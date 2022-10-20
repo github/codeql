@@ -2026,6 +2026,7 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }
 
   /** Gets a printable representation of this expression. */
+  pragma[assume_small_delta]
   override string toString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or

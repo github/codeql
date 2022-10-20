@@ -304,6 +304,7 @@ private predicate hasSubtypeStar1(RefType t, RefType sub) {
 /**
  * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardLowerBound(sub)`.
  */
+pragma[assume_small_delta]
 pragma[nomagic]
 private predicate hasSubtypeStar2(RefType t, RefType sub) {
   sub = t and getAWildcardLowerBound(sub)

@@ -152,6 +152,7 @@ class JacksonSerializableField extends SerializableField {
 
 /** A field that may be deserialized using the Jackson JSON framework. */
 class JacksonDeserializableField extends DeserializableField {
+  pragma[assume_small_delta]
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and
