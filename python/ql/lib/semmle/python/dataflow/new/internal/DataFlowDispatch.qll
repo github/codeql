@@ -1054,7 +1054,7 @@ predicate getCallArg(
     type instanceof CallTypeClassMethod and
     apos.isSelf() and
     resolveMethodCall(call, target, type, arg) and
-    arg = classTracker(_) and
+    (arg = classTracker(_) or arg = clsTracker(_)) and
     // dataflow lib has requirement that arguments and calls are in same enclosing callable.
     exists(CfgNode cfgNode | cfgNode.getNode() = call |
       cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
