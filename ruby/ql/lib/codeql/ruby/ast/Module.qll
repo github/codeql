@@ -3,6 +3,7 @@ private import codeql.ruby.CFG
 private import internal.AST
 private import internal.Module
 private import internal.TreeSitter
+private import internal.Scope
 
 /**
  * A representation of a run-time `module` or `class` value.
@@ -234,6 +235,31 @@ class ModuleBase extends BodyStmt, Scope, TModuleBase {
     or
     not this instanceof Namespace and
     result = this.getEnclosingModule().getNamespaceOrToplevel()
+  }
+
+  /**
+   * Gets an expression denoting the super class or an included or prepended module.
+   *
+   * For example, `C` is an ancestor expression of `M` in each of the following examples:
+   * ```rb
+   * class M < C
+   * end
+   *
+   * module M
+   *   include C
+   *   prepend C
+   * end
+   * ```
+   */
+  Expr getAnAncestorExpr() {
+    exists(MethodCall call |
+      call.getReceiver().(SelfVariableAccess).getVariable() = this.getModuleSelfVariable() and
+      call.getMethodName() = ["include", "prepend"] and
+      result = call.getArgument(0) and
+      scopeOfInclSynth(call) = this // only permit calls directly in the module scope, not in a block
+    )
+    or
+    result = this.(ClassDeclaration).getSuperclassExpr()
   }
 }
 
