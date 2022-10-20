@@ -36,7 +36,7 @@ class Property:
     type: Optional[str] = None
     is_child: bool = False
     pragmas: List[str] = field(default_factory=list)
-    doc_name: Optional[str] = None
+    doc: Optional[str] = None
     description: List[str] = field(default_factory=list)
 
     @property

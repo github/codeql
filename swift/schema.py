@@ -904,7 +904,7 @@ class FunctionType(AnyFunctionType):
 
 class GenericFunctionType(AnyFunctionType):
     """ The type of a generic function with type parameters """
-    generic_params: list["GenericTypeParamType"] | docname("generic parameters")
+    generic_params: list["GenericTypeParamType"] | doc("generic parameters")
 
 class GenericTypeParamType(SubstitutableType):
     pass

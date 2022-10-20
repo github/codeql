@@ -13,12 +13,12 @@ class _ChildModifier(_schema.PropertyModifier):
 
 @_dataclass
 class _DocnameModifier(_schema.PropertyModifier):
-    doc_name: str
+    doc: str
 
     def modify(self, prop: _schema.Property):
         if prop.is_predicate:
             raise _schema.Error("Predicates cannot have a doc name")
-        prop.doc_name = self.doc_name
+        prop.doc = self.doc
 
 
 @_dataclass
@@ -115,7 +115,7 @@ optional = _TypeModifier(_Optionalizer())
 list = _TypeModifier(_Listifier())
 
 child = _ChildModifier()
-docname = _DocnameModifier
+doc = _DocnameModifier
 desc = _DescModifier
 
 qltest = _Namespace(

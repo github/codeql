@@ -39,8 +39,8 @@ class Property:
     prev_child: Optional[str] = None
     qltest_skip: bool = False
     description: List[str] = field(default_factory=list)
-    doc_name: Optional[str] = None
-    doc_name_plural: Optional[str] = None
+    doc: Optional[str] = None
+    doc_plural: Optional[str] = None
 
     def __post_init__(self):
         if self.tableparams:

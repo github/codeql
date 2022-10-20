@@ -74,7 +74,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
-            doc_name=_humanize(prop.doc_name or prop.name),
+            doc=_humanize(prop.doc or prop.name),
         )
     elif prop.is_repeated:
         args.update(
@@ -82,15 +82,15 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
             plural=inflection.pluralize(inflection.camelize(prop.name)),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
-            doc_name=_humanize(inflection.singularize(prop.doc_name or prop.name)),
-            doc_name_plural=_humanize(inflection.pluralize(prop.doc_name or prop.name))
+            doc=_humanize(inflection.singularize(prop.doc or prop.name)),
+            doc_plural=_humanize(inflection.pluralize(prop.doc or prop.name))
         )
     elif prop.is_optional:
         args.update(
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
-            doc_name=_humanize(prop.doc_name or prop.name),
+            doc=_humanize(prop.doc or prop.name),
         )
     elif prop.is_predicate:
         args.update(

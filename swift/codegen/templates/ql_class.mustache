@@ -118,7 +118,7 @@ module Generated {
     {{#is_repeated}}
 
     /**
-     * Gets any of the {{doc_name_plural}}.
+     * Gets any of the {{doc_plural}}.
      */
     final {{type}} {{indefinite_getter}}() {
       result = {{getter}}(_)
@@ -126,7 +126,7 @@ module Generated {
     {{^is_optional}}
 
     /**
-     * Gets the number of {{doc_name_plural}}.
+     * Gets the number of {{doc_plural}}.
      */
     final int getNumberOf{{plural}}() {
       result = count({{indefinite_getter}}())
