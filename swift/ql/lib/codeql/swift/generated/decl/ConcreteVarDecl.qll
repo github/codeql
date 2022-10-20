@@ -8,7 +8,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ConcreteVarDecl" }
 
     /**
-     * Gets the introducer int of this concrete var declaration.
+     * Gets the introducer enumeration value.
+     * This is 0 if the variable was introduced with `let` and 1 if it was introduced with `var`.
      */
     int getIntroducerInt() {
       result = Synth::convertConcreteVarDeclToRaw(this).(Raw::ConcreteVarDecl).getIntroducerInt()

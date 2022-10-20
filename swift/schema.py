@@ -200,7 +200,9 @@ class ConcreteFuncDecl(FuncDecl):
     pass
 
 class ConcreteVarDecl(VarDecl):
-    introducer_int: int
+    introducer_int: int | doc("introducer enumeration value") | desc("""
+        This is 0 if the variable was introduced with `let` and 1 if it was introduced with `var`.
+    """)
 
 class GenericTypeParamDecl(AbstractTypeParamDecl):
     pass
