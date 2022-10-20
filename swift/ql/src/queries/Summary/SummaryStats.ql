@@ -5,6 +5,7 @@
  *              features interesting to analysis that have been found.
  * @kind table
  * @id swift/summary/summary-statistics
+ * @tags summary
  */
 
 import swift
