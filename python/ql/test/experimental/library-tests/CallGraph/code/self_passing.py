@@ -21,7 +21,7 @@ class Base(object):
 class A(Base):
     def foo(self):
         print("A.foo")
-        self.bar() # $ pt,tt=A.bar SPURIOUS: tt=B.bar
+        self.bar() # $ pt,tt=A.bar
 
     def not_called(self):
         self.bar() #$ pt,tt=A.bar
@@ -50,7 +50,7 @@ class X(object):
 
     def foo(self):
         print("X.foo")
-        self.meth() # $ pt,tt=X.meth SPURIOUS: tt=Y.meth
+        self.meth() # $ pt,tt=X.meth
 
 
 class Y(object):

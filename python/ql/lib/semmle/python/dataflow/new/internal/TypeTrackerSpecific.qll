@@ -68,7 +68,6 @@ string getPossibleContentName() {
  * methods is done using API graphs (which uses type tracking).
  */
 predicate callStep(DataFlowPublic::ArgumentNode nodeFrom, DataFlowPublic::ParameterNode nodeTo) {
-  // TODO: Fix performance problem with pandas
   exists(
     DataFlowPrivate::DataFlowCall call, DataFlowPrivate::DataFlowCallable callable,
     DataFlowPrivate::ArgumentPosition apos, DataFlowPrivate::ParameterPosition ppos
