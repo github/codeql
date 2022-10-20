@@ -11,7 +11,8 @@ module Generated {
     /**
      * Gets the sub expression of this enum is case expression.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -28,7 +29,8 @@ module Generated {
     /**
      * Gets the element of this enum is case expression.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     EnumElementDecl getImmediateElement() {
       result =

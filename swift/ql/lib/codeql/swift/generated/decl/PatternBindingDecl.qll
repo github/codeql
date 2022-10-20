@@ -12,7 +12,8 @@ module Generated {
     /**
      * Gets the `index`th init of this pattern binding declaration (0-based), if it exists.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateInit(int index) {
       result =
@@ -39,7 +40,8 @@ module Generated {
     /**
      * Gets the `index`th pattern of this pattern binding declaration (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Pattern getImmediatePattern(int index) {
       result =

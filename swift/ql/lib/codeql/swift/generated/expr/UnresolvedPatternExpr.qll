@@ -12,7 +12,8 @@ module Generated {
     /**
      * Gets the sub pattern of this unresolved pattern expression.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Pattern getImmediateSubPattern() {
       result =

@@ -11,7 +11,8 @@ module Generated {
     /**
      * Gets the key type of this dictionary type.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateKeyType() {
       result =
@@ -28,7 +29,8 @@ module Generated {
     /**
      * Gets the value type of this dictionary type.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateValueType() {
       result =

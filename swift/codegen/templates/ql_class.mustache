@@ -60,7 +60,8 @@ module Generated {
     {{#type_is_class}}
     /**
      * {{>ql_property_doc}}     *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
       {{^ipa}}

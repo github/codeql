@@ -12,7 +12,8 @@ module Generated {
     /**
      * Gets the boolean of this condition element, if it exists.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateBoolean() {
       result =
@@ -34,7 +35,8 @@ module Generated {
     /**
      * Gets the pattern of this condition element, if it exists.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Pattern getImmediatePattern() {
       result =
@@ -56,7 +58,8 @@ module Generated {
     /**
      * Gets the initializer of this condition element, if it exists.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateInitializer() {
       result =

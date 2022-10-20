@@ -13,7 +13,8 @@ module Generated {
     /**
      * Gets the `index`th parameter of this subscript declaration (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     ParamDecl getImmediateParam(int index) {
       result =
@@ -40,7 +41,8 @@ module Generated {
     /**
      * Gets the element type of this subscript declaration.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateElementType() {
       result =

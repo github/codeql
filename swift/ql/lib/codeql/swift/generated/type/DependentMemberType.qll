@@ -11,7 +11,8 @@ module Generated {
     /**
      * Gets the basetype of this dependent member type.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateBaseType() {
       result =
@@ -28,7 +29,8 @@ module Generated {
     /**
      * Gets the associated type declaration of this dependent member type.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
       result =

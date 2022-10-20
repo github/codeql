@@ -11,7 +11,8 @@ module Generated {
     /**
      * Gets the `index`th argument of this subscript expression (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Argument getImmediateArgument(int index) {
       result =

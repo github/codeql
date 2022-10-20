@@ -9,7 +9,8 @@ module Generated {
     /**
      * Gets the parent of this any generic type, if it exists.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateParent() {
       result =
@@ -31,7 +32,8 @@ module Generated {
     /**
      * Gets the declaration of this any generic type.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Decl getImmediateDeclaration() {
       result =

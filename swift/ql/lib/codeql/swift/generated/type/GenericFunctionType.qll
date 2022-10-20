@@ -14,7 +14,8 @@ module Generated {
     /**
      * Gets the `index`th type parameter of this generic type (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     GenericTypeParamType getImmediateGenericParam(int index) {
       result =

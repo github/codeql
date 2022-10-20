@@ -18,7 +18,8 @@ module Generated {
     /**
      * Gets the `index`th imported module of this module declaration (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     ModuleDecl getImmediateImportedModule(int index) {
       result =
@@ -47,7 +48,8 @@ module Generated {
     /**
      * Gets the `index`th exported module of this module declaration (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     ModuleDecl getImmediateExportedModule(int index) {
       result =

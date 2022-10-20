@@ -8,7 +8,8 @@ module Generated {
     /**
      * Gets the referent type of this reference storage type.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateReferentType() {
       result =

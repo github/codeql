@@ -12,7 +12,8 @@ module Generated {
     /**
      * Gets the expression of this switch statement.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateExpr() {
       result =
@@ -27,7 +28,8 @@ module Generated {
     /**
      * Gets the `index`th case of this switch statement (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     CaseStmt getImmediateCase(int index) {
       result =

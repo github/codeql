@@ -9,7 +9,8 @@ module Generated {
     /**
      * Gets the base of this self apply expression.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateBase() {
       result =

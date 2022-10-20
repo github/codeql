@@ -16,7 +16,8 @@ module Generated {
     /**
      * Gets the expression of this argument.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateExpr() {
       result =

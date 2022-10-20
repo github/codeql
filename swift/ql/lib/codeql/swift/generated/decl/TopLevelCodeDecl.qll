@@ -11,7 +11,8 @@ module Generated {
     /**
      * Gets the body of this top level code declaration.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     BraceStmt getImmediateBody() {
       result =

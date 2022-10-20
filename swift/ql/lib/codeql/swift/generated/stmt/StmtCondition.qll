@@ -11,7 +11,8 @@ module Generated {
     /**
      * Gets the `index`th element of this statement condition (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     ConditionElement getImmediateElement(int index) {
       result =

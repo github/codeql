@@ -11,7 +11,8 @@ module Generated {
     /**
      * Gets the body of this while statement.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Stmt getImmediateBody() {
       result =

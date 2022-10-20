@@ -10,7 +10,8 @@ module Generated {
     /**
      * Gets the interface type of this archetype type.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateInterfaceType() {
       result =
@@ -27,7 +28,8 @@ module Generated {
     /**
      * Gets the superclass of this archetype type, if it exists.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateSuperclass() {
       result =
@@ -49,7 +51,8 @@ module Generated {
     /**
      * Gets the `index`th protocol of this archetype type (0-based).
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     ProtocolDecl getImmediateProtocol(int index) {
       result =

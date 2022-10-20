@@ -10,7 +10,8 @@ module Generated {
     /**
      * Gets the base of this key path application expression.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateBase() {
       result =
@@ -27,7 +28,8 @@ module Generated {
     /**
      * Gets the key path of this key path application expression.
      *
-     * This includes nodes from the "hidden" AST.
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behaviour of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateKeyPath() {
       result =
