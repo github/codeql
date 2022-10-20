@@ -247,7 +247,7 @@ Added a flow step for `String.valueOf` calls on tainted `android.text.Editable` 
 
 ### Minor Analysis Improvements
 
-* Added guard preconditon support for assertion methods for popular testing libraries (e.g. Junit 4, Junit 5, TestNG).
+* Added guard precondition support for assertion methods for popular testing libraries (e.g. Junit 4, Junit 5, TestNG).
 
 ## 0.0.13
 
