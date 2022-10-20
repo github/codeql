@@ -738,6 +738,24 @@ class ModuleNode instanceof Module {
   /** Gets a module that transitively subclasses, includes, or prepends this module. */
   final ModuleNode getADescendent() { result = super.getADescendent() }
 
+  /**
+   * Gets the expression node denoting the super class or an included or prepended module.
+   *
+   * For example, `C` is an ancestor expression of `M` in each of the following examples:
+   * ```rb
+   * class M < C
+   * end
+   *
+   * module M
+   *   include C
+   *   prepend C
+   * end
+   * ```
+   */
+  final ExprNode getAnAncestorExpr() {
+    result.asExpr().getExpr() = super.getADeclaration().getAnAncestorExpr()
+  }
+
   /** Holds if this module is a class. */
   predicate isClass() { super.isClass() }
 
