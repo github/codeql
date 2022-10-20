@@ -16,7 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bazelbuild/setup-bazelisk@v2
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: 'swift/.python-version'
       - name: Build the Xcode autobuilder
         run: |
           bazel build //swift/xcode-autobuilder
