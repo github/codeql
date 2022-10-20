@@ -134,7 +134,7 @@ class VarDecl(AbstractStorageDecl):
     parent_initializer: optional[Expr]
 
 class ParamDecl(VarDecl):
-    is_inout: predicate
+    is_inout: predicate | doc("this is an `inout` parameter")
 
 class Callable(Element):
     self_param: optional[ParamDecl] | child
@@ -177,8 +177,8 @@ class GenericTypeDecl(GenericContext, TypeDecl):
     pass
 
 class ModuleDecl(TypeDecl):
-    is_builtin_module: predicate
-    is_system_module: predicate
+    is_builtin_module: predicate | doc("this module is the built-in one")
+    is_system_module: predicate | doc("this module is a system one")
     imported_modules: list["ModuleDecl"]
     exported_modules: list["ModuleDecl"]
 
@@ -188,10 +188,10 @@ class SubscriptDecl(AbstractStorageDecl, GenericContext):
     element_type: Type
 
 class AccessorDecl(FuncDecl):
-    is_getter: predicate
-    is_setter: predicate
-    is_will_set: predicate
-    is_did_set: predicate
+    is_getter: predicate | doc('this accessor is a getter')
+    is_setter: predicate | doc('this accessor is a setter')
+    is_will_set: predicate | doc('this accessor is a `willSet`, called before the property is set')
+    is_did_set: predicate | doc('this accessor is a `didSet`, called after the property is set')
 
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass

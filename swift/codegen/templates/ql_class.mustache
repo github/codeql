@@ -86,7 +86,6 @@ module Generated {
 
     {{/type_is_class}}
     {{^type_is_class}}
-    {{^is_predicate}}
     /**
      * {{>ql_property_doc}}     *
     {{#has_description}}
@@ -95,16 +94,6 @@ module Generated {
     {{/description}}
     {{/has_description}}
      */
-    {{/is_predicate}}
-    {{#is_predicate}}
-    {{#has_doc}}
-    /**
-    {{#doc}}
-     * {{.}}
-    {{/doc}}
-     */
-    {{/has_doc}}
-    {{/is_predicate}}
     {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
       {{^ipa}}
       {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}})

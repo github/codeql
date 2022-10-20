@@ -328,7 +328,7 @@ def test_predicate_property(generate_classes):
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="isFoo", type="predicate", tablename="my_object_is_foo",
-                                         tableparams=["this"], is_predicate=True),
+                                         tableparams=["this"], is_predicate=True, doc="this my object is foo"),
                          ])),
     }
 

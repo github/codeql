@@ -55,14 +55,23 @@ module Generated {
      */
     final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
 
+    /**
+     * Holds if this declaration ref expression has direct to storage semantics.
+     */
     predicate hasDirectToStorageSemantics() {
       Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToStorageSemantics()
     }
 
+    /**
+     * Holds if this declaration ref expression has direct to implementation semantics.
+     */
     predicate hasDirectToImplementationSemantics() {
       Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToImplementationSemantics()
     }
 
+    /**
+     * Holds if this declaration ref expression has ordinary semantics.
+     */
     predicate hasOrdinarySemantics() {
       Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
     }

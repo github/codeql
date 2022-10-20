@@ -554,13 +554,5 @@ def test_property_doc_override():
     }
 
 
-def test_predicate_cannot_have_doc_override():
-    with pytest.raises(schema.Error):
-        @schema.load
-        class data:
-            class A:
-                x: defs.predicate | defs.doc("y")
-
-
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

@@ -16,8 +16,6 @@ class _DocnameModifier(_schema.PropertyModifier):
     doc: str
 
     def modify(self, prop: _schema.Property):
-        if prop.is_predicate:
-            raise _schema.Error("Predicates cannot have a doc name")
         prop.doc = self.doc
 
 

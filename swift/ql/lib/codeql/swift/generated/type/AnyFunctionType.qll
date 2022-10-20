@@ -68,10 +68,16 @@ module Generated {
      */
     final int getNumberOfParamLabels() { result = count(getAParamLabel()) }
 
+    /**
+     * Holds if this any function type is throwing.
+     */
     predicate isThrowing() {
       Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isThrowing()
     }
 
+    /**
+     * Holds if this any function type is async.
+     */
     predicate isAsync() {
       Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isAsync()
     }

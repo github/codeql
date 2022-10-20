@@ -7,10 +7,16 @@ module Generated {
   class ModuleDecl extends Synth::TModuleDecl, TypeDecl {
     override string getAPrimaryQlClass() { result = "ModuleDecl" }
 
+    /**
+     * Holds if this module is the built-in one.
+     */
     predicate isBuiltinModule() {
       Synth::convertModuleDeclToRaw(this).(Raw::ModuleDecl).isBuiltinModule()
     }
 
+    /**
+     * Holds if this module is a system one.
+     */
     predicate isSystemModule() {
       Synth::convertModuleDeclToRaw(this).(Raw::ModuleDecl).isSystemModule()
     }

@@ -36,16 +36,25 @@ module Generated {
      */
     final int getNumberOfArguments() { result = count(getAnArgument()) }
 
+    /**
+     * Holds if this subscript expression has direct to storage semantics.
+     */
     predicate hasDirectToStorageSemantics() {
       Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasDirectToStorageSemantics()
     }
 
+    /**
+     * Holds if this subscript expression has direct to implementation semantics.
+     */
     predicate hasDirectToImplementationSemantics() {
       Synth::convertSubscriptExprToRaw(this)
           .(Raw::SubscriptExpr)
           .hasDirectToImplementationSemantics()
     }
 
+    /**
+     * Holds if this subscript expression has ordinary semantics.
+     */
     predicate hasOrdinarySemantics() {
       Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasOrdinarySemantics()
     }

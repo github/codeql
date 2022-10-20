@@ -96,6 +96,8 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
 
     prop_name = _humanize(prop.name)
     class_name = _humanize(inflection.underscore(cls.name))
+    if prop.is_predicate:
+        return f"this {class_name} {prop_name}"
     if plural is not None:
         prop_name = inflection.pluralize(prop_name) if plural else inflection.singularize(prop_name)
     return f"{prop_name} of this {class_name}"
@@ -138,6 +140,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
             singular=inflection.camelize(prop.name, uppercase_first_letter=False),
             tablename=inflection.underscore(f"{cls.name}_{prop.name}"),
             tableparams=["this"],
+            doc=_get_doc(cls, prop),
         )
     else:
         raise ValueError(f"unknown property kind for {prop.name} from {cls.name}")

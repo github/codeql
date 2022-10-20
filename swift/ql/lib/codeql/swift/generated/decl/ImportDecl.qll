@@ -9,6 +9,9 @@ module Generated {
   class ImportDecl extends Synth::TImportDecl, Decl {
     override string getAPrimaryQlClass() { result = "ImportDecl" }
 
+    /**
+     * Holds if this import declaration is exported.
+     */
     predicate isExported() { Synth::convertImportDeclToRaw(this).(Raw::ImportDecl).isExported() }
 
     /**

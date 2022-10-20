@@ -41,6 +41,9 @@ module Generated {
       result = getResolveStep().resolve()
     }
 
+    /**
+     * Holds if this element is unknown.
+     */
     predicate isUnknown() { Synth::convertElementToRaw(this).isUnknown() }
   }
 }
