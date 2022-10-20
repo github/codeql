@@ -554,5 +554,17 @@ def test_property_doc_override():
     }
 
 
+def test_class_default_doc_name():
+    @schema.load
+    class data:
+        @defs.ql.default_doc_name("b")
+        class A:
+            pass
+
+    assert data.classes == {
+        'A': schema.Class('A', default_doc_name="b"),
+    }
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

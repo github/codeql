@@ -6,7 +6,7 @@ import codeql.swift.elements.type.Type
 module Generated {
   class AnyFunctionType extends Synth::TAnyFunctionType, Type {
     /**
-     * Gets the result of this any function type.
+     * Gets the result of this function type.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behaviour of both the `Immediate` and non-`Immediate` versions.
@@ -19,12 +19,12 @@ module Generated {
     }
 
     /**
-     * Gets the result of this any function type.
+     * Gets the result of this function type.
      */
     final Type getResult() { result = getImmediateResult().resolve() }
 
     /**
-     * Gets the `index`th parameter type of this any function type (0-based).
+     * Gets the `index`th parameter type of this function type (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behaviour of both the `Immediate` and non-`Immediate` versions.
@@ -37,46 +37,46 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th parameter type of this any function type (0-based).
+     * Gets the `index`th parameter type of this function type (0-based).
      */
     final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
 
     /**
-     * Gets any of the parameter types of this any function type.
+     * Gets any of the parameter types of this function type.
      */
     final Type getAParamType() { result = getParamType(_) }
 
     /**
-     * Gets the number of parameter types of this any function type.
+     * Gets the number of parameter types of this function type.
      */
     final int getNumberOfParamTypes() { result = count(getAParamType()) }
 
     /**
-     * Gets the `index`th parameter label of this any function type (0-based).
+     * Gets the `index`th parameter label of this function type (0-based).
      */
     string getParamLabel(int index) {
       result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)
     }
 
     /**
-     * Gets any of the parameter labels of this any function type.
+     * Gets any of the parameter labels of this function type.
      */
     final string getAParamLabel() { result = getParamLabel(_) }
 
     /**
-     * Gets the number of parameter labels of this any function type.
+     * Gets the number of parameter labels of this function type.
      */
     final int getNumberOfParamLabels() { result = count(getAParamLabel()) }
 
     /**
-     * Holds if this any function type is throwing.
+     * Holds if this type refers to a throwing function.
      */
     predicate isThrowing() {
       Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isThrowing()
     }
 
     /**
-     * Holds if this any function type is async.
+     * Holds if this type refers to an `async` function.
      */
     predicate isAsync() {
       Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isAsync()

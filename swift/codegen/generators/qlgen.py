@@ -95,7 +95,7 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
         return format.format(**{noun: transform(noun) for noun in nouns})
 
     prop_name = _humanize(prop.name)
-    class_name = _humanize(inflection.underscore(cls.name))
+    class_name = cls.default_doc_name or _humanize(inflection.underscore(cls.name))
     if prop.is_predicate:
         return f"this {class_name} {prop_name}"
     if plural is not None:

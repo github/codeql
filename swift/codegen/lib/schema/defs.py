@@ -33,14 +33,13 @@ def include(source: str):
         "__includes", []).append(source)
 
 
+@_dataclass
 class _Pragma(_schema.PropertyModifier):
     """ A class or property pragma.
     For properties, it functions similarly to a `_PropertyModifier` with `|`, adding the pragma.
     For schema classes it acts as a python decorator with `@`.
     """
-
-    def __init__(self, pragma):
-        self.pragma = pragma
+    pragma: str
 
     def modify(self, prop: _schema.Property):
         prop.pragmas.append(self.pragma)
@@ -51,6 +50,15 @@ class _Pragma(_schema.PropertyModifier):
             cls.pragmas.append(self.pragma)
         else:
             cls.pragmas = [self.pragma]
+        return cls
+
+
+@_dataclass
+class _DefaultDocNameClassModifier:
+    doc_name: str
+
+    def __call__(self, cls: type) -> type:
+        cls._doc_name = self.doc_name
         return cls
 
 
@@ -120,6 +128,10 @@ qltest = _Namespace(
     skip=_Pragma("qltest_skip"),
     collapse_hierarchy=_Pragma("qltest_collapse_hierarchy"),
     uncollapse_hierarchy=_Pragma("qltest_uncollapse_hierarchy"),
+)
+
+ql = _Namespace(
+    default_doc_name=_DefaultDocNameClassModifier,
 )
 
 cpp = _Namespace(

@@ -80,6 +80,7 @@ class Class:
     pragmas: List[str] = field(default_factory=list)
     ipa: Optional[IpaInfo] = None
     doc: List[str] = field(default_factory=list)
+    default_doc_name: Optional[str] = None
 
     @property
     def final(self):
@@ -207,6 +208,7 @@ def _get_class(cls: type) -> Class:
                      for n, a in cls.__dict__.get("__annotations__", {}).items()
                  ],
                  doc=split_doc(cls.__doc__),
+                 default_doc_name=cls.__dict__.get("_doc_name"),
                  )
 
 

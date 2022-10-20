@@ -774,5 +774,20 @@ def test_property_doc_override_with_format(generate_classes):
     }
 
 
+def test_property_on_class_with_default_doc_name(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.SingleProperty("foo", "bar")],
+            default_doc_name="baz"),
+    ]) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True,
+                                  properties=[
+                                      ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                  tableparams=["this", "result"], doc="foo of this baz"),
+                                  ])),
+    }
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

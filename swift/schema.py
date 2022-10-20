@@ -783,12 +783,13 @@ class WhileStmt(LabeledConditionalStmt):
 class TypeRepr(AstNode):
     type: Type
 
+@ql.default_doc_name("function type")
 class AnyFunctionType(Type):
     result: Type
     param_types: list[Type]
     param_labels: list[string]
-    is_throwing: predicate
-    is_async: predicate
+    is_throwing: predicate | doc("this type refers to a throwing function")
+    is_async: predicate | doc("this type refers to an `async` function")
 
 class AnyGenericType(Type):
     parent: optional[Type]
