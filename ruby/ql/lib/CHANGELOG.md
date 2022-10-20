@@ -3,8 +3,7 @@
 ### Minor Analysis Improvements
 
 * The hashing algorithms from `Digest` and `OpenSSL::Digest` are now recognized and can be flagged by the `rb/weak-cryptographic-algorithm` query.
-* More sources of remote input arising from methods on `ActionDispatch::Request`
-  are now recognised.
+* More sources of remote input arising from methods on `ActionDispatch::Request` are now recognized.
 * The response value returned by the `Faraday#run_request` method is now also considered a source of remote input.
 * `ActiveJob::Serializers.deserialize` is considered to be a code execution sink.
 * Calls to `params` in `ActionMailer` classes are now treated as sources of remote user input.

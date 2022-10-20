@@ -5,7 +5,7 @@
 * Added model of `cx_Oracle`, `oracledb`, `phonenixdb` and `pyodbc` PyPI packages as a SQL interface following PEP249, resulting in additional sinks for `py/sql-injection`.
 * Added model of `executemany` calls on PEP-249 compliant database APIs, resulting in additional sinks for `py/sql-injection`.
 * Added model of `pymssql` PyPI package as a SQL interface following PEP249, resulting in additional sinks for `py/sql-injection`.
-* The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
 
 ### Bug Fixes
 

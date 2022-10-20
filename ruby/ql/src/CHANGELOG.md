@@ -10,7 +10,7 @@
 * HTTP response header and body writes via `ActionDispatch::Response` are now
   recognized.
 * The `rb/path-injection` query now treats the `file:` argument of the Rails `render` method as a sink.
-* The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
 
 ## 0.4.1
 
