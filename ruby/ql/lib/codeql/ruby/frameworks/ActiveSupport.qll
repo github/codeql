@@ -84,7 +84,7 @@ module ActiveSupport {
     }
 
     /**
-     *    Extensions to the `Hash` class.
+     * Extensions to the `Hash` class.
      */
     module Hash {
       private class WithIndifferentAccessSummary extends SimpleSummarizedCallable {
