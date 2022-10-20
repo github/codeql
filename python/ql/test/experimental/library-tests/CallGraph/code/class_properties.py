@@ -1,3 +1,6 @@
+def func():
+    print("func")
+
 class Prop(object):
     def __init__(self, arg):
         self._arg = arg
@@ -32,6 +35,11 @@ class Prop(object):
 
     arg2 = property(_arg2_getter, _arg2_setter, _arg2_deleter)
 
+    @property
+    def func_prop(self):
+        print("Prop.func_prop getter")
+        return func
+
 prop = Prop(42) # $ tt=Prop.__init__
 
 prop.arg
@@ -41,3 +49,6 @@ del prop.arg
 prop.arg2
 prop.arg2 = 43
 del prop.arg2
+
+f = prop.func_prop
+f() # $ SPURIOUS: tt=Prop.func_prop MISSING: tt=func
