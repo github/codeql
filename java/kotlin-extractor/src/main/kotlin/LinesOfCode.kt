@@ -16,9 +16,8 @@ class LinesOfCode(
     val tw: FileTrapWriter,
     val file: IrFile
 ) {
-    val psi2Ir = getPsi2Ir(logger)
-    init {
-        if (psi2Ir == null) {
+    val psi2Ir = getPsi2Ir(logger).also {
+        if (it == null) {
             logger.warn("Lines of code will not be populated as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})")
         }
     }
