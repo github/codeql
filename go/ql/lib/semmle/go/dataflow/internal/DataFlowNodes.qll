@@ -12,7 +12,7 @@ private newtype TNode =
   MkGlobalFunctionNode(Function f) or
   MkSummarizedParameterNode(DataFlowCallable c, int i) {
     not exists(c.getFuncDef()) and
-    c instanceof SummarizedCallable and
+    c.asCallable() instanceof SummarizedCallable and
     (
       i in [0 .. c.getType().getNumParameter() - 1]
       or
@@ -115,7 +115,7 @@ module Public {
       exists(DataFlowCallable dfc | result = dfc.asCallable() |
         this = MkSummarizedParameterNode(dfc, _)
         or
-        this = MkSummaryInternalNode(dfc, _)
+        this = MkSummaryInternalNode(dfc.asCallable(), _)
       )
     }
 
