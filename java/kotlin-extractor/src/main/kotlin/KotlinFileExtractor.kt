@@ -305,7 +305,7 @@ open class KotlinFileExtractor(
                 val kind = c.kind
                 if (kind == ClassKind.ENUM_CLASS) {
                     tw.writeIsEnumType(classId)
-                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                     logger.errorElement("Unrecognised class kind $kind", c)
                 }
             }
@@ -452,7 +452,7 @@ open class KotlinFileExtractor(
                     val kind = c.kind
                     if (kind == ClassKind.ENUM_CLASS) {
                         tw.writeIsEnumType(classId)
-                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                         logger.warnElement("Unrecognised class kind $kind", c)
                     }
 
