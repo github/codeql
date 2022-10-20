@@ -702,7 +702,7 @@ class CodeExecution extends DataFlow::Node instanceof CodeExecution::Range {
   /** Gets the argument that specifies the code to be executed. */
   DataFlow::Node getCode() { result = super.getCode() }
 
-  /** Holds if this execution runs arbitary code, as opposed to some restricted subset. E.g. `Object.send` will only run any method on an object. */
+  /** Holds if this execution runs arbitrary code, as opposed to some restricted subset. E.g. `Object.send` will only run any method on an object. */
   predicate runsArbitraryCode() { super.runsArbitraryCode() }
 }
 
@@ -718,7 +718,7 @@ module CodeExecution {
     /** Gets the argument that specifies the code to be executed. */
     abstract DataFlow::Node getCode();
 
-    /** Holds if this execution runs arbitary code, as opposed to some restricted subset. E.g. `Object.send` will only run any method on an object. */
+    /** Holds if this execution runs arbitrary code, as opposed to some restricted subset. E.g. `Object.send` will only run any method on an object. */
     predicate runsArbitraryCode() { any() }
   }
 }
