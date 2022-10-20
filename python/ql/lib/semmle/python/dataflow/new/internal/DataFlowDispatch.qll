@@ -441,7 +441,8 @@ private TypeTrackingNode classTracker(TypeTracker t, Class cls) {
     result.(CallCfgNode).getArg(0) = classInstanceTracker(cls)
   )
   or
-  exists(TypeTracker t2 | result = classTracker(t2, cls).track(t2, t))
+  exists(TypeTracker t2 | result = classTracker(t2, cls).track(t2, t)) and
+  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
@@ -456,7 +457,8 @@ private TypeTrackingNode classInstanceTracker(TypeTracker t, Class cls) {
   t.start() and
   result.(CallCfgNode).getFunction() = classTracker(cls)
   or
-  exists(TypeTracker t2 | result = classInstanceTracker(t2, cls).track(t2, t))
+  exists(TypeTracker t2 | result = classInstanceTracker(t2, cls).track(t2, t)) and
+  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
@@ -480,7 +482,8 @@ private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
     result.asExpr() = func.getArg(0)
   )
   or
-  exists(TypeTracker t2 | result = selfTracker(t2, classWithMethod).track(t2, t))
+  exists(TypeTracker t2 | result = selfTracker(t2, classWithMethod).track(t2, t)) and
+  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
@@ -509,7 +512,8 @@ private TypeTrackingNode clsTracker(TypeTracker t, Class classWithMethod) {
     result.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
   )
   or
-  exists(TypeTracker t2 | result = clsTracker(t2, classWithMethod).track(t2, t))
+  exists(TypeTracker t2 | result = clsTracker(t2, classWithMethod).track(t2, t)) and
+  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
@@ -532,7 +536,8 @@ private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func
     call.getScope() = func
   )
   or
-  exists(TypeTracker t2 | result = superCallNoArgumentTracker(t2, func).track(t2, t))
+  exists(TypeTracker t2 | result = superCallNoArgumentTracker(t2, func).track(t2, t)) and
+  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
@@ -555,7 +560,8 @@ private TypeTrackingNode superCallTwoArgumentTracker(TypeTracker t, Class cls, N
     call.getArg(1) = obj
   )
   or
-  exists(TypeTracker t2 | result = superCallTwoArgumentTracker(t2, cls, obj).track(t2, t))
+  exists(TypeTracker t2 | result = superCallTwoArgumentTracker(t2, cls, obj).track(t2, t)) and
+  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
