@@ -10,7 +10,7 @@ module Generated {
      * Gets the base of this lookup expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateBase() {
       result =
@@ -26,7 +26,7 @@ module Generated {
      * Gets the member of this lookup expression, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Decl getImmediateMember() {
       result =

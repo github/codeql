@@ -13,7 +13,7 @@ module Generated {
      * Gets the body of this do catch statement.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Stmt getImmediateBody() {
       result =
@@ -29,7 +29,7 @@ module Generated {
      * Gets the `index`th catch of this do catch statement (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     CaseStmt getImmediateCatch(int index) {
       result =

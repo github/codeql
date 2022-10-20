@@ -10,7 +10,7 @@ module Generated {
      * Gets the base type of this unary syntax sugar type.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateBaseType() {
       result =

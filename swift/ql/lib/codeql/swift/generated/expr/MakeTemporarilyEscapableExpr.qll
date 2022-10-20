@@ -12,7 +12,7 @@ module Generated {
      * Gets the escaping closure of this make temporarily escapable expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     OpaqueValueExpr getImmediateEscapingClosure() {
       result =
@@ -30,7 +30,7 @@ module Generated {
      * Gets the nonescaping closure of this make temporarily escapable expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateNonescapingClosure() {
       result =
@@ -48,7 +48,7 @@ module Generated {
      * Gets the sub expression of this make temporarily escapable expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateSubExpr() {
       result =

@@ -10,7 +10,7 @@ module Generated {
      * Gets the `index`th argument type of this bound generic type (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateArgType(int index) {
       result =

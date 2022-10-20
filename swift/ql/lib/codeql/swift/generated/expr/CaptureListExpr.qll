@@ -13,7 +13,7 @@ module Generated {
      * Gets the `index`th binding declaration of this capture list expression (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     PatternBindingDecl getImmediateBindingDecl(int index) {
       result =
@@ -43,7 +43,7 @@ module Generated {
      * Gets the closure body of this capture list expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     ClosureExpr getImmediateClosureBody() {
       result =

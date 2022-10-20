@@ -14,7 +14,7 @@ module Generated {
      * Gets the extended type declaration of this extension declaration.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     NominalTypeDecl getImmediateExtendedTypeDecl() {
       result =

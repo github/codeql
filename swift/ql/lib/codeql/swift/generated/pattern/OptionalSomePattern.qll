@@ -11,7 +11,7 @@ module Generated {
      * Gets the sub pattern of this optional some pattern.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Pattern getImmediateSubPattern() {
       result =

@@ -11,7 +11,7 @@ module Generated {
      * Gets the self parameter of this callable, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     ParamDecl getImmediateSelfParam() {
       result =
@@ -34,7 +34,7 @@ module Generated {
      * Gets the `index`th parameter of this callable (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     ParamDecl getImmediateParam(int index) {
       result =
@@ -62,7 +62,7 @@ module Generated {
      * Gets the body of this callable, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     BraceStmt getImmediateBody() {
       result =

@@ -12,7 +12,7 @@ module Generated {
      * Gets the type of this type representation.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateType() {
       result =

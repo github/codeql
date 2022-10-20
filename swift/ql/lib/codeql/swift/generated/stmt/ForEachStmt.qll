@@ -14,7 +14,7 @@ module Generated {
      * Gets the pattern of this for each statement.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Pattern getImmediatePattern() {
       result =
@@ -32,7 +32,7 @@ module Generated {
      * Gets the sequence of this for each statement.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateSequence() {
       result =
@@ -50,7 +50,7 @@ module Generated {
      * Gets the where of this for each statement, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateWhere() {
       result =
@@ -71,7 +71,7 @@ module Generated {
      * Gets the body of this for each statement.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     BraceStmt getImmediateBody() {
       result =

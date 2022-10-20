@@ -12,7 +12,7 @@ module Generated {
      * Gets the root of this key path expression, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     TypeRepr getImmediateRoot() {
       result =
@@ -35,7 +35,7 @@ module Generated {
      * Gets the parsed path of this key path expression, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateParsedPath() {
       result =

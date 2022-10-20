@@ -12,7 +12,7 @@ module Generated {
      * Gets the then of this if statement.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Stmt getImmediateThen() {
       result = Synth::convertStmtFromRaw(Synth::convertIfStmtToRaw(this).(Raw::IfStmt).getThen())
@@ -27,7 +27,7 @@ module Generated {
      * Gets the else of this if statement, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Stmt getImmediateElse() {
       result = Synth::convertStmtFromRaw(Synth::convertIfStmtToRaw(this).(Raw::IfStmt).getElse())

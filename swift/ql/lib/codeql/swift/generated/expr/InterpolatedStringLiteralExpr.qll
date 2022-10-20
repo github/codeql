@@ -14,7 +14,7 @@ module Generated {
      * Gets the interpolation expression of this interpolated string literal expression, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     OpaqueValueExpr getImmediateInterpolationExpr() {
       result =
@@ -39,7 +39,7 @@ module Generated {
      * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateInterpolationCountExpr() {
       result =
@@ -64,7 +64,7 @@ module Generated {
      * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateLiteralCapacityExpr() {
       result =
@@ -87,7 +87,7 @@ module Generated {
      * Gets the appending expression of this interpolated string literal expression, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     TapExpr getImmediateAppendingExpr() {
       result =

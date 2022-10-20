@@ -12,7 +12,7 @@ module Generated {
      * Gets the sub expression of this open existential expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -30,7 +30,7 @@ module Generated {
      * Gets the existential of this open existential expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateExistential() {
       result =
@@ -48,7 +48,7 @@ module Generated {
      * Gets the opaque expression of this open existential expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     OpaqueValueExpr getImmediateOpaqueExpr() {
       result =

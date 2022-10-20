@@ -14,7 +14,7 @@ module Generated {
      * Gets the canonical type of this type.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateCanonicalType() {
       result =

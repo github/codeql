@@ -17,7 +17,7 @@ module Generated {
      * Gets the type of this var declaration.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateType() {
       result = Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getType())
@@ -32,7 +32,7 @@ module Generated {
      * Gets the attached property wrapper type of this var declaration, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateAttachedPropertyWrapperType() {
       result =
@@ -57,7 +57,7 @@ module Generated {
      * Gets the parent pattern of this var declaration, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Pattern getImmediateParentPattern() {
       result =
@@ -80,7 +80,7 @@ module Generated {
      * Gets the parent initializer of this var declaration, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateParentInitializer() {
       result =

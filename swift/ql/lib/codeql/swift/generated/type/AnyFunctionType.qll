@@ -9,7 +9,7 @@ module Generated {
      * Gets the result of this function type.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateResult() {
       result =
@@ -27,7 +27,7 @@ module Generated {
      * Gets the `index`th parameter type of this function type (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behaviour of both the `Immediate` and non-`Immediate` versions.
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Type getImmediateParamType(int index) {
       result =
