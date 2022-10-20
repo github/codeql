@@ -367,7 +367,7 @@ module ContentDataFlow {
         or
         excludeStep(node, _)
         or
-        DF::PathGraph::subpaths(_, _, node, _)
+        DF::PathGraph::subpaths(_, _, node.getASuccessor(), _)
       )
     }
 
@@ -523,7 +523,7 @@ module ContentDataFlow {
   ) {
     exists(DF::PathNode source, DF::PathNode ret |
       nodeReaches(source, scReads, scStores, ret, reads, stores) and
-      DF::PathGraph::subpaths(arg, source, ret, out)
+      DF::PathGraph::subpaths(arg, source, ret.getASuccessor(), out)
     )
   }
 }

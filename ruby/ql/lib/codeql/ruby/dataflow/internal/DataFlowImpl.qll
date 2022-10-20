@@ -265,6 +265,7 @@ abstract private class ConfigurationRecursionPrevention extends Configuration {
 
 private newtype TNodeEx =
   TNodeNormal(Node n) or
+  TNodeReturn(ReturnPosition pos) or
   TNodeImplicitRead(Node n, boolean hasRead) {
     any(Configuration c).allowImplicitRead(n, _) and hasRead = [false, true]
   }
@@ -273,6 +274,8 @@ private class NodeEx extends TNodeEx {
   string toString() {
     result = this.asNode().toString()
     or
+    exists(ReturnPosition pos | this.isReturnNode(pos) | result = "return via " + pos + " [Ext]")
+    or
     exists(Node n | this.isImplicitReadNode(n, _) | result = n.toString() + " [Ext]")
   }
 
@@ -280,11 +283,15 @@ private class NodeEx extends TNodeEx {
 
   predicate isImplicitReadNode(Node n, boolean hasRead) { this = TNodeImplicitRead(n, hasRead) }
 
+  predicate isReturnNode(ReturnPosition pos) { this = TNodeReturn(pos) }
+
   Node projectToNode() { this = TNodeNormal(result) or this = TNodeImplicitRead(result, _) }
 
   pragma[nomagic]
   private DataFlowCallable getEnclosingCallable0() {
     nodeEnclosingCallable(this.projectToNode(), result)
+    or
+    exists(ReturnPosition pos | this.isReturnNode(pos) | result = pos.getCallable())
   }
 
   pragma[inline]
@@ -323,12 +330,12 @@ private class ParamNodeEx extends NodeEx {
   predicate allowParameterReturnInSelf() { allowParameterReturnInSelfCached(this.asNode()) }
 }
 
-private class RetNodeEx extends NodeEx {
-  RetNodeEx() { this.asNode() instanceof ReturnNodeExt }
+private class RetNodeEx extends NodeEx, TNodeReturn {
+  ReturnPosition getReturnPosition() { this = TNodeReturn(result) }
 
-  ReturnPosition getReturnPosition() { result = getReturnPosition(this.asNode()) }
+  ReturnKindExt getKind() { result = this.getReturnPosition().getKind() }
 
-  ReturnKindExt getKind() { result = this.asNode().(ReturnNodeExt).getKind() }
+  NodeEx getAnActualReturnNode() { this.getReturnPosition() = getReturnPosition(result.asNode()) }
 }
 
 private predicate inBarrier(NodeEx node, Configuration config) {
@@ -439,6 +446,9 @@ private predicate localFlowStep(NodeEx node1, NodeEx node2, Configuration config
     simpleLocalFlowStepExt(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     stepFilter(node1, node2, config)
   )
+  or
+  node2.(RetNodeEx).getAnActualReturnNode() = node1 and
+  stepFilter(node1, node2, config)
   or
   exists(Node n |
     config.allowImplicitRead(n, _) and
@@ -580,8 +590,8 @@ private predicate store(
 }
 
 pragma[nomagic]
-private predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, NodeEx out) {
-  viableReturnPosOut(call, pos, out.asNode())
+private predicate viableReturnOutEx(DataFlowCall call, RetNodeEx ret, NodeEx out) {
+  viableReturnPosOut(call, ret.getReturnPosition(), out.asNode())
 }
 
 pragma[nomagic]
@@ -702,18 +712,10 @@ private module Stage1 implements StageSig {
   }
 
   pragma[nomagic]
-  private predicate fwdFlowReturnPosition(ReturnPosition pos, Cc cc, Configuration config) {
+  private predicate fwdFlowOut(DataFlowCall call, NodeEx out, Cc cc, Configuration config) {
     exists(RetNodeEx ret |
       fwdFlow(ret, cc, config) and
-      ret.getReturnPosition() = pos
-    )
-  }
-
-  pragma[nomagic]
-  private predicate fwdFlowOut(DataFlowCall call, NodeEx out, Cc cc, Configuration config) {
-    exists(ReturnPosition pos |
-      fwdFlowReturnPosition(pos, cc, config) and
-      viableReturnPosOutEx(call, pos, out) and
+      viableReturnOutEx(call, ret, out) and
       not fullBarrier(out, config)
     )
   }
@@ -809,9 +811,9 @@ private module Stage1 implements StageSig {
     )
     or
     // flow out of a callable
-    exists(ReturnPosition pos |
-      revFlowOut(pos, config) and
-      node.(RetNodeEx).getReturnPosition() = pos and
+    exists(DataFlowCall call, NodeEx out |
+      revFlow(out, _, config) and
+      viableReturnOutNodeCandFwd1(call, node, out, config) and
       toReturn = true
     )
   }
@@ -850,19 +852,11 @@ private module Stage1 implements StageSig {
   }
 
   pragma[nomagic]
-  additional predicate viableReturnPosOutNodeCandFwd1(
-    DataFlowCall call, ReturnPosition pos, NodeEx out, Configuration config
+  additional predicate viableReturnOutNodeCandFwd1(
+    DataFlowCall call, RetNodeEx ret, NodeEx out, Configuration config
   ) {
-    fwdFlowReturnPosition(pos, _, config) and
-    viableReturnPosOutEx(call, pos, out)
-  }
-
-  pragma[nomagic]
-  private predicate revFlowOut(ReturnPosition pos, Configuration config) {
-    exists(DataFlowCall call, NodeEx out |
-      revFlow(out, _, config) and
-      viableReturnPosOutNodeCandFwd1(call, pos, out, config)
-    )
+    fwdFlow(ret, _, config) and
+    viableReturnOutEx(call, ret, out)
   }
 
   pragma[nomagic]
@@ -1037,14 +1031,6 @@ private predicate additionalLocalFlowStepNodeCand1(NodeEx node1, NodeEx node2, C
   additionalLocalFlowStep(node1, node2, config)
 }
 
-pragma[nomagic]
-private predicate viableReturnPosOutNodeCand1(
-  DataFlowCall call, ReturnPosition pos, NodeEx out, Configuration config
-) {
-  Stage1::revFlow(out, config) and
-  Stage1::viableReturnPosOutNodeCandFwd1(call, pos, out, config)
-}
-
 /**
  * Holds if data can flow out of `call` from `ret` to `out`, either
  * through a `ReturnNode` or through an argument that has been mutated, and
@@ -1054,9 +1040,9 @@ pragma[nomagic]
 private predicate flowOutOfCallNodeCand1(
   DataFlowCall call, RetNodeEx ret, NodeEx out, Configuration config
 ) {
-  viableReturnPosOutNodeCand1(call, ret.getReturnPosition(), out, config) and
-  Stage1::revFlow(ret, config) and
-  not outBarrier(ret, config) and
+  Stage1::revFlow(out, pragma[only_bind_into](config)) and
+  Stage1::viableReturnOutNodeCandFwd1(call, ret, out, config) and
+  Stage1::revFlow(ret, pragma[only_bind_into](config)) and
   not inBarrier(out, config)
 }
 
@@ -1094,6 +1080,17 @@ private int branch(NodeEx n1, Configuration conf) {
     )
 }
 
+// We should really not be counting actual return nodes here, but we keep it so
+// for historical reasons
+pragma[nomagic]
+private predicate flowOutOfCallNodeCand1Actual(NodeEx n, NodeEx n2, Configuration conf) {
+  exists(RetNodeEx ret |
+    flowOutOfCallNodeCand1(_, ret, n2, pragma[only_bind_into](conf)) and
+    n = ret.getAnActualReturnNode() and
+    Stage1::revFlow(n, pragma[only_bind_into](conf))
+  )
+}
+
 /**
  * Gets the amount of backward branching on the target of a cross-call path
  * edge in the graph of paths between sources and sinks that ignores call
@@ -1102,7 +1099,7 @@ private int branch(NodeEx n1, Configuration conf) {
 private int join(NodeEx n2, Configuration conf) {
   result =
     strictcount(NodeEx n |
-      flowOutOfCallNodeCand1(_, n, n2, conf) or flowIntoCallNodeCand1(_, n, n2, conf)
+      flowOutOfCallNodeCand1Actual(n, n2, conf) or flowIntoCallNodeCand1(_, n, n2, conf)
     )
 }
 
@@ -1339,7 +1336,16 @@ private module MkStage<StageSig PrevStage> {
       )
       or
       // flow out of a callable
-      fwdFlowOutNotFromArg(node, state, cc, argAp, ap, config)
+      exists(
+        DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc,
+        DataFlowCallable inner
+      |
+        fwdFlow(ret, state, innercc, argAp, ap, config) and
+        flowOutOfCall(call, ret, node, allowsFieldFlow, config) and
+        inner = ret.getEnclosingCallable() and
+        cc = getCallContextReturn(inner, call, innercc) and
+        if allowsFieldFlow = false then ap instanceof ApNil else any()
+      )
       or
       exists(DataFlowCall call, Ap argAp0 |
         fwdFlowOutFromArg(call, node, state, argAp0, ap, config) and
@@ -1391,22 +1397,6 @@ private module MkStage<StageSig PrevStage> {
         fwdFlow(arg, state, outercc, argAp, ap, config) and
         flowIntoCall(call, arg, p, allowsFieldFlow, config) and
         innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
-      )
-    }
-
-    pragma[nomagic]
-    private predicate fwdFlowOutNotFromArg(
-      NodeEx out, FlowState state, Cc ccOut, ApOption argAp, Ap ap, Configuration config
-    ) {
-      exists(
-        DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc,
-        DataFlowCallable inner
-      |
-        fwdFlow(ret, state, innercc, argAp, ap, config) and
-        flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
-        inner = ret.getEnclosingCallable() and
-        ccOut = getCallContextReturn(inner, call, innercc) and
         if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
@@ -2022,7 +2012,6 @@ private module LocalFlowBigStep {
       jumpStep(node, next, config) or
       additionalJumpStep(node, next, config) or
       flowIntoCallNodeCand1(_, node, next, config) or
-      flowOutOfCallNodeCand1(_, node, next, config) or
       Stage2::storeStepCand(node, _, _, next, _, config) or
       Stage2::readStepCand(node, _, next, config)
     )
@@ -2055,6 +2044,11 @@ private module LocalFlowBigStep {
     Stage2::revFlowAlias(node2, state2, false, pragma[only_bind_into](config))
   }
 
+  private LocalCallContext getARelevantLocalCallContext(NodeEx node) {
+    result.relevantFor(node.getEnclosingCallable()) and
+    not isUnreachableInCallCached(node.asNode(), result.(LocalCallContextSpecificCall).getCall())
+  }
+
   /**
    * Holds if the local path from `node1` to `node2` is a prefix of a maximal
    * subsequence of local flow steps in a dataflow path.
@@ -2081,8 +2075,7 @@ private module LocalFlowBigStep {
         t = node2.getDataFlowType()
       ) and
       node1 != node2 and
-      cc.relevantFor(node1.getEnclosingCallable()) and
-      not isUnreachableInCallCached(node1.asNode(), cc.(LocalCallContextSpecificCall).getCall())
+      cc = getARelevantLocalCallContext(node1)
       or
       exists(NodeEx mid |
         localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue, t,
@@ -2102,27 +2095,50 @@ private module LocalFlowBigStep {
     )
   }
 
+  private NodeEx getAnActualReturnNodeNodeCand1(RetNodeEx ret, FlowState state, Configuration config) {
+    exists(NodeEx out |
+      flowOutOfCallNodeCand1(_, ret, out, config) and
+      Stage2::revFlow(out, state, config) and
+      result = ret.getAnActualReturnNode()
+    )
+  }
+
   /**
    * Holds if `node1` can step to `node2` in one or more local steps and this
    * path can occur as a maximal subsequence of local steps in a dataflow path.
+   *
+   * Flow into synthetic return nodes (`RetNodeEx`) is broken up into a two steps:
+   * one step into a relevent actual return node, and a step from an actual return
+   * node to the synthetic return node. This ensures that we get the same flow
+   * paths as if the synthetic nodes were not there.
    */
   pragma[nomagic]
   predicate localFlowBigStep(
     NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
     AccessPathFrontNil apf, Configuration config, LocalCallContext callContext
   ) {
-    localFlowStepPlus(node1, state1, node2, preservesValue, apf.getType(), config, callContext) and
-    localFlowExit(node2, state1, config) and
-    state1 = state2
-    or
-    additionalLocalFlowStepNodeCand2(node1, state1, node2, state2, config) and
-    state1 != state2 and
-    preservesValue = false and
-    apf = TFrontNil(node2.getDataFlowType()) and
-    callContext.relevantFor(node1.getEnclosingCallable()) and
-    not exists(DataFlowCall call | call = callContext.(LocalCallContextSpecificCall).getCall() |
-      isUnreachableInCallCached(node1.asNode(), call) or
-      isUnreachableInCallCached(node2.asNode(), call)
+    exists(DataFlowType t | apf.getType() = pragma[only_bind_out](t) |
+      localFlowStepPlus(node1, state1, node2, preservesValue, t, config, callContext) and
+      state1 = state2 and
+      (
+        localFlowExit(node2, state1, config)
+        or
+        node2 = getAnActualReturnNodeNodeCand1(_, state1, config)
+      )
+      or
+      node1 = getAnActualReturnNodeNodeCand1(node2, state1, config) and
+      state1 = state2 and
+      preservesValue = true and
+      t = node1.getDataFlowType() and
+      callContext = getARelevantLocalCallContext(node1)
+      or
+      additionalLocalFlowStepNodeCand2(node1, state1, node2, state2, config) and
+      state1 != state2 and
+      preservesValue = false and
+      t = node2.getDataFlowType() and
+      callContext = getARelevantLocalCallContext(node1) and
+      not isUnreachableInCallCached(node2.asNode(),
+        callContext.(LocalCallContextSpecificCall).getCall())
     )
   }
 }
@@ -2934,7 +2950,9 @@ abstract private class PathNodeImpl extends TPathNode {
       not this.isSource() and
       not this instanceof PathNodeSink
       or
-      this.getNodeEx() instanceof TNodeImplicitRead
+      this.getNodeEx().isReturnNode(_)
+      or
+      this.getNodeEx().isImplicitReadNode(_, _)
     )
   }
 
@@ -3037,7 +3055,7 @@ class PathNode instanceof PathNodeImpl {
     super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  /** Gets the underlying `Node`. */
+  /** Gets the underlying `Node`, if any. */
   final Node getNode() { super.getNodeEx().projectToNode() = result }
 
   /** Gets the `FlowState` of this node. */
@@ -3701,7 +3719,7 @@ private module FlowExploration {
       viableParamArgEx(_, node2, node1)
       or
       // flow out of a callable
-      viableReturnPosOutEx(_, node1.(RetNodeEx).getReturnPosition(), node2)
+      viableReturnOutEx(_, node1, node2)
     |
       c1 = node1.getEnclosingCallable() and
       c2 = node2.getEnclosingCallable() and
@@ -3975,7 +3993,7 @@ private module FlowExploration {
       this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    /** Gets the underlying `Node`. */
+    /** Gets the underlying `Node`, if any. */
     final Node getNode() { this.getNodeEx().projectToNode() = result }
 
     FlowState getState() { none() }
@@ -4459,10 +4477,7 @@ private module FlowExploration {
       config = mid.getConfiguration()
     )
     or
-    exists(ReturnPosition pos |
-      revPartialPathIntoReturn(mid, pos, state, sc1, sc2, sc3, _, ap, config) and
-      pos = getReturnPosition(node.asNode())
-    )
+    revPartialPathIntoReturn(mid, node, state, sc1, sc2, sc3, _, ap, config)
     or
     revPartialPathThroughCallable(mid, node, state, ap, config) and
     sc1 = mid.getSummaryCtx1() and
@@ -4510,15 +4525,15 @@ private module FlowExploration {
 
   pragma[nomagic]
   private predicate revPartialPathIntoReturn(
-    PartialPathNodeRev mid, ReturnPosition pos, FlowState state, TRevSummaryCtx1Some sc1,
+    PartialPathNodeRev mid, RetNodeEx ret, FlowState state, TRevSummaryCtx1Some sc1,
     TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3, DataFlowCall call, RevPartialAccessPath ap,
     Configuration config
   ) {
     exists(NodeEx out |
       mid.getNodeEx() = out and
       mid.getState() = state and
-      viableReturnPosOutEx(call, pos, out) and
-      sc1 = TRevSummaryCtx1Some(pos) and
+      viableReturnOutEx(call, ret, out) and
+      sc1 = TRevSummaryCtx1Some(ret.getReturnPosition()) and
       sc2 = TRevSummaryCtx2Some(state) and
       sc3 = TRevSummaryCtx3Some(ap) and
       ap = mid.getAp() and
