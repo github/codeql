@@ -6,7 +6,8 @@ private string builtin() {
   result =
     [
       "Object", "Kernel", "BasicObject", "Class", "Module", "NilClass", "FalseClass", "TrueClass",
-      "Numeric", "Integer", "Float", "Rational", "Complex", "Array", "Hash", "Symbol", "Proc"
+      "Numeric", "Integer", "Float", "Rational", "Complex", "Array", "Hash", "String", "Symbol",
+      "Proc",
     ]
 }
 
@@ -41,7 +42,10 @@ private module Cached {
   Module getSuperClass(Module cls) {
     cls = TResolved("Object") and result = TResolved("BasicObject")
     or
-    cls = TResolved(["Module", "Numeric", "Array", "Hash", "FalseClass", "TrueClass", "NilClass"]) and
+    cls =
+      TResolved([
+          "Module", "Numeric", "Array", "Hash", "FalseClass", "TrueClass", "NilClass", "String"
+        ]) and
     result = TResolved("Object")
     or
     cls = TResolved(["Integer", "Float", "Rational", "Complex"]) and
