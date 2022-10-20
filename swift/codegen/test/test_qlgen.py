@@ -633,18 +633,19 @@ def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
     }
 
 
-def test_property_doc(generate_classes):
-    doc = ["Lorem", "Ipsum"]
+def test_property_description(generate_classes):
+    description = ["Lorem", "Ipsum"]
     assert generate_classes([
         schema.Class("MyObject", properties=[
-            schema.SingleProperty("foo", "bar", doc=doc),
+            schema.SingleProperty("foo", "bar", description=description),
         ]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True,
                                   properties=[
                                       ql.Property(singular="Foo", type="bar", tablename="my_objects",
-                                                  tableparams=["this", "result"], doc_name="foo", doc=doc),
+                                                  tableparams=["this", "result"], doc_name="foo",
+                                                  description=description),
                                   ])),
     }
 

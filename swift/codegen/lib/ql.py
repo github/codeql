@@ -38,7 +38,7 @@ class Property:
     is_predicate: bool = False
     prev_child: Optional[str] = None
     qltest_skip: bool = False
-    doc: List[str] = field(default_factory=list)
+    description: List[str] = field(default_factory=list)
     doc_name: Optional[str] = None
     doc_name_plural: Optional[str] = None
 
@@ -74,8 +74,8 @@ class Property:
         return self.prev_child is not None
 
     @property
-    def has_doc(self) -> bool:
-        return bool(self.doc)
+    def has_description(self) -> bool:
+        return bool(self.description)
 
 
 @dataclass

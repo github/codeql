@@ -26,7 +26,7 @@ class _DescModifier(_schema.PropertyModifier):
     description: str
 
     def modify(self, prop: _schema.Property):
-        prop.doc = _schema.split_doc(self.description)
+        prop.description = _schema.split_doc(self.description)
 
 
 def include(source: str):

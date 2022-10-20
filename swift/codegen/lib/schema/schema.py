@@ -37,7 +37,7 @@ class Property:
     is_child: bool = False
     pragmas: List[str] = field(default_factory=list)
     doc_name: Optional[str] = None
-    doc: List[str] = field(default_factory=list)
+    description: List[str] = field(default_factory=list)
 
     @property
     def is_single(self) -> bool:

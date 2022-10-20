@@ -137,14 +137,14 @@ def test_class_without_doc():
     assert cls.has_doc is False
 
 
-def test_property_with_doc():
-    prop = ql.Property("X", "int", doc=["foo", "bar"])
-    assert prop.has_doc is True
+def test_property_with_description():
+    prop = ql.Property("X", "int", description=["foo", "bar"])
+    assert prop.has_description is True
 
 
-def test_class_without_doc():
+def test_class_without_description():
     prop = ql.Property("X", "int")
-    assert prop.has_doc is False
+    assert prop.has_description is False
 
 
 if __name__ == '__main__':

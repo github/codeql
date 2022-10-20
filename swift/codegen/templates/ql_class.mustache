@@ -71,9 +71,9 @@ module Generated {
     }
 
     /**
-     * {{>ql_property_doc}}{{#has_doc}}{{#doc}}     * {{.}}
-    {{/doc}}
-    {{/has_doc}}
+     * {{>ql_property_doc}}{{#has_description}}{{#description}}     * {{.}}
+    {{/description}}
+    {{/has_description}}
      */
     final {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
       result = getImmediate{{singular}}({{#is_repeated}}index{{/is_repeated}}).resolve()
@@ -83,9 +83,9 @@ module Generated {
     {{^type_is_class}}
     {{^is_predicate}}
     /**
-     * {{>ql_property_doc}}{{#has_doc}}{{#doc}}     * {{.}}
-    {{/doc}}
-    {{/has_doc}}
+     * {{>ql_property_doc}}{{#has_description}}{{#description}}     * {{.}}
+    {{/description}}
+    {{/has_description}}
      */
     {{/is_predicate}}
     {{#is_predicate}}

@@ -428,7 +428,7 @@ def test_property_docstring():
             x: int | defs.desc("very important property.")
 
     assert data.classes == {
-        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', doc=["very important property."])])
+        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important property."])])
     }
 
 
@@ -452,7 +452,7 @@ def test_property_docstring_newline():
             property.""")
 
     assert data.classes == {
-        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', doc=["very important", "property."])])
+        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important", "property."])])
     }
 
 
@@ -482,7 +482,7 @@ def test_property_docstring_stripped():
             """)
 
     assert data.classes == {
-        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', doc=["very important property."])])
+        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important property."])])
     }
 
 
@@ -509,7 +509,7 @@ def test_property_docstring_split():
 
     assert data.classes == {
         'A': schema.Class('A', properties=[
-            schema.SingleProperty('x', 'int', doc=["very important property.", "", "Very very important."])])
+            schema.SingleProperty('x', 'int', description=["very important property.", "", "Very very important."])])
     }
 
 
@@ -538,7 +538,7 @@ def test_property_docstring_indent():
 
     assert data.classes == {
         'A': schema.Class('A', properties=[
-            schema.SingleProperty('x', 'int', doc=["very important property.", "  Very very important."])])
+            schema.SingleProperty('x', 'int', description=["very important property.", "  Very very important."])])
     }
 
 

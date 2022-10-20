@@ -67,7 +67,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         prev_child=prev_child if prop.is_child else None,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
-        doc=prop.doc,
+        description=prop.description,
     )
     if prop.is_single:
         args.update(
