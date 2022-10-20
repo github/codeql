@@ -12,7 +12,7 @@ class _ChildModifier(_schema.PropertyModifier):
 
 
 @_dataclass
-class _DocnameModifier(_schema.PropertyModifier):
+class _DocModifier(_schema.PropertyModifier):
     doc: str
 
     def modify(self, prop: _schema.Property):
@@ -113,7 +113,7 @@ optional = _TypeModifier(_Optionalizer())
 list = _TypeModifier(_Listifier())
 
 child = _ChildModifier()
-doc = _DocnameModifier
+doc = _DocModifier
 desc = _DescModifier
 
 qltest = _Namespace(
