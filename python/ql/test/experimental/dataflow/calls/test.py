@@ -28,7 +28,7 @@ class MyClass(object):
 
     @classmethod
     def other_classmethod(cls):
-        cls.cm(42) # $ call=cls.cm(..) callType=CallTypeClassMethod arg[position 0]=42 MISSING: arg[self]=cls
+        cls.cm(42) # $ call=cls.cm(..) callType=CallTypeClassMethod arg[position 0]=42 arg[self]=cls
         cls.sm(42) # $ call=cls.sm(..) callType=CallTypeStaticMethod arg[position 0]=42
 
     def __getitem__(self, key):
