@@ -1067,3 +1067,204 @@ class ArrayLiteralNode extends LocalSourceNode, ExprNode {
    */
   Node getAnElement() { result = this.(CallNode).getPositionalArgument(_) }
 }
+
+private newtype TConstLookupScope =
+  MkQualifiedLookup(ConstantAccess base) or
+  MkAncestorLookup(Module mod) or
+  MkNestedLookup(ModuleBase scope) or
+  MkExactLookup(Module mod)
+
+/**
+ * An access to a constant.
+ *
+ * This includes modules and class declarations.
+ */
+class ConstRef extends LocalSourceNode, ExprNode {
+  private ConstantAccess access;
+
+  ConstRef() { this.asExpr().getExpr() = access }
+
+  /**
+   * Gets the simple name of the constant being referenced, such as
+   * the `B` in `A::B`.
+   */
+  string getName() { result = access.getName() }
+
+  /**
+   * Holds if this might refer to a top-level constant.
+   */
+  predicate isPossiblyGlobal() {
+    exists(Module mod |
+      not exists(mod.getCanonicalEnclosingModule()) and
+      mod.getAnImmediateReference() = access
+    )
+    or
+    not exists(Module mod | mod.getAnImmediateReference() = access) and
+    not exists(access.getScopeExpr())
+  }
+
+  /**
+   * Gets a module for which this constant is the reference to an ancestor module.
+   *
+   * For example, `M` is the ancestry target of `C` in the following examples:
+   * ```rb
+   * class M < C {}
+   *
+   * module M
+   *   include C
+   * end
+   *
+   * module M
+   *   prepend C
+   * end
+   * ```
+   */
+  private ModuleNode getAncestryTarget() { result.getAnAncestorExpr() = this }
+
+  /**
+   * Gets a module scope in which the value of this constant is part of `Module.nesting`.
+   */
+  private ModuleBase getANestingScope() {
+    result = this.getAncestryTarget().getADeclaration()
+    or
+    result.getEnclosingModule() = this.getANestingScope()
+  }
+
+  /**
+   * Gets the known target module.
+   *
+   * We resolve these differently to prune out infeasible constant lookups.
+   */
+  private Module getExactTarget() { result.getAnImmediateReference() = access }
+
+  /**
+   * Gets a scope in which the result of this constant reference can occur in a constant.
+   */
+  pragma[nomagic]
+  private TConstLookupScope getATargetScope() {
+    result = MkAncestorLookup(this.getAncestryTarget().getADirectDescendent*())
+    or
+    access = any(ConstantAccess ac).getScopeExpr() and
+    result = MkQualifiedLookup(access)
+    or
+    result = MkNestedLookup(this.getANestingScope())
+    or
+    result = MkExactLookup(access.(Namespace).getModule())
+  }
+
+  /**
+   * Gets the scope expression, or the immediately enclosing `Namespace` (skipping over singleton classes).
+   *
+   * Top-levels are not included, since this is only needed for nested constant lookup, and unqualified constants
+   * at the top-level are handled by `DataFlow::getConst`, never `ConstRef.getConst`.
+   */
+  private TConstLookupScope getLookupScope() {
+    result = MkQualifiedLookup(access.getScopeExpr())
+    or
+    not exists(this.getExactTarget()) and
+    not exists(access.getScopeExpr()) and
+    not access.hasGlobalScope() and
+    (
+      result = MkAncestorLookup(access.getEnclosingModule().getNamespaceOrToplevel().getModule())
+      or
+      result = MkNestedLookup(access.getEnclosingModule())
+    )
+  }
+
+  /**
+   * Holds if this can reference a constant named `name` from `scope` using a lookup of `kind`.
+   */
+  pragma[nomagic]
+  private predicate accesses(TConstLookupScope scope, string name) {
+    scope = this.getLookupScope() and
+    name = this.getName()
+    or
+    exists(Module mod |
+      this.getExactTarget() = mod.getCanonicalNestedModule(name) and
+      scope = MkExactLookup(mod)
+    )
+  }
+
+  /**
+   * Gets a constant reference that may resolve to a member of this node.
+   *
+   * For example `DataFlow::getConst("A").getConst("B")` finds the following:
+   * ```rb
+   * A::B # simple reference
+   *
+   * module A
+   *   B # in scope
+   *   module X
+   *     B # in nested scope
+   *   end
+   * end
+   *
+   * module X
+   *   include A
+   *   B # via inclusion
+   * end
+   *
+   * class X < A
+   *   B # via subclassing
+   * end
+   * ```
+   */
+  pragma[inline]
+  ConstRef getConst(string name) {
+    exists(TConstLookupScope scope |
+      pragma[only_bind_into](scope) = pragma[only_bind_out](this).getATargetScope() and
+      result.accesses(pragma[only_bind_out](scope), name)
+    )
+  }
+
+  /**
+   * Gets a module that transitively subclasses, includes, or prepends the module referred to by
+   * this constant.
+   *
+   * For example, `DataFlow::getConst("A").getADescendentModule()` finds `B`, `C`, and `E`:
+   * ```rb
+   * class B < A
+   * end
+   *
+   * class C < B
+   * end
+   *
+   * module E
+   *   include C
+   * end
+   * ```
+   */
+  ModuleNode getADescendentModule() { MkAncestorLookup(result) = this.getATargetScope() }
+}
+
+/**
+ * Gets a constant reference that may resolve to the top-level constant `name`.
+ *
+ * To get nested constants, call `getConst()` one or more times on the result.
+ *
+ * For example `DataFlow::getConst("A").getConst("B")` finds the following:
+ * ```rb
+ * A::B # simple reference
+ *
+ * module A
+ *   B # in scope
+ *   module X
+ *     B # in nested scope
+ *   end
+ * end
+ *
+ * module X
+ *   include A
+ *   B # via inclusion
+ * end
+ *
+ * class X < A
+ *   B # via subclassing
+ * end
+ * ```
+ */
+pragma[nomagic]
+ConstRef getConst(string name) {
+  result.getName() = name and
+  result.isPossiblyGlobal()
+}
