@@ -119,16 +119,16 @@ module ActiveSupport {
       }
 
       /**
-       *A flow summary for `Hash#extract!`. This method removes the key/value pairs
-       *matching the given keys from the receiver and returns them (as a Hash).
+       * A flow summary for `Hash#extract!`. This method removes the key/value pairs
+       * matching the given keys from the receiver and returns them (as a Hash).
        *
-       *Example:
+       * Example:
        *
-       *```rb
-       * hash = { a: 1, b: 2, c: 3, d: 4 }
-       * hash.extract!(:a, :b) # => {:a=>1, :b=>2}
-       * hash                  # => {:c=>3, :d=>4}
-       *```
+       * ```rb
+       *  hash = { a: 1, b: 2, c: 3, d: 4 }
+       *  hash.extract!(:a, :b) # => {:a=>1, :b=>2}
+       *  hash                  # => {:c=>3, :d=>4}
+       * ```
        *
        * There is value flow from elements corresponding to keys in the
        * arguments (`:a` and `:b` in the example) to elements in
