@@ -1,6 +1,14 @@
 #-----| Class
 #-----|  -> Module
 
+#-----| EsotericInstanceMethods
+
+#-----| MyStruct
+
+#-----| Struct
+
+#-----| UnresolvedNamespace
+
 #-----| BasicObject
 
 #-----| Complex
@@ -235,8 +243,8 @@ unresolved_subclass.rb:
 #    1| ResolvableBaseClass
 #-----|  -> Object
 
-#    4| ...::Subclass1
+#    4| UnresolvedNamespace::Subclass1
 #-----|  -> ResolvableBaseClass
 
-#    7| ...::Subclass2
-#-----|  -> Object
+#    7| UnresolvedNamespace::Subclass2
+#-----|  -> UnresolvedNamespace::Subclass1
