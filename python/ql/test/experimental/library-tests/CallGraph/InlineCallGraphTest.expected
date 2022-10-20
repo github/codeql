@@ -42,4 +42,8 @@ typeTracker_found_pointsTo_notFound
 | code/isinstance.py:14:13:14:22 | ControlFlowNode for Attribute() | B.foo |
 | code/isinstance.py:17:13:17:22 | ControlFlowNode for Attribute() | A.foo |
 | code/nested_class.py:83:9:83:16 | ControlFlowNode for Attribute() | X.class_def_in_func.Y.meth |
+| code/self_passing.py:16:9:16:18 | ControlFlowNode for Attribute() | A.foo |
+| code/self_passing.py:16:9:16:18 | ControlFlowNode for Attribute() | B.foo |
+| code/self_passing.py:67:9:67:16 | ControlFlowNode for Attribute() | Y.cm |
+| code/self_passing.py:69:9:69:17 | ControlFlowNode for Attribute() | X.foo |
 | code/underscore_prefix_func_name.py:14:5:14:19 | ControlFlowNode for some_function() | some_function |
