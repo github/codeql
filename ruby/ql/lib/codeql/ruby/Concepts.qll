@@ -702,8 +702,8 @@ class CodeExecution extends DataFlow::Node instanceof CodeExecution::Range {
   /** Gets the argument that specifies the code to be executed. */
   DataFlow::Node getCode() { result = super.getCode() }
 
-  /** Holds if this execution immediately runs the input as code, as opposed to loading some code using the input as a "path". */
-  predicate runsImmediately() { super.runsImmediately() }
+  /** Holds if this execution runs arbitary code, as opposed to some restricted subset. E.g. `Object.send` will only run any method on an object. */
+  predicate runsArbitraryCode() { super.runsArbitraryCode() }
 }
 
 /** Provides a class for modeling new dynamic code execution APIs. */
@@ -718,8 +718,8 @@ module CodeExecution {
     /** Gets the argument that specifies the code to be executed. */
     abstract DataFlow::Node getCode();
 
-    /** Holds if this execution immediately runs the input as code, as opposed to loading some code using the input as a "path". */
-    predicate runsImmediately() { any() }
+    /** Holds if this execution runs arbitary code, as opposed to some restricted subset. E.g. `Object.send` will only run any method on an object. */
+    predicate runsArbitraryCode() { any() }
   }
 }
 

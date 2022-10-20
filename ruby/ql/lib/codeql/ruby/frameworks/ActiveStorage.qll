@@ -222,6 +222,6 @@ module ActiveStorage {
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
 
-    override predicate runsImmediately() { none() }
+    override predicate runsArbitraryCode() { none() }
   }
 }
