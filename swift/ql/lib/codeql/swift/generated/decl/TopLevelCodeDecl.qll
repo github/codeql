@@ -4,15 +4,17 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.decl.Decl
 
-class TopLevelCodeDeclBase extends Synth::TTopLevelCodeDecl, Decl {
-  override string getAPrimaryQlClass() { result = "TopLevelCodeDecl" }
+module Generated {
+  class TopLevelCodeDecl extends Synth::TTopLevelCodeDecl, Decl {
+    override string getAPrimaryQlClass() { result = "TopLevelCodeDecl" }
 
-  BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromRaw(Synth::convertTopLevelCodeDeclToRaw(this)
-            .(Raw::TopLevelCodeDecl)
-            .getBody())
+    BraceStmt getImmediateBody() {
+      result =
+        Synth::convertBraceStmtFromRaw(Synth::convertTopLevelCodeDeclToRaw(this)
+              .(Raw::TopLevelCodeDecl)
+              .getBody())
+    }
+
+    final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
-
-  final BraceStmt getBody() { result = getImmediateBody().resolve() }
 }

@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class SilTokenTypeBase extends Synth::TSilTokenType, Type {
-  override string getAPrimaryQlClass() { result = "SilTokenType" }
+module Generated {
+  class SilTokenType extends Synth::TSilTokenType, Type {
+    override string getAPrimaryQlClass() { result = "SilTokenType" }
+  }
 }

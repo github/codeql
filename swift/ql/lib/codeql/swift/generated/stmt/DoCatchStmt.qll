@@ -5,26 +5,28 @@ import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.Stmt
 
-class DoCatchStmtBase extends Synth::TDoCatchStmt, LabeledStmt {
-  override string getAPrimaryQlClass() { result = "DoCatchStmt" }
+module Generated {
+  class DoCatchStmt extends Synth::TDoCatchStmt, LabeledStmt {
+    override string getAPrimaryQlClass() { result = "DoCatchStmt" }
 
-  Stmt getImmediateBody() {
-    result =
-      Synth::convertStmtFromRaw(Synth::convertDoCatchStmtToRaw(this).(Raw::DoCatchStmt).getBody())
+    Stmt getImmediateBody() {
+      result =
+        Synth::convertStmtFromRaw(Synth::convertDoCatchStmtToRaw(this).(Raw::DoCatchStmt).getBody())
+    }
+
+    final Stmt getBody() { result = getImmediateBody().resolve() }
+
+    CaseStmt getImmediateCatch(int index) {
+      result =
+        Synth::convertCaseStmtFromRaw(Synth::convertDoCatchStmtToRaw(this)
+              .(Raw::DoCatchStmt)
+              .getCatch(index))
+    }
+
+    final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }
+
+    final CaseStmt getACatch() { result = getCatch(_) }
+
+    final int getNumberOfCatches() { result = count(getACatch()) }
   }
-
-  final Stmt getBody() { result = getImmediateBody().resolve() }
-
-  CaseStmt getImmediateCatch(int index) {
-    result =
-      Synth::convertCaseStmtFromRaw(Synth::convertDoCatchStmtToRaw(this)
-            .(Raw::DoCatchStmt)
-            .getCatch(index))
-  }
-
-  final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }
-
-  final CaseStmt getACatch() { result = getCatch(_) }
-
-  final int getNumberOfCatches() { result = count(getACatch()) }
 }

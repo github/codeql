@@ -126,7 +126,7 @@ module SuccessorTypes {
    * }
    * ```
    *
-   * has a control flow graph containing macthing successors:
+   * has a control flow graph containing matching successors:
    *
    * ```
    *      switch
@@ -230,7 +230,7 @@ module SuccessorTypes {
    * }
    * ```
    *
-   * The node `return x;` is a `break` succedssor of the node `break;`.
+   * The node `return x;` is a `break` successor of the node `break;`.
    */
   class BreakSuccessor extends SuccessorType, TBreakSuccessor {
     override string toString() { result = "break" }

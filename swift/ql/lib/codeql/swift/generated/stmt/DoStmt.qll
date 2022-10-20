@@ -4,12 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.LabeledStmt
 
-class DoStmtBase extends Synth::TDoStmt, LabeledStmt {
-  override string getAPrimaryQlClass() { result = "DoStmt" }
+module Generated {
+  class DoStmt extends Synth::TDoStmt, LabeledStmt {
+    override string getAPrimaryQlClass() { result = "DoStmt" }
 
-  BraceStmt getImmediateBody() {
-    result = Synth::convertBraceStmtFromRaw(Synth::convertDoStmtToRaw(this).(Raw::DoStmt).getBody())
+    BraceStmt getImmediateBody() {
+      result =
+        Synth::convertBraceStmtFromRaw(Synth::convertDoStmtToRaw(this).(Raw::DoStmt).getBody())
+    }
+
+    final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
-
-  final BraceStmt getBody() { result = getImmediateBody().resolve() }
 }

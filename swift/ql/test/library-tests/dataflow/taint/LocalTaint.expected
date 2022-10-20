@@ -125,3 +125,39 @@
 | string.swift:39:29:39:29 | < | string.swift:39:13:39:29 | ... .+(_:_:) ... |
 | subscript.swift:13:10:13:17 | call to source() | subscript.swift:13:10:13:20 | ...[...] |
 | subscript.swift:14:10:14:18 | call to source2() | subscript.swift:14:10:14:21 | ...[...] |
+| url.swift:64:12:64:12 | urlTainted | url.swift:64:12:64:23 | .absoluteURL |
+| url.swift:65:12:65:12 | urlTainted | url.swift:65:12:65:23 | .baseURL |
+| url.swift:66:15:66:15 | urlTainted | url.swift:66:15:66:26 | .fragment |
+| url.swift:67:15:67:15 | urlTainted | url.swift:67:15:67:26 | .host |
+| url.swift:68:15:68:15 | urlTainted | url.swift:68:15:68:26 | .lastPathComponent |
+| url.swift:69:15:69:15 | urlTainted | url.swift:69:15:69:26 | .path |
+| url.swift:70:15:70:15 | urlTainted | url.swift:70:15:70:26 | .pathComponents |
+| url.swift:70:15:70:26 | .pathComponents | url.swift:70:15:70:42 | ...[...] |
+| url.swift:71:15:71:15 | urlTainted | url.swift:71:15:71:26 | .pathExtension |
+| url.swift:72:12:72:12 | urlTainted | url.swift:72:12:72:23 | .port |
+| url.swift:73:15:73:15 | urlTainted | url.swift:73:15:73:26 | .query |
+| url.swift:74:15:74:15 | urlTainted | url.swift:74:15:74:26 | .relativePath |
+| url.swift:75:15:75:15 | urlTainted | url.swift:75:15:75:26 | .relativeString |
+| url.swift:76:15:76:15 | urlTainted | url.swift:76:15:76:26 | .scheme |
+| url.swift:77:12:77:12 | urlTainted | url.swift:77:12:77:23 | .standardized |
+| url.swift:78:12:78:12 | urlTainted | url.swift:78:12:78:23 | .standardizedFileURL |
+| url.swift:79:15:79:15 | urlTainted | url.swift:79:15:79:26 | .user |
+| url.swift:80:15:80:15 | urlTainted | url.swift:80:15:80:26 | .password |
+| url.swift:86:12:86:54 | ...! | url.swift:86:12:86:56 | .absoluteURL |
+| url.swift:87:12:87:54 | ...! | url.swift:87:12:87:56 | .baseURL |
+| url.swift:88:15:88:57 | ...! | url.swift:88:15:88:59 | .fragment |
+| url.swift:89:15:89:57 | ...! | url.swift:89:15:89:59 | .host |
+| url.swift:90:15:90:57 | ...! | url.swift:90:15:90:59 | .lastPathComponent |
+| url.swift:91:15:91:57 | ...! | url.swift:91:15:91:59 | .path |
+| url.swift:92:15:92:57 | ...! | url.swift:92:15:92:59 | .pathComponents |
+| url.swift:92:15:92:59 | .pathComponents | url.swift:92:15:92:75 | ...[...] |
+| url.swift:93:15:93:57 | ...! | url.swift:93:15:93:59 | .pathExtension |
+| url.swift:94:12:94:54 | ...! | url.swift:94:12:94:56 | .port |
+| url.swift:95:15:95:57 | ...! | url.swift:95:15:95:59 | .query |
+| url.swift:96:15:96:57 | ...! | url.swift:96:15:96:59 | .relativePath |
+| url.swift:97:15:97:57 | ...! | url.swift:97:15:97:59 | .relativeString |
+| url.swift:98:15:98:57 | ...! | url.swift:98:15:98:59 | .scheme |
+| url.swift:99:12:99:54 | ...! | url.swift:99:12:99:56 | .standardized |
+| url.swift:100:12:100:54 | ...! | url.swift:100:12:100:56 | .standardizedFileURL |
+| url.swift:101:15:101:57 | ...! | url.swift:101:15:101:59 | .user |
+| url.swift:102:15:102:57 | ...! | url.swift:102:15:102:59 | .password |

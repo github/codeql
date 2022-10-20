@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Locatable
 
-class AstNodeBase extends Synth::TAstNode, Locatable { }
+module Generated {
+  class AstNode extends Synth::TAstNode, Locatable { }
+}

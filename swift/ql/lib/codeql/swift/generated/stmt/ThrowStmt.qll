@@ -4,13 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 
-class ThrowStmtBase extends Synth::TThrowStmt, Stmt {
-  override string getAPrimaryQlClass() { result = "ThrowStmt" }
+module Generated {
+  class ThrowStmt extends Synth::TThrowStmt, Stmt {
+    override string getAPrimaryQlClass() { result = "ThrowStmt" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertThrowStmtToRaw(this).(Raw::ThrowStmt).getSubExpr())
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertThrowStmtToRaw(this).(Raw::ThrowStmt).getSubExpr())
+    }
+
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// An ITypeSymbol with nullability annotations.
-    /// Although a similar class has been implemented in Rolsyn,
+    /// Although a similar class has been implemented in Roslyn,
     /// https://github.com/dotnet/roslyn/blob/090e52e27c38ad8f1ea4d033114c2a107604ddaa/src/Compilers/CSharp/Portable/Symbols/TypeWithAnnotations.cs
     /// it is an internal struct that has not yet been exposed on the public interface.
     /// </summary>
@@ -80,8 +80,8 @@ namespace Semmle.Extraction.CSharp
         public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol)
         {
             var methodModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>(md => md.Modifiers);
-            var typeModifers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>(cd => cd.Modifiers);
-            return methodModifiers.Concat(typeModifers).Select(m => m.Text);
+            var typeModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>(cd => cd.Modifiers);
+            return methodModifiers.Concat(typeModifiers).Select(m => m.Text);
         }
 
         /// <summary>

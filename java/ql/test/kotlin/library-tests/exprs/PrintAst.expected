@@ -2862,6 +2862,14 @@ exprs.kt:
 #  279|           0: [TypeAccess] int
 #  279|         1: [Parameter] d
 #  279|           0: [TypeAccess] double
+#  279|         2: [Parameter] b
+#  279|           0: [TypeAccess] byte
+#  279|         3: [Parameter] s
+#  279|           0: [TypeAccess] short
+#  279|         4: [Parameter] l
+#  279|           0: [TypeAccess] long
+#  279|         5: [Parameter] f
+#  279|           0: [TypeAccess] float
 #  279|       5: [BlockStmt] { ... }
 #  280|         0: [ExprStmt] <Expr>;
 #  280|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -2963,6 +2971,306 @@ exprs.kt:
 #  293|             0: [TypeAccess] Unit
 #  293|             1: [MethodAccess] dec(...)
 #  293|               -1: [VarAccess] i1
+#  294|         14: [ExprStmt] <Expr>;
+#  294|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  294|             0: [TypeAccess] Unit
+#  294|             1: [BitNotExpr] ~...
+#  294|               0: [VarAccess] i
+#  296|         15: [ExprStmt] <Expr>;
+#  296|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  296|             0: [TypeAccess] Unit
+#  296|             1: [MinusExpr] -...
+#  296|               0: [VarAccess] b
+#  297|         16: [ExprStmt] <Expr>;
+#  297|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  297|             0: [TypeAccess] Unit
+#  297|             1: [PlusExpr] +...
+#  297|               0: [VarAccess] b
+#  298|         17: [LocalVariableDeclStmt] var ...;
+#  298|           1: [LocalVariableDeclExpr] b0
+#  298|             0: [IntegerLiteral] 1
+#  299|         18: [LocalVariableDeclStmt] var ...;
+#  299|           1: [LocalVariableDeclExpr] b1
+#  299|             0: [IntegerLiteral] 1
+#  300|         19: [ExprStmt] <Expr>;
+#  300|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  300|             0: [TypeAccess] Unit
+#  300|             1: [StmtExpr] <Stmt>
+#  300|               0: [BlockStmt] { ... }
+#  300|                 0: [LocalVariableDeclStmt] var ...;
+#  300|                   1: [LocalVariableDeclExpr] tmp2
+#  300|                     0: [VarAccess] b0
+#  300|                 1: [ExprStmt] <Expr>;
+#  300|                   0: [AssignExpr] ...=...
+#  300|                     0: [VarAccess] b0
+#  300|                     1: [MethodAccess] inc(...)
+#  300|                       -1: [VarAccess] tmp2
+#  300|                 2: [ExprStmt] <Expr>;
+#  300|                   0: [VarAccess] tmp2
+#  301|         20: [ExprStmt] <Expr>;
+#  301|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  301|             0: [TypeAccess] Unit
+#  301|             1: [StmtExpr] <Stmt>
+#  301|               0: [BlockStmt] { ... }
+#  301|                 0: [ExprStmt] <Expr>;
+#  301|                   0: [AssignExpr] ...=...
+#  301|                     0: [VarAccess] b0
+#  301|                     1: [MethodAccess] inc(...)
+#  301|                       -1: [VarAccess] b0
+#  301|                 1: [ExprStmt] <Expr>;
+#  301|                   0: [VarAccess] b0
+#  302|         21: [ExprStmt] <Expr>;
+#  302|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  302|             0: [TypeAccess] Unit
+#  302|             1: [StmtExpr] <Stmt>
+#  302|               0: [BlockStmt] { ... }
+#  302|                 0: [LocalVariableDeclStmt] var ...;
+#  302|                   1: [LocalVariableDeclExpr] tmp3
+#  302|                     0: [VarAccess] b0
+#  302|                 1: [ExprStmt] <Expr>;
+#  302|                   0: [AssignExpr] ...=...
+#  302|                     0: [VarAccess] b0
+#  302|                     1: [MethodAccess] dec(...)
+#  302|                       -1: [VarAccess] tmp3
+#  302|                 2: [ExprStmt] <Expr>;
+#  302|                   0: [VarAccess] tmp3
+#  303|         22: [ExprStmt] <Expr>;
+#  303|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  303|             0: [TypeAccess] Unit
+#  303|             1: [StmtExpr] <Stmt>
+#  303|               0: [BlockStmt] { ... }
+#  303|                 0: [ExprStmt] <Expr>;
+#  303|                   0: [AssignExpr] ...=...
+#  303|                     0: [VarAccess] b0
+#  303|                     1: [MethodAccess] dec(...)
+#  303|                       -1: [VarAccess] b0
+#  303|                 1: [ExprStmt] <Expr>;
+#  303|                   0: [VarAccess] b0
+#  304|         23: [ExprStmt] <Expr>;
+#  304|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  304|             0: [TypeAccess] Unit
+#  304|             1: [MethodAccess] inc(...)
+#  304|               -1: [VarAccess] b0
+#  305|         24: [ExprStmt] <Expr>;
+#  305|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  305|             0: [TypeAccess] Unit
+#  305|             1: [MethodAccess] dec(...)
+#  305|               -1: [VarAccess] b0
+#  306|         25: [ExprStmt] <Expr>;
+#  306|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  306|             0: [TypeAccess] Unit
+#  306|             1: [MethodAccess] inc(...)
+#  306|               -1: [VarAccess] b1
+#  307|         26: [ExprStmt] <Expr>;
+#  307|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  307|             0: [TypeAccess] Unit
+#  307|             1: [MethodAccess] dec(...)
+#  307|               -1: [VarAccess] b1
+#  308|         27: [ExprStmt] <Expr>;
+#  308|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  308|             0: [TypeAccess] Unit
+#  308|             1: [BitNotExpr] ~...
+#  308|               0: [VarAccess] b
+#  310|         28: [ExprStmt] <Expr>;
+#  310|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  310|             0: [TypeAccess] Unit
+#  310|             1: [MinusExpr] -...
+#  310|               0: [VarAccess] s
+#  311|         29: [ExprStmt] <Expr>;
+#  311|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  311|             0: [TypeAccess] Unit
+#  311|             1: [PlusExpr] +...
+#  311|               0: [VarAccess] s
+#  312|         30: [LocalVariableDeclStmt] var ...;
+#  312|           1: [LocalVariableDeclExpr] s0
+#  312|             0: [IntegerLiteral] 1
+#  313|         31: [LocalVariableDeclStmt] var ...;
+#  313|           1: [LocalVariableDeclExpr] s1
+#  313|             0: [IntegerLiteral] 1
+#  314|         32: [ExprStmt] <Expr>;
+#  314|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  314|             0: [TypeAccess] Unit
+#  314|             1: [StmtExpr] <Stmt>
+#  314|               0: [BlockStmt] { ... }
+#  314|                 0: [LocalVariableDeclStmt] var ...;
+#  314|                   1: [LocalVariableDeclExpr] tmp4
+#  314|                     0: [VarAccess] s0
+#  314|                 1: [ExprStmt] <Expr>;
+#  314|                   0: [AssignExpr] ...=...
+#  314|                     0: [VarAccess] s0
+#  314|                     1: [MethodAccess] inc(...)
+#  314|                       -1: [VarAccess] tmp4
+#  314|                 2: [ExprStmt] <Expr>;
+#  314|                   0: [VarAccess] tmp4
+#  315|         33: [ExprStmt] <Expr>;
+#  315|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  315|             0: [TypeAccess] Unit
+#  315|             1: [StmtExpr] <Stmt>
+#  315|               0: [BlockStmt] { ... }
+#  315|                 0: [ExprStmt] <Expr>;
+#  315|                   0: [AssignExpr] ...=...
+#  315|                     0: [VarAccess] s0
+#  315|                     1: [MethodAccess] inc(...)
+#  315|                       -1: [VarAccess] s0
+#  315|                 1: [ExprStmt] <Expr>;
+#  315|                   0: [VarAccess] s0
+#  316|         34: [ExprStmt] <Expr>;
+#  316|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  316|             0: [TypeAccess] Unit
+#  316|             1: [StmtExpr] <Stmt>
+#  316|               0: [BlockStmt] { ... }
+#  316|                 0: [LocalVariableDeclStmt] var ...;
+#  316|                   1: [LocalVariableDeclExpr] tmp5
+#  316|                     0: [VarAccess] s0
+#  316|                 1: [ExprStmt] <Expr>;
+#  316|                   0: [AssignExpr] ...=...
+#  316|                     0: [VarAccess] s0
+#  316|                     1: [MethodAccess] dec(...)
+#  316|                       -1: [VarAccess] tmp5
+#  316|                 2: [ExprStmt] <Expr>;
+#  316|                   0: [VarAccess] tmp5
+#  317|         35: [ExprStmt] <Expr>;
+#  317|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  317|             0: [TypeAccess] Unit
+#  317|             1: [StmtExpr] <Stmt>
+#  317|               0: [BlockStmt] { ... }
+#  317|                 0: [ExprStmt] <Expr>;
+#  317|                   0: [AssignExpr] ...=...
+#  317|                     0: [VarAccess] s0
+#  317|                     1: [MethodAccess] dec(...)
+#  317|                       -1: [VarAccess] s0
+#  317|                 1: [ExprStmt] <Expr>;
+#  317|                   0: [VarAccess] s0
+#  318|         36: [ExprStmt] <Expr>;
+#  318|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  318|             0: [TypeAccess] Unit
+#  318|             1: [MethodAccess] inc(...)
+#  318|               -1: [VarAccess] s0
+#  319|         37: [ExprStmt] <Expr>;
+#  319|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  319|             0: [TypeAccess] Unit
+#  319|             1: [MethodAccess] dec(...)
+#  319|               -1: [VarAccess] s0
+#  320|         38: [ExprStmt] <Expr>;
+#  320|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  320|             0: [TypeAccess] Unit
+#  320|             1: [MethodAccess] inc(...)
+#  320|               -1: [VarAccess] s1
+#  321|         39: [ExprStmt] <Expr>;
+#  321|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  321|             0: [TypeAccess] Unit
+#  321|             1: [MethodAccess] dec(...)
+#  321|               -1: [VarAccess] s1
+#  322|         40: [ExprStmt] <Expr>;
+#  322|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  322|             0: [TypeAccess] Unit
+#  322|             1: [BitNotExpr] ~...
+#  322|               0: [VarAccess] s
+#  324|         41: [ExprStmt] <Expr>;
+#  324|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  324|             0: [TypeAccess] Unit
+#  324|             1: [MinusExpr] -...
+#  324|               0: [VarAccess] l
+#  325|         42: [ExprStmt] <Expr>;
+#  325|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  325|             0: [TypeAccess] Unit
+#  325|             1: [PlusExpr] +...
+#  325|               0: [VarAccess] l
+#  326|         43: [LocalVariableDeclStmt] var ...;
+#  326|           1: [LocalVariableDeclExpr] l0
+#  326|             0: [LongLiteral] 1
+#  327|         44: [LocalVariableDeclStmt] var ...;
+#  327|           1: [LocalVariableDeclExpr] l1
+#  327|             0: [LongLiteral] 1
+#  328|         45: [ExprStmt] <Expr>;
+#  328|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  328|             0: [TypeAccess] Unit
+#  328|             1: [StmtExpr] <Stmt>
+#  328|               0: [BlockStmt] { ... }
+#  328|                 0: [LocalVariableDeclStmt] var ...;
+#  328|                   1: [LocalVariableDeclExpr] tmp6
+#  328|                     0: [VarAccess] l0
+#  328|                 1: [ExprStmt] <Expr>;
+#  328|                   0: [AssignExpr] ...=...
+#  328|                     0: [VarAccess] l0
+#  328|                     1: [MethodAccess] inc(...)
+#  328|                       -1: [VarAccess] tmp6
+#  328|                 2: [ExprStmt] <Expr>;
+#  328|                   0: [VarAccess] tmp6
+#  329|         46: [ExprStmt] <Expr>;
+#  329|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  329|             0: [TypeAccess] Unit
+#  329|             1: [StmtExpr] <Stmt>
+#  329|               0: [BlockStmt] { ... }
+#  329|                 0: [ExprStmt] <Expr>;
+#  329|                   0: [AssignExpr] ...=...
+#  329|                     0: [VarAccess] l0
+#  329|                     1: [MethodAccess] inc(...)
+#  329|                       -1: [VarAccess] l0
+#  329|                 1: [ExprStmt] <Expr>;
+#  329|                   0: [VarAccess] l0
+#  330|         47: [ExprStmt] <Expr>;
+#  330|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  330|             0: [TypeAccess] Unit
+#  330|             1: [StmtExpr] <Stmt>
+#  330|               0: [BlockStmt] { ... }
+#  330|                 0: [LocalVariableDeclStmt] var ...;
+#  330|                   1: [LocalVariableDeclExpr] tmp7
+#  330|                     0: [VarAccess] l0
+#  330|                 1: [ExprStmt] <Expr>;
+#  330|                   0: [AssignExpr] ...=...
+#  330|                     0: [VarAccess] l0
+#  330|                     1: [MethodAccess] dec(...)
+#  330|                       -1: [VarAccess] tmp7
+#  330|                 2: [ExprStmt] <Expr>;
+#  330|                   0: [VarAccess] tmp7
+#  331|         48: [ExprStmt] <Expr>;
+#  331|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  331|             0: [TypeAccess] Unit
+#  331|             1: [StmtExpr] <Stmt>
+#  331|               0: [BlockStmt] { ... }
+#  331|                 0: [ExprStmt] <Expr>;
+#  331|                   0: [AssignExpr] ...=...
+#  331|                     0: [VarAccess] l0
+#  331|                     1: [MethodAccess] dec(...)
+#  331|                       -1: [VarAccess] l0
+#  331|                 1: [ExprStmt] <Expr>;
+#  331|                   0: [VarAccess] l0
+#  332|         49: [ExprStmt] <Expr>;
+#  332|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  332|             0: [TypeAccess] Unit
+#  332|             1: [MethodAccess] inc(...)
+#  332|               -1: [VarAccess] l0
+#  333|         50: [ExprStmt] <Expr>;
+#  333|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  333|             0: [TypeAccess] Unit
+#  333|             1: [MethodAccess] dec(...)
+#  333|               -1: [VarAccess] l0
+#  334|         51: [ExprStmt] <Expr>;
+#  334|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  334|             0: [TypeAccess] Unit
+#  334|             1: [MethodAccess] inc(...)
+#  334|               -1: [VarAccess] l1
+#  335|         52: [ExprStmt] <Expr>;
+#  335|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  335|             0: [TypeAccess] Unit
+#  335|             1: [MethodAccess] dec(...)
+#  335|               -1: [VarAccess] l1
+#  336|         53: [ExprStmt] <Expr>;
+#  336|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  336|             0: [TypeAccess] Unit
+#  336|             1: [BitNotExpr] ~...
+#  336|               0: [VarAccess] l
+#  338|         54: [ExprStmt] <Expr>;
+#  338|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  338|             0: [TypeAccess] Unit
+#  338|             1: [PlusExpr] +...
+#  338|               0: [VarAccess] f
+#  339|         55: [ExprStmt] <Expr>;
+#  339|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  339|             0: [TypeAccess] Unit
+#  339|             1: [MinusExpr] -...
+#  339|               0: [VarAccess] f
 #  142|   2: [Class] C
 #  142|     1: [Constructor] C
 #-----|       4: (Parameters)
@@ -4139,6 +4447,7 @@ funcExprs.kt:
 #   38|                     0: [Parameter] <dispatchReceiver>
 #   38|                   5: [BlockStmt] { ... }
 #   38|                     0: [SuperConstructorInvocationStmt] super(...)
+#   38|                       0: [IntegerLiteral] 0
 #   38|                     1: [ExprStmt] <Expr>;
 #   38|                       0: [AssignExpr] ...=...
 #   38|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4166,6 +4475,7 @@ funcExprs.kt:
 #   39|                     0: [Parameter] <dispatchReceiver>
 #   39|                   5: [BlockStmt] { ... }
 #   39|                     0: [SuperConstructorInvocationStmt] super(...)
+#   39|                       0: [IntegerLiteral] 0
 #   39|                     1: [ExprStmt] <Expr>;
 #   39|                       0: [AssignExpr] ...=...
 #   39|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4193,6 +4503,7 @@ funcExprs.kt:
 #   40|                     0: [Parameter] <dispatchReceiver>
 #   40|                   5: [BlockStmt] { ... }
 #   40|                     0: [SuperConstructorInvocationStmt] super(...)
+#   40|                       0: [IntegerLiteral] 1
 #   40|                     1: [ExprStmt] <Expr>;
 #   40|                       0: [AssignExpr] ...=...
 #   40|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4223,6 +4534,7 @@ funcExprs.kt:
 #   41|                 1: [Constructor] 
 #   41|                   5: [BlockStmt] { ... }
 #   41|                     0: [SuperConstructorInvocationStmt] super(...)
+#   41|                       0: [IntegerLiteral] 2
 #   41|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   41|                     0: [Parameter] a0
@@ -4247,6 +4559,7 @@ funcExprs.kt:
 #   42|                     0: [Parameter] <extensionReceiver>
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [SuperConstructorInvocationStmt] super(...)
+#   42|                       0: [IntegerLiteral] 1
 #   42|                     1: [ExprStmt] <Expr>;
 #   42|                       0: [AssignExpr] ...=...
 #   42|                         0: [VarAccess] this.<extensionReceiver>
@@ -4277,6 +4590,7 @@ funcExprs.kt:
 #   43|                 1: [Constructor] 
 #   43|                   5: [BlockStmt] { ... }
 #   43|                     0: [SuperConstructorInvocationStmt] super(...)
+#   43|                       0: [IntegerLiteral] 2
 #   43|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   43|                     0: [Parameter] a0
@@ -4302,6 +4616,7 @@ funcExprs.kt:
 #   44|                     0: [Parameter] <dispatchReceiver>
 #   44|                   5: [BlockStmt] { ... }
 #   44|                     0: [SuperConstructorInvocationStmt] super(...)
+#   44|                       0: [IntegerLiteral] 22
 #   44|                     1: [ExprStmt] <Expr>;
 #   44|                       0: [AssignExpr] ...=...
 #   44|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4397,6 +4712,7 @@ funcExprs.kt:
 #   45|                     0: [Parameter] <dispatchReceiver>
 #   45|                   5: [BlockStmt] { ... }
 #   45|                     0: [SuperConstructorInvocationStmt] super(...)
+#   45|                       0: [IntegerLiteral] 23
 #   45|                     1: [ExprStmt] <Expr>;
 #   45|                       0: [AssignExpr] ...=...
 #   45|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4540,6 +4856,7 @@ funcExprs.kt:
 #   46|                 1: [Constructor] 
 #   46|                   5: [BlockStmt] { ... }
 #   46|                     0: [SuperConstructorInvocationStmt] super(...)
+#   46|                       0: [IntegerLiteral] 24
 #   46|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   46|                     0: [Parameter] a0
@@ -4686,6 +5003,7 @@ funcExprs.kt:
 #   49|                 1: [Constructor] 
 #   49|                   5: [BlockStmt] { ... }
 #   49|                     0: [SuperConstructorInvocationStmt] super(...)
+#   49|                       0: [IntegerLiteral] 0
 #   49|                 2: [Method] invoke
 #   49|                   5: [BlockStmt] { ... }
 #   49|                     0: [ReturnStmt] return ...
@@ -4703,6 +5021,7 @@ funcExprs.kt:
 #   51|                 1: [Constructor] 
 #   51|                   5: [BlockStmt] { ... }
 #   51|                     0: [SuperConstructorInvocationStmt] super(...)
+#   51|                       0: [IntegerLiteral] 0
 #   51|                 2: [Method] invoke
 #   51|                   5: [BlockStmt] { ... }
 #   51|                     0: [ReturnStmt] return ...
@@ -5316,6 +5635,7 @@ kFunctionInvoke.kt:
 #    8|                     0: [Parameter] <dispatchReceiver>
 #    8|                   5: [BlockStmt] { ... }
 #    8|                     0: [SuperConstructorInvocationStmt] super(...)
+#    8|                       0: [IntegerLiteral] 1
 #    8|                     1: [ExprStmt] <Expr>;
 #    8|                       0: [AssignExpr] ...=...
 #    8|                         0: [VarAccess] this.<dispatchReceiver>
@@ -5594,6 +5914,7 @@ samConversion.kt:
 #    5|                     1: [Constructor] 
 #    5|                       5: [BlockStmt] { ... }
 #    5|                         0: [SuperConstructorInvocationStmt] super(...)
+#    5|                           0: [IntegerLiteral] 2
 #    5|                     2: [Method] invoke
 #-----|                       4: (Parameters)
 #    5|                         0: [Parameter] a0
@@ -5815,6 +6136,7 @@ samConversion.kt:
 #   41|                 1: [Constructor] 
 #   41|                   5: [BlockStmt] { ... }
 #   41|                     0: [SuperConstructorInvocationStmt] super(...)
+#   41|                       0: [IntegerLiteral] 23
 #   41|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   41|                     0: [Parameter] a0
@@ -6432,6 +6754,120 @@ samConversion.kt:
 #   59|             -1: [VarAccess] i0
 #   59|             0: [IntegerLiteral] 1
 #   59|             1: [IntegerLiteral] 2
+#   74|     6: [Method] propertyRefsTest
+#   74|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#   74|         0: [Parameter] prt
+#   74|           0: [TypeAccess] PropertyRefsTest
+#   74|       5: [BlockStmt] { ... }
+#   75|         0: [LocalVariableDeclStmt] var ...;
+#   75|           1: [LocalVariableDeclExpr] test1
+#   75|             0: [CastExpr] (...)...
+#   75|               0: [TypeAccess] IntGetter
+#   75|               1: [ClassInstanceExpr] new (...)
+#   75|                 -4: [AnonymousClass] new IntGetter(...) { ... }
+#   75|                   1: [Constructor] 
+#-----|                     4: (Parameters)
+#   75|                       0: [Parameter] <fn>
+#   75|                     5: [BlockStmt] { ... }
+#   75|                       0: [SuperConstructorInvocationStmt] super(...)
+#   75|                       1: [ExprStmt] <Expr>;
+#   75|                         0: [AssignExpr] ...=...
+#   75|                           0: [VarAccess] this.<fn>
+#   75|                             -1: [ThisAccess] this
+#   75|                           1: [VarAccess] <fn>
+#   75|                   2: [FieldDeclaration] Function0<Integer> <fn>;
+#   75|                     -1: [TypeAccess] Function0<Integer>
+#   75|                       0: [TypeAccess] Integer
+#   75|                   3: [Method] f
+#   75|                     3: [TypeAccess] int
+#   75|                     5: [BlockStmt] { ... }
+#   75|                       0: [ReturnStmt] return ...
+#   75|                         0: [MethodAccess] invoke(...)
+#   75|                           -1: [VarAccess] <fn>
+#   75|                 -3: [TypeAccess] IntGetter
+#   75|                 0: [PropertyRefExpr] ...::...
+#   75|                   -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   75|                     1: [Constructor] 
+#-----|                       4: (Parameters)
+#   75|                         0: [Parameter] <dispatchReceiver>
+#   75|                       5: [BlockStmt] { ... }
+#   75|                         0: [SuperConstructorInvocationStmt] super(...)
+#   75|                         1: [ExprStmt] <Expr>;
+#   75|                           0: [AssignExpr] ...=...
+#   75|                             0: [VarAccess] this.<dispatchReceiver>
+#   75|                               -1: [ThisAccess] this
+#   75|                             1: [VarAccess] <dispatchReceiver>
+#   75|                     2: [FieldDeclaration] PropertyRefsTest <dispatchReceiver>;
+#   75|                       -1: [TypeAccess] PropertyRefsTest
+#   75|                     3: [Method] get
+#   75|                       5: [BlockStmt] { ... }
+#   75|                         0: [ReturnStmt] return ...
+#   75|                           0: [MethodAccess] getX(...)
+#   75|                             -1: [VarAccess] this.<dispatchReceiver>
+#   75|                               -1: [ThisAccess] this
+#   75|                     4: [Method] invoke
+#   75|                       5: [BlockStmt] { ... }
+#   75|                         0: [ReturnStmt] return ...
+#   75|                           0: [MethodAccess] get(...)
+#   75|                             -1: [ThisAccess] this
+#   75|                   -3: [TypeAccess] KProperty0<Integer>
+#   75|                     0: [TypeAccess] Integer
+#   75|                   0: [VarAccess] prt
+#   76|         1: [LocalVariableDeclStmt] var ...;
+#   76|           1: [LocalVariableDeclExpr] test2
+#   76|             0: [CastExpr] (...)...
+#   76|               0: [TypeAccess] PropertyRefsGetter
+#   76|               1: [ClassInstanceExpr] new (...)
+#   76|                 -4: [AnonymousClass] new PropertyRefsGetter(...) { ... }
+#   76|                   1: [Constructor] 
+#-----|                     4: (Parameters)
+#   76|                       0: [Parameter] <fn>
+#   76|                     5: [BlockStmt] { ... }
+#   76|                       0: [SuperConstructorInvocationStmt] super(...)
+#   76|                       1: [ExprStmt] <Expr>;
+#   76|                         0: [AssignExpr] ...=...
+#   76|                           0: [VarAccess] this.<fn>
+#   76|                             -1: [ThisAccess] this
+#   76|                           1: [VarAccess] <fn>
+#   76|                   2: [FieldDeclaration] Function1<PropertyRefsTest,Integer> <fn>;
+#   76|                     -1: [TypeAccess] Function1<PropertyRefsTest,Integer>
+#   76|                       0: [TypeAccess] PropertyRefsTest
+#   76|                       1: [TypeAccess] Integer
+#   76|                   3: [Method] f
+#   76|                     3: [TypeAccess] int
+#-----|                     4: (Parameters)
+#   76|                       0: [Parameter] prt
+#   76|                         0: [TypeAccess] PropertyRefsTest
+#   76|                     5: [BlockStmt] { ... }
+#   76|                       0: [ReturnStmt] return ...
+#   76|                         0: [MethodAccess] invoke(...)
+#   76|                           -1: [VarAccess] <fn>
+#   76|                           0: [VarAccess] prt
+#   76|                 -3: [TypeAccess] PropertyRefsGetter
+#   76|                 0: [PropertyRefExpr] ...::...
+#   76|                   -4: [AnonymousClass] new KProperty1<PropertyRefsTest,Integer>(...) { ... }
+#   76|                     1: [Constructor] 
+#   76|                       5: [BlockStmt] { ... }
+#   76|                         0: [SuperConstructorInvocationStmt] super(...)
+#   76|                     2: [Method] get
+#-----|                       4: (Parameters)
+#   76|                         0: [Parameter] a0
+#   76|                       5: [BlockStmt] { ... }
+#   76|                         0: [ReturnStmt] return ...
+#   76|                           0: [MethodAccess] getX(...)
+#   76|                             -1: [VarAccess] a0
+#   76|                     3: [Method] invoke
+#-----|                       4: (Parameters)
+#   76|                         0: [Parameter] a0
+#   76|                       5: [BlockStmt] { ... }
+#   76|                         0: [ReturnStmt] return ...
+#   76|                           0: [MethodAccess] get(...)
+#   76|                             -1: [ThisAccess] this
+#   76|                             0: [VarAccess] a0
+#   76|                   -3: [TypeAccess] KProperty1<PropertyRefsTest,Integer>
+#   76|                     0: [TypeAccess] PropertyRefsTest
+#   76|                     1: [TypeAccess] Integer
 #   16|   2: [Interface] IntPredicate
 #   17|     1: [Method] accept
 #   17|       3: [TypeAccess] boolean
@@ -6520,6 +6956,32 @@ samConversion.kt:
 #   54|           0: [TypeAccess] int
 #   54|         1: [Parameter] j
 #   54|           0: [TypeAccess] int
+#   62|   8: [Class] PropertyRefsTest
+#   62|     1: [Constructor] PropertyRefsTest
+#   62|       5: [BlockStmt] { ... }
+#   62|         0: [SuperConstructorInvocationStmt] super(...)
+#   62|         1: [BlockStmt] { ... }
+#   63|           0: [ExprStmt] <Expr>;
+#   63|             0: [KtInitializerAssignExpr] ...=...
+#   63|               0: [VarAccess] x
+#   63|     2: [Method] getX
+#   63|       3: [TypeAccess] int
+#   63|       5: [BlockStmt] { ... }
+#   63|         0: [ReturnStmt] return ...
+#   63|           0: [VarAccess] this.x
+#   63|             -1: [ThisAccess] this
+#   63|     3: [FieldDeclaration] int x;
+#   63|       -1: [TypeAccess] int
+#   63|       0: [IntegerLiteral] 1
+#   66|   9: [Interface] PropertyRefsGetter
+#   67|     1: [Method] f
+#   67|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#   67|         0: [Parameter] prt
+#   67|           0: [TypeAccess] PropertyRefsTest
+#   70|   10: [Interface] IntGetter
+#   71|     1: [Method] f
+#   71|       3: [TypeAccess] int
 whenExpr.kt:
 #    0| [CompilationUnit] whenExpr
 #    0|   1: [Class] WhenExprKt

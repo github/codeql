@@ -4,8 +4,6 @@ private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.Concepts
 
-query predicate htmlSafeCalls(Rails::HtmlSafeCall c) { any() }
-
 query predicate rawCalls(RawCall c) { any() }
 
 query predicate renderCalls(Rails::RenderCall c) { any() }

@@ -4,12 +4,14 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedDeclRefExprBase extends Synth::TUnresolvedDeclRefExpr, Expr, UnresolvedElement {
-  override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
+module Generated {
+  class UnresolvedDeclRefExpr extends Synth::TUnresolvedDeclRefExpr, Expr, UnresolvedElement {
+    override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
 
-  string getName() {
-    result = Synth::convertUnresolvedDeclRefExprToRaw(this).(Raw::UnresolvedDeclRefExpr).getName()
+    string getName() {
+      result = Synth::convertUnresolvedDeclRefExprToRaw(this).(Raw::UnresolvedDeclRefExpr).getName()
+    }
+
+    final predicate hasName() { exists(getName()) }
   }
-
-  final predicate hasName() { exists(getName()) }
 }

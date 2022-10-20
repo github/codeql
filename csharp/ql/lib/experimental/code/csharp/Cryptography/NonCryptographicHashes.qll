@@ -10,7 +10,9 @@ import csharp
 private import DataFlow
 private import semmle.code.csharp.dataflow.TaintTracking2
 
-predicate maybeANonCryptogrphicHash(Callable callable, Variable v, Expr xor, Expr mul, LoopStmt loop) {
+predicate maybeANonCryptographicHash(
+  Callable callable, Variable v, Expr xor, Expr mul, LoopStmt loop
+) {
   callable = loop.getEnclosingCallable() and
   (
     maybeUsedInFnvFunction(v, xor, mul, loop) or
@@ -75,7 +77,7 @@ private predicate maybeUsedInElfHashFunction(Variable v, Operation xor, Operatio
  */
 predicate isCallableAPotentialNonCryptographicHashFunction(Callable callable, Parameter param) {
   exists(Variable v, Expr op1, Expr op2, LoopStmt loop |
-    maybeANonCryptogrphicHash(callable, v, op1, op2, loop) and
+    maybeANonCryptographicHash(callable, v, op1, op2, loop) and
     callable.getAParameter() = param and
     exists(ParameterNode p, ExprNode n |
       p.getParameter() = param and

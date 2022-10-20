@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
 
-class UnresolvedElementBase extends Synth::TUnresolvedElement, Element { }
+module Generated {
+  class UnresolvedElement extends Synth::TUnresolvedElement, Element { }
+}
