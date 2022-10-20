@@ -230,3 +230,13 @@ toplevel_self_singleton.rb:
 #-----|  -> Object
 
 #   24| Good
+
+unresolved_subclass.rb:
+#    1| ResolvableBaseClass
+#-----|  -> Object
+
+#    4| ...::Subclass1
+#-----|  -> ResolvableBaseClass
+
+#    7| ...::Subclass2
+#-----|  -> Object

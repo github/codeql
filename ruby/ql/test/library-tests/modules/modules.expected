@@ -85,6 +85,9 @@ getModule
 | private.rb:96:1:102:3 | PrivateOverride2 |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B |
 | toplevel_self_singleton.rb:24:1:34:3 | Good |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass |
+| unresolved_subclass.rb:4:1:5:3 | ...::Subclass1 |
+| unresolved_subclass.rb:7:1:8:3 | ...::Subclass2 |
 getADeclaration
 | calls.rb:21:1:34:3 | M | calls.rb:21:1:34:3 | M |
 | calls.rb:43:1:58:3 | C | calls.rb:43:1:58:3 | C |
@@ -101,6 +104,7 @@ getADeclaration
 | calls.rb:115:1:118:3 | Object | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | calls.rb:115:1:118:3 | Object | private.rb:1:1:105:40 | private.rb |
 | calls.rb:115:1:118:3 | Object | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| calls.rb:115:1:118:3 | Object | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
 | calls.rb:120:1:123:3 | Hash | calls.rb:120:1:123:3 | Hash |
 | calls.rb:125:1:138:3 | Array | calls.rb:125:1:138:3 | Array |
 | calls.rb:165:1:169:3 | S | calls.rb:165:1:169:3 | S |
@@ -176,6 +180,9 @@ getADeclaration
 | toplevel_self_singleton.rb:2:5:5:7 | A::B | modules_rec.rb:4:1:5:3 | B |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B | toplevel_self_singleton.rb:2:5:5:7 | B |
 | toplevel_self_singleton.rb:24:1:34:3 | Good | toplevel_self_singleton.rb:24:1:34:3 | Good |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass | unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass |
+| unresolved_subclass.rb:4:1:5:3 | ...::Subclass1 | unresolved_subclass.rb:4:1:5:3 | Subclass1 |
+| unresolved_subclass.rb:7:1:8:3 | ...::Subclass2 | unresolved_subclass.rb:7:1:8:3 | Subclass2 |
 getSuperClass
 | calls.rb:43:1:58:3 | C | calls.rb:115:1:118:3 | Object |
 | calls.rb:65:1:69:3 | D | calls.rb:43:1:58:3 | C |
@@ -231,6 +238,9 @@ getSuperClass
 | private.rb:82:1:94:3 | PrivateOverride1 | calls.rb:115:1:118:3 | Object |
 | private.rb:96:1:102:3 | PrivateOverride2 | private.rb:82:1:94:3 | PrivateOverride1 |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B | calls.rb:115:1:118:3 | Object |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass | calls.rb:115:1:118:3 | Object |
+| unresolved_subclass.rb:4:1:5:3 | ...::Subclass1 | unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass |
+| unresolved_subclass.rb:7:1:8:3 | ...::Subclass2 | calls.rb:115:1:118:3 | Object |
 getAPrependedModule
 | calls.rb:115:1:118:3 | Object | calls.rb:171:1:174:3 | A |
 | calls.rb:171:1:174:3 | A | toplevel_self_singleton.rb:2:5:5:7 | A::B |
@@ -373,6 +383,7 @@ resolveConstantReadAccess
 | private.rb:100:7:100:22 | PrivateOverride1 | PrivateOverride1 |
 | private.rb:104:1:104:16 | PrivateOverride2 | PrivateOverride2 |
 | private.rb:105:1:105:16 | PrivateOverride2 | PrivateOverride2 |
+| unresolved_subclass.rb:4:40:4:58 | ResolvableBaseClass | ResolvableBaseClass |
 resolveConstantWriteAccess
 | calls.rb:21:1:34:3 | M | M |
 | calls.rb:43:1:58:3 | C | C |
@@ -469,6 +480,9 @@ resolveConstantWriteAccess
 | toplevel_self_singleton.rb:2:5:5:7 | B | A::B |
 | toplevel_self_singleton.rb:18:1:18:8 | MyStruct | MyStruct |
 | toplevel_self_singleton.rb:24:1:34:3 | Good | Good |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass | ResolvableBaseClass |
+| unresolved_subclass.rb:4:1:5:3 | Subclass1 | UnresolvedNamespace::Subclass1 |
+| unresolved_subclass.rb:7:1:8:3 | Subclass2 | UnresolvedNamespace::Subclass2 |
 enclosingModule
 | calls.rb:1:1:3:3 | foo | calls.rb:1:1:616:32 | calls.rb |
 | calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:616:32 | calls.rb |
@@ -1792,3 +1806,11 @@ enclosingModule
 | toplevel_self_singleton.rb:30:13:30:19 | self | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
 | toplevel_self_singleton.rb:31:13:31:20 | call to call_you | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
 | toplevel_self_singleton.rb:31:13:31:20 | self | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:4:1:5:3 | Subclass1 | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:4:7:4:25 | UnresolvedNamespace | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:4:40:4:58 | ResolvableBaseClass | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:7:1:8:3 | Subclass2 | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:7:7:7:25 | UnresolvedNamespace | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:7:40:7:58 | UnresolvedNamespace | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:7:40:7:69 | Subclass1 | unresolved_subclass.rb:1:1:8:4 | unresolved_subclass.rb |
