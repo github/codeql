@@ -14,13 +14,22 @@ class MyClass(object):
     def my_method(self, arg):
         pass
 
+    def other_method(self):
+        self.my_method(42) # $ arg[self]=self call=self.my_method(..) callType=CallTypeNormalMethod arg[position 0]=42
+        self.sm(42) # $ call=self.sm(..) callType=CallTypeStaticMethod arg[position 0]=42
+
     @staticmethod
-    def staticmethod(arg):
+    def sm(arg):
         pass
 
     @classmethod
-    def classmethod(cls, arg):
+    def cm(cls, arg):
         pass
+
+    @classmethod
+    def other_classmethod(cls):
+        cls.cm(42) # $ call=cls.cm(..) callType=CallTypeClassMethod arg[position 0]=42 MISSING: arg[self]=cls
+        cls.sm(42) # $ call=cls.sm(..) callType=CallTypeStaticMethod arg[position 0]=42
 
     def __getitem__(self, key):
         pass
@@ -34,11 +43,11 @@ mm = x.my_method
 mm(2) # $ call=mm(..) arg[self]=x arg[position 0]=2  callType=CallTypeNormalMethod
 MyClass.my_method(x, 2) # $ call=MyClass.my_method(..) arg[position 0]=2 arg[self]=x callType=CallTypeMethodAsPlainFunction
 
-x.staticmethod(3) # $ call=x.staticmethod(..) arg[position 0]=3  callType=CallTypeStaticMethod
-MyClass.staticmethod(3) # $ call=MyClass.staticmethod(..) arg[position 0]=3 callType=CallTypeStaticMethod
+x.sm(3) # $ call=x.sm(..) arg[position 0]=3  callType=CallTypeStaticMethod
+MyClass.sm(3) # $ call=MyClass.sm(..) arg[position 0]=3 callType=CallTypeStaticMethod
 
-x.classmethod(4) # $ call=x.classmethod(..) arg[position 0]=4 callType=CallTypeClassMethod
-MyClass.classmethod(4) # $ call=MyClass.classmethod(..) arg[position 0]=4 arg[self]=MyClass callType=CallTypeClassMethod
+x.cm(4) # $ call=x.cm(..) arg[position 0]=4 callType=CallTypeClassMethod
+MyClass.cm(4) # $ call=MyClass.cm(..) arg[position 0]=4 arg[self]=MyClass callType=CallTypeClassMethod
 
 x[5] # $ MISSING: call=x[5] arg[self]=x arg[position 0]=5
 
@@ -53,11 +62,11 @@ mm = y.my_method
 mm(2) # $ call=mm(..) arg[self]=y arg[position 0]=2 callType=CallTypeNormalMethod
 Subclass.my_method(y, 2) # $ call=Subclass.my_method(..) arg[self]=y arg[position 0]=2 callType=CallTypeMethodAsPlainFunction
 
-y.staticmethod(3) # $ call=y.staticmethod(..) arg[position 0]=3  callType=CallTypeStaticMethod
-Subclass.staticmethod(3) # $ call=Subclass.staticmethod(..) arg[position 0]=3 callType=CallTypeStaticMethod
+y.sm(3) # $ call=y.sm(..) arg[position 0]=3  callType=CallTypeStaticMethod
+Subclass.sm(3) # $ call=Subclass.sm(..) arg[position 0]=3 callType=CallTypeStaticMethod
 
-y.classmethod(4) # $ call=y.classmethod(..) arg[position 0]=4 callType=CallTypeClassMethod
-Subclass.classmethod(4) # $ call=Subclass.classmethod(..) arg[self]=Subclass arg[position 0]=4 callType=CallTypeClassMethod
+y.cm(4) # $ call=y.cm(..) arg[position 0]=4 callType=CallTypeClassMethod
+Subclass.cm(4) # $ call=Subclass.cm(..) arg[self]=Subclass arg[position 0]=4 callType=CallTypeClassMethod
 
 y[5] # $ MISSING: call=y[5] arg[self]=y arg[position 0]=5
 
