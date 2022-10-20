@@ -118,6 +118,25 @@ module ActiveSupport {
         result = DataFlow::Content::getKnownElementIndex(mc.getArgument(i)).serialize()
       }
 
+      /**
+       *A flow summary for `Hash#extract!`. This method removes the key/value pairs
+       *matching the given keys from the receiver and returns them (as a Hash).
+       *
+       *Example:
+       *
+       *```rb
+       * hash = { a: 1, b: 2, c: 3, d: 4 }
+       * hash.extract!(:a, :b) # => {:a=>1, :b=>2}
+       * hash                  # => {:c=>3, :d=>4}
+       *```
+       *
+       * There is value flow from elements corresponding to keys in the
+       * arguments (`:a` and `:b` in the example) to elements in
+       * the return value.
+       * There is also value flow from any element corresponding to a key _not_
+       * mentioned in the arguments to an element in `self`, including elements
+       * at unknown keys.
+       */
       private class ExtractSummary extends SummarizedCallable {
         MethodCall mc;
 
@@ -137,6 +156,9 @@ module ActiveSupport {
               output = "ReturnValue.Element[" + s + "!]"
             )
             or
+            // Argument[self].WithoutElement[:a!, :b!].WithElement[any] means
+            // "an element of self whose key is not :a or :b, including elements
+            // with unknown keys"
             input =
               "Argument[self]" +
                 concat(int i, string s |
