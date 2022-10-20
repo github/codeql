@@ -474,9 +474,6 @@ private class TransformKeysBangSummary extends SimpleSummarizedCallable {
     (
       input = "Argument[self].Element[any]" and
       output = "Argument[self].Element[?]"
-      or
-      input = "Argument[self].WithoutElement[any]" and
-      output = "Argument[self]"
     ) and
     preservesValue = true
   }
