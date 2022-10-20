@@ -180,6 +180,7 @@ module Stages {
     predicate ref() { 1 = 1 }
 
     private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
+    private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
     private import semmle.python.dataflow.new.internal.LocalSources as LocalSources
     private import semmle.python.internal.Awaited as Awaited
 
@@ -194,6 +195,10 @@ module Stages {
       exists(any(DataFlowPublic::Node node).toString())
       or
       any(DataFlowPublic::Node node).hasLocationInfo(_, _, _, _, _)
+      or
+      DataFlowDispatch::resolveCall(_, _, _)
+      or
+      DataFlowDispatch::getCallArg(_, _, _, _, _)
       or
       any(LocalSources::LocalSourceNode n).flowsTo(_)
       or

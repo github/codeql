@@ -37,6 +37,7 @@ private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
+private import semmle.python.internal.CachedStages
 
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
@@ -1041,20 +1042,23 @@ predicate resolveClassInstanceCall(CallNode call, Function target, Node self) {
  */
 cached
 predicate resolveCall(ControlFlowNode call, Function target, CallType type) {
-  type instanceof CallTypePlainFunction and
-  call.(CallNode).getFunction() = functionTracker(target).asCfgNode() and
-  not exists(Class cls | cls.getAMethod() = target)
-  or
-  resolveMethodCall(call, target, type, _)
-  or
-  type instanceof CallTypeClass and
-  exists(Class cls |
-    resolveClassCall(call, cls) and
-    target = invokedFunctionFromClassConstruction(cls, _)
+  Stages::DataFlow::ref() and
+  (
+    type instanceof CallTypePlainFunction and
+    call.(CallNode).getFunction() = functionTracker(target).asCfgNode() and
+    not exists(Class cls | cls.getAMethod() = target)
+    or
+    resolveMethodCall(call, target, type, _)
+    or
+    type instanceof CallTypeClass and
+    exists(Class cls |
+      resolveClassCall(call, cls) and
+      target = invokedFunctionFromClassConstruction(cls, _)
+    )
+    or
+    type instanceof CallTypeClassInstanceCall and
+    resolveClassInstanceCall(call, target, _)
   )
-  or
-  type instanceof CallTypeClassInstanceCall and
-  resolveClassInstanceCall(call, target, _)
 }
 
 // =============================================================================
@@ -1119,77 +1123,80 @@ cached
 predicate getCallArg(
   ControlFlowNode call, Function target, CallType type, Node arg, ArgumentPosition apos
 ) {
-  // normal calls with a real call node
-  resolveCall(call, target, type) and
-  call instanceof CallNode and
+  Stages::DataFlow::ref() and
   (
-    type instanceof CallTypePlainFunction and
-    normalCallArg(call, arg, apos)
-    or
-    // self argument for normal method calls
-    type instanceof CallTypeNormalMethod and
-    apos.isSelf() and
-    resolveMethodCall(call, target, type, arg) and
-    // dataflow lib has requirement that arguments and calls are in same enclosing callable.
-    exists(CfgNode cfgNode | cfgNode.getNode() = call |
-      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-    )
-    or
-    // cls argument for classmethod calls
-    type instanceof CallTypeClassMethod and
-    apos.isSelf() and
-    resolveMethodCall(call, target, type, arg) and
-    (arg = classTracker(_) or arg = clsTracker(_)) and
-    // dataflow lib has requirement that arguments and calls are in same enclosing callable.
-    exists(CfgNode cfgNode | cfgNode.getNode() = call |
-      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-    )
-    or
-    // normal arguments for method calls
+    // normal calls with a real call node
+    resolveCall(call, target, type) and
+    call instanceof CallNode and
     (
-      type instanceof CallTypeNormalMethod or
-      type instanceof CallTypeStaticMethod or
-      type instanceof CallTypeClassMethod
-    ) and
-    normalCallArg(call, arg, apos)
-    or
-    // method as plain function call.
-    //
-    // argument index 0 of call has position self (and MUST be given as positional
-    // argument in call). This also means that call-arguments are shifted by 1, such
-    // that argument index 1 of call has argument position 0
-    type instanceof CallTypeMethodAsPlainFunction and
-    (
-      apos.isSelf() and arg.asCfgNode() = call.(CallNode).getArg(0)
+      type instanceof CallTypePlainFunction and
+      normalCallArg(call, arg, apos)
       or
-      not apos.isPositional(_) and normalCallArg(call, arg, apos)
-      or
-      exists(ArgumentPosition normalPos, int index |
-        apos.isPositional(index - 1) and
-        normalPos.isPositional(index) and
-        normalCallArg(call, arg, normalPos)
+      // self argument for normal method calls
+      type instanceof CallTypeNormalMethod and
+      apos.isSelf() and
+      resolveMethodCall(call, target, type, arg) and
+      // dataflow lib has requirement that arguments and calls are in same enclosing callable.
+      exists(CfgNode cfgNode | cfgNode.getNode() = call |
+        cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
       )
-    )
-    or
-    // class call
-    type instanceof CallTypeClass and
-    (
-      // only pass synthetic node for created object to __init__, and not __new__ since
-      // __new__ is a classmethod.
-      target = invokedFunctionFromClassConstruction(_, "__init__") and
-      apos.isSelf() and
-      arg = TSyntheticPreUpdateNode(call)
       or
-      normalCallArg(call, arg, apos)
-    )
-    or
-    // call on class instance, which goes to `__call__` method
-    type instanceof CallTypeClassInstanceCall and
-    (
+      // cls argument for classmethod calls
+      type instanceof CallTypeClassMethod and
       apos.isSelf() and
-      resolveClassInstanceCall(call, target, arg)
+      resolveMethodCall(call, target, type, arg) and
+      (arg = classTracker(_) or arg = clsTracker(_)) and
+      // dataflow lib has requirement that arguments and calls are in same enclosing callable.
+      exists(CfgNode cfgNode | cfgNode.getNode() = call |
+        cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
+      )
       or
+      // normal arguments for method calls
+      (
+        type instanceof CallTypeNormalMethod or
+        type instanceof CallTypeStaticMethod or
+        type instanceof CallTypeClassMethod
+      ) and
       normalCallArg(call, arg, apos)
+      or
+      // method as plain function call.
+      //
+      // argument index 0 of call has position self (and MUST be given as positional
+      // argument in call). This also means that call-arguments are shifted by 1, such
+      // that argument index 1 of call has argument position 0
+      type instanceof CallTypeMethodAsPlainFunction and
+      (
+        apos.isSelf() and arg.asCfgNode() = call.(CallNode).getArg(0)
+        or
+        not apos.isPositional(_) and normalCallArg(call, arg, apos)
+        or
+        exists(ArgumentPosition normalPos, int index |
+          apos.isPositional(index - 1) and
+          normalPos.isPositional(index) and
+          normalCallArg(call, arg, normalPos)
+        )
+      )
+      or
+      // class call
+      type instanceof CallTypeClass and
+      (
+        // only pass synthetic node for created object to __init__, and not __new__ since
+        // __new__ is a classmethod.
+        target = invokedFunctionFromClassConstruction(_, "__init__") and
+        apos.isSelf() and
+        arg = TSyntheticPreUpdateNode(call)
+        or
+        normalCallArg(call, arg, apos)
+      )
+      or
+      // call on class instance, which goes to `__call__` method
+      type instanceof CallTypeClassInstanceCall and
+      (
+        apos.isSelf() and
+        resolveClassInstanceCall(call, target, arg)
+        or
+        normalCallArg(call, arg, apos)
+      )
     )
   )
 }
