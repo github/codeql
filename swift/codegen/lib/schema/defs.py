@@ -46,19 +46,10 @@ class _Pragma(_schema.PropertyModifier):
 
     def __call__(self, cls: type) -> type:
         """ use this pragma as a decorator on classes """
-        if "pragmas" in cls.__dict__:  # not using hasattr as we don't want to land on inherited pragmas
-            cls.pragmas.append(self.pragma)
+        if "_pragmas" in cls.__dict__:  # not using hasattr as we don't want to land on inherited pragmas
+            cls._pragmas.append(self.pragma)
         else:
-            cls.pragmas = [self.pragma]
-        return cls
-
-
-@_dataclass
-class _DefaultDocNameClassModifier:
-    doc_name: str
-
-    def __call__(self, cls: type) -> type:
-        cls._doc_name = self.doc_name
+            cls._pragmas = [self.pragma]
         return cls
 
 
@@ -106,7 +97,7 @@ _ClassDecorator = _Callable[[type], type]
 def _annotate(**kwargs) -> _ClassDecorator:
     def f(cls: type) -> type:
         for k, v in kwargs.items():
-            setattr(cls, k, v)
+            setattr(cls, f"_{k}", v)
         return cls
 
     return f
@@ -131,7 +122,7 @@ qltest = _Namespace(
 )
 
 ql = _Namespace(
-    default_doc_name=_DefaultDocNameClassModifier,
+    default_doc_name=lambda doc: _annotate(doc_name=doc)
 )
 
 cpp = _Namespace(

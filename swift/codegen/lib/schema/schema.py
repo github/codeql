@@ -193,16 +193,16 @@ def _get_class(cls: type) -> Class:
         raise Error(f"Only class definitions allowed in schema, found {cls}")
     if cls.__name__[0].islower():
         raise Error(f"Class name must be capitalized, found {cls.__name__}")
-    if len({b.group for b in cls.__bases__ if hasattr(b, "group")}) > 1:
+    if len({b._group for b in cls.__bases__ if hasattr(b, "_group")}) > 1:
         raise Error(f"Bases with mixed groups for {cls.__name__}")
     return Class(name=cls.__name__,
                  bases=[b.__name__ for b in cls.__bases__ if b is not object],
                  derived={d.__name__ for d in cls.__subclasses__()},
                  # getattr to inherit from bases
-                 group=getattr(cls, "group", ""),
+                 group=getattr(cls, "_group", ""),
                  # in the following we don't use `getattr` to avoid inheriting
-                 pragmas=cls.__dict__.get("pragmas", []),
-                 ipa=cls.__dict__.get("ipa", None),
+                 pragmas=cls.__dict__.get("_pragmas", []),
+                 ipa=cls.__dict__.get("_ipa", None),
                  properties=[
                      a | _PropertyNamer(n)
                      for n, a in cls.__dict__.get("__annotations__", {}).items()
