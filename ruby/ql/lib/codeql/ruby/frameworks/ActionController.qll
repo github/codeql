@@ -62,6 +62,12 @@ private ActionControllerControllerClass actionControllerClass() { any() }
 
 private DataFlow::LocalSourceNode actionControllerInstance() {
   result = actionControllerClass().getAnInstanceSelf()
+  or
+  // Include the module-level `self` to recover some cases where a block at the module level
+  // is invoked with an instance as the `self`, which we currently can't model directly.
+  // Concretely this happens in the block passed to `rescue_from`.
+  // TODO: revisit when we have better infrastructure for handling self in a block
+  result = actionControllerClass().getModuleLevelSelf()
 }
 
 /**
