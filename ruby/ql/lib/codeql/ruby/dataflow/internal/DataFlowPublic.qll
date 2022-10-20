@@ -737,6 +737,7 @@ class ModuleNode instanceof Module {
 
   /** Gets a module that transitively subclasses, includes, or prepends this module. */
   final ModuleNode getADescendent() { result = super.getADescendent() }
+
   /** Holds if this module is a class. */
   predicate isClass() { super.isClass() }
 
@@ -999,4 +1000,69 @@ class BlockNode extends CallableNode {
 
   /** Gets the underlying AST node for this block. */
   Block asBlock() { result = this.asCallableAstNode() }
+}
+
+/**
+ * A representation of a pair such as `K => V` or `K: V`.
+ *
+ * Unlike most expressions, pairs do not evaluate to actual objects at runtime and their nodes
+ * cannot generally be expected to have meaningful data flow edges.
+ * This node simply provides convenient access to the key and value as data flow nodes.
+ */
+class PairNode extends ExprNode {
+  PairNode() { getExprNode() instanceof CfgNodes::ExprNodes::PairCfgNode }
+
+  /**
+   * Holds if this pair is of form `key => value` or `key: value`.
+   */
+  predicate hasKeyAndValue(Node key, Node value) {
+    exists(CfgNodes::ExprNodes::PairCfgNode n |
+      getExprNode() = n and
+      key = TExprNode(n.getKey()) and
+      value = TExprNode(n.getValue())
+    )
+  }
+
+  /** Gets the key expression of this pair, such as the `K` in `K => V` or `K: V`. */
+  Node getKey() { this.hasKeyAndValue(result, _) }
+
+  /** Gets the value expression of this pair, such as the `V` in `K => V` or `K: V`. */
+  Node getValue() { this.hasKeyAndValue(_, result) }
+}
+
+/**
+ * A data-flow node that corresponds to a hash literal. Hash literals are desugared
+ * into calls to `Hash.[]`, so this includes both desugared calls as well as
+ * explicit calls.
+ */
+class HashLiteralNode extends LocalSourceNode, ExprNode {
+  HashLiteralNode() { super.getExprNode() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode }
+
+  /** Gets a pair in this hash literal. */
+  PairNode getAKeyValuePair() {
+    result.getExprNode() =
+      super.getExprNode().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair()
+  }
+
+  /** Gets the value associated with the constant `key`, if known. */
+  Node getElementFromKey(ConstantValue key) {
+    exists(ExprNode keyNode |
+      this.getAKeyValuePair().hasKeyAndValue(keyNode, result) and
+      keyNode.getConstantValue() = key
+    )
+  }
+}
+
+/**
+ * A data-flow node corresponding to an array literal. Array literals are desugared
+ * into calls to `Array.[]`, so this includes both desugared calls as well as
+ * explicit calls.
+ */
+class ArrayLiteralNode extends LocalSourceNode, ExprNode {
+  ArrayLiteralNode() { super.getExprNode() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode }
+
+  /**
+   * Gets an element of the array.
+   */
+  Node getAnElement() { result = this.(CallNode).getPositionalArgument(_) }
 }
