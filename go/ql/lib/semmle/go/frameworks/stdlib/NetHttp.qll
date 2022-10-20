@@ -184,6 +184,14 @@ module NetHttp {
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
   }
 
+  /** A call to a function in the `net/http` package that performs an HTTP request to a URL using http.NewRequest. */
+  private class NewRequestCall extends Http::ClientRequest::Range, DataFlow::CallNode {
+    NewRequestCall() { this.getTarget().hasQualifiedName("net/http", "NewRequest") }
+
+    /** Gets the URL of the request, which is the second argument in this case. */
+    override DataFlow::Node getUrl() { result = this.getArgument(1) }
+  }
+
   /** A call to the Client.Do function in the `net/http` package. */
   private class ClientDo extends Http::ClientRequest::Range, DataFlow::MethodCallNode {
     ClientDo() { this.getTarget().hasQualifiedName("net/http", "Client", "Do") }

@@ -35,6 +35,8 @@ func handler2(w http.ResponseWriter, req *http.Request) {
 	u, _ := url.Parse("http://example.com/relative-path")
 	u.Host = tainted
 	http.Get(u.String()) // Not OK
+
+	http.NewRequest("GET", tainted, nil) // Not OK
 }
 
 func main() {
