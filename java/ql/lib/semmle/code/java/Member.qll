@@ -471,7 +471,12 @@ class Method extends Callable, @method {
   }
 
   override predicate isAbstract() {
-    Callable.super.isAbstract()
+    // The combination `abstract default` isn't legal in Java,
+    // but it occurs when the Kotlin extractor records a default
+    // body, but the output class file in fact uses an abstract
+    // method and an associated static helper, which we don't
+    // extract as an implementation detail.
+    Callable.super.isAbstract() and not this.isDefault()
     or
     // JLS 9.4: An interface method lacking a `private`, `default`, or `static` modifier
     // is implicitly abstract.
