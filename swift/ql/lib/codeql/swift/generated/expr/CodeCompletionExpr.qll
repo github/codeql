@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class CodeCompletionExprBase extends Synth::TCodeCompletionExpr, Expr {
-  override string getAPrimaryQlClass() { result = "CodeCompletionExpr" }
+module Generated {
+  class CodeCompletionExpr extends Synth::TCodeCompletionExpr, Expr {
+    override string getAPrimaryQlClass() { result = "CodeCompletionExpr" }
+  }
 }

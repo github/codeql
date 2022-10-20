@@ -192,3 +192,12 @@ def m_safe_buffer_to_param
   y = x.to_param
   sink y # $hasTaintFlow=a
 end
+
+def m_pathname_existence
+  a = source "a"
+  x = Pathname.new(a)
+  y = x.existence
+  sink y # $hasTaintFlow=a
+  z = y.existence
+  sink z # $hasTaintFlow=a
+end

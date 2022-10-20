@@ -7,3 +7,5 @@ class B : A<B, Int> {
         println("a")
     }
 }
+
+fun fn(a: Int = 10) {}

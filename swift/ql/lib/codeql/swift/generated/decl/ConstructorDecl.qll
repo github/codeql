@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.AbstractFunctionDecl
 
-class ConstructorDeclBase extends Synth::TConstructorDecl, AbstractFunctionDecl {
-  override string getAPrimaryQlClass() { result = "ConstructorDecl" }
+module Generated {
+  class ConstructorDecl extends Synth::TConstructorDecl, AbstractFunctionDecl {
+    override string getAPrimaryQlClass() { result = "ConstructorDecl" }
+  }
 }

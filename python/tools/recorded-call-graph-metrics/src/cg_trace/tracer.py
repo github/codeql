@@ -251,7 +251,7 @@ class CallGraphTracer:
 
     def __init__(self):
         # Performing `Call.from_frame` can be expensive, so we cache (call, callee)
-        # pairs we have already seen to avoid double procressing.
+        # pairs we have already seen to avoid double processing.
         self.python_calls = dict()
         self.external_calls = dict()
 

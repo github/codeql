@@ -425,7 +425,7 @@ def test_non_empty_cleanup(opts, generate, renderer):
     test_c = opts.ql_test_output / "B.txt"
     write(ql_a)
     write(ql_b)
-    write(stub_a, "// generated\nprivate import bla\n\nclass foo extends bar {\n}\n")
+    write(stub_a, "// generated\nprivate import bla\n\nclass foo extends Generated::bar {\n}\n")
     write(stub_b, "bar\n")
     write(test_a)
     write(test_b)
@@ -437,7 +437,7 @@ def test_non_empty_cleanup(opts, generate, renderer):
 
 def test_modified_stub_still_generated(qlgen_opts, renderer):
     stub = qlgen_opts.ql_stub_output / "A.qll"
-    write(stub, "// generated\nprivate import bla\n\nclass foo extends bar, baz {\n}\n")
+    write(stub, "// generated\nprivate import bla\n\nclass foo extends Generated::bar, baz {\n}\n")
     with pytest.raises(qlgen.ModifiedStubMarkedAsGeneratedError):
         run_generation(qlgen.generate, qlgen_opts, renderer)
 
@@ -445,7 +445,8 @@ def test_modified_stub_still_generated(qlgen_opts, renderer):
 def test_extended_stub_still_generated(qlgen_opts, renderer):
     stub = qlgen_opts.ql_stub_output / "A.qll"
     write(stub,
-          "// generated\nprivate import bla\n\nclass foo extends bar {\n}\n\nclass other {\n  other() { none() }\n}")
+          "// generated\nprivate import bla\n\nclass foo extends Generated::bar {\n}\n\n"
+          "class other {\n  other() { none() }\n}")
     with pytest.raises(qlgen.ModifiedStubMarkedAsGeneratedError):
         run_generation(qlgen.generate, qlgen_opts, renderer)
 
@@ -584,7 +585,7 @@ def test_test_class_hierarchy_collapse(opts, generate_tests):
         schema.Class("D2", bases=["Base"], derived={"D3"}, properties=[schema.SingleProperty("y", "string")]),
         schema.Class("D3", bases=["D2"], properties=[schema.SingleProperty("z", "string")]),
     ]) == {
-        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+        "Base/Base.ql": ql.ClassTester(class_name="Base", show_ql_class=True),
     }
 
 
@@ -598,7 +599,7 @@ def test_test_class_hierarchy_uncollapse(opts, generate_tests):
         schema.Class("D3", bases=["D2"]),
         schema.Class("D4", bases=["D2"]),
     ]) == {
-        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+        "Base/Base.ql": ql.ClassTester(class_name="Base", show_ql_class=True),
         "D3/D3.ql": ql.ClassTester(class_name="D3"),
         "D4/D4.ql": ql.ClassTester(class_name="D4"),
     }
@@ -613,7 +614,7 @@ def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
         schema.Class("D2", bases=["Base"], derived={"D3"}),
         schema.Class("D3", bases=["D2"], pragmas=["qltest_uncollapse_hierarchy", "bar"]),
     ]) == {
-        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+        "Base/Base.ql": ql.ClassTester(class_name="Base", show_ql_class=True),
         "D3/D3.ql": ql.ClassTester(class_name="D3"),
     }
 

@@ -3696,7 +3696,7 @@ cfg.rb:
 #-----|  -> exit filter_nil
 
 #  207| filter_nil
-#-----|  -> exit cfg.rb (normal)
+#-----|  -> self
 
 #  207| list
 #-----|  -> list
@@ -3732,6 +3732,35 @@ cfg.rb:
 
 #  209| call to nil?
 #-----|  -> exit do ... end (normal)
+
+#  213| call to do_something
+#-----|  -> exit cfg.rb (normal)
+
+#  213| self
+#-----|  -> do ... end
+
+#  213| do ... end
+#-----|  -> call to do_something
+
+#  213| enter do ... end
+#-----|  -> self
+
+#  213| exit do ... end
+
+#  213| exit do ... end (normal)
+#-----|  -> exit do ... end
+
+#  214| self
+#-----|  -> call to something
+
+#  214| call to something
+#-----|  -> self
+
+#  215| call to something_else
+#-----|  -> exit do ... end (normal)
+
+#  215| self
+#-----|  -> call to something_else
 
 desugar.rb:
 #    1| enter m1

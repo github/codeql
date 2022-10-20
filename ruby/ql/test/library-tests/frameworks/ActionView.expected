@@ -1,6 +1,3 @@
-htmlSafeCalls
-| app/views/foo/bars/show.html.erb:23:3:23:25 | call to html_safe |
-| app/views/foo/bars/show.html.erb:27:3:27:25 | call to html_safe |
 rawCalls
 | app/views/foo/bars/_widget.html.erb:1:5:1:21 | call to raw |
 | app/views/foo/bars/_widget.html.erb:2:5:2:20 | call to raw |
@@ -24,6 +21,8 @@ renderToCalls
 linkToCalls
 | app/views/foo/bars/show.html.erb:33:5:33:41 | call to link_to |
 httpResponses
+| app/controllers/comments_controller.rb:11:5:11:17 | call to body= | app/controllers/comments_controller.rb:11:21:11:34 | ... = ... | text/http |
+| app/controllers/comments_controller.rb:21:5:21:37 | call to send_file | app/controllers/comments_controller.rb:21:24:21:36 | "my-file.ext" | application/octet-stream |
 | app/controllers/foo/bars_controller.rb:15:16:15:97 | call to render_to_string | app/controllers/foo/bars_controller.rb:15:33:15:47 | "foo/bars/show" | text/html |
 | app/controllers/foo/bars_controller.rb:23:5:23:76 | call to render | app/controllers/foo/bars_controller.rb:23:12:23:26 | "foo/bars/show" | text/html |
 | app/controllers/foo/bars_controller.rb:35:5:35:33 | call to render | app/controllers/foo/bars_controller.rb:35:18:35:33 | call to [] | application/json |

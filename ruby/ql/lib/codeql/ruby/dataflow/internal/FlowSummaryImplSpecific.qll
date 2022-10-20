@@ -44,6 +44,9 @@ DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { an
  */
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
 
+/** Gets the type of synthetic global `sg`. */
+DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
+
 /**
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, kind `kind`, and a flag `generated`

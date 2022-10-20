@@ -416,7 +416,7 @@ class MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions extends Class {
   /** Gets the `MapDelete` extension method. */
   Method getMapDeleteMethod() { result = this.getAMethod("MapDelete") }
 
-  /** Get a `Map` like extenion methods. */
+  /** Get a `Map` like extension methods. */
   Method getAMapMethod() {
     result =
       [

@@ -838,13 +838,13 @@ private module Stage1 implements StageSig {
    * by `revFlow`.
    */
   pragma[nomagic]
-  predicate revFlowIsReadAndStored(Content c, Configuration conf) {
+  additional predicate revFlowIsReadAndStored(Content c, Configuration conf) {
     revFlowConsCand(c, conf) and
     revFlowStore(c, _, _, conf)
   }
 
   pragma[nomagic]
-  predicate viableReturnPosOutNodeCandFwd1(
+  additional predicate viableReturnPosOutNodeCandFwd1(
     DataFlowCall call, ReturnPosition pos, NodeEx out, Configuration config
   ) {
     fwdFlowReturnPosition(pos, _, config) and
@@ -860,7 +860,7 @@ private module Stage1 implements StageSig {
   }
 
   pragma[nomagic]
-  predicate viableParamArgNodeCandFwd1(
+  additional predicate viableParamArgNodeCandFwd1(
     DataFlowCall call, ParamNodeEx p, ArgNodeEx arg, Configuration config
   ) {
     viableParamArgEx(call, p, arg) and
@@ -907,7 +907,7 @@ private module Stage1 implements StageSig {
     )
   }
 
-  predicate revFlowState(FlowState state, Configuration config) {
+  additional predicate revFlowState(FlowState state, Configuration config) {
     exists(NodeEx node |
       sinkNode(node, state, config) and
       revFlow(node, _, pragma[only_bind_into](config)) and
@@ -999,7 +999,7 @@ private module Stage1 implements StageSig {
     )
   }
 
-  predicate stats(
+  additional predicate stats(
     boolean fwd, int nodes, int fields, int conscand, int states, int tuples, Configuration config
   ) {
     fwd = true and
@@ -1260,7 +1260,7 @@ private module MkStage<StageSig PrevStage> {
      * argument.
      */
     pragma[nomagic]
-    predicate fwdFlow(
+    additional predicate fwdFlow(
       NodeEx node, FlowState state, Cc cc, ApOption argAp, Ap ap, Configuration config
     ) {
       fwdFlow0(node, state, cc, argAp, ap, config) and
@@ -1484,7 +1484,7 @@ private module MkStage<StageSig PrevStage> {
      * the access path of the returned value.
      */
     pragma[nomagic]
-    predicate revFlow(
+    additional predicate revFlow(
       NodeEx node, FlowState state, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
     ) {
       revFlow0(node, state, toReturn, returnAp, ap, config) and
@@ -1662,7 +1662,7 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    predicate revFlow(NodeEx node, FlowState state, Configuration config) {
+    additional predicate revFlow(NodeEx node, FlowState state, Configuration config) {
       revFlow(node, state, _, _, _, config)
     }
 
@@ -1675,11 +1675,13 @@ private module MkStage<StageSig PrevStage> {
 
     // use an alias as a workaround for bad functionality-induced joins
     pragma[nomagic]
-    predicate revFlowAlias(NodeEx node, Configuration config) { revFlow(node, _, _, _, _, config) }
+    additional predicate revFlowAlias(NodeEx node, Configuration config) {
+      revFlow(node, _, _, _, _, config)
+    }
 
     // use an alias as a workaround for bad functionality-induced joins
     pragma[nomagic]
-    predicate revFlowAlias(NodeEx node, FlowState state, Ap ap, Configuration config) {
+    additional predicate revFlowAlias(NodeEx node, FlowState state, Ap ap, Configuration config) {
       revFlow(node, state, ap, config)
     }
 
@@ -1700,7 +1702,7 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    additional predicate consCand(TypedContent tc, Ap ap, Configuration config) {
       revConsCand(tc, ap, config) and
       validAp(ap, config)
     }
@@ -1742,7 +1744,7 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    predicate stats(
+    additional predicate stats(
       boolean fwd, int nodes, int fields, int conscand, int states, int tuples, Configuration config
     ) {
       fwd = true and

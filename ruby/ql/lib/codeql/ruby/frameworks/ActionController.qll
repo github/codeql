@@ -83,6 +83,8 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
 
   override string getFramework() { result = "ActionController" }
 
+  override string getAnHttpMethod() { result = this.getARoute().getHttpMethod() }
+
   /** Gets a call to render from within this method. */
   Rails::RenderCall getARenderCall() { result.getParent+() = this }
 
@@ -139,6 +141,8 @@ class ParamsSource extends Http::Server::RequestInputAccess::Range {
   ParamsSource() { this.asExpr().getExpr() instanceof Rails::ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
+
+  override Http::Server::RequestInputKind getKind() { result = Http::Server::parameterInputKind() }
 }
 
 /**
@@ -149,6 +153,8 @@ class CookiesSource extends Http::Server::RequestInputAccess::Range {
   CookiesSource() { this.asExpr().getExpr() instanceof Rails::CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
+
+  override Http::Server::RequestInputKind getKind() { result = Http::Server::cookieInputKind() }
 }
 
 /** A call to `cookies` from within a controller. */
@@ -161,6 +167,140 @@ private class ActionControllerParamsCall extends ActionControllerContextCall, Pa
   ActionControllerParamsCall() { this.getMethodName() = "params" }
 }
 
+/** Modeling for `ActionDispatch::Request`. */
+private module Request {
+  /**
+   * A call to `request` from within a controller. This is an instance of
+   * `ActionDispatch::Request`.
+   */
+  private class RequestNode extends DataFlow::CallNode {
+    RequestNode() {
+      this.asExpr().getExpr() instanceof ActionControllerContextCall and
+      this.getMethodName() = "request"
+    }
+  }
+
+  /**
+   * A method call on `request`.
+   */
+  private class RequestMethodCall extends DataFlow::CallNode {
+    RequestMethodCall() {
+      any(RequestNode r).(DataFlow::LocalSourceNode).flowsTo(this.getReceiver())
+    }
+  }
+
+  abstract private class RequestInputAccess extends RequestMethodCall,
+    Http::Server::RequestInputAccess::Range {
+    override string getSourceType() { result = "ActionDispatch::Request#" + this.getMethodName() }
+  }
+
+  /**
+   * A method call on `request` which returns request parameters.
+   */
+  private class ParametersCall extends RequestInputAccess {
+    ParametersCall() {
+      this.getMethodName() =
+        [
+          "parameters", "params", "GET", "POST", "query_parameters", "request_parameters",
+          "filtered_parameters"
+        ]
+    }
+
+    override Http::Server::RequestInputKind getKind() {
+      result = Http::Server::parameterInputKind()
+    }
+  }
+
+  /** A method call on `request` which returns part or all of the request path. */
+  private class PathCall extends RequestInputAccess {
+    PathCall() {
+      this.getMethodName() =
+        ["path", "filtered_path", "fullpath", "original_fullpath", "original_url", "url"]
+    }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::urlInputKind() }
+  }
+
+  /** A method call on `request` which returns a specific request header. */
+  private class HeadersCall extends RequestInputAccess {
+    HeadersCall() {
+      this.getMethodName() =
+        [
+          "authorization", "script_name", "path_info", "user_agent", "referer", "referrer",
+          "host_authority", "content_type", "host", "hostname", "accept_encoding",
+          "accept_language", "if_none_match", "if_none_match_etags", "content_mime_type"
+        ]
+      or
+      // Request headers are prefixed with `HTTP_` to distinguish them from
+      // "headers" supplied by Rack middleware.
+      this.getMethodName() = ["get_header", "fetch_header"] and
+      this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
+    }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+  }
+
+  // TODO: each_header
+  /**
+   * A method call on `request` which returns part or all of the host.
+   * This can be influenced by headers such as Host and X-Forwarded-Host.
+   */
+  private class HostCall extends RequestInputAccess {
+    HostCall() {
+      this.getMethodName() =
+        [
+          "authority", "host", "host_authority", "host_with_port", "hostname", "forwarded_for",
+          "forwarded_host", "port", "forwarded_port"
+        ]
+    }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+  }
+
+  /**
+   * A method call on `request` which is influenced by one or more request
+   * headers.
+   */
+  private class HeaderTaintedCall extends RequestInputAccess {
+    HeaderTaintedCall() {
+      this.getMethodName() = ["media_type", "media_type_params", "content_charset", "base_url"]
+    }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+  }
+
+  /** A method call on `request` which returns the request body. */
+  private class BodyCall extends RequestInputAccess {
+    BodyCall() { this.getMethodName() = ["body", "raw_post"] }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
+  }
+
+  /**
+   * A method call on `request` which returns the rack env.
+   * This is a hash containing all the information about the request. Values
+   * under keys starting with `HTTP_` are user-controlled.
+   */
+  private class EnvCall extends RequestMethodCall {
+    EnvCall() { this.getMethodName() = ["env", "filtered_env"] }
+  }
+
+  /**
+   * A read of a user-controlled parameter from the request env.
+   */
+  private class EnvHttpAccess extends DataFlow::CallNode, Http::Server::RequestInputAccess::Range {
+    EnvHttpAccess() {
+      any(EnvCall c).(DataFlow::LocalSourceNode).flowsTo(this.getReceiver()) and
+      this.getMethodName() = "[]" and
+      this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
+    }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+
+    override string getSourceType() { result = "ActionDispatch::Request#env[]" }
+  }
+}
+
 /** A call to `render` from within a controller. */
 private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCallImpl {
   ActionControllerRenderCall() { this.getMethodName() = "render" }
@@ -169,14 +309,6 @@ private class ActionControllerRenderCall extends ActionControllerContextCall, Re
 /** A call to `render_to` from within a controller. */
 private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCallImpl {
   ActionControllerRenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
-}
-
-/** A call to `html_safe` from within a controller. */
-private class ActionControllerHtmlSafeCall extends HtmlSafeCallImpl {
-  ActionControllerHtmlSafeCall() {
-    this.getMethodName() = "html_safe" and
-    this.getEnclosingModule() instanceof ActionControllerControllerClass
-  }
 }
 
 /** A call to `html_escape` from within a controller. */
@@ -376,8 +508,11 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
  */
 private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
   SendFile() {
-    this.asExpr().getExpr() instanceof ActionControllerContextCall and
-    this.getMethodName() = "send_file"
+    this.getMethodName() = "send_file" and
+    (
+      this.asExpr().getExpr() instanceof ActionControllerContextCall or
+      this.getReceiver().asExpr().getExpr() instanceof Response::ResponseCall
+    )
   }
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
@@ -500,5 +635,96 @@ private module ParamsSummaries {
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
     }
+  }
+}
+
+/**
+ * Provides modeling for `ActionDispatch::Response`, which represents an HTTP
+ * response.
+ */
+private module Response {
+  class ResponseCall extends ActionControllerContextCall {
+    ResponseCall() { this.getMethodName() = "response" }
+  }
+
+  class BodyWrite extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
+    BodyWrite() {
+      this.getReceiver().asExpr().getExpr() instanceof ResponseCall and
+      this.getMethodName() = "body="
+    }
+
+    override DataFlow::Node getBody() { result = this.getArgument(0) }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { result = "text/http" }
+  }
+
+  class SendFileCall extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
+    SendFileCall() {
+      this.getReceiver().asExpr().getExpr() instanceof ResponseCall and
+      this.getMethodName() = "send_file"
+    }
+
+    override DataFlow::Node getBody() { result = this.getArgument(0) }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { result = "application/octet-stream" }
+  }
+
+  class HeaderWrite extends DataFlow::CallNode, Http::Server::HeaderWriteAccess::Range {
+    HeaderWrite() {
+      // response.header[key] = val
+      // response.headers[key] = val
+      exists(MethodCall headerCall |
+        headerCall.getMethodName() = ["header", "headers"] and
+        headerCall.getReceiver() instanceof ResponseCall
+      |
+        this.getReceiver().asExpr().getExpr() = headerCall and
+        this.getMethodName() = "[]="
+      )
+      or
+      // response.set_header(key) = val
+      // response[header] = val
+      // response.add_header(key, val)
+      this.getReceiver().asExpr().getExpr() instanceof ResponseCall and
+      this.getMethodName() = ["set_header", "[]=", "add_header"]
+    }
+
+    override string getName() {
+      result = this.getArgument(0).asExpr().getConstantValue().getString()
+    }
+
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
+  }
+
+  class SpecificHeaderWrite extends DataFlow::CallNode, Http::Server::HeaderWriteAccess::Range {
+    SpecificHeaderWrite() {
+      // response.<method> = val
+      this.getReceiver().asExpr().getExpr() instanceof ResponseCall and
+      this.getMethodName() =
+        [
+          "location=", "cache_control=", "_cache_control=", "etag=", "charset=", "content_type=",
+          "date=", "last_modified=", "weak_etag=", "strong_etag="
+        ]
+    }
+
+    override string getName() {
+      this.getMethodName() = "location=" and result = "location"
+      or
+      this.getMethodName() = ["_cache_control=", "cache_control="] and result = "cache-control"
+      or
+      this.getMethodName() = ["etag=", "weak_etag=", "strong_etag="] and result = "etag"
+      or
+      // sets the charset part of the content-type header
+      this.getMethodName() = ["charset=", "content_type="] and result = "content-type"
+      or
+      this.getMethodName() = "date=" and result = "date"
+      or
+      this.getMethodName() = "last_modified=" and result = "last-modified"
+    }
+
+    override DataFlow::Node getValue() { result = this.getArgument(0) }
   }
 }

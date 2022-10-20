@@ -104,7 +104,7 @@ class LocalSourceNode extends Node {
   /**
    * Gets a subscript of this node.
    */
-  Node getASubscript() { Cached::subscript(this, result) }
+  Node getSubscript(Node index) { Cached::subscript(this, result, index) }
 
   /**
    * Gets a call to the method `methodName` on this node.
@@ -185,7 +185,7 @@ private module Cached {
   /**
    * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local flow steps.
    *
-   * The slightly backwards parametering ordering is to force correct indexing.
+   * The slightly backwards parameter ordering is to force correct indexing.
    */
   cached
   predicate hasLocalSource(Node sink, LocalSourceNode source) {
@@ -249,13 +249,14 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` flows to a sequence/mapping of which `subscript` is a subscript.
+   * Holds if `node` flows to a sequence/mapping of which `subscript` is a subscript with index/key `index`.
    */
   cached
-  predicate subscript(LocalSourceNode node, CfgNode subscript) {
+  predicate subscript(LocalSourceNode node, CfgNode subscript, CfgNode index) {
     exists(CfgNode seq, SubscriptNode subscriptNode | subscriptNode = subscript.getNode() |
       node.flowsTo(seq) and
-      seq.getNode() = subscriptNode.getObject()
+      seq.getNode() = subscriptNode.getObject() and
+      index.getNode() = subscriptNode.getIndex()
     )
   }
 }

@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.OverloadSetRefExpr
 
-class OverloadedDeclRefExprBase extends Synth::TOverloadedDeclRefExpr, OverloadSetRefExpr {
-  override string getAPrimaryQlClass() { result = "OverloadedDeclRefExpr" }
+module Generated {
+  class OverloadedDeclRefExpr extends Synth::TOverloadedDeclRefExpr, OverloadSetRefExpr {
+    override string getAPrimaryQlClass() { result = "OverloadedDeclRefExpr" }
+  }
 }

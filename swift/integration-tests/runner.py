@@ -16,8 +16,7 @@ import argparse
 import shutil
 import platform
 
-this_dir = pathlib.Path(__file__).parent
-
+this_dir = pathlib.Path(__file__).parent.resolve()
 
 def options():
     p = argparse.ArgumentParser()

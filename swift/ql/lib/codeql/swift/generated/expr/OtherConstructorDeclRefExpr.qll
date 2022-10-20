@@ -4,15 +4,17 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.ConstructorDecl
 import codeql.swift.elements.expr.Expr
 
-class OtherConstructorDeclRefExprBase extends Synth::TOtherConstructorDeclRefExpr, Expr {
-  override string getAPrimaryQlClass() { result = "OtherConstructorDeclRefExpr" }
+module Generated {
+  class OtherConstructorDeclRefExpr extends Synth::TOtherConstructorDeclRefExpr, Expr {
+    override string getAPrimaryQlClass() { result = "OtherConstructorDeclRefExpr" }
 
-  ConstructorDecl getImmediateConstructorDecl() {
-    result =
-      Synth::convertConstructorDeclFromRaw(Synth::convertOtherConstructorDeclRefExprToRaw(this)
-            .(Raw::OtherConstructorDeclRefExpr)
-            .getConstructorDecl())
+    ConstructorDecl getImmediateConstructorDecl() {
+      result =
+        Synth::convertConstructorDeclFromRaw(Synth::convertOtherConstructorDeclRefExprToRaw(this)
+              .(Raw::OtherConstructorDeclRefExpr)
+              .getConstructorDecl())
+    }
+
+    final ConstructorDecl getConstructorDecl() { result = getImmediateConstructorDecl().resolve() }
   }
-
-  final ConstructorDecl getConstructorDecl() { result = getImmediateConstructorDecl().resolve() }
 }

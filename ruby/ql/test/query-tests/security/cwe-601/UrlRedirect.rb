@@ -83,6 +83,11 @@ class UsersController < ActionController::Base
     redirect_back_or_to params[:key], allow_other_host: false
   end
 
+  # GOOD
+  def route15
+    redirect_to cookies[:foo]
+  end
+
   private
 
   def filter_params(input_params)

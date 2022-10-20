@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class ErrorTypeBase extends Synth::TErrorType, Type {
-  override string getAPrimaryQlClass() { result = "ErrorType" }
+module Generated {
+  class ErrorType extends Synth::TErrorType, Type {
+    override string getAPrimaryQlClass() { result = "ErrorType" }
+  }
 }

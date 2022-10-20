@@ -687,6 +687,15 @@ module ExprNodes {
     final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
   }
 
+  /** A control-flow node that wraps a `VariableAccess` AST expression. */
+  class VariableAccessCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "VariableAccessCfgNode" }
+
+    override VariableAccess e;
+
+    final override VariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
   /** A control-flow node that wraps a `VariableReadAccess` AST expression. */
   class VariableReadAccessCfgNode extends ExprCfgNode {
     override string getAPrimaryQlClass() { result = "VariableReadAccessCfgNode" }

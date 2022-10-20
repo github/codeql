@@ -39,10 +39,16 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   void visitDotSyntaxCallExpr(swift::DotSyntaxCallExpr* expr);
   void visitVarargExpansionExpr(swift::VarargExpansionExpr* expr);
   void visitArrayExpr(swift::ArrayExpr* expr);
-  void visitErasureExpr(swift::ErasureExpr* expr);
+
+  template <typename E>
+  TrapClassOf<E> translateImplicitConversionExpr(const E& expr) {
+    auto entry = dispatcher_.createEntry(expr);
+    entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+    return entry;
+  }
+
   codeql::TypeExpr translateTypeExpr(const swift::TypeExpr& expr);
   codeql::ParenExpr translateParenExpr(const swift::ParenExpr& expr);
-  void visitLoadExpr(swift::LoadExpr* expr);
   void visitInOutExpr(swift::InOutExpr* expr);
   void visitOpaqueValueExpr(swift::OpaqueValueExpr* expr);
   void visitTapExpr(swift::TapExpr* expr);
@@ -50,7 +56,6 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   void visitTryExpr(swift::TryExpr* expr);
   void visitForceTryExpr(swift::ForceTryExpr* expr);
   void visitOptionalTryExpr(swift::OptionalTryExpr* expr);
-  void visitInjectIntoOptionalExpr(swift::InjectIntoOptionalExpr* expr);
   void visitConstructorRefCallExpr(swift::ConstructorRefCallExpr* expr);
   void visitDiscardAssignmentExpr(swift::DiscardAssignmentExpr* expr);
   codeql::ClosureExpr translateClosureExpr(const swift::ClosureExpr& expr);
@@ -62,14 +67,10 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   void visitLookupExpr(swift::LookupExpr* expr);
   void visitSubscriptExpr(swift::SubscriptExpr* expr);
   void visitDictionaryExpr(swift::DictionaryExpr* expr);
-  void visitFunctionConversionExpr(swift::FunctionConversionExpr* expr);
-  void visitInOutToPointerExpr(swift::InOutToPointerExpr* expr);
   void visitMemberRefExpr(swift::MemberRefExpr* expr);
-  void visitDerivedToBaseExpr(swift::DerivedToBaseExpr* expr);
   void visitKeyPathExpr(swift::KeyPathExpr* expr);
   void visitLazyInitializerExpr(swift::LazyInitializerExpr* expr);
   void visitForceValueExpr(swift::ForceValueExpr* expr);
-  void visitPointerToPointerExpr(swift::PointerToPointerExpr* expr);
   void visitIfExpr(swift::IfExpr* expr);
   void visitKeyPathDotExpr(swift::KeyPathDotExpr* expr);
   void visitKeyPathApplicationExpr(swift::KeyPathApplicationExpr* expr);
@@ -80,8 +81,6 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   codeql::UnresolvedMemberExpr translateUnresolvedMemberExpr(
       const swift::UnresolvedMemberExpr& expr);
   codeql::SequenceExpr translateSequenceExpr(const swift::SequenceExpr& expr);
-  codeql::BridgeToObjCExpr translateBridgeToObjCExpr(const swift::BridgeToObjCExpr& expr);
-  codeql::BridgeFromObjCExpr translateBridgeFromObjCExpr(const swift::BridgeFromObjCExpr& expr);
   codeql::DotSelfExpr translateDotSelfExpr(const swift::DotSelfExpr& expr);
   codeql::ErrorExpr translateErrorExpr(const swift::ErrorExpr& expr);
   // The following function requires a non-const parameter because:
@@ -96,8 +95,6 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
                                codeql::AbstractClosureExpr& entry);
   TrapLabel<ArgumentTag> emitArgument(const swift::Argument& arg);
-  void emitImplicitConversionExpr(swift::ImplicitConversionExpr* expr,
-                                  TrapLabel<ImplicitConversionExprTag> label);
   void emitExplicitCastExpr(swift::ExplicitCastExpr* expr, TrapLabel<ExplicitCastExprTag> label);
   void fillIdentityExpr(const swift::IdentityExpr& expr, codeql::IdentityExpr& entry);
   void emitAnyTryExpr(swift::AnyTryExpr* expr, TrapLabel<AnyTryExprTag> label);

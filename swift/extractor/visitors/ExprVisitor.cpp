@@ -279,12 +279,6 @@ void ExprVisitor::visitArrayExpr(swift::ArrayExpr* expr) {
   }
 }
 
-void ExprVisitor::visitErasureExpr(swift::ErasureExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(ErasureExprsTrap{label});
-  emitImplicitConversionExpr(expr, label);
-}
-
 codeql::TypeExpr ExprVisitor::translateTypeExpr(const swift::TypeExpr& expr) {
   TypeExpr entry{dispatcher_.assignNewLabel(expr)};
   if (expr.getTypeRepr() && expr.getInstanceType()) {
@@ -297,12 +291,6 @@ codeql::ParenExpr ExprVisitor::translateParenExpr(const swift::ParenExpr& expr) 
   ParenExpr entry{dispatcher_.assignNewLabel(expr)};
   fillIdentityExpr(expr, entry);
   return entry;
-}
-
-void ExprVisitor::visitLoadExpr(swift::LoadExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(LoadExprsTrap{label});
-  emitImplicitConversionExpr(expr, label);
 }
 
 void ExprVisitor::visitInOutExpr(swift::InOutExpr* expr) {
@@ -357,12 +345,6 @@ void ExprVisitor::visitOptionalTryExpr(swift::OptionalTryExpr* expr) {
   auto label = dispatcher_.assignNewLabel(expr);
   dispatcher_.emit(OptionalTryExprsTrap{label});
   emitAnyTryExpr(expr, label);
-}
-
-void ExprVisitor::visitInjectIntoOptionalExpr(swift::InjectIntoOptionalExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(InjectIntoOptionalExprsTrap{label});
-  emitImplicitConversionExpr(expr, label);
 }
 
 void ExprVisitor::visitConstructorRefCallExpr(swift::ConstructorRefCallExpr* expr) {
@@ -442,18 +424,6 @@ void ExprVisitor::visitDictionaryExpr(swift::DictionaryExpr* expr) {
   }
 }
 
-void ExprVisitor::visitFunctionConversionExpr(swift::FunctionConversionExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(FunctionConversionExprsTrap{label});
-  emitImplicitConversionExpr(expr, label);
-}
-
-void ExprVisitor::visitInOutToPointerExpr(swift::InOutToPointerExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(InOutToPointerExprsTrap{label});
-  emitImplicitConversionExpr(expr, label);
-}
-
 void ExprVisitor::visitMemberRefExpr(swift::MemberRefExpr* expr) {
   auto label = dispatcher_.assignNewLabel(expr);
   dispatcher_.emit(MemberRefExprsTrap{label});
@@ -463,12 +433,6 @@ void ExprVisitor::visitMemberRefExpr(swift::MemberRefExpr* expr) {
                         MemberRefExprHasOrdinarySemanticsTrap>(expr, label);
 
   emitLookupExpr(expr, label);
-}
-
-void ExprVisitor::visitDerivedToBaseExpr(swift::DerivedToBaseExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(DerivedToBaseExprsTrap{label});
-  emitImplicitConversionExpr(expr, label);
 }
 
 void ExprVisitor::visitKeyPathExpr(swift::KeyPathExpr* expr) {
@@ -504,12 +468,6 @@ void ExprVisitor::visitForceValueExpr(swift::ForceValueExpr* expr) {
 
   auto subExprLabel = dispatcher_.fetchLabel(expr->getSubExpr());
   dispatcher_.emit(ForceValueExprsTrap{label, subExprLabel});
-}
-
-void ExprVisitor::visitPointerToPointerExpr(swift::PointerToPointerExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(PointerToPointerExprsTrap{label});
-  emitImplicitConversionExpr(expr, label);
 }
 
 void ExprVisitor::visitIfExpr(swift::IfExpr* expr) {
@@ -583,20 +541,6 @@ codeql::SequenceExpr ExprVisitor::translateSequenceExpr(const swift::SequenceExp
   return entry;
 }
 
-codeql::BridgeToObjCExpr ExprVisitor::translateBridgeToObjCExpr(
-    const swift::BridgeToObjCExpr& expr) {
-  BridgeToObjCExpr entry{dispatcher_.assignNewLabel(expr)};
-  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
-  return entry;
-}
-
-codeql::BridgeFromObjCExpr ExprVisitor::translateBridgeFromObjCExpr(
-    const swift::BridgeFromObjCExpr& expr) {
-  BridgeFromObjCExpr entry{dispatcher_.assignNewLabel(expr)};
-  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
-  return entry;
-}
-
 codeql::DotSelfExpr ExprVisitor::translateDotSelfExpr(const swift::DotSelfExpr& expr) {
   DotSelfExpr entry{dispatcher_.assignNewLabel(expr)};
   fillIdentityExpr(expr, entry);
@@ -622,12 +566,6 @@ TrapLabel<ArgumentTag> ExprVisitor::emitArgument(const swift::Argument& arg) {
   entry.expr = dispatcher_.fetchLabel(arg.getExpr());
   dispatcher_.emit(entry);
   return entry.id;
-}
-
-void ExprVisitor::emitImplicitConversionExpr(swift::ImplicitConversionExpr* expr,
-                                             TrapLabel<ImplicitConversionExprTag> label) {
-  assert(expr->getSubExpr() && "ImplicitConversionExpr has getSubExpr()");
-  dispatcher_.emit(ImplicitConversionExprsTrap{label, dispatcher_.fetchLabel(expr->getSubExpr())});
 }
 
 void ExprVisitor::emitExplicitCastExpr(swift::ExplicitCastExpr* expr,

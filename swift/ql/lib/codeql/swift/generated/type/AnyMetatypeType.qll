@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class AnyMetatypeTypeBase extends Synth::TAnyMetatypeType, Type { }
+module Generated {
+  class AnyMetatypeType extends Synth::TAnyMetatypeType, Type { }
+}
