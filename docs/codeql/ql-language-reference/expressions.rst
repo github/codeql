@@ -571,7 +571,7 @@ If there had been two different prices for apples too, the monotonic
 
 Charles wants to buy a banana, which is not for sale at all. In the
 default case, the sum produced for Charles includes the cost of the
-apple he *can* buy, but there's no line for Charles in the monontonic
+apple he *can* buy, but there's no line for Charles in the monotonic
 ``sum`` output, because there *is no way* for Charles to buy one apple
 plus one banana.
 
