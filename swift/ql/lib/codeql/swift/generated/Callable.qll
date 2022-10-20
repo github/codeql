@@ -71,6 +71,7 @@ module Generated {
 
     /**
      * Gets the body of this callable, if it exists.
+     *
      * The body is absent within protocol declarations.
      */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
