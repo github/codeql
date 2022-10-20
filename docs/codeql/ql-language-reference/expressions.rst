@@ -586,7 +586,7 @@ case: As long as there's no price for bananas, no output is produced
 for him. This means that if we later do learn of a banana price, we
 don't need to *remove* any output tuple already produced. The
 importance of this is that the monotonic aggregate behavior works well
-with a fixpoint-based semantics for recursion, so it will be meaningul
+with a fixpoint-based semantics for recursion, so it will be meaningful
 to let the ``getPrice`` predicate be mutually recursive with the count
 aggregate itself. (On the other hand, ``getFruit`` still cannot be
 allowed to be recursive, because adding another fruit to someone's
