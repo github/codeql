@@ -173,3 +173,10 @@ class TestGenericUsedWithinDefaultValue<T> {
   fun ident(t: T) = t
 
 }
+
+class TestOverloadsWithDefaults {
+
+  fun f(x: Int, y: String = "Hello world") { }
+  fun f(z: String, w: Int = 0) { }
+
+}

@@ -126,7 +126,7 @@ String avoidHere(Select sel, string part) {
 String avoidArticleInLinkText(Select sel) {
   result = sel.getExpr((any(int i | i > 1))) and
   result = getSelectPart(sel, _) and
-  result.getValue().regexpMatch("a|an .*")
+  result.getValue().regexpMatch("(a|an) .*")
 }
 
 /**
@@ -203,6 +203,9 @@ AstNode getAlertLocLink(Select sel) {
 from AstNode node, string msg, Select sel
 where
   not node.getLocation().getFile().getAbsolutePath().matches("%/test/%") and
+  not node.getLocation().getFile().getAbsolutePath().matches("%/examples/%") and
+  not node.getLocation().getFile().getAbsolutePath().matches("%/experimental/%") and
+  not node.getLocation().getFile().getAbsolutePath().matches("%/meta/%") and
   sel.getQueryDoc().getQueryKind() = ["problem", "path-problem"] and
   (
     node = shouldHaveFullStop(sel) and

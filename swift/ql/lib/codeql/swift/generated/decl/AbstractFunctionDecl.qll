@@ -5,9 +5,11 @@ import codeql.swift.elements.Callable
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.ValueDecl
 
-class AbstractFunctionDeclBase extends Synth::TAbstractFunctionDecl, GenericContext, ValueDecl,
-  Callable {
-  string getName() {
-    result = Synth::convertAbstractFunctionDeclToRaw(this).(Raw::AbstractFunctionDecl).getName()
+module Generated {
+  class AbstractFunctionDecl extends Synth::TAbstractFunctionDecl, GenericContext, ValueDecl,
+    Callable {
+    string getName() {
+      result = Synth::convertAbstractFunctionDeclToRaw(this).(Raw::AbstractFunctionDecl).getName()
+    }
   }
 }

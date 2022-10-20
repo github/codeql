@@ -2177,7 +2177,7 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
 /**
  * The IR translation of the ternary conditional operator (`a ? b : c`).
  * For this version, we expand the condition as a `TranslatedCondition`, rather than a
- * `TranslatedExpr`, to simplify the control flow in the presence of short-ciruit logical operators.
+ * `TranslatedExpr`, to simplify the control flow in the presence of short-circuit logical operators.
  */
 class TranslatedTernaryConditionalExpr extends TranslatedConditionalExpr, ConditionContext {
   TranslatedTernaryConditionalExpr() { not expr.isTwoOperand() }

@@ -3,19 +3,21 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class SequenceExprBase extends Synth::TSequenceExpr, Expr {
-  override string getAPrimaryQlClass() { result = "SequenceExpr" }
+module Generated {
+  class SequenceExpr extends Synth::TSequenceExpr, Expr {
+    override string getAPrimaryQlClass() { result = "SequenceExpr" }
 
-  Expr getImmediateElement(int index) {
-    result =
-      Synth::convertExprFromRaw(Synth::convertSequenceExprToRaw(this)
-            .(Raw::SequenceExpr)
-            .getElement(index))
+    Expr getImmediateElement(int index) {
+      result =
+        Synth::convertExprFromRaw(Synth::convertSequenceExprToRaw(this)
+              .(Raw::SequenceExpr)
+              .getElement(index))
+    }
+
+    final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
+
+    final Expr getAnElement() { result = getElement(_) }
+
+    final int getNumberOfElements() { result = count(getAnElement()) }
   }
-
-  final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
-
-  final Expr getAnElement() { result = getElement(_) }
-
-  final int getNumberOfElements() { result = count(getAnElement()) }
 }

@@ -1,3 +1,4 @@
+require "active_job"
 require "base64"
 require "json"
 require "oj"
@@ -85,5 +86,17 @@ class UsersController < ActionController::Base
   def route11
     yaml_data = params[:key]
     object = Psych.load yaml_data
+  end
+
+  # BAD - user input determines which class is instantiated
+  def route12
+    klass = Module.const_get(params[:class])
+    object = klass.new
+  end
+
+  # BAD - user input determines which class is instantiated
+  def route13
+    klass = ActiveJob::Serializers.deserialize(params[:class])
+    object = klass.new
   end
 end

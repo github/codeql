@@ -16,10 +16,13 @@ private import codeql.ruby.security.OpenSSL
  */
 module Rails {
   /**
+   * DEPRECATED: Any call to `html_safe` is considered an XSS sink.
    * A method call on a string to mark it as HTML safe for Rails. Strings marked
    * as such will not be automatically escaped when inserted into HTML.
    */
-  class HtmlSafeCall extends MethodCall instanceof HtmlSafeCallImpl { }
+  deprecated class HtmlSafeCall extends MethodCall {
+    HtmlSafeCall() { this.getMethodName() = "html_safe" }
+  }
 
   /** A call to a Rails method to escape HTML. */
   class HtmlEscapeCall extends MethodCall instanceof HtmlEscapeCallImpl { }
@@ -71,6 +74,21 @@ module Rails {
 
   /** A render call that does not automatically set the HTTP response body. */
   class RenderToCall extends MethodCall instanceof RenderToCallImpl { }
+
+  /**
+   * A `render` call seen as a file system access.
+   */
+  private class RenderAsFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    RenderAsFileSystemAccess() {
+      exists(MethodCall call | this.asExpr().getExpr() = call |
+        call instanceof RenderCall
+        or
+        call instanceof RenderToCall
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getKeywordArgument("file") }
+  }
 }
 
 /**

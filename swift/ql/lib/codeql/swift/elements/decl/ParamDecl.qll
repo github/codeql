@@ -1,7 +1,7 @@
 private import codeql.swift.generated.decl.ParamDecl
 private import codeql.swift.elements.Callable
 
-class ParamDecl extends ParamDeclBase {
+class ParamDecl extends Generated::ParamDecl {
   /** Gets the function which declares this parameter. */
   Callable getDeclaringFunction() { result.getAParam() = this }
 

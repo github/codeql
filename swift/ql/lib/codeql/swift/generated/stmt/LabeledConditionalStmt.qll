@@ -4,13 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.StmtCondition
 
-class LabeledConditionalStmtBase extends Synth::TLabeledConditionalStmt, LabeledStmt {
-  StmtCondition getImmediateCondition() {
-    result =
-      Synth::convertStmtConditionFromRaw(Synth::convertLabeledConditionalStmtToRaw(this)
-            .(Raw::LabeledConditionalStmt)
-            .getCondition())
-  }
+module Generated {
+  class LabeledConditionalStmt extends Synth::TLabeledConditionalStmt, LabeledStmt {
+    StmtCondition getImmediateCondition() {
+      result =
+        Synth::convertStmtConditionFromRaw(Synth::convertLabeledConditionalStmtToRaw(this)
+              .(Raw::LabeledConditionalStmt)
+              .getCondition())
+    }
 
-  final StmtCondition getCondition() { result = getImmediateCondition().resolve() }
+    final StmtCondition getCondition() { result = getImmediateCondition().resolve() }
+  }
 }

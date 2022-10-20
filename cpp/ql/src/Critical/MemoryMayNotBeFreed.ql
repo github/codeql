@@ -63,7 +63,7 @@ predicate verifiedRealloc(FunctionCall reallocCall, Variable v, ControlFlowNode 
       node.(AnalysedExpr).getNonNullSuccessor(newV) = verified and
       // note: this case uses naive flow logic (getAnAssignedValue).
       // special case: if the result of the 'realloc' is assigned to the
-      // same variable, we don't descriminate properly between the old
+      // same variable, we don't discriminate properly between the old
       // and the new allocation; better to not consider this a free at
       // all in that case.
       newV != v

@@ -68,7 +68,6 @@ fn main() -> std::io::Result<()> {
                 .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
         )
         .init();
-    tracing::warn!("Support for Ruby is currently in Beta: https://codeql.github.com/docs/codeql-overview/supported-languages-and-frameworks/");
     let num_threads = num_codeql_threads();
     tracing::info!(
         "Using {} {}",

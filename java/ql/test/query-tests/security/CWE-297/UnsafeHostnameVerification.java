@@ -46,7 +46,7 @@ public class UnsafeHostnameVerification {
     private void functionThatActuallyDisablesVerification() {
         HttpsURLConnection.setDefaultHostnameVerifier((name, s) -> true); // GOOD [but detected as BAD], because we only
                                                                           // check guards inside a function
-        // and not accross function calls. This is considerer GOOD because the call to
+        // and not across function calls. This is considerer GOOD because the call to
         // `functionThatActuallyDisablesVerification` is guarded by a feature flag in
         // `testGuardedByFlagAccrossCalls`.
         // Although this is not ideal as another function could directly call

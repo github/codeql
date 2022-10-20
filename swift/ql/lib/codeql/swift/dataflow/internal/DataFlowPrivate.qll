@@ -486,7 +486,9 @@ private module OutNodes {
 
 import OutNodes
 
-predicate jumpStep(Node pred, Node succ) { none() }
+predicate jumpStep(Node pred, Node succ) {
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+}
 
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(MemberRefExpr ref, AssignExpr assign |

@@ -3,25 +3,27 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class TupleTypeBase extends Synth::TTupleType, Type {
-  override string getAPrimaryQlClass() { result = "TupleType" }
+module Generated {
+  class TupleType extends Synth::TTupleType, Type {
+    override string getAPrimaryQlClass() { result = "TupleType" }
 
-  Type getImmediateType(int index) {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertTupleTypeToRaw(this).(Raw::TupleType).getType(index))
+    Type getImmediateType(int index) {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertTupleTypeToRaw(this).(Raw::TupleType).getType(index))
+    }
+
+    final Type getType(int index) { result = getImmediateType(index).resolve() }
+
+    final Type getAType() { result = getType(_) }
+
+    final int getNumberOfTypes() { result = count(getAType()) }
+
+    string getName(int index) {
+      result = Synth::convertTupleTypeToRaw(this).(Raw::TupleType).getName(index)
+    }
+
+    final string getAName() { result = getName(_) }
+
+    final int getNumberOfNames() { result = count(getAName()) }
   }
-
-  final Type getType(int index) { result = getImmediateType(index).resolve() }
-
-  final Type getAType() { result = getType(_) }
-
-  final int getNumberOfTypes() { result = count(getAType()) }
-
-  string getName(int index) {
-    result = Synth::convertTupleTypeToRaw(this).(Raw::TupleType).getName(index)
-  }
-
-  final string getAName() { result = getName(_) }
-
-  final int getNumberOfNames() { result = count(getAName()) }
 }

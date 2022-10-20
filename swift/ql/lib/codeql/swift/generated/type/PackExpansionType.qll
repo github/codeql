@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class PackExpansionTypeBase extends Synth::TPackExpansionType, Type {
-  override string getAPrimaryQlClass() { result = "PackExpansionType" }
+module Generated {
+  class PackExpansionType extends Synth::TPackExpansionType, Type {
+    override string getAPrimaryQlClass() { result = "PackExpansionType" }
+  }
 }

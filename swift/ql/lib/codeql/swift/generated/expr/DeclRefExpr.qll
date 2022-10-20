@@ -5,38 +5,42 @@ import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.Type
 
-class DeclRefExprBase extends Synth::TDeclRefExpr, Expr {
-  override string getAPrimaryQlClass() { result = "DeclRefExpr" }
+module Generated {
+  class DeclRefExpr extends Synth::TDeclRefExpr, Expr {
+    override string getAPrimaryQlClass() { result = "DeclRefExpr" }
 
-  Decl getImmediateDecl() {
-    result =
-      Synth::convertDeclFromRaw(Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).getDecl())
-  }
+    Decl getImmediateDecl() {
+      result =
+        Synth::convertDeclFromRaw(Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).getDecl())
+    }
 
-  final Decl getDecl() { result = getImmediateDecl().resolve() }
+    final Decl getDecl() { result = getImmediateDecl().resolve() }
 
-  Type getImmediateReplacementType(int index) {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertDeclRefExprToRaw(this)
-            .(Raw::DeclRefExpr)
-            .getReplacementType(index))
-  }
+    Type getImmediateReplacementType(int index) {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertDeclRefExprToRaw(this)
+              .(Raw::DeclRefExpr)
+              .getReplacementType(index))
+    }
 
-  final Type getReplacementType(int index) { result = getImmediateReplacementType(index).resolve() }
+    final Type getReplacementType(int index) {
+      result = getImmediateReplacementType(index).resolve()
+    }
 
-  final Type getAReplacementType() { result = getReplacementType(_) }
+    final Type getAReplacementType() { result = getReplacementType(_) }
 
-  final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
+    final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
 
-  predicate hasDirectToStorageSemantics() {
-    Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToStorageSemantics()
-  }
+    predicate hasDirectToStorageSemantics() {
+      Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToStorageSemantics()
+    }
 
-  predicate hasDirectToImplementationSemantics() {
-    Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToImplementationSemantics()
-  }
+    predicate hasDirectToImplementationSemantics() {
+      Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDirectToImplementationSemantics()
+    }
 
-  predicate hasOrdinarySemantics() {
-    Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
+    predicate hasOrdinarySemantics() {
+      Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
+    }
   }
 }

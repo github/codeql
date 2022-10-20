@@ -74,7 +74,7 @@ class KotlinExtractorExtension(
             // First, if we can find our log directory, then let's try
             // making a log file there:
             val extractorLogDir = System.getenv("CODEQL_EXTRACTOR_JAVA_LOG_DIR")
-            if (extractorLogDir != null || extractorLogDir != "") {
+            if (extractorLogDir != null && extractorLogDir != "") {
                 // We use a slightly different filename pattern compared
                 // to normal logs. Just the existence of a `-top` log is
                 // a sign that something's gone very wrong.
@@ -296,7 +296,9 @@ private fun doFile(
         context.clear()
     }
 
-    val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFilePath")
+    val srcFileRelativePath = srcFilePath.replace(':', '_')
+
+    val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFileRelativePath")
     val dbSrcDirPath = dbSrcFilePath.parent
     Files.createDirectories(dbSrcDirPath)
     val srcTmpFile = File.createTempFile(dbSrcFilePath.fileName.toString() + ".", ".src.tmp", dbSrcDirPath.toFile())
@@ -305,7 +307,7 @@ private fun doFile(
     }
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
-    val trapFileName = "$dbTrapDir/$srcFilePath.trap"
+    val trapFileName = "$dbTrapDir/$srcFileRelativePath.trap"
     val trapFileWriter = getTrapFileWriter(compression, logger, trapFileName)
 
     if (checkTrapIdentical || !trapFileWriter.exists()) {
@@ -322,7 +324,8 @@ private fun doFile(
                 // file information
                 val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
                 val externalDeclExtractor = ExternalDeclExtractor(logger, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, globalExtensionState, fileTrapWriter)
-                val fileExtractor = KotlinFileExtractor(logger, sftw, srcFilePath, null, externalDeclExtractor, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
+                val linesOfCode = LinesOfCode(logger, sftw, srcFile)
+                val fileExtractor = KotlinFileExtractor(logger, sftw, linesOfCode, srcFilePath, null, externalDeclExtractor, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
 
                 fileExtractor.extractFileContents(srcFile, sftw.fileId)
                 externalDeclExtractor.extractExternalClasses()
@@ -397,7 +400,7 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
 
     fun getTempWriter(): BufferedWriter {
         if (this::tempFile.isInitialized) {
-            logger.error("Temp writer reinitiailised for $realFile")
+            logger.error("Temp writer reinitialized for $realFile")
         }
         tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
         return getWriter(tempFile)

@@ -15,6 +15,7 @@ import core.Hash
 import core.String
 import core.Regexp
 import core.IO
+import core.Digest
 
 /**
  * A system command executed via subshell literal syntax.
@@ -59,7 +60,7 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
 private class SplatSummary extends SummarizedCallable {
   SplatSummary() { this = "*(splat)" }
 
-  override SplatExpr getACall() { any() }
+  override SplatExpr getACallSimple() { any() }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (

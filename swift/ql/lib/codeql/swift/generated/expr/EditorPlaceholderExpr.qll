@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class EditorPlaceholderExprBase extends Synth::TEditorPlaceholderExpr, Expr {
-  override string getAPrimaryQlClass() { result = "EditorPlaceholderExpr" }
+module Generated {
+  class EditorPlaceholderExpr extends Synth::TEditorPlaceholderExpr, Expr {
+    override string getAPrimaryQlClass() { result = "EditorPlaceholderExpr" }
+  }
 }

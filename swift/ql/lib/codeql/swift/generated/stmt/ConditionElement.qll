@@ -5,39 +5,41 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
-class ConditionElementBase extends Synth::TConditionElement, AstNode {
-  override string getAPrimaryQlClass() { result = "ConditionElement" }
+module Generated {
+  class ConditionElement extends Synth::TConditionElement, AstNode {
+    override string getAPrimaryQlClass() { result = "ConditionElement" }
 
-  Expr getImmediateBoolean() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertConditionElementToRaw(this)
-            .(Raw::ConditionElement)
-            .getBoolean())
+    Expr getImmediateBoolean() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertConditionElementToRaw(this)
+              .(Raw::ConditionElement)
+              .getBoolean())
+    }
+
+    final Expr getBoolean() { result = getImmediateBoolean().resolve() }
+
+    final predicate hasBoolean() { exists(getBoolean()) }
+
+    Pattern getImmediatePattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertConditionElementToRaw(this)
+              .(Raw::ConditionElement)
+              .getPattern())
+    }
+
+    final Pattern getPattern() { result = getImmediatePattern().resolve() }
+
+    final predicate hasPattern() { exists(getPattern()) }
+
+    Expr getImmediateInitializer() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertConditionElementToRaw(this)
+              .(Raw::ConditionElement)
+              .getInitializer())
+    }
+
+    final Expr getInitializer() { result = getImmediateInitializer().resolve() }
+
+    final predicate hasInitializer() { exists(getInitializer()) }
   }
-
-  final Expr getBoolean() { result = getImmediateBoolean().resolve() }
-
-  final predicate hasBoolean() { exists(getBoolean()) }
-
-  Pattern getImmediatePattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertConditionElementToRaw(this)
-            .(Raw::ConditionElement)
-            .getPattern())
-  }
-
-  final Pattern getPattern() { result = getImmediatePattern().resolve() }
-
-  final predicate hasPattern() { exists(getPattern()) }
-
-  Expr getImmediateInitializer() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertConditionElementToRaw(this)
-            .(Raw::ConditionElement)
-            .getInitializer())
-  }
-
-  final Expr getInitializer() { result = getImmediateInitializer().resolve() }
-
-  final predicate hasInitializer() { exists(getInitializer()) }
 }

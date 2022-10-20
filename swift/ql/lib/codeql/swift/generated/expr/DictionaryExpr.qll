@@ -4,19 +4,21 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.Expr
 
-class DictionaryExprBase extends Synth::TDictionaryExpr, CollectionExpr {
-  override string getAPrimaryQlClass() { result = "DictionaryExpr" }
+module Generated {
+  class DictionaryExpr extends Synth::TDictionaryExpr, CollectionExpr {
+    override string getAPrimaryQlClass() { result = "DictionaryExpr" }
 
-  Expr getImmediateElement(int index) {
-    result =
-      Synth::convertExprFromRaw(Synth::convertDictionaryExprToRaw(this)
-            .(Raw::DictionaryExpr)
-            .getElement(index))
+    Expr getImmediateElement(int index) {
+      result =
+        Synth::convertExprFromRaw(Synth::convertDictionaryExprToRaw(this)
+              .(Raw::DictionaryExpr)
+              .getElement(index))
+    }
+
+    final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
+
+    final Expr getAnElement() { result = getElement(_) }
+
+    final int getNumberOfElements() { result = count(getAnElement()) }
   }
-
-  final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
-
-  final Expr getAnElement() { result = getElement(_) }
-
-  final int getNumberOfElements() { result = count(getAnElement()) }
 }

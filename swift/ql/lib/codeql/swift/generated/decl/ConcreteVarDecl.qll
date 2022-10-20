@@ -3,10 +3,12 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.VarDecl
 
-class ConcreteVarDeclBase extends Synth::TConcreteVarDecl, VarDecl {
-  override string getAPrimaryQlClass() { result = "ConcreteVarDecl" }
+module Generated {
+  class ConcreteVarDecl extends Synth::TConcreteVarDecl, VarDecl {
+    override string getAPrimaryQlClass() { result = "ConcreteVarDecl" }
 
-  int getIntroducerInt() {
-    result = Synth::convertConcreteVarDeclToRaw(this).(Raw::ConcreteVarDecl).getIntroducerInt()
+    int getIntroducerInt() {
+      result = Synth::convertConcreteVarDeclToRaw(this).(Raw::ConcreteVarDecl).getIntroducerInt()
+    }
   }
 }

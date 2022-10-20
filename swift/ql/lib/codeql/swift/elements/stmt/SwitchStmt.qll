@@ -1,6 +1,6 @@
 private import codeql.swift.generated.stmt.SwitchStmt
 
-class SwitchStmt extends SwitchStmtBase {
+class SwitchStmt extends Generated::SwitchStmt {
   CaseStmt getFirstCase() { result = this.getCase(0) }
 
   CaseStmt getLastCase() {

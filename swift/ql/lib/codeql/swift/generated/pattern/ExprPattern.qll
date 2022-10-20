@@ -4,13 +4,17 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
-class ExprPatternBase extends Synth::TExprPattern, Pattern {
-  override string getAPrimaryQlClass() { result = "ExprPattern" }
+module Generated {
+  class ExprPattern extends Synth::TExprPattern, Pattern {
+    override string getAPrimaryQlClass() { result = "ExprPattern" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertExprPatternToRaw(this).(Raw::ExprPattern).getSubExpr())
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertExprPatternToRaw(this)
+              .(Raw::ExprPattern)
+              .getSubExpr())
+    }
+
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

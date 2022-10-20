@@ -3,8 +3,12 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.pattern.Pattern
 
-class NamedPatternBase extends Synth::TNamedPattern, Pattern {
-  override string getAPrimaryQlClass() { result = "NamedPattern" }
+module Generated {
+  class NamedPattern extends Synth::TNamedPattern, Pattern {
+    override string getAPrimaryQlClass() { result = "NamedPattern" }
 
-  string getName() { result = Synth::convertNamedPatternToRaw(this).(Raw::NamedPattern).getName() }
+    string getName() {
+      result = Synth::convertNamedPatternToRaw(this).(Raw::NamedPattern).getName()
+    }
+  }
 }

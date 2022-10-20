@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class PackExprBase extends Synth::TPackExpr, Expr {
-  override string getAPrimaryQlClass() { result = "PackExpr" }
+module Generated {
+  class PackExpr extends Synth::TPackExpr, Expr {
+    override string getAPrimaryQlClass() { result = "PackExpr" }
+  }
 }

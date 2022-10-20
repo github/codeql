@@ -417,7 +417,7 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
   }
 
   /**
-   * Holds if this initialier is a `this` initializer, for example `this(0)`
+   * Holds if this initializer is a `this` initializer, for example `this(0)`
    * in
    *
    * ```csharp
@@ -431,7 +431,7 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
   predicate isThis() { this.getTargetType() = this.getConstructorType() }
 
   /**
-   * Holds if this initialier is a `base` initializer, for example `base(0)`
+   * Holds if this initializer is a `base` initializer, for example `base(0)`
    * in
    *
    * ```csharp

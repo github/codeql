@@ -37,7 +37,8 @@ class FaradayHttpRequest extends Http::Client::Request::Range, DataFlow::CallNod
         API::getTopLevelMember("Faraday").getInstance()
       ] and
     requestNode =
-      connectionNode.getReturn(["get", "head", "delete", "post", "put", "patch", "trace"]) and
+      connectionNode
+          .getReturn(["get", "head", "delete", "post", "put", "patch", "trace", "run_request"]) and
     this = requestNode.asSource() and
     connectionUse = connectionNode.asSource()
   }

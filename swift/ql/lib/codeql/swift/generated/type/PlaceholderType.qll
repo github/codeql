@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class PlaceholderTypeBase extends Synth::TPlaceholderType, Type {
-  override string getAPrimaryQlClass() { result = "PlaceholderType" }
+module Generated {
+  class PlaceholderType extends Synth::TPlaceholderType, Type {
+    override string getAPrimaryQlClass() { result = "PlaceholderType" }
+  }
 }
