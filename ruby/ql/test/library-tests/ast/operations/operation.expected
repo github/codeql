@@ -194,3 +194,13 @@
 | operations.rb:96:1:96:16 | ... = ... | = | operations.rb:96:13:96:14 | ... * ... | AssignExpr |
 | operations.rb:96:13:96:14 | ... * ... | * | operations.rb:96:1:96:11 | $global_var | MulExpr |
 | operations.rb:96:13:96:14 | ... * ... | * | operations.rb:96:16:96:16 | 6 | MulExpr |
+| operations.rb:98:1:98:13 | ... = ... | = | operations.rb:98:1:98:9 | CONSTANT1 | AssignExpr |
+| operations.rb:98:1:98:13 | ... = ... | = | operations.rb:98:13:98:13 | 5 | AssignExpr |
+| operations.rb:99:1:99:14 | ... += ... | += | operations.rb:99:1:99:9 | CONSTANT2 | AssignAddExpr |
+| operations.rb:99:1:99:14 | ... += ... | += | operations.rb:99:14:99:14 | 6 | AssignAddExpr |
+| operations.rb:100:1:100:15 | ... \|\|= ... | \|\|= | operations.rb:100:1:100:9 | CONSTANT3 | AssignLogicalOrExpr |
+| operations.rb:100:1:100:15 | ... \|\|= ... | \|\|= | operations.rb:100:15:100:15 | 7 | AssignLogicalOrExpr |
+| operations.rb:101:1:101:25 | ... \|\|= ... | \|\|= | operations.rb:101:1:101:19 | MemberConstant | AssignLogicalOrExpr |
+| operations.rb:101:1:101:25 | ... \|\|= ... | \|\|= | operations.rb:101:25:101:25 | 8 | AssignLogicalOrExpr |
+| operations.rb:102:1:102:31 | ... \|\|= ... | \|\|= | operations.rb:102:1:102:25 | OtherConstant | AssignLogicalOrExpr |
+| operations.rb:102:1:102:31 | ... \|\|= ... | \|\|= | operations.rb:102:31:102:31 | 7 | AssignLogicalOrExpr |
