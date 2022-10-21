@@ -15,8 +15,8 @@ import java
 import semmle.code.java.security.InsufficientKeySizeQuery
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink
-where exists(KeySizeConfiguration cfg | cfg.hasFlowPath(source, sink))
+from DataFlow::PathNode source, DataFlow::PathNode sink, KeySizeConfiguration cfg
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "This $@ is less than the recommended key size of " + source.getState() + " bits.",
   source.getNode(), "key size"
