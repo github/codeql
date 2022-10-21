@@ -101,10 +101,10 @@ class Configuration extends TaintTracking::Configuration {
       nodeTo = call
     )
     or
-    exists(DataFlow::CallCfgNode closing |
+    exists(API::CallNode closing |
       closing = API::moduleImport("contextlib").getMember("closing").getACall() and
       nodeFrom = closing.getArg(0) and
-      nodeFrom = tarfileOpen().getACall() and
+      nodeFrom = tarfileOpen().getReturn().getAValueReachingSink() and
       nodeTo = closing
     )
   }
