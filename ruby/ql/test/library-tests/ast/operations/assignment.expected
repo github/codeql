@@ -54,8 +54,14 @@ assignments
 | operations.rb:96:1:96:16 | ... = ... | = | operations.rb:96:1:96:11 | $global_var | operations.rb:96:13:96:14 | ... * ... | AssignExpr |
 | operations.rb:98:1:98:13 | ... = ... | = | operations.rb:98:1:98:9 | CONSTANT1 | operations.rb:98:13:98:13 | 5 | AssignExpr |
 | operations.rb:99:1:99:14 | ... += ... | += | operations.rb:99:1:99:9 | CONSTANT2 | operations.rb:99:14:99:14 | 6 | AssignAddExpr |
+| operations.rb:99:1:99:14 | ... = ... | = | operations.rb:99:1:99:9 | CONSTANT2 | operations.rb:99:11:99:12 | ... + ... | AssignExpr |
+| operations.rb:100:1:100:15 | ... = ... | = | operations.rb:100:1:100:9 | CONSTANT3 | operations.rb:100:11:100:13 | ... \|\| ... | AssignExpr |
 | operations.rb:100:1:100:15 | ... \|\|= ... | \|\|= | operations.rb:100:1:100:9 | CONSTANT3 | operations.rb:100:15:100:15 | 7 | AssignLogicalOrExpr |
+| operations.rb:101:1:101:3 | ... = ... | = | operations.rb:101:1:101:3 | __synth__0 | operations.rb:101:1:101:3 | Foo | AssignExpr |
+| operations.rb:101:1:101:25 | ... = ... | = | operations.rb:101:1:101:19 | MemberConstant | operations.rb:101:21:101:23 | ... \|\| ... | AssignExpr |
 | operations.rb:101:1:101:25 | ... \|\|= ... | \|\|= | operations.rb:101:1:101:19 | MemberConstant | operations.rb:101:25:101:25 | 8 | AssignLogicalOrExpr |
+| operations.rb:102:1:102:10 | ... = ... | = | operations.rb:102:1:102:10 | __synth__0 | operations.rb:102:1:102:10 | call to bar | AssignExpr |
+| operations.rb:102:1:102:31 | ... = ... | = | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:27:102:29 | ... \|\| ... | AssignExpr |
 | operations.rb:102:1:102:31 | ... \|\|= ... | \|\|= | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:31:102:31 | 7 | AssignLogicalOrExpr |
 assignOperations
 | operations.rb:69:1:69:8 | ... += ... | += | operations.rb:69:1:69:1 | x | operations.rb:69:6:69:8 | 128 | AssignAddExpr |
