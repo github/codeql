@@ -17,9 +17,11 @@ private import CoreKnowledge as CoreKnowledge
  * Provides a set of reasons why a given data flow node should be excluded as a sink candidate.
  */
 string getAReasonSinkExcluded(DataFlow::Node n) {
-  isArgumentToModeledFunction(n) and result = "legacy/reason-sink-excluded/argument to modeled function"
+  isArgumentToModeledFunction(n) and
+  result = "legacy/reason-sink-excluded/argument to modeled function"
   or
-  isArgumentToSinklessLibrary(n) and result = "legacy/reason-sink-excluded/argument to sinkless library"
+  isArgumentToSinklessLibrary(n) and
+  result = "legacy/reason-sink-excluded/argument to sinkless library"
   or
   isSanitizer(n) and result = "legacy/reason-sink-excluded/sanitizer"
   or
