@@ -482,8 +482,8 @@
 | LocalDataFlow.cs:278:15:278:22 | access to local variable nonSink0 | LocalDataFlow.cs:285:31:285:38 | access to local variable nonSink0 |
 | LocalDataFlow.cs:281:13:281:34 | SSA def(sink70) | LocalDataFlow.cs:282:15:282:20 | access to local variable sink70 |
 | LocalDataFlow.cs:281:22:281:34 | ... = ... | LocalDataFlow.cs:281:13:281:34 | SSA def(sink70) |
+| LocalDataFlow.cs:281:22:281:34 | SSA def(sink0) | LocalDataFlow.cs:313:22:313:38 | SSA phi read(sink0) |
 | LocalDataFlow.cs:281:22:281:34 | SSA def(sink0) | LocalDataFlow.cs:313:34:313:38 | access to local variable sink0 |
-| LocalDataFlow.cs:281:22:281:34 | SSA def(sink0) | LocalDataFlow.cs:314:22:314:26 | access to local variable sink0 |
 | LocalDataFlow.cs:281:30:281:34 | access to local variable sink0 | LocalDataFlow.cs:281:22:281:34 | ... = ... |
 | LocalDataFlow.cs:281:30:281:34 | access to local variable sink0 | LocalDataFlow.cs:281:22:281:34 | SSA def(sink0) |
 | LocalDataFlow.cs:282:15:282:20 | [post] access to local variable sink70 | LocalDataFlow.cs:289:13:289:18 | access to local variable sink70 |
@@ -508,8 +508,9 @@
 | LocalDataFlow.cs:313:22:313:29 | access to local variable nonSink0 | LocalDataFlow.cs:313:22:313:38 | ... ?? ... |
 | LocalDataFlow.cs:313:22:313:29 | access to local variable nonSink0 | LocalDataFlow.cs:314:31:314:38 | access to local variable nonSink0 |
 | LocalDataFlow.cs:313:22:313:38 | ... ?? ... | LocalDataFlow.cs:313:13:313:38 | SSA def(sink73) |
+| LocalDataFlow.cs:313:22:313:38 | SSA phi read(sink0) | LocalDataFlow.cs:314:22:314:26 | access to local variable sink0 |
 | LocalDataFlow.cs:313:34:313:38 | access to local variable sink0 | LocalDataFlow.cs:313:22:313:38 | ... ?? ... |
-| LocalDataFlow.cs:313:34:313:38 | access to local variable sink0 | LocalDataFlow.cs:314:22:314:26 | access to local variable sink0 |
+| LocalDataFlow.cs:313:34:313:38 | access to local variable sink0 | LocalDataFlow.cs:313:22:313:38 | SSA phi read(sink0) |
 | LocalDataFlow.cs:314:13:314:38 | SSA def(sink74) | LocalDataFlow.cs:316:15:316:20 | access to local variable sink74 |
 | LocalDataFlow.cs:314:22:314:26 | access to local variable sink0 | LocalDataFlow.cs:314:22:314:38 | ... ?? ... |
 | LocalDataFlow.cs:314:22:314:38 | ... ?? ... | LocalDataFlow.cs:314:13:314:38 | SSA def(sink74) |
@@ -551,19 +552,13 @@
 | SSA.cs:13:15:13:22 | [post] access to local variable nonSink0 | SSA.cs:19:13:19:20 | access to local variable nonSink0 |
 | SSA.cs:13:15:13:22 | access to local variable nonSink0 | SSA.cs:19:13:19:20 | access to local variable nonSink0 |
 | SSA.cs:16:13:16:20 | [post] access to local variable ssaSink0 | SSA.cs:24:24:24:31 | access to local variable ssaSink0 |
-| SSA.cs:16:13:16:20 | [post] access to local variable ssaSink0 | SSA.cs:37:24:37:31 | access to local variable ssaSink0 |
-| SSA.cs:16:13:16:20 | [post] access to local variable ssaSink0 | SSA.cs:91:24:91:31 | access to local variable ssaSink0 |
-| SSA.cs:16:13:16:20 | [post] access to local variable ssaSink0 | SSA.cs:117:36:117:43 | access to local variable ssaSink0 |
+| SSA.cs:16:13:16:20 | [post] access to local variable ssaSink0 | SSA.cs:25:9:25:24 | SSA phi read(ssaSink0) |
 | SSA.cs:16:13:16:20 | access to local variable ssaSink0 | SSA.cs:24:24:24:31 | access to local variable ssaSink0 |
-| SSA.cs:16:13:16:20 | access to local variable ssaSink0 | SSA.cs:37:24:37:31 | access to local variable ssaSink0 |
-| SSA.cs:16:13:16:20 | access to local variable ssaSink0 | SSA.cs:91:24:91:31 | access to local variable ssaSink0 |
-| SSA.cs:16:13:16:20 | access to local variable ssaSink0 | SSA.cs:117:36:117:43 | access to local variable ssaSink0 |
+| SSA.cs:16:13:16:20 | access to local variable ssaSink0 | SSA.cs:25:9:25:24 | SSA phi read(ssaSink0) |
 | SSA.cs:19:13:19:20 | [post] access to local variable nonSink0 | SSA.cs:30:24:30:31 | access to local variable nonSink0 |
-| SSA.cs:19:13:19:20 | [post] access to local variable nonSink0 | SSA.cs:49:24:49:31 | access to local variable nonSink0 |
-| SSA.cs:19:13:19:20 | [post] access to local variable nonSink0 | SSA.cs:63:23:63:30 | access to local variable nonSink0 |
+| SSA.cs:19:13:19:20 | [post] access to local variable nonSink0 | SSA.cs:31:9:31:24 | SSA phi read(nonSink0) |
 | SSA.cs:19:13:19:20 | access to local variable nonSink0 | SSA.cs:30:24:30:31 | access to local variable nonSink0 |
-| SSA.cs:19:13:19:20 | access to local variable nonSink0 | SSA.cs:49:24:49:31 | access to local variable nonSink0 |
-| SSA.cs:19:13:19:20 | access to local variable nonSink0 | SSA.cs:63:23:63:30 | access to local variable nonSink0 |
+| SSA.cs:19:13:19:20 | access to local variable nonSink0 | SSA.cs:31:9:31:24 | SSA phi read(nonSink0) |
 | SSA.cs:22:16:22:28 | SSA def(ssaSink1) | SSA.cs:25:9:25:24 | SSA phi(ssaSink1) |
 | SSA.cs:22:27:22:28 | "" | SSA.cs:22:16:22:28 | SSA def(ssaSink1) |
 | SSA.cs:23:13:23:22 | [post] access to parameter nonTainted | SSA.cs:29:13:29:22 | access to parameter nonTainted |
@@ -571,9 +566,9 @@
 | SSA.cs:23:13:23:29 | access to property Length | SSA.cs:23:13:23:33 | ... > ... |
 | SSA.cs:24:13:24:31 | SSA def(ssaSink1) | SSA.cs:25:9:25:24 | SSA phi(ssaSink1) |
 | SSA.cs:24:24:24:31 | access to local variable ssaSink0 | SSA.cs:24:13:24:31 | SSA def(ssaSink1) |
-| SSA.cs:24:24:24:31 | access to local variable ssaSink0 | SSA.cs:37:24:37:31 | access to local variable ssaSink0 |
-| SSA.cs:24:24:24:31 | access to local variable ssaSink0 | SSA.cs:91:24:91:31 | access to local variable ssaSink0 |
-| SSA.cs:24:24:24:31 | access to local variable ssaSink0 | SSA.cs:117:36:117:43 | access to local variable ssaSink0 |
+| SSA.cs:24:24:24:31 | access to local variable ssaSink0 | SSA.cs:25:9:25:24 | SSA phi read(ssaSink0) |
+| SSA.cs:25:9:25:24 | SSA phi read(ssaSink0) | SSA.cs:37:24:37:31 | access to local variable ssaSink0 |
+| SSA.cs:25:9:25:24 | SSA phi read(ssaSink0) | SSA.cs:43:9:43:24 | SSA phi read(ssaSink0) |
 | SSA.cs:25:9:25:24 | SSA phi(ssaSink1) | SSA.cs:25:15:25:22 | access to local variable ssaSink1 |
 | SSA.cs:28:16:28:28 | SSA def(nonSink1) | SSA.cs:31:9:31:24 | SSA phi(nonSink1) |
 | SSA.cs:28:27:28:28 | "" | SSA.cs:28:16:28:28 | SSA def(nonSink1) |
@@ -582,47 +577,52 @@
 | SSA.cs:29:13:29:29 | access to property Length | SSA.cs:29:13:29:33 | ... > ... |
 | SSA.cs:30:13:30:31 | SSA def(nonSink1) | SSA.cs:31:9:31:24 | SSA phi(nonSink1) |
 | SSA.cs:30:24:30:31 | access to local variable nonSink0 | SSA.cs:30:13:30:31 | SSA def(nonSink1) |
-| SSA.cs:30:24:30:31 | access to local variable nonSink0 | SSA.cs:49:24:49:31 | access to local variable nonSink0 |
-| SSA.cs:30:24:30:31 | access to local variable nonSink0 | SSA.cs:63:23:63:30 | access to local variable nonSink0 |
+| SSA.cs:30:24:30:31 | access to local variable nonSink0 | SSA.cs:31:9:31:24 | SSA phi read(nonSink0) |
+| SSA.cs:31:9:31:24 | SSA phi read(nonSink0) | SSA.cs:49:24:49:31 | access to local variable nonSink0 |
+| SSA.cs:31:9:31:24 | SSA phi read(nonSink0) | SSA.cs:55:9:55:24 | SSA phi read(nonSink0) |
 | SSA.cs:31:9:31:24 | SSA phi(nonSink1) | SSA.cs:31:15:31:22 | access to local variable nonSink1 |
 | SSA.cs:34:16:34:28 | SSA def(ssaSink2) | SSA.cs:43:9:43:24 | SSA phi(ssaSink2) |
 | SSA.cs:34:27:34:28 | "" | SSA.cs:34:16:34:28 | SSA def(ssaSink2) |
 | SSA.cs:35:13:35:22 | [post] access to parameter nonTainted | SSA.cs:38:17:38:26 | access to parameter nonTainted |
-| SSA.cs:35:13:35:22 | [post] access to parameter nonTainted | SSA.cs:47:13:47:22 | access to parameter nonTainted |
+| SSA.cs:35:13:35:22 | [post] access to parameter nonTainted | SSA.cs:43:9:43:24 | SSA phi read(nonTainted) |
 | SSA.cs:35:13:35:22 | access to parameter nonTainted | SSA.cs:38:17:38:26 | access to parameter nonTainted |
-| SSA.cs:35:13:35:22 | access to parameter nonTainted | SSA.cs:47:13:47:22 | access to parameter nonTainted |
+| SSA.cs:35:13:35:22 | access to parameter nonTainted | SSA.cs:43:9:43:24 | SSA phi read(nonTainted) |
 | SSA.cs:35:13:35:29 | access to property Length | SSA.cs:35:13:35:33 | ... > ... |
 | SSA.cs:37:13:37:31 | SSA def(ssaSink2) | SSA.cs:39:21:39:28 | access to local variable ssaSink2 |
 | SSA.cs:37:13:37:31 | SSA def(ssaSink2) | SSA.cs:41:21:41:28 | access to local variable ssaSink2 |
 | SSA.cs:37:24:37:31 | access to local variable ssaSink0 | SSA.cs:37:13:37:31 | SSA def(ssaSink2) |
-| SSA.cs:37:24:37:31 | access to local variable ssaSink0 | SSA.cs:91:24:91:31 | access to local variable ssaSink0 |
-| SSA.cs:37:24:37:31 | access to local variable ssaSink0 | SSA.cs:117:36:117:43 | access to local variable ssaSink0 |
-| SSA.cs:38:17:38:26 | [post] access to parameter nonTainted | SSA.cs:47:13:47:22 | access to parameter nonTainted |
-| SSA.cs:38:17:38:26 | access to parameter nonTainted | SSA.cs:47:13:47:22 | access to parameter nonTainted |
+| SSA.cs:37:24:37:31 | access to local variable ssaSink0 | SSA.cs:43:9:43:24 | SSA phi read(ssaSink0) |
+| SSA.cs:38:17:38:26 | [post] access to parameter nonTainted | SSA.cs:43:9:43:24 | SSA phi read(nonTainted) |
+| SSA.cs:38:17:38:26 | access to parameter nonTainted | SSA.cs:43:9:43:24 | SSA phi read(nonTainted) |
 | SSA.cs:38:17:38:33 | access to property Length | SSA.cs:38:17:38:37 | ... > ... |
 | SSA.cs:39:21:39:28 | [post] access to local variable ssaSink2 | SSA.cs:43:9:43:24 | SSA phi(ssaSink2) |
 | SSA.cs:39:21:39:28 | access to local variable ssaSink2 | SSA.cs:43:9:43:24 | SSA phi(ssaSink2) |
 | SSA.cs:41:21:41:28 | [post] access to local variable ssaSink2 | SSA.cs:43:9:43:24 | SSA phi(ssaSink2) |
 | SSA.cs:41:21:41:28 | access to local variable ssaSink2 | SSA.cs:43:9:43:24 | SSA phi(ssaSink2) |
+| SSA.cs:43:9:43:24 | SSA phi read(nonTainted) | SSA.cs:47:13:47:22 | access to parameter nonTainted |
+| SSA.cs:43:9:43:24 | SSA phi read(ssaSink0) | SSA.cs:91:24:91:31 | access to local variable ssaSink0 |
+| SSA.cs:43:9:43:24 | SSA phi read(ssaSink0) | SSA.cs:97:9:97:32 | SSA phi read(ssaSink0) |
 | SSA.cs:43:9:43:24 | SSA phi(ssaSink2) | SSA.cs:43:15:43:22 | access to local variable ssaSink2 |
 | SSA.cs:46:16:46:28 | SSA def(nonSink2) | SSA.cs:55:9:55:24 | SSA phi(nonSink2) |
 | SSA.cs:46:27:46:28 | "" | SSA.cs:46:16:46:28 | SSA def(nonSink2) |
 | SSA.cs:47:13:47:22 | [post] access to parameter nonTainted | SSA.cs:50:17:50:26 | access to parameter nonTainted |
-| SSA.cs:47:13:47:22 | [post] access to parameter nonTainted | SSA.cs:89:13:89:22 | access to parameter nonTainted |
+| SSA.cs:47:13:47:22 | [post] access to parameter nonTainted | SSA.cs:55:9:55:24 | SSA phi read(nonTainted) |
 | SSA.cs:47:13:47:22 | access to parameter nonTainted | SSA.cs:50:17:50:26 | access to parameter nonTainted |
-| SSA.cs:47:13:47:22 | access to parameter nonTainted | SSA.cs:89:13:89:22 | access to parameter nonTainted |
+| SSA.cs:47:13:47:22 | access to parameter nonTainted | SSA.cs:55:9:55:24 | SSA phi read(nonTainted) |
 | SSA.cs:47:13:47:29 | access to property Length | SSA.cs:47:13:47:33 | ... > ... |
 | SSA.cs:49:13:49:31 | SSA def(nonSink2) | SSA.cs:51:21:51:28 | access to local variable nonSink2 |
 | SSA.cs:49:13:49:31 | SSA def(nonSink2) | SSA.cs:53:21:53:28 | access to local variable nonSink2 |
 | SSA.cs:49:24:49:31 | access to local variable nonSink0 | SSA.cs:49:13:49:31 | SSA def(nonSink2) |
-| SSA.cs:49:24:49:31 | access to local variable nonSink0 | SSA.cs:63:23:63:30 | access to local variable nonSink0 |
-| SSA.cs:50:17:50:26 | [post] access to parameter nonTainted | SSA.cs:89:13:89:22 | access to parameter nonTainted |
-| SSA.cs:50:17:50:26 | access to parameter nonTainted | SSA.cs:89:13:89:22 | access to parameter nonTainted |
+| SSA.cs:49:24:49:31 | access to local variable nonSink0 | SSA.cs:55:9:55:24 | SSA phi read(nonSink0) |
+| SSA.cs:50:17:50:26 | [post] access to parameter nonTainted | SSA.cs:55:9:55:24 | SSA phi read(nonTainted) |
+| SSA.cs:50:17:50:26 | access to parameter nonTainted | SSA.cs:55:9:55:24 | SSA phi read(nonTainted) |
 | SSA.cs:50:17:50:33 | access to property Length | SSA.cs:50:17:50:37 | ... > ... |
 | SSA.cs:51:21:51:28 | [post] access to local variable nonSink2 | SSA.cs:55:9:55:24 | SSA phi(nonSink2) |
 | SSA.cs:51:21:51:28 | access to local variable nonSink2 | SSA.cs:55:9:55:24 | SSA phi(nonSink2) |
 | SSA.cs:53:21:53:28 | [post] access to local variable nonSink2 | SSA.cs:55:9:55:24 | SSA phi(nonSink2) |
 | SSA.cs:53:21:53:28 | access to local variable nonSink2 | SSA.cs:55:9:55:24 | SSA phi(nonSink2) |
+| SSA.cs:55:9:55:24 | SSA phi read(nonSink0) | SSA.cs:63:23:63:30 | access to local variable nonSink0 |
+| SSA.cs:55:9:55:24 | SSA phi read(nonTainted) | SSA.cs:89:13:89:22 | access to parameter nonTainted |
 | SSA.cs:55:9:55:24 | SSA phi(nonSink2) | SSA.cs:55:15:55:22 | access to local variable nonSink2 |
 | SSA.cs:58:16:58:33 | SSA def(ssaSink3) | SSA.cs:59:23:59:30 | access to local variable ssaSink3 |
 | SSA.cs:58:27:58:33 | access to parameter tainted | SSA.cs:58:16:58:33 | SSA def(ssaSink3) |
@@ -671,9 +671,9 @@
 | SSA.cs:77:20:77:26 | access to parameter tainted | SSA.cs:80:35:80:41 | access to parameter tainted |
 | SSA.cs:78:21:78:28 | SSA def(nonSink0) | SSA.cs:79:15:79:22 | access to local variable nonSink0 |
 | SSA.cs:79:15:79:22 | [post] access to local variable nonSink0 | SSA.cs:104:24:104:31 | access to local variable nonSink0 |
-| SSA.cs:79:15:79:22 | [post] access to local variable nonSink0 | SSA.cs:130:39:130:46 | access to local variable nonSink0 |
+| SSA.cs:79:15:79:22 | [post] access to local variable nonSink0 | SSA.cs:110:9:110:32 | SSA phi read(nonSink0) |
 | SSA.cs:79:15:79:22 | access to local variable nonSink0 | SSA.cs:104:24:104:31 | access to local variable nonSink0 |
-| SSA.cs:79:15:79:22 | access to local variable nonSink0 | SSA.cs:130:39:130:46 | access to local variable nonSink0 |
+| SSA.cs:79:15:79:22 | access to local variable nonSink0 | SSA.cs:110:9:110:32 | SSA phi read(nonSink0) |
 | SSA.cs:80:9:80:12 | [post] this access | SSA.cs:81:21:81:24 | this access |
 | SSA.cs:80:9:80:12 | this access | SSA.cs:81:21:81:24 | this access |
 | SSA.cs:80:9:80:14 | [post] access to field S | SSA.cs:81:21:81:26 | access to field S |
@@ -701,21 +701,23 @@
 | SSA.cs:88:16:88:28 | SSA def(ssaSink4) | SSA.cs:97:9:97:32 | SSA phi(ssaSink4) |
 | SSA.cs:88:27:88:28 | "" | SSA.cs:88:16:88:28 | SSA def(ssaSink4) |
 | SSA.cs:89:13:89:22 | [post] access to parameter nonTainted | SSA.cs:92:17:92:26 | access to parameter nonTainted |
-| SSA.cs:89:13:89:22 | [post] access to parameter nonTainted | SSA.cs:102:13:102:22 | access to parameter nonTainted |
+| SSA.cs:89:13:89:22 | [post] access to parameter nonTainted | SSA.cs:97:9:97:32 | SSA phi read(nonTainted) |
 | SSA.cs:89:13:89:22 | access to parameter nonTainted | SSA.cs:92:17:92:26 | access to parameter nonTainted |
-| SSA.cs:89:13:89:22 | access to parameter nonTainted | SSA.cs:102:13:102:22 | access to parameter nonTainted |
+| SSA.cs:89:13:89:22 | access to parameter nonTainted | SSA.cs:97:9:97:32 | SSA phi read(nonTainted) |
 | SSA.cs:89:13:89:29 | access to property Length | SSA.cs:89:13:89:33 | ... > ... |
 | SSA.cs:91:13:91:31 | SSA def(ssaSink4) | SSA.cs:93:21:93:28 | access to local variable ssaSink4 |
 | SSA.cs:91:13:91:31 | SSA def(ssaSink4) | SSA.cs:95:21:95:28 | access to local variable ssaSink4 |
 | SSA.cs:91:24:91:31 | access to local variable ssaSink0 | SSA.cs:91:13:91:31 | SSA def(ssaSink4) |
-| SSA.cs:91:24:91:31 | access to local variable ssaSink0 | SSA.cs:117:36:117:43 | access to local variable ssaSink0 |
-| SSA.cs:92:17:92:26 | [post] access to parameter nonTainted | SSA.cs:102:13:102:22 | access to parameter nonTainted |
-| SSA.cs:92:17:92:26 | access to parameter nonTainted | SSA.cs:102:13:102:22 | access to parameter nonTainted |
+| SSA.cs:91:24:91:31 | access to local variable ssaSink0 | SSA.cs:97:9:97:32 | SSA phi read(ssaSink0) |
+| SSA.cs:92:17:92:26 | [post] access to parameter nonTainted | SSA.cs:97:9:97:32 | SSA phi read(nonTainted) |
+| SSA.cs:92:17:92:26 | access to parameter nonTainted | SSA.cs:97:9:97:32 | SSA phi read(nonTainted) |
 | SSA.cs:92:17:92:33 | access to property Length | SSA.cs:92:17:92:37 | ... > ... |
 | SSA.cs:93:21:93:28 | [post] access to local variable ssaSink4 | SSA.cs:97:9:97:32 | SSA phi(ssaSink4) |
 | SSA.cs:93:21:93:28 | access to local variable ssaSink4 | SSA.cs:97:9:97:32 | SSA phi(ssaSink4) |
 | SSA.cs:95:21:95:28 | [post] access to local variable ssaSink4 | SSA.cs:97:9:97:32 | SSA phi(ssaSink4) |
 | SSA.cs:95:21:95:28 | access to local variable ssaSink4 | SSA.cs:97:9:97:32 | SSA phi(ssaSink4) |
+| SSA.cs:97:9:97:32 | SSA phi read(nonTainted) | SSA.cs:102:13:102:22 | access to parameter nonTainted |
+| SSA.cs:97:9:97:32 | SSA phi read(ssaSink0) | SSA.cs:117:36:117:43 | access to local variable ssaSink0 |
 | SSA.cs:97:9:97:32 | SSA phi(ssaSink4) | SSA.cs:97:23:97:30 | access to local variable ssaSink4 |
 | SSA.cs:97:23:97:30 | SSA def(ssaSink4) | SSA.cs:98:15:98:22 | access to local variable ssaSink4 |
 | SSA.cs:97:23:97:30 | [post] access to local variable ssaSink4 | SSA.cs:97:23:97:30 | SSA def(ssaSink4) |
@@ -723,21 +725,23 @@
 | SSA.cs:101:16:101:28 | SSA def(nonSink3) | SSA.cs:110:9:110:32 | SSA phi(nonSink3) |
 | SSA.cs:101:27:101:28 | "" | SSA.cs:101:16:101:28 | SSA def(nonSink3) |
 | SSA.cs:102:13:102:22 | [post] access to parameter nonTainted | SSA.cs:105:17:105:26 | access to parameter nonTainted |
-| SSA.cs:102:13:102:22 | [post] access to parameter nonTainted | SSA.cs:115:13:115:22 | access to parameter nonTainted |
+| SSA.cs:102:13:102:22 | [post] access to parameter nonTainted | SSA.cs:110:9:110:32 | SSA phi read(nonTainted) |
 | SSA.cs:102:13:102:22 | access to parameter nonTainted | SSA.cs:105:17:105:26 | access to parameter nonTainted |
-| SSA.cs:102:13:102:22 | access to parameter nonTainted | SSA.cs:115:13:115:22 | access to parameter nonTainted |
+| SSA.cs:102:13:102:22 | access to parameter nonTainted | SSA.cs:110:9:110:32 | SSA phi read(nonTainted) |
 | SSA.cs:102:13:102:29 | access to property Length | SSA.cs:102:13:102:33 | ... > ... |
 | SSA.cs:104:13:104:31 | SSA def(nonSink3) | SSA.cs:106:21:106:28 | access to local variable nonSink3 |
 | SSA.cs:104:13:104:31 | SSA def(nonSink3) | SSA.cs:108:21:108:28 | access to local variable nonSink3 |
 | SSA.cs:104:24:104:31 | access to local variable nonSink0 | SSA.cs:104:13:104:31 | SSA def(nonSink3) |
-| SSA.cs:104:24:104:31 | access to local variable nonSink0 | SSA.cs:130:39:130:46 | access to local variable nonSink0 |
-| SSA.cs:105:17:105:26 | [post] access to parameter nonTainted | SSA.cs:115:13:115:22 | access to parameter nonTainted |
-| SSA.cs:105:17:105:26 | access to parameter nonTainted | SSA.cs:115:13:115:22 | access to parameter nonTainted |
+| SSA.cs:104:24:104:31 | access to local variable nonSink0 | SSA.cs:110:9:110:32 | SSA phi read(nonSink0) |
+| SSA.cs:105:17:105:26 | [post] access to parameter nonTainted | SSA.cs:110:9:110:32 | SSA phi read(nonTainted) |
+| SSA.cs:105:17:105:26 | access to parameter nonTainted | SSA.cs:110:9:110:32 | SSA phi read(nonTainted) |
 | SSA.cs:105:17:105:33 | access to property Length | SSA.cs:105:17:105:37 | ... > ... |
 | SSA.cs:106:21:106:28 | [post] access to local variable nonSink3 | SSA.cs:110:9:110:32 | SSA phi(nonSink3) |
 | SSA.cs:106:21:106:28 | access to local variable nonSink3 | SSA.cs:110:9:110:32 | SSA phi(nonSink3) |
 | SSA.cs:108:21:108:28 | [post] access to local variable nonSink3 | SSA.cs:110:9:110:32 | SSA phi(nonSink3) |
 | SSA.cs:108:21:108:28 | access to local variable nonSink3 | SSA.cs:110:9:110:32 | SSA phi(nonSink3) |
+| SSA.cs:110:9:110:32 | SSA phi read(nonSink0) | SSA.cs:130:39:130:46 | access to local variable nonSink0 |
+| SSA.cs:110:9:110:32 | SSA phi read(nonTainted) | SSA.cs:115:13:115:22 | access to parameter nonTainted |
 | SSA.cs:110:9:110:32 | SSA phi(nonSink3) | SSA.cs:110:23:110:30 | access to local variable nonSink3 |
 | SSA.cs:110:23:110:30 | SSA def(nonSink3) | SSA.cs:111:15:111:22 | access to local variable nonSink3 |
 | SSA.cs:110:23:110:30 | [post] access to local variable nonSink3 | SSA.cs:110:23:110:30 | SSA def(nonSink3) |
@@ -747,15 +751,15 @@
 | SSA.cs:114:9:114:12 | this access | SSA.cs:117:13:117:16 | this access |
 | SSA.cs:114:9:114:12 | this access | SSA.cs:123:23:123:26 | this access |
 | SSA.cs:114:9:114:14 | [post] access to field S | SSA.cs:117:13:117:18 | access to field S |
-| SSA.cs:114:9:114:14 | [post] access to field S | SSA.cs:123:23:123:28 | access to field S |
+| SSA.cs:114:9:114:14 | [post] access to field S | SSA.cs:123:9:123:30 | SSA phi read(this.S) |
 | SSA.cs:114:9:114:14 | access to field S | SSA.cs:117:13:117:18 | access to field S |
-| SSA.cs:114:9:114:14 | access to field S | SSA.cs:123:23:123:28 | access to field S |
+| SSA.cs:114:9:114:14 | access to field S | SSA.cs:123:9:123:30 | SSA phi read(this.S) |
 | SSA.cs:114:9:114:33 | SSA def(this.S.SsaFieldSink1) | SSA.cs:123:9:123:30 | SSA phi(this.S.SsaFieldSink1) |
 | SSA.cs:114:32:114:33 | "" | SSA.cs:114:9:114:33 | SSA def(this.S.SsaFieldSink1) |
 | SSA.cs:115:13:115:22 | [post] access to parameter nonTainted | SSA.cs:118:17:118:26 | access to parameter nonTainted |
-| SSA.cs:115:13:115:22 | [post] access to parameter nonTainted | SSA.cs:128:13:128:22 | access to parameter nonTainted |
+| SSA.cs:115:13:115:22 | [post] access to parameter nonTainted | SSA.cs:123:9:123:30 | SSA phi read(nonTainted) |
 | SSA.cs:115:13:115:22 | access to parameter nonTainted | SSA.cs:118:17:118:26 | access to parameter nonTainted |
-| SSA.cs:115:13:115:22 | access to parameter nonTainted | SSA.cs:128:13:128:22 | access to parameter nonTainted |
+| SSA.cs:115:13:115:22 | access to parameter nonTainted | SSA.cs:123:9:123:30 | SSA phi read(nonTainted) |
 | SSA.cs:115:13:115:29 | access to property Length | SSA.cs:115:13:115:33 | ... > ... |
 | SSA.cs:117:13:117:16 | [post] this access | SSA.cs:119:21:119:24 | this access |
 | SSA.cs:117:13:117:16 | [post] this access | SSA.cs:121:21:121:24 | this access |
@@ -768,21 +772,23 @@
 | SSA.cs:117:13:117:43 | SSA def(this.S.SsaFieldSink1) | SSA.cs:119:21:119:40 | access to field SsaFieldSink1 |
 | SSA.cs:117:13:117:43 | SSA def(this.S.SsaFieldSink1) | SSA.cs:121:21:121:40 | access to field SsaFieldSink1 |
 | SSA.cs:117:36:117:43 | access to local variable ssaSink0 | SSA.cs:117:13:117:43 | SSA def(this.S.SsaFieldSink1) |
-| SSA.cs:118:17:118:26 | [post] access to parameter nonTainted | SSA.cs:128:13:128:22 | access to parameter nonTainted |
-| SSA.cs:118:17:118:26 | access to parameter nonTainted | SSA.cs:128:13:128:22 | access to parameter nonTainted |
+| SSA.cs:118:17:118:26 | [post] access to parameter nonTainted | SSA.cs:123:9:123:30 | SSA phi read(nonTainted) |
+| SSA.cs:118:17:118:26 | access to parameter nonTainted | SSA.cs:123:9:123:30 | SSA phi read(nonTainted) |
 | SSA.cs:118:17:118:33 | access to property Length | SSA.cs:118:17:118:37 | ... > ... |
 | SSA.cs:119:21:119:24 | [post] this access | SSA.cs:123:23:123:26 | this access |
 | SSA.cs:119:21:119:24 | this access | SSA.cs:123:23:123:26 | this access |
-| SSA.cs:119:21:119:26 | [post] access to field S | SSA.cs:123:23:123:28 | access to field S |
-| SSA.cs:119:21:119:26 | access to field S | SSA.cs:123:23:123:28 | access to field S |
+| SSA.cs:119:21:119:26 | [post] access to field S | SSA.cs:123:9:123:30 | SSA phi read(this.S) |
+| SSA.cs:119:21:119:26 | access to field S | SSA.cs:123:9:123:30 | SSA phi read(this.S) |
 | SSA.cs:119:21:119:40 | [post] access to field SsaFieldSink1 | SSA.cs:123:9:123:30 | SSA phi(this.S.SsaFieldSink1) |
 | SSA.cs:119:21:119:40 | access to field SsaFieldSink1 | SSA.cs:123:9:123:30 | SSA phi(this.S.SsaFieldSink1) |
 | SSA.cs:121:21:121:24 | [post] this access | SSA.cs:123:23:123:26 | this access |
 | SSA.cs:121:21:121:24 | this access | SSA.cs:123:23:123:26 | this access |
-| SSA.cs:121:21:121:26 | [post] access to field S | SSA.cs:123:23:123:28 | access to field S |
-| SSA.cs:121:21:121:26 | access to field S | SSA.cs:123:23:123:28 | access to field S |
+| SSA.cs:121:21:121:26 | [post] access to field S | SSA.cs:123:9:123:30 | SSA phi read(this.S) |
+| SSA.cs:121:21:121:26 | access to field S | SSA.cs:123:9:123:30 | SSA phi read(this.S) |
 | SSA.cs:121:21:121:40 | [post] access to field SsaFieldSink1 | SSA.cs:123:9:123:30 | SSA phi(this.S.SsaFieldSink1) |
 | SSA.cs:121:21:121:40 | access to field SsaFieldSink1 | SSA.cs:123:9:123:30 | SSA phi(this.S.SsaFieldSink1) |
+| SSA.cs:123:9:123:30 | SSA phi read(nonTainted) | SSA.cs:128:13:128:22 | access to parameter nonTainted |
+| SSA.cs:123:9:123:30 | SSA phi read(this.S) | SSA.cs:123:23:123:28 | access to field S |
 | SSA.cs:123:9:123:30 | SSA phi(this.S.SsaFieldSink1) | SSA.cs:123:23:123:28 | SSA qualifier def(this.S.SsaFieldSink1) |
 | SSA.cs:123:23:123:26 | [post] this access | SSA.cs:124:15:124:18 | this access |
 | SSA.cs:123:23:123:26 | this access | SSA.cs:124:15:124:18 | this access |
@@ -799,9 +805,9 @@
 | SSA.cs:127:9:127:12 | this access | SSA.cs:130:13:130:16 | this access |
 | SSA.cs:127:9:127:12 | this access | SSA.cs:136:23:136:26 | this access |
 | SSA.cs:127:9:127:14 | [post] access to field S | SSA.cs:130:13:130:18 | access to field S |
-| SSA.cs:127:9:127:14 | [post] access to field S | SSA.cs:136:23:136:28 | access to field S |
+| SSA.cs:127:9:127:14 | [post] access to field S | SSA.cs:136:9:136:30 | SSA phi read(this.S) |
 | SSA.cs:127:9:127:14 | access to field S | SSA.cs:130:13:130:18 | access to field S |
-| SSA.cs:127:9:127:14 | access to field S | SSA.cs:136:23:136:28 | access to field S |
+| SSA.cs:127:9:127:14 | access to field S | SSA.cs:136:9:136:30 | SSA phi read(this.S) |
 | SSA.cs:127:9:127:36 | SSA def(this.S.SsaFieldNonSink0) | SSA.cs:136:9:136:30 | SSA phi(this.S.SsaFieldNonSink0) |
 | SSA.cs:127:35:127:36 | "" | SSA.cs:127:9:127:36 | SSA def(this.S.SsaFieldNonSink0) |
 | SSA.cs:128:13:128:22 | [post] access to parameter nonTainted | SSA.cs:131:17:131:26 | access to parameter nonTainted |
@@ -821,16 +827,17 @@
 | SSA.cs:131:17:131:33 | access to property Length | SSA.cs:131:17:131:37 | ... > ... |
 | SSA.cs:132:21:132:24 | [post] this access | SSA.cs:136:23:136:26 | this access |
 | SSA.cs:132:21:132:24 | this access | SSA.cs:136:23:136:26 | this access |
-| SSA.cs:132:21:132:26 | [post] access to field S | SSA.cs:136:23:136:28 | access to field S |
-| SSA.cs:132:21:132:26 | access to field S | SSA.cs:136:23:136:28 | access to field S |
+| SSA.cs:132:21:132:26 | [post] access to field S | SSA.cs:136:9:136:30 | SSA phi read(this.S) |
+| SSA.cs:132:21:132:26 | access to field S | SSA.cs:136:9:136:30 | SSA phi read(this.S) |
 | SSA.cs:132:21:132:43 | [post] access to field SsaFieldNonSink0 | SSA.cs:136:9:136:30 | SSA phi(this.S.SsaFieldNonSink0) |
 | SSA.cs:132:21:132:43 | access to field SsaFieldNonSink0 | SSA.cs:136:9:136:30 | SSA phi(this.S.SsaFieldNonSink0) |
 | SSA.cs:134:21:134:24 | [post] this access | SSA.cs:136:23:136:26 | this access |
 | SSA.cs:134:21:134:24 | this access | SSA.cs:136:23:136:26 | this access |
-| SSA.cs:134:21:134:26 | [post] access to field S | SSA.cs:136:23:136:28 | access to field S |
-| SSA.cs:134:21:134:26 | access to field S | SSA.cs:136:23:136:28 | access to field S |
+| SSA.cs:134:21:134:26 | [post] access to field S | SSA.cs:136:9:136:30 | SSA phi read(this.S) |
+| SSA.cs:134:21:134:26 | access to field S | SSA.cs:136:9:136:30 | SSA phi read(this.S) |
 | SSA.cs:134:21:134:43 | [post] access to field SsaFieldNonSink0 | SSA.cs:136:9:136:30 | SSA phi(this.S.SsaFieldNonSink0) |
 | SSA.cs:134:21:134:43 | access to field SsaFieldNonSink0 | SSA.cs:136:9:136:30 | SSA phi(this.S.SsaFieldNonSink0) |
+| SSA.cs:136:9:136:30 | SSA phi read(this.S) | SSA.cs:136:23:136:28 | access to field S |
 | SSA.cs:136:9:136:30 | SSA phi(this.S.SsaFieldNonSink0) | SSA.cs:136:23:136:28 | SSA qualifier def(this.S.SsaFieldNonSink0) |
 | SSA.cs:136:23:136:26 | [post] this access | SSA.cs:137:15:137:18 | this access |
 | SSA.cs:136:23:136:26 | this access | SSA.cs:137:15:137:18 | this access |
@@ -859,18 +866,17 @@
 | SSA.cs:170:27:170:28 | "" | SSA.cs:170:16:170:28 | SSA def(ssaSink5) |
 | SSA.cs:171:13:171:15 | ...-- | SSA.cs:171:13:171:19 | ... > ... |
 | SSA.cs:171:13:171:15 | SSA def(i) | SSA.cs:174:20:174:20 | SSA phi(i) |
-| SSA.cs:173:13:173:30 | SSA def(ssaSink5) | SSA.cs:176:21:176:28 | access to local variable ssaSink5 |
-| SSA.cs:173:13:173:30 | SSA def(ssaSink5) | SSA.cs:180:9:180:24 | SSA phi(ssaSink5) |
+| SSA.cs:173:13:173:30 | SSA def(ssaSink5) | SSA.cs:174:20:174:20 | SSA phi read(ssaSink5) |
 | SSA.cs:173:24:173:30 | access to parameter tainted | SSA.cs:173:13:173:30 | SSA def(ssaSink5) |
+| SSA.cs:174:20:174:20 | SSA phi read(ssaSink5) | SSA.cs:176:21:176:28 | access to local variable ssaSink5 |
+| SSA.cs:174:20:174:20 | SSA phi read(ssaSink5) | SSA.cs:180:9:180:24 | SSA phi(ssaSink5) |
 | SSA.cs:174:20:174:20 | SSA phi(i) | SSA.cs:174:20:174:20 | access to parameter i |
 | SSA.cs:174:20:174:22 | ...-- | SSA.cs:174:20:174:26 | ... > ... |
 | SSA.cs:174:20:174:22 | SSA def(i) | SSA.cs:174:20:174:20 | SSA phi(i) |
 | SSA.cs:176:21:176:28 | [post] access to local variable ssaSink5 | SSA.cs:177:21:177:28 | access to local variable ssaSink5 |
 | SSA.cs:176:21:176:28 | access to local variable ssaSink5 | SSA.cs:177:21:177:28 | access to local variable ssaSink5 |
-| SSA.cs:177:21:177:28 | [post] access to local variable ssaSink5 | SSA.cs:176:21:176:28 | access to local variable ssaSink5 |
-| SSA.cs:177:21:177:28 | [post] access to local variable ssaSink5 | SSA.cs:180:9:180:24 | SSA phi(ssaSink5) |
-| SSA.cs:177:21:177:28 | access to local variable ssaSink5 | SSA.cs:176:21:176:28 | access to local variable ssaSink5 |
-| SSA.cs:177:21:177:28 | access to local variable ssaSink5 | SSA.cs:180:9:180:24 | SSA phi(ssaSink5) |
+| SSA.cs:177:21:177:28 | [post] access to local variable ssaSink5 | SSA.cs:174:20:174:20 | SSA phi read(ssaSink5) |
+| SSA.cs:177:21:177:28 | access to local variable ssaSink5 | SSA.cs:174:20:174:20 | SSA phi read(ssaSink5) |
 | SSA.cs:180:9:180:24 | SSA phi(ssaSink5) | SSA.cs:180:15:180:22 | access to local variable ssaSink5 |
 | Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b |
 | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:5:17:5:23 | access to parameter tainted |
