@@ -43,9 +43,3 @@ query predicate isFinal(LocalVariableDecl v, string isFinal) {
 query predicate compileTimeConstant(CompileTimeConstantExpr e) {
   exists(Variable v | v.getAnAccess() = e)
 }
-
-query predicate isCaptured(LocalVariableDecl v, string captured) {
-  if v.isCaptured() then captured = "captured" else captured = "not captured"
-}
-
-query predicate varCaptured(LocalVariableDecl v, Callable c) { v.getACapturingCallable() = c }

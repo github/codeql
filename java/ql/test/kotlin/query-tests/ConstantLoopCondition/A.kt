@@ -7,18 +7,4 @@ fun fn1() {
             c = false
         }
     }
-
-    var d = true
-    while (d) { // FALSE NEGATIVE
-        fn0 {
-            println(d)
-        }
-    }
-
-    val e = true
-    while (e) {
-        fn0 {
-            println(e)
-        }
-    }
 }
