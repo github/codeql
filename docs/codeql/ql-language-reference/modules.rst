@@ -300,8 +300,14 @@ module to generate a custom equivalence relation on an :ref:`algebraic datatype 
 
 .. code-block:: ql
 
-    newtype Node = MkNode(int x) {  x in [1..6] }
-    predicate base(Node x, Node y) {(x = MkNode(1) and y = MkNode(2)) or (x = MkNode(3) and y = MkNode(4)) }
+    newtype Node = MkNode(int x) { x in [1 .. 6] }
+
+    predicate base(Node x, Node y) {
+      x = MkNode(1) and y = MkNode(2)
+      or
+      x = MkNode(3) and y = MkNode(4)
+    }
+
     module Equiv = QlBuiltins::EquivalenceRelation<Node, base/2>;
 
     from int x, int y
