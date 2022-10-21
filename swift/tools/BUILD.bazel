@@ -1,10 +1,9 @@
-package(default_visibility = ["//visibility:public"])
-
-load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_files")
+load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 
 sh_binary(
     name = "qltest",
     srcs = ["qltest.sh"],
+    visibility = ["//swift/tools/test/qltest:__pkg__"],
 )
 
 sh_binary(
@@ -13,11 +12,26 @@ sh_binary(
 )
 
 pkg_files(
-    name = "tools",
+    name = "scripts",
     srcs = [
         ":autobuild",
         ":qltest",
     ],
     attributes = pkg_attributes(mode = "0755"),
     prefix = "tools",
+)
+
+pkg_files(
+    name = "tracing-config",
+    srcs = ["tracing-config.lua"],
+    prefix = "tools",
+)
+
+pkg_filegroup(
+    name = "tools",
+    srcs = [
+        ":scripts",
+        ":tracing-config",
+    ],
+    visibility = ["//swift:__pkg__"],
 )
