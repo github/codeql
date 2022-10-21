@@ -26,7 +26,7 @@ private class UrlRemoteFlowSource extends SourceModelCsv {
 // This is a temporary workaround until the TODO above is addressed.
 private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
   UrlLaunchOptionsRemoteFlowSource() {
-    exists(ApllicationWithLaunchOptionsFunc f, SubscriptExpr e |
+    exists(ApplicationWithLaunchOptionsFunc f, SubscriptExpr e |
       DataFlow::localExprFlow(f.getParam(1).getAnAccess(), e.getBase()) and
       e.getAnArgument().getExpr().(MemberRefExpr).getMember() instanceof LaunchOptionsUrlVarDecl and
       this.asExpr() = e
@@ -38,8 +38,8 @@ private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
   }
 }
 
-private class ApllicationWithLaunchOptionsFunc extends FuncDecl {
-  ApllicationWithLaunchOptionsFunc() {
+private class ApplicationWithLaunchOptionsFunc extends FuncDecl {
+  ApplicationWithLaunchOptionsFunc() {
     this.getName() = "application(_:" + ["did", "will"] + "FinishLaunchingWithOptions:)" and
     this.getEnclosingDecl().(ClassOrStructDecl).getABaseTypeDecl*().(ProtocolDecl).getName() =
       "UIApplicationDelegate"
