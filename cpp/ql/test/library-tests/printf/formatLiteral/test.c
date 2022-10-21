@@ -104,4 +104,22 @@ void more_cases(int a, int b)
 		printf("%4.2f%%", num);
 		printf("%%%f%%", num);
 	}
+
+	// more tests of width and precision
+	{
+		float num;
+
+		printf("%f", num);
+		printf("%.1f", num);
+		printf("%1f", num);
+		printf("%1.1f", num);
+		printf("%e", num);
+		printf("%.2e", num);
+		printf("%3e", num);
+		printf("%3.2e", num);
+		printf("%g", num);
+		printf("%.1g", num);
+		printf("%4g", num);
+		printf("%4.1g", num);
+	}
 }
