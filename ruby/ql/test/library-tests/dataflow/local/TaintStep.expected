@@ -1,0 +1,74 @@
+| file://:0:0:0:0 | parameter any of ;Pathname;Method[join] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[join] |
+| file://:0:0:0:0 | parameter position 0 of & | file://:0:0:0:0 | [summary] read: argument position 0.any element in & |
+| file://:0:0:0:0 | parameter position 0 of + | file://:0:0:0:0 | [summary] read: argument position 0.any element in + |
+| file://:0:0:0:0 | parameter position 0 of ;;Member[Pathname].Method[new] | file://:0:0:0:0 | [summary] to write: return (return) in ;;Member[Pathname].Method[new] |
+| file://:0:0:0:0 | parameter position 0 of ;;Member[Regexp].Method[escape,quote] | file://:0:0:0:0 | [summary] to write: return (return) in ;;Member[Regexp].Method[escape,quote] |
+| file://:0:0:0:0 | parameter position 0 of ActionController::Parameters#merge | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge |
+| file://:0:0:0:0 | parameter position 0 of ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: argument self in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | parameter position 0 of ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | parameter position 0 of Arel.sql | file://:0:0:0:0 | [summary] to write: return (return) in Arel.sql |
+| file://:0:0:0:0 | parameter position 0 of File.absolute_path | file://:0:0:0:0 | [summary] to write: return (return) in File.absolute_path |
+| file://:0:0:0:0 | parameter position 0 of File.dirname | file://:0:0:0:0 | [summary] to write: return (return) in File.dirname |
+| file://:0:0:0:0 | parameter position 0 of File.expand_path | file://:0:0:0:0 | [summary] to write: return (return) in File.expand_path |
+| file://:0:0:0:0 | parameter position 0 of File.path | file://:0:0:0:0 | [summary] to write: return (return) in File.path |
+| file://:0:0:0:0 | parameter position 0 of File.realdirpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realdirpath |
+| file://:0:0:0:0 | parameter position 0 of File.realpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realpath |
+| file://:0:0:0:0 | parameter position 0 of Hash[] | file://:0:0:0:0 | [summary] read: argument position 0.any element in Hash[] |
+| file://:0:0:0:0 | parameter position 0 of String.try_convert | file://:0:0:0:0 | [summary] to write: return (return) in String.try_convert |
+| file://:0:0:0:0 | parameter position 0 of \| | file://:0:0:0:0 | [summary] read: argument position 0.any element in \| |
+| file://:0:0:0:0 | parameter position 0 of activestorage;;Member[ActiveStorage].Member[Filename].Method[new] | file://:0:0:0:0 | [summary] to write: return (return) in activestorage;;Member[ActiveStorage].Member[Filename].Method[new] |
+| file://:0:0:0:0 | parameter position 0 of activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat] | file://:0:0:0:0 | [summary] to write: argument self in activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat] |
+| file://:0:0:0:0 | parameter position 0 of activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat] | file://:0:0:0:0 | [summary] to write: return (return) in activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat] |
+| file://:0:0:0:0 | parameter position 0 of activesupport;;Member[ActionView].Member[SafeBuffer].Method[new] | file://:0:0:0:0 | [summary] to write: return (return) in activesupport;;Member[ActionView].Member[SafeBuffer].Method[new] |
+| file://:0:0:0:0 | parameter position 0.. of File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
+| file://:0:0:0:0 | parameter self of & | file://:0:0:0:0 | [summary] read: argument self.any element in & |
+| file://:0:0:0:0 | parameter self of * | file://:0:0:0:0 | [summary] read: argument self.any element in * |
+| file://:0:0:0:0 | parameter self of - | file://:0:0:0:0 | [summary] read: argument self.any element in - |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[basename] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[basename] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[cleanpath] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[cleanpath] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[dirname] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[dirname] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[each_filename] | file://:0:0:0:0 | [summary] to write: argument block.parameter position 0 in ;Pathname;Method[each_filename] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[existence] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[existence] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[expand_path] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[expand_path] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[join] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[join] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[parent] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[parent] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[realpath] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[realpath] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[relative_path_from] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[relative_path_from] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[sub] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[sub] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[sub_ext] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[sub_ext] |
+| file://:0:0:0:0 | parameter self of ;Pathname;Method[to_path] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[to_path] |
+| file://:0:0:0:0 | parameter self of ActionController::Parameters#<various> | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#<various> |
+| file://:0:0:0:0 | parameter self of ActionController::Parameters#merge | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge |
+| file://:0:0:0:0 | parameter self of ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: argument self in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | parameter self of ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | parameter self of ActiveSupportStringTransform | file://:0:0:0:0 | [summary] to write: return (return) in ActiveSupportStringTransform |
+| file://:0:0:0:0 | parameter self of [] | file://:0:0:0:0 | [summary] to write: return (return) in [] |
+| file://:0:0:0:0 | parameter self of \| | file://:0:0:0:0 | [summary] read: argument self.any element in \| |
+| file://:0:0:0:0 | parameter self of activestorage;;Member[ActiveStorage].Member[Filename].Instance.Method[sanitized] | file://:0:0:0:0 | [summary] to write: return (return) in activestorage;;Member[ActiveStorage].Member[Filename].Instance.Method[sanitized] |
+| file://:0:0:0:0 | parameter self of activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[concat,insert,prepend,to_s,to_param] | file://:0:0:0:0 | [summary] to write: return (return) in activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[concat,insert,prepend,to_s,to_param] |
+| file://:0:0:0:0 | parameter self of each(0) | file://:0:0:0:0 | [summary] read: argument self.any element in each(0) |
+| local_dataflow.rb:6:8:6:8 | a | local_dataflow.rb:6:10:6:11 | ... + ... |
+| local_dataflow.rb:6:13:6:13 | b | local_dataflow.rb:6:10:6:11 | ... + ... |
+| local_dataflow.rb:9:9:9:15 | Array | local_dataflow.rb:9:9:9:15 | call to [] |
+| local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... |
+| local_dataflow.rb:20:10:20:10 | 1 | local_dataflow.rb:20:6:20:10 | ... > ... |
+| local_dataflow.rb:35:6:35:6 | x | local_dataflow.rb:35:6:35:11 | ... == ... |
+| local_dataflow.rb:35:11:35:11 | 4 | local_dataflow.rb:35:6:35:11 | ... == ... |
+| local_dataflow.rb:42:6:42:6 | x | local_dataflow.rb:42:6:42:11 | ... == ... |
+| local_dataflow.rb:42:11:42:11 | 4 | local_dataflow.rb:42:6:42:11 | ... == ... |
+| local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:50:18:50:22 | ... < ... |
+| local_dataflow.rb:50:22:50:22 | 4 | local_dataflow.rb:50:18:50:22 | ... < ... |
+| local_dataflow.rb:51:20:51:20 | x | local_dataflow.rb:51:20:51:24 | ... < ... |
+| local_dataflow.rb:51:24:51:24 | 9 | local_dataflow.rb:51:20:51:24 | ... < ... |
+| local_dataflow.rb:55:5:55:13 | Array | local_dataflow.rb:55:5:55:13 | call to [] |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:79:13:79:13 | b |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:80:8:80:8 | a |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:81:9:81:9 | c |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:81:13:81:13 | d |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:81:16:81:16 | e |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:85:13:85:13 | f |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:86:18:86:18 | g |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:87:10:87:10 | x |
+| local_dataflow.rb:80:13:80:13 | a | local_dataflow.rb:80:13:80:17 | ... > ... |
+| local_dataflow.rb:80:17:80:17 | 0 | local_dataflow.rb:80:13:80:17 | ... > ... |
+| local_dataflow.rb:81:25:84:14 | Array | local_dataflow.rb:81:25:84:14 | call to [] |
