@@ -1,8 +1,6 @@
 /**
  * @name Summary statistics
- * @description A table of summary statistics about a database. Includes
- *              values that measure its size, and the numbers of certain
- *              features interesting to analysis that have been found.
+ * @description A table of summary statistics about a database.
  * @kind table
  * @id swift/summary/summary-statistics
  * @tags summary
