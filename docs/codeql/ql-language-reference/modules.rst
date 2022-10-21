@@ -278,8 +278,8 @@ in the QL language specification.
 Built-in modules
 ****************
 
-QL defines a `QlBuiltins` module, which is a built-in module that all databases
-include. Currently, it defines a single parameterized sub-module
+QL defines a `QlBuiltins` module, which is a built-in module that is always in scope.
+Currently, it defines a single parameterized sub-module
 `EquivalenceRelation`, that provides an efficient abstraction for working with
 (partial) equivalence relations in QL.
 
