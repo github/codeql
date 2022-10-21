@@ -17,22 +17,22 @@ private import CoreKnowledge as CoreKnowledge
  * Provides a set of reasons why a given data flow node should be excluded as a sink candidate.
  */
 string getAReasonSinkExcluded(DataFlow::Node n) {
-  isArgumentToModeledFunction(n) and result = "argument to modeled function"
+  isArgumentToModeledFunction(n) and result = "legacy/reason-sink-excluded/argument to modeled function"
   or
-  isArgumentToSinklessLibrary(n) and result = "argument to sinkless library"
+  isArgumentToSinklessLibrary(n) and result = "legacy/reason-sink-excluded/argument to sinkless library"
   or
-  isSanitizer(n) and result = "sanitizer"
+  isSanitizer(n) and result = "legacy/reason-sink-excluded/sanitizer"
   or
-  isPredicate(n) and result = "predicate"
+  isPredicate(n) and result = "legacy/reason-sink-excluded/predicate"
   or
-  isHash(n) and result = "hash"
+  isHash(n) and result = "legacy/reason-sink-excluded/hash"
   or
-  isNumeric(n) and result = "numeric"
+  isNumeric(n) and result = "legacy/reason-sink-excluded/numeric"
   or
   // Ignore candidate sinks within externs, generated, library, and test code
   exists(string category | category = ["externs", "generated", "library", "test"] |
     ClassifyFiles::classify(n.getFile(), category) and
-    result = "in " + category + " file"
+    result = "legacy/reason-sink-excluded/in " + category + " file"
   )
 }
 

@@ -1,7 +1,7 @@
 /**
  * For internal use only.
  *
- * Provides classes and predicates that are useful for endpoint filters.
+ * Provides classes and predicates that are useful for labelling endpoints.
  *
  * The standard use of this library is to make use of `isPotentialEffectiveSink/1`
  */
@@ -13,62 +13,73 @@ private import CoreKnowledge as CoreKnowledge
 private import StandardEndpointFilters as StandardEndpointFilters
 
 module Labels {
-  private newtype TEndpointLabel =
-    TLegacyEndpointLabel() or
-    TLegacyReasonSinkExcludedEndpointLabel(string innerReason) {
+  private newtype TEndpointLabeller =
+    TLegacyEndpointLabeller() or
+    TLegacyReasonSinkExcludedEndpointLabeller(string innerReason) {
       innerReason =
-        [
-          "argument to modeled function", //
-          "argument to sinkless library", //
-          "sanitizer", //
-          "predicate", //
-          "hash", //
-          "numeric", //
-          "in " + ["externs", "generated", "library", "test"] + " file" //
-        ]
+        "legacy/reason-sink-excluded/" +
+          [
+            "argument to modeled function", //
+            "argument to sinkless library", //
+            "sanitizer", //
+            "predicate", //
+            "hash", //
+            "numeric", //
+            "in " + ["externs", "generated", "library", "test"] + " file" //
+          ]
     } or
     TLegacyModeledDbAccess() or
     TLegacyModeledSink() or
     TLegacyModeledStepSource() or
     TLegacyModeledHttp(string kind) { kind = ["request", "response"] }
 
-  class EndpointLabel extends TEndpointLabel {
+  /**
+   * An endpoint labeller defines logic that labels a subset of endpoints.
+   *
+   * Each instance of an endpoint labeller is claiming a range of endpoints (that range is defined by the `toString` method).
+   * It may then label endpoints within that range, but not outside of that range.
+   *
+   * The EndpointLabelsAreInRange.ql query checks that this invariant is upheld.
+   */
+  class EndpointLabeller extends TEndpointLabeller {
     abstract string getLabel(DataFlow::Node n);
 
-    abstract string toString();
+    abstract string getRange();
+
+    string toString() { result = getRange() }
   }
 
-  class LegacyEndpointLabel extends EndpointLabel, TLegacyEndpointLabel {
+  class LegacyEndpointLabeller extends EndpointLabeller, TLegacyEndpointLabeller {
     override string getLabel(DataFlow::Node n) {
       n = StandardEndpointFilters::getALikelyExternalLibraryCall() and
-      result = "legacy/likely-external-library-call"
+      result = "legacy/likely-external-library-call/is"
       or
       StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
-      result = "legacy/flows-to-argument-of-likely-external-library-call"
+      result = "legacy/likely-external-library-call/flows-to"
     }
 
-    override string toString() { result = "LegacyEndpointLabel" }
+    override string getRange() { result = "legacy/likely-external-library-call/**" }
   }
 
-  class LegacyReasonSinkExcludedEndpointLabel extends EndpointLabel,
-    TLegacyReasonSinkExcludedEndpointLabel {
+  class LegacyReasonSinkExcludedEndpointLabeller extends EndpointLabeller,
+    TLegacyReasonSinkExcludedEndpointLabeller {
     override string getLabel(DataFlow::Node n) {
       exists(string inner |
-        this = TLegacyReasonSinkExcludedEndpointLabel(inner) and
+        this = TLegacyReasonSinkExcludedEndpointLabeller(inner) and
         inner = StandardEndpointFilters::getAReasonSinkExcluded(n)
       |
         result = inner
       )
     }
 
-    override string toString() {
-      exists(string inner | this = TLegacyReasonSinkExcludedEndpointLabel(inner) |
-        result = "LegacyReasonSinkExcludedEndpointLabel(" + inner + ")"
+    override string getRange() {
+      exists(string inner | this = TLegacyReasonSinkExcludedEndpointLabeller(inner) |
+        result = inner
       )
     }
   }
 
-  class LegacyModeledDbAccessEndpointLabel extends EndpointLabel, TLegacyModeledDbAccess {
+  class LegacyModeledDbAccessEndpointLabeller extends EndpointLabeller, TLegacyModeledDbAccess {
     override string getLabel(DataFlow::Node n) {
       exists(DataFlow::CallNode call | n = call.getAnArgument() |
         call.(DataFlow::MethodCallNode).getMethodName() =
@@ -76,50 +87,53 @@ module Labels {
         result = "legacy/modeled/db-access/matches database access call heuristic"
         or
         call instanceof DatabaseAccess and
-        result = "legacy/modeled/db-access"
+        result = "legacy/modeled/db-access/classic-model"
       )
     }
 
-    override string toString() { result = "LegacyModeledDbAccessEndpointLabel" }
+    override string getRange() { result = "legacy/modeled/db-access/**" }
   }
 
-  class LegacyModeledSinkEndpointLabel extends Labels::EndpointLabel, TLegacyModeledSink {
+  class LegacyModeledSinkEndpointLabeller extends Labels::EndpointLabeller, TLegacyModeledSink {
     override string getLabel(DataFlow::Node n) {
       CoreKnowledge::isArgumentToKnownLibrarySinkFunction(n) and
-      result = "modeled sink"
+      result = "legacy/modeled/sink"
     }
 
-    override string toString() { result = "LegacyModeledSinkEndpointLabel" }
+    override string getRange() { result = "legacy/modeled/sink" }
   }
 
-  class LegacyModeledStepSourceEndpointLabel extends Labels::EndpointLabel, TLegacyModeledStepSource {
+  class LegacyModeledStepSourceEndpointLabeller extends Labels::EndpointLabeller,
+    TLegacyModeledStepSource {
     override string getLabel(DataFlow::Node n) {
       CoreKnowledge::isKnownStepSrc(n) and
       result = "legacy/modeled/step-source"
     }
 
-    override string toString() { result = "LegacyModeledStepSourceEndpointLabel" }
+    override string getRange() { result = "legacy/modeled/step-source" }
   }
 
-  class LegacyModeledHttpEndpointLabel extends Labels::EndpointLabel, TLegacyModeledHttp {
+  class LegacyModeledHttpEndpointLabeller extends Labels::EndpointLabeller, TLegacyModeledHttp {
     string kind;
 
-    LegacyModeledHttpEndpointLabel() { this = TLegacyModeledHttp(kind) }
+    LegacyModeledHttpEndpointLabeller() { this = TLegacyModeledHttp(kind) }
 
     override string getLabel(DataFlow::Node n) {
       exists(DataFlow::CallNode call | n = call.getAnArgument() |
+        kind = "request" and
         call.getReceiver() instanceof Http::RequestNode and
         result = "legacy/modeled/http/request"
         or
+        kind = "response" and
         call.getReceiver() instanceof Http::ResponseNode and
         result = "legacy/modeled/http/response"
       )
     }
 
-    override string toString() { result = "LegacyModeledHttpEndpointLabel(" + kind + ")" }
+    override string getRange() { result = "legacy/modeled/http/" + kind }
   }
 }
 
-string getAnEndpointLabel(DataFlow::Node n) { result = any(Labels::EndpointLabel l).getLabel(n) }
+string getAnEndpointLabel(DataFlow::Node n) { result = any(Labels::EndpointLabeller l).getLabel(n) }
 
 DataFlow::Node getALabeledEndpoint(string label) { getAnEndpointLabel(result) = label }

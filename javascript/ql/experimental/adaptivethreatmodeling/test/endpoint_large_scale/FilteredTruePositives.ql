@@ -25,23 +25,28 @@ import experimental.adaptivethreatmodeling.XssATM as XssAtm
 query predicate nosqlFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof NosqlInjection::Sink and
   reason = NosqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint) and
-  not reason = ["argument to modeled function", "modeled sink", "legacy/modeled/db-access"]
+  not reason
+      .matches("%" +
+          [
+            "legacy/reason-sink-excluded/argument to modeled function", "legacy/modeled/sink",
+            "legacy/modeled/db-access/"
+          ] + "%")
 }
 
 query predicate sqlFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof SqlInjection::Sink and
   reason = SqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint) and
-  reason != "argument to modeled function"
+  reason != "legacy/reason-sink-excluded/argument to modeled function"
 }
 
 query predicate taintedPathFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof TaintedPath::Sink and
   reason = TaintedPathAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint) and
-  reason != "argument to modeled function"
+  reason != "legacy/reason-sink-excluded/argument to modeled function"
 }
 
 query predicate xssFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof DomBasedXss::Sink and
   reason = XssAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint) and
-  reason != "argument to modeled function"
+  reason != "legacy/reason-sink-excluded/argument to modeled function"
 }

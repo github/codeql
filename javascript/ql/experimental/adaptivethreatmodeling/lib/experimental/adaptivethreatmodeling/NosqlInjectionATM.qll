@@ -20,12 +20,12 @@ module SinkEndpointFilter {
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
     result =
-      any(StandardEndpointLabels::Labels::EndpointLabel l |
-        l instanceof StandardEndpointLabels::Labels::LegacyReasonSinkExcludedEndpointLabel or
-        l instanceof StandardEndpointLabels::Labels::LegacyModeledDbAccessEndpointLabel or
-        l instanceof StandardEndpointLabels::Labels::LegacyModeledSinkEndpointLabel or
-        l instanceof StandardEndpointLabels::Labels::LegacyModeledStepSourceEndpointLabel or
-        l instanceof StandardEndpointLabels::Labels::LegacyModeledHttpEndpointLabel
+      any(StandardEndpointLabels::Labels::EndpointLabeller l |
+        l instanceof StandardEndpointLabels::Labels::LegacyReasonSinkExcludedEndpointLabeller or
+        l instanceof StandardEndpointLabels::Labels::LegacyModeledDbAccessEndpointLabeller or
+        l instanceof StandardEndpointLabels::Labels::LegacyModeledSinkEndpointLabeller or
+        l instanceof StandardEndpointLabels::Labels::LegacyModeledStepSourceEndpointLabeller or
+        l instanceof StandardEndpointLabels::Labels::LegacyModeledHttpEndpointLabeller
       ).getLabel(sinkCandidate)
     or
     // TODO move this comment, and update it, when improving the endpoint filters.
@@ -59,7 +59,7 @@ module SinkEndpointFilter {
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
     not sinkCandidate =
-      StandardEndpointLabels::getALabeledEndpoint("legacy/likely-external-library-call")
+      StandardEndpointLabels::getALabeledEndpoint("legacy/likely-external-library-call/is")
           .(DataFlow::CallNode)
           .getAnArgument() and
     not (
