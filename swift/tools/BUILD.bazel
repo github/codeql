@@ -1,0 +1,23 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_files")
+
+sh_binary(
+    name = "qltest",
+    srcs = ["qltest.sh"],
+)
+
+sh_binary(
+    name = "autobuild",
+    srcs = ["autobuild.sh"],
+)
+
+pkg_files(
+    name = "tools",
+    srcs = [
+        ":autobuild",
+        ":qltest",
+    ],
+    attributes = pkg_attributes(mode = "0755"),
+    prefix = "tools",
+)
