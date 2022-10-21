@@ -283,6 +283,9 @@ class Callable extends StmtParent, Member, @callable {
   /** Holds if the last parameter of this callable is a varargs (variable arity) parameter. */
   predicate isVarargs() { this.getAParameter().isVarargs() }
 
+  /** Gets the index of this callable's varargs parameter, if any exists. */
+  int getVaragsParameterIndex() { this.getParameter(result).isVarargs() }
+
   /**
    * Gets the signature of this callable, where all types in the signature have a fully-qualified name.
    * The parameter types are only separated by a comma (without space). If this callable has

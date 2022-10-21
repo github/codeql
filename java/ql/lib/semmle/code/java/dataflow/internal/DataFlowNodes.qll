@@ -378,11 +378,11 @@ module Private {
      */
     predicate argumentOf(DataFlowCall call, int pos) {
       exists(Argument arg | this.asExpr() = arg |
-        call.asCall() = arg.getCall() and pos = arg.getPosition()
+        call.asCall() = arg.getCall() and pos = arg.getParameterPos()
       )
       or
       call.asCall() = this.(ImplicitVarargsArray).getCall() and
-      pos = call.asCall().getCallee().getNumberOfParameters() - 1
+      pos = call.asCall().getCallee().getVaragsParameterIndex()
       or
       pos = -1 and this = getInstanceArgument(call.asCall())
       or
