@@ -257,3 +257,6 @@ unresolved_subclass.rb:
 
 #    7| UnresolvedNamespace::Subclass2
 #-----| super -> UnresolvedNamespace::Subclass1
+
+#   11| UnresolvedNamespace::A
+#-----| super -> Object

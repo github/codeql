@@ -65,6 +65,12 @@ private module Cached {
       forex(ClassDeclaration d | d = cls.getADeclaration() |
         not exists(resolveConstantReadAccess(d.getSuperclassExpr()))
       )
+      or
+      // If a module is used as a base class of another class, but we don't see its class declaration
+      // treat it as a class extending Object, so its subclasses transitively extend Object.
+      result = TResolved("Object") and
+      not cls.getADeclaration() instanceof ClassDeclaration and
+      cls = resolveConstantReadAccess(any(ClassDeclaration d).getSuperclassExpr())
     )
   }
 
