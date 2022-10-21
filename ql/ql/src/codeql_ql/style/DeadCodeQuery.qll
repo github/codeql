@@ -75,7 +75,7 @@ private AstNode alive() {
   or
   result instanceof TopLevel // toplevel is always alive.
   or
-  // recurisve cases
+  // recursive cases
   result = aliveStep(alive())
 }
 
@@ -243,13 +243,13 @@ private AstNode queryable() {
   or
   result instanceof TopLevel // toplevel is always alive.
   or
-  // recurisve cases
+  // recursive cases
   result = aliveStep(queryable())
 }
 
 /**
  * Gets an AstNode that does not affect any query result.
- * Is interresting as an quick-eval target to investigate dead code.
+ * Is interesting as an quick-eval target to investigate dead code.
  * (It is intentional that this predicate is a result of this predicate).
  */
 AstNode unQueryable(string msg) {

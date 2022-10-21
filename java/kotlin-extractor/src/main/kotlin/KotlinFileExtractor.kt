@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
+import org.jetbrains.kotlin.config.JvmAnalysisFlags
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
 import org.jetbrains.kotlin.ir.IrElement
@@ -120,11 +121,7 @@ open class KotlinFileExtractor(
     }
 
     private fun shouldExtractDecl(declaration: IrDeclaration, extractPrivateMembers: Boolean) =
-        extractPrivateMembers ||
-        when(declaration) {
-            is IrDeclarationWithVisibility -> declaration.visibility.let { it != DescriptorVisibilities.PRIVATE && it != DescriptorVisibilities.PRIVATE_TO_THIS }
-            else -> true
-        }
+        extractPrivateMembers || !isPrivate(declaration)
 
     fun extractDeclaration(declaration: IrDeclaration, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean) {
         with("declaration", declaration) {
@@ -308,7 +305,7 @@ open class KotlinFileExtractor(
                 val kind = c.kind
                 if (kind == ClassKind.ENUM_CLASS) {
                     tw.writeIsEnumType(classId)
-                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                     logger.errorElement("Unrecognised class kind $kind", c)
                 }
             }
@@ -367,23 +364,37 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun makeTypeParamSubstitution(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?) =
+        when (argsIncludingOuterClasses) {
+            null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
+            else -> makeGenericSubstitutionFunction(c, argsIncludingOuterClasses)
+        }
+
+    fun extractDeclarationPrototype(d: IrDeclaration, parentId: Label<out DbReftype>, argsIncludingOuterClasses: List<IrTypeArgument>?, typeParamSubstitutionQ: TypeSubstitution? = null) {
+        val typeParamSubstitution = typeParamSubstitutionQ ?:
+            when(val parent = d.parent) {
+                is IrClass -> makeTypeParamSubstitution(parent, argsIncludingOuterClasses)
+                else -> {
+                    logger.warnElement("Unable to extract prototype of local declaration", d)
+                    return
+                }
+            }
+        when (d) {
+            is IrFunction -> extractFunction(d, parentId, extractBody = false, extractMethodAndParameterTypeAccesses = false, typeParamSubstitution, argsIncludingOuterClasses)
+            is IrProperty -> extractProperty(d, parentId, extractBackingField = false, extractFunctionBodies = false, extractPrivateMembers = false, typeParamSubstitution, argsIncludingOuterClasses)
+            else -> {}
+        }
+    }
+
     // `argsIncludingOuterClasses` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     private fun extractNonPrivateMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
         with("member prototypes", c) {
-            val typeParamSubstitution =
-                when (argsIncludingOuterClasses) {
-                    null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
-                    else -> makeGenericSubstitutionFunction(c, argsIncludingOuterClasses)
-                }
+            val typeParamSubstitution = makeTypeParamSubstitution(c, argsIncludingOuterClasses)
 
             c.declarations.map {
                 if (shouldExtractDecl(it, false)) {
-                    when(it) {
-                        is IrFunction -> extractFunction(it, id, extractBody = false, extractMethodAndParameterTypeAccesses = false, typeParamSubstitution, argsIncludingOuterClasses)
-                        is IrProperty -> extractProperty(it, id, extractBackingField = false, extractFunctionBodies = false, extractPrivateMembers = false, typeParamSubstitution, argsIncludingOuterClasses)
-                        else -> {}
-                    }
+                    extractDeclarationPrototype(it, id, argsIncludingOuterClasses, typeParamSubstitution)
                 }
             }
         }
@@ -441,7 +452,7 @@ open class KotlinFileExtractor(
                     val kind = c.kind
                     if (kind == ClassKind.ENUM_CLASS) {
                         tw.writeIsEnumType(classId)
-                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                         logger.warnElement("Unrecognised class kind $kind", c)
                     }
 
@@ -583,12 +594,7 @@ open class KotlinFileExtractor(
             var parent: IrDeclarationParent? = declarationParent
             while (parent != null) {
                 if (parent is IrClass) {
-                    val parentId =
-                        if (parent.isAnonymousObject) {
-                            useAnonymousClass(parent).javaResult.id.cast<DbClass>()
-                        } else {
-                            useClassInstance(parent, parentClassTypeArguments).typeResult.id
-                        }
+                    val parentId = useClassInstance(parent, parentClassTypeArguments).typeResult.id
                     tw.writeEnclInReftype(innerId, parentId)
                     if (innerClass != null && innerClass.isCompanion) {
                         // If we are a companion then our parent has a
@@ -840,10 +846,68 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun isKotlinDefinedInterface(cls: IrClass?) =
+        cls != null && cls.isInterface && cls.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
+
+    private fun needsInterfaceForwarder(f: IrFunction) =
+        // forAllMethodsWithBody means -Xjvm-default=all or all-compatibility, in which case real Java default interfaces are used, and we don't need to do anything.
+        // Otherwise, for a Kotlin-defined method inheriting a Kotlin-defined default, we need to create a synthetic method like
+        // `int f(int x) { return super.InterfaceWithDefault.f(x); }`, because kotlinc will generate a public method and Java callers may directly target it.
+        // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class called InterfaceWithDefault$DefaultImpls and stores the default methods
+        // there to allow default method usage in Java < 8, but this is hopefully niche.
+        !pluginContext.languageVersionSettings.getFlag(JvmAnalysisFlags.jvmDefaultMode).forAllMethodsWithBody &&
+                f.parentClassOrNull.let { it != null && it.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB && it.modality != Modality.ABSTRACT } &&
+                f.realOverrideTarget.let { it != f && (it as? IrSimpleFunction)?.modality != Modality.ABSTRACT && isKotlinDefinedInterface(it.parentClassOrNull) }
+
+    private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)).also { functionId ->
+            tw.writeCompiler_generated(functionId, CompilerGeneratedKinds.INTERFACE_FORWARDER.kind)
+            if (extractBody) {
+                val realFunctionLocId = tw.getLocation(f)
+                val inheritedDefaultFunction = f.realOverrideTarget
+                val directlyInheritedSymbol =
+                    when(f) {
+                        is IrSimpleFunction ->
+                            f.overriddenSymbols.find { it.owner === inheritedDefaultFunction }
+                                ?: f.overriddenSymbols.find { it.owner.realOverrideTarget === inheritedDefaultFunction }
+                                ?: inheritedDefaultFunction.symbol
+                        else -> inheritedDefaultFunction.symbol // This is strictly invalid, since we shouldn't use A.super.f(...) where A may not be a direct supertype, but this path should also be unreachable.
+                    }
+                val defaultDefiningInterfaceType = (directlyInheritedSymbol.owner.parentClassOrNull ?: return functionId).typeWith()
+
+                extractExpressionBody(functionId, realFunctionLocId).also { returnId ->
+                    extractRawMethodAccess(
+                        f,
+                        realFunctionLocId,
+                        f.returnType,
+                        functionId,
+                        returnId,
+                        0,
+                        returnId,
+                        f.valueParameters.size,
+                        { argParentId, idxOffset ->
+                            f.valueParameters.mapIndexed { idx, param ->
+                                val syntheticParamId = useValueParameter(param, functionId)
+                                extractVariableAccess(syntheticParamId, param.type, realFunctionLocId, argParentId, idxOffset + idx, functionId, returnId)
+                            }
+                        },
+                        f.dispatchReceiverParameter?.type,
+                        { callId ->
+                            extractSuperAccess(defaultDefiningInterfaceType, functionId, callId, -1, returnId, realFunctionLocId)
+                        },
+                        null
+                    )
+                }
+            }
+        }
+
     private fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        if (isFake(f))
-            null
-        else {
+        if (isFake(f)) {
+            if (needsInterfaceForwarder(f))
+                makeInterfaceForwarder(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses)
+            else
+                null
+        } else {
             forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also {
                 // The defaults-forwarder function is a static utility, not a member, so we only need to extract this for the unspecialised instance of this class.
                 if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
@@ -868,7 +932,7 @@ open class KotlinFileExtractor(
                     extractTypeAccess(useType(paramType), locId, paramId, -1)
             }
         }
-        val paramsSignature = allParamTypeResults.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature }
+        val paramsSignature = allParamTypeResults.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.javaResult, f) }
         val shortName = getDefaultsMethodName(f)
 
         if (f.symbol is IrConstructorSymbol) {
@@ -1078,6 +1142,14 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun signatureOrWarn(t: TypeResult<*>, associatedElement: IrElement?) =
+        t.signature ?: "<signature unavailable>".also {
+            if (associatedElement != null)
+                logger.warnElement("Needed a signature for a type that doesn't have one", associatedElement)
+            else
+                logger.warn("Needed a signature for a type that doesn't have one")
+        }
+
     private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractOrigin: Boolean = true, overriddenAttributes: OverriddenFunctionAttributes? = null): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f, overriddenAttributes).use {
@@ -1114,7 +1186,7 @@ open class KotlinFileExtractor(
                     paramTypes
                 }
 
-                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature }
+                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.javaResult, f) }
 
                 val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, (javaCallable as? JavaMethod)?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
@@ -1150,7 +1222,7 @@ open class KotlinFileExtractor(
                     extractBody(body, id)
                 }
 
-                extractVisibility(f, id, f.visibility)
+                extractVisibility(f, id, overriddenAttributes?.visibility ?: f.visibility)
 
                 if (f.isInline) {
                     addModifiers(id, "inline")
@@ -1214,7 +1286,9 @@ open class KotlinFileExtractor(
 
     private fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, extractPrivateMembers: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("property", p) {
-            if (isFake(p)) return
+            fun needsInterfaceForwarderQ(f: IrFunction?) = f?.let { needsInterfaceForwarder(f) } ?: false
+
+            if (isFake(p) && !needsInterfaceForwarderQ(p.getter) && !needsInterfaceForwarderQ(p.setter)) return
 
             DeclarationStackAdjuster(p).use {
 
@@ -1810,7 +1884,7 @@ open class KotlinFileExtractor(
             IrConstImpl.defaultValueForType(0, 0, getDefaultsMethodLastArgType(callTarget))
         )
 
-        extractCallValueArguments(id, valueArgsWithDummies + extraArgs, enclosingStmt, enclosingCallable, nextIdx)
+        extractCallValueArguments(id, valueArgsWithDummies + extraArgs, enclosingStmt, enclosingCallable, nextIdx, extractVarargAsArray = true)
     }
 
     private fun getFunctionInvokeMethod(typeArgs: List<IrTypeArgument>): IrFunction? {
@@ -1887,8 +1961,12 @@ open class KotlinFileExtractor(
         superQualifierSymbol: IrClassSymbol? = null) {
 
         val locId = tw.getLocation(locElement)
+        val varargParam = syntacticCallTarget.valueParameters.withIndex().find { it.value.isVararg }
+        // If the vararg param is the only one not specified, and it has no default value, then we don't need to call a $default method,
+        // as omitting it already implies passing an empty vararg array.
+        val nullAllowedIdx = if (varargParam != null && varargParam.value.defaultValue == null) varargParam.index else -1
 
-        if (valueArguments.any { it == null }) {
+        if (valueArguments.withIndex().any { (index, it) -> it == null && index != nullAllowedIdx }) {
             extractsDefaultsCall(
                 syntacticCallTarget,
                 locId,
@@ -2008,11 +2086,11 @@ open class KotlinFileExtractor(
     private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
         extractCallValueArguments(callId, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, enclosingStmt, enclosingCallable, idxOffset)
 
-    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) {
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int, extractVarargAsArray: Boolean = false) {
         var i = 0
         valueArguments.forEach { arg ->
             if(arg != null) {
-                if (arg is IrVararg) {
+                if (arg is IrVararg && !extractVarargAsArray) {
                     arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, callId, i + idxOffset + varargNo, enclosingStmt) }
                     i += arg.elements.size
                 } else {
@@ -2952,20 +3030,8 @@ open class KotlinFileExtractor(
             logger.errorElement("Constructor call has non-simple type ${eType.javaClass}", e)
             return
         }
+        val type = useType(eType)
         val isAnonymous = eType.isAnonymous
-        val type: TypeResults = if (isAnonymous) {
-            if (e.typeArgumentsCount > 0) {
-                logger.warnElement("Unexpected type arguments (${e.typeArgumentsCount}) for anonymous class constructor call", e)
-            }
-            val c = eType.classifier.owner
-            if (c !is IrClass) {
-                logger.errorElement("Anonymous constructor call type not a class (${c.javaClass})", e)
-                return
-            }
-            useAnonymousClass(c)
-        } else {
-            useType(eType)
-        }
         val locId = tw.getLocation(e)
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
         // For now, don't try to use default methods for enum constructor calls,
@@ -2982,7 +3048,7 @@ open class KotlinFileExtractor(
         }
 
         if (isAnonymous) {
-            tw.writeIsAnonymClass(type.javaResult.id.cast<DbClass>(), id)
+            tw.writeIsAnonymClass(type.javaResult.id.cast(), id)
         }
 
         val dr = e.dispatchReceiver
@@ -4640,7 +4706,7 @@ open class KotlinFileExtractor(
             Pair(paramId, paramType)
         }
 
-        val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { it.second.javaResult.signature }
+        val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.second.javaResult, declarationStack.tryPeek()?.first) }
 
         val rt = useType(returnType, TypeContext.RETURN)
         tw.writeMethods(methodId, name, "$name$paramsSignature", rt.javaResult.id, parentId, methodId)
@@ -5359,6 +5425,8 @@ open class KotlinFileExtractor(
 
         fun peek() = stack.peek()
 
+        fun tryPeek() = if (stack.isEmpty()) null else stack.peek()
+
         fun findOverriddenAttributes(f: IrFunction) =
             stack.lastOrNull { it.first == f } ?.second
 
@@ -5372,7 +5440,9 @@ open class KotlinFileExtractor(
         val sourceLoc: Label<DbLocation>? = null,
         val valueParameters: List<IrValueParameter>? = null,
         val typeParameters: List<IrTypeParameter>? = null,
-        val isStatic: Boolean? = null)
+        val isStatic: Boolean? = null,
+        val visibility: DescriptorVisibility? = null,
+    )
 
     private fun peekDeclStackAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
         val trapWriter = tw
@@ -5397,6 +5467,7 @@ open class KotlinFileExtractor(
         DELEGATED_PROPERTY_SETTER(7),
         JVMSTATIC_PROXY_METHOD(8),
         JVMOVERLOADS_METHOD(9),
-        DEFAULT_ARGUMENTS_METHOD(10)
+        DEFAULT_ARGUMENTS_METHOD(10),
+        INTERFACE_FORWARDER(11),
     }
 }

@@ -263,29 +263,42 @@ modifiers
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | override |
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | public |
 compGenerated
-| file://<external>/Class2.class:0:0:0:0 | getValue | 3 |
-| file://<external>/Class2.class:0:0:0:0 | getValue | 3 |
-| file://<external>/KTypeProjection.class:0:0:0:0 | contravariant | 8 |
-| file://<external>/KTypeProjection.class:0:0:0:0 | copy$default | 10 |
-| file://<external>/KTypeProjection.class:0:0:0:0 | covariant | 8 |
-| file://<external>/KTypeProjection.class:0:0:0:0 | invariant | 8 |
-| reflection.kt:33:9:33:23 | getP0 | 3 |
-| reflection.kt:34:9:34:23 | getP1 | 3 |
-| reflection.kt:34:9:34:23 | setP1 | 3 |
-| reflection.kt:83:17:83:28 | getValue | 3 |
-| reflection.kt:105:18:105:31 | getProp1 | 3 |
-| reflection.kt:105:18:105:31 | setProp1 | 3 |
-| reflection.kt:126:9:126:13 |  | 1 |
-| reflection.kt:131:1:131:50 | takesOptionalParam$default | 10 |
-| reflection.kt:134:21:134:40 |  | 1 |
-| reflection.kt:140:5:140:54 | takesOptionalParam$default | 10 |
-| reflection.kt:144:21:144:41 |  | 1 |
-| reflection.kt:145:32:145:70 |  | 1 |
-| reflection.kt:150:1:150:60 | extTakesOptionalParam$default | 10 |
-| reflection.kt:153:21:153:44 |  | 1 |
-| reflection.kt:154:33:154:61 |  | 1 |
-| reflection.kt:157:1:157:49 | ConstructorOptional | 10 |
-| reflection.kt:162:25:162:45 |  | 1 |
+| file://<external>/CharProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/CharProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/CharRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/CharRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
+| file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
+| file://<external>/IntProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/IntProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/IntRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/IntRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/KTypeProjection.class:0:0:0:0 | contravariant | Proxy static method for a @JvmStatic-annotated function or property |
+| file://<external>/KTypeProjection.class:0:0:0:0 | copy$default | Forwarder for Kotlin calls that need default arguments filling in |
+| file://<external>/KTypeProjection.class:0:0:0:0 | covariant | Proxy static method for a @JvmStatic-annotated function or property |
+| file://<external>/KTypeProjection.class:0:0:0:0 | invariant | Proxy static method for a @JvmStatic-annotated function or property |
+| file://<external>/LongProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/LongProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/LongRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/LongRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/String.class:0:0:0:0 | isEmpty | Forwarder for a Kotlin class inheriting an interface default method |
+| reflection.kt:33:9:33:23 | getP0 | Default property accessor |
+| reflection.kt:34:9:34:23 | getP1 | Default property accessor |
+| reflection.kt:34:9:34:23 | setP1 | Default property accessor |
+| reflection.kt:83:17:83:28 | getValue | Default property accessor |
+| reflection.kt:105:18:105:31 | getProp1 | Default property accessor |
+| reflection.kt:105:18:105:31 | setProp1 | Default property accessor |
+| reflection.kt:126:9:126:13 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:131:1:131:50 | takesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:134:21:134:40 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:140:5:140:54 | takesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:144:21:144:41 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:145:32:145:70 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:150:1:150:60 | extTakesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:153:21:153:44 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:154:33:154:61 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:157:1:157:49 | ConstructorOptional | Forwarder for Kotlin calls that need default arguments filling in |
+| reflection.kt:162:25:162:45 |  | Declaring classes of adapter functions in Kotlin |
 propertyReferenceOverrides
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | kotlin.reflect.KProperty1<C,Integer>.get(Reflection.C) |
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | invoke | kotlin.jvm.functions.Function1<C,Integer>.invoke(Reflection.C) |

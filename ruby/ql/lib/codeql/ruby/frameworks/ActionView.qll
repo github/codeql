@@ -39,11 +39,6 @@ predicate inActionViewContext(AstNode n) {
   n.getLocation().getFile() instanceof ErbFile
 }
 
-/** A call to `html_safe` from within a template. */
-private class ActionViewHtmlSafeCall extends HtmlSafeCallImpl {
-  ActionViewHtmlSafeCall() { this.getMethodName() = "html_safe" and inActionViewContext(this) }
-}
-
 /**
  * A call to a Rails method that escapes HTML.
  */

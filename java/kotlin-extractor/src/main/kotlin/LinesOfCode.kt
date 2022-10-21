@@ -1,9 +1,10 @@
 package com.github.codeql
 
-import com.github.codeql.utils.versions.Psi2Ir
+import com.github.codeql.utils.versions.getPsi2Ir
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.kdoc.psi.api.KDocElement
@@ -15,9 +16,16 @@ class LinesOfCode(
     val tw: FileTrapWriter,
     val file: IrFile
 ) {
-    val psi2Ir = Psi2Ir(logger)
+    val psi2Ir = getPsi2Ir(logger).also {
+        if (it == null) {
+            logger.warn("Lines of code will not be populated as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})")
+        }
+    }
 
     fun linesOfCodeInFile(id: Label<DbFile>) {
+        if (psi2Ir == null) {
+            return
+        }
         val ktFile = psi2Ir.getKtFile(file)
         if (ktFile == null) {
             return
@@ -26,6 +34,9 @@ class LinesOfCode(
     }
 
     fun linesOfCodeInDeclaration(d: IrDeclaration, id: Label<out DbSourceline>) {
+        if (psi2Ir == null) {
+            return
+        }
         val p = psi2Ir.findPsiElement(d, file)
         if (p == null) {
             return
