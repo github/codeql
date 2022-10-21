@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
+import com.github.codeql.utils.versions.getKotlinType
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -671,7 +672,7 @@ open class KotlinUsesExtractor(
                           javaClass: IrClass,
                           kotlinPackageName: String, kotlinClassName: String): TypeResults {
             // Note the use of `hasEnhancedNullability` here covers cases like `@NotNull Integer`, which must be extracted as `Integer` not `int`.
-            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && s.kotlinType?.hasEnhancedNullability() != true && primitiveName != null) {
+            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && getKotlinType(s)?.hasEnhancedNullability() != true && primitiveName != null) {
                     val label: Label<DbPrimitive> = tw.getLabelFor("@\"type;$primitiveName\"", {
                         tw.writePrimitives(it, primitiveName)
                     })
