@@ -3816,6 +3816,25 @@ constant_compound_assign.rb:
 #-----|  -> ... || ...
 
 #   16| top_after
+#-----|  -> TOP_CONSTANT2
+
+#   19| TOP_CONSTANT2
+#-----|  -> TOP_CONSTANT2
+
+#   19| TOP_CONSTANT2
+#-----| true -> ... || ...
+#-----| false -> 123
+
+#   19| ... = ...
+#-----|  -> top_after2
+
+#   19| ... || ...
+#-----|  -> ... = ...
+
+#   19| 123
+#-----|  -> ... || ...
+
+#   21| top_after2
 #-----|  -> exit constant_compound_assign.rb (normal)
 
 desugar.rb:

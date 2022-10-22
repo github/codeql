@@ -2853,6 +2853,9 @@ operations/operations.rb:
 #  102|           getReceiver: [SelfVariableAccess] self
 #  102|           getArgument: [IntegerLiteral] 1
 #  102|     getAnOperand/getRightOperand: [IntegerLiteral] 7
+#  103|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  103|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT4
+#  103|     getAnOperand/getRightOperand: [IntegerLiteral] 7
 params/params.rb:
 #    1| [Toplevel] params.rb
 #    4|   getStmt: [Method] identifier_method_params

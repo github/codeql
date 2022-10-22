@@ -44,6 +44,7 @@ binaryOperations
 | operations.rb:100:11:100:13 | ... \|\| ... | \|\| | operations.rb:100:1:100:9 | CONSTANT3 | operations.rb:100:15:100:15 | 7 | LogicalOrExpr |
 | operations.rb:101:21:101:23 | ... \|\| ... | \|\| | operations.rb:101:1:101:19 | MemberConstant | operations.rb:101:25:101:25 | 8 | LogicalOrExpr |
 | operations.rb:102:27:102:29 | ... \|\| ... | \|\| | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:31:102:31 | 7 | LogicalOrExpr |
+| operations.rb:103:13:103:15 | ... \|\| ... | \|\| | operations.rb:103:1:103:11 | CONSTANT4 | operations.rb:103:17:103:17 | 7 | LogicalOrExpr |
 binaryArithmeticOperations
 | operations.rb:32:1:32:7 | ... + ... | + | operations.rb:32:1:32:1 | w | operations.rb:32:5:32:7 | 234 | AddExpr |
 | operations.rb:33:1:33:6 | ... - ... | - | operations.rb:33:1:33:1 | x | operations.rb:33:5:33:6 | 17 | SubExpr |
@@ -71,6 +72,7 @@ binaryLogicalOperations
 | operations.rb:100:11:100:13 | ... \|\| ... | \|\| | operations.rb:100:1:100:9 | CONSTANT3 | operations.rb:100:15:100:15 | 7 | LogicalOrExpr |
 | operations.rb:101:21:101:23 | ... \|\| ... | \|\| | operations.rb:101:1:101:19 | MemberConstant | operations.rb:101:25:101:25 | 8 | LogicalOrExpr |
 | operations.rb:102:27:102:29 | ... \|\| ... | \|\| | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:31:102:31 | 7 | LogicalOrExpr |
+| operations.rb:103:13:103:15 | ... \|\| ... | \|\| | operations.rb:103:1:103:11 | CONSTANT4 | operations.rb:103:17:103:17 | 7 | LogicalOrExpr |
 binaryBitwiseOperations
 | operations.rb:46:1:46:6 | ... << ... | << | operations.rb:46:1:46:1 | x | operations.rb:46:6:46:6 | 3 | LShiftExpr |
 | operations.rb:47:1:47:7 | ... >> ... | >> | operations.rb:47:1:47:1 | y | operations.rb:47:6:47:7 | 16 | RShiftExpr |

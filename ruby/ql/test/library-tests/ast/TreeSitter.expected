@@ -5571,6 +5571,12 @@ operations/operations.rb:
 #  102|       2: [Constant] OtherConstant
 #  102|     1: [ReservedWord] ||=
 #  102|     2: [Integer] 7
+#  103|   71: [OperatorAssignment] OperatorAssignment
+#  103|     0: [ScopeResolution] ScopeResolution
+#  103|       0: [ReservedWord] ::
+#  103|       1: [Constant] CONSTANT4
+#  103|     1: [ReservedWord] ||=
+#  103|     2: [Integer] 7
 #    1| [Comment] # Start with assignments to all the identifiers used below, so that they are
 #    2| [Comment] # interpreted as variables.
 #   22| [Comment] # Unary operations

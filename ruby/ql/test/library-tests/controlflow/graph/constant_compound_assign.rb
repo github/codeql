@@ -15,3 +15,8 @@ TOP_CONSTANT ||= 123
 
 def top_after
 end
+
+::TOP_CONSTANT2 ||= 123
+
+def top_after2
+end

@@ -224,3 +224,9 @@
 | operations.rb:102:1:102:31 | ... \|\|= ... | \|\|= | operations.rb:102:31:102:31 | 7 | AssignLogicalOrExpr |
 | operations.rb:102:27:102:29 | ... \|\| ... | \|\| | operations.rb:102:1:102:25 | OtherConstant | LogicalOrExpr |
 | operations.rb:102:27:102:29 | ... \|\| ... | \|\| | operations.rb:102:31:102:31 | 7 | LogicalOrExpr |
+| operations.rb:103:1:103:17 | ... = ... | = | operations.rb:103:1:103:11 | CONSTANT4 | AssignExpr |
+| operations.rb:103:1:103:17 | ... = ... | = | operations.rb:103:13:103:15 | ... \|\| ... | AssignExpr |
+| operations.rb:103:1:103:17 | ... \|\|= ... | \|\|= | operations.rb:103:1:103:11 | CONSTANT4 | AssignLogicalOrExpr |
+| operations.rb:103:1:103:17 | ... \|\|= ... | \|\|= | operations.rb:103:17:103:17 | 7 | AssignLogicalOrExpr |
+| operations.rb:103:13:103:15 | ... \|\| ... | \|\| | operations.rb:103:1:103:11 | CONSTANT4 | LogicalOrExpr |
+| operations.rb:103:13:103:15 | ... \|\| ... | \|\| | operations.rb:103:17:103:17 | 7 | LogicalOrExpr |

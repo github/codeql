@@ -904,6 +904,12 @@ operations/operations.rb:
 #  102|         getAnOperand/getLeftOperand/getReceiver: [ConstantReadAccess] OtherConstant
 #  102|           getScopeExpr: [LocalVariableAccess] __synth__0
 #  102|         getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 7
+#  103| [AssignLogicalOrExpr] ... ||= ...
+#  103|   getDesugared: [AssignExpr] ... = ...
+#  103|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT4
+#  103|     getAnOperand/getRightOperand: [LogicalOrExpr] ... || ...
+#  103|       getAnOperand/getLeftOperand/getReceiver: [ConstantReadAccess] CONSTANT4
+#  103|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 7
 params/params.rb:
 #    8| [HashLiteral] {...}
 #    8|   getDesugared: [MethodCall] call to []
