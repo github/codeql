@@ -49,6 +49,7 @@ class AllTarfileOpens extends API::CallNode {
     )
   }
 }
+
 /**
  * A taint-tracking configuration for detecting more "TarSlip" vulnerabilities.
  */
@@ -58,39 +59,44 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source = tarfileOpen().getACall() }
 
   override predicate isSink(DataFlow::Node sink) {
-    // A sink capturing method calls to `extractall` without `members` argument.
-    // For a call to `file.extractall` without `members` argument, `file` is considered a sink.
-    exists(MethodCallNode call , AllTarfileOpens atfo|
-      call = atfo.getReturn().getMember("extractall").getACall() and
-      not exists(Node arg | arg = call.getArgByName("members")) and
-      sink = call.getObject()
-    )
-    or
-    // A sink capturing method calls to `extractall` with `members` argument.
-    // For a call to `file.extractall` with `members` argument, `file` is considered a sink if not
-    // a the `members` argument contains a NameConstant as None, a List or call to the method `getmembers`.
-    // Otherwise, the argument of `members` is considered a sink.
-    exists(MethodCallNode call, Node arg, AllTarfileOpens atfo|
-      call = atfo.getReturn().getMember("extractall").getACall() and
-      arg = call.getArgByName("members") and
-      if
-        arg.asCfgNode() instanceof NameConstantNode or
-        arg.asCfgNode() instanceof ListNode
-      then sink = call.getObject()
-      else
-        if arg.(MethodCallNode).getMethodName() = "getmembers"
-        then sink = arg.(MethodCallNode).getObject()
-        else sink = call.getArgByName("members")
-    )
-    or
-    // An argument to `extract` is considered a sink.
-    exists(AllTarfileOpens atfo | sink = atfo.getReturn().getMember("extract").getACall().getArg(0))
-    or
-    //An argument to `_extract_member` is considered a sink.
-    exists(MethodCallNode call, AllTarfileOpens atfo |
-      call = atfo.getReturn().getMember("_extract_member").getACall() and
-      call.getArg(1).(AttrRead).accesses(sink, "name")
-    )
+    (
+      // A sink capturing method calls to `extractall` without `members` argument.
+      // For a call to `file.extractall` without `members` argument, `file` is considered a sink.
+      exists(MethodCallNode call, AllTarfileOpens atfo |
+        call = atfo.getReturn().getMember("extractall").getACall() and
+        not exists(Node arg | arg = call.getArgByName("members")) and
+        sink = call.getObject()
+      )
+      or
+      // A sink capturing method calls to `extractall` with `members` argument.
+      // For a call to `file.extractall` with `members` argument, `file` is considered a sink if not
+      // a the `members` argument contains a NameConstant as None, a List or call to the method `getmembers`.
+      // Otherwise, the argument of `members` is considered a sink.
+      exists(MethodCallNode call, Node arg, AllTarfileOpens atfo |
+        call = atfo.getReturn().getMember("extractall").getACall() and
+        arg = call.getArgByName("members") and
+        if
+          arg.asCfgNode() instanceof NameConstantNode or
+          arg.asCfgNode() instanceof ListNode
+        then sink = call.getObject()
+        else
+          if arg.(MethodCallNode).getMethodName() = "getmembers"
+          then sink = arg.(MethodCallNode).getObject()
+          else sink = call.getArgByName("members")
+      )
+      or
+      // An argument to `extract` is considered a sink.
+      exists(AllTarfileOpens atfo |
+        sink = atfo.getReturn().getMember("extract").getACall().getArg(0)
+      )
+      or
+      //An argument to `_extract_member` is considered a sink.
+      exists(MethodCallNode call, AllTarfileOpens atfo |
+        call = atfo.getReturn().getMember("_extract_member").getACall() and
+        call.getArg(1).(AttrRead).accesses(sink, "name")
+      )
+    ) and
+    not sink.getScope().getLocation().getFile().inStdlib()
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
