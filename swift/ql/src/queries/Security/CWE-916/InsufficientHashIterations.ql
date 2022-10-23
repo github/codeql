@@ -24,7 +24,7 @@ abstract class IterationsSource extends Expr { }
  * A literal integer that is 1000 or less is a source of taint for iterations.
  */
 class IntLiteralSource extends IterationsSource instanceof IntegerLiteralExpr {
-  IntLiteralSource() { this.getStringValue().toInt() >= 1000 }
+  IntLiteralSource() { this.getStringValue().toInt() < 1000 }
 }
 
 /**
@@ -33,20 +33,13 @@ class IntLiteralSource extends IterationsSource instanceof IntegerLiteralExpr {
 class InsufficientHashIterationsSink extends Expr {
   InsufficientHashIterationsSink() {
     // `iterations` arg in `init` is a sink
-    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getFullName() = "PKCS5.PBKDF1" and
+    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call, int arg |
+      c.getFullName() = ["PBKDF1", "PBKDF2"] and
       c.getAMember() = f and
       f.getName().matches("init(%iterations:%") and
       call.getStaticTarget() = f and
-      call.getArgument(2).getExpr() = this
-    )
-    or
-    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getFullName() = "PKCS5.PBKDF2" and
-      c.getAMember() = f and
-      f.getName().matches("init(%iterations:%") and
-      call.getStaticTarget() = f and
-      call.getArgument(3).getExpr() = this
+      f.getParam(pragma[only_bind_into](arg)).getName() = "iterations" and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this
     )
   }
 }
@@ -71,6 +64,6 @@ from
   DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
-  "The hash function '" + sinkNode.getNode().toString() +
-    "' has been initialized with an insufficient number of iterations from $@.", sourceNode,
-  sourceNode.getNode().toString()
+  "The variable '" + sinkNode.getNode().toString() +
+    "' is an insufficient number of iterations, which is not secure for hash functions.",
+  sourceNode, sourceNode.getNode().toString()
