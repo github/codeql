@@ -41,8 +41,8 @@ func test() {
 
 
 	// PBKDF2 test cases
-	let pbkdf2b1 = try PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: lowIterations, keyLength: 0) // BAD
-	let pbkdf2b2 = try PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: 800, keyLength: 0) // BAD
-	let pbkdf2g1 = PKCS5.PBKDF1(password: randomArray, salt: randomArray, iterations: enoughIterations, keyLength: 0) // GOOD
-	let pbkdf2g2 = PKCS5.PBKDF1(password: randomArray, salt: randomArray, iterations: 1200, keyLength: 0) // GOOD
+	let pbkdf2b1 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: lowIterations, keyLength: 0) // BAD
+	let pbkdf2b2 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: 800, keyLength: 0) // BAD
+	let pbkdf2g1 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: enoughIterations, keyLength: 0) // GOOD
+	let pbkdf2g2 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: 1200, keyLength: 0) // GOOD
 }
