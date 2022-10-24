@@ -17,6 +17,7 @@ pointsTo_found_typeTracker_notFound
 | code/funky_regression.py:15:9:15:17 | ControlFlowNode for Attribute() | Wat.f2 |
 | code/runtime_decision.py:44:1:44:7 | ControlFlowNode for func4() | "code/runtime_decision_defns.py:4:func4" |
 | code/runtime_decision.py:44:1:44:7 | ControlFlowNode for func4() | "code/runtime_decision_defns.py:7:func4" |
+| code/tuple_function_return.py:15:1:15:4 | ControlFlowNode for f2() | func |
 | code/type_tracking_limitation.py:8:1:8:3 | ControlFlowNode for x() | my_func |
 typeTracker_found_pointsTo_notFound
 | code/callable_as_argument.py:29:5:29:12 | ControlFlowNode for Attribute() | test_class.InsideTestFunc.sm |
