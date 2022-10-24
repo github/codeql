@@ -483,37 +483,39 @@ Node classInstanceTracker(Class cls) {
 }
 
 /**
- * Gets a reference to the `self` argument of a method on class `cls`.
+ * Gets a reference to the `self` argument of a method on class `classWithMethod`.
  * The method cannot be a `staticmethod` or `classmethod`.
  */
-private TypeTrackingNode selfTracker(TypeTracker t, Class cls) {
+private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
   t.start() and
   exists(Function func |
-    func = cls.getAMethod() and
+    func = classWithMethod.getAMethod() and
     not isStaticmethod(func) and
     not isClassmethod(func)
   |
     result.asExpr() = func.getArg(0)
   )
   or
-  exists(TypeTracker t2 | result = selfTracker(t2, cls).track(t2, t)) and
+  exists(TypeTracker t2 | result = selfTracker(t2, classWithMethod).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
- * Gets a reference to the `self` argument of a method on class `cls`.
+ * Gets a reference to the `self` argument of a method on class `classWithMethod`.
  * The method cannot be a `staticmethod` or `classmethod`.
  */
-Node selfTracker(Class cls) { selfTracker(TypeTracker::end(), cls).flowsTo(result) }
+Node selfTracker(Class classWithMethod) {
+  selfTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
+}
 
 /**
- * Gets a reference to the `cls` argument of a classmethod on class `cls`.
+ * Gets a reference to the `cls` argument of a classmethod on class `classWithMethod`.
  */
-private TypeTrackingNode clsTracker(TypeTracker t, Class cls) {
+private TypeTrackingNode clsTracker(TypeTracker t, Class classWithMethod) {
   t.start() and
   (
     exists(Function func |
-      func = cls.getAMethod() and
+      func = classWithMethod.getAMethod() and
       isClassmethod(func)
     |
       result.asExpr() = func.getArg(0)
@@ -521,17 +523,19 @@ private TypeTrackingNode clsTracker(TypeTracker t, Class cls) {
     or
     // type(self)
     result = getTypeCall() and
-    result.(CallCfgNode).getArg(0) = selfTracker(cls)
+    result.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
   )
   or
-  exists(TypeTracker t2 | result = clsTracker(t2, cls).track(t2, t)) and
+  exists(TypeTracker t2 | result = clsTracker(t2, classWithMethod).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
 
 /**
- * Gets a reference to the `cls` argument of a classmethod on class `cls`.
+ * Gets a reference to the `cls` argument of a classmethod on class `classWithMethod`.
  */
-Node clsTracker(Class cls) { clsTracker(TypeTracker::end(), cls).flowsTo(result) }
+Node clsTracker(Class classWithMethod) {
+  clsTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
+}
 
 /**
  * Gets a reference to the result of calling `super` without any argument, where the
@@ -825,7 +829,7 @@ private module MethodCalls {
 
   /**
    * Holds if `call` is a call to a method `target` derived from an implicit `self`/`cls`
-   * argument to a method within the class `methodWithinClass`.
+   * argument to a method within the class `classWithMethod`.
    *
    * It is found by making an attribute read `attr` with the name `functionName` on a
    * reference to an implicit `self`/`cls` argument. The reference the attribute-read is
@@ -833,24 +837,24 @@ private module MethodCalls {
    */
   pragma[noinline]
   private predicate callWithinMethodImplicitSelfOrCls(
-    CallNode call, Function target, string functionName, Class methodWithinClass, AttrRead attr,
+    CallNode call, Function target, string functionName, Class classWithMethod, AttrRead attr,
     Node self
   ) {
-    target = findFunctionAccordingToMro(getADirectSubclass*(methodWithinClass), functionName) and
-    callWithinMethodImplicitSelfOrCls_join(call, functionName, methodWithinClass, attr, self)
+    target = findFunctionAccordingToMro(getADirectSubclass*(classWithMethod), functionName) and
+    callWithinMethodImplicitSelfOrCls_join(call, functionName, classWithMethod, attr, self)
   }
 
   /** Extracted to give good join order */
   pragma[noinline]
   private predicate callWithinMethodImplicitSelfOrCls_join(
-    CallNode call, string functionName, Class methodWithinClass, AttrRead attr, Node self
+    CallNode call, string functionName, Class classWithMethod, AttrRead attr, Node self
   ) {
     (
       call.getFunction() = attrReadTracker(attr).asCfgNode() and
-      attr.accesses(clsTracker(methodWithinClass), functionName)
+      attr.accesses(clsTracker(classWithMethod), functionName)
       or
       call.getFunction() = attrReadTracker(attr).asCfgNode() and
-      attr.accesses(selfTracker(methodWithinClass), functionName)
+      attr.accesses(selfTracker(classWithMethod), functionName)
     ) and
     attr.accesses(self, functionName)
   }
