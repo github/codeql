@@ -44,15 +44,27 @@ class WithNew(object):
         inst.some_method() # $ MISSING: pt,tt=WithNew.some_method
         return inst
 
-    def __init__(self, arg):
+    def __init__(self, arg=None):
         print("WithNew.__init__", arg)
 
     def some_method(self):
-        print("WithNew.__init__")
+        print("WithNew.some_method")
 
 WithNew(44) # $ tt=WithNew.__new__ tt=WithNew.__init__
 print()
 
+class WithNewSub(WithNew):
+    def __new__(cls):
+        print("WithNewSub.__new__")
+        inst = super().__new__(cls, 44.1) # $ pt,tt=WithNew.__new__
+        assert isinstance(inst, cls)
+        inst.some_method() # $ MISSING: pt,tt=WithNew.some_method
+        return inst
+
+WithNewSub() # $ tt=WithNewSub.__new__ tt=WithNew.__init__
+print()
+
+# ------------------------------------------------------------------------------
 
 class ExtraCallToInit(object):
     def __new__(cls, arg):
