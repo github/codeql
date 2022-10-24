@@ -425,6 +425,15 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|                   -1: [ThisAccess] $serializer.this
 #    7|                     0: [TypeAccess] $serializer
 #    7|                 1: [VarAccess] tmp0_serialDesc
+#    7|       7: [Method] typeParametersSerializers
+#    7|         3: [TypeAccess] KSerializer<?>[]
+#    7|           0: [TypeAccess] KSerializer<?>
+#    7|             0: [WildcardTypeAccess] ? ...
+#    7|         5: [BlockStmt] { ... }
+#    7|           0: [ReturnStmt] return ...
+#    7|             0: [MethodAccess] typeParametersSerializers(...)
+#    7|               -1: [SuperAccess] GeneratedSerializer.super
+#    7|                 0: [TypeAccess] GeneratedSerializer
 #    7|     11: [Class] Companion
 #    0|       1: [Method] serializer
 #    0|         3: [TypeAccess] KSerializer<Project>

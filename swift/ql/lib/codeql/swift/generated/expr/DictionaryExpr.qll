@@ -8,6 +8,12 @@ module Generated {
   class DictionaryExpr extends Synth::TDictionaryExpr, CollectionExpr {
     override string getAPrimaryQlClass() { result = "DictionaryExpr" }
 
+    /**
+     * Gets the `index`th element of this dictionary expression (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateElement(int index) {
       result =
         Synth::convertExprFromRaw(Synth::convertDictionaryExprToRaw(this)
@@ -15,10 +21,19 @@ module Generated {
               .getElement(index))
     }
 
+    /**
+     * Gets the `index`th element of this dictionary expression (0-based).
+     */
     final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
 
+    /**
+     * Gets any of the elements of this dictionary expression.
+     */
     final Expr getAnElement() { result = getElement(_) }
 
+    /**
+     * Gets the number of elements of this dictionary expression.
+     */
     final int getNumberOfElements() { result = count(getAnElement()) }
   }
 }

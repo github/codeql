@@ -9,6 +9,12 @@ module Generated {
   class ConditionElement extends Synth::TConditionElement, AstNode {
     override string getAPrimaryQlClass() { result = "ConditionElement" }
 
+    /**
+     * Gets the boolean of this condition element, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateBoolean() {
       result =
         Synth::convertExprFromRaw(Synth::convertConditionElementToRaw(this)
@@ -16,10 +22,22 @@ module Generated {
               .getBoolean())
     }
 
+    /**
+     * Gets the boolean of this condition element, if it exists.
+     */
     final Expr getBoolean() { result = getImmediateBoolean().resolve() }
 
+    /**
+     * Holds if `getBoolean()` exists.
+     */
     final predicate hasBoolean() { exists(getBoolean()) }
 
+    /**
+     * Gets the pattern of this condition element, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Pattern getImmediatePattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertConditionElementToRaw(this)
@@ -27,10 +45,22 @@ module Generated {
               .getPattern())
     }
 
+    /**
+     * Gets the pattern of this condition element, if it exists.
+     */
     final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
+    /**
+     * Holds if `getPattern()` exists.
+     */
     final predicate hasPattern() { exists(getPattern()) }
 
+    /**
+     * Gets the initializer of this condition element, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateInitializer() {
       result =
         Synth::convertExprFromRaw(Synth::convertConditionElementToRaw(this)
@@ -38,8 +68,14 @@ module Generated {
               .getInitializer())
     }
 
+    /**
+     * Gets the initializer of this condition element, if it exists.
+     */
     final Expr getInitializer() { result = getImmediateInitializer().resolve() }
 
+    /**
+     * Holds if `getInitializer()` exists.
+     */
     final predicate hasInitializer() { exists(getInitializer()) }
   }
 }
