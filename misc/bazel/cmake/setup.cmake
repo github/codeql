@@ -6,7 +6,10 @@ if (CREATE_COMPILATION_DATABASE_LINK)
 endif ()
 
 macro(bazel)
-    execute_process(COMMAND bazel ${ARGN} COMMAND_ERROR_IS_FATAL ANY OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND bazel ${ARGN}
+            COMMAND_ERROR_IS_FATAL ANY
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 endmacro()
 
 bazel(info workspace OUTPUT_VARIABLE BAZEL_WORKSPACE)
