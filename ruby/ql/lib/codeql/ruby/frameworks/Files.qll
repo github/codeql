@@ -204,7 +204,7 @@ module Dir {
   /**
    * A call to a method on `Dir` that operates on a path as its first argument, considered as a `FileSystemAccess`.
    */
-  class DirPathAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+  class DirPathAccess extends FileSystemAccess::Range instanceof DataFlow::CallNode {
     DirPathAccess() {
       this =
         API::getTopLevelMember("Dir")
