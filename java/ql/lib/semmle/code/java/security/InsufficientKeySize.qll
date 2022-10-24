@@ -119,26 +119,26 @@ private class SymmetricSink extends InsufficientKeySizeSink {
   override predicate hasState(DataFlow::FlowState state) { state = getMinSymKeySize().toString() }
 }
 
-/** A call to a method that initializes a key generator. */
-abstract private class KeyGenInitMethodAccess extends MethodAccess {
-  /** Gets the `keysize` argument of this call. */
-  Argument getKeySizeArg() { result = this.getArgument(0) }
-}
-
 /**
  * A call to the `initialize` method declared in `java.security.KeyPairGenerator`
  * or to the `init` method declared in `java.security.AlgorithmParameterGenerator`.
  */
-private class AsymmetricInitMethodAccess extends KeyGenInitMethodAccess {
+private class AsymmetricInitMethodAccess extends MethodAccess {
   AsymmetricInitMethodAccess() {
     this.getMethod() instanceof KeyPairGeneratorInitMethod or
     this.getMethod() instanceof AlgoParamGeneratorInitMethod
   }
+
+  /** Gets the `keysize` argument of this call. */
+  Argument getKeySizeArg() { result = this.getArgument(0) }
 }
 
 /** A call to the `init` method declared in `javax.crypto.KeyGenerator`. */
-private class SymmetricInitMethodAccess extends KeyGenInitMethodAccess {
+private class SymmetricInitMethodAccess extends MethodAccess {
   SymmetricInitMethodAccess() { this.getMethod() instanceof KeyGeneratorInitMethod }
+
+  /** Gets the `keysize` argument of this call. */
+  Argument getKeySizeArg() { result = this.getArgument(0) }
 }
 
 /** An instance of a generator that specifies an encryption algorithm. */
