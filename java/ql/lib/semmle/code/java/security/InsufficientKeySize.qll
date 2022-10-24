@@ -157,12 +157,18 @@ private class AsymmetricKeyGenerator extends AlgoGeneratorObject {
     this instanceof JavaSecurityAlgoParamGenerator
   }
 
-  override Expr getAlgoSpec() { result = this.getAlgoSpec() }
+  override Expr getAlgoSpec() {
+    result =
+      [
+        this.(JavaSecurityKeyPairGenerator).getAlgoSpec(),
+        this.(JavaSecurityAlgoParamGenerator).getAlgoSpec()
+      ]
+  }
 }
 
 /** An instance of a `javax.crypto.KeyGenerator`. */
 private class SymmetricKeyGenerator extends AlgoGeneratorObject instanceof JavaxCryptoKeyGenerator {
-  override Expr getAlgoSpec() { result = this.getAlgoSpec() }
+  override Expr getAlgoSpec() { result = JavaxCryptoKeyGenerator.super.getAlgoSpec() }
 }
 
 /** An instance of an algorithm specification. */
