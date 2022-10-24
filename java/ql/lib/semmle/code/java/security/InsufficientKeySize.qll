@@ -17,7 +17,9 @@ abstract class InsufficientKeySizeSink extends DataFlow::Node {
 
 /** A source for an insufficient key size used in RSA, DSA, and DH algorithms. */
 private class AsymmetricNonEcSource extends InsufficientKeySizeSource {
-  AsymmetricNonEcSource() { getNodeIntValue(this) < getMinAsymNonEcKeySize() }
+  AsymmetricNonEcSource() {
+    this.asExpr().(IntegerLiteral).getIntValue() < getMinAsymNonEcKeySize()
+  }
 
   override predicate hasState(DataFlow::FlowState state) {
     state = getMinAsymNonEcKeySize().toString()
@@ -27,7 +29,7 @@ private class AsymmetricNonEcSource extends InsufficientKeySizeSource {
 /** A source for an insufficient key size used in elliptic curve (EC) algorithms. */
 private class AsymmetricEcSource extends InsufficientKeySizeSource {
   AsymmetricEcSource() {
-    getNodeIntValue(this) < getMinAsymEcKeySize()
+    this.asExpr().(IntegerLiteral).getIntValue() < getMinAsymEcKeySize()
     or
     // the below is needed for cases when the key size is embedded in the curve name
     getEcKeySize(this.asExpr().(StringLiteral).getValue()) < getMinAsymEcKeySize()
@@ -40,7 +42,7 @@ private class AsymmetricEcSource extends InsufficientKeySizeSource {
 
 /** A source for an insufficient key size used in AES algorithms. */
 private class SymmetricSource extends InsufficientKeySizeSource {
-  SymmetricSource() { getNodeIntValue(this) < getMinSymKeySize() }
+  SymmetricSource() { this.asExpr().(IntegerLiteral).getIntValue() < getMinSymKeySize() }
 
   override predicate hasState(DataFlow::FlowState state) { state = getMinSymKeySize().toString() }
 }
@@ -53,11 +55,6 @@ private int getMinAsymEcKeySize() { result = 256 }
 
 /** Returns the minimum recommended key size for AES algorithms. */
 private int getMinSymKeySize() { result = 128 }
-
-/** Returns the integer value of a given DataFlow::Node. */
-private int getNodeIntValue(DataFlow::Node node) {
-  result = node.asExpr().(IntegerLiteral).getIntValue()
-}
 
 /** Returns the key size from an EC algorithm's curve name string */
 bindingset[algorithm]
