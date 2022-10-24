@@ -2,6 +2,7 @@ package com.github.codeql
 
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.IrElement
@@ -138,6 +139,8 @@ class KotlinExtractorExtension(
             logger.info("Extraction started")
             logger.flush()
             logger.info("Extraction for invocation TRAP file $invocationTrapFile")
+            logger.flush()
+            logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
             logger.flush()
             logPeakMemoryUsage(logger, "before extractor")
             if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {

@@ -305,7 +305,7 @@ open class KotlinFileExtractor(
                 val kind = c.kind
                 if (kind == ClassKind.ENUM_CLASS) {
                     tw.writeIsEnumType(classId)
-                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                     logger.errorElement("Unrecognised class kind $kind", c)
                 }
             }
@@ -452,7 +452,7 @@ open class KotlinFileExtractor(
                     val kind = c.kind
                     if (kind == ClassKind.ENUM_CLASS) {
                         tw.writeIsEnumType(classId)
-                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                         logger.warnElement("Unrecognised class kind $kind", c)
                     }
 
@@ -1884,7 +1884,7 @@ open class KotlinFileExtractor(
             IrConstImpl.defaultValueForType(0, 0, getDefaultsMethodLastArgType(callTarget))
         )
 
-        extractCallValueArguments(id, valueArgsWithDummies + extraArgs, enclosingStmt, enclosingCallable, nextIdx)
+        extractCallValueArguments(id, valueArgsWithDummies + extraArgs, enclosingStmt, enclosingCallable, nextIdx, extractVarargAsArray = true)
     }
 
     private fun getFunctionInvokeMethod(typeArgs: List<IrTypeArgument>): IrFunction? {
@@ -1961,8 +1961,12 @@ open class KotlinFileExtractor(
         superQualifierSymbol: IrClassSymbol? = null) {
 
         val locId = tw.getLocation(locElement)
+        val varargParam = syntacticCallTarget.valueParameters.withIndex().find { it.value.isVararg }
+        // If the vararg param is the only one not specified, and it has no default value, then we don't need to call a $default method,
+        // as omitting it already implies passing an empty vararg array.
+        val nullAllowedIdx = if (varargParam != null && varargParam.value.defaultValue == null) varargParam.index else -1
 
-        if (valueArguments.any { it == null }) {
+        if (valueArguments.withIndex().any { (index, it) -> it == null && index != nullAllowedIdx }) {
             extractsDefaultsCall(
                 syntacticCallTarget,
                 locId,
@@ -2082,11 +2086,11 @@ open class KotlinFileExtractor(
     private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
         extractCallValueArguments(callId, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, enclosingStmt, enclosingCallable, idxOffset)
 
-    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) {
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int, extractVarargAsArray: Boolean = false) {
         var i = 0
         valueArguments.forEach { arg ->
             if(arg != null) {
-                if (arg is IrVararg) {
+                if (arg is IrVararg && !extractVarargAsArray) {
                     arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, callId, i + idxOffset + varargNo, enclosingStmt) }
                     i += arg.elements.size
                 } else {
