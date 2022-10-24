@@ -383,7 +383,7 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
 }
 
-/** An instance of a `java.security.KeyPairGenerator`. */
+/** A call to the `getInstance` method declared in `java.security.KeyPairGenerator`. */
 class JavaSecurityKeyPairGenerator extends JavaSecurityAlgoSpec {
   JavaSecurityKeyPairGenerator() {
     exists(Method m | m.getAReference() = this |
@@ -410,7 +410,7 @@ class AlgoParamGeneratorInitMethod extends Method {
   }
 }
 
-/** An instance of a `java.security.AlgorithmParameterGenerator`. */
+/** A call to the `getInstance` method declared in `java.security.AlgorithmParameterGenerator`. */
 class JavaSecurityAlgoParamGenerator extends JavaSecurityAlgoSpec {
   JavaSecurityAlgoParamGenerator() {
     exists(Method m | m.getAReference() = this |
