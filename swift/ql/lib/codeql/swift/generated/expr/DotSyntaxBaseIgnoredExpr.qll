@@ -7,6 +7,12 @@ module Generated {
   class DotSyntaxBaseIgnoredExpr extends Synth::TDotSyntaxBaseIgnoredExpr, Expr {
     override string getAPrimaryQlClass() { result = "DotSyntaxBaseIgnoredExpr" }
 
+    /**
+     * Gets the qualifier of this dot syntax base ignored expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateQualifier() {
       result =
         Synth::convertExprFromRaw(Synth::convertDotSyntaxBaseIgnoredExprToRaw(this)
@@ -14,8 +20,17 @@ module Generated {
               .getQualifier())
     }
 
+    /**
+     * Gets the qualifier of this dot syntax base ignored expression.
+     */
     final Expr getQualifier() { result = getImmediateQualifier().resolve() }
 
+    /**
+     * Gets the sub expression of this dot syntax base ignored expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertDotSyntaxBaseIgnoredExprToRaw(this)
@@ -23,6 +38,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expression of this dot syntax base ignored expression.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

@@ -8,10 +8,16 @@ module Generated {
   class UnresolvedDeclRefExpr extends Synth::TUnresolvedDeclRefExpr, Expr, UnresolvedElement {
     override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
 
+    /**
+     * Gets the name of this unresolved declaration ref expression, if it exists.
+     */
     string getName() {
       result = Synth::convertUnresolvedDeclRefExprToRaw(this).(Raw::UnresolvedDeclRefExpr).getName()
     }
 
+    /**
+     * Holds if `getName()` exists.
+     */
     final predicate hasName() { exists(getName()) }
   }
 }

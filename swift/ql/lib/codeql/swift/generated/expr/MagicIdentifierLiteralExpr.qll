@@ -7,6 +7,9 @@ module Generated {
   class MagicIdentifierLiteralExpr extends Synth::TMagicIdentifierLiteralExpr, BuiltinLiteralExpr {
     override string getAPrimaryQlClass() { result = "MagicIdentifierLiteralExpr" }
 
+    /**
+     * Gets the kind of this magic identifier literal expression.
+     */
     string getKind() {
       result =
         Synth::convertMagicIdentifierLiteralExprToRaw(this)

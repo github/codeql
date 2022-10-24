@@ -7,6 +7,9 @@ module Generated {
   class Comment extends Synth::TComment, Locatable {
     override string getAPrimaryQlClass() { result = "Comment" }
 
+    /**
+     * Gets the text of this comment.
+     */
     string getText() { result = Synth::convertCommentToRaw(this).(Raw::Comment).getText() }
   }
 }

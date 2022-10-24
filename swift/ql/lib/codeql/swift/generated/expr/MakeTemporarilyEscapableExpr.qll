@@ -8,6 +8,12 @@ module Generated {
   class MakeTemporarilyEscapableExpr extends Synth::TMakeTemporarilyEscapableExpr, Expr {
     override string getAPrimaryQlClass() { result = "MakeTemporarilyEscapableExpr" }
 
+    /**
+     * Gets the escaping closure of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     OpaqueValueExpr getImmediateEscapingClosure() {
       result =
         Synth::convertOpaqueValueExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
@@ -15,8 +21,17 @@ module Generated {
               .getEscapingClosure())
     }
 
+    /**
+     * Gets the escaping closure of this make temporarily escapable expression.
+     */
     final OpaqueValueExpr getEscapingClosure() { result = getImmediateEscapingClosure().resolve() }
 
+    /**
+     * Gets the nonescaping closure of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateNonescapingClosure() {
       result =
         Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
@@ -24,8 +39,17 @@ module Generated {
               .getNonescapingClosure())
     }
 
+    /**
+     * Gets the nonescaping closure of this make temporarily escapable expression.
+     */
     final Expr getNonescapingClosure() { result = getImmediateNonescapingClosure().resolve() }
 
+    /**
+     * Gets the sub expression of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
@@ -33,6 +57,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expression of this make temporarily escapable expression.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }
