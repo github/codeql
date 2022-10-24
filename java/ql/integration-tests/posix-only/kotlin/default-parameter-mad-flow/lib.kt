@@ -8,6 +8,9 @@ class LibClass {
   fun memberWithDefaults(x: Int, y: Int = 1) = 0
   fun String.extensionMemberWithDefaults(x: Int, y: Int = 1) = 0
 
+  fun multiParameterTest(x: Int, y: Int, z: Int, w: Int = 0) = 0
+  fun Int.multiParameterExtensionTest(x: Int, y: Int, w: Int = 0) = 0
+
 }
 
 class SomeToken {}
@@ -30,4 +33,3 @@ class SinkClass(x: Int, y: Int = 1) {
   fun String.extensionMemberSink(x: Int, y: Int = 1) {}
 
 }
-

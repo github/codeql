@@ -16,10 +16,20 @@ fun test(c: LibClass, sourcec: SourceClass, sinkc: SinkClass) {
   sink(c.memberWithDefaults(source(), 0)) // $ flow
   sink(c.memberWithDefaults(source())) // $ flow
 
+  sink(c.multiParameterTest(source(), 0, 0)) // $ flow
+  sink(c.multiParameterTest(0, source(), 0)) // $ flow
+  sink(c.multiParameterTest(0, 0, source()))
+
   with(c) {
     sink("Hello world".extensionMemberWithDefaults(source(), 0)) // $ flow
     sink("Hello world".extensionMemberWithDefaults(source())) // $ flow
-  };
+  }
+
+  with(c) {
+    sink(source().multiParameterExtensionTest(0, 0)) // $ flow
+    sink(0.multiParameterExtensionTest(source(), 0)) // $ flow
+    sink(0.multiParameterExtensionTest(0, source()))
+  }
 
   run {
     val st = SomeToken()

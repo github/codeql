@@ -11,7 +11,9 @@ private class Models extends SummaryModelCsv {
         ";LibKt;true;topLevelWithDefaults;(int,int);;Argument[0];ReturnValue;value;manual",
         ";LibKt;true;extensionWithDefaults;(String,int,int);;Argument[1];ReturnValue;value;manual",
         ";LibClass;true;memberWithDefaults;(int,int);;Argument[0];ReturnValue;value;manual",
-        ";LibClass;true;extensionMemberWithDefaults;(String,int,int);;Argument[1];ReturnValue;value;manual"
+        ";LibClass;true;extensionMemberWithDefaults;(String,int,int);;Argument[1];ReturnValue;value;manual",
+        ";LibClass;true;multiParameterTest;(int,int,int,int);;Argument[0..1];ReturnValue;value;manual",
+        ";LibClass;true;multiParameterExtensionTest;(int,int,int,int);;Argument[0, 1];ReturnValue;value;manual",
       ]
   }
 }

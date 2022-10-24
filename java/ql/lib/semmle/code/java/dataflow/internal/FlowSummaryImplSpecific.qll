@@ -10,6 +10,7 @@ private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSummary as FlowSummary
+private import semmle.code.java.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 
 class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 
@@ -84,6 +85,9 @@ private predicate relatedArgSpec(Callable c, string spec) {
  * for the additional dispatch receiver parameter that occurs in the default-parameter proxy's argument
  * list. When no adjustment is required (e.g. for constructors, or non-argument-based specs), `defaultArgsSpec`
  * equals `originalArgSpec`.
+ *
+ * Note in the case where `originalArgSpec` uses an integer range, like `Argument[1..3]...`, this will produce multiple
+ * results for `defaultsArgSpec`, like `{Argument[2]..., Argument[3]..., Argument[4]...}`.
  */
 private predicate correspondingKotlinParameterDefaultsArgSpec(
   Callable originalCallable, Callable defaultsCallable, string originalArgSpec,
@@ -98,19 +102,21 @@ private predicate correspondingKotlinParameterDefaultsArgSpec(
     exists(string regex |
       // Note I use a regex and not AccessPathToken because this feeds summaryElement et al,
       // which would introduce mutual recursion with the definition of AccessPathToken.
-      regex = "Argument\\[([0-9]+)\\](.*)" and
+      regex = "Argument\\[([0-9,\\. ]+)\\](.*)" and
       (
         exists(string oldArgNumber, string rest, int paramOffset |
           oldArgNumber = originalArgSpec.regexpCapture(regex, 1) and
           rest = originalArgSpec.regexpCapture(regex, 2) and
           paramOffset =
-            (
-              defaultsCallable.getNumberOfParameters() -
-                (originalCallable.getNumberOfParameters() + 2)
-            ) and
-          if ktExtensionFunctions(originalCallable, _, _) and oldArgNumber = "0"
-          then defaultsArgSpec = originalArgSpec
-          else defaultsArgSpec = "Argument[" + (oldArgNumber.toInt() + paramOffset) + "]" + rest
+            defaultsCallable.getNumberOfParameters() -
+              (originalCallable.getNumberOfParameters() + 2) and
+          exists(int oldArgParsed |
+            oldArgParsed = AccessPathSyntax::AccessPath::parseInt(oldArgNumber.splitAt(",").trim())
+          |
+            if ktExtensionFunctions(originalCallable, _, _) and oldArgParsed = 0
+            then defaultsArgSpec = "Argument[0]"
+            else defaultsArgSpec = "Argument[" + (oldArgParsed + paramOffset) + "]" + rest
+          )
         )
         or
         not originalArgSpec.regexpMatch(regex) and
