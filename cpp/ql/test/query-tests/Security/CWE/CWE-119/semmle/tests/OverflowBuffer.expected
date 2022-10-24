@@ -38,14 +38,19 @@
 | tests.cpp:376:3:376:13 | access to array | This array indexing operation accesses byte offset 101 but the $@ is only 101 bytes. | tests.cpp:369:47:369:52 | call to malloc | array |
 | tests.cpp:446:3:446:24 | access to array | This array indexing operation accesses a negative index -3 on the $@. | tests.cpp:444:7:444:14 | intArray | array |
 | tests.cpp:454:3:454:11 | access to array | This array indexing operation accesses a negative index -21 on the $@. | tests.cpp:450:7:450:11 | multi | array |
+| tests.cpp:455:3:455:14 | access to array | This array indexing operation accesses a negative index -5 on the $@. | tests.cpp:450:7:450:11 | multi | array |
 | tests.cpp:456:3:456:11 | access to array | This array indexing operation accesses a negative index -21 on the $@. | tests.cpp:450:7:450:11 | multi | array |
+| tests.cpp:456:3:456:15 | access to array | This array indexing operation accesses a negative index -5 on the $@. | tests.cpp:450:7:450:11 | multi | array |
+| tests.cpp:457:3:457:14 | access to array | This array indexing operation accesses a negative index -5 on the $@. | tests.cpp:450:7:450:11 | multi | array |
 | tests.cpp:459:3:459:11 | access to array | This array indexing operation accesses byte offset 639 but the $@ is only 400 bytes. | tests.cpp:450:7:450:11 | multi | array |
 | tests.cpp:461:3:461:11 | access to array | This array indexing operation accesses byte offset 639 but the $@ is only 400 bytes. | tests.cpp:450:7:450:11 | multi | array |
 | tests.cpp:476:2:476:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
 | tests.cpp:477:2:477:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
+| tests.cpp:479:2:479:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
 | tests.cpp:481:2:481:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
 | tests.cpp:485:2:485:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:469:7:469:12 | buffer | array |
 | tests.cpp:487:2:487:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:473:21:473:26 | call to malloc | array |
+| tests.cpp:489:2:489:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:473:21:473:26 | call to malloc | array |
 | tests.cpp:491:2:491:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:474:21:474:26 | call to malloc | array |
 | tests.cpp:495:2:495:7 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:474:21:474:26 | call to malloc | array |
 | tests.cpp:519:3:519:8 | call to memset | This 'memset' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:502:15:502:20 | call to malloc | destination buffer |
@@ -54,6 +59,7 @@
 | tests.cpp:541:6:541:10 | call to fread | This 'fread' operation may access 101 bytes but the $@ is only 100 bytes. | tests.cpp:532:7:532:16 | charBuffer | destination buffer |
 | tests.cpp:546:6:546:10 | call to fread | This 'fread' operation may access 400 bytes but the $@ is only 100 bytes. | tests.cpp:532:7:532:16 | charBuffer | destination buffer |
 | tests.cpp:569:6:569:15 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
+| tests.cpp:575:7:575:13 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
 | tests.cpp:577:7:577:13 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
 | tests.cpp:579:6:579:12 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
 | tests.cpp:586:6:586:12 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |

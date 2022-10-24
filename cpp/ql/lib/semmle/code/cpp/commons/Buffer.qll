@@ -28,11 +28,13 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
  * Gets the expression associated with `n`. Unlike `n.asExpr()` this also gets the
  * expression underlying an indirect dataflow node.
  */
-private Expr getExpr(DataFlow::Node n) {
-  result = [n.asExpr(), n.asIndirectArgument(), n.asIndirectArgument()]
+private Expr getExpr(DataFlow::Node n, boolean isIndirect) {
+  result = n.asExpr() and isIndirect = false
+  or
+  result = n.asIndirectExpr() and isIndirect = true
 }
 
-private DataFlow::Node exprNode(Expr e) { e = getExpr(result) }
+private DataFlow::Node exprNode(Expr e, boolean isIndirect) { e = getExpr(result, isIndirect) }
 
 /**
  * Holds if `bufferExpr` is an allocation-like expression.
@@ -83,6 +85,80 @@ private int isSource(Expr bufferExpr, Element why) {
   )
 }
 
+/** Holds if the value of `n2 + delta` may be equal to the value of `n1`. */
+private predicate localFlowIncrStep(DataFlow::Node n1, DataFlow::Node n2, int delta) {
+  DataFlow::localFlowStep(n1, n2) and
+  (
+    exists(IncrementOperation incr |
+      n1.asIndirectExpr() = incr.getOperand() and
+      delta = -1
+    )
+    or
+    exists(DecrementOperation decr |
+      n1.asIndirectExpr() = decr.getOperand() and
+      delta = 1
+    )
+    or
+    exists(AddExpr add, Expr e1, Expr e2 |
+      add.hasOperands(e1, e2) and
+      n1.asIndirectExpr() = e1 and
+      delta = -e2.getValue().toInt()
+    )
+    or
+    exists(SubExpr add, Expr e1, Expr e2 |
+      add.hasOperands(e1, e2) and
+      n1.asIndirectExpr() = e1 and
+      delta = e2.getValue().toInt()
+    )
+  )
+}
+
+/**
+ * Holds if `n1` may flow to `n2` without passing through any back-edges.
+ *
+ * Back-edges are excluded to prevent infinite loops on examples like:
+ * ```
+ * while(true) { ++n; }
+ * ```
+ * which, when used in `localFlowStepRec`, would create infinite loop that continuously
+ * increments the `delta` parameter.
+ */
+private predicate localFlowNotIncrStep(DataFlow::Node n1, DataFlow::Node n2) {
+  not localFlowIncrStep(n1, n2, _) and
+  DataFlow::localFlowStep(n1, n2) and
+  not n1 = n2.(DataFlow::SsaPhiNode).getAnInput(true)
+}
+
+private predicate localFlowToExprStep(DataFlow::Node n1, DataFlow::Node n2) {
+  not exists([n1.asExpr(), n1.asIndirectExpr()]) and
+  localFlowNotIncrStep(n1, n2)
+}
+
+/** Holds if `mid2 + delta` may be equal to `n1`. */
+private predicate localFlowStepRec0(DataFlow::Node n1, DataFlow::Node mid2, int delta) {
+  exists(DataFlow::Node mid1, int d1, int d2 |
+    // Or we take a number of steps that adds `d1` to the pointer
+    localFlowStepRec(n1, mid1, d1) and
+    // followed by a step that adds `d2` to the pointer
+    localFlowIncrStep(mid1, mid2, d2) and
+    delta = d1 + d2
+  )
+}
+
+/** Holds if `n2 + delta` may be equal to `n1`. */
+private predicate localFlowStepRec(DataFlow::Node n1, DataFlow::Node n2, int delta) {
+  // Either we take one or more steps that doesn't modify the size of the buffer
+  localFlowNotIncrStep+(n1, n2) and
+  delta = 0
+  or
+  exists(DataFlow::Node mid2 |
+    // Or we step from `n1` to `mid2 + delta`
+    localFlowStepRec0(n1, mid2, delta) and
+    // and finally to the next `ExprNode`.
+    localFlowToExprStep*(mid2, n2)
+  )
+}
+
 /**
  * Holds if `e2` is an expression that is derived from `e1` such that if `e1[n]` is a
  * well-defined expression for some number `n`, then `e2[n + delta]` is also a well-defined
@@ -105,8 +181,9 @@ private predicate step(Expr e1, Expr e2, int delta) {
     delta = bufferSize - parentClass.getSize()
   )
   or
-  DataFlow::localFlowStep+(exprNode(e1), exprNode(e2)) and
-  delta = 0
+  exists(boolean isIndirect |
+    localFlowStepRec(exprNode(e1, isIndirect), exprNode(e2, isIndirect), delta)
+  )
 }
 
 /**
