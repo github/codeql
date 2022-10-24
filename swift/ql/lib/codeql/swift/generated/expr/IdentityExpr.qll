@@ -5,6 +5,12 @@ import codeql.swift.elements.expr.Expr
 
 module Generated {
   class IdentityExpr extends Synth::TIdentityExpr, Expr {
+    /**
+     * Gets the sub expression of this identity expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertIdentityExprToRaw(this)
@@ -12,6 +18,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expression of this identity expression.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

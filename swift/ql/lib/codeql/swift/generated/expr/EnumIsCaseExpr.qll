@@ -8,6 +8,12 @@ module Generated {
   class EnumIsCaseExpr extends Synth::TEnumIsCaseExpr, Expr {
     override string getAPrimaryQlClass() { result = "EnumIsCaseExpr" }
 
+    /**
+     * Gets the sub expression of this enum is case expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertEnumIsCaseExprToRaw(this)
@@ -15,8 +21,17 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expression of this enum is case expression.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
+    /**
+     * Gets the element of this enum is case expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     EnumElementDecl getImmediateElement() {
       result =
         Synth::convertEnumElementDeclFromRaw(Synth::convertEnumIsCaseExprToRaw(this)
@@ -24,6 +39,9 @@ module Generated {
               .getElement())
     }
 
+    /**
+     * Gets the element of this enum is case expression.
+     */
     final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
   }
 }

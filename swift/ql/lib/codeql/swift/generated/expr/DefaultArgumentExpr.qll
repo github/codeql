@@ -8,6 +8,12 @@ module Generated {
   class DefaultArgumentExpr extends Synth::TDefaultArgumentExpr, Expr {
     override string getAPrimaryQlClass() { result = "DefaultArgumentExpr" }
 
+    /**
+     * Gets the parameter declaration of this default argument expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     ParamDecl getImmediateParamDecl() {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertDefaultArgumentExprToRaw(this)
@@ -15,13 +21,25 @@ module Generated {
               .getParamDecl())
     }
 
+    /**
+     * Gets the parameter declaration of this default argument expression.
+     */
     final ParamDecl getParamDecl() { result = getImmediateParamDecl().resolve() }
 
+    /**
+     * Gets the parameter index of this default argument expression.
+     */
     int getParamIndex() {
       result =
         Synth::convertDefaultArgumentExprToRaw(this).(Raw::DefaultArgumentExpr).getParamIndex()
     }
 
+    /**
+     * Gets the caller side default of this default argument expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateCallerSideDefault() {
       result =
         Synth::convertExprFromRaw(Synth::convertDefaultArgumentExprToRaw(this)
@@ -29,8 +47,14 @@ module Generated {
               .getCallerSideDefault())
     }
 
+    /**
+     * Gets the caller side default of this default argument expression, if it exists.
+     */
     final Expr getCallerSideDefault() { result = getImmediateCallerSideDefault().resolve() }
 
+    /**
+     * Holds if `getCallerSideDefault()` exists.
+     */
     final predicate hasCallerSideDefault() { exists(getCallerSideDefault()) }
   }
 }

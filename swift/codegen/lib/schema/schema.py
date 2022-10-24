@@ -1,5 +1,6 @@
 """ schema.yml format representation """
 import pathlib
+import re
 import types
 import typing
 from dataclasses import dataclass, field
@@ -35,6 +36,8 @@ class Property:
     type: Optional[str] = None
     is_child: bool = False
     pragmas: List[str] = field(default_factory=list)
+    doc: Optional[str] = None
+    description: List[str] = field(default_factory=list)
 
     @property
     def is_single(self) -> bool:
@@ -76,6 +79,8 @@ class Class:
     group: str = ""
     pragmas: List[str] = field(default_factory=list)
     ipa: Optional[IpaInfo] = None
+    doc: List[str] = field(default_factory=list)
+    default_doc_name: Optional[str] = None
 
     @property
     def final(self):
@@ -154,6 +159,27 @@ class PropertyModifier:
         raise NotImplementedError
 
 
+def split_doc(doc):
+    # implementation inspired from https://peps.python.org/pep-0257/
+    if not doc:
+        return []
+    lines = doc.splitlines()
+    # Determine minimum indentation (first line doesn't count):
+    strippedlines = (line.lstrip() for line in lines[1:])
+    indents = [len(line) - len(stripped) for line, stripped in zip(lines[1:], strippedlines) if stripped]
+    # Remove indentation (first line is special):
+    trimmed = [lines[0].strip()]
+    if indents:
+        indent = min(indents)
+        trimmed.extend(line[indent:].rstrip() for line in lines[1:])
+    # Strip off trailing and leading blank lines:
+    while trimmed and not trimmed[-1]:
+        trimmed.pop()
+    while trimmed and not trimmed[0]:
+        trimmed.pop(0)
+    return trimmed
+
+
 @dataclass
 class _PropertyNamer(PropertyModifier):
     name: str
@@ -167,20 +193,22 @@ def _get_class(cls: type) -> Class:
         raise Error(f"Only class definitions allowed in schema, found {cls}")
     if cls.__name__[0].islower():
         raise Error(f"Class name must be capitalized, found {cls.__name__}")
-    if len({b.group for b in cls.__bases__ if hasattr(b, "group")}) > 1:
+    if len({b._group for b in cls.__bases__ if hasattr(b, "_group")}) > 1:
         raise Error(f"Bases with mixed groups for {cls.__name__}")
     return Class(name=cls.__name__,
                  bases=[b.__name__ for b in cls.__bases__ if b is not object],
                  derived={d.__name__ for d in cls.__subclasses__()},
                  # getattr to inherit from bases
-                 group=getattr(cls, "group", ""),
+                 group=getattr(cls, "_group", ""),
                  # in the following we don't use `getattr` to avoid inheriting
-                 pragmas=cls.__dict__.get("pragmas", []),
-                 ipa=cls.__dict__.get("ipa", None),
+                 pragmas=cls.__dict__.get("_pragmas", []),
+                 ipa=cls.__dict__.get("_ipa", None),
                  properties=[
                      a | _PropertyNamer(n)
                      for n, a in cls.__dict__.get("__annotations__", {}).items()
                  ],
+                 doc=split_doc(cls.__doc__),
+                 default_doc_name=cls.__dict__.get("_doc_name"),
                  )
 
 

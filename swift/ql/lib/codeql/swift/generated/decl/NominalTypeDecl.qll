@@ -7,6 +7,12 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class NominalTypeDecl extends Synth::TNominalTypeDecl, GenericTypeDecl, IterableDeclContext {
+    /**
+     * Gets the type of this nominal type declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Type getImmediateType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertNominalTypeDeclToRaw(this)
@@ -14,6 +20,9 @@ module Generated {
               .getType())
     }
 
+    /**
+     * Gets the type of this nominal type declaration.
+     */
     final Type getType() { result = getImmediateType().resolve() }
   }
 }

@@ -7,6 +7,9 @@ module Generated {
   class FloatLiteralExpr extends Synth::TFloatLiteralExpr, NumberLiteralExpr {
     override string getAPrimaryQlClass() { result = "FloatLiteralExpr" }
 
+    /**
+     * Gets the string value of this float literal expression.
+     */
     string getStringValue() {
       result = Synth::convertFloatLiteralExprToRaw(this).(Raw::FloatLiteralExpr).getStringValue()
     }

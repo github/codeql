@@ -21,6 +21,13 @@ import DataFlow::PathGraph
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, Source sourceNode
 where
   config.hasFlowPath(source, sink) and
-  sourceNode = source.getNode()
+  sourceNode = source.getNode() and
+  // removing duplications of the same path, but different flow-labels.
+  sink =
+    min(DataFlow::PathNode otherSink |
+      config.hasFlowPath(any(DataFlow::PathNode s | s.getNode() = source.getNode()), otherSink)
+    |
+      otherSink order by otherSink.getState()
+    )
 select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
   "user-provided value"

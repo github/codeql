@@ -127,5 +127,25 @@ def test_class_with_children():
     assert cls.has_children is True
 
 
+def test_class_with_doc():
+    cls = ql.Class("Class", doc=["foo", "bar"])
+    assert cls.has_doc is True
+
+
+def test_class_without_doc():
+    cls = ql.Class("Class", doc=[])
+    assert cls.has_doc is False
+
+
+def test_property_with_description():
+    prop = ql.Property("X", "int", description=["foo", "bar"])
+    assert prop.has_description is True
+
+
+def test_class_without_description():
+    prop = ql.Property("X", "int")
+    assert prop.has_description is False
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

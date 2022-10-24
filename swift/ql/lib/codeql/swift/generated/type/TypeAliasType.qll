@@ -8,6 +8,12 @@ module Generated {
   class TypeAliasType extends Synth::TTypeAliasType, SugarType {
     override string getAPrimaryQlClass() { result = "TypeAliasType" }
 
+    /**
+     * Gets the declaration of this type alias type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     TypeAliasDecl getImmediateDecl() {
       result =
         Synth::convertTypeAliasDeclFromRaw(Synth::convertTypeAliasTypeToRaw(this)
@@ -15,6 +21,9 @@ module Generated {
               .getDecl())
     }
 
+    /**
+     * Gets the declaration of this type alias type.
+     */
     final TypeAliasDecl getDecl() { result = getImmediateDecl().resolve() }
   }
 }

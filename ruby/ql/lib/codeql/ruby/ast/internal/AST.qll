@@ -116,6 +116,9 @@ private module Cached {
     TConstantReadAccessSynth(Ast::AstNode parent, int i, string value) {
       mkSynthChild(ConstantReadAccessKind(value), parent, i)
     } or
+    TConstantWriteAccessSynth(Ast::AstNode parent, int i, string value) {
+      mkSynthChild(ConstantWriteAccessKind(value), parent, i)
+    } or
     TDefinedExpr(Ruby::Unary g) { g instanceof @ruby_unary_definedquestion } or
     TDelimitedSymbolLiteral(Ruby::DelimitedSymbol g) or
     TDestructuredLeftAssignment(Ruby::DestructuredLeftAssignment g) {
@@ -373,12 +376,13 @@ private module Cached {
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
         TBitwiseXorExprSynth or TBraceBlockSynth or TClassVariableAccessSynth or
-        TConstantReadAccessSynth or TDivExprSynth or TExponentExprSynth or
-        TGlobalVariableAccessSynth or TIfSynth or TInstanceVariableAccessSynth or
-        TIntegerLiteralSynth or TLShiftExprSynth or TLocalVariableAccessSynth or
-        TLogicalAndExprSynth or TLogicalOrExprSynth or TMethodCallSynth or TModuloExprSynth or
-        TMulExprSynth or TNilLiteralSynth or TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or
-        TSimpleParameterSynth or TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
+        TConstantReadAccessSynth or TConstantWriteAccessSynth or TDivExprSynth or
+        TExponentExprSynth or TGlobalVariableAccessSynth or TIfSynth or
+        TInstanceVariableAccessSynth or TIntegerLiteralSynth or TLShiftExprSynth or
+        TLocalVariableAccessSynth or TLogicalAndExprSynth or TLogicalOrExprSynth or
+        TMethodCallSynth or TModuloExprSynth or TMulExprSynth or TNilLiteralSynth or
+        TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or TSimpleParameterSynth or
+        TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not
@@ -565,6 +569,8 @@ private module Cached {
     or
     result = TConstantReadAccessSynth(parent, i, _)
     or
+    result = TConstantWriteAccessSynth(parent, i, _)
+    or
     result = TDivExprSynth(parent, i)
     or
     result = TExponentExprSynth(parent, i)
@@ -672,7 +678,8 @@ class TMethodCall =
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 
 class TConstantAccess =
-  TTokenConstantAccess or TScopeResolutionConstantAccess or TNamespace or TConstantReadAccessSynth;
+  TTokenConstantAccess or TScopeResolutionConstantAccess or TNamespace or
+      TConstantReadAccessSynth or TConstantWriteAccessSynth;
 
 class TControlExpr = TConditionalExpr or TCaseExpr or TCaseMatch or TLoop;
 
