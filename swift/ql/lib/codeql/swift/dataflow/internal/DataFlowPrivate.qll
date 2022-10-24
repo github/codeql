@@ -243,7 +243,7 @@ private module ParameterNodes {
     SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
-      c.getUnderlyingCallable() = sc and
+      c.asSummarizedCallable() = sc and
       p = pos
     }
 

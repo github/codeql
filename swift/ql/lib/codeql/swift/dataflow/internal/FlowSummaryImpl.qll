@@ -527,8 +527,8 @@ module Private {
     SummarizedCallable c, SummaryComponentStack s, Node receiver, ReturnKind rk
   ) {
     any(SummaryNodeState state).isInputState(c, s) and
-    s.head() = TReturnSummaryComponent(rk) and
-    receiver = summaryNodeInputState(c, s.tail())
+    receiver = summaryNodeInputState(c, s.tail()) and
+    s.head() = TReturnSummaryComponent(rk)
   }
 
   private predicate callbackInput(

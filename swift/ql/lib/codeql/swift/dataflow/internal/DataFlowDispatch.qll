@@ -53,17 +53,21 @@ class ParamReturnKind extends ReturnKind, TParamReturnKind {
  * defined in library code.
  */
 class DataFlowCallable extends TDataFlowCallable {
-  CfgScope scope;
-
-  DataFlowCallable() { this = TDataFlowFunc(scope) }
-
   /** Gets a textual representation of this callable. */
-  string toString() { result = scope.toString() }
+  string toString() {
+    result = this.getUnderlyingCallable().(CfgScope).toString() or
+    result = "Synthetic: " + this.asSummarizedCallable().toString()
+  }
 
   /** Gets the location of this callable. */
-  Location getLocation() { result = scope.getLocation() }
+  Location getLocation() {
+    result = this.getUnderlyingCallable().(CfgScope).getLocation() or
+    result = this.asSummarizedCallable().getLocation()
+  }
 
-  Callable::TypeRange getUnderlyingCallable() { result = scope }
+  Callable::TypeRange getUnderlyingCallable() { this = TDataFlowFunc(result) }
+
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 }
 
 cached
@@ -217,9 +221,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() {
-    result = TDataFlowFunc(c.getEnclosingFunction())
-  }
+  override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
