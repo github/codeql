@@ -4,6 +4,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 class TestConfiguration extends DataFlow::Configuration {
   TestConfiguration() { this = "TestConfiguration" }
@@ -14,10 +15,17 @@ class TestConfiguration extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(CallExpr sinkCall |
-      sinkCall.getStaticTarget().getName() = "sink(arg:)" and
+      sinkCall.getStaticTarget().getName() = ["sink(arg:)", "sink(opt:)"] and
       sinkCall.getAnArgument().getExpr() = sink.asExpr()
     )
   }
 
   override int explorationLimit() { result = 100 }
+}
+
+private class TestSummaries extends SummaryModelCsv {
+  override predicate row(string row) {
+    // dumb model to allow testing flow through optional chaining (`x?.signum()`)
+    row = ";Int;true;signum();;;Argument[-1];ReturnValue;value"
+  }
 }
