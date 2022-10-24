@@ -35,14 +35,18 @@ getModule
 | file://:0:0:0:0 | BasicObject |
 | file://:0:0:0:0 | Class |
 | file://:0:0:0:0 | Complex |
+| file://:0:0:0:0 | EsotericInstanceMethods |
 | file://:0:0:0:0 | FalseClass |
 | file://:0:0:0:0 | Float |
+| file://:0:0:0:0 | MyStruct |
 | file://:0:0:0:0 | NilClass |
 | file://:0:0:0:0 | Numeric |
 | file://:0:0:0:0 | Proc |
 | file://:0:0:0:0 | Rational |
+| file://:0:0:0:0 | Struct |
 | file://:0:0:0:0 | Symbol |
 | file://:0:0:0:0 | TrueClass |
+| file://:0:0:0:0 | UnresolvedNamespace |
 | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld |
@@ -85,6 +89,10 @@ getModule
 | private.rb:96:1:102:3 | PrivateOverride2 |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B |
 | toplevel_self_singleton.rb:24:1:34:3 | Good |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass |
+| unresolved_subclass.rb:4:1:5:3 | UnresolvedNamespace::Subclass1 |
+| unresolved_subclass.rb:7:1:8:3 | UnresolvedNamespace::Subclass2 |
+| unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A |
 getADeclaration
 | calls.rb:21:1:34:3 | M | calls.rb:21:1:34:3 | M |
 | calls.rb:43:1:58:3 | C | calls.rb:43:1:58:3 | C |
@@ -101,6 +109,7 @@ getADeclaration
 | calls.rb:115:1:118:3 | Object | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | calls.rb:115:1:118:3 | Object | private.rb:1:1:105:40 | private.rb |
 | calls.rb:115:1:118:3 | Object | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| calls.rb:115:1:118:3 | Object | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
 | calls.rb:120:1:123:3 | Hash | calls.rb:120:1:123:3 | Hash |
 | calls.rb:125:1:138:3 | Array | calls.rb:125:1:138:3 | Array |
 | calls.rb:165:1:169:3 | S | calls.rb:165:1:169:3 | S |
@@ -176,6 +185,10 @@ getADeclaration
 | toplevel_self_singleton.rb:2:5:5:7 | A::B | modules_rec.rb:4:1:5:3 | B |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B | toplevel_self_singleton.rb:2:5:5:7 | B |
 | toplevel_self_singleton.rb:24:1:34:3 | Good | toplevel_self_singleton.rb:24:1:34:3 | Good |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass | unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass |
+| unresolved_subclass.rb:4:1:5:3 | UnresolvedNamespace::Subclass1 | unresolved_subclass.rb:4:1:5:3 | Subclass1 |
+| unresolved_subclass.rb:7:1:8:3 | UnresolvedNamespace::Subclass2 | unresolved_subclass.rb:7:1:8:3 | Subclass2 |
+| unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A | unresolved_subclass.rb:11:1:12:3 | A |
 getSuperClass
 | calls.rb:43:1:58:3 | C | calls.rb:115:1:118:3 | Object |
 | calls.rb:65:1:69:3 | D | calls.rb:43:1:58:3 | C |
@@ -231,6 +244,10 @@ getSuperClass
 | private.rb:82:1:94:3 | PrivateOverride1 | calls.rb:115:1:118:3 | Object |
 | private.rb:96:1:102:3 | PrivateOverride2 | private.rb:82:1:94:3 | PrivateOverride1 |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B | calls.rb:115:1:118:3 | Object |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass | calls.rb:115:1:118:3 | Object |
+| unresolved_subclass.rb:4:1:5:3 | UnresolvedNamespace::Subclass1 | unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass |
+| unresolved_subclass.rb:7:1:8:3 | UnresolvedNamespace::Subclass2 | unresolved_subclass.rb:4:1:5:3 | UnresolvedNamespace::Subclass1 |
+| unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A | calls.rb:115:1:118:3 | Object |
 getAPrependedModule
 | calls.rb:115:1:118:3 | Object | calls.rb:171:1:174:3 | A |
 | calls.rb:171:1:174:3 | A | toplevel_self_singleton.rb:2:5:5:7 | A::B |
@@ -308,6 +325,11 @@ resolveConstantReadAccess
 | calls.rb:471:5:471:11 | Array | Array |
 | calls.rb:477:5:477:9 | Class | Class |
 | calls.rb:483:5:483:11 | Array | Array |
+| calls.rb:490:1:490:23 | EsotericInstanceMethods | EsotericInstanceMethods |
+| calls.rb:491:1:491:23 | EsotericInstanceMethods | EsotericInstanceMethods |
+| calls.rb:492:1:492:23 | EsotericInstanceMethods | EsotericInstanceMethods |
+| calls.rb:493:1:493:23 | EsotericInstanceMethods | EsotericInstanceMethods |
+| calls.rb:494:1:494:23 | EsotericInstanceMethods | EsotericInstanceMethods |
 | calls.rb:504:1:504:21 | ExtendSingletonMethod | ExtendSingletonMethod |
 | calls.rb:507:12:507:32 | ExtendSingletonMethod | ExtendSingletonMethod |
 | calls.rb:510:1:510:22 | ExtendSingletonMethod2 | ExtendSingletonMethod2 |
@@ -373,6 +395,14 @@ resolveConstantReadAccess
 | private.rb:100:7:100:22 | PrivateOverride1 | PrivateOverride1 |
 | private.rb:104:1:104:16 | PrivateOverride2 | PrivateOverride2 |
 | private.rb:105:1:105:16 | PrivateOverride2 | PrivateOverride2 |
+| toplevel_self_singleton.rb:18:12:18:17 | Struct | Struct |
+| unresolved_subclass.rb:4:7:4:25 | UnresolvedNamespace | UnresolvedNamespace |
+| unresolved_subclass.rb:4:40:4:58 | ResolvableBaseClass | ResolvableBaseClass |
+| unresolved_subclass.rb:7:7:7:25 | UnresolvedNamespace | UnresolvedNamespace |
+| unresolved_subclass.rb:7:40:7:58 | UnresolvedNamespace | UnresolvedNamespace |
+| unresolved_subclass.rb:7:40:7:69 | Subclass1 | UnresolvedNamespace::Subclass1 |
+| unresolved_subclass.rb:11:7:11:25 | UnresolvedNamespace | UnresolvedNamespace |
+| unresolved_subclass.rb:11:32:11:50 | UnresolvedNamespace | UnresolvedNamespace |
 resolveConstantWriteAccess
 | calls.rb:21:1:34:3 | M | M |
 | calls.rb:43:1:58:3 | C | C |
@@ -469,6 +499,10 @@ resolveConstantWriteAccess
 | toplevel_self_singleton.rb:2:5:5:7 | B | A::B |
 | toplevel_self_singleton.rb:18:1:18:8 | MyStruct | MyStruct |
 | toplevel_self_singleton.rb:24:1:34:3 | Good | Good |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass | ResolvableBaseClass |
+| unresolved_subclass.rb:4:1:5:3 | Subclass1 | UnresolvedNamespace::Subclass1 |
+| unresolved_subclass.rb:7:1:8:3 | Subclass2 | UnresolvedNamespace::Subclass2 |
+| unresolved_subclass.rb:11:1:12:3 | A | UnresolvedNamespace::A |
 enclosingModule
 | calls.rb:1:1:3:3 | foo | calls.rb:1:1:616:32 | calls.rb |
 | calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:616:32 | calls.rb |
@@ -1792,3 +1826,15 @@ enclosingModule
 | toplevel_self_singleton.rb:30:13:30:19 | self | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
 | toplevel_self_singleton.rb:31:13:31:20 | call to call_you | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
 | toplevel_self_singleton.rb:31:13:31:20 | self | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
+| unresolved_subclass.rb:1:1:2:3 | ResolvableBaseClass | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:4:1:5:3 | Subclass1 | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:4:7:4:25 | UnresolvedNamespace | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:4:40:4:58 | ResolvableBaseClass | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:7:1:8:3 | Subclass2 | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:7:7:7:25 | UnresolvedNamespace | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:7:40:7:58 | UnresolvedNamespace | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:7:40:7:69 | Subclass1 | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:11:1:12:3 | A | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:11:7:11:25 | UnresolvedNamespace | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:11:32:11:50 | UnresolvedNamespace | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |
+| unresolved_subclass.rb:11:32:11:53 | B | unresolved_subclass.rb:1:1:12:4 | unresolved_subclass.rb |

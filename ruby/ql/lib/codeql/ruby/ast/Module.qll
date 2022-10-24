@@ -25,7 +25,12 @@ class Module extends TModule {
 
   /** Holds if this module is a class. */
   pragma[noinline]
-  predicate isClass() { this.getADeclaration() instanceof ClassDeclaration }
+  predicate isClass() {
+    this.getADeclaration() instanceof ClassDeclaration
+    or
+    // If another class extends this, but we can't see the class declaration, assume it's a class
+    getSuperClass(_) = this
+  }
 
   /** Gets a textual representation of this module. */
   string toString() {
