@@ -10,7 +10,7 @@
  */
 
 import java
-private import semmle.code.java.frameworks.kotlin.Serialization
+import semmle.code.java.frameworks.kotlin.Serialization
 
 int eval(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }
 

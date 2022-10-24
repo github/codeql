@@ -1,5 +1,5 @@
 /**
- * Provides classes and predicates for working with thi `kotlinx.serialization` plugin.
+ * Provides classes and predicates for working with the `kotlinx.serialization` plugin.
  */
 
 import java
