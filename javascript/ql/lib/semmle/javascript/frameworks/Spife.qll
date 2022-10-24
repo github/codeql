@@ -186,8 +186,7 @@ module Spife {
     string kind;
 
     ContextInputAccess() {
-      request.ref().flowsTo(super.getReceiver()) and
-      super.getMethodName() = "get" and
+      this = request.ref().getAMethodCall("get")
       kind = "path"
     }
 
@@ -261,7 +260,7 @@ module Spife {
 
     override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
       // reply.header(RESPONSE, 'Cache-Control', 'no-cache')
-      headerName = this.getNameNode().getStringValue() and
+      this.getNameNode().mayHaveStringValue(headerName) and
       headerValue = this.getArgument(2)
     }
 
@@ -279,10 +278,10 @@ module Spife {
     MultipleHeaderDefinitions() {
       // reply.header(RESPONSE, {'Cache-Control': 'no-cache'})
       // reply(RESPONSE, {'Cache-Control': 'no-cache'})
-      reply.ref().(DataFlow::CallNode).getCalleeName() = ["header", "reply"] and
-      reply.ref().(DataFlow::CallNode).getAnArgument().getALocalSource() instanceof
-        DataFlow::ObjectLiteralNode and
-      this = reply
+      exists(DataFlow::CallNode call | call = [reply.ref(), reply.ref().getAMethodCall("header")] | 
+        call.getAnArgument().getALocalSource() instanceof DataFlow::ObjectLiteralNode and
+        this = call
+      )
     }
 
     /**
@@ -321,10 +320,10 @@ module Spife {
   /**
    * An HTTP cookie defined in a Spife HTTP response.
    */
-  private class CookieDefinition extends Http::CookieDefinition, DataFlow::MethodCallNode instanceof ReplySource {
+  private class CookieDefinition extends Http::CookieDefinition, DataFlow::MethodCallNode {
     CookieDefinition() {
       // reply.cookie(RESPONSE, 'TEST', 'FOO', {"maxAge": 1000, "httpOnly": true, "secure": true})
-      this.ref().(DataFlow::MethodCallNode).getMethodName() = "cookie"
+      this = any(ReplySource r).ref().getAMethodCall("cookie")
     }
 
     override DataFlow::Node getNameArgument() { result = this.getArgument(1) }

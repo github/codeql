@@ -384,7 +384,7 @@ module Restify {
   }
 
   /**
-   * The URL of a REstify client, viewed as a sink for request forgery.
+   * The URL of a Restify client, viewed as a sink for request forgery.
    */
   class RequestForgerySink extends RFC::RequestForgery::Sink {
     RequestForgerySink() {
@@ -435,8 +435,7 @@ module Restify {
    * A header produced by a route handler with no explicit declaration of a Content-Type.
    */
   private class ContentTypeRouteHandlerHeader extends Http::ImplicitHeaderDefinition,
-    DataFlow::FunctionNode {
-    ContentTypeRouteHandlerHeader() { this instanceof RouteHandler }
+    DataFlow::FunctionNode instanceof RouteHandler {
 
     override predicate defines(string headerName, string headerValue) {
       headerName = "content-type" and headerValue = "application/json"
@@ -454,8 +453,7 @@ module Restify {
     override DataFlow::SourceNode getAReference() { result = def.ref() }
   }
 
-  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    RoutingTreeSetup() { this instanceof RouteSetup }
+  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
 
     override string getRelativePath() {
       not this.getMethodName() = ["use", "pre", "param", "on"] and // do not treat parameter name as a path
