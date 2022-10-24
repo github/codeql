@@ -422,7 +422,7 @@ class JavaSecurityAlgoParamGenerator extends JavaSecurityAlgoSpec {
   override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
-/** The Java interface `java.security.spec.AlgorithmParameterSpec` */
+/** An implementation of the `java.security.spec.AlgorithmParameterSpec` interface. */
 abstract class AlgorithmParameterSpec extends RefType { }
 
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
