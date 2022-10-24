@@ -253,19 +253,24 @@ open class KotlinUsesExtractor(
         }
     }
 
+    private fun propertySignature(p: IrProperty) =
+        ((p.getter ?: p.setter)?.extensionReceiverParameter?.let { useType(erase(it.type)).javaResult.signature } ?: "")
+
     private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
             extractExternalClassLater(p.parentAsClass)
-            dependencyCollector?.addDependency(p, externalClassExtractor.propertySignature)
-            externalClassExtractor.extractLater(p)
+            val signature = propertySignature(p) + externalClassExtractor.propertySignature
+            dependencyCollector?.addDependency(p, signature)
+            externalClassExtractor.extractLater(p, signature)
         }
     }
 
     private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
             extractExternalClassLater(f.parentAsClass)
-            dependencyCollector?.addDependency(f, externalClassExtractor.fieldSignature)
-            externalClassExtractor.extractLater(f)
+            val signature = (f.correspondingPropertySymbol?.let { propertySignature(it.owner) } ?: "") + externalClassExtractor.fieldSignature
+            dependencyCollector?.addDependency(f, signature)
+            externalClassExtractor.extractLater(f, signature)
         }
     }
 
