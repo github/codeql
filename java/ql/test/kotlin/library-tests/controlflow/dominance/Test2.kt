@@ -35,3 +35,5 @@ public class Test2 {
 		}
 	}
 }
+
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Int.dec in java.lang.Integer  ...while extracting a call (<no name>) at %Test2.kt:34:4:34:6%

@@ -31,3 +31,16 @@ public class Int {
 public object Unit {
 }
 
+// Diagnostic Matches: % Can't find java.lang.Boolean
+// Diagnostic Matches: % Can't find java.lang.Byte
+// Diagnostic Matches: % Can't find java.lang.Character
+// Diagnostic Matches: % Can't find java.lang.Double
+// Diagnostic Matches: % Can't find java.lang.Float
+// Diagnostic Matches: % Can't find java.lang.Integer
+// Diagnostic Matches: % Can't find java.lang.Long
+// Diagnostic Matches: % Can't find java.lang.Short
+// Diagnostic Matches: % Can't find java.lang.Void
+// Diagnostic Matches: % Can't find kotlin.UByte
+// Diagnostic Matches: % Can't find kotlin.UInt
+// Diagnostic Matches: % Can't find kotlin.ULong
+// Diagnostic Matches: % Can't find kotlin.UShort
