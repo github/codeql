@@ -408,12 +408,8 @@ private module ResolveImpl {
   string getAnAssumedGlobalConst() {
     exists(ConstantAccess access |
       not exists(access.getScopeExpr()) and
-      result = access.getName()
-    |
-      access.hasGlobalScope()
-      or
-      // At the top-level but not inside a block
-      enclosingModuleNoBlock(access) instanceof Toplevel
+      result = access.getName() and
+      isToplevel(access)
     )
   }
 
