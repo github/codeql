@@ -813,7 +813,7 @@ open class KotlinUsesExtractor(
                 OperatorNameConventions.INVOKE.asString())
 
         fun getSuffixIfInternal() =
-            if (f.visibility == DescriptorVisibilities.INTERNAL) {
+            if (f.visibility == DescriptorVisibilities.INTERNAL && f !is IrConstructor) {
                 "\$" + getJvmModuleName(f)
             } else {
                 ""
