@@ -76,7 +76,13 @@ bindingset[func]
 string betterQualName(Function func) {
   // note: `target.getQualifiedName` for Lambdas is just "lambda", so is not very useful :|
   not func.isLambda() and
-  result = func.getQualifiedName()
+  if
+    strictcount(Function f |
+      f.getEnclosingModule() = func.getEnclosingModule() and
+      f.getQualifiedName() = func.getQualifiedName()
+    ) = 1
+  then result = func.getQualifiedName()
+  else result = func.getLocation().getStartLine() + ":" + func.getQualifiedName()
   or
   func.isLambda() and
   result =
@@ -88,7 +94,7 @@ query predicate debug_callableNotUnique(Function callable, string message) {
   exists(callable.getLocation().getFile().getRelativePath()) and
   exists(Function f |
     f != callable and
-    f.getQualifiedName() = callable.getQualifiedName() and
+    betterQualName(f) = betterQualName(callable) and
     f.getLocation().getFile() = callable.getLocation().getFile()
   ) and
   message =
