@@ -21,6 +21,9 @@ pointsTo_found_typeTracker_notFound
 | code/type_tracking_limitation.py:8:1:8:3 | ControlFlowNode for x() | my_func |
 typeTracker_found_pointsTo_notFound
 | code/callable_as_argument.py:29:5:29:12 | ControlFlowNode for Attribute() | test_class.InsideTestFunc.sm |
+| code/class_construction.py:44:9:44:26 | ControlFlowNode for Attribute() | WithNew.some_method |
+| code/class_construction.py:61:9:61:26 | ControlFlowNode for Attribute() | WithNew.some_method |
+| code/class_construction.py:75:9:75:27 | ControlFlowNode for Attribute() | ExtraCallToInit.__init__ |
 | code/class_special_methods.py:22:9:22:16 | ControlFlowNode for self() | Base.__call__ |
 | code/class_special_methods.py:22:9:22:16 | ControlFlowNode for self() | Sub.__call__ |
 | code/class_special_methods.py:33:1:33:5 | ControlFlowNode for b() | Base.__call__ |
