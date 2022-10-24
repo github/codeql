@@ -161,9 +161,7 @@ private class AsymmetricKeyGenerator extends AlgoGeneratorObject {
 }
 
 /** An instance of a `javax.crypto.KeyGenerator`. */
-private class SymmetricKeyGenerator extends AlgoGeneratorObject {
-  SymmetricKeyGenerator() { this instanceof JavaxCryptoKeyGenerator }
-
+private class SymmetricKeyGenerator extends AlgoGeneratorObject instanceof JavaxCryptoKeyGenerator {
   override Expr getAlgoSpec() { result = this.getAlgoSpec() }
 }
 
