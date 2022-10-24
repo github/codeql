@@ -25,7 +25,7 @@ class TestConfiguration extends DataFlow::Configuration {
 
 private class TestSummaries extends SummaryModelCsv {
   override predicate row(string row) {
-    // dumb model to allow testing flow through optional chaining (`x?.signum()`)
+    // model to allow data flow through `signum()` as though it were an identity function, for the benefit of testing flow through optional chaining (`x?.`).
     row = ";Int;true;signum();;;Argument[-1];ReturnValue;value"
   }
 }
