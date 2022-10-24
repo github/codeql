@@ -47,8 +47,8 @@ class TokenAssignmentValueSink extends DataFlow::Node {
   }
 }
 
-class TokenBuiltFromUUIDConfig extends TaintTracking::Configuration {
-  TokenBuiltFromUUIDConfig() { this = "TokenBuiltFromUUIDConfig" }
+class TokenBuiltFromUuidConfig extends TaintTracking::Configuration {
+  TokenBuiltFromUuidConfig() { this = "TokenBuiltFromUuidConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof PredictableResultSource }
 
@@ -64,6 +64,6 @@ class TokenBuiltFromUUIDConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, TokenBuiltFromUUIDConfig config
+from DataFlow::PathNode source, DataFlow::PathNode sink, TokenBuiltFromUuidConfig config
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Token built from $@.", source.getNode(), "predictable value"

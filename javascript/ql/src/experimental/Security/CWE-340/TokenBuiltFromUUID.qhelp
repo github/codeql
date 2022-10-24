@@ -34,7 +34,7 @@ Version four is the only UUID version expected to be randomly generated.
 
 <references>
 <li>UUID <a href="https://datatracker.ietf.org/doc/html/rfc4122">RFC</a>.</li>
-<li>Daniel Thatcher <i>In GUID We Trust<i> <a href="https://www.intruder.io/research/in-guid-we-trust">article</a>.</li>
+<li>Daniel Thatcher <i>In GUID We Trust</i> <a href="https://www.intruder.io/research/in-guid-we-trust">article</a>.</li>
 <li>UUID exploitation <a href="https://github.com/intruder-io/guidtool">tool</a>.</li>
 </references>
 </qhelp>
