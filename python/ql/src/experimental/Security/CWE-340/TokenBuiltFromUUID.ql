@@ -23,7 +23,6 @@ class PredictableResultSource extends DataFlow::Node {
       uuidCallRet =
         API::moduleImport("uuid")
             .getMember(["uuid1", "uuid3", "uuid5"])
-            .getACall()
             .getReturn()
     |
       this = uuidCallRet.asSource()
