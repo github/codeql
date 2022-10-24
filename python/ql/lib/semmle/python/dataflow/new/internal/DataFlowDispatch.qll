@@ -468,6 +468,13 @@ private TypeTrackingNode classInstanceTracker(TypeTracker t, Class cls) {
   t.start() and
   resolveClassCall(result.(CallCfgNode).asCfgNode(), cls)
   or
+  // result of `super().__new__` as used in a `__new__` method implementation
+  t.start() and
+  exists(Class classUsedInSuper |
+    fromSuperNewCall(result.(CallCfgNode).asCfgNode(), classUsedInSuper, _, _) and
+    classUsedInSuper = getADirectSuperclass*(cls)
+  )
+  or
   exists(TypeTracker t2 | result = classInstanceTracker(t2, cls).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
 }
@@ -854,6 +861,16 @@ private module MethodCalls {
       attr.accesses(selfTracker(classWithMethod), functionName)
     ) and
     attr.accesses(self, functionName)
+  }
+
+  /**
+   * Like `fromSuper`, but only for `__new__`, and without requirement for being able to
+   * resolve the call to a known target (since the only super class might be the
+   * builtin `object`, so we never have the implementation of `__new__` in the DB).
+   */
+  predicate fromSuperNewCall(CallNode call, Class classUsedInSuper, AttrRead attr, Node self) {
+    fromSuper_join(call, "__new__", classUsedInSuper, attr, self) and
+    self in [classTracker(_), clsTracker(_)]
   }
 
   /**

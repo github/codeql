@@ -41,7 +41,7 @@ class WithNew(object):
         print("WithNew.__new__", arg)
         inst = super().__new__(cls)
         assert isinstance(inst, cls)
-        inst.some_method() # $ MISSING: pt,tt=WithNew.some_method
+        inst.some_method() # $ tt=WithNew.some_method
         return inst
 
     def __init__(self, arg=None):
@@ -58,7 +58,7 @@ class WithNewSub(WithNew):
         print("WithNewSub.__new__")
         inst = super().__new__(cls, 44.1) # $ pt,tt=WithNew.__new__
         assert isinstance(inst, cls)
-        inst.some_method() # $ MISSING: pt,tt=WithNew.some_method
+        inst.some_method() # $ tt=WithNew.some_method
         return inst
 
 WithNewSub() # $ tt=WithNewSub.__new__ tt=WithNew.__init__
@@ -72,7 +72,7 @@ class ExtraCallToInit(object):
         inst = super().__new__(cls)
         assert isinstance(inst, cls)
         # you're not supposed to do this, since it will cause the __init__ method will be run twice.
-        inst.__init__(1001) # $ MISSING: pt,tt=ExtraCallToInit.__init__
+        inst.__init__(1001) # $ tt=ExtraCallToInit.__init__
         return inst
 
     def __init__(self, arg):
