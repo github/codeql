@@ -10,6 +10,12 @@ module Generated {
   class InterpolatedStringLiteralExpr extends Synth::TInterpolatedStringLiteralExpr, LiteralExpr {
     override string getAPrimaryQlClass() { result = "InterpolatedStringLiteralExpr" }
 
+    /**
+     * Gets the interpolation expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     OpaqueValueExpr getImmediateInterpolationExpr() {
       result =
         Synth::convertOpaqueValueExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
@@ -17,12 +23,24 @@ module Generated {
               .getInterpolationExpr())
     }
 
+    /**
+     * Gets the interpolation expression of this interpolated string literal expression, if it exists.
+     */
     final OpaqueValueExpr getInterpolationExpr() {
       result = getImmediateInterpolationExpr().resolve()
     }
 
+    /**
+     * Holds if `getInterpolationExpr()` exists.
+     */
     final predicate hasInterpolationExpr() { exists(getInterpolationExpr()) }
 
+    /**
+     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateInterpolationCountExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
@@ -30,12 +48,24 @@ module Generated {
               .getInterpolationCountExpr())
     }
 
+    /**
+     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
+     */
     final Expr getInterpolationCountExpr() {
       result = getImmediateInterpolationCountExpr().resolve()
     }
 
+    /**
+     * Holds if `getInterpolationCountExpr()` exists.
+     */
     final predicate hasInterpolationCountExpr() { exists(getInterpolationCountExpr()) }
 
+    /**
+     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateLiteralCapacityExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
@@ -43,10 +73,22 @@ module Generated {
               .getLiteralCapacityExpr())
     }
 
+    /**
+     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
+     */
     final Expr getLiteralCapacityExpr() { result = getImmediateLiteralCapacityExpr().resolve() }
 
+    /**
+     * Holds if `getLiteralCapacityExpr()` exists.
+     */
     final predicate hasLiteralCapacityExpr() { exists(getLiteralCapacityExpr()) }
 
+    /**
+     * Gets the appending expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     TapExpr getImmediateAppendingExpr() {
       result =
         Synth::convertTapExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
@@ -54,8 +96,14 @@ module Generated {
               .getAppendingExpr())
     }
 
+    /**
+     * Gets the appending expression of this interpolated string literal expression, if it exists.
+     */
     final TapExpr getAppendingExpr() { result = getImmediateAppendingExpr().resolve() }
 
+    /**
+     * Holds if `getAppendingExpr()` exists.
+     */
     final predicate hasAppendingExpr() { exists(getAppendingExpr()) }
   }
 }

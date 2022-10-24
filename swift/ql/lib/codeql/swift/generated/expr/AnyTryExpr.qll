@@ -5,11 +5,20 @@ import codeql.swift.elements.expr.Expr
 
 module Generated {
   class AnyTryExpr extends Synth::TAnyTryExpr, Expr {
+    /**
+     * Gets the sub expression of this any try expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertAnyTryExprToRaw(this).(Raw::AnyTryExpr).getSubExpr())
     }
 
+    /**
+     * Gets the sub expression of this any try expression.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

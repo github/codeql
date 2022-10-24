@@ -8,6 +8,12 @@ module Generated {
   class InfixOperatorDecl extends Synth::TInfixOperatorDecl, OperatorDecl {
     override string getAPrimaryQlClass() { result = "InfixOperatorDecl" }
 
+    /**
+     * Gets the precedence group of this infix operator declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     PrecedenceGroupDecl getImmediatePrecedenceGroup() {
       result =
         Synth::convertPrecedenceGroupDeclFromRaw(Synth::convertInfixOperatorDeclToRaw(this)
@@ -15,10 +21,16 @@ module Generated {
               .getPrecedenceGroup())
     }
 
+    /**
+     * Gets the precedence group of this infix operator declaration, if it exists.
+     */
     final PrecedenceGroupDecl getPrecedenceGroup() {
       result = getImmediatePrecedenceGroup().resolve()
     }
 
+    /**
+     * Holds if `getPrecedenceGroup()` exists.
+     */
     final predicate hasPrecedenceGroup() { exists(getPrecedenceGroup()) }
   }
 }

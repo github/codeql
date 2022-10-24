@@ -5,10 +5,16 @@ import codeql.swift.elements.stmt.Stmt
 
 module Generated {
   class LabeledStmt extends Synth::TLabeledStmt, Stmt {
+    /**
+     * Gets the label of this labeled statement, if it exists.
+     */
     string getLabel() {
       result = Synth::convertLabeledStmtToRaw(this).(Raw::LabeledStmt).getLabel()
     }
 
+    /**
+     * Holds if `getLabel()` exists.
+     */
     final predicate hasLabel() { exists(getLabel()) }
   }
 }

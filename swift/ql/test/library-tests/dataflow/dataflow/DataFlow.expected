@@ -98,6 +98,8 @@ edges
 | test.swift:219:13:219:15 | .a [x] :  | test.swift:219:13:219:17 | .x |
 | test.swift:225:14:225:21 | call to source() :  | test.swift:235:13:235:15 | .source_value |
 | test.swift:225:14:225:21 | call to source() :  | test.swift:238:13:238:15 | .source_value |
+| test.swift:259:12:259:19 | call to source() :  | test.swift:263:13:263:28 | call to optionalSource() :  |
+| test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:264:15:264:16 | ...! |
 nodes
 | file://:0:0:0:0 | .a [x] :  | semmle.label | .a [x] :  |
 | file://:0:0:0:0 | .x :  | semmle.label | .x :  |
@@ -208,6 +210,9 @@ nodes
 | test.swift:225:14:225:21 | call to source() :  | semmle.label | call to source() :  |
 | test.swift:235:13:235:15 | .source_value | semmle.label | .source_value |
 | test.swift:238:13:238:15 | .source_value | semmle.label | .source_value |
+| test.swift:259:12:259:19 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:263:13:263:28 | call to optionalSource() :  | semmle.label | call to optionalSource() :  |
+| test.swift:264:15:264:16 | ...! | semmle.label | ...! |
 subpaths
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:65:1:70:1 | arg2[return] :  | test.swift:75:31:75:32 | [post] &... :  |
 | test.swift:114:19:114:19 | arg :  | test.swift:109:9:109:14 | arg :  | test.swift:110:12:110:12 | arg :  | test.swift:114:12:114:22 | call to ... :  |
@@ -263,3 +268,4 @@ subpaths
 | test.swift:219:13:219:17 | .x | test.swift:218:11:218:18 | call to source() :  | test.swift:219:13:219:17 | .x | result |
 | test.swift:235:13:235:15 | .source_value | test.swift:225:14:225:21 | call to source() :  | test.swift:235:13:235:15 | .source_value | result |
 | test.swift:238:13:238:15 | .source_value | test.swift:225:14:225:21 | call to source() :  | test.swift:238:13:238:15 | .source_value | result |
+| test.swift:264:15:264:16 | ...! | test.swift:259:12:259:19 | call to source() :  | test.swift:264:15:264:16 | ...! | result |

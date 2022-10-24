@@ -10,8 +10,8 @@ edges
 | string.swift:28:17:28:25 | call to source2() :  | string.swift:35:13:35:23 | ... .+(_:_:) ... |
 | string.swift:28:17:28:25 | call to source2() :  | string.swift:36:13:36:23 | ... .+(_:_:) ... |
 | string.swift:28:17:28:25 | call to source2() :  | string.swift:39:13:39:29 | ... .+(_:_:) ... |
-| subscript.swift:13:10:13:17 | call to source() :  | subscript.swift:13:10:13:20 | ...[...] |
-| subscript.swift:14:10:14:18 | call to source2() :  | subscript.swift:14:10:14:21 | ...[...] |
+| subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] |
+| subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] |
 | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... |
 | try.swift:15:17:15:24 | call to source() :  | try.swift:15:12:15:24 | try! ... |
 | try.swift:18:18:18:25 | call to source() :  | try.swift:18:12:18:27 | ...! |
@@ -164,10 +164,10 @@ nodes
 | string.swift:35:13:35:23 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | string.swift:36:13:36:23 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | string.swift:39:13:39:29 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| subscript.swift:13:10:13:17 | call to source() :  | semmle.label | call to source() :  |
-| subscript.swift:13:10:13:20 | ...[...] | semmle.label | ...[...] |
-| subscript.swift:14:10:14:18 | call to source2() :  | semmle.label | call to source2() :  |
-| subscript.swift:14:10:14:21 | ...[...] | semmle.label | ...[...] |
+| subscript.swift:13:15:13:22 | call to source() :  | semmle.label | call to source() :  |
+| subscript.swift:13:15:13:25 | ...[...] | semmle.label | ...[...] |
+| subscript.swift:14:15:14:23 | call to source2() :  | semmle.label | call to source2() :  |
+| subscript.swift:14:15:14:26 | ...[...] | semmle.label | ...[...] |
 | try.swift:9:13:9:24 | try ... | semmle.label | try ... |
 | try.swift:9:17:9:24 | call to source() :  | semmle.label | call to source() :  |
 | try.swift:15:12:15:24 | try! ... | semmle.label | try! ... |
@@ -315,8 +315,8 @@ subpaths
 | string.swift:35:13:35:23 | ... .+(_:_:) ... | string.swift:28:17:28:25 | call to source2() :  | string.swift:35:13:35:23 | ... .+(_:_:) ... | result |
 | string.swift:36:13:36:23 | ... .+(_:_:) ... | string.swift:28:17:28:25 | call to source2() :  | string.swift:36:13:36:23 | ... .+(_:_:) ... | result |
 | string.swift:39:13:39:29 | ... .+(_:_:) ... | string.swift:28:17:28:25 | call to source2() :  | string.swift:39:13:39:29 | ... .+(_:_:) ... | result |
-| subscript.swift:13:10:13:20 | ...[...] | subscript.swift:13:10:13:17 | call to source() :  | subscript.swift:13:10:13:20 | ...[...] | result |
-| subscript.swift:14:10:14:21 | ...[...] | subscript.swift:14:10:14:18 | call to source2() :  | subscript.swift:14:10:14:21 | ...[...] | result |
+| subscript.swift:13:15:13:25 | ...[...] | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] | result |
+| subscript.swift:14:15:14:26 | ...[...] | subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] | result |
 | try.swift:9:13:9:24 | try ... | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... | result |
 | try.swift:15:12:15:24 | try! ... | try.swift:15:17:15:24 | call to source() :  | try.swift:15:12:15:24 | try! ... | result |
 | try.swift:18:12:18:27 | ...! | try.swift:18:18:18:25 | call to source() :  | try.swift:18:12:18:27 | ...! | result |

@@ -375,17 +375,10 @@ private module Cached {
   private predicate selfInSingletonMethodFlowsToMethodCallReceiver(
     RelevantCall call, Module m, string method
   ) {
-    exists(SsaSelfDefinitionNode self, Module target, MethodBase caller |
+    exists(SsaSelfDefinitionNode self, MethodBase caller |
       flowsToMethodCallReceiver(call, self, method) and
-      target = m.getSuperClass*() and
-      selfInMethod(self.getVariable(), caller, target) and
-      singletonMethod(caller, _, _) and
-      // Singleton methods declared in a block in the top-level may spuriously end up being seen as singleton
-      // methods on Object, if the block is actually evaluated in the context of another class.
-      // The 'self' inside such a singleton method could then be any class, leading to self-calls
-      // being resolved to arbitrary singleton methods.
-      // To remedy this, we do not allow following super-classes all the way to Object.
-      not (m != target and target = TResolved("Object"))
+      selfInMethod(self.getVariable(), caller, m) and
+      singletonMethod(caller, _, _)
     )
   }
 
@@ -441,12 +434,13 @@ private module Cached {
       // M.extend(M)
       // M.instance           # <- call
       // ```
-      exists(Module m | result = lookupSingletonMethod(m, method) |
+      exists(Module m, boolean exact | result = lookupSingletonMethod(m, method, exact) |
         // ```rb
         // def C.singleton; end # <- result
         // C.singleton          # <- call
         // ```
-        moduleFlowsToMethodCallReceiver(call, m, method)
+        moduleFlowsToMethodCallReceiver(call, m, method) and
+        exact = true
         or
         // ```rb
         // class C
@@ -454,7 +448,8 @@ private module Cached {
         //   self.singleton          # <- call
         // end
         // ```
-        selfInModuleFlowsToMethodCallReceiver(call, m, method)
+        selfInModuleFlowsToMethodCallReceiver(call, m, method) and
+        exact = true
         or
         // ```rb
         // class C
@@ -464,7 +459,8 @@ private module Cached {
         //   end
         // end
         // ```
-        selfInSingletonMethodFlowsToMethodCallReceiver(call, m, method)
+        selfInSingletonMethodFlowsToMethodCallReceiver(call, m, method) and
+        exact = false
       )
     )
     or
@@ -796,24 +792,52 @@ private predicate singletonMethodOnModule(MethodBase method, string name, Module
   )
 }
 
+pragma[nomagic]
+private MethodBase lookupSingletonMethodDirect(Module m, string name) {
+  singletonMethodOnModule(result, name, m)
+  or
+  exists(DataFlow::LocalSourceNode sourceNode |
+    sourceNode = trackModuleAccess(m) and
+    not m = resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
+    flowsToSingletonMethodObject(sourceNode, result, name)
+  )
+}
+
 /**
  * Holds if `method` is a singleton method named `name`, defined on module
  * `m`, or any transitive base class of `m`.
  */
 pragma[nomagic]
 private MethodBase lookupSingletonMethod(Module m, string name) {
-  singletonMethodOnModule(result, name, m)
+  result = lookupSingletonMethodDirect(m, name)
   or
-  // cannot be part of `singletonMethodOnModule` because it would introduce
-  // negative recursion below
-  exists(DataFlow::LocalSourceNode sourceNode |
-    sourceNode = trackModuleAccess(m) and
-    not m = resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
-    flowsToSingletonMethodObject(sourceNode, result, name)
-  )
-  or
+  // cannot use `lookupSingletonMethodDirect` because it would introduce
+  // negative recursion
   not singletonMethodOnModule(_, name, m) and
   result = lookupSingletonMethod(m.getSuperClass(), name)
+}
+
+pragma[nomagic]
+private MethodBase lookupSingletonMethodInSubClasses(Module m, string name) {
+  // Singleton methods declared in a block in the top-level may spuriously end up being seen as singleton
+  // methods on Object, if the block is actually evaluated in the context of another class.
+  // The 'self' inside such a singleton method could then be any class, leading to self-calls
+  // being resolved to arbitrary singleton methods.
+  // To remedy this, we do not allow following super-classes all the way to Object.
+  not m = TResolved("Object") and
+  exists(Module sub | sub.getSuperClass() = m |
+    result = lookupSingletonMethodDirect(sub, name) or
+    result = lookupSingletonMethodInSubClasses(sub, name)
+  )
+}
+
+pragma[nomagic]
+private MethodBase lookupSingletonMethod(Module m, string name, boolean exact) {
+  result = lookupSingletonMethod(m, name) and
+  exact in [false, true]
+  or
+  result = lookupSingletonMethodInSubClasses(m, name) and
+  exact = false
 }
 
 /**

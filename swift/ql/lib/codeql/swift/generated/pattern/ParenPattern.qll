@@ -7,6 +7,12 @@ module Generated {
   class ParenPattern extends Synth::TParenPattern, Pattern {
     override string getAPrimaryQlClass() { result = "ParenPattern" }
 
+    /**
+     * Gets the sub pattern of this paren pattern.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Pattern getImmediateSubPattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertParenPatternToRaw(this)
@@ -14,6 +20,9 @@ module Generated {
               .getSubPattern())
     }
 
+    /**
+     * Gets the sub pattern of this paren pattern.
+     */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
   }
 }
