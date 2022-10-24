@@ -284,10 +284,7 @@ class ToEncryptionConfiguration extends TaintTracking2::Configuration {
 class FromEncryptionConfiguration extends TaintTracking3::Configuration {
   FromEncryptionConfiguration() { this = "FromEncryptionConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    isSinkEncrypt(source, _) or
-    isSinkEncrypt(_, source.asDefiningArgument())
-  }
+  override predicate isSource(DataFlow::Node source) { isSinkEncrypt(source, _) }
 
   override predicate isSink(DataFlow::Node sink) {
     any(FromSensitiveConfiguration config).hasFlowTo(sink)
