@@ -171,21 +171,22 @@ private class SymmetricKeyGenerator extends AlgoGeneratorObject instanceof Javax
   override Expr getAlgoSpec() { result = JavaxCryptoKeyGenerator.super.getAlgoSpec() }
 }
 
-/** An instance of an algorithm specification. */
-abstract private class AlgoSpec extends ClassInstanceExpr {
-  Argument getKeySizeArg() { result = this.getArgument(0) }
-}
-
 /** An instance of an RSA, DSA, or DH algorithm specification. */
-private class AsymmetricNonEcSpec extends AlgoSpec {
+private class AsymmetricNonEcSpec extends ClassInstanceExpr {
   AsymmetricNonEcSpec() {
     this.getConstructedType() instanceof RsaKeyGenParameterSpec or
     this.getConstructedType() instanceof DsaGenParameterSpec or
     this.getConstructedType() instanceof DhGenParameterSpec
   }
+
+  /** Gets the `keysize` argument of this instance. */
+  Argument getKeySizeArg() { result = this.getArgument(0) }
 }
 
 /** An instance of an elliptic curve (EC) algorithm specification. */
-private class AsymmetricEcSpec extends AlgoSpec {
+private class AsymmetricEcSpec extends ClassInstanceExpr {
   AsymmetricEcSpec() { this.getConstructedType() instanceof EcGenParameterSpec }
+
+  /** Gets the `keysize` argument of this instance. */
+  Argument getKeySizeArg() { result = this.getArgument(0) }
 }
