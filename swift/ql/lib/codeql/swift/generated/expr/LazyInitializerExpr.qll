@@ -7,6 +7,12 @@ module Generated {
   class LazyInitializerExpr extends Synth::TLazyInitializerExpr, Expr {
     override string getAPrimaryQlClass() { result = "LazyInitializerExpr" }
 
+    /**
+     * Gets the sub expression of this lazy initializer expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertLazyInitializerExprToRaw(this)
@@ -14,6 +20,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expression of this lazy initializer expression.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

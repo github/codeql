@@ -8,6 +8,12 @@ module Generated {
   class KeyPathExpr extends Synth::TKeyPathExpr, Expr {
     override string getAPrimaryQlClass() { result = "KeyPathExpr" }
 
+    /**
+     * Gets the root of this key path expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     TypeRepr getImmediateRoot() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertKeyPathExprToRaw(this)
@@ -15,10 +21,22 @@ module Generated {
               .getRoot())
     }
 
+    /**
+     * Gets the root of this key path expression, if it exists.
+     */
     final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
 
+    /**
+     * Holds if `getRoot()` exists.
+     */
     final predicate hasRoot() { exists(getRoot()) }
 
+    /**
+     * Gets the parsed path of this key path expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateParsedPath() {
       result =
         Synth::convertExprFromRaw(Synth::convertKeyPathExprToRaw(this)
@@ -26,8 +44,14 @@ module Generated {
               .getParsedPath())
     }
 
+    /**
+     * Gets the parsed path of this key path expression, if it exists.
+     */
     final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }
 
+    /**
+     * Holds if `getParsedPath()` exists.
+     */
     final predicate hasParsedPath() { exists(getParsedPath()) }
   }
 }

@@ -7,6 +7,12 @@ module Generated {
   class VarargExpansionExpr extends Synth::TVarargExpansionExpr, Expr {
     override string getAPrimaryQlClass() { result = "VarargExpansionExpr" }
 
+    /**
+     * Gets the sub expression of this vararg expansion expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertVarargExpansionExprToRaw(this)
@@ -14,6 +20,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expression of this vararg expansion expression.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

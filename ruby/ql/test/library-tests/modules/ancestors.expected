@@ -1,6 +1,14 @@
 #-----| Class
 #-----| super -> Module
 
+#-----| EsotericInstanceMethods
+
+#-----| MyStruct
+
+#-----| Struct
+
+#-----| UnresolvedNamespace
+
 #-----| BasicObject
 
 #-----| Complex
@@ -239,3 +247,16 @@ toplevel_self_singleton.rb:
 #-----| super -> Object
 
 #   24| Good
+
+unresolved_subclass.rb:
+#    1| ResolvableBaseClass
+#-----| super -> Object
+
+#    4| UnresolvedNamespace::Subclass1
+#-----| super -> ResolvableBaseClass
+
+#    7| UnresolvedNamespace::Subclass2
+#-----| super -> UnresolvedNamespace::Subclass1
+
+#   11| UnresolvedNamespace::A
+#-----| super -> Object

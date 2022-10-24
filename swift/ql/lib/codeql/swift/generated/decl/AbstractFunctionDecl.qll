@@ -8,6 +8,9 @@ import codeql.swift.elements.decl.ValueDecl
 module Generated {
   class AbstractFunctionDecl extends Synth::TAbstractFunctionDecl, GenericContext, ValueDecl,
     Callable {
+    /**
+     * Gets the name of this function.
+     */
     string getName() {
       result = Synth::convertAbstractFunctionDeclToRaw(this).(Raw::AbstractFunctionDecl).getName()
     }

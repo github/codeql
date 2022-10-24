@@ -1,7 +1,7 @@
-from typing import Callable as _Callable, Union as _Union
-from functools import singledispatch as _singledispatch
+from typing import Callable as _Callable
 from swift.codegen.lib import schema as _schema
 import inspect as _inspect
+from dataclasses import dataclass as _dataclass
 
 
 class _ChildModifier(_schema.PropertyModifier):
@@ -11,30 +11,45 @@ class _ChildModifier(_schema.PropertyModifier):
         prop.is_child = True
 
 
+@_dataclass
+class _DocModifier(_schema.PropertyModifier):
+    doc: str
+
+    def modify(self, prop: _schema.Property):
+        prop.doc = self.doc
+
+
+@_dataclass
+class _DescModifier(_schema.PropertyModifier):
+    description: str
+
+    def modify(self, prop: _schema.Property):
+        prop.description = _schema.split_doc(self.description)
+
+
 def include(source: str):
     # add to `includes` variable in calling context
     _inspect.currentframe().f_back.f_locals.setdefault(
         "__includes", []).append(source)
 
 
+@_dataclass
 class _Pragma(_schema.PropertyModifier):
     """ A class or property pragma.
     For properties, it functions similarly to a `_PropertyModifier` with `|`, adding the pragma.
     For schema classes it acts as a python decorator with `@`.
     """
-
-    def __init__(self, pragma):
-        self.pragma = pragma
+    pragma: str
 
     def modify(self, prop: _schema.Property):
         prop.pragmas.append(self.pragma)
 
     def __call__(self, cls: type) -> type:
         """ use this pragma as a decorator on classes """
-        if "pragmas" in cls.__dict__:  # not using hasattr as we don't want to land on inherited pragmas
-            cls.pragmas.append(self.pragma)
+        if "_pragmas" in cls.__dict__:  # not using hasattr as we don't want to land on inherited pragmas
+            cls._pragmas.append(self.pragma)
         else:
-            cls.pragmas = [self.pragma]
+            cls._pragmas = [self.pragma]
         return cls
 
 
@@ -82,7 +97,7 @@ _ClassDecorator = _Callable[[type], type]
 def _annotate(**kwargs) -> _ClassDecorator:
     def f(cls: type) -> type:
         for k, v in kwargs.items():
-            setattr(cls, k, v)
+            setattr(cls, f"_{k}", v)
         return cls
 
     return f
@@ -97,11 +112,17 @@ optional = _TypeModifier(_Optionalizer())
 list = _TypeModifier(_Listifier())
 
 child = _ChildModifier()
+doc = _DocModifier
+desc = _DescModifier
 
 qltest = _Namespace(
     skip=_Pragma("qltest_skip"),
     collapse_hierarchy=_Pragma("qltest_collapse_hierarchy"),
     uncollapse_hierarchy=_Pragma("qltest_uncollapse_hierarchy"),
+)
+
+ql = _Namespace(
+    default_doc_name=lambda doc: _annotate(doc_name=doc)
 )
 
 cpp = _Namespace(

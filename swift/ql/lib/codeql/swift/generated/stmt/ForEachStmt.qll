@@ -10,6 +10,12 @@ module Generated {
   class ForEachStmt extends Synth::TForEachStmt, LabeledStmt {
     override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
+    /**
+     * Gets the pattern of this for each statement.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Pattern getImmediatePattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertForEachStmtToRaw(this)
@@ -17,8 +23,17 @@ module Generated {
               .getPattern())
     }
 
+    /**
+     * Gets the pattern of this for each statement.
+     */
     final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
+    /**
+     * Gets the sequence of this for each statement.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSequence() {
       result =
         Synth::convertExprFromRaw(Synth::convertForEachStmtToRaw(this)
@@ -26,17 +41,38 @@ module Generated {
               .getSequence())
     }
 
+    /**
+     * Gets the sequence of this for each statement.
+     */
     final Expr getSequence() { result = getImmediateSequence().resolve() }
 
+    /**
+     * Gets the where of this for each statement, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateWhere() {
       result =
         Synth::convertExprFromRaw(Synth::convertForEachStmtToRaw(this).(Raw::ForEachStmt).getWhere())
     }
 
+    /**
+     * Gets the where of this for each statement, if it exists.
+     */
     final Expr getWhere() { result = getImmediateWhere().resolve() }
 
+    /**
+     * Holds if `getWhere()` exists.
+     */
     final predicate hasWhere() { exists(getWhere()) }
 
+    /**
+     * Gets the body of this for each statement.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     BraceStmt getImmediateBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertForEachStmtToRaw(this)
@@ -44,6 +80,9 @@ module Generated {
               .getBody())
     }
 
+    /**
+     * Gets the body of this for each statement.
+     */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
 }

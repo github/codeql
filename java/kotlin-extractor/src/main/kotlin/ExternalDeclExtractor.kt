@@ -35,8 +35,6 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
         if (ret) externalDeclWorkList.add(Pair(d, signature))
         return ret
     }
-    fun extractLater(p: IrProperty) = extractLater(p, propertySignature)
-    fun extractLater(f: IrField) = extractLater(f, fieldSignature)
     fun extractLater(c: IrClass) = extractLater(c, "")
 
     fun extractExternalClasses() {

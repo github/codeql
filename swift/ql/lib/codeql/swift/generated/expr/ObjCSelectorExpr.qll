@@ -8,6 +8,12 @@ module Generated {
   class ObjCSelectorExpr extends Synth::TObjCSelectorExpr, Expr {
     override string getAPrimaryQlClass() { result = "ObjCSelectorExpr" }
 
+    /**
+     * Gets the sub expression of this obj c selector expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertObjCSelectorExprToRaw(this)
@@ -15,8 +21,17 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expression of this obj c selector expression.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
+    /**
+     * Gets the method of this obj c selector expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     AbstractFunctionDecl getImmediateMethod() {
       result =
         Synth::convertAbstractFunctionDeclFromRaw(Synth::convertObjCSelectorExprToRaw(this)
@@ -24,6 +39,9 @@ module Generated {
               .getMethod())
     }
 
+    /**
+     * Gets the method of this obj c selector expression.
+     */
     final AbstractFunctionDecl getMethod() { result = getImmediateMethod().resolve() }
   }
 }

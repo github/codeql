@@ -7,7 +7,14 @@ private import internal.ControlFlowGraphImpl
 private import internal.Splitting
 private import internal.Completion
 
-/** An AST node with an associated control-flow graph. */
+/**
+ * An AST node with an associated control-flow graph.
+ *
+ * Top-levels, methods, blocks, and lambdas are all CFG scopes.
+ *
+ * Note that module declarations are not themselves CFG scopes, as they are part of
+ * the CFG of the enclosing top-level or callable.
+ */
 class CfgScope extends Scope instanceof CfgScopeImpl {
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {

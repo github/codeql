@@ -7,6 +7,9 @@ module Generated {
   class IntegerLiteralExpr extends Synth::TIntegerLiteralExpr, NumberLiteralExpr {
     override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
 
+    /**
+     * Gets the string value of this integer literal expression.
+     */
     string getStringValue() {
       result =
         Synth::convertIntegerLiteralExprToRaw(this).(Raw::IntegerLiteralExpr).getStringValue()
