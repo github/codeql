@@ -26,13 +26,13 @@ class Statement {
 
 	init(_ connection: Connection, _ SQL: String) throws { self.connection = connection}
 
-	public func bind(_ values: Binding?...) -> Statement { return Statement(connection, "") }
-	public func bind(_ values: [Binding?]) -> Statement { return Statement(connection, "") }
-	public func bind(_ values: [String: Binding?]) -> Statement { return Statement(connection, "") }
+	public func bind(_ values: Binding?...) -> Statement { return self }
+	public func bind(_ values: [Binding?]) -> Statement { return self }
+	public func bind(_ values: [String: Binding?]) -> Statement { return self }
 
-	@discardableResult public func run(_ bindings: Binding?...) throws -> Statement { return Statement(connection, "") }
-	@discardableResult public func run(_ bindings: [Binding?]) throws -> Statement { return Statement(connection, "") }
-	@discardableResult public func run(_ bindings: [String: Binding?]) throws -> Statement { return Statement(connection, "") }
+	@discardableResult public func run(_ bindings: Binding?...) throws -> Statement { return self }
+	@discardableResult public func run(_ bindings: [Binding?]) throws -> Statement { return self }
+	@discardableResult public func run(_ bindings: [String: Binding?]) throws -> Statement { return self }
 
 	public func scalar(_ bindings: Binding?...) throws -> Binding? { return nil }
 	public func scalar(_ bindings: [Binding?]) throws -> Binding? { return nil }
@@ -42,13 +42,13 @@ class Statement {
 class Connection {
 	public func execute(_ SQL: String) throws { }
 
-	public func prepare(_ statement: String, _ bindings: Binding?...) throws -> Statement { return Statement(self, "") }
-	public func prepare(_ statement: String, _ bindings: [Binding?]) throws -> Statement { return Statement(self, "") }
-	public func prepare(_ statement: String, _ bindings: [String: Binding?]) throws -> Statement { return Statement(self, "") }
+	public func prepare(_ statement: String, _ bindings: Binding?...) throws -> Statement { return try Statement(self, "") }
+	public func prepare(_ statement: String, _ bindings: [Binding?]) throws -> Statement { return try Statement(self, "") }
+	public func prepare(_ statement: String, _ bindings: [String: Binding?]) throws -> Statement { return try Statement(self, "") }
 
-	@discardableResult public func run(_ statement: String, _ bindings: Binding?...) throws -> Statement { return Statement(self, "") }
-	@discardableResult public func run(_ statement: String, _ bindings: [Binding?]) throws -> Statement { return Statement(self, "") }
-	@discardableResult public func run(_ statement: String, _ bindings: [String: Binding?]) throws -> Statement { return Statement(self, "") }
+	@discardableResult public func run(_ statement: String, _ bindings: Binding?...) throws -> Statement { return try Statement(self, "") }
+	@discardableResult public func run(_ statement: String, _ bindings: [Binding?]) throws -> Statement { return try Statement(self, "") }
+	@discardableResult public func run(_ statement: String, _ bindings: [String: Binding?]) throws -> Statement { return try Statement(self, "") }
 
 	public func scalar(_ statement: String, _ bindings: Binding?...) throws -> Binding? { return nil }
 	public func scalar(_ statement: String, _ bindings: [Binding?]) throws -> Binding? { return nil }
@@ -57,9 +57,9 @@ class Connection {
 
 // --- tests ---
 
-func test_sqlite_swift_api(db: Connection) {
+func test_sqlite_swift_api(db: Connection) throws {
 	let localString = "user"
-	let remoteString = try! String(contentsOf: URL(string: "http://example.com/")!)
+	let remoteString = try String(contentsOf: URL(string: "http://example.com/")!)
 	let remoteNumber = Int(remoteString) ?? 0
 
 	let unsafeQuery1 = remoteString
@@ -89,11 +89,11 @@ func test_sqlite_swift_api(db: Connection) {
 	let stmt3 = try db.prepare(varQuery, remoteString) // GOOD
 	try stmt3.run()
 
-	let stmt4 = Statement(db, localString) // GOOD
-	stmt4.run()
+	let stmt4 = try Statement(db, localString) // GOOD
+	try stmt4.run()
 
-	let stmt5 = Statement(db, remoteString) // BAD
-	stmt5.run()
+	let stmt5 = try Statement(db, remoteString) // BAD
+	try stmt5.run()
 
 	// --- more variants ---
 
@@ -106,22 +106,22 @@ func test_sqlite_swift_api(db: Connection) {
 	let stmt8 = try db.prepare(unsafeQuery1, ["username": ""]) // BAD
 	try stmt8.run()
 
-	db.run(unsafeQuery1, "") // BAD
+	try db.run(unsafeQuery1, "") // BAD
 
-	db.run(unsafeQuery1, [""]) // BAD
+	try db.run(unsafeQuery1, [""]) // BAD
 
-	db.run(unsafeQuery1, ["username": ""]) // BAD
+	try db.run(unsafeQuery1, ["username": ""]) // BAD
 
-	db.scalar(unsafeQuery1, "") // BAD
+	try db.scalar(unsafeQuery1, "") // BAD
 
-	db.scalar(unsafeQuery1, [""]) // BAD
+	try db.scalar(unsafeQuery1, [""]) // BAD
 
-	db.scalar(unsafeQuery1, ["username": ""]) // BAD
+	try db.scalar(unsafeQuery1, ["username": ""]) // BAD
 
 	let stmt9 = try db.prepare(varQuery) // GOOD
-	stmt9.bind(remoteString) // GOOD
-	stmt9.bind([remoteString]) // GOOD
-	stmt9.bind(["username": remoteString]) // GOOD
+	try stmt9.bind(remoteString) // GOOD
+	try stmt9.bind([remoteString]) // GOOD
+	try stmt9.bind(["username": remoteString]) // GOOD
 	try stmt9.run(remoteString) // GOOD
 	try stmt9.run([remoteString]) // GOOD
 	try stmt9.run(["username": remoteString]) // GOOD
@@ -129,5 +129,5 @@ func test_sqlite_swift_api(db: Connection) {
 	try stmt9.scalar([remoteString]) // GOOD
 	try stmt9.scalar(["username": remoteString]) // GOOD
 
-	Statement(db, remoteString).run() // BAD
+	try Statement(db, remoteString).run() // BAD
 }

@@ -4,6 +4,14 @@ class Data
     init<S>(_ elements: S) {}
 }
 
+extension String {
+	struct Encoding {
+		static let utf8 = Encoding()
+	}
+
+	init?(data: Data, encoding: Encoding) { self.init() }
+}
+
 func source() -> String { return "" }
 func sink(arg: Data) {}
 func sink2(arg: String) {}
