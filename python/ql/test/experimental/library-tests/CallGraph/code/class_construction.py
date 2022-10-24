@@ -8,19 +8,19 @@ class X(object):
 
     def meth(self):
         print("X.meth")
-        return type(self)(42.1) # $ MISSING: tt=X.__init__ tt=Y.__init__
+        return type(self)(42.1) # $ tt=X.__init__ tt=Y.__init__
 
     @classmethod
     def cm(cls):
         print("X.cm")
-        cls(42.2) # $ MISSING: tt=X.__init__ tt=Y.__init__
+        cls(42.2) # $ tt=X.__init__ tt=Y.__init__
 
 x = X(42.0) # $ tt=X.__init__
 x_421 = x.meth() # $ pt,tt=X.meth
 X.cm() # $ pt,tt=X.cm
 x.foo() # $ pt,tt=X.foo
 print()
-x_421.foo() # $ pt=X.foo MISSING: tt=X.foo
+x_421.foo() # $ pt=X.foo tt=X.foo
 print()
 
 

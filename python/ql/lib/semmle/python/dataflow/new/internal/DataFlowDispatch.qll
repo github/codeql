@@ -466,7 +466,7 @@ Node classTracker(Class cls) { classTracker(TypeTracker::end(), cls).flowsTo(res
  */
 private TypeTrackingNode classInstanceTracker(TypeTracker t, Class cls) {
   t.start() and
-  result.(CallCfgNode).getFunction() = classTracker(cls)
+  resolveClassCall(result.(CallCfgNode).asCfgNode(), cls)
   or
   exists(TypeTracker t2 | result = classInstanceTracker(t2, cls).track(t2, t)) and
   not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
@@ -951,6 +951,12 @@ import MethodCalls
  */
 predicate resolveClassCall(CallNode call, Class cls) {
   call.getFunction() = classTracker(cls).asCfgNode()
+  or
+  // `cls()` inside a classmethod (which also contains `type(self)()` inside a method)
+  exists(Class classWithMethod |
+    call.getFunction() = clsTracker(classWithMethod).asCfgNode() and
+    getADirectSuperclass*(cls) = classWithMethod
+  )
 }
 
 /**
