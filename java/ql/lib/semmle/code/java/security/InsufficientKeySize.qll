@@ -15,7 +15,6 @@ abstract class InsufficientKeySizeSink extends DataFlow::Node {
   predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
 }
 
-// *********************************** SOURCES ***********************************
 /** A source for an insufficient key size used in RSA, DSA, and DH algorithms. */
 private class AsymmetricNonEcSource extends InsufficientKeySizeSource {
   AsymmetricNonEcSource() { getNodeIntValue(this) < getMinAsymNonEcKeySize() }
@@ -46,7 +45,6 @@ private class SymmetricSource extends InsufficientKeySizeSource {
   override predicate hasState(DataFlow::FlowState state) { state = getMinSymKeySize().toString() }
 }
 
-// ************************** SOURCES HELPER PREDICATES **************************
 /** Returns the minimum recommended key size for RSA, DSA, and DH algorithms. */
 private int getMinAsymNonEcKeySize() { result = 2048 }
 
@@ -74,7 +72,6 @@ private int getEcKeySize(string algorithm) {
   result = algorithm.regexpCapture(".*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
 }
 
-// ************************************ SINKS ************************************
 /** A sink for an insufficient key size used in RSA, DSA, and DH algorithms. */
 private class AsymmetricNonEcSink extends InsufficientKeySizeSink {
   AsymmetricNonEcSink() {
@@ -122,7 +119,6 @@ private class SymmetricSink extends InsufficientKeySizeSink {
   override predicate hasState(DataFlow::FlowState state) { state = getMinSymKeySize().toString() }
 }
 
-// ********************** SINKS HELPER CLASSES & PREDICATES **********************
 /** A call to a method that initializes a key generator. */
 abstract private class KeyGenInitMethodAccess extends MethodAccess {
   /** Gets the `keysize` argument of this call. */
