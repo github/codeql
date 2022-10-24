@@ -4,47 +4,47 @@ fun sink(x: Any) { }
 
 fun test(c: LibClass, sourcec: SourceClass, sinkc: SinkClass) {
 
-  sink(ConstructorWithDefaults(source(), 0))
-  sink(ConstructorWithDefaults(source()))
+  sink(ConstructorWithDefaults(source(), 0)) // $ flow
+  sink(ConstructorWithDefaults(source())) // $ flow
 
-  sink(topLevelWithDefaults(source(), 0))
-  sink(topLevelWithDefaults(source()))
+  sink(topLevelWithDefaults(source(), 0)) // $ flow
+  sink(topLevelWithDefaults(source())) // $ flow
 
-  sink("Hello world".extensionWithDefaults(source(), 0))
-  sink("Hello world".extensionWithDefaults(source()))
+  sink("Hello world".extensionWithDefaults(source(), 0)) // $ flow
+  sink("Hello world".extensionWithDefaults(source())) // $ flow
 
-  sink(c.memberWithDefaults(source(), 0))
-  sink(c.memberWithDefaults(source()))
+  sink(c.memberWithDefaults(source(), 0)) // $ flow
+  sink(c.memberWithDefaults(source())) // $ flow
 
   with(c) {
-    sink("Hello world".extensionMemberWithDefaults(source(), 0))
-    sink("Hello world".extensionMemberWithDefaults(source()))
+    sink("Hello world".extensionMemberWithDefaults(source(), 0)) // $ flow
+    sink("Hello world".extensionMemberWithDefaults(source())) // $ flow
   };
 
   run {
     val st = SomeToken()
     topLevelArgSource(st)
-    sink(st)
+    sink(st) // $ flow
   }
 
   run {
     val st = SomeToken()
     "Hello world".extensionArgSource(st)
-    sink(st)
+    sink(st) // $ flow
   }
 
   run {
     val st = SomeToken()
     sourcec.memberArgSource(st)
-    sink(st)
+    sink(st) // $ flow
   }
 
-  SinkClass(source())
-  topLevelSink(source())
-  "Hello world".extensionSink(source())
-  sinkc.memberSink(source())
+  SinkClass(source()) // $ flow
+  topLevelSink(source()) // $ flow
+  "Hello world".extensionSink(source()) // $ flow
+  sinkc.memberSink(source()) // $ flow
   with(sinkc) {
-    "Hello world".extensionMemberSink(source())
+    "Hello world".extensionMemberSink(source()) // $ flow
   }
 
 }

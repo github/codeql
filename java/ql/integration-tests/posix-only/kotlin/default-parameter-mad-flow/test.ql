@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import DataFlow::PathGraph
+import TestUtilities.InlineExpectationsTest
 private import semmle.code.java.dataflow.ExternalFlow
 
 private class Models extends SummaryModelCsv {
@@ -56,6 +56,17 @@ class Config extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Config c
-where c.hasFlowPath(source, sink)
-select source, source, sink, "flow path"
+class InlineFlowTest extends InlineExpectationsTest {
+  InlineFlowTest() { this = "HasFlowTest" }
+
+  override string getARelevantTag() { result = "flow" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "flow" and
+    exists(DataFlow::Node src, DataFlow::Node sink, Config c | c.hasFlow(src, sink) |
+      sink.getLocation() = location and
+      element = sink.toString() and
+      value = ""
+    )
+  }
+}
