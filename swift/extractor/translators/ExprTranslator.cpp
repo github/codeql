@@ -598,4 +598,11 @@ codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapp
   return entry;
 }
 
+codeql::RegexLiteralExpr ExprTranslator::translateRegexLiteralExpr(const swift::RegexLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.pattern = expr.getRegexText().str();
+  entry.version = expr.getVersion();
+  return entry;
+}
+
 }  // namespace codeql
