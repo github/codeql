@@ -1,8 +1,26 @@
 class X(object):
     def __init__(self, arg):
         print("X.__init__", arg)
+        self.arg = arg
 
-X(42) # $ tt=X.__init__
+    def foo(self):
+        print("X.foo", self.arg)
+
+    def meth(self):
+        print("X.meth")
+        return type(self)(42.1) # $ MISSING: tt=X.__init__ tt=Y.__init__
+
+    @classmethod
+    def cm(cls):
+        print("X.cm")
+        cls(42.2) # $ MISSING: tt=X.__init__ tt=Y.__init__
+
+x = X(42.0) # $ tt=X.__init__
+x_421 = x.meth() # $ pt,tt=X.meth
+X.cm() # $ pt,tt=X.cm
+x.foo() # $ pt,tt=X.foo
+print()
+x_421.foo() # $ pt=X.foo MISSING: tt=X.foo
 print()
 
 
@@ -11,7 +29,9 @@ class Y(X):
         print("Y.__init__", arg)
         super().__init__(-arg) # $ pt,tt=X.__init__
 
-Y(43) # $ tt=Y.__init__
+y = Y(43) # $ tt=Y.__init__
+y.meth() # $ pt,tt=X.meth
+y.cm() # $ pt,tt=X.cm
 print()
 
 # ---
