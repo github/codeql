@@ -44,7 +44,7 @@ public class RegexInjectionTest extends HttpServlet {
     Pattern pt = Pattern.compile(pattern); // $ hasRegexInjection
     Matcher matcher = pt.matcher(input);
 
-    return matcher.find();  // BAD // ! double-check that line 44 is the correct location for this alert (seems like it based on the old .expected file)
+    return matcher.find();
   }
 
   public boolean pattern2(javax.servlet.http.HttpServletRequest request) {
@@ -76,7 +76,7 @@ public class RegexInjectionTest extends HttpServlet {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
 
-    // GOOD: User input is sanitized before constructing the regex
+    // Safe: User input is sanitized before constructing the regex
     return input.matches("^" + escapeSpecialRegexChars(pattern) + "=.*$");
   }
 
@@ -84,6 +84,7 @@ public class RegexInjectionTest extends HttpServlet {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
 
+    // TODO: add a "Safe" test for situation when this return value is stored in a variable, then the variable is used in the regex
     escapeSpecialRegexChars(pattern);
 
     // BAD: the pattern is not really sanitized
@@ -92,6 +93,7 @@ public class RegexInjectionTest extends HttpServlet {
 
   Pattern SPECIAL_REGEX_CHARS = Pattern.compile("[{}()\\[\\]><-=!.+*?^$\\\\|]");
 
+  // TODO: check if any other inbuilt escape/sanitizers in Java APIs
   String escapeSpecialRegexChars(String str) {
     return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
   }
@@ -136,7 +138,7 @@ public class RegexInjectionTest extends HttpServlet {
     String input = request.getParameter("input");
 
     Pattern pt = (Pattern)(Object) pattern;
-    return RegExUtils.replaceFirst(input, pt, "").length() > 0;  // GOOD, Pattern compile is the sink instead
+    return RegExUtils.replaceFirst(input, pt, "").length() > 0;  // Safe: Pattern compile is the sink instead
   }
 
   public boolean apache7(javax.servlet.http.HttpServletRequest request) {
@@ -145,4 +147,14 @@ public class RegexInjectionTest extends HttpServlet {
 
     return RegExUtils.replacePattern(input, pattern, "").length() > 0;  // $ hasRegexInjection
   }
+
+  // from https://rules.sonarsource.com/java/RSPEC-2631 to test for Pattern.quote as safe
+  public boolean validate(javax.servlet.http.HttpServletRequest request) {
+    String regex = request.getParameter("regex");
+    String input = request.getParameter("input");
+
+    return input.matches(Pattern.quote(regex));  // Safe: with Pattern.quote, metacharacters or escape sequences will be given no special meaning
+  }
 }
+
+// ! see the following for potential additional test case ideas: https://www.baeldung.com/regular-expressions-java
