@@ -159,16 +159,37 @@ class StringConstCaseCompareBarrier extends DataFlow::Node {
 private predicate stringConstCaseCompare(
   CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch
 ) {
+  branch = true and
   exists(CfgNodes::ExprNodes::CaseExprCfgNode case |
     case.getValue() = testedNode and
-    exists(
-      CfgNodes::ExprNodes::WhenClauseCfgNode branchNode,
-      CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode
-    |
-      guard = strLitNode and
+    exists(CfgNodes::ExprNodes::WhenClauseCfgNode branchNode |
       branchNode = case.getBranch(_) and
-      branchNode.getPattern(_) = strLitNode and
-      branch = true
+      guard = branchNode.getPattern(_) and
+      // For simplicity, consider patterns that contain only string literals or arrays of string literals
+      forall(ExprCfgNode pattern | pattern = branchNode.getPattern(_) |
+        // when "foo"
+        // when "foo", "bar"
+        pattern instanceof ExprNodes::StringLiteralCfgNode
+        or
+        // array literals behave weirdly in the CFG so we need to drop down to the AST level for this bit
+        // specifically: `SplatExprCfgNode.getOperand()` does not return results for array literals
+        exists(CfgNodes::ExprNodes::SplatExprCfgNode splat | splat = pattern |
+          // when *["foo", "bar"]
+          exists(ArrayLiteral arr |
+            splat.getExpr().getOperand() = arr and
+            forall(Expr elem | elem = arr.getAnElement() | elem instanceof StringLiteral)
+          )
+          or
+          // when *some_var
+          // when *SOME_CONST
+          exists(ExprNodes::ArrayLiteralCfgNode arr |
+            isArrayConstant(splat.getOperand(), arr) and
+            forall(ExprCfgNode elem | elem = arr.getAnArgument() |
+              elem instanceof ExprNodes::StringLiteralCfgNode
+            )
+          )
+        )
+      )
     )
   )
 }
