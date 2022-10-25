@@ -23,6 +23,8 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
       c.getLeftOperand() = testedNode and c.getRightOperand() = strLitNode
     )
   )
+  or
+  stringConstCaseCompare(guard, testedNode, branch)
 }
 
 /**
@@ -146,15 +148,6 @@ deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
  *   User.find_by("username = #{name}")
  * end
  * ```
- */
-class StringConstCaseCompareBarrier extends DataFlow::Node {
-  StringConstCaseCompareBarrier() {
-    this = DataFlow::BarrierGuard<stringConstCaseCompare/3>::getABarrierNode()
-  }
-}
-
-/**
- * Implements the logic for `StringConstCaseCompareBarrier`.
  */
 private predicate stringConstCaseCompare(
   CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch
