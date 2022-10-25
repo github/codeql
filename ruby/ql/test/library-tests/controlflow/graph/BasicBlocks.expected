@@ -1,0 +1,241 @@
+| break_ensure.rb:2:3:6:5 | while ... | break_ensure.rb:8:6:8:18 | call to nil? | break_ensure.rb:9:5:9:23 | self | true |
+| break_ensure.rb:2:9:2:9 | x | break_ensure.rb:2:9:2:13 | ... < ... | break_ensure.rb:3:8:3:8 | x | true |
+| break_ensure.rb:3:8:3:8 | x | break_ensure.rb:3:8:3:12 | ... > ... | break_ensure.rb:3:5:5:7 | if ... | false |
+| break_ensure.rb:3:8:3:8 | x | break_ensure.rb:3:8:3:12 | ... > ... | break_ensure.rb:4:7:4:11 | break | true |
+| break_ensure.rb:8:6:8:13 | [ensure: raise] self | break_ensure.rb:8:6:8:18 | [ensure: raise] call to nil? | break_ensure.rb:9:5:9:23 | [ensure: raise] self | true |
+| break_ensure.rb:14:9:14:9 | x | break_ensure.rb:14:9:14:13 | ... < ... | break_ensure.rb:16:10:16:10 | x | true |
+| break_ensure.rb:16:7:18:9 | if ... | break_ensure.rb:20:10:20:15 | call to nil? | break_ensure.rb:21:9:21:20 | self | true |
+| break_ensure.rb:16:10:16:10 | x | break_ensure.rb:16:10:16:14 | ... > ... | break_ensure.rb:16:7:18:9 | if ... | false |
+| break_ensure.rb:16:10:16:10 | x | break_ensure.rb:16:10:16:14 | ... > ... | break_ensure.rb:17:9:17:13 | break | true |
+| break_ensure.rb:17:9:17:13 | break | break_ensure.rb:20:10:20:15 | [ensure: break] call to nil? | break_ensure.rb:21:9:21:20 | [ensure: break] self | true |
+| break_ensure.rb:20:10:20:10 | [ensure: raise] y | break_ensure.rb:20:10:20:15 | [ensure: raise] call to nil? | break_ensure.rb:21:9:21:20 | [ensure: raise] self | true |
+| break_ensure.rb:27:1:42:3 | enter m3 | break_ensure.rb:29:8:29:13 | call to nil? | break_ensure.rb:29:5:31:7 | if ... | false |
+| break_ensure.rb:27:1:42:3 | enter m3 | break_ensure.rb:29:8:29:13 | call to nil? | break_ensure.rb:30:7:30:12 | return | true |
+| break_ensure.rb:33:11:33:11 | [ensure: raise] y | break_ensure.rb:33:11:33:15 | [ensure: raise] ... < ... | break_ensure.rb:35:12:35:12 | [ensure: raise] x | true |
+| break_ensure.rb:33:11:33:11 | [ensure: return] y | break_ensure.rb:33:11:33:15 | [ensure: return] ... < ... | break_ensure.rb:35:12:35:12 | [ensure: return] x | true |
+| break_ensure.rb:33:11:33:11 | y | break_ensure.rb:33:11:33:15 | ... < ... | break_ensure.rb:35:12:35:12 | x | true |
+| break_ensure.rb:35:12:35:12 | [ensure: raise] x | break_ensure.rb:35:12:35:16 | [ensure: raise] ... > ... | break_ensure.rb:35:9:37:11 | [ensure: raise] if ... | false |
+| break_ensure.rb:35:12:35:12 | [ensure: raise] x | break_ensure.rb:35:12:35:16 | [ensure: raise] ... > ... | break_ensure.rb:36:11:36:15 | [ensure: raise] break | true |
+| break_ensure.rb:35:12:35:12 | [ensure: return] x | break_ensure.rb:35:12:35:16 | [ensure: return] ... > ... | break_ensure.rb:35:9:37:11 | [ensure: return] if ... | false |
+| break_ensure.rb:35:12:35:12 | [ensure: return] x | break_ensure.rb:35:12:35:16 | [ensure: return] ... > ... | break_ensure.rb:36:11:36:15 | [ensure: return] break | true |
+| break_ensure.rb:35:12:35:12 | x | break_ensure.rb:35:12:35:16 | ... > ... | break_ensure.rb:35:9:37:11 | if ... | false |
+| break_ensure.rb:35:12:35:12 | x | break_ensure.rb:35:12:35:16 | ... > ... | break_ensure.rb:36:11:36:15 | break | true |
+| break_ensure.rb:45:9:45:9 | x | break_ensure.rb:45:9:45:13 | ... < ... | break_ensure.rb:47:10:47:10 | x | true |
+| break_ensure.rb:47:7:49:9 | if ... | break_ensure.rb:51:10:51:14 | ... > ... | break_ensure.rb:51:7:53:9 | if ... | false |
+| break_ensure.rb:47:7:49:9 | if ... | break_ensure.rb:51:10:51:14 | ... > ... | break_ensure.rb:52:15:52:16 | 10 | true |
+| break_ensure.rb:47:10:47:10 | x | break_ensure.rb:47:10:47:14 | ... > ... | break_ensure.rb:47:7:49:9 | if ... | false |
+| break_ensure.rb:47:10:47:10 | x | break_ensure.rb:47:10:47:14 | ... > ... | break_ensure.rb:48:9:48:16 | self | true |
+| break_ensure.rb:51:10:51:10 | [ensure: raise] x | break_ensure.rb:51:10:51:14 | [ensure: raise] ... > ... | break_ensure.rb:51:7:53:9 | [ensure: raise] if ... | false |
+| break_ensure.rb:51:10:51:10 | [ensure: raise] x | break_ensure.rb:51:10:51:14 | [ensure: raise] ... > ... | break_ensure.rb:52:15:52:16 | [ensure: raise] 10 | true |
+| case.rb:1:1:6:3 | enter if_in_case | case.rb:3:10:3:10 | 1 | case.rb:3:21:3:22 | self | match |
+| case.rb:1:1:6:3 | enter if_in_case | case.rb:3:10:3:10 | 1 | case.rb:4:5:4:24 | when ... | no-match |
+| case.rb:3:21:3:22 | self | case.rb:3:21:3:22 | call to x2 | case.rb:3:29:3:37 | self | true |
+| case.rb:4:5:4:24 | when ... | case.rb:4:10:4:10 | 2 | case.rb:4:17:4:24 | self | match |
+| case.rb:8:1:18:3 | enter case_match | case.rb:10:8:10:8 | 0 | case.rb:11:5:11:15 | in ... then ... | no-match |
+| case.rb:11:5:11:15 | in ... then ... | case.rb:11:8:11:8 | 1 | case.rb:11:15:11:15 | 3 | match |
+| case.rb:11:5:11:15 | in ... then ... | case.rb:11:8:11:8 | 1 | case.rb:12:5:13:7 | in ... then ... | no-match |
+| case.rb:12:5:13:7 | in ... then ... | case.rb:12:8:12:8 | 2 | case.rb:13:7:13:7 | 4 | match |
+| case.rb:12:5:13:7 | in ... then ... | case.rb:12:8:12:8 | 2 | case.rb:14:5:14:25 | in ... then ... | no-match |
+| case.rb:14:5:14:25 | in ... then ... | case.rb:14:13:14:18 | ... == ... | case.rb:14:25:14:25 | 6 | true |
+| case.rb:14:5:14:25 | in ... then ... | case.rb:14:13:14:18 | ... == ... | case.rb:15:5:15:28 | in ... then ... | false |
+| case.rb:15:5:15:28 | in ... then ... | case.rb:15:17:15:21 | ... < ... | case.rb:15:28:15:28 | 7 | false |
+| case.rb:15:5:15:28 | in ... then ... | case.rb:15:17:15:21 | ... < ... | case.rb:16:10:16:10 | 8 | true |
+| case.rb:20:1:24:3 | enter case_match_no_match | case.rb:22:8:22:8 | 1 | case.rb:21:3:23:5 | case ... | match |
+| case.rb:26:1:30:3 | enter case_match_raise | case.rb:28:7:28:28 | -> { ... } | case.rb:27:3:29:5 | case ... | match |
+| case.rb:32:1:39:3 | enter case_match_array | case.rb:34:8:34:9 | [ ..., * ] | case.rb:35:5:35:11 | in ... then ... | no-match |
+| case.rb:35:5:35:11 | in ... then ... | case.rb:35:8:35:10 | [ ..., * ] | case.rb:35:9:35:9 | x | false |
+| case.rb:35:5:35:11 | in ... then ... | case.rb:35:8:35:10 | [ ..., * ] | case.rb:35:9:35:9 | x | match |
+| case.rb:35:5:35:11 | in ... then ... | case.rb:35:8:35:10 | [ ..., * ] | case.rb:35:9:35:9 | x | true |
+| case.rb:35:5:35:11 | in ... then ... | case.rb:35:8:35:10 | [ ..., * ] | case.rb:36:5:36:13 | in ... then ... | no-match |
+| case.rb:36:5:36:13 | in ... then ... | case.rb:36:8:36:12 | [ ..., * ] | case.rb:36:9:36:9 | x | false |
+| case.rb:36:5:36:13 | in ... then ... | case.rb:36:8:36:12 | [ ..., * ] | case.rb:36:9:36:9 | x | match |
+| case.rb:36:5:36:13 | in ... then ... | case.rb:36:8:36:12 | [ ..., * ] | case.rb:36:9:36:9 | x | true |
+| case.rb:36:5:36:13 | in ... then ... | case.rb:36:8:36:12 | [ ..., * ] | case.rb:37:5:37:27 | in ... then ... | no-match |
+| case.rb:37:5:37:27 | in ... then ... | case.rb:37:8:37:10 | Bar | case.rb:37:8:37:26 | [ ..., * ] | match |
+| case.rb:37:8:37:26 | [ ..., * ] | case.rb:37:8:37:26 | [ ..., * ] | case.rb:37:12:37:12 | a | false |
+| case.rb:37:8:37:26 | [ ..., * ] | case.rb:37:8:37:26 | [ ..., * ] | case.rb:37:12:37:12 | a | match |
+| case.rb:37:8:37:26 | [ ..., * ] | case.rb:37:8:37:26 | [ ..., * ] | case.rb:37:12:37:12 | a | true |
+| case.rb:41:1:45:3 | enter case_match_find | case.rb:43:8:43:21 | [ *,...,* ] | case.rb:43:10:43:10 | x | false |
+| case.rb:41:1:45:3 | enter case_match_find | case.rb:43:8:43:21 | [ *,...,* ] | case.rb:43:10:43:10 | x | match |
+| case.rb:41:1:45:3 | enter case_match_find | case.rb:43:8:43:21 | [ *,...,* ] | case.rb:43:10:43:10 | x | true |
+| case.rb:43:10:43:10 | x | case.rb:43:13:43:13 | 1 | case.rb:43:16:43:16 | 2 | match |
+| case.rb:43:16:43:16 | 2 | case.rb:43:16:43:16 | 2 | case.rb:43:20:43:20 | y | match |
+| case.rb:47:1:53:3 | enter case_match_hash | case.rb:49:8:49:15 | Bar | case.rb:49:8:49:34 | { ..., ** } | match |
+| case.rb:49:8:49:34 | { ..., ** } | case.rb:49:8:49:34 | { ..., ** } | case.rb:49:20:49:20 | 1 | false |
+| case.rb:49:8:49:34 | { ..., ** } | case.rb:49:8:49:34 | { ..., ** } | case.rb:49:20:49:20 | 1 | match |
+| case.rb:49:8:49:34 | { ..., ** } | case.rb:49:8:49:34 | { ..., ** } | case.rb:49:20:49:20 | 1 | true |
+| case.rb:49:20:49:20 | 1 | case.rb:49:20:49:20 | 1 | case.rb:49:23:49:23 | a | match |
+| case.rb:50:5:50:25 | in ... then ... | case.rb:50:8:50:10 | Bar | case.rb:50:8:50:24 | { ..., ** } | match |
+| case.rb:50:8:50:24 | { ..., ** } | case.rb:50:8:50:24 | { ..., ** } | case.rb:50:16:50:16 | 1 | false |
+| case.rb:50:8:50:24 | { ..., ** } | case.rb:50:8:50:24 | { ..., ** } | case.rb:50:16:50:16 | 1 | match |
+| case.rb:50:8:50:24 | { ..., ** } | case.rb:50:8:50:24 | { ..., ** } | case.rb:50:16:50:16 | 1 | true |
+| case.rb:51:5:51:17 | in ... then ... | case.rb:51:8:51:10 | Bar | case.rb:51:8:51:16 | { ..., ** } | match |
+| case.rb:55:1:61:3 | enter case_match_variable | case.rb:57:8:57:8 | 5 | case.rb:58:5:58:10 | in ... then ... | no-match |
+| case.rb:63:1:67:3 | enter case_match_underscore | case.rb:65:8:65:8 | 5 | case.rb:65:12:65:12 | _ | no-match |
+| case.rb:69:1:93:3 | enter case_match_various | case.rb:73:8:73:8 | 5 | case.rb:74:5:74:11 | in ... then ... | no-match |
+| case.rb:74:5:74:11 | in ... then ... | case.rb:74:9:74:11 | foo | case.rb:75:5:75:15 | in ... then ... | no-match |
+| case.rb:75:5:75:15 | in ... then ... | case.rb:75:8:75:15 | "string" | case.rb:76:5:76:18 | in ... then ... | no-match |
+| case.rb:76:5:76:18 | in ... then ... | case.rb:76:8:76:18 | call to [] | case.rb:77:5:77:18 | in ... then ... | no-match |
+| case.rb:77:5:77:18 | in ... then ... | case.rb:77:8:77:18 | call to [] | case.rb:78:5:78:19 | in ... then ... | no-match |
+| case.rb:78:5:78:19 | in ... then ... | case.rb:78:8:78:19 | /.*abc[0-9]/ | case.rb:79:5:79:14 | in ... then ... | no-match |
+| case.rb:79:5:79:14 | in ... then ... | case.rb:79:8:79:14 | _ .. _ | case.rb:80:5:80:12 | in ... then ... | no-match |
+| case.rb:80:5:80:12 | in ... then ... | case.rb:80:8:80:12 | _ .. _ | case.rb:81:5:81:11 | in ... then ... | no-match |
+| case.rb:81:5:81:11 | in ... then ... | case.rb:81:8:81:11 | _ .. _ | case.rb:82:5:82:20 | in ... then ... | no-match |
+| case.rb:82:5:82:20 | in ... then ... | case.rb:82:8:82:8 | 5 | case.rb:82:13:82:13 | x | match |
+| case.rb:82:5:82:20 | in ... then ... | case.rb:82:8:82:8 | 5 | case.rb:83:5:83:26 | in ... then ... | no-match |
+| case.rb:83:5:83:26 | in ... then ... | case.rb:83:8:83:8 | 5 | case.rb:83:12:83:15 | ^... | no-match |
+| case.rb:83:12:83:15 | ^... | case.rb:83:13:83:15 | foo | case.rb:83:20:83:25 | string | no-match |
+| case.rb:83:20:83:25 | string | case.rb:83:19:83:26 | "string" | case.rb:84:5:84:17 | in ... then ... | no-match |
+| case.rb:84:5:84:17 | in ... then ... | case.rb:84:8:84:17 | Bar | case.rb:85:5:85:23 | in ... then ... | no-match |
+| case.rb:85:5:85:23 | in ... then ... | case.rb:85:8:85:23 | -> { ... } | case.rb:86:5:86:11 | in ... then ... | no-match |
+| case.rb:86:5:86:11 | in ... then ... | case.rb:86:8:86:11 | :foo | case.rb:87:5:87:17 | in ... then ... | no-match |
+| case.rb:87:5:87:17 | in ... then ... | case.rb:87:8:87:17 | :"foo bar" | case.rb:88:5:88:15 | in ... then ... | no-match |
+| case.rb:88:5:88:15 | in ... then ... | case.rb:88:8:88:9 | - ... | case.rb:88:14:88:15 | 10 | no-match |
+| case.rb:88:14:88:15 | 10 | case.rb:88:13:88:15 | + ... | case.rb:89:5:89:69 | in ... then ... | no-match |
+| case.rb:89:5:89:69 | in ... then ... | case.rb:89:8:89:10 | nil | case.rb:89:14:89:17 | self | no-match |
+| case.rb:89:14:89:17 | self | case.rb:89:14:89:17 | self | case.rb:89:21:89:24 | true | no-match |
+| case.rb:89:21:89:24 | true | case.rb:89:21:89:24 | true | case.rb:89:28:89:32 | false | no-match |
+| case.rb:89:28:89:32 | false | case.rb:89:28:89:32 | false | case.rb:89:36:89:43 | __LINE__ | no-match |
+| case.rb:89:36:89:43 | __LINE__ | case.rb:89:36:89:43 | __LINE__ | case.rb:89:47:89:54 | __FILE__ | no-match |
+| case.rb:89:47:89:54 | __FILE__ | case.rb:89:47:89:54 | __FILE__ | case.rb:89:58:89:69 | __ENCODING__ | no-match |
+| case.rb:89:58:89:69 | __ENCODING__ | case.rb:89:58:89:69 | __ENCODING__ | case.rb:90:5:90:13 | in ... then ... | no-match |
+| case.rb:90:5:90:13 | in ... then ... | case.rb:90:9:90:12 | _ .. _ | case.rb:91:5:91:25 | in ... then ... | no-match |
+| case.rb:91:5:91:25 | in ... then ... | case.rb:91:9:91:9 | 0 | case.rb:91:13:91:14 | "" | no-match |
+| case.rb:91:13:91:14 | "" | case.rb:91:13:91:14 | "" | case.rb:91:18:91:19 | [ ..., * ] | no-match |
+| case.rb:91:18:91:19 | [ ..., * ] | case.rb:91:18:91:19 | [ ..., * ] | case.rb:91:23:91:24 | { ..., ** } | no-match |
+| case.rb:95:1:99:3 | enter case_match_guard_no_else | case.rb:97:13:97:18 | ... == ... | case.rb:97:25:97:25 | 6 | true |
+| cfg.html.erb:5:16:31:12 | enter cfg.html.erb | cfg.html.erb:18:17:18:22 | call to admin? | cfg.html.erb:19:19:19:32 | self | true |
+| cfg.html.erb:5:16:31:12 | enter cfg.html.erb | cfg.html.erb:18:17:18:22 | call to admin? | cfg.html.erb:21:19:21:32 | self | false |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:42:8:42:8 | 1 | cfg.rb:42:15:42:24 | self | match |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:42:8:42:8 | 1 | cfg.rb:43:3:43:31 | when ... | no-match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:8:48:13 | ... == ... | cfg.rb:48:20:48:29 | self | true |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:8:48:13 | ... == ... | cfg.rb:49:3:49:37 | when ... | false |
+| cfg.rb:43:3:43:31 | when ... | cfg.rb:43:8:43:8 | 2 | cfg.rb:43:11:43:11 | 3 | no-match |
+| cfg.rb:43:11:43:11 | 3 | cfg.rb:43:11:43:11 | 3 | cfg.rb:43:14:43:14 | 4 | no-match |
+| cfg.rb:43:14:43:14 | 4 | cfg.rb:43:14:43:14 | 4 | cfg.rb:44:8:44:18 | self | no-match |
+| cfg.rb:47:1:50:3 | case ... | cfg.rb:60:17:60:22 | ... < ... | cfg.rb:60:27:60:31 | hello | true |
+| cfg.rb:47:1:50:3 | case ... | cfg.rb:60:17:60:22 | ... < ... | cfg.rb:60:37:60:39 | bye | false |
+| cfg.rb:49:3:49:37 | when ... | cfg.rb:49:8:49:13 | ... == ... | cfg.rb:49:16:49:16 | b | false |
+| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:75:4:75:8 | ... < ... | cfg.rb:75:15:75:15 | 0 | true |
+| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:75:4:75:8 | ... < ... | cfg.rb:75:23:75:23 | x | false |
+| cfg.rb:75:1:75:47 | if ... | cfg.rb:113:14:113:19 | ... > ... | cfg.rb:113:1:113:9 | self | true |
+| cfg.rb:75:23:75:23 | x | cfg.rb:75:23:75:28 | ... > ... | cfg.rb:75:35:75:36 | 10 | true |
+| cfg.rb:75:23:75:23 | x | cfg.rb:75:23:75:28 | ... > ... | cfg.rb:75:43:75:43 | x | false |
+| cfg.rb:90:1:93:3 | enter { ... } | cfg.rb:91:6:91:10 | ... > ... | cfg.rb:91:3:91:24 | if ... | false |
+| cfg.rb:90:1:93:3 | enter { ... } | cfg.rb:91:6:91:10 | ... > ... | cfg.rb:91:17:91:20 | next | true |
+| cfg.rb:101:1:104:3 | enter parameters | cfg.rb:101:16:101:20 | value | cfg.rb:101:24:101:25 | 42 | false |
+| cfg.rb:101:1:104:3 | enter parameters | cfg.rb:101:16:101:20 | value | cfg.rb:101:24:101:25 | 42 | no-match |
+| cfg.rb:101:1:104:3 | enter parameters | cfg.rb:101:16:101:20 | value | cfg.rb:101:24:101:25 | 42 | true |
+| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:172:8:172:14 | ... == ... | cfg.rb:172:21:172:29 | self | false |
+| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:172:8:172:14 | ... == ... | cfg.rb:172:36:172:45 | self | true |
+| cfg.rb:172:1:172:49 | unless ... | cfg.rb:174:18:174:23 | ... == ... | cfg.rb:174:1:174:9 | self | false |
+| cfg.rb:176:7:176:7 | x | cfg.rb:176:7:176:12 | ... > ... | cfg.rb:176:1:176:41 | until ... | true |
+| cfg.rb:176:7:176:7 | x | cfg.rb:176:7:176:12 | ... > ... | cfg.rb:176:17:176:17 | x | false |
+| cfg.rb:179:30:179:30 | i | cfg.rb:179:30:179:36 | ... == ... | cfg.rb:179:1:179:36 | ... until ... | true |
+| cfg.rb:179:30:179:30 | i | cfg.rb:179:30:179:36 | ... == ... | cfg.rb:179:2:179:13 | self | false |
+| cfg.rb:182:7:182:7 | x | cfg.rb:182:7:182:12 | ... < ... | cfg.rb:182:1:186:3 | while ... | false |
+| cfg.rb:182:7:182:7 | x | cfg.rb:182:7:182:12 | ... < ... | cfg.rb:183:3:183:3 | x | true |
+| cfg.rb:183:3:183:3 | x | cfg.rb:184:6:184:11 | ... == ... | cfg.rb:184:3:184:25 | if ... | false |
+| cfg.rb:183:3:183:3 | x | cfg.rb:184:6:184:11 | ... == ... | cfg.rb:184:18:184:21 | redo | true |
+| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:205:4:205:5 | call to == | cfg.rb:205:1:205:3 | __synth__0__1 | false |
+| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:205:4:205:5 | call to == | cfg.rb:205:1:205:3 | nil | true |
+| cfg.rb:188:30:188:30 | i | cfg.rb:188:30:188:35 | ... != ... | cfg.rb:188:1:188:35 | ... while ... | false |
+| cfg.rb:188:30:188:30 | i | cfg.rb:188:30:188:35 | ... != ... | cfg.rb:188:2:188:13 | self | true |
+| constant_compound_assign.rb:1:1:22:4 | enter constant_compound_assign.rb | constant_compound_assign.rb:5:5:5:16 | FOO_CONSTANT | constant_compound_assign.rb:5:22:5:24 | 123 | false |
+| constant_compound_assign.rb:5:18:5:20 | ... \|\| ... | constant_compound_assign.rb:14:1:14:12 | TOP_CONSTANT | constant_compound_assign.rb:14:18:14:20 | 123 | false |
+| constant_compound_assign.rb:14:14:14:16 | ... \|\| ... | constant_compound_assign.rb:19:1:19:15 | TOP_CONSTANT2 | constant_compound_assign.rb:19:21:19:23 | 123 | false |
+| exit.rb:1:1:6:3 | enter m1 | exit.rb:2:6:2:10 | ... > ... | exit.rb:2:3:4:5 | if ... | false |
+| exit.rb:1:1:6:3 | enter m1 | exit.rb:2:6:2:10 | ... > ... | exit.rb:3:5:3:10 | self | true |
+| exit.rb:8:1:13:3 | enter m2 | exit.rb:9:6:9:10 | ... > ... | exit.rb:9:3:11:5 | if ... | false |
+| exit.rb:8:1:13:3 | enter m2 | exit.rb:9:6:9:10 | ... > ... | exit.rb:10:5:10:18 | self | true |
+| ifs.rb:1:1:9:3 | enter m1 | ifs.rb:2:6:2:10 | ... > ... | ifs.rb:3:5:3:30 | self | true |
+| ifs.rb:1:1:9:3 | enter m1 | ifs.rb:2:6:2:10 | ... > ... | ifs.rb:4:9:4:9 | x | false |
+| ifs.rb:1:1:58:3 | enter ifs.rb | ifs.rb:38:12:38:17 | ... == ... | ifs.rb:36:1:38:3 | conditional_method_def | false |
+| ifs.rb:4:9:4:9 | x | ifs.rb:4:9:4:14 | ... <= ... | ifs.rb:4:20:4:20 | x | true |
+| ifs.rb:4:9:4:24 | [true] ... and ... | ifs.rb:4:32:4:37 | ... == ... | ifs.rb:4:31:4:38 | [false] ( ... ) | false |
+| ifs.rb:4:9:4:24 | [true] ... and ... | ifs.rb:4:32:4:37 | ... == ... | ifs.rb:4:31:4:38 | [true] ( ... ) | true |
+| ifs.rb:4:20:4:20 | x | ifs.rb:4:20:4:24 | ... > ... | ifs.rb:4:9:4:24 | [true] ... and ... | true |
+| ifs.rb:11:1:16:3 | enter m2 | ifs.rb:12:6:12:6 | b | ifs.rb:12:3:14:5 | if ... | false |
+| ifs.rb:11:1:16:3 | enter m2 | ifs.rb:12:6:12:6 | b | ifs.rb:13:12:13:12 | 0 | true |
+| ifs.rb:18:1:26:3 | enter m3 | ifs.rb:19:6:19:10 | ... < ... | ifs.rb:20:5:20:5 | x | true |
+| ifs.rb:20:5:20:5 | x | ifs.rb:21:8:21:13 | ... > ... | ifs.rb:22:7:22:7 | x | true |
+| ifs.rb:28:1:30:3 | enter m4 | ifs.rb:29:11:29:12 | b1 | ifs.rb:29:16:29:17 | b2 | true |
+| ifs.rb:28:1:30:3 | enter m4 | ifs.rb:29:11:29:12 | b1 | ifs.rb:29:21:29:22 | b3 | false |
+| ifs.rb:32:1:34:3 | enter m5 | ifs.rb:33:10:33:11 | b1 | ifs.rb:33:18:33:19 | b2 | true |
+| ifs.rb:32:1:34:3 | enter m5 | ifs.rb:33:10:33:11 | b1 | ifs.rb:33:27:33:28 | b3 | false |
+| ifs.rb:33:18:33:19 | b2 | ifs.rb:33:18:33:19 | b2 | ifs.rb:33:13:33:19 | [false] then ... | false |
+| ifs.rb:33:18:33:19 | b2 | ifs.rb:33:18:33:19 | b2 | ifs.rb:33:13:33:19 | [true] then ... | true |
+| ifs.rb:33:27:33:28 | b3 | ifs.rb:33:27:33:28 | b3 | ifs.rb:33:35:33:36 | b4 | true |
+| ifs.rb:33:27:33:28 | b3 | ifs.rb:33:27:33:28 | b3 | ifs.rb:33:43:33:44 | b5 | false |
+| ifs.rb:33:35:33:36 | b4 | ifs.rb:33:35:33:36 | b4 | ifs.rb:33:30:33:36 | [false] then ... | false |
+| ifs.rb:33:35:33:36 | b4 | ifs.rb:33:35:33:36 | b4 | ifs.rb:33:30:33:36 | [true] then ... | true |
+| ifs.rb:33:43:33:44 | b5 | ifs.rb:33:43:33:44 | b5 | ifs.rb:33:38:33:44 | [false] else ... | false |
+| ifs.rb:33:43:33:44 | b5 | ifs.rb:33:43:33:44 | b5 | ifs.rb:33:38:33:44 | [true] else ... | true |
+| ifs.rb:46:1:52:3 | enter empty_else | ifs.rb:47:6:47:6 | b | ifs.rb:48:5:48:15 | self | true |
+| ifs.rb:46:1:52:3 | enter empty_else | ifs.rb:47:6:47:6 | b | ifs.rb:49:3:49:6 | else ... | false |
+| ifs.rb:54:1:58:3 | enter disjunct | ifs.rb:55:7:55:8 | b1 | ifs.rb:55:13:55:14 | b2 | false |
+| ifs.rb:55:13:55:14 | b2 | ifs.rb:55:13:55:14 | b2 | ifs.rb:55:7:55:14 | [false] ... \|\| ... | false |
+| loops.rb:2:9:2:9 | x | loops.rb:2:9:2:14 | ... >= ... | loops.rb:2:3:5:5 | while ... | false |
+| loops.rb:2:9:2:9 | x | loops.rb:2:9:2:14 | ... >= ... | loops.rb:3:5:3:10 | self | true |
+| loops.rb:9:9:9:9 | x | loops.rb:9:9:9:14 | ... >= ... | loops.rb:10:5:10:10 | self | true |
+| loops.rb:10:5:10:10 | self | loops.rb:12:8:12:14 | ... > ... | loops.rb:13:7:13:11 | break | true |
+| loops.rb:10:5:10:10 | self | loops.rb:12:8:12:14 | ... > ... | loops.rb:14:11:14:11 | x | false |
+| loops.rb:14:11:14:11 | x | loops.rb:14:11:14:16 | ... > ... | loops.rb:15:7:15:10 | next | true |
+| loops.rb:14:11:14:11 | x | loops.rb:14:11:14:16 | ... > ... | loops.rb:16:11:16:11 | x | false |
+| loops.rb:16:11:16:11 | x | loops.rb:16:11:16:16 | ... > ... | loops.rb:16:5:17:10 | elsif ... | false |
+| loops.rb:16:11:16:11 | x | loops.rb:16:11:16:16 | ... > ... | loops.rb:17:7:17:10 | redo | true |
+| loops.rb:31:9:31:9 | x | loops.rb:31:9:31:13 | ... < ... | loops.rb:31:3:32:5 | while ... | false |
+| loops.rb:31:9:31:9 | x | loops.rb:31:9:31:13 | ... < ... | loops.rb:31:15:32:5 | do ... | true |
+| raise.rb:7:1:12:3 | enter m1 | raise.rb:8:6:8:10 | ... > ... | raise.rb:8:3:10:5 | if ... | false |
+| raise.rb:7:1:12:3 | enter m1 | raise.rb:8:6:8:10 | ... > ... | raise.rb:9:5:9:17 | self | true |
+| raise.rb:14:1:23:3 | enter m2 | raise.rb:16:8:16:8 | b | raise.rb:16:5:18:7 | if ... | false |
+| raise.rb:14:1:23:3 | enter m2 | raise.rb:16:8:16:8 | b | raise.rb:17:7:17:22 | self | true |
+| raise.rb:17:7:17:22 | self | raise.rb:19:10:19:19 | ExceptionA | raise.rb:20:5:20:18 | self | match |
+| raise.rb:25:1:34:3 | enter m3 | raise.rb:27:8:27:8 | b | raise.rb:27:5:29:7 | if ... | false |
+| raise.rb:25:1:34:3 | enter m3 | raise.rb:27:8:27:8 | b | raise.rb:28:7:28:22 | self | true |
+| raise.rb:36:1:45:3 | enter m4 | raise.rb:38:8:38:8 | b | raise.rb:38:5:40:7 | if ... | false |
+| raise.rb:36:1:45:3 | enter m4 | raise.rb:38:8:38:8 | b | raise.rb:39:7:39:22 | self | true |
+| raise.rb:47:1:55:3 | enter m5 | raise.rb:49:8:49:8 | b | raise.rb:49:5:51:7 | if ... | false |
+| raise.rb:47:1:55:3 | enter m5 | raise.rb:49:8:49:8 | b | raise.rb:50:7:50:22 | self | true |
+| raise.rb:57:1:66:3 | enter m6 | raise.rb:59:8:59:8 | b | raise.rb:59:5:61:7 | if ... | false |
+| raise.rb:57:1:66:3 | enter m6 | raise.rb:59:8:59:8 | b | raise.rb:60:7:60:22 | self | true |
+| raise.rb:60:7:60:22 | self | raise.rb:62:10:62:19 | ExceptionA | raise.rb:62:22:62:31 | ExceptionB | no-match |
+| raise.rb:68:1:77:3 | enter m7 | raise.rb:69:6:69:10 | ... > ... | raise.rb:70:5:70:17 | self | true |
+| raise.rb:68:1:77:3 | enter m7 | raise.rb:69:6:69:10 | ... > ... | raise.rb:71:9:71:9 | x | false |
+| raise.rb:71:9:71:9 | x | raise.rb:71:9:71:13 | ... < ... | raise.rb:71:3:72:18 | elsif ... | false |
+| raise.rb:71:9:71:9 | x | raise.rb:71:9:71:13 | ... < ... | raise.rb:72:13:72:17 | x < 0 | true |
+| raise.rb:79:1:92:3 | enter m8 | raise.rb:82:8:82:12 | ... > ... | raise.rb:83:7:83:19 | self | true |
+| raise.rb:79:1:92:3 | enter m8 | raise.rb:82:8:82:12 | ... > ... | raise.rb:84:11:84:11 | x | false |
+| raise.rb:84:11:84:11 | x | raise.rb:84:11:84:15 | ... < ... | raise.rb:84:5:85:20 | elsif ... | false |
+| raise.rb:84:11:84:11 | x | raise.rb:84:11:84:15 | ... < ... | raise.rb:85:15:85:19 | x < 0 | true |
+| raise.rb:97:8:97:8 | x | raise.rb:97:8:97:12 | ... > ... | raise.rb:98:7:98:19 | self | true |
+| raise.rb:97:8:97:8 | x | raise.rb:97:8:97:12 | ... > ... | raise.rb:99:11:99:11 | x | false |
+| raise.rb:99:11:99:11 | x | raise.rb:99:11:99:15 | ... < ... | raise.rb:99:5:100:20 | elsif ... | false |
+| raise.rb:99:11:99:11 | x | raise.rb:99:11:99:15 | ... < ... | raise.rb:100:15:100:19 | x < 0 | true |
+| raise.rb:106:10:106:11 | [ensure: raise] b1 | raise.rb:106:10:106:11 | [ensure: raise] b1 | raise.rb:106:7:108:9 | [ensure: raise] if ... | false |
+| raise.rb:106:10:106:11 | [ensure: raise] b1 | raise.rb:106:10:106:11 | [ensure: raise] b1 | raise.rb:107:9:107:26 | [ensure: raise] self | true |
+| raise.rb:106:10:106:11 | [ensure: return] b1 | raise.rb:106:10:106:11 | [ensure: return] b1 | raise.rb:106:7:108:9 | [ensure: return] if ... | false |
+| raise.rb:106:10:106:11 | [ensure: return] b1 | raise.rb:106:10:106:11 | [ensure: return] b1 | raise.rb:107:9:107:26 | [ensure: return] self | true |
+| raise.rb:106:10:106:11 | b1 | raise.rb:106:10:106:11 | b1 | raise.rb:106:7:108:9 | if ... | false |
+| raise.rb:106:10:106:11 | b1 | raise.rb:106:10:106:11 | b1 | raise.rb:107:9:107:26 | self | true |
+| raise.rb:109:5:110:25 | [ensure: return] ensure ... | raise.rb:116:6:116:7 | [ensure: return] b2 | raise.rb:116:3:118:5 | [ensure: return] if ... | false |
+| raise.rb:109:5:110:25 | [ensure: return] ensure ... | raise.rb:116:6:116:7 | [ensure: return] b2 | raise.rb:117:5:117:22 | [ensure: return] self | true |
+| raise.rb:115:3:115:22 | [ensure: raise] self | raise.rb:116:6:116:7 | [ensure: raise] b2 | raise.rb:116:3:118:5 | [ensure: raise] if ... | false |
+| raise.rb:115:3:115:22 | [ensure: raise] self | raise.rb:116:6:116:7 | [ensure: raise] b2 | raise.rb:117:5:117:22 | [ensure: raise] self | true |
+| raise.rb:115:3:115:22 | self | raise.rb:116:6:116:7 | b2 | raise.rb:116:3:118:5 | if ... | false |
+| raise.rb:115:3:115:22 | self | raise.rb:116:6:116:7 | b2 | raise.rb:117:5:117:22 | self | true |
+| raise.rb:121:1:126:3 | enter m10 | raise.rb:121:9:121:9 | p | raise.rb:121:14:121:30 | self | false |
+| raise.rb:121:1:126:3 | enter m10 | raise.rb:121:9:121:9 | p | raise.rb:121:14:121:30 | self | no-match |
+| raise.rb:121:1:126:3 | enter m10 | raise.rb:121:9:121:9 | p | raise.rb:121:14:121:30 | self | true |
+| raise.rb:121:1:126:3 | enter m10 | raise.rb:121:9:121:9 | p | raise.rb:125:3:125:51 | self | match |
+| raise.rb:128:1:140:3 | enter m11 | raise.rb:130:8:130:8 | b | raise.rb:130:5:132:7 | if ... | false |
+| raise.rb:128:1:140:3 | enter m11 | raise.rb:130:8:130:8 | b | raise.rb:131:7:131:22 | self | true |
+| raise.rb:131:7:131:22 | self | raise.rb:133:10:133:19 | ExceptionA | raise.rb:133:3:133:19 | rescue ... | match |
+| raise.rb:131:7:131:22 | self | raise.rb:133:10:133:19 | ExceptionA | raise.rb:134:10:134:19 | ExceptionB | no-match |
+| raise.rb:134:10:134:19 | ExceptionB | raise.rb:134:10:134:19 | ExceptionB | raise.rb:135:5:135:21 | self | match |
+| raise.rb:142:1:148:3 | enter m12 | raise.rb:143:6:143:6 | b | raise.rb:143:3:145:5 | if ... | false |
+| raise.rb:142:1:148:3 | enter m12 | raise.rb:143:6:143:6 | b | raise.rb:144:5:144:12 | self | true |
+| raise.rb:155:16:155:50 | enter { ... } | raise.rb:155:37:155:48 | call to nil? | raise.rb:155:25:155:32 | self | true |
+| raise.rb:155:16:155:50 | enter { ... } | raise.rb:155:37:155:48 | call to nil? | raise.rb:155:25:155:48 | ... if ... | false |
+| raise.rb:160:9:162:7 | enter -> { ... } | raise.rb:161:23:161:23 | x | raise.rb:161:7:161:14 | self | false |
+| raise.rb:160:9:162:7 | enter -> { ... } | raise.rb:161:23:161:23 | x | raise.rb:161:7:161:23 | ... unless ... | true |
