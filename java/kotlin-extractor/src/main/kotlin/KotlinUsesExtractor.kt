@@ -1281,6 +1281,7 @@ open class KotlinUsesExtractor(
                         }
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
+                            !decl.isFakeOverride &&
                             decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size &&
                             decl.valueParameters.zip(f.valueParameters).all { p -> erase(p.first.type).classifierOrNull == erase(p.second.type).classifierOrNull }
