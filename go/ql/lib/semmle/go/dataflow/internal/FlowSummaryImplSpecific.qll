@@ -3,6 +3,7 @@
  */
 
 private import go
+private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowUtil
 private import FlowSummaryImpl::Private
@@ -17,40 +18,6 @@ private module FlowSummaries {
 class SummarizedCallableBase = Callable;
 
 DataFlowCallable inject(SummarizedCallable c) { result.asCallable() = c }
-
-/** Holds if `i` is a valid parameter position. */
-predicate parameterPosition(int i) {
-  i = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
-}
-
-/** Gets the parameter position of the instance parameter. */
-int instanceParameterPosition() { result = -1 }
-
-/** A parameter position represented by an integer. */
-class ParameterPosition extends int {
-  ParameterPosition() { parameterPosition(this) }
-}
-
-/** An argument position represented by an integer. */
-class ArgumentPosition extends int {
-  ArgumentPosition() { parameterPosition(this) }
-}
-
-/** Holds if arguments at position `apos` match parameters at position `ppos`. */
-pragma[inline]
-predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
-
-/**
- * Holds if `arg` is an argument of `call` with an argument position that matches
- * parameter position `ppos`.
- */
-pragma[noinline]
-predicate argumentPositionMatch(DataFlowCall call, ArgNode arg, ParameterPosition ppos) {
-  exists(ArgumentPosition apos |
-    arg.argumentOf(call, apos) and
-    parameterMatch(ppos, apos)
-  )
-}
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
