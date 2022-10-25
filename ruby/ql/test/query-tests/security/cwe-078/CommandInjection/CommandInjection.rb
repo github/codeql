@@ -56,7 +56,7 @@ EOF
       when "foo"
         system(cmd)
       end
-      system(foo)
+      system(cmd)
     end
 end
 
