@@ -7,11 +7,16 @@
   </overview>
 
   <recommendation>
-    <p>Use sufficient number of iterations (i.e., greater than or equal 1000) for generating password-based keys.</p>
+    <p>Use sufficient number of iterations (that is, greater than or equal 1000) for generating password-based keys.</p>
   </recommendation>
 
   <example>
     <p>The following example shows a few cases of instantiating a password-based key. In the 'BAD' cases, the key is initialized with insufficient iterations, making it susceptible to password cracking attacks. In the 'GOOD' cases, the key is initialized with at least 1000 iterations, which protects the encrypted data against recovery.</p>
     <sample src="InsufficientHashIterations.swift" />
   </example>
+
+  <references>
+    <li>Password-Based Cryptography Specification Version 2.0. 2000.<a href="https://www.rfc-editor.org/rfc/rfc2898">RFC2898</a>.</li>
+    <li>OWASP <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet.</a></li>
+  </references>
 </qhelp>
