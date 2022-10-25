@@ -95,7 +95,6 @@ private import internal.FlowSummaryImplSpecific
  */
 private module Frameworks {
   private import semmle.code.csharp.frameworks.EntityFramework
-  private import semmle.code.csharp.frameworks.Generated
   private import semmle.code.csharp.frameworks.JsonNET
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
