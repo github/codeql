@@ -172,7 +172,7 @@ private module SsaComputeImpl {
 
   cached
   predicate variableDef(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
-    variableDefine(v, n, b, i) or variableRefine(v, n, b, i)
+    variableDefine(v, n, b, i)
   }
 
   /**

@@ -14,7 +14,7 @@ def func(cond=True):
     x.foo() # $ use-use=x:11
 
     x.foo(1 if cond else 0) # $ use-use=x:14
-    x.foo() # $ MISSING: use-use=x:16
+    x.foo() # $ use-use=x:16
     print(x) # $ use-use=x:17
 
 func()
