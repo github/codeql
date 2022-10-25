@@ -312,7 +312,7 @@ private module Cached {
   cached
   predicate immediatelyControls(ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s) {
     succ = cb.getASuccessor(s) and
-    forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != cb | succ.dominates(pred))
+    forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != cb | cb.dominates(pred))
   }
 
   cached
