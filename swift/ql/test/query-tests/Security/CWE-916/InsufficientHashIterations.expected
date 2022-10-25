@@ -11,7 +11,7 @@ nodes
 | test.swift:45:84:45:84 | 800 | semmle.label | 800 |
 subpaths
 #select
-| test.swift:37:84:37:84 | lowIterations | test.swift:20:45:20:45 | 999 :  | test.swift:37:84:37:84 | lowIterations | The variable 'lowIterations' is an insufficient number of iterations, which is not secure for hash functions. | test.swift:20:45:20:45 | 999 :  | 999 |
-| test.swift:38:84:38:84 | 800 | test.swift:38:84:38:84 | 800 | test.swift:38:84:38:84 | 800 | The variable '800' is an insufficient number of iterations, which is not secure for hash functions. | test.swift:38:84:38:84 | 800 | 800 |
-| test.swift:44:84:44:84 | lowIterations | test.swift:20:45:20:45 | 999 :  | test.swift:44:84:44:84 | lowIterations | The variable 'lowIterations' is an insufficient number of iterations, which is not secure for hash functions. | test.swift:20:45:20:45 | 999 :  | 999 |
-| test.swift:45:84:45:84 | 800 | test.swift:45:84:45:84 | 800 | test.swift:45:84:45:84 | 800 | The variable '800' is an insufficient number of iterations, which is not secure for hash functions. | test.swift:45:84:45:84 | 800 | 800 |
+| test.swift:37:84:37:84 | lowIterations | test.swift:20:45:20:45 | 999 :  | test.swift:37:84:37:84 | lowIterations | The value '999' is an insufficient number of iterations for secure password hashing. |
+| test.swift:38:84:38:84 | 800 | test.swift:38:84:38:84 | 800 | test.swift:38:84:38:84 | 800 | The value '800' is an insufficient number of iterations for secure password hashing. |
+| test.swift:44:84:44:84 | lowIterations | test.swift:20:45:20:45 | 999 :  | test.swift:44:84:44:84 | lowIterations | The value '999' is an insufficient number of iterations for secure password hashing. |
+| test.swift:45:84:45:84 | 800 | test.swift:45:84:45:84 | 800 | test.swift:45:84:45:84 | 800 | The value '800' is an insufficient number of iterations for secure password hashing. |
