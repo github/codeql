@@ -174,7 +174,9 @@ class VariableAccess extends AssignableAccess, @variable_access_expr {
 class VariableRead extends VariableAccess, AssignableRead {
   override VariableRead getANextRead() { result = AssignableRead.super.getANextRead() }
 
-  override VariableRead getAReachableRead() { result = AssignableRead.super.getAReachableRead() }
+  deprecated override VariableRead getAReachableRead() {
+    result = AssignableRead.super.getAReachableRead()
+  }
 }
 
 /**
@@ -200,7 +202,7 @@ class LocalScopeVariableAccess extends VariableAccess, @local_scope_variable_acc
 class LocalScopeVariableRead extends LocalScopeVariableAccess, VariableRead {
   override LocalScopeVariableRead getANextRead() { result = VariableRead.super.getANextRead() }
 
-  override LocalScopeVariableRead getAReachableRead() {
+  deprecated override LocalScopeVariableRead getAReachableRead() {
     result = VariableRead.super.getAReachableRead()
   }
 }
@@ -242,7 +244,7 @@ class ParameterAccess extends LocalScopeVariableAccess, @parameter_access_expr {
 class ParameterRead extends ParameterAccess, LocalScopeVariableRead {
   override ParameterRead getANextRead() { result = LocalScopeVariableRead.super.getANextRead() }
 
-  override ParameterRead getAReachableRead() {
+  deprecated override ParameterRead getAReachableRead() {
     result = LocalScopeVariableRead.super.getAReachableRead()
   }
 }
@@ -297,7 +299,7 @@ class LocalVariableAccess extends LocalScopeVariableAccess, @local_variable_acce
 class LocalVariableRead extends LocalVariableAccess, LocalScopeVariableRead {
   override LocalVariableRead getANextRead() { result = LocalScopeVariableRead.super.getANextRead() }
 
-  override LocalVariableRead getAReachableRead() {
+  deprecated override LocalVariableRead getAReachableRead() {
     result = LocalScopeVariableRead.super.getAReachableRead()
   }
 }
@@ -442,7 +444,9 @@ class PropertyAccess extends AssignableMemberAccess, PropertyAccessExpr {
 class PropertyRead extends PropertyAccess, AssignableRead {
   override PropertyRead getANextRead() { result = AssignableRead.super.getANextRead() }
 
-  override PropertyRead getAReachableRead() { result = AssignableRead.super.getAReachableRead() }
+  deprecated override PropertyRead getAReachableRead() {
+    result = AssignableRead.super.getAReachableRead()
+  }
 }
 
 /**
@@ -581,7 +585,9 @@ class IndexerAccess extends AssignableMemberAccess, ElementAccess, IndexerAccess
 class IndexerRead extends IndexerAccess, ElementRead {
   override IndexerRead getANextRead() { result = ElementRead.super.getANextRead() }
 
-  override IndexerRead getAReachableRead() { result = ElementRead.super.getAReachableRead() }
+  deprecated override IndexerRead getAReachableRead() {
+    result = ElementRead.super.getAReachableRead()
+  }
 }
 
 /**

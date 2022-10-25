@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class EnumDeclBase extends Synth::TEnumDecl, NominalTypeDecl {
-  override string getAPrimaryQlClass() { result = "EnumDecl" }
+module Generated {
+  class EnumDecl extends Synth::TEnumDecl, NominalTypeDecl {
+    override string getAPrimaryQlClass() { result = "EnumDecl" }
+  }
 }

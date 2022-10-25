@@ -888,6 +888,13 @@ exprValue
 | operations/operations.rb:92:10:92:10 | 4 | 4 | int |
 | operations/operations.rb:95:15:95:15 | 5 | 5 | int |
 | operations/operations.rb:96:16:96:16 | 6 | 6 | int |
+| operations/operations.rb:98:13:98:13 | 5 | 5 | int |
+| operations/operations.rb:99:14:99:14 | 6 | 6 | int |
+| operations/operations.rb:100:15:100:15 | 7 | 7 | int |
+| operations/operations.rb:101:25:101:25 | 8 | 8 | int |
+| operations/operations.rb:102:5:102:5 | 1 | 1 | int |
+| operations/operations.rb:102:31:102:31 | 7 | 7 | int |
+| operations/operations.rb:103:17:103:17 | 7 | 7 | int |
 | params/params.rb:41:46:41:46 | 7 | 7 | int |
 | params/params.rb:47:19:47:21 | :bar | :bar | symbol |
 | params/params.rb:47:24:47:24 | 2 | 2 | int |
@@ -1764,6 +1771,13 @@ exprCfgNodeValue
 | operations/operations.rb:92:10:92:10 | 4 | 4 | int |
 | operations/operations.rb:95:15:95:15 | 5 | 5 | int |
 | operations/operations.rb:96:16:96:16 | 6 | 6 | int |
+| operations/operations.rb:98:13:98:13 | 5 | 5 | int |
+| operations/operations.rb:99:14:99:14 | 6 | 6 | int |
+| operations/operations.rb:100:15:100:15 | 7 | 7 | int |
+| operations/operations.rb:101:25:101:25 | 8 | 8 | int |
+| operations/operations.rb:102:5:102:5 | 1 | 1 | int |
+| operations/operations.rb:102:31:102:31 | 7 | 7 | int |
+| operations/operations.rb:103:17:103:17 | 7 | 7 | int |
 | params/params.rb:41:46:41:46 | 7 | 7 | int |
 | params/params.rb:47:19:47:21 | :bar | :bar | symbol |
 | params/params.rb:47:24:47:24 | 2 | 2 | int |

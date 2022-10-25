@@ -203,7 +203,7 @@ module API {
     /**
      * Gets a node representing a call to `method` on the receiver represented by this node.
      */
-    Node getMethod(string method) {
+    MethodAccessNode getMethod(string method) {
       result = this.getASubclass().getASuccessor(Label::method(method))
     }
 
@@ -898,7 +898,7 @@ module API {
     /** Gets the `subclass` edge label. */
     LabelSubclass subclass() { any() }
 
-    /** Gets the label representing the given keword argument/parameter. */
+    /** Gets the label representing the given keyword argument/parameter. */
     LabelKeywordParameter keywordParameter(string name) { result.getName() = name }
 
     /** Gets the label representing the `n`th positional argument/parameter. */

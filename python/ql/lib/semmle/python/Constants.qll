@@ -7,7 +7,7 @@ int major_version() {
   explicit_major_version(result)
   or
   not explicit_major_version(_) and
-  /* If there is more than one version, prefer 2 for backwards compatibilty */
+  /* If there is more than one version, prefer 2 for backwards compatibility */
   (if py_flags_versioned("version.major", "2", "2") then result = 2 else result = 3)
 }
 

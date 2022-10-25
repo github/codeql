@@ -3,13 +3,26 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class InOutTypeBase extends Synth::TInOutType, Type {
-  override string getAPrimaryQlClass() { result = "InOutType" }
+module Generated {
+  class InOutType extends Synth::TInOutType, Type {
+    override string getAPrimaryQlClass() { result = "InOutType" }
 
-  Type getImmediateObjectType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertInOutTypeToRaw(this).(Raw::InOutType).getObjectType())
+    /**
+     * Gets the object type of this in out type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateObjectType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertInOutTypeToRaw(this)
+              .(Raw::InOutType)
+              .getObjectType())
+    }
+
+    /**
+     * Gets the object type of this in out type.
+     */
+    final Type getObjectType() { result = getImmediateObjectType().resolve() }
   }
-
-  final Type getObjectType() { result = getImmediateObjectType().resolve() }
 }

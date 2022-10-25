@@ -3,13 +3,24 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class InOutExprBase extends Synth::TInOutExpr, Expr {
-  override string getAPrimaryQlClass() { result = "InOutExpr" }
+module Generated {
+  class InOutExpr extends Synth::TInOutExpr, Expr {
+    override string getAPrimaryQlClass() { result = "InOutExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertInOutExprToRaw(this).(Raw::InOutExpr).getSubExpr())
+    /**
+     * Gets the sub expression of this in out expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertInOutExprToRaw(this).(Raw::InOutExpr).getSubExpr())
+    }
+
+    /**
+     * Gets the sub expression of this in out expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

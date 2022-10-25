@@ -639,7 +639,7 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
@@ -687,17 +687,19 @@ Parameterized annotations take some additional arguments.
 
 The parameterized annotation ``pragma`` supplies compiler pragmas, and may be applied in various contexts depending on the pragma in question.
 
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| Pragma       | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
-+==============+=========+============+===================+=======================+=========+========+=========+=========+
-| ``inline``   |         | yes        | yes               | yes                   |         |        |         |         |
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``noinline`` |         | yes        | yes               | yes                   |         |        |         |         |
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``nomagic``  |         | yes        | yes               | yes                   |         |        |         |         |
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``noopt``    |         | yes        | yes               | yes                   |         |        |         |         |
-+--------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| Pragma                    | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
++===========================+=========+============+===================+=======================+=========+========+=========+=========+
+| ``inline``                |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``noinline``              |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``nomagic``               |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``noopt``                 |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``assume_small_delta``    |         | yes        | yes               | yes                   |         |        |         |         |
++---------------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 
 The parameterized annotation ``language`` supplies language pragmas which change the behavior of the language. Language pragmas apply at the scope level, and are inherited by nested scopes.
 
@@ -2048,7 +2050,7 @@ The complete grammar for QL is as follows:
                     |   "override"
                     |   "query"
 
-   argsAnnotation ::= "pragma" "[" ("noinline" | "nomagic" | "noopt") "]"
+   argsAnnotation ::= "pragma" "[" ("inline" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 

@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.AnyBuiltinIntegerType
 
-class BuiltinIntegerLiteralTypeBase extends Synth::TBuiltinIntegerLiteralType, AnyBuiltinIntegerType {
-  override string getAPrimaryQlClass() { result = "BuiltinIntegerLiteralType" }
+module Generated {
+  class BuiltinIntegerLiteralType extends Synth::TBuiltinIntegerLiteralType, AnyBuiltinIntegerType {
+    override string getAPrimaryQlClass() { result = "BuiltinIntegerLiteralType" }
+  }
 }

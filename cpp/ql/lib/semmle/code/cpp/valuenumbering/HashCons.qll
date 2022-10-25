@@ -104,7 +104,7 @@ private newtype HC_Alloc =
   HC_HasAlloc(HashCons hc) { mk_HasAlloc(hc, _) }
 
 /**
- * Used to implement optional extent expression on `new[]` exprtessions
+ * Used to implement optional extent expression on `new[]` expressions
  */
 private newtype HC_Extent =
   HC_NoExtent() or
@@ -116,7 +116,7 @@ private newtype HC_Args =
   HC_ArgCons(HashCons hc, int i, HC_Args list) { mk_ArgCons(hc, i, list, _) }
 
 /**
- * Used to implement hash-consing of struct initizializers.
+ * Used to implement hash-consing of struct initializers.
  */
 private newtype HC_Fields =
   HC_EmptyFields(Class c) { exists(ClassAggregateLiteral cal | c = cal.getUnspecifiedType()) } or

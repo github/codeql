@@ -1,5 +1,5 @@
 /**
- * Provides precicates for reasoning about which strings are matched by a regular expression,
+ * Provides predicates for reasoning about which strings are matched by a regular expression,
  * and for testing which capture groups are filled when a particular regexp matches a string.
  */
 

@@ -4,13 +4,24 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 import codeql.swift.elements.stmt.Stmt
 
-class WhileStmtBase extends Synth::TWhileStmt, LabeledConditionalStmt {
-  override string getAPrimaryQlClass() { result = "WhileStmt" }
+module Generated {
+  class WhileStmt extends Synth::TWhileStmt, LabeledConditionalStmt {
+    override string getAPrimaryQlClass() { result = "WhileStmt" }
 
-  Stmt getImmediateBody() {
-    result =
-      Synth::convertStmtFromRaw(Synth::convertWhileStmtToRaw(this).(Raw::WhileStmt).getBody())
+    /**
+     * Gets the body of this while statement.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Stmt getImmediateBody() {
+      result =
+        Synth::convertStmtFromRaw(Synth::convertWhileStmtToRaw(this).(Raw::WhileStmt).getBody())
+    }
+
+    /**
+     * Gets the body of this while statement.
+     */
+    final Stmt getBody() { result = getImmediateBody().resolve() }
   }
-
-  final Stmt getBody() { result = getImmediateBody().resolve() }
 }

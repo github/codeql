@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinRawPointerTypeBase extends Synth::TBuiltinRawPointerType, BuiltinType {
-  override string getAPrimaryQlClass() { result = "BuiltinRawPointerType" }
+module Generated {
+  class BuiltinRawPointerType extends Synth::TBuiltinRawPointerType, BuiltinType {
+    override string getAPrimaryQlClass() { result = "BuiltinRawPointerType" }
+  }
 }

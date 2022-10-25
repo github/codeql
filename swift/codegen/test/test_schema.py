@@ -141,6 +141,7 @@ def test_no_mixed_groups_in_bases():
             class D(B, C):
                 pass
 
+
 #
 
 
@@ -407,6 +408,162 @@ def test_ipa_class_on_dangling():
             @defs.synth.on_arguments(s=defs.string, a="A", i=defs.int)
             class B:
                 pass
+
+
+def test_class_docstring():
+    @schema.load
+    class data:
+        class A:
+            """Very important class."""
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important class."])
+    }
+
+
+def test_property_docstring():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("very important property.")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important property."])])
+    }
+
+
+def test_class_docstring_newline():
+    @schema.load
+    class data:
+        class A:
+            """Very important
+            class."""
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important", "class."])
+    }
+
+
+def test_property_docstring_newline():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("""very important 
+            property.""")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important", "property."])])
+    }
+
+
+def test_class_docstring_stripped():
+    @schema.load
+    class data:
+        class A:
+            """
+
+            Very important class.
+
+            """
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important class."])
+    }
+
+
+def test_property_docstring_stripped():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("""
+            
+            very important property.
+            
+            """)
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important property."])])
+    }
+
+
+def test_class_docstring_split():
+    @schema.load
+    class data:
+        class A:
+            """Very important class.
+
+            As said, very important."""
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important class.", "", "As said, very important."])
+    }
+
+
+def test_property_docstring_split():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("""very important property.
+            
+            Very very important.""")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[
+            schema.SingleProperty('x', 'int', description=["very important property.", "", "Very very important."])])
+    }
+
+
+def test_class_docstring_indent():
+    @schema.load
+    class data:
+        class A:
+            """
+            Very important class.
+              As said, very important.
+            """
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important class.", "  As said, very important."])
+    }
+
+
+def test_property_docstring_indent():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("""
+            very important property.
+              Very very important.
+            """)
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[
+            schema.SingleProperty('x', 'int', description=["very important property.", "  Very very important."])])
+    }
+
+
+def test_property_doc_override():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.doc("y")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[
+            schema.SingleProperty('x', 'int', doc="y")]),
+    }
+
+
+def test_class_default_doc_name():
+    @schema.load
+    class data:
+        @defs.ql.default_doc_name("b")
+        class A:
+            pass
+
+    assert data.classes == {
+        'A': schema.Class('A', default_doc_name="b"),
+    }
 
 
 if __name__ == '__main__':
