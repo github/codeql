@@ -233,7 +233,7 @@ void test_recv() {
 int send(int, const void*, int, int);
 
 void test_send(char* buffer, int length) {
-  send(0, buffer, length, 0); // $ MISSING: remote
+  send(0, buffer, length, 0); // $ remote
 }
 
 struct iovec {
@@ -257,5 +257,5 @@ int test_readv_and_writev(iovec* iovs) {
   sink(p); // $ MISSING: ast,ir
   sink(*p); // $ MISSING: ast,ir
 
-  writev(0, iovs, 16); // $ MISSING: remote
+  writev(0, iovs, 16); // $ remote
 }
