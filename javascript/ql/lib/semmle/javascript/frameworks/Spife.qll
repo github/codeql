@@ -10,15 +10,6 @@ import semmle.javascript.frameworks.HTTP
  */
 module Spife {
   /**
-   * An API graph entry point ensuring all tagged template exprs are part of the API graph
-   */
-  private class TaggedTemplateEntryPoint extends API::EntryPoint {
-    TaggedTemplateEntryPoint() { this = "TaggedTemplateEntryPoint" }
-
-    override DataFlow::SourceNode getASource() { result.asExpr() instanceof TaggedTemplateExpr }
-  }
-
-  /**
    * A call to a Spife method that sets up a route.
    */
   private class RouteSetup extends API::CallNode, Http::Servers::StandardRouteSetup {
