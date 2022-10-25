@@ -126,24 +126,48 @@ else
     foo
 end
 
-# not recognized as a guard
 case foo
 when *["foo", "bar"]
     foo
 end
 
-FOOS = ["foo", "bar"]
-
-# not recognized as a guard
 case foo
-when *FOOS
+when *%w[foo bar]
     foo
 end
 
-foos = ["foo", "bar"]
+case foo
+when *FOO
+    foo
+end
 
-# not recognized as a guard
 case foo
 when *foos
+    foo
+end
+
+x = nil
+
+case foo
+when *["foo", x]
+    foo
+end
+
+case foo
+when "foo", x
+    foo
+end
+
+foos_and_x = ["foo", x]
+
+case foo
+when *foos_and_x
+    foo
+end
+
+FOOS_AND_X = ["foo", x]
+
+case foo
+when *FOOS_AND_X
     foo
 end
