@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
+import com.github.codeql.utils.versions.getKotlinType
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -22,6 +23,7 @@ import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
+import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
 import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
@@ -674,7 +676,8 @@ open class KotlinUsesExtractor(
                           otherIsPrimitive: Boolean,
                           javaClass: IrClass,
                           kotlinPackageName: String, kotlinClassName: String): TypeResults {
-            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && primitiveName != null) {
+            // Note the use of `hasEnhancedNullability` here covers cases like `@NotNull Integer`, which must be extracted as `Integer` not `int`.
+            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && getKotlinType(s)?.hasEnhancedNullability() != true && primitiveName != null) {
                     val label: Label<DbPrimitive> = tw.getLabelFor("@\"type;$primitiveName\"", {
                         tw.writePrimitives(it, primitiveName)
                     })
