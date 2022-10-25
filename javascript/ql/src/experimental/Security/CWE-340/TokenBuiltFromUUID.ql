@@ -19,7 +19,7 @@ class PredictableResultSource extends DataFlow::Node {
   PredictableResultSource() {
     exists(API::Node uuidCallRet |
       uuidCallRet =
-        API::moduleImport("uuid").getMember(["v1", "v2", "v3", "v5"]).getACall().getReturn()
+        API::moduleImport("uuid").getMember(["v1", "v3", "v5"]).getACall().getReturn()
     |
       this = uuidCallRet.asSource()
     )
