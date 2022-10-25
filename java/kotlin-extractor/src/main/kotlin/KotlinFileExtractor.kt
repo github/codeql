@@ -27,6 +27,7 @@ import org.jetbrains.kotlin.load.java.structure.JavaClass
 import org.jetbrains.kotlin.load.java.structure.JavaMethod
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
+import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -98,15 +99,29 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun javaBinaryDeclaresMethod(c: IrClass, name: String) =
+        ((c.source as? JavaSourceElement)?.javaElement as? BinaryJavaClass)?.methods?.any { it.name.asString() == name }
+
+    private fun isJavaBinaryDeclaration(f: IrFunction) =
+        f.parentClassOrNull?.let { javaBinaryDeclaresMethod(it, f.name.asString()) } ?: false
+
+    private fun isJavaBinaryObjectMethodRedeclaration(d: IrDeclaration) =
+        when (d) {
+            is IrFunction ->
+                when (d.name.asString()) {
+                    "toString" -> d.valueParameters.isEmpty()
+                    "hashCode" -> d.valueParameters.isEmpty()
+                    "equals" -> d.valueParameters.singleOrNull()?.type?.isNullableAny() ?: false
+                    else -> false
+                } && isJavaBinaryDeclaration(d)
+            else -> false
+        }
+
     @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun isFake(d: IrDeclarationWithVisibility): Boolean {
-        val visibility = d.visibility
-        if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake) {
+        val hasFakeVisibility = d.visibility.let { it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake } || d.isFakeOverride
+        if (hasFakeVisibility && !isJavaBinaryObjectMethodRedeclaration(d))
             return true
-        }
-        if (d.isFakeOverride) {
-            return true
-        }
         try {
             if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
                 return true
@@ -908,7 +923,9 @@ open class KotlinFileExtractor(
             else
                 null
         } else {
-            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also {
+            // Work around an apparent bug causing redeclarations of `fun toString(): String` specifically in interfaces loaded from Java classes show up like fake overrides.
+            val overriddenVisibility = if (f.isFakeOverride && isJavaBinaryObjectMethodRedeclaration(f)) OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC) else null
+            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenVisibility).also {
                 // The defaults-forwarder function is a static utility, not a member, so we only need to extract this for the unspecialised instance of this class.
                 if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
                     extractDefaultsFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses)
