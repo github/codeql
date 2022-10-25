@@ -3,7 +3,7 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSources
 
-private class UrlRemoteFlowSource extends SourceModelCsv {
+private class CustomUrlRemoteFlowSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
