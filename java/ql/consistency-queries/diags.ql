@@ -1,12 +1,12 @@
 import semmle.code.java.Diagnostics
 
 /*
-This query fails if any unexpected diagnostics are recorded in the
-database. By putting
-    // Diagnostic Matches: PAT
-in any source files, you can declare that diagnostics matching PAT
-(in the string.matches(string) sense) are expected.
-*/
+ * This query fails if any unexpected diagnostics are recorded in the
+ * database. By putting
+ *    // Diagnostic Matches: PAT
+ * in any source files, you can declare that diagnostics matching PAT
+ * (in the string.matches(string) sense) are expected.
+ */
 
 class DiagnosticException extends Top {
   string pattern;
