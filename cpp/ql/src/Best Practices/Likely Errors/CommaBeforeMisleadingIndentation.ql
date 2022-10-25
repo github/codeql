@@ -20,7 +20,7 @@ import semmle.code.cpp.commons.Exclusions
  * Gets a child of `e`, including conversions but excluding call arguments.
  */
 pragma[inline]
-Expr childWithConversions(Expr e) {
+Expr getAChildWithConversions(Expr e) {
   result.getParentWithConversions() = e and
   not result = any(Call c).getAnArgument()
 }
@@ -31,7 +31,7 @@ Expr childWithConversions(Expr e) {
  */
 int getCandidateColumn(Expr e) {
   result = e.getLocation().getStartColumn() or
-  result = getCandidateColumn(childWithConversions(e))
+  result = getCandidateColumn(getAChildWithConversions(e))
 }
 
 /**
@@ -44,7 +44,7 @@ Expr normalizeExpr(Expr e) {
   result = e
   or
   not e.getLocation().getStartColumn() = min(getCandidateColumn(e)) and
-  result = normalizeExpr(childWithConversions(e)) and
+  result = normalizeExpr(getAChildWithConversions(e)) and
   result.getLocation().getStartColumn() = min(getCandidateColumn(e))
 }
 
