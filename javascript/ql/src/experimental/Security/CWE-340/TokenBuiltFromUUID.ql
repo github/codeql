@@ -28,17 +28,12 @@ class PredictableResultSource extends DataFlow::Node {
 
 class TokenAssignmentValueSink extends DataFlow::Node {
   TokenAssignmentValueSink() {
-    exists(PropWrite pw | this = pw.getRhs() |
-      pw.getPropertyName().toLowerCase().matches(["%token", "%code"])
-    )
+    exists(string name | name.toLowerCase().matches(["%token", "%code"]) |
+      exists(PropWrite pw | this = pw.getRhs() | pw.getPropertyName().toLowerCase() = name)
     or
     exists(AssignExpr ae | this = ae.getRhs().flow() |
-      ae.getLhs()
-          .(VariableAccess)
-          .getVariable()
-          .getName()
-          .toLowerCase()
-          .matches(["%token", "%code"])
+        ae.getLhs().(VariableAccess).getVariable().getName().toLowerCase() = name
+      )
     )
   }
 }

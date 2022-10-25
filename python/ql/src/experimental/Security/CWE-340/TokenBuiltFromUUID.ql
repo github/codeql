@@ -34,14 +34,10 @@ class PredictableResultSource extends DataFlow::Node {
 
 class TokenAssignmentValueSink extends DataFlow::Node {
   TokenAssignmentValueSink() {
-    exists(Assign a, Expr target | this = DataFlow::exprNode(a.getValue()) |
-      target = a.getATarget() and
-      (target instanceof Attribute or target instanceof Name) and
-      (
-        target.(Attribute).getName().toLowerCase().matches(["%token", "%code"])
+    exists(string name | name.toLowerCase().matches(["%token", "%code"]) |
+      exists(DefinitionNode n | n.getValue() = this.asCfgNode() | name = n.(NameNode).getId())
         or
-        target.(Name).getId().toLowerCase().matches(["%token", "%code"])
-      )
+      exists(DataFlow::AttrWrite aw | aw.getValue() = this | name = aw.getAttributeName())
     )
   }
 }
