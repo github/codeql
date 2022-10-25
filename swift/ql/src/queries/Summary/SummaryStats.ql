@@ -13,7 +13,7 @@ import codeql.swift.security.SensitiveExprs
 predicate statistic(string what, int value) {
   what = "Files" and value = count(File f)
   or
-  what = "Expressions" and value = count(Expr e | e.getFile().getName() != "")
+  what = "Expressions" and value = count(Expr e | not e.getFile() instanceof UnknownFile)
   or
   what = "Remote flow sources" and value = count(RemoteFlowSource s)
   or
