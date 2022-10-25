@@ -234,7 +234,7 @@ module ExprNodes {
     override predicate relevantChild(AstNode n) { none() }
   }
 
-  /** A control-flow node that wraps an `ArrayLiteral` AST expression. */
+  /** A control-flow node that wraps a `Literal` AST expression. */
   class LiteralCfgNode extends ExprCfgNode {
     override string getAPrimaryQlClass() { result = "LiteralCfgNode" }
 
@@ -864,6 +864,17 @@ module ExprNodes {
     RelationalOperationCfgNode() { e instanceof RelationalOperation }
 
     final override RelationalOperation getExpr() { result = super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `SplatExpr` AST expression. */
+  class SplatExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "SplatExprCfgNode" }
+
+    SplatExprCfgNode() { e instanceof SplatExpr }
+
+    final override SplatExpr getExpr() { result = super.getExpr() }
+
+    final ExprCfgNode getOperand() { result.getExpr() = e.(SplatExpr).getOperand() }
   }
 
   /** A control-flow node that wraps an `ElementReference` AST expression. */
