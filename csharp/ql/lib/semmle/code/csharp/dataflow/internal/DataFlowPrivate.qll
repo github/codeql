@@ -2212,6 +2212,15 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
 
+/**
+ * A module importing the modules that provide synthetic field declarations,
+ * ensuring that they are visible to the taint tracking / data flow library.
+ */
+private module SyntheticFields {
+  private import semmle.code.csharp.frameworks.system.threading.Tasks
+  private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
+}
+
 /** A synthetic field. */
 abstract class SyntheticField extends string {
   bindingset[this]
