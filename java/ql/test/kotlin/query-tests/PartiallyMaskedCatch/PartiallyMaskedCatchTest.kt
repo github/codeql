@@ -15,7 +15,7 @@ fun fn2() {
         fn0()
     } catch (e: java.io.FileNotFoundException) {
         println(e)
-    } catch (e: java.io.IOException) {	// False positive
+    } catch (e: java.io.IOException) {
         println(e)
     }
 }
@@ -25,7 +25,7 @@ fun fn3() {
         throw java.io.FileNotFoundException()
     } catch (e: java.io.FileNotFoundException) {
         println(e)
-    } catch (e: java.io.IOException) {	// True positive
+    } catch (e: java.io.IOException) {	// TODO: False negative
         println(e)
     }
 }
