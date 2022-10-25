@@ -3,6 +3,7 @@ import semmle.code.java.deadcode.DeadEnumConstant
 import semmle.code.java.deadcode.DeadCodeCustomizations
 import semmle.code.java.deadcode.DeadField
 import semmle.code.java.deadcode.EntryPoints
+private import semmle.code.java.frameworks.kotlin.Serialization
 
 /**
  * Holds if the given callable has any liveness causes.
@@ -309,10 +310,7 @@ class RootdefCallable extends Callable {
     this.isCompilerGenerated()
     or
     // Exclude Kotlin serialization constructors.
-    this.(Constructor)
-        .getParameterType(this.getNumberOfParameters() - 1)
-        .(RefType)
-        .hasQualifiedName("kotlinx.serialization.internal", "SerializationConstructorMarker")
+    this instanceof SerializationConstructor
   }
 }
 
