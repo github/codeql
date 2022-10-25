@@ -29,14 +29,6 @@ class SystemWebUIWebControlsTextBoxClass extends SystemWebUIWebControlsClass {
   }
 }
 
-/** Data flow for `System.Web.UI.WebControls.TextBox`. */
-private class SystebWebUIWebControlsTextBoxClassFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Web.UI.WebControls;TextBox;false;get_Text;();;Argument[this];ReturnValue;taint;manual"
-  }
-}
-
 /** The `System.Web.UI.WebControls.Label` class. */
 class SystemWebUIWebControlsLabelClass extends SystemWebUIWebControlsClass {
   SystemWebUIWebControlsLabelClass() { this.hasName("Label") }
