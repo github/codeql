@@ -1,0 +1,2 @@
+| PartiallyMaskedCatchTest.kt:18:7:20:5 | catch (...) | This catch-clause is unreachable; it is masked $@. | PartiallyMaskedCatchTest.kt:16:7:18:5 | catch (...) | by a previous catch-clause for exceptions of type 'FileNotFoundException' |
+| PartiallyMaskedCatchTest.kt:28:7:30:5 | catch (...) | This catch-clause is unreachable; it is masked $@. | PartiallyMaskedCatchTest.kt:26:7:28:5 | catch (...) | by a previous catch-clause for exceptions of type 'FileNotFoundException' |
