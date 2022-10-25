@@ -7,11 +7,11 @@
   </overview>
 
   <recommendation>
-    <p>Use sufficient number of iterations (that is, greater than or equal 1000) for generating password-based keys.</p>
+    <p>Use sufficient number of iterations (that is, greater than or equal 120000) for generating password-based keys.</p>
   </recommendation>
 
   <example>
-    <p>The following example shows a few cases of instantiating a password-based key. In the 'BAD' cases, the key is initialized with insufficient iterations, making it susceptible to password cracking attacks. In the 'GOOD' cases, the key is initialized with at least 1000 iterations, which protects the encrypted data against recovery.</p>
+    <p>The following example shows a few cases of instantiating a password-based key. In the 'BAD' cases, the key is initialized with insufficient iterations, making it susceptible to password cracking attacks. In the 'GOOD' cases, the key is initialized with at least 120000 iterations, which protects the encrypted data against recovery.</p>
     <sample src="InsufficientHashIterations.swift" />
   </example>
 

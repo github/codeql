@@ -1,6 +1,6 @@
 /**
  * @name Insufficient hash iterations
- * @description Using hash functions with < 1000 iterations is not secure, because that scheme leads to password cracking attacks due to having an insufficient level of computational effort.
+ * @description Using hash functions with less than 120,000 iterations is not secure, because that scheme leads to password cracking attacks due to having an insufficient level of computational effort.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
@@ -21,10 +21,10 @@ import DataFlow::PathGraph
 abstract class IterationsSource extends Expr { }
 
 /**
- * A literal integer that is 1000 or less is a source of taint for iterations.
+ * A literal integer that is 120,000 or less is a source of taint for iterations.
  */
 class IntLiteralSource extends IterationsSource instanceof IntegerLiteralExpr {
-  IntLiteralSource() { this.getStringValue().toInt() < 1000 }
+  IntLiteralSource() { this.getStringValue().toInt() < 120000 }
 }
 
 /**
