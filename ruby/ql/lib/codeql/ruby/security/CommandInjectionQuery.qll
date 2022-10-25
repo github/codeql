@@ -26,7 +26,6 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     node instanceof Sanitizer or
     node instanceof StringConstCompareBarrier or
-    node instanceof StringConstArrayInclusionCallBarrier or
-    node instanceof StringConstCaseCompareBarrier
+    node instanceof StringConstArrayInclusionCallBarrier
   }
 }
