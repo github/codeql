@@ -50,11 +50,10 @@ class TokenBuiltFromUuidConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof TokenAssignmentValueSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(Call call, Name name |
-      call.getFunc() = name and
-      name.getId() = "str" and
-      nodeFrom = DataFlow::exprNode(call.getArg(0)) and
-      nodeTo = DataFlow::exprNode(call)
+    exists(DataFlow::CallCfgNode call |
+      call = API::builtin("str").getACall() and
+      nodeFrom = call.getArg(0) and
+      nodeTo = call
     )
   }
 }
