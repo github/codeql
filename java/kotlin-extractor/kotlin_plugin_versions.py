@@ -49,7 +49,7 @@ def get_single_version(fakeVersionOutput = None):
     matching_minor_versions.sort(reverse = True)
 
     for version in matching_minor_versions:
-        if version <= current_version:
+        if version[0:3] <= current_version[0:3]:
             return version_tuple_to_string(version)
 
     return version_tuple_to_string(matching_minor_versions[-1])
