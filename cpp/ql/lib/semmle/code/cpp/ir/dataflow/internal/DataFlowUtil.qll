@@ -111,7 +111,12 @@ class Node extends TIRDataFlowNode {
   /** Gets the function to which this node belongs, if any. */
   Declaration getFunction() { none() } // overridden in subclasses
 
-  /** Gets the type of this node. */
+  /**
+   * Gets the type of this node.
+   *
+   * If `asInstruction().isGLValue()` holds, then the type of this node
+   * should be thought of as "pointer to `getType()`".
+   */
   DataFlowType getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
@@ -746,7 +751,7 @@ predicate exprNodeShouldBeOperand(Node node, Expr e) {
 
 /**
  * Holds if `load` is a `LoadInstruction` that is the result of evaluating `e`
- * and `node` is an `IndirctOperandNode` that should map `node.asExpr()` to `e`.
+ * and `node` is an `IndirectOperandNode` that should map `node.asExpr()` to `e`.
  *
  * We map `e` to `node.asExpr()` when `node` semantically represents the
  * same value as `load`. A subsequent flow step will flow `node` to
