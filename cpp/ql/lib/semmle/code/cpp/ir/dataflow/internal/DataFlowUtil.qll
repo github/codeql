@@ -361,22 +361,20 @@ class OperandNode extends Node, TOperandNode {
 }
 
 /**
- * Returns `t`, but stripped of the `n` outermost pointers, references, etc.
+ * Returns `t`, but stripped of the outermost pointer, reference, etc.
  *
- * For example, `stripPointers(int*&, 2)` is `int` and `stripPointers(int*, 0)` is `int*`.
+ * For example, `stripPointers(int*&)` is `int*` and `stripPointers(int*)` is `int`.
  */
-private Type stripPointers(Type t, int n) {
-  result = t and n = 0
+private Type stripPointer(Type t) {
+  result = t.(PointerType).getBaseType()
   or
-  result = stripPointers(t.(PointerType).getBaseType(), n - 1)
+  result = t.(ArrayType).getBaseType()
   or
-  result = stripPointers(t.(ArrayType).getBaseType(), n - 1)
+  result = t.(ReferenceType).getBaseType()
   or
-  result = stripPointers(t.(ReferenceType).getBaseType(), n - 1)
+  result = t.(PointerToMemberType).getBaseType()
   or
-  result = stripPointers(t.(PointerToMemberType).getBaseType(), n - 1)
-  or
-  result = stripPointers(t.(FunctionPointerIshType).getBaseType(), n - 1)
+  result = t.(FunctionPointerIshType).getBaseType()
 }
 
 /**
@@ -606,36 +604,12 @@ class IndirectReturnOutNode extends Node {
   int getIndirectionIndex() { result = indirectionIndex }
 }
 
-private PointerType getGLValueType(Type t, int indirectionIndex) {
-  result.getBaseType() = stripPointers(t, indirectionIndex - 1)
-}
-
-bindingset[isGLValue]
-private DataFlowType getTypeImpl(Type t, int indirectionIndex, boolean isGLValue) {
-  if isGLValue = true
-  then
-    result = getGLValueType(t, indirectionIndex)
-    or
-    // Ideally, the above case would cover all glvalue cases. However, consider the case where
-    // the database consists only of:
-    // ```
-    // void test() {
-    //   int* x;
-    //   x = nullptr;
-    // }
-    // ```
-    // and we want to compute the type of `*x` in the assignment `x = nullptr`. Here, `x` is an lvalue
-    // of type int* (which morally is an int**). So when we call `getTypeImpl` it will be with the
-    // parameters:
-    // - t = int*
-    // - indirectionIndex = 1 (when we want to model the dataflow node corresponding to *x)
-    // - isGLValue = true
-    // In this case, `getTypeImpl(t, indirectionIndex, isGLValue)` should give back `int**`. In this
-    // case, however, `int**` does not exist in the database. So instead we return int* (which is
-    // wrong, but at least we have a type).
-    not exists(getGLValueType(t, indirectionIndex)) and
-    result = stripPointers(t, indirectionIndex - 1)
-  else result = stripPointers(t, indirectionIndex)
+private Type getTypeImpl(Type t, int indirectionIndex) {
+  indirectionIndex = 0 and
+  result = t
+  or
+  indirectionIndex > 0 and
+  result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
 }
 
 /**
@@ -660,8 +634,8 @@ class IndirectOperand extends Node, TIndirectOperand {
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override DataFlowType getType() {
-    exists(boolean isGLValue | if operand.isGLValue() then isGLValue = true else isGLValue = false |
-      result = getTypeImpl(operand.getType().getUnspecifiedType(), indirectionIndex, isGLValue)
+    exists(int sub | if operand.isGLValue() then sub = 1 else sub = 0 |
+      result = getTypeImpl(operand.getType().getUnspecifiedType(), indirectionIndex - sub)
     )
   }
 
@@ -713,8 +687,8 @@ class IndirectInstruction extends Node, TIndirectInstruction {
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override DataFlowType getType() {
-    exists(boolean isGLValue | if instr.isGLValue() then isGLValue = true else isGLValue = false |
-      result = getTypeImpl(instr.getResultType().getUnspecifiedType(), indirectionIndex, isGLValue)
+    exists(int sub | if instr.isGLValue() then sub = 1 else sub = 0 |
+      result = getTypeImpl(instr.getResultType().getUnspecifiedType(), indirectionIndex - sub)
     )
   }
 
