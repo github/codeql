@@ -186,7 +186,7 @@ module Spife {
     string kind;
 
     ContextInputAccess() {
-      this = request.ref().getAMethodCall("get")
+      this = request.ref().getAMethodCall("get") and
       kind = "path"
     }
 
@@ -217,29 +217,25 @@ module Spife {
    * A Spife response source, that is, the response variable used by a
    * route handler.
    */
-  private class ReplySource extends Http::Servers::ResponseSource instanceof DataFlow::CallNode {
-    ReplySource() {
-      // const reply = require("@npm/spife/reply")
+  private class ReplyCall extends API::CallNode {
+    ReplyCall() {
       // reply(resp)
+      this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getACall()
+      or
       // reply.header(resp, 'foo', 'bar')
-      this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getACall() or
       this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getAMember().getACall()
     }
 
-    private DataFlow::SourceNode reachesHandlerReturn(DataFlow::TypeTracker t) {
-      result = this and
-      t.start()
-      or
-      exists(DataFlow::TypeTracker t2 | result = this.reachesHandlerReturn(t2).track(t2, t))
+    predicate isDirectReplyCall() {
+      this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getACall()
     }
 
     /**
      * Gets the route handler that provides this response.
      */
-    override RouteHandler getRouteHandler() {
+    RouteHandler getRouteHandler() {
       exists(RouteHandler handler |
-        handler.(DataFlow::FunctionNode).getAReturn().getALocalSource() =
-          this.reachesHandlerReturn(DataFlow::TypeTracker::end()) and
+        handler.getAReturn() = this.getReturn().getAValueReachableFromSource() and
         result = handler
       )
     }
@@ -248,47 +244,46 @@ module Spife {
   /**
    * An HTTP header defined in a Spife response.
    */
-  private class HeaderDefinition extends Http::ExplicitHeaderDefinition, DataFlow::MethodCallNode instanceof ReplySource {
-    HeaderDefinition() {
+  private class SingleHeaderDefinition extends Http::ExplicitHeaderDefinition instanceof ReplyCall {
+    SingleHeaderDefinition() {
       // reply.header(RESPONSE, 'Cache-Control', 'no-cache')
-      exists(DataFlow::MethodCallNode call |
-        this.ref() = call and
-        call.getMethodName() = "header" and
-        call.getNumArgument() = 3
-      )
+      this.getCalleeName() = "header" and
+      this.getNumArgument() = 3
     }
 
     override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
       // reply.header(RESPONSE, 'Cache-Control', 'no-cache')
       this.getNameNode().mayHaveStringValue(headerName) and
-      headerValue = this.getArgument(2)
+      headerValue = this.(DataFlow::MethodCallNode).getArgument(2)
     }
 
-    override DataFlow::Node getNameNode() { result = this.getArgument(1) }
+    override DataFlow::Node getNameNode() {
+      result = this.(DataFlow::MethodCallNode).getArgument(1)
+    }
 
-    override RouteHandler getRouteHandler() { result = this.getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
   }
 
   /**
    * An invocation that sets any number of headers of the HTTP response.
    */
-  private class MultipleHeaderDefinitions extends Http::ExplicitHeaderDefinition, DataFlow::CallNode {
-    ReplySource reply;
-
+  private class MultipleHeaderDefinitions extends Http::ExplicitHeaderDefinition instanceof ReplyCall {
     MultipleHeaderDefinitions() {
-      // reply.header(RESPONSE, {'Cache-Control': 'no-cache'})
-      // reply(RESPONSE, {'Cache-Control': 'no-cache'})
-      exists(DataFlow::CallNode call | call = [reply.ref(), reply.ref().getAMethodCall("header")] | 
-        call.getAnArgument().getALocalSource() instanceof DataFlow::ObjectLiteralNode and
-        this = call
-      )
+      (
+        // reply.header(RESPONSE, {'Cache-Control': 'no-cache'})
+        this.getCalleeName() = "header"
+        or
+        // reply(RESPONSE, {'Cache-Control': 'no-cache'})
+        this.isDirectReplyCall()
+      ) and
+      this.getAnArgument().getALocalSource() instanceof DataFlow::ObjectLiteralNode
     }
 
     /**
      * Gets a reference to the multiple headers object that is to be set.
      */
-    private DataFlow::ObjectLiteralNode getAHeaderSource() {
-      result = this.getAnArgument().getALocalSource()
+    DataFlow::ObjectLiteralNode getAHeaderSource() {
+      result = this.(DataFlow::CallNode).getAnArgument().getALocalSource()
     }
 
     override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
@@ -302,56 +297,106 @@ module Spife {
       result = this.getAHeaderSource().getAPropertyWrite().getPropertyNameExpr().flow()
     }
 
-    override RouteHandler getRouteHandler() { result = reply.getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
   }
 
   /**
    * A header produced by a route handler with no explicit declaration of a Content-Type.
    */
-  private class ContentTypeRouteHandlerHeader extends Http::ImplicitHeaderDefinition,
-    DataFlow::FunctionNode instanceof RouteHandler {
+  private class ContentTypeRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof RouteHandler {
     override predicate defines(string headerName, string headerValue) {
       headerName = "content-type" and headerValue = "application/json"
     }
 
-    override Http::RouteHandler getRouteHandler() { result = this }
+    override RouteHandler getRouteHandler() { result = this }
   }
 
   /**
    * An HTTP cookie defined in a Spife HTTP response.
    */
-  private class CookieDefinition extends Http::CookieDefinition, DataFlow::MethodCallNode {
+  private class CookieDefinition extends Http::CookieDefinition instanceof ReplyCall {
     CookieDefinition() {
       // reply.cookie(RESPONSE, 'TEST', 'FOO', {"maxAge": 1000, "httpOnly": true, "secure": true})
-      this = any(ReplySource r).ref().getAMethodCall("cookie")
+      this.getCalleeName() = "cookie"
     }
 
-    override DataFlow::Node getNameArgument() { result = this.getArgument(1) }
+    //  this = any(ReplyCall r).ref().getAMethodCall("cookie")
+    override DataFlow::Node getNameArgument() { result = this.(ReplyCall).getArgument(1) }
 
-    override DataFlow::Node getValueArgument() { result = this.getArgument(2) }
+    override DataFlow::Node getValueArgument() { result = this.(ReplyCall).getArgument(2) }
 
-    override RouteHandler getRouteHandler() { result = this.getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
   }
 
   /**
-   * A response argument passed to the `reply` method.
+   * A response sent using a method on the `reply` object.
    */
-  private class ReplyArgument extends Http::ResponseSendArgument, DataFlow::Node {
+  private class ReplyMethodCallArgument extends Http::ResponseSendArgument {
+    ReplyCall reply;
+
+    ReplyMethodCallArgument() {
+      // reply.header(RESPONSE, {'Cache-Control': 'no-cache'})
+      reply.getCalleeName() =
+        ["cookie", "link", "header", "headers", "raw", "status", "toStream", "vary"] and
+      reply.getArgument(0) = this
+    }
+
+    override RouteHandler getRouteHandler() { result = reply.getRouteHandler() }
+  }
+
+  /**
+   * A response sent using the `reply()` method.
+   */
+  private class ReplyCallArgument extends Http::ResponseSendArgument {
+    ReplyCall reply;
+
+    ReplyCallArgument() {
+      // reply(RESPONSE, {'Cache-Control': 'no-cache'})
+      reply.isDirectReplyCall() and
+      reply.getArgument(0) = this
+    }
+
+    override RouteHandler getRouteHandler() { result = reply.getRouteHandler() }
+  }
+
+  /**
+   * The return statement for a route handler.
+   */
+  private class RouteHandlerReturn extends Http::ResponseSendArgument {
     RouteHandler rh;
 
-    ReplyArgument() {
-      exists(ReplySource reply, DataFlow::CallNode call |
-        reply.ref() = call and
-        call.getCalleeName() =
-          ["reply", "cookie", "link", "header", "headers", "raw", "status", "toStream", "vary"] and
-        this = call.getArgument(0) and
-        rh = reply.getRouteHandler()
-      )
-      or
-      this = rh.getAReturn()
+    RouteHandlerReturn() {
+      this = rh.getAReturn() and not this.getALocalSource() instanceof ReplyCall
     }
 
     override RouteHandler getRouteHandler() { result = rh }
+  }
+
+  /**
+   * A call to `reply.template('template', { ... })`, seen as a template instantiation.
+   */
+  private class TemplateCall extends Templating::TemplateInstantiation::Range instanceof ReplyCall {
+    TemplateCall() { this.getCalleeName() = "template" }
+
+    override DataFlow::SourceNode getOutput() { result = this }
+
+    override DataFlow::Node getTemplateFileNode() { result = this.(ReplyCall).getArgument(0) }
+
+    override DataFlow::Node getTemplateParamsNode() { result = this.(ReplyCall).getArgument(1) }
+  }
+
+  /**
+   * An object passed to the `template` method of the reply object.
+   */
+  private class TemplateObjectInput extends DataFlow::Node {
+    TemplateCall call;
+
+    TemplateObjectInput() { this = call.(ReplyCall).getArgument(1) }
+
+    /**
+     * Gets the route handler that uses this object.
+     */
+    RouteHandler getRouteHandler() { result = call.(ReplyCall).getRouteHandler() }
   }
 
   /**
@@ -361,55 +406,19 @@ module Spife {
   private class TemplateInput extends Http::ResponseBody {
     TemplateObjectInput obj;
 
-    TemplateInput() {
-      obj.getALocalSource().(DataFlow::ObjectLiteralNode).hasPropertyWrite(_, this)
-    }
+    TemplateInput() { obj.getALocalSource().hasPropertyWrite(_, this) }
 
     override RouteHandler getRouteHandler() { result = obj.getRouteHandler() }
   }
 
   /**
-   * An object passed to the `template` method of the reply object.
-   */
-  private class TemplateObjectInput extends DataFlow::Node {
-    ReplySource reply;
-
-    TemplateObjectInput() {
-      exists(DataFlow::MethodCallNode call |
-        reply.ref() = call and
-        call.getMethodName() = "template" and
-        this = call.getArgument(1)
-      )
-    }
-
-    /**
-     * Gets the route handler that uses this object.
-     */
-    RouteHandler getRouteHandler() { result = reply.getRouteHandler() }
-  }
-
-  /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends Http::RedirectInvocation, DataFlow::MethodCallNode instanceof ReplySource {
-    RedirectInvocation() { this.ref().(DataFlow::MethodCallNode).getMethodName() = "redirect" }
+  private class RedirectInvocation extends Http::RedirectInvocation instanceof ReplyCall {
+    RedirectInvocation() { this.getCalleeName() = "redirect" }
 
     override DataFlow::Node getUrlArgument() { result = this.getAnArgument() }
 
     override RouteHandler getRouteHandler() { result = this.getRouteHandler() }
-  }
-
-  /**
-   * A call to `reply.template('template', { ... })`, seen as a template instantiation.
-   */
-  private class TemplateCall extends Templating::TemplateInstantiation::Range,
-    DataFlow::MethodCallNode instanceof ReplySource {
-    TemplateCall() { this.getMethodName() = "template" }
-
-    override DataFlow::SourceNode getOutput() { result = this }
-
-    override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
-
-    override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
   }
 }

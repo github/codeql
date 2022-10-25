@@ -33,8 +33,14 @@ query predicate passingPositiveTests(string res, string expectation, InlineTest 
   res = "PASSED" and
   t.hasPositiveTest(expectation) and
   (
+    expectation = "responseBody" and
+    exists(Http::ResponseBody n | t.inNode(n))
+    or
     expectation = "headerDefinition" and
-    exists(Http::HeaderDefinition n | t.inNode(n))
+    exists(DataFlow::Node n, Http::ExplicitHeaderDefinition h |
+      t.inNode(n) and
+      h.definesHeaderValue(_, n)
+    )
     or
     expectation = "cookieDefinition" and
     exists(Http::CookieDefinition n | t.inNode(n))
@@ -83,8 +89,14 @@ query predicate failingPositiveTests(string res, string expectation, InlineTest 
   res = "FAILED" and
   t.hasPositiveTest(expectation) and
   (
+    expectation = "responseBody" and
+    not exists(Http::ResponseBody n | t.inNode(n))
+    or
     expectation = "headerDefinition" and
-    not exists(Http::HeaderDefinition n | t.inNode(n))
+    not exists(DataFlow::Node n, Http::ExplicitHeaderDefinition h |
+      t.inNode(n) and
+      h.definesHeaderValue(_, n)
+    )
     or
     expectation = "cookieDefinition" and
     not exists(Http::CookieDefinition n | t.inNode(n))
@@ -133,8 +145,14 @@ query predicate passingNegativeTests(string res, string expectation, InlineTest 
   res = "PASSED" and
   t.hasNegativeTest(expectation) and
   (
+    expectation = "!responseBody" and
+    not exists(Http::ResponseBody n | t.inNode(n))
+    or
     expectation = "!headerDefinition" and
-    not exists(Http::HeaderDefinition n | t.inNode(n))
+    not exists(DataFlow::Node n, Http::ExplicitHeaderDefinition h |
+      t.inNode(n) and
+      h.definesHeaderValue(_, n)
+    )
     or
     expectation = "!cookieDefinition" and
     not exists(Http::CookieDefinition n | t.inNode(n))
@@ -183,8 +201,14 @@ query predicate failingNegativeTests(string res, string expectation, InlineTest 
   res = "FAILED" and
   t.hasNegativeTest(expectation) and
   (
+    expectation = "!responseBody" and
+    exists(Http::ResponseBody n | t.inNode(n))
+    or
     expectation = "!headerDefinition" and
-    exists(Http::HeaderDefinition n | t.inNode(n))
+    not exists(DataFlow::Node n, Http::ExplicitHeaderDefinition h |
+      t.inNode(n) and
+      h.definesHeaderValue(_, n)
+    )
     or
     expectation = "!cookieDefinition" and
     exists(Http::CookieDefinition n | t.inNode(n))

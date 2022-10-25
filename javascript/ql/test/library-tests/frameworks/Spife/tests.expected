@@ -1,8 +1,88 @@
+WARNING: Unused method getCredentialsHeader (tests.ql:70,26-46)
+test0
+| lib/views/index.js:23:1:26:1 | functio ... tned)\\n} | content-type | application/json |
+| lib/views/index.js:28:1:39:1 | functio ... eBody\\n} | content-type | application/json |
+| lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | content-type | application/json |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-credentials | true |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-headers | Content-Type, Authorization, Content-Length, X-Requested-With |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-methods | GET, POST, PUT, DELETE, OPTIONS |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-origin | * |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | content-type | text/html |
+| lib/views/index.js:53:1:55:1 | functio ... ource\\n} | content-type | application/json |
+| lib/views/index.js:56:1:58:1 | functio ... ition\\n} | content-type | application/json |
+| lib/views/index.js:60:1:70:1 | functio ... ext.'\\n} | content-type | application/json |
+| lib/views/index.js:65:14:65:87 | reply.h ... /html') | content-type | text/html |
+| lib/views/index.js:67:14:67:92 | reply.h ... ain' }) | content-type | text/plain |
+| lib/views/index.js:72:1:80:1 | functio ... ext.'\\n} | content-type | application/json |
+| lib/views/index.js:77:14:77:92 | reply.h ... ain' }) | content-type | text/plain |
+| lib/views/index.js:82:1:84:1 | functio ...  !xss\\n} | content-type | application/json |
+| lib/views/index.js:86:1:91:1 | functio ... ition\\n} | content-type | application/json |
+| lib/views/index.js:93:1:98:1 | functio ...  !xss\\n} | content-type | application/json |
+| lib/views/index.js:100:1:109:1 | functio ... n\\n  }\\n} | content-type | application/json |
+| lib/views/index.js:107:12:107:86 | reply(m ... tml' }) | content-type | text/html |
+| lib/views/index.js:111:1:115:1 | functio ... \\n  })\\n} | content-type | application/json |
+test
+| lib/views/index.js:45:36:45:38 | "*" |
+test2
+| lib/views/index.js:43:16:43:29 | req.query.name |
+| lib/views/index.js:65:27:65:57 | '<p>' + ...  '</p>' |
+| lib/views/index.js:107:18:107:24 | message |
+test3
+| lib/views/index.js:43:16:43:29 | req.query.name |
+| lib/views/index.js:65:27:65:57 | '<p>' + ...  '</p>' |
+| lib/views/index.js:107:18:107:24 | message |
+test4
+| lib/views/index.js:23:1:26:1 | functio ... tned)\\n} | content-type | application/json |
+| lib/views/index.js:28:1:39:1 | functio ... eBody\\n} | content-type | application/json |
+| lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | content-type | application/json |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-credentials | true |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-headers | Content-Type, Authorization, Content-Length, X-Requested-With |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-methods | GET, POST, PUT, DELETE, OPTIONS |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-origin | * |
+| lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | content-type | text/html |
+| lib/views/index.js:53:1:55:1 | functio ... ource\\n} | content-type | application/json |
+| lib/views/index.js:56:1:58:1 | functio ... ition\\n} | content-type | application/json |
+| lib/views/index.js:60:1:70:1 | functio ... ext.'\\n} | content-type | application/json |
+| lib/views/index.js:65:14:65:87 | reply.h ... /html') | content-type | text/html |
+| lib/views/index.js:67:14:67:92 | reply.h ... ain' }) | content-type | text/plain |
+| lib/views/index.js:72:1:80:1 | functio ... ext.'\\n} | content-type | application/json |
+| lib/views/index.js:77:14:77:92 | reply.h ... ain' }) | content-type | text/plain |
+| lib/views/index.js:82:1:84:1 | functio ...  !xss\\n} | content-type | application/json |
+| lib/views/index.js:86:1:91:1 | functio ... ition\\n} | content-type | application/json |
+| lib/views/index.js:93:1:98:1 | functio ...  !xss\\n} | content-type | application/json |
+| lib/views/index.js:100:1:109:1 | functio ... n\\n  }\\n} | content-type | application/json |
+| lib/views/index.js:107:12:107:86 | reply(m ... tml' }) | content-type | text/html |
+| lib/views/index.js:111:1:115:1 | functio ... \\n  })\\n} | content-type | application/json |
+test5
+| lib/views/index.js:23:1:26:1 | functio ... tned)\\n} | lib/views/index.js:23:1:26:1 | functio ... tned)\\n} | content-type |
+| lib/views/index.js:28:1:39:1 | functio ... eBody\\n} | lib/views/index.js:28:1:39:1 | functio ... eBody\\n} | content-type |
+| lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | content-type |
+| lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-credentials |
+| lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-headers |
+| lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-methods |
+| lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | access-control-allow-origin |
+| lib/views/index.js:41:1:51:1 | functio ... \\n  })\\n} | lib/views/index.js:43:10:50:4 | reply(r ... n\\n\\n  }) | content-type |
+| lib/views/index.js:53:1:55:1 | functio ... ource\\n} | lib/views/index.js:53:1:55:1 | functio ... ource\\n} | content-type |
+| lib/views/index.js:56:1:58:1 | functio ... ition\\n} | lib/views/index.js:56:1:58:1 | functio ... ition\\n} | content-type |
+| lib/views/index.js:60:1:70:1 | functio ... ext.'\\n} | lib/views/index.js:60:1:70:1 | functio ... ext.'\\n} | content-type |
+| lib/views/index.js:60:1:70:1 | functio ... ext.'\\n} | lib/views/index.js:65:14:65:87 | reply.h ... /html') | content-type |
+| lib/views/index.js:60:1:70:1 | functio ... ext.'\\n} | lib/views/index.js:67:14:67:92 | reply.h ... ain' }) | content-type |
+| lib/views/index.js:72:1:80:1 | functio ... ext.'\\n} | lib/views/index.js:72:1:80:1 | functio ... ext.'\\n} | content-type |
+| lib/views/index.js:72:1:80:1 | functio ... ext.'\\n} | lib/views/index.js:77:14:77:92 | reply.h ... ain' }) | content-type |
+| lib/views/index.js:82:1:84:1 | functio ...  !xss\\n} | lib/views/index.js:82:1:84:1 | functio ...  !xss\\n} | content-type |
+| lib/views/index.js:86:1:91:1 | functio ... ition\\n} | lib/views/index.js:86:1:91:1 | functio ... ition\\n} | content-type |
+| lib/views/index.js:86:1:91:1 | functio ... ition\\n} | lib/views/index.js:90:10:90:55 | reply(m ... sage }) | npm-notice |
+| lib/views/index.js:93:1:98:1 | functio ...  !xss\\n} | lib/views/index.js:93:1:98:1 | functio ...  !xss\\n} | content-type |
+| lib/views/index.js:100:1:109:1 | functio ... n\\n  }\\n} | lib/views/index.js:100:1:109:1 | functio ... n\\n  }\\n} | content-type |
+| lib/views/index.js:100:1:109:1 | functio ... n\\n  }\\n} | lib/views/index.js:105:12:105:57 | reply(m ... sage }) | npm-notice |
+| lib/views/index.js:100:1:109:1 | functio ... n\\n  }\\n} | lib/views/index.js:107:12:107:86 | reply(m ... tml' }) | content-type |
+| lib/views/index.js:100:1:109:1 | functio ... n\\n  }\\n} | lib/views/index.js:107:12:107:86 | reply(m ... tml' }) | npm-notice |
+| lib/views/index.js:111:1:115:1 | functio ... \\n  })\\n} | lib/views/index.js:111:1:115:1 | functio ... \\n  })\\n} | content-type |
 passingPositiveTests
 | PASSED | candidateHandler | lib/views/index.js:82:32:82:56 | // test ... Handler |
 | PASSED | cleartextStorageSink | lib/views/index.js:57:115:57:193 | // test ... inition |
 | PASSED | cookieDefinition | lib/views/index.js:57:115:57:193 | // test ... inition |
-| PASSED | corsMiconfigurationSink | lib/views/index.js:45:41:45:72 | // test ... ionSink |
+| PASSED | corsMiconfigurationSink | lib/views/index.js:45:41:45:90 | // test ... inition |
 | PASSED | handler | lib/views/index.js:23:40:23:55 | // test: handler |
 | PASSED | handler | lib/views/index.js:28:35:28:50 | // test: handler |
 | PASSED | handler | lib/views/index.js:41:31:41:46 | // test: handler |
@@ -13,11 +93,19 @@ passingPositiveTests
 | PASSED | handler | lib/views/index.js:86:32:86:47 | // test: handler |
 | PASSED | handler | lib/views/index.js:93:32:93:47 | // test: handler |
 | PASSED | handler | lib/views/index.js:100:32:100:47 | // test: handler |
+| PASSED | headerDefinition | lib/views/index.js:44:34:44:58 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:45:41:45:90 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:46:102:46:126 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:47:72:47:96 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:48:48:48:71 | //test: ... inition |
 | PASSED | headerDefinition | lib/views/index.js:65:89:65:159 | // test ... inition |
-| PASSED | headerDefinition | lib/views/index.js:67:94:67:166 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | headerDefinition | lib/views/index.js:77:94:77:166 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:90:57:90:121 | // test ... inition |
+| PASSED | headerDefinition | lib/views/index.js:105:59:105:123 | // test ... inition |
 | PASSED | headerDefinition | lib/views/index.js:107:88:107:150 | // test ... inition |
-| PASSED | redirectSink | lib/views/index.js:54:54:54:106 | // test ... ureSink |
+| PASSED | redirectSink | lib/views/index.js:54:54:54:82 | // test ...  source |
+| PASSED | responseBody | lib/views/index.js:38:61:38:136 | // test ... nseBody |
 | PASSED | source | lib/views/index.js:24:56:24:70 | // test: source |
 | PASSED | source | lib/views/index.js:29:28:29:42 | // test: source |
 | PASSED | source | lib/views/index.js:30:28:30:42 | // test: source |
@@ -27,14 +115,14 @@ passingPositiveTests
 | PASSED | source | lib/views/index.js:34:17:34:31 | // test: source |
 | PASSED | source | lib/views/index.js:35:32:35:46 | // test: source |
 | PASSED | source | lib/views/index.js:36:32:36:46 | // test: source |
-| PASSED | source | lib/views/index.js:38:61:38:122 | // test ... ureSink |
+| PASSED | source | lib/views/index.js:38:61:38:136 | // test ... nseBody |
 | PASSED | source | lib/views/index.js:42:24:42:38 | // test: source |
 | PASSED | source | lib/views/index.js:43:39:43:91 | // test ... nk, xss |
-| PASSED | source | lib/views/index.js:54:54:54:106 | // test ... ureSink |
+| PASSED | source | lib/views/index.js:54:54:54:82 | // test ...  source |
 | PASSED | source | lib/views/index.js:57:115:57:193 | // test ... inition |
 | PASSED | source | lib/views/index.js:63:41:63:79 | // test ... ureSink |
 | PASSED | source | lib/views/index.js:65:89:65:159 | // test ... inition |
-| PASSED | source | lib/views/index.js:67:94:67:166 | // test ... inition |
+| PASSED | source | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | source | lib/views/index.js:75:41:75:79 | // test ... ureSink |
 | PASSED | source | lib/views/index.js:77:94:77:166 | // test ... inition |
 | PASSED | source | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
@@ -42,22 +130,21 @@ passingPositiveTests
 | PASSED | source | lib/views/index.js:94:25:94:39 | // test: source |
 | PASSED | source | lib/views/index.js:101:25:101:39 | // test: source |
 | PASSED | source | lib/views/index.js:112:34:112:72 | // test ... ureSink |
-| PASSED | stackTraceExposureSink | lib/views/index.js:38:61:38:122 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | lib/views/index.js:38:61:38:136 | // test ... nseBody |
 | PASSED | stackTraceExposureSink | lib/views/index.js:43:39:43:91 | // test ... nk, xss |
-| PASSED | stackTraceExposureSink | lib/views/index.js:54:54:54:106 | // test ... ureSink |
 | PASSED | stackTraceExposureSink | lib/views/index.js:57:115:57:193 | // test ... inition |
 | PASSED | stackTraceExposureSink | lib/views/index.js:63:41:63:79 | // test ... ureSink |
 | PASSED | stackTraceExposureSink | lib/views/index.js:65:89:65:159 | // test ... inition |
-| PASSED | stackTraceExposureSink | lib/views/index.js:67:94:67:166 | // test ... inition |
+| PASSED | stackTraceExposureSink | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | stackTraceExposureSink | lib/views/index.js:75:41:75:79 | // test ... ureSink |
 | PASSED | stackTraceExposureSink | lib/views/index.js:77:94:77:166 | // test ... inition |
 | PASSED | stackTraceExposureSink | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
-| PASSED | stackTraceExposureSink | lib/views/index.js:90:57:90:103 | // test ... k, !xss |
+| PASSED | stackTraceExposureSink | lib/views/index.js:90:57:90:121 | // test ... inition |
 | PASSED | stackTraceExposureSink | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
-| PASSED | stackTraceExposureSink | lib/views/index.js:105:59:105:105 | // test ... k, !xss |
+| PASSED | stackTraceExposureSink | lib/views/index.js:105:59:105:123 | // test ... inition |
 | PASSED | stackTraceExposureSink | lib/views/index.js:107:88:107:150 | // test ... inition |
 | PASSED | stackTraceExposureSink | lib/views/index.js:112:34:112:72 | // test ... ureSink |
-| PASSED | templateInstantiation | lib/views/index.js:38:61:38:122 | // test ... ureSink |
+| PASSED | templateInstantiation | lib/views/index.js:38:61:38:136 | // test ... nseBody |
 | PASSED | xss | lib/views/index.js:43:39:43:91 | // test ... nk, xss |
 | PASSED | xss | lib/views/index.js:65:89:65:159 | // test ... inition |
 | PASSED | xss | lib/views/index.js:107:88:107:150 | // test ... inition |
@@ -66,16 +153,16 @@ passingPositiveTests
 | PASSED | xssSink | lib/views/index.js:107:88:107:150 | // test ... inition |
 failingPositiveTests
 passingNegativeTests
-| PASSED | !xss | lib/views/index.js:67:94:67:166 | // test ... inition |
+| PASSED | !xss | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | !xss | lib/views/index.js:77:94:77:166 | // test ... inition |
 | PASSED | !xss | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
-| PASSED | !xss | lib/views/index.js:90:57:90:103 | // test ... k, !xss |
+| PASSED | !xss | lib/views/index.js:90:57:90:121 | // test ... inition |
 | PASSED | !xss | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
-| PASSED | !xss | lib/views/index.js:105:59:105:105 | // test ... k, !xss |
-| PASSED | !xssSink | lib/views/index.js:67:94:67:166 | // test ... inition |
+| PASSED | !xss | lib/views/index.js:105:59:105:123 | // test ... inition |
+| PASSED | !xssSink | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | !xssSink | lib/views/index.js:77:94:77:166 | // test ... inition |
 | PASSED | !xssSink | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
-| PASSED | !xssSink | lib/views/index.js:90:57:90:103 | // test ... k, !xss |
+| PASSED | !xssSink | lib/views/index.js:90:57:90:121 | // test ... inition |
 | PASSED | !xssSink | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
-| PASSED | !xssSink | lib/views/index.js:105:59:105:105 | // test ... k, !xss |
+| PASSED | !xssSink | lib/views/index.js:105:59:105:123 | // test ... inition |
 failingNegativeTests
