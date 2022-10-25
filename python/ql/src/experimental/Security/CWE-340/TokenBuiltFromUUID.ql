@@ -20,10 +20,7 @@ import DataFlow::PathGraph
 class PredictableResultSource extends DataFlow::Node {
   PredictableResultSource() {
     exists(API::Node uuidCallRet |
-      uuidCallRet =
-        API::moduleImport("uuid")
-            .getMember(["uuid1", "uuid3", "uuid5"])
-            .getReturn()
+      uuidCallRet = API::moduleImport("uuid").getMember(["uuid1", "uuid3", "uuid5"]).getReturn()
     |
       this = uuidCallRet.asSource()
       or
@@ -36,7 +33,7 @@ class TokenAssignmentValueSink extends DataFlow::Node {
   TokenAssignmentValueSink() {
     exists(string name | name.toLowerCase().matches(["%token", "%code"]) |
       exists(DefinitionNode n | n.getValue() = this.asCfgNode() | name = n.(NameNode).getId())
-        or
+      or
       exists(DataFlow::AttrWrite aw | aw.getValue() = this | name = aw.getAttributeName())
     )
   }
