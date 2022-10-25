@@ -14,8 +14,23 @@ def func(cond=True):
     x.bar() # $ pt,tt=X.bar
 
     # the conditional in the argument makes us stop tracking the class instance :|
-    x.bar(1 if cond else 0) # $ pt,tt=X.bar
-    x.foo() # $ pt=X.foo MISSING: tt=X.foo
+    x.foo(1 if cond else 0) # $ pt,tt=X.foo
+    x.bar() # $ pt=X.bar MISSING: tt=X.bar
 
 
 func() # $ pt,tt=func
+
+def func2(cond=True):
+    y = X()
+
+    # ok
+    y.foo() # $ pt,tt=X.foo
+    y.bar() # $ pt,tt=X.bar
+
+    if cond:
+        arg = 1
+    else:
+        arg = 0
+
+    y.foo(arg) # $ pt,tt=X.foo
+    y.bar() # $ pt,tt=X.bar

@@ -5,7 +5,7 @@ pointsTo_found_typeTracker_notFound
 | code/class_attr_assign.py:11:9:11:25 | ControlFlowNode for Attribute() | my_func |
 | code/class_attr_assign.py:26:9:26:25 | ControlFlowNode for Attribute() | DummyObject.method |
 | code/class_super.py:50:1:50:6 | ControlFlowNode for Attribute() | outside_def |
-| code/conditional_in_argument.py:18:5:18:11 | ControlFlowNode for Attribute() | X.foo |
+| code/conditional_in_argument.py:18:5:18:11 | ControlFlowNode for Attribute() | X.bar |
 | code/func_defined_outside_class.py:21:1:21:11 | ControlFlowNode for Attribute() | A.foo |
 | code/func_defined_outside_class.py:22:1:22:15 | ControlFlowNode for Attribute() | outside |
 | code/func_defined_outside_class.py:24:1:24:14 | ControlFlowNode for Attribute() | outside_sm |
