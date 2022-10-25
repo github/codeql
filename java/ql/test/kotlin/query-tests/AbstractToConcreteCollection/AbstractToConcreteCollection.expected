@@ -1,1 +1,0 @@
-| Test.kt:3:9:3:9 | <implicit cast> | $@ is cast to the concrete type $@, losing abstraction. | file:///modules/java.base/java/util/List.class:0:0:0:0 | List | List<Integer> | file:///modules/java.base/java/util/ArrayList.class:0:0:0:0 | ArrayList | ArrayList<Integer> |
