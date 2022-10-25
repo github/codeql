@@ -436,7 +436,6 @@ module Restify {
    */
   private class ContentTypeRouteHandlerHeader extends Http::ImplicitHeaderDefinition,
     DataFlow::FunctionNode instanceof RouteHandler {
-
     override predicate defines(string headerName, string headerValue) {
       headerName = "content-type" and headerValue = "application/json"
     }
@@ -454,7 +453,6 @@ module Restify {
   }
 
   private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
-
     override string getRelativePath() {
       not this.getMethodName() = ["use", "pre", "param", "on"] and // do not treat parameter name as a path
       result = this.getArgument(0).getStringValue()
