@@ -36,245 +36,245 @@ public class Constructors {
 	public void test() {
 
 		{
-			// "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			AbstractMap.SimpleEntry out = null;
 			Map.Entry in = new AbstractMap.SimpleEntry(source(), null);
 			out = new AbstractMap.SimpleEntry(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			AbstractMap.SimpleEntry out = null;
 			Map.Entry in = new AbstractMap.SimpleEntry(null, source());;
 			out = new AbstractMap.SimpleEntry(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
+			// "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Object,Object);;Argument[0];MapKey of Argument[-1];value;manual"
 			AbstractMap.SimpleEntry out = null;
 			Object in = source();
 			out = new AbstractMap.SimpleEntry(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
+			// "java.util;AbstractMap$SimpleEntry;false;SimpleEntry;(Object,Object);;Argument[1];MapValue of Argument[-1];value;manual"
 			AbstractMap.SimpleEntry out = null;
 			Object in = source();
 			out = new AbstractMap.SimpleEntry(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;AbstractMap$SimpleImmutableEntry;false;SimpleImmutableEntry;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;AbstractMap$SimpleImmutableEntry;false;SimpleImmutableEntry;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			AbstractMap.SimpleImmutableEntry out = null;
 			Map.Entry in = new AbstractMap.SimpleEntry(source(), null);
 			out = new AbstractMap.SimpleImmutableEntry(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;AbstractMap$SimpleImmutableEntry;false;SimpleImmutableEntry;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;AbstractMap$SimpleImmutableEntry;false;SimpleImmutableEntry;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			AbstractMap.SimpleImmutableEntry out = null;
 			Map.Entry in = new AbstractMap.SimpleEntry(null, source());
 			out = new AbstractMap.SimpleImmutableEntry(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;ArrayDeque;false;ArrayDeque;(Collection);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;ArrayDeque;false;ArrayDeque;(Collection);;Element of Argument[0];Element of Argument[-1];value;manual"
 			ArrayDeque out = null;
 			Collection in = List.of(source());
 			out = new ArrayDeque(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;ArrayList;false;ArrayList;(Collection);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;ArrayList;false;ArrayList;(Collection);;Element of Argument[0];Element of Argument[-1];value;manual"
 			ArrayList out = null;
 			Collection in = List.of(source());
 			out = new ArrayList(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;EnumMap;false;EnumMap;(EnumMap);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;EnumMap;false;EnumMap;(EnumMap);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			EnumMap out = null;
 			EnumMap in = new EnumMap(Map.of(source(), null));
 			out = new EnumMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;EnumMap;false;EnumMap;(EnumMap);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;EnumMap;false;EnumMap;(EnumMap);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			EnumMap out = null;
 			EnumMap in = new EnumMap(Map.of(null, source()));
 			out = new EnumMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;EnumMap;false;EnumMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;EnumMap;false;EnumMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			EnumMap out = null;
 			Map in = Map.of(source(), null);
 			out = new EnumMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;EnumMap;false;EnumMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;EnumMap;false;EnumMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			EnumMap out = null;
 			Map in = Map.of(null, source());
 			out = new EnumMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;HashMap;false;HashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;HashMap;false;HashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			HashMap out = null;
 			Map in = Map.of(source(), null);
 			out = new HashMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;HashMap;false;HashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;HashMap;false;HashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			HashMap out = null;
 			Map in = Map.of(null, source());
 			out = new HashMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;HashSet;false;HashSet;(Collection);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;HashSet;false;HashSet;(Collection);;Element of Argument[0];Element of Argument[-1];value;manual"
 			HashSet out = null;
 			Collection in = List.of(source());
 			out = new HashSet(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;Hashtable;false;Hashtable;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;Hashtable;false;Hashtable;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			Hashtable out = null;
 			Map in = Map.of(source(), null);
 			out = new Hashtable(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;Hashtable;false;Hashtable;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;Hashtable;false;Hashtable;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			Hashtable out = null;
 			Map in = Map.of(null, source());
 			out = new Hashtable(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;IdentityHashMap;false;IdentityHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;IdentityHashMap;false;IdentityHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			IdentityHashMap out = null;
 			Map in = Map.of(source(), null);
 			out = new IdentityHashMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;IdentityHashMap;false;IdentityHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;IdentityHashMap;false;IdentityHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			IdentityHashMap out = null;
 			Map in = Map.of(null, source());
 			out = new IdentityHashMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;LinkedHashMap;false;LinkedHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;LinkedHashMap;false;LinkedHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			LinkedHashMap out = null;
 			Map in = Map.of(source(), null);
 			out = new LinkedHashMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;LinkedHashMap;false;LinkedHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;LinkedHashMap;false;LinkedHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			LinkedHashMap out = null;
 			Map in = Map.of(null, source());
 			out = new LinkedHashMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;LinkedHashSet;false;LinkedHashSet;(Collection);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;LinkedHashSet;false;LinkedHashSet;(Collection);;Element of Argument[0];Element of Argument[-1];value;manual"
 			LinkedHashSet out = null;
 			Collection in = List.of(source());
 			out = new LinkedHashSet(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;LinkedList;false;LinkedList;(Collection);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;LinkedList;false;LinkedList;(Collection);;Element of Argument[0];Element of Argument[-1];value;manual"
 			LinkedList out = null;
 			Collection in = List.of(source());
 			out = new LinkedList(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;PriorityQueue;false;PriorityQueue;(Collection);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;PriorityQueue;false;PriorityQueue;(Collection);;Element of Argument[0];Element of Argument[-1];value;manual"
 			PriorityQueue out = null;
 			Collection in = List.of(source());
 			out = new PriorityQueue(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;PriorityQueue;false;PriorityQueue;(PriorityQueue);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;PriorityQueue;false;PriorityQueue;(PriorityQueue);;Element of Argument[0];Element of Argument[-1];value;manual"
 			PriorityQueue out = null;
 			PriorityQueue in = new PriorityQueue(List.of(source()));
 			out = new PriorityQueue(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;PriorityQueue;false;PriorityQueue;(SortedSet);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;PriorityQueue;false;PriorityQueue;(SortedSet);;Element of Argument[0];Element of Argument[-1];value;manual"
 			PriorityQueue out = null;
 			SortedSet in = new TreeSet(List.of(source()));
 			out = new PriorityQueue(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;TreeMap;false;TreeMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;TreeMap;false;TreeMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			TreeMap out = null;
 			Map in = Map.of(source(), null);
 			out = new TreeMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;TreeMap;false;TreeMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;TreeMap;false;TreeMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			TreeMap out = null;
 			Map in = Map.of(null, source());
 			out = new TreeMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;TreeMap;false;TreeMap;(SortedMap);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;TreeMap;false;TreeMap;(SortedMap);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			TreeMap out = null;
 			SortedMap in = new TreeMap(Map.of(source(), null));
 			out = new TreeMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;TreeMap;false;TreeMap;(SortedMap);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;TreeMap;false;TreeMap;(SortedMap);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			TreeMap out = null;
 			SortedMap in = new TreeMap(Map.of(null, source()));
 			out = new TreeMap(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;TreeSet;false;TreeSet;(Collection);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;TreeSet;false;TreeSet;(Collection);;Element of Argument[0];Element of Argument[-1];value;manual"
 			TreeSet out = null;
 			Collection in = List.of(source());
 			out = new TreeSet(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;TreeSet;false;TreeSet;(SortedSet);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;TreeSet;false;TreeSet;(SortedSet);;Element of Argument[0];Element of Argument[-1];value;manual"
 			TreeSet out = null;
 			SortedSet in = new TreeSet(List.of(source()));
 			out = new TreeSet(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;Vector;false;Vector;(Collection);;Element of Argument[0];Element of Argument[-1];value"
+			// "java.util;Vector;false;Vector;(Collection);;Element of Argument[0];Element of Argument[-1];value;manual"
 			Vector out = null;
 			Collection in = List.of(source());
 			out = new Vector(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;WeakHashMap;false;WeakHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			// "java.util;WeakHashMap;false;WeakHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
 			WeakHashMap out = null;
 			Map in = Map.of(source(), null);
 			out = new WeakHashMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "java.util;WeakHashMap;false;WeakHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			// "java.util;WeakHashMap;false;WeakHashMap;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
 			WeakHashMap out = null;
 			Map in = Map.of(null, source());
 			out = new WeakHashMap(in);

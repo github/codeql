@@ -14,8 +14,8 @@ abstract class EJB extends Class {
 /**
  * A session EJB.
  */
-class SessionEJB extends EJB {
-  SessionEJB() {
+class SessionEjb extends EJB {
+  SessionEjb() {
     // Subtype of `javax.ejb.SessionBean`.
     this instanceof SessionBean or
     // EJB annotations.
@@ -50,8 +50,8 @@ class SessionEJB extends EJB {
    * using either an annotation or an XML deployment descriptor.
    */
   private BusinessInterface getAnExplicitBusinessInterface() {
-    result.(AnnotatedBusinessInterface).getAnEJB() = this or
-    result.(XmlSpecifiedBusinessInterface).getAnEJB() = this
+    result.(AnnotatedBusinessInterface).getAnEjb() = this or
+    result.(XmlSpecifiedBusinessInterface).getAnEjb() = this
   }
 
   /**
@@ -69,40 +69,40 @@ class SessionEJB extends EJB {
   LegacyEjbRemoteInterface getARemoteInterface() {
     result = this.getASupertype() and result instanceof ExtendedRemoteInterface
     or
-    exists(AnnotatedRemoteHomeInterface i | i.getAnEJB() = this |
+    exists(AnnotatedRemoteHomeInterface i | i.getAnEjb() = this |
       result = i.getAnAssociatedRemoteInterface()
     )
     or
-    result.(XmlSpecifiedRemoteInterface).getAnEJB() = this
+    result.(XmlSpecifiedRemoteInterface).getAnEjb() = this
   }
 
   /** Any remote home interfaces of this EJB. */
   LegacyEjbRemoteHomeInterface getARemoteHomeInterface() {
     result = this.getASupertype() and result instanceof ExtendedRemoteHomeInterface
     or
-    result.(AnnotatedRemoteHomeInterface).getAnEJB() = this
+    result.(AnnotatedRemoteHomeInterface).getAnEjb() = this
     or
-    result.(XmlSpecifiedRemoteHomeInterface).getAnEJB() = this
+    result.(XmlSpecifiedRemoteHomeInterface).getAnEjb() = this
   }
 
   /** Any local interfaces of this EJB. */
   LegacyEjbLocalInterface getALocalInterface() {
     result = this.getASupertype() and result instanceof ExtendedLocalInterface
     or
-    exists(AnnotatedLocalHomeInterface i | i.getAnEJB() = this |
+    exists(AnnotatedLocalHomeInterface i | i.getAnEjb() = this |
       result = i.getAnAssociatedLocalInterface()
     )
     or
-    result.(XmlSpecifiedLocalInterface).getAnEJB() = this
+    result.(XmlSpecifiedLocalInterface).getAnEjb() = this
   }
 
   /** Any local home interfaces of this EJB. */
   LegacyEjbLocalHomeInterface getALocalHomeInterface() {
     result = this.getASupertype() and result instanceof ExtendedLocalHomeInterface
     or
-    result.(AnnotatedLocalHomeInterface).getAnEJB() = this
+    result.(AnnotatedLocalHomeInterface).getAnEjb() = this
     or
-    result.(XmlSpecifiedLocalHomeInterface).getAnEJB() = this
+    result.(XmlSpecifiedLocalHomeInterface).getAnEjb() = this
   }
 
   /** Any `ejbCreate*` methods required for legacy remote or local home interfaces. */
@@ -112,11 +112,14 @@ class SessionEJB extends EJB {
   EjbAnnotatedInitMethod getAnAnnotatedInitMethod() { this.inherits(result) }
 }
 
+/** DEPRECATED: Alias for SessionEjb */
+deprecated class SessionEJB = SessionEjb;
+
 /**
  * A stateful session EJB.
  */
-class StatefulSessionEJB extends SessionEJB {
-  StatefulSessionEJB() {
+class StatefulSessionEjb extends SessionEjb {
+  StatefulSessionEjb() {
     // EJB annotations.
     this.getAnAnnotation().getType().hasName("Stateful")
     or
@@ -129,11 +132,14 @@ class StatefulSessionEJB extends SessionEJB {
   }
 }
 
+/** DEPRECATED: Alias for StatefulSessionEjb */
+deprecated class StatefulSessionEJB = StatefulSessionEjb;
+
 /**
  * A stateless session EJB.
  */
-class StatelessSessionEJB extends SessionEJB {
-  StatelessSessionEJB() {
+class StatelessSessionEjb extends SessionEjb {
+  StatelessSessionEjb() {
     // EJB annotations.
     this.getAnAnnotation().getType().hasName("Stateless")
     or
@@ -145,6 +151,9 @@ class StatelessSessionEJB extends SessionEJB {
     )
   }
 }
+
+/** DEPRECATED: Alias for StatelessSessionEjb */
+deprecated class StatelessSessionEJB = StatelessSessionEjb;
 
 /**
  * A message-driven EJB.
@@ -168,8 +177,8 @@ class MessageDrivenBean extends EJB {
 /**
  * An entity EJB (deprecated as of EJB 3.0).
  */
-class EntityEJB extends EJB {
-  EntityEJB() {
+class EntityEjb extends EJB {
+  EntityEjb() {
     // Subtype of `javax.ejb.EntityBean`.
     this instanceof EntityBean
     or
@@ -180,6 +189,9 @@ class EntityEJB extends EJB {
     )
   }
 }
+
+/** DEPRECATED: Alias for EntityEjb */
+deprecated class EntityEJB = EntityEjb;
 
 /*
  * Business interfaces (applicable to session beans).
@@ -231,7 +243,10 @@ class LocalAnnotation extends BusinessInterfaceAnnotation {
  */
 abstract class BusinessInterface extends Interface {
   /** Gets an EJB to which this business interface belongs. */
-  abstract SessionEJB getAnEJB();
+  abstract SessionEjb getAnEjb();
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   /** Holds if this business interface is declared local. */
   abstract predicate isDeclaredLocal();
@@ -251,13 +266,16 @@ class XmlSpecifiedBusinessInterface extends BusinessInterface {
     )
   }
 
-  override SessionEJB getAnEJB() {
+  override SessionEjb getAnEjb() {
     exists(EjbJarXmlFile f, EjbJarSessionElement se |
       se = f.getASessionElement() and
       this.getQualifiedName() = se.getABusinessElement().getACharactersSet().getCharacters() and
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated override SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   override predicate isDeclaredLocal() {
     exists(EjbJarXmlFile f |
@@ -291,9 +309,12 @@ class AnnotatedBusinessInterface extends BusinessInterface {
    * Any class that has a `@Local` or `@Remote` annotation that names this interface
    * is an EJB to which this business interface belongs.
    */
-  override SessionEJB getAnEJB() {
+  override SessionEjb getAnEjb() {
     result.getAnAnnotation().(BusinessInterfaceAnnotation).getANamedType() = this
   }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated override SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   override predicate isDeclaredLocal() { this instanceof LocalAnnotatedBusinessInterface }
 
@@ -338,7 +359,7 @@ class InitAnnotation extends Annotation {
 class EjbAnnotatedInitMethod extends Method {
   EjbAnnotatedInitMethod() {
     this.getAnAnnotation() instanceof InitAnnotation and
-    exists(SessionEJB ejb | ejb.inherits(this))
+    exists(SessionEjb ejb | ejb.inherits(this))
   }
 }
 
@@ -349,7 +370,7 @@ class EjbAnnotatedInitMethod extends Method {
 class EjbCreateMethod extends Method {
   EjbCreateMethod() {
     this.getName().matches("ejbCreate%") and
-    exists(SessionEJB ejb | ejb.inherits(this))
+    exists(SessionEjb ejb | ejb.inherits(this))
   }
 
   /** Gets the suffix of the method name without the `ejbCreate` prefix. */
@@ -405,8 +426,8 @@ abstract class LegacyEjbHomeInterface extends LegacyEjbInterface {
 /** A legacy remote interface. */
 abstract class LegacyEjbRemoteInterface extends LegacyEjbInterface { }
 
-/** A legacy remote interface that extends `javax.ejb.EJBObject`. */
-class ExtendedRemoteInterface extends LegacyEjbRemoteInterface, RemoteEJBInterface { }
+/** A legacy remote interface that extends `javax.ejb.EjbObject`. */
+class ExtendedRemoteInterface extends LegacyEjbRemoteInterface, RemoteEjbInterface { }
 
 /** A legacy remote interface specified within an XML deployment descriptor. */
 class XmlSpecifiedRemoteInterface extends LegacyEjbRemoteInterface {
@@ -421,20 +442,23 @@ class XmlSpecifiedRemoteInterface extends LegacyEjbRemoteInterface {
    * Gets a session EJB specified in the XML deployment descriptor
    * for this legacy EJB remote interface.
    */
-  SessionEJB getAnEJB() {
+  SessionEjb getAnEjb() {
     exists(EjbJarXmlFile f, EjbJarSessionElement se |
       se = f.getASessionElement() and
       this.getQualifiedName() = se.getARemoteElement().getACharactersSet().getCharacters() and
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 }
 
 /** A legacy remote home interface. */
 abstract class LegacyEjbRemoteHomeInterface extends LegacyEjbHomeInterface { }
 
-/** A legacy remote home interface that extends `javax.ejb.EJBHome`. */
-class ExtendedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface, RemoteEJBHomeInterface { }
+/** A legacy remote home interface that extends `javax.ejb.EjbHome`. */
+class ExtendedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface, RemoteEjbHomeInterface { }
 
 /** A legacy remote home interface specified by means of a `@RemoteHome` annotation. */
 class AnnotatedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
@@ -444,7 +468,10 @@ class AnnotatedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
   }
 
   /** Gets an EJB to which this interface belongs. */
-  SessionEJB getAnEJB() { result.getAnAnnotation().(RemoteHomeAnnotation).getANamedType() = this }
+  SessionEjb getAnEjb() { result.getAnAnnotation().(RemoteHomeAnnotation).getANamedType() = this }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   /** Gets a remote interface associated with this legacy remote home interface. */
   Interface getAnAssociatedRemoteInterface() { result = this.getACreateMethod().getReturnType() }
@@ -460,20 +487,23 @@ class XmlSpecifiedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
   }
 
   /** Gets an EJB to which this interface belongs. */
-  SessionEJB getAnEJB() {
+  SessionEjb getAnEjb() {
     exists(EjbJarXmlFile f, EjbJarSessionElement se |
       se = f.getASessionElement() and
       this.getQualifiedName() = se.getARemoteHomeElement().getACharactersSet().getCharacters() and
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 }
 
 /** A legacy local interface. */
 abstract class LegacyEjbLocalInterface extends LegacyEjbInterface { }
 
 /** A legacy local interface that extends `javax.ejb.EJBLocalObject`. */
-class ExtendedLocalInterface extends LegacyEjbLocalInterface, LocalEJBInterface { }
+class ExtendedLocalInterface extends LegacyEjbLocalInterface, LocalEjbInterface { }
 
 /** A legacy local interface specified within an XML deployment descriptor. */
 class XmlSpecifiedLocalInterface extends LegacyEjbLocalInterface {
@@ -485,20 +515,23 @@ class XmlSpecifiedLocalInterface extends LegacyEjbLocalInterface {
   }
 
   /** Gets an EJB to which this interface belongs. */
-  SessionEJB getAnEJB() {
+  SessionEjb getAnEjb() {
     exists(EjbJarXmlFile f, EjbJarSessionElement se |
       se = f.getASessionElement() and
       this.getQualifiedName() = se.getALocalElement().getACharactersSet().getCharacters() and
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 }
 
 /** A legacy local home interface. */
 abstract class LegacyEjbLocalHomeInterface extends LegacyEjbHomeInterface { }
 
 /** A legacy local home interface that extends `javax.ejb.EJBLocalHome`. */
-class ExtendedLocalHomeInterface extends LegacyEjbLocalHomeInterface, LocalEJBHomeInterface { }
+class ExtendedLocalHomeInterface extends LegacyEjbLocalHomeInterface, LocalEjbHomeInterface { }
 
 /** A legacy local home interface specified by means of a `@LocalHome` annotation. */
 class AnnotatedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
@@ -508,7 +541,10 @@ class AnnotatedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
   }
 
   /** Gets an EJB to which this interface belongs. */
-  SessionEJB getAnEJB() { result.getAnAnnotation().(LocalHomeAnnotation).getANamedType() = this }
+  SessionEjb getAnEjb() { result.getAnAnnotation().(LocalHomeAnnotation).getANamedType() = this }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   /** Gets a local interface associated with this legacy local home interface. */
   Interface getAnAssociatedLocalInterface() { result = this.getACreateMethod().getReturnType() }
@@ -524,13 +560,16 @@ class XmlSpecifiedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
   }
 
   /** Gets an EJB to which this interface belongs. */
-  SessionEJB getAnEJB() {
+  SessionEjb getAnEjb() {
     exists(EjbJarXmlFile f, EjbJarSessionElement se |
       se = f.getASessionElement() and
       this.getQualifiedName() = se.getALocalHomeElement().getACharactersSet().getCharacters() and
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 }
 
 /**
@@ -541,18 +580,21 @@ class RemoteInterface extends Interface {
   RemoteInterface() {
     this instanceof RemoteAnnotatedBusinessInterface or
     this.(XmlSpecifiedBusinessInterface).isDeclaredRemote() or
-    exists(SessionEJB ejb | this = ejb.getARemoteInterface())
+    exists(SessionEjb ejb | this = ejb.getARemoteInterface())
   }
 
   /**
    * Any EJBs associated with this `RemoteInterface`
    * by means of annotations or `ejb-jar.xml` configuration files.
    */
-  SessionEJB getAnEJB() {
+  SessionEjb getAnEjb() {
     result.getAnAnnotation().(RemoteAnnotation).getANamedType() = this or
-    result = this.(XmlSpecifiedRemoteInterface).getAnEJB() or
+    result = this.(XmlSpecifiedRemoteInterface).getAnEjb() or
     result.getARemoteInterface() = this
   }
+
+  /** DEPRECATED: Alias for getAnEjb */
+  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   /**
    * A "remote method" is a method that is available on the remote
@@ -585,8 +627,8 @@ class RemoteInterface extends Interface {
    * but the EJB is not a subtype of this remote interface.
    */
   Method getARemoteMethodImplementationUnchecked() {
-    exists(SessionEJB ejb, Method rm |
-      ejb = this.getAnEJB() and
+    exists(SessionEjb ejb, Method rm |
+      ejb = this.getAnEjb() and
       not ejb.getAnAncestor() = this and
       rm = this.getARemoteMethod() and
       result = getAnInheritedMatchingMethodIgnoreThrows(ejb, rm.getSignature()) and
@@ -648,13 +690,13 @@ private predicate throwsExplicitUncheckedException(Method m, Exception ex) {
 }
 
 /** Gets a method (inherited by `ejb`) matching the signature `sig`. (Ignores `throws` clauses.) */
-Method getAnInheritedMatchingMethodIgnoreThrows(SessionEJB ejb, string sig) {
+Method getAnInheritedMatchingMethodIgnoreThrows(SessionEjb ejb, string sig) {
   ejb.inherits(result) and
   sig = result.getSignature()
 }
 
 /** Holds if `ejb` inherits a method matching the given signature. (Ignores `throws` clauses.) */
-predicate inheritsMatchingMethodIgnoreThrows(SessionEJB ejb, string signature) {
+predicate inheritsMatchingMethodIgnoreThrows(SessionEjb ejb, string signature) {
   exists(getAnInheritedMatchingMethodIgnoreThrows(ejb, signature))
 }
 
@@ -662,7 +704,7 @@ predicate inheritsMatchingMethodIgnoreThrows(SessionEJB ejb, string signature) {
  * If `ejb` inherits a method matching the signature of `m` except for the `throws` clause,
  * then return any type in the `throws` clause that does not match.
  */
-Type inheritsMatchingMethodExceptThrows(SessionEJB ejb, Method m) {
+Type inheritsMatchingMethodExceptThrows(SessionEjb ejb, Method m) {
   exists(Method n, string sig |
     ejb.inherits(n) and
     sig = n.getSignature() and
@@ -679,7 +721,7 @@ Type inheritsMatchingMethodExceptThrows(SessionEJB ejb, Method m) {
  * (Ignores `throws` clauses.)
  */
 predicate inheritsMatchingCreateMethodIgnoreThrows(
-  StatefulSessionEJB ejb, EjbInterfaceCreateMethod icm
+  StatefulSessionEjb ejb, EjbInterfaceCreateMethod icm
 ) {
   exists(EjbCreateMethod cm | cm = ejb.getAnEjbCreateMethod() |
     cm.getMethodSuffix() = icm.getMethodSuffix() and
@@ -705,7 +747,7 @@ predicate inheritsMatchingCreateMethodIgnoreThrows(
  * If `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `m` except for the `throws` clause,
  * then return any type in the `throws` clause that does not match.
  */
-Type inheritsMatchingCreateMethodExceptThrows(StatefulSessionEJB ejb, EjbInterfaceCreateMethod icm) {
+Type inheritsMatchingCreateMethodExceptThrows(StatefulSessionEjb ejb, EjbInterfaceCreateMethod icm) {
   exists(EjbCreateMethod cm | cm = ejb.getAnEjbCreateMethod() |
     cm.getMethodSuffix() = icm.getMethodSuffix() and
     cm.getNumberOfParameters() = icm.getNumberOfParameters() and
@@ -814,9 +856,12 @@ class DependsOnAnnotation extends Annotation {
 /**
  * A `@javax.ejb.EJB` annotation.
  */
-class EJBAnnotation extends Annotation {
-  EJBAnnotation() { this.getType().hasQualifiedName("javax.ejb", "EJB") }
+class EjbAnnotation extends Annotation {
+  EjbAnnotation() { this.getType().hasQualifiedName("javax.ejb", "EJB") }
 }
+
+/** DEPRECATED: Alias for EjbAnnotation */
+deprecated class EJBAnnotation = EjbAnnotation;
 
 /**
  * A `@javax.ejb.EJBs` annotation.

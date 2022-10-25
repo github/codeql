@@ -498,7 +498,7 @@ private module ReturnPortal {
     invk = callee.getAnExitNode(isRemote).getAnInvocation()
   }
 
-  /** Holds if `ret` is a return node of a function flowing through `callee`. */
+  /** Holds if `ret` is a return node of a function flowing through `base`. */
   predicate returns(Portal base, DataFlow::Node ret, boolean escapes) {
     ret = base.getAnEntryNode(escapes).getALocalSource().(DataFlow::FunctionNode).getAReturn()
   }

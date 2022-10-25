@@ -413,8 +413,12 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   /** Gets a direct or indirect supertype of this type, including itself. */
   RefType getAnAncestor() { hasDescendant(result, this) }
 
-  /** Gets a direct or indirect supertype of this type, not including itself. */
-  RefType getAStrictAncestor() { result = this.getAnAncestor() and result != this }
+  /**
+   * Gets a direct or indirect supertype of this type.
+   * This does not including itself, unless this type is part of a cycle
+   * in the type hierarchy.
+   */
+  RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }
 
   /**
    * Gets the source declaration of a direct supertype of this type, excluding itself.
@@ -666,6 +670,14 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   }
 }
 
+/**
+ * An `ErrorType` is generated when CodeQL is unable to correctly
+ * extract a type.
+ */
+class ErrorType extends RefType, @errortype {
+  override string getAPrimaryQlClass() { result = "ErrorType" }
+}
+
 /** A type that is the same as its source declaration. */
 class SrcRefType extends RefType {
   SrcRefType() { this.isSourceDeclaration() }
@@ -674,7 +686,7 @@ class SrcRefType extends RefType {
 /** A class declaration. */
 class Class extends ClassOrInterface, @class {
   /** Holds if this class is an anonymous class. */
-  predicate isAnonymous() { isAnonymClass(this, _) }
+  predicate isAnonymous() { isAnonymClass(this.getSourceDeclaration(), _) }
 
   override RefType getSourceDeclaration() { classes(this, _, _, result) }
 
@@ -712,6 +724,13 @@ class CompanionObject extends Class {
 
   /** Gets the instance variable that implements this `companion object`. */
   Field getInstance() { type_companion_object(_, result, this) }
+}
+
+/**
+ * A Kotlin data class declaration.
+ */
+class DataClass extends Class {
+  DataClass() { ktDataClasses(this) }
 }
 
 /**
@@ -781,10 +800,13 @@ class AnonymousClass extends NestedClass {
   }
 
   /** Gets the class instance expression where this anonymous class occurs. */
-  ClassInstanceExpr getClassInstanceExpr() { isAnonymClass(this, result) }
+  ClassInstanceExpr getClassInstanceExpr() { isAnonymClass(this.getSourceDeclaration(), result) }
 
   override string toString() {
-    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }"
+    // Include super.toString, i.e. the name given in the database, because for Kotlin anonymous
+    // classes we can get specialisations of anonymous generic types, and this will supply the
+    // trailing type arguments.
+    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }" + super.toString()
   }
 
   /**
@@ -1182,8 +1204,8 @@ private Type erase(Type t) {
 }
 
 /**
- * Is there a common (reflexive, transitive) subtype of the erasures of
- * types `t1` and `t2`?
+ * Holds if there is a common (reflexive, transitive) subtype of the erasures of
+ * types `t1` and `t2`.
  *
  * If there is no such common subtype, then the two types are disjoint.
  * However, the converse is not true; for example, the parameterized types
@@ -1197,6 +1219,25 @@ pragma[inline]
 predicate haveIntersection(RefType t1, RefType t2) {
   exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
     erasedHaveIntersection(e1, e2)
+  )
+}
+
+/**
+ * Holds if there is no common (reflexive, transitive) subtype of the erasures
+ * of types `t1` and `t2`.
+ *
+ * If there is no such common subtype, then the two types are disjoint.
+ * However, the converse is not true; for example, the parameterized types
+ * `List<Integer>` and `Collection<String>` are disjoint,
+ * but their erasures (`List` and `Collection`, respectively)
+ * do have common subtypes (such as `List` itself).
+ *
+ * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
+ */
+bindingset[t1, t2]
+predicate notHaveIntersection(RefType t1, RefType t2) {
+  exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
+    not erasedHaveIntersection(e1, e2)
   )
 }
 

@@ -38,5 +38,5 @@ class StringLiteralSource extends KeySource {
 
 from SymmetricKeyTaintTrackingConfiguration keyFlow, KeySource src, SymmetricEncryptionKeySink sink
 where keyFlow.hasFlow(src, sink)
-select sink, "Hard-coded symmetric $@ is used in symmetric algorithm in " + sink.getDescription(),
-  src, "key"
+select sink, "This hard-coded $@ is used in symmetric algorithm in " + sink.getDescription(), src,
+  "symmetric key"

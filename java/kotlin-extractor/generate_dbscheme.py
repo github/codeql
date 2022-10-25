@@ -171,13 +171,12 @@ with open('src/main/kotlin/KotlinExtractorDbScheme.kt', 'w') as kt:
             for num, typ in mapping:
                 genTable(kt, relname, columns, enum, kind, num, typ)
 
+    kt.write('sealed interface AnyDbType\n')
     for typ in sorted(supertypes):
-        kt.write('sealed interface Db' + upperFirst(typ))
+        kt.write('sealed interface Db' + upperFirst(typ) + ': AnyDbType')
         # Sorting makes the output deterministic.
         names = sorted(supertypes[typ])
-        if names:
-            kt.write(': ')
-            kt.write(', '.join(map(lambda name: 'Db' + upperFirst(name), names)))
+        kt.write(''.join(map(lambda name: ', Db' + upperFirst(name), names)))
         kt.write('\n')
     for alias in sorted(type_aliases):
         kt.write('typealias Db' + upperFirst(alias) + ' = Db' + upperFirst(type_aliases[alias]) + '\n')

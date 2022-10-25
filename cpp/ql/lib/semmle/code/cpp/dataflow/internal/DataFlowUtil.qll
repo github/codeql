@@ -699,7 +699,7 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
         call.getTarget() = f and
         // AST dataflow treats a reference as if it were the referred-to object, while the dataflow
         // models treat references as pointers. If the return type of the call is a reference, then
-        // look for data flow the the referred-to object, rather than the reference itself.
+        // look for data flow to the referred-to object, rather than the reference itself.
         if call.getType().getUnspecifiedType() instanceof ReferenceType
         then outModel.isReturnValueDeref()
         else outModel.isReturnValue()
@@ -850,6 +850,34 @@ class ContentSet instanceof Content {
 }
 
 /**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(GuardCondition g, Expr e, boolean branch);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  ExprNode getABarrierNode() {
+    exists(GuardCondition g, SsaDefinition def, Variable v, boolean branch |
+      result.getExpr() = def.getAUse(v) and
+      guardChecks(g, def.getAUse(v), branch) and
+      g.controls(result.getExpr().getBasicBlock(), branch)
+    )
+  }
+}
+
+/**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -858,7 +886,7 @@ class ContentSet instanceof Content {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends GuardCondition {
+deprecated class BarrierGuard extends GuardCondition {
   /** Override this predicate to hold if this guard validates `e` upon evaluating to `b`. */
   abstract predicate checks(Expr e, boolean b);
 

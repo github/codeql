@@ -81,3 +81,11 @@
 (function(){
 	({ unusedProp: 42 }, 42);
 });
+
+(function(){
+	var foo = {
+        unused: 42
+    };
+    foo.unused = 42;
+    Object.hasOwn(foo, blab);
+});

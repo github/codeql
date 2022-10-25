@@ -125,7 +125,7 @@ getAffectedStateAccessPath
 getADispatchFunctionNode
 | react-redux.jsx:65:20:65:32 | use moduleImport("react-redux").getMember("exports").getMember("useDispatch").getReturn() |
 getADispatchedValueNode
-| react-redux.jsx:27:12:30:5 | def getASuccessor(Label::entryPoint("react-redux-connect")).getParameter(1).getMember("manualAction").getReturn() |
+| react-redux.jsx:27:12:30:5 | def entryPoint("react-redux-connect").getParameter(1).getMember("manualAction").getReturn() |
 | react-redux.jsx:69:18:69:39 | def moduleImport("react-redux").getMember("exports").getMember("useDispatch").getReturn().getParameter(0) |
 | react-redux.jsx:70:18:70:38 | def moduleImport("react-redux").getMember("exports").getMember("useDispatch").getReturn().getParameter(0) |
 getAnUntypedActionInReducer

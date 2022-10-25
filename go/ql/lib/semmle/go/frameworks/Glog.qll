@@ -4,7 +4,6 @@
  */
 
 import go
-private import semmle.go.StringOps
 
 /**
  * Provides models of commonly used functions in the `github.com/golang/glog` packages and its

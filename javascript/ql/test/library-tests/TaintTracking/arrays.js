@@ -17,4 +17,6 @@ function test() {
         return prev + '<b>' + current + '</b>';
     }, '');
     sink(res); // NOT OK
+
+    sink(foo.at(-1)); // NOT OK
 }

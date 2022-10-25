@@ -276,15 +276,15 @@ class ExternalScriptDependency extends ScriptDependency, @xmlattribute {
 /**
  * A dependency on GWT indicated by a GWT header script.
  */
-private class GWTDependency extends ScriptDependency {
-  GWTDependency() { this instanceof GWTHeader }
+private class GwtDependency extends ScriptDependency {
+  GwtDependency() { this instanceof GwtHeader }
 
   override predicate info(string id, string v) {
     id = "gwt" and
-    exists(GWTHeader h | h = this |
-      v = h.getGWTVersion()
+    exists(GwtHeader h | h = this |
+      v = h.getGwtVersion()
       or
-      not exists(h.getGWTVersion()) and v = "unknown"
+      not exists(h.getGwtVersion()) and v = "unknown"
     )
   }
 

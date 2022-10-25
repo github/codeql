@@ -1,12 +1,10 @@
 private import codeql.swift.generated.stmt.ConditionElement
 private import codeql.swift.elements.AstNode
 
-class ConditionElement extends ConditionElementBase {
-  AstNode getUnderlyingCondition() {
-    result = this.getBoolean()
+class ConditionElement extends Generated::ConditionElement {
+  override string toString() {
+    result = this.getBoolean().toString()
     or
-    result = this.getInitializer()
-    or
-    result = this.getPattern()
+    result = this.getPattern().toString() + " = ... "
   }
 }

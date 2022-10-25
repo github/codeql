@@ -1,5 +1,5 @@
 /**
- * Provides classes for modeling built-in operations.  Built-in operations are
+ * Provides classes for modeling built-in operations. Built-in operations are
  * typically compiler specific and are used by libraries and generated code.
  */
 
@@ -120,8 +120,8 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
 
 /**
  * A C/C++ `__builtin_offsetof` built-in operation (used by some implementations
- * of `offsetof`).  The operation retains its semantics even in the presence
- * of an overloaded `operator &`).  This is a GNU/Clang extension.
+ * of `offsetof`). The operation retains its semantics even in the presence
+ * of an overloaded `operator &`). This is a gcc/clang extension.
  * ```
  * struct S {
  *   int a, b;
@@ -137,8 +137,8 @@ class BuiltInOperationBuiltInOffsetOf extends BuiltInOperation, @offsetofexpr {
 
 /**
  * A C/C++ `__INTADDR__` built-in operation (used by some implementations
- * of `offsetof`).  The operation retains its semantics even in the presence
- * of an overloaded `operator &`).  This is an EDG extension.
+ * of `offsetof`). The operation retains its semantics even in the presence
+ * of an overloaded `operator &`). This is an EDG extension.
  * ```
  * struct S {
  *   int a, b;
@@ -173,7 +173,7 @@ class BuiltInOperationHasAssign extends BuiltInOperation, @hasassignexpr {
  *
  * Returns `true` if the type has a copy constructor.
  * ```
- * std::integral_constant< bool, __has_copy(_Tp)> hc;
+ * std::integral_constant<bool, __has_copy(_Tp)> hc;
  * ```
  */
 class BuiltInOperationHasCopy extends BuiltInOperation, @hascopyexpr {
@@ -189,7 +189,7 @@ class BuiltInOperationHasCopy extends BuiltInOperation, @hascopyexpr {
  * Returns `true` if a copy assignment operator has an empty exception
  * specification.
  * ```
- * std::integral_constant< bool, __has_nothrow_assign(_Tp)> hnta;
+ * std::integral_constant<bool, __has_nothrow_assign(_Tp)> hnta;
  * ```
  */
 class BuiltInOperationHasNoThrowAssign extends BuiltInOperation, @hasnothrowassign {
@@ -220,7 +220,7 @@ class BuiltInOperationHasNoThrowConstructor extends BuiltInOperation, @hasnothro
  *
  * Returns `true` if the copy constructor has an empty exception specification.
  * ```
- * std::integral_constant< bool, __has_nothrow_copy(MyType) >;
+ * std::integral_constant<bool, __has_nothrow_copy(MyType) >;
  * ```
  */
 class BuiltInOperationHasNoThrowCopy extends BuiltInOperation, @hasnothrowcopy {
@@ -266,7 +266,7 @@ class BuiltInOperationHasTrivialConstructor extends BuiltInOperation, @hastrivia
  *
  * Returns true if the type has a trivial copy constructor.
  * ```
- * std::integral_constant< bool, __has_trivial_copy(MyType) > htc;
+ * std::integral_constant<bool, __has_trivial_copy(MyType)> htc;
  * ```
  */
 class BuiltInOperationHasTrivialCopy extends BuiltInOperation, @hastrivialcopy {
@@ -468,7 +468,7 @@ class BuiltInOperationIsUnion extends BuiltInOperation, @isunionexpr {
  * ```
  * template<typename _Tp1, typename _Tp2>
  *   struct types_compatible
- *   : public integral_constant<bool, __builtin_types_compatible_p(_Tp1, _Tp2) >
+ *   : public integral_constant<bool, __builtin_types_compatible_p(_Tp1, _Tp2)>
  *   { };
  * ```
  */
@@ -479,8 +479,7 @@ class BuiltInOperationBuiltInTypesCompatibleP extends BuiltInOperation, @typesco
 /**
  * A clang `__builtin_shufflevector` expression.
  *
- * It outputs a permutation of elements from one or two input vectors.
- * Please see
+ * It outputs a permutation of elements from one or two input vectors. See
  * https://releases.llvm.org/3.7.0/tools/clang/docs/LanguageExtensions.html#langext-builtin-shufflevector
  * for more information.
  * ```
@@ -495,10 +494,28 @@ class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshu
 }
 
 /**
+ * A gcc `__builtin_shuffle` expression.
+ *
+ * It outputs a permutation of elements from one or two input vectors.
+ * See https://gcc.gnu.org/onlinedocs/gcc/Vector-Extensions.html
+ * for more information.
+ * ```
+ * // Concatenate every other element of 4-element vectors V1 and V2.
+ * M = {0, 2, 4, 6};
+ * V3 = __builtin_shuffle(V1, V2, M);
+ * ```
+ */
+class BuiltInOperationBuiltInShuffle extends BuiltInOperation, @builtinshuffle {
+  override string toString() { result = "__builtin_shuffle" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationBuiltInShuffle" }
+}
+
+/**
  * A clang `__builtin_convertvector` expression.
  *
  * Allows for conversion of vectors of equal element count and compatible
- * element types. Please see
+ * element types. See
  * https://releases.llvm.org/3.7.0/tools/clang/docs/LanguageExtensions.html#builtin-convertvector
  * for more information.
  * ```
@@ -547,7 +564,7 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
  * ```
  * template<typename T, typename... Args>
  *   struct is_trivially_constructible
- *   : public integral_constant<bool, __is_trivially_constructible(T, Args...) >
+ *   : public integral_constant<bool, __is_trivially_constructible(T, Args...)>
  *   { };
  * ```
  */
@@ -612,13 +629,10 @@ class BuiltInOperationIsTriviallyDestructible extends BuiltInOperation, @istrivi
  * The `__is_trivially_assignable` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns `true` if the assignment operator `C::operator =(const C& c)` is
- * trivial.
+ * Returns `true` if the assignment operator `C::operator =(const D& d)` is
+ * trivial (i.e., it will not call any operation that is non-trivial).
  * ```
- * template<typename T>
- *   struct is_trivially_assignable
- *   : public integral_constant<bool, __is_trivially_assignable(T) >
- *   { };
+ * bool v = __is_trivially_assignable(MyType1, MyType2);
  * ```
  */
 class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istriviallyassignableexpr {
@@ -631,10 +645,10 @@ class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istrivial
  * The `__is_nothrow_assignable` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns true if there exists a `C::operator =(const C& c) nothrow`
+ * Returns true if there exists a `C::operator =(const D& d) nothrow`
  * assignment operator (i.e, with an empty exception specification).
  * ```
- * bool v = __is_nothrow_assignable(MyType);
+ * bool v = __is_nothrow_assignable(MyType1, MyType2);
  * ```
  */
 class BuiltInOperationIsNothrowAssignable extends BuiltInOperation, @isnothrowassignableexpr {
@@ -644,14 +658,29 @@ class BuiltInOperationIsNothrowAssignable extends BuiltInOperation, @isnothrowas
 }
 
 /**
+ * The `__is_assignable` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns true if there exists a `C::operator =(const D& d)` assignment
+ * operator.
+ * ```
+ * bool v = __is_assignable(MyType1, MyType2);
+ * ```
+ */
+class BuiltInOperationIsAssignable extends BuiltInOperation, @isassignable {
+  override string toString() { result = "__is_assignable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsAssignable" }
+}
+
+/**
  * The `__is_standard_layout` built-in operation (used by some implementations
  * of the `<type_traits>` header).
  *
  * Returns `true` if the type is a primitive type, or a `class`, `struct` or
- * `union` WITHOUT (1) virtual functions or base classes, (2) reference member
- * variable or (3) multiple occurrences of base `class` objects, among other
- * restrictions.  Please see
- * https://en.cppreference.com/w/cpp/named_req/StandardLayoutType
+ * `union` without (1) virtual functions or base classes, (2) reference member
+ * variable, or (3) multiple occurrences of base `class` objects, among other
+ * restrictions. See https://en.cppreference.com/w/cpp/named_req/StandardLayoutType
  * for more information.
  * ```
  * bool v = __is_standard_layout(MyType);
@@ -668,7 +697,7 @@ class BuiltInOperationIsStandardLayout extends BuiltInOperation, @isstandardlayo
  * implementations of the `<type_traits>` header).
  *
  * Returns `true` if instances of this type can be copied by trivial
- * means.  The copying is done in a manner similar to the `memcpy`
+ * means. The copying is done in a manner similar to the `memcpy`
  * function.
  */
 class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istriviallycopyableexpr {
@@ -682,13 +711,13 @@ class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istrivially
  * the `<type_traits>` header).
  *
  * Returns `true` if the type is a scalar type, a reference type or an array of
- * literal types, among others. Please see
+ * literal types, among others. See
  * https://en.cppreference.com/w/cpp/named_req/LiteralType
  * for more information.
  *
  * ```
  * template <typename _Tp>
- * std::integral_constant< bool, __is_literal_type(_Tp)> ilt;
+ * std::integral_constant<bool, __is_literal_type(_Tp)> ilt;
  * ```
  */
 class BuiltInOperationIsLiteralType extends BuiltInOperation, @isliteraltypeexpr {
@@ -705,7 +734,7 @@ class BuiltInOperationIsLiteralType extends BuiltInOperation, @isliteraltypeexpr
  * compiler, with semantics of the `memcpy` operation.
  * ```
  * template <typename _Tp>
- * std::integral_constant< bool, __has_trivial_move_constructor(_Tp)> htmc;
+ * std::integral_constant<bool, __has_trivial_move_constructor(_Tp)> htmc;
  * ```
  */
 class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation,
@@ -723,7 +752,7 @@ class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation,
  * ```
  * template<typename T>
  *   struct has_trivial_move_assign
- *   : public integral_constant<bool, __has_trivial_move_assign(T) >
+ *   : public integral_constant<bool, __has_trivial_move_assign(T)>
  *   { };
  * ```
  */
@@ -758,7 +787,7 @@ class BuiltInOperationHasNothrowMoveAssign extends BuiltInOperation, @hasnothrow
  * ```
  * template<typename T, typename... Args>
  *   struct is_constructible
- *   : public integral_constant<bool, __is_constructible(T, Args...) >
+ *   : public integral_constant<bool, __is_constructible(T, Args...)>
  *   { };
  * ```
  */
@@ -785,7 +814,7 @@ class BuiltInOperationIsNothrowConstructible extends BuiltInOperation, @isnothro
 }
 
 /**
- * The `__has_finalizer` built-in operation.  This is a Microsoft extension.
+ * The `__has_finalizer` built-in operation. This is a Microsoft extension.
  *
  * Returns `true` if the type defines a _finalizer_ `C::!C(void)`, to be called
  * from either the regular destructor or the garbage collector.
@@ -800,10 +829,10 @@ class BuiltInOperationHasFinalizer extends BuiltInOperation, @hasfinalizerexpr {
 }
 
 /**
- * The `__is_delegate` built-in operation.  This is a Microsoft extension.
+ * The `__is_delegate` built-in operation. This is a Microsoft extension.
  *
  * Returns `true` if the function has been declared as a `delegate`, used in
- * message forwarding.  Please see
+ * message forwarding. See
  * https://docs.microsoft.com/en-us/cpp/extensions/delegate-cpp-component-extensions
  * for more information.
  */
@@ -814,9 +843,9 @@ class BuiltInOperationIsDelegate extends BuiltInOperation, @isdelegateexpr {
 }
 
 /**
- * The `__is_interface_class` built-in operation.  This is a Microsoft extension.
+ * The `__is_interface_class` built-in operation. This is a Microsoft extension.
  *
- * Returns `true` if the type has been declared as an `interface`.  Please see
+ * Returns `true` if the type has been declared as an `interface`. See
  * https://docs.microsoft.com/en-us/cpp/extensions/interface-class-cpp-component-extensions
  * for more information.
  */
@@ -827,9 +856,9 @@ class BuiltInOperationIsInterfaceClass extends BuiltInOperation, @isinterfacecla
 }
 
 /**
- * The `__is_ref_array` built-in operation.  This is a Microsoft extension.
+ * The `__is_ref_array` built-in operation. This is a Microsoft extension.
  *
- * Returns `true` if the object passed in is a _platform array_.  Please see
+ * Returns `true` if the object passed in is a _platform array_. See
  * https://docs.microsoft.com/en-us/cpp/extensions/arrays-cpp-component-extensions
  * for more information.
  * ```
@@ -844,9 +873,9 @@ class BuiltInOperationIsRefArray extends BuiltInOperation, @isrefarrayexpr {
 }
 
 /**
- * The `__is_ref_class` built-in operation.  This is a Microsoft extension.
+ * The `__is_ref_class` built-in operation. This is a Microsoft extension.
  *
- * Returns `true` if the type is a _reference class_.  Please see
+ * Returns `true` if the type is a _reference class_. See
  * https://docs.microsoft.com/en-us/cpp/extensions/classes-and-structs-cpp-component-extensions
  * for more information.
  * ```
@@ -861,10 +890,10 @@ class BuiltInOperationIsRefClass extends BuiltInOperation, @isrefclassexpr {
 }
 
 /**
- * The `__is_sealed` built-in operation.  This is a Microsoft extension.
+ * The `__is_sealed` built-in operation. This is a Microsoft extension.
  *
  * Returns `true` if a given class or virtual function is marked as `sealed`,
- * meaning that it cannot be extended or overridden.  The `sealed` keyword
+ * meaning that it cannot be extended or overridden. The `sealed` keyword
  * is similar to the C++11 `final` keyword.
  * ```
  * ref class X sealed {
@@ -879,7 +908,7 @@ class BuiltInOperationIsSealed extends BuiltInOperation, @issealedexpr {
 }
 
 /**
- * The `__is_simple_value_class` built-in operation.  This is a Microsoft extension.
+ * The `__is_simple_value_class` built-in operation. This is a Microsoft extension.
  *
  * Returns `true` if passed a value type that contains no references to the
  * garbage-collected heap.
@@ -898,9 +927,9 @@ class BuiltInOperationIsSimpleValueClass extends BuiltInOperation, @issimplevalu
 }
 
 /**
- * The `__is_value_class` built-in operation.  This is a Microsoft extension.
+ * The `__is_value_class` built-in operation. This is a Microsoft extension.
  *
- * Returns `true` if passed a value type.  Please see
+ * Returns `true` if passed a value type. See
  * https://docs.microsoft.com/en-us/cpp/extensions/classes-and-structs-cpp-component-extensions
  * For more information.
  * ```
@@ -922,7 +951,7 @@ class BuiltInOperationIsValueClass extends BuiltInOperation, @isvalueclassexpr {
  * ```
  * template<typename T>
  *   struct is_final
- *   : public integral_constant<bool, __is_final(T) >
+ *   : public integral_constant<bool, __is_final(T)>
  *   { };
  * ```
  */
@@ -933,7 +962,7 @@ class BuiltInOperationIsFinal extends BuiltInOperation, @isfinalexpr {
 }
 
 /**
- * The `__builtin_choose_expr` expression.  This is a GNU/Clang extension.
+ * The `__builtin_choose_expr` expression. This is a gcc/clang extension.
  *
  * The expression functions similarly to the ternary `?:` operator, except
  * that it is evaluated at compile-time.
@@ -977,4 +1006,539 @@ class BuiltInComplexOperation extends BuiltInOperation, @builtincomplex {
 
   /** Gets the operand corresponding to the imaginary part of the complex number. */
   Expr getImaginaryOperand() { this.hasChild(result, 1) }
+}
+
+/**
+ * A C++ `__is_aggregate` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if the type has is an aggregate type.
+ * ```
+ * std::integral_constant<bool, __is_aggregate(_Tp)> ia;
+ * ```
+ */
+class BuiltInOperationIsAggregate extends BuiltInOperation, @isaggregate {
+  override string toString() { result = "__is_aggregate" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsAggregate" }
+}
+
+/**
+ * A C++ `__has_unique_object_representations` built-in operation (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the type is trivially copyable and if the object representation
+ * is unique for two objects with the same value.
+ * ```
+ * bool v = __has_unique_object_representations(MyType);
+ * ```
+ */
+class BuiltInOperationHasUniqueObjectRepresentations extends BuiltInOperation,
+  @hasuniqueobjectrepresentations {
+  override string toString() { result = "__has_unique_object_representations" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasUniqueObjectRepresentations" }
+}
+
+/**
+ * A C++ `__is_same` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if two types are the same.
+ * ```
+ * template<typename _Tp, typename _Up>
+ *   struct is_same
+ *   : public integral_constant<bool, __is_same(_Tp, _Up)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsSame extends BuiltInOperation, @issame {
+  override string toString() { result = "__is_same" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsSame" }
+}
+
+/**
+ * A C++ `__is_function` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a function type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_function
+ *   : public integral_constant<bool, __is_function(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsFunction extends BuiltInOperation, @isfunction {
+  override string toString() { result = "__is_function" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsFunction" }
+}
+
+/**
+ * A C++ `__is_layout_compatible` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if two types are layout-compatible.
+ * ```
+ * template<typename _Tp, typename _Up>
+ *   struct is_layout_compatible
+ *   : public integral_constant<bool, __is_layout_compatible(_Tp, _Up)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsLayoutCompatible extends BuiltInOperation, @islayoutcompatible {
+  override string toString() { result = "__is_layout_compatible" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsLayoutCompatible" }
+}
+
+/**
+ * A C++ `__is_pointer_interconvertible_base_of` built-in operation (used
+ * by some implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the second type is pointer-interconvertible with the first type.
+ * ```
+ * template<typename _Tp, typename _Up>
+ *   struct is_pointer_interconvertible_base_of_v
+ *   : public integral_constant<bool, __is_pointer_interconvertible_base_of(_Tp, _Up)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsPointerInterconvertibleBaseOf extends BuiltInOperation,
+  @ispointerinterconvertiblebaseof {
+  override string toString() { result = "__is_pointer_interconvertible_base_of" }
+
+  override string getAPrimaryQlClass() {
+    result = "BuiltInOperationIsPointerInterconvertibleBaseOf"
+  }
+}
+
+/**
+ * A C++ `__is_array` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is an array type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_array
+ *   : public integral_constant<bool, __is_array(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsArray extends BuiltInOperation, @isarray {
+  override string toString() { result = "__is_array" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsArray" }
+}
+
+/**
+ * A C++ `__array_rank` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * If known, returns the number of dimensions of an arrary type.
+ * ```
+ * template<typename _Tp>
+ *   struct rank
+ *   : public integral_constant<size_t, __array_rank(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationArrayRank extends BuiltInOperation, @arrayrank {
+  override string toString() { result = "__array_rank" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationArrayRank" }
+}
+
+/**
+ * A C++ `__array_extent` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * If known, returns the number of elements of an arrary type in the specified
+ * dimension.
+ * ```
+ * template<typename _Tp,  unsigned int _Dim>
+ *   struct extent
+ *   : public integral_constant<size_t, __array_extent(_Tp, _Dim)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationArrayExtent extends BuiltInOperation, @arrayextent {
+  override string toString() { result = "__array_extent" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationArrayExtent" }
+}
+
+/**
+ * A C++ `__is_arithmetic` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is an arithmetic type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_arithmetic
+ *   : public integral_constant<bool, __is_arithmetic(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsArithmetic extends BuiltInOperation, @isarithmetic {
+  override string toString() { result = "__is_arithmetic" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsArithmetic" }
+}
+
+/**
+ * A C++ `__is_complete_type` built-in operation.
+ *
+ * Returns `true` if a type is a complete type. Note that this built-in operation
+ * can return different values for the same type at different points in a program.
+ * ```
+ * class S;
+ * bool b = __complete_type(S);
+ * ```
+ */
+class BuiltInOperationIsCompleteType extends BuiltInOperation, @iscompletetype {
+  override string toString() { result = "__is_complete_type" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsCompleteType" }
+}
+
+/**
+ * A C++ `__is_compound` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a compound type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_compound
+ *   : public integral_constant<bool, __is_compound(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsCompound extends BuiltInOperation, @iscompound {
+  override string toString() { result = "__is_compound" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsCompound" }
+}
+
+/**
+ * A C++ `__is_const` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a const-qualified type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_const
+ *   : public integral_constant<bool, __is_const(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsConst extends BuiltInOperation, @isconst {
+  override string toString() { result = "__is_const" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsConst" }
+}
+
+/**
+ * A C++ `__is_floating_point` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is a floating point type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_floating_point
+ *   : public integral_constant<bool, __is_floating_point(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsFloatingPoint extends BuiltInOperation, @isfloatingpoint {
+  override string toString() { result = "__is_floating_point" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsFloatingPoint" }
+}
+
+/**
+ * A C++ `__is_fundamental` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a fundamental C++ type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_fundamental
+ *   : public integral_constant<bool, __is_fundamental(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsFundamental extends BuiltInOperation, @isfundamental {
+  override string toString() { result = "__is_fundamental" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsFundamental" }
+}
+
+/**
+ * A C++ `__is_integral` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is an integral type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_integral
+ *   : public integral_constant<bool, __is_integral(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsIntegral extends BuiltInOperation, @isintegral {
+  override string toString() { result = "__is_integral" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsIntegral" }
+}
+
+/**
+ * A C++ `__is_lvalue_reference` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is an lvalue reference type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_lvalue_reference
+ *   : public integral_constant<bool, __is_lvalue_reference(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsLvalueReference extends BuiltInOperation, @islvaluereference {
+  override string toString() { result = "__is_lvalue_reference" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsLvalueReference" }
+}
+
+/**
+ * A C++ `__is_member_function_pointer` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is an non-static member function pointer type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_member_function_pointer
+ *   : public integral_constant<bool, __is_member_function_pointer(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsMemberFunctionPointer extends BuiltInOperation, @ismemberfunctionpointer {
+  override string toString() { result = "__is_member_function_pointer" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsMemberFunctionPointer" }
+}
+
+/**
+ * A C++ `__is_member_object_pointer` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is an non-static member object pointer type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_member_object_pointer
+ *   : public integral_constant<bool, __is_member_object_pointer(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsMemberObjectPointer extends BuiltInOperation, @ismemberobjectpointer {
+  override string toString() { result = "__is_member_object_pointer" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsMemberObjectPointer" }
+}
+
+/**
+ * A C++ `__is_member_pointer` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is an non-static member object of function pointer type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_member_pointer
+ *   : public integral_constant<bool, __is_member_pointer(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsMemberPointer extends BuiltInOperation, @ismemberpointer {
+  override string toString() { result = "__is_member_pointer" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsMemberPointer" }
+}
+
+/**
+ * A C++ `__is_object` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is an object type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_object
+ *   : public integral_constant<bool, __is_object(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsObject extends BuiltInOperation, @isobject {
+  override string toString() { result = "__is_object" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsObject" }
+}
+
+/**
+ * A C++ `__is_pointer` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is a pointer to an object or function type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_pointer
+ *   : public integral_constant<bool, __is_pointer(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsPointer extends BuiltInOperation, @ispointer {
+  override string toString() { result = "__is_pointer" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsPointer" }
+}
+
+/**
+ * A C++ `__is_reference` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is an lvalue or rvalue reference type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_reference
+ *   : public integral_constant<bool, __is_reference(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsReference extends BuiltInOperation, @isreference {
+  override string toString() { result = "__is_reference" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsReference" }
+}
+
+/**
+ * A C++ `__is_rvalue_reference` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is an rvalue reference type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_rvalue_reference
+ *   : public integral_constant<bool, __is_rvalue_reference(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsRvalueReference extends BuiltInOperation, @isrvaluereference {
+  override string toString() { result = "__is_rvalue_reference" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsRvalueReference" }
+}
+
+/**
+ * A C++ `__is_scalar` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a scalar type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_scalar
+ *   : public integral_constant<bool, __is_scalar(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsScalar extends BuiltInOperation, @isscalar {
+  override string toString() { result = "__is_scalar" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsScalar" }
+}
+
+/**
+ * A C++ `__is_signed` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a signed arithmetic type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_signed
+ *   : public integral_constant<bool, __is_signed(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsSigned extends BuiltInOperation, @issigned {
+  override string toString() { result = "__is_signed" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsSigned" }
+}
+
+/**
+ * A C++ `__is_unsigned` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is an unsigned arithmetic type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_unsigned
+ *   : public integral_constant<bool, __is_unsigned(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsUnsigned extends BuiltInOperation, @isunsigned {
+  override string toString() { result = "__is_unsigned" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsUnsigned" }
+}
+
+/**
+ * A C++ `__is_void` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a void type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_void
+ *   : public integral_constant<bool, __is_void(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsVoid extends BuiltInOperation, @isvoid {
+  override string toString() { result = "__is_void" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsVoid" }
+}
+
+/**
+ * A C++ `__is_volatile` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if a type is a volatile-qualified type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_volatile
+ *   : public integral_constant<bool, __is_volatile(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsVolatile extends BuiltInOperation, @isvolatile {
+  override string toString() { result = "__is_volatile" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsVolatile" }
+}
+
+/**
+ * A C/C++ `__builtin_bit_cast` built-in operation (used by some implementations
+ * of `std::bit_cast`).
+ *
+ * Performs a bit cast from a value to a type.
+ * ```
+ * __builtin_bit_cast(Type, value);
+ * ```
+ */
+class BuiltInBitCast extends BuiltInOperation, @builtinbitcast {
+  override string toString() { result = "__builtin_bit_cast" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInBitCast" }
 }

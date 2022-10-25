@@ -100,7 +100,7 @@ module XML {
     }
 
     override DataFlow::Node getAResult() {
-      result = [doc(), element(), attr()].getAnImmediateUse()
+      result = [doc(), element(), attr()].asSource()
       or
       result = element().getMember(["name", "text"]).getACall()
       or
@@ -198,7 +198,7 @@ module XML {
     override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
 
     // The result is an XMLDocument (https://developer.mozilla.org/en-US/docs/Web/API/XMLDocument).
-    // The API of the XMLDocument is not modelled.
+    // The API of the XMLDocument is not modeled.
     override DataFlow::Node getAResult() { result.asExpr() = this }
   }
 
@@ -282,11 +282,7 @@ module XML {
 
     override DataFlow::Node getAResult() {
       result =
-        parser
-            .getReturn()
-            .getMember(any(string s | s.matches("on%")))
-            .getAParameter()
-            .getAnImmediateUse()
+        parser.getReturn().getMember(any(string s | s.matches("on%"))).getAParameter().asSource()
     }
   }
 
@@ -330,6 +326,7 @@ module XML {
       none()
     }
 
+    pragma[noinline]
     override DataFlow::Node getAResult() {
       result =
         parser

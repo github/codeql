@@ -7,7 +7,6 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 
 private API::Node graphQlSchema() { result = API::getTopLevelMember("GraphQL").getMember("Schema") }
@@ -41,7 +40,12 @@ private API::Node graphQlSchema() { result = API::getTopLevelMember("GraphQL").g
 private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
   GraphqlRelayClassicMutationClass() {
     this.getSuperclassExpr() =
-      graphQlSchema().getMember("RelayClassicMutation").getASubclass*().getAUse().asExpr().getExpr()
+      graphQlSchema()
+          .getMember("RelayClassicMutation")
+          .getASubclass*()
+          .getAValueReachableFromSource()
+          .asExpr()
+          .getExpr()
   }
 }
 
@@ -71,9 +75,17 @@ private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
 private class GraphqlSchemaResolverClass extends ClassDeclaration {
   GraphqlSchemaResolverClass() {
     this.getSuperclassExpr() =
-      graphQlSchema().getMember("Resolver").getASubclass().getAUse().asExpr().getExpr()
+      graphQlSchema()
+          .getMember("Resolver")
+          .getASubclass()
+          .getAValueReachableFromSource()
+          .asExpr()
+          .getExpr()
   }
 }
+
+/** Gets an HTTP method that is supported for querying a GraphQL server. */
+private string getASupportedHttpMethod() { result = ["get", "post"] }
 
 /**
  * A `ClassDeclaration` for a class that extends `GraphQL::Schema::Object`.
@@ -92,7 +104,12 @@ private class GraphqlSchemaResolverClass extends ClassDeclaration {
 class GraphqlSchemaObjectClass extends ClassDeclaration {
   GraphqlSchemaObjectClass() {
     this.getSuperclassExpr() =
-      graphQlSchema().getMember("Object").getASubclass().getAUse().asExpr().getExpr()
+      graphQlSchema()
+          .getMember("Object")
+          .getASubclass()
+          .getAValueReachableFromSource()
+          .asExpr()
+          .getExpr()
   }
 
   /** Gets a `GraphqlFieldDefinitionMethodCall` called in this class. */
@@ -106,7 +123,7 @@ class GraphqlSchemaObjectClass extends ClassDeclaration {
  * `GraphQL::Schema::RelayClassicMutation` or
  * `GraphQL::Schema::Resolver`.
  *
- * Both of these classes have an overrideable `resolve` instance
+ * Both of these classes have an overridable `resolve` instance
  * method which can receive user input in order to resolve a query or mutation.
  */
 private class GraphqlResolvableClass extends ClassDeclaration {
@@ -130,7 +147,7 @@ private class GraphqlResolvableClass extends ClassDeclaration {
  *
  * ```rb
  * module Mutation
- *   class NameAnInstrument < BaseMutationn
+ *   class NameAnInstrument < BaseMutation
  *     argument :instrument_uuid, Types::Uuid,
  *              required: true,
  *              loads: ::Instrument,
@@ -149,7 +166,7 @@ private class GraphqlResolvableClass extends ClassDeclaration {
  * end
  * ```
  */
-class GraphqlResolveMethod extends Method, HTTP::Server::RequestHandler::Range {
+class GraphqlResolveMethod extends Method, Http::Server::RequestHandler::Range {
   private GraphqlResolvableClass resolvableClass;
 
   GraphqlResolveMethod() { this = resolvableClass.getMethod("resolve") }
@@ -157,6 +174,8 @@ class GraphqlResolveMethod extends Method, HTTP::Server::RequestHandler::Range {
   override Parameter getARoutedParameter() { result = this.getAParameter() }
 
   override string getFramework() { result = "GraphQL" }
+
+  override string getAnHttpMethod() { result = getASupportedHttpMethod() }
 
   /** Gets the mutation class containing this method. */
   GraphqlResolvableClass getMutationClass() { result = resolvableClass }
@@ -174,7 +193,7 @@ class GraphqlResolveMethod extends Method, HTTP::Server::RequestHandler::Range {
  *
  * ```rb
  * module Mutation
- *   class NameAnInstrument < BaseMutationn
+ *   class NameAnInstrument < BaseMutation
  *     argument :instrument_uuid, Types::Uuid,
  *              required: true,
  *              loads: ::Instrument,
@@ -193,7 +212,7 @@ class GraphqlResolveMethod extends Method, HTTP::Server::RequestHandler::Range {
  * end
  * ```
  */
-class GraphqlLoadMethod extends Method, HTTP::Server::RequestHandler::Range {
+class GraphqlLoadMethod extends Method, Http::Server::RequestHandler::Range {
   private GraphqlResolvableClass resolvableClass;
 
   GraphqlLoadMethod() {
@@ -204,6 +223,8 @@ class GraphqlLoadMethod extends Method, HTTP::Server::RequestHandler::Range {
   override Parameter getARoutedParameter() { result = this.getAParameter() }
 
   override string getFramework() { result = "GraphQL" }
+
+  override string getAnHttpMethod() { result = getASupportedHttpMethod() }
 
   /** Gets the mutation class containing this method. */
   GraphqlResolvableClass getMutationClass() { result = resolvableClass }
@@ -218,7 +239,7 @@ private class GraphqlSchemaObjectClassMethodCall extends MethodCall {
 
   GraphqlSchemaObjectClassMethodCall() {
     // e.g. Foo.some_method(...)
-    recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
+    recvCls.getModule() = this.getReceiver().(ConstantReadAccess).getModule()
     or
     // e.g. self.some_method(...) within a graphql Object or Interface
     this.getReceiver() instanceof SelfVariableAccess and
@@ -325,7 +346,7 @@ private class GraphqlFieldArgumentDefinitionMethodCall extends GraphqlSchemaObje
  * end
  * ```
  */
-class GraphqlFieldResolutionMethod extends Method, HTTP::Server::RequestHandler::Range {
+class GraphqlFieldResolutionMethod extends Method, Http::Server::RequestHandler::Range {
   private GraphqlSchemaObjectClass schemaObjectClass;
 
   GraphqlFieldResolutionMethod() {
@@ -364,7 +385,7 @@ class GraphqlFieldResolutionMethod extends Method, HTTP::Server::RequestHandler:
         result.(KeywordParameter).hasName(argDefn.getArgumentName())
         or
         // TODO this will cause false positives because now *anything* in the **args
-        // param will be flagged as as RoutedParameter/RemoteFlowSource, but really
+        // param will be flagged as RoutedParameter/RemoteFlowSource, but really
         // only the hash keys corresponding to the defined arguments are user input
         // others could be things defined in the `:extras` keyword argument to the `argument`
         result instanceof HashSplatParameter // often you see `def field(**args)`
@@ -373,6 +394,8 @@ class GraphqlFieldResolutionMethod extends Method, HTTP::Server::RequestHandler:
   }
 
   override string getFramework() { result = "GraphQL" }
+
+  override string getAnHttpMethod() { result = getASupportedHttpMethod() }
 
   /** Gets the class containing this method. */
   GraphqlSchemaObjectClass getGraphqlClass() { result = schemaObjectClass }

@@ -83,6 +83,8 @@ predicate jumpStep(Node node1, Node node2) {
   or
   any(AdditionalValueStep a).step(node1, node2) and
   node1.getEnclosingCallable() != node2.getEnclosingCallable()
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(node1, node2)
 }
 
 /**
@@ -230,26 +232,26 @@ class CastNode extends ExprNode {
 }
 
 private newtype TDataFlowCallable =
-  TCallable(Callable c) or
+  TSrcCallable(Callable c) or
+  TSummarizedCallable(SummarizedCallable c) or
   TFieldScope(Field f)
 
 class DataFlowCallable extends TDataFlowCallable {
-  Callable asCallable() { this = TCallable(result) }
+  Callable asCallable() { this = TSrcCallable(result) }
+
+  SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
   Field asFieldScope() { this = TFieldScope(result) }
 
-  RefType getDeclaringType() {
-    result = this.asCallable().getDeclaringType() or
-    result = this.asFieldScope().getDeclaringType()
-  }
-
   string toString() {
     result = this.asCallable().toString() or
+    result = "Synthetic: " + this.asSummarizedCallable().toString() or
     result = "Field scope: " + this.asFieldScope().toString()
   }
 
   Location getLocation() {
     result = this.asCallable().getLocation() or
+    result = this.asSummarizedCallable().getLocation() or
     result = this.asFieldScope().getLocation()
   }
 }
@@ -317,7 +319,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() { result.asCallable() = c }
+  override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
@@ -376,9 +378,8 @@ predicate forceHighPrecision(Content c) {
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
-  n instanceof SummaryNode
-  or
-  n.(ParameterNode).isParameterOf(any(SummarizedCallable c), _)
+  n instanceof SummaryNode or
+  n instanceof SummaryParameterNode
 }
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface

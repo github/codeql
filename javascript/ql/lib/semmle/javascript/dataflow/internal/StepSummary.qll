@@ -45,7 +45,8 @@ private module Cached {
       CopyStep(PropertyName prop) or
       LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
         SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
-      }
+      } or
+      WithoutPropStep(PropertySet props) { SharedTypeTrackingStep::withoutPropStep(_, _, props) }
   }
 
   /**
@@ -108,6 +109,11 @@ private module Cached {
       or
       SharedTypeTrackingStep::loadStoreStep(pred, succ, prop) and
       summary = CopyStep(prop)
+    )
+    or
+    exists(PropertySet props |
+      SharedTypeTrackingStep::withoutPropStep(pred, succ, props) and
+      summary = WithoutPropStep(props)
     )
     or
     exists(string fromProp, string toProp |
@@ -193,6 +199,8 @@ class StepSummary extends TStepSummary {
     exists(string prop | this = LoadStep(prop) | result = "load " + prop)
     or
     exists(string prop | this = CopyStep(prop) | result = "copy " + prop)
+    or
+    exists(string prop | this = WithoutPropStep(prop) | result = "without " + prop)
     or
     exists(string fromProp, string toProp | this = LoadStoreStep(fromProp, toProp) |
       result = "load " + fromProp + " and store to " + toProp

@@ -3,7 +3,7 @@
 About CodeQL queries
 ####################
 
-CodeQL queries are used to analyze code for issues related to security, correctness, maintainability, and readability. 
+CodeQL queries are used to analyze code for issues related to security, correctness, maintainability, and readability.
 
 Overview
 ********
@@ -13,7 +13,7 @@ CodeQL includes queries to find the most relevant and interesting problems for e
 - **Alert queries**: queries that highlight issues in specific locations in your code.
 - **Path queries**: queries that describe the flow of information between a source and a sink in your code.
 
-You can add custom queries to :doc:`QL packs <../codeql-cli/about-ql-packs>` to analyze your projects with "`Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__", use them to analyze a database with the ":ref:`CodeQL CLI <codeql-cli>`," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
+You can add custom queries to :doc:`CodeQL packs <../codeql-cli/about-codeql-packs>` to analyze your projects with "`Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__", use them to analyze a database with the ":ref:`CodeQL CLI <codeql-cli>`," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
 
 This topic is a basic introduction to query files. You can find more information on writing queries for specific programming languages in the ":ref:`CodeQL language guides <codeql-language-guides>`," and detailed technical information about QL in the ":ref:`QL language reference <ql-language-reference>`."
 For more information on how to format your code when contributing queries to the GitHub repository, see the `CodeQL style guide <https://github.com/github/codeql/blob/main/docs/ql-style-guide.md>`__.
@@ -47,15 +47,14 @@ Query metadata
 Query metadata is used to identify your custom queries when they are added to the GitHub repository or used in your analysis. Metadata provides information about the query's purpose, and also specifies how to interpret and display the query results. For a full list of metadata properties, see ":doc:`Metadata for CodeQL queries <metadata-for-codeql-queries>`." The exact metadata requirement depends on how you are going to run your query:
 
 - If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__. 
-- If you are adding a custom query to a query pack for analysis using LGTM , see `Writing custom queries to include in LGTM analysis <https://lgtm.com/help/lgtm/writing-custom-queries>`__.
 - If you are analyzing a database using the :ref:`CodeQL CLI <codeql-cli>`, your query metadata must contain ``@kind``.
-- If you are running a query in the query console on LGTM or with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com and ":ref:`Analyzing your projects <analyzing-your-projects>`" in the CodeQL for VS Code help.
+- If you are running a query with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see ":ref:`Analyzing your projects <analyzing-your-projects>`" in the CodeQL for VS Code help.
 
 .. pull-quote:: 
 
     Note
 
-    Queries that are contributed to the open source repository, added to a query pack in LGTM, or used to analyze a database with the :ref:`CodeQL CLI <codeql-cli>` must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
+    Queries that are contributed to the open source repository, or used to analyze a database with the :ref:`CodeQL CLI <codeql-cli>` must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
 
     - Alert query metadata must contain ``@kind problem`` to identify the results as a simple alert.
     - Path query metadata must contain ``@kind path-problem`` to identify the results as an alert documented by a sequence of code locations.
@@ -70,14 +69,16 @@ Import statements
 Each query generally contains one or more ``import`` statements, which define the :ref:`libraries <library-modules>` or :ref:`modules <modules>` to import into the query. Libraries and modules provide a way of grouping together related :ref:`types <types>`, :ref:`predicates <predicates>`, and other modules. The contents of each library or module that you import can then be accessed by the query. 
 Our `open source repository on GitHub <https://github.com/github/codeql>`__ contains the standard CodeQL libraries for each supported language.   
 
-When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying, using ``import`` followed by a language:
+When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying. For more information about importing the standard CodeQL libraries, see the CodeQL library guides:
 
-- C/C++: ``cpp``
-- C#: ``csharp``
-- Go: ``go``
-- Java: ``java``
-- JavaScript/TypeScript: ``javascript``
-- Python: ``python``
+- :ref:`CodeQL library guide for C and C++ <codeql-library-for-cpp>`
+- :ref:`CodeQL library guide for C# <codeql-library-for-csharp>`
+- :ref:`CodeQL library guide for Go <codeql-library-for-go>`
+- :ref:`CodeQL library guide for Java <codeql-library-for-java>`
+- :ref:`CodeQL library guide for JavaScript <codeql-library-for-javascript>`
+- :ref:`CodeQL library guide for Python <codeql-library-for-python>`
+- :ref:`CodeQL library guide for Ruby <codeql-library-for-ruby>`
+- :ref:`CodeQL library guide for TypeScript <codeql-library-for-typescript>`
 
 There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
@@ -129,7 +130,7 @@ Contributing queries
 ********************
 
 Contributions to the standard queries and libraries are very welcome. For more information, see our `contributing guidelines <https://github.com/github/codeql/blob/main/CONTRIBUTING.md>`__.
-If you are contributing a query to the open source GitHub repository, writing a custom query for LGTM, or using a custom query in an analysis with the CodeQL CLI, then you need to include extra metadata in your query to ensure that the query results are interpreted and displayed correctly. See the following topics for more information on query metadata:
+If you are contributing a query to the open source GitHub repository or using a custom query in an analysis with the CodeQL CLI, then you need to include extra metadata in your query to ensure that the query results are interpreted and displayed correctly. See the following topics for more information on query metadata:
 
 -  ":doc:`Metadata for CodeQL queries <metadata-for-codeql-queries>`"
 -  `Query metadata style guide on GitHub <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__

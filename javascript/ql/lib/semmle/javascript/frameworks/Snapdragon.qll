@@ -27,7 +27,7 @@ private module Snapdragon {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(string methodName, API::CallNode set, API::CallNode call, API::Node base |
         // the handler, registered with a call to `.set`.
-        set = getSetCall+(base.getMember(methodName + "r")).getAnImmediateUse() and
+        set = getSetCall+(base.getMember(methodName + "r")).asSource() and
         // the snapdragon instance. The API is chaining, you can also use the instance directly.
         base = API::moduleImport("snapdragon").getInstance() and
         methodName = ["parse", "compile"] and
@@ -47,7 +47,7 @@ private module Snapdragon {
           or
           // for compiler handlers the input is the first parameter.
           methodName = "compile" and
-          succ = set.getParameter(1).getParameter(0).getAnImmediateUse()
+          succ = set.getParameter(1).getParameter(0).asSource()
         )
       )
     }

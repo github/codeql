@@ -34,7 +34,7 @@ class FullServerSideRequestForgeryConfiguration extends TaintTracking::Configura
     node instanceof FullUrlControlSanitizer
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof SanitizerGuard
   }
 }
@@ -42,7 +42,7 @@ class FullServerSideRequestForgeryConfiguration extends TaintTracking::Configura
 /**
  * Holds if all URL parts of `request` is fully user controlled.
  */
-predicate fullyControlledRequest(HTTP::Client::Request request) {
+predicate fullyControlledRequest(Http::Client::Request request) {
   exists(FullServerSideRequestForgeryConfiguration fullConfig |
     forall(DataFlow::Node urlPart | urlPart = request.getAUrlPart() |
       fullConfig.hasFlow(_, urlPart)
@@ -65,7 +65,7 @@ class PartialServerSideRequestForgeryConfiguration extends TaintTracking::Config
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof SanitizerGuard
   }
 }

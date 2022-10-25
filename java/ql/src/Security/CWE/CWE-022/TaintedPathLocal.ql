@@ -15,7 +15,9 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.PathCreation
+import semmle.code.java.security.PathSanitizer
 import DataFlow::PathGraph
 import TaintedPathCommon
 
@@ -26,16 +28,37 @@ class TaintedPathLocalConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()
+    or
+    sinkNode(sink, "create-file")
+  }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer.getType() instanceof BoxedType or
+    sanitizer.getType() instanceof PrimitiveType or
+    sanitizer.getType() instanceof NumberType or
+    sanitizer instanceof PathInjectionSanitizer
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(TaintedPathAdditionalTaintStep s).step(n1, n2)
   }
 }
 
-from
-  DataFlow::PathNode source, DataFlow::PathNode sink, PathCreation p, Expr e,
-  TaintedPathLocalConfig conf
-where
-  e = sink.getNode().asExpr() and
-  e = p.getAnInput() and
-  conf.hasFlowPath(source, sink) and
-  not guarded(e)
-select p, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
-  "User-provided value"
+/**
+ * Gets the data-flow node at which to report a path ending at `sink`.
+ *
+ * Previously this query flagged alerts exclusively at `PathCreation` sites,
+ * so to avoid perturbing existing alerts, where a `PathCreation` exists we
+ * continue to report there; otherwise we report directly at `sink`.
+ */
+DataFlow::Node getReportingNode(DataFlow::Node sink) {
+  any(TaintedPathLocalConfig c).hasFlowTo(sink) and
+  if exists(PathCreation pc | pc.getAnInput() = sink.asExpr())
+  then result.asExpr() = any(PathCreation pc | pc.getAnInput() = sink.asExpr())
+  else result = sink
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, TaintedPathLocalConfig conf
+where conf.hasFlowPath(source, sink)
+select getReportingNode(sink.getNode()), source, sink, "This path depends on a $@.",
+  source.getNode(), "user-provided value"

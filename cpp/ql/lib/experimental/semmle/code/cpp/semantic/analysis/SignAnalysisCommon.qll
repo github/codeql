@@ -71,7 +71,7 @@ abstract class CustomSignDef extends SignDef {
  * Concrete implementations extend one of the following subclasses:
  * - `ConstantSignExpr`, for expressions with a compile-time constant value.
  * - `FlowSignExpr`, for expressions whose sign can be computed from the signs of their operands.
- * - `CustomsignExpr`, for expressions shose sign can be computed by a language-specific
+ * - `CustomsignExpr`, for expressions whose sign can be computed by a language-specific
  *   implementation.
  *
  * If the same expression matches more than one of the above subclasses, the sign is computed as
@@ -189,9 +189,12 @@ private class BinarySignExpr extends FlowSignExpr {
   BinarySignExpr() { binary = this }
 
   override Sign getSignRestriction() {
-    result =
-      semExprSign(binary.getLeftOperand())
-          .applyBinaryOp(semExprSign(binary.getRightOperand()), binary.getOpcode())
+    exists(SemExpr left, SemExpr right |
+      binaryExprOperands(binary, left, right) and
+      result =
+        semExprSign(pragma[only_bind_out](left))
+            .applyBinaryOp(semExprSign(pragma[only_bind_out](right)), binary.getOpcode())
+    )
     or
     exists(SemDivExpr div | div = binary |
       result = semExprSign(div.getLeftOperand()) and
@@ -199,6 +202,11 @@ private class BinarySignExpr extends FlowSignExpr {
       div.getRightOperand().(SemFloatingPointLiteralExpr).getFloatValue() = 0
     )
   }
+}
+
+pragma[nomagic]
+private predicate binaryExprOperands(SemBinaryExpr binary, SemExpr left, SemExpr right) {
+  binary.getLeftOperand() = left and binary.getRightOperand() = right
 }
 
 /**
@@ -221,7 +229,7 @@ private class UnarySignExpr extends FlowSignExpr {
   UnarySignExpr() { unary = this and not this instanceof SemCastExpr }
 
   override Sign getSignRestriction() {
-    result = semExprSign(unary.getOperand()).applyUnaryOp(unary.getOpcode())
+    result = semExprSign(pragma[only_bind_out](unary.getOperand())).applyUnaryOp(unary.getOpcode())
   }
 }
 

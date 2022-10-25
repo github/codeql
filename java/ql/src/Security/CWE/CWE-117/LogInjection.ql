@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from LogInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This $@ flows to a log entry.", source.getNode(),
+select sink.getNode(), source, sink, "This log entry depends on a $@.", source.getNode(),
   "user-provided value"

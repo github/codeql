@@ -1,6 +1,10 @@
 C and C++ built-in support
 ================================
 
+Provided by the current versions of the
+CodeQL query pack ``codeql/cpp-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src>`__)
+and the CodeQL library pack ``codeql/cpp-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib>`__).
+
 .. csv-table::
    :header-rows: 1
    :class: fullWidthTable
@@ -13,6 +17,10 @@ C and C++ built-in support
 
 C# built-in support
 ================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/csharp-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/src>`__)
+and the CodeQL library pack ``codeql/csharp-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/lib>`__).
 
 .. csv-table::
    :header-rows: 1
@@ -32,6 +40,10 @@ C# built-in support
 
 Go built-in support
 ================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/go-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/src>`__)
+and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/lib>`__).
 
 .. csv-table::
    :header-rows: 1
@@ -84,6 +96,10 @@ Go built-in support
 Java built-in support
 ==================================
 
+Provided by the current versions of the
+CodeQL query pack ``codeql/java-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src>`__)
+and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib>`__).
+
 .. csv-table::
    :header-rows: 1
    :class: fullWidthTable
@@ -112,6 +128,10 @@ Java built-in support
 
 JavaScript and TypeScript built-in support
 =======================================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/javascript-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/src>`__)
+and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/lib>`__).
 
 .. csv-table::
    :header-rows: 1
@@ -156,6 +176,10 @@ JavaScript and TypeScript built-in support
 Python built-in support
 ====================================
 
+Provided by the current versions of the
+CodeQL query pack ``codeql/python-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/src>`__)
+and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib>`__).
+
 .. csv-table::
    :header-rows: 1
    :class: fullWidthTable
@@ -197,11 +221,17 @@ Python built-in support
    aiopg, Database
    asyncpg, Database
    clickhouse-driver, Database
+   cx_Oracle, Database
    mysql-connector-python, Database
    mysql-connector, Database
    MySQL-python, Database
    mysqlclient, Database
+   oracledb, Database
+   phoenixdb, Database
    psycopg2, Database
+   pyodbc, Database
+   pymssql, Database
+   PyMySQL, Database
    sqlite3, Database
    Flask-SQLAlchemy, Database ORM
    peewee, Database ORM
@@ -215,3 +245,31 @@ Python built-in support
    libxml2, XML processing library
    lxml, XML processing library
    xmltodict, XML processing library
+
+
+Ruby built-in support
+====================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/ruby-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src>`__)
+and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+
+   Name, Category
+   excon, HTTP client
+   faraday, HTTP client
+   http_client, HTTP client
+   httparty, HTTP client
+   libxml-ruby, XML processing library
+   nokogiri, XML processing library
+   open-uri, HTTP client
+   posix-spawn, Utility library
+   rest-client, HTTP client
+   Ruby on Rails, Web framework
+   rubyzip, Compression library
+   typhoeus, HTTP client
+

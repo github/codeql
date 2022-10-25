@@ -37,6 +37,8 @@ predicate inVoidContext(Expr e) {
   )
   or
   exists(LogicalBinaryExpr logical | e = logical.getRightOperand() and inVoidContext(logical))
+  or
+  exists(ConditionalExpr cond | e = cond.getABranch() | inVoidContext(cond))
 }
 
 /**

@@ -334,19 +334,19 @@ namespace FlowThroughGlobals {
   }
 
   int f() {
-    sink(globalVar); // tainted or clean? Not sure.
+    sink(globalVar); // $ ir=333:17 ir=347:17 // tainted or clean? Not sure.
     taintGlobal();
-    sink(globalVar); // $ MISSING: ast,ir
+    sink(globalVar); // $ ir=333:17 ir=347:17 MISSING: ast
   }
 
   int calledAfterTaint() {
-    sink(globalVar); // $ MISSING: ast,ir
+    sink(globalVar); // $ ir=333:17 ir=347:17 MISSING: ast
   }
 
   int taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast,ir
+    sink(globalVar); // $ ast ir=333:17 ir=347:17
   }
 }
 

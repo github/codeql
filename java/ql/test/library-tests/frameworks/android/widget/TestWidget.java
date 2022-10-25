@@ -2,10 +2,14 @@ import android.widget.EditText;
 
 public class TestWidget {
 
+    private EditText source() {
+        return null;
+    }
+
     private void sink(Object sink) {}
 
-    public void test(EditText t) {
-        sink(t.getText().toString()); // $ hasTaintFlow
+    public void test() {
+        sink(source().getText().toString()); // $ hasTaintFlow
     }
 }
 

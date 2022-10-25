@@ -27,13 +27,13 @@ private class SqlSinkCsv extends SinkModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;spec;kind"
-        "org.hibernate;QueryProducer;true;createQuery;;;Argument[0];sql",
-        "org.hibernate;QueryProducer;true;createNativeQuery;;;Argument[0];sql",
-        "org.hibernate;QueryProducer;true;createSQLQuery;;;Argument[0];sql",
-        "org.hibernate;SharedSessionContract;true;createQuery;;;Argument[0];sql",
-        "org.hibernate;SharedSessionContract;true;createSQLQuery;;;Argument[0];sql",
-        "org.hibernate;Session;true;createQuery;;;Argument[0];sql",
-        "org.hibernate;Session;true;createSQLQuery;;;Argument[0];sql"
+        "org.hibernate;QueryProducer;true;createQuery;;;Argument[0];sql;manual",
+        "org.hibernate;QueryProducer;true;createNativeQuery;;;Argument[0];sql;manual",
+        "org.hibernate;QueryProducer;true;createSQLQuery;;;Argument[0];sql;manual",
+        "org.hibernate;SharedSessionContract;true;createQuery;;;Argument[0];sql;manual",
+        "org.hibernate;SharedSessionContract;true;createSQLQuery;;;Argument[0];sql;manual",
+        "org.hibernate;Session;true;createQuery;;;Argument[0];sql;manual",
+        "org.hibernate;Session;true;createSQLQuery;;;Argument[0];sql;manual"
       ]
   }
 }

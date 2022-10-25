@@ -1,14 +1,21 @@
 package com.github.codeql
 
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrPackageFragment
 import org.jetbrains.kotlin.ir.types.IrSimpleType
-import org.jetbrains.kotlin.ir.types.IdSignatureValues
-import org.jetbrains.kotlin.ir.util.IdSignature
+import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.name.FqName
 
 class PrimitiveTypeMapping(val logger: Logger, val pluginContext: IrPluginContext) {
-    fun getPrimitiveInfo(s: IrSimpleType) = mapping[s.classifier.signature]
+    fun getPrimitiveInfo(s: IrSimpleType) =
+        s.classOrNull?.let {
+            if ((it.owner.parent as? IrPackageFragment)?.fqName == StandardNames.BUILT_INS_PACKAGE_FQ_NAME)
+                mapping[it.owner.name]
+            else
+                null
+        }
 
     data class PrimitiveTypeInfo(
         val primitiveName: String?,
@@ -60,25 +67,25 @@ class PrimitiveTypeMapping(val logger: Logger, val pluginContext: IrPluginContex
         val javaLangVoid = findClass("java.lang.Void", kotlinNothing)
 
         mapOf(
-            IdSignatureValues._byte to PrimitiveTypeInfo("byte", true, javaLangByte, "kotlin", "Byte"),
-            IdSignatureValues._short to PrimitiveTypeInfo("short", true, javaLangShort, "kotlin", "Short"),
-            IdSignatureValues._int to PrimitiveTypeInfo("int", true, javaLangInteger, "kotlin", "Int"),
-            IdSignatureValues._long to PrimitiveTypeInfo("long", true, javaLangLong, "kotlin", "Long"),
+            StandardNames.FqNames._byte.shortName() to PrimitiveTypeInfo("byte", true, javaLangByte, "kotlin", "Byte"),
+            StandardNames.FqNames._short.shortName() to PrimitiveTypeInfo("short", true, javaLangShort, "kotlin", "Short"),
+            StandardNames.FqNames._int.shortName() to PrimitiveTypeInfo("int", true, javaLangInteger, "kotlin", "Int"),
+            StandardNames.FqNames._long.shortName() to PrimitiveTypeInfo("long", true, javaLangLong, "kotlin", "Long"),
 
-            IdSignatureValues.uByte to PrimitiveTypeInfo("byte", true, kotlinUByte, "kotlin", "UByte"),
-            IdSignatureValues.uShort to PrimitiveTypeInfo("short", true, kotlinUShort, "kotlin", "UShort"),
-            IdSignatureValues.uInt to PrimitiveTypeInfo("int", true, kotlinUInt, "kotlin", "UInt"),
-            IdSignatureValues.uLong to PrimitiveTypeInfo("long", true, kotlinULong, "kotlin", "ULong"),
+            StandardNames.FqNames.uByteFqName.shortName() to PrimitiveTypeInfo("byte", true, kotlinUByte, "kotlin", "UByte"),
+            StandardNames.FqNames.uShortFqName.shortName() to PrimitiveTypeInfo("short", true, kotlinUShort, "kotlin", "UShort"),
+            StandardNames.FqNames.uIntFqName.shortName() to PrimitiveTypeInfo("int", true, kotlinUInt, "kotlin", "UInt"),
+            StandardNames.FqNames.uLongFqName.shortName() to PrimitiveTypeInfo("long", true, kotlinULong, "kotlin", "ULong"),
 
-            IdSignatureValues._double to PrimitiveTypeInfo("double", true, javaLangDouble, "kotlin", "Double"),
-            IdSignatureValues._float to PrimitiveTypeInfo("float", true, javaLangFloat, "kotlin", "Float"),
+            StandardNames.FqNames._double.shortName() to PrimitiveTypeInfo("double", true, javaLangDouble, "kotlin", "Double"),
+            StandardNames.FqNames._float.shortName() to PrimitiveTypeInfo("float", true, javaLangFloat, "kotlin", "Float"),
 
-            IdSignatureValues._boolean to PrimitiveTypeInfo("boolean", true, javaLangBoolean, "kotlin", "Boolean"),
+            StandardNames.FqNames._boolean.shortName() to PrimitiveTypeInfo("boolean", true, javaLangBoolean, "kotlin", "Boolean"),
 
-            IdSignatureValues._char to PrimitiveTypeInfo("char", true, javaLangCharacter, "kotlin", "Char"),
+            StandardNames.FqNames._char.shortName() to PrimitiveTypeInfo("char", true, javaLangCharacter, "kotlin", "Char"),
 
-            IdSignatureValues.unit to PrimitiveTypeInfo("void", false, kotlinUnit, "kotlin", "Unit"),
-            IdSignatureValues.nothing to PrimitiveTypeInfo(null, true, javaLangVoid, "kotlin", "Nothing"),
+            StandardNames.FqNames.unit.shortName() to PrimitiveTypeInfo("void", false, kotlinUnit, "kotlin", "Unit"),
+            StandardNames.FqNames.nothing.shortName() to PrimitiveTypeInfo(null, true, javaLangVoid, "kotlin", "Nothing"),
         )
     }()
 }

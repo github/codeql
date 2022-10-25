@@ -50,5 +50,5 @@ predicate isSuspiciousPropertyName(PropertyRead pr) {
 from DataFlow::PathNode src, DataFlow::PathNode sink, DataFlowFromMethodToHash conf
 where conf.hasFlow(src.getNode(), sink.getNode())
 select src.getNode(), src, sink,
-  "The hash is calculated on the process name $@, may be related to a backdoor. Please review the code for possible malicious intent.",
-  sink.getNode(), "here"
+  "The hash is calculated on $@, may be related to a backdoor. Please review the code for possible malicious intent.",
+  sink.getNode(), "this process name"

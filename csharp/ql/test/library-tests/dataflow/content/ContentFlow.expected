@@ -1,0 +1,9 @@
+| ContentFlow.cs:18:18:18:24 | object creation of type A | field FieldB.field FieldA. | ContentFlow.cs:19:14:19:38 | call to method Through<B> |  | true |
+| ContentFlow.cs:18:18:18:24 | object creation of type A | field FieldB.field FieldA. | ContentFlow.cs:37:14:37:14 | access to parameter t |  | true |
+| ContentFlow.cs:21:27:21:33 | object creation of type B |  | ContentFlow.cs:22:14:22:23 | call to method Through<A> | field FieldA.field FieldB. | true |
+| ContentFlow.cs:21:27:21:33 | object creation of type B |  | ContentFlow.cs:37:14:37:14 | access to parameter t | field FieldA.field FieldB. | true |
+| ContentFlow.cs:24:18:24:24 | object creation of type A | field FieldA.field FieldB. | ContentFlow.cs:26:14:26:23 | call to method Through<B> | field FieldB.field FieldA. | true |
+| ContentFlow.cs:24:18:24:24 | object creation of type A | field FieldA.field FieldB. | ContentFlow.cs:37:14:37:14 | access to parameter t | field FieldB.field FieldA. | true |
+| ContentFlow.cs:30:12:30:18 | object creation of type A | field FieldB.field FieldA. | ContentFlow.cs:43:14:43:14 | access to parameter t |  | true |
+| ContentFlow.cs:48:17:48:23 | object creation of type A | field FieldB.field FieldA. | ContentFlow.cs:28:14:28:27 | call to method Through<B> |  | true |
+| ContentFlow.cs:48:17:48:23 | object creation of type A | field FieldB.field FieldA. | ContentFlow.cs:37:14:37:14 | access to parameter t |  | true |

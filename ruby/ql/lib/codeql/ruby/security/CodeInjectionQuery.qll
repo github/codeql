@@ -16,13 +16,27 @@ import codeql.ruby.dataflow.BarrierGuards
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "CodeInjection" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+    state = source.(Source).getAFlowState()
+  }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+    state = sink.(Sink).getAFlowState()
+  }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard or
-    guard instanceof StringConstCompare or
-    guard instanceof StringConstArrayInclusionCall
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof Sanitizer and not exists(node.(Sanitizer).getAFlowState())
+    or
+    node instanceof StringConstCompareBarrier
+    or
+    node instanceof StringConstArrayInclusionCallBarrier
+  }
+
+  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
+    node.(Sanitizer).getAFlowState() = state
+  }
+
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof SanitizerGuard
   }
 }

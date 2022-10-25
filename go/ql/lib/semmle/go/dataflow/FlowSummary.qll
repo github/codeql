@@ -1,5 +1,5 @@
 /**
- * Provides classes and predicates for definining flow summaries.
+ * Provides classes and predicates for defining flow summaries.
  */
 
 import go

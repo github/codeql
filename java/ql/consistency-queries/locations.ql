@@ -26,7 +26,7 @@ Location backwardsLocation() {
 // least to locate a `File`, so such a location does end up with a single use.
 Location unusedLocation() {
   not exists(Top t | t.getLocation() = result) and
-  not exists(XMLLocatable x | x.getLocation() = result) and
+  not exists(XmlLocatable x | x.getLocation() = result) and
   not exists(ConfigLocatable c | c.getLocation() = result) and
   not exists(Diagnostic d | d.getLocation() = result) and
   not (

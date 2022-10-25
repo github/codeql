@@ -10,7 +10,7 @@ import go
  * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
  *
  * Use this if you want to define a derived `DataFlow::BarrierGuard` without
- * make the type recursive. Otherwise use `RegexpCheck`.
+ * make the type recursive. Otherwise use `RegexpCheckBarrier`.
  */
 predicate regexpFunctionChecksExpr(DataFlow::Node resultNode, Expr checked, boolean branch) {
   exists(RegexpMatchFunction matchfn, DataFlow::CallNode call |
@@ -26,7 +26,20 @@ predicate regexpFunctionChecksExpr(DataFlow::Node resultNode, Expr checked, bool
  *
  * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
  */
-class RegexpCheck extends DataFlow::BarrierGuard {
+class RegexpCheckBarrier extends DataFlow::Node {
+  RegexpCheckBarrier() {
+    this = DataFlow::BarrierGuard<regexpFunctionChecksExpr/3>::getABarrierNode()
+  }
+}
+
+/**
+ * DEPRECATED: Use `RegexpCheckBarrier` instead.
+ *
+ * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
+ *
+ * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
+ */
+deprecated class RegexpCheck extends DataFlow::BarrierGuard {
   RegexpCheck() { regexpFunctionChecksExpr(this, _, _) }
 
   override predicate checks(Expr e, boolean branch) { regexpFunctionChecksExpr(this, e, branch) }

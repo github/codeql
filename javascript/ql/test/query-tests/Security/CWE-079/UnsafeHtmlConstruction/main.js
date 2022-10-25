@@ -75,3 +75,45 @@ module.exports.intentionalTemplate = function (obj) {
     const html = "<span>" + obj.spanTemplate + "</span>"; // OK
     document.querySelector("#template").innerHTML = html;
 }
+
+module.exports.types = function (val) {
+    if (typeof val === "string") {
+        $("#foo").html("<span>" + val + "</span>"); // NOT OK
+    } else if (typeof val === "number") {
+        $("#foo").html("<span>" + val + "</span>"); // OK
+    } else if (typeof val === "boolean") {
+        $("#foo").html("<span>" + val + "</span>"); // OK
+    }
+}
+
+function createHTML(x) {
+    return "<span>" + x + "</span>"; // NOT OK
+}
+
+module.exports.usesCreateHTML = function (x) {
+    $("#foo").html(createHTML(x));
+}
+
+const myMermaid = require('mermaid');
+module.exports.usesCreateHTML = function (x) {
+    myMermaid.render("id", x, function (svg) { // NOT OK
+        $("#foo").html(svg);
+    });
+    
+    $("#foo").html(myMermaid.render("id", x)); // NOT OK
+
+    mermaid.render("id", x, function (svg) {// NOT OK
+        $("#foo").html(svg); 
+    });
+
+    $("#foo").html(mermaid.render("id", x)); // NOT OK
+
+    mermaid.mermaidAPI.render("id", x, function (svg) {// NOT OK
+        $("#foo").html(svg);
+    });
+}
+
+module.exports.xssThroughMarkdown = function (s) {
+    const html = markdown.render(s); // NOT OK
+    document.querySelector("#markdown").innerHTML = html;
+}

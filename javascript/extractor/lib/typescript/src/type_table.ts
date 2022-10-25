@@ -947,7 +947,7 @@ export class TypeTable {
    * Returns a unique string for the given call/constructor signature.
    */
   private getSignatureString(kind: ts.SignatureKind, signature: AugmentedSignature): string {
-    let modifiers : ts.ModifiersArray = signature.getDeclaration()?.modifiers;
+    let modifiers  = signature.getDeclaration()?.modifiers;
     let isAbstract = modifiers && modifiers.filter(modifier => modifier.kind == ts.SyntaxKind.AbstractKeyword).length > 0
 
     let parameters = signature.getParameters();
@@ -1068,6 +1068,7 @@ export class TypeTable {
             let superType = this.typeChecker.getTypeFromTypeNode(typeExpr);
             if (superType == null) continue;
             let baseTypeSymbol = superType.symbol;
+            baseTypeSymbol = (baseTypeSymbol as any)?.type?.symbol ?? baseTypeSymbol;
             if (baseTypeSymbol == null) continue;
             let baseId = this.getSymbolId(baseTypeSymbol);
             // Note: take care not to perform a recursive call between the two `push` calls.

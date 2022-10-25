@@ -16,17 +16,17 @@ import cpp
 // pointers. This will obviously not catch code that uses inline assembly to achieve
 // self-modification, nor will it spot the use of OS mechanisms to write into process
 // memory (such as WriteProcessMemory under Windows).
-predicate maybeSMCConversion(Type t1, Type t2) {
+predicate maybeSmcConversion(Type t1, Type t2) {
   t1 instanceof FunctionPointerType and
   t2 instanceof PointerType and
   not t2 instanceof FunctionPointerType and
   not t2 instanceof VoidPointerType
   or
-  maybeSMCConversion(t2, t1)
+  maybeSmcConversion(t2, t1)
 }
 
 from Expr e
 where
   e.fromSource() and
-  maybeSMCConversion(e.getUnderlyingType(), e.getActualType())
+  maybeSmcConversion(e.getUnderlyingType(), e.getActualType())
 select e, "AV Rule 2: There shall not be any self-modifying code."

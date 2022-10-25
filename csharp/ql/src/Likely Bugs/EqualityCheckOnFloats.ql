@@ -1,6 +1,8 @@
 /**
  * @name Equality check on floating point values
- * @description Equality checks on floating point values can yield unexpected results.
+ * @description Comparing results of floating-point computations with '==' or
+ *              '!=' is likely to yield surprising results since floating-point
+ *              computation does not follow the standard rules of algebra.
  * @kind problem
  * @problem.severity warning
  * @precision medium

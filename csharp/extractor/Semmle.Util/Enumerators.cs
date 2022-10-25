@@ -8,7 +8,7 @@ namespace Semmle.Util
         /// Create an enumerable with a single element.
         /// </summary>
         ///
-        /// <typeparam name="T">The type of the enumerble/element.</typeparam>
+        /// <typeparam name="T">The type of the enumerable/element.</typeparam>
         /// <param name="t">The element.</param>
         /// <returns>An enumerable containing a single element.</returns>
         public static IEnumerable<T> Singleton<T>(T t)

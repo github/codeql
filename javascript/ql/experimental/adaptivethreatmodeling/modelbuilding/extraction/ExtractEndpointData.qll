@@ -14,10 +14,26 @@ import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import experimental.adaptivethreatmodeling.EndpointScoring as EndpointScoring
 import experimental.adaptivethreatmodeling.EndpointTypes
 import experimental.adaptivethreatmodeling.FilteringReasons
-import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
-import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
-import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
-import experimental.adaptivethreatmodeling.XssATM as XssATM
+import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
+
+/** DEPRECATED: Alias for NosqlInjectionAtm */
+deprecated module NosqlInjectionATM = NosqlInjectionAtm;
+
+import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
+
+/** DEPRECATED: Alias for SqlInjectionAtm */
+deprecated module SqlInjectionATM = SqlInjectionAtm;
+
+import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+
+/** DEPRECATED: Alias for TaintedPathAtm */
+deprecated module TaintedPathATM = TaintedPathAtm;
+
+import experimental.adaptivethreatmodeling.XssATM as XssAtm
+
+/** DEPRECATED: Alias for XssAtm */
+deprecated module XssATM = XssAtm;
+
 import Labels
 import NoFeaturizationRestrictionsConfig
 import Queries
@@ -25,13 +41,13 @@ import Queries
 /** Gets the ATM configuration object for the specified query. */
 AtmConfig getAtmCfg(Query query) {
   query instanceof NosqlInjectionQuery and
-  result instanceof NosqlInjectionATM::NosqlInjectionAtmConfig
+  result instanceof NosqlInjectionAtm::NosqlInjectionAtmConfig
   or
-  query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::SqlInjectionAtmConfig
+  query instanceof SqlInjectionQuery and result instanceof SqlInjectionAtm::SqlInjectionAtmConfig
   or
-  query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathAtmConfig
+  query instanceof TaintedPathQuery and result instanceof TaintedPathAtm::TaintedPathAtmConfig
   or
-  query instanceof XssQuery and result instanceof XssATM::DomBasedXssAtmConfig
+  query instanceof XssQuery and result instanceof XssAtm::DomBasedXssAtmConfig
 }
 
 /** DEPRECATED: Alias for getAtmCfg */
@@ -39,13 +55,13 @@ deprecated ATMConfig getATMCfg(Query query) { result = getAtmCfg(query) }
 
 /** Gets the ATM data flow configuration for the specified query. */
 DataFlow::Configuration getDataFlowCfg(Query query) {
-  query instanceof NosqlInjectionQuery and result instanceof NosqlInjectionATM::Configuration
+  query instanceof NosqlInjectionQuery and result instanceof NosqlInjectionAtm::Configuration
   or
-  query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::Configuration
+  query instanceof SqlInjectionQuery and result instanceof SqlInjectionAtm::Configuration
   or
-  query instanceof TaintedPathQuery and result instanceof TaintedPathATM::Configuration
+  query instanceof TaintedPathQuery and result instanceof TaintedPathAtm::Configuration
   or
-  query instanceof XssQuery and result instanceof XssATM::Configuration
+  query instanceof XssQuery and result instanceof XssAtm::Configuration
 }
 
 /** Gets a known sink for the specified query. */
@@ -188,10 +204,10 @@ module FlowFromSource {
 
     Query getQuery() { result = q }
 
-    /** The sinks are the endpoints we're extracting. */
+    /** Holds if `sink` is an endpoint we're extracting. */
     override predicate isSink(DataFlow::Node sink) { sink = getAnEndpoint(q) }
 
-    /** The sinks are the endpoints we're extracting. */
+    /** Holds if `sink` is an endpoint we're extracting. */
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
       sink = getAnEndpoint(q) and exists(lbl)
     }

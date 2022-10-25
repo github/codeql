@@ -11,7 +11,6 @@
  * @precision high
  * @tags security
  *       external/cwe/cwe-732
- *       external/microsoft/C6248
  */
 
 import cpp

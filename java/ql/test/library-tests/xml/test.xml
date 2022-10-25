@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <element attribute="value">Text</element> <!-- $ hasXmlResult -->
+    <element attribute="value">Text</element> <!-- Missing -->
+    <element>Text</element> <!-- $ hasXmlResult --> <!-- Spurious -->
+</document>

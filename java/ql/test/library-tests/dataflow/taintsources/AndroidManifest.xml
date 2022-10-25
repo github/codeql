@@ -18,7 +18,7 @@
 
         <!-- This name is resolved to com.example.myapp.MainActivity
              based upon the package attribute -->
-        <activity android:name=".IntentSources">
+        <activity android:name=".IntentSourcesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,6 +28,18 @@
         <activity
             android:name=".DisplayMessageActivity"
             android:parentActivityName=".MainActivity" />
+
+        <service android:name=".IntentSourcesService">
+            <intent-filter>
+                <action android:name="android.intent.action.START_BACKGROUND"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".IntentSourcesReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_INSTALL"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
 

@@ -1,0 +1,11 @@
+name: codeql/swift-queries
+version: 0.0.0
+groups:
+  - swift
+  - queries
+suites: codeql-suites
+extractor: swift
+defaultSuiteFile: codeql-suites/swift-code-scanning.qls
+dependencies:
+  codeql/swift-all: "*"
+  codeql/suite-helpers: "*"

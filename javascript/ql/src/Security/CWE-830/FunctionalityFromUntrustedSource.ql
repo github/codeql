@@ -61,8 +61,8 @@ module StaticCreation {
   }
 
   /** A script element that refers to untrusted content. */
-  class CDNScriptElementWithUntrustedContent extends AddsUntrustedUrl, HTML::ScriptElement {
-    CDNScriptElementWithUntrustedContent() {
+  class CdnScriptElementWithUntrustedContent extends AddsUntrustedUrl, HTML::ScriptElement {
+    CdnScriptElementWithUntrustedContent() {
       not exists(string digest | not digest = "" | this.getIntegrityDigest() = digest) and
       isCdnUrlWithCheckingRequired(this.getSourcePath())
     }

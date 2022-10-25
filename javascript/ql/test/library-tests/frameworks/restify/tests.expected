@@ -18,7 +18,9 @@ test_HeaderDefinition_defines
 | src/test.js:13:5:13:37 | respons ... 2', '') | header2 |  |
 test_ResponseExpr
 | src/test.js:9:46:9:53 | response | src/test.js:9:19:11:1 | functio ... ition\\n} |
+| src/test.js:9:46:9:53 | response | src/test.js:9:19:11:1 | functio ... ition\\n} |
 | src/test.js:10:5:10:12 | response | src/test.js:9:19:11:1 | functio ... ition\\n} |
+| src/test.js:12:46:12:53 | response | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:12:46:12:53 | response | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:13:5:13:12 | response | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 test_HeaderDefinition
@@ -36,7 +38,9 @@ test_ServerDefinition
 | src/test.js:4:15:4:36 | restify ... erver() |
 test_RouteHandler_getAResponseExpr
 | src/test.js:9:19:11:1 | functio ... ition\\n} | src/test.js:9:46:9:53 | response |
+| src/test.js:9:19:11:1 | functio ... ition\\n} | src/test.js:9:46:9:53 | response |
 | src/test.js:9:19:11:1 | functio ... ition\\n} | src/test.js:10:5:10:12 | response |
+| src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:12:46:12:53 | response |
 | src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:12:46:12:53 | response |
 | src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:13:5:13:12 | response |
 test_RouteSetup_getARouteHandler
@@ -50,6 +54,7 @@ test_RouteHandler
 test_RequestExpr
 | src/test.js:9:37:9:43 | request | src/test.js:9:19:11:1 | functio ... ition\\n} |
 | src/test.js:12:37:12:43 | request | src/test.js:12:19:22:1 | functio ... okie;\\n} |
+| src/test.js:12:37:12:43 | request | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:14:5:14:11 | request | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:15:5:15:11 | request | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:16:5:16:11 | request | src/test.js:12:19:22:1 | functio ... okie;\\n} |
@@ -60,6 +65,7 @@ test_RequestExpr
 | src/test.js:21:5:21:11 | request | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 test_RouteHandler_getARequestExpr
 | src/test.js:9:19:11:1 | functio ... ition\\n} | src/test.js:9:37:9:43 | request |
+| src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:12:37:12:43 | request |
 | src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:12:37:12:43 | request |
 | src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:14:5:14:11 | request |
 | src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:15:5:15:11 | request |

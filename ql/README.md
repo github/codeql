@@ -21,14 +21,14 @@ cargo build --release
 The generated `ql/src/ql.dbscheme` and `ql/src/codeql_ql/ast/internal/TreeSitter.qll` files are included in the repository, but they can be re-generated as follows:
 
 ```bash
-./create-extractor-pack.sh
+./scripts/create-extractor-pack.sh
 ```
 
 ## Building a CodeQL database for a QL program
 
 First, get an extractor pack:
 
-Run `./create-extractor-pack.sh` (Linux/Mac) or `.\create-extractor-pack.ps1` (Windows PowerShell) and the pack will be created in the `extractor-pack` directory.
+Run `./scripts/create-extractor-pack.sh` (Linux/Mac) or `.\scripts\create-extractor-pack.ps1` (Windows PowerShell) and the pack will be created in the `extractor-pack` directory.
 
 Then run
 

@@ -60,7 +60,7 @@ class StackTraceExposureConfig extends TaintTracking::Configuration {
     node = any(DebugStackFunction f).getACall().getResult()
   }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof HTTP::ResponseBody }
+  override predicate isSink(DataFlow::Node node) { node instanceof Http::ResponseBody }
 
   override predicate isSanitizer(DataFlow::Node node) {
     // Sanitise everything controlled by an is-debug-mode check.
@@ -76,5 +76,6 @@ class StackTraceExposureConfig extends TaintTracking::Configuration {
 
 from StackTraceExposureConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "This stack trace is exposed to a remote user $@.",
-  sink.getNode(), "here"
+select sink.getNode(), source, sink,
+  "HTTP response depends on $@ and may be exposed to an external user.", source.getNode(),
+  "stack trace information"

@@ -68,8 +68,6 @@ class ListComp extends ListComp_, Comp {
 
   override Expr getIterable() { result = ListComp_.super.getIterable() }
 
-  override string toString() { result = ListComp_.super.toString() }
-
   override Expr getElt() { result = Comp.super.getElt() }
 }
 

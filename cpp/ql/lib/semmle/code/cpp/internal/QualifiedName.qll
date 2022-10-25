@@ -4,11 +4,7 @@
  * qualified.
  *
  * This file contains classes that mirror the standard AST classes for C++, but
- * these classes are only concerned with naming. The other difference is that
- * these classes don't use the `ResolveClass.qll` mechanisms like
- * `unresolveElement` because these classes should eventually be part of the
- * implementation of `ResolveClass.qll`, allowing it to match up classes when
- * their qualified names and parameters match.
+ * these classes are only concerned with naming.
  */
 
 private import semmle.code.cpp.Declaration as D

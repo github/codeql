@@ -48,8 +48,8 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
   }
 
   override TypeDeclarationEntry getADeclarationEntry() {
-    if type_decls(_, underlyingElement(this), _)
-    then type_decls(unresolveElement(result), underlyingElement(this), _)
+    if type_decls(_, unresolveElement(this), _)
+    then type_decls(underlyingElement(result), unresolveElement(this), _)
     else exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getADeclarationEntry())
   }
 

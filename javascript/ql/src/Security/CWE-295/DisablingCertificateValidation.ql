@@ -45,7 +45,7 @@ where
     or
     // the same thing, but with API-nodes if they happen to be available
     exists(API::Node tlsInvk | tlsInvk.getAnInvocation() = tlsInvocation() |
-      disable.getRhs() = tlsInvk.getAParameter().getMember("rejectUnauthorized").getARhs()
+      disable.getRhs() = tlsInvk.getAParameter().getMember("rejectUnauthorized").asSink()
     )
   ) and
   disable.getRhs().(AnalyzedNode).getTheBooleanValue() = false

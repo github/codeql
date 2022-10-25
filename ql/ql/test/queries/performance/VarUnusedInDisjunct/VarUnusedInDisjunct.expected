@@ -1,8 +1,9 @@
-| Test.qll:14:3:16:7 | Disjunction | The variable b is only used in one side of disjunct. |
-| Test.qll:21:5:23:37 | Disjunction | The variable big is only used in one side of disjunct. |
-| Test.qll:28:3:30:33 | Disjunction | The variable t is only used in one side of disjunct. |
-| Test.qll:49:3:53:26 | Disjunction | The variable toType is only used in one side of disjunct. |
-| Test.qll:74:8:74:77 | Disjunction | The variable bad is only used in one side of disjunct. |
-| Test.qll:115:26:115:80 | IfFormula | The variable bb is only used in one side of disjunct. |
-| Test.qll:127:5:129:9 | Disjunction | The variable a is only used in one side of disjunct. |
-| Test.qll:132:5:134:9 | Disjunction | The variable a is only used in one side of disjunct. |
+| Test.qll:14:3:16:7 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:13:16:13:20 | b | variable b |
+| Test.qll:21:5:23:37 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:20:10:20:16 | big | variable big |
+| Test.qll:28:3:30:33 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:27:12:27:16 | t | variable t |
+| Test.qll:49:3:53:26 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:48:30:48:39 | toType | variable toType |
+| Test.qll:74:8:74:77 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:70:9:70:15 | bad | variable bad |
+| Test.qll:115:26:115:80 | IfFormula | The $@ is only used in one side of disjunct. | Test.qll:115:16:115:21 | bb | variable bb |
+| Test.qll:127:5:129:9 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:125:16:125:20 | a | variable a |
+| Test.qll:132:5:134:9 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:125:16:125:20 | a | variable a |
+| Test.qll:164:5:166:35 | Disjunction | The $@ is only used in one side of disjunct. | Test.qll:161:3:161:11 | field | field field |

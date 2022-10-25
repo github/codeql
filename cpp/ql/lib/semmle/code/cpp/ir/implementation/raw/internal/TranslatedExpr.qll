@@ -12,6 +12,7 @@ private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
 private import TranslatedStmt
+private import TranslatedGlobalVar
 import TranslatedCall
 
 /**
@@ -78,7 +79,7 @@ abstract class TranslatedExpr extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = this.getAst() }
 
-  final override Function getFunction() { result = expr.getEnclosingFunction() }
+  final override Declaration getFunction() { result = expr.getEnclosingDeclaration() }
 
   /**
    * Gets the expression from which this `TranslatedExpr` is generated.
@@ -88,8 +89,10 @@ abstract class TranslatedExpr extends TranslatedElement {
   /**
    * Gets the `TranslatedFunction` containing this expression.
    */
-  final TranslatedFunction getEnclosingFunction() {
+  final TranslatedRootElement getEnclosingFunction() {
     result = getTranslatedFunction(expr.getEnclosingFunction())
+    or
+    result = getTranslatedVarInit(expr.getEnclosingVariable())
   }
 }
 
@@ -787,7 +790,7 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = ThisAddressTag() and
-    result = this.getEnclosingFunction().getThisVariable()
+    result = this.getEnclosingFunction().(TranslatedFunction).getThisVariable()
   }
 }
 
@@ -838,7 +841,7 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getIRUserVariable(expr.getEnclosingFunction(), expr.getTarget())
+    result = getIRUserVariable(expr.getEnclosingDeclaration(), expr.getTarget())
   }
 }
 
@@ -1447,8 +1450,6 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
       result = this.getLeftOperand().getResult()
   }
 
-  abstract Instruction getStoredValue();
-
   final TranslatedExpr getLeftOperand() {
     result = getTranslatedExpr(expr.getLValue().getFullyConverted())
   }
@@ -1486,6 +1487,75 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
       or
       operandTag instanceof StoreValueOperandTag and
       result = this.getRightOperand().getResult()
+    )
+  }
+}
+
+class TranslatedBlockAssignExpr extends TranslatedNonConstantExpr {
+  override BlockAssignExpr expr;
+
+  final override TranslatedElement getChild(int id) {
+    id = 0 and result = this.getLeftOperand()
+    or
+    id = 1 and result = this.getRightOperand()
+  }
+
+  final override Instruction getFirstInstruction() {
+    // The operand evaluation order should not matter since block assignments behave like memcpy.
+    result = this.getLeftOperand().getFirstInstruction()
+  }
+
+  final override Instruction getResult() { result = this.getInstruction(AssignmentStoreTag()) }
+
+  final TranslatedExpr getLeftOperand() {
+    result = getTranslatedExpr(expr.getLValue().getFullyConverted())
+  }
+
+  final TranslatedExpr getRightOperand() {
+    result = getTranslatedExpr(expr.getRValue().getFullyConverted())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = LoadTag() and
+    result = this.getInstruction(AssignmentStoreTag()) and
+    kind instanceof GotoEdge
+    or
+    tag = AssignmentStoreTag() and
+    result = this.getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getLeftOperand() and
+    result = this.getRightOperand().getFirstInstruction()
+    or
+    child = this.getRightOperand() and
+    result = this.getInstruction(LoadTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = LoadTag() and
+    opcode instanceof Opcode::Load and
+    resultType = getTypeForPRValue(expr.getRValue().getType())
+    or
+    tag = AssignmentStoreTag() and
+    opcode instanceof Opcode::Store and
+    // The frontend specifies that the relevant type is the one of the source.
+    resultType = getTypeForPRValue(expr.getRValue().getType())
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = LoadTag() and
+    operandTag instanceof AddressOperandTag and
+    result = this.getRightOperand().getResult()
+    or
+    tag = AssignmentStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = this.getLeftOperand().getResult()
+      or
+      operandTag instanceof StoreValueOperandTag and
+      result = this.getInstruction(LoadTag())
     )
   }
 }
@@ -2107,7 +2177,7 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
 /**
  * The IR translation of the ternary conditional operator (`a ? b : c`).
  * For this version, we expand the condition as a `TranslatedCondition`, rather than a
- * `TranslatedExpr`, to simplify the control flow in the presence of short-ciruit logical operators.
+ * `TranslatedExpr`, to simplify the control flow in the presence of short-circuit logical operators.
  */
 class TranslatedTernaryConditionalExpr extends TranslatedConditionalExpr, ConditionContext {
   TranslatedTernaryConditionalExpr() { not expr.isTwoOperand() }
@@ -2522,7 +2592,7 @@ class TranslatedVarArgsStart extends TranslatedNonConstantExpr {
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = VarArgsStartEllipsisAddressTag() and
-    result = this.getEnclosingFunction().getEllipsisVariable()
+    result = this.getEnclosingFunction().(TranslatedFunction).getEllipsisVariable()
   }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {

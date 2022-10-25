@@ -19,7 +19,7 @@ module CodeInjection {
     /**
      * Gets the substitute for `X` in the message `User-provided value flows to X`.
      */
-    string getMessageSuffix() { result = "here and is interpreted as code" }
+    string getMessageSuffix() { result = "this location and is interpreted as code" }
   }
 
   /**
@@ -37,7 +37,7 @@ module CodeInjection {
    */
   class AngularJSExpressionSink extends Sink, DataFlow::ValueNode {
     AngularJSExpressionSink() {
-      any(AngularJS::AngularJSCall call).interpretsArgumentAsCode(this.asExpr())
+      any(AngularJS::AngularJSCallNode call).interpretsArgumentAsCode(this)
     }
   }
 
@@ -48,6 +48,18 @@ module CodeInjection {
   class NodeJSVmSink extends Sink, DataFlow::ValueNode {
     NodeJSVmSink() {
       exists(NodeJSLib::VmModuleMemberInvocation inv | this = inv.getACodeArgument())
+    }
+  }
+
+  /** An expression parsed by the `gray-matter` library. */
+  class GrayMatterSink extends Sink {
+    GrayMatterSink() {
+      exists(API::CallNode call |
+        call = DataFlow::moduleImport("gray-matter").getACall() and
+        this = call.getArgument(0) and
+        // if the js/javascript engine is set, then we assume they are set to something safe.
+        not exists(call.getParameter(1).getMember("engines").getMember(["js", "javascript"]))
+      )
     }
   }
 
@@ -114,7 +126,8 @@ module CodeInjection {
     }
 
     override string getMessageSuffix() {
-      result = "here and is interpreted by " + templateType + ", which may evaluate it as code"
+      result =
+        "this location and is interpreted by " + templateType + ", which may evaluate it as code"
     }
   }
 
@@ -158,7 +171,7 @@ module CodeInjection {
         exists(string callName | c = DataFlow::globalVarRef(callName).getAnInvocation() |
           callName = "eval" and index = 0
           or
-          callName = "Function"
+          callName = "Function" and index = -1
           or
           callName = "execScript" and index = 0
           or
@@ -173,14 +186,13 @@ module CodeInjection {
           callName = "setImmediate" and index = 0
         )
         or
-        exists(DataFlow::GlobalVarRefNode wasm, string methodName |
-          wasm.getName() = "WebAssembly" and c = wasm.getAMemberCall(methodName)
-        |
-          methodName = "compile" or
-          methodName = "compileStreaming"
-        )
+        c = DataFlow::globalVarRef("WebAssembly").getAMemberCall(["compile", "compileStreaming"]) and
+        index = -1
       |
         this = c.getArgument(index)
+        or
+        index = -1 and
+        this = c.getAnArgument()
       )
       or
       // node-serialize is not intended to be safe for untrusted inputs
@@ -277,7 +289,7 @@ module CodeInjection {
   /** A sink for code injection via template injection. */
   abstract private class TemplateSink extends Sink {
     override string getMessageSuffix() {
-      result = "here and is interpreted as a template, which may contain code"
+      result = "this location and is interpreted as a template, which may contain code"
     }
   }
 

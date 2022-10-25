@@ -245,10 +245,12 @@ class Call extends Call_ {
     result = count(Expr arg | arg = this.getAPositionalArg() and not arg instanceof Starred)
   }
 
-  /** Gets the tuple (*) argument of this call, provided there is exactly one. */
+  /** Gets the first tuple (*) argument of this call, if any. */
   Expr getStarArg() {
-    count(this.getStarargs()) < 2 and
-    result = this.getStarargs()
+    exists(int firstStarArgIndex |
+      firstStarArgIndex = min(int i | this.getPositionalArg(i) instanceof Starred | i) and
+      result = this.getPositionalArg(firstStarArgIndex).(Starred).getValue()
+    )
   }
 }
 
@@ -615,6 +617,9 @@ private string non_byte_prefix() {
   result = any(Str_ s).getPrefix() and
   not result.charAt(_) in ["b", "B"]
 }
+
+/** A string constant. This is a placeholder class -- use `StrConst` instead. */
+class Str = StrConst;
 
 /** A string constant. */
 class StrConst extends Str_, ImmutableLiteral {

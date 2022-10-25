@@ -21,7 +21,7 @@ class File extends Container, @file {
 
   /** Whether this file is a source code file. */
   predicate fromSource() {
-    /* If we start to analyse .pyc files, then this will have to change. */
+    /* If we start to analyze .pyc files, then this will have to change. */
     any()
   }
 

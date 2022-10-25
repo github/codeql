@@ -383,3 +383,22 @@ function constantComparisonSanitizer2() {
       }
     }
 }
+
+function propertySanitization(o) {
+    var v = SOURCE();
+    SINK(v.p.q); // NOT OK
+
+    if (o.hasOwnProperty(v)) {
+        SINK(v); // OK
+    } else if (o.hasOwnProperty(v.p)) {
+        SINK(v.p); // OK
+    } else if (o.hasOwnProperty(v.p.q)) {
+        SINK(v.p.q); // OK
+    } else if (o.hasOwnProperty(v.p)) {
+        SINK(v); // NOT OK
+    } else if (o.hasOwnProperty(v["p.q"])) {
+        SINK(v.p.q); // NOT OK
+    } else if (Object.hasOwn(o, v)) {
+        SINK(v); // OK
+    }
+}

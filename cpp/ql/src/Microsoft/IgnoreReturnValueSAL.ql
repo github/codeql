@@ -18,7 +18,7 @@ from Function f, FunctionCall call
 where
   call.getTarget() = f and
   call instanceof ExprInVoidContext and
-  any(SALCheckReturn a).getDeclaration() = f and
+  any(SalCheckReturn a).getDeclaration() = f and
   not getOptions().okToIgnoreReturnValue(call)
 select call, "Return value of $@ discarded although a SAL annotation " + "requires inspecting it.",
   f, f.getName()

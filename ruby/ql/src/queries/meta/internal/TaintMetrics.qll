@@ -36,3 +36,10 @@ DataFlow::Node relevantTaintSink(string kind) {
     kind = "UrlRedirect" and result instanceof UrlRedirect::Sink
   )
 }
+
+/**
+ * Gets the root folder of the snapshot.
+ *
+ * This is selected as the location for project-wide metrics.
+ */
+Folder projectRoot() { result.getRelativePath() = "" }

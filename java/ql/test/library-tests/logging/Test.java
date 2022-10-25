@@ -18,14 +18,14 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "java.util.logging;LogRecord;false;LogRecord;;;Argument[1];Argument[-1];taint"
+			// "java.util.logging;LogRecord;false;LogRecord;;;Argument[1];Argument[-1];taint;manual"
 			LogRecord out = null;
 			String in = (String) source();
 			out = new LogRecord(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceEntry;(Message);;Argument[0];ReturnValue;taint"
+			// "org.apache.logging.log4j;Logger;true;traceEntry;(Message);;Argument[0];ReturnValue;taint;manual"
 			EntryMessage out = null;
 			Message in = (Message) source();
 			Logger instance = null;
@@ -33,7 +33,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceEntry;(String,Object[]);;Argument[0..1];ReturnValue;taint"
+			// "org.apache.logging.log4j;Logger;true;traceEntry;(String,Object[]);;Argument[0..1];ReturnValue;taint;manual"
 			EntryMessage out = null;
 			Object[] in = (Object[]) source();
 			Logger instance = null;
@@ -41,7 +41,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceEntry;(String,Object[]);;Argument[0..1];ReturnValue;taint"
+			// "org.apache.logging.log4j;Logger;true;traceEntry;(String,Object[]);;Argument[0..1];ReturnValue;taint;manual"
 			EntryMessage out = null;
 			String in = (String) source();
 			Logger instance = null;
@@ -49,7 +49,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier[]);;Argument[0..1];ReturnValue;taint"
+			// "org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier[]);;Argument[0..1];ReturnValue;taint;manual"
 			EntryMessage out = null;
 			String in = (String) source();
 			Logger instance = null;
@@ -57,7 +57,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier[]);;Argument[0..1];ReturnValue;taint"
+			// "org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier[]);;Argument[0..1];ReturnValue;taint;manual"
 			EntryMessage out = null;
 			org.apache.logging.log4j.util.Supplier[] in =
 					(org.apache.logging.log4j.util.Supplier[]) source();
@@ -66,7 +66,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceEntry;(Supplier[]);;Argument[0];ReturnValue;taint"
+			// "org.apache.logging.log4j;Logger;true;traceEntry;(Supplier[]);;Argument[0];ReturnValue;taint;manual"
 			EntryMessage out = null;
 			org.apache.logging.log4j.util.Supplier[] in =
 					(org.apache.logging.log4j.util.Supplier[]) source();
@@ -75,7 +75,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceExit;(EntryMessage,Object);;Argument[1];ReturnValue;value"
+			// "org.apache.logging.log4j;Logger;true;traceExit;(EntryMessage,Object);;Argument[1];ReturnValue;value;manual"
 			Object out = null;
 			Object in = (Object) source();
 			Logger instance = null;
@@ -83,7 +83,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceExit;(Message,Object);;Argument[1];ReturnValue;value"
+			// "org.apache.logging.log4j;Logger;true;traceExit;(Message,Object);;Argument[1];ReturnValue;value;manual"
 			Object out = null;
 			Object in = (Object) source();
 			Logger instance = null;
@@ -91,7 +91,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceExit;(Object);;Argument[0];ReturnValue;value"
+			// "org.apache.logging.log4j;Logger;true;traceExit;(Object);;Argument[0];ReturnValue;value;manual"
 			Object out = null;
 			Object in = (Object) source();
 			Logger instance = null;
@@ -99,7 +99,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.apache.logging.log4j;Logger;true;traceExit;(String,Object);;Argument[1];ReturnValue;value"
+			// "org.apache.logging.log4j;Logger;true;traceExit;(String,Object);;Argument[1];ReturnValue;value;manual"
 			Object out = null;
 			Object in = (Object) source();
 			Logger instance = null;
@@ -107,56 +107,56 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.slf4j.spi;LoggingEventBuilder;true;addArgument;;;Argument[-1];ReturnValue;value"
+			// "org.slf4j.spi;LoggingEventBuilder;true;addArgument;;;Argument[-1];ReturnValue;value;manual"
 			LoggingEventBuilder out = null;
 			LoggingEventBuilder in = (LoggingEventBuilder) source();
 			out = in.addArgument((Object) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.slf4j.spi;LoggingEventBuilder;true;addArgument;;;Argument[-1];ReturnValue;value"
+			// "org.slf4j.spi;LoggingEventBuilder;true;addArgument;;;Argument[-1];ReturnValue;value;manual"
 			LoggingEventBuilder out = null;
 			LoggingEventBuilder in = (LoggingEventBuilder) source();
 			out = in.addArgument((java.util.function.Supplier) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[-1];ReturnValue;value"
+			// "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[-1];ReturnValue;value;manual"
 			LoggingEventBuilder out = null;
 			LoggingEventBuilder in = (LoggingEventBuilder) source();
 			out = in.addKeyValue((String) null, (Object) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[-1];ReturnValue;value"
+			// "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[-1];ReturnValue;value;manual"
 			LoggingEventBuilder out = null;
 			LoggingEventBuilder in = (LoggingEventBuilder) source();
 			out = in.addKeyValue((String) null, (java.util.function.Supplier) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[1];Argument[-1];taint"
+			// "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[1];Argument[-1];taint;manual"
 			LoggingEventBuilder out = null;
 			Object in = (Object) source();
 			out.addKeyValue((String) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[1];Argument[-1];taint"
+			// "org.slf4j.spi;LoggingEventBuilder;true;addKeyValue;;;Argument[1];Argument[-1];taint;manual"
 			LoggingEventBuilder out = null;
 			java.util.function.Supplier in = (java.util.function.Supplier) source();
 			out.addKeyValue((String) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.slf4j.spi;LoggingEventBuilder;true;addMarker;;;Argument[-1];ReturnValue;value"
+			// "org.slf4j.spi;LoggingEventBuilder;true;addMarker;;;Argument[-1];ReturnValue;value;manual"
 			LoggingEventBuilder out = null;
 			LoggingEventBuilder in = (LoggingEventBuilder) source();
 			out = in.addMarker(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.slf4j.spi;LoggingEventBuilder;true;setCause;;;Argument[-1];ReturnValue;value"
+			// "org.slf4j.spi;LoggingEventBuilder;true;setCause;;;Argument[-1];ReturnValue;value;manual"
 			LoggingEventBuilder out = null;
 			LoggingEventBuilder in = (LoggingEventBuilder) source();
 			out = in.setCause(null);

@@ -1,6 +1,6 @@
 private import codeql.swift.generated.stmt.DoCatchStmt
 
-class DoCatchStmt extends DoCatchStmtBase {
+class DoCatchStmt extends Generated::DoCatchStmt {
   CaseStmt getFirstCatch() { result = this.getCatch(0) }
 
   CaseStmt getLastCatch() {
@@ -9,4 +9,6 @@ class DoCatchStmt extends DoCatchStmtBase {
       not exists(this.getCatch(i + 1))
     )
   }
+
+  override string toString() { result = "do { ... } catch { ... }" }
 }

@@ -26,11 +26,12 @@ class PromotedMethodsTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "promotedmethods" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TestConfig config, DataFlow::Node source, DataFlow::Node sink |
       config.hasFlow(source, sink)
     |
-      sink.hasLocationInfo(file, line, _, _, _) and
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString() and
       value = source.getEnclosingCallable().getName() and
       tag = "promotedmethods"

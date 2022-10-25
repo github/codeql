@@ -74,7 +74,7 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, @bit_or_expr {
 }
 
 /**
- * A bitwise exlusive-or operation, for example `x ^ y`.
+ * A bitwise exclusive-or operation, for example `x ^ y`.
  */
 class BitwiseXorExpr extends BinaryBitwiseOperation, @bit_xor_expr {
   override string getOperator() { result = "^" }

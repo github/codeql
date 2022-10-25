@@ -61,7 +61,7 @@ class ArgumentList extends Expr, TArgumentList {
 
 private class LhsExpr_ =
   TVariableAccess or TTokenConstantAccess or TScopeResolutionConstantAccess or TMethodCall or
-      TDestructuredLhsExpr;
+      TDestructuredLhsExpr or TConstantWriteAccessSynth;
 
 /**
  * A "left-hand-side" (LHS) expression. An `LhsExpr` can occur on the left-hand side of
@@ -207,6 +207,7 @@ class BodyStmt extends StmtSequence, TBodyStmt {
     result = unique(Ensure s | toGenerated(s) = getBodyStmtChild(this, _))
   }
 
+  /** Holds if this block has an `ensure` block. */
   final predicate hasEnsure() { exists(this.getEnsure()) }
 
   override AstNode getAChild(string pred) {

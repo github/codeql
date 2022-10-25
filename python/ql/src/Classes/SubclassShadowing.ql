@@ -42,5 +42,5 @@ predicate shadowed_by_super_class(
 from ClassObject c, ClassObject supercls, Assign assign, FunctionObject shadowed
 where shadowed_by_super_class(c, supercls, assign, shadowed)
 select shadowed.getOrigin(),
-  "Method " + shadowed.getName() + " is shadowed by $@ in super class '" + supercls.getName() + "'.",
-  assign, "an attribute"
+  "Method " + shadowed.getName() + " is shadowed by an $@ in super class '" + supercls.getName() +
+    "'.", assign, "attribute"

@@ -21,7 +21,7 @@ In summary, the kinds of expressions are:
   - **Module expressions**
       - These refer to modules.
       - They can be simple :ref:`names <names>`, :ref:`qualified references <qualified-references>` 
-        (in import statements), or :ref:`selections <selections>`.
+        (in import statements), :ref:`selections <selections>`, or :ref:`instantiations <parameterized-modules>`.
   - **Type expressions**
       - These refer to types.
       - They can be simple :ref:`names <names>` or :ref:`selections <selections>`.

@@ -48,6 +48,20 @@ class AssignExpr extends Assignment, @assignexpr {
 }
 
 /**
+ * A compiler generated assignment operation that may occur in a compiler generated
+ * copy/move constructor or assignment operator, and which functions like `memcpy`
+ * where the size argument is based on the type of the rvalue of the assignment.
+ */
+class BlockAssignExpr extends Assignment, @blockassignexpr {
+  override string getOperator() { result = "=" }
+
+  override string getAPrimaryQlClass() { result = "BlockAssignExpr" }
+
+  /** Gets a textual representation of this assignment. */
+  override string toString() { result = "... = ..." }
+}
+
+/**
  * A non-overloaded binary assignment operation other than `=`.
  *
  * This class does _not_ include variable initializers. To get a variable

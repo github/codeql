@@ -9,12 +9,13 @@
  * @precision high
  * @id java/redos
  * @tags security
+ *       external/cwe/cwe-1333
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 
 import java
-import semmle.code.java.security.performance.ExponentialBackTracking
+import semmle.code.java.security.regexp.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where

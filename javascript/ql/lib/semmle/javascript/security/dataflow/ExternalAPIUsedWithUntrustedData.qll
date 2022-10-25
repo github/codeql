@@ -1,10 +1,10 @@
-/** DEPRECATED. Import `ExternalAPIUsedWithUntrustedDataQuery` instead. */
+/** DEPRECATED. Import `ExternalApiUsedWithUntrustedDataQuery` instead. */
 
 import javascript
-private import ExternalAPIUsedWithUntrustedDataQuery as ExternalAPIUsedWithUntrustedDataQuery // ignore-query-import
+private import ExternalAPIUsedWithUntrustedDataQuery as ExternalApiUsedWithUntrustedDataQuery // ignore-query-import
 
-/** DEPRECATED. Import `ExternalAPIUsedWithUntrustedDataQuery` instead. */
-deprecated module ExternalApiUsedWithUntrustedData = ExternalAPIUsedWithUntrustedDataQuery;
+/** DEPRECATED. Import `ExternalApiUsedWithUntrustedDataQuery` instead. */
+deprecated module ExternalApiUsedWithUntrustedData = ExternalApiUsedWithUntrustedDataQuery;
 
 /** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
 deprecated module ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

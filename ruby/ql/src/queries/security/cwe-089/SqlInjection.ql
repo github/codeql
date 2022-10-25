@@ -11,7 +11,7 @@
  *       external/cwe/cwe-089
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.BarrierGuards
@@ -26,13 +26,13 @@ class SqlInjectionConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof SqlExecution }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare or
-    guard instanceof StringConstArrayInclusionCall
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof StringConstCompareBarrier or
+    node instanceof StringConstArrayInclusionCallBarrier
   }
 }
 
 from SqlInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This SQL query depends on $@.", source.getNode(),
-  "a user-provided value"
+select sink.getNode(), source, sink, "This SQL query depends on a $@.", source.getNode(),
+  "user-provided value"

@@ -1,0 +1,12 @@
+<manifest ... >
+    <application ...
+        <!-- GOOD: this component is not exported due to 'android:exported' explicitly set to 'false'-->
+        <activity>
+            android:name=".Activity">
+            android:exported="false"
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

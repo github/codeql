@@ -21,7 +21,7 @@
 | StringLiterals.java:29:3:29:10 | "\\uDC00" | \ufffd |  |
 | StringLiterals.java:30:3:30:31 | "hello\\uD800hello\\uDC00world" | hello\ufffdhello\ufffdworld |  |
 | StringLiterals.java:32:3:32:16 | "\\u005C\\u0022" | " |  |
-| StringLiterals.java:33:8:33:20 | 2\\u0061\\u0022 | a |  |
+| StringLiterals.java:33:3:33:20 | \\u0022\\u0061\\u0022 | a |  |
 | StringLiterals.java:38:3:40:5 | """      \t  \n\t\ttest "text" and escaped \\u0022\n\t\t""" | test "text" and escaped "\n | text-block |
 | StringLiterals.java:42:3:44:5 | """\n\t\t\tindented\n\t\t""" | \tindented\n | text-block |
 | StringLiterals.java:45:3:47:5 | """\n\tno indentation last line\n\t\t""" | no indentation last line\n | text-block |
@@ -35,7 +35,7 @@
 | StringLiterals.java:70:3:71:18 | """\n\t\t3 quotes:""\\"""" | 3 quotes:""" | text-block |
 | StringLiterals.java:72:3:75:5 | """\n\t\tline \\\n\t\tcontinuation \\\n\t\t""" | line continuation  | text-block |
 | StringLiterals.java:76:3:80:5 | """\n\t\tExplicit line breaks:\\n\n\t\t\\r\\n\n\t\t\\r\n\t\t""" | Explicit line breaks:\n\n\r\n\n\r\n | text-block |
-| StringLiterals.java:83:10:85:16 | 2"\\u0022\n\t\ttest\n\t\t\\u0022\\uu0022" | test\n |  |
+| StringLiterals.java:83:3:85:16 | \\uuu0022"\\u0022\n\t\ttest\n\t\t\\u0022\\uu0022" | test\n |  |
 | StringLiterals.java:91:3:91:19 | "hello" + "world" | helloworld |  |
 | StringLiterals.java:92:3:93:20 | """\n\t\thello""" + "world" | helloworld | text-block |
 | StringLiterals.java:94:10:94:12 | "a" | a |  |

@@ -18,4 +18,5 @@ import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Deserializing of $@.", source.getNode(), "untrusted input"
+select sink.getNode(), source, sink, "Unsafe deserialization depends on a $@.", source.getNode(),
+  "user-provided value"

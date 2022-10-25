@@ -18,12 +18,13 @@ class ZapTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "zap" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "zap" and
     exists(DataFlow::Node sink | any(TestConfig c).hasFlow(_, sink) |
       element = sink.toString() and
       value = "\"" + sink.toString() + "\"" and
-      sink.hasLocationInfo(file, line, _, _, _)
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }

@@ -11,12 +11,15 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.web.HttpRequest
 
 /** Models XSLT Injection related classes and functions */
-module XSLTInjection {
+module XsltInjection {
   /** Returns a class value which refers to `lxml.etree` */
   Value etree() { result = Value::named("lxml.etree") }
 
   /** A generic taint sink that is vulnerable to XSLT injection. */
-  abstract class XSLTInjectionSink extends TaintSink { }
+  abstract class XsltInjectionSink extends TaintSink { }
+
+  /** DEPRECATED: Alias for XsltInjectionSink */
+  deprecated class XSLTInjectionSink = XsltInjectionSink;
 
   /**
    * A kind of "taint", representing an untrusted XML string
@@ -73,10 +76,10 @@ module XSLTInjection {
    *    root = etree.XML("<xmlContent>")
    *    find_text = etree.XSLT("`sink`")
    */
-  private class EtreeXSLTArgument extends XSLTInjectionSink {
+  private class EtreeXsltArgument extends XsltInjectionSink {
     override string toString() { result = "lxml.etree.XSLT" }
 
-    EtreeXSLTArgument() {
+    EtreeXsltArgument() {
       exists(CallNode call | call.getFunction().(AttrNode).getObject("XSLT").pointsTo(etree()) |
         call.getArg(0) = this
       )
@@ -94,10 +97,10 @@ module XSLTInjection {
    *    tree = etree.parse(f)
    *    result_tree = tree.xslt(`sink`)
    */
-  private class ParseXSLTArgument extends XSLTInjectionSink {
+  private class ParseXsltArgument extends XsltInjectionSink {
     override string toString() { result = "lxml.etree.parse.xslt" }
 
-    ParseXSLTArgument() {
+    ParseXsltArgument() {
       exists(
         CallNode parseCall, CallNode xsltCall, ControlFlowNode obj, Variable var, AssignStmt assign
       |
@@ -113,3 +116,6 @@ module XSLTInjection {
     override predicate sinks(TaintKind kind) { kind instanceof ExternalXmlKind }
   }
 }
+
+/** DEPRECATED: Alias for XsltInjection */
+deprecated module XSLTInjection = XsltInjection;

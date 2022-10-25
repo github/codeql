@@ -17,6 +17,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Android
+import semmle.code.java.frameworks.android.ExternalStorage
 import semmle.code.java.frameworks.android.OnActivityResultSource
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.play.Play
@@ -87,7 +88,7 @@ private class ReverseDnsSource extends RemoteFlowSource {
   ReverseDnsSource() {
     // Try not to trigger on `localhost`.
     exists(MethodAccess m | m = this.asExpr() |
-      m.getMethod() instanceof ReverseDNSMethod and
+      m.getMethod() instanceof ReverseDnsMethod and
       not exists(MethodAccess l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
         l.getMethod().getName() = "getLocalHost"
@@ -152,6 +153,12 @@ private class ThriftIfaceParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "Thrift Iface parameter" }
 }
 
+private class AndroidExternalStorageSource extends RemoteFlowSource {
+  AndroidExternalStorageSource() { androidExternalStorageSource(this) }
+
+  override string getSourceType() { result = "Android external storage" }
+}
+
 /** Class for `tainted` user input. */
 abstract class UserInput extends DataFlow::Node { }
 
@@ -214,8 +221,8 @@ class TypeInetAddr extends RefType {
 }
 
 /** A reverse DNS method. */
-class ReverseDNSMethod extends Method {
-  ReverseDNSMethod() {
+class ReverseDnsMethod extends Method {
+  ReverseDnsMethod() {
     this.getDeclaringType() instanceof TypeInetAddr and
     (
       this.getName() = "getHostName" or
@@ -223,6 +230,9 @@ class ReverseDNSMethod extends Method {
     )
   }
 }
+
+/** DEPRECATED: Alias for ReverseDnsMethod */
+deprecated class ReverseDNSMethod = ReverseDnsMethod;
 
 /** Android `Intent` that may have come from a hostile application. */
 class AndroidIntentInput extends DataFlow::Node {
@@ -238,6 +248,12 @@ class AndroidIntentInput extends DataFlow::Node {
     exists(Method m, AndroidReceiveIntentMethod rI |
       m.overrides*(rI) and
       this.asParameter() = m.getParameter(1) and
+      receiverType = m.getDeclaringType()
+    )
+    or
+    exists(Method m, AndroidServiceIntentMethod sI |
+      m.overrides*(sI) and
+      this.asParameter() = m.getParameter(0) and
       receiverType = m.getDeclaringType()
     )
   }

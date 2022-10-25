@@ -19,6 +19,7 @@ fn main() -> std::io::Result<()> {
         .arg("--include-extension=.erb")
         .arg("--include-extension=.gemspec")
         .arg("--include=**/Gemfile")
+        .arg("--exclude=**/.git")
         .arg("--size-limit=5m")
         .arg("--language=ruby")
         .arg("--working-dir=.")
@@ -29,9 +30,9 @@ fn main() -> std::io::Result<()> {
         .split('\n')
     {
         if let Some(stripped) = line.strip_prefix("include:") {
-            cmd.arg("--include").arg(stripped);
+            cmd.arg("--also-match=".to_owned() + stripped);
         } else if let Some(stripped) = line.strip_prefix("exclude:") {
-            cmd.arg("--exclude").arg(stripped);
+            cmd.arg("--exclude=".to_owned() + stripped);
         }
     }
     let exit = &cmd.spawn()?.wait()?;

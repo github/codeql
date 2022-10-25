@@ -53,9 +53,39 @@ class UsersController < ActionController::Base
 
   # BAD
   # The same as `create1` but this is reachable via a GET request, as configured
-  # by the routes at the top of this file.
+  # by the routes at the bottom of this file.
   def route9
     redirect_to params[:key]
+  end
+
+  # BAD
+  def route10
+    redirect_back fallback_location: params[:key]
+  end
+
+  # BAD
+  def route11
+    redirect_back fallback_location: params[:key], allow_other_host: true
+  end
+
+  # BAD
+  def route12
+    redirect_back_or_to params[:key]
+  end
+
+  # GOOD
+  def route13
+    redirect_back fallback_location: params[:key], allow_other_host: false
+  end
+
+  # GOOD
+  def route14
+    redirect_back_or_to params[:key], allow_other_host: false
+  end
+
+  # GOOD
+  def route15
+    redirect_to cookies[:foo]
   end
 
   private

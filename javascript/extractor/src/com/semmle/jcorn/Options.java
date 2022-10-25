@@ -40,7 +40,7 @@ public class Options {
   }
 
   private boolean allowHashBang, allowReturnOutsideFunction, allowImportExportEverywhere, allowGeneratedCodeExprs;
-  private boolean preserveParens, mozExtensions, jscript, esnext, v8Extensions, e4x;
+  private boolean preserveParens, mozExtensions, jscript, esnext, v8Extensions, e4x, allowFlowTypes;
   private int ecmaVersion;
   private AllowReserved allowReserved;
   private String sourceType;
@@ -70,6 +70,7 @@ public class Options {
     this.v8Extensions = false;
     this.e4x = false;
     this.onRecoverableError = null;
+    this.allowFlowTypes = false;
   }
 
   public Options(Options that) {
@@ -92,6 +93,7 @@ public class Options {
     this.onComment = that.onComment;
     this.program = that.program;
     this.onRecoverableError = that.onRecoverableError;
+    this.allowFlowTypes = that.allowFlowTypes;
   }
 
   public boolean allowHashBang() {
@@ -128,6 +130,10 @@ public class Options {
 
   public boolean v8Extensions() {
     return v8Extensions;
+  }
+
+  public boolean allowFlowTypes() {
+    return allowFlowTypes;
   }
 
   public boolean e4x() {
@@ -200,6 +206,10 @@ public class Options {
 
   public void v8Extensions(boolean v8Extensions) {
     this.v8Extensions = v8Extensions;
+  }
+
+  public void allowFlowTypes(boolean allowFlowTypes) {
+    this.allowFlowTypes = allowFlowTypes;
   }
 
   public void e4x(boolean e4x) {

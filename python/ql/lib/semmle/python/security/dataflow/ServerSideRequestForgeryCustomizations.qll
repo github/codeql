@@ -28,7 +28,7 @@ module ServerSideRequestForgery {
     /**
      * Gets the request this sink belongs to.
      */
-    abstract HTTP::Client::Request getRequest();
+    abstract Http::Client::Request getRequest();
   }
 
   /**
@@ -44,9 +44,11 @@ module ServerSideRequestForgery {
   abstract class FullUrlControlSanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "Server-side request forgery" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -55,7 +57,7 @@ module ServerSideRequestForgery {
 
   /** The URL of an HTTP request, considered as a sink. */
   class HttpRequestUrlAsSink extends Sink {
-    HTTP::Client::Request req;
+    Http::Client::Request req;
 
     HttpRequestUrlAsSink() {
       req.getAUrlPart() = this and
@@ -72,13 +74,13 @@ module ServerSideRequestForgery {
       not req.getScope().getEnclosingModule().getName() in ["http.client", "httplib"]
     }
 
-    override HTTP::Client::Request getRequest() { result = req }
+    override Http::Client::Request getRequest() { result = req }
   }
 
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
 
   /**
    * A string construction (concat, format, f-string) where the left side is not

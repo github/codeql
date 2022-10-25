@@ -1,6 +1,6 @@
 import java.awt.Polygon
 import java.awt.Rectangle
-
+import kotlin.experimental.inv
 fun topLevelMethod(x: Int, y: Int,
                    byx: Byte, byy: Byte,
                    sx: Short, sy: Short,
@@ -267,4 +267,74 @@ fun inPlaceOperators() {
   updated /= 1
   updated %= 1
 
+}
+
+inline fun <reified T : Enum<T>> getEnumValues() = enumValues<T>()
+
+fun callToEnumValues() {
+    enumValues<Color>()
+    getEnumValues<Color>()
+}
+
+fun unaryExprs(i: Int, d: Double, b: Byte, s: Short, l: Long, f: Float) {
+    -i
+    +i
+    -d
+    +d
+    var i0 = 1
+    val i1 = 1
+    i0++
+    ++i0
+    i0--
+    --i0
+    i0.inc()
+    i0.dec()
+    i1.inc()
+    i1.dec()
+    i.inv()
+
+    -b
+    +b
+    var b0: Byte = 1
+    val b1: Byte = 1
+    b0++
+    ++b0
+    b0--
+    --b0
+    b0.inc()
+    b0.dec()
+    b1.inc()
+    b1.dec()
+    b.inv()
+
+    -s
+    +s
+    var s0: Short = 1
+    val s1: Short = 1
+    s0++
+    ++s0
+    s0--
+    --s0
+    s0.inc()
+    s0.dec()
+    s1.inc()
+    s1.dec()
+    s.inv()
+
+    -l
+    +l
+    var l0: Long = 1
+    val l1: Long = 1
+    l0++
+    ++l0
+    l0--
+    --l0
+    l0.inc()
+    l0.dec()
+    l1.inc()
+    l1.dec()
+    l.inv()
+
+    +f
+    -f
 }

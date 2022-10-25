@@ -58,12 +58,15 @@ class MethodUnboundIdFilterCreate extends Method {
 }
 
 /** A method with the name `createANDFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
-class MethodUnboundIdFilterCreateANDFilter extends Method {
-  MethodUnboundIdFilterCreateANDFilter() {
+class MethodUnboundIdFilterCreateAndFilter extends Method {
+  MethodUnboundIdFilterCreateAndFilter() {
     this.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
     this.hasName("createANDFilter")
   }
 }
+
+/** DEPRECATED: Alias for MethodUnboundIdFilterCreateAndFilter */
+deprecated class MethodUnboundIdFilterCreateANDFilter = MethodUnboundIdFilterCreateAndFilter;
 
 /** A method with the name `createORFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreateORFilter extends Method {
@@ -73,9 +76,12 @@ class MethodUnboundIdFilterCreateORFilter extends Method {
   }
 }
 
+/** DEPRECATED: Alias for MethodUnboundIdFilterCreateNOTFilter */
+deprecated class MethodUnboundIdFilterCreateNOTFilter = MethodUnboundIdFilterCreateNotFilter;
+
 /** A method with the name `createNOTFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
-class MethodUnboundIdFilterCreateNOTFilter extends Method {
-  MethodUnboundIdFilterCreateNOTFilter() {
+class MethodUnboundIdFilterCreateNotFilter extends Method {
+  MethodUnboundIdFilterCreateNotFilter() {
     this.getDeclaringType() instanceof TypeUnboundIdLdapFilter and
     this.hasName("createNOTFilter")
   }

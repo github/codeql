@@ -28,7 +28,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Holds if CIL should be extracted.
         /// </summary>
-        public bool CIL { get; private set; } = false;
+        public bool CIL { get; private set; } = true;
 
         /// <summary>
         /// Holds if assemblies shouldn't be extracted twice.
@@ -49,7 +49,6 @@ namespace Semmle.Extraction
         /// Whether extraction is done using `codeql test run`.
         /// </summary>
         public bool QlTest { get; private set; } = false;
-
 
         /// <summary>
         /// The compression algorithm used for trap files.
@@ -73,6 +72,9 @@ namespace Semmle.Extraction
                         return true;
                     }
                     return false;
+                case "cil":
+                    CIL = Boolean.Parse(value);
+                    return true;
                 default:
                     return false;
             }
@@ -96,9 +98,6 @@ namespace Semmle.Extraction
                     return true;
                 case "cache":
                     Cache = value;
-                    return true;
-                case "cil":
-                    CIL = value;
                     return true;
                 case "pdb":
                     PDB = value;

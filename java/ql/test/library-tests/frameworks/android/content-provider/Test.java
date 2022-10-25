@@ -15,7 +15,7 @@ public class Test extends ContentProvider {
 
 	void sink(Object o) {}
 
-	// "android.content;ContentProvider;true;call;(String,String,String,Bundle);;Parameter[0..3];contentprovider",
+	// "android.content;ContentProvider;true;call;(String,String,String,Bundle);;Parameter[0..3];contentprovider;manual",
 	@Override
 	public Bundle call(String authority, String method, String arg, Bundle extras) {
 		sink(authority); // $ hasTaintFlow
@@ -25,7 +25,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;call;(String,String,Bundle);;Parameter[0..2];contentprovider",
+	// "android.content;ContentProvider;true;call;(String,String,Bundle);;Parameter[0..2];contentprovider;manual",
 	public Bundle call(String method, String arg, Bundle extras) {
 		sink(method); // $ hasTaintFlow
 		sink(arg); // $ hasTaintFlow
@@ -33,7 +33,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;delete;(Uri,String,String[]);;Parameter[0..2];contentprovider",
+	// "android.content;ContentProvider;true;delete;(Uri,String,String[]);;Parameter[0..2];contentprovider;manual",
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		sink(uri); // $ hasTaintFlow
@@ -42,7 +42,7 @@ public class Test extends ContentProvider {
 		return 0;
 	}
 
-	// "android.content;ContentProvider;true;delete;(Uri,Bundle);;Parameter[0..1];contentprovider",
+	// "android.content;ContentProvider;true;delete;(Uri,Bundle);;Parameter[0..1];contentprovider;manual",
 	@Override
 	public int delete(Uri uri, Bundle extras) {
 		sink(uri); // $ hasTaintFlow
@@ -50,14 +50,14 @@ public class Test extends ContentProvider {
 		return 0;
 	}
 
-	// "android.content;ContentProvider;true;getType;(Uri);;Parameter[0];contentprovider",
+	// "android.content;ContentProvider;true;getType;(Uri);;Parameter[0];contentprovider;manual",
 	@Override
 	public String getType(Uri uri) {
 		sink(uri); // $ hasTaintFlow
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;insert;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider",
+	// "android.content;ContentProvider;true;insert;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider;manual",
 	@Override
 	public Uri insert(Uri uri, ContentValues values, Bundle extras) {
 		sink(uri); // $ hasTaintFlow
@@ -66,7 +66,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;insert;(Uri,ContentValues);;Parameter[0..1];contentprovider",
+	// "android.content;ContentProvider;true;insert;(Uri,ContentValues);;Parameter[0..1];contentprovider;manual",
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		sink(uri); // $ hasTaintFlow
@@ -74,7 +74,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;openAssetFile;(Uri,String,CancellationSignal);;Parameter[0];contentprovider",
+	// "android.content;ContentProvider;true;openAssetFile;(Uri,String,CancellationSignal);;Parameter[0];contentprovider;manual",
 	@Override
 	public AssetFileDescriptor openAssetFile(Uri uri, String mode, CancellationSignal signal) {
 		sink(uri); // $ hasTaintFlow
@@ -83,7 +83,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;openAssetFile;(Uri,String);;Parameter[0];contentprovider",
+	// "android.content;ContentProvider;true;openAssetFile;(Uri,String);;Parameter[0];contentprovider;manual",
 	@Override
 	public AssetFileDescriptor openAssetFile(Uri uri, String mode) {
 		sink(uri); // $ hasTaintFlow
@@ -91,7 +91,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;openTypedAssetFile;(Uri,String,Bundle,CancellationSignal);;Parameter[0..2];contentprovider",
+	// "android.content;ContentProvider;true;openTypedAssetFile;(Uri,String,Bundle,CancellationSignal);;Parameter[0..2];contentprovider;manual",
 	@Override
 	public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts,
 			CancellationSignal signal) {
@@ -102,7 +102,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;openTypedAssetFile;(Uri,String,Bundle);;Parameter[0..2];contentprovider",
+	// "android.content;ContentProvider;true;openTypedAssetFile;(Uri,String,Bundle);;Parameter[0..2];contentprovider;manual",
 	@Override
 	public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts) {
 		sink(uri); // $ hasTaintFlow
@@ -111,7 +111,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;openFile;(Uri,String,CancellationSignal);;Parameter[0];contentprovider",
+	// "android.content;ContentProvider;true;openFile;(Uri,String,CancellationSignal);;Parameter[0];contentprovider;manual",
 	@Override
 	public ParcelFileDescriptor openFile(Uri uri, String mode, CancellationSignal signal) {
 		sink(uri); // $ hasTaintFlow
@@ -120,7 +120,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;openFile;(Uri,String);;Parameter[0..1];contentprovider",
+	// "android.content;ContentProvider;true;openFile;(Uri,String);;Parameter[0..1];contentprovider;manual",
 	@Override
 	public ParcelFileDescriptor openFile(Uri uri, String mode) {
 		sink(uri); // $ hasTaintFlow
@@ -128,7 +128,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;query;(Uri,String[],Bundle,CancellationSignal);;Parameter[0..2];contentprovider",
+	// "android.content;ContentProvider;true;query;(Uri,String[],Bundle,CancellationSignal);;Parameter[0..2];contentprovider;manual",
 	@Override
 	public Cursor query(Uri uri, String[] projection, Bundle queryArgs,
 			CancellationSignal cancellationSignal) {
@@ -139,7 +139,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;query;(Uri,String[],String,String[],String);;Parameter[0..4];contentprovider",
+	// "android.content;ContentProvider;true;query;(Uri,String[],String,String[],String);;Parameter[0..4];contentprovider;manual",
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
 			String sortOrder) {
@@ -150,7 +150,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;query;(Uri,String[],String,String[],String,CancellationSignal);;Parameter[0..4];contentprovider",
+	// "android.content;ContentProvider;true;query;(Uri,String[],String,String[],String,CancellationSignal);;Parameter[0..4];contentprovider;manual",
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
 			String sortOrder, CancellationSignal cancellationSignal) {
@@ -163,7 +163,7 @@ public class Test extends ContentProvider {
 		return null;
 	}
 
-	// "android.content;ContentProvider;true;update;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider",
+	// "android.content;ContentProvider;true;update;(Uri,ContentValues,Bundle);;Parameter[0..2];contentprovider;manual",
 	@Override
 	public int update(Uri uri, ContentValues values, Bundle extras) {
 		sink(uri); // $ hasTaintFlow
@@ -172,7 +172,7 @@ public class Test extends ContentProvider {
 		return 0;
 	}
 
-	// "android.content;ContentProvider;true;update;(Uri,ContentValues,String,String[]);;Parameter[0..3];contentprovider"
+	// "android.content;ContentProvider;true;update;(Uri,ContentValues,String,String[]);;Parameter[0..3];contentprovider;manual"
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 		sink(uri); // $ hasTaintFlow

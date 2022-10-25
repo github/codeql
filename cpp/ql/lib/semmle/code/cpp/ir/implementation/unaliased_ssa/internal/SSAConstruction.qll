@@ -5,8 +5,8 @@ private import Imports::OperandTag
 private import Imports::Overlap
 private import Imports::TInstruction
 private import Imports::RawIR as RawIR
-private import SSAInstructions
-private import SSAOperands
+private import SsaInstructions
+private import SsaOperands
 private import NewIR
 
 private class OldBlock = Reachability::ReachableBlock;
@@ -64,7 +64,7 @@ private module Cached {
     or
     instr = reusedPhiInstruction(_) and
     // Check that the phi instruction is *not* degenerate, but we can't use
-    // getDegeneratePhiOperand in the first stage with phi instyructions
+    // getDegeneratePhiOperand in the first stage with phi instructions
     not exists(
       unique(OldIR::PhiInputOperand operand |
         operand = instr.(OldIR::PhiInstruction).getAnInputOperand() and
@@ -140,16 +140,6 @@ private module Cached {
     exists(Alias::MemoryLocation location |
       instruction = getPhi(_, location) and
       not exists(location.getAllocation())
-    )
-  }
-
-  cached
-  Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
-    exists(OldInstruction oldInstruction, OldIR::RegisterOperand oldOperand |
-      oldInstruction = getOldInstruction(instruction) and
-      oldOperand = oldInstruction.getAnOperand() and
-      tag = oldOperand.getOperandTag() and
-      result = getNewInstruction(oldOperand.getAnyDef())
     )
   }
 
@@ -728,7 +718,7 @@ module DefUse {
   }
 
   /**
-   * Gets the rank index of a hyphothetical use one instruction past the end of
+   * Gets the rank index of a hypothetical use one instruction past the end of
    * the block. This index can be used to determine if a definition reaches the
    * end of the block, even if the definition is the last instruction in the
    * block.
@@ -1135,7 +1125,7 @@ deprecated module SSAConsistency = SsaConsistency;
  * These predicates are all just aliases for predicates defined in the `Cached` module. This ensures
  * that all of SSA construction will be evaluated in the same stage.
  */
-module SSA {
+module Ssa {
   class MemoryLocation = Alias::MemoryLocation;
 
   predicate hasPhiInstruction = Cached::hasPhiInstructionCached/2;
@@ -1144,3 +1134,6 @@ module SSA {
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }
+
+/** DEPRECATED: Alias for Ssa */
+deprecated module SSA = Ssa;

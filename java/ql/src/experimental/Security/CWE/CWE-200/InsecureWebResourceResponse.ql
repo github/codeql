@@ -13,7 +13,7 @@ import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import experimental.semmle.code.java.PathSanitizer
+import semmle.code.java.security.PathSanitizer
 import AndroidWebResourceResponse
 import DataFlow::PathGraph
 
@@ -24,9 +24,7 @@ class InsecureWebResourceResponseConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof WebResourceResponseSink }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof PathTraversalBarrierGuard
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof PathInjectionSanitizer }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureWebResourceResponseConfig conf

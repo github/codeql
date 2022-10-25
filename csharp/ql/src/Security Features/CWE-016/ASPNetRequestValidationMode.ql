@@ -13,7 +13,7 @@
 
 import csharp
 
-from XMLAttribute reqValidationMode
+from XmlAttribute reqValidationMode
 where
   reqValidationMode.getName().toLowerCase() = "requestvalidationmode" and
   reqValidationMode.getValue().toFloat() < 4.5

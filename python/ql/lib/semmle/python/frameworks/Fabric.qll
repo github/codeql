@@ -179,7 +179,7 @@ private module FabricV2 {
       DataFlow::ParameterNode {
       FabricTaskFirstParamConnectionInstance() {
         exists(Function func |
-          func.getADecorator() = Fabric::Tasks::task().getAUse().asExpr() and
+          func.getADecorator() = Fabric::Tasks::task().getAValueReachableFromSource().asExpr() and
           this.getParameter() = func.getArg(0)
         )
       }

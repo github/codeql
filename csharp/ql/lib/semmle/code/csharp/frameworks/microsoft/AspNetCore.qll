@@ -62,6 +62,13 @@ class MicrosoftAspNetCoreMvcNonActionAttribute extends MicrosoftAspNetCoreMvcAtt
   MicrosoftAspNetCoreMvcNonActionAttribute() { this.getType().hasName("NonActionAttribute") }
 }
 
+/** A `Microsoft.AspNetCore.Mvc.NonController` attribute. */
+class MicrosoftAspNetCoreMvcNonControllerAttribute extends MicrosoftAspNetCoreMvcAttribute {
+  MicrosoftAspNetCoreMvcNonControllerAttribute() {
+    this.getType().hasName("NonControllerAttribute")
+  }
+}
+
 /** The `Microsoft.AspNetCore.Antiforgery` namespace. */
 class MicrosoftAspNetCoreAntiforgeryNamespace extends Namespace {
   MicrosoftAspNetCoreAntiforgeryNamespace() {
@@ -182,10 +189,38 @@ class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
   }
 }
 
-/** A subtype of `Microsoft.AspNetCore.Mvc.Controller` or `Microsoft.AspNetCore.Mvc.ControllerBase`. */
+/**
+ * A valid ASP.NET Core controller according to:
+ * https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-3.1
+ * https://github.com/dotnet/aspnetcore/blob/b3c93967ba508b8ef139add27132d9483c1a9eb4/src/Mvc/Mvc.Core/src/Controllers/ControllerFeatureProvider.cs#L39-L75
+ */
 class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() {
-    this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+    (
+      exists(Assembly a |
+        a.getName() = ["Microsoft.AspNetCore.Mvc.Core", "Microsoft.AspNetCore.Mvc.ViewFeatures"]
+      ) or
+      exists(UsingNamespaceDirective ns |
+        ns.getImportedNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
+      )
+    ) and
+    this.isPublic() and
+    (not this.isAbstract() or this instanceof MicrosoftAspNetCoreMvcControllerBaseClass) and
+    not this instanceof Generic and
+    (
+      this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+      or
+      this.getABaseType*().getName().matches("%Controller")
+      or
+      this.getABaseType*()
+          .getAnAttribute()
+          .getType()
+          .getABaseType*()
+          // ApiControllerAttribute is derived from ControllerAttribute
+          .hasQualifiedName("Microsoft.AspNetCore.Mvc.ControllerAttribute")
+    ) and
+    not this.getABaseType*().getAnAttribute() instanceof
+      MicrosoftAspNetCoreMvcNonControllerAttribute
   }
 
   /** Gets an action method for this controller. */
@@ -355,5 +390,38 @@ class MicrosoftAspNetCoreBuilderCookiePolicyAppBuilderExtensions extends RefType
 class MicrosoftAspNetCoreHttpHtmlString extends Class {
   MicrosoftAspNetCoreHttpHtmlString() {
     this.hasQualifiedName("Microsoft.AspNetCore.Html", "HtmlString")
+  }
+}
+
+/**
+ * The `Microsoft.AspNetCore.Builder.EndpointRouteBuilderExtensions` class.
+ */
+class MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions extends Class {
+  MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions() {
+    this.hasQualifiedName("Microsoft.AspNetCore.Builder", "EndpointRouteBuilderExtensions")
+  }
+
+  /** Gets the `Map` extension method. */
+  Method getMapMethod() { result = this.getAMethod("Map") }
+
+  /** Gets the `MapGet` extension method. */
+  Method getMapGetMethod() { result = this.getAMethod("MapGet") }
+
+  /** Gets the `MapPost` extension method. */
+  Method getMapPostMethod() { result = this.getAMethod("MapPost") }
+
+  /** Gets the `MapPut` extension method. */
+  Method getMapPutMethod() { result = this.getAMethod("MapPut") }
+
+  /** Gets the `MapDelete` extension method. */
+  Method getMapDeleteMethod() { result = this.getAMethod("MapDelete") }
+
+  /** Get a `Map` like extension methods. */
+  Method getAMapMethod() {
+    result =
+      [
+        this.getMapMethod(), this.getMapGetMethod(), this.getMapPostMethod(),
+        this.getMapPutMethod(), this.getMapDeleteMethod()
+      ]
   }
 }

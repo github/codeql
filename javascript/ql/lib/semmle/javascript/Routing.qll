@@ -148,6 +148,18 @@ module Routing {
       this instanceof MkRouter
     }
 
+    /**
+     * Like `mayResumeDispatch` but without the assumption that functions with an unknown
+     * implementation invoke their continuation.
+     */
+    predicate definitelyResumesDispatch() {
+      this.getLastChild().definitelyResumesDispatch()
+      or
+      exists(this.(RouteHandler).getAContinuationInvocation())
+      or
+      this instanceof MkRouter
+    }
+
     /** Gets the parent of this node, provided that this node may invoke its continuation. */
     private Node getContinuationParent() {
       result = this.getParent() and
@@ -229,11 +241,11 @@ module Routing {
     }
 
     /**
-     * Holds if `node` has processed the incoming request strictly prior to this node.
+     * Holds if `guard` has processed the incoming request strictly prior to this node.
      */
     pragma[inline]
     private predicate isGuardedByNodeInternal(Node guard) {
-      // Look for a common ancestor `fork` whose child leading to `guard` ("base1") preceeds
+      // Look for a common ancestor `fork` whose child leading to `guard` ("base1") precedes
       // the child leading to `this` ("base2").
       //
       // Schematically:
@@ -270,7 +282,7 @@ module Routing {
      * Gets an HTTP method name which this node will accept, or nothing if the node accepts all HTTP methods, not
      * taking into account the context from ancestors or children nodes.
      */
-    HTTP::RequestMethodName getOwnHttpMethod() { none() } // Overridden in subclass
+    Http::RequestMethodName getOwnHttpMethod() { none() } // Overridden in subclass
 
     private Node getAUseSiteInRouteSetup() {
       if this.getParent() instanceof RouteSetup
@@ -371,7 +383,7 @@ module Routing {
        * Gets an HTTP request method name (in upper case) matched by this node, or nothing
        * if all HTTP request method names are accepted.
        */
-      HTTP::RequestMethodName getHttpMethod() { none() }
+      Http::RequestMethodName getHttpMethod() { none() }
     }
 
     private class ValueNodeImpl extends Node, MkValueNode {
@@ -395,7 +407,7 @@ module Routing {
 
       override string getRelativePath() { result = range.getRelativePath() }
 
-      override HTTP::RequestMethodName getOwnHttpMethod() { result = range.getHttpMethod() }
+      override Http::RequestMethodName getOwnHttpMethod() { result = range.getHttpMethod() }
     }
 
     private StepSummary routeStepSummary() {
@@ -422,7 +434,7 @@ module Routing {
         or
         StepSummary::smallstep(result, this, routeStepSummary())
         or
-        HTTP::routeHandlerStep(result, this)
+        Http::routeHandlerStep(result, this)
         or
         RouteHandlerTrackingStep::step(result, this)
         or
@@ -587,7 +599,7 @@ module Routing {
        * Gets an HTTP request method name (in upper case) matched by this node, or nothing
        * if all HTTP request method names are accepted.
        */
-      HTTP::RequestMethodName getHttpMethod() { none() }
+      Http::RequestMethodName getHttpMethod() { none() }
 
       /**
        * Holds if this route setup targets `router` and occurs at the given `cfgNode`.
@@ -623,7 +635,7 @@ module Routing {
 
       override string getRelativePath() { result = range.getRelativePath() }
 
-      override HTTP::RequestMethodName getOwnHttpMethod() { result = range.getHttpMethod() }
+      override Http::RequestMethodName getOwnHttpMethod() { result = range.getHttpMethod() }
     }
 
     /**

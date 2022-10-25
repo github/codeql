@@ -3,7 +3,7 @@
  * server side request forgery, as well as extension points for adding your own.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
@@ -32,9 +32,11 @@ module ServerSideRequestForgery {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "URL redirection" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A source of remote user input, considered as a flow source for server side request forgery. */
   class RemoteFlowSourceAsSource extends Source {
@@ -43,7 +45,7 @@ module ServerSideRequestForgery {
 
   /** The URL of an HTTP request, considered as a sink. */
   class HttpRequestAsSink extends Sink {
-    HttpRequestAsSink() { exists(HTTP::Client::Request req | req.getAUrlPart() = this) }
+    HttpRequestAsSink() { exists(Http::Client::Request req | req.getAUrlPart() = this) }
   }
 
   /** A string interpolation with a fixed prefix, considered as a flow sanitizer. */

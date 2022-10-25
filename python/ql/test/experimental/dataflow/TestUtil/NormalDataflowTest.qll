@@ -13,7 +13,7 @@ class DataFlowTest extends FlowTest {
   }
 }
 
-query predicate missingAnnotationOnSINK(Location location, string error, string element) {
+query predicate missingAnnotationOnSink(Location location, string error, string element) {
   error = "ERROR, you should add `# $ MISSING: flow` annotation" and
   exists(DataFlow::Node sink |
     exists(DataFlow::CallCfgNode call |
@@ -31,3 +31,6 @@ query predicate missingAnnotationOnSINK(Location location, string error, string 
     )
   )
 }
+
+/** DEPRECATED: Alias for missingAnnotationOnSink */
+deprecated predicate missingAnnotationOnSINK = missingAnnotationOnSink/3;

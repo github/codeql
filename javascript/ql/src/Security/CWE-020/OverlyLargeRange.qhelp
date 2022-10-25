@@ -1,0 +1,65 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+    <overview>
+        <p>
+            It's easy to write a regular expression range that matches a wider range of characters than you intended.
+            For example, <code>/[a-zA-z]/</code> matches all lowercase and all uppercase letters,
+            as you would expect, but it also matches the characters: <code>[ \ ] ^ _ `</code>.  
+        </p>
+        <p>
+            Another common problem is failing to escape the dash character in a regular 
+            expression. An unescaped dash is interpreted 
+            as part of a range. For example, in the character class <code>[a-zA-Z0-9%=.,-_]</code> 
+            the last character range matches the 55 characters between 
+            <code>,</code> and <code>_</code> (both included), which overlaps with the 
+            range <code>[0-9]</code> and is clearly not intended by the writer.
+        </p>
+    </overview>
+
+    <recommendation>
+        <p>
+            Avoid any confusion about which characters are included in the range by 
+            writing unambiguous regular expressions.
+            Always check that character ranges match only the expected characters.
+        </p>
+    </recommendation>
+
+    <example>
+
+        <p>
+            The following example code is intended to check whether a string is a valid 6 digit hex color. 
+        </p>
+
+<sample language="javascript">
+function isValidHexColor(color) {
+    return /^#[0-9a-fA-f]{6}$/i.test(color);
+}
+</sample>
+
+        <p>
+            However, the <code>A-f</code> range is overly large and matches every uppercase character. 
+            It would parse a "color" like <code>#XXYYZZ</code> as valid.
+        </p>
+
+        <p>
+            The fix is to use an uppercase <code>A-F</code> range instead.
+        </p>
+
+<sample language="javascript">
+function isValidHexColor(color) {
+    return /^#[0-9A-F]{6}$/i.test(color);
+}
+</sample>
+
+    </example>
+
+    <references>
+        <li>GitHub Advisory Database: <a href="https://github.com/advisories/GHSA-g4rg-993r-mgx7">CVE-2021-42740: Improper Neutralization of Special Elements used in a Command in Shell-quote</a></li>
+        <li>wh0.github.io: <a href="https://wh0.github.io/2021/10/28/shell-quote-rce-exploiting.html">Exploiting CVE-2021-42740</a></li>
+        <li>Yosuke Ota: <a href="https://ota-meshi.github.io/eslint-plugin-regexp/rules/no-obscure-range.html">no-obscure-range</a></li>
+        <li>Paul Boyd: <a href="https://pboyd.io/posts/comma-dash-dot/">The regex [,-.]</a></li>
+    </references>
+</qhelp>

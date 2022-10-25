@@ -7,7 +7,7 @@ import csharp
 /**
  * A `Web.config` file.
  */
-class WebConfigXml extends XMLFile {
+class WebConfigXml extends XmlFile {
   WebConfigXml() { this.getName().matches("%Web.config") }
 }
 
@@ -15,7 +15,7 @@ class WebConfigXml extends XMLFile {
 deprecated class WebConfigXML = WebConfigXml;
 
 /** A `<configuration>` tag in an ASP.NET configuration file. */
-class ConfigurationXmlElement extends XMLElement {
+class ConfigurationXmlElement extends XmlElement {
   ConfigurationXmlElement() { this.getName().toLowerCase() = "configuration" }
 }
 
@@ -23,7 +23,7 @@ class ConfigurationXmlElement extends XMLElement {
 deprecated class ConfigurationXMLElement = ConfigurationXmlElement;
 
 /** A `<location>` tag in an ASP.NET configuration file. */
-class LocationXmlElement extends XMLElement {
+class LocationXmlElement extends XmlElement {
   LocationXmlElement() {
     this.getParent() instanceof ConfigurationXmlElement and
     this.getName().toLowerCase() = "location"
@@ -34,7 +34,7 @@ class LocationXmlElement extends XMLElement {
 deprecated class LocationXMLElement = LocationXmlElement;
 
 /** A `<system.web>` tag in an ASP.NET configuration file. */
-class SystemWebXmlElement extends XMLElement {
+class SystemWebXmlElement extends XmlElement {
   SystemWebXmlElement() {
     (
       this.getParent() instanceof ConfigurationXmlElement
@@ -49,7 +49,7 @@ class SystemWebXmlElement extends XMLElement {
 deprecated class SystemWebXMLElement = SystemWebXmlElement;
 
 /** A `<system.webServer>` tag in an ASP.NET configuration file. */
-class SystemWebServerXmlElement extends XMLElement {
+class SystemWebServerXmlElement extends XmlElement {
   SystemWebServerXmlElement() {
     (
       this.getParent() instanceof ConfigurationXmlElement
@@ -64,7 +64,7 @@ class SystemWebServerXmlElement extends XMLElement {
 deprecated class SystemWebServerXMLElement = SystemWebServerXmlElement;
 
 /** A `<customErrors>` tag in an ASP.NET configuration file. */
-class CustomErrorsXmlElement extends XMLElement {
+class CustomErrorsXmlElement extends XmlElement {
   CustomErrorsXmlElement() {
     this.getParent() instanceof SystemWebXmlElement and
     this.getName().toLowerCase() = "customerrors"
@@ -75,7 +75,7 @@ class CustomErrorsXmlElement extends XMLElement {
 deprecated class CustomErrorsXMLElement = CustomErrorsXmlElement;
 
 /** A `<httpRuntime>` tag in an ASP.NET configuration file. */
-class HttpRuntimeXmlElement extends XMLElement {
+class HttpRuntimeXmlElement extends XmlElement {
   HttpRuntimeXmlElement() {
     this.getParent() instanceof SystemWebXmlElement and
     this.getName().toLowerCase() = "httpruntime"
@@ -86,7 +86,7 @@ class HttpRuntimeXmlElement extends XMLElement {
 deprecated class HttpRuntimeXMLElement = HttpRuntimeXmlElement;
 
 /** A `<forms>` tag under `<system.web><authentication>` in an ASP.NET configuration file. */
-class FormsElement extends XMLElement {
+class FormsElement extends XmlElement {
   FormsElement() {
     this = any(SystemWebXmlElement sw).getAChild("authentication").getAChild("forms")
   }
@@ -94,18 +94,24 @@ class FormsElement extends XMLElement {
   /**
    * Gets attribute's `requireSSL` value.
    */
-  string getRequireSSL() {
+  string getRequireSsl() {
     result = this.getAttribute("requireSSL").getValue().trim().toLowerCase()
   }
+
+  /** DEPRECATED: Alias for getRequireSsl */
+  deprecated string getRequireSSL() { result = this.getRequireSsl() }
 
   /**
    * Holds if `requireSSL` value is true.
    */
-  predicate isRequireSSL() { this.getRequireSSL() = "true" }
+  predicate isRequireSsl() { this.getRequireSsl() = "true" }
+
+  /** DEPRECATED: Alias for isRequireSsl */
+  deprecated predicate isRequireSSL() { this.isRequireSsl() }
 }
 
 /** A `<httpCookies>` tag in an ASP.NET configuration file. */
-class HttpCookiesElement extends XMLElement {
+class HttpCookiesElement extends XmlElement {
   HttpCookiesElement() { this = any(SystemWebXmlElement sw).getAChild("httpCookies") }
 
   /**
@@ -123,17 +129,23 @@ class HttpCookiesElement extends XMLElement {
   /**
    * Gets attribute's `requireSSL` value.
    */
-  string getRequireSSL() {
+  string getRequireSsl() {
     result = this.getAttribute("requireSSL").getValue().trim().toLowerCase()
   }
+
+  /** DEPRECATED: Alias for getRequireSsl */
+  deprecated string getRequireSSL() { result = this.getRequireSsl() }
 
   /**
    * Holds if there is any chance that `requireSSL` is set to `true` either globally or for Forms.
    */
-  predicate isRequireSSL() {
-    this.getRequireSSL() = "true"
+  predicate isRequireSsl() {
+    this.getRequireSsl() = "true"
     or
-    not this.getRequireSSL() = "false" and // not set all, i.e. default
-    exists(FormsElement forms | forms.getFile() = this.getFile() | forms.isRequireSSL())
+    not this.getRequireSsl() = "false" and // not set all, i.e. default
+    exists(FormsElement forms | forms.getFile() = this.getFile() | forms.isRequireSsl())
   }
+
+  /** DEPRECATED: Alias for isRequireSsl */
+  deprecated predicate isRequireSSL() { this.isRequireSsl() }
 }

@@ -1,6 +1,6 @@
 private import codeql.swift.generated.stmt.SwitchStmt
 
-class SwitchStmt extends SwitchStmtBase {
+class SwitchStmt extends Generated::SwitchStmt {
   CaseStmt getFirstCase() { result = this.getCase(0) }
 
   CaseStmt getLastCase() {
@@ -9,4 +9,6 @@ class SwitchStmt extends SwitchStmtBase {
       not exists(this.getCase(i + 1))
     )
   }
+
+  override string toString() { result = "switch " + this.getExpr().toString() + " { ... }" }
 }

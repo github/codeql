@@ -43,6 +43,13 @@
 | B.java:15:21:15:27 | taint(...) | B.java:157:10:157:46 | toFile(...) |
 | B.java:15:21:15:27 | taint(...) | B.java:160:10:160:46 | getAbsoluteFile(...) |
 | B.java:15:21:15:27 | taint(...) | B.java:163:10:163:47 | getCanonicalFile(...) |
+| B.java:194:16:194:22 | taint(...) | B.java:197:10:197:21 | replReceiver |
+| B.java:194:16:194:22 | taint(...) | B.java:200:10:200:17 | replChar |
+| B.java:194:16:194:22 | taint(...) | B.java:203:10:203:25 | replCharReceiver |
+| B.java:194:16:194:22 | taint(...) | B.java:208:10:208:15 | charAt |
+| B.java:194:16:194:22 | taint(...) | B.java:212:10:212:14 | bytes |
+| B.java:194:16:194:22 | taint(...) | B.java:215:10:215:16 | replAll |
+| B.java:194:16:194:22 | taint(...) | B.java:218:10:218:18 | replFirst |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:8:12:8:14 | seq |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:11:12:11:21 | seqFromSeq |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:14:12:14:24 | stringFromSeq |

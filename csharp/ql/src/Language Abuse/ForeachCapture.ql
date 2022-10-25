@@ -13,6 +13,7 @@
 
 import csharp
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 import semmle.code.csharp.frameworks.system.Collections
 import semmle.code.csharp.frameworks.system.collections.Generic
@@ -76,7 +77,8 @@ Element getAssignmentTarget(Expr e) {
 Element getCollectionAssignmentTarget(Expr e) {
   // Store into collection via method
   exists(DataFlowPrivate::PostUpdateNode postNode |
-    FlowSummaryImpl::Private::Steps::summarySetterStep(DataFlow::exprNode(e), _, postNode) and
+    FlowSummaryImpl::Private::Steps::summarySetterStep(DataFlow::exprNode(e), _, postNode,
+      any(DataFlowDispatch::DataFlowSummarizedCallable sc)) and
     result.(Variable).getAnAccess() = postNode.getPreUpdateNode().asExpr()
   )
   or
@@ -109,5 +111,5 @@ predicate declaredInsideLoop(ForeachStmt loop, LocalVariable v) {
 
 from LambdaDataFlowConfiguration c, AnonymousFunctionExpr lambda, Variable loopVar, Element storage
 where c.capturesLoopVarAndIsStoredIn(lambda, loopVar, storage)
-select lambda, "Function which may be stored in $@ captures variable $@", storage,
+select lambda, "Function which may be stored in $@ captures variable $@.", storage,
   storage.toString(), loopVar, loopVar.getName()

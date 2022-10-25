@@ -8,15 +8,12 @@
 
 import java
 import ExternalApi
-import semmle.code.java.GeneratedFiles
 
-from ExternalApi api, int usages
-where
+private predicate relevant(ExternalApi api) {
   not api.isUninteresting() and
-  api.isSink() and
-  usages =
-    strictcount(Call c |
-      c.getCallee().getSourceDeclaration() = api and
-      not c.getFile() instanceof GeneratedFile
-    )
-select api.getApiName() as apiname, usages order by usages desc
+  api.isSink()
+}
+
+from string apiName, int usages
+where Results<relevant/1>::restrict(apiName, usages)
+select apiName, usages order by usages desc

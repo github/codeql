@@ -1,6 +1,6 @@
 private import codeql.swift.generated.pattern.TuplePattern
 
-class TuplePattern extends TuplePatternBase {
+class TuplePattern extends Generated::TuplePattern {
   Pattern getFirstElement() { result = this.getElement(0) }
 
   Pattern getLastElement() {
@@ -9,4 +9,6 @@ class TuplePattern extends TuplePatternBase {
       not exists(this.getElement(i + 1))
     )
   }
+
+  override string toString() { result = "(...)" }
 }

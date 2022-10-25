@@ -474,7 +474,7 @@ module FlowVar_internal {
   }
 
   /** Type-specialized version of `getEnclosingElement`. */
-  private ControlFlowNode getCFNParent(ControlFlowNode node) { result = node.getEnclosingElement() }
+  private ControlFlowNode getCfnParent(ControlFlowNode node) { result = node.getEnclosingElement() }
 
   /**
    * A for-loop or while-loop whose condition is always true upon entry but not
@@ -526,7 +526,7 @@ module FlowVar_internal {
     }
 
     private predicate bbInLoopCondition(BasicBlock bb) {
-      getCFNParent*(bb.getANode()) = this.(Loop).getCondition()
+      getCfnParent*(bb.getANode()) = this.(Loop).getCondition()
     }
 
     private predicate bbInLoop(BasicBlock bb) {

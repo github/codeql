@@ -6,11 +6,12 @@ namespace Microsoft
     {
         namespace SafeHandles
         {
-            // Generated from `Microsoft.Win32.SafeHandles.SafePipeHandle` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.Win32.SafeHandles.SafePipeHandle` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafePipeHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
             {
                 public override bool IsInvalid { get => throw null; }
                 protected override bool ReleaseHandle() => throw null;
+                public SafePipeHandle() : base(default(bool)) => throw null;
                 public SafePipeHandle(System.IntPtr preexistingHandle, bool ownsHandle) : base(default(bool)) => throw null;
             }
 
@@ -23,7 +24,7 @@ namespace System
     {
         namespace Pipes
         {
-            // Generated from `System.IO.Pipes.AnonymousPipeClientStream` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.IO.Pipes.AnonymousPipeClientStream` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AnonymousPipeClientStream : System.IO.Pipes.PipeStream
             {
                 public AnonymousPipeClientStream(System.IO.Pipes.PipeDirection direction, Microsoft.Win32.SafeHandles.SafePipeHandle safePipeHandle) : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
@@ -34,7 +35,7 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~AnonymousPipeClientStream
             }
 
-            // Generated from `System.IO.Pipes.AnonymousPipeServerStream` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.IO.Pipes.AnonymousPipeServerStream` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AnonymousPipeServerStream : System.IO.Pipes.PipeStream
             {
                 public AnonymousPipeServerStream() : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
@@ -51,7 +52,7 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~AnonymousPipeServerStream
             }
 
-            // Generated from `System.IO.Pipes.NamedPipeClientStream` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.IO.Pipes.NamedPipeClientStream` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NamedPipeClientStream : System.IO.Pipes.PipeStream
             {
                 protected internal override void CheckPipePropertyOperations() => throw null;
@@ -72,7 +73,7 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~NamedPipeClientStream
             }
 
-            // Generated from `System.IO.Pipes.NamedPipeServerStream` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.IO.Pipes.NamedPipeServerStream` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NamedPipeServerStream : System.IO.Pipes.PipeStream
             {
                 public System.IAsyncResult BeginWaitForConnection(System.AsyncCallback callback, object state) => throw null;
@@ -94,25 +95,25 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~NamedPipeServerStream
             }
 
-            // Generated from `System.IO.Pipes.PipeDirection` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PipeDirection
+            // Generated from `System.IO.Pipes.PipeDirection` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PipeDirection : int
             {
-                In,
-                InOut,
-                Out,
+                In = 1,
+                InOut = 3,
+                Out = 2,
             }
 
-            // Generated from `System.IO.Pipes.PipeOptions` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.IO.Pipes.PipeOptions` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum PipeOptions
+            public enum PipeOptions : int
             {
-                Asynchronous,
-                CurrentUserOnly,
-                None,
-                WriteThrough,
+                Asynchronous = 1073741824,
+                CurrentUserOnly = 536870912,
+                None = 0,
+                WriteThrough = -2147483648,
             }
 
-            // Generated from `System.IO.Pipes.PipeStream` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.IO.Pipes.PipeStream` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class PipeStream : System.IO.Stream
             {
                 public override System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
@@ -157,14 +158,14 @@ namespace System
                 public override void WriteByte(System.Byte value) => throw null;
             }
 
-            // Generated from `System.IO.Pipes.PipeStreamImpersonationWorker` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.IO.Pipes.PipeStreamImpersonationWorker` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void PipeStreamImpersonationWorker();
 
-            // Generated from `System.IO.Pipes.PipeTransmissionMode` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PipeTransmissionMode
+            // Generated from `System.IO.Pipes.PipeTransmissionMode` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PipeTransmissionMode : int
             {
-                Byte,
-                Message,
+                Byte = 0,
+                Message = 1,
             }
 
         }

@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate binaryOperations(
   BinaryOperation o, string operator, Expr left, Expr right, string pClass

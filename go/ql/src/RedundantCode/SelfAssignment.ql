@@ -23,4 +23,4 @@ from PotentialSelfAssignment assgn, HashableNode rhs
 where
   rhs = assgn.getRhs() and
   rhs.hash() = assgn.getLhs().(HashableNode).hash()
-select assgn, "This statement assigns $@ to itself.", rhs, "an expression"
+select assgn, "This statement assigns an $@ to itself.", rhs, "expression"

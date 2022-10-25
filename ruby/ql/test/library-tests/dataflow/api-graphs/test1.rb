@@ -14,7 +14,7 @@ Foo::Bar::Baz #$ use=getMember("Foo").getMember("Bar").getMember("Baz")
 
 Const = [1, 2, 3] #$ use=getMember("Array").getMethod("[]").getReturn()
 Const.each do |c| #$ use=getMember("Const").getMethod("each").getReturn() def=getMember("Const").getMethod("each").getBlock()
-    puts c #$ use=getMember("Const").getMethod("each").getBlock().getParameter(0)
+    puts c #$ use=getMember("Const").getMethod("each").getBlock().getParameter(0) use=getMember("Const").getContent(element)
 end
 
 foo = Foo #$ use=getMember("Foo")
@@ -46,7 +46,7 @@ end
 module M2
     class C3 < M1::C1 #$ use=getMember("M1").getMember("C1")
     end
-    
+
     class C4 < C2 #$ use=getMember("C2")
     end
 end
@@ -65,6 +65,11 @@ Foo.foo(a,b:c) #$ use=getMember("Foo").getMethod("foo").getReturn() def=getMembe
 
 def userDefinedFunction(x, y)
     x.noApiGraph(y)
-    x.customEntryPointCall(y) #$ call=CustomEntryPointCall use=CustomEntryPointCall.getReturn() rhs=CustomEntryPointCall.getParameter(0)
-    x.customEntryPointUse(y) #$ use=CustomEntryPointUse
+    x.customEntryPointCall(y) #$ call=entryPoint("CustomEntryPointCall") use=entryPoint("CustomEntryPointCall").getReturn() rhs=entryPoint("CustomEntryPointCall").getParameter(0)
+    x.customEntryPointUse(y) #$ use=entryPoint("CustomEntryPointUse")
 end
+
+array = [A::B::C] #$ use=getMember("Array").getMethod("[]").getReturn()
+array[0].m #$ use=getMember("A").getMember("B").getMember("C").getMethod("m").getReturn()
+
+A::B::C[0] #$ use=getMember("A").getMember("B").getMember("C").getContent(element_0)

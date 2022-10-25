@@ -6,11 +6,11 @@ namespace Microsoft
     {
         namespace FileProviders
         {
-            // Generated from `Microsoft.Extensions.FileProviders.CompositeFileProvider` in `Microsoft.Extensions.FileProviders.Composite, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.FileProviders.CompositeFileProvider` in `Microsoft.Extensions.FileProviders.Composite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CompositeFileProvider : Microsoft.Extensions.FileProviders.IFileProvider
             {
-                public CompositeFileProvider(params Microsoft.Extensions.FileProviders.IFileProvider[] fileProviders) => throw null;
                 public CompositeFileProvider(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileProvider> fileProviders) => throw null;
+                public CompositeFileProvider(params Microsoft.Extensions.FileProviders.IFileProvider[] fileProviders) => throw null;
                 public System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileProvider> FileProviders { get => throw null; }
                 public Microsoft.Extensions.FileProviders.IDirectoryContents GetDirectoryContents(string subpath) => throw null;
                 public Microsoft.Extensions.FileProviders.IFileInfo GetFileInfo(string subpath) => throw null;
@@ -19,8 +19,8 @@ namespace Microsoft
 
             namespace Composite
             {
-                // Generated from `Microsoft.Extensions.FileProviders.Composite.CompositeDirectoryContents` in `Microsoft.Extensions.FileProviders.Composite, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public class CompositeDirectoryContents : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo>, Microsoft.Extensions.FileProviders.IDirectoryContents
+                // Generated from `Microsoft.Extensions.FileProviders.Composite.CompositeDirectoryContents` in `Microsoft.Extensions.FileProviders.Composite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class CompositeDirectoryContents : Microsoft.Extensions.FileProviders.IDirectoryContents, System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo>, System.Collections.IEnumerable
                 {
                     public CompositeDirectoryContents(System.Collections.Generic.IList<Microsoft.Extensions.FileProviders.IFileProvider> fileProviders, string subpath) => throw null;
                     public bool Exists { get => throw null; }

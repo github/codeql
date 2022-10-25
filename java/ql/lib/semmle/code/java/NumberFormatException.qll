@@ -15,7 +15,7 @@ private class SpecialMethodAccess extends MethodAccess {
     this.getQualifier().getType().(RefType).hasQualifiedName("java.lang", klass)
   }
 
-  predicate throwsNFE() {
+  predicate throwsNfe() {
     this.isParseMethod("Byte", "parseByte") or
     this.isParseMethod("Short", "parseShort") or
     this.isParseMethod("Integer", "parseInt") or
@@ -33,6 +33,9 @@ private class SpecialMethodAccess extends MethodAccess {
     this.isValueOfMethod("Float") or
     this.isValueOfMethod("Double")
   }
+
+  /** DEPRECATED: Alias for throwsNfe */
+  deprecated predicate throwsNFE() { this.throwsNfe() }
 }
 
 /** A `ClassInstanceExpr` that constructs a number from its string representation. */
@@ -43,7 +46,7 @@ private class SpecialClassInstanceExpr extends ClassInstanceExpr {
     this.getNumArgument() = 1
   }
 
-  predicate throwsNFE() {
+  predicate throwsNfe() {
     this.isStringConstructor("Byte") or
     this.isStringConstructor("Short") or
     this.isStringConstructor("Integer") or
@@ -51,6 +54,9 @@ private class SpecialClassInstanceExpr extends ClassInstanceExpr {
     this.isStringConstructor("Float") or
     this.isStringConstructor("Double")
   }
+
+  /** DEPRECATED: Alias for throwsNfe */
+  deprecated predicate throwsNFE() { this.throwsNfe() }
 }
 
 /** The class `java.lang.NumberFormatException`. */
@@ -59,7 +65,7 @@ class NumberFormatException extends RefType {
 }
 
 /** Holds if `java.lang.NumberFormatException` is caught. */
-predicate catchesNFE(TryStmt t) {
+predicate catchesNfe(TryStmt t) {
   exists(CatchClause cc, LocalVariableDeclExpr v |
     t.getACatchClause() = cc and
     cc.getVariable() = v and
@@ -67,7 +73,13 @@ predicate catchesNFE(TryStmt t) {
   )
 }
 
+/** DEPRECATED: Alias for catchesNfe */
+deprecated predicate catchesNFE = catchesNfe/1;
+
 /** Holds if `java.lang.NumberFormatException` can be thrown. */
-predicate throwsNFE(Expr e) {
-  e.(SpecialClassInstanceExpr).throwsNFE() or e.(SpecialMethodAccess).throwsNFE()
+predicate throwsNfe(Expr e) {
+  e.(SpecialClassInstanceExpr).throwsNfe() or e.(SpecialMethodAccess).throwsNfe()
 }
+
+/** DEPRECATED: Alias for throwsNfe */
+deprecated predicate throwsNFE = throwsNfe/1;

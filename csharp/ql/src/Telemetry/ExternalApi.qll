@@ -17,8 +17,10 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
 class TestLibrary extends RefType {
   TestLibrary() {
     this.getNamespace()
-        .getName()
-        .matches(["NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%"])
+        .getQualifiedName()
+        .matches([
+            "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
+          ])
   }
 }
 
@@ -85,7 +87,7 @@ class ExternalApi extends DotNet::Callable {
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is is a constructor without parameters. */
+  /** Holds if this API is a constructor without parameters. */
   private predicate isParameterlessConstructor() {
     this instanceof Constructor and this.getNumberOfParameters() = 0
   }
@@ -106,4 +108,47 @@ class ExternalApi extends DotNet::Callable {
 
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
   predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
+}
+
+/**
+ * Gets the limit for the number of results produced by a telemetry query.
+ */
+int resultLimit() { result = 1000 }
+
+/**
+ * Holds if it is relevant to count usages of `api`.
+ */
+signature predicate relevantApi(ExternalApi api);
+
+/**
+ * Given a predicate to count relevant API usages, this module provides a predicate
+ * for restricting the number or returned results based on a certain limit.
+ */
+module Results<relevantApi/1 getRelevantUsages> {
+  private int getUsages(string apiInfo) {
+    result =
+      strictcount(DispatchCall c, ExternalApi api |
+        c = api.getACall() and
+        apiInfo = api.getInfo() and
+        getRelevantUsages(api)
+      )
+  }
+
+  private int getOrder(string apiInfo) {
+    apiInfo =
+      rank[result](string info, int usages |
+        usages = getUsages(info)
+      |
+        info order by usages desc, info
+      )
+  }
+
+  /**
+   * Holds if there exists an API with `apiInfo` that is being used `usages` times
+   * and if it is in the top results (guarded by resultLimit).
+   */
+  predicate restrict(string apiInfo, int usages) {
+    usages = getUsages(apiInfo) and
+    getOrder(apiInfo) <= resultLimit()
+  }
 }

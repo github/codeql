@@ -11,7 +11,7 @@ class Foo extends AstNode {
 }
 
 class Sub extends Foo {
-  override predicate baz() { super.baz() }
+  override predicate baz() { not super.baz() }
 }
 
 query predicate test2() { any(Foo f).bar() }

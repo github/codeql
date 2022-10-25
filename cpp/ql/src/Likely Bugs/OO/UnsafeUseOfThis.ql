@@ -83,4 +83,4 @@ where
     c.getAMemberFunction().getAnOverriddenFunction() = call.getStaticCallTarget()
   )
 select call.getUnconvertedResultExpression(), source, sink,
-  "Call to pure virtual function during " + msg
+  "Call to pure virtual function during " + msg + "."

@@ -1,5 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../../../../resources/stubs/Microsoft.AspNetCore.CookiePolicy.cs ${testdir}/../../../../../resources/stubs/Microsoft.AspNetCore.Hosting.cs ${testdir}/../../../../../resources/stubs/Microsoft.AspNetCore.Http.cs ${testdir}/../../../../../resources/stubs/Microsoft.AspNetCore.Mvc.cs ${testdir}/../../../../../resources/stubs/Microsoft.AspNetCore.Builder.cs
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 

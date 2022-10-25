@@ -69,11 +69,11 @@ class ExternalApi extends Callable {
 
   /** Holds if this API has a supported summary. */
   predicate hasSummary() {
-    this instanceof SummarizedCallable or
+    this = any(SummarizedCallable sc).asCallable() or
     TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is is a constructor without parameters. */
+  /** Holds if this API is a constructor without parameters. */
   private predicate isParameterlessConstructor() {
     this instanceof Constructor and this.getNumberOfParameters() = 0
   }
@@ -98,3 +98,47 @@ class ExternalApi extends Callable {
 
 /** DEPRECATED: Alias for ExternalApi */
 deprecated class ExternalAPI = ExternalApi;
+
+/**
+ * Gets the limit for the number of results produced by a telemetry query.
+ */
+int resultLimit() { result = 1000 }
+
+/**
+ * Holds if it is relevant to count usages of `api`.
+ */
+signature predicate relevantApi(ExternalApi api);
+
+/**
+ * Given a predicate to count relevant API usages, this module provides a predicate
+ * for restricting the number or returned results based on a certain limit.
+ */
+module Results<relevantApi/1 getRelevantUsages> {
+  private int getUsages(string apiName) {
+    result =
+      strictcount(Call c, ExternalApi api |
+        c.getCallee().getSourceDeclaration() = api and
+        not c.getFile() instanceof GeneratedFile and
+        apiName = api.getApiName() and
+        getRelevantUsages(api)
+      )
+  }
+
+  private int getOrder(string apiInfo) {
+    apiInfo =
+      rank[result](string info, int usages |
+        usages = getUsages(info)
+      |
+        info order by usages desc, info
+      )
+  }
+
+  /**
+   * Holds if there exists an API with `apiName` that is being used `usages` times
+   * and if it is in the top results (guarded by resultLimit).
+   */
+  predicate restrict(string apiName, int usages) {
+    usages = getUsages(apiName) and
+    getOrder(apiName) <= resultLimit()
+  }
+}

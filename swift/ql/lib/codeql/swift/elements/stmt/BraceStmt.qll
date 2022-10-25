@@ -1,6 +1,6 @@
 private import codeql.swift.generated.stmt.BraceStmt
 
-class BraceStmt extends BraceStmtBase {
+class BraceStmt extends Generated::BraceStmt {
   AstNode getFirstElement() { result = this.getElement(0) }
 
   AstNode getLastElement() {
@@ -9,4 +9,6 @@ class BraceStmt extends BraceStmtBase {
       not exists(this.getElement(i + 1))
     )
   }
+
+  override string toString() { result = "{ ... }" }
 }

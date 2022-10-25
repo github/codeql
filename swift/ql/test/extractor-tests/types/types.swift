@@ -20,3 +20,11 @@ func f(x: Int, y: Int) -> Int {
 func g(_ f: (Int) -> Int, _ x: Int) -> Int {
   return f(x)
 }
+
+func throwingFunc() throws -> Int {
+  return 42
+}
+
+func asyncFunction(x: Int) async { }
+
+func throwingAndAsyncFunction(x: Int) async throws { }

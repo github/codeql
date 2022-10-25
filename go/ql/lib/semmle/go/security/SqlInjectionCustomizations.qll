@@ -26,9 +26,11 @@ module SqlInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for SQL-injection vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A source of untrusted data, considered as a taint source for SQL injection. */
   class UntrustedFlowAsSource extends Source {
@@ -40,8 +42,8 @@ module SqlInjection {
     SqlQueryAsSink() { this instanceof SQL::QueryString }
   }
 
-  /** A NoSQL query, considered as a taint sink for SQL injection. */
+  /** A NoSql query, considered as a taint sink for SQL injection. */
   class NoSqlQueryAsSink extends Sink {
-    NoSqlQueryAsSink() { this instanceof NoSQL::Query }
+    NoSqlQueryAsSink() { this instanceof NoSql::Query }
   }
 }

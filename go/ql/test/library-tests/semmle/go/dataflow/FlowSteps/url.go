@@ -52,3 +52,16 @@ func func8(q string) url.Values {
 	fmt.Println(v.Get("page"))
 	return v
 }
+
+func func9(q string) *url.URL {
+	joined1, _ := url.JoinPath(q, "clean")
+	joined2, _ := url.JoinPath("clean", joined1)
+	asUrl, _ := url.Parse(joined2)
+	joinedUrl := asUrl.JoinPath("clean")
+	return joinedUrl
+}
+
+func func10(q string) *url.URL {
+	cleanUrl, _ := url.Parse("http://harmless.org")
+	return cleanUrl.JoinPath(q)
+}

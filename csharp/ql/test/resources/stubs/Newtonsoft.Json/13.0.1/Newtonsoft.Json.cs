@@ -7,32 +7,32 @@ namespace Newtonsoft
         // Generated from `Newtonsoft.Json.ConstructorHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum ConstructorHandling
         {
-            AllowNonPublicDefaultConstructor,
-            Default,
+            AllowNonPublicDefaultConstructor = 1,
+            Default = 0,
         }
 
         // Generated from `Newtonsoft.Json.DateFormatHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum DateFormatHandling
         {
-            IsoDateFormat,
-            MicrosoftDateFormat,
+            IsoDateFormat = 0,
+            MicrosoftDateFormat = 1,
         }
 
         // Generated from `Newtonsoft.Json.DateParseHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum DateParseHandling
         {
-            DateTime,
-            DateTimeOffset,
-            None,
+            DateTime = 1,
+            DateTimeOffset = 2,
+            None = 0,
         }
 
         // Generated from `Newtonsoft.Json.DateTimeZoneHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum DateTimeZoneHandling
         {
-            Local,
-            RoundtripKind,
-            Unspecified,
-            Utc,
+            Local = 0,
+            RoundtripKind = 3,
+            Unspecified = 2,
+            Utc = 1,
         }
 
         // Generated from `Newtonsoft.Json.DefaultJsonNameTable` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -47,32 +47,32 @@ namespace Newtonsoft
         [System.Flags]
         public enum DefaultValueHandling
         {
-            Ignore,
-            IgnoreAndPopulate,
-            Include,
-            Populate,
+            Ignore = 1,
+            IgnoreAndPopulate = 3,
+            Include = 0,
+            Populate = 2,
         }
 
         // Generated from `Newtonsoft.Json.FloatFormatHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum FloatFormatHandling
         {
-            DefaultValue,
-            String,
-            Symbol,
+            DefaultValue = 2,
+            String = 0,
+            Symbol = 1,
         }
 
         // Generated from `Newtonsoft.Json.FloatParseHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum FloatParseHandling
         {
-            Decimal,
-            Double,
+            Decimal = 1,
+            Double = 0,
         }
 
         // Generated from `Newtonsoft.Json.Formatting` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum Formatting
         {
-            Indented,
-            None,
+            Indented = 1,
+            None = 0,
         }
 
         // Generated from `Newtonsoft.Json.IArrayPool<>` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -94,9 +94,9 @@ namespace Newtonsoft
         public class JsonArrayAttribute : Newtonsoft.Json.JsonContainerAttribute
         {
             public bool AllowNullItems { get => throw null; set => throw null; }
-            public JsonArrayAttribute(string id) => throw null;
-            public JsonArrayAttribute(bool allowNullItems) => throw null;
             public JsonArrayAttribute() => throw null;
+            public JsonArrayAttribute(bool allowNullItems) => throw null;
+            public JsonArrayAttribute(string id) => throw null;
         }
 
         // Generated from `Newtonsoft.Json.JsonConstructorAttribute` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -116,8 +116,8 @@ namespace Newtonsoft
             public bool ItemIsReference { get => throw null; set => throw null; }
             public Newtonsoft.Json.ReferenceLoopHandling ItemReferenceLoopHandling { get => throw null; set => throw null; }
             public Newtonsoft.Json.TypeNameHandling ItemTypeNameHandling { get => throw null; set => throw null; }
-            protected JsonContainerAttribute(string id) => throw null;
             protected JsonContainerAttribute() => throw null;
+            protected JsonContainerAttribute(string id) => throw null;
             public object[] NamingStrategyParameters { get => throw null; set => throw null; }
             public System.Type NamingStrategyType { get => throw null; set => throw null; }
             public string Title { get => throw null; set => throw null; }
@@ -127,70 +127,70 @@ namespace Newtonsoft
         public static class JsonConvert
         {
             public static System.Func<Newtonsoft.Json.JsonSerializerSettings> DefaultSettings { get => throw null; set => throw null; }
-            public static T DeserializeAnonymousType<T>(string value, T anonymousTypeObject, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
             public static T DeserializeAnonymousType<T>(string value, T anonymousTypeObject) => throw null;
-            public static object DeserializeObject(string value, System.Type type, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
-            public static object DeserializeObject(string value, System.Type type, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
-            public static object DeserializeObject(string value, System.Type type) => throw null;
-            public static object DeserializeObject(string value, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static T DeserializeAnonymousType<T>(string value, T anonymousTypeObject, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
             public static object DeserializeObject(string value) => throw null;
-            public static T DeserializeObject<T>(string value, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
-            public static T DeserializeObject<T>(string value, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static object DeserializeObject(string value, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static object DeserializeObject(string value, System.Type type) => throw null;
+            public static object DeserializeObject(string value, System.Type type, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static object DeserializeObject(string value, System.Type type, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
             public static T DeserializeObject<T>(string value) => throw null;
-            public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName, bool writeArrayAttribute, bool encodeSpecialCharacters) => throw null;
-            public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName, bool writeArrayAttribute) => throw null;
-            public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName) => throw null;
+            public static T DeserializeObject<T>(string value, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static T DeserializeObject<T>(string value, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
             public static System.Xml.Linq.XDocument DeserializeXNode(string value) => throw null;
-            public static System.Xml.XmlDocument DeserializeXmlNode(string value, string deserializeRootElementName, bool writeArrayAttribute, bool encodeSpecialCharacters) => throw null;
-            public static System.Xml.XmlDocument DeserializeXmlNode(string value, string deserializeRootElementName, bool writeArrayAttribute) => throw null;
-            public static System.Xml.XmlDocument DeserializeXmlNode(string value, string deserializeRootElementName) => throw null;
+            public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName) => throw null;
+            public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName, bool writeArrayAttribute) => throw null;
+            public static System.Xml.Linq.XDocument DeserializeXNode(string value, string deserializeRootElementName, bool writeArrayAttribute, bool encodeSpecialCharacters) => throw null;
             public static System.Xml.XmlDocument DeserializeXmlNode(string value) => throw null;
+            public static System.Xml.XmlDocument DeserializeXmlNode(string value, string deserializeRootElementName) => throw null;
+            public static System.Xml.XmlDocument DeserializeXmlNode(string value, string deserializeRootElementName, bool writeArrayAttribute) => throw null;
+            public static System.Xml.XmlDocument DeserializeXmlNode(string value, string deserializeRootElementName, bool writeArrayAttribute, bool encodeSpecialCharacters) => throw null;
             public static string False;
             public static string NaN;
             public static string NegativeInfinity;
             public static string Null;
-            public static void PopulateObject(string value, object target, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
             public static void PopulateObject(string value, object target) => throw null;
+            public static void PopulateObject(string value, object target, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
             public static string PositiveInfinity;
-            public static string SerializeObject(object value, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
-            public static string SerializeObject(object value, System.Type type, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
-            public static string SerializeObject(object value, System.Type type, Newtonsoft.Json.Formatting formatting, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
-            public static string SerializeObject(object value, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
-            public static string SerializeObject(object value, Newtonsoft.Json.Formatting formatting, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
-            public static string SerializeObject(object value, Newtonsoft.Json.Formatting formatting, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
-            public static string SerializeObject(object value, Newtonsoft.Json.Formatting formatting) => throw null;
             public static string SerializeObject(object value) => throw null;
-            public static string SerializeXNode(System.Xml.Linq.XObject node, Newtonsoft.Json.Formatting formatting, bool omitRootObject) => throw null;
-            public static string SerializeXNode(System.Xml.Linq.XObject node, Newtonsoft.Json.Formatting formatting) => throw null;
+            public static string SerializeObject(object value, Newtonsoft.Json.Formatting formatting) => throw null;
+            public static string SerializeObject(object value, Newtonsoft.Json.Formatting formatting, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static string SerializeObject(object value, Newtonsoft.Json.Formatting formatting, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
+            public static string SerializeObject(object value, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static string SerializeObject(object value, System.Type type, Newtonsoft.Json.Formatting formatting, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static string SerializeObject(object value, System.Type type, Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static string SerializeObject(object value, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
             public static string SerializeXNode(System.Xml.Linq.XObject node) => throw null;
-            public static string SerializeXmlNode(System.Xml.XmlNode node, Newtonsoft.Json.Formatting formatting, bool omitRootObject) => throw null;
-            public static string SerializeXmlNode(System.Xml.XmlNode node, Newtonsoft.Json.Formatting formatting) => throw null;
+            public static string SerializeXNode(System.Xml.Linq.XObject node, Newtonsoft.Json.Formatting formatting) => throw null;
+            public static string SerializeXNode(System.Xml.Linq.XObject node, Newtonsoft.Json.Formatting formatting, bool omitRootObject) => throw null;
             public static string SerializeXmlNode(System.Xml.XmlNode node) => throw null;
-            public static string ToString(string value, System.Char delimiter, Newtonsoft.Json.StringEscapeHandling stringEscapeHandling) => throw null;
-            public static string ToString(string value, System.Char delimiter) => throw null;
-            public static string ToString(string value) => throw null;
-            public static string ToString(object value) => throw null;
-            public static string ToString(int value) => throw null;
-            public static string ToString(float value) => throw null;
-            public static string ToString(double value) => throw null;
-            public static string ToString(bool value) => throw null;
-            public static string ToString(System.Uri value) => throw null;
-            public static string ToString(System.UInt64 value) => throw null;
-            public static string ToString(System.UInt32 value) => throw null;
-            public static string ToString(System.UInt16 value) => throw null;
-            public static string ToString(System.TimeSpan value) => throw null;
-            public static string ToString(System.SByte value) => throw null;
-            public static string ToString(System.Int64 value) => throw null;
-            public static string ToString(System.Int16 value) => throw null;
-            public static string ToString(System.Guid value) => throw null;
-            public static string ToString(System.Enum value) => throw null;
-            public static string ToString(System.Decimal value) => throw null;
-            public static string ToString(System.DateTimeOffset value, Newtonsoft.Json.DateFormatHandling format) => throw null;
-            public static string ToString(System.DateTimeOffset value) => throw null;
-            public static string ToString(System.DateTime value, Newtonsoft.Json.DateFormatHandling format, Newtonsoft.Json.DateTimeZoneHandling timeZoneHandling) => throw null;
+            public static string SerializeXmlNode(System.Xml.XmlNode node, Newtonsoft.Json.Formatting formatting) => throw null;
+            public static string SerializeXmlNode(System.Xml.XmlNode node, Newtonsoft.Json.Formatting formatting, bool omitRootObject) => throw null;
             public static string ToString(System.DateTime value) => throw null;
-            public static string ToString(System.Char value) => throw null;
+            public static string ToString(System.DateTime value, Newtonsoft.Json.DateFormatHandling format, Newtonsoft.Json.DateTimeZoneHandling timeZoneHandling) => throw null;
+            public static string ToString(System.DateTimeOffset value) => throw null;
+            public static string ToString(System.DateTimeOffset value, Newtonsoft.Json.DateFormatHandling format) => throw null;
+            public static string ToString(System.Enum value) => throw null;
+            public static string ToString(System.Guid value) => throw null;
+            public static string ToString(System.TimeSpan value) => throw null;
+            public static string ToString(System.Uri value) => throw null;
+            public static string ToString(bool value) => throw null;
             public static string ToString(System.Byte value) => throw null;
+            public static string ToString(System.Char value) => throw null;
+            public static string ToString(System.Decimal value) => throw null;
+            public static string ToString(double value) => throw null;
+            public static string ToString(float value) => throw null;
+            public static string ToString(int value) => throw null;
+            public static string ToString(System.Int64 value) => throw null;
+            public static string ToString(object value) => throw null;
+            public static string ToString(System.SByte value) => throw null;
+            public static string ToString(System.Int16 value) => throw null;
+            public static string ToString(string value) => throw null;
+            public static string ToString(string value, System.Char delimiter) => throw null;
+            public static string ToString(string value, System.Char delimiter, Newtonsoft.Json.StringEscapeHandling stringEscapeHandling) => throw null;
+            public static string ToString(System.UInt32 value) => throw null;
+            public static string ToString(System.UInt64 value) => throw null;
+            public static string ToString(System.UInt16 value) => throw null;
             public static string True;
             public static string Undefined;
         }
@@ -211,10 +211,10 @@ namespace Newtonsoft
         {
             public override bool CanConvert(System.Type objectType) => throw null;
             protected JsonConverter() => throw null;
-            public override object ReadJson(Newtonsoft.Json.JsonReader reader, System.Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer) => throw null;
             public abstract T ReadJson(Newtonsoft.Json.JsonReader reader, System.Type objectType, T existingValue, bool hasExistingValue, Newtonsoft.Json.JsonSerializer serializer);
-            public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer) => throw null;
+            public override object ReadJson(Newtonsoft.Json.JsonReader reader, System.Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer) => throw null;
             public abstract void WriteJson(Newtonsoft.Json.JsonWriter writer, T value, Newtonsoft.Json.JsonSerializer serializer);
+            public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer) => throw null;
         }
 
         // Generated from `Newtonsoft.Json.JsonConverterAttribute` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -222,8 +222,8 @@ namespace Newtonsoft
         {
             public object[] ConverterParameters { get => throw null; }
             public System.Type ConverterType { get => throw null; }
-            public JsonConverterAttribute(System.Type converterType, params object[] converterParameters) => throw null;
             public JsonConverterAttribute(System.Type converterType) => throw null;
+            public JsonConverterAttribute(System.Type converterType, params object[] converterParameters) => throw null;
         }
 
         // Generated from `Newtonsoft.Json.JsonConverterCollection` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -235,17 +235,17 @@ namespace Newtonsoft
         // Generated from `Newtonsoft.Json.JsonDictionaryAttribute` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public class JsonDictionaryAttribute : Newtonsoft.Json.JsonContainerAttribute
         {
-            public JsonDictionaryAttribute(string id) => throw null;
             public JsonDictionaryAttribute() => throw null;
+            public JsonDictionaryAttribute(string id) => throw null;
         }
 
         // Generated from `Newtonsoft.Json.JsonException` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public class JsonException : System.Exception
         {
-            public JsonException(string message, System.Exception innerException) => throw null;
-            public JsonException(string message) => throw null;
-            public JsonException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public JsonException() => throw null;
+            public JsonException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public JsonException(string message) => throw null;
+            public JsonException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `Newtonsoft.Json.JsonExtensionDataAttribute` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -274,9 +274,9 @@ namespace Newtonsoft
         {
             public Newtonsoft.Json.NullValueHandling ItemNullValueHandling { get => throw null; set => throw null; }
             public Newtonsoft.Json.Required ItemRequired { get => throw null; set => throw null; }
-            public JsonObjectAttribute(string id) => throw null;
-            public JsonObjectAttribute(Newtonsoft.Json.MemberSerialization memberSerialization) => throw null;
             public JsonObjectAttribute() => throw null;
+            public JsonObjectAttribute(Newtonsoft.Json.MemberSerialization memberSerialization) => throw null;
+            public JsonObjectAttribute(string id) => throw null;
             public Newtonsoft.Json.MemberSerialization MemberSerialization { get => throw null; set => throw null; }
             public Newtonsoft.Json.MissingMemberHandling MissingMemberHandling { get => throw null; set => throw null; }
         }
@@ -291,8 +291,8 @@ namespace Newtonsoft
             public bool ItemIsReference { get => throw null; set => throw null; }
             public Newtonsoft.Json.ReferenceLoopHandling ItemReferenceLoopHandling { get => throw null; set => throw null; }
             public Newtonsoft.Json.TypeNameHandling ItemTypeNameHandling { get => throw null; set => throw null; }
-            public JsonPropertyAttribute(string propertyName) => throw null;
             public JsonPropertyAttribute() => throw null;
+            public JsonPropertyAttribute(string propertyName) => throw null;
             public object[] NamingStrategyParameters { get => throw null; set => throw null; }
             public System.Type NamingStrategyType { get => throw null; set => throw null; }
             public Newtonsoft.Json.NullValueHandling NullValueHandling { get => throw null; set => throw null; }
@@ -307,6 +307,25 @@ namespace Newtonsoft
         // Generated from `Newtonsoft.Json.JsonReader` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public abstract class JsonReader : System.IDisposable
         {
+            // Generated from `Newtonsoft.Json.JsonReader+State` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
+            protected internal enum State
+            {
+                Array = 6,
+                ArrayStart = 5,
+                Closed = 7,
+                Complete = 1,
+                Constructor = 10,
+                ConstructorStart = 9,
+                Error = 11,
+                Finished = 12,
+                Object = 4,
+                ObjectStart = 3,
+                PostValue = 8,
+                Property = 2,
+                Start = 0,
+            }
+
+
             public virtual void Close() => throw null;
             public bool CloseInput { get => throw null; set => throw null; }
             public System.Globalization.CultureInfo Culture { get => throw null; set => throw null; }
@@ -341,30 +360,11 @@ namespace Newtonsoft
             public virtual System.Threading.Tasks.Task<string> ReadAsStringAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual System.Threading.Tasks.Task<bool> ReadAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             protected void SetStateBasedOnCurrent() => throw null;
-            protected void SetToken(Newtonsoft.Json.JsonToken newToken, object value, bool updateIndex) => throw null;
-            protected void SetToken(Newtonsoft.Json.JsonToken newToken, object value) => throw null;
             protected void SetToken(Newtonsoft.Json.JsonToken newToken) => throw null;
+            protected void SetToken(Newtonsoft.Json.JsonToken newToken, object value) => throw null;
+            protected void SetToken(Newtonsoft.Json.JsonToken newToken, object value, bool updateIndex) => throw null;
             public void Skip() => throw null;
             public System.Threading.Tasks.Task SkipAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            // Generated from `Newtonsoft.Json.JsonReader+State` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
-            protected internal enum State
-            {
-                Array,
-                ArrayStart,
-                Closed,
-                Complete,
-                Constructor,
-                ConstructorStart,
-                Error,
-                Finished,
-                Object,
-                ObjectStart,
-                PostValue,
-                Property,
-                Start,
-            }
-
-
             public bool SupportMultipleContent { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.JsonToken TokenType { get => throw null; }
             public virtual object Value { get => throw null; }
@@ -374,11 +374,11 @@ namespace Newtonsoft
         // Generated from `Newtonsoft.Json.JsonReaderException` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public class JsonReaderException : Newtonsoft.Json.JsonException
         {
-            public JsonReaderException(string message, string path, int lineNumber, int linePosition, System.Exception innerException) => throw null;
-            public JsonReaderException(string message, System.Exception innerException) => throw null;
-            public JsonReaderException(string message) => throw null;
-            public JsonReaderException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public JsonReaderException() => throw null;
+            public JsonReaderException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public JsonReaderException(string message) => throw null;
+            public JsonReaderException(string message, System.Exception innerException) => throw null;
+            public JsonReaderException(string message, string path, int lineNumber, int linePosition, System.Exception innerException) => throw null;
             public int LineNumber { get => throw null; }
             public int LinePosition { get => throw null; }
             public string Path { get => throw null; }
@@ -393,11 +393,11 @@ namespace Newtonsoft
         // Generated from `Newtonsoft.Json.JsonSerializationException` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public class JsonSerializationException : Newtonsoft.Json.JsonException
         {
-            public JsonSerializationException(string message, string path, int lineNumber, int linePosition, System.Exception innerException) => throw null;
-            public JsonSerializationException(string message, System.Exception innerException) => throw null;
-            public JsonSerializationException(string message) => throw null;
-            public JsonSerializationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public JsonSerializationException() => throw null;
+            public JsonSerializationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public JsonSerializationException(string message) => throw null;
+            public JsonSerializationException(string message, System.Exception innerException) => throw null;
+            public JsonSerializationException(string message, string path, int lineNumber, int linePosition, System.Exception innerException) => throw null;
             public int LineNumber { get => throw null; }
             public int LinePosition { get => throw null; }
             public string Path { get => throw null; }
@@ -412,19 +412,19 @@ namespace Newtonsoft
             public virtual System.Runtime.Serialization.StreamingContext Context { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.Serialization.IContractResolver ContractResolver { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.JsonConverterCollection Converters { get => throw null; }
-            public static Newtonsoft.Json.JsonSerializer Create(Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
             public static Newtonsoft.Json.JsonSerializer Create() => throw null;
-            public static Newtonsoft.Json.JsonSerializer CreateDefault(Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
+            public static Newtonsoft.Json.JsonSerializer Create(Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
             public static Newtonsoft.Json.JsonSerializer CreateDefault() => throw null;
+            public static Newtonsoft.Json.JsonSerializer CreateDefault(Newtonsoft.Json.JsonSerializerSettings settings) => throw null;
             public virtual System.Globalization.CultureInfo Culture { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.DateFormatHandling DateFormatHandling { get => throw null; set => throw null; }
             public virtual string DateFormatString { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.DateParseHandling DateParseHandling { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.DateTimeZoneHandling DateTimeZoneHandling { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.DefaultValueHandling DefaultValueHandling { get => throw null; set => throw null; }
-            public object Deserialize(System.IO.TextReader reader, System.Type objectType) => throw null;
-            public object Deserialize(Newtonsoft.Json.JsonReader reader, System.Type objectType) => throw null;
             public object Deserialize(Newtonsoft.Json.JsonReader reader) => throw null;
+            public object Deserialize(Newtonsoft.Json.JsonReader reader, System.Type objectType) => throw null;
+            public object Deserialize(System.IO.TextReader reader, System.Type objectType) => throw null;
             public T Deserialize<T>(Newtonsoft.Json.JsonReader reader) => throw null;
             public virtual System.Collections.IEqualityComparer EqualityComparer { get => throw null; set => throw null; }
             public virtual event System.EventHandler<Newtonsoft.Json.Serialization.ErrorEventArgs> Error;
@@ -437,16 +437,16 @@ namespace Newtonsoft
             public virtual Newtonsoft.Json.MissingMemberHandling MissingMemberHandling { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.NullValueHandling NullValueHandling { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.ObjectCreationHandling ObjectCreationHandling { get => throw null; set => throw null; }
-            public void Populate(System.IO.TextReader reader, object target) => throw null;
             public void Populate(Newtonsoft.Json.JsonReader reader, object target) => throw null;
+            public void Populate(System.IO.TextReader reader, object target) => throw null;
             public virtual Newtonsoft.Json.PreserveReferencesHandling PreserveReferencesHandling { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.ReferenceLoopHandling ReferenceLoopHandling { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.Serialization.IReferenceResolver ReferenceResolver { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.Serialization.ISerializationBinder SerializationBinder { get => throw null; set => throw null; }
-            public void Serialize(System.IO.TextWriter textWriter, object value, System.Type objectType) => throw null;
-            public void Serialize(System.IO.TextWriter textWriter, object value) => throw null;
-            public void Serialize(Newtonsoft.Json.JsonWriter jsonWriter, object value, System.Type objectType) => throw null;
             public void Serialize(Newtonsoft.Json.JsonWriter jsonWriter, object value) => throw null;
+            public void Serialize(Newtonsoft.Json.JsonWriter jsonWriter, object value, System.Type objectType) => throw null;
+            public void Serialize(System.IO.TextWriter textWriter, object value) => throw null;
+            public void Serialize(System.IO.TextWriter textWriter, object value, System.Type objectType) => throw null;
             public virtual Newtonsoft.Json.StringEscapeHandling StringEscapeHandling { get => throw null; set => throw null; }
             public virtual Newtonsoft.Json.Serialization.ITraceWriter TraceWriter { get => throw null; set => throw null; }
             public virtual System.Runtime.Serialization.Formatters.FormatterAssemblyStyle TypeNameAssemblyFormat { get => throw null; set => throw null; }
@@ -549,10 +549,10 @@ namespace Newtonsoft
             protected override System.Threading.Tasks.Task WriteIndentSpaceAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public override void WriteNull() => throw null;
             public override System.Threading.Tasks.Task WriteNullAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override void WritePropertyName(string name, bool escape) => throw null;
             public override void WritePropertyName(string name) => throw null;
-            public override System.Threading.Tasks.Task WritePropertyNameAsync(string name, bool escape, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void WritePropertyName(string name, bool escape) => throw null;
             public override System.Threading.Tasks.Task WritePropertyNameAsync(string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WritePropertyNameAsync(string name, bool escape, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteRaw(string json) => throw null;
             public override System.Threading.Tasks.Task WriteRawAsync(string json, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override System.Threading.Tasks.Task WriteRawValueAsync(string json, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -564,67 +564,67 @@ namespace Newtonsoft
             public override System.Threading.Tasks.Task WriteStartObjectAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteUndefined() => throw null;
             public override System.Threading.Tasks.Task WriteUndefinedAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override void WriteValue(string value) => throw null;
-            public override void WriteValue(object value) => throw null;
-            public override void WriteValue(int value) => throw null;
-            public override void WriteValue(float? value) => throw null;
-            public override void WriteValue(float value) => throw null;
-            public override void WriteValue(double? value) => throw null;
-            public override void WriteValue(double value) => throw null;
-            public override void WriteValue(bool value) => throw null;
-            public override void WriteValue(System.Uri value) => throw null;
-            public override void WriteValue(System.UInt64 value) => throw null;
-            public override void WriteValue(System.UInt32 value) => throw null;
-            public override void WriteValue(System.UInt16 value) => throw null;
-            public override void WriteValue(System.TimeSpan value) => throw null;
-            public override void WriteValue(System.SByte value) => throw null;
-            public override void WriteValue(System.Int64 value) => throw null;
-            public override void WriteValue(System.Int16 value) => throw null;
-            public override void WriteValue(System.Guid value) => throw null;
-            public override void WriteValue(System.Decimal value) => throw null;
-            public override void WriteValue(System.DateTimeOffset value) => throw null;
-            public override void WriteValue(System.DateTime value) => throw null;
-            public override void WriteValue(System.Char value) => throw null;
             public override void WriteValue(System.Byte[] value) => throw null;
+            public override void WriteValue(System.DateTime value) => throw null;
+            public override void WriteValue(System.DateTimeOffset value) => throw null;
+            public override void WriteValue(System.Guid value) => throw null;
+            public override void WriteValue(System.TimeSpan value) => throw null;
+            public override void WriteValue(System.Uri value) => throw null;
+            public override void WriteValue(bool value) => throw null;
             public override void WriteValue(System.Byte value) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(string value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(object value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(int? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(int value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(float? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(float value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(double? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(double value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(bool? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(bool value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Uri value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt64? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt64 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt32? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt32 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt16? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt16 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.TimeSpan? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.TimeSpan value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.SByte? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.SByte value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Int64? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Int64 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Int16? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Int16 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Guid? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Guid value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Decimal? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Decimal value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.DateTimeOffset? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.DateTimeOffset value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.DateTime? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.DateTime value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Char? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Char value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override void WriteValue(System.Char value) => throw null;
+            public override void WriteValue(System.Decimal value) => throw null;
+            public override void WriteValue(double value) => throw null;
+            public override void WriteValue(double? value) => throw null;
+            public override void WriteValue(float value) => throw null;
+            public override void WriteValue(float? value) => throw null;
+            public override void WriteValue(int value) => throw null;
+            public override void WriteValue(System.Int64 value) => throw null;
+            public override void WriteValue(object value) => throw null;
+            public override void WriteValue(System.SByte value) => throw null;
+            public override void WriteValue(System.Int16 value) => throw null;
+            public override void WriteValue(string value) => throw null;
+            public override void WriteValue(System.UInt32 value) => throw null;
+            public override void WriteValue(System.UInt64 value) => throw null;
+            public override void WriteValue(System.UInt16 value) => throw null;
             public override System.Threading.Tasks.Task WriteValueAsync(System.Byte[] value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public override System.Threading.Tasks.Task WriteValueAsync(System.Byte? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.DateTime value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.DateTime? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.DateTimeOffset value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.DateTimeOffset? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Guid value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Guid? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.TimeSpan value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.TimeSpan? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Uri value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(bool value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(bool? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override System.Threading.Tasks.Task WriteValueAsync(System.Byte value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Byte? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Char value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Char? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Decimal value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Decimal? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(double value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(double? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(float value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(float? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(int value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(int? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Int64 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Int64? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(object value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.SByte value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.SByte? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Int16 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.Int16? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(string value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt32 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt32? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt64 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt64? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt16 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.Task WriteValueAsync(System.UInt16? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             protected override void WriteValueDelimiter() => throw null;
             protected override System.Threading.Tasks.Task WriteValueDelimiterAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public override void WriteWhitespace(string ws) => throw null;
@@ -634,24 +634,24 @@ namespace Newtonsoft
         // Generated from `Newtonsoft.Json.JsonToken` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum JsonToken
         {
-            Boolean,
-            Bytes,
-            Comment,
-            Date,
-            EndArray,
-            EndConstructor,
-            EndObject,
-            Float,
-            Integer,
-            None,
-            Null,
-            PropertyName,
-            Raw,
-            StartArray,
-            StartConstructor,
-            StartObject,
-            String,
-            Undefined,
+            Boolean = 10,
+            Bytes = 17,
+            Comment = 5,
+            Date = 16,
+            EndArray = 14,
+            EndConstructor = 15,
+            EndObject = 13,
+            Float = 8,
+            Integer = 7,
+            None = 0,
+            Null = 11,
+            PropertyName = 4,
+            Raw = 6,
+            StartArray = 2,
+            StartConstructor = 3,
+            StartObject = 1,
+            String = 9,
+            Undefined = 12,
         }
 
         // Generated from `Newtonsoft.Json.JsonValidatingReader` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -723,10 +723,10 @@ namespace Newtonsoft
             protected virtual System.Threading.Tasks.Task WriteIndentSpaceAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public virtual void WriteNull() => throw null;
             public virtual System.Threading.Tasks.Task WriteNullAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual void WritePropertyName(string name, bool escape) => throw null;
             public virtual void WritePropertyName(string name) => throw null;
-            public virtual System.Threading.Tasks.Task WritePropertyNameAsync(string name, bool escape, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual void WritePropertyName(string name, bool escape) => throw null;
             public virtual System.Threading.Tasks.Task WritePropertyNameAsync(string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WritePropertyNameAsync(string name, bool escape, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual void WriteRaw(string json) => throw null;
             public virtual System.Threading.Tasks.Task WriteRawAsync(string json, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual void WriteRawValue(string json) => throw null;
@@ -738,92 +738,92 @@ namespace Newtonsoft
             public virtual void WriteStartObject() => throw null;
             public virtual System.Threading.Tasks.Task WriteStartObjectAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public Newtonsoft.Json.WriteState WriteState { get => throw null; }
-            public void WriteToken(Newtonsoft.Json.JsonToken token, object value) => throw null;
-            public void WriteToken(Newtonsoft.Json.JsonToken token) => throw null;
-            public void WriteToken(Newtonsoft.Json.JsonReader reader, bool writeChildren) => throw null;
             public void WriteToken(Newtonsoft.Json.JsonReader reader) => throw null;
-            public System.Threading.Tasks.Task WriteTokenAsync(Newtonsoft.Json.JsonToken token, object value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public System.Threading.Tasks.Task WriteTokenAsync(Newtonsoft.Json.JsonToken token, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public System.Threading.Tasks.Task WriteTokenAsync(Newtonsoft.Json.JsonReader reader, bool writeChildren, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public void WriteToken(Newtonsoft.Json.JsonReader reader, bool writeChildren) => throw null;
+            public void WriteToken(Newtonsoft.Json.JsonToken token) => throw null;
+            public void WriteToken(Newtonsoft.Json.JsonToken token, object value) => throw null;
             public System.Threading.Tasks.Task WriteTokenAsync(Newtonsoft.Json.JsonReader reader, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public System.Threading.Tasks.Task WriteTokenAsync(Newtonsoft.Json.JsonReader reader, bool writeChildren, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public System.Threading.Tasks.Task WriteTokenAsync(Newtonsoft.Json.JsonToken token, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public System.Threading.Tasks.Task WriteTokenAsync(Newtonsoft.Json.JsonToken token, object value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual void WriteUndefined() => throw null;
             public virtual System.Threading.Tasks.Task WriteUndefinedAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual void WriteValue(string value) => throw null;
-            public virtual void WriteValue(object value) => throw null;
-            public virtual void WriteValue(int? value) => throw null;
-            public virtual void WriteValue(int value) => throw null;
-            public virtual void WriteValue(float? value) => throw null;
-            public virtual void WriteValue(float value) => throw null;
-            public virtual void WriteValue(double? value) => throw null;
-            public virtual void WriteValue(double value) => throw null;
-            public virtual void WriteValue(bool? value) => throw null;
-            public virtual void WriteValue(bool value) => throw null;
-            public virtual void WriteValue(System.Uri value) => throw null;
-            public virtual void WriteValue(System.UInt64? value) => throw null;
-            public virtual void WriteValue(System.UInt64 value) => throw null;
-            public virtual void WriteValue(System.UInt32? value) => throw null;
-            public virtual void WriteValue(System.UInt32 value) => throw null;
-            public virtual void WriteValue(System.UInt16? value) => throw null;
-            public virtual void WriteValue(System.UInt16 value) => throw null;
-            public virtual void WriteValue(System.TimeSpan? value) => throw null;
-            public virtual void WriteValue(System.TimeSpan value) => throw null;
-            public virtual void WriteValue(System.SByte? value) => throw null;
-            public virtual void WriteValue(System.SByte value) => throw null;
-            public virtual void WriteValue(System.Int64? value) => throw null;
-            public virtual void WriteValue(System.Int64 value) => throw null;
-            public virtual void WriteValue(System.Int16? value) => throw null;
-            public virtual void WriteValue(System.Int16 value) => throw null;
-            public virtual void WriteValue(System.Guid? value) => throw null;
-            public virtual void WriteValue(System.Guid value) => throw null;
-            public virtual void WriteValue(System.Decimal? value) => throw null;
-            public virtual void WriteValue(System.Decimal value) => throw null;
-            public virtual void WriteValue(System.DateTimeOffset? value) => throw null;
-            public virtual void WriteValue(System.DateTimeOffset value) => throw null;
-            public virtual void WriteValue(System.DateTime? value) => throw null;
-            public virtual void WriteValue(System.DateTime value) => throw null;
-            public virtual void WriteValue(System.Char? value) => throw null;
-            public virtual void WriteValue(System.Char value) => throw null;
             public virtual void WriteValue(System.Byte[] value) => throw null;
-            public virtual void WriteValue(System.Byte? value) => throw null;
+            public virtual void WriteValue(System.DateTime value) => throw null;
+            public virtual void WriteValue(System.DateTime? value) => throw null;
+            public virtual void WriteValue(System.DateTimeOffset value) => throw null;
+            public virtual void WriteValue(System.DateTimeOffset? value) => throw null;
+            public virtual void WriteValue(System.Guid value) => throw null;
+            public virtual void WriteValue(System.Guid? value) => throw null;
+            public virtual void WriteValue(System.TimeSpan value) => throw null;
+            public virtual void WriteValue(System.TimeSpan? value) => throw null;
+            public virtual void WriteValue(System.Uri value) => throw null;
+            public virtual void WriteValue(bool value) => throw null;
+            public virtual void WriteValue(bool? value) => throw null;
             public virtual void WriteValue(System.Byte value) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(string value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(object value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(int? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(int value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(float? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(float value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(double? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(double value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(bool? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(bool value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Uri value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt64? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt64 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt32? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt32 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt16? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt16 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.TimeSpan? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.TimeSpan value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.SByte? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.SByte value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Int64? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Int64 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Int16? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Int16 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Guid? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Guid value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Decimal? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Decimal value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.DateTimeOffset? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.DateTimeOffset value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.DateTime? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.DateTime value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Char? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Char value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual void WriteValue(System.Byte? value) => throw null;
+            public virtual void WriteValue(System.Char value) => throw null;
+            public virtual void WriteValue(System.Char? value) => throw null;
+            public virtual void WriteValue(System.Decimal value) => throw null;
+            public virtual void WriteValue(System.Decimal? value) => throw null;
+            public virtual void WriteValue(double value) => throw null;
+            public virtual void WriteValue(double? value) => throw null;
+            public virtual void WriteValue(float value) => throw null;
+            public virtual void WriteValue(float? value) => throw null;
+            public virtual void WriteValue(int value) => throw null;
+            public virtual void WriteValue(int? value) => throw null;
+            public virtual void WriteValue(System.Int64 value) => throw null;
+            public virtual void WriteValue(System.Int64? value) => throw null;
+            public virtual void WriteValue(object value) => throw null;
+            public virtual void WriteValue(System.SByte value) => throw null;
+            public virtual void WriteValue(System.SByte? value) => throw null;
+            public virtual void WriteValue(System.Int16 value) => throw null;
+            public virtual void WriteValue(System.Int16? value) => throw null;
+            public virtual void WriteValue(string value) => throw null;
+            public virtual void WriteValue(System.UInt32 value) => throw null;
+            public virtual void WriteValue(System.UInt32? value) => throw null;
+            public virtual void WriteValue(System.UInt64 value) => throw null;
+            public virtual void WriteValue(System.UInt64? value) => throw null;
+            public virtual void WriteValue(System.UInt16 value) => throw null;
+            public virtual void WriteValue(System.UInt16? value) => throw null;
             public virtual System.Threading.Tasks.Task WriteValueAsync(System.Byte[] value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Byte? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.DateTime value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.DateTime? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.DateTimeOffset value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.DateTimeOffset? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Guid value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Guid? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.TimeSpan value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.TimeSpan? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Uri value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(bool value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(bool? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public virtual System.Threading.Tasks.Task WriteValueAsync(System.Byte value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Byte? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Char value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Char? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Decimal value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Decimal? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(double value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(double? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(float value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(float? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(int value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(int? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Int64 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Int64? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(object value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.SByte value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.SByte? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Int16 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.Int16? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(string value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt32 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt32? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt64 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt64? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt16 value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public virtual System.Threading.Tasks.Task WriteValueAsync(System.UInt16? value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             protected virtual void WriteValueDelimiter() => throw null;
             protected virtual System.Threading.Tasks.Task WriteValueDelimiterAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public virtual void WriteWhitespace(string ws) => throw null;
@@ -833,115 +833,115 @@ namespace Newtonsoft
         // Generated from `Newtonsoft.Json.JsonWriterException` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public class JsonWriterException : Newtonsoft.Json.JsonException
         {
-            public JsonWriterException(string message, string path, System.Exception innerException) => throw null;
-            public JsonWriterException(string message, System.Exception innerException) => throw null;
-            public JsonWriterException(string message) => throw null;
-            public JsonWriterException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public JsonWriterException() => throw null;
+            public JsonWriterException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public JsonWriterException(string message) => throw null;
+            public JsonWriterException(string message, System.Exception innerException) => throw null;
+            public JsonWriterException(string message, string path, System.Exception innerException) => throw null;
             public string Path { get => throw null; }
         }
 
         // Generated from `Newtonsoft.Json.MemberSerialization` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum MemberSerialization
         {
-            Fields,
-            OptIn,
-            OptOut,
+            Fields = 2,
+            OptIn = 1,
+            OptOut = 0,
         }
 
         // Generated from `Newtonsoft.Json.MetadataPropertyHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum MetadataPropertyHandling
         {
-            Default,
-            Ignore,
-            ReadAhead,
+            Default = 0,
+            Ignore = 2,
+            ReadAhead = 1,
         }
 
         // Generated from `Newtonsoft.Json.MissingMemberHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum MissingMemberHandling
         {
-            Error,
-            Ignore,
+            Error = 1,
+            Ignore = 0,
         }
 
         // Generated from `Newtonsoft.Json.NullValueHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum NullValueHandling
         {
-            Ignore,
-            Include,
+            Ignore = 1,
+            Include = 0,
         }
 
         // Generated from `Newtonsoft.Json.ObjectCreationHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum ObjectCreationHandling
         {
-            Auto,
-            Replace,
-            Reuse,
+            Auto = 0,
+            Replace = 2,
+            Reuse = 1,
         }
 
         // Generated from `Newtonsoft.Json.PreserveReferencesHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         [System.Flags]
         public enum PreserveReferencesHandling
         {
-            All,
-            Arrays,
-            None,
-            Objects,
+            All = 3,
+            Arrays = 2,
+            None = 0,
+            Objects = 1,
         }
 
         // Generated from `Newtonsoft.Json.ReferenceLoopHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum ReferenceLoopHandling
         {
-            Error,
-            Ignore,
-            Serialize,
+            Error = 0,
+            Ignore = 1,
+            Serialize = 2,
         }
 
         // Generated from `Newtonsoft.Json.Required` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum Required
         {
-            AllowNull,
-            Always,
-            Default,
-            DisallowNull,
+            AllowNull = 1,
+            Always = 2,
+            Default = 0,
+            DisallowNull = 3,
         }
 
         // Generated from `Newtonsoft.Json.StringEscapeHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum StringEscapeHandling
         {
-            Default,
-            EscapeHtml,
-            EscapeNonAscii,
+            Default = 0,
+            EscapeHtml = 2,
+            EscapeNonAscii = 1,
         }
 
         // Generated from `Newtonsoft.Json.TypeNameAssemblyFormatHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum TypeNameAssemblyFormatHandling
         {
-            Full,
-            Simple,
+            Full = 1,
+            Simple = 0,
         }
 
         // Generated from `Newtonsoft.Json.TypeNameHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         [System.Flags]
         public enum TypeNameHandling
         {
-            All,
-            Arrays,
-            Auto,
-            None,
-            Objects,
+            All = 3,
+            Arrays = 2,
+            Auto = 4,
+            None = 0,
+            Objects = 1,
         }
 
         // Generated from `Newtonsoft.Json.WriteState` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
         public enum WriteState
         {
-            Array,
-            Closed,
-            Constructor,
-            Error,
-            Object,
-            Property,
-            Start,
+            Array = 3,
+            Closed = 1,
+            Constructor = 4,
+            Error = 0,
+            Object = 2,
+            Property = 5,
+            Start = 6,
         }
 
         namespace Bson
@@ -956,10 +956,10 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Bson.BsonReader` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public class BsonReader : Newtonsoft.Json.JsonReader
             {
-                public BsonReader(System.IO.Stream stream, bool readRootValueAsArray, System.DateTimeKind dateTimeKindHandling) => throw null;
-                public BsonReader(System.IO.Stream stream) => throw null;
-                public BsonReader(System.IO.BinaryReader reader, bool readRootValueAsArray, System.DateTimeKind dateTimeKindHandling) => throw null;
                 public BsonReader(System.IO.BinaryReader reader) => throw null;
+                public BsonReader(System.IO.BinaryReader reader, bool readRootValueAsArray, System.DateTimeKind dateTimeKindHandling) => throw null;
+                public BsonReader(System.IO.Stream stream) => throw null;
+                public BsonReader(System.IO.Stream stream, bool readRootValueAsArray, System.DateTimeKind dateTimeKindHandling) => throw null;
                 public override void Close() => throw null;
                 public System.DateTimeKind DateTimeKindHandling { get => throw null; set => throw null; }
                 public bool JsonNet35BinaryCompatibility { get => throw null; set => throw null; }
@@ -970,8 +970,8 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Bson.BsonWriter` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public class BsonWriter : Newtonsoft.Json.JsonWriter
             {
-                public BsonWriter(System.IO.Stream stream) => throw null;
                 public BsonWriter(System.IO.BinaryWriter writer) => throw null;
+                public BsonWriter(System.IO.Stream stream) => throw null;
                 public override void Close() => throw null;
                 public System.DateTimeKind DateTimeKindHandling { get => throw null; set => throw null; }
                 public override void Flush() => throw null;
@@ -987,27 +987,27 @@ namespace Newtonsoft
                 public override void WriteStartConstructor(string name) => throw null;
                 public override void WriteStartObject() => throw null;
                 public override void WriteUndefined() => throw null;
-                public override void WriteValue(string value) => throw null;
-                public override void WriteValue(object value) => throw null;
-                public override void WriteValue(int value) => throw null;
-                public override void WriteValue(float value) => throw null;
-                public override void WriteValue(double value) => throw null;
-                public override void WriteValue(bool value) => throw null;
-                public override void WriteValue(System.Uri value) => throw null;
-                public override void WriteValue(System.UInt64 value) => throw null;
-                public override void WriteValue(System.UInt32 value) => throw null;
-                public override void WriteValue(System.UInt16 value) => throw null;
-                public override void WriteValue(System.TimeSpan value) => throw null;
-                public override void WriteValue(System.SByte value) => throw null;
-                public override void WriteValue(System.Int64 value) => throw null;
-                public override void WriteValue(System.Int16 value) => throw null;
-                public override void WriteValue(System.Guid value) => throw null;
-                public override void WriteValue(System.Decimal value) => throw null;
-                public override void WriteValue(System.DateTimeOffset value) => throw null;
-                public override void WriteValue(System.DateTime value) => throw null;
-                public override void WriteValue(System.Char value) => throw null;
                 public override void WriteValue(System.Byte[] value) => throw null;
+                public override void WriteValue(System.DateTime value) => throw null;
+                public override void WriteValue(System.DateTimeOffset value) => throw null;
+                public override void WriteValue(System.Guid value) => throw null;
+                public override void WriteValue(System.TimeSpan value) => throw null;
+                public override void WriteValue(System.Uri value) => throw null;
+                public override void WriteValue(bool value) => throw null;
                 public override void WriteValue(System.Byte value) => throw null;
+                public override void WriteValue(System.Char value) => throw null;
+                public override void WriteValue(System.Decimal value) => throw null;
+                public override void WriteValue(double value) => throw null;
+                public override void WriteValue(float value) => throw null;
+                public override void WriteValue(int value) => throw null;
+                public override void WriteValue(System.Int64 value) => throw null;
+                public override void WriteValue(object value) => throw null;
+                public override void WriteValue(System.SByte value) => throw null;
+                public override void WriteValue(System.Int16 value) => throw null;
+                public override void WriteValue(string value) => throw null;
+                public override void WriteValue(System.UInt32 value) => throw null;
+                public override void WriteValue(System.UInt64 value) => throw null;
+                public override void WriteValue(System.UInt16 value) => throw null;
             }
 
         }
@@ -1140,12 +1140,12 @@ namespace Newtonsoft
                 public override bool CanConvert(System.Type objectType) => throw null;
                 public Newtonsoft.Json.Serialization.NamingStrategy NamingStrategy { get => throw null; set => throw null; }
                 public override object ReadJson(Newtonsoft.Json.JsonReader reader, System.Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer) => throw null;
-                public StringEnumConverter(bool camelCaseText) => throw null;
-                public StringEnumConverter(System.Type namingStrategyType, object[] namingStrategyParameters, bool allowIntegerValues) => throw null;
-                public StringEnumConverter(System.Type namingStrategyType, object[] namingStrategyParameters) => throw null;
-                public StringEnumConverter(System.Type namingStrategyType) => throw null;
-                public StringEnumConverter(Newtonsoft.Json.Serialization.NamingStrategy namingStrategy, bool allowIntegerValues = default(bool)) => throw null;
                 public StringEnumConverter() => throw null;
+                public StringEnumConverter(Newtonsoft.Json.Serialization.NamingStrategy namingStrategy, bool allowIntegerValues = default(bool)) => throw null;
+                public StringEnumConverter(System.Type namingStrategyType) => throw null;
+                public StringEnumConverter(System.Type namingStrategyType, object[] namingStrategyParameters) => throw null;
+                public StringEnumConverter(System.Type namingStrategyType, object[] namingStrategyParameters, bool allowIntegerValues) => throw null;
+                public StringEnumConverter(bool camelCaseText) => throw null;
                 public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer) => throw null;
             }
 
@@ -1185,16 +1185,16 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Linq.CommentHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public enum CommentHandling
             {
-                Ignore,
-                Load,
+                Ignore = 0,
+                Load = 1,
             }
 
             // Generated from `Newtonsoft.Json.Linq.DuplicatePropertyNameHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public enum DuplicatePropertyNameHandling
             {
-                Error,
-                Ignore,
-                Replace,
+                Error = 2,
+                Ignore = 1,
+                Replace = 0,
             }
 
             // Generated from `Newtonsoft.Json.Linq.Extensions` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -1202,53 +1202,53 @@ namespace Newtonsoft
             {
                 public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> Ancestors<T>(this System.Collections.Generic.IEnumerable<T> source) where T : Newtonsoft.Json.Linq.JToken => throw null;
                 public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> AncestorsAndSelf<T>(this System.Collections.Generic.IEnumerable<T> source) where T : Newtonsoft.Json.Linq.JToken => throw null;
-                public static Newtonsoft.Json.Linq.IJEnumerable<T> AsJEnumerable<T>(this System.Collections.Generic.IEnumerable<T> source) where T : Newtonsoft.Json.Linq.JToken => throw null;
                 public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> AsJEnumerable(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> source) => throw null;
+                public static Newtonsoft.Json.Linq.IJEnumerable<T> AsJEnumerable<T>(this System.Collections.Generic.IEnumerable<T> source) where T : Newtonsoft.Json.Linq.JToken => throw null;
                 public static System.Collections.Generic.IEnumerable<U> Children<T, U>(this System.Collections.Generic.IEnumerable<T> source) where T : Newtonsoft.Json.Linq.JToken => throw null;
                 public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> Children<T>(this System.Collections.Generic.IEnumerable<T> source) where T : Newtonsoft.Json.Linq.JToken => throw null;
                 public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> Descendants<T>(this System.Collections.Generic.IEnumerable<T> source) where T : Newtonsoft.Json.Linq.JContainer => throw null;
                 public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> DescendantsAndSelf<T>(this System.Collections.Generic.IEnumerable<T> source) where T : Newtonsoft.Json.Linq.JContainer => throw null;
                 public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JProperty> Properties(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JObject> source) => throw null;
-                public static U Value<U>(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> value) => throw null;
                 public static U Value<T, U>(this System.Collections.Generic.IEnumerable<T> value) where T : Newtonsoft.Json.Linq.JToken => throw null;
-                public static System.Collections.Generic.IEnumerable<U> Values<U>(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> source, object key) => throw null;
-                public static System.Collections.Generic.IEnumerable<U> Values<U>(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> source) => throw null;
-                public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> Values(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> source, object key) => throw null;
+                public static U Value<U>(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> value) => throw null;
                 public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> Values(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> source) => throw null;
+                public static Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> Values(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> source, object key) => throw null;
+                public static System.Collections.Generic.IEnumerable<U> Values<U>(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> source) => throw null;
+                public static System.Collections.Generic.IEnumerable<U> Values<U>(this System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> source, object key) => throw null;
             }
 
             // Generated from `Newtonsoft.Json.Linq.IJEnumerable<>` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
-            public interface IJEnumerable<T> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<T> where T : Newtonsoft.Json.Linq.JToken
+            public interface IJEnumerable<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable where T : Newtonsoft.Json.Linq.JToken
             {
                 Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> this[object key] { get; }
             }
 
             // Generated from `Newtonsoft.Json.Linq.JArray` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
-            public class JArray : Newtonsoft.Json.Linq.JContainer, System.Collections.IEnumerable, System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>
+            public class JArray : Newtonsoft.Json.Linq.JContainer, System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>, System.Collections.IEnumerable
             {
                 public void Add(Newtonsoft.Json.Linq.JToken item) => throw null;
                 protected override System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken> ChildrenTokens { get => throw null; }
                 public void Clear() => throw null;
                 public bool Contains(Newtonsoft.Json.Linq.JToken item) => throw null;
                 public void CopyTo(Newtonsoft.Json.Linq.JToken[] array, int arrayIndex) => throw null;
-                public static Newtonsoft.Json.Linq.JArray FromObject(object o, Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
                 public static Newtonsoft.Json.Linq.JArray FromObject(object o) => throw null;
+                public static Newtonsoft.Json.Linq.JArray FromObject(object o, Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
                 public System.Collections.Generic.IEnumerator<Newtonsoft.Json.Linq.JToken> GetEnumerator() => throw null;
                 public int IndexOf(Newtonsoft.Json.Linq.JToken item) => throw null;
                 public void Insert(int index, Newtonsoft.Json.Linq.JToken item) => throw null;
                 public bool IsReadOnly { get => throw null; }
-                public override Newtonsoft.Json.Linq.JToken this[object key] { get => throw null; set => throw null; }
                 public Newtonsoft.Json.Linq.JToken this[int index] { get => throw null; set => throw null; }
-                public JArray(params object[] content) => throw null;
-                public JArray(object content) => throw null;
-                public JArray(Newtonsoft.Json.Linq.JArray other) => throw null;
+                public override Newtonsoft.Json.Linq.JToken this[object key] { get => throw null; set => throw null; }
                 public JArray() => throw null;
-                public static Newtonsoft.Json.Linq.JArray Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
+                public JArray(Newtonsoft.Json.Linq.JArray other) => throw null;
+                public JArray(object content) => throw null;
+                public JArray(params object[] content) => throw null;
                 public static Newtonsoft.Json.Linq.JArray Load(Newtonsoft.Json.JsonReader reader) => throw null;
+                public static Newtonsoft.Json.Linq.JArray Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JArray> LoadAsync(Newtonsoft.Json.JsonReader reader, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JArray> LoadAsync(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public static Newtonsoft.Json.Linq.JArray Parse(string json, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static Newtonsoft.Json.Linq.JArray Parse(string json) => throw null;
+                public static Newtonsoft.Json.Linq.JArray Parse(string json, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public bool Remove(Newtonsoft.Json.Linq.JToken item) => throw null;
                 public void RemoveAt(int index) => throw null;
                 public override Newtonsoft.Json.Linq.JTokenType Type { get => throw null; }
@@ -1261,13 +1261,13 @@ namespace Newtonsoft
             {
                 protected override System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken> ChildrenTokens { get => throw null; }
                 public override Newtonsoft.Json.Linq.JToken this[object key] { get => throw null; set => throw null; }
-                public JConstructor(string name, params object[] content) => throw null;
-                public JConstructor(string name, object content) => throw null;
-                public JConstructor(string name) => throw null;
-                public JConstructor(Newtonsoft.Json.Linq.JConstructor other) => throw null;
                 public JConstructor() => throw null;
-                public static Newtonsoft.Json.Linq.JConstructor Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
+                public JConstructor(Newtonsoft.Json.Linq.JConstructor other) => throw null;
+                public JConstructor(string name) => throw null;
+                public JConstructor(string name, object content) => throw null;
+                public JConstructor(string name, params object[] content) => throw null;
                 public static Newtonsoft.Json.Linq.JConstructor Load(Newtonsoft.Json.JsonReader reader) => throw null;
+                public static Newtonsoft.Json.Linq.JConstructor Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JConstructor> LoadAsync(Newtonsoft.Json.JsonReader reader, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JConstructor> LoadAsync(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public string Name { get => throw null; set => throw null; }
@@ -1277,7 +1277,7 @@ namespace Newtonsoft
             }
 
             // Generated from `Newtonsoft.Json.Linq.JContainer` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
-            public abstract class JContainer : Newtonsoft.Json.Linq.JToken, System.ComponentModel.ITypedList, System.ComponentModel.IBindingList, System.Collections.Specialized.INotifyCollectionChanged, System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>
+            public abstract class JContainer : Newtonsoft.Json.Linq.JToken, System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Collections.Specialized.INotifyCollectionChanged, System.ComponentModel.IBindingList, System.ComponentModel.ITypedList
             {
                 void System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.Add(Newtonsoft.Json.Linq.JToken item) => throw null;
                 public virtual void Add(object content) => throw null;
@@ -1292,11 +1292,11 @@ namespace Newtonsoft
                 void System.ComponentModel.IBindingList.ApplySort(System.ComponentModel.PropertyDescriptor property, System.ComponentModel.ListSortDirection direction) => throw null;
                 public override Newtonsoft.Json.Linq.JEnumerable<Newtonsoft.Json.Linq.JToken> Children() => throw null;
                 protected abstract System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken> ChildrenTokens { get; }
-                void System.Collections.IList.Clear() => throw null;
                 void System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.Clear() => throw null;
+                void System.Collections.IList.Clear() => throw null;
                 public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
-                bool System.Collections.IList.Contains(object value) => throw null;
                 bool System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.Contains(Newtonsoft.Json.Linq.JToken item) => throw null;
+                bool System.Collections.IList.Contains(object value) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                 void System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.CopyTo(Newtonsoft.Json.Linq.JToken[] array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
@@ -1308,30 +1308,30 @@ namespace Newtonsoft
                 System.ComponentModel.PropertyDescriptorCollection System.ComponentModel.ITypedList.GetItemProperties(System.ComponentModel.PropertyDescriptor[] listAccessors) => throw null;
                 string System.ComponentModel.ITypedList.GetListName(System.ComponentModel.PropertyDescriptor[] listAccessors) => throw null;
                 public override bool HasValues { get => throw null; }
-                int System.Collections.IList.IndexOf(object value) => throw null;
                 int System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>.IndexOf(Newtonsoft.Json.Linq.JToken item) => throw null;
-                void System.Collections.IList.Insert(int index, object value) => throw null;
+                int System.Collections.IList.IndexOf(object value) => throw null;
                 void System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>.Insert(int index, Newtonsoft.Json.Linq.JToken item) => throw null;
+                void System.Collections.IList.Insert(int index, object value) => throw null;
                 bool System.Collections.IList.IsFixedSize { get => throw null; }
-                bool System.Collections.IList.IsReadOnly { get => throw null; }
                 bool System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.IsReadOnly { get => throw null; }
+                bool System.Collections.IList.IsReadOnly { get => throw null; }
                 bool System.ComponentModel.IBindingList.IsSorted { get => throw null; }
                 bool System.Collections.ICollection.IsSynchronized { get => throw null; }
-                object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
                 Newtonsoft.Json.Linq.JToken System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>.this[int index] { get => throw null; set => throw null; }
+                object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
                 internal JContainer() => throw null;
                 public override Newtonsoft.Json.Linq.JToken Last { get => throw null; }
                 public event System.ComponentModel.ListChangedEventHandler ListChanged;
-                public void Merge(object content, Newtonsoft.Json.Linq.JsonMergeSettings settings) => throw null;
                 public void Merge(object content) => throw null;
+                public void Merge(object content, Newtonsoft.Json.Linq.JsonMergeSettings settings) => throw null;
                 protected virtual void OnAddingNew(System.ComponentModel.AddingNewEventArgs e) => throw null;
                 protected virtual void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => throw null;
                 protected virtual void OnListChanged(System.ComponentModel.ListChangedEventArgs e) => throw null;
-                void System.Collections.IList.Remove(object value) => throw null;
                 bool System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.Remove(Newtonsoft.Json.Linq.JToken item) => throw null;
+                void System.Collections.IList.Remove(object value) => throw null;
                 public void RemoveAll() => throw null;
-                void System.Collections.IList.RemoveAt(int index) => throw null;
                 void System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>.RemoveAt(int index) => throw null;
+                void System.Collections.IList.RemoveAt(int index) => throw null;
                 void System.ComponentModel.IBindingList.RemoveIndex(System.ComponentModel.PropertyDescriptor property) => throw null;
                 void System.ComponentModel.IBindingList.RemoveSort() => throw null;
                 public void ReplaceAll(object content) => throw null;
@@ -1345,21 +1345,21 @@ namespace Newtonsoft
             }
 
             // Generated from `Newtonsoft.Json.Linq.JEnumerable<>` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
-            public struct JEnumerable<T> : System.IEquatable<Newtonsoft.Json.Linq.JEnumerable<T>>, System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<T>, Newtonsoft.Json.Linq.IJEnumerable<T> where T : Newtonsoft.Json.Linq.JToken
+            public struct JEnumerable<T> : Newtonsoft.Json.Linq.IJEnumerable<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.IEquatable<Newtonsoft.Json.Linq.JEnumerable<T>> where T : Newtonsoft.Json.Linq.JToken
             {
                 public static Newtonsoft.Json.Linq.JEnumerable<T> Empty;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(Newtonsoft.Json.Linq.JEnumerable<T> other) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public System.Collections.Generic.IEnumerator<T> GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 public override int GetHashCode() => throw null;
                 public Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> this[object key] { get => throw null; }
+                // Stub generator skipped constructor
                 public JEnumerable(System.Collections.Generic.IEnumerable<T> enumerable) => throw null;
-                // Stub generator skipped constructor 
             }
 
             // Generated from `Newtonsoft.Json.Linq.JObject` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
-            public class JObject : Newtonsoft.Json.Linq.JContainer, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.ICustomTypeDescriptor, System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>, System.Collections.Generic.IDictionary<string, Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>
+            public class JObject : Newtonsoft.Json.Linq.JContainer, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>, System.Collections.Generic.IDictionary<string, Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>, System.Collections.IEnumerable, System.ComponentModel.ICustomTypeDescriptor, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.INotifyPropertyChanging
             {
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>.Add(System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> item) => throw null;
                 public void Add(string propertyName, Newtonsoft.Json.Linq.JToken value) => throw null;
@@ -1368,8 +1368,8 @@ namespace Newtonsoft
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>.Contains(System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> item) => throw null;
                 public bool ContainsKey(string propertyName) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>.CopyTo(System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>[] array, int arrayIndex) => throw null;
-                public static Newtonsoft.Json.Linq.JObject FromObject(object o, Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
                 public static Newtonsoft.Json.Linq.JObject FromObject(object o) => throw null;
+                public static Newtonsoft.Json.Linq.JObject FromObject(object o, Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
                 System.ComponentModel.AttributeCollection System.ComponentModel.ICustomTypeDescriptor.GetAttributes() => throw null;
                 string System.ComponentModel.ICustomTypeDescriptor.GetClassName() => throw null;
                 string System.ComponentModel.ICustomTypeDescriptor.GetComponentName() => throw null;
@@ -1378,40 +1378,40 @@ namespace Newtonsoft
                 System.ComponentModel.PropertyDescriptor System.ComponentModel.ICustomTypeDescriptor.GetDefaultProperty() => throw null;
                 object System.ComponentModel.ICustomTypeDescriptor.GetEditor(System.Type editorBaseType) => throw null;
                 public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>> GetEnumerator() => throw null;
-                System.ComponentModel.EventDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetEvents(System.Attribute[] attributes) => throw null;
                 System.ComponentModel.EventDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetEvents() => throw null;
+                System.ComponentModel.EventDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetEvents(System.Attribute[] attributes) => throw null;
                 protected override System.Dynamic.DynamicMetaObject GetMetaObject(System.Linq.Expressions.Expression parameter) => throw null;
-                System.ComponentModel.PropertyDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetProperties(System.Attribute[] attributes) => throw null;
                 System.ComponentModel.PropertyDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetProperties() => throw null;
+                System.ComponentModel.PropertyDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetProperties(System.Attribute[] attributes) => throw null;
                 object System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd) => throw null;
-                public Newtonsoft.Json.Linq.JToken GetValue(string propertyName, System.StringComparison comparison) => throw null;
                 public Newtonsoft.Json.Linq.JToken GetValue(string propertyName) => throw null;
+                public Newtonsoft.Json.Linq.JToken GetValue(string propertyName, System.StringComparison comparison) => throw null;
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>.IsReadOnly { get => throw null; }
                 public override Newtonsoft.Json.Linq.JToken this[object key] { get => throw null; set => throw null; }
                 public Newtonsoft.Json.Linq.JToken this[string propertyName] { get => throw null; set => throw null; }
-                public JObject(params object[] content) => throw null;
-                public JObject(object content) => throw null;
-                public JObject(Newtonsoft.Json.Linq.JObject other) => throw null;
                 public JObject() => throw null;
+                public JObject(Newtonsoft.Json.Linq.JObject other) => throw null;
+                public JObject(object content) => throw null;
+                public JObject(params object[] content) => throw null;
                 System.Collections.Generic.ICollection<string> System.Collections.Generic.IDictionary<string, Newtonsoft.Json.Linq.JToken>.Keys { get => throw null; }
-                public static Newtonsoft.Json.Linq.JObject Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static Newtonsoft.Json.Linq.JObject Load(Newtonsoft.Json.JsonReader reader) => throw null;
+                public static Newtonsoft.Json.Linq.JObject Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JObject> LoadAsync(Newtonsoft.Json.JsonReader reader, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JObject> LoadAsync(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected virtual void OnPropertyChanged(string propertyName) => throw null;
                 protected virtual void OnPropertyChanging(string propertyName) => throw null;
-                public static Newtonsoft.Json.Linq.JObject Parse(string json, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static Newtonsoft.Json.Linq.JObject Parse(string json) => throw null;
+                public static Newtonsoft.Json.Linq.JObject Parse(string json, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JProperty> Properties() => throw null;
-                public Newtonsoft.Json.Linq.JProperty Property(string name, System.StringComparison comparison) => throw null;
                 public Newtonsoft.Json.Linq.JProperty Property(string name) => throw null;
+                public Newtonsoft.Json.Linq.JProperty Property(string name, System.StringComparison comparison) => throw null;
                 public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
                 public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
                 public Newtonsoft.Json.Linq.JEnumerable<Newtonsoft.Json.Linq.JToken> PropertyValues() => throw null;
-                public bool Remove(string propertyName) => throw null;
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>.Remove(System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> item) => throw null;
-                public bool TryGetValue(string propertyName, out Newtonsoft.Json.Linq.JToken value) => throw null;
+                public bool Remove(string propertyName) => throw null;
                 public bool TryGetValue(string propertyName, System.StringComparison comparison, out Newtonsoft.Json.Linq.JToken value) => throw null;
+                public bool TryGetValue(string propertyName, out Newtonsoft.Json.Linq.JToken value) => throw null;
                 public override Newtonsoft.Json.Linq.JTokenType Type { get => throw null; }
                 System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken> System.Collections.Generic.IDictionary<string, Newtonsoft.Json.Linq.JToken>.Values { get => throw null; }
                 public override void WriteTo(Newtonsoft.Json.JsonWriter writer, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
@@ -1422,11 +1422,11 @@ namespace Newtonsoft
             public class JProperty : Newtonsoft.Json.Linq.JContainer
             {
                 protected override System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken> ChildrenTokens { get => throw null; }
-                public JProperty(string name, params object[] content) => throw null;
-                public JProperty(string name, object content) => throw null;
                 public JProperty(Newtonsoft.Json.Linq.JProperty other) => throw null;
-                public static Newtonsoft.Json.Linq.JProperty Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
+                public JProperty(string name, object content) => throw null;
+                public JProperty(string name, params object[] content) => throw null;
                 public static Newtonsoft.Json.Linq.JProperty Load(Newtonsoft.Json.JsonReader reader) => throw null;
+                public static Newtonsoft.Json.Linq.JProperty Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JProperty> LoadAsync(Newtonsoft.Json.JsonReader reader, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JProperty> LoadAsync(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public string Name { get => throw null; }
@@ -1456,12 +1456,12 @@ namespace Newtonsoft
             {
                 public static Newtonsoft.Json.Linq.JRaw Create(Newtonsoft.Json.JsonReader reader) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JRaw> CreateAsync(Newtonsoft.Json.JsonReader reader, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public JRaw(object rawJson) : base(default(Newtonsoft.Json.Linq.JValue)) => throw null;
                 public JRaw(Newtonsoft.Json.Linq.JRaw other) : base(default(Newtonsoft.Json.Linq.JValue)) => throw null;
+                public JRaw(object rawJson) : base(default(Newtonsoft.Json.Linq.JValue)) => throw null;
             }
 
             // Generated from `Newtonsoft.Json.Linq.JToken` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
-            public abstract class JToken : System.ICloneable, System.Dynamic.IDynamicMetaObjectProvider, System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken>, Newtonsoft.Json.IJsonLineInfo
+            public abstract class JToken : Newtonsoft.Json.IJsonLineInfo, Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.IEnumerable, System.Dynamic.IDynamicMetaObjectProvider, System.ICloneable
             {
                 public void AddAfterSelf(object content) => throw null;
                 public void AddAnnotation(object annotation) => throw null;
@@ -1482,10 +1482,10 @@ namespace Newtonsoft
                 public static bool DeepEquals(Newtonsoft.Json.Linq.JToken t1, Newtonsoft.Json.Linq.JToken t2) => throw null;
                 public static Newtonsoft.Json.Linq.JTokenEqualityComparer EqualityComparer { get => throw null; }
                 public virtual Newtonsoft.Json.Linq.JToken First { get => throw null; }
-                public static Newtonsoft.Json.Linq.JToken FromObject(object o, Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
                 public static Newtonsoft.Json.Linq.JToken FromObject(object o) => throw null;
-                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                public static Newtonsoft.Json.Linq.JToken FromObject(object o, Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
                 System.Collections.Generic.IEnumerator<Newtonsoft.Json.Linq.JToken> System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>.GetEnumerator() => throw null;
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 protected virtual System.Dynamic.DynamicMetaObject GetMetaObject(System.Linq.Expressions.Expression parameter) => throw null;
                 System.Dynamic.DynamicMetaObject System.Dynamic.IDynamicMetaObjectProvider.GetMetaObject(System.Linq.Expressions.Expression parameter) => throw null;
                 bool Newtonsoft.Json.IJsonLineInfo.HasLineInfo() => throw null;
@@ -1496,115 +1496,115 @@ namespace Newtonsoft
                 public virtual Newtonsoft.Json.Linq.JToken Last { get => throw null; }
                 int Newtonsoft.Json.IJsonLineInfo.LineNumber { get => throw null; }
                 int Newtonsoft.Json.IJsonLineInfo.LinePosition { get => throw null; }
-                public static Newtonsoft.Json.Linq.JToken Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static Newtonsoft.Json.Linq.JToken Load(Newtonsoft.Json.JsonReader reader) => throw null;
+                public static Newtonsoft.Json.Linq.JToken Load(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JToken> LoadAsync(Newtonsoft.Json.JsonReader reader, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JToken> LoadAsync(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public Newtonsoft.Json.Linq.JToken Next { get => throw null; set => throw null; }
                 public Newtonsoft.Json.Linq.JContainer Parent { get => throw null; set => throw null; }
-                public static Newtonsoft.Json.Linq.JToken Parse(string json, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static Newtonsoft.Json.Linq.JToken Parse(string json) => throw null;
+                public static Newtonsoft.Json.Linq.JToken Parse(string json, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public string Path { get => throw null; }
                 public Newtonsoft.Json.Linq.JToken Previous { get => throw null; set => throw null; }
-                public static Newtonsoft.Json.Linq.JToken ReadFrom(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static Newtonsoft.Json.Linq.JToken ReadFrom(Newtonsoft.Json.JsonReader reader) => throw null;
+                public static Newtonsoft.Json.Linq.JToken ReadFrom(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JToken> ReadFromAsync(Newtonsoft.Json.JsonReader reader, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JToken> ReadFromAsync(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Linq.JsonLoadSettings settings, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public void Remove() => throw null;
-                public void RemoveAnnotations<T>() where T : class => throw null;
                 public void RemoveAnnotations(System.Type type) => throw null;
+                public void RemoveAnnotations<T>() where T : class => throw null;
                 public void Replace(Newtonsoft.Json.Linq.JToken value) => throw null;
                 public Newtonsoft.Json.Linq.JToken Root { get => throw null; }
-                public Newtonsoft.Json.Linq.JToken SelectToken(string path, bool errorWhenNoMatch) => throw null;
-                public Newtonsoft.Json.Linq.JToken SelectToken(string path, Newtonsoft.Json.Linq.JsonSelectSettings settings) => throw null;
                 public Newtonsoft.Json.Linq.JToken SelectToken(string path) => throw null;
-                public System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> SelectTokens(string path, bool errorWhenNoMatch) => throw null;
-                public System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> SelectTokens(string path, Newtonsoft.Json.Linq.JsonSelectSettings settings) => throw null;
+                public Newtonsoft.Json.Linq.JToken SelectToken(string path, Newtonsoft.Json.Linq.JsonSelectSettings settings) => throw null;
+                public Newtonsoft.Json.Linq.JToken SelectToken(string path, bool errorWhenNoMatch) => throw null;
                 public System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> SelectTokens(string path) => throw null;
-                public object ToObject(System.Type objectType, Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
+                public System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> SelectTokens(string path, Newtonsoft.Json.Linq.JsonSelectSettings settings) => throw null;
+                public System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken> SelectTokens(string path, bool errorWhenNoMatch) => throw null;
                 public object ToObject(System.Type objectType) => throw null;
-                public T ToObject<T>(Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
+                public object ToObject(System.Type objectType, Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
                 public T ToObject<T>() => throw null;
-                public string ToString(Newtonsoft.Json.Formatting formatting, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
+                public T ToObject<T>(Newtonsoft.Json.JsonSerializer jsonSerializer) => throw null;
                 public override string ToString() => throw null;
+                public string ToString(Newtonsoft.Json.Formatting formatting, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
                 public abstract Newtonsoft.Json.Linq.JTokenType Type { get; }
                 public virtual T Value<T>(object key) => throw null;
                 public virtual System.Collections.Generic.IEnumerable<T> Values<T>() => throw null;
                 public abstract void WriteTo(Newtonsoft.Json.JsonWriter writer, params Newtonsoft.Json.JsonConverter[] converters);
                 public virtual System.Threading.Tasks.Task WriteToAsync(Newtonsoft.Json.JsonWriter writer, System.Threading.CancellationToken cancellationToken, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
                 public System.Threading.Tasks.Task WriteToAsync(Newtonsoft.Json.JsonWriter writer, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
-                public static explicit operator string(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator int?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator int(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator float?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator float(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator double?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator double(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator bool?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator bool(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Uri(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.UInt64?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.UInt64(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.UInt32?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.UInt32(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.UInt16?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.UInt16(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.TimeSpan?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.TimeSpan(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.SByte?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.SByte(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Int64?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Int64(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Int16?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Int16(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Guid?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Guid(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Decimal?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Decimal(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.DateTimeOffset?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.DateTimeOffset(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.DateTime?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.DateTime(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Char?(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Char(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Byte[](Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static explicit operator System.Byte?(Newtonsoft.Json.Linq.JToken value) => throw null;
                 public static explicit operator System.Byte(Newtonsoft.Json.Linq.JToken value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(string value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(int? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(int value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(float? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(float value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(double? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(double value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(bool? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(bool value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Uri value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt64? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt64 value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt32? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt32 value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt16? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt16 value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.TimeSpan? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.TimeSpan value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.SByte? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.SByte value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Int64? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Int64 value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Int16? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Int16 value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Guid? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Guid value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Decimal? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Decimal value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.DateTimeOffset? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.DateTimeOffset value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.DateTime? value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.DateTime value) => throw null;
+                public static explicit operator System.Byte?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Byte[](Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Char(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Char?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.DateTime(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.DateTime?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.DateTimeOffset(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.DateTimeOffset?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Decimal(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Decimal?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Guid(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Guid?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Int16(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Int16?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Int64(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Int64?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.SByte(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.SByte?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.TimeSpan(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.TimeSpan?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.UInt16(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.UInt16?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.UInt32(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.UInt32?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.UInt64(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.UInt64?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator System.Uri(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator bool(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator bool?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator double(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator double?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator float(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator float?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator int(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator int?(Newtonsoft.Json.Linq.JToken value) => throw null;
+                public static explicit operator string(Newtonsoft.Json.Linq.JToken value) => throw null;
                 public static implicit operator Newtonsoft.Json.Linq.JToken(System.Byte[] value) => throw null;
-                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Byte? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.DateTime value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.DateTime? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.DateTimeOffset value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.DateTimeOffset? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Guid value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Guid? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.TimeSpan value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.TimeSpan? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Uri value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(bool value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(bool? value) => throw null;
                 public static implicit operator Newtonsoft.Json.Linq.JToken(System.Byte value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Byte? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Decimal value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Decimal? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(double value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(double? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(float value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(float? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(int value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(int? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Int64 value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Int64? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.SByte value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.SByte? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Int16 value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.Int16? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(string value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt32 value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt32? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt64 value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt64? value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt16 value) => throw null;
+                public static implicit operator Newtonsoft.Json.Linq.JToken(System.UInt16? value) => throw null;
             }
 
             // Generated from `Newtonsoft.Json.Linq.JTokenEqualityComparer` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -1620,8 +1620,8 @@ namespace Newtonsoft
             {
                 public Newtonsoft.Json.Linq.JToken CurrentToken { get => throw null; }
                 bool Newtonsoft.Json.IJsonLineInfo.HasLineInfo() => throw null;
-                public JTokenReader(Newtonsoft.Json.Linq.JToken token, string initialPath) => throw null;
                 public JTokenReader(Newtonsoft.Json.Linq.JToken token) => throw null;
+                public JTokenReader(Newtonsoft.Json.Linq.JToken token, string initialPath) => throw null;
                 int Newtonsoft.Json.IJsonLineInfo.LineNumber { get => throw null; }
                 int Newtonsoft.Json.IJsonLineInfo.LinePosition { get => throw null; }
                 public override string Path { get => throw null; }
@@ -1631,24 +1631,24 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Linq.JTokenType` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public enum JTokenType
             {
-                Array,
-                Boolean,
-                Bytes,
-                Comment,
-                Constructor,
-                Date,
-                Float,
-                Guid,
-                Integer,
-                None,
-                Null,
-                Object,
-                Property,
-                Raw,
-                String,
-                TimeSpan,
-                Undefined,
-                Uri,
+                Array = 2,
+                Boolean = 9,
+                Bytes = 14,
+                Comment = 5,
+                Constructor = 3,
+                Date = 12,
+                Float = 7,
+                Guid = 15,
+                Integer = 6,
+                None = 0,
+                Null = 10,
+                Object = 1,
+                Property = 4,
+                Raw = 13,
+                String = 8,
+                TimeSpan = 17,
+                Undefined = 11,
+                Uri = 16,
             }
 
             // Generated from `Newtonsoft.Json.Linq.JTokenWriter` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -1657,8 +1657,8 @@ namespace Newtonsoft
                 public override void Close() => throw null;
                 public Newtonsoft.Json.Linq.JToken CurrentToken { get => throw null; }
                 public override void Flush() => throw null;
-                public JTokenWriter(Newtonsoft.Json.Linq.JContainer container) => throw null;
                 public JTokenWriter() => throw null;
+                public JTokenWriter(Newtonsoft.Json.Linq.JContainer container) => throw null;
                 public Newtonsoft.Json.Linq.JToken Token { get => throw null; }
                 public override void WriteComment(string text) => throw null;
                 protected override void WriteEnd(Newtonsoft.Json.JsonToken token) => throw null;
@@ -1669,31 +1669,31 @@ namespace Newtonsoft
                 public override void WriteStartConstructor(string name) => throw null;
                 public override void WriteStartObject() => throw null;
                 public override void WriteUndefined() => throw null;
-                public override void WriteValue(string value) => throw null;
-                public override void WriteValue(object value) => throw null;
-                public override void WriteValue(int value) => throw null;
-                public override void WriteValue(float value) => throw null;
-                public override void WriteValue(double value) => throw null;
-                public override void WriteValue(bool value) => throw null;
-                public override void WriteValue(System.Uri value) => throw null;
-                public override void WriteValue(System.UInt64 value) => throw null;
-                public override void WriteValue(System.UInt32 value) => throw null;
-                public override void WriteValue(System.UInt16 value) => throw null;
-                public override void WriteValue(System.TimeSpan value) => throw null;
-                public override void WriteValue(System.SByte value) => throw null;
-                public override void WriteValue(System.Int64 value) => throw null;
-                public override void WriteValue(System.Int16 value) => throw null;
-                public override void WriteValue(System.Guid value) => throw null;
-                public override void WriteValue(System.Decimal value) => throw null;
-                public override void WriteValue(System.DateTimeOffset value) => throw null;
-                public override void WriteValue(System.DateTime value) => throw null;
-                public override void WriteValue(System.Char value) => throw null;
                 public override void WriteValue(System.Byte[] value) => throw null;
+                public override void WriteValue(System.DateTime value) => throw null;
+                public override void WriteValue(System.DateTimeOffset value) => throw null;
+                public override void WriteValue(System.Guid value) => throw null;
+                public override void WriteValue(System.TimeSpan value) => throw null;
+                public override void WriteValue(System.Uri value) => throw null;
+                public override void WriteValue(bool value) => throw null;
                 public override void WriteValue(System.Byte value) => throw null;
+                public override void WriteValue(System.Char value) => throw null;
+                public override void WriteValue(System.Decimal value) => throw null;
+                public override void WriteValue(double value) => throw null;
+                public override void WriteValue(float value) => throw null;
+                public override void WriteValue(int value) => throw null;
+                public override void WriteValue(System.Int64 value) => throw null;
+                public override void WriteValue(object value) => throw null;
+                public override void WriteValue(System.SByte value) => throw null;
+                public override void WriteValue(System.Int16 value) => throw null;
+                public override void WriteValue(string value) => throw null;
+                public override void WriteValue(System.UInt32 value) => throw null;
+                public override void WriteValue(System.UInt64 value) => throw null;
+                public override void WriteValue(System.UInt16 value) => throw null;
             }
 
             // Generated from `Newtonsoft.Json.Linq.JValue` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
-            public class JValue : Newtonsoft.Json.Linq.JToken, System.IFormattable, System.IEquatable<Newtonsoft.Json.Linq.JValue>, System.IConvertible, System.IComparable<Newtonsoft.Json.Linq.JValue>, System.IComparable
+            public class JValue : Newtonsoft.Json.Linq.JToken, System.IComparable, System.IComparable<Newtonsoft.Json.Linq.JValue>, System.IConvertible, System.IEquatable<Newtonsoft.Json.Linq.JValue>, System.IFormattable
             {
                 public int CompareTo(Newtonsoft.Json.Linq.JValue obj) => throw null;
                 int System.IComparable.CompareTo(object obj) => throw null;
@@ -1701,27 +1701,27 @@ namespace Newtonsoft
                 public static Newtonsoft.Json.Linq.JValue CreateNull() => throw null;
                 public static Newtonsoft.Json.Linq.JValue CreateString(string value) => throw null;
                 public static Newtonsoft.Json.Linq.JValue CreateUndefined() => throw null;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(Newtonsoft.Json.Linq.JValue other) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public override int GetHashCode() => throw null;
                 protected override System.Dynamic.DynamicMetaObject GetMetaObject(System.Linq.Expressions.Expression parameter) => throw null;
                 System.TypeCode System.IConvertible.GetTypeCode() => throw null;
                 public override bool HasValues { get => throw null; }
-                public JValue(string value) => throw null;
-                public JValue(object value) => throw null;
-                public JValue(float value) => throw null;
-                public JValue(double value) => throw null;
-                public JValue(bool value) => throw null;
-                public JValue(System.Uri value) => throw null;
-                public JValue(System.UInt64 value) => throw null;
-                public JValue(System.TimeSpan value) => throw null;
-                public JValue(System.Int64 value) => throw null;
-                public JValue(System.Guid value) => throw null;
-                public JValue(System.Decimal value) => throw null;
-                public JValue(System.DateTimeOffset value) => throw null;
                 public JValue(System.DateTime value) => throw null;
-                public JValue(System.Char value) => throw null;
+                public JValue(System.DateTimeOffset value) => throw null;
+                public JValue(System.Guid value) => throw null;
                 public JValue(Newtonsoft.Json.Linq.JValue other) => throw null;
+                public JValue(System.TimeSpan value) => throw null;
+                public JValue(System.Uri value) => throw null;
+                public JValue(bool value) => throw null;
+                public JValue(System.Char value) => throw null;
+                public JValue(System.Decimal value) => throw null;
+                public JValue(double value) => throw null;
+                public JValue(float value) => throw null;
+                public JValue(System.Int64 value) => throw null;
+                public JValue(object value) => throw null;
+                public JValue(string value) => throw null;
+                public JValue(System.UInt64 value) => throw null;
                 bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
                 System.Byte System.IConvertible.ToByte(System.IFormatProvider provider) => throw null;
                 System.Char System.IConvertible.ToChar(System.IFormatProvider provider) => throw null;
@@ -1733,10 +1733,10 @@ namespace Newtonsoft
                 System.Int64 System.IConvertible.ToInt64(System.IFormatProvider provider) => throw null;
                 System.SByte System.IConvertible.ToSByte(System.IFormatProvider provider) => throw null;
                 float System.IConvertible.ToSingle(System.IFormatProvider provider) => throw null;
-                public string ToString(string format, System.IFormatProvider formatProvider) => throw null;
-                public string ToString(string format) => throw null;
-                public string ToString(System.IFormatProvider formatProvider) => throw null;
                 public override string ToString() => throw null;
+                public string ToString(System.IFormatProvider formatProvider) => throw null;
+                public string ToString(string format) => throw null;
+                public string ToString(string format, System.IFormatProvider formatProvider) => throw null;
                 object System.IConvertible.ToType(System.Type conversionType, System.IFormatProvider provider) => throw null;
                 System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
                 System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
@@ -1776,25 +1776,25 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Linq.LineInfoHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public enum LineInfoHandling
             {
-                Ignore,
-                Load,
+                Ignore = 0,
+                Load = 1,
             }
 
             // Generated from `Newtonsoft.Json.Linq.MergeArrayHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public enum MergeArrayHandling
             {
-                Concat,
-                Merge,
-                Replace,
-                Union,
+                Concat = 0,
+                Merge = 3,
+                Replace = 2,
+                Union = 1,
             }
 
             // Generated from `Newtonsoft.Json.Linq.MergeNullValueHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             [System.Flags]
             public enum MergeNullValueHandling
             {
-                Ignore,
-                Merge,
+                Ignore = 0,
+                Merge = 1,
             }
 
         }
@@ -1803,10 +1803,10 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Schema.Extensions` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public static class Extensions
             {
-                public static bool IsValid(this Newtonsoft.Json.Linq.JToken source, Newtonsoft.Json.Schema.JsonSchema schema, out System.Collections.Generic.IList<string> errorMessages) => throw null;
                 public static bool IsValid(this Newtonsoft.Json.Linq.JToken source, Newtonsoft.Json.Schema.JsonSchema schema) => throw null;
-                public static void Validate(this Newtonsoft.Json.Linq.JToken source, Newtonsoft.Json.Schema.JsonSchema schema, Newtonsoft.Json.Schema.ValidationEventHandler validationEventHandler) => throw null;
+                public static bool IsValid(this Newtonsoft.Json.Linq.JToken source, Newtonsoft.Json.Schema.JsonSchema schema, out System.Collections.Generic.IList<string> errorMessages) => throw null;
                 public static void Validate(this Newtonsoft.Json.Linq.JToken source, Newtonsoft.Json.Schema.JsonSchema schema) => throw null;
+                public static void Validate(this Newtonsoft.Json.Linq.JToken source, Newtonsoft.Json.Schema.JsonSchema schema, Newtonsoft.Json.Schema.ValidationEventHandler validationEventHandler) => throw null;
             }
 
             // Generated from `Newtonsoft.Json.Schema.JsonSchema` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -1835,14 +1835,14 @@ namespace Newtonsoft
                 public double? Minimum { get => throw null; set => throw null; }
                 public int? MinimumItems { get => throw null; set => throw null; }
                 public int? MinimumLength { get => throw null; set => throw null; }
-                public static Newtonsoft.Json.Schema.JsonSchema Parse(string json, Newtonsoft.Json.Schema.JsonSchemaResolver resolver) => throw null;
                 public static Newtonsoft.Json.Schema.JsonSchema Parse(string json) => throw null;
+                public static Newtonsoft.Json.Schema.JsonSchema Parse(string json, Newtonsoft.Json.Schema.JsonSchemaResolver resolver) => throw null;
                 public string Pattern { get => throw null; set => throw null; }
                 public System.Collections.Generic.IDictionary<string, Newtonsoft.Json.Schema.JsonSchema> PatternProperties { get => throw null; set => throw null; }
                 public bool PositionalItemsValidation { get => throw null; set => throw null; }
                 public System.Collections.Generic.IDictionary<string, Newtonsoft.Json.Schema.JsonSchema> Properties { get => throw null; set => throw null; }
-                public static Newtonsoft.Json.Schema.JsonSchema Read(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Schema.JsonSchemaResolver resolver) => throw null;
                 public static Newtonsoft.Json.Schema.JsonSchema Read(Newtonsoft.Json.JsonReader reader) => throw null;
+                public static Newtonsoft.Json.Schema.JsonSchema Read(Newtonsoft.Json.JsonReader reader, Newtonsoft.Json.Schema.JsonSchemaResolver resolver) => throw null;
                 public bool? ReadOnly { get => throw null; set => throw null; }
                 public bool? Required { get => throw null; set => throw null; }
                 public string Requires { get => throw null; set => throw null; }
@@ -1851,17 +1851,17 @@ namespace Newtonsoft
                 public bool? Transient { get => throw null; set => throw null; }
                 public Newtonsoft.Json.Schema.JsonSchemaType? Type { get => throw null; set => throw null; }
                 public bool UniqueItems { get => throw null; set => throw null; }
-                public void WriteTo(Newtonsoft.Json.JsonWriter writer, Newtonsoft.Json.Schema.JsonSchemaResolver resolver) => throw null;
                 public void WriteTo(Newtonsoft.Json.JsonWriter writer) => throw null;
+                public void WriteTo(Newtonsoft.Json.JsonWriter writer, Newtonsoft.Json.Schema.JsonSchemaResolver resolver) => throw null;
             }
 
             // Generated from `Newtonsoft.Json.Schema.JsonSchemaException` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public class JsonSchemaException : Newtonsoft.Json.JsonException
             {
-                public JsonSchemaException(string message, System.Exception innerException) => throw null;
-                public JsonSchemaException(string message) => throw null;
-                public JsonSchemaException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public JsonSchemaException() => throw null;
+                public JsonSchemaException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public JsonSchemaException(string message) => throw null;
+                public JsonSchemaException(string message, System.Exception innerException) => throw null;
                 public int LineNumber { get => throw null; }
                 public int LinePosition { get => throw null; }
                 public string Path { get => throw null; }
@@ -1871,10 +1871,10 @@ namespace Newtonsoft
             public class JsonSchemaGenerator
             {
                 public Newtonsoft.Json.Serialization.IContractResolver ContractResolver { get => throw null; set => throw null; }
-                public Newtonsoft.Json.Schema.JsonSchema Generate(System.Type type, bool rootSchemaNullable) => throw null;
-                public Newtonsoft.Json.Schema.JsonSchema Generate(System.Type type, Newtonsoft.Json.Schema.JsonSchemaResolver resolver, bool rootSchemaNullable) => throw null;
-                public Newtonsoft.Json.Schema.JsonSchema Generate(System.Type type, Newtonsoft.Json.Schema.JsonSchemaResolver resolver) => throw null;
                 public Newtonsoft.Json.Schema.JsonSchema Generate(System.Type type) => throw null;
+                public Newtonsoft.Json.Schema.JsonSchema Generate(System.Type type, Newtonsoft.Json.Schema.JsonSchemaResolver resolver) => throw null;
+                public Newtonsoft.Json.Schema.JsonSchema Generate(System.Type type, Newtonsoft.Json.Schema.JsonSchemaResolver resolver, bool rootSchemaNullable) => throw null;
+                public Newtonsoft.Json.Schema.JsonSchema Generate(System.Type type, bool rootSchemaNullable) => throw null;
                 public JsonSchemaGenerator() => throw null;
                 public Newtonsoft.Json.Schema.UndefinedSchemaIdHandling UndefinedSchemaIdHandling { get => throw null; set => throw null; }
             }
@@ -1891,23 +1891,23 @@ namespace Newtonsoft
             [System.Flags]
             public enum JsonSchemaType
             {
-                Any,
-                Array,
-                Boolean,
-                Float,
-                Integer,
-                None,
-                Null,
-                Object,
-                String,
+                Any = 127,
+                Array = 32,
+                Boolean = 8,
+                Float = 2,
+                Integer = 4,
+                None = 0,
+                Null = 64,
+                Object = 16,
+                String = 1,
             }
 
             // Generated from `Newtonsoft.Json.Schema.UndefinedSchemaIdHandling` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public enum UndefinedSchemaIdHandling
             {
-                None,
-                UseAssemblyQualifiedName,
-                UseTypeName,
+                None = 0,
+                UseAssemblyQualifiedName = 2,
+                UseTypeName = 1,
             }
 
             // Generated from `Newtonsoft.Json.Schema.ValidationEventArgs` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -1927,9 +1927,9 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Serialization.CamelCaseNamingStrategy` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public class CamelCaseNamingStrategy : Newtonsoft.Json.Serialization.NamingStrategy
             {
-                public CamelCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames, bool processExtensionDataNames) => throw null;
-                public CamelCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames) => throw null;
                 public CamelCaseNamingStrategy() => throw null;
+                public CamelCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames) => throw null;
+                public CamelCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames, bool processExtensionDataNames) => throw null;
                 protected override string ResolvePropertyName(string name) => throw null;
             }
 
@@ -2033,8 +2033,8 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Serialization.IAttributeProvider` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public interface IAttributeProvider
             {
-                System.Collections.Generic.IList<System.Attribute> GetAttributes(bool inherit);
                 System.Collections.Generic.IList<System.Attribute> GetAttributes(System.Type attributeType, bool inherit);
+                System.Collections.Generic.IList<System.Attribute> GetAttributes(bool inherit);
             }
 
             // Generated from `Newtonsoft.Json.Serialization.IContractResolver` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
@@ -2222,9 +2222,9 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Serialization.KebabCaseNamingStrategy` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public class KebabCaseNamingStrategy : Newtonsoft.Json.Serialization.NamingStrategy
             {
-                public KebabCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames, bool processExtensionDataNames) => throw null;
-                public KebabCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames) => throw null;
                 public KebabCaseNamingStrategy() => throw null;
+                public KebabCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames) => throw null;
+                public KebabCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames, bool processExtensionDataNames) => throw null;
                 protected override string ResolvePropertyName(string name) => throw null;
             }
 
@@ -2241,8 +2241,8 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Serialization.NamingStrategy` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public abstract class NamingStrategy
             {
-                public override bool Equals(object obj) => throw null;
                 protected bool Equals(Newtonsoft.Json.Serialization.NamingStrategy other) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public virtual string GetDictionaryKey(string key) => throw null;
                 public virtual string GetExtensionDataName(string name) => throw null;
                 public override int GetHashCode() => throw null;
@@ -2266,8 +2266,8 @@ namespace Newtonsoft
             // Generated from `Newtonsoft.Json.Serialization.ReflectionAttributeProvider` in `Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed`
             public class ReflectionAttributeProvider : Newtonsoft.Json.Serialization.IAttributeProvider
             {
-                public System.Collections.Generic.IList<System.Attribute> GetAttributes(bool inherit) => throw null;
                 public System.Collections.Generic.IList<System.Attribute> GetAttributes(System.Type attributeType, bool inherit) => throw null;
+                public System.Collections.Generic.IList<System.Attribute> GetAttributes(bool inherit) => throw null;
                 public ReflectionAttributeProvider(object attributeProvider) => throw null;
             }
 
@@ -2289,9 +2289,9 @@ namespace Newtonsoft
             public class SnakeCaseNamingStrategy : Newtonsoft.Json.Serialization.NamingStrategy
             {
                 protected override string ResolvePropertyName(string name) => throw null;
-                public SnakeCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames, bool processExtensionDataNames) => throw null;
-                public SnakeCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames) => throw null;
                 public SnakeCaseNamingStrategy() => throw null;
+                public SnakeCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames) => throw null;
+                public SnakeCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames, bool processExtensionDataNames) => throw null;
             }
 
         }

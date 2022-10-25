@@ -46,5 +46,3 @@ namespace ASP
         }
     }
 }
-
-// source-extractor-options: /r:${testdir}/../../../../../packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.dll /r:${testdir}/../../../../../packages/Microsoft.AspNet.Mvc.5.2.3/lib/net45/System.Web.Mvc.dll /r:System.Dynamic.Runtime.dll /r:System.Runtime.Extensions.dll /r:System.Linq.Expressions.dll /r:System.Web.dll /r:C:\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Web.dll /r:System.Collections.Specialized.dll

@@ -42,7 +42,7 @@ private module NotExposed {
   // Implementation below
   // ---------------------------------------------------------------------------
   //
-  // We are looking to find all subclassed of the already modelled classes, and ideally
+  // We are looking to find all subclassed of the already modeled classes, and ideally
   // we would identify an `API::Node` for each (then `toString` would give the API
   // path).
   //
@@ -68,15 +68,13 @@ private module NotExposed {
   // modeling. See https://github.com/github/codeql/pull/5632 for more discussion.
   //
   //
-  bindingset[fullyQaulified]
-  string fullyQualifiedToApiGraphPath(string fullyQaulified) {
-    result = "moduleImport(\"" + fullyQaulified.replaceAll(".", "\").getMember(\"") + "\")"
+  bindingset[fullyQualified]
+  string fullyQualifiedToApiGraphPath(string fullyQualified) {
+    result = "moduleImport(\"" + fullyQualified.replaceAll(".", "\").getMember(\"") + "\")"
   }
 
   /** DEPRECATED: Alias for fullyQualifiedToApiGraphPath */
-  deprecated string fullyQualifiedToAPIGraphPath(string fullyQaulified) {
-    result = fullyQualifiedToApiGraphPath(fullyQaulified)
-  }
+  deprecated predicate fullyQualifiedToAPIGraphPath = fullyQualifiedToApiGraphPath/1;
 
   bindingset[this]
   abstract class FindSubclassesSpec extends string {
@@ -152,7 +150,7 @@ private module NotExposed {
     FindSubclassesSpec spec, string newAliasFullyQualified, ImportMember importMember, Module mod,
     Location loc
   ) {
-    importMember = newOrExistingModeling(spec).getAUse().asExpr() and
+    importMember = newOrExistingModeling(spec).getAValueReachableFromSource().asExpr() and
     importMember.getScope() = mod and
     loc = importMember.getLocation() and
     (
@@ -182,7 +180,7 @@ private module NotExposed {
     // WHAT A HACK :D :D
     relevantClass.getPath() =
       relevantClass.getAPredecessor().getPath() + ".getMember(\"" + relevantName + "\")" and
-    relevantClass.getAPredecessor().getAUse().asExpr() = importStar.getModule() and
+    relevantClass.getAPredecessor().getAValueReachableFromSource().asExpr() = importStar.getModule() and
     (
       mod.isPackageInit() and
       newAliasFullyQualified = mod.getPackageName() + "." + relevantName
@@ -204,7 +202,7 @@ private module NotExposed {
     FindSubclassesSpec spec, string newSubclassQualified, ClassExpr classExpr, Module mod,
     Location loc
   ) {
-    classExpr = newOrExistingModeling(spec).getASubclass*().getAnImmediateUse().asExpr() and
+    classExpr = newOrExistingModeling(spec).getASubclass*().asSource().asExpr() and
     classExpr.getScope() = mod and
     newSubclassQualified = mod.getName() + "." + classExpr.getName() and
     loc = classExpr.getLocation() and

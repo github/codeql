@@ -7,10 +7,10 @@ import XML
 /**
  * An Android manifest file, named `AndroidManifest.xml`.
  */
-class AndroidManifestXmlFile extends XMLFile {
+class AndroidManifestXmlFile extends XmlFile {
   AndroidManifestXmlFile() {
     this.getBaseName() = "AndroidManifest.xml" and
-    count(XMLElement e | e = this.getAChild()) = 1 and
+    count(XmlElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "manifest"
   }
 
@@ -18,12 +18,17 @@ class AndroidManifestXmlFile extends XMLFile {
    * Gets the top-level `<manifest>` element in this Android manifest file.
    */
   AndroidManifestXmlElement getManifestElement() { result = this.getAChild() }
+
+  /**
+   * Holds if this Android manifest file is located in a build directory.
+   */
+  predicate isInBuildDirectory() { this.getFile().getRelativePath().matches("%build%") }
 }
 
 /**
  * A `<manifest>` element in an Android manifest file.
  */
-class AndroidManifestXmlElement extends XMLElement {
+class AndroidManifestXmlElement extends XmlElement {
   AndroidManifestXmlElement() {
     this.getParent() instanceof AndroidManifestXmlFile and this.getName() = "manifest"
   }
@@ -42,7 +47,7 @@ class AndroidManifestXmlElement extends XMLElement {
 /**
  * An `<application>` element in an Android manifest file.
  */
-class AndroidApplicationXmlElement extends XMLElement {
+class AndroidApplicationXmlElement extends XmlElement {
   AndroidApplicationXmlElement() {
     this.getParent() instanceof AndroidManifestXmlElement and this.getName() = "application"
   }
@@ -51,6 +56,72 @@ class AndroidApplicationXmlElement extends XMLElement {
    * Gets a component child element of this `<application>` element.
    */
   AndroidComponentXmlElement getAComponentElement() { result = this.getAChild() }
+
+  /**
+   * Holds if this application element has the attribute `android:debuggable` set to `true`.
+   */
+  predicate isDebuggable() {
+    exists(AndroidXmlAttribute attr |
+      this.getAnAttribute() = attr and
+      attr.getName() = "debuggable" and
+      attr.getValue() = "true"
+    )
+  }
+
+  /**
+   * Holds if this application element has explicitly set a value for its `android:permission` attribute.
+   */
+  predicate requiresPermissions() { this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull() }
+
+  /**
+   * Holds if this application element does not disable the `android:allowBackup` attribute.
+   *
+   * https://developer.android.com/guide/topics/data/autobackup
+   */
+  predicate allowsBackup() {
+    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory() and
+    (
+      // explicitly sets android:allowBackup="true"
+      this.allowsBackupExplicitly()
+      or
+      // Manifest providing the main intent for an application, and does not explicitly
+      // disallow the allowBackup attribute
+      this.providesMainIntent() and
+      // Check that android:allowBackup="false" is not present
+      not exists(AndroidXmlAttribute attr |
+        this.getAnAttribute() = attr and
+        attr.getName() = "allowBackup" and
+        attr.getValue() = "false"
+      )
+    )
+  }
+
+  /**
+   * Holds if this application element sets the `android:allowBackup` attribute to `true`.
+   *
+   * https://developer.android.com/guide/topics/data/autobackup
+   */
+  private predicate allowsBackupExplicitly() {
+    exists(AndroidXmlAttribute attr |
+      this.getAnAttribute() = attr and
+      attr.getName() = "allowBackup" and
+      attr.getValue() = "true"
+    )
+  }
+
+  /**
+   * Holds if the application element contains a child element which provides the
+   * `android.intent.action.MAIN` intent.
+   */
+  private predicate providesMainIntent() {
+    exists(AndroidActivityXmlElement activity |
+      activity = this.getAChild() and
+      exists(AndroidIntentFilterXmlElement intentFilter |
+        intentFilter = activity.getAChild() and
+        intentFilter.getAnActionElement().getActionName() = "android.intent.action.MAIN"
+      )
+    )
+  }
 }
 
 /**
@@ -77,7 +148,7 @@ class AndroidReceiverXmlElement extends AndroidComponentXmlElement {
 /**
  * An XML attribute with the `android:` prefix.
  */
-class AndroidXmlAttribute extends XMLAttribute {
+class AndroidXmlAttribute extends XmlAttribute {
   AndroidXmlAttribute() { this.getNamespace().getPrefix() = "android" }
 }
 
@@ -92,7 +163,7 @@ class AndroidProviderXmlElement extends AndroidComponentXmlElement {
    * `android:permission` attribute or its `android:readPermission` and `android:writePermission`
    * attributes.
    */
-  predicate requiresPermissions() {
+  override predicate requiresPermissions() {
     this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull()
     or
     this.getAnAttribute().(AndroidPermissionXmlAttribute).isWrite() and
@@ -109,12 +180,23 @@ class AndroidProviderXmlElement extends AndroidComponentXmlElement {
       attr.getValue() = "true"
     )
   }
+
+  /**
+   * Holds if the provider element is only protected by either `android:readPermission` or `android:writePermission`.
+   */
+  predicate hasIncompletePermissions() {
+    (
+      this.getAnAttribute().(AndroidPermissionXmlAttribute).isWrite() or
+      this.getAnAttribute().(AndroidPermissionXmlAttribute).isRead()
+    ) and
+    not this.requiresPermissions()
+  }
 }
 
 /**
  * The attribute `android:perrmission`, `android:readPermission`, or `android:writePermission`.
  */
-class AndroidPermissionXmlAttribute extends XMLAttribute {
+class AndroidPermissionXmlAttribute extends XmlAttribute {
   AndroidPermissionXmlAttribute() {
     this.getNamespace().getPrefix() = "android" and
     this.getName() = ["permission", "readPermission", "writePermission"]
@@ -133,7 +215,7 @@ class AndroidPermissionXmlAttribute extends XMLAttribute {
 /**
  * The `<path-permission`> element of a `<provider>` in an Android manifest file.
  */
-class AndroidPathPermissionXmlElement extends XMLElement {
+class AndroidPathPermissionXmlElement extends XmlElement {
   AndroidPathPermissionXmlElement() {
     this.getParent() instanceof AndroidProviderXmlElement and
     this.hasName("path-permission")
@@ -143,7 +225,7 @@ class AndroidPathPermissionXmlElement extends XMLElement {
 /**
  * An Android component element in an Android manifest file.
  */
-class AndroidComponentXmlElement extends XMLElement {
+class AndroidComponentXmlElement extends XmlElement {
   AndroidComponentXmlElement() {
     this.getParent() instanceof AndroidApplicationXmlElement and
     this.getName().regexpMatch("(activity|service|receiver|provider)")
@@ -155,10 +237,15 @@ class AndroidComponentXmlElement extends XMLElement {
   AndroidIntentFilterXmlElement getAnIntentFilterElement() { result = this.getAChild() }
 
   /**
+   * Holds if this component element has an `<intent-filter>` child element.
+   */
+  predicate hasAnIntentFilterElement() { exists(this.getAnIntentFilterElement()) }
+
+  /**
    * Gets the value of the `android:name` attribute of this component element.
    */
   string getComponentName() {
-    exists(XMLAttribute attr |
+    exists(XmlAttribute attr |
       attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
@@ -175,7 +262,7 @@ class AndroidComponentXmlElement extends XMLElement {
     then
       result =
         this.getParent()
-              .(XMLElement)
+              .(XmlElement)
               .getParent()
               .(AndroidManifestXmlElement)
               .getPackageAttributeValue() + this.getComponentName()
@@ -186,7 +273,7 @@ class AndroidComponentXmlElement extends XMLElement {
    * Gets the value of the `android:exported` attribute of this component element.
    */
   string getExportedAttributeValue() {
-    exists(XMLAttribute attr |
+    exists(XmlAttribute attr |
       attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "exported"
@@ -204,12 +291,22 @@ class AndroidComponentXmlElement extends XMLElement {
    * Holds if the `android:exported` attribute of this component element is explicitly set to `false`.
    */
   predicate isNotExported() { this.getExportedAttributeValue() = "false" }
+
+  /**
+   * Holds if this component element has an `android:exported` attribute.
+   */
+  predicate hasExportedAttribute() { exists(this.getExportedAttributeValue()) }
+
+  /**
+   * Holds if this component element has explicitly set a value for its `android:permission` attribute.
+   */
+  predicate requiresPermissions() { this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull() }
 }
 
 /**
  * An `<intent-filter>` element in an Android manifest file.
  */
-class AndroidIntentFilterXmlElement extends XMLElement {
+class AndroidIntentFilterXmlElement extends XmlElement {
   AndroidIntentFilterXmlElement() {
     this.getFile() instanceof AndroidManifestXmlFile and this.getName() = "intent-filter"
   }
@@ -218,12 +315,17 @@ class AndroidIntentFilterXmlElement extends XMLElement {
    * Gets an `<action>` child element of this `<intent-filter>` element.
    */
   AndroidActionXmlElement getAnActionElement() { result = this.getAChild() }
+
+  /**
+   * Gets a `<category>` child element of this `<intent-filter>` element.
+   */
+  AndroidCategoryXmlElement getACategoryElement() { result = this.getAChild() }
 }
 
 /**
  * An `<action>` element in an Android manifest file.
  */
-class AndroidActionXmlElement extends XMLElement {
+class AndroidActionXmlElement extends XmlElement {
   AndroidActionXmlElement() {
     this.getFile() instanceof AndroidManifestXmlFile and this.getName() = "action"
   }
@@ -232,7 +334,29 @@ class AndroidActionXmlElement extends XMLElement {
    * Gets the name of this action.
    */
   string getActionName() {
-    exists(XMLAttribute attr |
+    exists(XmlAttribute attr |
+      attr = this.getAnAttribute() and
+      attr.getNamespace().getPrefix() = "android" and
+      attr.getName() = "name"
+    |
+      result = attr.getValue()
+    )
+  }
+}
+
+/**
+ * A `<category>` element in an Android manifest file.
+ */
+class AndroidCategoryXmlElement extends XmlElement {
+  AndroidCategoryXmlElement() {
+    this.getFile() instanceof AndroidManifestXmlFile and this.getName() = "category"
+  }
+
+  /**
+   * Gets the name of this category.
+   */
+  string getCategoryName() {
+    exists(XmlAttribute attr |
       attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
