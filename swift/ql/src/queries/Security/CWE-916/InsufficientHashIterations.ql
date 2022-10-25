@@ -64,6 +64,5 @@ from
   DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
-  "The variable '" + sinkNode.getNode().toString() +
-    "' is an insufficient number of iterations, which is not secure for hash functions.",
-  sourceNode, sourceNode.getNode().toString()
+  "The value '" + sourceNode.getNode().toString() +
+    "' is an insufficient number of iterations for secure password hashing."
