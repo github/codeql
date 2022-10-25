@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.AnyFunctionType
 
-class FunctionTypeBase extends Synth::TFunctionType, AnyFunctionType {
-  override string getAPrimaryQlClass() { result = "FunctionType" }
+module Generated {
+  class FunctionType extends Synth::TFunctionType, AnyFunctionType {
+    override string getAPrimaryQlClass() { result = "FunctionType" }
+  }
 }

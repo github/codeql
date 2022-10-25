@@ -10,7 +10,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 /**
- * Provides models for the the `urllib2` module, part of
+ * Provides models for the `urllib2` module, part of
  * the Python 2 standard library.
  *
  * See https://docs.python.org/2/library/urllib2.html

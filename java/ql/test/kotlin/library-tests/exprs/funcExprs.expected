@@ -241,6 +241,12 @@ anon_class_member_modifiers
 | samConversion.kt:46:32:46:44 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:46:32:46:44 | invoke | override, public |
 | samConversion.kt:58:14:58:45 | new InterfaceFn1Sus(...) { ... } | samConversion.kt:58:14:58:45 | fn1 | override, public, suspend |
 | samConversion.kt:58:30:58:45 | new Function2<Integer,Integer,Unit>(...) { ... } | samConversion.kt:58:30:58:45 | invoke | override, public, suspend |
+| samConversion.kt:75:17:75:33 | new IntGetter(...) { ... } | samConversion.kt:75:17:75:33 | f | override, public |
+| samConversion.kt:75:27:75:32 | new KProperty0<Integer>(...) { ... } | samConversion.kt:75:27:75:32 | get | override, public |
+| samConversion.kt:75:27:75:32 | new KProperty0<Integer>(...) { ... } | samConversion.kt:75:27:75:32 | invoke | override, public |
+| samConversion.kt:76:17:76:55 | new PropertyRefsGetter(...) { ... } | samConversion.kt:76:17:76:55 | f | override, public |
+| samConversion.kt:76:36:76:54 | new KProperty1<PropertyRefsTest,Integer>(...) { ... } | samConversion.kt:76:36:76:54 | get | override, public |
+| samConversion.kt:76:36:76:54 | new KProperty1<PropertyRefsTest,Integer>(...) { ... } | samConversion.kt:76:36:76:54 | invoke | override, public |
 nonOverrideInvoke
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | 23 |
 | funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | 23 |

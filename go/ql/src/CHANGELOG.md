@@ -1,3 +1,9 @@
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
+
 ## 0.3.1
 
 No user-facing changes.

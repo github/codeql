@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ApplyExpr
 
-class CallExprBase extends Synth::TCallExpr, ApplyExpr {
-  override string getAPrimaryQlClass() { result = "CallExpr" }
+module Generated {
+  class CallExpr extends Synth::TCallExpr, ApplyExpr {
+    override string getAPrimaryQlClass() { result = "CallExpr" }
+  }
 }

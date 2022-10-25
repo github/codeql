@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.AbstractTypeParamDecl
 
-class GenericTypeParamDeclBase extends Synth::TGenericTypeParamDecl, AbstractTypeParamDecl {
-  override string getAPrimaryQlClass() { result = "GenericTypeParamDecl" }
+module Generated {
+  class GenericTypeParamDecl extends Synth::TGenericTypeParamDecl, AbstractTypeParamDecl {
+    override string getAPrimaryQlClass() { result = "GenericTypeParamDecl" }
+  }
 }

@@ -1,0 +1,6 @@
+| test.kt:2:1:4:1 | foo | 3 | 3 | 0 |
+| test.kt:8:1:8:9 | getX | 1 | 1 | 0 |
+| test.kt:18:1:18:17 | getY | 5 | 1 | 4 |
+| test.kt:20:1:26:1 | Foo | 7 | 6 | 1 |
+| test.kt:21:5:24:5 | bar | 4 | 3 | 1 |
+| test.kt:25:5:25:21 | getSomeField | 1 | 1 | 0 |

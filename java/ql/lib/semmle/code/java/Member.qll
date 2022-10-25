@@ -283,6 +283,9 @@ class Callable extends StmtParent, Member, @callable {
   /** Holds if the last parameter of this callable is a varargs (variable arity) parameter. */
   predicate isVarargs() { this.getAParameter().isVarargs() }
 
+  /** Gets the index of this callable's varargs parameter, if any exists. */
+  int getVaragsParameterIndex() { this.getParameter(result).isVarargs() }
+
   /**
    * Gets the signature of this callable, where all types in the signature have a fully-qualified name.
    * The parameter types are only separated by a comma (without space). If this callable has
@@ -471,7 +474,12 @@ class Method extends Callable, @method {
   }
 
   override predicate isAbstract() {
-    Callable.super.isAbstract()
+    // The combination `abstract default` isn't legal in Java,
+    // but it occurs when the Kotlin extractor records a default
+    // body, but the output class file in fact uses an abstract
+    // method and an associated static helper, which we don't
+    // extract as an implementation detail.
+    Callable.super.isAbstract() and not this.isDefault()
     or
     // JLS 9.4: An interface method lacking a `private`, `default`, or `static` modifier
     // is implicitly abstract.

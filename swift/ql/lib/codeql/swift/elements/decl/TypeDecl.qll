@@ -1,9 +1,8 @@
 private import codeql.swift.generated.decl.TypeDecl
-private import codeql.swift.generated.type.Type
 private import codeql.swift.elements.type.AnyGenericType
 private import swift
 
-class TypeDecl extends TypeDeclBase {
+class TypeDecl extends Generated::TypeDecl {
   override string toString() { result = this.getName() }
 
   TypeDecl getBaseTypeDecl(int i) { result = this.getBaseType(i).(AnyGenericType).getDeclaration() }

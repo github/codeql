@@ -148,6 +148,11 @@ private module Cached {
     // flow through `!`
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
+    // flow through `?`
+    nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -486,7 +491,9 @@ private module OutNodes {
 
 import OutNodes
 
-predicate jumpStep(Node pred, Node succ) { none() }
+predicate jumpStep(Node pred, Node succ) {
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+}
 
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(MemberRefExpr ref, AssignExpr assign |

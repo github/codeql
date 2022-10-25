@@ -4,13 +4,24 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.StmtCondition
 
-class LabeledConditionalStmtBase extends Synth::TLabeledConditionalStmt, LabeledStmt {
-  StmtCondition getImmediateCondition() {
-    result =
-      Synth::convertStmtConditionFromRaw(Synth::convertLabeledConditionalStmtToRaw(this)
-            .(Raw::LabeledConditionalStmt)
-            .getCondition())
-  }
+module Generated {
+  class LabeledConditionalStmt extends Synth::TLabeledConditionalStmt, LabeledStmt {
+    /**
+     * Gets the condition of this labeled conditional statement.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    StmtCondition getImmediateCondition() {
+      result =
+        Synth::convertStmtConditionFromRaw(Synth::convertLabeledConditionalStmtToRaw(this)
+              .(Raw::LabeledConditionalStmt)
+              .getCondition())
+    }
 
-  final StmtCondition getCondition() { result = getImmediateCondition().resolve() }
+    /**
+     * Gets the condition of this labeled conditional statement.
+     */
+    final StmtCondition getCondition() { result = getImmediateCondition().resolve() }
+  }
 }

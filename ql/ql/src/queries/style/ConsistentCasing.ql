@@ -34,7 +34,7 @@ predicate problem(string name1, AstNode node1, string name2, string kind) {
     pack2 = pack1.getADependency*() and
     name2 = getNameAndPack(_, kind, lower, pack2) and // TODO: Get if it's a dependency pack in the alert-message.
     name1 != name2 and
-    kind != "variable" // these are benign, and plentyful...
+    kind != "variable" // these are benign, and plentiful...
   )
 }
 

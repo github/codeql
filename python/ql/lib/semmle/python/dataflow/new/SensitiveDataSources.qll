@@ -1,5 +1,5 @@
 /**
- * Provides an extension point for for modeling sensitive data, such as secrets, certificates, or passwords.
+ * Provides an extension point for modeling sensitive data, such as secrets, certificates, or passwords.
  * Sensitive data can be interesting to use as data-flow sources in security queries.
  */
 

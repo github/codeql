@@ -417,7 +417,7 @@ module Rbi {
     override ReturnType getReturnType() { result = ReturnsCall.super.getReturnType() }
   }
 
-  /** A call to `void` that spcifies that a given method does not return a useful value. */
+  /** A call to `void` that specifies that a given method does not return a useful value. */
   class MethodVoidCall extends MethodReturnsTypeCall instanceof VoidCall {
     override ReturnType getReturnType() { result = VoidCall.super.getReturnType() }
   }
@@ -448,7 +448,7 @@ module Rbi {
   }
 
   /**
-   * A call to `void` that spcifies that a given proc or block does not return
+   * A call to `void` that specifies that a given proc or block does not return
    * a useful value.
    */
   class ProcVoidCall extends ProcReturnsTypeCall instanceof VoidCall {

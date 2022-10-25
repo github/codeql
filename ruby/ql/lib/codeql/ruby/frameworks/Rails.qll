@@ -16,10 +16,13 @@ private import codeql.ruby.security.OpenSSL
  */
 module Rails {
   /**
+   * DEPRECATED: Any call to `html_safe` is considered an XSS sink.
    * A method call on a string to mark it as HTML safe for Rails. Strings marked
    * as such will not be automatically escaped when inserted into HTML.
    */
-  class HtmlSafeCall extends MethodCall instanceof HtmlSafeCallImpl { }
+  deprecated class HtmlSafeCall extends MethodCall {
+    HtmlSafeCall() { this.getMethodName() = "html_safe" }
+  }
 
   /** A call to a Rails method to escape HTML. */
   class HtmlEscapeCall extends MethodCall instanceof HtmlEscapeCallImpl { }

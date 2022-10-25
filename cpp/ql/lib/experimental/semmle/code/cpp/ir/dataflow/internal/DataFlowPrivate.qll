@@ -241,7 +241,7 @@ private Instruction getANonConversionUse(Operand operand) {
 
 /**
  * Gets the operand that represents the first use of the value of `call` following
- * a sequnce of conversion-like instructions.
+ * a sequence of conversion-like instructions.
  */
 predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
   exists(getANonConversionUse(operand)) and
@@ -254,7 +254,7 @@ predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
 
 /**
  * Gets the instruction that represents the first use of the value of `call` following
- * a sequnce of conversion-like instructions.
+ * a sequence of conversion-like instructions.
  *
  * This predicate only holds if there is no suitable operand (i.e., no operand of a non-
  * conversion instruction) to use to represent the value of `call` after conversions.

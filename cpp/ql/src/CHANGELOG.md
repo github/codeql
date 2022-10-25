@@ -1,3 +1,14 @@
+## 0.4.2
+
+### New Queries
+
+* Added a new medium-precision query, `cpp/comma-before-misleading-indentation`, which detects instances of whitespace that have readability issues.
+
+### Minor Analysis Improvements
+
+* The "Unterminated variadic call" (`cpp/unterminated-variadic-call`) query has been tuned to produce fewer false positive results.
+* Fixed false positives from the "Unused static function" (`cpp/unused-static-function`) query in files that had errors during compilation.
+
 ## 0.4.1
 
 ### Minor Analysis Improvements
@@ -125,7 +136,7 @@
 
 * The `security` tag has been added to the `cpp/return-stack-allocated-memory` query. As a result, its results will now appear by default.
 * The "Uncontrolled data in arithmetic expression" (cpp/uncontrolled-arithmetic) query has been enhanced to reduce false positive results and its @precision increased to high.
-* A new `cpp/very-likely-overruning-write` query has been added to the default query suite for C/C++. The query reports some results that were formerly flagged by `cpp/overruning-write`.
+* A new `cpp/very-likely-overrunning-write` query has been added to the default query suite for C/C++. The query reports some results that were formerly flagged by `cpp/overrunning-write`.
 
 ### Minor Analysis Improvements
 

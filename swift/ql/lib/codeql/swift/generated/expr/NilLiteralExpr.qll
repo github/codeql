@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.LiteralExpr
 
-class NilLiteralExprBase extends Synth::TNilLiteralExpr, LiteralExpr {
-  override string getAPrimaryQlClass() { result = "NilLiteralExpr" }
+module Generated {
+  class NilLiteralExpr extends Synth::TNilLiteralExpr, LiteralExpr {
+    override string getAPrimaryQlClass() { result = "NilLiteralExpr" }
+  }
 }
