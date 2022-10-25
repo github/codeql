@@ -383,6 +383,10 @@ class SingletonOverride1
         def call_singleton1
             singleton1
         end
+
+        def factory
+            self.new.instance1
+        end
     end
 
     def self.singleton2
@@ -394,6 +398,10 @@ class SingletonOverride1
     end
 
     singleton2
+
+    def instance1
+        puts "SingletonOverride1#instance1"
+    end
 end
 
 SingletonOverride1.singleton1
@@ -410,6 +418,10 @@ class SingletonOverride2 < SingletonOverride1
 
     def self.singleton2
         puts "SingletonOverride2#singleton2"
+    end
+
+    def instance1
+        puts "SingletonOverride2#instance1"
     end
 end
 
@@ -548,3 +560,57 @@ ProtectedMethodsSub.new.baz
 
 [C.new].each { |c| c.baz }
 ["a","b","c"].each { |s| s.capitalize }
+
+class SingletonUpCall_Base
+    def self.singleton
+    end
+end
+class SingletonUpCall_Sub < SingletonUpCall_Base
+    singleton
+    singleton2 # should not resolve
+    def self.mid_method
+        singleton
+        singleton2 # should resolve
+    end
+end
+class SingletonUpCall_SubSub < SingletonUpCall_Sub
+    def self.singleton2
+    end
+
+    mid_method
+end
+
+class SingletonA
+    def self.singleton1
+    end
+
+    def self.call_singleton1
+        singleton1
+    end
+
+    def self.call_call_singleton1
+        call_singleton1
+    end
+end
+
+class SingletonB < SingletonA
+    def self.singleton1
+    end
+
+    def self.call_singleton1
+        singleton1 # should not be able to target `SingletonA:::singleton1` and `SingletonC:::singleton1`
+    end
+end
+
+class SingletonC < SingletonA
+    def self.singleton1
+    end
+
+    def self.call_singleton1
+        singleton1 # should not be able to target `SingletonA:::singleton1` and `SingletonB:::singleton1`
+    end
+end
+
+SingletonA.call_call_singleton1
+SingletonB.call_call_singleton1
+SingletonC.call_call_singleton1

@@ -453,13 +453,15 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   jumpStepSharedWithTypeTracker(nodeFrom, nodeTo)
   or
   jumpStepNotSharedWithTypeTracker(nodeFrom, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom, nodeTo)
 }
 
 /**
  * Set of jumpSteps that are shared with type-tracker implementation.
  *
  * For ORM modeling we want to add jumpsteps to global dataflow, but since these are
- * based on type-trackers, it's important that these new ORM jumsteps are not used in
+ * based on type-trackers, it's important that these new ORM jumpsteps are not used in
  * the type-trackers as well, as that would make evaluation of type-tracking recursive
  * with the new jumpsteps.
  *
@@ -485,7 +487,7 @@ predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  * Set of jumpSteps that are NOT shared with type-tracker implementation.
  *
  * For ORM modeling we want to add jumpsteps to global dataflow, but since these are
- * based on type-trackers, it's important that these new ORM jumsteps are not used in
+ * based on type-trackers, it's important that these new ORM jumpsteps are not used in
  * the type-trackers as well, as that would make evaluation of type-tracking recursive
  * with the new jumpsteps.
  *
@@ -668,7 +670,7 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode n
 }
 
 /**
- * Holds if `nodeFrom` flows into the synthezised positional overflow argument (`nodeTo`)
+ * Holds if `nodeFrom` flows into the synthesized positional overflow argument (`nodeTo`)
  * at the position indicated by `c`.
  */
 predicate posOverflowStoreStep(CfgNode nodeFrom, TupleElementContent c, Node nodeTo) {
@@ -680,7 +682,7 @@ predicate posOverflowStoreStep(CfgNode nodeFrom, TupleElementContent c, Node nod
 }
 
 /**
- * Holds if `nodeFrom` flows into the synthezised keyword overflow argument (`nodeTo`)
+ * Holds if `nodeFrom` flows into the synthesized keyword overflow argument (`nodeTo`)
  * at the key indicated by `c`.
  */
 predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
@@ -814,7 +816,7 @@ predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) 
 
 /**
  * Holds if `nodeFrom` is a dictionary argument being unpacked and `nodeTo` is the
- * synthezised unpacked argument with the name indicated by `c`.
+ * synthesized unpacked argument with the name indicated by `c`.
  */
 predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
   exists(CallNode call, CallableValue callable, string name |

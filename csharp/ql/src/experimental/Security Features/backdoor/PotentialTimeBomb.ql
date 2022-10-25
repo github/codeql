@@ -61,7 +61,7 @@ class DateTimeStruct extends Struct {
   /**
    * holds if the Callable is used for DateTime arithmetic operations
    */
-  Callable getATimeSpanArtithmeticCallable() {
+  Callable getATimeSpanArithmeticCallable() {
     (result = this.getAnOperator() or result = this.getAMethod()) and
     result.getName() in [
         "Add", "AddDays", "AddHours", "AddMilliseconds", "AddMinutes", "AddMonths", "AddSeconds",
@@ -96,7 +96,7 @@ private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extend
   override predicate isSink(DataFlow::Node sink) {
     exists(Call call, DateTimeStruct dateTime |
       call.getAChild*() = sink.asExpr() and
-      call = dateTime.getATimeSpanArtithmeticCallable().getACall()
+      call = dateTime.getATimeSpanArithmeticCallable().getACall()
     )
   }
 }
@@ -111,7 +111,7 @@ private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintT
 
   override predicate isSource(DataFlow::Node source) {
     exists(DateTimeStruct dateTime, Call call | source.asExpr() = call |
-      call = dateTime.getATimeSpanArtithmeticCallable().getACall()
+      call = dateTime.getATimeSpanArithmeticCallable().getACall()
     )
   }
 
@@ -157,7 +157,7 @@ predicate isPotentialTimeBomb(
   |
     pathSource.getNode() = exprNode(getLastWriteTimeMethodCall) and
     config1.hasFlow(exprNode(getLastWriteTimeMethodCall), sink) and
-    timeArithmeticCall = dateTime.getATimeSpanArtithmeticCallable().getACall() and
+    timeArithmeticCall = dateTime.getATimeSpanArithmeticCallable().getACall() and
     timeArithmeticCall.getAChild*() = sink.asExpr() and
     config2.hasFlow(exprNode(timeArithmeticCall), sink2) and
     timeComparisonCall = dateTime.getAComparisonCallable().getACall() and

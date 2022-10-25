@@ -1,6 +1,6 @@
 private import codeql.swift.generated.expr.Expr
 
-class Expr extends ExprBase {
+class Expr extends Generated::Expr {
   final override Expr getResolveStep() { this.convertsFrom(result) }
 
   predicate convertsFrom(Expr e) { none() } // overridden by subclasses

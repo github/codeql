@@ -4,15 +4,31 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.TypeRepr
 
-class TypeExprBase extends Synth::TTypeExpr, Expr {
-  override string getAPrimaryQlClass() { result = "TypeExpr" }
+module Generated {
+  class TypeExpr extends Synth::TTypeExpr, Expr {
+    override string getAPrimaryQlClass() { result = "TypeExpr" }
 
-  TypeRepr getImmediateTypeRepr() {
-    result =
-      Synth::convertTypeReprFromRaw(Synth::convertTypeExprToRaw(this).(Raw::TypeExpr).getTypeRepr())
+    /**
+     * Gets the type representation of this type expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    TypeRepr getImmediateTypeRepr() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertTypeExprToRaw(this)
+              .(Raw::TypeExpr)
+              .getTypeRepr())
+    }
+
+    /**
+     * Gets the type representation of this type expression, if it exists.
+     */
+    final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
+
+    /**
+     * Holds if `getTypeRepr()` exists.
+     */
+    final predicate hasTypeRepr() { exists(getTypeRepr()) }
   }
-
-  final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
-
-  final predicate hasTypeRepr() { exists(getTypeRepr()) }
 }

@@ -91,14 +91,10 @@ private module ExperimentalPrivateDjango {
             result = baseClassRef().getReturn().getAMember()
           }
 
-          /** Gets a reference to a header instance call with `__setitem__`. */
-          API::Node headerSetItem() {
-            result = headerInstance() and
-            result.asSource().(DataFlow::AttrRead).getAttributeName() = "__setitem__"
-          }
-
           class DjangoResponseSetItemCall extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
-            DjangoResponseSetItemCall() { this = headerSetItem().getACall() }
+            DjangoResponseSetItemCall() {
+              this = baseClassRef().getReturn().getMember("__setitem__").getACall()
+            }
 
             override DataFlow::Node getNameArg() { result = this.getArg(0) }
 
@@ -109,8 +105,7 @@ private module ExperimentalPrivateDjango {
             DataFlow::Node headerInput;
 
             DjangoResponseDefinition() {
-              this.asCfgNode().(DefinitionNode) =
-                headerInstance().getAValueReachableFromSource().asCfgNode() and
+              headerInput = headerInstance().asSink() and
               headerInput.asCfgNode() = this.asCfgNode().(DefinitionNode).getValue()
             }
 

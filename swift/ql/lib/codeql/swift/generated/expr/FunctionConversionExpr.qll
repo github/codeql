@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class FunctionConversionExprBase extends Synth::TFunctionConversionExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "FunctionConversionExpr" }
+module Generated {
+  class FunctionConversionExpr extends Synth::TFunctionConversionExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "FunctionConversionExpr" }
+  }
 }

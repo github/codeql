@@ -25,6 +25,11 @@ open class X {
 
     inline fun fn4(noinline f: () -> Unit) { }
     inline fun fn5(crossinline f: () -> Unit) { }
+    inline fun <reified T> fn6(x: T) {}
+}
+
+class Y<in T1, out T2> {
+    fun foo(t: T1) : T2 = null!!
 }
 
 public class LateInit {

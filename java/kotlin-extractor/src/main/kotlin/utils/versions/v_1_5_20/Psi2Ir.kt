@@ -8,7 +8,9 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.psi.KtFile
 
-class Psi2Ir(private val logger: FileLogger): Psi2IrFacade {
+fun getPsi2Ir(logger: FileLogger): Psi2IrFacade? = Psi2Ir(logger)
+
+private class Psi2Ir(private val logger: FileLogger): Psi2IrFacade {
     override fun getKtFile(irFile: IrFile): KtFile? {
         return irFile.getKtFile()
     }

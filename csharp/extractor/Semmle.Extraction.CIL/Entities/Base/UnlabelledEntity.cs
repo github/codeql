@@ -5,7 +5,7 @@ namespace Semmle.Extraction.CIL
 {
     /// <summary>
     /// An entity that has contents to extract. There is no need to populate
-    /// a key as it's done in the contructor.
+    /// a key as it's done in the constructor.
     /// </summary>
     internal abstract class UnlabelledEntity : Extraction.UnlabelledEntity, IExtractedEntity
     {

@@ -68,9 +68,8 @@ private module Cached {
   Definition getAPhiInput(PhiNode phi) { phiHasInputFromBlock(phi, result, _) }
 
   cached
-  predicate hasLastInputRef(Definition phi, Definition def, BasicBlock bb, int i) {
-    lastRefRedef(def, bb, i, phi) and
-    def = getAPhiInput(phi)
+  predicate lastRefBeforeRedef(Definition def, BasicBlock bb, int i, Definition next) {
+    lastRefRedef(def, bb, i, next)
   }
 }
 

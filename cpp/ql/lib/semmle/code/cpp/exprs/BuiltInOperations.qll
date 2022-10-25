@@ -1137,7 +1137,7 @@ class BuiltInOperationIsArray extends BuiltInOperation, @isarray {
  * A C++ `__array_rank` built-in operation (used by some implementations of the
  * `<type_traits>` header).
  *
- * If known, returns the number of dimentsions of an arrary type.
+ * If known, returns the number of dimensions of an arrary type.
  * ```
  * template<typename _Tp>
  *   struct rank

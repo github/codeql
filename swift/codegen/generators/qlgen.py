@@ -55,6 +55,54 @@ class NoClasses(Error):
     pass
 
 
+abbreviations = {
+    "expr": "expression",
+    "arg": "argument",
+    "stmt": "statement",
+    "decl": "declaration",
+    "repr": "representation",
+    "param": "parameter",
+    "int": "integer",
+}
+
+abbreviations.update({f"{k}s": f"{v}s" for k, v in abbreviations.items()})
+
+_abbreviations_re = re.compile("|".join(fr"\b{abbr}\b" for abbr in abbreviations))
+
+
+def _humanize(s: str) -> str:
+    ret = inflection.humanize(s)
+    ret = ret[0].lower() + ret[1:]
+    ret = _abbreviations_re.sub(lambda m: abbreviations[m[0]], ret)
+    return ret
+
+
+_format_re = re.compile(r"\{(\w+)\}")
+
+
+def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
+    if prop.doc:
+        if plural is None:
+            # for consistency, ignore format in non repeated properties
+            return _format_re.sub(lambda m: m[1], prop.doc)
+        format = prop.doc
+        nouns = [m[1] for m in _format_re.finditer(prop.doc)]
+        if not nouns:
+            noun, _, rest = prop.doc.partition(" ")
+            format = f"{{{noun}}} {rest}"
+            nouns = [noun]
+        transform = inflection.pluralize if plural else inflection.singularize
+        return format.format(**{noun: transform(noun) for noun in nouns})
+
+    prop_name = _humanize(prop.name)
+    class_name = cls.default_doc_name or _humanize(inflection.underscore(cls.name))
+    if prop.is_predicate:
+        return f"this {class_name} {prop_name}"
+    if plural is not None:
+        prop_name = inflection.pluralize(prop_name) if plural else inflection.singularize(prop_name)
+    return f"{prop_name} of this {class_name}"
+
+
 def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
@@ -62,12 +110,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         prev_child=prev_child if prop.is_child else None,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
+        description=prop.description
     )
     if prop.is_single:
         args.update(
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
+            doc=_get_doc(cls, prop),
         )
     elif prop.is_repeated:
         args.update(
@@ -75,18 +125,22 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
             plural=inflection.pluralize(inflection.camelize(prop.name)),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
+            doc=_get_doc(cls, prop, plural=False),
+            doc_plural=_get_doc(cls, prop, plural=True),
         )
     elif prop.is_optional:
         args.update(
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
+            doc=_get_doc(cls, prop),
         )
     elif prop.is_predicate:
         args.update(
             singular=inflection.camelize(prop.name, uppercase_first_letter=False),
             tablename=inflection.underscore(f"{cls.name}_{prop.name}"),
             tableparams=["this"],
+            doc=_get_doc(cls, prop),
         )
     else:
         raise ValueError(f"unknown property kind for {prop.name} from {cls.name}")
@@ -109,6 +163,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
         properties=properties,
         dir=pathlib.Path(cls.group or ""),
         ipa=bool(cls.ipa),
+        doc=cls.doc,
         **pragmas,
     )
 
@@ -157,10 +212,10 @@ def get_types_used_by(cls: ql.Class) -> typing.Iterable[str]:
 
 
 def get_classes_used_by(cls: ql.Class) -> typing.List[str]:
-    return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
+    return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper() and t != cls.name))
 
 
-_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends \w+ \{[ \n]?\}", re.MULTILINE)
+_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends Generated::\w+ \{[ \n]?\}", re.MULTILINE)
 
 
 def _is_generated_stub(file: pathlib.Path) -> bool:
@@ -230,18 +285,18 @@ def _partition(l, pred):
     return map(list, _partition_iter(l, pred))
 
 
-def _is_in_qltest_collapsed_hierachy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
-    return "qltest_collapse_hierarchy" in cls.pragmas or _is_under_qltest_collapsed_hierachy(cls, lookup)
+def _is_in_qltest_collapsed_hierarchy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+    return "qltest_collapse_hierarchy" in cls.pragmas or _is_under_qltest_collapsed_hierarchy(cls, lookup)
 
 
-def _is_under_qltest_collapsed_hierachy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+def _is_under_qltest_collapsed_hierarchy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_uncollapse_hierarchy" not in cls.pragmas and any(
-        _is_in_qltest_collapsed_hierachy(lookup[b], lookup) for b in cls.bases)
+        _is_in_qltest_collapsed_hierarchy(lookup[b], lookup) for b in cls.bases)
 
 
 def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_skip" in cls.pragmas or not (
-        cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierachy(
+        cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierarchy(
         cls, lookup)
 
 
@@ -304,7 +359,10 @@ def generate(opts, renderer):
         total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, data.classes),
                                                 lambda p: p.is_single or p.is_predicate)
         renderer.render(ql.ClassTester(class_name=c.name,
-                                       properties=total_props), test_dir / f"{c.name}.ql")
+                                       properties=total_props,
+                                       # in case of collapsed hierarchies we want to see the actual QL class in results
+                                       show_ql_class="qltest_collapse_hierarchy" in c.pragmas),
+                        test_dir / f"{c.name}.ql")
         for p in partial_props:
             renderer.render(ql.PropertyTester(class_name=c.name,
                                               property=p), test_dir / f"{c.name}_{p.getter}.ql")

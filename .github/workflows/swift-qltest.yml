@@ -23,16 +23,30 @@ jobs:
       - uses: ./.github/actions/fetch-codeql
       - name: Check QL formatting
         run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql query format --check-only
+  qltest-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bazelbuild/setup-bazelisk@v2
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: 'swift/.python-version'
+      - name: Test qltest.sh
+        run: |
+          bazel test //swift/tools/test/qltest
   qltest:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os : [ubuntu-20.04, macos-latest]
+        os: [ ubuntu-20.04, macos-latest ]
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - uses: bazelbuild/setup-bazelisk@v2
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: 'swift/.python-version'
       - name: Build Swift extractor
         run: |
           bazel run //swift:create-extractor-pack

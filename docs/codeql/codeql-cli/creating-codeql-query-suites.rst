@@ -359,20 +359,6 @@ definition using ``query compile``, or use the queries in an analysis using
 ``database analyze``. For more information about analyzing CodeQL databases, see
 ":doc:`Analyzing databases with the CodeQL CLI <analyzing-databases-with-the-codeql-cli>`."
 
-Viewing the query suites used on LGTM.com
------------------------------------------
-
-The query suite definitions used to select queries to run on LGTM.com can be
-found in the CodeQL repository. For example, to view the CodeQL queries for
-JavaScript, visit
-https://github.com/github/codeql/tree/main/javascript/ql/src/codeql-suites.
-
-These suite definitions apply reusable filter patterns to the queries
-located in the standard CodeQL packs for each supported language. For more
-information, see the `suite-helpers
-<https://github.com/github/codeql/tree/main/misc/suite-helpers>`__ in the CodeQL
-repository.
-
 Further reading
 ---------------
 

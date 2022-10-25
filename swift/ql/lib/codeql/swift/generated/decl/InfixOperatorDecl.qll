@@ -4,19 +4,33 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.OperatorDecl
 import codeql.swift.elements.decl.PrecedenceGroupDecl
 
-class InfixOperatorDeclBase extends Synth::TInfixOperatorDecl, OperatorDecl {
-  override string getAPrimaryQlClass() { result = "InfixOperatorDecl" }
+module Generated {
+  class InfixOperatorDecl extends Synth::TInfixOperatorDecl, OperatorDecl {
+    override string getAPrimaryQlClass() { result = "InfixOperatorDecl" }
 
-  PrecedenceGroupDecl getImmediatePrecedenceGroup() {
-    result =
-      Synth::convertPrecedenceGroupDeclFromRaw(Synth::convertInfixOperatorDeclToRaw(this)
-            .(Raw::InfixOperatorDecl)
-            .getPrecedenceGroup())
+    /**
+     * Gets the precedence group of this infix operator declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    PrecedenceGroupDecl getImmediatePrecedenceGroup() {
+      result =
+        Synth::convertPrecedenceGroupDeclFromRaw(Synth::convertInfixOperatorDeclToRaw(this)
+              .(Raw::InfixOperatorDecl)
+              .getPrecedenceGroup())
+    }
+
+    /**
+     * Gets the precedence group of this infix operator declaration, if it exists.
+     */
+    final PrecedenceGroupDecl getPrecedenceGroup() {
+      result = getImmediatePrecedenceGroup().resolve()
+    }
+
+    /**
+     * Holds if `getPrecedenceGroup()` exists.
+     */
+    final predicate hasPrecedenceGroup() { exists(getPrecedenceGroup()) }
   }
-
-  final PrecedenceGroupDecl getPrecedenceGroup() {
-    result = getImmediatePrecedenceGroup().resolve()
-  }
-
-  final predicate hasPrecedenceGroup() { exists(getPrecedenceGroup()) }
 }

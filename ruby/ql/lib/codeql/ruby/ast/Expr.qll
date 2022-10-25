@@ -61,7 +61,7 @@ class ArgumentList extends Expr, TArgumentList {
 
 private class LhsExpr_ =
   TVariableAccess or TTokenConstantAccess or TScopeResolutionConstantAccess or TMethodCall or
-      TDestructuredLhsExpr;
+      TDestructuredLhsExpr or TConstantWriteAccessSynth;
 
 /**
  * A "left-hand-side" (LHS) expression. An `LhsExpr` can occur on the left-hand side of

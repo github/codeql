@@ -143,6 +143,7 @@ up to create and analyze databases:
 
       - ``codeql/cpp-queries``
       - ``codeql/csharp-queries``
+      - ``codeql/go-queries``
       - ``codeql/java-queries``
       - ``codeql/javascript-queries``
       - ``codeql/python-queries``
@@ -210,13 +211,9 @@ see ":doc:`About CodeQL packs <about-codeql-packs>`."
    There are different versions of the CodeQL queries available for different
    users. Check out the correct version for your use case:
 
-   - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
-     ``lgtm.com`` branch. You should use this branch for databases you've built
-     using the CodeQL CLI, fetched from code scanning on GitHub, or recently downloaded from LGTM.com.
-     The queries on the ``lgtm.com`` branch are more likely to be compatible
-     with the ``latest`` CLI, so you'll be less likely to have to upgrade
-     newly-created databases than if you use the ``main`` branch. Older databases
-     may need to be upgraded before you can analyze them.
+   - For the queries that are intended to be used with the latest CodeQL CLI release, check out the 
+     branch tagged ``codeql-cli/latest``. You should use this branch for databases you've built
+     using the CodeQL CLI, fetched from code scanning on GitHub, or recently downloaded from GitHub.com.
 
    - For the most up to date CodeQL queries, check out the ``main`` branch.
      This branch represents the very latest version of CodeQL's analysis.
@@ -268,7 +265,7 @@ Using two versions of the CodeQL CLI
 
 If you want to use the latest CodeQL features to execute queries or CodeQL tests,
 but also want to prepare databases that are compatible with a specific version of
-LGTM Enterprise, you may need to install two versions of the CLI. The
+CodeQL code scanning on GitHub Enterprise Server, you may need to install two versions of the CLI. The
 recommended directory setup depends on which versions you want to install:
 
 - If both versions are 2.0.2 (or newer), you can unpack both CLI archives in the
