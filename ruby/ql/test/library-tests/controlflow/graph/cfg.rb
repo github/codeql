@@ -210,6 +210,11 @@ def filter_nil list
   end
 end
 
+do_something do
+  self.something
+  something_else
+end
+
 __END__
 
 Some ignored nonsense

@@ -6,47 +6,97 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.Type
 
-class VarDeclBase extends Synth::TVarDecl, AbstractStorageDecl {
-  string getName() { result = Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getName() }
+module Generated {
+  class VarDecl extends Synth::TVarDecl, AbstractStorageDecl {
+    /**
+     * Gets the name of this var declaration.
+     */
+    string getName() { result = Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getName() }
 
-  Type getImmediateType() {
-    result = Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getType())
+    /**
+     * Gets the type of this var declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateType() {
+      result = Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getType())
+    }
+
+    /**
+     * Gets the type of this var declaration.
+     */
+    final Type getType() { result = getImmediateType().resolve() }
+
+    /**
+     * Gets the attached property wrapper type of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateAttachedPropertyWrapperType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getAttachedPropertyWrapperType())
+    }
+
+    /**
+     * Gets the attached property wrapper type of this var declaration, if it exists.
+     */
+    final Type getAttachedPropertyWrapperType() {
+      result = getImmediateAttachedPropertyWrapperType().resolve()
+    }
+
+    /**
+     * Holds if `getAttachedPropertyWrapperType()` exists.
+     */
+    final predicate hasAttachedPropertyWrapperType() { exists(getAttachedPropertyWrapperType()) }
+
+    /**
+     * Gets the parent pattern of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Pattern getImmediateParentPattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getParentPattern())
+    }
+
+    /**
+     * Gets the parent pattern of this var declaration, if it exists.
+     */
+    final Pattern getParentPattern() { result = getImmediateParentPattern().resolve() }
+
+    /**
+     * Holds if `getParentPattern()` exists.
+     */
+    final predicate hasParentPattern() { exists(getParentPattern()) }
+
+    /**
+     * Gets the parent initializer of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateParentInitializer() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getParentInitializer())
+    }
+
+    /**
+     * Gets the parent initializer of this var declaration, if it exists.
+     */
+    final Expr getParentInitializer() { result = getImmediateParentInitializer().resolve() }
+
+    /**
+     * Holds if `getParentInitializer()` exists.
+     */
+    final predicate hasParentInitializer() { exists(getParentInitializer()) }
   }
-
-  final Type getType() { result = getImmediateType().resolve() }
-
-  Type getImmediateAttachedPropertyWrapperType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this)
-            .(Raw::VarDecl)
-            .getAttachedPropertyWrapperType())
-  }
-
-  final Type getAttachedPropertyWrapperType() {
-    result = getImmediateAttachedPropertyWrapperType().resolve()
-  }
-
-  final predicate hasAttachedPropertyWrapperType() { exists(getAttachedPropertyWrapperType()) }
-
-  Pattern getImmediateParentPattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertVarDeclToRaw(this)
-            .(Raw::VarDecl)
-            .getParentPattern())
-  }
-
-  final Pattern getParentPattern() { result = getImmediateParentPattern().resolve() }
-
-  final predicate hasParentPattern() { exists(getParentPattern()) }
-
-  Expr getImmediateParentInitializer() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertVarDeclToRaw(this)
-            .(Raw::VarDecl)
-            .getParentInitializer())
-  }
-
-  final Expr getParentInitializer() { result = getImmediateParentInitializer().resolve() }
-
-  final predicate hasParentInitializer() { exists(getParentInitializer()) }
 }

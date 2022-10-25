@@ -1,4 +1,5 @@
 load("//swift:rules.bzl", "swift_cc_binary")
+load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
 
 swift_cc_binary(
     name = "extractor",
@@ -9,8 +10,14 @@ swift_cc_binary(
     visibility = ["//swift:__pkg__"],
     deps = [
         "//swift/extractor/infra",
-        "//swift/extractor/visitors",
         "//swift/extractor/remapping",
+        "//swift/extractor/visitors",
         "//swift/tools/prebuilt:swift-llvm-support",
     ],
+)
+
+generate_cmake(
+    name = "cmake",
+    targets = [":extractor"],
+    visibility = ["//visibility:public"],
 )

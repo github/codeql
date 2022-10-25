@@ -378,11 +378,11 @@ module Private {
      */
     predicate argumentOf(DataFlowCall call, int pos) {
       exists(Argument arg | this.asExpr() = arg |
-        call.asCall() = arg.getCall() and pos = arg.getPosition()
+        call.asCall() = arg.getCall() and pos = arg.getParameterPos()
       )
       or
       call.asCall() = this.(ImplicitVarargsArray).getCall() and
-      pos = call.asCall().getCallee().getNumberOfParameters() - 1
+      pos = call.asCall().getCallee().getVaragsParameterIndex()
       or
       pos = -1 and this = getInstanceArgument(call.asCall())
       or
@@ -463,11 +463,7 @@ module Private {
       c.asSummarizedCallable() = sc and pos = pos_
     }
 
-    Type getTypeImpl() {
-      result = sc.getParameter(pos_).getType()
-      or
-      pos_ = -1 and result = sc.getDeclaringType()
-    }
+    Type getTypeImpl() { result = sc.getParameterType(pos_) }
   }
 }
 

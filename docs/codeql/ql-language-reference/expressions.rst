@@ -571,7 +571,7 @@ If there had been two different prices for apples too, the monotonic
 
 Charles wants to buy a banana, which is not for sale at all. In the
 default case, the sum produced for Charles includes the cost of the
-apple he *can* buy, but there's no line for Charles in the monontonic
+apple he *can* buy, but there's no line for Charles in the monotonic
 ``sum`` output, because there *is no way* for Charles to buy one apple
 plus one banana.
 
@@ -586,7 +586,7 @@ case: As long as there's no price for bananas, no output is produced
 for him. This means that if we later do learn of a banana price, we
 don't need to *remove* any output tuple already produced. The
 importance of this is that the monotonic aggregate behavior works well
-with a fixpoint-based semantics for recursion, so it will be meaningul
+with a fixpoint-based semantics for recursion, so it will be meaningful
 to let the ``getPrice`` predicate be mutually recursive with the count
 aggregate itself. (On the other hand, ``getFruit`` still cannot be
 allowed to be recursive, because adding another fruit to someone's

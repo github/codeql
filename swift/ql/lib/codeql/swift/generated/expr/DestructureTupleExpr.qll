@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class DestructureTupleExprBase extends Synth::TDestructureTupleExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "DestructureTupleExpr" }
+module Generated {
+  class DestructureTupleExpr extends Synth::TDestructureTupleExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "DestructureTupleExpr" }
+  }
 }

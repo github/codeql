@@ -61,6 +61,20 @@ module Public {
 
     /** Gets a summary component for a return of kind `rk`. */
     SummaryComponent return(ReturnKind rk) { result = TReturnSummaryComponent(rk) }
+
+    /** Gets a summary component for synthetic global `sg`. */
+    SummaryComponent syntheticGlobal(SyntheticGlobal sg) {
+      result = TSyntheticGlobalSummaryComponent(sg)
+    }
+
+    /**
+     * A synthetic global. This represents some form of global state, which
+     * summaries can read and write individually.
+     */
+    abstract class SyntheticGlobal extends string {
+      bindingset[this]
+      SyntheticGlobal() { any() }
+    }
   }
 
   /**
@@ -256,6 +270,7 @@ module Private {
     TParameterSummaryComponent(ArgumentPosition pos) or
     TArgumentSummaryComponent(ParameterPosition pos) or
     TReturnSummaryComponent(ReturnKind rk) or
+    TSyntheticGlobalSummaryComponent(SummaryComponent::SyntheticGlobal sg) or
     TWithoutContentSummaryComponent(ContentSet c) or
     TWithContentSummaryComponent(ContentSet c)
 
@@ -563,6 +578,11 @@ module Private {
             getCallbackReturnType(getNodeType(summaryNodeInputState(pragma[only_bind_out](c),
                   s.tail())), rk)
         )
+        or
+        exists(SummaryComponent::SyntheticGlobal sg |
+          head = TSyntheticGlobalSummaryComponent(sg) and
+          result = getSyntheticGlobalType(sg)
+        )
       )
       or
       n = summaryNodeOutputState(c, s) and
@@ -581,6 +601,11 @@ module Private {
           result =
             getCallbackParameterType(getNodeType(summaryNodeInputState(pragma[only_bind_out](c),
                   s.tail())), pos)
+        )
+        or
+        exists(SummaryComponent::SyntheticGlobal sg |
+          head = TSyntheticGlobalSummaryComponent(sg) and
+          result = getSyntheticGlobalType(sg)
         )
       )
     )
@@ -689,6 +714,18 @@ module Private {
         pred = summaryNodeOutputState(sc, s) and
         succ = summaryNodeOutputState(sc, s.tail()) and
         SummaryComponent::content(c) = s.head()
+      )
+    }
+
+    /**
+     * Holds if there is a jump step from `pred` to `succ`, which is synthesized
+     * from a flow summary.
+     */
+    predicate summaryJumpStep(Node pred, Node succ) {
+      exists(SummaryComponentStack s |
+        s = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(_)) and
+        pred = summaryNodeOutputState(_, s) and
+        succ = summaryNodeInputState(_, s)
       )
     }
 
@@ -871,16 +908,26 @@ module Private {
       AccessPathRange() { relevantSpec(this) }
     }
 
-    /** Holds if specification component `c` parses as parameter `n`. */
+    /** Holds if specification component `token` parses as parameter `pos`. */
     predicate parseParam(AccessPathToken token, ArgumentPosition pos) {
       token.getName() = "Parameter" and
       pos = parseParamBody(token.getAnArgument())
     }
 
-    /** Holds if specification component `c` parses as argument `n`. */
+    /** Holds if specification component `token` parses as argument `pos`. */
     predicate parseArg(AccessPathToken token, ParameterPosition pos) {
       token.getName() = "Argument" and
       pos = parseArgBody(token.getAnArgument())
+    }
+
+    /** Holds if specification component `token` parses as synthetic global `sg`. */
+    predicate parseSynthGlobal(AccessPathToken token, string sg) {
+      token.getName() = "SyntheticGlobal" and
+      sg = token.getAnArgument()
+    }
+
+    private class SyntheticGlobalFromAccessPath extends SummaryComponent::SyntheticGlobal {
+      SyntheticGlobalFromAccessPath() { parseSynthGlobal(_, this) }
     }
 
     private SummaryComponent interpretComponent(AccessPathToken token) {
@@ -893,6 +940,10 @@ module Private {
       )
       or
       token = "ReturnValue" and result = SummaryComponent::return(getReturnValueKind())
+      or
+      exists(string sg |
+        parseSynthGlobal(token, sg) and result = SummaryComponent::syntheticGlobal(sg)
+      )
       or
       result = interpretComponentSpecific(token)
     }

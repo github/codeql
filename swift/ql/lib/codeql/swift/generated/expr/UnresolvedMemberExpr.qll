@@ -4,10 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedMemberExprBase extends Synth::TUnresolvedMemberExpr, Expr, UnresolvedElement {
-  override string getAPrimaryQlClass() { result = "UnresolvedMemberExpr" }
+module Generated {
+  class UnresolvedMemberExpr extends Synth::TUnresolvedMemberExpr, Expr, UnresolvedElement {
+    override string getAPrimaryQlClass() { result = "UnresolvedMemberExpr" }
 
-  string getName() {
-    result = Synth::convertUnresolvedMemberExprToRaw(this).(Raw::UnresolvedMemberExpr).getName()
+    /**
+     * Gets the name of this unresolved member expression.
+     */
+    string getName() {
+      result = Synth::convertUnresolvedMemberExprToRaw(this).(Raw::UnresolvedMemberExpr).getName()
+    }
   }
 }

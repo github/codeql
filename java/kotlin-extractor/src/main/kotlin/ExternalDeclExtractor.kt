@@ -35,8 +35,6 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
         if (ret) externalDeclWorkList.add(Pair(d, signature))
         return ret
     }
-    fun extractLater(p: IrProperty) = extractLater(p, propertySignature)
-    fun extractLater(f: IrField) = extractLater(f, fieldSignature)
     fun extractLater(c: IrClass) = extractLater(c, "")
 
     fun extractExternalClasses() {
@@ -84,7 +82,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
                                     // file information if needed:
                                     val ftw = tw.makeFileTrapWriter(binaryPath, irDecl is IrClass)
 
-                                    val fileExtractor = KotlinFileExtractor(logger, ftw, binaryPath, manager, this, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
+                                    val fileExtractor = KotlinFileExtractor(logger, ftw, null, binaryPath, manager, this, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
 
                                     if (irDecl is IrClass) {
                                         // Populate a location and compilation-unit package for the file. This is similar to

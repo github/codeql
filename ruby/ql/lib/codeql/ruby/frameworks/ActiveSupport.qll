@@ -35,6 +35,8 @@ module ActiveSupport {
         }
 
         override DataFlow::Node getCode() { result = this.getReceiver() }
+
+        override predicate runsArbitraryCode() { none() }
       }
 
       /**

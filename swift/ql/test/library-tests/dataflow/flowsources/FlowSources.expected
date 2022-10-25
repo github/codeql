@@ -1,6 +1,8 @@
-| customurlschemes.swift:17:44:17:54 | url | external |
-| customurlschemes.swift:20:52:20:68 | url | external |
-| customurlschemes.swift:23:52:23:62 | url | external |
+| customurlschemes.swift:30:44:30:54 | url | external |
+| customurlschemes.swift:34:52:34:68 | url | external |
+| customurlschemes.swift:38:52:38:62 | url | external |
+| customurlschemes.swift:43:9:43:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:48:9:48:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
 | string.swift:27:21:27:21 | call to init(contentsOf:) | external |
 | string.swift:27:21:27:44 | call to init(contentsOf:) | external |
 | url.swift:53:15:53:19 | .resourceBytes | external |
