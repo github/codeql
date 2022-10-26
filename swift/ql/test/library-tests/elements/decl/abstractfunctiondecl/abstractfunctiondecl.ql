@@ -2,14 +2,13 @@ import swift
 
 string describe(AbstractFunctionDecl f) {
   result = "getName:" + f.getName()
-  or exists(string a |
+  or
+  exists(string a |
     f.hasName(a) and
     result = "hasName:" + a
   )
   or
-  (
-    result = "MethodDecl" and f instanceof MethodDecl
-  )
+  result = "MethodDecl" and f instanceof MethodDecl
   or
   exists(string a, string b |
     f.(MethodDecl).hasQualifiedName(a, b) and
