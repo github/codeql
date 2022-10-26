@@ -109,22 +109,18 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) { non
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
-/** Holds if `i` is a valid parameter position. */
-predicate parameterPosition(int i) {
-  i = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
+private int parameterPosition() {
+  result = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
 }
-
-/** Gets the parameter position of the instance parameter. */
-int instanceParameterPosition() { result = -1 }
 
 /** A parameter position represented by an integer. */
 class ParameterPosition extends int {
-  ParameterPosition() { parameterPosition(this) }
+  ParameterPosition() { this = parameterPosition() }
 }
 
 /** An argument position represented by an integer. */
 class ArgumentPosition extends int {
-  ArgumentPosition() { parameterPosition(this) }
+  ArgumentPosition() { this = parameterPosition() }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */

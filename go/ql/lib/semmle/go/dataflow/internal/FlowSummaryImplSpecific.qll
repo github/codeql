@@ -19,6 +19,9 @@ class SummarizedCallableBase = Callable;
 
 DataFlowCallable inject(SummarizedCallable c) { result.asCallable() = c }
 
+/** Gets the parameter position of the instance parameter. */
+ArgumentPosition instanceParameterPosition() { result = -1 }
+
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
 
@@ -245,7 +248,10 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
   )
 }
 
-/** Holds if specification component `c` parses as return value `n`. */
+/**
+ * Holds if specification component `c` parses as return value `n` or a range
+ * containing `n`.
+ */
 predicate parseReturn(AccessPathToken c, int n) {
   (
     c = "ReturnValue" and n = 0
@@ -266,8 +272,10 @@ private int parseConstantOrRange(string arg) {
   )
 }
 
+/** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[arg]
 ArgumentPosition parseParamBody(string arg) { result = parseConstantOrRange(arg) }
 
+/** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[arg]
 ParameterPosition parseArgBody(string arg) { result = parseConstantOrRange(arg) }
