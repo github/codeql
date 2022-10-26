@@ -43,7 +43,7 @@ class MethodDecl extends AbstractFunctionDecl {
 
   /**
    * Holds if this function is called `funcName` and its a member of a
-   * class, struct, extension, enum or protocol call `typeName` in a moduile
+   * class, struct, extension, enum or protocol call `typeName` in a module
    * called `moduleName`.
    */
   predicate hasQualifiedName(string moduleName, string typeName, string funcName) {
