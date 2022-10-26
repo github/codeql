@@ -9,5 +9,6 @@
 import go
 
 from File f
-where not exists(Error e | e.getFile() = f)
-select f.getRelativePath()
+where not exists(Error e | e.getFile() = f) and
+  exists(f.getRelativePath())
+select f, ""
