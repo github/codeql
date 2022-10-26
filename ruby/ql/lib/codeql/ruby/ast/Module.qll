@@ -101,6 +101,32 @@ class Module extends TModule {
     result = this.getASingletonClass().getAMethod().(Method)
   }
 
+  /**
+   * Gets an instance method named `name` declared in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  Method getOwnInstanceMethod(string name) { result = this.getADeclaration().getMethod(name) }
+
+  /**
+   * Gets an instance method declared in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  Method getAnOwnInstanceMethod() { result = this.getADeclaration().getMethod(_) }
+
+  /**
+   * Gets the instance method named `name` available in this module, including methods inherited
+   * from ancestors.
+   */
+  Method getInstanceMethod(string name) { result = lookupMethod(this, name) }
+
+  /**
+   * Gets an instance method available in this module, including methods inherited
+   * from ancestors.
+   */
+  Method getAnInstanceMethod() { result = lookupMethod(this, _) }
+
   /** Gets a constant or `self` access that refers to this module. */
   Expr getAnImmediateReference() {
     result = this.getAnImmediateReferenceBase()

@@ -862,6 +862,14 @@ class ModuleNode instanceof Module {
     result = TSelfParameterNode(this.getAnOwnInstanceMethod().asMethod())
   }
 
+  /**
+   * Gets the `self` parameter of an instance method available in this module,
+   * including those inherited from ancestors.
+   */
+  ParameterNode getAnInstanceSelf() {
+    result = TSelfParameterNode(this.getAnInstanceMethod().asMethod())
+  }
+
   private InstanceVariableAccess getAnOwnInstanceVariableAccess(string name) {
     exists(InstanceVariable v |
       v.getDeclaringScope() = this.getAnOwnInstanceMethod().asMethod() and
@@ -891,6 +899,20 @@ class ModuleNode instanceof Module {
       result.asExpr().getExpr() = assignment.getRightOperand()
     )
   }
+
+  /**
+   * Gets the instance method named `name` available in this module, including methods inherited
+   * from ancestors.
+   */
+  MethodNode getInstanceMethod(string name) {
+    result.asCallableAstNode() = super.getInstanceMethod(name)
+  }
+
+  /**
+   * Gets an instance method named available in this module, including methods inherited
+   * from ancestors.
+   */
+  MethodNode getAnInstanceMethod() { result = this.getInstanceMethod(_) }
 
   /**
    * Gets the enclosing module, as it appears in the qualified name of this module.

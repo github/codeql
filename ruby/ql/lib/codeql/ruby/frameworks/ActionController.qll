@@ -55,19 +55,26 @@ class ActionControllerControllerClass extends DataFlow::ClassNode {
   /**
    * Gets a `ActionControllerActionMethod` defined in this class.
    */
-  ActionControllerActionMethod getAnAction() { result = this.getAnOwnInstanceMethod().asMethod() }
+  ActionControllerActionMethod getAnAction() { result = this.getAnInstanceMethod().asMethod() }
+
+  /**
+   * Gets a `self` that possibly refers to an instance of this class.
+   */
+  DataFlow::LocalSourceNode getSelf() {
+    result = actionControllerClass().getAnInstanceSelf()
+    or
+    // Include the module-level `self` to recover some cases where a block at the module level
+    // is invoked with an instance as the `self`, which we currently can't model directly.
+    // Concretely this happens in the block passed to `rescue_from`.
+    // TODO: revisit when we have better infrastructure for handling self in a block
+    result = actionControllerClass().getModuleLevelSelf()
+  }
 }
 
 private ActionControllerControllerClass actionControllerClass() { any() }
 
 private DataFlow::LocalSourceNode actionControllerInstance() {
-  result = actionControllerClass().getAnOwnInstanceSelf()
-  or
-  // Include the module-level `self` to recover some cases where a block at the module level
-  // is invoked with an instance as the `self`, which we currently can't model directly.
-  // Concretely this happens in the block passed to `rescue_from`.
-  // TODO: revisit when we have better infrastructure for handling self in a block
-  result = actionControllerClass().getModuleLevelSelf()
+  result = any(ActionControllerControllerClass cls).getSelf()
 }
 
 /**
@@ -78,7 +85,7 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerActionMethod() {
-    this = controllerClass.getAnOwnInstanceMethod().asMethod() and not this.isPrivate()
+    this = controllerClass.getAnInstanceMethod().asMethod() and not this.isPrivate()
   }
 
   /**
@@ -118,7 +125,7 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
   ActionDispatch::Routing::Route getARoute() {
     exists(string name, DataFlow::MethodNode m |
       isRoute(result, name, controllerClass) and
-      m = controllerClass.getOwnInstanceMethod(name) and
+      m = controllerClass.getInstanceMethod(name) and
       this = m.asMethod()
     )
   }
@@ -178,9 +185,7 @@ private module Request {
    * `ActionDispatch::Request`.
    */
   private class RequestNode extends DataFlow::CallNode {
-    RequestNode() {
-      this = actionControllerClass().getAnOwnInstanceSelf().getAMethodCall("request")
-    }
+    RequestNode() { this = actionControllerInstance().getAMethodCall("request") }
   }
 
   /**
@@ -326,8 +331,7 @@ private class ActionControllerHtmlEscapeCall extends HtmlEscapeCallImpl {
   ActionControllerHtmlEscapeCall() {
     // "h" is aliased to "html_escape" in ActiveSupport
     this =
-      actionControllerClass()
-          .getAnOwnInstanceSelf()
+      actionControllerInstance()
           .getAMethodCall(["html_escape", "html_escape_once", "h", "sanitize"])
           .asExpr()
           .getExpr()
@@ -344,7 +348,7 @@ class RedirectToCall extends MethodCall {
   RedirectToCall() {
     this =
       controller
-          .getAnOwnInstanceSelf()
+          .getSelf()
           .getAMethodCall(["redirect_to", "redirect_back", "redirect_back_or_to"])
           .asExpr()
           .getExpr()
@@ -361,7 +365,7 @@ class RedirectToCall extends MethodCall {
   ActionControllerActionMethod getRedirectActionMethod() {
     exists(string name |
       this.getKeywordArgument("action").getConstantValue().isStringlikeValue(name) and
-      result = controller.getOwnInstanceMethod(name).asMethod()
+      result = controller.getInstanceMethod(name).asMethod()
     )
   }
 
@@ -421,7 +425,7 @@ class ActionControllerHelperMethod extends Method {
 
   ActionControllerHelperMethod() {
     exists(DataFlow::MethodNode m, string name |
-      m = controllerClass.getOwnInstanceMethod(name) and
+      m = controllerClass.getInstanceMethod(name) and
       actionControllerHasHelperMethodCall(controllerClass, name) and
       this = m.asMethod()
     )
