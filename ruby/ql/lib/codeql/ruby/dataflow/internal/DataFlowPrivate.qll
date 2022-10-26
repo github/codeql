@@ -351,11 +351,7 @@ private module Cached {
   private predicate entrySsaDefinition(SsaDefinitionNode n) {
     n = LocalFlow::getParameterDefNode(_)
     or
-    exists(Ssa::Definition def | def = n.getDefinition() |
-      def instanceof Ssa::SelfDefinition
-      or
-      def instanceof Ssa::CapturedEntryDefinition
-    )
+    n.getDefinition() instanceof Ssa::SelfDefinition
   }
 
   pragma[nomagic]
@@ -1056,7 +1052,7 @@ predicate flowInsensitiveCaptureStep(Node pred, Node succ) {
   )
   or
   // Ensure captured parameters are connected to the CapturedVariableNode.
-  // If a parameter has no use in outermost scope, it will not have an SSA definition.
+  // If a parameter has no use in its declaring scope, it will not have an SSA entry definition.
   exists(LocalVariable variable | succ.(CapturedVariableNode).getVariable() = variable |
     pred.(ParameterNodeImpl).getParameter().(NamedParameter).getVariable() = variable
     or
