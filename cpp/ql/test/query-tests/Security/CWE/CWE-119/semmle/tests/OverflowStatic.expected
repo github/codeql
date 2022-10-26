@@ -1,4 +1,5 @@
 | overflowdestination.cpp:46:20:46:30 | sizeof(<expr>) | Potential buffer-overflow: 'dest' has size 64 not 128. |
+| tests.cpp:23:33:23:49 | sizeof(<expr>) | Potential buffer-overflow: 'bigbuffer' has size 10 not 20. |
 | tests.cpp:25:33:25:49 | sizeof(<expr>) | Potential buffer-overflow: 'smallbuffer' has size 10 not 20. |
 | tests.cpp:163:3:163:11 | access to array | Potential buffer-overflow: counter 'k' <= 100 but 'buffer' has 100 elements. |
 | tests.cpp:164:8:164:16 | access to array | Potential buffer-overflow: counter 'k' <= 100 but 'buffer' has 100 elements. |

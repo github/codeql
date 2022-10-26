@@ -454,7 +454,7 @@ void test17(long long *longArray)
 		multi[-5][5] = 0; // BAD: underrun write [INCORRECT MESSAGE]
 		multi[5][-5] = 0; // DUBIOUS: underrun write (this one is still within the bounds of the whole array)
 		multi[-5][-5] = 0; // BAD: underrun write [INCORRECT MESSAGE]
-		multi[0][-5] = 0; // BAD: underrun write [NOT DETECTED]
+		multi[0][-5] = 0; // BAD: underrun write
 
 		multi[15][5] = 0; // BAD: overrun write
 		multi[5][15] = 0; // DUBIOUS: overrun write (this one is still within the bounds of the whole array)
@@ -476,23 +476,23 @@ void test18()
 	p1[-1] = 0; // BAD: underrun write
 	p2[-1] = 0; // BAD: underrun write
 	p2++;
-	p2[-1] = 0; // GOOD
+	p2[-1] = 0; // GOOD [FALSE POSITIVE]
 
 	p3[-1] = 0; // BAD
 	while (*p3 != 0) {
 		p3 = update(p3);
 	}
-	p3[-1] = 0; // GOOD
+	p3[-1] = 0; // GOOD [FALSE POSITIVE]
 
 	p4[-1] = 0; // BAD: underrun write
 	p4++;
-	p4[-1] = 0; // GOOD
+	p4[-1] = 0; // GOOD [FALSE POSITIVE]
 
 	p5[-1] = 0; // BAD
 	while (*p5 != 0) {
 		p5 = update(p5);
 	}
-	p5[-1] = 0; // GOOD
+	p5[-1] = 0; // GOOD [FALSE POSITIVE]
 }
 
 void test19(bool b)
@@ -517,7 +517,7 @@ void test19(bool b)
 	if (b)
 	{
 		memset(p1, 0, 20); // BAD
-		memset(p2, 0, 20); // GOOD
+		memset(p2, 0, 20); // GOOD [FALSE POSITIVE]
 		memset(p3, 0, 20); // GOOD
 	}
 }
@@ -572,7 +572,7 @@ void test21(bool cond)
 	if (cond)
 	{
 		ptr++;
-		if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[0]
+		if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[0] [FALSE POSITIVE]
 	} else {
 		if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1]
 	}
