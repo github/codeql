@@ -3,7 +3,11 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSources
 
-private class UrlRemoteFlowSource extends SourceModelCsv {
+/**
+ * A model for custom URL remote flow sources. iOS apps can receive arbitrary
+ * URLs from other apps in these functions if they register a custom URL scheme.
+ */
+private class CustomUrlRemoteFlowSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [

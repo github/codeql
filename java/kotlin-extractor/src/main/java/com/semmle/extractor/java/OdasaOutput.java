@@ -277,7 +277,7 @@ public class OdasaOutput {
 				// Only re-write an existing trap file if we encountered a newer version of the same class.
 				TrapClassVersion trapVersion = readVersionInfo(trap);
 				if (!currVersion.isValid()) {
-					log.warn("Not rewriting trap file for: " + shortName + " " + trapVersion + " " + currVersion + " " + trap);
+					log.trace("Not rewriting trap file for: " + shortName + " " + trapVersion + " " + currVersion + " " + trap);
 				} else if (currVersion.newerThan(trapVersion)) {
 					log.trace("Rewriting trap file for: " + shortName + " " + trapVersion + " " + currVersion + " " + trap);
 					deleteTrapFileAndDependencies(sym, signature);
@@ -291,7 +291,7 @@ public class OdasaOutput {
 			// If the TRAP file already exists then we
 			// don't need to write it.
 			if (trap.exists()) {
-				log.warn("Not rewriting trap file for " + trap.toString() + " as it exists");
+				log.trace("Not rewriting trap file for " + trap.toString() + " as it exists");
 				return null;
 			}
 			// If the TRAP file was written in the past, and
@@ -301,7 +301,7 @@ public class OdasaOutput {
 			File trapFileDir = trap.getParentFile();
 			File trapOld = new File(trapFileDir, trap.getName().replace(".trap.gz", ".trap-old.gz"));
 			if (trapOld.exists()) {
-				log.warn("Not rewriting trap file for " + trap.toString() + " as the trap-old exists");
+				log.trace("Not rewriting trap file for " + trap.toString() + " as the trap-old exists");
 				return null;
 			}
 			// Otherwise, if any newer TRAP file has already
@@ -316,7 +316,7 @@ public class OdasaOutput {
 					if (m.matches() && m.group(1).equals(trapFileBaseName)) {
 						TrapClassVersion v = new TrapClassVersion(Integer.valueOf(m.group(2)), Integer.valueOf(m.group(3)), Long.valueOf(m.group(4)), m.group(5));
 						if (v.newerThan(trapFileVersion)) {
-							log.warn("Not rewriting trap file for " + trap.toString() + " as " + f.toString() + " exists");
+							log.trace("Not rewriting trap file for " + trap.toString() + " as " + f.toString() + " exists");
 							return null;
 						}
 					}
