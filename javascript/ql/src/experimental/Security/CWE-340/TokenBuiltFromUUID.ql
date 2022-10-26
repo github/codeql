@@ -18,8 +18,7 @@ import DataFlow::PathGraph
 class PredictableResultSource extends DataFlow::Node {
   PredictableResultSource() {
     exists(API::Node uuidCallRet |
-      uuidCallRet =
-        API::moduleImport("uuid").getMember(["v1", "v3", "v5"]).getACall().getReturn()
+      uuidCallRet = API::moduleImport("uuid").getMember(["v1", "v3", "v5"]).getReturn()
     |
       this = uuidCallRet.asSource()
     )
