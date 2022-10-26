@@ -564,10 +564,16 @@ uniqueNodeToString
 | break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
+| break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
+| break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
+| break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
+| break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | i | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | i | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | x | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | x | Node should have one toString but has 2. |
 | constructorinitializer.cpp:3:9:3:9 | i | Node should have one toString but has 2. |
 | constructorinitializer.cpp:3:9:3:9 | x | Node should have one toString but has 2. |
@@ -578,8 +584,12 @@ uniqueNodeToString
 | duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
+| duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
+| duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
+| duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
+| duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
 | newexpr.cpp:3:9:3:9 | i | Node should have one toString but has 2. |
 | newexpr.cpp:3:9:3:9 | x | Node should have one toString but has 2. |
@@ -590,12 +600,16 @@ uniqueNodeToString
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
+| switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
+| switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 missingToString
 parameterCallable
@@ -626,7 +640,7 @@ uniquePostUpdate
 postIsInSameCallable
 reverseRead
 | cpp11.cpp:82:17:82:17 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| cpp11.cpp:82:17:82:55 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| cpp11.cpp:82:17:82:55 | [...](...){...} | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:514:10:514:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:515:10:515:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:515:10:515:11 | Unary | Origin of readStep is missing a PostUpdateNode. |

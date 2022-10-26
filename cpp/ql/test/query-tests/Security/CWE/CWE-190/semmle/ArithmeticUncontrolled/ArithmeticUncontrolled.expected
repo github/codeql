@@ -10,7 +10,7 @@ edges
 | test.c:131:13:131:16 | call to rand | test.c:133:5:133:5 | r |
 | test.c:137:13:137:16 | call to rand | test.c:139:10:139:10 | r |
 | test.c:155:22:155:25 | call to rand | test.c:157:9:157:9 | r |
-| test.c:155:22:155:27 | (unsigned int)... | test.c:157:9:157:9 | r |
+| test.c:155:22:155:27 | call to rand | test.c:157:9:157:9 | r |
 | test.cpp:6:5:6:12 | VariableAddress indirection | test.cpp:25:7:25:7 | r |
 | test.cpp:8:9:8:12 | call to rand | test.cpp:6:5:6:12 | VariableAddress indirection |
 | test.cpp:11:21:11:24 | Load indirection | test.cpp:30:13:30:14 | get_rand2 output argument |
@@ -29,7 +29,7 @@ edges
 | test.cpp:98:10:98:13 | call to rand | test.cpp:102:10:102:10 | x |
 | test.cpp:137:10:137:13 | call to rand | test.cpp:146:9:146:9 | y |
 | test.cpp:151:10:151:13 | call to rand | test.cpp:154:10:154:10 | b |
-| test.cpp:169:11:169:14 | call to rand | test.cpp:171:11:171:16 | (int)... |
+| test.cpp:169:11:169:14 | call to rand | test.cpp:171:11:171:16 | y |
 | test.cpp:169:11:169:14 | call to rand | test.cpp:171:16:171:16 | y |
 | test.cpp:189:10:189:13 | call to rand | test.cpp:196:7:196:7 | x |
 | test.cpp:189:10:189:13 | call to rand | test.cpp:198:7:198:7 | x |
@@ -58,7 +58,7 @@ nodes
 | test.c:137:13:137:16 | call to rand | semmle.label | call to rand |
 | test.c:139:10:139:10 | r | semmle.label | r |
 | test.c:155:22:155:25 | call to rand | semmle.label | call to rand |
-| test.c:155:22:155:27 | (unsigned int)... | semmle.label | (unsigned int)... |
+| test.c:155:22:155:27 | call to rand | semmle.label | call to rand |
 | test.c:157:9:157:9 | r | semmle.label | r |
 | test.cpp:6:5:6:12 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | test.cpp:8:9:8:12 | call to rand | semmle.label | call to rand |
@@ -86,7 +86,7 @@ nodes
 | test.cpp:151:10:151:13 | call to rand | semmle.label | call to rand |
 | test.cpp:154:10:154:10 | b | semmle.label | b |
 | test.cpp:169:11:169:14 | call to rand | semmle.label | call to rand |
-| test.cpp:171:11:171:16 | (int)... | semmle.label | (int)... |
+| test.cpp:171:11:171:16 | y | semmle.label | y |
 | test.cpp:171:16:171:16 | y | semmle.label | y |
 | test.cpp:189:10:189:13 | call to rand | semmle.label | call to rand |
 | test.cpp:190:10:190:13 | call to rand | semmle.label | call to rand |
@@ -111,7 +111,7 @@ subpaths
 | test.c:133:5:133:5 | r | test.c:131:13:131:16 | call to rand | test.c:133:5:133:5 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.c:131:13:131:16 | call to rand | uncontrolled value |
 | test.c:139:10:139:10 | r | test.c:137:13:137:16 | call to rand | test.c:139:10:139:10 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.c:137:13:137:16 | call to rand | uncontrolled value |
 | test.c:157:9:157:9 | r | test.c:155:22:155:25 | call to rand | test.c:157:9:157:9 | r | This arithmetic expression depends on an $@, potentially causing an underflow. | test.c:155:22:155:25 | call to rand | uncontrolled value |
-| test.c:157:9:157:9 | r | test.c:155:22:155:27 | (unsigned int)... | test.c:157:9:157:9 | r | This arithmetic expression depends on an $@, potentially causing an underflow. | test.c:155:22:155:25 | call to rand | uncontrolled value |
+| test.c:157:9:157:9 | r | test.c:155:22:155:27 | call to rand | test.c:157:9:157:9 | r | This arithmetic expression depends on an $@, potentially causing an underflow. | test.c:155:22:155:25 | call to rand | uncontrolled value |
 | test.cpp:25:7:25:7 | r | test.cpp:8:9:8:12 | call to rand | test.cpp:25:7:25:7 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:8:9:8:12 | call to rand | uncontrolled value |
 | test.cpp:31:7:31:7 | r | test.cpp:13:10:13:13 | call to rand | test.cpp:31:7:31:7 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:13:10:13:13 | call to rand | uncontrolled value |
 | test.cpp:37:7:37:7 | r | test.cpp:18:9:18:12 | call to rand | test.cpp:37:7:37:7 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:18:9:18:12 | call to rand | uncontrolled value |
@@ -120,7 +120,7 @@ subpaths
 | test.cpp:102:10:102:10 | x | test.cpp:98:10:98:13 | call to rand | test.cpp:102:10:102:10 | x | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:98:10:98:13 | call to rand | uncontrolled value |
 | test.cpp:146:9:146:9 | y | test.cpp:137:10:137:13 | call to rand | test.cpp:146:9:146:9 | y | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:137:10:137:13 | call to rand | uncontrolled value |
 | test.cpp:154:10:154:10 | b | test.cpp:151:10:151:13 | call to rand | test.cpp:154:10:154:10 | b | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:151:10:151:13 | call to rand | uncontrolled value |
-| test.cpp:171:11:171:16 | (int)... | test.cpp:169:11:169:14 | call to rand | test.cpp:171:11:171:16 | (int)... | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:169:11:169:14 | call to rand | uncontrolled value |
+| test.cpp:171:11:171:16 | y | test.cpp:169:11:169:14 | call to rand | test.cpp:171:11:171:16 | y | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:169:11:169:14 | call to rand | uncontrolled value |
 | test.cpp:171:16:171:16 | y | test.cpp:169:11:169:14 | call to rand | test.cpp:171:16:171:16 | y | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:169:11:169:14 | call to rand | uncontrolled value |
 | test.cpp:196:7:196:7 | x | test.cpp:189:10:189:13 | call to rand | test.cpp:196:7:196:7 | x | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:189:10:189:13 | call to rand | uncontrolled value |
 | test.cpp:198:7:198:7 | x | test.cpp:189:10:189:13 | call to rand | test.cpp:198:7:198:7 | x | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:189:10:189:13 | call to rand | uncontrolled value |
