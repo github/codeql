@@ -27,7 +27,7 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink) or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
-  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink)
+  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
 }
 
 private Type getElementType(Type containerType) {
