@@ -1,6 +1,6 @@
 #pragma once
 
-#include "swift/extractor/infra/TargetFile.h"
+#include "swift/extractor/infra/file/TargetFile.h"
 #include "swift/extractor/SwiftExtractorConfiguration.h"
 
 namespace codeql {

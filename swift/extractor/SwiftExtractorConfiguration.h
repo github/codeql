@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "swift/extractor/infra/TargetFile.h"
+#include "swift/extractor/infra/file/TargetFile.h"
 
 namespace codeql {
 struct SwiftExtractorConfiguration {
