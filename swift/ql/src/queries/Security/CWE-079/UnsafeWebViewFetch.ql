@@ -50,7 +50,6 @@ class Sink extends DataFlow::Node {
       call.getStaticTarget() = funcDecl and
       // match up `funcName`, `paramName`, `arg`, `node`.
       funcDecl.hasQualifiedName(className, funcName) and
-      funcDecl.getName() = funcName and
       funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = this.asExpr() and
       // match up `baseURLArg`
