@@ -801,8 +801,7 @@ private class IndirectOperandExprNode extends ExprNodeBase, IndirectOperand {
 }
 
 private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgumentOutNode {
-
-  IndirectArgumentOutExprNode() { exprNodeShouldBeIndirectOutNode(this, _)}
+  IndirectArgumentOutExprNode() { exprNodeShouldBeIndirectOutNode(this, _) }
 
   final override Expr getConvertedExpr() { exprNodeShouldBeIndirectOutNode(this, result) }
 
