@@ -313,6 +313,58 @@ private module Cached {
   predicate immediatelyControls(ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s) {
     succ = cb.getASuccessor(s) and
     forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != cb | succ.dominates(pred))
+    or
+    // special case for `when` clauses in case expressions
+    whenClauseImmediatelyControls(cb, succ, s)
+  }
+
+  /**
+   * Holds if all control flow paths reaching `succ` first exit `cb` with
+   * successor type `s`, assuming that the last node of `cb` is a `when` clause.
+   *
+   * ```
+   *   case foo
+   *         |
+   *     +---+
+   *     |
+   *     v
+   *   when  "foo" ---> "bar" ----+
+   *         |  |        |        |
+   * no-match|  |match   |match   |no-match
+   *         |  v        |        |
+   *         |  foo <----+        |
+   *         |                    |
+   *   end <-+--------------------+
+   * ```
+   *
+   * The read of `foo` in the `then` block is not technically controlled by
+   * either `"foo"` or `"bar"` because it can be reached from either of them.
+   * However if we consider the `when` clause as a whole, then it is
+   * controlled because _at least one of the patterns_ must match.
+   *
+   * We determine this by finding a common successor `succ` of each pattern
+   * with the same successor type `s`. We check that all predecessors of
+   * `succ` are patterns in the clause, or are dominated by a pattern in the
+   * clause.
+   */
+  cached
+  private predicate whenClauseImmediatelyControls(
+    ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s
+  ) {
+    exists(ExprNodes::WhenClauseCfgNode when |
+      cb = when.getBasicBlock() and
+      forall(ExprCfgNode pattern | pattern = when.getPattern(_) |
+        succ = pattern.getBasicBlock().getASuccessor(s) and
+        forall(BasicBlock pred |
+          pred = succ.getAPredecessor() and
+          pred != cb
+        |
+          pred = when.getPattern(_).getBasicBlock()
+          or
+          when.getPattern(_).getBasicBlock().dominates(pred)
+        )
+      )
+    )
   }
 
   cached
