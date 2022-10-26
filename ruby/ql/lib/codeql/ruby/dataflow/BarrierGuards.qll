@@ -23,8 +23,6 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
       c.getLeftOperand() = testedNode and c.getRightOperand() = strLitNode
     )
   )
-  or
-  stringConstCaseCompare(guard, testedNode, branch)
 }
 
 /**
@@ -42,7 +40,11 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
  */
 class StringConstCompareBarrier extends DataFlow::Node {
   StringConstCompareBarrier() {
-    this = DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode()
+    this =
+      [
+        DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode(),
+        CaseBarrier::getABarrierNode()
+      ]
   }
 }
 
@@ -185,4 +187,128 @@ private predicate stringConstCaseCompare(
       )
     )
   )
+}
+
+/**
+ * Predicates that define a barrier for string constant comparison inside case
+ * expressions.
+ *
+ * This is a copy of the `DataFlow::BarrierGuard` parameterized module that uses
+ * `whenClauseControls` instead of `ConditionBlock.controls`.
+ */
+module CaseBarrier {
+  private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
+  private import codeql.ruby.controlflow.ControlFlowGraph::SuccessorTypes
+
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
+  private predicate guardControlsBlock(CfgNodes::AstCfgNode guard, BasicBlock bb, boolean branch) {
+    exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
+      guard = conditionBlock.getLastNode() and
+      s.getValue() = branch and
+      whenClauseControls(conditionBlock, bb, s)
+    )
+  }
+
+  /**
+   * Gets an implicit entry definition for a captured variable that
+   * may be guarded, because a call to the capturing callable is guarded.
+   *
+   * This is restricted to calls where the variable is captured inside a
+   * block.
+   */
+  private Ssa::Definition getAMaybeGuardedCapturedDef() {
+    exists(
+      CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode,
+      Ssa::Definition def, CfgNodes::ExprNodes::CallCfgNode call
+    |
+      def.getARead() = testedNode and
+      stringConstCaseCompare(g, testedNode, branch) and
+      SsaImpl::captureFlowIn(call, def, result) and
+      guardControlsBlock(g, call.getBasicBlock(), branch) and
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+    )
+  }
+
+  /**
+   * Holds if all control flow paths reaching `succ` first exit `cb` with
+   * successor type `s`, assuming that the last node of `cb` is a `when` clause.
+   *
+   * ```
+   *   case foo
+   *         |
+   *     +---+
+   *     |
+   *     v
+   *   when  "foo" ---> "bar" ----+
+   *         |  |        |        |
+   * no-match|  |match   |match   |no-match
+   *         |  v        |        |
+   *         |  foo <----+        |
+   *         |                    |
+   *   end <-+--------------------+
+   * ```
+   *
+   * The read of `foo` in the `then` block is not technically controlled by
+   * either `"foo"` or `"bar"` because it can be reached from either of them.
+   * However if we consider the `when` clause as a whole, then it is
+   * controlled because _at least one of the patterns_ must match.
+   *
+   * We determine this by finding a common successor `succ` of each pattern
+   * with the same successor type `s`. We check that all predecessors of
+   * `succ` are patterns in the clause, or are dominated by a pattern in the
+   * clause.
+   */
+  cached
+  private predicate whenClauseImmediatelyControls(
+    ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s
+  ) {
+    exists(ExprNodes::WhenClauseCfgNode when |
+      cb = when.getBasicBlock() and
+      forall(ExprCfgNode pattern | pattern = when.getPattern(_) |
+        succ = pattern.getBasicBlock().getASuccessor(s) and
+        forall(BasicBlock pred |
+          pred = succ.getAPredecessor() and
+          pred != cb
+        |
+          pred = when.getPattern(_).getBasicBlock()
+          or
+          when.getPattern(_).getBasicBlock().dominates(pred)
+        )
+      )
+    )
+  }
+
+  // The predicates below are all identical to their counterparts in
+  // `DataFlow::BarrierGuard`.
+  cached
+  private predicate whenClauseControls(
+    ConditionBlock whenCb, BasicBlock controlled, ConditionalSuccessor s
+  ) {
+    exists(BasicBlock succ | whenClauseImmediatelyControls(whenCb, succ, s) |
+      succ.dominates(controlled)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate guardChecksSsaDef(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def) {
+    stringConstCaseCompare(g, def.getARead(), branch)
+  }
+
+  pragma[nomagic]
+  private predicate guardControlsSsaDef(
+    CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, DataFlow::Node n
+  ) {
+    def.getARead() = n.asExpr() and
+    guardControlsBlock(g, n.asExpr().getBasicBlock(), branch)
+  }
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  DataFlow::Node getABarrierNode() {
+    exists(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def |
+      guardChecksSsaDef(g, branch, def) and
+      guardControlsSsaDef(g, branch, def, result)
+    )
+    or
+    result.asExpr() = getAMaybeGuardedCapturedDef().getARead()
+  }
 }

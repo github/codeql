@@ -158,16 +158,16 @@ when "foo", x
     foo
 end
 
-foos_and_x = ["foo", x]
+foo_and_x = ["foo", x]
 
 case foo
-when *foos_and_x
+when *foo_and_x
     foo
 end
 
-FOOS_AND_X = ["foo", x]
+FOO_AND_X = ["foo", x]
 
 case foo
-when *FOOS_AND_X
+when *FOO_AND_X
     foo
 end
