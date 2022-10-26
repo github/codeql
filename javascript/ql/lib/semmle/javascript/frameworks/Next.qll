@@ -53,6 +53,15 @@ module NextJS {
             .getAFunctionValue()
             .getParameter(0)
             .getAPropertyRead("params")
+      or
+      exists(DataFlow::ParameterNode params |
+        params = getServerSidePropsFunction(_).getParameter(0)
+      |
+        this = params.getAPropertyRead("params") or
+        this = params.getAPropertyRead("query")
+      )
+      or
+      this = nextRouter().getAPropertyRead("query")
     }
 
     override string getSourceType() { result = "Next request parameter" }
