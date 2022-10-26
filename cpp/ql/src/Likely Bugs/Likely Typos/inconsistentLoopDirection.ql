@@ -82,7 +82,8 @@ predicate illDefinedIncrForStmt(
     candidateIncrForStmt(forstmt, v, greaterOperand, terminalCondition) and
     // `initialCondition` is a value of `v` in the for loop
     v.getAnAssignedValue() = initialCondition and
-    DataFlow::localFlowStep+(DataFlow::exprNode(initialCondition), DataFlow::exprNode(greaterOperand)) and
+    DataFlow::localFlowStep+(DataFlow::exprNode(initialCondition),
+      DataFlow::exprNode(greaterOperand)) and
     // `terminalCondition` < `initialCondition`
     (
       upperBound(terminalCondition) < lowerBound(initialCondition)
