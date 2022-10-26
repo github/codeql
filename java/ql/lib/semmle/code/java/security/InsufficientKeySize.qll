@@ -15,42 +15,38 @@ abstract class InsufficientKeySizeSink extends DataFlow::Node {
   predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
 }
 
+/** Provides models for asymmetric cryptography. */
 private module Asymmetric {
+  /** Provides models for non-elliptic-curve asymmetric cryptography. */
   private module NonEllipticCurve {
     /** A source for an insufficient key size used in RSA, DSA, and DH algorithms. */
-    private class AsymmetricNonEcSource extends InsufficientKeySizeSource {
-      AsymmetricNonEcSource() {
-        this.asExpr().(IntegerLiteral).getIntValue() < getMinAsymNonEcKeySize()
-      }
+    private class Source extends InsufficientKeySizeSource {
+      Source() { this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize() }
 
-      override predicate hasState(DataFlow::FlowState state) {
-        state = getMinAsymNonEcKeySize().toString()
-      }
+      override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
     }
 
     /** A sink for an insufficient key size used in RSA, DSA, and DH algorithms. */
-    private class AsymmetricNonEcSink extends InsufficientKeySizeSink {
-      AsymmetricNonEcSink() {
-        exists(AsymmetricInitMethodAccess ma, AsymmetricKeyGenerator kg |
-          kg.getAlgoName().matches(["RSA", "DSA", "DH"]) and
-          DataFlow::localExprFlow(kg, ma.getQualifier()) and
-          this.asExpr() = ma.getKeySizeArg()
+    private class Sink extends InsufficientKeySizeSink {
+      Sink() {
+        exists(KeyPairGenInit kpgInit, KeyPairGen kpg |
+          kpg.getAlgoName().matches(["RSA", "DSA", "DH"]) and
+          DataFlow::localExprFlow(kpg, kpgInit.getQualifier()) and
+          this.asExpr() = kpgInit.getKeySizeArg()
         )
         or
-        exists(AsymmetricNonEcSpec spec | this.asExpr() = spec.getKeySizeArg())
+        exists(Spec spec | this.asExpr() = spec.getKeySizeArg())
       }
 
-      override predicate hasState(DataFlow::FlowState state) {
-        state = getMinAsymNonEcKeySize().toString()
-      }
+      override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
     }
 
     /** Returns the minimum recommended key size for RSA, DSA, and DH algorithms. */
-    private int getMinAsymNonEcKeySize() { result = 2048 }
+    private int getMinKeySize() { result = 2048 }
 
     /** An instance of an RSA, DSA, or DH algorithm specification. */
-    private class AsymmetricNonEcSpec extends ClassInstanceExpr {
-      AsymmetricNonEcSpec() {
+    private class Spec extends ClassInstanceExpr {
+      Spec() {
         this.getConstructedType() instanceof RsaKeyGenParameterSpec or
         this.getConstructedType() instanceof DsaGenParameterSpec or
         this.getConstructedType() instanceof DhGenParameterSpec
@@ -61,44 +57,41 @@ private module Asymmetric {
     }
   }
 
+  /** Provides models for elliptic-curve asymmetric cryptography. */
   private module EllipticCurve {
     /** A source for an insufficient key size used in elliptic curve (EC) algorithms. */
-    private class AsymmetricEcSource extends InsufficientKeySizeSource {
-      AsymmetricEcSource() {
-        this.asExpr().(IntegerLiteral).getIntValue() < getMinAsymEcKeySize()
+    private class Source extends InsufficientKeySizeSource {
+      Source() {
+        this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize()
         or
         // the below is needed for cases when the key size is embedded in the curve name
-        getEcKeySize(this.asExpr().(StringLiteral).getValue()) < getMinAsymEcKeySize()
+        getKeySize(this.asExpr().(StringLiteral).getValue()) < getMinKeySize()
       }
 
-      override predicate hasState(DataFlow::FlowState state) {
-        state = getMinAsymEcKeySize().toString()
-      }
+      override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
     }
 
     /** A sink for an insufficient key size used in elliptic curve (EC) algorithms. */
-    private class AsymmetricEcSink extends InsufficientKeySizeSink {
-      AsymmetricEcSink() {
-        exists(AsymmetricInitMethodAccess ma, AsymmetricKeyGenerator kg |
-          kg.getAlgoName().matches("EC%") and
-          DataFlow::localExprFlow(kg, ma.getQualifier()) and
-          this.asExpr() = ma.getKeySizeArg()
+    private class Sink extends InsufficientKeySizeSink {
+      Sink() {
+        exists(KeyPairGenInit kpgInit, KeyPairGen kpg |
+          kpg.getAlgoName().matches("EC%") and
+          DataFlow::localExprFlow(kpg, kpgInit.getQualifier()) and
+          this.asExpr() = kpgInit.getKeySizeArg()
         )
         or
-        exists(AsymmetricEcSpec s | this.asExpr() = s.getKeySizeArg())
+        exists(Spec s | this.asExpr() = s.getKeySizeArg())
       }
 
-      override predicate hasState(DataFlow::FlowState state) {
-        state = getMinAsymEcKeySize().toString()
-      }
+      override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
     }
 
     /** Returns the minimum recommended key size for elliptic curve (EC) algorithms. */
-    private int getMinAsymEcKeySize() { result = 256 }
+    private int getMinKeySize() { result = 256 }
 
     /** Returns the key size from an EC algorithm's curve name string */
     bindingset[algorithm]
-    private int getEcKeySize(string algorithm) {
+    private int getKeySize(string algorithm) {
       algorithm.matches("sec%") and // specification such as "secp256r1"
       result = algorithm.regexpCapture("sec[p|t](\\d+)[a-zA-Z].*", 1).toInt()
       or
@@ -110,8 +103,8 @@ private module Asymmetric {
     }
 
     /** An instance of an elliptic curve (EC) algorithm specification. */
-    private class AsymmetricEcSpec extends ClassInstanceExpr {
-      AsymmetricEcSpec() { this.getConstructedType() instanceof EcGenParameterSpec }
+    private class Spec extends ClassInstanceExpr {
+      Spec() { this.getConstructedType() instanceof EcGenParameterSpec }
 
       /** Gets the `keysize` argument of this instance. */
       Argument getKeySizeArg() { result = this.getArgument(0) }
@@ -122,8 +115,8 @@ private module Asymmetric {
    * A call to the `initialize` method declared in `java.security.KeyPairGenerator`
    * or to the `init` method declared in `java.security.AlgorithmParameterGenerator`.
    */
-  private class AsymmetricInitMethodAccess extends MethodAccess {
-    AsymmetricInitMethodAccess() {
+  private class KeyPairGenInit extends MethodAccess {
+    KeyPairGenInit() {
       this.getMethod() instanceof KeyPairGeneratorInitMethod or
       this.getMethod() instanceof AlgoParamGeneratorInitMethod
     }
@@ -136,8 +129,8 @@ private module Asymmetric {
    * An instance of a `java.security.KeyPairGenerator`
    * or of a `java.security.AlgorithmParameterGenerator`.
    */
-  private class AsymmetricKeyGenerator extends AlgoGeneratorObject {
-    AsymmetricKeyGenerator() {
+  private class KeyPairGen extends GeneratorAlgoSpec {
+    KeyPairGen() {
       this instanceof JavaSecurityKeyPairGenerator or
       this instanceof JavaSecurityAlgoParamGenerator
     }
@@ -152,46 +145,47 @@ private module Asymmetric {
   }
 }
 
+/** Provides models for symmetric cryptography. */
 private module Symmetric {
   /** A source for an insufficient key size used in AES algorithms. */
-  private class SymmetricSource extends InsufficientKeySizeSource {
-    SymmetricSource() { this.asExpr().(IntegerLiteral).getIntValue() < getMinSymKeySize() }
+  private class Source extends InsufficientKeySizeSource {
+    Source() { this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize() }
 
-    override predicate hasState(DataFlow::FlowState state) { state = getMinSymKeySize().toString() }
+    override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
   }
 
   /** A sink for an insufficient key size used in AES algorithms. */
-  private class SymmetricSink extends InsufficientKeySizeSink {
-    SymmetricSink() {
-      exists(SymmetricInitMethodAccess ma, SymmetricKeyGenerator kg |
+  private class Sink extends InsufficientKeySizeSink {
+    Sink() {
+      exists(KeyGenInit kgInit, KeyGen kg |
         kg.getAlgoName() = "AES" and
-        DataFlow::localExprFlow(kg, ma.getQualifier()) and
-        this.asExpr() = ma.getKeySizeArg()
+        DataFlow::localExprFlow(kg, kgInit.getQualifier()) and
+        this.asExpr() = kgInit.getKeySizeArg()
       )
     }
 
-    override predicate hasState(DataFlow::FlowState state) { state = getMinSymKeySize().toString() }
+    override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
   }
 
   /** Returns the minimum recommended key size for AES algorithms. */
-  private int getMinSymKeySize() { result = 128 }
+  private int getMinKeySize() { result = 128 }
 
   /** A call to the `init` method declared in `javax.crypto.KeyGenerator`. */
-  private class SymmetricInitMethodAccess extends MethodAccess {
-    SymmetricInitMethodAccess() { this.getMethod() instanceof KeyGeneratorInitMethod }
+  private class KeyGenInit extends MethodAccess {
+    KeyGenInit() { this.getMethod() instanceof KeyGeneratorInitMethod }
 
     /** Gets the `keysize` argument of this call. */
     Argument getKeySizeArg() { result = this.getArgument(0) }
   }
 
   /** An instance of a `javax.crypto.KeyGenerator`. */
-  private class SymmetricKeyGenerator extends AlgoGeneratorObject instanceof JavaxCryptoKeyGenerator {
+  private class KeyGen extends GeneratorAlgoSpec instanceof JavaxCryptoKeyGenerator {
     override Expr getAlgoSpec() { result = JavaxCryptoKeyGenerator.super.getAlgoSpec() }
   }
 }
 
 /** An instance of a generator that specifies an encryption algorithm. */
-abstract private class AlgoGeneratorObject extends CryptoAlgoSpec {
+abstract private class GeneratorAlgoSpec extends CryptoAlgoSpec {
   /** Returns an uppercase string representing the algorithm name specified by this generator object. */
   string getAlgoName() { result = this.getAlgoSpec().(StringLiteral).getValue().toUpperCase() }
 }
