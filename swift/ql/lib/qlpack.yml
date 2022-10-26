@@ -6,4 +6,4 @@ dbscheme: swift.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
-  codeql/ssa: 0.0.1
+  codeql/ssa: ${workspace}
