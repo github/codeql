@@ -2,8 +2,8 @@
 #include <iomanip>
 namespace codeql {
 std::optional<TargetFile> createTargetTrapFile(const SwiftExtractorConfiguration& configuration,
-                                               std::string_view target) {
-  std::string trap{target};
+                                               const std::filesystem::path& target) {
+  auto trap = target;
   trap += ".trap";
   auto ret = TargetFile::create(trap, configuration.trapDir, configuration.getTempTrapDir());
   if (ret) {

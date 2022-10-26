@@ -1,46 +1,54 @@
 #include "swift/extractor/infra/file/TargetFile.h"
 
 #include <iostream>
+#include <cassert>
 #include <cstdio>
 #include <cerrno>
 #include <system_error>
+#include <filesystem>
 
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
+namespace fs = std::filesystem;
 
 namespace codeql {
 namespace {
-[[noreturn]] void error(const char* action, const std::string& arg, std::error_code ec) {
+[[noreturn]] void error(const char* action, const fs::path& arg, std::error_code ec) {
   std::cerr << "Unable to " << action << ": " << arg << " (" << ec.message() << ")\n";
   std::abort();
 }
 
-[[noreturn]] void error(const char* action, const std::string& arg) {
+[[noreturn]] void error(const char* action, const fs::path& arg) {
   error(action, arg, {errno, std::system_category()});
 }
 
-void ensureParentDir(const std::string& path) {
-  auto parent = llvm::sys::path::parent_path(path);
-  if (auto ec = llvm::sys::fs::create_directories(parent)) {
-    error("create directory", parent.str(), ec);
+void check(const char* action, const fs::path& arg, std::error_code ec) {
+  if (ec) {
+    error(action, arg, ec);
   }
 }
 
-std::string initPath(std::string_view target, std::string_view dir) {
-  std::string ret{dir};
+void ensureParentDir(const fs::path& path) {
+  auto parent = path.parent_path();
+  std::error_code ec;
+  fs::create_directories(parent, ec);
+  check("create directory", parent, ec);
+}
+
+fs::path initPath(const std::filesystem::path& target, const std::filesystem::path& dir) {
+  fs::path ret{dir};
   assert(!target.empty() && "target must be a non-empty path");
-  if (target[0] != '/') {
-    ret += '/';
+  if (target.is_absolute()) {
+    ret += target;
+  } else {
+    ret /= target;
   }
-  ret.append(target);
   ensureParentDir(ret);
   return ret;
 }
 }  // namespace
 
-TargetFile::TargetFile(std::string_view target,
-                       std::string_view targetDir,
-                       std::string_view workingDir)
+TargetFile::TargetFile(const std::filesystem::path& target,
+                       const std::filesystem::path& targetDir,
+                       const std::filesystem::path& workingDir)
     : workingPath{initPath(target, workingDir)}, targetPath{initPath(target, targetDir)} {}
 
 bool TargetFile::init() {
@@ -59,9 +67,9 @@ bool TargetFile::init() {
   return false;
 }
 
-std::optional<TargetFile> TargetFile::create(std::string_view target,
-                                             std::string_view targetDir,
-                                             std::string_view workingDir) {
+std::optional<TargetFile> TargetFile::create(const std::filesystem::path& target,
+                                             const std::filesystem::path& targetDir,
+                                             const std::filesystem::path& workingDir) {
   TargetFile ret{target, targetDir, workingDir};
   if (ret.init()) return ret;
   return std::nullopt;
@@ -70,10 +78,9 @@ std::optional<TargetFile> TargetFile::create(std::string_view target,
 void TargetFile::commit() {
   if (out.is_open()) {
     out.close();
-    errno = 0;
-    if (std::rename(workingPath.c_str(), targetPath.c_str()) != 0) {
-      error("rename file", targetPath);
-    }
+    std::error_code ec;
+    fs::rename(workingPath, targetPath, ec);
+    check("rename file", targetPath, ec);
   }
 }
 

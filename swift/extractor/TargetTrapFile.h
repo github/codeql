@@ -6,6 +6,6 @@
 namespace codeql {
 
 std::optional<TargetFile> createTargetTrapFile(const SwiftExtractorConfiguration& configuration,
-                                               std::string_view target);
+                                               const std::filesystem::path& target);
 
 }  // namespace codeql

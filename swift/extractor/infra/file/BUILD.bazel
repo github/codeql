@@ -5,5 +5,5 @@ swift_cc_library(
     srcs = glob(["*.cpp"]),
     hdrs = glob(["*.h"]),
     visibility = ["//swift:__subpackages__"],
-    deps = ["//swift/third_party/swift-llvm-support"],
+    deps = ["@picosha2"],
 )

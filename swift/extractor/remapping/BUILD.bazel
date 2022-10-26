@@ -14,6 +14,7 @@ swift_cc_library(
     visibility = ["//swift:__subpackages__"],
     deps = [
         "//swift/third_party/swift-llvm-support",
+        "//swift/extractor/infra/file",
     ] + select({
         "@platforms//os:linux": [],
         "@platforms//os:macos": [
