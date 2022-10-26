@@ -60,7 +60,7 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
   /**
    * Holds if `source` is a TLS version source yielding value `val`.
    */
-  predicate isSource(DataFlow::Node source, int val) {
+  predicate intIsSource(DataFlow::Node source, int val) {
     val = source.getIntValue() and
     val = getATlsVersion() and
     not DataFlow::isReturnedWithError(source)
@@ -74,7 +74,7 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
     fieldWrite.writesField(base, fld, sink)
   }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
 
   override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
 }
@@ -87,7 +87,7 @@ predicate secureTlsVersionFlow(
 ) {
   exists(int version |
     config.hasFlowPath(source, sink) and
-    config.isSource(source.getNode(), version) and
+    config.intIsSource(source.getNode(), version) and
     not isInsecureTlsVersion(version, _, fld.getName())
   )
 }
@@ -130,7 +130,7 @@ predicate isInsecureTlsVersionFlow(
 ) {
   exists(TlsVersionFlowConfig cfg, int version, Field fld |
     cfg.hasFlowPath(source, sink) and
-    cfg.isSource(source.getNode(), version) and
+    cfg.intIsSource(source.getNode(), version) and
     cfg.isSink(sink.getNode(), fld, base, _) and
     isInsecureTlsVersion(version, _, fld.getName()) and
     // Exclude cases where a secure TLS version can also flow to the same
