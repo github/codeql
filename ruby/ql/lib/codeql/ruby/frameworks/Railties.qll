@@ -33,7 +33,7 @@ module Railties {
    */
   private class ExecuteCommandCall extends SystemCommandExecution::Range, DataFlow::CallNode {
     ExecuteCommandCall() {
-      this = generatorsActionsClass().getAnInstanceSelf().getAMethodCall("execute_command")
+      this = generatorsActionsClass().getAnOwnInstanceSelf().getAMethodCall("execute_command")
     }
 
     override DataFlow::Node getAnArgument() { result = this.getArgument([0, 1]) }
@@ -48,7 +48,7 @@ module Railties {
     ExecuteCommandWrapperCall() {
       this =
         generatorsActionsClass()
-            .getAnInstanceSelf()
+            .getAnOwnInstanceSelf()
             .getAMethodCall(["rake", "rails_command", "git"])
     }
 

@@ -55,13 +55,13 @@ class ActionControllerControllerClass extends DataFlow::ClassNode {
   /**
    * Gets a `ActionControllerActionMethod` defined in this class.
    */
-  ActionControllerActionMethod getAnAction() { result = this.getAnInstanceMethod().asMethod() }
+  ActionControllerActionMethod getAnAction() { result = this.getAnOwnInstanceMethod().asMethod() }
 }
 
 private ActionControllerControllerClass actionControllerClass() { any() }
 
 private DataFlow::LocalSourceNode actionControllerInstance() {
-  result = actionControllerClass().getAnInstanceSelf()
+  result = actionControllerClass().getAnOwnInstanceSelf()
   or
   // Include the module-level `self` to recover some cases where a block at the module level
   // is invoked with an instance as the `self`, which we currently can't model directly.
@@ -78,7 +78,7 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerActionMethod() {
-    this = controllerClass.getAnInstanceMethod().asMethod() and not this.isPrivate()
+    this = controllerClass.getAnOwnInstanceMethod().asMethod() and not this.isPrivate()
   }
 
   /**
@@ -118,7 +118,7 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
   ActionDispatch::Routing::Route getARoute() {
     exists(string name, DataFlow::MethodNode m |
       isRoute(result, name, controllerClass) and
-      m = controllerClass.getInstanceMethod(name) and
+      m = controllerClass.getOwnInstanceMethod(name) and
       this = m.asMethod()
     )
   }
@@ -178,7 +178,9 @@ private module Request {
    * `ActionDispatch::Request`.
    */
   private class RequestNode extends DataFlow::CallNode {
-    RequestNode() { this = actionControllerClass().getAnInstanceSelf().getAMethodCall("request") }
+    RequestNode() {
+      this = actionControllerClass().getAnOwnInstanceSelf().getAMethodCall("request")
+    }
   }
 
   /**
@@ -325,7 +327,7 @@ private class ActionControllerHtmlEscapeCall extends HtmlEscapeCallImpl {
     // "h" is aliased to "html_escape" in ActiveSupport
     this =
       actionControllerClass()
-          .getAnInstanceSelf()
+          .getAnOwnInstanceSelf()
           .getAMethodCall(["html_escape", "html_escape_once", "h", "sanitize"])
           .asExpr()
           .getExpr()
@@ -342,7 +344,7 @@ class RedirectToCall extends MethodCall {
   RedirectToCall() {
     this =
       controller
-          .getAnInstanceSelf()
+          .getAnOwnInstanceSelf()
           .getAMethodCall(["redirect_to", "redirect_back", "redirect_back_or_to"])
           .asExpr()
           .getExpr()
@@ -359,7 +361,7 @@ class RedirectToCall extends MethodCall {
   ActionControllerActionMethod getRedirectActionMethod() {
     exists(string name |
       this.getKeywordArgument("action").getConstantValue().isStringlikeValue(name) and
-      result = controller.getInstanceMethod(name).asMethod()
+      result = controller.getOwnInstanceMethod(name).asMethod()
     )
   }
 
@@ -419,7 +421,7 @@ class ActionControllerHelperMethod extends Method {
 
   ActionControllerHelperMethod() {
     exists(DataFlow::MethodNode m, string name |
-      m = controllerClass.getInstanceMethod(name) and
+      m = controllerClass.getOwnInstanceMethod(name) and
       actionControllerHasHelperMethodCall(controllerClass, name) and
       this = m.asMethod()
     )

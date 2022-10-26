@@ -92,8 +92,10 @@ class Module extends TModule {
   /**
    * Gets a singleton method on this module, either declared as a singleton method
    * or an instance method on a singleton class.
+   *
+   * Does not take inheritance into account.
    */
-  MethodBase getASingletonMethod() {
+  MethodBase getAnOwnSingletonMethod() {
     result.(SingletonMethod).getObject() = this.getAnImmediateReferenceBase()
     or
     result = this.getASingletonClass().getAMethod().(Method)
@@ -103,7 +105,7 @@ class Module extends TModule {
   Expr getAnImmediateReference() {
     result = this.getAnImmediateReferenceBase()
     or
-    result.(SelfVariableAccess).getVariable().getDeclaringScope() = this.getASingletonMethod()
+    result.(SelfVariableAccess).getVariable().getDeclaringScope() = this.getAnOwnSingletonMethod()
   }
 
   pragma[nomagic]

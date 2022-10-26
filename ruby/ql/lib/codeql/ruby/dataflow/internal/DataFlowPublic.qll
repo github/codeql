@@ -788,10 +788,10 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  LocalSourceNode getAModuleSelf() {
+  LocalSourceNode getAnOwnModuleSelf() {
     result = this.getModuleLevelSelf()
     or
-    result = this.getASingletonMethod().getSelfParameter()
+    result = this.getAnOwnSingletonMethod().getSelfParameter()
   }
 
   /**
@@ -821,7 +821,7 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  MethodNode getASingletonMethod() { result.asMethod() = super.getASingletonMethod() }
+  MethodNode getAnOwnSingletonMethod() { result.asMethod() = super.getAnOwnSingletonMethod() }
 
   /**
    * Gets the singleton method named `name` declared in this module (or in a singleton class
@@ -829,8 +829,8 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  MethodNode getSingletonMethod(string name) {
-    result = this.getASingletonMethod() and
+  MethodNode getOwnSingletonMethod(string name) {
+    result = this.getAnOwnSingletonMethod() and
     result.getMethodName() = name
   }
 
@@ -839,7 +839,7 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  MethodNode getAnInstanceMethod() {
+  MethodNode getAnOwnInstanceMethod() {
     result.asMethod() = this.getADeclaration().getAMethod().(Method)
   }
 
@@ -848,8 +848,8 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  MethodNode getInstanceMethod(string name) {
-    result = this.getAnInstanceMethod() and
+  MethodNode getOwnInstanceMethod(string name) {
+    result = this.getAnOwnInstanceMethod() and
     result.getMethodName() = name
   }
 
@@ -858,13 +858,13 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  ParameterNode getAnInstanceSelf() {
-    result = TSelfParameterNode(this.getAnInstanceMethod().asMethod())
+  ParameterNode getAnOwnInstanceSelf() {
+    result = TSelfParameterNode(this.getAnOwnInstanceMethod().asMethod())
   }
 
-  private InstanceVariableAccess getAnInstanceVariableAccess(string name) {
+  private InstanceVariableAccess getAnOwnInstanceVariableAccess(string name) {
     exists(InstanceVariable v |
-      v.getDeclaringScope() = this.getAnInstanceMethod().asMethod() and
+      v.getDeclaringScope() = this.getAnOwnInstanceMethod().asMethod() and
       v.getName() = name and
       result.getVariable() = v
     )
@@ -875,8 +875,9 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  LocalSourceNode getAnInstanceVariableRead(string name) {
-    result.asExpr().getExpr() = this.getAnInstanceVariableAccess(name).(InstanceVariableReadAccess)
+  LocalSourceNode getAnOwnInstanceVariableRead(string name) {
+    result.asExpr().getExpr() =
+      this.getAnOwnInstanceVariableAccess(name).(InstanceVariableReadAccess)
   }
 
   /**
@@ -884,9 +885,9 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  Node getAnInstanceVariableWriteValue(string name) {
+  Node getAnOwnInstanceVariableWriteValue(string name) {
     exists(Assignment assignment |
-      assignment.getLeftOperand() = this.getAnInstanceVariableAccess(name) and
+      assignment.getLeftOperand() = this.getAnOwnInstanceVariableAccess(name) and
       result.asExpr().getExpr() = assignment.getRightOperand()
     )
   }

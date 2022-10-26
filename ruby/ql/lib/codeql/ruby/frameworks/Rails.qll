@@ -122,7 +122,7 @@ private DataFlow::LocalSourceNode railsApp() {
 private module Config {
   DataFlow::LocalSourceNode configSource() {
     // `Foo < Rails::Application ... config ...`
-    result = railtieClass().getAModuleSelf().getAMethodCall("config")
+    result = railtieClass().getAnOwnModuleSelf().getAMethodCall("config")
     or
     // `Rails.application.config`
     result = railsApp().getAMethodCall("config")
