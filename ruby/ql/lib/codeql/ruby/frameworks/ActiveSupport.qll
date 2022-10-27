@@ -81,6 +81,29 @@ module ActiveSupport {
           preservesValue = true
         }
       }
+
+      /**
+       * A call to `Object#try`, which may execute its first argument as a Ruby
+       * method call.
+       * ```rb
+       * x = "abc"
+       * x.try(:upcase) # => "ABC"
+       * y = nil
+       * y.try(:upcase) # => nil
+       * ```
+       * `Object#try!` behaves similarly but raises `NoMethodError` if the
+       * receiver is not `nil` and does not respond to the method.
+       */
+      class TryCallCodeExecution extends CodeExecution::Range, DataFlow::CallNode {
+        TryCallCodeExecution() {
+          this.asExpr().getExpr() instanceof UnknownMethodCall and
+          this.getMethodName() = ["try", "try!"]
+        }
+
+        override DataFlow::Node getCode() { result = this.getArgument(0) }
+
+        override predicate runsArbitraryCode() { none() }
+      }
     }
 
     /**
