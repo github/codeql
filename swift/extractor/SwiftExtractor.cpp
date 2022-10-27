@@ -41,7 +41,7 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   ensureDirectory("source archive destination", dstFilePath.parent_path());
 
   std::error_code ec;
-  fs::copy(srcFilePath, dstFilePath, fs::copy_options::skip_existing, ec);
+  fs::copy(srcFilePath, dstFilePath, fs::copy_options::overwrite_existing, ec);
 
   if (ec) {
     std::cerr << "Cannot archive source file " << srcFilePath << " -> " << dstFilePath << ": "
