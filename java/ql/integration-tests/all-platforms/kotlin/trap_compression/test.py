@@ -1,6 +1,13 @@
 from create_database_utils import *
 
 def check_extension(directory, expected_extension):
+    if platform.system() == 'Windows':
+        # It's important that the path is a Unicode path on Windows, so
+        # that the right system calls get used.
+        directory = u'' + directory
+        if not directory.startswith("\\\\?\\"):
+            directory = "\\\\?\\" + os.path.abspath(directory)
+
     if expected_extension == '.trap':
         # We start TRAP files with a comment
         expected_start = b'//'

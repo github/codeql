@@ -2,9 +2,9 @@
 
 from create_database_utils import *
 
-runSuccessfully(["kotlinc", "KotlinDefault.kt"])
+runSuccessfully([get_cmd("kotlinc"), "KotlinDefault.kt"])
 os.environ['CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN'] = 'true'
-runSuccessfully(["kotlinc", "KotlinDisabled.kt"])
+runSuccessfully([get_cmd("kotlinc"), "KotlinDisabled.kt"])
 del(os.environ['CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN'])
 os.environ['CODEQL_EXTRACTOR_JAVA_AGENT_ENABLE_KOTLIN'] = 'true'
-runSuccessfully(["kotlinc", "KotlinEnabled.kt"])
+runSuccessfully([get_cmd("kotlinc"), "KotlinEnabled.kt"])

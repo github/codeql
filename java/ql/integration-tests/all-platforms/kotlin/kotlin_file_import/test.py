@@ -5,7 +5,7 @@ import glob
 # will certainly reference the jar, not the source or class file.
 
 os.mkdir('build')
-runSuccessfully(["kotlinc"] + glob.glob("libsrc/*.kt") + ["-d", "build"])
+runSuccessfully([get_cmd("kotlinc")] + glob.glob("libsrc/*.kt") + ["-d", "build"])
 runSuccessfully(["jar", "cf", "extlib.jar", "-C", "build", "abcdefghij", "-C", "build", "META-INF"])
 run_codeql_database_create(["kotlinc user.kt -cp extlib.jar"], lang="java")
 
