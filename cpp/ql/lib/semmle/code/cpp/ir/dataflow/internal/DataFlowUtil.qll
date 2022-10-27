@@ -740,6 +740,7 @@ private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, 
 
 private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, Expr e) {
   exists(CallInstruction call |
+    call.getStaticCallTarget() instanceof Constructor and
     e = call.getConvertedResultExpression() and
     call.getThisArgumentOperand() = node.getAddressOperand()
   )
