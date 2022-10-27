@@ -43,7 +43,7 @@ module NextJS {
   }
 
   /**
-   * User defined path parameter and query in `Next.js`.
+   * A user defined path or query parameter in `Next.js`.
    */
   class NextParams extends RemoteFlowSource {
     NextParams() {
