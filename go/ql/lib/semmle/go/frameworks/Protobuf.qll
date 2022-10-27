@@ -123,21 +123,21 @@ module Protobuf {
   }
 
   /** A `Get` method of a protobuf `Message` type. */
-  private class GetMethod extends DataFlow::FunctionModel, Method {
+  class GetMethod extends TaintTracking::FunctionModel, Method {
     GetMethod() {
       exists(string name | name.matches("Get%") | this = any(MessageType msg).getMethod(name))
     }
 
-    override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
     }
   }
 
   /** A `ProtoReflect` method of a protobuf `Message` type. */
-  private class ProtoReflectMethod extends DataFlow::FunctionModel, Method {
+  private class ProtoReflectMethod extends TaintTracking::FunctionModel, Method {
     ProtoReflectMethod() { this = any(MessageType msg).getMethod("ProtoReflect") }
 
-    override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
     }
   }
