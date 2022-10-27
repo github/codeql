@@ -44,7 +44,7 @@ documentation:
   - ql/**/*
   - .github/workflows/ql-for-ql*
 
-# since these are all shared files that needs to be synced, I just picked _one_ version
+# Since these are all shared files that need to be synced, just pick _one_ copy of each.
 "DataFlow Library":
   - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl.qll"
   - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll"
