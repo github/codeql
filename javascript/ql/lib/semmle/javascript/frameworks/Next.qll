@@ -43,7 +43,7 @@ module NextJS {
   }
 
   /**
-   * A user defined path parameter in `Next.js`.
+   * A user defined path or query parameter in `Next.js`.
    */
   class NextParams extends RemoteFlowSource {
     NextParams() {
@@ -53,6 +53,10 @@ module NextJS {
             .getAFunctionValue()
             .getParameter(0)
             .getAPropertyRead("params")
+      or
+      this = getServerSidePropsFunction(_).getParameter(0).getAPropertyRead(["params", "query"])
+      or
+      this = nextRouter().getAPropertyRead("query")
     }
 
     override string getSourceType() { result = "Next request parameter" }
