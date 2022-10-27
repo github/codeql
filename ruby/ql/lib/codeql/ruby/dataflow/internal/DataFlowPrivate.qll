@@ -115,6 +115,22 @@ module LocalFlow {
   }
 
   /**
+   * Holds if `nodeFrom -> nodeTo` is a step from a parameter to a capture entry node for
+   * that parameter.
+   *
+   * This is intended to recover from flow not currently recognised by ordinary capture flow.
+   */
+  predicate localFlowSsaParamCaptureInput(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::CapturedEntryDefinition def |
+      nodeFrom.asParameter().(NamedParameter).getVariable() = def.getSourceVariable()
+      or
+      nodeFrom.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
+    |
+      nodeTo.(SsaDefinitionNode).getDefinition() = def
+    )
+  }
+
+  /**
    * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
    * involving SSA definition `def`.
    */
