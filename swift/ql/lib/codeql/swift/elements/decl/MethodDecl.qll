@@ -26,7 +26,8 @@ class MethodDecl extends AbstractFunctionDecl {
    * Holds if this function is called `funcName` and its a member of a
    * class, struct, extension, enum or protocol call `typeName`.
    */
-  cached predicate hasQualifiedName(string typeName, string funcName) {
+  cached
+  predicate hasQualifiedName(string typeName, string funcName) {
     this.getName() = funcName and
     (
       exists(NominalTypeDecl c |
