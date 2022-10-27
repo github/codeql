@@ -955,7 +955,8 @@ private DataFlow::Node trackSingletonMethodOnInstance(MethodBase method, string 
     // def x.foo; end
     // x.foo # <- we want to resolve this call to the second definition only
     // ```
-    not singletonMethodOnInstance(_, name, result.asExpr().getExpr())
+    not singletonMethodOnInstance(_, name, result.asExpr().getExpr()) and
+    not result instanceof SelfParameterNode
   )
 }
 
