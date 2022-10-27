@@ -3224,12 +3224,11 @@ open class KotlinFileExtractor(
             (cond.dispatchReceiver as? IrGetValue)?.symbol?.owner != iteratorVariable ||
             body == null ||
             body.origin != IrStatementOrigin.FOR_LOOP_INNER_WHILE ||
-            body.statements.size != 2) {
+            body.statements.size < 2) {
             return false
         }
 
         val loopVar = body.statements[0] as? IrVariable
-        val block = body.statements[1] as? IrBlock
         val nextCall = loopVar?.initializer as? IrCall
 
         if (loopVar == null ||
@@ -3240,14 +3239,22 @@ open class KotlinFileExtractor(
             return false
         }
 
-        val id = extractLoop(innerWhile, block, 2, parent, callable) { p, idx ->
+        val id = extractLoop(innerWhile, null, parent, callable) { p, idx ->
             val loopId = tw.getFreshIdLabel<DbEnhancedforstmt>()
             tw.writeStmts_enhancedforstmt(loopId, p, idx, callable)
             loopId
         }
 
-        extractExpressionExpr(expr, callable, id, 1, id)
         extractVariableExpr(loopVar, callable, id, 0, id, extractInitializer = false)
+        extractExpressionExpr(expr, callable, id, 1, id)
+        val block = body.statements[1] as? IrBlock
+        if (body.statements.size == 2 && block != null) {
+            // Extract the body that was given to us by the compiler
+            extractExpressionStmt(block, callable, id, 2)
+        } else {
+            // Extract a block with all but the first (loop variable declaration) statement
+            extractBlock(body, body.statements.takeLast(body.statements.size - 1), id, 2, callable)
+        }
 
         return true
     }
@@ -3487,14 +3494,7 @@ open class KotlinFileExtractor(
                     if (!tryExtractArrayUpdate(e, callable, parent) &&
                         !tryExtractForLoop(e, callable, parent)) {
 
-                        val stmtParent = parent.stmt(e, callable)
-                        val id = tw.getFreshIdLabel<DbBlock>()
-                        val locId = tw.getLocation(e)
-                        tw.writeStmts_block(id, stmtParent.parent, stmtParent.idx, callable)
-                        tw.writeHasLocation(id, locId)
-                        e.statements.forEachIndexed { i, s ->
-                            extractStatement(s, callable, id, i)
-                        }
+                        extractBlock(e, e.statements, parent, callable)
                     }
                 }
                 is IrWhileLoop -> {
@@ -3966,6 +3966,32 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun extractBlock(
+        e: IrContainerExpression,
+        statements: List<IrStatement>,
+        parent: StmtExprParent,
+        callable: Label<out DbCallable>
+    ) {
+        val stmtParent = parent.stmt(e, callable)
+        extractBlock(e, statements, stmtParent.parent, stmtParent.idx, callable)
+    }
+
+    private fun extractBlock(
+        e: IrElement,
+        statements: List<IrStatement>,
+        parent: Label<out DbStmtparent>,
+        idx: Int,
+        callable: Label<out DbCallable>
+    ) {
+        val id = tw.getFreshIdLabel<DbBlock>()
+        val locId = tw.getLocation(e)
+        tw.writeStmts_block(id, parent, idx, callable)
+        tw.writeHasLocation(id, locId)
+        statements.forEachIndexed { i, s ->
+            extractStatement(s, callable, id, i)
+        }
+    }
+
     private inline fun <D: DeclarationDescriptor, reified B: IrSymbolOwner> getBoundSymbolOwner(symbol: IrBindableSymbol<D, B>, e: IrExpression): B? {
         if (symbol.isBound) {
             return symbol.owner
@@ -4074,8 +4100,7 @@ open class KotlinFileExtractor(
 
     private fun extractLoop(
         loop: IrLoop,
-        body: IrExpression?,
-        bodyIdx: Int,
+        bodyIdx: Int?,
         stmtExprParent: StmtExprParent,
         callable: Label<out DbCallable>,
         getId: (Label<out DbStmtparent>, Int) -> Label<out DbStmt>
@@ -4103,7 +4128,8 @@ open class KotlinFileExtractor(
         val id = getId(parent, idx)
         tw.writeHasLocation(id, locId)
 
-        if (body != null) {
+        val body = loop.body
+        if (body != null && bodyIdx != null) {
             extractExpressionStmt(body, callable, id, bodyIdx)
         }
 
@@ -4115,7 +4141,7 @@ open class KotlinFileExtractor(
         stmtExprParent: StmtExprParent,
         callable: Label<out DbCallable>
     ) {
-        val id = extractLoop(loop, loop.body, 1, stmtExprParent, callable) { parent, idx ->
+        val id = extractLoop(loop, 1, stmtExprParent, callable) { parent, idx ->
             if (loop is IrWhileLoop) {
                 val id = tw.getFreshIdLabel<DbWhilestmt>()
                 tw.writeStmts_whilestmt(id, parent, idx, callable)

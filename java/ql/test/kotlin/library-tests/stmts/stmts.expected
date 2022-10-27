@@ -54,13 +54,10 @@ enclosing
 | stmts.kt:37:13:37:36 | ... -> ... | stmts.kt:37:13:37:36 | <Expr>; |
 | stmts.kt:37:13:37:36 | <Expr>; | stmts.kt:36:13:38:9 | { ... } |
 | stmts.kt:37:24:37:36 | break | stmts.kt:37:13:37:36 | ... -> ... |
-| stmts.kt:41:5:43:5 | while (...) | stmts.kt:41:5:43:5 | { ... } |
-| stmts.kt:41:5:43:5 | { ... } | stmts.kt:22:27:44:1 | { ... } |
-| stmts.kt:41:5:43:5 | { ... } | stmts.kt:41:5:43:5 | while (...) |
+| stmts.kt:41:5:43:5 | for (... : ...) | stmts.kt:22:27:44:1 | { ... } |
+| stmts.kt:41:5:43:5 | { ... } | stmts.kt:41:5:43:5 | for (... : ...) |
 | stmts.kt:41:11:41:11 | var ...; | stmts.kt:41:5:43:5 | { ... } |
 | stmts.kt:41:13:41:13 | var ...; | stmts.kt:41:5:43:5 | { ... } |
-| stmts.kt:41:19:41:36 | var ...; | stmts.kt:41:5:43:5 | { ... } |
-| stmts.kt:41:19:41:36 | var ...; | stmts.kt:41:5:43:5 | { ... } |
 | stmts.kt:41:39:43:5 | { ... } | stmts.kt:41:5:43:5 | { ... } |
 | stmts.kt:42:9:42:24 | ... -> ... | stmts.kt:42:9:42:24 | <Expr>; |
 | stmts.kt:42:9:42:24 | <Expr>; | stmts.kt:41:39:43:5 | { ... } |
@@ -131,13 +128,10 @@ enclosing
 | stmts.kt:37:13:37:36 | ... -> ... | WhenBranch |
 | stmts.kt:37:13:37:36 | <Expr>; | ExprStmt |
 | stmts.kt:37:24:37:36 | break | BreakStmt |
-| stmts.kt:41:5:43:5 | while (...) | WhileStmt |
-| stmts.kt:41:5:43:5 | { ... } | BlockStmt |
+| stmts.kt:41:5:43:5 | for (... : ...) | EnhancedForStmt |
 | stmts.kt:41:5:43:5 | { ... } | BlockStmt |
 | stmts.kt:41:11:41:11 | var ...; | LocalVariableDeclStmt |
 | stmts.kt:41:13:41:13 | var ...; | LocalVariableDeclStmt |
-| stmts.kt:41:19:41:36 | var ...; | LocalVariableDeclStmt |
-| stmts.kt:41:19:41:36 | var ...; | LocalVariableDeclStmt |
 | stmts.kt:41:39:43:5 | { ... } | BlockStmt |
 | stmts.kt:42:9:42:24 | ... -> ... | WhenBranch |
 | stmts.kt:42:9:42:24 | <Expr>; | ExprStmt |

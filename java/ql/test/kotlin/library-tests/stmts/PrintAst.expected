@@ -151,40 +151,32 @@ stmts.kt:
 #   37|                             0: [VarAccess] x
 #   37|                             1: [VarAccess] y
 #   37|                           1: [BreakStmt] break
-#   41|         4: [BlockStmt] { ... }
-#   41|           0: [LocalVariableDeclStmt] var ...;
-#   41|             1: [LocalVariableDeclExpr] tmp2_iterator
-#   41|               0: [MethodAccess] iterator(...)
-#   41|                 -1: [MethodAccess] withIndex(...)
-#   41|                   -2: [TypeAccess] Integer
-#   41|                   -1: [TypeAccess] CollectionsKt
-#   41|                   0: [MethodAccess] rangeTo(...)
-#   41|                     -1: [VarAccess] x
-#   41|                     0: [VarAccess] y
-#   41|           1: [WhileStmt] while (...)
-#   41|             0: [MethodAccess] hasNext(...)
-#   41|               -1: [VarAccess] tmp2_iterator
-#   41|             1: [BlockStmt] { ... }
-#   41|               0: [LocalVariableDeclStmt] var ...;
-#   41|                 1: [LocalVariableDeclExpr] tmp3_loop_parameter
-#   41|                   0: [MethodAccess] next(...)
-#   41|                     -1: [VarAccess] tmp2_iterator
-#   41|               1: [LocalVariableDeclStmt] var ...;
-#   41|                 1: [LocalVariableDeclExpr] v
-#   41|                   0: [MethodAccess] component1(...)
-#   41|                     -1: [VarAccess] tmp3_loop_parameter
-#   41|               2: [LocalVariableDeclStmt] var ...;
-#   41|                 1: [LocalVariableDeclExpr] i
-#   41|                   0: [MethodAccess] component2(...)
-#   41|                     -1: [VarAccess] tmp3_loop_parameter
-#   41|               3: [BlockStmt] { ... }
-#   42|                 0: [ExprStmt] <Expr>;
-#   42|                   0: [WhenExpr] when ...
-#   42|                     0: [WhenBranch] ... -> ...
-#   42|                       0: [GTExpr] ... > ...
-#   42|                         0: [VarAccess] x
-#   42|                         1: [VarAccess] y
-#   42|                       1: [BreakStmt] break
+#   41|         4: [EnhancedForStmt] for (... : ...)
+#-----|           0: (Single Local Variable Declaration)
+#   41|             1: [LocalVariableDeclExpr] tmp3_loop_parameter
+#   41|           1: [MethodAccess] withIndex(...)
+#   41|             -2: [TypeAccess] Integer
+#   41|             -1: [TypeAccess] CollectionsKt
+#   41|             0: [MethodAccess] rangeTo(...)
+#   41|               -1: [VarAccess] x
+#   41|               0: [VarAccess] y
+#   41|           2: [BlockStmt] { ... }
+#   41|             0: [LocalVariableDeclStmt] var ...;
+#   41|               1: [LocalVariableDeclExpr] v
+#   41|                 0: [MethodAccess] component1(...)
+#   41|                   -1: [VarAccess] tmp3_loop_parameter
+#   41|             1: [LocalVariableDeclStmt] var ...;
+#   41|               1: [LocalVariableDeclExpr] i
+#   41|                 0: [MethodAccess] component2(...)
+#   41|                   -1: [VarAccess] tmp3_loop_parameter
+#   41|             2: [BlockStmt] { ... }
+#   42|               0: [ExprStmt] <Expr>;
+#   42|                 0: [WhenExpr] when ...
+#   42|                   0: [WhenBranch] ... -> ...
+#   42|                     0: [GTExpr] ... > ...
+#   42|                       0: [VarAccess] x
+#   42|                       1: [VarAccess] y
+#   42|                     1: [BreakStmt] break
 #   46|     3: [Method] exceptions
 #   46|       3: [TypeAccess] int
 #   46|       5: [BlockStmt] { ... }

@@ -85,12 +85,6 @@
 | stmts.kt:41:11:41:11 | v | LocalVariableDeclExpr |
 | stmts.kt:41:13:41:13 | component2(...) | MethodAccess |
 | stmts.kt:41:13:41:13 | i | LocalVariableDeclExpr |
-| stmts.kt:41:19:41:36 | hasNext(...) | MethodAccess |
-| stmts.kt:41:19:41:36 | iterator(...) | MethodAccess |
-| stmts.kt:41:19:41:36 | next(...) | MethodAccess |
-| stmts.kt:41:19:41:36 | tmp2_iterator | LocalVariableDeclExpr |
-| stmts.kt:41:19:41:36 | tmp2_iterator | VarAccess |
-| stmts.kt:41:19:41:36 | tmp2_iterator | VarAccess |
 | stmts.kt:41:19:41:36 | tmp3_loop_parameter | LocalVariableDeclExpr |
 | stmts.kt:41:19:41:36 | tmp3_loop_parameter | VarAccess |
 | stmts.kt:41:19:41:36 | tmp3_loop_parameter | VarAccess |
