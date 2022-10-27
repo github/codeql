@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.2.1-2022-10-07-10h43m13s.hungry-panda-5wlwgw2p.49f6f50f04fb67286bfb3b335968a0cb683d1dd61acbfd13138bfeb101842b9f
 compiled: false
 lockVersion: 1.0.0
