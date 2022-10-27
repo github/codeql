@@ -36,3 +36,33 @@ def capture_escape_known_call x
     call_it fn
 end
 capture_escape_known_call source(1.5)
+
+def capture6
+    captured = source(1.6)
+    fn = -> {
+        captured
+    }
+    fn.call
+end
+sink(capture6) # $ hasValueFlow=1.6
+
+def capture7 x
+    captured = x
+    fn = -> {
+        captured
+    }
+    fn.call
+end
+sink(capture7 'safe') # $ SPURIOUS: hasValueFlow=1.7
+sink(capture7 source(1.7)) # $ hasValueFlow=1.7
+
+def capture8 x
+    captured = nil
+    fn = -> {
+        captured = x
+    }
+    fn.call
+    captured
+end
+sink(capture8 'safe') # $ SPURIOUS: hasValueFlow=1.8
+sink(capture8 source(1.8)) # $ hasValueFlow=1.8
