@@ -35,7 +35,7 @@ class WKWebView extends Sink {
       ce.getStaticTarget() =
         getMethodWithQualifiedName("WKWebView",
           [
-            "evaluateJavaScript(_:completionHandler:)",
+            "evaluateJavaScript(_:)", "evaluateJavaScript(_:completionHandler:)",
             "evaluateJavaScript(_:in:in:completionHandler:)",
             "evaluateJavaScript(_:in:contentWorld:)",
             "callAsyncJavaScript(_:arguments:in:in:completionHandler:)",
