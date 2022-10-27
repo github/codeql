@@ -3,7 +3,7 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.dataflow.TaintTracking
 import semmle.code.cpp.commons.DateTime
 
 /**
@@ -248,24 +248,27 @@ class FiletimeYearArithmeticOperationCheckConfiguration extends DataFlow::Config
 /**
  * `DataFlow::Configuration` for finding an operation with hardcoded 365 that will flow into any known date/time field.
  */
-class PossibleYearArithmeticOperationCheckConfiguration extends DataFlow::Configuration {
+class PossibleYearArithmeticOperationCheckConfiguration extends TaintTracking::Configuration {
   PossibleYearArithmeticOperationCheckConfiguration() {
     this = "PossibleYearArithmeticOperationCheckConfiguration"
   }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(Operation op | op = source.asExpr() |
+    exists(Operation op | op = source.asConvertedExpr() |
       op.getAChild*().getValue().toInt() = 365 and
-      not op.getParent() instanceof Expr
+      (
+        not op.getParent() instanceof Expr or
+        op.getParent() instanceof Assignment
+      )
     )
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from anything on the RHS of an assignment to a time/date structure to that
     // assignment.
-    exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr, Expr e |
+    exists(StructLikeClass dds, FieldAccess fa, Assignment aexpr, Expr e |
       e = node1.asExpr() and
-      aexpr = node2.asExpr()
+      fa = node2.asExpr()
     |
       (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and
@@ -275,7 +278,9 @@ class PossibleYearArithmeticOperationCheckConfiguration extends DataFlow::Config
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr | aexpr = sink.asExpr() |
+    exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr |
+      aexpr.getRValue() = sink.asConvertedExpr()
+    |
       (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and
       fa.isModified() and
