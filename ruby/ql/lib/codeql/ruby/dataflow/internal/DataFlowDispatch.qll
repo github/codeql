@@ -985,6 +985,11 @@ private predicate isInstanceLocalMustFlow(DataFlow::Node n, Module tp, boolean e
     n.asExpr() = mid.(SsaDefinitionNode).getDefinition().getARead()
     or
     n.(SsaDefinitionNode).getDefinition().(Ssa::WriteDefinition).assigns(mid.asExpr())
+    or
+    LocalFlow::localFlowSsaParamInput(mid, n)
+    or
+    // 'self' cannot change value, so flow to all uses, not just the first
+    mid.(SelfParameterNode).getSelfVariable() = n.(SsaSelfDefinitionNode).getVariable()
   )
 }
 
