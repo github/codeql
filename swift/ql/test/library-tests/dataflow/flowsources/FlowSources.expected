@@ -8,4 +8,6 @@
 | url.swift:53:15:53:19 | .resourceBytes | external |
 | url.swift:60:15:60:19 | .lines | external |
 | url.swift:67:16:67:22 | .lines | external |
-| webview.swift:11:82:11:102 | message | external |
+| webview.swift:19:82:19:102 | message | external |
+| webview.swift:24:5:24:13 | .globalObject | external |
+| webview.swift:25:5:25:39 | call to objectForKeyedSubscript(_:) | external |
