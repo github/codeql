@@ -52,7 +52,7 @@ pkg_runfiles(
 
 pkg_files(
     name = "swift-test-sdk-arch",
-    srcs = ["//swift/tools/prebuilt:swift-test-sdk"],
+    srcs = ["//swift/third_party/swift-llvm-support:swift-test-sdk"],
     prefix = "qltest/" + codeql_platform,
     strip_prefix = strip_prefix.from_pkg(),
 )

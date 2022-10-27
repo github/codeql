@@ -134,7 +134,7 @@ No user-facing changes.
   The query is not run by default.
 * A new query `js/file-system-race` has been added. The query detects when there is time between a file being checked and used. The query is not run by default.
 * A new query `js/jwt-missing-verification` has been added. The query detects applications that don't verify JWT tokens.
-* The `js/insecure-dependency` query has been added. It detects depedencies that are downloaded using an unencrypted connection.
+* The `js/insecure-dependency` query has been added. It detects dependencies that are downloaded using an unencrypted connection.
 
 ## 0.0.9
 

@@ -14,4 +14,6 @@ public class Test {
 	Object test2() {
 		return null; // returnstatement.ql
 	}
+
+	// Diagnostic Matches: Incomplete inheritance relation for type java.lang.Object and supertype none
 }

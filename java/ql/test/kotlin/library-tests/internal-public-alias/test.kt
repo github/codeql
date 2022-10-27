@@ -10,3 +10,6 @@ public class Test {
   internal fun internalFun() = 3
 
 }
+
+// Diagnostic Matches: Incomplete annotation: @kotlin.Metadata(%)
+// Diagnostic Matches: Unknown location for kotlin.Metadata

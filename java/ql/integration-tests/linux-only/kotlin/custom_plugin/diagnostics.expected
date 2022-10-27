@@ -1,3 +1,1 @@
 | CodeQL Kotlin extractor | 2 |  | IrProperty without a getter | d.kt:0:0:0:0 | d.kt:0:0:0:0 |
-| CodeQL Kotlin extractor | 2 |  | Not rewriting trap file for test-db/trap/java/classes/java/lang/Boolean.members/Boolean.members<VERSION>-<MODIFIED>-kotlin.trap.gz as it exists | file://:0:0:0:0 | file://:0:0:0:0 |
-| CodeQL Kotlin extractor | 2 |  | Not rewriting trap file for test-db/trap/java/classes/kotlin/Boolean.members/Boolean.members<VERSION>-<MODIFIED>-null.trap.gz as it exists | file://:0:0:0:0 | file://:0:0:0:0 |

@@ -31,3 +31,5 @@ public fun <T> CoroutineScope.async(
 ): Deferred<T> {
     return null!!
 }
+
+// Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (kotlinx_coroutines_stubs.kt) at %kotlinx_coroutines_stubs.kt:1:1:36:0%
