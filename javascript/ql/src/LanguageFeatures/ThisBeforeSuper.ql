@@ -62,4 +62,4 @@ where
     sc.getBinder() = ctor and
     sc.getEnclosingFunction() != ctor
   )
-select ctor.(FirstLineOf), "The super constructor must be called before using '$@'.", e, kind
+select ctor.(FirstLineOf), "The super constructor must be called before using $@.", e, kind
