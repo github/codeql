@@ -4,6 +4,7 @@
 #include <fstream>
 #include <optional>
 #include <cerrno>
+#include <filesystem>
 
 namespace codeql {
 
@@ -12,14 +13,14 @@ namespace codeql {
 // The content streamed to the `TargetFile` is written to `workingDir/target`, and is moved onto
 // `targetDir/target` on destruction.
 class TargetFile {
-  std::string workingPath;
-  std::string targetPath;
+  std::filesystem::path workingPath;
+  std::filesystem::path targetPath;
   std::ofstream out;
 
  public:
-  static std::optional<TargetFile> create(std::string_view target,
-                                          std::string_view targetDir,
-                                          std::string_view workingDir);
+  static std::optional<TargetFile> create(const std::filesystem::path& target,
+                                          const std::filesystem::path& targetDir,
+                                          const std::filesystem::path& workingDir);
 
   ~TargetFile() { commit(); }
 
@@ -36,7 +37,9 @@ class TargetFile {
   }
 
  private:
-  TargetFile(std::string_view target, std::string_view targetDir, std::string_view workingDir);
+  TargetFile(const std::filesystem::path& target,
+             const std::filesystem::path& targetDir,
+             const std::filesystem::path& workingDir);
 
   bool init();
   void checkOutput(const char* action);

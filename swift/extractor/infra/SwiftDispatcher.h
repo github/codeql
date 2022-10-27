@@ -1,15 +1,16 @@
 #pragma once
 
+#include <filesystem>
+
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
-#include <llvm/Support/FileSystem.h>
 #include <swift/Parse/Token.h>
 
 #include "swift/extractor/trap/TrapLabelStore.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/SwiftTagTraits.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
-#include "swift/extractor/infra/FilePath.h"
+#include "swift/extractor/infra/file/PathHash.h"
 
 namespace codeql {
 
@@ -29,7 +30,7 @@ class SwiftDispatcher {
                                const swift::Pattern*,
                                const swift::TypeRepr*,
                                const swift::TypeBase*,
-                               FilePath>;
+                               std::filesystem::path>;
 
   template <typename E>
   static constexpr bool IsStorable = std::is_constructible_v<Store::Handle, const E&>;
@@ -306,16 +307,17 @@ class SwiftDispatcher {
     return false;
   }
 
-  static FilePath getFilePath(llvm::StringRef path) {
+  static std::filesystem::path getFilePath(std::string_view path) {
     // TODO: this needs more testing
     // TODO: check canonicalization of names on a case insensitive filesystems
     // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
-    llvm::SmallString<PATH_MAX> realPath;
-    if (std::error_code ec = llvm::sys::fs::real_path(path, realPath)) {
-      std::cerr << "Cannot get real path: '" << path.str() << "': " << ec.message() << "\n";
+    std::error_code ec;
+    auto ret = std::filesystem::canonical(path, ec);
+    if (ec) {
+      std::cerr << "Cannot get real path: " << std::quoted(path) << ": " << ec.message() << "\n";
       return {};
     }
-    return realPath.str().str();
+    return ret;
   }
 
   // TODO: for const correctness these should consistently be `const` (and maybe const references
@@ -331,9 +333,9 @@ class SwiftDispatcher {
   virtual void visit(swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(swift::TypeBase* type) = 0;
 
-  void visit(const FilePath& file) {
-    auto entry = createEntry(file, file.path);
-    entry.name = file.path;
+  void visit(const std::filesystem::path& file) {
+    auto entry = createEntry(file, file.string());
+    entry.name = file.string();
     emit(entry);
   }
 
