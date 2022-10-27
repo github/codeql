@@ -722,9 +722,6 @@ private predicate convertedExprMustBeOperand(Expr e) {
   isFullyConvertedCall(e)
 }
 
-/** Holds if `e` must be represented by an `IndirectOperand` node. */
-private predicate convertedExprMustBeIndirectOperand(Expr e) { convertedExprMustBeOperand(e) }
-
 /** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeOperand(Node node, Expr e) {
   e = node.asOperand().getDef().getConvertedResultExpression() and
@@ -748,9 +745,15 @@ private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, 
 
 /** Holds if `node` should be an `IndirectOperand` that maps `node.asIndirectExpr()` to `e`. */
 private predicate indirectExprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e) {
-  e = node.getOperand().getDef().getConvertedResultExpression() and
-  not convertedExprMustBeIndirectOperand(e) and
-  not node instanceof ExprNode
+  exists(Instruction instr |
+    instr = node.getOperand().getDef() and
+    not node instanceof ExprNode
+  |
+    e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
+    or
+    not instr instanceof VariableAddressInstruction and
+    e = instr.getConvertedResultExpression()
+  )
 }
 
 /** Holds if `node` should be an instruction node that maps `node.asExpr()` to `e`. */
@@ -762,8 +765,14 @@ predicate exprNodeShouldBeInstruction(Node node, Expr e) {
 
 /** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */
 predicate indirectExprNodeShouldBeIndirectInstruction(IndirectInstruction node, Expr e) {
-  e = node.getInstruction().getConvertedResultExpression() and
-  not indirectExprNodeShouldBeIndirectOperand(_, e)
+  exists(Instruction instr |
+    instr = node.getInstruction() and not indirectExprNodeShouldBeIndirectOperand(_, e)
+  |
+    e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
+    or
+    not instr instanceof VariableAddressInstruction and
+    e = instr.getConvertedResultExpression()
+  )
 }
 
 abstract private class ExprNodeBase extends Node {
@@ -854,9 +863,7 @@ private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase, 
     result = this.getConvertedExpr(index).getUnconverted()
   }
 
-  final override string toStringImpl() {
-    result = this.getInstruction().getConvertedResultExpression().toString()
-  }
+  final override string toStringImpl() { result = super.toStringImpl() }
 }
 
 /**
