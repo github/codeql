@@ -12,9 +12,9 @@ edges
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c |
 | A.cpp:31:20:31:20 | c | A.cpp:31:14:31:21 | B output argument [c] |
 | A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c |
-| A.cpp:48:12:48:18 | Call indirection [c] | A.cpp:49:10:49:10 | b indirection [c] |
+| A.cpp:48:12:48:18 | call to make indirection [c] | A.cpp:49:10:49:10 | b indirection [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c |
-| A.cpp:48:20:48:20 | c | A.cpp:48:12:48:18 | Call indirection [c] |
+| A.cpp:48:20:48:20 | c | A.cpp:48:12:48:18 | call to make indirection [c] |
 | A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:10:49:13 | c |
 | A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:13:49:13 | c |
 | A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:13:49:13 | c |
@@ -32,16 +32,16 @@ edges
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c |
 | A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | B output argument [c] |
 | A.cpp:57:17:57:23 | new | A.cpp:57:17:57:23 | new |
-| A.cpp:64:10:64:15 | Call indirection [c] | A.cpp:66:10:66:11 | b2 indirection [c] |
-| A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | Call indirection [c] |
+| A.cpp:64:10:64:15 | call to setOnB indirection [c] | A.cpp:66:10:66:11 | b2 indirection [c] |
+| A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | call to setOnB indirection [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:21:64:28 | new |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c |
 | A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:10:66:14 | c |
 | A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:14:66:14 | c |
 | A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:14:66:14 | c |
 | A.cpp:66:14:66:14 | c | A.cpp:66:10:66:14 | c |
-| A.cpp:73:10:73:19 | Call indirection [c] | A.cpp:75:10:75:11 | b2 indirection [c] |
-| A.cpp:73:25:73:32 | new | A.cpp:73:10:73:19 | Call indirection [c] |
+| A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] | A.cpp:75:10:75:11 | b2 indirection [c] |
+| A.cpp:73:25:73:32 | new | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:73:25:73:32 | new |
 | A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c |
 | A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:10:75:14 | c |
@@ -49,8 +49,8 @@ edges
 | A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:14:75:14 | c |
 | A.cpp:75:14:75:14 | c | A.cpp:75:10:75:14 | c |
 | A.cpp:78:27:78:27 | c | A.cpp:81:21:81:21 | c |
-| A.cpp:81:10:81:15 | Call indirection [c] | A.cpp:78:6:78:15 | VariableAddress indirection [c] |
-| A.cpp:81:21:81:21 | c | A.cpp:81:10:81:15 | Call indirection [c] |
+| A.cpp:81:10:81:15 | call to setOnB indirection [c] | A.cpp:78:6:78:15 | VariableAddress indirection [c] |
+| A.cpp:81:21:81:21 | c | A.cpp:81:10:81:15 | call to setOnB indirection [c] |
 | A.cpp:81:21:81:21 | c | A.cpp:85:26:85:26 | c |
 | A.cpp:85:26:85:26 | c | A.cpp:90:15:90:15 | c |
 | A.cpp:90:7:90:8 | set output argument [c] | A.cpp:85:9:85:14 | VariableAddress indirection [c] |
@@ -233,8 +233,8 @@ edges
 | D.cpp:38:14:38:14 | b indirection [box indirection, elem] | D.cpp:21:30:21:31 | b2 indirection [box indirection, elem] |
 | D.cpp:42:15:42:24 | new | D.cpp:44:5:44:26 | Store |
 | D.cpp:44:5:44:5 | getBox1 output argument [box indirection, elem] | D.cpp:45:14:45:14 | b indirection [box indirection, elem] |
-| D.cpp:44:5:44:26 | Store | D.cpp:44:19:44:22 | Call indirection [post update] [elem] |
-| D.cpp:44:19:44:22 | Call indirection [post update] [elem] | D.cpp:44:5:44:5 | getBox1 output argument [box indirection, elem] |
+| D.cpp:44:5:44:26 | Store | D.cpp:44:19:44:22 | call to getBox1 indirection [post update] [elem] |
+| D.cpp:44:19:44:22 | call to getBox1 indirection [post update] [elem] | D.cpp:44:5:44:5 | getBox1 output argument [box indirection, elem] |
 | D.cpp:45:14:45:14 | b indirection [box indirection, elem] | D.cpp:21:30:21:31 | b2 indirection [box indirection, elem] |
 | D.cpp:49:15:49:24 | new | D.cpp:51:27:51:27 | e |
 | D.cpp:51:5:51:5 | getBox1 output argument [box indirection, elem] | D.cpp:52:14:52:14 | b indirection [box indirection, elem] |
@@ -692,8 +692,8 @@ edges
 | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:51:13:65 | Store |
 | qualifiers.cpp:13:51:13:65 | Store | qualifiers.cpp:13:57:13:57 | inner indirection [post update] [a] |
 | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] | qualifiers.cpp:23:10:23:14 | outer indirection [inner indirection, a] |
-| qualifiers.cpp:22:5:22:38 | Store | qualifiers.cpp:22:23:22:23 | Call indirection [post update] [a] |
-| qualifiers.cpp:22:23:22:23 | Call indirection [post update] [a] | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] |
+| qualifiers.cpp:22:5:22:38 | Store | qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] |
+| qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] |
 | qualifiers.cpp:22:27:22:36 | call to user_input | qualifiers.cpp:22:5:22:38 | Store |
 | qualifiers.cpp:23:10:23:14 | outer indirection [inner indirection, a] | qualifiers.cpp:23:16:23:20 | FieldAddress indirection [a] |
 | qualifiers.cpp:23:10:23:14 | outer indirection [inner indirection, a] | qualifiers.cpp:23:16:23:20 | inner indirection [a] |
@@ -741,9 +741,9 @@ edges
 | qualifiers.cpp:43:16:43:20 | inner indirection [a] | qualifiers.cpp:43:23:43:23 | FieldAddress indirection |
 | qualifiers.cpp:43:16:43:20 | inner indirection [a] | qualifiers.cpp:43:23:43:23 | a |
 | qualifiers.cpp:43:23:43:23 | FieldAddress indirection | qualifiers.cpp:43:23:43:23 | a |
-| qualifiers.cpp:47:5:47:42 | Store | qualifiers.cpp:47:27:47:27 | Call indirection [post update] [a] |
+| qualifiers.cpp:47:5:47:42 | Store | qualifiers.cpp:47:27:47:27 | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:47:6:47:11 | getInner output argument [inner indirection, a] | qualifiers.cpp:48:10:48:14 | outer indirection [inner indirection, a] |
-| qualifiers.cpp:47:27:47:27 | Call indirection [post update] [a] | qualifiers.cpp:47:6:47:11 | getInner output argument [inner indirection, a] |
+| qualifiers.cpp:47:27:47:27 | call to getInner indirection [post update] [a] | qualifiers.cpp:47:6:47:11 | getInner output argument [inner indirection, a] |
 | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:47:5:47:42 | Store |
 | qualifiers.cpp:48:10:48:14 | outer indirection [inner indirection, a] | qualifiers.cpp:48:16:48:20 | FieldAddress indirection [a] |
 | qualifiers.cpp:48:10:48:14 | outer indirection [inner indirection, a] | qualifiers.cpp:48:16:48:20 | inner indirection [a] |
@@ -884,7 +884,7 @@ nodes
 | A.cpp:31:14:31:21 | B output argument [c] | semmle.label | B output argument [c] |
 | A.cpp:31:20:31:20 | c | semmle.label | c |
 | A.cpp:47:12:47:18 | new | semmle.label | new |
-| A.cpp:48:12:48:18 | Call indirection [c] | semmle.label | Call indirection [c] |
+| A.cpp:48:12:48:18 | call to make indirection [c] | semmle.label | call to make indirection [c] |
 | A.cpp:48:20:48:20 | c | semmle.label | c |
 | A.cpp:49:10:49:10 | b indirection [c] | semmle.label | b indirection [c] |
 | A.cpp:49:10:49:13 | c | semmle.label | c |
@@ -900,14 +900,14 @@ nodes
 | A.cpp:57:11:57:24 | new indirection [c] | semmle.label | new indirection [c] |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
-| A.cpp:64:10:64:15 | Call indirection [c] | semmle.label | Call indirection [c] |
+| A.cpp:64:10:64:15 | call to setOnB indirection [c] | semmle.label | call to setOnB indirection [c] |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
 | A.cpp:66:10:66:11 | b2 indirection [c] | semmle.label | b2 indirection [c] |
 | A.cpp:66:10:66:14 | c | semmle.label | c |
 | A.cpp:66:14:66:14 | c | semmle.label | c |
 | A.cpp:66:14:66:14 | c | semmle.label | c |
-| A.cpp:73:10:73:19 | Call indirection [c] | semmle.label | Call indirection [c] |
+| A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] | semmle.label | call to setOnBWrap indirection [c] |
 | A.cpp:73:25:73:32 | new | semmle.label | new |
 | A.cpp:73:25:73:32 | new | semmle.label | new |
 | A.cpp:75:10:75:11 | b2 indirection [c] | semmle.label | b2 indirection [c] |
@@ -916,7 +916,7 @@ nodes
 | A.cpp:75:14:75:14 | c | semmle.label | c |
 | A.cpp:78:6:78:15 | VariableAddress indirection [c] | semmle.label | VariableAddress indirection [c] |
 | A.cpp:78:27:78:27 | c | semmle.label | c |
-| A.cpp:81:10:81:15 | Call indirection [c] | semmle.label | Call indirection [c] |
+| A.cpp:81:10:81:15 | call to setOnB indirection [c] | semmle.label | call to setOnB indirection [c] |
 | A.cpp:81:21:81:21 | c | semmle.label | c |
 | A.cpp:85:9:85:14 | VariableAddress indirection [c] | semmle.label | VariableAddress indirection [c] |
 | A.cpp:85:26:85:26 | c | semmle.label | c |
@@ -1088,7 +1088,7 @@ nodes
 | D.cpp:42:15:42:24 | new | semmle.label | new |
 | D.cpp:44:5:44:5 | getBox1 output argument [box indirection, elem] | semmle.label | getBox1 output argument [box indirection, elem] |
 | D.cpp:44:5:44:26 | Store | semmle.label | Store |
-| D.cpp:44:19:44:22 | Call indirection [post update] [elem] | semmle.label | Call indirection [post update] [elem] |
+| D.cpp:44:19:44:22 | call to getBox1 indirection [post update] [elem] | semmle.label | call to getBox1 indirection [post update] [elem] |
 | D.cpp:45:14:45:14 | b indirection [box indirection, elem] | semmle.label | b indirection [box indirection, elem] |
 | D.cpp:49:15:49:24 | new | semmle.label | new |
 | D.cpp:51:5:51:5 | getBox1 output argument [box indirection, elem] | semmle.label | getBox1 output argument [box indirection, elem] |
@@ -1506,7 +1506,7 @@ nodes
 | qualifiers.cpp:13:57:13:57 | inner indirection [post update] [a] | semmle.label | inner indirection [post update] [a] |
 | qualifiers.cpp:22:5:22:9 | getInner output argument [inner indirection, a] | semmle.label | getInner output argument [inner indirection, a] |
 | qualifiers.cpp:22:5:22:38 | Store | semmle.label | Store |
-| qualifiers.cpp:22:23:22:23 | Call indirection [post update] [a] | semmle.label | Call indirection [post update] [a] |
+| qualifiers.cpp:22:23:22:23 | call to getInner indirection [post update] [a] | semmle.label | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:22:27:22:36 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:23:10:23:14 | outer indirection [inner indirection, a] | semmle.label | outer indirection [inner indirection, a] |
 | qualifiers.cpp:23:16:23:20 | FieldAddress indirection [a] | semmle.label | FieldAddress indirection [a] |
@@ -1548,7 +1548,7 @@ nodes
 | qualifiers.cpp:43:23:43:23 | a | semmle.label | a |
 | qualifiers.cpp:47:5:47:42 | Store | semmle.label | Store |
 | qualifiers.cpp:47:6:47:11 | getInner output argument [inner indirection, a] | semmle.label | getInner output argument [inner indirection, a] |
-| qualifiers.cpp:47:27:47:27 | Call indirection [post update] [a] | semmle.label | Call indirection [post update] [a] |
+| qualifiers.cpp:47:27:47:27 | call to getInner indirection [post update] [a] | semmle.label | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:47:31:47:40 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:48:10:48:14 | outer indirection [inner indirection, a] | semmle.label | outer indirection [inner indirection, a] |
 | qualifiers.cpp:48:16:48:20 | FieldAddress indirection [a] | semmle.label | FieldAddress indirection [a] |
@@ -1664,14 +1664,14 @@ nodes
 | struct_init.c:46:16:46:24 | pointerAB indirection [a] | semmle.label | pointerAB indirection [a] |
 subpaths
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c | A.cpp:25:13:25:13 | this indirection [post update] [c] | A.cpp:31:14:31:21 | B output argument [c] |
-| A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c | A.cpp:29:15:29:18 | VariableAddress indirection [c] | A.cpp:48:12:48:18 | Call indirection [c] |
+| A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c | A.cpp:29:15:29:18 | VariableAddress indirection [c] | A.cpp:48:12:48:18 | call to make indirection [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | this indirection [post update] [c] | A.cpp:55:5:55:5 | set output argument [c] |
 | A.cpp:56:10:56:10 | b indirection [c] | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:8:28:10 | VariableAddress indirection | A.cpp:56:10:56:17 | call to get |
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:8:28:10 | VariableAddress indirection | A.cpp:57:10:57:32 | call to get |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c | A.cpp:25:13:25:13 | this indirection [post update] [c] | A.cpp:57:11:57:24 | B output argument [c] |
-| A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | VariableAddress indirection [c] | A.cpp:64:10:64:15 | Call indirection [c] |
-| A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c | A.cpp:78:6:78:15 | VariableAddress indirection [c] | A.cpp:73:10:73:19 | Call indirection [c] |
-| A.cpp:81:21:81:21 | c | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | VariableAddress indirection [c] | A.cpp:81:10:81:15 | Call indirection [c] |
+| A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | VariableAddress indirection [c] | A.cpp:64:10:64:15 | call to setOnB indirection [c] |
+| A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c | A.cpp:78:6:78:15 | VariableAddress indirection [c] | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] |
+| A.cpp:81:21:81:21 | c | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | VariableAddress indirection [c] | A.cpp:81:10:81:15 | call to setOnB indirection [c] |
 | A.cpp:90:15:90:15 | c | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | this indirection [post update] [c] | A.cpp:90:7:90:8 | set output argument [c] |
 | A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | this indirection [post update] [c] | A.cpp:126:5:126:5 | set output argument [c] |
 | A.cpp:151:18:151:18 | b | A.cpp:140:13:140:13 | b | A.cpp:143:13:143:13 | this indirection [post update] [b] | A.cpp:151:12:151:24 | D output argument [b] |
