@@ -1499,7 +1499,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
+    private fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, extractInitializer: Boolean = true) {
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
@@ -1514,7 +1514,7 @@ open class KotlinFileExtractor(
             tw.writeCallableEnclosingExpr(exprId, callable)
             tw.writeStatementEnclosingExpr(exprId, enclosingStmt)
             val i = v.initializer
-            if (i != null) {
+            if (i != null && extractInitializer) {
                 extractExpressionExpr(i, callable, exprId, 0, enclosingStmt)
             }
             if (!v.isVar) {
@@ -3175,6 +3175,85 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * This method tries to extract a block as an enhanced for loop.
+     * It returns true if it succeeds, and false otherwise.
+     */
+    private fun tryExtractForLoop(e: IrContainerExpression, callable: Label<out DbCallable>, parent: StmtExprParent): Boolean {
+        /*
+         * We're expecting the pattern
+         * {
+         *   val iterator = [expr].iterator()
+         *   while (iterator.hasNext()) {
+         *    val [loopVar] = iterator.next()
+         *    [block]
+         *   }
+         * }
+         */
+
+        if (e.origin != IrStatementOrigin.FOR_LOOP ||
+            e.statements.size != 2 ||
+            (e.statements[0] as? IrVariable)?.origin != IrDeclarationOrigin.FOR_LOOP_ITERATOR ||
+            (e.statements[1] as? IrWhileLoop)?.origin != IrStatementOrigin.FOR_LOOP_INNER_WHILE) {
+            return false
+        }
+
+        val iteratorVariable = e.statements[0] as? IrVariable
+        val innerWhile = e.statements[1] as? IrWhileLoop
+
+        if (iteratorVariable == null ||
+            iteratorVariable.origin != IrDeclarationOrigin.FOR_LOOP_ITERATOR ||
+            innerWhile == null ||
+            innerWhile.origin != IrStatementOrigin.FOR_LOOP_INNER_WHILE) {
+            return false
+        }
+
+        val initializer = iteratorVariable.initializer as? IrCall
+        if (initializer == null ||
+            initializer.origin != IrStatementOrigin.FOR_LOOP_ITERATOR ||
+            initializer.symbol.owner.name.asString() != "iterator") {
+            return false
+        }
+
+        val expr = initializer.dispatchReceiver
+        val cond = innerWhile.condition as? IrCall
+        val body = innerWhile.body as? IrBlock
+
+        if (expr == null ||
+            cond == null ||
+            cond.origin != IrStatementOrigin.FOR_LOOP_HAS_NEXT ||
+            (cond.dispatchReceiver as? IrGetValue)?.symbol?.owner != iteratorVariable ||
+            body == null ||
+            body.origin != IrStatementOrigin.FOR_LOOP_INNER_WHILE ||
+            body.statements.size != 2) {
+            return false
+        }
+
+        val loopVar = body.statements[0] as? IrVariable
+        val block = body.statements[1] as? IrBlock
+        val nextCall = loopVar?.initializer as? IrCall
+
+        if (loopVar == null ||
+            !(loopVar.origin == IrDeclarationOrigin.FOR_LOOP_VARIABLE || loopVar.origin == IrDeclarationOrigin.IR_TEMPORARY_VARIABLE) ||
+            nextCall == null ||
+            nextCall.origin != IrStatementOrigin.FOR_LOOP_NEXT ||
+            (nextCall.dispatchReceiver as? IrGetValue)?.symbol?.owner != iteratorVariable) {
+            return false
+        }
+
+        val id = extractLoop(innerWhile, block, 2, parent, callable) { p, idx ->
+            val loopId = tw.getFreshIdLabel<DbEnhancedforstmt>()
+            tw.writeStmts_enhancedforstmt(loopId, p, idx, callable)
+            loopId
+        }
+
+        extractExpressionExpr(expr, callable, id, 1, id)
+        extractVariableExpr(loopVar, callable, id, 0, id, extractInitializer = false)
+
+        return true
+    }
+
+
+    /**
      * This tried to extract a block as an array update.
      * It returns true if it succeeds, and false otherwise.
      */
@@ -3405,7 +3484,9 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrContainerExpression -> {
-                    if(!tryExtractArrayUpdate(e, callable, parent)) {
+                    if (!tryExtractArrayUpdate(e, callable, parent) &&
+                        !tryExtractForLoop(e, callable, parent)) {
+
                         val stmtParent = parent.stmt(e, callable)
                         val id = tw.getFreshIdLabel<DbBlock>()
                         val locId = tw.getLocation(e)
@@ -3417,10 +3498,10 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrWhileLoop -> {
-                    extractLoop(e, parent, callable)
+                    extractLoopWithCondition(e, parent, callable)
                 }
                 is IrDoWhileLoop -> {
-                    extractLoop(e, parent, callable)
+                    extractLoopWithCondition(e, parent, callable)
                 }
                 is IrInstanceInitializerCall -> {
                     val irConstructor = declarationStack.peek().first as? IrConstructor
@@ -3993,9 +4074,12 @@ open class KotlinFileExtractor(
 
     private fun extractLoop(
         loop: IrLoop,
+        body: IrExpression?,
+        bodyIdx: Int,
         stmtExprParent: StmtExprParent,
-        callable: Label<out DbCallable>
-    ) {
+        callable: Label<out DbCallable>,
+        getId: (Label<out DbStmtparent>, Int) -> Label<out DbStmt>
+    ) : Label<out DbStmt> {
         val stmtParent = stmtExprParent.stmt(loop, callable)
         val locId = tw.getLocation(loop)
 
@@ -4016,22 +4100,33 @@ open class KotlinFileExtractor(
             parent = stmtParent.parent
         }
 
-        val id = if (loop is IrWhileLoop) {
-            val id = tw.getFreshIdLabel<DbWhilestmt>()
-            tw.writeStmts_whilestmt(id, parent, idx, callable)
-            id
-        } else {
-            val id = tw.getFreshIdLabel<DbDostmt>()
-            tw.writeStmts_dostmt(id, parent, idx, callable)
-            id
+        val id = getId(parent, idx)
+        tw.writeHasLocation(id, locId)
+
+        if (body != null) {
+            extractExpressionStmt(body, callable, id, bodyIdx)
         }
 
-        tw.writeHasLocation(id, locId)
-        extractExpressionExpr(loop.condition, callable, id, 0, id)
-        val body = loop.body
-        if (body != null) {
-            extractExpressionStmt(body, callable, id, 1)
+        return id
+    }
+
+    private fun extractLoopWithCondition(
+        loop: IrLoop,
+        stmtExprParent: StmtExprParent,
+        callable: Label<out DbCallable>
+    ) {
+        val id = extractLoop(loop, loop.body, 1, stmtExprParent, callable) { parent, idx ->
+            if (loop is IrWhileLoop) {
+                val id = tw.getFreshIdLabel<DbWhilestmt>()
+                tw.writeStmts_whilestmt(id, parent, idx, callable)
+                id
+            } else {
+                val id = tw.getFreshIdLabel<DbDostmt>()
+                tw.writeStmts_dostmt(id, parent, idx, callable)
+                id
+            }
         }
+        extractExpressionExpr(loop.condition, callable, id, 0, id)
     }
 
     private fun IrValueParameter.isExtensionReceiver(): Boolean {

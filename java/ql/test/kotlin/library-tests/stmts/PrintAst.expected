@@ -116,59 +116,41 @@ stmts.kt:
 #   28|             0: [VarAccess] x
 #   28|             1: [VarAccess] y
 #   29|           1: [ContinueStmt] continue
-#   31|         2: [BlockStmt] { ... }
-#   31|           0: [LocalVariableDeclStmt] var ...;
-#   31|             1: [LocalVariableDeclExpr] tmp0_iterator
-#   31|               0: [MethodAccess] iterator(...)
-#   31|                 -1: [MethodAccess] rangeTo(...)
-#   31|                   -1: [VarAccess] x
-#   31|                   0: [VarAccess] y
-#   31|           1: [WhileStmt] while (...)
-#   31|             0: [MethodAccess] hasNext(...)
-#   31|               -1: [VarAccess] tmp0_iterator
-#   31|             1: [BlockStmt] { ... }
-#   31|               0: [LocalVariableDeclStmt] var ...;
-#   31|                 1: [LocalVariableDeclExpr] i
-#   31|                   0: [MethodAccess] next(...)
-#   31|                     -1: [VarAccess] tmp0_iterator
-#   31|               1: [BlockStmt] { ... }
-#   32|                 0: [ExprStmt] <Expr>;
-#   32|                   0: [WhenExpr] when ...
-#   32|                     0: [WhenBranch] ... -> ...
-#   32|                       0: [GTExpr] ... > ...
-#   32|                         0: [VarAccess] x
-#   32|                         1: [VarAccess] y
-#   32|                       1: [BreakStmt] break
-#   35|         3: [BlockStmt] { ... }
-#   35|           0: [LocalVariableDeclStmt] var ...;
-#   35|             1: [LocalVariableDeclExpr] tmp1_iterator
-#   35|               0: [MethodAccess] iterator(...)
-#   35|                 -1: [MethodAccess] rangeTo(...)
-#   35|                   -1: [VarAccess] x
-#   35|                   0: [VarAccess] y
-#   35|           1: [LabeledStmt] <Label>: ...
-#   35|             0: [WhileStmt] while (...)
-#   35|               0: [MethodAccess] hasNext(...)
-#   35|                 -1: [VarAccess] tmp1_iterator
-#   35|               1: [BlockStmt] { ... }
-#   35|                 0: [LocalVariableDeclStmt] var ...;
-#   35|                   1: [LocalVariableDeclExpr] i
-#   35|                     0: [MethodAccess] next(...)
-#   35|                       -1: [VarAccess] tmp1_iterator
-#   35|                 1: [BlockStmt] { ... }
-#   36|                   0: [BlockStmt] { ... }
-#   36|                     0: [DoStmt] do ... while (...)
-#   38|                       0: [GTExpr] ... > ...
-#   38|                         0: [VarAccess] y
-#   38|                         1: [IntegerLiteral] 100
-#   36|                       1: [BlockStmt] { ... }
-#   37|                         0: [ExprStmt] <Expr>;
-#   37|                           0: [WhenExpr] when ...
-#   37|                             0: [WhenBranch] ... -> ...
-#   37|                               0: [GTExpr] ... > ...
-#   37|                                 0: [VarAccess] x
-#   37|                                 1: [VarAccess] y
-#   37|                               1: [BreakStmt] break
+#   31|         2: [EnhancedForStmt] for (... : ...)
+#-----|           0: (Single Local Variable Declaration)
+#   31|             1: [LocalVariableDeclExpr] i
+#   31|           1: [MethodAccess] rangeTo(...)
+#   31|             -1: [VarAccess] x
+#   31|             0: [VarAccess] y
+#   31|           2: [BlockStmt] { ... }
+#   32|             0: [ExprStmt] <Expr>;
+#   32|               0: [WhenExpr] when ...
+#   32|                 0: [WhenBranch] ... -> ...
+#   32|                   0: [GTExpr] ... > ...
+#   32|                     0: [VarAccess] x
+#   32|                     1: [VarAccess] y
+#   32|                   1: [BreakStmt] break
+#   35|         3: [LabeledStmt] <Label>: ...
+#   35|           0: [EnhancedForStmt] for (... : ...)
+#-----|             0: (Single Local Variable Declaration)
+#   35|               1: [LocalVariableDeclExpr] i
+#   35|             1: [MethodAccess] rangeTo(...)
+#   35|               -1: [VarAccess] x
+#   35|               0: [VarAccess] y
+#   35|             2: [BlockStmt] { ... }
+#   36|               0: [BlockStmt] { ... }
+#   36|                 0: [DoStmt] do ... while (...)
+#   38|                   0: [GTExpr] ... > ...
+#   38|                     0: [VarAccess] y
+#   38|                     1: [IntegerLiteral] 100
+#   36|                   1: [BlockStmt] { ... }
+#   37|                     0: [ExprStmt] <Expr>;
+#   37|                       0: [WhenExpr] when ...
+#   37|                         0: [WhenBranch] ... -> ...
+#   37|                           0: [GTExpr] ... > ...
+#   37|                             0: [VarAccess] x
+#   37|                             1: [VarAccess] y
+#   37|                           1: [BreakStmt] break
 #   41|         4: [BlockStmt] { ... }
 #   41|           0: [LocalVariableDeclStmt] var ...;
 #   41|             1: [LocalVariableDeclExpr] tmp2_iterator
