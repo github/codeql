@@ -95,10 +95,10 @@ private module Asymmetric {
       algorithm.matches("sec%") and // specification such as "secp256r1"
       result = algorithm.regexpCapture("sec[p|t](\\d+)[a-zA-Z].*", 1).toInt()
       or
-      algorithm.matches("X9.62%") and //specification such as "X9.62 prime192v2"
+      algorithm.matches("X9.62%") and // specification such as "X9.62 prime192v2"
       result = algorithm.regexpCapture("X9\\.62 .*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
       or
-      (algorithm.matches("prime%") or algorithm.matches("c2tnb%")) and //specification such as "prime192v2"
+      algorithm.matches(["prime%", "c2tnb%"]) and // specification such as "prime192v2"
       result = algorithm.regexpCapture(".*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
     }
 
