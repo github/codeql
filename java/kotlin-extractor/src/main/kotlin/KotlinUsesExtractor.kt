@@ -964,7 +964,6 @@ open class KotlinUsesExtractor(
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
             !addByDefault -> false
-            t.hasAnnotation(jvmWildcardSuppressionAnnotation) -> false
             // If a Java declaration specifies a variance, introduce it even if it's pointless (e.g. ? extends FinalClass, or ? super Object)
             javaVariance == v -> true
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
@@ -972,9 +971,17 @@ open class KotlinUsesExtractor(
             else -> false
         }
 
+    // Returns true if `t` has `@JvmSuppressWildcards` or `@JvmSuppressWildcards(true)`,
+    // false if it has `@JvmSuppressWildcards(false)`,
+    // and null if the annotation is not present.
+    @Suppress("UNCHECKED_CAST")
+    private fun getWildcardSuppressionDirective(t: IrAnnotationContainer) =
+        t.getAnnotation(jvmWildcardSuppressionAnnotation)?.let { (it.getValueArgument(0) as? IrConst<Boolean>)?.value ?: true }
+
     private fun addJavaLoweringArgumentWildcards(p: IrTypeParameter, t: IrTypeArgument, addByDefault: Boolean, javaType: JavaType?): IrTypeArgument =
         (t as? IrTypeProjection)?.let {
-            val newBase = addJavaLoweringWildcards(it.type, addByDefault, javaType)
+            val newAddByDefault = getWildcardSuppressionDirective(it.type)?.let { b -> !b } ?: addByDefault
+            val newBase = addJavaLoweringWildcards(it.type, newAddByDefault, javaType)
             // Note javaVariance == null means we don't have a Java type to conform to -- for example if this is a Kotlin source definition.
             val javaVariance = javaType?.let { jType ->
                 when (jType) {
@@ -989,7 +996,7 @@ open class KotlinUsesExtractor(
                     // For example, Java might declare f(Comparable<CharSequence> cs), in which case we shouldn't add a `? super ...`
                     // wildcard. Note if javaType is unknown (e.g. this is a Kotlin source element), we assume wildcards should be added.
                     (javaVariance == null || javaVariance == p.variance) &&
-                    wildcardAdditionAllowed(p.variance, it.type, addByDefault, javaVariance))
+                    wildcardAdditionAllowed(p.variance, it.type, newAddByDefault, javaVariance))
                     p.variance
                 else
                     it.variance
@@ -1008,12 +1015,13 @@ open class KotlinUsesExtractor(
 
     fun addJavaLoweringWildcards(t: IrType, addByDefault: Boolean, javaType: JavaType?): IrType =
         (t as? IrSimpleType)?.let {
+            val newAddByDefault = getWildcardSuppressionDirective(t)?.let { b -> !b } ?: addByDefault
             val typeParams = it.classOrNull?.owner?.typeParameters ?: return t
             val newArgs = typeParams.zip(it.arguments).mapIndexed { idx, pair ->
                 addJavaLoweringArgumentWildcards(
                     pair.first,
                     pair.second,
-                    addByDefault,
+                    newAddByDefault,
                     javaType?.let { jt -> getJavaTypeArgument(jt, idx) }
                 )
             }
@@ -1061,7 +1069,7 @@ open class KotlinUsesExtractor(
             classTypeArgsIncludingOuterClasses,
             overridesCollectionsMethodWithAlteredParameterTypes(f),
             getJavaCallable(f),
-            !hasWildcardSuppressionAnnotation(f)
+            !getInnermostWildcardSupppressionAnnotation(f)
         )
 
     /*
@@ -1220,10 +1228,11 @@ open class KotlinUsesExtractor(
         else -> null
     }
 
-    fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
-        d.hasAnnotation(jvmWildcardSuppressionAnnotation) ||
+    fun getInnermostWildcardSupppressionAnnotation(d: IrDeclaration) =
+        getWildcardSuppressionDirective(d) ?:
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
-        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotation) == true }
+        d.parents.filterIsInstance<IrAnnotationContainer>().firstNotNullOfOrNull { getWildcardSuppressionDirective(it) } ?:
+        false
 
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
