@@ -156,8 +156,8 @@ abstract class InlineExpectationsTest extends string {
       not actualResult.getTag() = this.getARelevantTag() and
       element = actualResult and
       message =
-        "Tag mismatch: Actual result with tag " + actualResult.getTag() +
-          " that is not part of getARelevantTag()"
+        "Tag mismatch: Actual result with tag '" + actualResult.getTag() +
+          "' that is not part of getARelevantTag()"
     )
     or
     exists(ValidExpectation expectation |
