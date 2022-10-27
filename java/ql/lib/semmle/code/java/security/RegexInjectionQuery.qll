@@ -2,40 +2,46 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 
+/** The Java class `java.util.regex.Pattern`. */
+private class RegexPattern extends RefType {
+  RegexPattern() { this.hasQualifiedName("java.util.regex", "Pattern") }
+}
+
+/** The Java class `java.util.regex.Matcher`. */
+private class RegexMatcher extends RefType {
+  RegexMatcher() { this.hasQualifiedName("java.util.regex", "Matcher") }
+}
+
+/** The Java class `org.apache.commons.lang3.RegExUtils`. */
+private class ApacheRegExUtils extends RefType {
+  ApacheRegExUtils() { this.hasQualifiedName("java.util.regex", "Matcher") }
+}
+
+// TODO: Are there already classes for any of below(above) in a pre-existing regex library?
+// TODO: look into further: Pattern.matcher, .pattern() and .toString() as taint steps, .split and .splitAsStream
 /**
  * A data flow sink for untrusted user input used to construct regular expressions.
  */
 class RegexSink extends DataFlow::ExprNode {
   RegexSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      ma.getArgument(0) = this.asExpr() and
       (
         m.getDeclaringType() instanceof TypeString and
-        (
-          ma.getArgument(0) = this.asExpr() and // ! combine this line with the below at least? e.g. TypeString and TypePattern both use it
-          // ! test below more?
-          // ! (are there already classes for these methods in a regex library?)
-          m.hasName(["matches", "split", "replaceFirst", "replaceAll"])
-        )
+        m.hasName(["matches", "split", "replaceFirst", "replaceAll"])
         or
-        // ! make class for the below? (is there already a class for this and its methods in a regex library?)
-        m.getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
-        (
-          ma.getArgument(0) = this.asExpr() and
-          // ! look into further: Pattern.matcher, .pattern() and .toString() as taint steps, .split and .splitAsStream
-          m.hasName(["compile", "matches"])
-        )
-        or
-        // ! make class for the below? (is there already a class for this and its methods in a regex library?)
-        m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "RegExUtils") and
-        (
-          ma.getArgument(1) = this.asExpr() and
-          m.getParameterType(1) instanceof TypeString and
-          // ! test below more?
-          m.hasName([
-              "removeAll", "removeFirst", "removePattern", "replaceAll", "replaceFirst",
-              "replacePattern"
-            ])
-        )
+        m.getDeclaringType() instanceof RegexPattern and
+        m.hasName(["compile", "matches"])
+      )
+      or
+      m.getDeclaringType() instanceof ApacheRegExUtils and
+      (
+        ma.getArgument(1) = this.asExpr() and
+        m.getParameterType(1) instanceof TypeString and // only does String here because other option is Patter, but that's already handled by `java.util.regex.Pattern` above
+        m.hasName([
+            "removeAll", "removeFirst", "removePattern", "replaceAll", "replaceFirst",
+            "replacePattern"
+          ])
       )
     )
   }
@@ -67,7 +73,7 @@ class RegExpSanitizationCall extends Sanitizer {
     // adds Pattern.quote() as a sanitizer
     // see https://rules.sonarsource.com/java/RSPEC-2631 and https://sensei.securecodewarrior.com/recipes/scw:java:regex-injection
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+      m.getDeclaringType() instanceof RegexPattern and
       (
         ma.getArgument(0) = this.asExpr() and
         m.hasName("quote")
