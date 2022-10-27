@@ -54,12 +54,7 @@ module NextJS {
             .getParameter(0)
             .getAPropertyRead("params")
       or
-      exists(DataFlow::ParameterNode params |
-        params = getServerSidePropsFunction(_).getParameter(0)
-      |
-        this = params.getAPropertyRead("params") or
-        this = params.getAPropertyRead("query")
-      )
+      this = getServerSidePropsFunction(_).getParameter(0).getAPropertyRead(["params", "query"])
       or
       this = nextRouter().getAPropertyRead("query")
     }
