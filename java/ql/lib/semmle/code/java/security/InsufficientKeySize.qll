@@ -187,5 +187,7 @@ private module Symmetric {
 /** An instance of a generator that specifies an encryption algorithm. */
 abstract private class GeneratorAlgoSpec extends CryptoAlgoSpec {
   /** Returns an uppercase string representing the algorithm name specified by this generator object. */
-  string getAlgoName() { result = this.getAlgoSpec().(StringLiteral).getValue().toUpperCase() }
+  string getAlgoName() {
+    result = this.getAlgoSpec().(CompileTimeConstantExpr).getStringValue().toUpperCase()
+  }
 }

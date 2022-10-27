@@ -33,6 +33,15 @@ public class InsufficientKeySizeTest {
             KeyGenerator keyGen5 = KeyGenerator.getInstance("AES"); // MISSING: test KeyGenerator variable as argument
             testSymmetricVariable(size2, keyGen5); // test with variable as key size
             testSymmetricInt(64); // test with int literal as key size
+
+            /* Test with variable as algo name argument in `getInstance` method. */
+            final String algoName1 = "AES"; // compile-time constant
+            KeyGenerator keyGen6 = KeyGenerator.getInstance(algoName1);
+            keyGen6.init(64); // $ hasInsufficientKeySize
+
+            String algoName2 = "AES"; // not a compile-time constant
+            KeyGenerator keyGen7 = KeyGenerator.getInstance(algoName2);
+            keyGen7.init(64); // $ MISSING: hasInsufficientKeySize
         }
 
         // RSA (Asymmetric): minimum recommended key size is 2048
@@ -70,6 +79,15 @@ public class InsufficientKeySizeTest {
             /* Test getting key size as return value of another method */
             KeyPairGenerator keyPairGen8 = KeyPairGenerator.getInstance("RSA");
             keyPairGen8.initialize(getRSAKeySize()); // $ hasInsufficientKeySize
+
+            /* Test with variable as algo name argument in `getInstance` method. */
+            final String algoName1 = "RSA"; // compile-time constant
+            KeyPairGenerator keyPairGen9 = KeyPairGenerator.getInstance(algoName1);
+            keyPairGen9.initialize(1024); // $ hasInsufficientKeySize
+
+            String algoName2 = "RSA"; // not a compile-time constant
+            KeyPairGenerator keyPairGen10 = KeyPairGenerator.getInstance(algoName2);
+            keyPairGen10.initialize(1024); // $ MISSING: hasInsufficientKeySize
         }
 
         // DSA (Asymmetric): minimum recommended key size is 2048
@@ -92,6 +110,15 @@ public class InsufficientKeySizeTest {
             /* Test `AlgorithmParameterGenerator` */
             AlgorithmParameterGenerator paramGen = AlgorithmParameterGenerator.getInstance("DSA");
             paramGen.init(1024); // $ hasInsufficientKeySize
+
+            /* Test with variable as algo name argument in `getInstance` method. */
+            final String algoName1 = "DSA"; // compile-time constant
+            AlgorithmParameterGenerator paramGen1 = AlgorithmParameterGenerator.getInstance(algoName1);
+            paramGen1.init(1024); // $ hasInsufficientKeySize
+
+            String algoName2 = "DSA"; // not a compile-time constant
+            AlgorithmParameterGenerator paramGen2 = AlgorithmParameterGenerator.getInstance(algoName2);
+            paramGen2.init(1024); // $ MISSING: hasInsufficientKeySize
         }
 
         // DH (Asymmetric): minimum recommended key size is 2048
@@ -173,6 +200,17 @@ public class InsufficientKeySizeTest {
             KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("EC"); // MISSING: test KeyGenerator variable as argument
             testAsymmetricEcIntVariable(size, keyPairGen); // test with variable as key size
             testAsymmetricEcIntLiteral(128); // test with int literal as key size
+
+            /* Test with variable as curve name argument in `ECGenParameterSpec` constructor. */
+            final String curveName1 = "secp112r1"; // compile-time constant
+            KeyPairGenerator keyPairGen16 = KeyPairGenerator.getInstance("EC");
+            ECGenParameterSpec ecSpec11 = new ECGenParameterSpec(curveName1); // $ hasInsufficientKeySize
+            keyPairGen16.initialize(ecSpec11);
+
+            String curveName2 = "secp112r1"; // not a compile-time constant
+            KeyPairGenerator keyPairGen17 = KeyPairGenerator.getInstance("EC");
+            ECGenParameterSpec ecSpec12 = new ECGenParameterSpec(curveName2); // $ hasInsufficientKeySize
+            keyPairGen17.initialize(ecSpec12);
         }
     }
 
