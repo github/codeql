@@ -1,0 +1,137 @@
+name: "Swift"
+
+on:
+  pull_request:
+    paths:
+      - "swift/**"
+      - "misc/bazel/**"
+      - "*.bazel*"
+      - .github/workflows/swift.yml
+      - .github/actions/fetch-codeql/action.yml
+      - codeql-workspace.yml
+      - .pre-commit-config.yaml
+      - "!**/*.md"
+      - "!**/*.qhelp"
+    branches:
+      - main
+defaults:
+  run:
+    working-directory: swift
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      codegen: ${{ steps.filter.outputs.codegen }}
+      ql: ${{ steps.filter.outputs.ql }}
+    steps:
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            codegen:
+              - 'github/workflows/swift.yml'
+              - "misc/bazel/**"
+              - "*.bazel*"
+              - 'swift/actions/env-setup/**'
+              - '.pre-commit-config.yaml'
+              - 'swift/codegen/**'
+              - 'swift/schema.py'
+              - 'swift/**/*.dbscheme'
+              - 'swift/ql/lib/codeql/swift/elements.qll'
+              - 'swift/ql/lib/codeql/swift/elements/**'
+              - 'swift/ql/lib/codeql/swift/generated/**'
+              - 'swift/ql/test/extractor-tests/generated/**'
+            ql:
+              - 'github/workflows/swift.yml'
+              - 'swift/**/*.ql'
+              - 'swift/**/*.qll'
+  # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
+  # without waiting for the macOS build
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/create-extractor-pack
+      # loading bazel targets is very long on the basic macOS runner
+      # therefore it's better to test the X
+      - name: Test the Xcode autobuilder
+        run: |
+          bazel test //swift/xcode-autobuilder/tests
+  build-linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/create-extractor-pack
+  qltests:
+    needs: build-linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/env-setup
+      - uses: ./swift/actions/share-extractor-pack
+      - name: Test qltest.sh
+        run: |
+          bazel test //swift/tools/test/qltest
+      - uses: ./.github/actions/fetch-codeql
+      - name: Run QL tests
+        run: |
+          codeql test run \
+            --threads=0 \
+            --ram 5000 \
+            --search-path "${{ github.workspace }}/swift/extractor-pack" \
+            --check-databases \
+            --check-unused-labels \
+            --check-repeated-labels \
+            --check-redefined-labels \
+            --check-use-before-definition \
+            ql/test
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+  integration-tests-linux:
+    needs: build-linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/run-integration-tests
+  integration-tests-macos:
+    needs: build-macos
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/run-integration-tests
+  codegen:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.codegen == 'true' }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/env-setup
+      - uses: pre-commit/action@v3.0.0
+        name: Check that python code is properly formatted
+        with:
+          extra_args: autopep8 --all-files
+      - name: Run unit tests
+        run: |
+          bazel test //swift/codegen/test --test_output=errors
+      - uses: ./.github/actions/fetch-codeql
+      - uses: pre-commit/action@v3.0.0
+        name: Check that QL generated code was checked in
+        with:
+          extra_args: swift-codegen --all-files
+      - name: Generate C++ files
+        run: |
+          bazel run //swift/codegen:codegen -- --generate=trap,cpp --cpp-output=$PWD/generated-cpp-files
+      - uses: actions/upload-artifact@v3
+        with:
+          name: swift-generated-cpp-files
+          path: swift/generated-cpp-files/**
+  qlformat:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.ql == 'true' }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/fetch-codeql
+      - name: Check QL formatting
+        run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql query format --check-only
