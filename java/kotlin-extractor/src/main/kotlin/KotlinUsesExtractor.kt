@@ -960,11 +960,13 @@ open class KotlinUsesExtractor(
             ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
         }
 
-    private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
+    private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean, javaVariance: Variance?) =
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
             !addByDefault -> false
             t.hasAnnotation(jvmWildcardSuppressionAnnotation) -> false
+            // If a Java declaration specifies a variance, introduce it even if it's pointless (e.g. ? extends FinalClass, or ? super Object)
+            javaVariance == v -> true
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
             v == Variance.OUT_VARIANCE -> extendsAdditionAllowed(t)
             else -> false
@@ -973,14 +975,21 @@ open class KotlinUsesExtractor(
     private fun addJavaLoweringArgumentWildcards(p: IrTypeParameter, t: IrTypeArgument, addByDefault: Boolean, javaType: JavaType?): IrTypeArgument =
         (t as? IrTypeProjection)?.let {
             val newBase = addJavaLoweringWildcards(it.type, addByDefault, javaType)
+            // Note javaVariance == null means we don't have a Java type to conform to -- for example if this is a Kotlin source definition.
+            val javaVariance = javaType?.let { jType ->
+                when (jType) {
+                    is JavaWildcardType -> if (jType.isExtends) Variance.OUT_VARIANCE else Variance.IN_VARIANCE
+                    else -> Variance.INVARIANT
+                }
+            }
             val newVariance =
                 if (it.variance == Variance.INVARIANT &&
                     p.variance != Variance.INVARIANT &&
                     // The next line forbids inferring a wildcard type when we have a corresponding Java type with conflicting variance.
                     // For example, Java might declare f(Comparable<CharSequence> cs), in which case we shouldn't add a `? super ...`
                     // wildcard. Note if javaType is unknown (e.g. this is a Kotlin source element), we assume wildcards should be added.
-                    (javaType?.let { jt -> jt is JavaWildcardType && jt.isExtends == (p.variance == Variance.OUT_VARIANCE) } != false) &&
-                    wildcardAdditionAllowed(p.variance, it.type, addByDefault))
+                    (javaVariance == null || javaVariance == p.variance) &&
+                    wildcardAdditionAllowed(p.variance, it.type, addByDefault, javaVariance))
                     p.variance
                 else
                     it.variance
