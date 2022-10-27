@@ -119,6 +119,7 @@ edges
 | url.swift:117:28:117:28 | tainted :  | url.swift:117:16:117:35 | call to init(string:) :  |
 | url.swift:120:46:120:46 | urlTainted :  | url.swift:43:2:46:55 | [summary param] 0 in dataTask(with:completionHandler:) :  |
 | url.swift:120:61:120:61 | data :  | url.swift:121:15:121:19 | ...! |
+| webview.swift:12:13:12:20 | call to source() :  | webview.swift:12:13:12:22 | .body |
 nodes
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | semmle.label | [summary] to write: return (return) in init(string:) :  |
@@ -231,6 +232,8 @@ nodes
 | url.swift:120:46:120:46 | urlTainted :  | semmle.label | urlTainted :  |
 | url.swift:120:61:120:61 | data :  | semmle.label | data :  |
 | url.swift:121:15:121:19 | ...! | semmle.label | ...! |
+| webview.swift:12:13:12:20 | call to source() :  | semmle.label | call to source() :  |
+| webview.swift:12:13:12:22 | .body | semmle.label | .body |
 subpaths
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:59:19:59:38 | call to init(string:) :  |
 | url.swift:83:24:83:24 | tainted :  | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:83:12:83:48 | call to init(string:relativeTo:) :  |
@@ -306,3 +309,4 @@ subpaths
 | url.swift:102:15:102:67 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:102:15:102:67 | ...! | result |
 | url.swift:118:12:118:12 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:118:12:118:12 | ...! | result |
 | url.swift:121:15:121:19 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:121:15:121:19 | ...! | result |
+| webview.swift:12:13:12:22 | .body | webview.swift:12:13:12:20 | call to source() :  | webview.swift:12:13:12:22 | .body | result |
