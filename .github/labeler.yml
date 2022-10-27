@@ -43,3 +43,11 @@ documentation:
 "QL-for-QL":
   - ql/**/*
   - .github/workflows/ql-for-ql*
+
+# since these are all shared files that needs to be synced, I just picked _one_ version
+"DataFlow Library":
+  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl.qll"
+  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll"
+  - "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
+  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll"
+  - "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll"
