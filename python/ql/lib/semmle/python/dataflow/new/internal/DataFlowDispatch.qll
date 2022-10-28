@@ -1,279 +1,38 @@
 /**
  * INTERNAL: Do not use.
  *
- * Points-to based call-graph.
+ * TypeTracker based call-graph.
+ *
+ * A goal of this library is to support modeling calls that happens by third-party
+ * libraries. For example `call_later(func, arg0, arg1, foo=val)`, and the fact that the
+ * library might inject it's own arguments, for example a context that will always be
+ * passed as the actual first argument to the function. Currently the aim is to provide
+ * enough predicates for such `call_later` function to be modeled by providing
+ * additional data-flow steps for the arguments/parameters. This means we cannot have
+ * any special logic that requires an AST call to be made before we care to figure out
+ * what callable this call might end up targeting.
  */
 
 private import python
 private import DataFlowPublic
-private import semmle.python.SpecialMethods
 private import FlowSummaryImpl as FlowSummaryImpl
 
-/** A parameter position represented by an integer. */
-class ParameterPosition extends int {
-  ParameterPosition() { exists(any(DataFlowCallable c).getParameter(this)) }
-
-  /** Holds if this position represents a positional parameter at position `pos`. */
-  predicate isPositional(int pos) { this = pos } // with the current representation, all parameters are positional
+/** A parameter position. */
+class ParameterPosition extends Unit {
+  // TODO(call-graph): implement this!
 }
 
-/** An argument position represented by an integer. */
-class ArgumentPosition extends int {
-  ArgumentPosition() { this in [-2, -1] or exists(any(Call c).getArg(this)) }
-
-  /** Holds if this position represents a positional argument at position `pos`. */
-  predicate isPositional(int pos) { this = pos } // with the current representation, all arguments are positional
+/** An argument position. */
+abstract class ArgumentPosition extends Unit {
+  // TODO(call-graph): implement this!
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
-predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
-
-/**
- * Computes routing of arguments to parameters
- *
- * When a call contains more positional arguments than there are positional parameters,
- * the extra positional arguments are passed as a tuple to a starred parameter. This is
- * achieved by synthesizing a node `TPosOverflowNode(call, callable)`
- * that represents the tuple of extra positional arguments. There is a store step from each
- * extra positional argument to this node.
- *
- * CURRENTLY NOT SUPPORTED:
- * When a call contains an iterable unpacking argument, such as `func(*args)`, it is expanded into positional arguments.
- *
- * CURRENTLY NOT SUPPORTED:
- * If a call contains an iterable unpacking argument, such as `func(*args)`, and the callee contains a starred argument, any extra
- * positional arguments are passed to the starred argument.
- *
- * When a call contains keyword arguments that do not correspond to keyword parameters, these
- * extra keyword arguments are passed as a dictionary to a doubly starred parameter. This is
- * achieved by synthesizing a node `TKwOverflowNode(call, callable)`
- * that represents the dictionary of extra keyword arguments. There is a store step from each
- * extra keyword argument to this node.
- *
- * When a call contains a dictionary unpacking argument, such as `func(**kwargs)`, with entries corresponding to a keyword parameter,
- * the value at such a key is unpacked and passed to the parameter. This is achieved
- * by synthesizing an argument node `TKwUnpacked(call, callable, name)` representing the unpacked
- * value. This node is used as the argument passed to the matching keyword parameter. There is a read
- * step from the dictionary argument to the synthesized argument node.
- *
- * When a call contains a dictionary unpacking argument, such as `func(**kwargs)`, and the callee contains a doubly starred parameter,
- * entries which are not unpacked are passed to the doubly starred parameter. This is achieved by
- * adding a dataflow step from the dictionary argument to `TKwOverflowNode(call, callable)` and a
- * step to clear content of that node at any unpacked keys.
- *
- * ## Examples:
- * Assume that we have the callable
- * ```python
- * def f(x, y, *t, **d):
- *   pass
- * ```
- * Then the call
- * ```python
- * f(0, 1, 2, a=3)
- * ```
- * will be modeled as
- * ```python
- * f(0, 1, [*t], [**d])
- * ```
- * where `[` and `]` denotes synthesized nodes, so `[*t]` is the synthesized tuple argument
- * `TPosOverflowNode` and `[**d]` is the synthesized dictionary argument `TKwOverflowNode`.
- * There will be a store step from `2` to `[*t]` at pos `0` and one from `3` to `[**d]` at key
- * `a`.
- *
- * For the call
- * ```python
- * f(0, **{"y": 1, "a": 3})
- * ```
- * no tuple argument is synthesized. It is modeled as
- * ```python
- * f(0, [y=1], [**d])
- * ```
- * where `[y=1]` is the synthesized unpacked argument `TKwUnpacked` (with `name` = `y`). There is
- * a read step from `**{"y": 1, "a": 3}` to `[y=1]` at key `y` to get the value passed to the parameter
- * `y`. There is a dataflow step from `**{"y": 1, "a": 3}` to `[**d]` to transfer the content and
- * a clearing of content at key `y` for node `[**d]`, since that value has been unpacked.
- */
-module ArgumentPassing {
-  /**
-   * Holds if `call` represents a `DataFlowCall` to a `DataFlowCallable` represented by `callable`.
-   *
-   * It _may not_ be the case that `call = callable.getACall()`, i.e. if `call` represents a `ClassCall`.
-   *
-   * Used to limit the size of predicates.
-   */
-  predicate connects(CallNode call, CallableValue callable) {
-    exists(NormalCall c |
-      call = c.getNode() and
-      callable = c.getCallable().getCallableValue()
-    )
-  }
-
-  /**
-   * Gets the `n`th parameter of `callable`.
-   * If the callable has a starred parameter, say `*tuple`, that is matched with `n=-1`.
-   * If the callable has a doubly starred parameter, say `**dict`, that is matched with `n=-2`.
-   * Note that, unlike other languages, we do _not_ use -1 for the position of `self` in Python,
-   * as it is an explicit parameter at position 0.
-   */
-  NameNode getParameter(CallableValue callable, int n) {
-    // positional parameter
-    result = callable.getParameter(n)
-    or
-    // starred parameter, `*tuple`
-    exists(Function f |
-      f = callable.getScope() and
-      n = -1 and
-      result = f.getVararg().getAFlowNode()
-    )
-    or
-    // doubly starred parameter, `**dict`
-    exists(Function f |
-      f = callable.getScope() and
-      n = -2 and
-      result = f.getKwarg().getAFlowNode()
-    )
-  }
-
-  /**
-   * A type representing a mapping from argument indices to parameter indices.
-   * We currently use two mappings: NoShift, the identity, used for ordinary
-   * function calls, and ShiftOneUp which is used for calls where an extra argument
-   * is inserted. These include method calls, constructor calls and class calls.
-   * In these calls, the argument at index `n` is mapped to the parameter at position `n+1`.
-   */
-  newtype TArgParamMapping =
-    TNoShift() or
-    TShiftOneUp()
-
-  /** A mapping used for parameter passing. */
-  abstract class ArgParamMapping extends TArgParamMapping {
-    /** Gets the index of the parameter that corresponds to the argument at index `argN`. */
-    bindingset[argN]
-    abstract int getParamN(int argN);
-
-    /** Gets a textual representation of this element. */
-    abstract string toString();
-  }
-
-  /** A mapping that passes argument `n` to parameter `n`. */
-  class NoShift extends ArgParamMapping, TNoShift {
-    NoShift() { this = TNoShift() }
-
-    override string toString() { result = "NoShift [n -> n]" }
-
-    bindingset[argN]
-    override int getParamN(int argN) { result = argN }
-  }
-
-  /** A mapping that passes argument `n` to parameter `n+1`. */
-  class ShiftOneUp extends ArgParamMapping, TShiftOneUp {
-    ShiftOneUp() { this = TShiftOneUp() }
-
-    override string toString() { result = "ShiftOneUp [n -> n+1]" }
-
-    bindingset[argN]
-    override int getParamN(int argN) { result = argN + 1 }
-  }
-
-  /**
-   * Gets the node representing the argument to `call` that is passed to the parameter at
-   * (zero-based) index `paramN` in `callable`. If this is a positional argument, it must appear
-   * at an index, `argN`, in `call` which satisfies `paramN = mapping.getParamN(argN)`.
-   *
-   * `mapping` will be the identity for function calls, but not for method- or constructor calls,
-   * where the first parameter is `self` and the first positional argument is passed to the second positional parameter.
-   * Similarly for classmethod calls, where the first parameter is `cls`.
-   *
-   * NOT SUPPORTED: Keyword-only parameters.
-   */
-  Node getArg(CallNode call, ArgParamMapping mapping, CallableValue callable, int paramN) {
-    connects(call, callable) and
-    (
-      // positional argument
-      exists(int argN |
-        paramN = mapping.getParamN(argN) and
-        result = TCfgNode(call.getArg(argN))
-      )
-      or
-      // keyword argument
-      // TODO: Since `getArgName` have no results for keyword-only parameters,
-      // these are currently not supported.
-      exists(Function f, string argName |
-        f = callable.getScope() and
-        f.getArgName(paramN) = argName and
-        result = TCfgNode(call.getArgByName(unbind_string(argName)))
-      )
-      or
-      // a synthesized argument passed to the starred parameter (at position -1)
-      callable.getScope().hasVarArg() and
-      paramN = -1 and
-      result = TPosOverflowNode(call, callable)
-      or
-      // a synthesized argument passed to the doubly starred parameter (at position -2)
-      callable.getScope().hasKwArg() and
-      paramN = -2 and
-      result = TKwOverflowNode(call, callable)
-      or
-      // argument unpacked from dict
-      exists(string name |
-        call_unpacks(call, mapping, callable, name, paramN) and
-        result = TKwUnpackedNode(call, callable, name)
-      )
-    )
-  }
-
-  /** Currently required in `getArg` in order to prevent a bad join. */
-  bindingset[result, s]
-  private string unbind_string(string s) { result <= s and s <= result }
-
-  /** Gets the control flow node that is passed as the `n`th overflow positional argument. */
-  ControlFlowNode getPositionalOverflowArg(CallNode call, CallableValue callable, int n) {
-    connects(call, callable) and
-    exists(Function f, int posCount, int argNr |
-      f = callable.getScope() and
-      f.hasVarArg() and
-      posCount = f.getPositionalParameterCount() and
-      result = call.getArg(argNr) and
-      argNr >= posCount and
-      argNr = posCount + n
-    )
-  }
-
-  /** Gets the control flow node that is passed as the overflow keyword argument with key `key`. */
-  ControlFlowNode getKeywordOverflowArg(CallNode call, CallableValue callable, string key) {
-    connects(call, callable) and
-    exists(Function f |
-      f = callable.getScope() and
-      f.hasKwArg() and
-      not exists(f.getArgByName(key)) and
-      result = call.getArgByName(key)
-    )
-  }
-
-  /**
-   * Holds if `call` unpacks a dictionary argument in order to pass it via `name`.
-   * It will then be passed to the parameter of `callable` at index `paramN`.
-   */
-  predicate call_unpacks(
-    CallNode call, ArgParamMapping mapping, CallableValue callable, string name, int paramN
-  ) {
-    connects(call, callable) and
-    exists(Function f |
-      f = callable.getScope() and
-      not exists(int argN | paramN = mapping.getParamN(argN) | exists(call.getArg(argN))) and // no positional argument available
-      name = f.getArgName(paramN) and
-      // not exists(call.getArgByName(name)) and // only matches keyword arguments not preceded by **
-      // TODO: make the below logic respect control flow splitting (by not going to the AST).
-      not call.getNode().getANamedArg().(Keyword).getArg() = name and // no keyword argument available
-      paramN >= 0 and
-      paramN < f.getPositionalParameterCount() + f.getKeywordOnlyParameterCount() and
-      exists(call.getNode().getKwargs()) // dict argument available
-    )
-  }
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
+  // TODO(call-graph): implement this!
+  none()
 }
-
-import ArgumentPassing
 
 /** A callable defined in library code, identified by a unique string. */
 abstract class LibraryCallable extends string {
@@ -287,92 +46,34 @@ abstract class LibraryCallable extends string {
   abstract ArgumentNode getACallback();
 }
 
-/**
- * IPA type for DataFlowCallable.
- *
- * A callable is either a function value, a class value, or a module (for enclosing `ModuleVariableNode`s).
- * A module has no calls.
- */
 newtype TDataFlowCallable =
-  TCallableValue(CallableValue callable) {
-    callable instanceof FunctionValue and
-    not callable.(FunctionValue).isLambda()
-    or
-    callable instanceof ClassValue
-  } or
-  TLambda(Function lambda) { lambda.isLambda() } or
+  // TODO(call-graph): implement this!
+  /** For enclosing `ModuleVariableNode`s -- don't actually have calls. */
   TModule(Module m) or
   TLibraryCallable(LibraryCallable callable)
 
 /** A callable. */
-class DataFlowCallable extends TDataFlowCallable {
+abstract class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
-  string toString() { result = "DataFlowCallable" }
-
-  /** Gets a call to this callable. */
-  CallNode getACall() { none() }
+  abstract string toString();
 
   /** Gets the scope of this callable */
-  Scope getScope() { none() }
+  abstract Scope getScope();
 
-  /** Gets the specified parameter of this callable */
-  NameNode getParameter(int n) { none() }
-
-  /** Gets the name of this callable. */
-  string getName() { none() }
-
-  /** Gets a callable value for this callable, if any. */
-  CallableValue getCallableValue() { none() }
+  /** Gets the parameter at position `ppos`, if any. */
+  abstract ParameterNode getParameter(ParameterPosition ppos);
 
   /** Gets the underlying library callable, if any. */
   LibraryCallable asLibraryCallable() { this = TLibraryCallable(result) }
 
-  Location getLocation() { none() }
+  /** Gets the location of this dataflow callable. */
+  abstract Location getLocation();
 }
 
-/** A class representing a callable value. */
-class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
-  CallableValue callable;
-
-  DataFlowCallableValue() { this = TCallableValue(callable) }
-
-  override string toString() { result = callable.toString() }
-
-  override CallNode getACall() { result = callable.getACall() }
-
-  override Scope getScope() { result = callable.getScope() }
-
-  override NameNode getParameter(int n) { result = getParameter(callable, n) }
-
-  override string getName() { result = callable.getName() }
-
-  override CallableValue getCallableValue() { result = callable }
-}
-
-/** A class representing a callable lambda. */
-class DataFlowLambda extends DataFlowCallable, TLambda {
-  Function lambda;
-
-  DataFlowLambda() { this = TLambda(lambda) }
-
-  override string toString() { result = lambda.toString() }
-
-  override CallNode getACall() { result = this.getCallableValue().getACall() }
-
-  override Scope getScope() { result = lambda.getEvaluatingScope() }
-
-  override NameNode getParameter(int n) { result = getParameter(this.getCallableValue(), n) }
-
-  override string getName() { result = "Lambda callable" }
-
-  override FunctionValue getCallableValue() {
-    result.getOrigin().getNode() = lambda.getDefinition()
-  }
-
-  Expr getDefinition() { result = lambda.getDefinition() }
-}
-
-/** A class representing the scope in which a `ModuleVariableNode` appears. */
+/**
+ * A module. This is not actually a callable, but we need this so a
+ * `ModuleVariableNode` have an enclosing callable.
+ */
 class DataFlowModuleScope extends DataFlowCallable, TModule {
   Module mod;
 
@@ -380,15 +81,11 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
 
   override string toString() { result = mod.toString() }
 
-  override CallNode getACall() { none() }
+  override Module getScope() { result = mod }
 
-  override Scope getScope() { result = mod }
+  override Location getLocation() { result = mod.getLocation() }
 
-  override NameNode getParameter(int n) { none() }
-
-  override string getName() { result = mod.getName() }
-
-  override CallableValue getCallableValue() { none() }
+  override ParameterNode getParameter(ParameterPosition ppos) { none() }
 }
 
 class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
@@ -398,66 +95,36 @@ class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
 
   override string toString() { result = callable.toString() }
 
-  override CallNode getACall() { result = callable.getACall().getNode() }
-
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   ArgumentNode getACallback() { result = callable.getACallback() }
 
   override Scope getScope() { none() }
 
-  override NameNode getParameter(int n) { none() }
-
-  override string getName() { result = callable }
+  override ParameterNode getParameter(ParameterPosition ppos) { none() }
 
   override LibraryCallable asLibraryCallable() { result = callable }
+
+  override Location getLocation() { none() }
 }
 
-/**
- * IPA type for DataFlowCall.
- *
- * Calls corresponding to `CallNode`s are either to callable values or to classes.
- * The latter is directed to the callable corresponding to the `__init__` method of the class.
- *
- * An `__init__` method can also be called directly, so that the callable can be targeted by
- * different types of calls. In that case, the parameter mappings will be different,
- * as the class call will synthesize an argument node to be mapped to the `self` parameter.
- *
- * A call corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
- *
- * TODO: Add `TClassMethodCall` mapping `cls` appropriately.
- */
 newtype TDataFlowCall =
-  /**
-   * Includes function calls, method calls, class calls and library calls.
-   * All these will be associated with a `CallNode`.
-   */
-  TNormalCall(CallNode call) or
-  /**
-   * Includes calls to special methods.
-   * These will be associated with a `SpecialMethodCallNode`.
-   */
-  TSpecialCall(SpecialMethodCallNode special) or
+  // TODO(call-graph): implement this!
+  MkDataFlowCall() or
   /** A synthesized call inside a summarized callable */
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
-
-/** A call found in the program source (as opposed to a synthesised summary call). */
-class TExtractedDataFlowCall = TSpecialCall or TNormalCall;
 
 /** A call that is taken into account by the global data flow computation. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
-  /** Get the callable to which this call goes, if such exists. */
+  /** Get the callable to which this call goes. */
   abstract DataFlowCallable getCallable();
 
-  /**
-   * Gets the argument to this call that will be sent
-   * to the `n`th parameter of the callable, if any.
-   */
-  abstract Node getArg(int n);
+  /** Gets the argument at position `apos`, if any. */
+  abstract ArgumentNode getArgument(ArgumentPosition apos);
 
   /** Get the control flow node representing this call, if any. */
   abstract ControlFlowNode getNode();
@@ -483,130 +150,10 @@ abstract class DataFlowCall extends TDataFlowCall {
 }
 
 /** A call found in the program source (as opposed to a synthesised call). */
-abstract class ExtractedDataFlowCall extends DataFlowCall, TExtractedDataFlowCall {
-  final override Location getLocation() { result = this.getNode().getLocation() }
+abstract class ExtractedDataFlowCall extends DataFlowCall {
+  ExtractedDataFlowCall() { exists(this.getNode()) }
 
-  abstract override DataFlowCallable getCallable();
-
-  abstract override Node getArg(int n);
-
-  abstract override ControlFlowNode getNode();
-}
-
-/** A call associated with a `CallNode`. */
-class NormalCall extends ExtractedDataFlowCall, TNormalCall {
-  CallNode call;
-
-  NormalCall() { this = TNormalCall(call) }
-
-  override string toString() { result = call.toString() }
-
-  abstract override Node getArg(int n);
-
-  override CallNode getNode() { result = call }
-
-  abstract override DataFlowCallable getCallable();
-
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
-}
-
-/**
- * A call to a function.
- * This excludes calls to bound methods, classes, and special methods.
- * Bound method calls and class calls insert an argument for the explicit
- * `self` parameter, and special method calls have special argument passing.
- */
-class FunctionCall extends NormalCall {
-  DataFlowCallableValue callable;
-
-  FunctionCall() {
-    call = any(FunctionValue f).getAFunctionCall() and
-    call = callable.getACall()
-  }
-
-  override Node getArg(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
-
-  override DataFlowCallable getCallable() { result = callable }
-}
-
-/** A call to a lambda. */
-class LambdaCall extends NormalCall {
-  DataFlowLambda callable;
-
-  LambdaCall() {
-    call = callable.getACall() and
-    callable = TLambda(any(Function f))
-  }
-
-  override Node getArg(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
-
-  override DataFlowCallable getCallable() { result = callable }
-}
-
-/**
- * Represents a call to a bound method call.
- * The node representing the instance is inserted as argument to the `self` parameter.
- */
-class MethodCall extends NormalCall {
-  FunctionValue bm;
-
-  MethodCall() { call = bm.getAMethodCall() }
-
-  private CallableValue getCallableValue() { result = bm }
-
-  override Node getArg(int n) {
-    n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
-    or
-    n = 0 and result = TCfgNode(call.getFunction().(AttrNode).getObject())
-  }
-
-  override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
-}
-
-/**
- * Represents a call to a class.
- * The pre-update node for the call is inserted as argument to the `self` parameter.
- * That makes the call node be the post-update node holding the value of the object
- * after the constructor has run.
- */
-class ClassCall extends NormalCall {
-  ClassValue c;
-
-  ClassCall() {
-    not c.isAbsent() and
-    call = c.getACall()
-  }
-
-  private CallableValue getCallableValue() { c.getScope().getInitMethod() = result.getScope() }
-
-  override Node getArg(int n) {
-    n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
-    or
-    n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
-  }
-
-  override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
-}
-
-/** A call to a special method. */
-class SpecialCall extends ExtractedDataFlowCall, TSpecialCall {
-  SpecialMethodCallNode special;
-
-  SpecialCall() { this = TSpecialCall(special) }
-
-  override string toString() { result = special.toString() }
-
-  override Node getArg(int n) { result = TCfgNode(special.(SpecialMethod::Potential).getArg(n)) }
-
-  override ControlFlowNode getNode() { result = special }
-
-  override DataFlowCallable getCallable() {
-    result = TCallableValue(special.getResolvedSpecialMethod())
-  }
-
-  override DataFlowCallable getEnclosingCallable() {
-    result.getScope() = special.getNode().getScope()
-  }
+  override Location getLocation() { result = this.getNode().getLocation() }
 }
 
 /**
@@ -617,27 +164,42 @@ class SpecialCall extends ExtractedDataFlowCall, TSpecialCall {
  * We hope to lift this restriction in the future and include all potential calls to summaries
  * in this class.
  */
-class LibraryCall extends NormalCall {
+class LibraryCall extends DataFlowCall {
   LibraryCall() {
-    // TODO: share this with `resolvedCall`
-    not (
-      call = any(DataFlowCallableValue cv).getACall()
-      or
-      call = any(DataFlowLambda l).getACall()
-      or
-      // TODO: this should be covered by `DataFlowCallableValue`, but a `ClassValue` is not a `CallableValue`.
-      call = any(ClassValue c).getACall()
-    )
+    // TODO(call-graph): implement this!
+    none()
   }
 
-  // TODO: Implement Python calling convention?
-  override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
+  override string toString() {
+    // TODO(call-graph): implement this!
+    none()
+  }
 
   // We cannot refer to a `LibraryCallable` here,
   // as that could in turn refer to type tracking.
   // This call will be tied to a `LibraryCallable` via
   // `getViableCallabe` when the global data flow is assembled.
   override DataFlowCallable getCallable() { none() }
+
+  override ArgumentNode getArgument(ArgumentPosition apos) {
+    // TODO(call-graph): implement this!
+    none()
+  }
+
+  override ControlFlowNode getNode() {
+    // TODO(call-graph): implement this!
+    none()
+  }
+
+  override DataFlowCallable getEnclosingCallable() {
+    // TODO(call-graph): implement this!
+    none()
+  }
+
+  override Location getLocation() {
+    // TODO(call-graph): implement this!
+    none()
+  }
 }
 
 /**
@@ -663,7 +225,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 
   override DataFlowCallable getCallable() { none() }
 
-  override Node getArg(int n) { none() }
+  override ArgumentNode getArgument(ArgumentPosition apos) { none() }
 
   override ControlFlowNode getNode() { none() }
 
@@ -681,22 +243,22 @@ abstract class ParameterNodeImpl extends Node {
 
   /**
    * Holds if this node is the parameter of callable `c` at the
-   * (zero-based) index `i`.
+   * position `ppos`.
    */
-  abstract predicate isParameterOf(DataFlowCallable c, int i);
+  abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos);
 }
 
 /** A parameter for a library callable with a flow summary. */
 class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
   private FlowSummaryImpl::Public::SummarizedCallable sc;
-  private int pos;
+  private ParameterPosition pos;
 
   SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
 
   override Parameter getParameter() { none() }
 
-  override predicate isParameterOf(DataFlowCallable c, int i) {
-    sc = c.asLibraryCallable() and i = pos
+  override predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
+    sc = c.asLibraryCallable() and ppos = pos
   }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
