@@ -756,11 +756,20 @@ private predicate indirectExprNodeShouldBeIndirectOperand(IndirectOperand node, 
   )
 }
 
+private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, Expr e) {
+  exists(CallInstruction call |
+    call.getStaticCallTarget() instanceof Constructor and
+    e = call.getConvertedResultExpression() and
+    call.getThisArgumentOperand() = node.getAddressOperand()
+  )
+}
+
 /** Holds if `node` should be an instruction node that maps `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeInstruction(Node node, Expr e) {
   e = node.asInstruction().getConvertedResultExpression() and
   not exprNodeShouldBeOperand(_, e) and
-  not exprNodeShouldBeIndirectOperand(_, e, _)
+  not exprNodeShouldBeIndirectOperand(_, e, _) and
+  not exprNodeShouldBeIndirectOutNode(_, e)
 }
 
 /** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */
@@ -864,6 +873,16 @@ private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase, 
   }
 
   final override string toStringImpl() { result = super.toStringImpl() }
+}
+
+private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgumentOutNode {
+  IndirectArgumentOutExprNode() { exprNodeShouldBeIndirectOutNode(this, _) }
+
+  final override Expr getConvertedExpr() { exprNodeShouldBeIndirectOutNode(this, result) }
+
+  final override Expr getExpr() { result = this.getConvertedExpr() }
+
+  final override string toStringImpl() { result = this.getConvertedExpr().toString() }
 }
 
 /**
