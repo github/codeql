@@ -1188,7 +1188,7 @@ open class KotlinFileExtractor(
                             id
 
                 val extReceiver = f.extensionReceiverParameter
-                val fParameters = (overriddenAttributes?.valueParameters ?: f.valueParameters) + listOfNotNull(extReceiver)
+                val fParameters = listOfNotNull(extReceiver) + (overriddenAttributes?.valueParameters ?: f.valueParameters)
                 val paramTypes = fParameters.mapIndexed { i, vp ->
                     extractValueParameter(vp, id, i, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
                 }
