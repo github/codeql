@@ -28,10 +28,8 @@ abstract class Transmitted extends Expr { }
 class NWConnectionSend extends Transmitted {
   NWConnectionSend() {
     // `content` arg to `NWConnection.send` is a sink
-    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "NWConnection" and
-      c.getAMember() = f and
-      f.getName() = "send(content:contentContext:isComplete:completion:)" and
+    exists(MethodDecl f, CallExpr call |
+      f.hasQualifiedName("NWConnection", "send(content:contentContext:isComplete:completion:)") and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
     )
@@ -46,10 +44,8 @@ class Url extends Transmitted {
   Url() {
     // `string` arg in `URL.init` is a sink
     // (we assume here that the URL goes on to be used in a network operation)
-    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "URL" and
-      c.getAMember() = f and
-      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
+    exists(MethodDecl f, CallExpr call |
+      f.hasQualifiedName("URL", ["init(string:)", "init(string:relativeTo:)"]) and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
     )
