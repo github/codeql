@@ -25,9 +25,10 @@ where
   // removing duplications of the same path, but different flow-labels.
   sink =
     min(DataFlow::PathNode otherSink |
-      config.hasFlowPath(any(DataFlow::PathNode s | s.getNode() = source.getNode()), otherSink)
+      config.hasFlowPath(any(DataFlow::PathNode s | s.getNode() = sourceNode), otherSink) and
+      otherSink.getNode() = sink.getNode()
     |
       otherSink order by otherSink.getState()
     )
-select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, "This code execution depends on a $@.", sourceNode,
   "user-provided value"
