@@ -1231,7 +1231,7 @@ open class KotlinUsesExtractor(
     fun getInnermostWildcardSupppressionAnnotation(d: IrDeclaration) =
         getWildcardSuppressionDirective(d) ?:
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
-        d.parents.filterIsInstance<IrAnnotationContainer>().firstNotNullOfOrNull { getWildcardSuppressionDirective(it) } ?:
+        d.parents.filterIsInstance<IrAnnotationContainer>().mapNotNull { getWildcardSuppressionDirective(it) }.firstOrNull() ?:
         false
 
     /**
