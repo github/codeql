@@ -12,5 +12,5 @@ func testProtobuf() {
 	query.Description = password
 
 	log.Println(query.GetDescription()) // NOT OK
-	log.Println(query.GetId()) // OK
+	log.Println(query.GetId())          // OK
 }
