@@ -60,21 +60,21 @@ string getPossibleContentName() {
   result = any(DataFlowPublic::AttrRef a).getAttributeName()
 }
 
-/**
- * Gets a callable for the call where `nodeFrom` is used as the `i`'th argument.
- *
- * Helper predicate to avoid bad join order experienced in `callStep`.
- * This happened when `isParameterOf` was joined _before_ `getCallable`.
- */
-pragma[nomagic]
-private DataFlowPrivate::DataFlowCallable getCallableForArgument(
-  DataFlowPublic::ExtractedArgumentNode nodeFrom, int i
-) {
-  exists(DataFlowPrivate::ExtractedDataFlowCall call |
-    nodeFrom.extractedArgumentOf(call, i) and
-    result = call.getCallable()
-  )
-}
+// /**
+//  * Gets a callable for the call where `nodeFrom` is used as the `i`'th argument.
+//  *
+//  * Helper predicate to avoid bad join order experienced in `callStep`.
+//  * This happened when `isParameterOf` was joined _before_ `getCallable`.
+//  */
+// pragma[nomagic]
+// private DataFlowPrivate::DataFlowCallable getCallableForArgument(
+//   DataFlowPublic::ExtractedArgumentNode nodeFrom, int i
+// ) {
+//   exists(DataFlowPrivate::ExtractedDataFlowCall call |
+//     nodeFrom.extractedArgumentOf(call, i) and
+//     result = call.getCallable()
+//   )
+// }
 
 /**
  * Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call.
@@ -84,11 +84,13 @@ private DataFlowPrivate::DataFlowCallable getCallableForArgument(
  * methods is done using API graphs (which uses type tracking).
  */
 predicate callStep(DataFlowPublic::ArgumentNode nodeFrom, DataFlowPrivate::ParameterNodeImpl nodeTo) {
-  // TODO: Support special methods?
-  exists(DataFlowPrivate::DataFlowCallable callable, int i |
-    callable = getCallableForArgument(nodeFrom, i) and
-    nodeTo.isParameterOf(callable, i)
-  )
+  // TODO(call-graph): implement this!
+  none()
+  // // TODO: Support special methods?
+  // exists(DataFlowPrivate::DataFlowCallable callable, int i |
+  //   callable = getCallableForArgument(nodeFrom, i) and
+  //   nodeTo.isParameterOf(callable, i)
+  // )
 }
 
 /** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */

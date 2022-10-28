@@ -61,11 +61,11 @@ bindingset[c, rk]
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
 
 /**
- * Gets the type of the `i`th parameter in a synthesized call that targets a
- * callback of type `t`.
+ * Gets the type of the parameter matching arguments at position `pos` in a
+ * synthesized call that targets a callback of type `t`.
  */
-bindingset[t, i]
-DataFlowType getCallbackParameterType(DataFlowType t, int i) { any() }
+bindingset[t, pos]
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { any() }
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
@@ -213,16 +213,20 @@ module ParsePositions {
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 ArgumentPosition parseParamBody(string s) {
-  exists(int i |
-    ParsePositions::isParsedParameterPosition(s, i) and
-    result.isPositional(i)
-  )
+  none()
+  // TODO(call-graph): implement this!
+  // exists(int i |
+  //   ParsePositions::isParsedParameterPosition(s, i) and
+  //   result.isPositional(i)
+  // )
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 ParameterPosition parseArgBody(string s) {
-  exists(int i |
-    ParsePositions::isParsedArgumentPosition(s, i) and
-    result.isPositional(i)
-  )
+  none()
+  // TODO(call-graph): implement this!
+  // exists(int i |
+  //   ParsePositions::isParsedArgumentPosition(s, i) and
+  //   result.isPositional(i)
+  // )
 }
