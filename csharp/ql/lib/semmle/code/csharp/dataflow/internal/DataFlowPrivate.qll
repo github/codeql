@@ -2246,7 +2246,7 @@ string parameterQualifiedTypeNamesToString(DotNet::Callable c) {
 }
 
 /**
- * A module containing predicates related to generating models as data.
+ * A module containing predicates related to generating MaD models.
  */
 module Csv {
   /** Holds if the summary should apply for all overrides of `c`. */

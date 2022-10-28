@@ -5,7 +5,7 @@
 import csharp
 import DataFlow::PathGraph
 import semmle.code.csharp.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "ExternalFlow" }

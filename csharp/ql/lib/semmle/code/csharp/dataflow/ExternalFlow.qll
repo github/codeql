@@ -1,7 +1,8 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with flow models specified in CSV format.
+ * Provides classes and predicates for dealing with MaD flow models specified
+ * in data extensions and CSV format.
  *
  * The CSV specification has the following columns:
  * - Sources:
@@ -380,7 +381,7 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 }
 
 /**
- * Holds if CSV framework coverage of `namespace` is `n` api endpoints of the
+ * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
  * kind `(kind, part)`.
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
@@ -412,8 +413,8 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
   )
 }
 
-/** Provides a query predicate to check the CSV data for validation errors. */
-module CsvValidation {
+/** Provides a query predicate to check the MaD models for validation errors. */
+module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, string part |
       sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
@@ -536,7 +537,7 @@ module CsvValidation {
     )
   }
 
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
+  /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
@@ -709,7 +710,7 @@ predicate hasSummary(Callable c, boolean generated) { summaryElement(c, _, _, _,
 cached
 private module Cached {
   /**
-   * Holds if `node` is specified as a source with the given kind in a CSV flow
+   * Holds if `node` is specified as a source with the given kind in a MaD flow
    * model.
    */
   cached
@@ -718,7 +719,7 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` is specified as a sink with the given kind in a CSV flow
+   * Holds if `node` is specified as a sink with the given kind in a MaD flow
    * model.
    */
   cached
