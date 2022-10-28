@@ -474,7 +474,7 @@ ActionControllerClass getAssociatedControllerClass(ErbFile f) {
 // TODO: improve layout support, e.g. for `layout` method
 // https://guides.rubyonrails.org/layouts_and_rendering.html
 /**
- * Holds if `templatesFile` is a viable file "belonging" to the given
+ * Holds if `templateFile` is a viable file "belonging" to the given
  * `ActionControllerControllerClass`, according to Rails conventions.
  *
  * This handles mappings between controllers in `app/controllers/`, and
