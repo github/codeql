@@ -19,6 +19,17 @@ class ApplyExpr extends Generated::ApplyExpr {
   /** Gets the method qualifier, if this is applying a method */
   Expr getQualifier() { none() }
 
+  /**
+   * Gets the argument that has corresponding parameter name `paramName` (if
+   * any). If this call does not have a static target, there will be no result.
+   */
+  final Argument getArgumentByParamName(string paramName) {
+    exists(int arg |
+      this.getStaticTarget().getParam(pragma[only_bind_into](arg)).getName() = paramName and
+      this.getArgument(pragma[only_bind_into](arg)) = result
+    )
+  }
+
   override string toString() {
     result = "call to " + this.getStaticTarget().toString()
     or

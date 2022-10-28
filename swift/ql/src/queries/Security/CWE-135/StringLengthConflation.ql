@@ -94,9 +94,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
    * that sink. We actually want to report incorrect flow states.
    */
   predicate isSinkImpl(DataFlow::Node node, string flowstate) {
-    exists(
-      AbstractFunctionDecl funcDecl, CallExpr call, string funcName, string paramName, int arg
-    |
+    exists(AbstractFunctionDecl funcDecl, CallExpr call, string funcName, string paramName |
       (
         // arguments to method calls...
         exists(string className, ClassOrStructDecl c |
@@ -166,8 +164,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       ) and
       // match up `funcName`, `paramName`, `arg`, `node`.
       funcDecl.getName() = funcName and
-      funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr()
+      call.getArgumentByParamName(paramName).getExpr() = node.asExpr()
     )
   }
 

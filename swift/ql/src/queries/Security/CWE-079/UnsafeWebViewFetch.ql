@@ -26,10 +26,7 @@ class Sink extends DataFlow::Node {
   Expr baseUrl;
 
   Sink() {
-    exists(
-      MethodDecl funcDecl, CallExpr call, string className, string funcName, string paramName,
-      int arg, int baseUrlArg
-    |
+    exists(MethodDecl funcDecl, CallExpr call, string className, string funcName, string paramName |
       // arguments to method calls...
       (
         // `loadHTMLString`
@@ -50,11 +47,9 @@ class Sink extends DataFlow::Node {
       call.getStaticTarget() = funcDecl and
       // match up `funcName`, `paramName`, `arg`, `node`.
       funcDecl.hasQualifiedName(className, funcName) and
-      funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this.asExpr() and
+      call.getArgumentByParamName(paramName).getExpr() = this.asExpr() and
       // match up `baseURLArg`
-      funcDecl.getParam(pragma[only_bind_into](baseUrlArg)).getName() = "baseURL" and
-      call.getArgument(pragma[only_bind_into](baseUrlArg)).getExpr() = baseUrl
+      call.getArgumentByParamName("baseURL").getExpr() = baseUrl
     )
   }
 
