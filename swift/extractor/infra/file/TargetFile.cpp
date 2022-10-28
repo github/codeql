@@ -36,11 +36,7 @@ void ensureParentDir(const fs::path& path) {
 fs::path initPath(const std::filesystem::path& target, const std::filesystem::path& dir) {
   fs::path ret{dir};
   assert(!target.empty() && "target must be a non-empty path");
-  if (target.is_absolute()) {
-    ret += target;
-  } else {
-    ret /= target;
-  }
+  ret /= target.relative_path();
   ensureParentDir(ret);
   return ret;
 }

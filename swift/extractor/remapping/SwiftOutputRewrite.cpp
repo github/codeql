@@ -21,7 +21,7 @@ static std::optional<fs::path> rewriteOutputFileMap(const fs::path& scratchDir,
                                                     const fs::path& outputFileMapPath,
                                                     const std::vector<fs::path>& inputs,
                                                     PathRemapping& remapping) {
-  auto newMapPath = scratchDir / outputFileMapPath;
+  auto newMapPath = scratchDir / outputFileMapPath.relative_path();
 
   // TODO: do not assume absolute path for the second parameter
   auto outputMapOrError = swift::OutputFileMap::loadFromPath(outputFileMapPath.c_str(), "");
@@ -41,8 +41,8 @@ static std::optional<fs::path> rewriteOutputFileMap(const fs::path& scratchDir,
     auto& newMap = newOutputMap.getOrCreateOutputMapForInput(key.c_str());
     newMap.copyFrom(*oldMap);
     for (auto& entry : newMap) {
-      auto oldPath = entry.getSecond();
-      auto newPath = scratchDir / oldPath;
+      fs::path oldPath = entry.getSecond();
+      auto newPath = scratchDir / oldPath.relative_path();
       entry.getSecond() = newPath;
       remapping[oldPath] = newPath;
     }
@@ -91,7 +91,7 @@ PathRemapping rewriteOutputsInPlace(const fs::path& scratchDir, std::vector<std:
   for (size_t i = 0; i < CLIArgs.size(); i++) {
     if (pathRewriteOptions.count(CLIArgs[i])) {
       fs::path oldPath = CLIArgs[i + 1];
-      auto newPath = scratchDir / oldPath;
+      auto newPath = scratchDir / oldPath.relative_path();
       CLIArgs[++i] = newPath.string();
       newLocations.push_back(newPath);
 
