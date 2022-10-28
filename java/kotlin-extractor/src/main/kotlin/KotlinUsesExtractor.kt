@@ -980,7 +980,7 @@ open class KotlinUsesExtractor(
 
     private fun addJavaLoweringArgumentWildcards(p: IrTypeParameter, t: IrTypeArgument, addByDefault: Boolean, javaType: JavaType?): IrTypeArgument =
         (t as? IrTypeProjection)?.let {
-            val newAddByDefault = getWildcardSuppressionDirective(it.type)?.let { b -> !b } ?: addByDefault
+            val newAddByDefault = getWildcardSuppressionDirective(it.type)?.not() ?: addByDefault
             val newBase = addJavaLoweringWildcards(it.type, newAddByDefault, javaType)
             // Note javaVariance == null means we don't have a Java type to conform to -- for example if this is a Kotlin source definition.
             val javaVariance = javaType?.let { jType ->
@@ -1015,7 +1015,7 @@ open class KotlinUsesExtractor(
 
     fun addJavaLoweringWildcards(t: IrType, addByDefault: Boolean, javaType: JavaType?): IrType =
         (t as? IrSimpleType)?.let {
-            val newAddByDefault = getWildcardSuppressionDirective(t)?.let { b -> !b } ?: addByDefault
+            val newAddByDefault = getWildcardSuppressionDirective(t)?.not() ?: addByDefault
             val typeParams = it.classOrNull?.owner?.typeParameters ?: return t
             val newArgs = typeParams.zip(it.arguments).mapIndexed { idx, pair ->
                 addJavaLoweringArgumentWildcards(
