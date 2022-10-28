@@ -311,14 +311,6 @@ private class ActionControllerRenderToCall extends ActionControllerContextCall, 
   ActionControllerRenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
 }
 
-/** A call to `html_safe` from within a controller. */
-private class ActionControllerHtmlSafeCall extends HtmlSafeCallImpl {
-  ActionControllerHtmlSafeCall() {
-    this.getMethodName() = "html_safe" and
-    this.getEnclosingModule() instanceof ActionControllerControllerClass
-  }
-}
-
 /** A call to `html_escape` from within a controller. */
 private class ActionControllerHtmlEscapeCall extends HtmlEscapeCallImpl {
   ActionControllerHtmlEscapeCall() {

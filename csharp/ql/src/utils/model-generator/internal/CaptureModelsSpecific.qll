@@ -131,7 +131,7 @@ private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, Param
 }
 
 /**
- * Gets the CSV string represention of the the return node `node`.
+ * Gets the CSV string representation of the the return node `node`.
  */
 string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
   if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind

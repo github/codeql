@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.IdentityExpr
 
-class ParenExprBase extends Synth::TParenExpr, IdentityExpr {
-  override string getAPrimaryQlClass() { result = "ParenExpr" }
+module Generated {
+  class ParenExpr extends Synth::TParenExpr, IdentityExpr {
+    override string getAPrimaryQlClass() { result = "ParenExpr" }
+  }
 }

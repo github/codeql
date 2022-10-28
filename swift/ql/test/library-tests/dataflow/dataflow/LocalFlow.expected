@@ -184,3 +184,11 @@
 | test.swift:247:9:247:9 | [post] self | test.swift:246:5:248:5 | self[return] |
 | test.swift:247:9:247:9 | self | test.swift:246:5:248:5 | self[return] |
 | test.swift:252:23:252:23 | value | test.swift:252:23:252:23 | WriteDef |
+| test.swift:263:9:263:9 | WriteDef | test.swift:264:15:264:15 | x |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:263:9:263:9 | WriteDef |
+| test.swift:264:15:264:15 | x | test.swift:264:15:264:16 | ...! |
+| test.swift:264:15:264:15 | x | test.swift:266:15:266:15 | x |
+| test.swift:266:15:266:15 | x | test.swift:266:15:266:16 | ...? |
+| test.swift:266:15:266:15 | x | test.swift:267:15:267:15 | x |
+| test.swift:266:15:266:25 | call to signum() | test.swift:266:15:266:25 | OptionalEvaluationExpr |
+| test.swift:267:15:267:15 | x | test.swift:268:16:268:16 | x |

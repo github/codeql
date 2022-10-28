@@ -3,15 +3,26 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class DynamicTypeExprBase extends Synth::TDynamicTypeExpr, Expr {
-  override string getAPrimaryQlClass() { result = "DynamicTypeExpr" }
+module Generated {
+  class DynamicTypeExpr extends Synth::TDynamicTypeExpr, Expr {
+    override string getAPrimaryQlClass() { result = "DynamicTypeExpr" }
 
-  Expr getImmediateBase() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertDynamicTypeExprToRaw(this)
-            .(Raw::DynamicTypeExpr)
-            .getBase())
+    /**
+     * Gets the base of this dynamic type expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateBase() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertDynamicTypeExprToRaw(this)
+              .(Raw::DynamicTypeExpr)
+              .getBase())
+    }
+
+    /**
+     * Gets the base of this dynamic type expression.
+     */
+    final Expr getBase() { result = getImmediateBase().resolve() }
   }
-
-  final Expr getBase() { result = getImmediateBase().resolve() }
 }

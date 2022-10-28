@@ -3,13 +3,18 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
-class MagicIdentifierLiteralExprBase extends Synth::TMagicIdentifierLiteralExpr, BuiltinLiteralExpr {
-  override string getAPrimaryQlClass() { result = "MagicIdentifierLiteralExpr" }
+module Generated {
+  class MagicIdentifierLiteralExpr extends Synth::TMagicIdentifierLiteralExpr, BuiltinLiteralExpr {
+    override string getAPrimaryQlClass() { result = "MagicIdentifierLiteralExpr" }
 
-  string getKind() {
-    result =
-      Synth::convertMagicIdentifierLiteralExprToRaw(this)
-          .(Raw::MagicIdentifierLiteralExpr)
-          .getKind()
+    /**
+     * Gets the kind of this magic identifier literal expression.
+     */
+    string getKind() {
+      result =
+        Synth::convertMagicIdentifierLiteralExprToRaw(this)
+            .(Raw::MagicIdentifierLiteralExpr)
+            .getKind()
+    }
   }
 }

@@ -3,7 +3,9 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class PropertyWrapperValuePlaceholderExprBase extends Synth::TPropertyWrapperValuePlaceholderExpr,
-  Expr {
-  override string getAPrimaryQlClass() { result = "PropertyWrapperValuePlaceholderExpr" }
+module Generated {
+  class PropertyWrapperValuePlaceholderExpr extends Synth::TPropertyWrapperValuePlaceholderExpr,
+    Expr {
+    override string getAPrimaryQlClass() { result = "PropertyWrapperValuePlaceholderExpr" }
+  }
 }

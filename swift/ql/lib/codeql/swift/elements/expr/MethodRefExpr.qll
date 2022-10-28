@@ -5,7 +5,7 @@ private import codeql.swift.elements.decl.AbstractFunctionDecl
 private import codeql.swift.generated.Raw
 private import codeql.swift.generated.Synth
 
-class MethodRefExpr extends MethodRefExprBase {
+class MethodRefExpr extends Generated::MethodRefExpr {
   override string toString() { result = "." + this.getMember().toString() }
 
   override Expr getImmediateBase() {

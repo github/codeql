@@ -25,13 +25,13 @@ module ReflectedXss {
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
   class HttpResponseSink extends Sink instanceof Http::ResponseSendArgument {
-    HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(this)) }
+    HttpResponseSink() { not exists(getAXssSafeHeaderDefinition(this)) }
   }
 
   /**
-   * Gets a HeaderDefinition that defines a non-html content-type for `send`.
+   * DEPRECATED: Gets a HeaderDefinition that defines a non-html content-type for `send`.
    */
-  Http::HeaderDefinition getANonHtmlHeaderDefinition(Http::ResponseSendArgument send) {
+  deprecated Http::HeaderDefinition getANonHtmlHeaderDefinition(Http::ResponseSendArgument send) {
     exists(Http::RouteHandler h |
       send.getRouteHandler() = h and
       result = nonHtmlContentTypeHeader(h)
@@ -42,11 +42,47 @@ module ReflectedXss {
   }
 
   /**
-   * Holds if `h` may send a response with a content type other than HTML.
+   * DEPRECATED: Holds if `h` may send a response with a content type other than HTML.
    */
-  Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
+  deprecated Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
     result = h.getAResponseHeader("content-type") and
     not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  }
+
+  /**
+   * Gets a HeaderDefinition that defines a XSS safe content-type for `send`.
+   */
+  Http::HeaderDefinition getAXssSafeHeaderDefinition(Http::ResponseSendArgument send) {
+    exists(Http::RouteHandler h |
+      send.getRouteHandler() = h and
+      result = xssSafeContentTypeHeader(h)
+    |
+      // The HeaderDefinition affects a response sent at `send`.
+      headerAffects(result, send)
+    )
+  }
+
+  /**
+   * Gets a content-type that may lead to javascript code being executed in the browser.
+   * ref: https://portswigger.net/web-security/cross-site-scripting/cheat-sheet#content-types
+   */
+  string xssUnsafeContentType() {
+    result =
+      [
+        "text/html", "application/xhtml+xml", "application/xml", "text/xml", "image/svg+xml",
+        "text/xsl", "application/vnd.wap.xhtml+xml", "text/rdf", "application/rdf+xml",
+        "application/mathml+xml", "text/vtt", "text/cache-manifest"
+      ]
+  }
+
+  /**
+   * Holds if `h` may send a response with a content type that is safe for XSS.
+   */
+  Http::HeaderDefinition xssSafeContentTypeHeader(Http::RouteHandler h) {
+    result = h.getAResponseHeader("content-type") and
+    not exists(string tp | result.defines("content-type", tp) |
+      tp.toLowerCase().matches(xssUnsafeContentType() + "%")
+    )
   }
 
   /**
@@ -61,6 +97,7 @@ module ReflectedXss {
       // There is no dominating header, and `header` is non-local.
       not isLocalHeaderDefinition(header) and
       not exists(Http::HeaderDefinition dominatingHeader |
+        dominatingHeader.getAHeaderName() = "content-type" and
         dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
       )
     )

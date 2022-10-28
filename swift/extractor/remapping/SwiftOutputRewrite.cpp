@@ -1,8 +1,6 @@
 #include "swift/extractor/remapping/SwiftOutputRewrite.h"
 
 #include <llvm/ADT/SmallString.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
 #include <swift/Basic/OutputFileMap.h>
 #include <swift/Basic/Platform.h>
 #include <unistd.h>
@@ -10,60 +8,60 @@
 #include <optional>
 #include <iostream>
 
+#include "swift/extractor/infra/file/PathHash.h"
+
+namespace fs = std::filesystem;
+
+namespace codeql {
+
 // Creates a copy of the output file map and updates remapping table in place
 // It does not change the original map file as it is depended upon by the original compiler
 // Returns path to the newly created output file map on success, or None in a case of failure
-static std::optional<std::string> rewriteOutputFileMap(
-    const std::string& scratchDir,
-    const std::string& outputFileMapPath,
-    const std::vector<std::string>& inputs,
-    std::unordered_map<std::string, std::string>& remapping) {
-  auto newMapPath = scratchDir + '/' + outputFileMapPath;
+static std::optional<fs::path> rewriteOutputFileMap(const fs::path& scratchDir,
+                                                    const fs::path& outputFileMapPath,
+                                                    const std::vector<fs::path>& inputs,
+                                                    PathRemapping& remapping) {
+  auto newMapPath = scratchDir / outputFileMapPath.relative_path();
 
   // TODO: do not assume absolute path for the second parameter
-  auto outputMapOrError = swift::OutputFileMap::loadFromPath(outputFileMapPath, "");
+  auto outputMapOrError = swift::OutputFileMap::loadFromPath(outputFileMapPath.c_str(), "");
   if (!outputMapOrError) {
-    std::cerr << "Cannot load output map: '" << outputFileMapPath << "'\n";
+    std::cerr << "Cannot load output map " << outputFileMapPath << "\n";
     return std::nullopt;
   }
   auto oldOutputMap = outputMapOrError.get();
   swift::OutputFileMap newOutputMap;
   std::vector<llvm::StringRef> keys;
   for (auto& key : inputs) {
-    auto oldMap = oldOutputMap.getOutputMapForInput(key);
+    auto oldMap = oldOutputMap.getOutputMapForInput(key.c_str());
     if (!oldMap) {
       continue;
     }
-    keys.push_back(key);
-    auto& newMap = newOutputMap.getOrCreateOutputMapForInput(key);
+    keys.push_back(key.c_str());
+    auto& newMap = newOutputMap.getOrCreateOutputMapForInput(key.c_str());
     newMap.copyFrom(*oldMap);
     for (auto& entry : newMap) {
-      auto oldPath = entry.getSecond();
-      auto newPath = scratchDir + '/' + oldPath;
+      fs::path oldPath = entry.getSecond();
+      auto newPath = scratchDir / oldPath.relative_path();
       entry.getSecond() = newPath;
       remapping[oldPath] = newPath;
     }
   }
   std::error_code ec;
-  llvm::SmallString<PATH_MAX> filepath(newMapPath);
-  llvm::StringRef parent = llvm::sys::path::parent_path(filepath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(parent)) {
-    std::cerr << "Cannot create relocated output map dir: '" << parent.str()
-              << "': " << ec.message() << "\n";
+  fs::create_directories(newMapPath.parent_path(), ec);
+  if (ec) {
+    std::cerr << "Cannot create relocated output map dir " << newMapPath.parent_path() << ": "
+              << ec.message() << "\n";
     return std::nullopt;
   }
 
-  llvm::raw_fd_ostream fd(newMapPath, ec, llvm::sys::fs::OF_None);
+  llvm::raw_fd_ostream fd(newMapPath.c_str(), ec, llvm::sys::fs::OF_None);
   newOutputMap.write(fd, keys);
   return newMapPath;
 }
 
-namespace codeql {
-
-std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
-    const std::string& scratchDir,
-    std::vector<std::string>& CLIArgs) {
-  std::unordered_map<std::string, std::string> remapping;
+PathRemapping rewriteOutputsInPlace(const fs::path& scratchDir, std::vector<std::string>& CLIArgs) {
+  PathRemapping remapping;
 
   // TODO: handle filelists?
   const std::unordered_set<std::string> pathRewriteOptions({
@@ -86,15 +84,15 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
       {"-supplementary-output-file-map", "-output-file-map"});
 
   std::vector<size_t> outputFileMapIndexes;
-  std::vector<std::string> maybeInput;
+  std::vector<fs::path> maybeInput;
   std::string targetTriple;
 
-  std::vector<std::string> newLocations;
+  std::vector<fs::path> newLocations;
   for (size_t i = 0; i < CLIArgs.size(); i++) {
     if (pathRewriteOptions.count(CLIArgs[i])) {
-      auto oldPath = CLIArgs[i + 1];
-      auto newPath = scratchDir + '/' + oldPath;
-      CLIArgs[++i] = newPath;
+      fs::path oldPath = CLIArgs[i + 1];
+      auto newPath = scratchDir / oldPath.relative_path();
+      CLIArgs[++i] = newPath.string();
       newLocations.push_back(newPath);
 
       remapping[oldPath] = newPath;
@@ -116,7 +114,7 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
     auto oldPath = CLIArgs[index];
     auto maybeNewPath = rewriteOutputFileMap(scratchDir, oldPath, maybeInput, remapping);
     if (maybeNewPath) {
-      auto newPath = maybeNewPath.value();
+      const auto& newPath = maybeNewPath.value();
       CLIArgs[index] = newPath;
       remapping[oldPath] = newPath;
     }
@@ -125,13 +123,13 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
   return remapping;
 }
 
-void ensureDirectoriesForNewPathsExist(
-    const std::unordered_map<std::string, std::string>& remapping) {
+void ensureDirectoriesForNewPathsExist(const PathRemapping& remapping) {
   for (auto& [_, newPath] : remapping) {
-    llvm::SmallString<PATH_MAX> filepath(newPath);
-    llvm::StringRef parent = llvm::sys::path::parent_path(filepath);
-    if (std::error_code ec = llvm::sys::fs::create_directories(parent)) {
-      std::cerr << "Cannot create redirected directory: " << ec.message() << "\n";
+    std::error_code ec;
+    fs::create_directories(newPath.parent_path(), ec);
+    if (ec) {
+      std::cerr << "Cannot create redirected directory " << newPath.parent_path() << ": "
+                << ec.message() << "\n";
     }
   }
 }

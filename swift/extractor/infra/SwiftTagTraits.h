@@ -2,10 +2,10 @@
 
 // This file implements the mapping needed by the API defined in the TrapTagTraits.h, so that
 // TrapTagOf/TrapLabelOf provide the tags/labels for specific swift entity types.
+#include <filesystem>
 #include <swift/AST/ASTVisitor.h>
 #include "swift/extractor/trap/TrapTagTraits.h"
 #include "swift/extractor/trap/generated/TrapTags.h"
-#include "swift/extractor/infra/FilePath.h"
 
 namespace codeql {
 
@@ -68,7 +68,7 @@ MAP_TYPE_TO_TAG(swift::TypeBase, TypeTag);
 OVERRIDE_TAG(FuncDecl, ConcreteFuncDeclTag);
 OVERRIDE_TAG(VarDecl, ConcreteVarDeclTag);
 
-MAP_TYPE_TO_TAG(FilePath, DbFileTag);
+MAP_TYPE_TO_TAG(std::filesystem::path, DbFileTag);
 
 #undef MAP_TAG
 #undef MAP_SUBTAG
