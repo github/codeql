@@ -128,53 +128,69 @@ private module Frameworks {
 }
 
 /**
+ * DEPRECATED: Define source models as data extensions instead.
+ *
  * A unit class for adding additional source model rows.
  *
  * Extend this class to add additional source definitions.
  */
-class SourceModelCsv extends Unit {
+deprecated class SourceModelCsv = SourceModelCsvInternal;
+
+private class SourceModelCsvInternal extends Unit {
   /** Holds if `row` specifies a source definition. */
   abstract predicate row(string row);
 }
 
 /**
+ * DEPRECATED: Define sink models as data extensions instead.
+ *
  * A unit class for adding additional sink model rows.
  *
  * Extend this class to add additional sink definitions.
  */
-class SinkModelCsv extends Unit {
+deprecated class SinkModelCsv = SinkModelCsvInternal;
+
+private class SinkModelCsvInternal extends Unit {
   /** Holds if `row` specifies a sink definition. */
   abstract predicate row(string row);
 }
 
 /**
+ * DEPRECATED: Define summary models as data extensions instead.
+ *
  * A unit class for adding additional summary model rows.
  *
  * Extend this class to add additional flow summary definitions.
  */
-class SummaryModelCsv extends Unit {
+deprecated class SummaryModelCsv = SummaryModelCsvInternal;
+
+private class SummaryModelCsvInternal extends Unit {
   /** Holds if `row` specifies a summary definition. */
   abstract predicate row(string row);
 }
 
 /**
- * A unit class for adding negative summary model rows.
+ * DEPRECATED: Define negative summary models as data extensions instead.
  *
- * Extend this class to add additional flow summary definitions.
+ * A unit class for adding additional negative summary model rows.
+ *
+ * Extend this class to add additional negative summary definitions.
  */
-class NegativeSummaryModelCsv extends Unit {
+deprecated class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
+
+private class NegativeSummaryModelCsvInternal extends Unit {
   /** Holds if `row` specifies a negative summary definition. */
   abstract predicate row(string row);
 }
 
-private predicate sourceModelInternal(string row) { any(SourceModelCsv s).row(row) }
+private predicate sourceModelInternal(string row) { any(SourceModelCsvInternal s).row(row) }
 
-private predicate summaryModelInternal(string row) { any(SummaryModelCsv s).row(row) }
+private predicate summaryModelInternal(string row) { any(SummaryModelCsvInternal s).row(row) }
 
-private predicate sinkModelInternal(string row) { any(SinkModelCsv s).row(row) }
+private predicate sinkModelInternal(string row) { any(SinkModelCsvInternal s).row(row) }
 
 private predicate negativeSummaryModelInternal(string row) {
-  any(NegativeSummaryModelCsv s).row(row)
+  any(NegativeSummaryModelCsvInternal s).row(row)
 }
 
 /**
