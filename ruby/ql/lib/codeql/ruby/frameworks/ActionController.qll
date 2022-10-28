@@ -523,7 +523,7 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
   }
 
   private string getWithValueText() {
-    result = getKeywordArgument("with").getConstantValue().getSymbol()
+    result = this.getKeywordArgument("with").getConstantValue().getSymbol()
   }
 
   // Calls without `with: :exception` can allow for bypassing CSRF protection

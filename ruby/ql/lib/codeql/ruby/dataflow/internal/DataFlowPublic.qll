@@ -56,7 +56,7 @@ class Node extends TNode {
   Node getASuccessor() { localFlowStep(this, result) }
 
   /** Gets the constant value of this expression, if any. */
-  ConstantValue getConstantValue() { result = asExpr().getExpr().getConstantValue() }
+  ConstantValue getConstantValue() { result = this.asExpr().getExpr().getConstantValue() }
 
   /**
    * Gets the callable corresponding to this block, lambda expression, or call to `proc` or `lambda`.
@@ -160,7 +160,7 @@ class CallNode extends LocalSourceNode, ExprNode {
  * ```
  */
 class SetterCallNode extends CallNode {
-  SetterCallNode() { asExpr().getExpr() instanceof SetterMethodCall }
+  SetterCallNode() { this.asExpr().getExpr() instanceof SetterMethodCall }
 
   /**
    * Gets the name of the method being called without the trailing `=`. For example, in the following
@@ -170,7 +170,9 @@ class SetterCallNode extends CallNode {
    * foo.value = 1
    * ```
    */
-  final string getTargetName() { result = asExpr().getExpr().(SetterMethodCall).getTargetName() }
+  final string getTargetName() {
+    result = this.asExpr().getExpr().(SetterMethodCall).getTargetName()
+  }
 }
 
 /**
@@ -958,32 +960,34 @@ class CallableNode extends ExprNode {
   }
 
   /** Gets the `n`th positional parameter. */
-  ParameterNode getParameter(int n) { getParameterPosition(result).isPositional(n) }
+  ParameterNode getParameter(int n) { this.getParameterPosition(result).isPositional(n) }
 
   /** Gets the keyword parameter of the given name. */
-  ParameterNode getKeywordParameter(string name) { getParameterPosition(result).isKeyword(name) }
+  ParameterNode getKeywordParameter(string name) {
+    this.getParameterPosition(result).isKeyword(name)
+  }
 
   /** Gets the `self` parameter of this callable, if any. */
-  ParameterNode getSelfParameter() { getParameterPosition(result).isSelf() }
+  ParameterNode getSelfParameter() { this.getParameterPosition(result).isSelf() }
 
   /**
    * Gets the `hash-splat` parameter. This is a synthetic parameter holding
    * a hash object with entries for each keyword argument passed to the function.
    */
-  ParameterNode getHashSplatParameter() { getParameterPosition(result).isHashSplat() }
+  ParameterNode getHashSplatParameter() { this.getParameterPosition(result).isHashSplat() }
 
   /**
    * Gets the block parameter of this method, if any.
    */
-  ParameterNode getBlockParameter() { getParameterPosition(result).isBlock() }
+  ParameterNode getBlockParameter() { this.getParameterPosition(result).isBlock() }
 
   /**
    * Gets a `yield` in this method call or `.call` on the block parameter.
    */
   CallNode getABlockCall() {
-    hasYieldCall(getBlockParameter(), result)
+    hasYieldCall(this.getBlockParameter(), result)
     or
-    result = getBlockParameter().getAMethodCall("call")
+    result = this.getBlockParameter().getAMethodCall("call")
   }
 
   /**
@@ -1011,7 +1015,7 @@ class MethodNode extends CallableNode {
   MethodBase asMethod() { result = this.asCallableAstNode() }
 
   /** Gets the name of this method. */
-  string getMethodName() { result = asMethod().getName() }
+  string getMethodName() { result = this.asMethod().getName() }
 }
 
 /**
@@ -1032,14 +1036,14 @@ class BlockNode extends CallableNode {
  * This node simply provides convenient access to the key and value as data flow nodes.
  */
 class PairNode extends ExprNode {
-  PairNode() { getExprNode() instanceof CfgNodes::ExprNodes::PairCfgNode }
+  PairNode() { this.getExprNode() instanceof CfgNodes::ExprNodes::PairCfgNode }
 
   /**
    * Holds if this pair is of form `key => value` or `key: value`.
    */
   predicate hasKeyAndValue(Node key, Node value) {
     exists(CfgNodes::ExprNodes::PairCfgNode n |
-      getExprNode() = n and
+      this.getExprNode() = n and
       key = TExprNode(n.getKey()) and
       value = TExprNode(n.getValue())
     )
