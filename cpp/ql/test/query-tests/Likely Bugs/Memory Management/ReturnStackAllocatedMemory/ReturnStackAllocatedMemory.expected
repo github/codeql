@@ -2,22 +2,22 @@ edges
 | test.cpp:17:9:17:11 | & ... | test.cpp:17:9:17:11 | StoreValue |
 | test.cpp:17:10:17:11 | Unary | test.cpp:17:9:17:11 | & ... |
 | test.cpp:17:10:17:11 | mc | test.cpp:17:10:17:11 | Unary |
-| test.cpp:47:9:47:10 | (reference to) | test.cpp:47:9:47:10 | StoreValue |
-| test.cpp:47:9:47:10 | Unary | test.cpp:47:9:47:10 | (reference to) |
+| test.cpp:47:9:47:10 | Unary | test.cpp:47:9:47:10 | mc |
+| test.cpp:47:9:47:10 | mc | test.cpp:47:9:47:10 | StoreValue |
 | test.cpp:47:9:47:10 | mc | test.cpp:47:9:47:10 | Unary |
 | test.cpp:54:9:54:15 | & ... | test.cpp:54:9:54:15 | StoreValue |
 | test.cpp:54:11:54:12 | Unary | test.cpp:54:14:54:14 | a |
 | test.cpp:54:11:54:12 | mc | test.cpp:54:11:54:12 | Unary |
 | test.cpp:54:14:54:14 | Unary | test.cpp:54:9:54:15 | & ... |
 | test.cpp:54:14:54:14 | a | test.cpp:54:14:54:14 | Unary |
-| test.cpp:112:9:112:11 | Unary | test.cpp:112:9:112:11 | array to pointer conversion |
+| test.cpp:112:9:112:11 | Unary | test.cpp:112:9:112:11 | arr |
+| test.cpp:112:9:112:11 | arr | test.cpp:112:9:112:11 | StoreValue |
 | test.cpp:112:9:112:11 | arr | test.cpp:112:9:112:11 | Unary |
-| test.cpp:112:9:112:11 | array to pointer conversion | test.cpp:112:9:112:11 | StoreValue |
 | test.cpp:119:9:119:18 | & ... | test.cpp:119:9:119:18 | StoreValue |
 | test.cpp:119:11:119:13 | Left | test.cpp:119:11:119:17 | access to array |
-| test.cpp:119:11:119:13 | Unary | test.cpp:119:11:119:13 | array to pointer conversion |
+| test.cpp:119:11:119:13 | Unary | test.cpp:119:11:119:13 | arr |
+| test.cpp:119:11:119:13 | arr | test.cpp:119:11:119:13 | Left |
 | test.cpp:119:11:119:13 | arr | test.cpp:119:11:119:13 | Unary |
-| test.cpp:119:11:119:13 | array to pointer conversion | test.cpp:119:11:119:13 | Left |
 | test.cpp:119:11:119:17 | Unary | test.cpp:119:9:119:18 | & ... |
 | test.cpp:119:11:119:17 | access to array | test.cpp:119:11:119:17 | Unary |
 nodes
@@ -25,9 +25,9 @@ nodes
 | test.cpp:17:9:17:11 | StoreValue | semmle.label | StoreValue |
 | test.cpp:17:10:17:11 | Unary | semmle.label | Unary |
 | test.cpp:17:10:17:11 | mc | semmle.label | mc |
-| test.cpp:47:9:47:10 | (reference to) | semmle.label | (reference to) |
 | test.cpp:47:9:47:10 | StoreValue | semmle.label | StoreValue |
 | test.cpp:47:9:47:10 | Unary | semmle.label | Unary |
+| test.cpp:47:9:47:10 | mc | semmle.label | mc |
 | test.cpp:47:9:47:10 | mc | semmle.label | mc |
 | test.cpp:54:9:54:15 | & ... | semmle.label | & ... |
 | test.cpp:54:9:54:15 | StoreValue | semmle.label | StoreValue |
@@ -38,13 +38,13 @@ nodes
 | test.cpp:112:9:112:11 | StoreValue | semmle.label | StoreValue |
 | test.cpp:112:9:112:11 | Unary | semmle.label | Unary |
 | test.cpp:112:9:112:11 | arr | semmle.label | arr |
-| test.cpp:112:9:112:11 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:112:9:112:11 | arr | semmle.label | arr |
 | test.cpp:119:9:119:18 | & ... | semmle.label | & ... |
 | test.cpp:119:9:119:18 | StoreValue | semmle.label | StoreValue |
 | test.cpp:119:11:119:13 | Left | semmle.label | Left |
 | test.cpp:119:11:119:13 | Unary | semmle.label | Unary |
 | test.cpp:119:11:119:13 | arr | semmle.label | arr |
-| test.cpp:119:11:119:13 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:119:11:119:13 | arr | semmle.label | arr |
 | test.cpp:119:11:119:17 | Unary | semmle.label | Unary |
 | test.cpp:119:11:119:17 | access to array | semmle.label | access to array |
 #select

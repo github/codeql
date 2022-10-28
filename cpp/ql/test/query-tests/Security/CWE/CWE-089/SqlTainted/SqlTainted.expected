@@ -1,6 +1,6 @@
 edges
-| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | array to pointer conversion |
-| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | array to pointer conversion |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
 | test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
 | test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
 | test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
@@ -15,8 +15,8 @@ subpaths
 nodes
 | test.c:15:20:15:23 | argv | semmle.label | argv |
 | test.c:15:20:15:23 | argv | semmle.label | argv |
-| test.c:21:18:21:23 | array to pointer conversion | semmle.label | array to pointer conversion |
-| test.c:21:18:21:23 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.c:21:18:21:23 | query1 | semmle.label | query1 |
+| test.c:21:18:21:23 | query1 | semmle.label | query1 |
 | test.c:21:18:21:23 | query1 | semmle.label | query1 |
 | test.c:21:18:21:23 | query1 | semmle.label | query1 |
 | test.c:21:18:21:23 | query1 | semmle.label | query1 |
