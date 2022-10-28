@@ -8,7 +8,6 @@
  */
 
 import go
-private import semmle.go.frameworks.Protobuf
 
 /**
  * Provides a data-flow tracking configuration for reasoning about
