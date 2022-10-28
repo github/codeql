@@ -28,10 +28,8 @@ abstract class Stored extends DataFlow::Node { }
 class CoreDataStore extends Stored {
   CoreDataStore() {
     // `content` arg to `NWConnection.send` is a sink
-    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "NSManagedObject" and
-      c.getAMember() = f and
-      f.getName() = ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"] and
+    exists(MethodDecl f, CallExpr call |
+      f.hasQualifiedName("NSManagedObject", ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this.asExpr()
     )

@@ -50,7 +50,7 @@ whose methods use only primitive types and strings:
 <sample src="RmiSafeRemoteObject.java" />
 
 <p>
-The next example shows how to set a deserilization filter for a remote object:
+The next example shows how to set a deserialization filter for a remote object:
 </p>
 <sample src="RmiRemoteObjectWithFilter.java" />
 

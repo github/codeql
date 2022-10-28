@@ -12,7 +12,7 @@ package com.github.codeql
  * `shortName` is a Java primitive name (e.g. "int"), a class short name with Java-style type arguments ("InnerClass<E>" or
  * "OuterClass<ConcreteArgument>" or "OtherClass<? extends Bound>") or an array ("componentShortName[]").
  */
-data class TypeResultGeneric<SignatureType,out LabelType: AnyDbType>(val id: Label<out LabelType>, val signature: SignatureType, val shortName: String) {
+data class TypeResultGeneric<SignatureType,out LabelType: AnyDbType>(val id: Label<out LabelType>, val signature: SignatureType?, val shortName: String) {
     fun <U: AnyDbType> cast(): TypeResultGeneric<SignatureType,U> {
         @Suppress("UNCHECKED_CAST")
         return this as TypeResultGeneric<SignatureType,U>

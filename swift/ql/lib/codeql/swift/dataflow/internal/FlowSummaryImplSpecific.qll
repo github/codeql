@@ -15,7 +15,7 @@ private import codeql.swift.controlflow.CfgNodes
 
 class SummarizedCallableBase = AbstractFunctionDecl;
 
-DataFlowCallable inject(SummarizedCallable c) { result = TDataFlowFunc(c) }
+DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition instanceParameterPosition() { result instanceof ThisArgumentPosition }
@@ -50,6 +50,9 @@ DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   any() // TODO once we have type pruning
 }
+
+/** Gets the type of synthetic global `sg`. */
+DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
 
 /**
  * Holds if an external flow summary exists for `c` with input specification

@@ -25,4 +25,4 @@ from SanGuard guard
 where
   not exists(TypeExpr t | t.getResolvedType().(ClassType).getDeclaration() = guard) and
   not guard.hasAnnotation("deprecated")
-select guard, "Guard class is not mentioned anywhere"
+select guard, "Guard class is not mentioned anywhere."

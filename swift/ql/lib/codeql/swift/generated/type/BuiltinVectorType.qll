@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinVectorTypeBase extends Synth::TBuiltinVectorType, BuiltinType {
-  override string getAPrimaryQlClass() { result = "BuiltinVectorType" }
+module Generated {
+  class BuiltinVectorType extends Synth::TBuiltinVectorType, BuiltinType {
+    override string getAPrimaryQlClass() { result = "BuiltinVectorType" }
+  }
 }

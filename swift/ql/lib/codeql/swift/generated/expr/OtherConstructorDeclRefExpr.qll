@@ -4,15 +4,26 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.ConstructorDecl
 import codeql.swift.elements.expr.Expr
 
-class OtherConstructorDeclRefExprBase extends Synth::TOtherConstructorDeclRefExpr, Expr {
-  override string getAPrimaryQlClass() { result = "OtherConstructorDeclRefExpr" }
+module Generated {
+  class OtherConstructorDeclRefExpr extends Synth::TOtherConstructorDeclRefExpr, Expr {
+    override string getAPrimaryQlClass() { result = "OtherConstructorDeclRefExpr" }
 
-  ConstructorDecl getImmediateConstructorDecl() {
-    result =
-      Synth::convertConstructorDeclFromRaw(Synth::convertOtherConstructorDeclRefExprToRaw(this)
-            .(Raw::OtherConstructorDeclRefExpr)
-            .getConstructorDecl())
+    /**
+     * Gets the constructor declaration of this other constructor declaration ref expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    ConstructorDecl getImmediateConstructorDecl() {
+      result =
+        Synth::convertConstructorDeclFromRaw(Synth::convertOtherConstructorDeclRefExprToRaw(this)
+              .(Raw::OtherConstructorDeclRefExpr)
+              .getConstructorDecl())
+    }
+
+    /**
+     * Gets the constructor declaration of this other constructor declaration ref expression.
+     */
+    final ConstructorDecl getConstructorDecl() { result = getImmediateConstructorDecl().resolve() }
   }
-
-  final ConstructorDecl getConstructorDecl() { result = getImmediateConstructorDecl().resolve() }
 }

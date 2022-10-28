@@ -59,8 +59,8 @@ predicate matchesEpsilon(RegExpTerm t) {
 /**
  * A lookahead/lookbehind that matches the empty string.
  */
-class EmptyPositiveSubPatttern extends RegExpSubPattern {
-  EmptyPositiveSubPatttern() {
+class EmptyPositiveSubPattern extends RegExpSubPattern {
+  EmptyPositiveSubPattern() {
     (
       this instanceof RegExpPositiveLookahead
       or
@@ -69,6 +69,9 @@ class EmptyPositiveSubPatttern extends RegExpSubPattern {
     matchesEpsilon(this.getOperand())
   }
 }
+
+/** DEPRECATED: Use `EmptyPositiveSubPattern` instead. */
+deprecated class EmptyPositiveSubPatttern = EmptyPositiveSubPattern;
 
 /**
  * A branch in a disjunction that is the root node in a literal, or a literal
@@ -133,7 +136,7 @@ private predicate isCanonicalTerm(RelevantRegExpTerm term, string str) {
 }
 
 /**
- * Gets a string reperesentation of the flags used with the regular expression.
+ * Gets a string representation of the flags used with the regular expression.
  * Only the flags that are relevant for the canonicalization are included.
  */
 string getCanonicalizationFlags(RegExpTerm root) {
@@ -334,7 +337,7 @@ private module CharacterClasses {
     )
   }
 
-  private string lowercaseLetter() { result = "abdcefghijklmnopqrstuvwxyz".charAt(_) }
+  private string lowercaseLetter() { result = "abcdefghijklmnopqrstuvwxyz".charAt(_) }
 
   private string upperCaseLetter() { result = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(_) }
 
@@ -697,9 +700,7 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     lbl = Epsilon() and q2 = Accept(getRoot(dollar))
   )
   or
-  exists(EmptyPositiveSubPatttern empty | q1 = before(empty) |
-    lbl = Epsilon() and q2 = after(empty)
-  )
+  exists(EmptyPositiveSubPattern empty | q1 = before(empty) | lbl = Epsilon() and q2 = after(empty))
 }
 
 /**
@@ -1028,7 +1029,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
    * as the suffix "X" will cause both the regular expressions to be rejected.
    *
    * The string `w` is repeated any number of times because it needs to be
-   * infinitely repeatedable for the attack to work.
+   * infinitely repeatable for the attack to work.
    * For the regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
    * using epsilon transitions. But any attempt at repeating `w` will end in a state that accepts all suffixes.
    */

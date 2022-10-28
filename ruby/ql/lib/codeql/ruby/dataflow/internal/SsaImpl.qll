@@ -64,7 +64,7 @@ predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
   i = -1
 }
 
-/** Holds if `bb` contains a caputured read of variable `v`. */
+/** Holds if `bb` contains a captured read of variable `v`. */
 pragma[noinline]
 private predicate hasCapturedVariableRead(Cfg::BasicBlock bb, LocalVariable v) {
   exists(LocalVariableReadAccess read |
@@ -74,7 +74,7 @@ private predicate hasCapturedVariableRead(Cfg::BasicBlock bb, LocalVariable v) {
   )
 }
 
-/** Holds if `bb` contains a caputured write to variable `v`. */
+/** Holds if `bb` contains a captured write to variable `v`. */
 pragma[noinline]
 private predicate writesCapturedVariable(Cfg::BasicBlock bb, LocalVariable v) {
   exists(LocalVariableWriteAccess write |

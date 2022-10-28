@@ -250,7 +250,7 @@ class TaintTrackingImplementation extends string {
   }
 
   /**
-   * Hold if taint flows to `src` to `(node, context, path, kind)` in a single step, labelled with `egdeLabel` with this configuration.
+   * Hold if taint flows to `src` to `(node, context, path, kind)` in a single step, labelled with `edgeLabel` with this configuration.
    * `edgeLabel` is purely informative.
    */
   predicate flowStep(

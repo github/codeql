@@ -17,6 +17,7 @@ private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
+private import semmle.code.cil.Ssa::Ssa as CilSsa
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallableImpl() }
@@ -177,6 +178,12 @@ predicate hasNodePath(ControlFlowReachabilityConfiguration conf, ExprNode n1, No
   )
 }
 
+/** Gets the CIL data-flow node for `node`, if any. */
+CIL::DataFlowNode asCilDataFlowNode(Node node) {
+  result = node.asParameter() or
+  result = node.asExpr()
+}
+
 /** Provides predicates related to local data flow. */
 module LocalFlow {
   private class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -281,15 +288,6 @@ module LocalFlow {
     }
   }
 
-  private CIL::DataFlowNode asCilDataFlowNode(Node node) {
-    result = node.asParameter() or
-    result = node.asExpr()
-  }
-
-  private predicate localFlowStepCil(Node nodeFrom, Node nodeTo) {
-    asCilDataFlowNode(nodeFrom).getALocalFlowSucc(asCilDataFlowNode(nodeTo), any(CIL::Untainted t))
-  }
-
   /**
    * An uncertain SSA definition. Either an uncertain explicit definition or an
    * uncertain qualifier definition.
@@ -341,7 +339,7 @@ module LocalFlow {
 
   /**
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
-   * SSA definition `def.
+   * SSA definition `def`.
    */
   predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     // Flow from SSA definition/parameter to first read
@@ -386,6 +384,76 @@ module LocalFlow {
     )
   }
 
+  private module CilFlow {
+    private import semmle.code.cil.internal.SsaImpl as CilSsaImpl
+
+    /**
+     * Holds if `nodeFrom` is a last node referencing SSA definition `def`, which
+     * can reach `next`.
+     */
+    private predicate localFlowCilSsaInput(
+      Node nodeFrom, CilSsa::Definition def, CilSsa::Definition next
+    ) {
+      exists(CIL::BasicBlock bb, int i | CilSsaImpl::lastRefBeforeRedef(def, bb, i, next) |
+        def.definesAt(_, bb, i) and
+        def = nodeFrom.(CilSsaDefinitionNode).getDefinition()
+        or
+        nodeFrom = TCilExprNode(bb.getNode(i).(CIL::ReadAccess))
+      )
+    }
+
+    /**
+     * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
+     * CIL SSA definition `def`.
+     */
+    private predicate localCilSsaFlowStep(CilSsa::Definition def, Node nodeFrom, Node nodeTo) {
+      // Flow into SSA definition
+      exists(CIL::VariableUpdate vu |
+        vu = def.getVariableUpdate() and
+        vu.getSource() = asCilDataFlowNode(nodeFrom) and
+        def = nodeTo.(CilSsaDefinitionNode).getDefinition()
+      )
+      or
+      // Flow from SSA definition to first read
+      def = nodeFrom.(CilSsaDefinitionNode).getDefinition() and
+      nodeTo = TCilExprNode(CilSsaImpl::getAFirstRead(def))
+      or
+      // Flow from read to next read
+      exists(CIL::ReadAccess readFrom, CIL::ReadAccess readTo |
+        CilSsaImpl::hasAdjacentReads(def, readFrom, readTo) and
+        nodeTo = TCilExprNode(readTo) and
+        nodeFrom = TCilExprNode(readFrom)
+      )
+      or
+      // Flow into phi node
+      exists(CilSsa::PhiNode phi |
+        localFlowCilSsaInput(nodeFrom, def, phi) and
+        phi = nodeTo.(CilSsaDefinitionNode).getDefinition() and
+        def = CilSsaImpl::getAPhiInput(phi)
+      )
+    }
+
+    private predicate localExactStep(CIL::DataFlowNode src, CIL::DataFlowNode sink) {
+      src = sink.(CIL::Opcodes::Dup).getAnOperand()
+      or
+      src = sink.(CIL::Conversion).getExpr()
+      or
+      src = sink.(CIL::WriteAccess).getExpr()
+      or
+      src = sink.(CIL::Method).getAnImplementation().getAnInstruction().(CIL::Return)
+      or
+      src = sink.(CIL::Return).getExpr()
+      or
+      src = sink.(CIL::ConditionalBranch).getAnOperand()
+    }
+
+    predicate localFlowStepCil(Node nodeFrom, Node nodeTo) {
+      localExactStep(asCilDataFlowNode(nodeFrom), asCilDataFlowNode(nodeTo))
+      or
+      localCilSsaFlowStep(_, nodeFrom, nodeTo)
+    }
+  }
+
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     exists(Ssa::Definition def |
       localSsaFlowStep(def, nodeFrom, nodeTo) and
@@ -398,7 +466,7 @@ module LocalFlow {
     or
     ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
-    localFlowStepCil(nodeFrom, nodeTo)
+    CilFlow::localFlowStepCil(nodeFrom, nodeTo)
   }
 
   /**
@@ -634,7 +702,7 @@ private predicate arrayStore(Expr e, Expr src, Expr a, boolean postUpdate) {
   e = a and
   postUpdate = false
   or
-  // Member initalizer, `new C { Array = { [i] = src } }`
+  // Member initializer, `new C { Array = { [i] = src } }`
   exists(MemberInitializer mi |
     mi = a.(ObjectInitializer).getAMemberInitializer() and
     mi.getLValue() instanceof ArrayAccess and
@@ -719,6 +787,7 @@ private module Cached {
       cfn.getElement() instanceof Expr
     } or
     TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
+    TCilSsaDefinitionNode(CilSsa::Definition def) or
     TSsaDefinitionNode(Ssa::Definition def) {
       // Handled by `TExplicitParameterNode` below
       not def.(Ssa::ExplicitDefinition).getADefinition() instanceof
@@ -865,6 +934,28 @@ predicate nodeIsHidden(Node n) {
   n instanceof ParamsArgumentNode
   or
   n.asExpr() = any(WithExpr we).getInitializer()
+}
+
+/** A CIL SSA definition, viewed as a node in a data flow graph. */
+class CilSsaDefinitionNode extends NodeImpl, TCilSsaDefinitionNode {
+  CilSsa::Definition def;
+
+  CilSsaDefinitionNode() { this = TCilSsaDefinitionNode(def) }
+
+  /** Gets the underlying SSA definition. */
+  CilSsa::Definition getDefinition() { result = def }
+
+  override DataFlowCallable getEnclosingCallableImpl() {
+    result.asCallable() = def.getBasicBlock().getFirstNode().getImplementation().getMethod()
+  }
+
+  override CIL::Type getTypeImpl() { result = def.getSourceVariable().getType() }
+
+  override ControlFlow::Node getControlFlowNodeImpl() { none() }
+
+  override Location getLocationImpl() { result = def.getBasicBlock().getLocation() }
+
+  override string toStringImpl() { result = def.toString() }
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -1581,6 +1672,8 @@ predicate jumpStep(Node pred, Node succ) {
     jrk.getTarget() = call.getATarget(_) and
     succ = getAnOutNode(call, jrk.getTargetReturnKind())
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
 }
 
 private class StoreStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -1945,8 +2038,8 @@ private module PostUpdateNodes {
     ExprPostUpdateNode() { this = TExprPostUpdateNode(cfn) }
 
     override ExprNode getPreUpdateNode() {
-      // For compund arguments, such as `m(b ? x : y)`, we want the leaf nodes
-      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compund argument,
+      // For compound arguments, such as `m(b ? x : y)`, we want the leaf nodes
+      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compound argument,
       // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
       // respectively.
       //

@@ -885,7 +885,7 @@ module TestOutput {
     /**
      * Gets a string used to resolve ties in node and edge ordering.
      */
-    string getOrderDisambuigation() { result = "" }
+    string getOrderDisambiguation() { result = "" }
   }
 
   query predicate nodes(RelevantNode n, string attr, string val) {
@@ -900,7 +900,7 @@ module TestOutput {
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
               l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString(),
-              p.getOrderDisambuigation()
+              p.getOrderDisambiguation()
           )
       ).toString()
   }
@@ -923,7 +923,7 @@ module TestOutput {
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
               l.getStartColumn(), l.getEndLine(), l.getEndColumn(), t.toString(), s.toString(),
-              s.getOrderDisambuigation()
+              s.getOrderDisambiguation()
           )
       ).toString()
   }

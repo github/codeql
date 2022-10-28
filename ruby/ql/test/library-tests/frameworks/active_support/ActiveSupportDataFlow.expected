@@ -136,6 +136,14 @@ edges
 | active_support.rb:191:34:191:34 | a :  | active_support.rb:191:7:191:35 | call to new :  |
 | active_support.rb:192:7:192:7 | x :  | active_support.rb:192:7:192:16 | call to to_param :  |
 | active_support.rb:192:7:192:16 | call to to_param :  | active_support.rb:193:8:193:8 | y |
+| active_support.rb:197:7:197:16 | call to source :  | active_support.rb:198:20:198:20 | a :  |
+| active_support.rb:198:7:198:21 | call to new :  | active_support.rb:199:7:199:7 | x :  |
+| active_support.rb:198:20:198:20 | a :  | active_support.rb:198:7:198:21 | call to new :  |
+| active_support.rb:199:7:199:7 | x :  | active_support.rb:199:7:199:17 | call to existence :  |
+| active_support.rb:199:7:199:17 | call to existence :  | active_support.rb:200:8:200:8 | y |
+| active_support.rb:199:7:199:17 | call to existence :  | active_support.rb:201:7:201:7 | y :  |
+| active_support.rb:201:7:201:7 | y :  | active_support.rb:201:7:201:17 | call to existence :  |
+| active_support.rb:201:7:201:17 | call to existence :  | active_support.rb:202:8:202:8 | z |
 nodes
 | active_support.rb:9:9:9:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:10:10:10:10 | x :  | semmle.label | x :  |
@@ -310,6 +318,15 @@ nodes
 | active_support.rb:192:7:192:7 | x :  | semmle.label | x :  |
 | active_support.rb:192:7:192:16 | call to to_param :  | semmle.label | call to to_param :  |
 | active_support.rb:193:8:193:8 | y | semmle.label | y |
+| active_support.rb:197:7:197:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:198:7:198:21 | call to new :  | semmle.label | call to new :  |
+| active_support.rb:198:20:198:20 | a :  | semmle.label | a :  |
+| active_support.rb:199:7:199:7 | x :  | semmle.label | x :  |
+| active_support.rb:199:7:199:17 | call to existence :  | semmle.label | call to existence :  |
+| active_support.rb:200:8:200:8 | y | semmle.label | y |
+| active_support.rb:201:7:201:7 | y :  | semmle.label | y :  |
+| active_support.rb:201:7:201:17 | call to existence :  | semmle.label | call to existence :  |
+| active_support.rb:202:8:202:8 | z | semmle.label | z |
 subpaths
 #select
 | active_support.rb:106:10:106:13 | ...[...] | active_support.rb:104:10:104:17 | call to source :  | active_support.rb:106:10:106:13 | ...[...] | $@ | active_support.rb:104:10:104:17 | call to source :  | call to source :  |

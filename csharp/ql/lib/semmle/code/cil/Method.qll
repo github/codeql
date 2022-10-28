@@ -270,7 +270,7 @@ class Setter extends Accessor {
  */
 class TrivialSetter extends Method {
   TrivialSetter() {
-    exists(MethodImplementation impl | impl = this.getImplementation() |
+    exists(MethodImplementation impl | impl = this.getAnImplementation() |
       impl.getInstruction(0) instanceof ThisAccess and
       impl.getInstruction(1).(ParameterReadAccess).getTarget().getIndex() = 1 and
       impl.getInstruction(2) instanceof FieldWriteAccess

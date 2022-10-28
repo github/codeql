@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
-class ArraySliceTypeBase extends Synth::TArraySliceType, UnarySyntaxSugarType {
-  override string getAPrimaryQlClass() { result = "ArraySliceType" }
+module Generated {
+  class ArraySliceType extends Synth::TArraySliceType, UnarySyntaxSugarType {
+    override string getAPrimaryQlClass() { result = "ArraySliceType" }
+  }
 }

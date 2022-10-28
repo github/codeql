@@ -1,3 +1,17 @@
+## 0.4.2
+
+### New Queries
+
+* Added a new query, `rb/non-constant-kernel-open`, to detect uses of Kernel.open and related methods with non-constant values.
+* Added a new query, `rb/sensitive-get-query`, to detect cases where sensitive data is read from the query parameters of an HTTP `GET` request.
+
+### Minor Analysis Improvements
+
+* HTTP response header and body writes via `ActionDispatch::Response` are now
+  recognized.
+* The `rb/path-injection` query now treats the `file:` argument of the Rails `render` method as a sink.
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
+
 ## 0.4.1
 
 ### Minor Analysis Improvements
@@ -23,7 +37,7 @@
 
 ### New Queries
 
-* Added a new query, `rb/log-inection`, to detect cases where a malicious user may be able to forge log entries.
+* Added a new query, `rb/log-injection`, to detect cases where a malicious user may be able to forge log entries.
 * Added a new query, `rb/incomplete-multi-character-sanitization`. The query
   finds string transformations that do not replace all occurrences of a
   multi-character substring.
@@ -119,7 +133,7 @@
 ### New Queries
 
 * A new query (`rb/request-forgery`) has been added. The query finds HTTP requests made with user-controlled URLs.
-* A new query (`rb/csrf-protection-disabled`) has been added. The query finds cases where cross-site forgery protection is explictly disabled.
+* A new query (`rb/csrf-protection-disabled`) has been added. The query finds cases where cross-site forgery protection is explicitly disabled.
 
 ### Query Metadata Changes
 

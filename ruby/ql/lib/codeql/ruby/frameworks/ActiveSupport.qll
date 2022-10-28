@@ -35,6 +35,8 @@ module ActiveSupport {
         }
 
         override DataFlow::Node getCode() { result = this.getReceiver() }
+
+        override predicate runsArbitraryCode() { none() }
       }
 
       /**
@@ -137,6 +139,25 @@ module ActiveSupport {
               .getMember(["Logger", "TaggedLogging"])
               .getAnInstantiation()
       }
+    }
+  }
+
+  /**
+   * Type summaries for extensions to the `Pathname` module.
+   */
+  private class PathnameTypeSummary extends ModelInput::TypeModelCsv {
+    override predicate row(string row) {
+      // package1;type1;package2;type2;path
+      // Pathname#existence : Pathname
+      row = ";Pathname;;Pathname;Method[existence].ReturnValue"
+    }
+  }
+
+  /** Taint flow summaries for extensions to the `Pathname` module. */
+  private class PathnameTaintSummary extends ModelInput::SummaryModelCsv {
+    override predicate row(string row) {
+      // Pathname#existence
+      row = ";Pathname;Method[existence];Argument[self];ReturnValue;taint"
     }
   }
 

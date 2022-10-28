@@ -209,7 +209,7 @@ private predicate aClassFile(Class c, File file) { c.getDefinitionLocation().get
 
 pragma[noopt]
 private predicate dependsOnFileSimple(MetricFile source, MetricFile dest) {
-  // class derives from classs
+  // class derives from another class
   exists(Class fromClass, Class toClass |
     aClassFile(fromClass, source) and
     fromClass.derivesFrom(toClass) and

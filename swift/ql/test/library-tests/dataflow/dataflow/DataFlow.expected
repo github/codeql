@@ -1,4 +1,5 @@
 edges
+| file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  |
 | file://:0:0:0:0 | self [a, x] :  | file://:0:0:0:0 | .a [x] :  |
 | file://:0:0:0:0 | self [x] :  | file://:0:0:0:0 | .x :  |
 | file://:0:0:0:0 | value :  | file://:0:0:0:0 | [post] self [x] :  |
@@ -98,10 +99,20 @@ edges
 | test.swift:219:13:219:15 | .a [x] :  | test.swift:219:13:219:17 | .x |
 | test.swift:225:14:225:21 | call to source() :  | test.swift:235:13:235:15 | .source_value |
 | test.swift:225:14:225:21 | call to source() :  | test.swift:238:13:238:15 | .source_value |
+| test.swift:259:12:259:19 | call to source() :  | test.swift:263:13:263:28 | call to optionalSource() :  |
+| test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:264:15:264:16 | ...! |
+| test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:266:15:266:16 | ...? :  |
+| test.swift:265:15:265:22 | call to source() :  | file://:0:0:0:0 | [summary param] this in signum() :  |
+| test.swift:265:15:265:22 | call to source() :  | test.swift:265:15:265:31 | call to signum() |
+| test.swift:266:15:266:16 | ...? :  | file://:0:0:0:0 | [summary param] this in signum() :  |
+| test.swift:266:15:266:16 | ...? :  | test.swift:266:15:266:25 | call to signum() :  |
+| test.swift:266:15:266:25 | call to signum() :  | test.swift:266:15:266:25 | OptionalEvaluationExpr |
 nodes
 | file://:0:0:0:0 | .a [x] :  | semmle.label | .a [x] :  |
 | file://:0:0:0:0 | .x :  | semmle.label | .x :  |
 | file://:0:0:0:0 | [post] self [x] :  | semmle.label | [post] self [x] :  |
+| file://:0:0:0:0 | [summary param] this in signum() :  | semmle.label | [summary param] this in signum() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | semmle.label | [summary] to write: return (return) in signum() :  |
 | file://:0:0:0:0 | self [a, x] :  | semmle.label | self [a, x] :  |
 | file://:0:0:0:0 | self [x] :  | semmle.label | self [x] :  |
 | file://:0:0:0:0 | value :  | semmle.label | value :  |
@@ -208,6 +219,14 @@ nodes
 | test.swift:225:14:225:21 | call to source() :  | semmle.label | call to source() :  |
 | test.swift:235:13:235:15 | .source_value | semmle.label | .source_value |
 | test.swift:238:13:238:15 | .source_value | semmle.label | .source_value |
+| test.swift:259:12:259:19 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:263:13:263:28 | call to optionalSource() :  | semmle.label | call to optionalSource() :  |
+| test.swift:264:15:264:16 | ...! | semmle.label | ...! |
+| test.swift:265:15:265:22 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:265:15:265:31 | call to signum() | semmle.label | call to signum() |
+| test.swift:266:15:266:16 | ...? :  | semmle.label | ...? :  |
+| test.swift:266:15:266:25 | OptionalEvaluationExpr | semmle.label | OptionalEvaluationExpr |
+| test.swift:266:15:266:25 | call to signum() :  | semmle.label | call to signum() :  |
 subpaths
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:65:1:70:1 | arg2[return] :  | test.swift:75:31:75:32 | [post] &... :  |
 | test.swift:114:19:114:19 | arg :  | test.swift:109:9:109:14 | arg :  | test.swift:110:12:110:12 | arg :  | test.swift:114:12:114:22 | call to ... :  |
@@ -234,6 +253,8 @@ subpaths
 | test.swift:218:11:218:18 | call to source() :  | test.swift:169:12:169:22 | value :  | test.swift:170:5:170:5 | [post] self [x] :  | test.swift:218:3:218:5 | [post] getter for .a [x] :  |
 | test.swift:219:13:219:13 | b [a, x] :  | test.swift:185:7:185:7 | self [a, x] :  | file://:0:0:0:0 | .a [x] :  | test.swift:219:13:219:15 | .a [x] :  |
 | test.swift:219:13:219:15 | .a [x] :  | test.swift:163:7:163:7 | self [x] :  | file://:0:0:0:0 | .x :  | test.swift:219:13:219:17 | .x |
+| test.swift:265:15:265:22 | call to source() :  | file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | test.swift:265:15:265:31 | call to signum() |
+| test.swift:266:15:266:16 | ...? :  | file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | test.swift:266:15:266:25 | call to signum() :  |
 #select
 | test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source() :  | test.swift:7:15:7:15 | t1 | result |
 | test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source() :  | test.swift:9:15:9:15 | t1 | result |
@@ -263,3 +284,6 @@ subpaths
 | test.swift:219:13:219:17 | .x | test.swift:218:11:218:18 | call to source() :  | test.swift:219:13:219:17 | .x | result |
 | test.swift:235:13:235:15 | .source_value | test.swift:225:14:225:21 | call to source() :  | test.swift:235:13:235:15 | .source_value | result |
 | test.swift:238:13:238:15 | .source_value | test.swift:225:14:225:21 | call to source() :  | test.swift:238:13:238:15 | .source_value | result |
+| test.swift:264:15:264:16 | ...! | test.swift:259:12:259:19 | call to source() :  | test.swift:264:15:264:16 | ...! | result |
+| test.swift:265:15:265:31 | call to signum() | test.swift:265:15:265:22 | call to source() :  | test.swift:265:15:265:31 | call to signum() | result |
+| test.swift:266:15:266:25 | OptionalEvaluationExpr | test.swift:259:12:259:19 | call to source() :  | test.swift:266:15:266:25 | OptionalEvaluationExpr | result |

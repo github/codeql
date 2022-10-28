@@ -1,3 +1,20 @@
+## 0.4.2
+
+### Deprecated APIs
+
+* Deprecated `ContextStartActivityMethod`. Use `StartActivityMethod` instead.
+
+### New Features
+
+* Added a new predicate, `hasIncompletePermissions`, in the `AndroidProviderXmlElement` class. This predicate detects if a provider element does not provide both read and write permissions.
+
+### Minor Analysis Improvements
+
+* Added support for common patterns involving `Stream.collect` and common collectors like `Collectors.toList()`.
+* The class `TypeVariable` now also extends `Modifiable`.
+* Added data flow steps for tainted Android intents that are sent to services and receivers.
+* Improved the data flow step for tainted Android intents that are sent to activities so that more cases are covered.
+
 ## 0.4.1
 
 ### Minor Analysis Improvements
@@ -33,7 +50,7 @@
 
 ### Minor Analysis Improvements
 
-* Added new sinks to the query `java/android/implict-pendingintents` to take into account the classes `androidx.core.app.NotificationManagerCompat` and `androidx.core.app.AlarmManagerCompat`.
+* Added new sinks to the query `java/android/implicit-pendingintents` to take into account the classes `androidx.core.app.NotificationManagerCompat` and `androidx.core.app.AlarmManagerCompat`.
 * Added new flow steps for `androidx.core.app.NotificationCompat` and its inner classes.
 * Added flow sinks, sources and summaries for the Kotlin standard library.
 * Added flow summary for `org.springframework.data.repository.CrudRepository.save()`.
@@ -106,7 +123,7 @@
 
 ### Minor Analysis Improvements
 
-* Added data-flow models for `java.util.Properites`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
+* Added data-flow models for `java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
 * Added `Modifier.isInline()`.
 * Removed Kotlin-specific database and QL structures for loops and `break`/`continue` statements. The Kotlin extractor was changed to reuse the Java structures for these constructs.
 * Added additional flow sources for uses of external storage on Android. 
@@ -247,7 +264,7 @@ Added a flow step for `String.valueOf` calls on tainted `android.text.Editable` 
 
 ### Minor Analysis Improvements
 
-* Added guard preconditon support for assertion methods for popular testing libraries (e.g. Junit 4, Junit 5, TestNG).
+* Added guard precondition support for assertion methods for popular testing libraries (e.g. Junit 4, Junit 5, TestNG).
 
 ## 0.0.13
 

@@ -29,6 +29,6 @@ edges
 | tst.js:17:11:17:11 | e | tst.js:17:11:17:17 | e.stack |
 | tst.js:17:11:17:11 | e | tst.js:17:11:17:17 | e.stack |
 #select
-| node.js:11:13:11:21 | err.stack | node.js:8:10:8:12 | err | node.js:11:13:11:21 | err.stack | $@ flows to this location and may be exposed to an external user. | node.js:8:10:8:12 | err | Stack trace information |
-| tst.js:7:13:7:13 | e | tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e | $@ flows to this location and may be exposed to an external user. | tst.js:6:12:6:12 | e | Stack trace information |
-| tst.js:17:11:17:17 | e.stack | tst.js:6:12:6:12 | e | tst.js:17:11:17:17 | e.stack | $@ flows to this location and may be exposed to an external user. | tst.js:6:12:6:12 | e | Stack trace information |
+| node.js:11:13:11:21 | err.stack | node.js:8:10:8:12 | err | node.js:11:13:11:21 | err.stack | This information exposed to the user depends on $@. | node.js:8:10:8:12 | err | stack trace information |
+| tst.js:7:13:7:13 | e | tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e | This information exposed to the user depends on $@. | tst.js:6:12:6:12 | e | stack trace information |
+| tst.js:17:11:17:17 | e.stack | tst.js:6:12:6:12 | e | tst.js:17:11:17:17 | e.stack | This information exposed to the user depends on $@. | tst.js:6:12:6:12 | e | stack trace information |

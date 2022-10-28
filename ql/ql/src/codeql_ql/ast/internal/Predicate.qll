@@ -157,7 +157,7 @@ private module Cached {
     )
   }
 
-  private predicate resolveBuildinPredicateCall(PredicateCall call, BuiltinClassless pred) {
+  private predicate resolveBuiltinPredicateCall(PredicateCall call, BuiltinClassless pred) {
     call.getNumberOfArguments() = pred.getArity() and
     call.getPredicateName() = pred.getName()
   }
@@ -167,7 +167,7 @@ private module Cached {
     resolvePredicateCall(c, p)
     or
     not resolvePredicateCall(c, _) and
-    resolveBuildinPredicateCall(c, p)
+    resolveBuiltinPredicateCall(c, p)
     or
     resolveMemberCall(c, p)
     or

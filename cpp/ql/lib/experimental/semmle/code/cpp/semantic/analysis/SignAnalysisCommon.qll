@@ -71,7 +71,7 @@ abstract class CustomSignDef extends SignDef {
  * Concrete implementations extend one of the following subclasses:
  * - `ConstantSignExpr`, for expressions with a compile-time constant value.
  * - `FlowSignExpr`, for expressions whose sign can be computed from the signs of their operands.
- * - `CustomsignExpr`, for expressions shose sign can be computed by a language-specific
+ * - `CustomsignExpr`, for expressions whose sign can be computed by a language-specific
  *   implementation.
  *
  * If the same expression matches more than one of the above subclasses, the sign is computed as

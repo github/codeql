@@ -34,10 +34,13 @@ class FaradayHttpRequest extends Http::Client::Request::Range, DataFlow::CallNod
         // one-off requests
         API::getTopLevelMember("Faraday"),
         // connection re-use
-        API::getTopLevelMember("Faraday").getInstance()
+        API::getTopLevelMember("Faraday").getInstance(),
+        // connection re-use with Faraday::Connection.new instantiation
+        API::getTopLevelMember("Faraday").getMember("Connection").getInstance()
       ] and
     requestNode =
-      connectionNode.getReturn(["get", "head", "delete", "post", "put", "patch", "trace"]) and
+      connectionNode
+          .getReturn(["get", "head", "delete", "post", "put", "patch", "trace", "run_request"]) and
     this = requestNode.asSource() and
     connectionUse = connectionNode.asSource()
   }
@@ -71,6 +74,7 @@ class FaradayHttpRequest extends Http::Client::Request::Range, DataFlow::CallNod
     )
   }
 
+  cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {

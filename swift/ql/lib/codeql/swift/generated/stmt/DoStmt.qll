@@ -4,12 +4,24 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.LabeledStmt
 
-class DoStmtBase extends Synth::TDoStmt, LabeledStmt {
-  override string getAPrimaryQlClass() { result = "DoStmt" }
+module Generated {
+  class DoStmt extends Synth::TDoStmt, LabeledStmt {
+    override string getAPrimaryQlClass() { result = "DoStmt" }
 
-  BraceStmt getImmediateBody() {
-    result = Synth::convertBraceStmtFromRaw(Synth::convertDoStmtToRaw(this).(Raw::DoStmt).getBody())
+    /**
+     * Gets the body of this do statement.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    BraceStmt getImmediateBody() {
+      result =
+        Synth::convertBraceStmtFromRaw(Synth::convertDoStmtToRaw(this).(Raw::DoStmt).getBody())
+    }
+
+    /**
+     * Gets the body of this do statement.
+     */
+    final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
-
-  final BraceStmt getBody() { result = getImmediateBody().resolve() }
 }

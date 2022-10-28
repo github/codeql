@@ -202,7 +202,7 @@ private predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, Stat
     //
     // We additionally require that the there exists another InfiniteRepetitionQuantifier `mid` on the path from `q` to itself.
     // This is done to avoid flagging regular expressions such as `/(a?)*b/` - that only has polynomial runtime, and is detected by `js/polynomial-redos`.
-    // The below code is therefore a heuritic, that only flags regular expressions such as `/(a*)*b/`,
+    // The below code is therefore a heuristic, that only flags regular expressions such as `/(a*)*b/`,
     // and does not flag regular expressions such as `/(a?b?)c/`, but the latter pattern is not used frequently.
     r1 = r2 and
     q1 = q2 and

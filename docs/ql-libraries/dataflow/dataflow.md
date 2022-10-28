@@ -294,8 +294,8 @@ through an additional step targeting a `PostUpdateNode`).
 
 It is recommended to introduce `PostUpdateNode`s for all `ArgumentNode`s (this
 can be skipped for immutable arguments), and all field qualifiers for both
-reads and stores. Note also that in the case of compund arguments, such as
-`b ? x : y`, it is recommented to have post-update nodes for `x` and `y` (and
+reads and stores. Note also that in the case of compound arguments, such as
+`b ? x : y`, it is recommended to have post-update nodes for `x` and `y` (and
 not the compound argument itself), and let `[post update] x` have both `x`
 and `b ? x : y` as pre-update nodes (and similarly for `[post update] y`).
 

@@ -252,3 +252,20 @@ func test_property_wrapper() {
     @DidSetSource var x = 42
     sink(arg: x) // $ MISSING: flow=243
 }
+
+func sink(opt: Int?) {}
+
+func optionalSource() -> Int? {
+    return source()
+}
+
+func test_optionals() {
+    let x = optionalSource()
+    sink(arg: x!) // $ flow=259
+    sink(arg: source().signum()) // $ flow=265
+    sink(opt: x?.signum()) // $ flow=259
+    sink(arg: x ?? 0) // $ MISSING: flow=259
+    if let y = x {
+        sink(arg: y) // $ MISSING: flow=259
+    }
+}
