@@ -691,7 +691,7 @@ open class KotlinFileExtractor(
                     null
             } ?: vp.type
             val javaType = (vp.parent as? IrFunction)?.let { getJavaCallable(it)?.let { jCallable -> getJavaValueParameterType(jCallable, idx) } }
-            val typeWithWildcards = addJavaLoweringWildcards(maybeAlteredType, !hasWildcardSuppressionAnnotation(vp), javaType)
+            val typeWithWildcards = addJavaLoweringWildcards(maybeAlteredType, !getInnermostWildcardSupppressionAnnotation(vp), javaType)
             val substitutedType = typeSubstitution?.let { it(typeWithWildcards, TypeContext.OTHER, pluginContext) } ?: typeWithWildcards
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {

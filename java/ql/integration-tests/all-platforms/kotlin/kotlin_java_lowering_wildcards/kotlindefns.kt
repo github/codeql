@@ -33,6 +33,10 @@ class KotlinDefns {
 
   fun takesVariantTypesSuppressedWildcards(covar: List<@JvmSuppressWildcards CharSequence>, contravar: Comparable<@JvmSuppressWildcards CharSequence>) { }
 
+  fun takesVariantTypesIndirectlySuppressedWildcards(covar: @JvmSuppressWildcards List<CharSequence>, contravar: @JvmSuppressWildcards Comparable<CharSequence>) { }
+
+  fun takesVariantTypesComplexSuppressionWildcards(covar: @JvmSuppressWildcards(suppress = true) List<@JvmSuppressWildcards List<@JvmSuppressWildcards(suppress = false) List<CharSequence>>>) { }
+
   fun returnsInvar() : MutableList<CharSequence> = mutableListOf()
 
   fun returnsCovar(): List<CharSequence> = listOf()

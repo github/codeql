@@ -40,6 +40,9 @@
 | KotlinDefns | takesNestedType | invar | List<List<CharSequence>> |
 | KotlinDefns | takesNestedType | mixed1 | List<? extends Comparable<? super CharSequence>> |
 | KotlinDefns | takesNestedType | mixed2 | Comparable<? super List<? extends CharSequence>> |
+| KotlinDefns | takesVariantTypesComplexSuppressionWildcards | covar | List<List<? extends List<? extends CharSequence>>> |
+| KotlinDefns | takesVariantTypesIndirectlySuppressedWildcards | contravar | Comparable<CharSequence> |
+| KotlinDefns | takesVariantTypesIndirectlySuppressedWildcards | covar | List<CharSequence> |
 | KotlinDefns | takesVariantTypesSuppressedWildcards | contravar | Comparable<CharSequence> |
 | KotlinDefns | takesVariantTypesSuppressedWildcards | covar | List<CharSequence> |
 | KotlinDefnsSuppressedFn | outerFn | contravar | Comparable<CharSequence> |
