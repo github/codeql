@@ -27,15 +27,14 @@ abstract class SqlSink extends DataFlow::Node { }
 class CApiSqlSink extends SqlSink {
   CApiSqlSink() {
     // `sqlite3_exec` and variants of `sqlite3_prepare`.
-    exists(AbstractFunctionDecl f, CallExpr call |
-      f.getName() =
-        [
-          "sqlite3_exec(_:_:_:_:_:)", "sqlite3_prepare(_:_:_:_:_:)",
-          "sqlite3_prepare_v2(_:_:_:_:_:)", "sqlite3_prepare_v3(_:_:_:_:_:_:)",
-          "sqlite3_prepare16(_:_:_:_:_:)", "sqlite3_prepare16_v2(_:_:_:_:_:)",
-          "sqlite3_prepare16_v3(_:_:_:_:_:_:)"
-        ] and
-      call.getStaticTarget() = f and
+    exists(CallExpr call |
+      call.getStaticTarget()
+          .hasGlobalName([
+              "sqlite3_exec(_:_:_:_:_:)", "sqlite3_prepare(_:_:_:_:_:)",
+              "sqlite3_prepare_v2(_:_:_:_:_:)", "sqlite3_prepare_v3(_:_:_:_:_:_:)",
+              "sqlite3_prepare16(_:_:_:_:_:)", "sqlite3_prepare16_v2(_:_:_:_:_:)",
+              "sqlite3_prepare16_v3(_:_:_:_:_:_:)"
+            ]) and
       call.getArgument(1).getExpr() = this.asExpr()
     )
   }
