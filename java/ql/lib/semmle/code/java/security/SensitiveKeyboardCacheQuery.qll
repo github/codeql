@@ -9,24 +9,40 @@ private class AndroidLayoutXmlFile extends XmlFile {
   AndroidLayoutXmlFile() { this.getRelativePath().matches("%/res/layout/%.xml") }
 }
 
-/** An XML element that represents an editable text field. */
-class AndroidEditableXmlElement extends XmlElement {
-  AndroidXmlAttribute inputType;
+/** A component declared in an Android layout file. */
+class AndroidLayoutXmlElement extends XmlElement {
   AndroidXmlAttribute id;
 
-  AndroidEditableXmlElement() {
+  AndroidLayoutXmlElement() {
     this.getFile() instanceof AndroidLayoutXmlFile and
-    inputType = this.getAnAttribute() and
-    inputType.getName() = "inputType" and
-    id = this.getAnAttribute() and
-    id.getName() = "id"
+    id = this.getAttribute("id")
   }
 
-  /** Gets the input type of this field. */
-  string getInputType() { result = inputType.getValue() }
-
-  /** Gets the ID of this field. */
+  /** Gets the ID of this component. */
   string getId() { result = id.getValue() }
+
+  /** Gets the class of this component. */
+  Class getClass() {
+    this.getName() = "view" and
+    this.getAttribute("class").getValue() = result.getQualifiedName()
+    or
+    this.getName() = result.getQualifiedName()
+    or
+    result.hasQualifiedName(["android.widget", "android.view"], this.getName())
+  }
+}
+
+/** An XML element that represents an editable text field. */
+class AndroidEditableXmlElement extends AndroidLayoutXmlElement {
+  AndroidEditableXmlElement() {
+    exists(Class editText |
+      editText.hasQualifiedName("android.widget", "EditText") and
+      editText = this.getClass().getASourceSupertype*()
+    )
+  }
+
+  /** Gets the input type of this field, if any. */
+  string getInputType() { result = this.getAttribute("inputType").(AndroidXmlAttribute).getValue() }
 }
 
 /** Gets a regex indicating that an input field may contain sensitive data. */
