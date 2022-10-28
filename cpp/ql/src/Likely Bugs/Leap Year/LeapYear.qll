@@ -246,7 +246,7 @@ class FiletimeYearArithmeticOperationCheckConfiguration extends DataFlow::Config
 }
 
 /**
- * `DataFlow::Configuration` for finding an operation with hardcoded 365 that will flow into any known date/time field.
+ * Taint configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
  */
 class PossibleYearArithmeticOperationCheckConfiguration extends TaintTracking::Configuration {
   PossibleYearArithmeticOperationCheckConfiguration() {
