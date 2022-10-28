@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <regex>
+#include <unistd.h>
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
@@ -51,7 +53,51 @@ static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration
   }
 }
 
+// if `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER` env variable is set, and either
+// * `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER` is not set, or
+// * it is set to a regexp matching any substring of the extractor call
+// then the running process is substituted with the command (and possibly
+// options) stated in `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER`, followed by `argv`.
+// Before calling `exec`, `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER` is unset to avoid
+// unpleasant loops.
+// An example usage is to run the extractor under `gdbserver :1234` when the
+// arguments match a given source file.
+void checkToRunUnderTool(int argc, char* const* argv) {
+  auto runUnder = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
+  if (runUnder == nullptr) {
+    return;
+  }
+  auto runUnderFilter = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER");
+  if (runUnderFilter != nullptr) {
+    assert(argc > 0);
+    std::string call = argv[0];
+    for (auto i = 0; i < argc; ++i) {
+      call += ' ';
+      call += argv[i];
+    }
+    std::regex filter{runUnderFilter, std::regex_constants::basic | std::regex_constants::nosubs};
+    if (!std::regex_search(call, filter)) {
+      return;
+    }
+  }
+  std::vector<char*> args;
+  for (auto word = std::strtok(runUnder, " "); word != nullptr; word = std::strtok(nullptr, " ")) {
+    args.push_back(word);
+  }
+  if (args.empty()) {
+    return;
+  }
+  for (auto i = 0; i < argc; ++i) {
+    args.push_back(argv[i]);
+  }
+  args.push_back(nullptr);
+  unsetenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
+  execvp(args[0], args.data());
+}
+
 int main(int argc, char** argv) {
+  checkToRunUnderTool(argc, argv);
+
   if (argc == 1) {
     // TODO: print usage
     return 1;
