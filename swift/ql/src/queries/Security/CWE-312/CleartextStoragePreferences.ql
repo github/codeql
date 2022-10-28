@@ -26,10 +26,8 @@ abstract class Stored extends DataFlow::Node {
 /** The `DataFlow::Node` of an expression that gets written to the user defaults database */
 class UserDefaultsStore extends Stored {
   UserDefaultsStore() {
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "UserDefaults" and
-      c.getAMember() = f and
-      f.getName() = "set(_:forKey:)" and
+    exists(MethodDecl f, CallExpr call |
+      f.hasQualifiedName("UserDefaults", "set(_:forKey:)") and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this.asExpr()
     )
@@ -41,10 +39,8 @@ class UserDefaultsStore extends Stored {
 /** The `DataFlow::Node` of an expression that gets written to the iCloud-backed NSUbiquitousKeyValueStore */
 class NSUbiquitousKeyValueStore extends Stored {
   NSUbiquitousKeyValueStore() {
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "NSUbiquitousKeyValueStore" and
-      c.getAMember() = f and
-      f.getName() = "set(_:forKey:)" and
+    exists(MethodDecl f, CallExpr call |
+      f.hasQualifiedName("NSUbiquitousKeyValueStore", "set(_:forKey:)") and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this.asExpr()
     )
