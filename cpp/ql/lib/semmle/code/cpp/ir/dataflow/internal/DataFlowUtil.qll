@@ -855,8 +855,6 @@ private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase, Indi
     this.getIndirectionIndex() = index and
     result = this.getConvertedExpr(index).getUnconverted()
   }
-
-  final override string toStringImpl() { result = super.toStringImpl() }
 }
 
 private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase, IndirectInstruction {
@@ -871,8 +869,6 @@ private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase, 
     this.getIndirectionIndex() = index and
     result = this.getConvertedExpr(index).getUnconverted()
   }
-
-  final override string toStringImpl() { result = super.toStringImpl() }
 }
 
 private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgumentOutNode {
