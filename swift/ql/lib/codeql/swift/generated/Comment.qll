@@ -3,8 +3,13 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Locatable
 
-class CommentBase extends Synth::TComment, Locatable {
-  override string getAPrimaryQlClass() { result = "Comment" }
+module Generated {
+  class Comment extends Synth::TComment, Locatable {
+    override string getAPrimaryQlClass() { result = "Comment" }
 
-  string getText() { result = Synth::convertCommentToRaw(this).(Raw::Comment).getText() }
+    /**
+     * Gets the text of this comment.
+     */
+    string getText() { result = Synth::convertCommentToRaw(this).(Raw::Comment).getText() }
+  }
 }

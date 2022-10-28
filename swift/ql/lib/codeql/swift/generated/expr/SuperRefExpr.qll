@@ -4,15 +4,26 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
-class SuperRefExprBase extends Synth::TSuperRefExpr, Expr {
-  override string getAPrimaryQlClass() { result = "SuperRefExpr" }
+module Generated {
+  class SuperRefExpr extends Synth::TSuperRefExpr, Expr {
+    override string getAPrimaryQlClass() { result = "SuperRefExpr" }
 
-  VarDecl getImmediateSelf() {
-    result =
-      Synth::convertVarDeclFromRaw(Synth::convertSuperRefExprToRaw(this)
-            .(Raw::SuperRefExpr)
-            .getSelf())
+    /**
+     * Gets the self of this super ref expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    VarDecl getImmediateSelf() {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertSuperRefExprToRaw(this)
+              .(Raw::SuperRefExpr)
+              .getSelf())
+    }
+
+    /**
+     * Gets the self of this super ref expression.
+     */
+    final VarDecl getSelf() { result = getImmediateSelf().resolve() }
   }
-
-  final VarDecl getSelf() { result = getImmediateSelf().resolve() }
 }

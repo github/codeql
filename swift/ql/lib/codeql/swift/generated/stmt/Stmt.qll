@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 
-class StmtBase extends Synth::TStmt, AstNode { }
+module Generated {
+  class Stmt extends Synth::TStmt, AstNode { }
+}

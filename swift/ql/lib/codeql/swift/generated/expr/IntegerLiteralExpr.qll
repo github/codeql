@@ -3,10 +3,16 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.NumberLiteralExpr
 
-class IntegerLiteralExprBase extends Synth::TIntegerLiteralExpr, NumberLiteralExpr {
-  override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
+module Generated {
+  class IntegerLiteralExpr extends Synth::TIntegerLiteralExpr, NumberLiteralExpr {
+    override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
 
-  string getStringValue() {
-    result = Synth::convertIntegerLiteralExprToRaw(this).(Raw::IntegerLiteralExpr).getStringValue()
+    /**
+     * Gets the string value of this integer literal expression.
+     */
+    string getStringValue() {
+      result =
+        Synth::convertIntegerLiteralExprToRaw(this).(Raw::IntegerLiteralExpr).getStringValue()
+    }
   }
 }

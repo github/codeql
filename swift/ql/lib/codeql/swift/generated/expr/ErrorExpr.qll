@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class ErrorExprBase extends Synth::TErrorExpr, Expr {
-  override string getAPrimaryQlClass() { result = "ErrorExpr" }
+module Generated {
+  class ErrorExpr extends Synth::TErrorExpr, Expr {
+    override string getAPrimaryQlClass() { result = "ErrorExpr" }
+  }
 }

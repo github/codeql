@@ -4,7 +4,7 @@ private import codeql.swift.elements.expr.DeclRefExpr
 private import codeql.swift.elements.expr.MethodRefExpr
 private import codeql.swift.elements.expr.ConstructorRefCallExpr
 
-class ApplyExpr extends ApplyExprBase {
+class ApplyExpr extends Generated::ApplyExpr {
   AbstractFunctionDecl getStaticTarget() {
     exists(Expr f |
       f = this.getFunction() and

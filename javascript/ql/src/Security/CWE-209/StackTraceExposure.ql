@@ -19,6 +19,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
-  "$@ flows to this location and may be exposed to an external user.", source.getNode(),
-  "Stack trace information"
+select sink.getNode(), source, sink, "This information exposed to the user depends on $@.",
+  source.getNode(), "stack trace information"

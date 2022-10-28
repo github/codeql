@@ -3,19 +3,33 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class TupleElementExprBase extends Synth::TTupleElementExpr, Expr {
-  override string getAPrimaryQlClass() { result = "TupleElementExpr" }
+module Generated {
+  class TupleElementExpr extends Synth::TTupleElementExpr, Expr {
+    override string getAPrimaryQlClass() { result = "TupleElementExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertTupleElementExprToRaw(this)
-            .(Raw::TupleElementExpr)
-            .getSubExpr())
-  }
+    /**
+     * Gets the sub expression of this tuple element expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertTupleElementExprToRaw(this)
+              .(Raw::TupleElementExpr)
+              .getSubExpr())
+    }
 
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    /**
+     * Gets the sub expression of this tuple element expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
-  int getIndex() {
-    result = Synth::convertTupleElementExprToRaw(this).(Raw::TupleElementExpr).getIndex()
+    /**
+     * Gets the index of this tuple element expression.
+     */
+    int getIndex() {
+      result = Synth::convertTupleElementExprToRaw(this).(Raw::TupleElementExpr).getIndex()
+    }
   }
 }

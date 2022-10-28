@@ -4,33 +4,62 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
-class OpenExistentialExprBase extends Synth::TOpenExistentialExpr, Expr {
-  override string getAPrimaryQlClass() { result = "OpenExistentialExpr" }
+module Generated {
+  class OpenExistentialExpr extends Synth::TOpenExistentialExpr, Expr {
+    override string getAPrimaryQlClass() { result = "OpenExistentialExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
-            .(Raw::OpenExistentialExpr)
-            .getSubExpr())
+    /**
+     * Gets the sub expression of this open existential expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
+              .(Raw::OpenExistentialExpr)
+              .getSubExpr())
+    }
+
+    /**
+     * Gets the sub expression of this open existential expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+
+    /**
+     * Gets the existential of this open existential expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateExistential() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
+              .(Raw::OpenExistentialExpr)
+              .getExistential())
+    }
+
+    /**
+     * Gets the existential of this open existential expression.
+     */
+    final Expr getExistential() { result = getImmediateExistential().resolve() }
+
+    /**
+     * Gets the opaque expression of this open existential expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    OpaqueValueExpr getImmediateOpaqueExpr() {
+      result =
+        Synth::convertOpaqueValueExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
+              .(Raw::OpenExistentialExpr)
+              .getOpaqueExpr())
+    }
+
+    /**
+     * Gets the opaque expression of this open existential expression.
+     */
+    final OpaqueValueExpr getOpaqueExpr() { result = getImmediateOpaqueExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
-
-  Expr getImmediateExistential() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
-            .(Raw::OpenExistentialExpr)
-            .getExistential())
-  }
-
-  final Expr getExistential() { result = getImmediateExistential().resolve() }
-
-  OpaqueValueExpr getImmediateOpaqueExpr() {
-    result =
-      Synth::convertOpaqueValueExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
-            .(Raw::OpenExistentialExpr)
-            .getOpaqueExpr())
-  }
-
-  final OpaqueValueExpr getOpaqueExpr() { result = getImmediateOpaqueExpr().resolve() }
 }

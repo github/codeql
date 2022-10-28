@@ -4,4 +4,6 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Callable
 import codeql.swift.elements.expr.Expr
 
-class AbstractClosureExprBase extends Synth::TAbstractClosureExpr, Expr, Callable { }
+module Generated {
+  class AbstractClosureExpr extends Synth::TAbstractClosureExpr, Expr, Callable { }
+}

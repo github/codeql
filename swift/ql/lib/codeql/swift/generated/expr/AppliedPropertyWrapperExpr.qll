@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class AppliedPropertyWrapperExprBase extends Synth::TAppliedPropertyWrapperExpr, Expr {
-  override string getAPrimaryQlClass() { result = "AppliedPropertyWrapperExpr" }
+module Generated {
+  class AppliedPropertyWrapperExpr extends Synth::TAppliedPropertyWrapperExpr, Expr {
+    override string getAPrimaryQlClass() { result = "AppliedPropertyWrapperExpr" }
+  }
 }

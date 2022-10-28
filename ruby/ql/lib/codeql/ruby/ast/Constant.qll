@@ -252,6 +252,20 @@ private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAcces
   final override predicate hasGlobalScope() { value.matches("::%") }
 }
 
+private class ConstantWriteAccessSynth extends ConstantAccess, TConstantWriteAccessSynth {
+  private string value;
+
+  ConstantWriteAccessSynth() { this = TConstantWriteAccessSynth(_, _, value) }
+
+  final override string getName() {
+    if this.hasGlobalScope() then result = value.suffix(2) else result = value
+  }
+
+  final override Expr getScopeExpr() { synthChild(this, 0, result) }
+
+  final override predicate hasGlobalScope() { value.matches("::%") }
+}
+
 /**
  * A use (read) of a constant.
  *
@@ -323,7 +337,9 @@ class ConstantReadAccess extends ConstantAccess {
  */
 class ConstantWriteAccess extends ConstantAccess {
   ConstantWriteAccess() {
-    explicitAssignmentNode(toGenerated(this), _) or this instanceof TNamespace
+    explicitAssignmentNode(toGenerated(this), _) or
+    this instanceof TNamespace or
+    this instanceof TConstantWriteAccessSynth
   }
 
   override string getAPrimaryQlClass() { result = "ConstantWriteAccess" }

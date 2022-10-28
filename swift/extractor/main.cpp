@@ -38,11 +38,10 @@ static std::string getenv_or(const char* envvar, const std::string& def) {
   return def;
 }
 
-static void lockOutputSwiftModuleTraps(
-    const codeql::SwiftExtractorConfiguration& config,
-    const std::unordered_map<std::string, std::string>& remapping) {
+static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration& config,
+                                       const codeql::PathRemapping& remapping) {
   for (const auto& [oldPath, newPath] : remapping) {
-    if (llvm::StringRef(oldPath).endswith(".swiftmodule")) {
+    if (oldPath.extension() == ".swiftmodule") {
       if (auto target = codeql::createTargetTrapFile(config, oldPath)) {
         *target << "// trap file deliberately empty\n"
                    "// this swiftmodule was created during the build, so its entities must have"

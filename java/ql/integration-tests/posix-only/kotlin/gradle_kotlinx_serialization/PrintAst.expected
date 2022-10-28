@@ -425,6 +425,15 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|                   -1: [ThisAccess] $serializer.this
 #    7|                     0: [TypeAccess] $serializer
 #    7|                 1: [VarAccess] tmp0_serialDesc
+#    7|       7: [Method] typeParametersSerializers
+#    7|         3: [TypeAccess] KSerializer<?>[]
+#    7|           0: [TypeAccess] KSerializer<?>
+#    7|             0: [WildcardTypeAccess] ? ...
+#    7|         5: [BlockStmt] { ... }
+#    7|           0: [ReturnStmt] return ...
+#    7|             0: [MethodAccess] typeParametersSerializers(...)
+#    7|               -1: [SuperAccess] GeneratedSerializer.super
+#    7|                 0: [TypeAccess] GeneratedSerializer
 #    7|     11: [Class] Companion
 #    0|       1: [Method] serializer
 #    0|         3: [TypeAccess] KSerializer<Project>
@@ -469,3 +478,296 @@ app/src/main/kotlin/testProject/App.kt:
 #    8|     16: [FieldDeclaration] int language;
 #    8|       -1: [TypeAccess] int
 #    8|       0: [VarAccess] language
+#   10|   2: [Interface] Base
+#   11|     1: [Method] getId
+#   11|       3: [TypeAccess] String
+#   14|   3: [Class] X
+#    0|     1: [Constructor] X
+#-----|       4: (Parameters)
+#    0|         0: [Parameter] seen1
+#    0|           0: [TypeAccess] int
+#    0|         1: [Parameter] id
+#    0|           0: [TypeAccess] String
+#    0|         2: [Parameter] serializationConstructorMarker
+#    0|           0: [TypeAccess] SerializationConstructorMarker
+#   14|       5: [BlockStmt] { ... }
+#   14|         0: [ExprStmt] <Expr>;
+#   14|           0: [WhenExpr] when ...
+#   14|             0: [WhenBranch] ... -> ...
+#   14|               0: [ValueNEExpr] ... (value not-equals) ...
+#   14|                 0: [IntegerLiteral] 0
+#   14|                 1: [AndBitwiseExpr] ... & ...
+#   14|                   0: [IntegerLiteral] 0
+#   14|                   1: [VarAccess] seen1
+#   14|               1: [ExprStmt] <Expr>;
+#   14|                 0: [MethodAccess] throwMissingFieldException(...)
+#   14|                   -1: [TypeAccess] PluginExceptionsKt
+#   14|                   0: [VarAccess] seen1
+#   14|                   1: [IntegerLiteral] 0
+#   14|                   2: [MethodAccess] getDescriptor(...)
+#   14|                     -1: [VarAccess] INSTANCE
+#   14|         1: [SuperConstructorInvocationStmt] super(...)
+#   14|         2: [ExprStmt] <Expr>;
+#   14|           0: [WhenExpr] when ...
+#   14|             0: [WhenBranch] ... -> ...
+#   14|               0: [ValueEQExpr] ... (value equals) ...
+#   14|                 0: [IntegerLiteral] 0
+#   14|                 1: [AndBitwiseExpr] ... & ...
+#   14|                   0: [VarAccess] seen1
+#   14|                   1: [IntegerLiteral] 1
+#   14|               1: [ExprStmt] <Expr>;
+#   14|                 0: [AssignExpr] ...=...
+#   14|                   0: [VarAccess] X.this.id
+#   14|                     -1: [ThisAccess] X.this
+#   14|                       0: [TypeAccess] X
+#   16|                   1: [StringLiteral] X
+#   14|             1: [WhenBranch] ... -> ...
+#   14|               0: [BooleanLiteral] true
+#   14|               1: [ExprStmt] <Expr>;
+#   14|                 0: [AssignExpr] ...=...
+#   14|                   0: [VarAccess] X.this.id
+#   14|                     -1: [ThisAccess] X.this
+#   14|                       0: [TypeAccess] X
+#   14|                   1: [VarAccess] id
+#    0|     2: [Method] write$Self
+#    0|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#    0|         0: [Parameter] self
+#    0|           0: [TypeAccess] X
+#    0|         1: [Parameter] output
+#    0|           0: [TypeAccess] CompositeEncoder
+#    0|         2: [Parameter] serialDesc
+#    0|           0: [TypeAccess] SerialDescriptor
+#   14|       5: [BlockStmt] { ... }
+#   14|         0: [ExprStmt] <Expr>;
+#   14|           0: [WhenExpr] when ...
+#   14|             0: [WhenBranch] ... -> ...
+#   14|               0: [WhenExpr] when ...
+#   14|                 0: [WhenBranch] ... -> ...
+#   14|                   0: [MethodAccess] shouldEncodeElementDefault(...)
+#   14|                     -1: [VarAccess] output
+#   14|                     0: [VarAccess] serialDesc
+#   14|                     1: [IntegerLiteral] 0
+#   14|                   1: [ExprStmt] <Expr>;
+#   14|                     0: [BooleanLiteral] true
+#   14|                 1: [WhenBranch] ... -> ...
+#   14|                   0: [BooleanLiteral] true
+#   14|                   1: [ExprStmt] <Expr>;
+#   14|                     0: [ValueNEExpr] ... (value not-equals) ...
+#   14|                       0: [MethodAccess] getId(...)
+#   14|                         -1: [VarAccess] self
+#   16|                       1: [StringLiteral] X
+#   14|               1: [ExprStmt] <Expr>;
+#   14|                 0: [MethodAccess] encodeStringElement(...)
+#   14|                   -1: [VarAccess] output
+#   14|                   0: [VarAccess] serialDesc
+#   14|                   1: [IntegerLiteral] 0
+#   14|                   2: [MethodAccess] getId(...)
+#   14|                     -1: [VarAccess] self
+#   14|     3: [Class] $serializer
+#    0|       1: [FieldDeclaration] SerialDescriptor descriptor;
+#    0|         -1: [TypeAccess] SerialDescriptor
+#    0|       2: [Method] childSerializers
+#    0|         3: [TypeAccess] KSerializer<?>[]
+#    0|           0: [TypeAccess] KSerializer<?>
+#    0|             0: [WildcardTypeAccess] ? ...
+#   14|         5: [BlockStmt] { ... }
+#   14|           0: [ReturnStmt] return ...
+#   14|             0: [ArrayCreationExpr] new KSerializer<?>[]
+#   14|               -2: [ArrayInit] {...}
+#   14|               -1: [TypeAccess] KSerializer<?>
+#   14|               0: [IntegerLiteral] 1
+#    0|       3: [Method] deserialize
+#    0|         3: [TypeAccess] X
+#-----|         4: (Parameters)
+#    0|           0: [Parameter] decoder
+#    0|             0: [TypeAccess] Decoder
+#   14|         5: [BlockStmt] { ... }
+#   14|           0: [LocalVariableDeclStmt] var ...;
+#   14|             1: [LocalVariableDeclExpr] tmp0_desc
+#   14|               0: [MethodAccess] getDescriptor(...)
+#   14|                 -1: [ThisAccess] this
+#   14|           1: [LocalVariableDeclStmt] var ...;
+#   14|             1: [LocalVariableDeclExpr] tmp1_flag
+#   14|               0: [BooleanLiteral] true
+#   14|           2: [LocalVariableDeclStmt] var ...;
+#   14|             1: [LocalVariableDeclExpr] tmp2_index
+#   14|               0: [IntegerLiteral] 0
+#   14|           3: [LocalVariableDeclStmt] var ...;
+#   14|             1: [LocalVariableDeclExpr] tmp3_bitMask0
+#   14|               0: [IntegerLiteral] 0
+#   14|           4: [LocalVariableDeclStmt] var ...;
+#   14|             1: [LocalVariableDeclExpr] tmp4_local0
+#   14|               0: [NullLiteral] null
+#   14|           5: [LocalVariableDeclStmt] var ...;
+#   14|             1: [LocalVariableDeclExpr] tmp5_input
+#   14|               0: [MethodAccess] beginStructure(...)
+#   14|                 -1: [VarAccess] decoder
+#   14|                 0: [VarAccess] tmp0_desc
+#   14|           6: [ExprStmt] <Expr>;
+#   14|             0: [WhenExpr] when ...
+#   14|               0: [WhenBranch] ... -> ...
+#   14|                 0: [MethodAccess] decodeSequentially(...)
+#   14|                   -1: [VarAccess] tmp5_input
+#   14|                 1: [BlockStmt] { ... }
+#   14|                   0: [BlockStmt] { ... }
+#   14|                     0: [ExprStmt] <Expr>;
+#   14|                       0: [AssignExpr] ...=...
+#   14|                         0: [VarAccess] tmp4_local0
+#   14|                         1: [MethodAccess] decodeStringElement(...)
+#   14|                           -1: [VarAccess] tmp5_input
+#   14|                           0: [VarAccess] tmp0_desc
+#   14|                           1: [IntegerLiteral] 0
+#   14|                     1: [ExprStmt] <Expr>;
+#   14|                       0: [AssignExpr] ...=...
+#   14|                         0: [VarAccess] tmp3_bitMask0
+#   14|                         1: [OrBitwiseExpr] ... | ...
+#   14|                           0: [VarAccess] tmp3_bitMask0
+#   14|                           1: [IntegerLiteral] 1
+#   14|               1: [WhenBranch] ... -> ...
+#   14|                 0: [BooleanLiteral] true
+#   14|                 1: [WhileStmt] while (...)
+#   14|                   0: [VarAccess] tmp1_flag
+#   14|                   1: [BlockStmt] { ... }
+#   14|                     0: [ExprStmt] <Expr>;
+#   14|                       0: [AssignExpr] ...=...
+#   14|                         0: [VarAccess] tmp2_index
+#   14|                         1: [MethodAccess] decodeElementIndex(...)
+#   14|                           -1: [VarAccess] tmp5_input
+#   14|                           0: [VarAccess] tmp0_desc
+#   14|                     1: [ExprStmt] <Expr>;
+#   14|                       0: [WhenExpr] when ...
+#   14|                         0: [WhenBranch] ... -> ...
+#   14|                           0: [ValueEQExpr] ... (value equals) ...
+#   14|                             0: [VarAccess] tmp2_index
+#   14|                             1: [IntegerLiteral] -1
+#   14|                           1: [ExprStmt] <Expr>;
+#   14|                             0: [AssignExpr] ...=...
+#   14|                               0: [VarAccess] tmp1_flag
+#   14|                               1: [BooleanLiteral] false
+#   14|                         1: [WhenBranch] ... -> ...
+#   14|                           0: [ValueEQExpr] ... (value equals) ...
+#   14|                             0: [VarAccess] tmp2_index
+#   14|                             1: [IntegerLiteral] 0
+#   14|                           1: [BlockStmt] { ... }
+#   14|                             0: [ExprStmt] <Expr>;
+#   14|                               0: [AssignExpr] ...=...
+#   14|                                 0: [VarAccess] tmp4_local0
+#   14|                                 1: [MethodAccess] decodeStringElement(...)
+#   14|                                   -1: [VarAccess] tmp5_input
+#   14|                                   0: [VarAccess] tmp0_desc
+#   14|                                   1: [IntegerLiteral] 0
+#   14|                             1: [ExprStmt] <Expr>;
+#   14|                               0: [AssignExpr] ...=...
+#   14|                                 0: [VarAccess] tmp3_bitMask0
+#   14|                                 1: [OrBitwiseExpr] ... | ...
+#   14|                                   0: [VarAccess] tmp3_bitMask0
+#   14|                                   1: [IntegerLiteral] 1
+#   14|                         2: [WhenBranch] ... -> ...
+#   14|                           0: [BooleanLiteral] true
+#   14|                           1: [ThrowStmt] throw ...
+#   14|                             0: [ClassInstanceExpr] new UnknownFieldException(...)
+#   14|                               -3: [TypeAccess] UnknownFieldException
+#   14|                               0: [VarAccess] tmp2_index
+#   14|           7: [ExprStmt] <Expr>;
+#   14|             0: [MethodAccess] endStructure(...)
+#   14|               -1: [VarAccess] tmp5_input
+#   14|               0: [VarAccess] tmp0_desc
+#   14|           8: [ReturnStmt] return ...
+#   14|             0: [ClassInstanceExpr] new X(...)
+#   14|               -3: [TypeAccess] X
+#   14|               0: [VarAccess] tmp3_bitMask0
+#   14|               1: [VarAccess] tmp4_local0
+#   14|               2: [NullLiteral] null
+#    0|       4: [Method] getDescriptor
+#    0|         3: [TypeAccess] SerialDescriptor
+#    0|         5: [BlockStmt] { ... }
+#    0|           0: [ReturnStmt] return ...
+#    0|             0: [VarAccess] this.descriptor
+#    0|               -1: [ThisAccess] this
+#    0|       5: [Method] serialize
+#    0|         3: [TypeAccess] Unit
+#-----|         4: (Parameters)
+#    0|           0: [Parameter] encoder
+#    0|             0: [TypeAccess] Encoder
+#    0|           1: [Parameter] value
+#    0|             0: [TypeAccess] X
+#   14|         5: [BlockStmt] { ... }
+#   14|           0: [LocalVariableDeclStmt] var ...;
+#   14|             1: [LocalVariableDeclExpr] tmp0_desc
+#   14|               0: [MethodAccess] getDescriptor(...)
+#   14|                 -1: [ThisAccess] this
+#   14|           1: [LocalVariableDeclStmt] var ...;
+#   14|             1: [LocalVariableDeclExpr] tmp1_output
+#   14|               0: [MethodAccess] beginStructure(...)
+#   14|                 -1: [VarAccess] encoder
+#   14|                 0: [VarAccess] tmp0_desc
+#   14|           2: [ExprStmt] <Expr>;
+#   14|             0: [MethodAccess] write$Self(...)
+#   14|               -1: [TypeAccess] X
+#   14|               0: [VarAccess] value
+#   14|               1: [VarAccess] tmp1_output
+#   14|               2: [VarAccess] tmp0_desc
+#   14|           3: [ExprStmt] <Expr>;
+#   14|             0: [MethodAccess] endStructure(...)
+#   14|               -1: [VarAccess] tmp1_output
+#   14|               0: [VarAccess] tmp0_desc
+#   14|       6: [Constructor] $serializer
+#   14|         5: [BlockStmt] { ... }
+#   14|           0: [SuperConstructorInvocationStmt] super(...)
+#   14|           1: [BlockStmt] { ... }
+#   14|             0: [LocalVariableDeclStmt] var ...;
+#   14|               1: [LocalVariableDeclExpr] tmp0_serialDesc
+#   14|                 0: [ClassInstanceExpr] new PluginGeneratedSerialDescriptor(...)
+#   14|                   -3: [TypeAccess] PluginGeneratedSerialDescriptor
+#   14|                   0: [StringLiteral] testProject.X
+#   14|                   1: [ThisAccess] $serializer.this
+#   14|                     0: [TypeAccess] $serializer
+#   14|                   2: [IntegerLiteral] 1
+#   14|             1: [ExprStmt] <Expr>;
+#   14|               0: [MethodAccess] addElement(...)
+#   14|                 -1: [VarAccess] tmp0_serialDesc
+#   14|                 0: [StringLiteral] id
+#   14|                 1: [BooleanLiteral] true
+#   14|             2: [ExprStmt] <Expr>;
+#   14|               0: [AssignExpr] ...=...
+#   14|                 0: [VarAccess] $serializer.this.descriptor
+#   14|                   -1: [ThisAccess] $serializer.this
+#   14|                     0: [TypeAccess] $serializer
+#   14|                 1: [VarAccess] tmp0_serialDesc
+#   14|       7: [Method] typeParametersSerializers
+#   14|         3: [TypeAccess] KSerializer<?>[]
+#   14|           0: [TypeAccess] KSerializer<?>
+#   14|             0: [WildcardTypeAccess] ? ...
+#   14|         5: [BlockStmt] { ... }
+#   14|           0: [ReturnStmt] return ...
+#   14|             0: [MethodAccess] typeParametersSerializers(...)
+#   14|               -1: [SuperAccess] GeneratedSerializer.super
+#   14|                 0: [TypeAccess] GeneratedSerializer
+#   14|     4: [Class] Companion
+#    0|       1: [Method] serializer
+#    0|         3: [TypeAccess] KSerializer<X>
+#    0|           0: [TypeAccess] X
+#   14|         5: [BlockStmt] { ... }
+#   14|           0: [ReturnStmt] return ...
+#   14|             0: [VarAccess] INSTANCE
+#   14|       2: [Constructor] Companion
+#   14|         5: [BlockStmt] { ... }
+#   14|           0: [SuperConstructorInvocationStmt] super(...)
+#   14|           1: [BlockStmt] { ... }
+#   15|     5: [Constructor] X
+#   14|       5: [BlockStmt] { ... }
+#   14|         0: [SuperConstructorInvocationStmt] super(...)
+#   15|         1: [BlockStmt] { ... }
+#   16|           0: [ExprStmt] <Expr>;
+#   16|             0: [KtInitializerAssignExpr] ...=...
+#   16|               0: [VarAccess] id
+#   16|     6: [FieldDeclaration] String id;
+#   16|       -1: [TypeAccess] String
+#   16|       0: [StringLiteral] X
+#   16|     7: [Method] getId
+#   16|       3: [TypeAccess] String
+#   16|       5: [BlockStmt] { ... }
+#   16|         0: [ReturnStmt] return ...
+#   16|           0: [VarAccess] this.id
+#   16|             -1: [ThisAccess] this

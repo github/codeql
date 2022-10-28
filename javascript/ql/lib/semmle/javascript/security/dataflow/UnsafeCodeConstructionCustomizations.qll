@@ -37,6 +37,11 @@ module UnsafeCodeConstruction {
      * Gets the node where the unsafe code is executed.
      */
     abstract DataFlow::Node getCodeSink();
+
+    /**
+     * Gets the type of sink.
+     */
+    string getSinkType() { result = "code construction" }
   }
 
   /**
@@ -59,5 +64,7 @@ module UnsafeCodeConstruction {
     }
 
     override DataFlow::Node getCodeSink() { result = codeSink }
+
+    override string getSinkType() { result = "string concatenation" }
   }
 }

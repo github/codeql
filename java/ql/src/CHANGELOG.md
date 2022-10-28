@@ -1,3 +1,10 @@
+## 0.4.2
+
+### New Queries
+
+* Added a new query, `java/android/incomplete-provider-permissions`, to detect if an Android ContentProvider is not protected with a correct set of permissions.
+* A new query "Uncontrolled data used in content resolution" (`java/androd/unsafe-content-uri-resolution`) has been added. This query finds paths from user-provided data to URI resolution operations in Android's `ContentResolver` without previous validation or sanitization.
+
 ## 0.4.1
 
 ### New Queries
@@ -153,7 +160,7 @@ this respect.
 
 * Add more classes to Netty request/response splitting. Change identification to `java/netty-http-request-or-response-splitting`.
   Identify request splitting differently from response splitting in query results.
-  Support addional classes:
+  Support additional classes:
   * `io.netty.handler.codec.http.CombinedHttpHeaders`
   * `io.netty.handler.codec.http.DefaultHttpRequest`
   * `io.netty.handler.codec.http.DefaultFullHttpRequest`

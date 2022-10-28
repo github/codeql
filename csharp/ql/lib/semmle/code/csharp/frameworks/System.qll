@@ -1243,7 +1243,7 @@ predicate implementsDispose(ValueOrRefType t) { getInvokedDisposeMethod(t).getDe
 
 /**
  * Gets the dispose method that will be invoked on a value `x`
- * of type `t` when `x.Dipsose()` is called.
+ * of type `t` when `x.Dispose()` is called.
  *
  * Either the dispose method is (an override of) `IDisposable.Dispose()`,
  * or an implementation of a method `Dispose(bool)` which is called

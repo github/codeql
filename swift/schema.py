@@ -35,7 +35,7 @@ class Location(Element):
 
 @qltest.skip
 class Locatable(Element):
-    location: optional[Location] | cpp.skip
+    location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
 
 class Comment(Locatable):
     text: string
@@ -68,6 +68,7 @@ class Decl(AstNode):
 
 @group("expr")
 class Expr(AstNode):
+    """The base class for all expressions in Swift."""
     type: optional[Type]
 
 @group("pattern")
@@ -133,15 +134,15 @@ class VarDecl(AbstractStorageDecl):
     parent_initializer: optional[Expr]
 
 class ParamDecl(VarDecl):
-    is_inout: predicate
+    is_inout: predicate | doc("this is an `inout` parameter")
 
 class Callable(Element):
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
-    body: optional["BraceStmt"] | child
+    body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
 
 class AbstractFunctionDecl(GenericContext, ValueDecl, Callable):
-    name: string
+    name: string | doc("name of this function")
 
 class EnumElementDecl(ValueDecl):
     name: string
@@ -176,8 +177,8 @@ class GenericTypeDecl(GenericContext, TypeDecl):
     pass
 
 class ModuleDecl(TypeDecl):
-    is_builtin_module: predicate
-    is_system_module: predicate
+    is_builtin_module: predicate | doc("this module is the built-in one")
+    is_system_module: predicate | doc("this module is a system one")
     imported_modules: list["ModuleDecl"]
     exported_modules: list["ModuleDecl"]
 
@@ -187,10 +188,10 @@ class SubscriptDecl(AbstractStorageDecl, GenericContext):
     element_type: Type
 
 class AccessorDecl(FuncDecl):
-    is_getter: predicate
-    is_setter: predicate
-    is_will_set: predicate
-    is_did_set: predicate
+    is_getter: predicate | doc('this accessor is a getter')
+    is_setter: predicate | doc('this accessor is a setter')
+    is_will_set: predicate | doc('this accessor is a `willSet`, called before the property is set')
+    is_did_set: predicate | doc('this accessor is a `didSet`, called after the property is set')
 
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass
@@ -199,7 +200,9 @@ class ConcreteFuncDecl(FuncDecl):
     pass
 
 class ConcreteVarDecl(VarDecl):
-    introducer_int: int
+    introducer_int: int | doc("introducer enumeration value") | desc("""
+        This is 0 if the variable was introduced with `let` and 1 if it was introduced with `var`.
+    """)
 
 class GenericTypeParamDecl(AbstractTypeParamDecl):
     pass
@@ -240,8 +243,8 @@ class AppliedPropertyWrapperExpr(Expr):
     pass
 
 class ApplyExpr(Expr):
-    function: Expr | child
-    arguments: list[Argument] | child
+    function: Expr | child | doc("function being applied")
+    arguments: list[Argument] | child | doc("arguments passed to the applied function")
 
 class ArrowExpr(Expr):
     pass
@@ -780,12 +783,13 @@ class WhileStmt(LabeledConditionalStmt):
 class TypeRepr(AstNode):
     type: Type
 
+@ql.default_doc_name("function type")
 class AnyFunctionType(Type):
     result: Type
     param_types: list[Type]
     param_labels: list[string]
-    is_throwing: predicate
-    is_async: predicate
+    is_throwing: predicate | doc("this type refers to a throwing function")
+    is_async: predicate | doc("this type refers to an `async` function")
 
 class AnyGenericType(Type):
     parent: optional[Type]
@@ -902,7 +906,8 @@ class FunctionType(AnyFunctionType):
     pass
 
 class GenericFunctionType(AnyFunctionType):
-    generic_params: list["GenericTypeParamType"]
+    """ The type of a generic function with type parameters """
+    generic_params: list["GenericTypeParamType"] | doc("type {parameters} of this generic type")
 
 class GenericTypeParamType(SubstitutableType):
     pass

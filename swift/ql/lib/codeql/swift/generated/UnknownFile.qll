@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.File
 
-class UnknownFileBase extends Synth::TUnknownFile, File {
-  override string getAPrimaryQlClass() { result = "UnknownFile" }
+module Generated {
+  class UnknownFile extends Synth::TUnknownFile, File {
+    override string getAPrimaryQlClass() { result = "UnknownFile" }
+  }
 }

@@ -18,5 +18,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, sink.getNode().(Sink).getMessage() + " depends on $@.",
-  source.getNode(), "a user-provided value"
+select sink.getNode(), source, sink, sink.getNode().(Sink).getMessage() + " depends on a $@.",
+  source.getNode(), "user-provided value"

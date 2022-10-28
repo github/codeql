@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
+import com.github.codeql.utils.versions.getKotlinType
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -22,6 +23,7 @@ import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
+import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
 import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
@@ -210,10 +212,6 @@ open class KotlinUsesExtractor(
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
-        if (c.isAnonymousObject) {
-            logger.error("Unexpected access to anonymous class instance")
-        }
-
         val substituteClass = getJavaEquivalentClass(c)
 
         val extractClass = substituteClass ?: c
@@ -257,19 +255,24 @@ open class KotlinUsesExtractor(
         }
     }
 
+    private fun propertySignature(p: IrProperty) =
+        ((p.getter ?: p.setter)?.extensionReceiverParameter?.let { useType(erase(it.type)).javaResult.signature } ?: "")
+
     private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
             extractExternalClassLater(p.parentAsClass)
-            dependencyCollector?.addDependency(p, externalClassExtractor.propertySignature)
-            externalClassExtractor.extractLater(p)
+            val signature = propertySignature(p) + externalClassExtractor.propertySignature
+            dependencyCollector?.addDependency(p, signature)
+            externalClassExtractor.extractLater(p, signature)
         }
     }
 
     private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
             extractExternalClassLater(f.parentAsClass)
-            dependencyCollector?.addDependency(f, externalClassExtractor.fieldSignature)
-            externalClassExtractor.extractLater(f)
+            val signature = (f.correspondingPropertySymbol?.let { propertySignature(it.owner) } ?: "") + externalClassExtractor.fieldSignature
+            dependencyCollector?.addDependency(f, signature)
+            externalClassExtractor.extractLater(f, signature)
         }
     }
 
@@ -418,10 +421,11 @@ open class KotlinUsesExtractor(
         }
 
         val fqName = replacedClass.fqNameWhenAvailable
-        val signature = if (fqName == null) {
+        val signature = if (replacedClass.isAnonymousObject) {
+            null
+        } else if (fqName == null) {
             logger.error("Unable to find signature/fqName for ${replacedClass.name}")
-            // TODO: Should we return null here instead?
-            "<no signature available>"
+            null
         } else {
             fqName.asString()
         }
@@ -465,21 +469,13 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun useAnonymousClass(c: IrClass) =
+    private fun useAnonymousClass(c: IrClass) =
         tw.lm.anonymousTypeMapping.getOrPut(c) {
             TypeResults(
                 TypeResult(tw.getFreshIdLabel<DbClass>(), "", ""),
                 TypeResult(fakeKotlinType(), "TODO", "TODO")
             )
         }
-
-    fun getExistingAnonymousClassLabel(c: IrClass): Label<out DbType>? {
-        if (!c.isAnonymousObject){
-            return null
-        }
-
-        return tw.lm.anonymousTypeMapping[c]?.javaResult?.id
-    }
 
     fun fakeKotlinType(): Label<out DbKt_type> {
         val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
@@ -497,16 +493,6 @@ open class KotlinUsesExtractor(
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
-        if (c.isAnonymousObject) {
-            args?.let {
-                if (it.isNotEmpty() && !isUnspecialised(c, it, logger)) {
-                    logger.error("Unexpected specialised instance of generic anonymous class")
-                }
-            }
-
-            return useAnonymousClass(c)
-        }
-
         val classInstanceResult = useClassInstance(c, args)
         val javaClassId = classInstanceResult.typeResult.id
         val kotlinQualClassName = getUnquotedClassLabel(c, args).classLabel
@@ -690,7 +676,8 @@ open class KotlinUsesExtractor(
                           otherIsPrimitive: Boolean,
                           javaClass: IrClass,
                           kotlinPackageName: String, kotlinClassName: String): TypeResults {
-            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && primitiveName != null) {
+            // Note the use of `hasEnhancedNullability` here covers cases like `@NotNull Integer`, which must be extracted as `Integer` not `int`.
+            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && getKotlinType(s)?.hasEnhancedNullability() != true && primitiveName != null) {
                     val label: Label<DbPrimitive> = tw.getLabelFor("@\"type;$primitiveName\"", {
                         tw.writePrimitives(it, primitiveName)
                     })
@@ -795,7 +782,7 @@ open class KotlinUsesExtractor(
                     extractFileClass(dp)
                 }
             is IrClass ->
-                if (classTypeArguments != null && !dp.isAnonymousObject) {
+                if (classTypeArguments != null) {
                     useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id
                 } else {
                     val replacedType = tryReplaceParcelizeRawType(dp)
@@ -834,7 +821,7 @@ open class KotlinUsesExtractor(
                 OperatorNameConventions.INVOKE.asString())
 
         fun getSuffixIfInternal() =
-            if (f.visibility == DescriptorVisibilities.INTERNAL) {
+            if (f.visibility == DescriptorVisibilities.INTERNAL && f !is IrConstructor) {
                 "\$" + getJvmModuleName(f)
             } else {
                 ""
@@ -944,7 +931,7 @@ open class KotlinUsesExtractor(
 
 
     private val jvmWildcardAnnotation = FqName("kotlin.jvm.JvmWildcard")
-    private val jvmWildcardSuppressionAnnotaton = FqName("kotlin.jvm.JvmSuppressWildcards")
+    private val jvmWildcardSuppressionAnnotation = FqName("kotlin.jvm.JvmSuppressWildcards")
 
     private fun arrayExtendsAdditionAllowed(t: IrSimpleType): Boolean =
         // Note the array special case includes Array<*>, which does permit adding `? extends ...` (making `? extends Object[]` in that case)
@@ -973,11 +960,13 @@ open class KotlinUsesExtractor(
             ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
         }
 
-    private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
+    private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean, javaVariance: Variance?) =
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
             !addByDefault -> false
-            t.hasAnnotation(jvmWildcardSuppressionAnnotaton) -> false
+            t.hasAnnotation(jvmWildcardSuppressionAnnotation) -> false
+            // If a Java declaration specifies a variance, introduce it even if it's pointless (e.g. ? extends FinalClass, or ? super Object)
+            javaVariance == v -> true
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
             v == Variance.OUT_VARIANCE -> extendsAdditionAllowed(t)
             else -> false
@@ -986,14 +975,21 @@ open class KotlinUsesExtractor(
     private fun addJavaLoweringArgumentWildcards(p: IrTypeParameter, t: IrTypeArgument, addByDefault: Boolean, javaType: JavaType?): IrTypeArgument =
         (t as? IrTypeProjection)?.let {
             val newBase = addJavaLoweringWildcards(it.type, addByDefault, javaType)
+            // Note javaVariance == null means we don't have a Java type to conform to -- for example if this is a Kotlin source definition.
+            val javaVariance = javaType?.let { jType ->
+                when (jType) {
+                    is JavaWildcardType -> if (jType.isExtends) Variance.OUT_VARIANCE else Variance.IN_VARIANCE
+                    else -> Variance.INVARIANT
+                }
+            }
             val newVariance =
                 if (it.variance == Variance.INVARIANT &&
                     p.variance != Variance.INVARIANT &&
                     // The next line forbids inferring a wildcard type when we have a corresponding Java type with conflicting variance.
                     // For example, Java might declare f(Comparable<CharSequence> cs), in which case we shouldn't add a `? super ...`
                     // wildcard. Note if javaType is unknown (e.g. this is a Kotlin source element), we assume wildcards should be added.
-                    (javaType?.let { jt -> jt is JavaWildcardType && jt.isExtends == (p.variance == Variance.OUT_VARIANCE) } != false) &&
-                    wildcardAdditionAllowed(p.variance, it.type, addByDefault))
+                    (javaVariance == null || javaVariance == p.variance) &&
+                    wildcardAdditionAllowed(p.variance, it.type, addByDefault, javaVariance))
                     p.variance
                 else
                     it.variance
@@ -1225,9 +1221,9 @@ open class KotlinUsesExtractor(
     }
 
     fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
-        d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||
+        d.hasAnnotation(jvmWildcardSuppressionAnnotation) ||
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
-        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
+        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotation) == true }
 
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
@@ -1294,6 +1290,7 @@ open class KotlinUsesExtractor(
                         }
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
+                            !decl.isFakeOverride &&
                             decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size &&
                             decl.valueParameters.zip(f.valueParameters).all { p -> erase(p.first.type).classifierOrNull == erase(p.second.type).classifierOrNull }
@@ -1319,6 +1316,12 @@ open class KotlinUsesExtractor(
                 }
             } ?: f
 
+    fun isPrivate(d: IrDeclaration) =
+        when(d) {
+            is IrDeclarationWithVisibility -> d.visibility.let { it == DescriptorVisibilities.PRIVATE || it == DescriptorVisibilities.PRIVATE_TO_THIS }
+            else -> false
+        }
+
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
         return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
     }
@@ -1330,12 +1333,27 @@ open class KotlinUsesExtractor(
         }
         val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
         val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
-        val id: Label<T> = tw.getLabelFor(label)
+        val id: Label<T> = tw.getLabelFor(label) {
+            extractPrivateSpecialisedDeclaration(f, classTypeArgsIncludingOuterClasses)
+        }
         if (isExternalDeclaration(javaFun)) {
             extractFunctionLaterIfExternalFileMember(javaFun)
             extractExternalEnclosingClassLater(javaFun)
         }
         return id
+    }
+
+    private fun extractPrivateSpecialisedDeclaration(d: IrDeclaration, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
+        // Note here `classTypeArgsIncludingOuterClasses` being null doesn't signify a raw receiver type but rather that no type args were supplied.
+        // This is because a call to a private method can only be observed inside Kotlin code, and Kotlin can't represent raw types.
+        if (this is KotlinFileExtractor && isPrivate(d) && classTypeArgsIncludingOuterClasses != null && classTypeArgsIncludingOuterClasses.isNotEmpty()) {
+            d.parent.let {
+                when(it) {
+                    is IrClass -> this.extractDeclarationPrototype(d, useClassInstance(it, classTypeArgsIncludingOuterClasses).typeResult.id, classTypeArgsIncludingOuterClasses)
+                    else -> logger.warnElement("Unable to extract specialised declaration that isn't a member of a class", d)
+                }
+            }
+        }
     }
 
     fun getTypeArgumentLabel(
@@ -1393,20 +1411,24 @@ open class KotlinUsesExtractor(
     private fun getUnquotedClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): ClassLabelResults {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
-        val label = when (val parent = c.parent) {
-            is IrClass -> {
-                "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
-            }
-            is IrFunction -> {
-                "{${useFunction<DbMethod>(parent)}}.$cls"
-            }
-            is IrField -> {
-                "{${useField(parent)}}.$cls"
-            }
-            else -> {
-                if (pkg.isEmpty()) cls else "$pkg.$cls"
-            }
-        }
+        val label =
+            if (c.isAnonymousObject)
+                "{${useAnonymousClass(c).javaResult.id}}"
+            else
+                when (val parent = c.parent) {
+                    is IrClass -> {
+                        "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
+                    }
+                    is IrFunction -> {
+                        "{${useFunction<DbMethod>(parent)}}.$cls"
+                    }
+                    is IrField -> {
+                        "{${useField(parent)}}.$cls"
+                    }
+                    else -> {
+                        if (pkg.isEmpty()) cls else "$pkg.$cls"
+                    }
+                }
 
         val reorderedArgs = orderTypeArgsLeftToRight(c, argsIncludingOuterClasses)
         val typeArgLabels = reorderedArgs?.map { getTypeArgumentLabel(it) }
@@ -1417,20 +1439,17 @@ open class KotlinUsesExtractor(
                 ""
             else
                 typeArgLabels.takeLast(c.typeParameters.size).joinToString(prefix = "<", postfix = ">", separator = ",") { it.shortName }
+        val shortNamePrefix = if (c.isAnonymousObject) "" else cls
 
         return ClassLabelResults(
             label + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
-            cls + typeArgsShortName
+            shortNamePrefix + typeArgsShortName
         )
     }
 
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun getClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): ClassLabelResults {
-        if (c.isAnonymousObject) {
-            logger.error("Label generation should not be requested for an anonymous class")
-        }
-
         val unquotedLabel = getUnquotedClassLabel(c, argsIncludingOuterClasses)
         return ClassLabelResults(
             "@\"class;${unquotedLabel.classLabel}\"",
@@ -1438,10 +1457,6 @@ open class KotlinUsesExtractor(
     }
 
     fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
-        if (c.isAnonymousObject) {
-            return useAnonymousClass(c).javaResult.id.cast<DbClass>()
-        }
-
         // For source classes, the label doesn't include any type arguments
         val classTypeResult = addClassLabel(c, listOf())
         return classTypeResult.id
@@ -1686,8 +1701,11 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun useProperty(p: IrProperty, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbKt_property> =
-        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId, classTypeArgsIncludingOuterClasses)).also { extractPropertyLaterIfExternalFileMember(p) }
+    fun useProperty(p: IrProperty, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId, classTypeArgsIncludingOuterClasses)) {
+            extractPropertyLaterIfExternalFileMember(p)
+            extractPrivateSpecialisedDeclaration(p, classTypeArgsIncludingOuterClasses)
+        }
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
         val parentId = useDeclarationParent(ee.parent, false)

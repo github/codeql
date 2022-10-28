@@ -6,52 +6,104 @@ import codeql.swift.elements.expr.LiteralExpr
 import codeql.swift.elements.expr.OpaqueValueExpr
 import codeql.swift.elements.expr.TapExpr
 
-class InterpolatedStringLiteralExprBase extends Synth::TInterpolatedStringLiteralExpr, LiteralExpr {
-  override string getAPrimaryQlClass() { result = "InterpolatedStringLiteralExpr" }
+module Generated {
+  class InterpolatedStringLiteralExpr extends Synth::TInterpolatedStringLiteralExpr, LiteralExpr {
+    override string getAPrimaryQlClass() { result = "InterpolatedStringLiteralExpr" }
 
-  OpaqueValueExpr getImmediateInterpolationExpr() {
-    result =
-      Synth::convertOpaqueValueExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
-            .(Raw::InterpolatedStringLiteralExpr)
-            .getInterpolationExpr())
+    /**
+     * Gets the interpolation expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    OpaqueValueExpr getImmediateInterpolationExpr() {
+      result =
+        Synth::convertOpaqueValueExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
+              .(Raw::InterpolatedStringLiteralExpr)
+              .getInterpolationExpr())
+    }
+
+    /**
+     * Gets the interpolation expression of this interpolated string literal expression, if it exists.
+     */
+    final OpaqueValueExpr getInterpolationExpr() {
+      result = getImmediateInterpolationExpr().resolve()
+    }
+
+    /**
+     * Holds if `getInterpolationExpr()` exists.
+     */
+    final predicate hasInterpolationExpr() { exists(getInterpolationExpr()) }
+
+    /**
+     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateInterpolationCountExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
+              .(Raw::InterpolatedStringLiteralExpr)
+              .getInterpolationCountExpr())
+    }
+
+    /**
+     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
+     */
+    final Expr getInterpolationCountExpr() {
+      result = getImmediateInterpolationCountExpr().resolve()
+    }
+
+    /**
+     * Holds if `getInterpolationCountExpr()` exists.
+     */
+    final predicate hasInterpolationCountExpr() { exists(getInterpolationCountExpr()) }
+
+    /**
+     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateLiteralCapacityExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
+              .(Raw::InterpolatedStringLiteralExpr)
+              .getLiteralCapacityExpr())
+    }
+
+    /**
+     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
+     */
+    final Expr getLiteralCapacityExpr() { result = getImmediateLiteralCapacityExpr().resolve() }
+
+    /**
+     * Holds if `getLiteralCapacityExpr()` exists.
+     */
+    final predicate hasLiteralCapacityExpr() { exists(getLiteralCapacityExpr()) }
+
+    /**
+     * Gets the appending expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    TapExpr getImmediateAppendingExpr() {
+      result =
+        Synth::convertTapExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
+              .(Raw::InterpolatedStringLiteralExpr)
+              .getAppendingExpr())
+    }
+
+    /**
+     * Gets the appending expression of this interpolated string literal expression, if it exists.
+     */
+    final TapExpr getAppendingExpr() { result = getImmediateAppendingExpr().resolve() }
+
+    /**
+     * Holds if `getAppendingExpr()` exists.
+     */
+    final predicate hasAppendingExpr() { exists(getAppendingExpr()) }
   }
-
-  final OpaqueValueExpr getInterpolationExpr() {
-    result = getImmediateInterpolationExpr().resolve()
-  }
-
-  final predicate hasInterpolationExpr() { exists(getInterpolationExpr()) }
-
-  Expr getImmediateInterpolationCountExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
-            .(Raw::InterpolatedStringLiteralExpr)
-            .getInterpolationCountExpr())
-  }
-
-  final Expr getInterpolationCountExpr() { result = getImmediateInterpolationCountExpr().resolve() }
-
-  final predicate hasInterpolationCountExpr() { exists(getInterpolationCountExpr()) }
-
-  Expr getImmediateLiteralCapacityExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
-            .(Raw::InterpolatedStringLiteralExpr)
-            .getLiteralCapacityExpr())
-  }
-
-  final Expr getLiteralCapacityExpr() { result = getImmediateLiteralCapacityExpr().resolve() }
-
-  final predicate hasLiteralCapacityExpr() { exists(getLiteralCapacityExpr()) }
-
-  TapExpr getImmediateAppendingExpr() {
-    result =
-      Synth::convertTapExprFromRaw(Synth::convertInterpolatedStringLiteralExprToRaw(this)
-            .(Raw::InterpolatedStringLiteralExpr)
-            .getAppendingExpr())
-  }
-
-  final TapExpr getAppendingExpr() { result = getImmediateAppendingExpr().resolve() }
-
-  final predicate hasAppendingExpr() { exists(getAppendingExpr()) }
 }

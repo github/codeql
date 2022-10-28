@@ -12,7 +12,7 @@ swift_cc_binary(
         "//swift/extractor/infra",
         "//swift/extractor/remapping",
         "//swift/extractor/visitors",
-        "//swift/tools/prebuilt:swift-llvm-support",
+        "//swift/third_party/swift-llvm-support",
     ],
 )
 

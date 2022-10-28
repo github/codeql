@@ -3762,6 +3762,81 @@ cfg.rb:
 #  215| self
 #-----|  -> call to something_else
 
+constant_compound_assign.rb:
+#    1| Foo
+#-----|  -> foo_before
+
+#    1| enter constant_compound_assign.rb
+#-----|  -> Foo
+
+#    1| exit constant_compound_assign.rb
+
+#    1| exit constant_compound_assign.rb (normal)
+#-----|  -> exit constant_compound_assign.rb
+
+#    2| foo_before
+#-----|  -> FOO_CONSTANT
+
+#    5| FOO_CONSTANT
+#-----|  -> FOO_CONSTANT
+
+#    5| FOO_CONSTANT
+#-----| true -> ... || ...
+#-----| false -> 123
+
+#    5| ... = ...
+#-----|  -> foo_after
+
+#    5| ... || ...
+#-----|  -> ... = ...
+
+#    5| 123
+#-----|  -> ... || ...
+
+#    7| foo_after
+#-----|  -> top_before
+
+#   11| top_before
+#-----|  -> TOP_CONSTANT
+
+#   14| TOP_CONSTANT
+#-----|  -> TOP_CONSTANT
+
+#   14| TOP_CONSTANT
+#-----| true -> ... || ...
+#-----| false -> 123
+
+#   14| ... = ...
+#-----|  -> top_after
+
+#   14| ... || ...
+#-----|  -> ... = ...
+
+#   14| 123
+#-----|  -> ... || ...
+
+#   16| top_after
+#-----|  -> TOP_CONSTANT2
+
+#   19| TOP_CONSTANT2
+#-----|  -> TOP_CONSTANT2
+
+#   19| TOP_CONSTANT2
+#-----| true -> ... || ...
+#-----| false -> 123
+
+#   19| ... = ...
+#-----|  -> top_after2
+
+#   19| ... || ...
+#-----|  -> ... = ...
+
+#   19| 123
+#-----|  -> ... || ...
+
+#   21| top_after2
+#-----|  -> exit constant_compound_assign.rb (normal)
+
 desugar.rb:
 #    1| enter m1
 #-----|  -> x

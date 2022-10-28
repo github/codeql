@@ -1,5 +1,19 @@
 import swift
+private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
+private import codeql.swift.dataflow.FlowSteps
+
+/** The struct `URL`. */
+class UrlDecl extends StructDecl {
+  UrlDecl() { this.getFullName() = "URL" }
+}
+
+/**
+ * A content implying that, if a `URL` is tainted, then all its fields are tainted.
+ */
+private class UriFieldsInheritTaint extends TaintInheritingContent, DataFlow::Content::FieldContent {
+  UriFieldsInheritTaint() { this.getField().getEnclosingDecl() instanceof UrlDecl }
+}
 
 /**
  * A model for `URL` members that are sources of remote flow.
