@@ -19,7 +19,7 @@ class UseTest extends InlineExpectationsTest {
           )
           or
           exists(EssaVariable var | AdjacentUses::firstUse(var, nodeTo) |
-            prevLoc = var.getDefinition().getLocation() and
+            prevLoc = var.getLocation() and
             name = var.getName() and
             tag = "def-use"
           )
@@ -31,7 +31,7 @@ class UseTest extends InlineExpectationsTest {
       or
       exists(EssaVariable var | AdjacentUses::firstUse(var, _) |
         value = var.getName() and
-        location = var.getDefinition().getLocation() and
+        location = var.getLocation() and
         element = var.getName() and
         name = var.getName() and
         tag = "def"
