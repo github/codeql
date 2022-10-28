@@ -33,7 +33,14 @@ private module Cached {
    */
   cached
   newtype TIRDataFlowNode =
-    TInstructionNode(Instruction i) { not Ssa::ignoreInstruction(i) } or
+    TInstructionNode(Instruction i) {
+      not Ssa::ignoreInstruction(i) and
+      // We exclude `void`-typed instructions because they cannot contain data.
+      // However, if the instruction is a glvalue, and their type is `void`, then the result
+      // type of the instruction is really `void*`, and thus we still want to have a dataflow
+      // node for it.
+      (not i.getResultType() instanceof VoidType or i.isGLValue())
+    } or
     TOperandNode(Operand op) { not Ssa::ignoreOperand(op) } or
     TVariableNode(Variable var) or
     TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
