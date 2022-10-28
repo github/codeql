@@ -15,7 +15,7 @@ private import codeql.swift.controlflow.CfgNodes
 
 class SummarizedCallableBase = AbstractFunctionDecl;
 
-DataFlowCallable inject(SummarizedCallable c) { result = TDataFlowFunc(c) }
+DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition instanceParameterPosition() { result instanceof ThisArgumentPosition }
