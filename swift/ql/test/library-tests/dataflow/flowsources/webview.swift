@@ -13,6 +13,7 @@ class JSContext {
     func objectForKeyedSubscript(_: Any!) -> JSValue! { return JSValue() } 
     func setObject(_: Any, forKeyedSubscript: (NSCopying & NSObjectProtocol) ) {}
 }
+protocol JSExport {}
 
 // --- tests ---
 class TestMessageHandler: WKScriptMessageHandler {
@@ -23,13 +24,20 @@ class TestMessageHandler: WKScriptMessageHandler {
 func testJsContext(context: JSContext) {
     context.globalObject // SOURCE
     context.objectForKeyedSubscript("") // SOURCE
-    context.setObject(Exposed.self, forKeyedSubscript: "exposed" as! NSCopying & NSObjectProtocol)
 }
 
-class Exposed {
+protocol Exported : JSExport {
+    var tainted: Any { get }
+    func tainted(arg1: Any, arg2: Any)
+}
+class ExportedImpl : Exported {
     var tainted: Any { get { return "" } } // SOURCE
 
-    func tainted(arg1: Any, arg2: Any) { // SOURCES
+    var notTainted: Any { get { return ""} }
 
+    func tainted(arg1: Any, arg2: Any) { // SOURCES
+    }
+
+    func notTainted(arg1: Any, arg2: Any) {
     }
 } 

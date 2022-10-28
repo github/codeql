@@ -91,39 +91,43 @@ private class JsValueSummaries extends SummaryModelCsv {
   }
 }
 
-/** The class `JSContext`. */
-private class JsContextDecl extends ClassDecl {
-  JsContextDecl() { this.getName() = "JSContext" }
+/** The `JSExport` protocol. */
+private class JsExport extends ProtocolDecl {
+  JsExport() { this.getName() = "JSExport" }
 }
 
-/** The type of an object exposed to JavaScript through `JSContext.setObject`. */
-private class TypeExposedThroughJsContext extends Type {
-  TypeExposedThroughJsContext() {
-    exists(ApplyExpr c, FuncDecl f |
-      c.getStaticTarget() = f and
-      f.getEnclosingDecl() instanceof JsContextDecl and
-      f.getName() = "setObject(_:forKeyedSubscript)"
-    |
-      c.getArgument(0).getExpr().getType() = this
-    )
-  }
+/** A protocol inheriting `JSExport`. */
+private class JsExportedProto extends ProtocolDecl {
+  JsExportedProto() { this.getABaseTypeDecl+() instanceof JsExport }
+}
+
+/** A type that adopts a `JSExport`-inherited protocol. */
+private class JsExportedType extends ClassOrStructDecl {
+  JsExportedType() { this.getABaseTypeDecl*() instanceof JsExportedProto }
 }
 
 /**
- * The members (fields and parameters of functions) of a class or struct
- * an instance of which is exposed to JavaScript through `JSContext.setObject`.
+ * A flow source that models properties and methods defined in a `JSExport`-inherited protocol
+ * and implemented in a type adopting that protcol. These members are accessible from JavaScript
+ * when the object is assigned to a `JSContext`.
  */
-private class ExposedThroughJsContextSource extends RemoteFlowSource {
-  ExposedThroughJsContextSource() {
-    exists(ParamDecl p | this.(DataFlow::ParameterNode).getParameter() = p |
-      p.getDeclaringFunction().getEnclosingDecl().(ClassOrStructDecl).getType() instanceof
-        TypeExposedThroughJsContext
+private class JsExportedSource extends RemoteFlowSource {
+  JsExportedSource() {
+    exists(MethodDecl adopter, MethodDecl base |
+      base.getEnclosingDecl() instanceof JsExportedProto and
+      adopter.getEnclosingDecl() instanceof JsExportedType
+    |
+      this.(DataFlow::ParameterNode).getParameter().getDeclaringFunction() = adopter and
+      adopter.getName() = base.getName()
     )
     or
-    exists(FieldDecl f | this.asDefinition().getSourceVariable() = f |
-      f.getEnclosingDecl().(ClassOrStructDecl).getType() instanceof TypeExposedThroughJsContext
+    exists(FieldDecl adopter, FieldDecl base |
+      base.getEnclosingDecl() instanceof JsExportedProto and
+      adopter.getEnclosingDecl() instanceof JsExportedType
+    |
+      this.asDefinition().getSourceVariable() = adopter and adopter.getName() = base.getName()
     )
   }
 
-  override string getSourceType() { result = "Member of a type exposed through JSContext" }
+  override string getSourceType() { result = "Member of a type exposed through JSExport" }
 }
