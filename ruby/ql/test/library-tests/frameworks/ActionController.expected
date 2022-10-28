@@ -6,6 +6,7 @@ actionControllerControllerClasses
 | active_record/ActiveRecord.rb:41:1:64:3 | BarController |
 | active_record/ActiveRecord.rb:66:1:98:3 | BazController |
 | active_record/ActiveRecord.rb:100:1:108:3 | AnnotatedController |
+| active_storage/active_storage.rb:39:1:45:3 | PostsController2 |
 | app/controllers/comments_controller.rb:1:1:40:3 | CommentsController |
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
