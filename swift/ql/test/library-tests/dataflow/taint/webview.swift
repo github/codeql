@@ -87,13 +87,13 @@ func testJsValue() {
     
     let v1 = JSValue(object: "", in: context)
     v1.defineProperty("", descriptor: s as Any)
-    sink(v1) // $ MISSING: tainted=56
+    sink(v1) // $ tainted=56
 
     let v2 = JSValue(object: "", in: context)
     v2.setValue(s as Any, at: 0)
-    sink(v2) // $ MISSING: tainted=56
+    sink(v2) // $ tainted=56
 
     let v3 = JSValue(object: "", in: context)
-    v2.setValue(s as Any, forProperty: "")
-    sink(v3) // $ MISSING: tainted=56
+    v3.setValue(s as Any, forProperty: "")
+    sink(v3) // $ tainted=56
 }
