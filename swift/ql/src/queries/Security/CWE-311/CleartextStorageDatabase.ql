@@ -28,9 +28,11 @@ abstract class Stored extends DataFlow::Node { }
 class CoreDataStore extends Stored {
   CoreDataStore() {
     // values written into Core Data objects are a sink
-    exists(MethodDecl f, CallExpr call |
-      f.hasQualifiedName("NSManagedObject", ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
-      call.getStaticTarget() = f and
+    exists(CallExpr call |
+      call.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName("NSManagedObject",
+            ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
     )
   }
