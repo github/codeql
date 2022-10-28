@@ -142,11 +142,7 @@ class Node extends TIRDataFlowNode {
    * Gets the non-conversion expression that's indirectly tracked by this node
    * under `index` number of indirections.
    */
-  Expr asIndirectExpr(int index) {
-    exists(Operand operand | hasOperandAndIndex(this, operand, index) |
-      result = operand.getDef().getUnconvertedResultExpression()
-    )
-  }
+  Expr asIndirectExpr(int index) { result = this.(IndirectExprNode).getExpr(index) }
 
   /**
    * Gets the non-conversion expression that's indirectly tracked by this node
@@ -165,9 +161,7 @@ class Node extends TIRDataFlowNode {
    * behind `index` number of indirections.
    */
   Expr asIndirectConvertedExpr(int index) {
-    exists(Operand operand | hasOperandAndIndex(this, operand, index) |
-      result = operand.getDef().getConvertedResultExpression()
-    )
+    result = this.(IndirectExprNode).getConvertedExpr(index)
   }
 
   /**
@@ -309,12 +303,23 @@ class Node extends TIRDataFlowNode {
 
   /** Gets a textual representation of this element. */
   cached
-  final string toString() { result = this.toStringImpl() }
+  final string toString() {
+    result = toExprString(this)
+    or
+    not exists(toExprString(this)) and
+    result = this.toStringImpl()
+  }
 
   /** INTERNAL: Do not use. */
   string toStringImpl() {
     none() // overridden by subclasses
   }
+}
+
+private string toExprString(Node n) {
+  result = n.asExpr().toString()
+  or
+  result = n.asIndirectExpr().toString() + " indirection"
 }
 
 /**
@@ -738,6 +743,19 @@ private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, 
   not convertedExprMustBeOperand(e)
 }
 
+/** Holds if `node` should be an `IndirectOperand` that maps `node.asIndirectExpr()` to `e`. */
+private predicate indirectExprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e) {
+  exists(Instruction instr |
+    instr = node.getOperand().getDef() and
+    not node instanceof ExprNode
+  |
+    e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
+    or
+    not instr instanceof VariableAddressInstruction and
+    e = instr.getConvertedResultExpression()
+  )
+}
+
 private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, Expr e) {
   exists(CallInstruction call |
     call.getStaticCallTarget() instanceof Constructor and
@@ -754,10 +772,27 @@ predicate exprNodeShouldBeInstruction(Node node, Expr e) {
   not exprNodeShouldBeIndirectOutNode(_, e)
 }
 
-private class ExprNodeBase extends Node {
-  Expr getConvertedExpr() { none() } // overridden by subclasses
+/** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */
+predicate indirectExprNodeShouldBeIndirectInstruction(IndirectInstruction node, Expr e) {
+  exists(Instruction instr |
+    instr = node.getInstruction() and not indirectExprNodeShouldBeIndirectOperand(_, e)
+  |
+    e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
+    or
+    not instr instanceof VariableAddressInstruction and
+    e = instr.getConvertedResultExpression()
+  )
+}
 
-  Expr getExpr() { none() } // overridden by subclasses
+abstract private class ExprNodeBase extends Node {
+  /**
+   * Gets the expression corresponding to this node, if any. The returned
+   * expression may be a `Conversion`.
+   */
+  abstract Expr getConvertedExpr();
+
+  /** Gets the non-conversion expression corresponding to this node, if any. */
+  abstract Expr getExpr();
 }
 
 private class InstructionExprNode extends ExprNodeBase, InstructionNode {
@@ -765,7 +800,7 @@ private class InstructionExprNode extends ExprNodeBase, InstructionNode {
 
   final override Expr getConvertedExpr() { exprNodeShouldBeInstruction(this, result) }
 
-  final override Expr getExpr() { result = this.getInstruction().getUnconvertedResultExpression() }
+  final override Expr getExpr() { result = this.getConvertedExpr().getUnconverted() }
 
   final override string toStringImpl() { result = this.getConvertedExpr().toString() }
 }
@@ -775,9 +810,7 @@ private class OperandExprNode extends ExprNodeBase, OperandNode {
 
   final override Expr getConvertedExpr() { exprNodeShouldBeOperand(this, result) }
 
-  final override Expr getExpr() {
-    result = this.getOperand().getDef().getUnconvertedResultExpression()
-  }
+  final override Expr getExpr() { result = this.getConvertedExpr().getUnconverted() }
 
   final override string toStringImpl() {
     // Avoid generating multiple `toString` results for `ArgumentNode`s
@@ -790,15 +823,56 @@ private class OperandExprNode extends ExprNodeBase, OperandNode {
 }
 
 private class IndirectOperandExprNode extends ExprNodeBase, IndirectOperand {
-  LoadInstruction load;
+  IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, _) }
 
-  IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, load) }
+  final override Expr getConvertedExpr() { exprNodeShouldBeIndirectOperand(this, result, _) }
 
-  final override Expr getConvertedExpr() { exprNodeShouldBeIndirectOperand(this, result, load) }
-
-  final override Expr getExpr() { result = load.getUnconvertedResultExpression() }
+  final override Expr getExpr() { result = this.getConvertedExpr().getUnconverted() }
 
   final override string toStringImpl() { result = this.getConvertedExpr().toString() }
+}
+
+abstract private class IndirectExprNodeBase extends Node {
+  /**
+   * Gets the expression corresponding to this node, if any. The returned
+   * expression may be a `Conversion`.
+   */
+  abstract Expr getConvertedExpr(int indirectionIndex);
+
+  /** Gets the non-conversion expression corresponding to this node, if any. */
+  abstract Expr getExpr(int indirectionIndex);
+}
+
+private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase, IndirectOperand {
+  IndirectOperandIndirectExprNode() { indirectExprNodeShouldBeIndirectOperand(this, _) }
+
+  final override Expr getConvertedExpr(int index) {
+    this.getIndirectionIndex() = index and
+    indirectExprNodeShouldBeIndirectOperand(this, result)
+  }
+
+  final override Expr getExpr(int index) {
+    this.getIndirectionIndex() = index and
+    result = this.getConvertedExpr(index).getUnconverted()
+  }
+
+  final override string toStringImpl() { result = super.toStringImpl() }
+}
+
+private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase, IndirectInstruction {
+  IndirectInstructionIndirectExprNode() { indirectExprNodeShouldBeIndirectInstruction(this, _) }
+
+  final override Expr getConvertedExpr(int index) {
+    this.getIndirectionIndex() = index and
+    indirectExprNodeShouldBeIndirectInstruction(this, result)
+  }
+
+  final override Expr getExpr(int index) {
+    this.getIndirectionIndex() = index and
+    result = this.getConvertedExpr(index).getUnconverted()
+  }
+
+  final override string toStringImpl() { result = super.toStringImpl() }
 }
 
 private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgumentOutNode {
@@ -828,6 +902,25 @@ class ExprNode extends Node instanceof ExprNodeBase {
    * expression may be a `Conversion`.
    */
   Expr getConvertedExpr() { result = super.getConvertedExpr() }
+}
+
+/**
+ * An indirect expression, viewed as a node in a data flow graph.
+ */
+class IndirectExprNode extends Node instanceof IndirectExprNodeBase {
+  /**
+   * Gets the non-conversion expression corresponding to this node, if any. If
+   * this node strictly (in the sense of `getConvertedExpr`) corresponds to a
+   * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
+   * expression.
+   */
+  Expr getExpr(int indirectionIndex) { result = super.getExpr(indirectionIndex) }
+
+  /**
+   * Gets the expression corresponding to this node, if any. The returned
+   * expression may be a `Conversion`.
+   */
+  Expr getConvertedExpr(int indirectionIndex) { result = super.getConvertedExpr(indirectionIndex) }
 }
 
 /**
