@@ -1957,6 +1957,18 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun getCalleeRealOverrideTarget(f: IrFunction): IrFunction {
+        val target = f.target.realOverrideTarget
+        return if (overridesCollectionsMethodWithAlteredParameterTypes(f))
+        // Cope with the case where an inherited callee can be rewritten with substituted parameter types
+        // if the child class uses it to implement a collections interface
+        // (for example, `class A { boolean contains(Object o) { ... } }; class B<T> extends A implements Set<T> { ... }`
+        // leads to generating a function `A.contains(B::T)`, with `initialSignatureFunction` pointing to `A.contains(Object)`.
+            (target as? IrLazyFunction)?.initialSignatureFunction ?: target
+        else
+            target
+    }
+
     fun extractRawMethodAccess(
         syntacticCallTarget: IrFunction,
         locElement: IrElement,
@@ -2010,18 +2022,6 @@ open class KotlinFileExtractor(
                 superQualifierSymbol
             )
         }
-    }
-
-    private fun getCalleeRealOverrideTarget(f: IrFunction): IrFunction {
-        val target = f.target.realOverrideTarget
-        return if (overridesCollectionsMethodWithAlteredParameterTypes(f))
-            // Cope with the case where an inherited callee can be rewritten with substituted parameter types
-            // if the child class uses it to implement a collections interface
-            // (for example, `class A { boolean contains(Object o) { ... } }; class B<T> extends A implements Set<T> { ... }`
-            // leads to generating a function `A.contains(B::T)`, with `initialSignatureFunction` pointing to `A.contains(Object)`.
-            (target as? IrLazyFunction)?.initialSignatureFunction ?: target
-        else
-            target
     }
 
     fun extractRawMethodAccess(
