@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.symbols.*
@@ -2011,6 +2012,18 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun getCalleeRealOverrideTarget(f: IrFunction): IrFunction {
+        val target = f.target.realOverrideTarget
+        return if (overridesCollectionsMethodWithAlteredParameterTypes(f))
+            // Cope with the case where an inherited callee can be rewritten with substituted parameter types
+            // if the child class uses it to implement a collections interface
+            // (for example, `class A { boolean contains(Object o) { ... } }; class B<T> extends A implements Set<T> { ... }`
+            // leads to generating a function `A.contains(B::T)`, with `initialSignatureFunction` pointing to `A.contains(Object)`.
+            (target as? IrLazyFunction)?.initialSignatureFunction ?: target
+        else
+            target
+    }
+
     fun extractRawMethodAccess(
         syntacticCallTarget: IrFunction,
         locId: Label<DbLocation>,
@@ -2028,7 +2041,7 @@ open class KotlinFileExtractor(
         extractClassTypeArguments: Boolean = false,
         superQualifierSymbol: IrClassSymbol? = null) {
 
-        val callTarget = syntacticCallTarget.target.realOverrideTarget
+        val callTarget = getCalleeRealOverrideTarget(syntacticCallTarget)
         val methodId = getCalleeMethodId(callTarget, drType, extractClassTypeArguments)
         if (methodId == null) {
             logger.warn("No method to bind call to for raw method access")
