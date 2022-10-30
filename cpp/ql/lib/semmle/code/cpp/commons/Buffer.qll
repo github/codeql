@@ -79,8 +79,10 @@ private predicate localFlowToExprStep(DataFlow::Node n1, DataFlow::Node n2) {
 }
 
 /** Holds if `n2 + delta` may be equal to `n1`. */
-private predicate localFlowStepToExpr(DataFlow::Node n1, Expr e2) {
-  exists(DataFlow::Node mid, DataFlow::Node n2 |
+private predicate localFlowStepToExpr(Expr e1, Expr e2) {
+  getBufferSize0(e1) and
+  exists(DataFlow::Node n1, DataFlow::Node mid, DataFlow::Node n2 |
+    n1.asExpr() = e1 and
     localFlowToExprStep*(n1, mid) and
     DataFlow::localFlowStep(mid, n2) and
     n2.asExpr() = e2
@@ -93,6 +95,7 @@ private predicate localFlowStepToExpr(DataFlow::Node n1, Expr e2) {
  * expression.
  */
 private predicate step(Expr e1, Expr e2, int delta) {
+  getBufferSize0(e1) and
   exists(Variable bufferVar, Class parentClass, VariableAccess parentPtr, int bufferSize |
     e1 = parentPtr
   |
@@ -109,19 +112,32 @@ private predicate step(Expr e1, Expr e2, int delta) {
     delta = bufferSize - parentClass.getSize()
   )
   or
-  localFlowStepToExpr(DataFlow::exprNode(e1), e2) and
+  localFlowStepToExpr(e1, e2) and
   delta = 0
+}
+
+pragma[nomagic]
+private predicate getBufferSize0(Expr e) {
+  exists(isSource(e, _))
+  or
+  exists(Expr e0 |
+    getBufferSize0(e0) and
+    step(e0, e, _)
+  )
 }
 
 /**
  * Get the size in bytes of the buffer pointed to by an expression (if this can be determined).
  */
 int getBufferSize(Expr bufferExpr, Element why) {
-  result = isSource(bufferExpr, why)
-  or
-  exists(Expr e0, int delta, int size |
-    size = getBufferSize(e0, why) and
-    delta = unique(int cand | step(e0, bufferExpr, cand) | cand) and
-    result = size + delta
+  getBufferSize0(bufferExpr) and
+  (
+    result = isSource(bufferExpr, why)
+    or
+    exists(Expr e0, int delta, int size |
+      size = getBufferSize(e0, why) and
+      delta = unique(int cand | step(e0, bufferExpr, cand) | cand) and
+      result = size + delta
+    )
   )
 }
