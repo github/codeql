@@ -20,7 +20,7 @@ void test1()
 	char bigbuffer[20];
 	
 	memcpy(bigbuffer, smallbuffer, sizeof(smallbuffer)); // GOOD
-	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read
+	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read [NOT DETECTED]
 	memcpy(smallbuffer, bigbuffer, sizeof(smallbuffer)); // GOOD
 	memcpy(smallbuffer, bigbuffer, sizeof(bigbuffer)); // BAD: over-write
 }
@@ -454,7 +454,7 @@ void test17(long long *longArray)
 		multi[-5][5] = 0; // BAD: underrun write [INCORRECT MESSAGE]
 		multi[5][-5] = 0; // DUBIOUS: underrun write (this one is still within the bounds of the whole array)
 		multi[-5][-5] = 0; // BAD: underrun write [INCORRECT MESSAGE]
-		multi[0][-5] = 0; // BAD: underrun write
+		multi[0][-5] = 0; // BAD: underrun write [NOT DETECTED]
 
 		multi[15][5] = 0; // BAD: overrun write
 		multi[5][15] = 0; // DUBIOUS: overrun write (this one is still within the bounds of the whole array)
@@ -476,7 +476,7 @@ void test18()
 	p1[-1] = 0; // BAD: underrun write
 	p2[-1] = 0; // BAD: underrun write
 	p2++;
-	p2[-1] = 0; // GOOD [FALSE POSITIVE]
+	p2[-1] = 0; // GOOD
 
 	p3[-1] = 0; // BAD
 	while (*p3 != 0) {
@@ -486,7 +486,7 @@ void test18()
 
 	p4[-1] = 0; // BAD: underrun write
 	p4++;
-	p4[-1] = 0; // GOOD [FALSE POSITIVE]
+	p4[-1] = 0; // GOOD
 
 	p5[-1] = 0; // BAD
 	while (*p5 != 0) {
@@ -572,7 +572,7 @@ void test21(bool cond)
 	if (cond)
 	{
 		ptr++;
-		if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[0] [FALSE POSITIVE]
+		if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[0]
 	} else {
 		if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1]
 	}
