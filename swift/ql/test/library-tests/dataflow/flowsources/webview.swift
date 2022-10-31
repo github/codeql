@@ -31,9 +31,14 @@ protocol Exported : JSExport {
     func tainted(arg1: Any, arg2: Any)
 }
 class ExportedImpl : Exported {
-    var tainted: Any { get { return "" } } // SOURCE
+    var tainted: Any { get { return "" } }
 
     var notTainted: Any { get { return ""} }
+
+    func readFields() {
+        tainted // SOURCE
+        notTainted
+    }
 
     func tainted(arg1: Any, arg2: Any) { // SOURCES
     }

@@ -125,7 +125,7 @@ private class JsExportedSource extends RemoteFlowSource {
       base.getEnclosingDecl() instanceof JsExportedProto and
       adopter.getEnclosingDecl() instanceof JsExportedType
     |
-      this.asDefinition().getSourceVariable() = adopter and adopter.getName() = base.getName()
+      this.asExpr().(MemberRefExpr).getMember() = adopter and adopter.getName() = base.getName()
     )
   }
 
