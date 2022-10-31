@@ -137,6 +137,8 @@ private predicate delegate(Method caller, Method callee) {
 
 from Method m, Method n, string messageQualifier
 where
+  // Exclude compiler generated methods, such as Kotlin `$default` methods:
+  not m.isCompilerGenerated() and
   confusinglyOverloaded(m, n) and
   (
     if m.getDeclaringType() = n.getDeclaringType()

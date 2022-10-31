@@ -1,1 +1,0 @@
-| Test.kt:12:5:12:45 | fn$default | Method A.fn$default(..) could be confused with overloaded method $@, since dispatch depends on static types. | Test.kt:13:5:13:40 | fn$default | fn$default |
