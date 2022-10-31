@@ -154,5 +154,5 @@ void print_ith_message() {
 
 void fmt_via_strcpy(char *data) {
     strcpy(data, "some string");
-    printf(data);
+    printf(data); // BAD
 }
