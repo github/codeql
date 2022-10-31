@@ -46,13 +46,23 @@ class AndroidEditableXmlElement extends AndroidLayoutXmlElement {
   string getInputType() { result = this.getAttribute("inputType").(AndroidXmlAttribute).getValue() }
 }
 
+/** A `findViewById` or `requireViewById` method on `Activity` or `View`. */
+private class FindViewMethod extends Method {
+  FindViewMethod() {
+    hasQualifiedName("android.view", "View", ["findViewById", "requireViewById"])
+    or
+    exists(Method m |
+      m.hasQualifiedName("android.app", "Activity", ["findViewById", "requireViewById"]) and
+      this = m.getAnOverride*()
+    )
+  }
+}
+
 /** Gets a use of the view that has the given id. */
 private Expr getAUseOfId(string id) {
   exists(string name, MethodAccess findView, NestedClass r_id, Field id_field |
     id = "@+id/" + name and
-    findView
-        .getMethod()
-        .hasQualifiedName("android.view", "View", ["findViewById", "requireViewById"]) and
+    findView.getMethod() instanceof FindViewMethod and
     r_id.getEnclosingType().hasName("R") and
     r_id.hasName("id") and
     id_field.getDeclaringType() = r_id and

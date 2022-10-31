@@ -23,4 +23,13 @@
     <!-- $hasResult --> <EditText
         android:id="@+id/test5_bank_account_name"
         android:inputType="textMultiLine"/>  
+
+    <!-- $hasResult --> <EditText
+        android:id="@+id/test6_password"/>  
+
+    <EditText
+        android:id="@+id/test7_password"/>  
+
+    <EditText
+        android:id="@+id/test8_password"/>  
 </LinearLayout>

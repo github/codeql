@@ -13,7 +13,7 @@ this sensitive data may be leaked to other applications via the keyboard cache.<
 
 <p>For input fields expected to accept sensitive information, an input type such as <code>"textNoSuggestions"</code> (or <code>"textPassword"</code> for a password) 
 should be used to ensure that the input does not get stored in the keyboard cache.</p>
-
+<p>The input type can also be set in code through <code>TextView.setInputType()</code> rather than declared through XML.</p>
 </recommendation>
 <example>
 
