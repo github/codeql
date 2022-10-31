@@ -78,7 +78,7 @@ IDE. Please refer to your IDE's instructions for how to set up remote debugging.
 
 In particular for breakpoints to work you might need to setup the following remote path mapping:
 
-| Remote      | Local                                 |
-|-------------|---------------------------------------|
-| `swift`     | `/absolute/path/to/codeql/swift`      |
-| `bazel-out` | `/absolute/path/to/codeql/bazel-out/` |
+| Remote      | Local                                |
+|-------------|--------------------------------------|
+| `swift`     | `/absolute/path/to/codeql/swift`     |
+| `bazel-out` | `/absolute/path/to/codeql/bazel-out` |
