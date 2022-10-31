@@ -53,6 +53,20 @@ static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration
   }
 }
 
+static bool checkRunUnderFilter(int argc, char* const* argv) {
+  auto runUnderFilter = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER");
+  if (runUnderFilter == nullptr) {
+    return true;
+  }
+  std::string call = argv[0];
+  for (auto i = 1; i < argc; ++i) {
+    call += ' ';
+    call += argv[i];
+  }
+  std::regex filter{runUnderFilter, std::regex_constants::basic | std::regex_constants::nosubs};
+  return std::regex_search(call, filter);
+}
+
 // if `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER` env variable is set, and either
 // * `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER` is not set, or
 // * it is set to a regexp matching any substring of the extractor call
@@ -62,41 +76,28 @@ static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration
 // unpleasant loops.
 // An example usage is to run the extractor under `gdbserver :1234` when the
 // arguments match a given source file.
-void checkToRunUnderTool(int argc, char* const* argv) {
+static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
+  assert(argc > 0);
+
   auto runUnder = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
-  if (runUnder == nullptr) {
+  if (runUnder == nullptr || !checkRunUnderFilter(argc, argv)) {
     return;
   }
-  auto runUnderFilter = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER");
-  if (runUnderFilter != nullptr) {
-    assert(argc > 0);
-    std::string call = argv[0];
-    for (auto i = 1; i < argc; ++i) {
-      call += ' ';
-      call += argv[i];
-    }
-    std::regex filter{runUnderFilter, std::regex_constants::basic | std::regex_constants::nosubs};
-    if (!std::regex_search(call, filter)) {
-      return;
-    }
-  }
   std::vector<char*> args;
+  // split RUN_UNDER value by spaces to get args vector
   for (auto word = std::strtok(runUnder, " "); word != nullptr; word = std::strtok(nullptr, " ")) {
     args.push_back(word);
   }
-  if (args.empty()) {
-    return;
-  }
-  for (auto i = 0; i < argc; ++i) {
-    args.push_back(argv[i]);
-  }
+  // append process args, including extractor executable path
+  args.insert(args.end(), argv, argv + argc);
   args.push_back(nullptr);
+  // avoid looping on this function
   unsetenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
   execvp(args[0], args.data());
 }
 
 int main(int argc, char** argv) {
-  checkToRunUnderTool(argc, argv);
+  checkWhetherToRunUnderTool(argc, argv);
 
   if (argc == 1) {
     // TODO: print usage
