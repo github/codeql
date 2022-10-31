@@ -1,5 +1,5 @@
 actionControllerControllerClasses
-| controllers/comments_controller.rb:1:1:40:3 | CommentsController |
+| controllers/comments_controller.rb:1:1:45:3 | CommentsController |
 | controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
 | controllers/photos_controller.rb:1:1:4:3 | PhotosController |
 | controllers/posts_controller.rb:1:1:10:3 | PostsController |
@@ -10,7 +10,7 @@ actionControllerControllerClasses
 | params_flow.rb:1:1:151:3 | MyController |
 actionControllerActionMethods
 | controllers/comments_controller.rb:2:3:36:5 | index |
-| controllers/comments_controller.rb:38:3:39:5 | show |
+| controllers/comments_controller.rb:38:3:44:5 | show |
 | controllers/foo/bars_controller.rb:5:3:7:5 | index |
 | controllers/foo/bars_controller.rb:9:3:18:5 | show_debug |
 | controllers/foo/bars_controller.rb:20:3:24:5 | show |
@@ -251,10 +251,12 @@ cookiesCalls
 cookiesSources
 | controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
 redirectToCalls
+| controllers/comments_controller.rb:40:21:40:49 | call to redirect_to |
 | controllers/foo/bars_controller.rb:17:5:17:30 | call to redirect_to |
 | controllers/foo/bars_controller.rb:27:5:27:39 | call to redirect_back_or_to |
 | controllers/foo/bars_controller.rb:31:5:31:56 | call to redirect_back |
 renderCalls
+| controllers/comments_controller.rb:42:21:42:64 | call to render |
 | controllers/foo/bars_controller.rb:6:5:6:37 | call to render |
 | controllers/foo/bars_controller.rb:23:5:23:76 | call to render |
 | controllers/foo/bars_controller.rb:35:5:35:33 | call to render |

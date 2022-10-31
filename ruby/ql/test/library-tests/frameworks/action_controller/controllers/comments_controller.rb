@@ -36,5 +36,10 @@ class CommentsController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html { redirect_to(comment_view_url) }
+      format.json
+      format.xml  { render xml: @comment.to_xml(include: @photo) }
+    end
   end
 end
