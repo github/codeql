@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.2.1-2022-08-29-10h34m48s.nifty-knee-zhkm8d4b.0f7165ab2368fe2b4334e099ec26cf1f619cb909c4569c0a90876a7ceb276a75
 compiled: false
 lockVersion: 1.0.0
