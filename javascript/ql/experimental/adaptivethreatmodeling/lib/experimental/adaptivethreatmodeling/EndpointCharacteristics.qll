@@ -12,11 +12,11 @@ private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.TaintedPathCustomizations
 
-abstract class ClassificationReason extends string {
-  // The name of the reason, which should describe some characteristic of the endpoint that is meaningful for
+abstract class EndpointCharacteristic extends string {
+  // The name of the characteristic, which should describe some characteristic of the endpoint that is meaningful for
   // determining whether it's a sink and if so of which type
   bindingset[this]
-  ClassificationReason() { any() }
+  EndpointCharacteristic() { any() }
 
   // Indicators with confidence at or above this threshold are considered to be high-confidence indicators.
   float getHighConfidenceThreshold() { result = 0.8 }
@@ -24,17 +24,17 @@ abstract class ClassificationReason extends string {
   // Indicators with confidence at or above this threshold are considered to be medium-confidence indicators.
   float getMediumConfidenceThreshold() { result = 0.5 }
 
-  // The logic to identify which endpoints have this reason.
+  // The logic to identify which endpoints have this characteristic.
   abstract predicate getEndpoints(DataFlow::Node n);
 
-  // This predicate describes what the reason tells us about an endpoint.
+  // This predicate describes what the characteristic tells us about an endpoint.
   //
   // Params:
   // endpointClass: Class 0 is the negative class. Each positive int corresponds to a single sink type.
-  // isPositiveIndicator: Does this reason indicate this endpoint _is_ a member of the class, or that it _isn't_ a
-  // member of the class?
-  // confidence: A number in [0, 1], which tells us how strong an indicator this reason is for the endpoint belonging /
-  // not belonging to the given class.
+  // isPositiveIndicator: Does this characteristic indicate this endpoint _is_ a member of the class, or that it
+  // _isn't_ a member of the class?
+  // confidence: A number in [0, 1], which tells us how strong an indicator this characteristic is for the endpoint
+  // belonging / not belonging to the given class.
   abstract predicate getImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   );
@@ -45,8 +45,8 @@ abstract class ClassificationReason extends string {
  * confidence.
  */
 
-class DomBasedXssSinkReason extends ClassificationReason {
-  DomBasedXssSinkReason() { this = "DomBasedXssSink" }
+class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
+  DomBasedXssSinkCharacteristic() { this = "DomBasedXssSink" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof DomBasedXss::Sink }
 
@@ -62,8 +62,8 @@ class DomBasedXssSinkReason extends ClassificationReason {
  * maximal confidence.
  */
 
-class TaintedPathSinkReason extends ClassificationReason {
-  TaintedPathSinkReason() { this = "TaintedPathSink" }
+class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
+  TaintedPathSinkCharacteristic() { this = "TaintedPathSink" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof TaintedPath::Sink }
 
@@ -79,8 +79,8 @@ class TaintedPathSinkReason extends ClassificationReason {
  * maximal confidence.
  */
 
-class SqlInjectionSinkReason extends ClassificationReason {
-  SqlInjectionSinkReason() { this = "SqlInjectionSink" }
+class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
+  SqlInjectionSinkCharacteristic() { this = "SqlInjectionSink" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof SqlInjection::Sink }
 
@@ -98,8 +98,8 @@ class SqlInjectionSinkReason extends ClassificationReason {
  * with maximal confidence.
  */
 
-class NosqlInjectionSinkReason extends ClassificationReason {
-  NosqlInjectionSinkReason() { this = "NosqlInjectionSink" }
+class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
+  NosqlInjectionSinkCharacteristic() { this = "NosqlInjectionSink" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof NosqlInjection::Sink }
 
