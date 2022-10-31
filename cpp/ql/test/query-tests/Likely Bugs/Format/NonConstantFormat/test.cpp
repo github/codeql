@@ -1,6 +1,7 @@
 extern "C" int printf(const char *fmt, ...);
 extern "C" int sprintf(char *buf, const char *fmt, ...);
-extern "C" char *gettext (const char *);
+extern "C" char *gettext(const char *);
+extern "C" char *strcpy(char *dst, const char *src);
 
 #define MYSPRINTF sprintf
 
