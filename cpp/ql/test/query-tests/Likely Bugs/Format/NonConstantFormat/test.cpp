@@ -151,3 +151,8 @@ void print_ith_message() {
   set_value_of(&i);
   printf(messages[i], 1U); // GOOD
 }
+
+void fmt_via_strcpy(char *data) {
+    strcpy(data, "some string");
+    printf(data);
+}
