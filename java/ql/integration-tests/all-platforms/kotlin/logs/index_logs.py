@@ -31,7 +31,7 @@ with open('logs.csv', 'w', newline='') as f_out:
                 for line in f_in:
                     j = json.loads(line)
                     msg = j['message']
-                    msg = re.sub('(?<=Extraction for invocation TRAP file ).*/kt-db/trap/java/invocations/kotlin\..*\.trap', '<FILENAME>', msg)
+                    msg = re.sub(r'(?<=Extraction for invocation TRAP file ).*[\\/]kt-db[\\/]trap[\\/]java[\\/]invocations[\\/]kotlin\..*\.trap', '<FILENAME>', msg)
                     msg = re.sub('(?<=Kotlin version )[0-9.]+', '<VERSION>', msg)
                     if msg.startswith('Peak memory: '):
                         # Peak memory information varies from run to run, so just ignore it
