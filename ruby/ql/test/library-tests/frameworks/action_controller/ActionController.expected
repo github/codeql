@@ -254,6 +254,12 @@ redirectToCalls
 | controllers/foo/bars_controller.rb:17:5:17:30 | call to redirect_to |
 | controllers/foo/bars_controller.rb:27:5:27:39 | call to redirect_back_or_to |
 | controllers/foo/bars_controller.rb:31:5:31:56 | call to redirect_back |
+renderCalls
+| controllers/foo/bars_controller.rb:6:5:6:37 | call to render |
+| controllers/foo/bars_controller.rb:23:5:23:76 | call to render |
+| controllers/foo/bars_controller.rb:35:5:35:33 | call to render |
+| controllers/foo/bars_controller.rb:38:5:38:50 | call to render |
+| controllers/foo/bars_controller.rb:44:5:44:17 | call to render |
 actionControllerHelperMethods
 getAssociatedControllerClasses
 controllerTemplateFiles

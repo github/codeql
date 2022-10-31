@@ -23,6 +23,8 @@ query predicate cookiesSources(CookiesSource src) { any() }
 
 query predicate redirectToCalls(RedirectToCall c) { any() }
 
+query predicate renderCalls(Rails::RenderCall c) { any() }
+
 query predicate actionControllerHelperMethods(ActionControllerHelperMethod m) { any() }
 
 query predicate getAssociatedControllerClasses(ActionControllerClass cls, ErbFile f) {
