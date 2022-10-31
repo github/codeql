@@ -3191,9 +3191,7 @@ open class KotlinFileExtractor(
          */
 
         if (e.origin != IrStatementOrigin.FOR_LOOP ||
-            e.statements.size != 2 ||
-            (e.statements[0] as? IrVariable)?.origin != IrDeclarationOrigin.FOR_LOOP_ITERATOR ||
-            (e.statements[1] as? IrWhileLoop)?.origin != IrStatementOrigin.FOR_LOOP_INNER_WHILE) {
+            e.statements.size != 2) {
             return false
         }
 
@@ -3240,9 +3238,9 @@ open class KotlinFileExtractor(
         }
 
         val id = extractLoop(innerWhile, null, parent, callable) { p, idx ->
-            val loopId = tw.getFreshIdLabel<DbEnhancedforstmt>()
-            tw.writeStmts_enhancedforstmt(loopId, p, idx, callable)
-            loopId
+            tw.getFreshIdLabel<DbEnhancedforstmt>().also {
+                tw.writeStmts_enhancedforstmt(it, p, idx, callable)
+            }
         }
 
         extractVariableExpr(loopVar, callable, id, 0, id, extractInitializer = false)
@@ -4143,13 +4141,13 @@ open class KotlinFileExtractor(
     ) {
         val id = extractLoop(loop, 1, stmtExprParent, callable) { parent, idx ->
             if (loop is IrWhileLoop) {
-                val id = tw.getFreshIdLabel<DbWhilestmt>()
-                tw.writeStmts_whilestmt(id, parent, idx, callable)
-                id
+                tw.getFreshIdLabel<DbWhilestmt>().also {
+                    tw.writeStmts_whilestmt(it, parent, idx, callable)
+                }
             } else {
-                val id = tw.getFreshIdLabel<DbDostmt>()
-                tw.writeStmts_dostmt(id, parent, idx, callable)
-                id
+                tw.getFreshIdLabel<DbDostmt>().also {
+                    tw.writeStmts_dostmt(it, parent, idx, callable)
+                }
             }
         }
         extractExpressionExpr(loop.condition, callable, id, 0, id)
