@@ -49,6 +49,9 @@ public class JavaUser {
     KotlinDefnsSuppressedFn kdsf = new KotlinDefnsSuppressedFn();
     kdsf.outerFn((List<CharSequence>)null, (Comparable<CharSequence>)null);
 
+    kd.takesVariantTypesIndirectlySuppressedWildcards((List<CharSequence>)null, (Comparable<CharSequence>)null);
+    kd.takesVariantTypesComplexSuppressionWildcards((List<List<? extends List<? extends CharSequence>>>)null);
+
   }
 
 }

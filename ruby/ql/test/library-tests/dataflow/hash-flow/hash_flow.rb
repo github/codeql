@@ -755,3 +755,90 @@ def m45()
 end
 
 m45()
+
+def m46(x)
+    hash = {
+        :a => taint(46.1),
+        :b => 1,
+        :c => taint(46.2),
+        :d => taint(46.3)
+    }
+
+    sink(hash[:a]) # $ hasValueFlow=46.1
+    sink(hash[:b])
+    sink(hash[:c]) # $ hasValueFlow=46.2
+    sink(hash[:d]) # $ hasValueFlow=46.3
+
+    x = hash.except!(:a, x, :d)
+
+    sink(x[:a])
+    sink(x[:b])
+    sink(x[:c]) # $ hasValueFlow=46.2
+    sink(x[:d])
+
+    sink(hash[:a])
+    sink(hash[:b])
+    sink(hash[:c]) # $ hasValueFlow=46.2
+    sink(hash[:d])
+end
+
+m46(:c)
+
+def m47()
+    hash1 = {
+        :a => taint(47.1),
+        :b => 1,
+        :c => taint(47.2)
+    }
+    hash2 = {
+        :d => taint(47.3),
+        :e => 1,
+        :f => taint(47.4)
+    }
+    hash = hash1.deep_merge(hash2) do |key, old_value, new_value|
+        sink key
+        sink old_value # $ hasValueFlow=47.1 $ hasValueFlow=47.2 $ hasValueFlow=47.3 $ hasValueFlow=47.4
+        sink new_value # $ hasValueFlow=47.1 $ hasValueFlow=47.2 $ hasValueFlow=47.3 $ hasValueFlow=47.4
+    end
+    sink (hash[:a]) # $ hasValueFlow=47.1
+    sink (hash[:b])
+    sink (hash[:c]) # $ hasValueFlow=47.2
+    sink (hash[:d]) # $ hasValueFlow=47.3
+    sink (hash[:e])
+    sink (hash[:f]) # $ hasValueFlow=47.4
+end
+
+m47()
+
+def m48()
+    hash1 = {
+        :a => taint(48.1),
+        :b => 1,
+        :c => taint(48.2)
+    }
+    hash2 = {
+        :d => taint(48.3),
+        :e => 1,
+        :f => taint(48.4)
+    }
+    hash = hash1.deep_merge!(hash2) do |key, old_value, new_value|
+        sink key
+        sink old_value # $ hasValueFlow=48.1 $ hasValueFlow=48.2 $ hasValueFlow=48.3 $ hasValueFlow=48.4
+        sink new_value # $ hasValueFlow=48.1 $ hasValueFlow=48.2 $ hasValueFlow=48.3 $ hasValueFlow=48.4
+    end
+    sink (hash[:a]) # $ hasValueFlow=48.1
+    sink (hash[:b])
+    sink (hash[:c]) # $ hasValueFlow=48.2
+    sink (hash[:d]) # $ hasValueFlow=48.3
+    sink (hash[:e])
+    sink (hash[:f]) # $ hasValueFlow=48.4
+
+    sink (hash1[:a]) # $ hasValueFlow=48.1
+    sink (hash1[:b])
+    sink (hash1[:c]) # $ hasValueFlow=48.2
+    sink (hash1[:d]) # $ hasValueFlow=48.3
+    sink (hash1[:e])
+    sink (hash1[:f]) # $ hasValueFlow=48.4
+end
+
+m48()

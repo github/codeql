@@ -47,16 +47,17 @@ class CApiSqlSink extends SqlSink {
 class SQLiteSwiftSqlSink extends SqlSink {
   SQLiteSwiftSqlSink() {
     // Variants of `Connection.execute`, `connection.prepare` and `connection.scalar`.
-    exists(MethodDecl f, CallExpr call |
-      f.hasQualifiedName("Connection", ["execute(_:)", "prepare(_:_:)", "run(_:_:)", "scalar(_:_:)"]) and
-      call.getStaticTarget() = f and
+    exists(CallExpr call |
+      call.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName("Connection",
+            ["execute(_:)", "prepare(_:_:)", "run(_:_:)", "scalar(_:_:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
     )
     or
     // String argument to the `Statement` constructor.
-    exists(MethodDecl f, CallExpr call |
-      f.hasQualifiedName("Statement", "init(_:_:)") and
-      call.getStaticTarget() = f and
+    exists(CallExpr call |
+      call.getStaticTarget().(MethodDecl).hasQualifiedName("Statement", "init(_:_:)") and
       call.getArgument(1).getExpr() = this.asExpr()
     )
   }

@@ -691,7 +691,7 @@ open class KotlinFileExtractor(
                     null
             } ?: vp.type
             val javaType = (vp.parent as? IrFunction)?.let { getJavaCallable(it)?.let { jCallable -> getJavaValueParameterType(jCallable, idx) } }
-            val typeWithWildcards = addJavaLoweringWildcards(maybeAlteredType, !hasWildcardSuppressionAnnotation(vp), javaType)
+            val typeWithWildcards = addJavaLoweringWildcards(maybeAlteredType, !getInnermostWildcardSupppressionAnnotation(vp), javaType)
             val substitutedType = typeSubstitution?.let { it(typeWithWildcards, TypeContext.OTHER, pluginContext) } ?: typeWithWildcards
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
@@ -1188,22 +1188,16 @@ open class KotlinFileExtractor(
                             id
 
                 val extReceiver = f.extensionReceiverParameter
-                val idxOffset = if (extReceiver != null) 1 else 0
-                val fParameters = overriddenAttributes?.valueParameters ?: f.valueParameters
+                val fParameters = listOfNotNull(extReceiver) + (overriddenAttributes?.valueParameters ?: f.valueParameters)
                 val paramTypes = fParameters.mapIndexed { i, vp ->
-                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
+                    extractValueParameter(vp, id, i, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
                 }
-                val allParamTypes = if (extReceiver != null) {
-                    val extendedType = useType(extReceiver.type)
+                if (extReceiver != null) {
+                    val extendedType = paramTypes[0]
                     tw.writeKtExtensionFunctions(id.cast<DbMethod>(), extendedType.javaResult.id, extendedType.kotlinResult.id)
-
-                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
-                    listOf(t) + paramTypes
-                } else {
-                    paramTypes
                 }
 
-                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.javaResult, f) }
+                val paramsSignature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.javaResult, f) }
 
                 val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, (javaCallable as? JavaMethod)?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
