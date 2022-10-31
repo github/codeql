@@ -29,7 +29,8 @@ class CApiSqlSink extends SqlSink {
     // `sqlite3_exec` and variants of `sqlite3_prepare`.
     exists(CallExpr call |
       call.getStaticTarget()
-          .hasGlobalName([
+          .(FreeFunctionDecl)
+          .hasName([
               "sqlite3_exec(_:_:_:_:_:)", "sqlite3_prepare(_:_:_:_:_:)",
               "sqlite3_prepare_v2(_:_:_:_:_:)", "sqlite3_prepare_v3(_:_:_:_:_:_:)",
               "sqlite3_prepare16(_:_:_:_:_:)", "sqlite3_prepare16_v2(_:_:_:_:_:)",
