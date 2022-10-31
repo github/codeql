@@ -24,6 +24,16 @@ edges
 | passwords.go:122:13:122:25 | call to getPassword : string | passwords.go:125:14:125:19 | config |
 | passwords.go:126:14:126:19 | config [x] : string | passwords.go:126:14:126:21 | selection of x |
 | passwords.go:127:14:127:19 | config [y] : string | passwords.go:127:14:127:21 | selection of y |
+| protobuf.go:11:2:11:6 | definition of query [pointer, Description] : string | protobuf.go:12:2:12:6 | query [pointer, Description] : string |
+| protobuf.go:11:2:11:6 | definition of query [pointer, Description] : string | protobuf.go:14:14:14:18 | query [pointer, Description] : string |
+| protobuf.go:12:2:12:6 | implicit dereference [Description] : string | protobuf.go:11:2:11:6 | definition of query [pointer, Description] : string |
+| protobuf.go:12:2:12:6 | query [pointer, Description] : string | protobuf.go:12:2:12:6 | implicit dereference [Description] : string |
+| protobuf.go:12:22:12:29 | password : string | protobuf.go:12:2:12:6 | implicit dereference [Description] : string |
+| protobuf.go:14:14:14:18 | query [pointer, Description] : string | protobuf.go:14:14:14:35 | call to GetDescription |
+| protobuf.go:14:14:14:18 | query [pointer, Description] : string | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] : string |
+| protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] : string | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] : string |
+| protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] : string | protos/query/query.pb.go:119:10:119:22 | selection of Description : string |
+| protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] : string | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] : string |
 | util.go:16:9:16:18 | selection of password : string | passwords.go:28:14:28:28 | call to getPassword |
 nodes
 | klog.go:20:30:20:37 | selection of Header : Header | semmle.label | selection of Header : Header |
@@ -77,8 +87,19 @@ nodes
 | passwords.go:126:14:126:21 | selection of x | semmle.label | selection of x |
 | passwords.go:127:14:127:19 | config [y] : string | semmle.label | config [y] : string |
 | passwords.go:127:14:127:21 | selection of y | semmle.label | selection of y |
+| protobuf.go:11:2:11:6 | definition of query [pointer, Description] : string | semmle.label | definition of query [pointer, Description] : string |
+| protobuf.go:12:2:12:6 | implicit dereference [Description] : string | semmle.label | implicit dereference [Description] : string |
+| protobuf.go:12:2:12:6 | query [pointer, Description] : string | semmle.label | query [pointer, Description] : string |
+| protobuf.go:12:22:12:29 | password : string | semmle.label | password : string |
+| protobuf.go:14:14:14:18 | query [pointer, Description] : string | semmle.label | query [pointer, Description] : string |
+| protobuf.go:14:14:14:35 | call to GetDescription | semmle.label | call to GetDescription |
+| protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] : string | semmle.label | definition of x [pointer, Description] : string |
+| protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] : string | semmle.label | implicit dereference [Description] : string |
+| protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] : string | semmle.label | x [pointer, Description] : string |
+| protos/query/query.pb.go:119:10:119:22 | selection of Description : string | semmle.label | selection of Description : string |
 | util.go:16:9:16:18 | selection of password : string | semmle.label | selection of password : string |
 subpaths
+| protobuf.go:14:14:14:18 | query [pointer, Description] : string | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] : string | protos/query/query.pb.go:119:10:119:22 | selection of Description : string | protobuf.go:14:14:14:35 | call to GetDescription : string |
 #select
 | klog.go:22:15:22:20 | header | klog.go:20:30:20:37 | selection of Header : Header | klog.go:22:15:22:20 | header | $@ flows to a logging call. | klog.go:20:30:20:37 | selection of Header | Sensitive data returned by HTTP request headers |
 | klog.go:28:13:28:41 | call to Get | klog.go:28:13:28:20 | selection of Header : Header | klog.go:28:13:28:41 | call to Get | $@ flows to a logging call. | klog.go:28:13:28:20 | selection of Header | Sensitive data returned by HTTP request headers |
@@ -111,3 +132,4 @@ subpaths
 | passwords.go:125:14:125:19 | config | passwords.go:122:13:122:25 | call to getPassword : string | passwords.go:125:14:125:19 | config | $@ flows to a logging call. | passwords.go:122:13:122:25 | call to getPassword | Sensitive data returned by a call to getPassword |
 | passwords.go:126:14:126:21 | selection of x | passwords.go:121:13:121:20 | password : string | passwords.go:126:14:126:21 | selection of x | $@ flows to a logging call. | passwords.go:121:13:121:20 | password | Sensitive data returned by an access to password |
 | passwords.go:127:14:127:21 | selection of y | passwords.go:122:13:122:25 | call to getPassword : string | passwords.go:127:14:127:21 | selection of y | $@ flows to a logging call. | passwords.go:122:13:122:25 | call to getPassword | Sensitive data returned by a call to getPassword |
+| protobuf.go:14:14:14:35 | call to GetDescription | protobuf.go:12:22:12:29 | password : string | protobuf.go:14:14:14:35 | call to GetDescription | $@ flows to a logging call. | protobuf.go:12:22:12:29 | password | Sensitive data returned by an access to password |
