@@ -262,6 +262,9 @@ private module Cached {
       )
     } or
     TSsaDefinitionNode(Ssa::Definition def) or
+    TRawNamespaceSelf(Namespace ns) {
+      not exists(Ssa::SelfDefinition def | def.getSourceVariable() = ns.getModuleSelfVariable())
+    } or
     TNormalParameterNode(Parameter p) {
       p instanceof SimpleParameter or
       p instanceof OptionalParameter or
@@ -402,6 +405,8 @@ private module Cached {
     or
     // Needed for stores in type tracking
     TypeTrackerSpecific::storeStepIntoSourceNode(_, n, _)
+    or
+    n instanceof TRawNamespaceSelf
   }
 
   cached
@@ -521,6 +526,38 @@ class SsaSelfDefinitionNode extends LocalSourceNode, SsaDefinitionNode {
 
   /** Gets the scope in which the `self` variable is declared. */
   Scope getSelfScope() { result = self.getDeclaringScope() }
+}
+
+/**
+ * A representative for the created or re-opened class/module in a `Namespace` that does
+ * not have an SSA definition for `self`.
+ */
+class RawNamespaceSelf extends NodeImpl, TRawNamespaceSelf {
+  private Namespace namespace;
+
+  RawNamespaceSelf() { this = TRawNamespaceSelf(namespace) }
+
+  /** Gets the namespace for which this represents the created or re-opened class/module. */
+  Namespace getNamespace() { result = namespace }
+
+  override CfgScope getCfgScope() { result = namespace.getCfgScope() }
+
+  override Location getLocationImpl() { result = namespace.getLocation() }
+
+  override string toStringImpl() { result = namespace.toString() }
+}
+
+/**
+ * Gets a representative for the created or re-opened class/module in a `Namespace`.
+ *
+ * This is usually the SSA definition for `self`, but if this node does not exist due to lack of liveness,
+ * it is the `RawNamespaceSelf` node.
+ */
+LocalSourceNode getNamespaceSelf(Namespace namespace) {
+  result.(SsaDefinitionNode).getDefinition().(Ssa::SelfDefinition).getSourceVariable() =
+    namespace.getModuleSelfVariable()
+  or
+  result = TRawNamespaceSelf(namespace)
 }
 
 /**

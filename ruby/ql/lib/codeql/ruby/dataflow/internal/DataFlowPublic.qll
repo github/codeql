@@ -1113,9 +1113,7 @@ private LocalSourceNode getConstantAccessNode(ConstantAccess access) {
   // Namespaces don't evaluate to the constant being accessed, they return the value of their last statement.
   // Use the definition of 'self' in the namespace as the representative in this case.
   if access instanceof Namespace
-  then
-    result.(SsaDefinitionNode).getDefinition().(Ssa::SelfDefinition).getSourceVariable() =
-      access.(Namespace).getModuleSelfVariable()
+  then result = getNamespaceSelf(access)
   else result.asExpr().getExpr() = access
 }
 
