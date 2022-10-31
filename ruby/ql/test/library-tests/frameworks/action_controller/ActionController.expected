@@ -6,6 +6,7 @@ actionControllerControllerClasses
 | controllers/tags_controller.rb:1:1:2:3 | TagsController |
 | controllers/users/notifications_controller.rb:2:3:5:5 | NotificationsController |
 | input_access.rb:1:1:50:3 | UsersController |
+| logging.rb:1:1:9:3 | UsersController |
 | params_flow.rb:1:1:151:3 | MyController |
 actionControllerActionMethods
 | controllers/comments_controller.rb:2:3:36:5 | index |
@@ -22,6 +23,7 @@ actionControllerActionMethods
 | controllers/posts_controller.rb:8:3:9:5 | upvote |
 | controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
 | input_access.rb:2:3:49:5 | index |
+| logging.rb:2:5:8:7 | index |
 | params_flow.rb:2:3:4:5 | m1 |
 | params_flow.rb:6:3:8:5 | m2 |
 | params_flow.rb:10:3:12:5 | m2 |
@@ -201,6 +203,7 @@ httpInputAccesses
 | input_access.rb:43:5:43:20 | call to raw_post | ActionDispatch::Request#raw_post |
 | input_access.rb:45:5:45:30 | ...[...] | ActionDispatch::Request#env[] |
 | input_access.rb:47:5:47:39 | ...[...] | ActionDispatch::Request#env[] |
+| logging.rb:5:22:5:35 | call to params | ActionDispatch::Request#params |
 | params_flow.rb:3:10:3:15 | call to params | ActionController::Metal#params |
 | params_flow.rb:7:10:7:15 | call to params | ActionController::Metal#params |
 | params_flow.rb:11:10:11:15 | call to params | ActionController::Metal#params |
@@ -270,3 +273,8 @@ headerWriteAccesses
 | controllers/comments_controller.rb:33:5:33:26 | call to last_modified= | last-modified | controllers/comments_controller.rb:33:30:33:43 | ... = ... |
 | controllers/comments_controller.rb:34:5:34:22 | call to weak_etag= | etag | controllers/comments_controller.rb:34:26:34:32 | ... = ... |
 | controllers/comments_controller.rb:35:5:35:24 | call to strong_etag= | etag | controllers/comments_controller.rb:35:28:35:34 | ... = ... |
+loggingCalls
+| logging.rb:3:9:3:31 | call to info | logging.rb:3:21:3:31 | "some info" |
+| logging.rb:4:9:4:31 | call to warn | logging.rb:4:21:4:31 | "a warning" |
+| logging.rb:5:9:5:35 | call to debug | logging.rb:5:22:5:35 | call to params |
+| logging.rb:7:9:7:26 | call to info | logging.rb:7:16:7:26 | "more info" |

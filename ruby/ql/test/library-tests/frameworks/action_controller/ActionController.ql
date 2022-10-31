@@ -38,3 +38,5 @@ query predicate headerWriteAccesses(
 ) {
   name = a.getName() and value = a.getValue()
 }
+
+query predicate loggingCalls(Logging c, DataFlow::Node input) { input = c.getAnInput() }

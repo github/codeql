@@ -12,6 +12,7 @@ private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.frameworks.internal.Rails
+private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 /**
  * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
@@ -731,5 +732,31 @@ private module Response {
     }
 
     override DataFlow::Node getValue() { result = this.getArgument(0) }
+  }
+}
+
+private class ActionControllerLoggerInstance extends DataFlow::Node {
+  ActionControllerLoggerInstance() {
+    this.asExpr().getExpr() instanceof ActionControllerContextCall and
+    this.(DataFlow::CallNode).getMethodName() = "logger"
+    or
+    any(ActionControllerLoggerInstance i).(DataFlow::LocalSourceNode).flowsTo(this)
+  }
+}
+
+private class ActionControllerLoggingCall extends DataFlow::CallNode, Logging::Range {
+  ActionControllerLoggingCall() {
+    this.getReceiver() instanceof ActionControllerLoggerInstance and
+    this.getMethodName() = ["debug", "error", "fatal", "info", "unknown", "warn"]
+  }
+
+  // Note: this is identical to the definition `stdlib.Logger.LoggerInfoStyleCall`.
+  override DataFlow::Node getAnInput() {
+    // `msg` from `Logger#info(msg)`,
+    // or `progname` from `Logger#info(progname) <block>`
+    result = this.getArgument(0)
+    or
+    // a return value from the block in `Logger#info(progname) <block>`
+    exprNodeReturnedFrom(result, this.getBlock().asExpr().getExpr())
   }
 }
