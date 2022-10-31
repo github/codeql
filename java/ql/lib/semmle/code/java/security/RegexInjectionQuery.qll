@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.regex.RegexFlowConfigs
 
 /** The Java class `java.util.regex.Pattern`. */
 private class RegexPattern extends RefType {
@@ -17,7 +18,7 @@ private class ApacheRegExUtils extends RefType {
   ApacheRegExUtils() { this.hasQualifiedName("java.util.regex", "Matcher") }
 }
 
-// TODO: Are there already classes for any of below(above) in a pre-existing regex library?
+// TODO: Look for above in pre-existing regex libraries again.
 // TODO: look into further: Pattern.matcher, .pattern() and .toString() as taint steps, .split and .splitAsStream
 /**
  * A data flow sink for untrusted user input used to construct regular expressions.
@@ -37,7 +38,7 @@ class RegexSink extends DataFlow::ExprNode {
       m.getDeclaringType() instanceof ApacheRegExUtils and
       (
         ma.getArgument(1) = this.asExpr() and
-        m.getParameterType(1) instanceof TypeString and // only does String here because other option is Patter, but that's already handled by `java.util.regex.Pattern` above
+        m.getParameterType(1) instanceof TypeString and // only does String here because other option is Pattern, but that's already handled by `java.util.regex.Pattern` above
         m.hasName([
             "removeAll", "removeFirst", "removePattern", "replaceAll", "replaceFirst",
             "replacePattern"
@@ -92,5 +93,8 @@ class RegexInjectionConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegexSink }
 
+  // ! testing below RegexFlowSink from RegexFlowConfigs.qll
+  // ! extra results from jfinal with this... look into further...
+  // override predicate isSink(DataFlow::Node sink) { sink instanceof RegexFlowSink }
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }

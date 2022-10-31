@@ -1,10 +1,11 @@
 /**
  * @name Regular expression injection
- * @description User input should not be used in regular expressions without first being sanitized,
+ * @description User input should not be used in regular expressions without first being escaped,
  *              otherwise a malicious user may be able to provide a regex that could require
  *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id java/regex-injection
  * @tags security
