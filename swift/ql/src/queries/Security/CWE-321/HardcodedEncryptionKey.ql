@@ -37,12 +37,13 @@ class StringLiteralSource extends KeySource instanceof StringLiteralExpr { }
 class EncryptionKeySink extends Expr {
   EncryptionKeySink() {
     // `key` arg in `init` is a sink
-    exists(MethodDecl f, CallExpr call, string fName |
-      f.hasQualifiedName([
-          "AES", "HMAC", "ChaCha20", "CBCMAC", "CMAC", "Poly1305", "Blowfish", "Rabbit"
-        ], fName) and
+    exists(CallExpr call, string fName |
+      call.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName([
+              "AES", "HMAC", "ChaCha20", "CBCMAC", "CMAC", "Poly1305", "Blowfish", "Rabbit"
+            ], fName) and
       fName.matches("init(key:%") and
-      call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
     )
   }
