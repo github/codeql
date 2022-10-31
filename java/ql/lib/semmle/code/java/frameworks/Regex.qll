@@ -2,6 +2,11 @@
 
 private import semmle.code.java.dataflow.ExternalFlow
 
+/** The class `java.util.regex.Pattern`. */
+class TypeRegexPattern extends Class {
+  TypeRegexPattern() { this.hasQualifiedName("java.util.regex", "Pattern") }
+}
+
 private class RegexModel extends SummaryModelCsv {
   override predicate row(string s) {
     s =

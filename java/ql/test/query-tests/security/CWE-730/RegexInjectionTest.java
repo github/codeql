@@ -84,17 +84,52 @@ public class RegexInjectionTest extends HttpServlet {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
 
-    // TODO: add a "Safe" test for situation when this return value is stored in a variable, then the variable is used in the regex
     escapeSpecialRegexChars(pattern);
 
     // BAD: the pattern is not really sanitized
     return input.matches("^" + pattern + "=.*$"); // $ hasRegexInjection
   }
 
+  public boolean pattern7(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    String escapedPattern = escapeSpecialRegexChars(pattern);
+
+    // Safe: User input is sanitized before constructing the regex
+    return input.matches("^" + escapedPattern + "=.*$");
+  }
+
+  public boolean pattern8(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    // Safe: User input is sanitized before constructing the regex
+    return input.matches("^" + sanitizeSpecialRegexChars(pattern) + "=.*$");
+  }
+
+  public boolean pattern9(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    // Safe: User input is sanitized before constructing the regex
+    return input.matches("^" + sanitiseSpecialRegexChars(pattern) + "=.*$");
+  }
+
   Pattern SPECIAL_REGEX_CHARS = Pattern.compile("[{}()\\[\\]><-=!.+*?^$\\\\|]");
 
-  // TODO: check if any other inbuilt escape/sanitizers in Java APIs
+  // test `escape...regex`
   String escapeSpecialRegexChars(String str) {
+    return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
+  }
+
+  // test `sanitize...regex`
+  String sanitizeSpecialRegexChars(String str) {
+    return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
+  }
+
+  // test `sanitise...regex`
+  String sanitiseSpecialRegexChars(String str) {
     return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
   }
 
@@ -148,12 +183,20 @@ public class RegexInjectionTest extends HttpServlet {
     return RegExUtils.replacePattern(input, pattern, "").length() > 0;  // $ hasRegexInjection
   }
 
-  // from https://rules.sonarsource.com/java/RSPEC-2631 to test for Pattern.quote as safe
-  public boolean validate(javax.servlet.http.HttpServletRequest request) {
+  // test `Pattern.quote` as safe
+  public boolean quoteTest(javax.servlet.http.HttpServletRequest request) {
     String regex = request.getParameter("regex");
     String input = request.getParameter("input");
 
-    return input.matches(Pattern.quote(regex));  // Safe: with Pattern.quote, metacharacters or escape sequences will be given no special meaning
+    return input.matches(Pattern.quote(regex));  // Safe
+  }
+
+  // test `Pattern.LITERAL` as safe
+  public boolean literalTest(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return Pattern.compile(pattern, Pattern.LITERAL).matcher(input).matches();  // Safe
   }
 }
 
