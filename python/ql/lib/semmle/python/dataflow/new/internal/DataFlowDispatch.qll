@@ -36,13 +36,26 @@ private import python
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
+private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import semmle.python.internal.CachedStages
 
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
-  TPositionalParameterPosition(int pos) { pos = any(Parameter p).getPosition() } or
-  TKeywordParameterPosition(string name) { name = any(Parameter p).getName() } or
+  TPositionalParameterPosition(int pos) {
+    pos = any(Parameter p).getPosition()
+    or
+    // since synthetic parameters are made for a synthetic summary callable, based on
+    // what Argument positions they have flow for, we need to make sure we have such
+    // parameter positions available.
+    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalArgumentPosition(_, pos)
+  } or
+  TKeywordParameterPosition(string name) {
+    name = any(Parameter p).getName()
+    or
+    // see comment for TPositionalParameterPosition
+    FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+  } or
   TStarArgsParameterPosition(int pos) {
     // since `.getPosition` does not work for `*args`, we need *args parameter positions
     // at index 1 larger than the largest positional parameter position (and 0 must be
@@ -115,8 +128,20 @@ class ParameterPosition extends TParameterPosition {
 newtype TArgumentPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfArgumentPosition() or
-  TPositionalArgumentPosition(int pos) { exists(any(CallNode c).getArg(pos)) } or
-  TKeywordArgumentPosition(string name) { exists(any(CallNode c).getArgByName(name)) } or
+  TPositionalArgumentPosition(int pos) {
+    exists(any(CallNode c).getArg(pos))
+    or
+    // since synthetic calls within a summarized callable could use a unique argument
+    // position, we need to ensure we make these available (these are specified as
+    // parameters in the flow-summary spec)
+    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalParameterPosition(_, pos)
+  } or
+  TKeywordArgumentPosition(string name) {
+    exists(any(CallNode c).getArgByName(name))
+    or
+    // see comment for TPositionalArgumentPosition
+    FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+  } or
   TStarArgsArgumentPosition(int pos) { exists(Call c | c.getPositionalArg(pos) instanceof Starred) } or
   TDictSplatArgumentPosition()
 
@@ -216,7 +241,6 @@ predicate hasPropertyDecorator(Function func) {
 // =============================================================================
 // Callables
 // =============================================================================
-
 /** A callable defined in library code, identified by a unique string. */
 abstract class LibraryCallable extends string {
   bindingset[this]
@@ -228,7 +252,6 @@ abstract class LibraryCallable extends string {
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   abstract ArgumentNode getACallback();
 }
-
 
 newtype TDataFlowCallable =
   TFunction(Function func) or
@@ -379,7 +402,7 @@ class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
 
   LibraryCallableValue() { this = TLibraryCallable(callable) }
 
-  override string toString() { result = callable.toString() }
+  override string toString() { result = "LibraryCallableValue: " + callable.toString() }
 
   override string getQualifiedName() { result = callable.toString() }
 
@@ -1045,7 +1068,8 @@ predicate resolveCall(ControlFlowNode call, Function target, CallType type) {
  * Holds if the argument of `call` at position `apos` is `arg`. This is just a helper
  * predicate that maps ArgumentPositions to the arguments of the underlying `CallNode`.
  */
-private predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
+cached
+predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
   exists(int index |
     apos.isPositional(index) and
     arg.asCfgNode() = call.getArg(index)
@@ -1181,8 +1205,8 @@ predicate getCallArg(
 // DataFlowCall
 // =============================================================================
 newtype TDataFlowCall =
-  TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) }
-  or
+  TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
+  TPotentialLibraryCall(CallNode call) or
   /** A synthesized call inside a summarized callable */
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
@@ -1264,49 +1288,44 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
 }
 
 /**
- * A call to a summarized callable, a `LibraryCallable`.
+ * A potential call to a summarized callable, a `LibraryCallable`.
  *
  * We currently exclude all resolved calls. This means that a call to, say, `map`, which
  * is a `ClassCall`, cannot currently be given a summary.
  * We hope to lift this restriction in the future and include all potential calls to summaries
  * in this class.
  */
-class LibraryCall extends DataFlowCall {
-  LibraryCall() {
-    // TODO(call-graph): implement this!
-    none()
-  }
+class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall {
+  CallNode call;
+
+  PotentialLibraryCall() { this = TPotentialLibraryCall(call) }
 
   override string toString() {
-    // TODO(call-graph): implement this!
-    none()
+    // note: if we used toString directly on the CallNode we would get
+    //     `ControlFlowNode for func()`
+    // but the `ControlFlowNode` part is just clutter, so we go directly to the AST node
+    // instead.
+    result = call.getNode().toString()
   }
 
-  // We cannot refer to a `LibraryCallable` here,
+  // We cannot refer to a `PotentialLibraryCall` here,
   // as that could in turn refer to type tracking.
-  // This call will be tied to a `LibraryCallable` via
-  // `getViableCallabe` when the global data flow is assembled.
+  // This call will be tied to a `PotentialLibraryCall` via
+  // `viableCallable` when the global data flow is assembled.
   override DataFlowCallable getCallable() { none() }
 
   override ArgumentNode getArgument(ArgumentPosition apos) {
-    // TODO(call-graph): implement this!
-    none()
+    normalCallArg(call, result, apos)
+    or
+    // potential self argument, from `foo.bar()` -- note that this could also just be a
+    // module reference, but we really don't have a good way of knowing :|
+    apos.isSelf() and
+    result = any(MethodCallNode mc | mc.getFunction().asCfgNode() = call.getFunction()).getObject()
   }
 
-  override ControlFlowNode getNode() {
-    // TODO(call-graph): implement this!
-    none()
-  }
+  override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() {
-    // TODO(call-graph): implement this!
-    none()
-  }
-
-  override Location getLocation() {
-    // TODO(call-graph): implement this!
-    none()
-  }
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
 
 /**
@@ -1346,7 +1365,6 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
  * flow graph.
  */
 abstract class ParameterNodeImpl extends Node {
-
   /** Gets the `Parameter` this `ParameterNode` represents. */
   abstract Parameter getParameter();
 
@@ -1445,7 +1463,8 @@ DataFlowCallable viableCallable(ExtractedDataFlowCall call) {
   // Instead we resolve the call from the summary.
   exists(LibraryCallable callable |
     result = TLibraryCallable(callable) and
-    call.getNode() = callable.getACall().getNode()
+    call.getNode() = callable.getACall().getNode() and
+    call instanceof PotentialLibraryCall
   )
 }
 

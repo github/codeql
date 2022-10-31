@@ -981,18 +981,10 @@ class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  // TODO(call-graph): implement this!
-  //
-  // // lambda
-  // kind = kind and
-  // creation.asExpr() = c.(DataFlowLambda).getDefinition()
-  // or
-  // // normal function
-  // exists(FunctionDef def |
-  //   def.defines(creation.asVar().getSourceVariable()) and
-  //   def.getDefinedFunction() = c.(DataFlowCallableValue).getCallableValue().getScope()
-  // )
-  // or
+  // lambda and plain functions
+  kind = kind and
+  creation.asExpr() = c.(DataFlowPlainFunction).getScope().getDefinition()
+  or
   // summarized function
   exists(kind) and // avoid warning on unused 'kind'
   exists(Call call |
