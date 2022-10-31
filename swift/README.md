@@ -52,10 +52,9 @@ options. This is known to have issues on non-Linux platforms.
 
 ### CMake project
 
-There are two `CMakeLists.txt` files, one at the root of the repository and another in the `swift` directory. Using
-either will allows to load the Swift extractor as a CMake project, which allows integration into a wider variety of
-IDEs. Building with CMake also creates a `compile_commands.json` compilation database that can be picked up by even more
-IDEs. In particular, opening the `swift` directory in VSCode should work.
+The `CMakeLists.txt` file allows to load the Swift extractor as a CMake project, which allows integration into a wider
+variety of IDEs. Building with CMake also creates a `compile_commands.json` compilation database that can be picked up
+by even more IDEs. In particular, opening the `swift` directory in VSCode should work.
 
 ### Debugging codeql database creation
 
