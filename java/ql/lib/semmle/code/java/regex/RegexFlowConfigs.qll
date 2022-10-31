@@ -39,8 +39,7 @@ private predicate regexSinkKindInfo(string kind, boolean full, int strArg) {
 }
 
 /** A sink that is relevant for regex flow. */
-class RegexFlowSink extends DataFlow::Node {
-  // ! switch back to private!!! - just testing if this sink is useful for regex injection as well
+private class RegexFlowSink extends DataFlow::Node {
   boolean full;
   int strArg;
 
