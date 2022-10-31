@@ -1,6 +1,7 @@
 /** Definitions for the keyboard cache query */
 
 import java
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.SensitiveActions
 import semmle.code.xml.AndroidManifest
 
@@ -45,6 +46,62 @@ class AndroidEditableXmlElement extends AndroidLayoutXmlElement {
   string getInputType() { result = this.getAttribute("inputType").(AndroidXmlAttribute).getValue() }
 }
 
+/** Gets a use of the view that has the given id. */
+private Expr getAUseOfId(string id) {
+  exists(string name, MethodAccess findView, NestedClass r_id, Field id_field |
+    id = "@+id/" + name and
+    findView
+        .getMethod()
+        .hasQualifiedName("android.view", "View", ["findViewById", "requireViewById"]) and
+    r_id.getEnclosingType().hasName("R") and
+    r_id.hasName("id") and
+    id_field.getDeclaringType() = r_id and
+    id_field.hasName(name)
+  |
+    DataFlow::localExprFlow(id_field.getAnAccess(), findView.getArgument(0)) and
+    result = findView
+  )
+}
+
+/** Gets the argument of a use of `setInputType` called on the view with the given id. */
+private Expr setInputTypeForId(string id) {
+  exists(MethodAccess setInputType |
+    setInputType.getMethod().hasQualifiedName("android.widget", "TextView", "setInputType") and
+    DataFlow::localExprFlow(getAUseOfId(id), setInputType.getQualifier()) and
+    result = setInputType.getArgument(0)
+  )
+}
+
+/** Holds if the given field is a constant flag indicating that an input with this type will not be cached. */
+private predicate inputTypeFieldNotCached(Field f) {
+  f.getDeclaringType().hasQualifiedName("android.text", "InputType") and
+  (
+    not f.getName().matches("%TEXT%")
+    or
+    f.getName().matches("%PASSWORD%")
+    or
+    f.getName() = "TYPE_TEXT_FLAG_NO_SUGGESTIONS"
+  )
+}
+
+/** Configuration that finds uses of `setInputType` that for non cached fields. */
+private class GoodInputTypeConf extends DataFlow::Configuration {
+  GoodInputTypeConf() { this = "GoodInputTypeConf" }
+
+  override predicate isSource(DataFlow::Node node) {
+    inputTypeFieldNotCached(node.asExpr().(FieldAccess).getField())
+  }
+
+  override predicate isSink(DataFlow::Node node) { node.asExpr() = setInputTypeForId(_) }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(OrBitwiseExpr bitOr |
+      node1.asExpr() = bitOr.getAChildExpr() and
+      node2.asExpr() = bitOr
+    )
+  }
+}
+
 /** Gets a regex indicating that an input field may contain sensitive data. */
 private string getInputSensitiveInfoRegex() {
   result =
@@ -54,7 +111,7 @@ private string getInputSensitiveInfoRegex() {
     ]
 }
 
-/** Holds if input using the given input type may be stored in the keyboard cache. */
+/** Holds if input using the given input type (as written in XML) may be stored in the keyboard cache. */
 bindingset[ty]
 private predicate inputTypeCached(string ty) {
   ty.matches("%text%") and
@@ -64,5 +121,13 @@ private predicate inputTypeCached(string ty) {
 /** Gets an input field whose contents may be sensitive and may be stored in the keyboard cache. */
 AndroidEditableXmlElement getASensitiveCachedInput() {
   result.getId().regexpMatch(getInputSensitiveInfoRegex()) and
-  inputTypeCached(result.getInputType())
+  (
+    inputTypeCached(result.getInputType())
+    or
+    not exists(result.getInputType()) and
+    not exists(GoodInputTypeConf conf, DataFlow::Node src, DataFlow::Node sink |
+      conf.hasFlow(src, sink) and
+      sink.asExpr() = setInputTypeForId(result.getId())
+    )
+  )
 }
