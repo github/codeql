@@ -97,7 +97,6 @@ The next section will give some concrete examples, but there is a more abstract 
 A local source is a data-flow node with no local data flow into it.
 As such, it is a local origin of data flow, a place where a new value is created.
 This includes parameters (which only receive global data flow) and most expressions (because they are not value-preserving).
-Restricting attention to such local sources gives a much lighter and more performant data-flow graph and in most cases also a more suitable abstraction for the investigation of interest.
 The class ``LocalSourceNode`` represents data-flow nodes that are also local sources.
 It comes with a useful member predicate ``flowsTo(DataFlow::Node node)``, which holds if there is local data flow from the local source to ``node``.
 
