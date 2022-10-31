@@ -1,6 +1,6 @@
 /**
  * @name Insufficient hash iterations
- * @description Using hash functions with less than 120,000 iterations is not secure, because that scheme leads to password cracking attacks due to having an insufficient level of computational effort.
+ * @description Using hash functions with fewer than 120,000 iterations is insufficient to protect passwords because a cracking attack will require a low level of computational effort.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
