@@ -71,7 +71,7 @@ void checkToRunUnderTool(int argc, char* const* argv) {
   if (runUnderFilter != nullptr) {
     assert(argc > 0);
     std::string call = argv[0];
-    for (auto i = 0; i < argc; ++i) {
+    for (auto i = 1; i < argc; ++i) {
       call += ' ';
       call += argv[i];
     }
