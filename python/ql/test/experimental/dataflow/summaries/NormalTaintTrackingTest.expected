@@ -1,2 +1,14 @@
 missingAnnotationOnSink
+| summaries.py:33:6:33:12 | summaries.py:33 | ERROR, you should add `# $ MISSING: flow` annotation | tainted |
+| summaries.py:37:6:37:19 | summaries.py:37 | ERROR, you should add `# $ MISSING: flow` annotation | tainted_lambda |
+| summaries.py:52:6:52:22 | summaries.py:52 | ERROR, you should add `# $ MISSING: flow` annotation | tainted_mapped[0] |
+| summaries.py:58:6:58:31 | summaries.py:58 | ERROR, you should add `# $ MISSING: flow` annotation | tainted_mapped_explicit[0] |
+| summaries.py:61:6:61:30 | summaries.py:61 | ERROR, you should add `# $ MISSING: flow` annotation | tainted_mapped_summary[0] |
+| summaries.py:64:6:64:20 | summaries.py:64 | ERROR, you should add `# $ MISSING: flow` annotation | tainted_list[0] |
 failures
+| summaries.py:33:16:33:49 | Comment # $ flow="SOURCE, l:-1 -> tainted" | Missing result:flow="SOURCE, l:-1 -> tainted" |
+| summaries.py:37:23:37:63 | Comment # $ flow="SOURCE, l:-1 -> tainted_lambda" | Missing result:flow="SOURCE, l:-1 -> tainted_lambda" |
+| summaries.py:52:26:52:69 | Comment # $ flow="SOURCE, l:-1 -> tainted_mapped[0]" | Missing result:flow="SOURCE, l:-1 -> tainted_mapped[0]" |
+| summaries.py:58:35:58:87 | Comment # $ flow="SOURCE, l:-1 -> tainted_mapped_explicit[0]" | Missing result:flow="SOURCE, l:-1 -> tainted_mapped_explicit[0]" |
+| summaries.py:61:34:61:85 | Comment # $ flow="SOURCE, l:-1 -> tainted_mapped_summary[0]" | Missing result:flow="SOURCE, l:-1 -> tainted_mapped_summary[0]" |
+| summaries.py:64:24:64:65 | Comment # $ flow="SOURCE, l:-1 -> tainted_list[0]" | Missing result:flow="SOURCE, l:-1 -> tainted_list[0]" |
