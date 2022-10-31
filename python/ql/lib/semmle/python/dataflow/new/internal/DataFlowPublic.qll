@@ -337,11 +337,19 @@ abstract class ArgumentNode extends Node {
 }
 
 /**
- * A data flow node that represents a call argument found in the source code,
- * where the call can be resolved.
+ * A data flow node that represents a call argument found in the source code.
  */
 class ExtractedArgumentNode extends ArgumentNode {
-  ExtractedArgumentNode() { getCallArg(_, _, _, this, _) }
+  ExtractedArgumentNode() {
+    // for resolved calls, we need to allow all argument nodes
+    getCallArg(_, _, _, this, _)
+    or
+    // for potential summaries we allow all normal call arguments
+    normalCallArg(_, this, _)
+    or
+    // and self arguments
+    this = any(MethodCallNode mc).getObject()
+  }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this = call.getArgument(pos) and

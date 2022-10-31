@@ -115,10 +115,34 @@ string getComponentSpecificCsv(SummaryComponent sc) {
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
+string getParameterPositionCsv(ParameterPosition pos) {
+  pos.isSelf() and result = "self"
+  or
+  exists(int i |
+    pos.isPositional(i) and
+    result = i.toString()
+  )
+  or
+  exists(string name |
+    pos.isKeyword(name) and
+    result = name + ":"
+  )
+}
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
+string getArgumentPositionCsv(ArgumentPosition pos) {
+  pos.isSelf() and result = "self"
+  or
+  exists(int i |
+    pos.isPositional(i) and
+    result = i.toString()
+  )
+  or
+  exists(string name |
+    pos.isKeyword(name) and
+    result = name + ":"
+  )
+}
 
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }
@@ -200,33 +224,55 @@ module ParsePositions {
     )
   }
 
-  predicate isParsedParameterPosition(string c, int i) {
+  predicate isParsedPositionalParameterPosition(string c, int i) {
     isParamBody(c) and
     i = AccessPath::parseInt(c)
   }
 
-  predicate isParsedArgumentPosition(string c, int i) {
+  predicate isParsedKeywordParameterPosition(string c, string paramName) {
+    isParamBody(c) and
+    c = paramName + ":"
+  }
+
+  predicate isParsedPositionalArgumentPosition(string c, int i) {
     isArgBody(c) and
     i = AccessPath::parseInt(c)
+  }
+
+  predicate isParsedKeywordArgumentPosition(string c, string argName) {
+    isArgBody(c) and
+    c = argName + ":"
   }
 }
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 ArgumentPosition parseParamBody(string s) {
-  none()
-  // TODO(call-graph): implement this!
-  // exists(int i |
-  //   ParsePositions::isParsedParameterPosition(s, i) and
-  //   result.isPositional(i)
-  // )
+  exists(int i |
+    ParsePositions::isParsedPositionalParameterPosition(s, i) and
+    result.isPositional(i)
+  )
+  or
+  exists(string name |
+    ParsePositions::isParsedKeywordParameterPosition(s, name) and
+    result.isKeyword(name)
+  )
+  or
+  s = "self" and
+  result.isSelf()
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 ParameterPosition parseArgBody(string s) {
-  none()
-  // TODO(call-graph): implement this!
-  // exists(int i |
-  //   ParsePositions::isParsedArgumentPosition(s, i) and
-  //   result.isPositional(i)
-  // )
+  exists(int i |
+    ParsePositions::isParsedPositionalArgumentPosition(s, i) and
+    result.isPositional(i)
+  )
+  or
+  exists(string name |
+    ParsePositions::isParsedKeywordArgumentPosition(s, name) and
+    result.isKeyword(name)
+  )
+  or
+  s = "self" and
+  result.isSelf()
 }
