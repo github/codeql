@@ -52,9 +52,10 @@ options. This is known to have issues on non-Linux platforms.
 
 ### CMake project
 
-The `CMakeLists.txt` file allows to load the Swift extractor as a CMake project, which allows integration into a wider
-variety of IDEs. Building with CMake also creates a `compile_commands.json` compilation database that can be picked up
-by even more IDEs. In particular, opening the `swift` directory in VSCode should work.
+There are two `CMakeLists.txt` files, one at the root of the repository and another in the `swift` directory. Using
+either will allows to load the Swift extractor as a CMake project, which allows integration into a wider variety of
+IDEs. Building with CMake also creates a `compile_commands.json` compilation database that can be picked up by even more
+IDEs. In particular, opening the `swift` directory in VSCode should work.
 
 ### Debugging codeql database creation
 
@@ -76,5 +77,9 @@ before starting the database extraction, and when that source is encountered the
 a `gdbserver` instance listening on port 1234. You can then attach to the running debugging server from `gdb` or your
 IDE. Please refer to your IDE's instructions for how to set up remote debugging.
 
-*Note for CLion users*: there is an issue for which breakpoints will not work in this mode if you are opening the
-workspace using the Intellij Bazel plugin. For the time being the workaround is to use the CMake project instead.
+In particular for breakpoints to work you might need to setup the following remote path mapping:
+
+| Remote      | Local                                 |
+|-------------|---------------------------------------|
+| `swift`     | `/absolute/path/to/codeql/swift`      |
+| `bazel-out` | `/absolute/path/to/codeql/bazel-out/` |
