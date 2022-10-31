@@ -18,6 +18,6 @@ import semmle.javascript.security.dataflow.UnsafeHtmlConstructionQuery
 
 from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
 where cfg.hasFlowPath(source, sink) and sink.getNode() = sinkNode
-select sinkNode, source, sink, "$@ which depends on $@ might later allow $@.", sinkNode,
-  sinkNode.describe(), source.getNode(), "library input", sinkNode.getSink(),
-  sinkNode.getVulnerabilityKind().toLowerCase()
+select sinkNode, source, sink,
+  "This " + sinkNode.describe() + " which depends on $@ might later allow $@.", source.getNode(),
+  "library input", sinkNode.getSink(), sinkNode.getVulnerabilityKind().toLowerCase()

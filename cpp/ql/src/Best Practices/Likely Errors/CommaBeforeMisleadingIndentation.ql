@@ -16,15 +16,36 @@
 import cpp
 import semmle.code.cpp.commons.Exclusions
 
-/** Gets the sub-expression of 'e' with the earliest-starting Location */
+/**
+ * Gets a child of `e`, including conversions but excluding call arguments.
+ */
+pragma[inline]
+Expr getAChildWithConversions(Expr e) {
+  result.getParentWithConversions() = e and
+  not result = any(Call c).getAnArgument()
+}
+
+/**
+ * Gets the left-most column position of any transitive child of `e` (including
+ * conversions but excluding call arguments).
+ */
+int getCandidateColumn(Expr e) {
+  result = e.getLocation().getStartColumn() or
+  result = getCandidateColumn(getAChildWithConversions(e))
+}
+
+/**
+ * Gets the transitive child of `e` (including conversions but excluding call
+ * arguments) at the left-most column position, preferring less deeply nested
+ * expressions if there is a choice.
+ */
 Expr normalizeExpr(Expr e) {
-  result =
-    min(Expr child |
-      child.getParentWithConversions*() = e.getFullyConverted() and
-      not child.getParentWithConversions*() = any(Call c).getAnArgument()
-    |
-      child order by child.getLocation().getStartColumn(), count(child.getParentWithConversions*())
-    )
+  e.getLocation().getStartColumn() = min(getCandidateColumn(e)) and
+  result = e
+  or
+  not e.getLocation().getStartColumn() = min(getCandidateColumn(e)) and
+  result = normalizeExpr(getAChildWithConversions(e)) and
+  result.getLocation().getStartColumn() = min(getCandidateColumn(e))
 }
 
 predicate isParenthesized(CommaExpr ce) {
@@ -43,8 +64,8 @@ from CommaExpr ce, Expr left, Expr right, Location leftLoc, Location rightLoc
 where
   ce.fromSource() and
   not isFromMacroDefinition(ce) and
-  left = normalizeExpr(ce.getLeftOperand()) and
-  right = normalizeExpr(ce.getRightOperand()) and
+  left = normalizeExpr(ce.getLeftOperand().getFullyConverted()) and
+  right = normalizeExpr(ce.getRightOperand().getFullyConverted()) and
   leftLoc = left.getLocation() and
   rightLoc = right.getLocation() and
   not isParenthesized(ce) and

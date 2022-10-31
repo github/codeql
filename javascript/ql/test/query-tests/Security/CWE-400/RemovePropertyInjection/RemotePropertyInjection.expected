@@ -33,8 +33,8 @@ edges
 | tstNonExpr.js:5:17:5:23 | req.url | tstNonExpr.js:5:7:5:23 | userVal |
 | tstNonExpr.js:5:17:5:23 | req.url | tstNonExpr.js:5:7:5:23 | userVal |
 #select
-| tst.js:9:8:9:11 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:9:8:9:11 | prop | A property name to write to depends on $@. | tst.js:8:28:8:51 | req.que ... trolled | a user-provided value |
-| tst.js:13:15:13:18 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:13:15:13:18 | prop | A property name to write to depends on $@. | tst.js:8:28:8:51 | req.que ... trolled | a user-provided value |
-| tst.js:14:31:14:34 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:14:31:14:34 | prop | A property name to write to depends on $@. | tst.js:8:28:8:51 | req.que ... trolled | a user-provided value |
-| tst.js:16:10:16:13 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:16:10:16:13 | prop | A property name to write to depends on $@. | tst.js:8:28:8:51 | req.que ... trolled | a user-provided value |
-| tstNonExpr.js:8:17:8:23 | userVal | tstNonExpr.js:5:17:5:23 | req.url | tstNonExpr.js:8:17:8:23 | userVal | A header name depends on $@. | tstNonExpr.js:5:17:5:23 | req.url | a user-provided value |
+| tst.js:9:8:9:11 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:9:8:9:11 | prop | A property name to write to depends on a $@. | tst.js:8:28:8:51 | req.que ... trolled | user-provided value |
+| tst.js:13:15:13:18 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:13:15:13:18 | prop | A property name to write to depends on a $@. | tst.js:8:28:8:51 | req.que ... trolled | user-provided value |
+| tst.js:14:31:14:34 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:14:31:14:34 | prop | A property name to write to depends on a $@. | tst.js:8:28:8:51 | req.que ... trolled | user-provided value |
+| tst.js:16:10:16:13 | prop | tst.js:8:28:8:51 | req.que ... trolled | tst.js:16:10:16:13 | prop | A property name to write to depends on a $@. | tst.js:8:28:8:51 | req.que ... trolled | user-provided value |
+| tstNonExpr.js:8:17:8:23 | userVal | tstNonExpr.js:5:17:5:23 | req.url | tstNonExpr.js:8:17:8:23 | userVal | A header name depends on a $@. | tstNonExpr.js:5:17:5:23 | req.url | user-provided value |

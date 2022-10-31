@@ -187,5 +187,5 @@ where
   callbackArg.getALocalSource().getAstNode() = cb and
   async.getAnArgument() = callbackArg
 select crasher, crasher, cb,
-  "The server of $@ will terminate when an uncaught exception from here escapes this $@", rh,
-  "this route handler", callbackArg, "asynchronous callback"
+  "The server of $@ will terminate when an uncaught exception from this location escapes an $@.",
+  rh, "this route handler", callbackArg, "asynchronous callback"

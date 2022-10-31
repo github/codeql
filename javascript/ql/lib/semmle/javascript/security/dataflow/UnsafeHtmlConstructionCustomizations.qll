@@ -178,7 +178,7 @@ module UnsafeHtmlConstruction {
       )
     }
 
-    override string describe() { result = "Markdown rendering" }
+    override string describe() { result = "markdown rendering" }
   }
 
   /** A test for the value of `typeof x`, restricting the potential types of `x`. */
