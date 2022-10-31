@@ -1,17 +1,18 @@
 import swift
+import codeql.swift.elements.decl.DeclWithMembers
 
 predicate isInTestModule(Decl decl) { decl.getModule().getName() = "iterabledeclcontext" }
 
 query predicate declHasMemberAtIndex(
-  IterableDeclContext decl, int index, Decl member, string memberClass
+  DeclWithMembers decl, int index, Decl member, string memberClass
 ) {
   isInTestModule(decl) and
   member = decl.getMember(index) and
   memberClass = member.getPrimaryQlClasses()
 }
 
-query predicate methodDecl(IterableDeclContext d, MethodDecl m, string mClass) {
-  isInTestModule(m) and
-  mClass = m.getPrimaryQlClasses() and
-  d.getAMember() = m
+query predicate methodDecl(DeclWithMembers decl, MethodDecl member, string memberClass) {
+  isInTestModule(member) and
+  memberClass = member.getPrimaryQlClasses() and
+  decl.getAMember() = member
 }

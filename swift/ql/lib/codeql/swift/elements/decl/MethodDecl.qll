@@ -1,7 +1,8 @@
 private import swift
+private import codeql.swift.elements.decl.DeclWithMembers
 
 class MethodDecl extends AbstractFunctionDecl {
-  MethodDecl() { this = any(IterableDeclContext decl).getAMember() }
+  MethodDecl() { this = any(DeclWithMembers decl).getAMember() }
 
   /**
    * Holds if this function is called `funcName` and its a member of a
