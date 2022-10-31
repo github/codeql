@@ -308,11 +308,9 @@ Class hierarchy
 
 -  ``DataFlow::Configuration`` - base class for custom global data flow analysis.
 -  ``DataFlow::Node`` - an element behaving as a data-flow node.
-
-    -  ``DataFlow::CfgNode`` - a control-flow node behaving as a data-flow node.
-
-        -  ``DataFlow::ExprNode`` - an expression behaving as a data-flow node.
-        -  ``DataFlow::ParameterNode`` - a parameter data-flow node representing the value of a parameter at method/block entry.
+    -  ``DataFlow::LocalSourceNode`` - a local origin of data, as a data-flow node.
+    -  ``DataFlow::ExprNode`` - an expression behaving as a data-flow node.
+    -  ``DataFlow::ParameterNode`` - a parameter data-flow node representing the value of a parameter at method/block entry.
 
     -  ``RemoteFlowSource`` - data flow from network/remote input.
     -  ``Concepts::SystemCommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
