@@ -5,4 +5,4 @@ groups:
     - solorigate
 library: true
 dependencies:
-    codeql/csharp-all: "*"
+    codeql/csharp-all: ${workspace}

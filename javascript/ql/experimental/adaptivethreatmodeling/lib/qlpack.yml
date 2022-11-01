@@ -6,4 +6,4 @@ groups:
     - javascript
     - experimental
 dependencies:
-    codeql/javascript-all: "*"
+    codeql/javascript-all: ${workspace}

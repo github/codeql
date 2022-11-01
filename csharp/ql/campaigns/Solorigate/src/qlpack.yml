@@ -5,5 +5,5 @@ groups:
     - solorigate
 defaultSuiteFile: codeql-suites/solorigate.qls
 dependencies:
-    codeql/csharp-all: "*"
-    codeql/csharp-solorigate-all: "*"
+    codeql/csharp-all: ${workspace}
+    codeql/csharp-solorigate-all: ${workspace}
