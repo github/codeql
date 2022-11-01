@@ -870,7 +870,8 @@ class ModuleNode instanceof Module {
    * including those inherited from ancestors.
    */
   ParameterNode getAnInstanceSelf() {
-    result = TSelfParameterNode(this.getAnInstanceMethod().asMethod())
+    // Make sure to include the 'self' in overridden instance methods
+    result = this.getAnAncestor().getAnOwnInstanceSelf()
   }
 
   private InstanceVariableAccess getAnOwnInstanceVariableAccess(string name) {
@@ -906,14 +907,18 @@ class ModuleNode instanceof Module {
   /**
    * Gets the instance method named `name` available in this module, including methods inherited
    * from ancestors.
+   *
+   * Overridden methods are not included.
    */
   MethodNode getInstanceMethod(string name) {
     result.asCallableAstNode() = super.getInstanceMethod(name)
   }
 
   /**
-   * Gets an instance method named available in this module, including methods inherited
+   * Gets an instance method available in this module, including methods inherited
    * from ancestors.
+   *
+   * Overridden methods are not included.
    */
   MethodNode getAnInstanceMethod() { result = this.getInstanceMethod(_) }
 
