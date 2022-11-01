@@ -60,36 +60,36 @@ declHasMemberAtIndex
 | iterabledeclcontext.swift:54:2:58:2 | NestedEnum | 9 | file://:0:0:0:0 | hashValue | ConcreteVarDecl |
 | iterabledeclcontext.swift:54:2:58:2 | NestedEnum | 10 | file://:0:0:0:0 | get | AccessorDecl |
 methodDecl
-| iterabledeclcontext.swift:4:1:7:1 | Protocol1 | iterabledeclcontext.swift:6:2:6:16 | foo() | ConcreteFuncDecl |
-| iterabledeclcontext.swift:8:1:10:1 | extension | iterabledeclcontext.swift:9:2:9:45 | foo() | ConcreteFuncDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:13:2:13:10 | init() | ConstructorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:14:2:14:10 | deinit() | DestructorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:16:6:16:6 | get | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:17:6:17:6 | (unnamed function decl) | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:17:6:17:6 | get | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:17:6:17:6 | set | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:18:13:18:13 | get | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:19:13:19:13 | (unnamed function decl) | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:19:13:19:13 | get | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:19:13:19:13 | set | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:21:36:23:2 | get | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:24:6:24:6 | (unnamed function decl) | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:24:6:24:6 | get | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:24:6:24:6 | set | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:25:3:25:36 | willSet | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:26:3:26:34 | didSet | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:29:2:29:2 | (unnamed function decl) | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:30:3:32:3 | get | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:33:3:35:3 | set | AccessorDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:38:2:38:25 | instanceMethod() | ConcreteFuncDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:39:2:39:30 | staticMethod() | ConcreteFuncDecl |
-| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:40:2:40:28 | classMethod() | ConcreteFuncDecl |
-| iterabledeclcontext.swift:48:2:50:2 | NestedClass | iterabledeclcontext.swift:48:8:48:8 | deinit() | DestructorDecl |
-| iterabledeclcontext.swift:48:2:50:2 | NestedClass | iterabledeclcontext.swift:48:8:48:8 | init() | ConstructorDecl |
-| iterabledeclcontext.swift:48:2:50:2 | NestedClass | iterabledeclcontext.swift:49:3:49:25 | foo() | ConcreteFuncDecl |
-| iterabledeclcontext.swift:51:2:53:2 | NestedStruct | iterabledeclcontext.swift:51:9:51:9 | init() | ConstructorDecl |
-| iterabledeclcontext.swift:51:2:53:2 | NestedStruct | iterabledeclcontext.swift:52:3:52:25 | foo() | ConcreteFuncDecl |
-| iterabledeclcontext.swift:54:2:58:2 | NestedEnum | file://:0:0:0:0 | __derived_enum_equals(_:_:) | ConcreteFuncDecl |
-| iterabledeclcontext.swift:54:2:58:2 | NestedEnum | file://:0:0:0:0 | get | AccessorDecl |
-| iterabledeclcontext.swift:54:2:58:2 | NestedEnum | file://:0:0:0:0 | hash(into:) | ConcreteFuncDecl |
-| iterabledeclcontext.swift:54:2:58:2 | NestedEnum | iterabledeclcontext.swift:57:3:57:25 | foo() | ConcreteFuncDecl |
+| iterabledeclcontext.swift:4:1:7:1 | Protocol1 | iterabledeclcontext.swift:6:2:6:16 | foo() | ConcreteFuncDecl | iterabledeclcontext.Protocol1.foo() |
+| iterabledeclcontext.swift:8:1:10:1 | extension | iterabledeclcontext.swift:9:2:9:45 | foo() | ConcreteFuncDecl | iterabledeclcontext.Protocol1.foo() |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:13:2:13:10 | init() | ConstructorDecl | iterabledeclcontext.Class1.init() |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:14:2:14:10 | deinit() | DestructorDecl | iterabledeclcontext.Class1.deinit() |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:16:6:16:6 | get | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:17:6:17:6 | (unnamed function decl) | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:17:6:17:6 | get | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:17:6:17:6 | set | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:18:13:18:13 | get | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:19:13:19:13 | (unnamed function decl) | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:19:13:19:13 | get | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:19:13:19:13 | set | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:21:36:23:2 | get | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:24:6:24:6 | (unnamed function decl) | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:24:6:24:6 | get | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:24:6:24:6 | set | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:25:3:25:36 | willSet | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:26:3:26:34 | didSet | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:29:2:29:2 | (unnamed function decl) | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:30:3:32:3 | get | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:33:3:35:3 | set | AccessorDecl | iterabledeclcontext.Class1.(unnamed function decl) |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:38:2:38:25 | instanceMethod() | ConcreteFuncDecl | iterabledeclcontext.Class1.instanceMethod() |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:39:2:39:30 | staticMethod() | ConcreteFuncDecl | iterabledeclcontext.Class1.staticMethod() |
+| iterabledeclcontext.swift:12:1:59:1 | Class1 | iterabledeclcontext.swift:40:2:40:28 | classMethod() | ConcreteFuncDecl | iterabledeclcontext.Class1.classMethod() |
+| iterabledeclcontext.swift:48:2:50:2 | NestedClass | iterabledeclcontext.swift:48:8:48:8 | deinit() | DestructorDecl | iterabledeclcontext.Class1.NestedClass.deinit() |
+| iterabledeclcontext.swift:48:2:50:2 | NestedClass | iterabledeclcontext.swift:48:8:48:8 | init() | ConstructorDecl | iterabledeclcontext.Class1.NestedClass.init() |
+| iterabledeclcontext.swift:48:2:50:2 | NestedClass | iterabledeclcontext.swift:49:3:49:25 | foo() | ConcreteFuncDecl | iterabledeclcontext.Class1.NestedClass.foo() |
+| iterabledeclcontext.swift:51:2:53:2 | NestedStruct | iterabledeclcontext.swift:51:9:51:9 | init() | ConstructorDecl | iterabledeclcontext.Class1.NestedStruct.init() |
+| iterabledeclcontext.swift:51:2:53:2 | NestedStruct | iterabledeclcontext.swift:52:3:52:25 | foo() | ConcreteFuncDecl | iterabledeclcontext.Class1.NestedStruct.foo() |
+| iterabledeclcontext.swift:54:2:58:2 | NestedEnum | file://:0:0:0:0 | __derived_enum_equals(_:_:) | ConcreteFuncDecl | iterabledeclcontext.Class1.NestedEnum.__derived_enum_equals(_:_:) |
+| iterabledeclcontext.swift:54:2:58:2 | NestedEnum | file://:0:0:0:0 | get | AccessorDecl | iterabledeclcontext.Class1.NestedEnum.(unnamed function decl) |
+| iterabledeclcontext.swift:54:2:58:2 | NestedEnum | file://:0:0:0:0 | hash(into:) | ConcreteFuncDecl | iterabledeclcontext.Class1.NestedEnum.hash(into:) |
+| iterabledeclcontext.swift:54:2:58:2 | NestedEnum | iterabledeclcontext.swift:57:3:57:25 | foo() | ConcreteFuncDecl | iterabledeclcontext.Class1.NestedEnum.foo() |

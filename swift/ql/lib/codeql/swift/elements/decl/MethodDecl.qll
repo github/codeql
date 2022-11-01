@@ -11,17 +11,7 @@ class MethodDecl extends AbstractFunctionDecl {
   cached
   predicate hasQualifiedName(string typeName, string funcName) {
     this.getName() = funcName and
-    (
-      exists(NominalTypeDecl c |
-        c.getFullName() = typeName and
-        c.getAMember() = this
-      )
-      or
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getFullName() = typeName and
-        e.getAMember() = this
-      )
-    )
+    this.getDeclaringTypeDecl().getFullName() = typeName
   }
 
   /**

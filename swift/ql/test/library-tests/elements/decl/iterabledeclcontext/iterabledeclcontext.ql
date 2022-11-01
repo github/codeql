@@ -11,8 +11,14 @@ query predicate declHasMemberAtIndex(
   memberClass = member.getPrimaryQlClasses()
 }
 
-query predicate methodDecl(DeclWithMembers decl, MethodDecl member, string memberClass) {
+query predicate methodDecl(
+  DeclWithMembers decl, MethodDecl member, string memberClass, string memberQName
+) {
   isInTestModule(member) and
   memberClass = member.getPrimaryQlClasses() and
-  decl.getAMember() = member
+  decl.getAMember() = member and
+  exists(string memberModule, string memberType, string memberName |
+    member.hasQualifiedName(memberModule, memberType, memberName) and
+    memberQName = memberModule + "." + memberType + "." + memberName
+  )
 }
