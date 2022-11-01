@@ -348,7 +348,7 @@ class ExtractedArgumentNode extends ArgumentNode {
     normalCallArg(_, this, _)
     or
     // and self arguments
-    this = any(MethodCallNode mc).getObject()
+    this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
