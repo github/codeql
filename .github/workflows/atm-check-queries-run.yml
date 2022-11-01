@@ -1,19 +1,15 @@
 name: ATM Check Queries Run
 
 env:
-  AZURE_STORAGE_URL: "https://atmcodeqldata.blob.core.windows.net"
-  DB_NAME: "AmanSultanBaig/SignIn-SignUp-System-with-Nodejs"
   DB_PATH: test_db
-  MODEL_BULDING_PACK_PATH: javascript/ql/experimental/adaptivethreatmodeling/modelbuilding
-  QUERY_SUITE: javascript/ql/experimental/adaptivethreatmodeling/src/codeql-suites/javascript-atm-code-scanning.qls
+  ATM_MODEL_PACK: javascript/ql/experimental/adaptivethreatmodeling/src
+  QUERY_SUITE: codeql-suites/javascript-atm-code-scanning.qls
 
 on:
   pull_request:
     paths:
-      - "javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/codeql-pack.lock.yml"
-      - "javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/qlpack.yml"
-      - "javascript/experimental/adpativethreatmodeling/src/qlpack.yml"
-      - "javascript/experimental/adpativethreatmodeling/src/codeql-pack.lock.yml"
+      - ".github/workflows/atm-check-queries-run.yml"
+      - "javascript/ql/experimental/adaptivethreatmodeling/**"
   workflow_dispatch:
 
 jobs:
@@ -22,8 +18,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: codeql-lib
 
       - name: Install CodeQL CLI
         env:
@@ -32,48 +26,31 @@ jobs:
           gh extensions install github/gh-codeql
           gh codeql download
 
-      - name: Download model pack
+      - name: Install ATM model pack
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STORAGE_SAS: ${{ secrets.AZURE_BLOB_STORAGE_ATMCODEQLDATA_SAS }}
         run: |
-          echo "::group::Download ATM model pack"
           set -exu
+          
+          # Install ATM model pack
+          gh codeql pack install ${ATM_MODEL_PACK}
 
-          # Get pack version and checksum
-          pack_version=$(yq '.dependencies.codeql/javascript-experimental-atm-model' ./codeql-lib/${MODEL_BULDING_PACK_PATH}/qlpack.yml )
-          model_checksum="${pack_version##*.}"
-          echo "Will use pack model ${pack_version} with model checksum ${model_checksum}."
-
-          # Download the model to the package cache
-          tmp_dir=$(mktemp -d)
-          gh codeql pack download codeql/javascript-experimental-atm-model@${pack_version}
+          # Retrieve model checksum
+          model_checksum=$(gh codeql resolve extensions ${ATM_MODEL_PACK}/${QUERY_SUITE} | jq -r '.models[0].checksum')
 
           # Trust the model so that we can use it in the ATM boosted queries
           mkdir -p "$HOME/.config/codeql"
           echo "--insecurely-execute-ml-model-checksums ${model_checksum}" >> "$HOME/.config/codeql/config"
-          echo "::endgroup::"
 
       - name: Create test DB
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "::group::Create test database"
-          gh repo clone ${DB_NAME} -- --depth 1
-          gh codeql database create ${DB_PATH} --language javascript 
-          echo "::endgroup::"
+          gh codeql database create ${RUNNER_TEMP}/${DB_PATH} --source-root config/atm/ --language javascript 
 
       - name: Run ATM query suite
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "::group::Run boosted query suite"
-          gh codeql database run-queries -vv -- ${DB_PATH} codeql-lib/${QUERY_SUITE}
-          if [[ $? -ne 0 ]]; then
-            echo "Failed to run the ATM query suite."
-            exit 1
-          else
-            echo "Successfully run ATM query suite."
-          fi
-          echo "::endgroup::"
+          gh codeql database run-queries -vv -- ${RUNNER_TEMP}/${DB_PATH} ${ATM_MODEL_PACK}/${QUERY_SUITE}
       
