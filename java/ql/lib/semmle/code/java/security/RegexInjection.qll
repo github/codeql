@@ -43,7 +43,7 @@ private class RegexSanitizationCall extends RegexInjectionSanitizer {
 }
 
 /**
- * A call to the `Pattern.quote` method, which gives metacharacters or escape sequences
+ * A call to the `Pattern.quote` method, which gives meta-characters or escape sequences
  * no special meaning.
  */
 private class PatternQuoteCall extends RegexInjectionSanitizer {
@@ -56,7 +56,7 @@ private class PatternQuoteCall extends RegexInjectionSanitizer {
 }
 
 /**
- * Use of the `Pattern.LITERAL` flag with `Pattern.compile`, which gives metacharacters
+ * Use of the `Pattern.LITERAL` flag with `Pattern.compile`, which gives meta-characters
  * or escape sequences no special meaning.
  */
 private class PatternLiteralFlag extends RegexInjectionSanitizer {
@@ -72,7 +72,7 @@ private class PatternLiteralFlag extends RegexInjectionSanitizer {
 }
 
 /**
- * The methods of the class `java.lang.String` that take a regular expression
+ * A method of the class `java.lang.String` that takes a regular expression
  * as a parameter.
  */
 private class StringRegexMethod extends Method {
@@ -83,7 +83,7 @@ private class StringRegexMethod extends Method {
 }
 
 /**
- * The methods of the class `java.util.regex.Pattern` that take a regular
+ * A method of the class `java.util.regex.Pattern` that takes a regular
  * expression as a parameter.
  */
 private class PatternRegexMethod extends Method {
@@ -94,7 +94,7 @@ private class PatternRegexMethod extends Method {
 }
 
 /**
- * The methods of the class `org.apache.commons.lang3.RegExUtils` that take
+ * A methods of the class `org.apache.commons.lang3.RegExUtils` that takes
  * a regular expression of type `String` as a parameter.
  */
 private class ApacheRegExUtilsMethod extends Method {

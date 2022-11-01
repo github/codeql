@@ -199,5 +199,3 @@ public class RegexInjectionTest extends HttpServlet {
     return Pattern.compile(pattern, Pattern.LITERAL).matcher(input).matches();  // Safe
   }
 }
-
-// ! see the following for potential additional test case ideas: https://www.baeldung.com/regular-expressions-java
