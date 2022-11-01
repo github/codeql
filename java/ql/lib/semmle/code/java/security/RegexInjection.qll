@@ -6,13 +6,13 @@ private import semmle.code.java.frameworks.Regex
 private import semmle.code.java.frameworks.apache.Lang
 
 /** A data flow sink for untrusted user input used to construct regular expressions. */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class RegexInjectionSink extends DataFlow::ExprNode { }
 
 /** A sanitizer for untrusted user input used to construct regular expressions. */
 abstract class RegexInjectionSanitizer extends DataFlow::ExprNode { }
 
-private class RegexInjectionSink extends Sink {
-  RegexInjectionSink() {
+private class DefaultRegexInjectionSink extends RegexInjectionSink {
+  DefaultRegexInjectionSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       ma.getArgument(0) = this.asExpr() and
       (

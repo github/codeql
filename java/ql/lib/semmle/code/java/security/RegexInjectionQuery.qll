@@ -11,7 +11,7 @@ class RegexInjectionConfiguration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RegexInjectionSink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof RegexInjectionSanitizer }
 }
