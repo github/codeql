@@ -4,6 +4,10 @@ private import internal.ParseRegExp
 private import codeql.NumberUtils
 private import codeql.ruby.ast.Literal as Ast
 private import codeql.Locations
+private import codeql.regex.nfa.NfaUtils as NfaUtils
+private import codeql.regex.RegexTreeView
+// exporting as RegexTreeView, and in the top-level scope.
+import Impl as RegexTreeView
 import Impl
 
 /** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
@@ -52,7 +56,7 @@ private newtype TRegExpParent =
   }
 
 /** An implementation that statisfies the RegexTreeView signature. */
-private module Impl {
+private module Impl implements RegexTreeViewSig {
   /**
    * An element containing a regular expression term, that is, either
    * a string literal (parsed as a regular expression)
@@ -1156,5 +1160,68 @@ private module Impl {
      * which matches non-digits.
      */
     predicate isInverted() { re.namedCharacterPropertyIsInverted(start, end) }
+  }
+
+  class Top = RegExpParent;
+
+  /**
+   * Holds if `term` is an escape class representing e.g. `\d`.
+   * `clazz` is which character class it represents, e.g. "d" for `\d`.
+   */
+  predicate isEscapeClass(RegExpTerm term, string clazz) {
+    exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
+    or
+    // TODO: expand to cover more properties
+    exists(RegExpNamedCharacterProperty escape | term = escape |
+      escape.getName().toLowerCase() = "digit" and
+      if escape.isInverted() then clazz = "D" else clazz = "d"
+      or
+      escape.getName().toLowerCase() = "space" and
+      if escape.isInverted() then clazz = "S" else clazz = "s"
+      or
+      escape.getName().toLowerCase() = "word" and
+      if escape.isInverted() then clazz = "W" else clazz = "w"
+    )
+  }
+
+  /**
+   * Holds if the regular expression should not be considered.
+   */
+  predicate isExcluded(RegExpParent parent) {
+    parent.(RegExpTerm).getRegExp().(Ast::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
+  }
+
+  /**
+   * Holds if `term` is a possessive quantifier.
+   * Not currently implemented, but is used by the shared library.
+   */
+  predicate isPossessive(RegExpQuantifier term) { none() }
+
+  /**
+   * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
+   * Not yet implemented for Ruby.
+   */
+  predicate matchesAnyPrefix(RegExpTerm term) { any() }
+
+  /**
+   * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
+   * Not yet implemented for Ruby.
+   */
+  predicate matchesAnySuffix(RegExpTerm term) { any() }
+
+  /**
+   * Holds if `root` has the `i` flag for case-insensitive matching.
+   */
+  predicate isIgnoreCase(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isIgnoreCase()
+  }
+
+  /**
+   * Holds if `root` has the `s` flag for multi-line matching.
+   */
+  predicate isDotAll(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isDotAll()
   }
 }
