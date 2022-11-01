@@ -1311,7 +1311,7 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
     // potential self argument, from `foo.bar()` -- note that this could also just be a
     // module reference, but we really don't have a good way of knowing :|
     apos.isSelf() and
-    result = any(MethodCallNode mc | mc.getFunction().asCfgNode() = call.getFunction()).getObject()
+    result.asCfgNode() = call.getFunction().(AttrNode).getObject()
   }
 
   override ControlFlowNode getNode() { result = call }
