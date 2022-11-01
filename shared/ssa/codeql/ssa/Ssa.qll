@@ -654,14 +654,14 @@ module Make<InputSig Input> {
   }
 
   pragma[noinline]
-  private predicate adjacentDefRead(
+  deprecated private predicate adjacentDefRead(
     Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
   ) {
     adjacentDefRead(def, bb1, i1, bb2, i2) and
     v = def.getSourceVariable()
   }
 
-  private predicate adjacentDefReachesRead(
+  deprecated private predicate adjacentDefReachesRead(
     Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
   ) {
     exists(SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
@@ -683,7 +683,7 @@ module Make<InputSig Input> {
    * Same as `adjacentDefRead`, but ignores uncertain reads.
    */
   pragma[nomagic]
-  predicate adjacentDefNoUncertainReads(
+  deprecated predicate adjacentDefNoUncertainReads(
     Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
   ) {
     adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
@@ -728,7 +728,7 @@ module Make<InputSig Input> {
     lastRefRedef(inp, _, _, def)
   }
 
-  private predicate adjacentDefReachesUncertainRead(
+  deprecated private predicate adjacentDefReachesUncertainRead(
     Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
   ) {
     adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
@@ -741,7 +741,9 @@ module Make<InputSig Input> {
    * Same as `lastRefRedef`, but ignores uncertain reads.
    */
   pragma[nomagic]
-  predicate lastRefRedefNoUncertainReads(Definition def, BasicBlock bb, int i, Definition next) {
+  deprecated predicate lastRefRedefNoUncertainReads(
+    Definition def, BasicBlock bb, int i, Definition next
+  ) {
     lastRefRedef(def, bb, i, next) and
     not variableRead(bb, i, def.getSourceVariable(), false)
     or
@@ -781,7 +783,7 @@ module Make<InputSig Input> {
    * Same as `lastRefRedef`, but ignores uncertain reads.
    */
   pragma[nomagic]
-  predicate lastRefNoUncertainReads(Definition def, BasicBlock bb, int i) {
+  deprecated predicate lastRefNoUncertainReads(Definition def, BasicBlock bb, int i) {
     lastRef(def, bb, i) and
     not variableRead(bb, i, def.getSourceVariable(), false)
     or
