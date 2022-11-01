@@ -18,7 +18,7 @@ jobs:
         id: go
 
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up CodeQL CLI
         uses: ./.github/actions/fetch-codeql
@@ -64,7 +64,7 @@ jobs:
         id: go
 
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up CodeQL CLI
         uses: ./.github/actions/fetch-codeql
@@ -94,7 +94,7 @@ jobs:
         id: go
 
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up CodeQL CLI
         uses: ./.github/actions/fetch-codeql
