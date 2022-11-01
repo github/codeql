@@ -15,8 +15,8 @@ the server.
 <recommendation>
 
 <p>
-Sanitize user input before passing it to the shell command by for example 
-ensuring that URLs are valid and do not contain malicious commands.
+Sanitize user input before passing it to the shell command. For example,
+ensure that URLs are valid and do not contain malicious commands.
 </p>
 
 </recommendation>
@@ -30,7 +30,7 @@ URL that can be controlled by a malicious user.
 <sample src="examples/second-order-command-injection.js" />
 
 <p>
-The problem has been fixed in the below where the URL is validated before
+The problem has been fixed in the snippet below, where the URL is validated before
 being passed to the shell command.
 </p>
 
