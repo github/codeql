@@ -17,7 +17,8 @@ class DataFlowCallTest extends InlineExpectationsTest {
     exists(location.getFile().getRelativePath()) and
     exists(DataFlowDispatch::DataFlowCall call |
       location = call.getLocation() and
-      element = call.toString()
+      element = call.toString() and
+      exists(call.getCallable())
     |
       value = prettyExpr(call.getNode().getNode()) and
       tag = "call"

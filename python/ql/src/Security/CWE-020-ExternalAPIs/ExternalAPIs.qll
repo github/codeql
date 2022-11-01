@@ -87,6 +87,7 @@ newtype TInterestingExternalApiCall =
   } or
   TResolvedCall(DataFlowPrivate::DataFlowCall call) {
     exists(call.getLocation().getFile().getRelativePath()) and
+    exists(call.getCallable()) and
     not call.getCallable() = any(SafeExternalApi safe).getSafeCallable() and
     // ignore calls inside codebase, and ignore calls that are marked as  safe. This is
     // only needed as long as we extract dependencies. When we stop doing that, all
