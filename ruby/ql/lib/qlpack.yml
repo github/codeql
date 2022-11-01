@@ -7,4 +7,4 @@ upgrades: upgrades
 library: true
 dependencies:
   codeql/ssa: ${workspace}
-
+  codeql/regex: ${workspace}
