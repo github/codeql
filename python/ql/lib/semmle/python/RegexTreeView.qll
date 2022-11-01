@@ -2,6 +2,10 @@
 
 import python
 private import semmle.python.regex
+private import codeql.regex.nfa.NfaUtils as NfaUtils
+private import codeql.regex.RegexTreeView
+// exporting as RegexTreeView, and in the top-level scope.
+import Impl as RegexTreeView
 import Impl
 
 /** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
@@ -52,8 +56,34 @@ private newtype TRegExpParent =
   /** A back reference */
   TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
+pragma[nomagic]
+private int seqChildEnd(Regex re, int start, int end, int i) {
+  result = seqChild(re, start, end, i).getEnd()
+}
+
+// moved out so we can use it in the charpred
+private RegExpTerm seqChild(Regex re, int start, int end, int i) {
+  re.sequence(start, end) and
+  (
+    i = 0 and
+    result.getRegex() = re and
+    result.getStart() = start and
+    exists(int itemEnd |
+      re.item(start, itemEnd) and
+      result.getEnd() = itemEnd
+    )
+    or
+    i > 0 and
+    result.getRegex() = re and
+    exists(int itemStart | itemStart = seqChildEnd(re, start, end, i - 1) |
+      result.getStart() = itemStart and
+      re.item(itemStart, result.getEnd())
+    )
+  )
+}
+
 /** An implementation that statisfies the RegexTreeView signature. */
-module Impl {
+module Impl implements RegexTreeViewSig {
   /**
    * An element containing a regular expression term, that is, either
    * a string literal (parsed as a regular expression)
@@ -389,32 +419,6 @@ module Impl {
     }
 
     override string getPrimaryQLClass() { result = "RegExpSequence" }
-  }
-
-  pragma[nomagic]
-  private int seqChildEnd(Regex re, int start, int end, int i) {
-    result = seqChild(re, start, end, i).getEnd()
-  }
-
-  // moved out so we can use it in the charpred
-  private RegExpTerm seqChild(Regex re, int start, int end, int i) {
-    re.sequence(start, end) and
-    (
-      i = 0 and
-      result.getRegex() = re and
-      result.getStart() = start and
-      exists(int itemEnd |
-        re.item(start, itemEnd) and
-        result.getEnd() = itemEnd
-      )
-      or
-      i > 0 and
-      result.getRegex() = re and
-      exists(int itemStart | itemStart = seqChildEnd(re, start, end, i - 1) |
-        result.getStart() = itemStart and
-        re.item(itemStart, result.getEnd())
-      )
-    )
   }
 
   /**
@@ -1029,5 +1033,63 @@ module Impl {
     override RegExpTerm getChild(int i) { none() }
 
     override string getPrimaryQLClass() { result = "RegExpBackRef" }
+  }
+
+  class Top = RegExpParent;
+
+  /**
+   * Holds if `term` is an escape class representing e.g. `\d`.
+   * `clazz` is which character class it represents, e.g. "d" for `\d`.
+   */
+  predicate isEscapeClass(RegExpTerm term, string clazz) {
+    exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
+  }
+
+  /**
+   * Holds if `term` is a possessive quantifier.
+   * As python's regexes do not support possessive quantifiers, this never holds, but is used by the shared library.
+   */
+  predicate isPossessive(RegExpQuantifier term) { none() }
+
+  /**
+   * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
+   * Not yet implemented for Python.
+   */
+  predicate matchesAnyPrefix(RegExpTerm term) { any() }
+
+  /**
+   * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
+   * Not yet implemented for Python.
+   */
+  predicate matchesAnySuffix(RegExpTerm term) { any() }
+
+  /**
+   * Holds if the regular expression should not be considered.
+   *
+   * We make the pragmatic performance optimization to ignore regular expressions in files
+   * that does not belong to the project code (such as installed dependencies).
+   */
+  predicate isExcluded(RegExpParent parent) {
+    not exists(parent.getRegex().getLocation().getFile().getRelativePath())
+    or
+    // Regexes with many occurrences of ".*" may cause the polynomial ReDoS computation to explode, so
+    // we explicitly exclude these.
+    count(int i | exists(parent.getRegex().getText().regexpFind("\\.\\*", i, _)) | i) > 10
+  }
+
+  /**
+   * Holds if `root` has the `i` flag for case-insensitive matching.
+   */
+  predicate isIgnoreCase(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isIgnoreCase()
+  }
+
+  /**
+   * Holds if `root` has the `s` flag for multi-line matching.
+   */
+  predicate isDotAll(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isDotAll()
   }
 }
