@@ -2,8 +2,14 @@ package p;
 
 import java.util.*;
 import java.util.function.*;
-import java.util.stream.*;
+import java.util.stream.LongStream;
+import java.util.stream.IntStream;
+import java.util.stream.DoubleStream;
+import java.util.stream.Collector;
 
+/**
+ * This is a stub implementation of the Java Stream API.
+ */
 public class Stream<T> {
 
     // MaD=p;Stream;true;iterator;();;Argument[-1].Element;ReturnValue.Element;value;generated

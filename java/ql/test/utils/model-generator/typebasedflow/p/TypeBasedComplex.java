@@ -19,6 +19,9 @@ public class TypeBasedComplex<T> {
         return null;
     }
 
+    // A method that doesn't mention `T` in its type signature.
+    // This is for testing that we don't generate a summary that involves the
+    // implicit field for `T`.
     // MaD=p;TypeBasedComplex;true;apply2;(Object,Function);;Argument[0];Argument[1].Parameter[0];value;generated
     // MaD=p;TypeBasedComplex;true;apply2;(Object,Function);;Argument[1].ReturnValue;ReturnValue;value;generated
     public <T1, T2> T2 apply2(T1 x, Function<T1, T2> f) {
