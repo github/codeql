@@ -7,6 +7,22 @@ class TypeRegexPattern extends Class {
   TypeRegexPattern() { this.hasQualifiedName("java.util.regex", "Pattern") }
 }
 
+/** The `quote` method of the `java.util.regex.Pattern` class. */
+class PatternQuoteMethod extends Method {
+  PatternQuoteMethod() {
+    this.getDeclaringType() instanceof TypeRegexPattern and
+    this.hasName(["quote"])
+  }
+}
+
+/** The `LITERAL` field of the `java.util.regex.Pattern` class. */
+class PatternLiteral extends Field {
+  PatternLiteral() {
+    this.getDeclaringType() instanceof TypeRegexPattern and
+    this.hasName("LITERAL")
+  }
+}
+
 private class RegexModel extends SummaryModelCsv {
   override predicate row(string s) {
     s =

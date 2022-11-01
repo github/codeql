@@ -92,19 +92,6 @@ private class PatternRegexMethod extends Method {
   }
 }
 
-/** The `quote` method of the `java.util.regex.Pattern` class. */
-private class PatternQuoteMethod extends Method {
-  PatternQuoteMethod() { this.hasName(["quote"]) }
-}
-
-/** The `LITERAL` field of the `java.util.regex.Pattern` class. */
-private class PatternLiteral extends Field {
-  PatternLiteral() {
-    this.getDeclaringType() instanceof TypeRegexPattern and
-    this.hasName("LITERAL")
-  }
-}
-
 /**
  * The methods of the class `org.apache.commons.lang3.RegExUtils` that take
  * a regular expression of type `String` as a parameter.
