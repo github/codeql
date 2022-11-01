@@ -1,12 +1,228 @@
 name: ATM Model Integration Tests
 
+env:
+  ATM_MODEL_PACK: javascript/ql/experimental/adaptivethreatmodeling/src
+  ATM_INTEGRATION_QUERY: javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/evaluation/EndpointScoresIntegrationTest.ql
+
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/atm-check-queries-run.yml"
+      - "javascript/ql/experimental/adaptivethreatmodeling/**"
   workflow_dispatch:
 
 jobs:
-  hello-world:
+  run-integration-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: foo
-        run: echo "Hello world"
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+
+      - name: Install dependencies
+        run: |
+          pip install numpy pandas
+
+      - name: Install CodeQL CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh extensions install github/gh-codeql
+          gh codeql download
+
+      - name: Install ATM model pack
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -exu
+          
+          # Install ATM model pack
+          gh codeql pack install ${ATM_MODEL_PACK}
+
+          # Retrieve model checksum
+          resolved_extensions=$(gh codeql resolve extensions ${ATM_INTEGRATION_QUERY})
+          model_checksum=$(jq -r '.models[0].checksum' <<< ${resolved_extensions})
+          model_path=$(jq -r '.models[0].path' <<< ${resolved_extensions})
+          echo "ML_MODEL_PATH=${model_path}" >> "${GITHUB_ENV}"
+
+          # Trust the model so that we can use it in the ATM boosted queries
+          mkdir -p "$HOME/.config/codeql"
+          echo "--insecurely-execute-ml-model-checksums ${model_checksum}" >> "$HOME/.config/codeql/config"
+
+      - name: Create test DB
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DB_PATH=${RUNNER_TEMP}/test_db
+          echo "DB_PATH=${DB_PATH}" >> "${GITHUB_ENV}"
+          
+          # gh codeql database create "${DB_PATH}" --source-root config/atm/ --language javascript
+          
+          # TODO: hack
+          gh repo clone AmanSultanBaig/SignIn-SignUp-System-with-Nodejs -- --depth 1
+          gh codeql database create "${DB_PATH}" --source-root SignIn-SignUp-System-with-Nodejs/ --language javascript
+          
+          
+      - name: Run integration test query
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Run query
+          gh codeql query run \
+            --database "${DB_PATH}" \
+            --output "${RUNNER_TEMP}/integration_endpoint_scores.bqrs" \
+            ${ATM_INTEGRATION_QUERY}
+
+          # Decode results to csv
+          results_codeql="${RUNNER_TEMP}/integration_endpoint_scores.csv"
+          gh codeql bqrs decode \
+            --output "${results_codeql}" \
+            --entities "url" \
+            --format "csv" \
+            "${RUNNER_TEMP}/integration_endpoint_scores.bqrs"
+          echo "RESULTS_CODEQL=${results_codeql}" >> "${GITHUB_ENV}"
+
+      - name: Retrieve CodeQL and Python results
+        shell: python
+        run: |
+          import os
+          import numpy as np
+          import pandas as pd
+          from pathlib import Path
+
+          # CodeQL results
+          #---------------
+          df_codeql = pd.read_csv(os.environ['RESULTS_CODEQL'])
+          
+          # Replace 'URL for endpoint' column by 'url' column after stripping `file://`
+          # df_codeql['url'] = df_codeql['URL for endpoint'].map(lambda x: x[len('file://'):])  
+          
+          # TODO:hack
+          df_codeql['url'] = df_codeql['URL for endpoint'].map(lambda x: x.split('SignIn-SignUp-System-with-Nodejs/')[1] if 'SignIn-SignUp-System-with-Nodejs/' in x else x)
+          
+          df_codeql = df_codeql.drop(['URL for endpoint'], axis=1)
+          
+          # Remove results occuring in library code in`/opt/dist`
+          df_codeql = df_codeql[df_codeql['url'].map(lambda x: not x.startswith('/opt/dist'))]  
+
+          # Seralise it to csv
+          csv_codeql = f"{os.environ['RUNNER_TEMP']}/scored_endpoints_codeql.csv"
+          df_codeql.to_csv(csv_codeql)
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+            f.write(f"CSV_CODEQL={csv_codeql}\n")
+
+          # Python results
+          #---------------          
+          # Read endpoints locations and scores files packaged with ML model
+          model_path = Path(os.environ['ML_MODEL_PATH'])
+          df_model_locations = pd.read_csv(model_path.joinpath('model_checks', 'endpoint_locations.csv'))
+          df_model_scores = pd.read_csv(model_path.joinpath('model_checks', 'endpoint_scores.csv'))
+          
+          # Make the `url` column the same as `df_codeql` e.g. /opt/src/auth/authMiddleware.js:1:21:1:34
+          df_model_locations['url'] = \
+              df_model_locations['absolutePath'] + \
+              ':' + \
+              df_model_locations['startLine'].astype(str) + \
+              ':' + \
+              df_model_locations['startColumn'].astype(str) + \
+              ':' + \
+              df_model_locations['endLine'].astype(str) + \
+              ':' + \
+              df_model_locations['endColumn'].astype(str)
+          
+          # TODO: hack
+          df_model_locations['url'] = df_model_locations['url'].map(lambda x: x.split('/opt/src/')[1] if '/opt/src/' in x else x)
+          
+          # Merge locations and scores
+          df_model = df_model_scores.merge(df_model_locations)
+          df_model = df_model.drop(
+              [
+                  'entityName',
+                  'startLine',
+                  'startColumn',
+                  'endLine',
+                  'endColumn',
+                  'absolutePath',
+              ], axis=1
+          )
+          df_model = df_model.rename(columns={'scoreIndex': 'encodedEndpointType', 'scoreValue': 'score'})
+
+          # Seralise it to csv
+          csv_model = f"{os.environ['RUNNER_TEMP']}/scored_endpoints_pyton.csv"
+          df_model.to_csv(csv_model)
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+            f.write(f"CSV_MODEL={csv_model}\n")
+            
+      - name: Check endpoints locations
+        shell: python
+        run: |
+          # All the results in the `model_checks` directory packaged with the model appear when running 
+          # `EndpointScoresIntegrationTest.ql` against the model check DB
+
+          # NOTE: why do we have different number of results?
+          #
+          # model_check results:
+          # The model checks datataset created by the pipeline contains endpoints labelled as positive or negative
+          # examples. These endpoints are scored by the model training script once the model has been trained.
+          #
+          # codeql results:
+          # These are produced by the EndpointScoresIntegrationTest.ql query which scores all endpoints that are
+          # DataFlow::CallNode. This *happens to* encompass pretty much all possible endpoints and so will also contain
+          # the endpoints used by model_checks, along with several more.
+          #
+          # The reason we have more codeql endpoints than model_checks endpoints is thus because we do not have an easy
+          # way of selecting the same endpoints and rely on a hack to get a set of endpoints that will encompass the
+          # endpoints that we actually care about (but this is not a theoretical guarantee, more of a heuristic).
+
+          import os
+          import numpy as np
+          import pandas as pd
+          
+          # Read in data
+          df_codeql = pd.read_csv(os.environ['CSV_CODEQL'])
+          df_model = pd.read_csv(os.environ['CSV_MODEL'])
+          df_all_inner = df_codeql.merge(df_model, on=['url', 'encodedEndpointType'], suffixes=('_codeql', '_model'))
+          df_all_outer = df_codeql.merge(df_model, on=['url', 'encodedEndpointType'], suffixes=('_codeql', '_model'), how='outer', indicator=True)
+
+          # Display number of endpoints
+          print(f'Number of codeql results (i.e. from running `{os.environ["ATM_INTEGRATION_QUERY"].split("/")[-1]}`): {df_codeql.shape[0]}')
+          print(f'Number of model checks results (i.e. shipped with model): {df_model.shape[0]}')
+          print(f'Number of overlapping results: {df_all_inner.shape[0]}')
+
+          # Check all model checks results are also in codeql results
+          df_all_diff = df_all_outer[df_all_outer._merge != 'both']
+          print(f'Number of results in `model_check` but not in `codeql` (should be zero): {len(df_all_diff[df_all_diff["_merge"] == "right_only"])}')
+          print(f'Number of results in `codeql` but not in `model_checks` (expect non-zero): {len(df_all_diff[df_all_diff["_merge"] == "left_only"])}')
+          if len(df_all_diff[df_all_diff["_merge"] == "right_only"]):
+              print(f'Missing results when running `EndpointScoresIntegrationTest.ql` that are in `model_check`: {df_all_diff[df_all_diff["_merge"] == "right_only"].to_string()}')
+          assert df_model.shape[0] == df_all_inner.shape[0], f'There are missing results from `model_check` when running `EndpointScoresIntegrationTest.ql`'
+
+      - name: Check endpoints scores
+        shell: python
+        run: |
+          # The scores produced by the CodeQL query `EndpointScoresIntegrationTest.ql` should match those packaged
+          # with the model.
+          
+          import os
+          import numpy as np
+          import pandas as pd
+          
+          # Read in data
+          df_codeql = pd.read_csv(os.environ['CSV_CODEQL'])
+          df_model = pd.read_csv(os.environ['CSV_MODEL'])
+          df_all_inner = df_codeql.merge(df_model, on=['url', 'encodedEndpointType'], suffixes=('_codeql', '_model'))
+
+          # Assert the codeql and model checks scores are almost identical
+          rtol=1e-04
+          np.testing.assert_allclose(
+              df_all_inner['score_codeql'],
+              df_all_inner['score_model'],
+              rtol=rtol,
+          ), f'There are non-matching scores'
+          print(f'The scores of the {df_all_inner.shape[0]} overlapping endpoints match, using rtol={rtol}.')
+
+
+      
