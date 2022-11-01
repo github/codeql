@@ -183,7 +183,7 @@ public class RegexInjectionTest extends HttpServlet {
     return RegExUtils.replacePattern(input, pattern, "").length() > 0;  // $ hasRegexInjection
   }
 
-  // test `Pattern.quote` as safe
+  // test `Pattern.quote` sanitizer
   public boolean quoteTest(javax.servlet.http.HttpServletRequest request) {
     String regex = request.getParameter("regex");
     String input = request.getParameter("input");
@@ -191,7 +191,7 @@ public class RegexInjectionTest extends HttpServlet {
     return input.matches(Pattern.quote(regex));  // Safe
   }
 
-  // test `Pattern.LITERAL` as safe
+  // test `Pattern.LITERAL` sanitizer
   public boolean literalTest(javax.servlet.http.HttpServletRequest request) {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");

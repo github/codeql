@@ -9,7 +9,7 @@ private import semmle.code.java.frameworks.apache.Lang
 abstract class Sink extends DataFlow::ExprNode { }
 
 /** A sanitizer for untrusted user input used to construct regular expressions. */
-abstract class Sanitizer extends DataFlow::ExprNode { }
+abstract class RegexInjectionSanitizer extends DataFlow::ExprNode { }
 
 private class RegexInjectionSink extends Sink {
   RegexInjectionSink() {
@@ -26,10 +26,9 @@ private class RegexInjectionSink extends Sink {
   }
 }
 
-/** A call to a function which escapes regular expression meta-characters. */
-private class RegexInjectionSanitizer extends Sanitizer {
-  RegexInjectionSanitizer() {
-    // a function whose name suggests that it escapes regular expression meta-characters
+/** A call to a function whose name suggests that it escapes regular expression meta-characters. */
+private class RegexSanitizationCall extends RegexInjectionSanitizer {
+  RegexSanitizationCall() {
     exists(string calleeName, string sanitize, string regexp |
       calleeName = this.asExpr().(Call).getCallee().getName() and
       sanitize = "(?:escape|saniti[sz]e)" and
@@ -39,19 +38,32 @@ private class RegexInjectionSanitizer extends Sanitizer {
           .regexpMatch("(?i)(" + sanitize + ".*" + regexp + ".*)" + "|(" + regexp + ".*" + sanitize +
               ".*)")
     )
-    or
-    // a call to the `Pattern.quote` method, which gives metacharacters or escape sequences no special meaning
+  }
+}
+
+/**
+ * A call to the `Pattern.quote` method, which gives metacharacters or escape sequences
+ * no special meaning.
+ */
+private class PatternQuoteCall extends RegexInjectionSanitizer {
+  PatternQuoteCall() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       ma.getArgument(0) = this.asExpr() and
       m instanceof PatternQuoteMethod
     )
-    or
-    // use of Pattern.LITERAL flag with `Pattern.compile` which gives metacharacters or escape sequences no special meaning
+  }
+}
+
+/**
+ * Use of the `Pattern.LITERAL` flag with `Pattern.compile`, which gives metacharacters
+ * or escape sequences no special meaning.
+ */
+private class PatternLiteralFlag extends RegexInjectionSanitizer {
+  PatternLiteralFlag() {
     exists(MethodAccess ma, Method m, Field field | m = ma.getMethod() |
       ma.getArgument(0) = this.asExpr() and
       m instanceof PatternRegexMethod and
       m.hasName("compile") and
-      //ma.getArgument(1).toString() = "Pattern.LITERAL" and
       field instanceof PatternLiteral and
       ma.getArgument(1) = field.getAnAccess()
     )
