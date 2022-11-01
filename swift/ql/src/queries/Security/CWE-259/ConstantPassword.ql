@@ -17,7 +17,7 @@ import codeql.swift.dataflow.FlowSteps
 import DataFlow::PathGraph
 
 /**
- * A constant salt is created through either a byte array or string literals.
+ * A constant password is created through either a byte array or string literals.
  */
 class ConstantPasswordSource extends Expr {
   ConstantPasswordSource() {
@@ -45,7 +45,7 @@ class ConstantPasswordSink extends Expr {
 
 /**
  * A taint configuration from the source of constants passwords to expressions that use
- * them to initialize password-based enecryption keys.
+ * them to initialize password-based encryption keys.
  */
 class ConstantPasswordConfig extends TaintTracking::Configuration {
   ConstantPasswordConfig() { this = "ConstantPasswordConfig" }
