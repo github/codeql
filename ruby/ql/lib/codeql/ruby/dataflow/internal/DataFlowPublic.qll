@@ -1106,8 +1106,8 @@ private newtype TConstLookupScope =
   MkQualifiedLookup(ConstantAccess base) or
   /** Look up in the ancestors of `mod`. */
   MkAncestorLookup(Module mod) or
-  /** Look up in a module syntactically nested in `scope`. */
-  MkNestedLookup(ModuleBase scope) or
+  /** Look up in a module syntactically nested in a declaration of `mod`. */
+  MkNestedLookup(Module mod) or
   /** Pseudo-scope for accesses that are known to resolve to `mod`. */
   MkExactLookup(Module mod)
 
@@ -1179,15 +1179,6 @@ class ConstRef extends LocalSourceNode {
   private ModuleNode getAncestryTarget() { result.getAnAncestorExpr() = this }
 
   /**
-   * Gets a module scope in which the value of this constant is part of `Module.nesting`.
-   */
-  private ModuleBase getANestingScope() {
-    result = this.getAncestryTarget().getADeclaration()
-    or
-    result.getEnclosingModule() = this.getANestingScope()
-  }
-
-  /**
    * Gets the known target module.
    *
    * We resolve these differently to prune out infeasible constant lookups.
@@ -1204,7 +1195,7 @@ class ConstRef extends LocalSourceNode {
     access = any(ConstantAccess ac).getScopeExpr() and
     result = MkQualifiedLookup(access)
     or
-    result = MkNestedLookup(this.getANestingScope())
+    result = MkNestedLookup(this.getAncestryTarget())
     or
     result = MkExactLookup(access.(Namespace).getModule())
   }
@@ -1224,7 +1215,7 @@ class ConstRef extends LocalSourceNode {
     (
       result = MkAncestorLookup(access.getEnclosingModule().getNamespaceOrToplevel().getModule())
       or
-      result = MkNestedLookup(access.getEnclosingModule())
+      result = MkNestedLookup(access.getEnclosingModule().getEnclosingModule*().getModule())
     )
   }
 
