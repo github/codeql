@@ -1,38 +1,22 @@
-package com.example.demo;
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+public class RegexInjectionDemo extends HttpServlet {
 
-@RestController
-public class DemoApplication {
+  public boolean badExample(javax.servlet.http.HttpServletRequest request) {
+    String regex = request.getParameter("regex");
+    String input = request.getParameter("input");
 
-    @GetMapping("/string1")
-    public String string1(@RequestParam(value = "input", defaultValue = "test") String input,
-                          @RequestParam(value = "pattern", defaultValue = ".*") String pattern) {
-        // BAD: Unsanitized user input is used to construct a regular expression
-        if (input.matches("^" + pattern + "=.*$"))
-            return "match!";
+    // BAD: Unsanitized user input is used to construct a regular expression
+    return input.matches(regex);
+  }
 
-        return "doesn't match!";
-    }
+  public boolean goodExample(javax.servlet.http.HttpServletRequest request) {
+    String regex = request.getParameter("regex");
+    String input = request.getParameter("input");
 
-    @GetMapping("/string2")
-    public String string2(@RequestParam(value = "input", defaultValue = "test") String input,
-                          @RequestParam(value = "pattern", defaultValue = ".*") String pattern) {
-        // GOOD: User input is sanitized before constructing the regex
-        if (input.matches("^" + escapeSpecialRegexChars(pattern) + "=.*$"))
-            return "match!";
-
-        return "doesn't match!";
-    }
-
-    Pattern SPECIAL_REGEX_CHARS = Pattern.compile("[{}()\\[\\]><-=!.+*?^$\\\\|]");
-
-    String escapeSpecialRegexChars(String str) {
-        return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
-    }
+    // GOOD: User input is sanitized before constructing the regex
+    return input.matches(Pattern.quote(regex));
+  }
 }

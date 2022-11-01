@@ -11,6 +11,7 @@ abstract class RegexInjectionSink extends DataFlow::ExprNode { }
 /** A sanitizer for untrusted user input used to construct regular expressions. */
 abstract class RegexInjectionSanitizer extends DataFlow::ExprNode { }
 
+/** A method call that takes a regular expression as an argument. */
 private class DefaultRegexInjectionSink extends RegexInjectionSink {
   DefaultRegexInjectionSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
