@@ -6,6 +6,7 @@ import com.github.codeql.utils.versions.functionN
 import com.github.codeql.utils.versions.isUnderscoreParameter
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
@@ -1855,16 +1856,27 @@ open class KotlinFileExtractor(
             // Ensure the real target gets extracted, as we might not every directly touch it thanks to this call being redirected to a $default method.
             useFunction<DbCallable>(callTarget)
         }
-        val defaultMethodLabel = getDefaultsMethodLabel(callTarget)
-        val id = extractMethodAccessWithoutArgs(resultType, locId, enclosingCallable, callsiteParent, childIdx, enclosingStmt, defaultMethodLabel)
 
-        if (callTarget.isLocalFunction()) {
-            extractTypeAccess(getLocallyVisibleFunctionLabels(callTarget).type, locId, id, -1, enclosingCallable, enclosingStmt)
-        } else {
-            extractStaticTypeAccessQualifierUnchecked(callTarget.parent, id, locId, enclosingCallable, enclosingStmt)
+        // Default parameter values are inherited by overrides; in this case the call should dispatch against the $default method belonging to the class
+        // that specified the default values, which will in turn dynamically dispatch back to the relevant override.
+        val overriddenCallTarget = (callTarget as? IrSimpleFunction)?.allOverridden(true)?.firstOrNull {
+            it.overriddenSymbols.isEmpty() && it.valueParameters.any { p -> p.defaultValue != null }
+        } ?: callTarget
+        if (isExternalDeclaration(overriddenCallTarget)) {
+            // Likewise, ensure the overridden target gets extracted.
+            useFunction<DbCallable>(overriddenCallTarget)
         }
 
-        extractDefaultsCallArguments(id, callTarget, enclosingCallable, enclosingStmt, valueArguments, dispatchReceiver, extensionReceiver)
+        val defaultMethodLabel = getDefaultsMethodLabel(overriddenCallTarget)
+        val id = extractMethodAccessWithoutArgs(resultType, locId, enclosingCallable, callsiteParent, childIdx, enclosingStmt, defaultMethodLabel)
+
+        if (overriddenCallTarget.isLocalFunction()) {
+            extractTypeAccess(getLocallyVisibleFunctionLabels(overriddenCallTarget).type, locId, id, -1, enclosingCallable, enclosingStmt)
+        } else {
+            extractStaticTypeAccessQualifierUnchecked(overriddenCallTarget.parent, id, locId, enclosingCallable, enclosingStmt)
+        }
+
+        extractDefaultsCallArguments(id, overriddenCallTarget, enclosingCallable, enclosingStmt, valueArguments, dispatchReceiver, extensionReceiver)
     }
 
     private fun extractDefaultsCallArguments(
