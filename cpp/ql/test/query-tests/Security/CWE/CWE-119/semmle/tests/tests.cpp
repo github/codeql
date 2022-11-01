@@ -517,7 +517,7 @@ void test19(bool b)
 	if (b)
 	{
 		memset(p1, 0, 20); // BAD
-		memset(p2, 0, 20); // GOOD [FALSE POSITIVE]
+		memset(p2, 0, 20); // GOOD
 		memset(p3, 0, 20); // GOOD
 	}
 }
