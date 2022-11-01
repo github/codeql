@@ -277,12 +277,11 @@ module Impl implements RegexTreeViewSig {
    */
   class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
     int part_end;
-    boolean maybe_empty;
     boolean may_repeat_forever;
 
     RegExpQuantifier() {
       this = TRegExpQuantifier(re, start, end) and
-      re.qualifiedPart(start, part_end, end, maybe_empty, may_repeat_forever)
+      re.qualifiedPart(start, part_end, end, _, may_repeat_forever)
     }
 
     override RegExpTerm getChild(int i) {
