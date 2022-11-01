@@ -42,4 +42,8 @@ class CommentsController < ApplicationController
       format.xml  { render xml: @comment.to_xml(include: @photo) }
     end
   end
+
+  def photo
+    send_data @photo
+  end
 end

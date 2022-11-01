@@ -539,12 +539,38 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
 /**
  * A call to `send_file`, which sends the file at the given path to the client.
  */
-private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
+private class SendFile extends FileSystemAccess::Range, Http::Server::HttpResponse::Range,
+  DataFlow::CallNode {
   SendFile() {
     this = [actionControllerInstance(), Response::response()].getAMethodCall("send_file")
   }
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+
+  override DataFlow::Node getBody() { result = this.getArgument(0) }
+
+  override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+  override string getMimetypeDefault() { result = "application/octet-stream" }
+}
+
+/**
+ * A call to `send_data`, which sends the given data to the client.
+ */
+class SendDataCall extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
+  SendDataCall() {
+    this.getMethodName() = "send_data" and
+    (
+      this.asExpr().getExpr() instanceof ActionControllerContextCall or
+      this.getReceiver().asExpr().getExpr() instanceof Response::ResponseCall
+    )
+  }
+
+  override DataFlow::Node getBody() { result = this.getArgument(0) }
+
+  override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+  override string getMimetypeDefault() { result = "application/octet-stream" }
 }
 
 private module ParamsSummaries {

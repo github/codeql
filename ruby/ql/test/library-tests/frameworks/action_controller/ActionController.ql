@@ -25,6 +25,10 @@ query predicate redirectToCalls(RedirectToCall c) { any() }
 
 query predicate renderCalls(Rails::RenderCall c) { any() }
 
+query predicate httpResponses(Http::Server::HttpResponse r, DataFlow::Node body) {
+  body = r.getBody()
+}
+
 query predicate actionControllerHelperMethods(ActionControllerHelperMethod m) { any() }
 
 query predicate getAssociatedControllerClasses(ActionControllerClass cls, ErbFile f) {
