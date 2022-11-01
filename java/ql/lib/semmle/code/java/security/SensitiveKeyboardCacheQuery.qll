@@ -49,7 +49,7 @@ class AndroidEditableXmlElement extends AndroidLayoutXmlElement {
 /** A `findViewById` or `requireViewById` method on `Activity` or `View`. */
 private class FindViewMethod extends Method {
   FindViewMethod() {
-    hasQualifiedName("android.view", "View", ["findViewById", "requireViewById"])
+    this.hasQualifiedName("android.view", "View", ["findViewById", "requireViewById"])
     or
     exists(Method m |
       m.hasQualifiedName("android.app", "Activity", ["findViewById", "requireViewById"]) and
