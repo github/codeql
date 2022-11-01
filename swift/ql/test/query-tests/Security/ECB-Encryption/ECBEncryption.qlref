@@ -1,1 +1,1 @@
-queries/Security/ECB-Encryption/ECBEncryption.ql
+queries/Security/CWE-327/ECBEncryption.ql
