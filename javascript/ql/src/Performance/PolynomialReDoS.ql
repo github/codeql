@@ -15,7 +15,6 @@
 
 import javascript
 import semmle.javascript.security.regexp.PolynomialReDoSQuery
-import semmle.javascript.security.regexp.SuperlinearBackTracking
 import DataFlow::PathGraph
 
 from
