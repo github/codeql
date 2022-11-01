@@ -375,9 +375,9 @@ private module Cached {
   private predicate selfInSingletonMethodFlowsToMethodCallReceiver(
     RelevantCall call, Module m, string method
   ) {
-    exists(SsaSelfDefinitionNode self, MethodBase caller |
+    exists(SelfParameterNode self, MethodBase caller |
       flowsToMethodCallReceiver(call, self, method) and
-      selfInMethod(self.getVariable(), caller, m) and
+      selfInMethod(self.getSelfVariable(), caller, m) and
       singletonMethod(caller, _, _)
     )
   }
@@ -616,22 +616,26 @@ private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
     or
     // `self.new` inside a singleton method
     exists(MethodBase target |
-      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), target, tp) and
+      selfInMethod(sourceNode.(SelfParameterNode).getSelfVariable(), target, tp) and
       singletonMethod(target, _, _) and
       exact = false
     )
   )
   or
-  // `self` reference in method or top-level (but not in module or singleton method,
+  // `self` reference in a method (but not in module or singleton method,
   // where instance methods cannot be called; only singleton methods)
   n =
-    any(SsaSelfDefinitionNode self |
+    any(SelfParameterNode self |
       exists(MethodBase m |
-        selfInMethod(self.getVariable(), m, tp) and
+        selfInMethod(self.getSelfVariable(), m, tp) and
         not m instanceof SingletonMethod and
         if m.getEnclosingModule() instanceof Toplevel then exact = true else exact = false
       )
-      or
+    )
+  or
+  // `self` reference in top-level
+  n =
+    any(SsaSelfDefinitionNode self |
       selfInToplevel(self.getVariable(), tp) and
       exact = true
     )
@@ -662,7 +666,7 @@ private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
       selfInModule(result.(SsaSelfDefinitionNode).getVariable(), m)
       or
       // needed for e.g. `self.puts`
-      selfInMethod(result.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm), m)
+      selfInMethod(result.(SelfParameterNode).getSelfVariable(), any(SingletonMethod sm), m)
     )
   )
   or
@@ -951,7 +955,8 @@ private DataFlow::Node trackSingletonMethodOnInstance(MethodBase method, string 
     // def x.foo; end
     // x.foo # <- we want to resolve this call to the second definition only
     // ```
-    not singletonMethodOnInstance(_, name, result.asExpr().getExpr())
+    not singletonMethodOnInstance(_, name, result.asExpr().getExpr()) and
+    not result instanceof SelfParameterNode
   )
 }
 
@@ -981,6 +986,11 @@ private predicate isInstanceLocalMustFlow(DataFlow::Node n, Module tp, boolean e
     n.asExpr() = mid.(SsaDefinitionNode).getDefinition().getARead()
     or
     n.(SsaDefinitionNode).getDefinition().(Ssa::WriteDefinition).assigns(mid.asExpr())
+    or
+    LocalFlow::localFlowSsaParamInput(mid, n)
+    or
+    // 'self' cannot change value, so flow to all uses, not just the first
+    mid.(SelfParameterNode).getSelfVariable() = n.(SsaSelfDefinitionNode).getVariable()
   )
 }
 

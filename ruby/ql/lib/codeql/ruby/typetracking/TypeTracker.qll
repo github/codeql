@@ -189,6 +189,9 @@ private module Cached {
     levelStepNoCall(nodeFrom, nodeTo) and
     summary = LevelStep()
     or
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
+    summary = LevelStep()
+    or
     exists(TypeTrackerContent content |
       flowsToStoreStep(nodeFrom, nodeTo, content) and
       summary = StoreStep(content)
@@ -467,9 +470,6 @@ class TypeTracker extends TTypeTracker {
       StepSummary::smallstep(nodeFrom, nodeTo, summary) and
       result = this.append(summary)
     )
-    or
-    simpleLocalFlowStep(nodeFrom, nodeTo) and
-    result = this
   }
 }
 

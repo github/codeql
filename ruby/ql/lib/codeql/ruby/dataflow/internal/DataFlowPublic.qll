@@ -144,7 +144,7 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
+class ParameterNode extends LocalSourceNode, TParameterNode instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   final Parameter getParameter() { result = super.getParameter() }
 }
@@ -199,9 +199,11 @@ private predicate hasLocalSource(Node sink, Node source) {
   source = sink and
   source instanceof LocalSourceNode
   or
-  exists(Node mid |
-    hasLocalSource(mid, source) and
+  exists(Node mid | hasLocalSource(mid, source) |
     localFlowStepTypeTracker(mid, sink)
+    or
+    // Explicitly include the SSA param input step as type-tracking omits this step.
+    LocalFlow::localFlowSsaParamInput(mid, sink)
   )
 }
 
