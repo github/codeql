@@ -149,7 +149,7 @@
     o.push({specified : 1, nodeName : a});
   });
 
-  n.cloneNode(false).outerHTML.replace(/<\/?[\w:\-]+ ?|=[\"][^\"]+\"|=\'[^\']+\'|=[\w\-]+|>/gi, '').replace(/[\w:\-]+/gi, function(a) { // NOT OK - but not flagged
+  n.cloneNode(false).outerHTML.replace(/<\/?[\w:\-]+ ?|=[\"][^\"]+\"|=\'[^\']+\'|=[\w\-]+|>/gi, '').replace(/[\w:\-]+/gi, function(a) { // NOT OK
     o.push({specified : 1, nodeName : a});
   });  
 });
