@@ -8,6 +8,7 @@ CodeQL has a large selection of classes for representing the abstract syntax tre
 .. include:: ../reusables/abstract-syntax-tree.rst
 
 An ``IDENTIFIER`` should match the regular expression ``/[a-zA-Z_][a-zA-Z0-9_]*/``. A ``CNAME`` should match ``/[A-Z][a-zA-Z0-9_]*/``.
+``TERM`` is either a semicolon or a newline used to terminate a statement.
 
 Statement classes
 ~~~~~~~~~~~~~~~~~
@@ -73,10 +74,6 @@ All classes in this subsection are subclasses of ConstantAccess_.
 | Expression syntax                      | CodeQL class         | Superclasses         | Remarks           |
 +========================================+======================+======================+===================+
 | CNAME                                  | ConstantReadAccess_  | ConstantAccess_      |                   |
-+----------------------------------------+----------------------+----------------------+-------------------+
-| ``class`` CNAME StmtSequence_ ``end``  | ConstantWriteAccess_ | ConstantAccess_      | class definition  |
-+----------------------------------------+----------------------+----------------------+-------------------+
-| ``module`` CNAME StmtSequence_ ``end`` | ConstantWriteAccess_ | ConstantAccess_      | module definition |
 +----------------------------------------+----------------------+----------------------+-------------------+
 | CNAME ``=`` Expr_                      | ConstantAssignment_  | ConstantWriteAccess_ |                   |
 +----------------------------------------+----------------------+----------------------+-------------------+
@@ -272,6 +269,19 @@ All classes in this subsection are subclasses of Literal_.
 | ``:foo``                   | SymbolLiteral_    | StringlikeLiteral_         |                   |
 +----------------------------+-------------------+----------------------------+-------------------+
 
+Modules and Ruby classes
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+All classes in this subsection are subclasses of BodyStmt_ and Scope_.
+
++----------------------------------------------------------------+--------------------+----------------------------------+-------------------+
+| Expression syntax                                              | CodeQL class       | Superclasses                     | Remarks           |
++================================================================+====================+==================================+===================+
+| ``class`` CNAME [``<`` Expr_] TERM StmtSequence_ TERM ``end``  | ClassDeclaration_  | Namespace_, ConstantWriteAccess_ |                   |
+| ``module`` CNAME TERM StmtSequence_ TERM ``end``               | ModuleDeclaration_ | Namespace_, ConstantWriteAccess_ |                   |
+| ``class <<`` Expr_ TERM StmtSequence_ TERM ``end``             | SingletonClass_    | ModuleBase_                      |                   |
++----------------------------------------------------------------+--------------------+----------------------------------+-------------------+
+
 Method classes
 ~~~~~~~~~~~~~~
 
@@ -297,19 +307,8 @@ All classes in this subsection are subclasses of Callable_.
 | ``(`` StmtSequence_ ``)`` | ParenthesizedExpr_ | StmtSequence_ | |
 | ``rescue``  TODO   | RescueClause_ | Expr_ |  |
 | Stmt_ ``rescue`` Stmt_ | RescueModifierExpr_ | Expr_ | |
-| StmtSequence_ ``;`` Stmt_ | StmtSequence_ | Expr_ | A sequence of 0 or more statements, separated by semicolons or newlines |
+| StmtSequence_ TERM Stmt_ | StmtSequence_ | Expr_ | A sequence of 0 or more statements, separated by semicolons or newlines |
 | StringLiteral_ StringLiteral_ | StringConcatenation_ | Expr_ | Implicit concatenation of consecutive string literals |
-
-
-..
-  Module.qll
-| | ClassDeclaration_ | | |
-| | Module_ | | |
-| | ModuleBase_ | | |
-| | ModuleDeclaration_ | | |
-| | Namespace_ | | |
-| | SingletonClass_ | | |
-| | Toplevel_ | | |
 
 ..
   Parameter.qll
