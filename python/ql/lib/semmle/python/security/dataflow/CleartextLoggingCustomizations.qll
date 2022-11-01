@@ -57,16 +57,43 @@ module CleartextLogging {
   /** A piece of data printed, considered as a flow sink. */
   class PrintedDataAsSink extends Sink {
     PrintedDataAsSink() {
-      this = API::builtin("print").getACall().getArg(_)
-      or
-      // special handling of writing to `sys.stdout` and `sys.stderr`, which is
-      // essentially the same as printing
-      this =
-        API::moduleImport("sys")
-            .getMember(["stdout", "stderr"])
-            .getMember("write")
-            .getACall()
-            .getArg(0)
+      (
+        this = API::builtin("print").getACall().getArg(_)
+        or
+        // special handling of writing to `sys.stdout` and `sys.stderr`, which is
+        // essentially the same as printing
+        this =
+          API::moduleImport("sys")
+              .getMember(["stdout", "stderr"])
+              .getMember("write")
+              .getACall()
+              .getArg(0)
+      ) and
+      // since some of the inner error handling implementation of the logging module is
+      // ```py
+      //         sys.stderr.write('Message: %r\n'
+      //         'Arguments: %s\n' % (record.msg,
+      //                              record.args))
+      // ```
+      // any time we would report flow to such a logging sink, we can ALSO report
+      // the flow to the `record.msg`/`record.args` sinks -- obviously we
+      // don't want that.
+      //
+      // However, simply removing taint edges out of a sink is not a good enough solution,
+      // since we would only flag one of the `logging.info` calls in the following example
+      // due to use-use flow
+      // ```py
+      // logging.info(user_controlled)
+      // logging.info(user_controlled)
+      // ```
+      //
+      // The same approach is used in the command injection query.
+      not exists(Module loggingInit |
+        loggingInit.getName() = "logging.__init__" and
+        this.getScope().getEnclosingModule() = loggingInit and
+        // do allow this call if we're analyzing logging/__init__.py as part of CPython though
+        not exists(loggingInit.getFile().getRelativePath())
+      )
     }
   }
 }
