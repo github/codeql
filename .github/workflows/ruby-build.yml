@@ -209,7 +209,6 @@ jobs:
       - name: Run QL test
         shell: bash
         run: |
-          codeql pack install .
           codeql test run --search-path "${{ runner.temp }}/ruby-bundle" --additional-packs "${{ runner.temp }}/ruby-bundle" .
       - name: Create database
         shell: bash
