@@ -1,4 +1,7 @@
 edges
+| testAlamofire.swift:150:45:150:45 | password :  | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... |
+| testAlamofire.swift:152:51:152:51 | password :  | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... |
+| testAlamofire.swift:154:38:154:38 | email :  | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... |
 | testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  |
 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 |
 | testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 |
@@ -8,6 +11,12 @@ edges
 | testURL.swift:13:54:13:54 | passwd :  | testURL.swift:13:22:13:54 | ... .+(_:_:) ... |
 | testURL.swift:16:55:16:55 | credit_card_no :  | testURL.swift:16:22:16:55 | ... .+(_:_:) ... |
 nodes
+| testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testAlamofire.swift:150:45:150:45 | password :  | semmle.label | password :  |
+| testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testAlamofire.swift:152:51:152:51 | password :  | semmle.label | password :  |
+| testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testAlamofire.swift:154:38:154:38 | email :  | semmle.label | email :  |
 | testSend.swift:29:19:29:19 | passwordPlain | semmle.label | passwordPlain |
 | testSend.swift:41:10:41:18 | data :  | semmle.label | data :  |
 | testSend.swift:41:45:41:45 | data :  | semmle.label | data :  |
@@ -26,6 +35,9 @@ nodes
 subpaths
 | testSend.swift:47:17:47:17 | password :  | testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  | testSend.swift:47:13:47:25 | call to pad(_:) :  |
 #select
+| testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | testAlamofire.swift:150:45:150:45 | password :  | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:150:45:150:45 | password :  | password |
+| testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | testAlamofire.swift:152:51:152:51 | password :  | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:152:51:152:51 | password :  | password |
+| testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | testAlamofire.swift:154:38:154:38 | email :  | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:154:38:154:38 | email :  | email |
 | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | This operation transmits 'passwordPlain', which may contain unencrypted sensitive data from $@. | testSend.swift:29:19:29:19 | passwordPlain | passwordPlain |
 | testSend.swift:52:27:52:27 | str1 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 | This operation transmits 'str1', which may contain unencrypted sensitive data from $@. | testSend.swift:45:13:45:13 | password :  | password |
 | testSend.swift:53:27:53:27 | str2 | testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 | This operation transmits 'str2', which may contain unencrypted sensitive data from $@. | testSend.swift:46:13:46:13 | password :  | password |

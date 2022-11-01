@@ -147,11 +147,11 @@ struct MyEncodable: Encodable {
 func test1(username: String, password: String, email: String, harmless: String) {
 	// sensitive data in URL
 
-	AF.request("http://example.com/login?p=" + password) // BAD [NOT DETECTED]
+	AF.request("http://example.com/login?p=" + password) // BAD
 	AF.request("http://example.com/login?h=" + harmless) // GOOD (not sensitive)
-	AF.streamRequest("http://example.com/login?p=" + password) // BAD [NOT DETECTED]
+	AF.streamRequest("http://example.com/login?p=" + password) // BAD
 	AF.streamRequest("http://example.com/login?h=" + harmless) // GOOD (not sensitive)
-	AF.download("http://example.com/" + email + ".html") // BAD [NOT DETECTED]
+	AF.download("http://example.com/" + email + ".html") // BAD
 	AF.download("http://example.com/" + harmless + ".html") // GOOD (not sensitive)
 
 	// sensitive data in parameters
