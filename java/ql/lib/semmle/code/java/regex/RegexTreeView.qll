@@ -1,11 +1,19 @@
 /** Provides a class hierarchy corresponding to a parse tree of regular expressions. */
 
-private import java
-private import semmle.code.java.regex.regex
+private import semmle.code.java.regex.regex as RE // importing under a namescape to avoid naming conflict for `Top`.
+private import codeql.regex.nfa.NfaUtils as NfaUtils
+// exporting as RegexTreeView, and in the top-level scope.
+import Impl as RegexTreeView
 import Impl
 
 /** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
-RegExpTerm getParsedRegExp(StringLiteral re) { result.getRegex() = re and result.isRootTerm() }
+RegExpTerm getParsedRegExp(RE::StringLiteral re) { result.getRegex() = re and result.isRootTerm() }
+
+private class Regex = RE::Regex;
+
+private class Location = RE::Location;
+
+private class File = RE::File;
 
 /**
  * An element containing a regular expression term, that is, either
@@ -53,7 +61,10 @@ private newtype TRegExpParent =
   /** A back reference */
   TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
-module Impl {
+private import codeql.regex.RegexTreeView
+
+/** An implementation that statisfies the RegexTreeView signature. */
+module Impl implements RegexTreeViewSig {
   /**
    * An element containing a regular expression term, that is, either
    * a string literal (parsed as a regular expression; the root of the parse tree)
@@ -545,6 +556,13 @@ module Impl {
         result = 16.pow(hex.length() - index - 1) * toHex(char)
       )
     }
+  }
+
+  /**
+   * A word boundary, that is, a regular expression term of the form `\b`.
+   */
+  class RegExpWordBoundary extends RegExpSpecialChar {
+    RegExpWordBoundary() { this.getChar() = "\\b" }
   }
 
   /**
@@ -1087,5 +1105,70 @@ module Impl {
     override RegExpTerm getChild(int i) { none() }
 
     override string getPrimaryQLClass() { result = "RegExpBackRef" }
+  }
+
+  class Top = RegExpParent;
+
+  /**
+   * Holds if `term` is an escape class representing e.g. `\d`.
+   * `clazz` is which character class it represents, e.g. "d" for `\d`.
+   */
+  predicate isEscapeClass(RegExpTerm term, string clazz) {
+    term.(RegExpCharacterClassEscape).getValue() = clazz
+    or
+    term.(RegExpNamedProperty).getBackslashEquivalent() = clazz
+  }
+
+  /**
+   * Holds if `term` is a possessive quantifier, e.g. `a*+`.
+   */
+  predicate isPossessive(RegExpQuantifier term) { term.isPossessive() }
+
+  /**
+   * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
+   */
+  predicate matchesAnyPrefix(RegExpTerm term) { not term.getRegex().matchesFullString() }
+
+  /**
+   * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
+   */
+  predicate matchesAnySuffix(RegExpTerm term) { not term.getRegex().matchesFullString() }
+
+  /**
+   * Holds if the regular expression should not be considered.
+   *
+   * We make the pragmatic performance optimization to ignore regular expressions in files
+   * that do not belong to the project code (such as installed dependencies).
+   */
+  predicate isExcluded(RegExpParent parent) {
+    not exists(parent.getRegex().getLocation().getFile().getRelativePath())
+    or
+    // Regexes with many occurrences of ".*" may cause the polynomial ReDoS computation to explode, so
+    // we explicitly exclude these.
+    strictcount(int i | exists(parent.getRegex().getText().regexpFind("\\.\\*", i, _)) | i) > 10
+  }
+
+  /**
+   * Holds if `root` has the `i` flag for case-insensitive matching.
+   */
+  predicate isIgnoreCase(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isIgnoreCase()
+  }
+
+  /**
+   * Gets the flags for `root`, or the empty string if `root` has no flags.
+   */
+  deprecated string getFlags(RegExpTerm root) {
+    root.isRootTerm() and
+    result = root.getLiteral().getFlags()
+  }
+
+  /**
+   * Holds if `root` has the `s` flag for multi-line matching.
+   */
+  predicate isDotAll(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isDotAll()
   }
 }
