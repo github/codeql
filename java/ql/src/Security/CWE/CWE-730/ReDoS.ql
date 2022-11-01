@@ -14,12 +14,12 @@
  *       external/cwe/cwe-400
  */
 
-import java
-import semmle.code.java.security.regexp.ExponentialBackTracking
+private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
+import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView> as ExponentialBackTracking
 
-from RegExpTerm t, string pump, State s, string prefixMsg
+from TreeView::RegExpTerm t, string pump, ExponentialBackTracking::State s, string prefixMsg
 where
-  hasReDoSResult(t, pump, s, prefixMsg) and
+  ExponentialBackTracking::hasReDoSResult(t, pump, s, prefixMsg) and
   // exclude verbose mode regexes for now
   not t.getRegex().getAMode() = "VERBOSE"
 select t,
