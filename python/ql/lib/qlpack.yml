@@ -5,3 +5,5 @@ dbscheme: semmlecode.python.dbscheme
 extractor: python
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/regex: 0.0.1
