@@ -506,7 +506,7 @@ class With_call:
 
 
 def test_call():
-    with_call = With_call()  #$ MISSING: arg1="SSA variable with_call" func=With_call.__call__
+    with_call = With_call()  #$ arg1="SSA variable with_call" func=With_call.__call__
     with_call()
 
 
