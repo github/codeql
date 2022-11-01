@@ -17,8 +17,9 @@ import javascript
 import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.SecondOrderCommandInjectionQuery
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
+where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
 select sink.getNode(), source, sink,
-  "Command line argument that allows for arbitrary command execution depends on $@.",
+  "Command line argument that depends on $@ can execute an arbitrary command if " +
+    sinkNode.getVulnerableArgumentExample() + " is used with " + sinkNode.getCommand() + ".",
   source.getNode(), source.getNode().(Source).describe()

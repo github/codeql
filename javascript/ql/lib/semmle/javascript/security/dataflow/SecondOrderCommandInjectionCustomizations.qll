@@ -25,6 +25,13 @@ module SecondOrderCommandInjection {
       or
       this = "hg" and exists(result)
     }
+
+    /** Gets an example argument that can cause this command to execute arbitrary code. */
+    string getVulnerableArgumentExample() {
+      this = "git" and result = "--upload-pack"
+      or
+      this = "hg" and result = "--config=alias.<alias>=<command>"
+    }
   }
 
   /** A source for second order command injection. */
@@ -65,6 +72,26 @@ module SecondOrderCommandInjection {
   abstract class Sink extends DataFlow::Node {
     /** Gets a label for which this is a sink. */
     abstract DataFlow::FlowLabel getALabel();
+
+    /** Gets the command getting invoked. I.e. `git` or `hg`. */
+    abstract string getCommand();
+
+    /**
+     * Gets an example argument for the comand that allows for second order command injection.
+     * E.g. `--upload-pack` for `git`.
+     */
+    abstract string getVulnerableArgumentExample();
+  }
+
+  /**
+   * A sink that invokes a command described by the `VulnerableCommand` class.
+   */
+  abstract class VulnerableCommandSink extends Sink {
+    VulnerableCommand cmd;
+
+    override string getCommand() { result = cmd }
+
+    override string getVulnerableArgumentExample() { result = cmd.getVulnerableArgumentExample() }
   }
 
   /** A call that (indirectly) executes a shell command with a list of arguments. */
@@ -131,9 +158,9 @@ module SecondOrderCommandInjection {
   }
 
   /** An argument to an invocation of `git`/`hg` that can cause second order command injection. */
-  class ArgSink extends Sink {
+  class ArgSink extends VulnerableCommandSink {
     ArgSink() {
-      exists(DataFlow::ArrayCreationNode args, VulnerableCommand cmd |
+      exists(DataFlow::ArrayCreationNode args |
         args = usedAsVersionControlArgs(DataFlow::TypeBackTracker::end(), _, cmd)
       |
         this = [args.getAnElement(), args.getASpreadArgument()] and
@@ -149,11 +176,9 @@ module SecondOrderCommandInjection {
   /**
    * An arguments array given to an invocation of `git` or `hg` that can cause second order command injection.
    */
-  class ArgsArraySink extends Sink {
+  class ArgsArraySink extends VulnerableCommandSink {
     ArgsArraySink() {
-      exists(SystemExecAsCmdCall exec |
-        exec.getCommandArg().mayHaveStringValue(any(VulnerableCommand cmd))
-      |
+      exists(SystemExecAsCmdCall exec | exec.getCommandArg().mayHaveStringValue(cmd) |
         this = exec.getArgList()
       )
     }
