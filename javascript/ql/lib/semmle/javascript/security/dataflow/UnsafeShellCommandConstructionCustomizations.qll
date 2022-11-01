@@ -97,7 +97,7 @@ module UnsafeShellCommandConstruction {
       )
     }
 
-    override string getSinkType() { result = "String concatenation" }
+    override string getSinkType() { result = "string concatenation" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
@@ -125,7 +125,7 @@ module UnsafeShellCommandConstruction {
       )
     }
 
-    override string getSinkType() { result = "Array element" }
+    override string getSinkType() { result = "array element" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
@@ -148,7 +148,7 @@ module UnsafeShellCommandConstruction {
       )
     }
 
-    override string getSinkType() { result = "Formatted string" }
+    override string getSinkType() { result = "formatted string" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
@@ -195,7 +195,7 @@ module UnsafeShellCommandConstruction {
       )
     }
 
-    override string getSinkType() { result = "Shell argument" }
+    override string getSinkType() { result = "shell argument" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
@@ -217,7 +217,7 @@ module UnsafeShellCommandConstruction {
       )
     }
 
-    override string getSinkType() { result = "Path concatenation" }
+    override string getSinkType() { result = "path concatenation" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 

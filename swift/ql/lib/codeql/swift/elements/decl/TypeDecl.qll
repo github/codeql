@@ -25,6 +25,7 @@ class TypeDecl extends Generated::TypeDecl {
    * The name and full name of `A` is `A`. The name of `B` is `B`, but the
    * full name of `B` is `A.B`.
    */
+  cached
   string getFullName() {
     not this.getEnclosingDecl() instanceof TypeDecl and
     result = this.getName()

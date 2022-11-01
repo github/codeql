@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "swift/extractor/trap/TrapLabel.h"
-#include "swift/extractor/infra/TargetFile.h"
+#include "swift/extractor/infra/file/TargetFile.h"
 
 namespace codeql {
 

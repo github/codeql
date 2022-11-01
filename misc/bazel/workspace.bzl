@@ -34,6 +34,14 @@ def codeql_workspace(repository_name = "codeql"):
         sha256 = "9f2cdee6dcc2039d4c47d25ab5141fe0678ce6ed27ef482cab17fe9fa38a30ce",
     )
 
+    http_archive(
+        name = "picosha2",
+        url = "https://github.com/okdshin/PicoSHA2/archive/27fcf6979298949e8a462e16d09a0351c18fcaf2.zip",
+        strip_prefix = "PicoSHA2-27fcf6979298949e8a462e16d09a0351c18fcaf2",
+        build_file = "@%s//swift/third_party/picosha2:BUILD.picosha2.bazel" % repository_name,
+        sha256 = "d6647ca45a8b7bdaf027ecb68d041b22a899a0218b7206dee755c558a2725abb",
+    )
+
     maybe(
         repo_rule = http_archive,
         name = "rules_pkg",

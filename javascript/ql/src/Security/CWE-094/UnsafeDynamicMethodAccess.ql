@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink, source, sink,
-  "This method is invoked using $@, which may allow remote code execution.", source.getNode(),
-  "a user-controlled value"
+  "This method is invoked using a $@, which may allow remote code execution.", source.getNode(),
+  "user-controlled value"

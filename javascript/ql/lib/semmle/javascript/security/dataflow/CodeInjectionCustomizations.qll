@@ -17,9 +17,15 @@ module CodeInjection {
    */
   abstract class Sink extends DataFlow::Node {
     /**
+     * DEPRECATED: Use `getMessagePrefix()` instead.
      * Gets the substitute for `X` in the message `User-provided value flows to X`.
      */
-    string getMessageSuffix() { result = "this location and is interpreted as code" }
+    deprecated string getMessageSuffix() { result = "this location and is interpreted as code" }
+
+    /**
+     * Gets the prefix for the message `X depends on a user-provided value.`.
+     */
+    string getMessagePrefix() { result = "This code execution" }
   }
 
   /**
@@ -125,9 +131,13 @@ module CodeInjection {
       )
     }
 
-    override string getMessageSuffix() {
+    deprecated override string getMessageSuffix() {
       result =
         "this location and is interpreted by " + templateType + ", which may evaluate it as code"
+    }
+
+    override string getMessagePrefix() {
+      result = "This " + templateType + " template, which may contain code,"
     }
   }
 
@@ -288,9 +298,11 @@ module CodeInjection {
 
   /** A sink for code injection via template injection. */
   abstract private class TemplateSink extends Sink {
-    override string getMessageSuffix() {
+    deprecated override string getMessageSuffix() {
       result = "this location and is interpreted as a template, which may contain code"
     }
+
+    override string getMessagePrefix() { result = "Template, which may contain code," }
   }
 
   /**

@@ -1,2 +1,2 @@
-libraryPathDependencies:
-  - codeql-csharp
+dependencies:
+  codeql/csharp-all: '*'
