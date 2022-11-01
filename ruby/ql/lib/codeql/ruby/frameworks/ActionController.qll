@@ -296,7 +296,7 @@ private module Request {
 
   /** A method call on `request` which returns the request body. */
   private class BodyCall extends RequestInputAccess {
-    BodyCall() { this.getMethodName() = ["body", "raw_post"] }
+    BodyCall() { this.getMethodName() = ["body", "raw_post", "body_stream"] }
 
     override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
   }

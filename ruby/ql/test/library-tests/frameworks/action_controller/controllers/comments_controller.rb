@@ -46,4 +46,8 @@ class CommentsController < ApplicationController
   def photo
     send_data @photo
   end
+
+  def destroy
+    body = request.body_stream
+  end
 end
