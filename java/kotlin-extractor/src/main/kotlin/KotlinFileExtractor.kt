@@ -1817,7 +1817,7 @@ open class KotlinFileExtractor(
         }
 
     private fun getDefaultsMethodLabel(f: IrFunction): Label<out DbCallable> {
-        val defaultsMethodName = getDefaultsMethodName(f)
+        val defaultsMethodName = if (f is IrConstructor) "<init>" else getDefaultsMethodName(f)
         val normalArgTypes = getDefaultsMethodArgTypes(f)
         val extensionParamType = f.extensionReceiverParameter?.let { erase(it.type) }
 
@@ -1969,6 +1969,15 @@ open class KotlinFileExtractor(
             target
     }
 
+    private fun callUsesDefaultArguments(callTarget: IrFunction, valueArguments: List<IrExpression?>): Boolean {
+        val varargParam = callTarget.valueParameters.withIndex().find { it.value.isVararg }
+        // If the vararg param is the only one not specified, and it has no default value, then we don't need to call a $default method,
+        // as omitting it already implies passing an empty vararg array.
+        val nullAllowedIdx = if (varargParam != null && varargParam.value.defaultValue == null) varargParam.index else -1
+        return valueArguments.withIndex().any { (index, it) -> it == null && index != nullAllowedIdx }
+    }
+
+
     fun extractRawMethodAccess(
         syntacticCallTarget: IrFunction,
         locElement: IrElement,
@@ -1985,12 +1994,8 @@ open class KotlinFileExtractor(
         superQualifierSymbol: IrClassSymbol? = null) {
 
         val locId = tw.getLocation(locElement)
-        val varargParam = syntacticCallTarget.valueParameters.withIndex().find { it.value.isVararg }
-        // If the vararg param is the only one not specified, and it has no default value, then we don't need to call a $default method,
-        // as omitting it already implies passing an empty vararg array.
-        val nullAllowedIdx = if (varargParam != null && varargParam.value.defaultValue == null) varargParam.index else -1
 
-        if (valueArguments.withIndex().any { (index, it) -> it == null && index != nullAllowedIdx }) {
+        if (callUsesDefaultArguments(syntacticCallTarget, valueArguments)) {
             extractsDefaultsCall(
                 syntacticCallTarget,
                 locId,
@@ -3060,8 +3065,7 @@ open class KotlinFileExtractor(
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
         // For now, don't try to use default methods for enum constructor calls,
         // which have null arguments even though the parameters don't give default values.
-        val anyDefaultArgs = e !is IrEnumConstructorCall && valueArgs.any { it == null }
-        val id = if (anyDefaultArgs) {
+        val id = if (callUsesDefaultArguments(e.symbol.owner, valueArgs)) {
             extractNewExpr(getDefaultsMethodLabel(e.symbol.owner).cast(), type, locId, parent, idx, callable, enclosingStmt).also {
                 extractDefaultsCallArguments(it, e.symbol.owner, callable, enclosingStmt, valueArgs, null, null)
             }
