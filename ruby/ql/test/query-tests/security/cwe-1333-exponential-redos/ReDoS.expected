@@ -1,5 +1,5 @@
 | tst.rb:4:14:4:28 | (?:__\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '__'. |
-| tst.rb:4:38:4:54 | (?:\\*\\*\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '**'. |
+| tst.rb:4:38:4:54 | (?:\\*\\*\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings starting with '*' and containing many repetitions of '**'. |
 | tst.rb:19:20:19:39 | (?:[^"\\\\]\|\\\\\\\\\|\\\\.)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\\\\\'. |
 | tst.rb:19:43:19:62 | (?:[^'\\\\]\|\\\\\\\\\|\\\\.)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\\\\\'. |
 | tst.rb:19:67:19:86 | (?:[^)\\\\]\|\\\\\\\\\|\\\\.)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\\\\\'. |
@@ -49,7 +49,6 @@
 | tst.rb:194:77:194:78 | ,? | This part of the regular expression may cause exponential backtracking on strings starting with '{[A(A)A: ' and containing many repetitions of ',A: '. |
 | tst.rb:197:11:197:12 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:197:14:197:15 | b+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
-| tst.rb:200:12:200:18 | (a+a?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:200:13:200:14 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:203:11:203:12 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:209:11:209:12 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
@@ -67,16 +66,16 @@
 | tst.rb:260:10:260:73 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'thisisagoddamnlongstringforstresstestingthequery'. |
 | tst.rb:260:64:260:66 | \\w+ | This part of the regular expression may cause exponential backtracking on strings starting with 'this' and containing many repetitions of '0querythis'. |
 | tst.rb:272:17:272:18 | b+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
-| tst.rb:275:34:275:36 | \\s* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '""\\t0='. |
+| tst.rb:275:34:275:36 | \\s* | This part of the regular expression may cause exponential backtracking on strings starting with '<0\\t0=' and containing many repetitions of '""\\t0='. |
 | tst.rb:281:12:281:13 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:284:12:284:13 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:290:12:290:13 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:293:21:293:22 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
-| tst.rb:299:86:299:87 | e+ | This part of the regular expression may cause exponential backtracking on strings starting with ';00000000000000' and containing many repetitions of 'e'. |
+| tst.rb:299:86:299:87 | e+ | This part of the regular expression may cause exponential backtracking on strings starting with '00000000000000' and containing many repetitions of 'e'. |
 | tst.rb:302:14:302:15 | c+ | This part of the regular expression may cause exponential backtracking on strings starting with 'ab' and containing many repetitions of 'c'. |
 | tst.rb:305:14:305:16 | \\s+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\t'. |
 | tst.rb:308:12:308:21 | ([^\\/]\|X)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'X'. |
-| tst.rb:311:16:311:20 | [^Y]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'Xx'. |
+| tst.rb:311:16:311:20 | [^Y]+ | This part of the regular expression may cause exponential backtracking on strings starting with 'x' and containing many repetitions of 'Xx'. |
 | tst.rb:314:11:314:12 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:317:14:317:19 | [\\w-]* | This part of the regular expression may cause exponential backtracking on strings starting with 'foo' and containing many repetitions of '-'. |
 | tst.rb:320:11:320:15 | (ab)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'ab'. |
@@ -93,9 +92,9 @@
 | tst.rb:361:11:361:29 | ((?:a{0\|-)\|\\w\\{\\d)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0'. |
 | tst.rb:362:11:362:31 | ((?:a{0,\|-)\|\\w\\{\\d,)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0,'. |
 | tst.rb:363:11:363:34 | ((?:a{0,2\|-)\|\\w\\{\\d,\\d)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0,2'. |
-| tst.rb:369:12:369:22 | (\\u0061\|a)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| tst.rb:369:12:369:22 | (\\u0061\|a)* | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of 'a'. |
 | tst.rb:375:11:375:27 | ([[:digit:]]\|\\d)+ | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of '0'. |
 | tst.rb:378:12:378:18 | (a\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.rb:379:12:379:18 | (a\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
-| tst.rb:390:70:390:110 | (?:[a-zA-Z0-9_]\|%[a-fA-F0-9][a-fA-F0-9])+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
-| tst.rb:390:98:390:108 | [a-fA-F0-9] | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0%0'. |
+| tst.rb:390:70:390:110 | (?:[a-zA-Z0-9_]\|%[a-fA-F0-9][a-fA-F0-9])+ | This part of the regular expression may cause exponential backtracking on strings starting with '0' and containing many repetitions of '0'. |
+| tst.rb:390:98:390:108 | [a-fA-F0-9] | This part of the regular expression may cause exponential backtracking on strings starting with '0%0' and containing many repetitions of '0%0'. |
