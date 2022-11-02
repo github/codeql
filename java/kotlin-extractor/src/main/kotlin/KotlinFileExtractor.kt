@@ -2135,7 +2135,7 @@ open class KotlinFileExtractor(
 
                 // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
                 if (realCallTarget is IrConstructor &&
-                    realCallTarget.parentClassOrNull?.symbol == pluginContext.irBuiltIns.enumClass &&
+                    realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
                     realCallTarget.valueParameters.size == 2 &&
                     i < realCallTarget.valueParameters.size) {
 
