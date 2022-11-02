@@ -87,15 +87,15 @@ class StringPercentCall extends PrintfStyleCall {
   override DataFlow::Node getFormatString() { result = this.getReceiver() }
 
   override DataFlow::Node getFormatArgument(int n) {
-    exists(Ast::Call call | call = this.asExpr().getExpr() |
-      exists(Ast::ArrayLiteral arrLit | arrLit = call.getArgument(0) |
-        result.asExpr().getExpr() = arrLit.getElement(n)
-      )
-      or
-      exists(Ast::HashLiteral hashLit | hashLit = call.getArgument(0) |
-        n = -2 and // -2 is indicates that the index does not make sense in this context
-        result.asExpr().getExpr() = hashLit.getAnElement()
-      )
+    exists(CfgNodes::ExprNodes::ArrayLiteralCfgNode arrLit | arrLit = this.getArgument(0).asExpr() |
+      result.asExpr() = arrLit.getArgument(n)
+    )
+    or
+    exists(CfgNodes::ExprNodes::HashLiteralCfgNode hashLit |
+      hashLit = this.getArgument(0).asExpr()
+    |
+      n = -2 and // -2 is indicates that the index does not make sense in this context
+      result.asExpr() = hashLit.getAKeyValuePair().getValue()
     )
   }
 
