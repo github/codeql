@@ -2,11 +2,11 @@ package com.github.codeql
 
 import com.github.codeql.comments.CommentExtractor
 import com.github.codeql.utils.*
+import com.github.codeql.utils.versions.allOverriddenIncludingSelf
 import com.github.codeql.utils.versions.functionN
 import com.github.codeql.utils.versions.isUnderscoreParameter
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
@@ -1859,7 +1859,7 @@ open class KotlinFileExtractor(
 
         // Default parameter values are inherited by overrides; in this case the call should dispatch against the $default method belonging to the class
         // that specified the default values, which will in turn dynamically dispatch back to the relevant override.
-        val overriddenCallTarget = (callTarget as? IrSimpleFunction)?.allOverridden(true)?.firstOrNull {
+        val overriddenCallTarget = (callTarget as? IrSimpleFunction)?.allOverriddenIncludingSelf()?.firstOrNull {
             it.overriddenSymbols.isEmpty() && it.valueParameters.any { p -> p.defaultValue != null }
         } ?: callTarget
         if (isExternalDeclaration(overriddenCallTarget)) {
