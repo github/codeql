@@ -11,11 +11,15 @@ runs:
       id: find-latest
       shell: pwsh
       run: |
-        $Latest = gh release list --exclude-drafts --limit 1000 |
+        $Latest = gh release list --repo github/codeql-action --exclude-drafts --limit 1000 |
           ForEach-Object { $C = $_ -split "`t"; return @{ type = $C[1]; tag = $C[2]; } } |
           Where-Object { $_.type -eq 'Latest' }
 
         $Tag = $Latest.tag
+        if ($Tag -eq '') {
+          throw 'Failed to find latest bundle release.'
+        }
+
         Write-Output "Latest bundle tag is '${Tag}'."
         "url=https://github.com/github/codeql-action/releases/download/${Tag}/codeql-bundle-linux64.tar.gz" >> $env:GITHUB_OUTPUT
       env:
