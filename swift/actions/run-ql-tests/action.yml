@@ -23,6 +23,6 @@ runs:
           --check-redefined-labels \
           --check-use-before-definition \
           ${{ inputs.flags }} \
-          ql/test
+          swift/ql/test
       env:
         GITHUB_TOKEN: ${{ github.token }}

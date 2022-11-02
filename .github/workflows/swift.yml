@@ -14,9 +14,6 @@ on:
       - "!**/*.qhelp"
     branches:
       - main
-defaults:
-  run:
-    working-directory: swift
 
 jobs:
   changes:
@@ -119,4 +116,4 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - name: Check QL formatting
-        run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql query format --check-only
+        run: find swift/ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql query format --check-only
