@@ -615,9 +615,9 @@ private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
     exact = true
     or
     // `self.new` inside a singleton method
-    exists(MethodBase target |
-      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), target, tp) and
-      singletonMethod(target, _, _) and
+    exists(MethodBase caller |
+      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), caller, tp) and
+      singletonMethod(caller, _, _) and
       exact = false
     )
   )
@@ -991,14 +991,13 @@ private predicate isInstanceLocalMustFlow(DataFlow::Node n, Module tp, boolean e
  * `name` is the name of the method being called by `call`.
  */
 pragma[nomagic]
-private predicate mayBenefitFromCallContext0(
+private predicate argFlowsToReceiver(
   RelevantCall ctx, ArgumentNode arg, RelevantCall call, Callable encl, string name
 ) {
   exists(
     ParameterNodeImpl p, SsaDefinitionNode ssaNode, ParameterPosition ppos, ArgumentPosition apos
   |
     // the receiver of `call` references `p`
-    ssaNode = trackInstance(_, _) and
     LocalFlow::localFlowSsaParamInput(p, ssaNode) and
     flowsToMethodCallReceiver(pragma[only_bind_into](call), pragma[only_bind_into](ssaNode),
       pragma[only_bind_into](name)) and
@@ -1016,22 +1015,64 @@ private predicate mayBenefitFromCallContext0(
 /**
  * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, and
  * the receiver of `call` is a parameter access, where the corresponding argument
- * of `ctx` has type `tp`.
+ * `arg` of `ctx` has type `tp`.
  *
  * `name` is the name of the method being called by `call`, and `exact` is pertaining
  * to the type of the argument.
  */
 pragma[nomagic]
-private predicate mayBenefitFromCallContext1(
-  RelevantCall ctx, RelevantCall call, Callable encl, Module tp, boolean exact, string name
+private predicate mayBenefitFromCallContextInstance(
+  RelevantCall ctx, RelevantCall call, ArgumentNode arg, Callable encl, Module tp, boolean exact,
+  string name
 ) {
-  exists(ArgumentNode arg |
-    mayBenefitFromCallContext0(ctx, pragma[only_bind_into](arg), call, encl,
-      pragma[only_bind_into](name)) and
-    // `arg` has a relevant instance type
-    isInstanceLocalMustFlow(arg, tp, exact) and
-    exists(lookupMethod(tp, pragma[only_bind_into](name)))
+  argFlowsToReceiver(ctx, pragma[only_bind_into](arg), call, encl, pragma[only_bind_into](name)) and
+  // `arg` has a relevant instance type
+  isInstanceLocalMustFlow(arg, tp, exact) and
+  exists(lookupMethod(tp, pragma[only_bind_into](name)))
+}
+
+/** Same as `resolveConstantReadAccess`, but includes local must-flow through SSA definitions. */
+private predicate resolveConstantReadAccessMustFlow(DataFlow::Node n, Module tp) {
+  tp = resolveConstantReadAccess(n.asExpr().getExpr())
+  or
+  exists(DataFlow::Node mid | resolveConstantReadAccessMustFlow(mid, tp) |
+    n.asExpr() = mid.(SsaDefinitionNode).getDefinition().getARead()
+    or
+    n.(SsaDefinitionNode).getDefinition().(Ssa::WriteDefinition).assigns(mid.asExpr())
   )
+}
+
+/**
+ * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, and
+ * the receiver of `call` is a parameter access, where the corresponding argument
+ * `arg` of `ctx` is a module access targeting a module of type `tp`.
+ *
+ * `name` is the name of the method being called by `call`, and `exact` is pertaining
+ * to the type of the argument.
+ */
+pragma[nomagic]
+private predicate mayBenefitFromCallContextSingleton(
+  RelevantCall ctx, RelevantCall call, ArgumentNode arg, Callable encl, Module tp, boolean exact,
+  string name
+) {
+  argFlowsToReceiver(ctx, pragma[only_bind_into](arg), call, encl, pragma[only_bind_into](name)) and
+  // `arg` has a relevant module type
+  (
+    resolveConstantReadAccessMustFlow(arg, tp) and
+    exact = true
+    or
+    exists(SelfVariable self | arg.asExpr().getExpr() = self.getAnAccess() |
+      selfInModule(self, tp) and
+      exact = true
+      or
+      exists(MethodBase caller |
+        selfInMethod(self, caller, tp) and
+        singletonMethod(caller, _, _) and
+        exact = false
+      )
+    )
+  ) and
+  exists(lookupSingletonMethod(tp, pragma[only_bind_into](name), exact))
 }
 
 /**
@@ -1041,7 +1082,9 @@ private predicate mayBenefitFromCallContext1(
  * the implicit `self` parameter).
  */
 predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
-  mayBenefitFromCallContext1(_, call.asCall(), c.asCallable(), _, _, _)
+  mayBenefitFromCallContextInstance(_, call.asCall(), _, c.asCallable(), _, _, _)
+  or
+  mayBenefitFromCallContextSingleton(_, call.asCall(), _, c.asCallable(), _, _, _)
 }
 
 /**
@@ -1050,28 +1093,38 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
  */
 pragma[nomagic]
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-  // `ctx` can provide a potentially better type bound
-  exists(RelevantCall call0, Callable res |
-    call0 = call.asCall() and
-    res = result.asCallable() and
-    res = getTarget(call0) and // make sure to not include e.g. private methods
-    exists(Module m, boolean exact, string name |
-      res = lookupMethod(m, name, exact) and
-      mayBenefitFromCallContext1(ctx.asCall(), pragma[only_bind_into](call0), _,
-        pragma[only_bind_into](m), exact, pragma[only_bind_into](name))
+  mayBenefitFromCallContext(call, _) and
+  (
+    // `ctx` can provide a potentially better type bound
+    exists(RelevantCall call0, Callable res |
+      call0 = call.asCall() and
+      res = result.asCallable() and
+      res = getTarget(call0) and // make sure to not include e.g. private methods
+      exists(Module m, boolean exact, string name |
+        mayBenefitFromCallContextInstance(ctx.asCall(), pragma[only_bind_into](call0), _, _,
+          pragma[only_bind_into](m), exact, pragma[only_bind_into](name)) and
+        res = lookupMethod(m, name, exact)
+        or
+        mayBenefitFromCallContextSingleton(ctx.asCall(), pragma[only_bind_into](call0), _, _,
+          pragma[only_bind_into](m), exact, pragma[only_bind_into](name)) and
+        res = lookupSingletonMethod(m, name, exact)
+      )
     )
+    or
+    // `ctx` cannot provide a type bound
+    exists(RelevantCall call0, RelevantCall ctx0, ArgumentNode arg, string name |
+      call0 = call.asCall() and
+      ctx0 = ctx.asCall() and
+      argFlowsToReceiver(ctx0, arg, call0, _, name) and
+      not mayBenefitFromCallContextInstance(ctx0, call0, arg, _, _, _, name) and
+      not mayBenefitFromCallContextSingleton(ctx0, call0, arg, _, _, _, name) and
+      result = viableSourceCallable(call)
+    )
+    or
+    // library calls should always be able to resolve
+    argFlowsToReceiver(ctx.asCall(), _, call.asCall(), _, _) and
+    result = viableLibraryCallable(call)
   )
-  or
-  // `ctx` cannot provide a type bound
-  exists(ArgumentNode arg |
-    mayBenefitFromCallContext0(ctx.asCall(), arg, call.asCall(), _, _) and
-    not isInstanceLocalMustFlow(arg, _, _) and
-    result = viableSourceCallable(call)
-  )
-  or
-  // library calls should always be able to resolve
-  mayBenefitFromCallContext0(ctx.asCall(), _, call.asCall(), _, _) and
-  result = viableLibraryCallable(call)
 }
 
 predicate exprNodeReturnedFrom = exprNodeReturnedFromCached/2;
