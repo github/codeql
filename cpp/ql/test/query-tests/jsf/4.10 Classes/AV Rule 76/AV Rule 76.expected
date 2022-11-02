@@ -1,0 +1,3 @@
+| test.cpp:5:7:5:12 | Class2 | AV Rule 76: A copy constructor and an assignment operator shall be declared for classes that contain pointers to data items or nontrivial destructors. |
+| test.cpp:16:7:16:12 | Class3 | AV Rule 76: A copy constructor and an assignment operator shall be declared for classes that contain pointers to data items or nontrivial destructors. |
+| test.cpp:33:7:33:12 | Class4 | AV Rule 76: A copy constructor and an assignment operator shall be declared for classes that contain pointers to data items or nontrivial destructors. |
