@@ -11,7 +11,7 @@ runs:
     - name: Run codegen tests
       shell: bash
       run: |
-        bazel test //swift/codegen/tests
+        bazel test //swift/codegen/test
     - name: Run qltest tests
       shell: bash
       run: |
