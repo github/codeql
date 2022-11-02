@@ -142,6 +142,7 @@ jobs:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Move pack cache
         run: |
           cp -r ${PACK}/.cache ql/ql/src/.cache
