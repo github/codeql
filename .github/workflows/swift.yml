@@ -33,7 +33,7 @@ jobs:
               - 'github/workflows/swift.yml'
               - "misc/bazel/**"
               - "*.bazel*"
-              - 'swift/actions/env-setup/**'
+              - 'swift/actions/setup-env/**'
               - '.pre-commit-config.yaml'
               - 'swift/codegen/**'
               - 'swift/schema.py'
@@ -52,17 +52,12 @@ jobs:
     runs-on: macos-12-xl
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/create-extractor-pack
-      # loading bazel targets is very long on the basic macOS runner
-      # therefore it's better to test the X
-      - name: Test the Xcode autobuilder
-        run: |
-          bazel test //swift/xcode-autobuilder/tests
+      - uses: ./swift/actions/create-and-test-extractor-pack
   build-linux:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/create-extractor-pack
+      - uses: ./swift/actions/create-and-test-extractor-pack
   qltests-linux:
     needs: build-linux
     runs-on: ubuntu-latest
@@ -99,14 +94,11 @@ jobs:
     if: ${{ needs.changes.outputs.codegen == 'true' }}
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/env-setup
+      - uses: ./swift/actions/setup-env
       - uses: pre-commit/action@v3.0.0
         name: Check that python code is properly formatted
         with:
           extra_args: autopep8 --all-files
-      - name: Run unit tests
-        run: |
-          bazel test //swift/codegen/test --test_output=errors
       - uses: ./.github/actions/fetch-codeql
       - uses: pre-commit/action@v3.0.0
         name: Check that QL generated code was checked in

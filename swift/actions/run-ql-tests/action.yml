@@ -8,13 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: ./swift/actions/env-setup
     - uses: ./swift/actions/share-extractor-pack
-    - uses: ./swift/actions/share-extractor-pack
-    - name: Test qltest.sh
-      shell: bash
-      run: |
-        bazel test //swift/tools/test/qltest
     - uses: ./.github/actions/fetch-codeql
     - name: Run QL tests
       shell: bash
