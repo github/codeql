@@ -3524,10 +3524,12 @@ open class KotlinFileExtractor(
                 }
                 is IrConst<*> -> {
                     val exprParent = parent.expr(e, callable)
-                    when(val v = e.value) {
-                        is Int, is Short, is Byte -> {
-                            extractConstantInteger(v as Number, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
-                        } is Long -> {
+                    val v = e.value
+                    when {
+                        v is Number && (v is Int || v is Short || v is Byte) -> {
+                            extractConstantInteger(v, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+                        }
+                        v is Long -> {
                             val id = tw.getFreshIdLabel<DbLongliteral>()
                             val type = useType(e.type)
                             val locId = tw.getLocation(e)
@@ -3535,7 +3537,8 @@ open class KotlinFileExtractor(
                             tw.writeExprsKotlinType(id, type.kotlinResult.id)
                             extractExprContext(id, locId, callable, exprParent.enclosingStmt)
                             tw.writeNamestrings(v.toString(), v.toString(), id)
-                        } is Float -> {
+                        }
+                        v is Float -> {
                             val id = tw.getFreshIdLabel<DbFloatingpointliteral>()
                             val type = useType(e.type)
                             val locId = tw.getLocation(e)
@@ -3543,7 +3546,8 @@ open class KotlinFileExtractor(
                             tw.writeExprsKotlinType(id, type.kotlinResult.id)
                             extractExprContext(id, locId, callable, exprParent.enclosingStmt)
                             tw.writeNamestrings(v.toString(), v.toString(), id)
-                        } is Double -> {
+                        }
+                        v is Double -> {
                             val id = tw.getFreshIdLabel<DbDoubleliteral>()
                             val type = useType(e.type)
                             val locId = tw.getLocation(e)
@@ -3551,7 +3555,8 @@ open class KotlinFileExtractor(
                             tw.writeExprsKotlinType(id, type.kotlinResult.id)
                             extractExprContext(id, locId, callable, exprParent.enclosingStmt)
                             tw.writeNamestrings(v.toString(), v.toString(), id)
-                        } is Boolean -> {
+                        }
+                        v is Boolean -> {
                             val id = tw.getFreshIdLabel<DbBooleanliteral>()
                             val type = useType(e.type)
                             val locId = tw.getLocation(e)
@@ -3559,7 +3564,8 @@ open class KotlinFileExtractor(
                             tw.writeExprsKotlinType(id, type.kotlinResult.id)
                             extractExprContext(id, locId, callable, exprParent.enclosingStmt)
                             tw.writeNamestrings(v.toString(), v.toString(), id)
-                        } is Char -> {
+                        }
+                        v is Char -> {
                             val id = tw.getFreshIdLabel<DbCharacterliteral>()
                             val type = useType(e.type)
                             val locId = tw.getLocation(e)
@@ -3567,7 +3573,8 @@ open class KotlinFileExtractor(
                             tw.writeExprsKotlinType(id, type.kotlinResult.id)
                             extractExprContext(id, locId, callable, exprParent.enclosingStmt)
                             tw.writeNamestrings(v.toString(), v.toString(), id)
-                        } is String -> {
+                        }
+                        v is String -> {
                             val id = tw.getFreshIdLabel<DbStringliteral>()
                             val type = useType(e.type)
                             val locId = tw.getLocation(e)
@@ -3576,7 +3583,7 @@ open class KotlinFileExtractor(
                             extractExprContext(id, locId, callable, exprParent.enclosingStmt)
                             tw.writeNamestrings(v.toString(), v.toString(), id)
                         }
-                        null -> {
+                        v == null -> {
                             val id = tw.getFreshIdLabel<DbNullliteral>()
                             val type = useType(e.type) // class;kotlin.Nothing
                             val locId = tw.getLocation(e)
