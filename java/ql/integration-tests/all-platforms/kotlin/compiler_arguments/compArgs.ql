@@ -12,4 +12,4 @@ private string getArgument(Compilation c, int i) {
 }
 
 from Compilation c, int i
-select i, getArgument(c, i)
+select i, getArgument(c, i).replaceAll("\\", "/")

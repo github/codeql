@@ -9,10 +9,7 @@ signature module InputSig {
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
    * without branches or joins.
    */
-  class BasicBlock {
-    /** Gets a textual representation of this basic block. */
-    string toString();
-  }
+  class BasicBlock;
 
   /**
    * Gets the basic block that immediately dominates basic block `bb`, if any.
@@ -46,10 +43,7 @@ signature module InputSig {
   class ExitBasicBlock extends BasicBlock;
 
   /** A variable that can be SSA converted. */
-  class SourceVariable {
-    /** Gets a textual representation of this variable. */
-    string toString();
-  }
+  class SourceVariable;
 
   /**
    * Holds if the `i`th node of basic block `bb` is a (potential) write to source
@@ -660,14 +654,14 @@ module Make<InputSig Input> {
   }
 
   pragma[noinline]
-  private predicate adjacentDefRead(
+  deprecated private predicate adjacentDefRead(
     Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
   ) {
     adjacentDefRead(def, bb1, i1, bb2, i2) and
     v = def.getSourceVariable()
   }
 
-  private predicate adjacentDefReachesRead(
+  deprecated private predicate adjacentDefReachesRead(
     Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
   ) {
     exists(SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
@@ -689,7 +683,7 @@ module Make<InputSig Input> {
    * Same as `adjacentDefRead`, but ignores uncertain reads.
    */
   pragma[nomagic]
-  predicate adjacentDefNoUncertainReads(
+  deprecated predicate adjacentDefNoUncertainReads(
     Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
   ) {
     adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
@@ -734,7 +728,7 @@ module Make<InputSig Input> {
     lastRefRedef(inp, _, _, def)
   }
 
-  private predicate adjacentDefReachesUncertainRead(
+  deprecated private predicate adjacentDefReachesUncertainRead(
     Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
   ) {
     adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
@@ -747,7 +741,9 @@ module Make<InputSig Input> {
    * Same as `lastRefRedef`, but ignores uncertain reads.
    */
   pragma[nomagic]
-  predicate lastRefRedefNoUncertainReads(Definition def, BasicBlock bb, int i, Definition next) {
+  deprecated predicate lastRefRedefNoUncertainReads(
+    Definition def, BasicBlock bb, int i, Definition next
+  ) {
     lastRefRedef(def, bb, i, next) and
     not variableRead(bb, i, def.getSourceVariable(), false)
     or
@@ -787,7 +783,7 @@ module Make<InputSig Input> {
    * Same as `lastRefRedef`, but ignores uncertain reads.
    */
   pragma[nomagic]
-  predicate lastRefNoUncertainReads(Definition def, BasicBlock bb, int i) {
+  deprecated predicate lastRefNoUncertainReads(Definition def, BasicBlock bb, int i) {
     lastRef(def, bb, i) and
     not variableRead(bb, i, def.getSourceVariable(), false)
     or
@@ -850,6 +846,8 @@ module Make<InputSig Input> {
   }
 
   /** Provides a set of consistency queries. */
+  // TODO: Make these `query` predicates once class signatures are supported
+  // (`SourceVariable` and `BasicBlock` must have `toString`)
   module Consistency {
     /** A definition that is relevant for the consistency queries. */
     abstract class RelevantDefinition extends Definition {
@@ -860,19 +858,19 @@ module Make<InputSig Input> {
     }
 
     /** Holds if a read can be reached from multiple definitions. */
-    query predicate nonUniqueDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
+    predicate nonUniqueDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
       ssaDefReachesRead(v, def, bb, i) and
       not exists(unique(Definition def0 | ssaDefReachesRead(v, def0, bb, i)))
     }
 
     /** Holds if a read cannot be reached from a definition. */
-    query predicate readWithoutDef(SourceVariable v, BasicBlock bb, int i) {
+    predicate readWithoutDef(SourceVariable v, BasicBlock bb, int i) {
       variableRead(bb, i, v, _) and
       not ssaDefReachesRead(v, _, bb, i)
     }
 
     /** Holds if a definition cannot reach a read. */
-    query predicate deadDef(RelevantDefinition def, SourceVariable v) {
+    predicate deadDef(RelevantDefinition def, SourceVariable v) {
       v = def.getSourceVariable() and
       not ssaDefReachesRead(_, def, _, _) and
       not phiHasInputFromBlock(_, def, _) and
@@ -880,7 +878,7 @@ module Make<InputSig Input> {
     }
 
     /** Holds if a read is not dominated by a definition. */
-    query predicate notDominatedByDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
+    predicate notDominatedByDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
       exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef) |
         ssaDefReachesReadWithinBlock(v, def, bb, i) and
         (bb != bbDef or i < iDef)

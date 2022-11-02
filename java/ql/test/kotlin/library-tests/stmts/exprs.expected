@@ -90,10 +90,10 @@
 | stmts.kt:41:19:41:36 | tmp3_loop_parameter | VarAccess |
 | stmts.kt:41:20:41:20 | x | VarAccess |
 | stmts.kt:41:20:41:23 | rangeTo(...) | MethodAccess |
+| stmts.kt:41:20:41:36 | CollectionsKt | TypeAccess |
+| stmts.kt:41:20:41:36 | Integer | TypeAccess |
+| stmts.kt:41:20:41:36 | withIndex(...) | MethodAccess |
 | stmts.kt:41:23:41:23 | y | VarAccess |
-| stmts.kt:41:26:41:36 | CollectionsKt | TypeAccess |
-| stmts.kt:41:26:41:36 | Integer | TypeAccess |
-| stmts.kt:41:26:41:36 | withIndex(...) | MethodAccess |
 | stmts.kt:42:9:42:24 | when ... | WhenExpr |
 | stmts.kt:42:13:42:13 | x | VarAccess |
 | stmts.kt:42:13:42:17 | ... > ... | GTExpr |
