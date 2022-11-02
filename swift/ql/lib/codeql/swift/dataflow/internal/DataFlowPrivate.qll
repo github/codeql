@@ -269,7 +269,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
-  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(c) }
+  override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
 
   override UnknownLocation getLocationImpl() { any() }
 
@@ -430,6 +430,8 @@ private module OutNodes {
   }
 
   class SummaryOutNode extends OutNode, SummaryNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+
     override DataFlowCall getCall(ReturnKind kind) {
       FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
     }

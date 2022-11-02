@@ -5,7 +5,7 @@ import codeql.ruby.security.InsecureDependencyQuery
 class InsecureDependencyTest extends InlineExpectationsTest {
   InsecureDependencyTest() { this = "InsecureDependencyTest" }
 
-  override string getARelevantTag() { result = "BAD" }
+  override string getARelevantTag() { result = "result" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "result" and

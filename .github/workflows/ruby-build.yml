@@ -96,8 +96,8 @@ jobs:
       - name: Build Query Pack
         run: |
           codeql pack create ../shared/ssa --output target/packs
+          codeql pack create ../misc/suite-helpers --output target/packs
           codeql pack create ql/lib --output target/packs
-          codeql pack install ql/src
           codeql pack create ql/src --output target/packs
           PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
           codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
@@ -202,7 +202,7 @@ jobs:
           echo 'name: sample-tests
           version: 0.0.0
           dependencies:
-            codeql/ruby-all: 0.0.1
+            codeql/ruby-all: "*"
           extractor: ruby
           tests: .
           ' > qlpack.yml

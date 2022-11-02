@@ -16,13 +16,9 @@ edges
 | try.swift:15:17:15:24 | call to source() :  | try.swift:15:12:15:24 | try! ... |
 | try.swift:18:18:18:25 | call to source() :  | try.swift:18:12:18:27 | ...! |
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  |
-| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  |
 | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  |
-| url.swift:9:8:9:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  |
-| url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | url.swift:43:2:46:55 | [summary param] 0 in dataTask(with:completionHandler:) :  | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
-| url.swift:44:5:44:15 | url :  | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
 | url.swift:57:16:57:23 | call to source() :  | url.swift:59:31:59:31 | tainted :  |
 | url.swift:57:16:57:23 | call to source() :  | url.swift:83:24:83:24 | tainted :  |
 | url.swift:57:16:57:23 | call to source() :  | url.swift:117:28:117:28 | tainted :  |
@@ -63,93 +59,69 @@ edges
 | url.swift:59:19:59:38 | call to init(string:) :  | url.swift:102:46:102:46 | urlTainted :  |
 | url.swift:59:19:59:38 | call to init(string:) :  | url.swift:120:46:120:46 | urlTainted :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  |
-| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) :  |
 | url.swift:83:12:83:48 | call to init(string:relativeTo:) :  | url.swift:83:12:83:49 | ...! |
 | url.swift:83:24:83:24 | tainted :  | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  |
-| url.swift:83:24:83:24 | tainted :  | url.swift:9:8:9:16 | string :  |
 | url.swift:83:24:83:24 | tainted :  | url.swift:83:12:83:48 | call to init(string:relativeTo:) :  |
 | url.swift:86:12:86:53 | call to init(string:relativeTo:) :  | url.swift:86:12:86:56 | .absoluteURL |
 | url.swift:86:43:86:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:86:43:86:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:86:43:86:43 | urlTainted :  | url.swift:86:12:86:53 | call to init(string:relativeTo:) :  |
 | url.swift:87:12:87:53 | call to init(string:relativeTo:) :  | url.swift:87:12:87:56 | .baseURL |
 | url.swift:87:43:87:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:87:43:87:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:87:43:87:43 | urlTainted :  | url.swift:87:12:87:53 | call to init(string:relativeTo:) :  |
 | url.swift:88:15:88:56 | call to init(string:relativeTo:) :  | url.swift:88:15:88:67 | ...! |
 | url.swift:88:46:88:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:88:46:88:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:88:46:88:46 | urlTainted :  | url.swift:88:15:88:56 | call to init(string:relativeTo:) :  |
 | url.swift:89:15:89:56 | call to init(string:relativeTo:) :  | url.swift:89:15:89:63 | ...! |
 | url.swift:89:46:89:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:89:46:89:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:89:46:89:46 | urlTainted :  | url.swift:89:15:89:56 | call to init(string:relativeTo:) :  |
 | url.swift:90:15:90:56 | call to init(string:relativeTo:) :  | url.swift:90:15:90:59 | .lastPathComponent |
 | url.swift:90:46:90:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:90:46:90:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:90:46:90:46 | urlTainted :  | url.swift:90:15:90:56 | call to init(string:relativeTo:) :  |
 | url.swift:91:15:91:56 | call to init(string:relativeTo:) :  | url.swift:91:15:91:59 | .path |
 | url.swift:91:46:91:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:91:46:91:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:91:46:91:46 | urlTainted :  | url.swift:91:15:91:56 | call to init(string:relativeTo:) :  |
 | url.swift:92:15:92:56 | call to init(string:relativeTo:) :  | url.swift:92:15:92:75 | ...[...] |
 | url.swift:92:46:92:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:92:46:92:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:92:46:92:46 | urlTainted :  | url.swift:92:15:92:56 | call to init(string:relativeTo:) :  |
 | url.swift:93:15:93:56 | call to init(string:relativeTo:) :  | url.swift:93:15:93:59 | .pathExtension |
 | url.swift:93:46:93:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:93:46:93:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:93:46:93:46 | urlTainted :  | url.swift:93:15:93:56 | call to init(string:relativeTo:) :  |
 | url.swift:94:12:94:53 | call to init(string:relativeTo:) :  | url.swift:94:12:94:60 | ...! |
 | url.swift:94:43:94:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:94:43:94:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:94:43:94:43 | urlTainted :  | url.swift:94:12:94:53 | call to init(string:relativeTo:) :  |
 | url.swift:95:15:95:56 | call to init(string:relativeTo:) :  | url.swift:95:15:95:64 | ...! |
 | url.swift:95:46:95:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:95:46:95:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:95:46:95:46 | urlTainted :  | url.swift:95:15:95:56 | call to init(string:relativeTo:) :  |
 | url.swift:96:15:96:56 | call to init(string:relativeTo:) :  | url.swift:96:15:96:59 | .relativePath |
 | url.swift:96:46:96:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:96:46:96:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:96:46:96:46 | urlTainted :  | url.swift:96:15:96:56 | call to init(string:relativeTo:) :  |
 | url.swift:97:15:97:56 | call to init(string:relativeTo:) :  | url.swift:97:15:97:59 | .relativeString |
 | url.swift:97:46:97:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:97:46:97:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:97:46:97:46 | urlTainted :  | url.swift:97:15:97:56 | call to init(string:relativeTo:) :  |
 | url.swift:98:15:98:56 | call to init(string:relativeTo:) :  | url.swift:98:15:98:65 | ...! |
 | url.swift:98:46:98:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:98:46:98:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:98:46:98:46 | urlTainted :  | url.swift:98:15:98:56 | call to init(string:relativeTo:) :  |
 | url.swift:99:12:99:53 | call to init(string:relativeTo:) :  | url.swift:99:12:99:56 | .standardized |
 | url.swift:99:43:99:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:99:43:99:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:99:43:99:43 | urlTainted :  | url.swift:99:12:99:53 | call to init(string:relativeTo:) :  |
 | url.swift:100:12:100:53 | call to init(string:relativeTo:) :  | url.swift:100:12:100:56 | .standardizedFileURL |
 | url.swift:100:43:100:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:100:43:100:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:100:43:100:43 | urlTainted :  | url.swift:100:12:100:53 | call to init(string:relativeTo:) :  |
 | url.swift:101:15:101:56 | call to init(string:relativeTo:) :  | url.swift:101:15:101:63 | ...! |
 | url.swift:101:46:101:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:101:46:101:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:101:46:101:46 | urlTainted :  | url.swift:101:15:101:56 | call to init(string:relativeTo:) :  |
 | url.swift:102:15:102:56 | call to init(string:relativeTo:) :  | url.swift:102:15:102:67 | ...! |
 | url.swift:102:46:102:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:102:46:102:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
 | url.swift:102:46:102:46 | urlTainted :  | url.swift:102:15:102:56 | call to init(string:relativeTo:) :  |
 | url.swift:117:16:117:35 | call to init(string:) :  | url.swift:118:12:118:12 | ...! |
 | url.swift:117:28:117:28 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  |
-| url.swift:117:28:117:28 | tainted :  | url.swift:8:8:8:16 | string :  |
 | url.swift:117:28:117:28 | tainted :  | url.swift:117:16:117:35 | call to init(string:) :  |
 | url.swift:120:46:120:46 | urlTainted :  | url.swift:43:2:46:55 | [summary param] 0 in dataTask(with:completionHandler:) :  |
-| url.swift:120:46:120:46 | urlTainted :  | url.swift:44:5:44:15 | url :  |
 | url.swift:120:61:120:61 | data :  | url.swift:121:15:121:19 | ...! |
 nodes
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | semmle.label | [summary] to write: return (return) in init(string:) :  |
-| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | semmle.label | [summary] to write: return (return) in init(string:) :  |
-| file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
-| file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | string.swift:5:11:5:18 | call to source() :  | semmle.label | call to source() :  |
@@ -175,13 +147,9 @@ nodes
 | try.swift:18:12:18:27 | ...! | semmle.label | ...! |
 | try.swift:18:18:18:25 | call to source() :  | semmle.label | call to source() :  |
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | semmle.label | [summary param] 0 in init(string:) :  |
-| url.swift:8:8:8:16 | string :  | semmle.label | string :  |
 | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  | semmle.label | [summary param] 0 in init(string:relativeTo:) :  |
 | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | semmle.label | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:9:8:9:16 | string :  | semmle.label | string :  |
-| url.swift:9:24:9:39 | relativeTo :  | semmle.label | relativeTo :  |
 | url.swift:43:2:46:55 | [summary param] 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary param] 0 in dataTask(with:completionHandler:) :  |
-| url.swift:44:5:44:15 | url :  | semmle.label | url :  |
 | url.swift:57:16:57:23 | call to source() :  | semmle.label | call to source() :  |
 | url.swift:59:19:59:38 | call to init(string:) :  | semmle.label | call to init(string:) :  |
 | url.swift:59:31:59:31 | tainted :  | semmle.label | tainted :  |
@@ -265,45 +233,25 @@ nodes
 | url.swift:121:15:121:19 | ...! | semmle.label | ...! |
 subpaths
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:59:19:59:38 | call to init(string:) :  |
-| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:59:19:59:38 | call to init(string:) :  |
 | url.swift:83:24:83:24 | tainted :  | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:83:12:83:48 | call to init(string:relativeTo:) :  |
-| url.swift:83:24:83:24 | tainted :  | url.swift:9:8:9:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:83:12:83:48 | call to init(string:relativeTo:) :  |
 | url.swift:86:43:86:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:86:12:86:53 | call to init(string:relativeTo:) :  |
-| url.swift:86:43:86:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:86:12:86:53 | call to init(string:relativeTo:) :  |
 | url.swift:87:43:87:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:87:12:87:53 | call to init(string:relativeTo:) :  |
-| url.swift:87:43:87:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:87:12:87:53 | call to init(string:relativeTo:) :  |
 | url.swift:88:46:88:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:88:15:88:56 | call to init(string:relativeTo:) :  |
-| url.swift:88:46:88:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:88:15:88:56 | call to init(string:relativeTo:) :  |
 | url.swift:89:46:89:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:89:15:89:56 | call to init(string:relativeTo:) :  |
-| url.swift:89:46:89:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:89:15:89:56 | call to init(string:relativeTo:) :  |
 | url.swift:90:46:90:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:90:15:90:56 | call to init(string:relativeTo:) :  |
-| url.swift:90:46:90:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:90:15:90:56 | call to init(string:relativeTo:) :  |
 | url.swift:91:46:91:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:91:15:91:56 | call to init(string:relativeTo:) :  |
-| url.swift:91:46:91:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:91:15:91:56 | call to init(string:relativeTo:) :  |
 | url.swift:92:46:92:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:92:15:92:56 | call to init(string:relativeTo:) :  |
-| url.swift:92:46:92:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:92:15:92:56 | call to init(string:relativeTo:) :  |
 | url.swift:93:46:93:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:93:15:93:56 | call to init(string:relativeTo:) :  |
-| url.swift:93:46:93:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:93:15:93:56 | call to init(string:relativeTo:) :  |
 | url.swift:94:43:94:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:94:12:94:53 | call to init(string:relativeTo:) :  |
-| url.swift:94:43:94:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:94:12:94:53 | call to init(string:relativeTo:) :  |
 | url.swift:95:46:95:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:95:15:95:56 | call to init(string:relativeTo:) :  |
-| url.swift:95:46:95:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:95:15:95:56 | call to init(string:relativeTo:) :  |
 | url.swift:96:46:96:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:96:15:96:56 | call to init(string:relativeTo:) :  |
-| url.swift:96:46:96:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:96:15:96:56 | call to init(string:relativeTo:) :  |
 | url.swift:97:46:97:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:97:15:97:56 | call to init(string:relativeTo:) :  |
-| url.swift:97:46:97:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:97:15:97:56 | call to init(string:relativeTo:) :  |
 | url.swift:98:46:98:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:98:15:98:56 | call to init(string:relativeTo:) :  |
-| url.swift:98:46:98:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:98:15:98:56 | call to init(string:relativeTo:) :  |
 | url.swift:99:43:99:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:99:12:99:53 | call to init(string:relativeTo:) :  |
-| url.swift:99:43:99:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:99:12:99:53 | call to init(string:relativeTo:) :  |
 | url.swift:100:43:100:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:100:12:100:53 | call to init(string:relativeTo:) :  |
-| url.swift:100:43:100:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:100:12:100:53 | call to init(string:relativeTo:) :  |
 | url.swift:101:46:101:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:101:15:101:56 | call to init(string:relativeTo:) :  |
-| url.swift:101:46:101:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:101:15:101:56 | call to init(string:relativeTo:) :  |
 | url.swift:102:46:102:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:102:15:102:56 | call to init(string:relativeTo:) :  |
-| url.swift:102:46:102:46 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:102:15:102:56 | call to init(string:relativeTo:) :  |
 | url.swift:117:28:117:28 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:117:16:117:35 | call to init(string:) :  |
-| url.swift:117:28:117:28 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:117:16:117:35 | call to init(string:) :  |
 #select
 | string.swift:7:13:7:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:7:13:7:13 | "..." | result |
 | string.swift:9:13:9:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:9:13:9:13 | "..." | result |

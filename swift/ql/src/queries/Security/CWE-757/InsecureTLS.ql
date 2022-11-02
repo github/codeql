@@ -26,23 +26,18 @@ class InsecureTlsConfig extends TaintTracking::Configuration {
    * Holds for enum values that represent an insecure version of TLS
    */
   override predicate isSource(DataFlow::Node node) {
-    exists(MethodRefExpr expr, EnumElementDecl enum, string enumName |
-      node.asExpr() = expr and
-      expr.getMember() = enum and
-      enumName = enum.getName() and
-      enumName in ["TLSv10", "TLSv11", "tlsProtocol10", "tlsProtocol11"]
-    )
+    node.asExpr().(MethodRefExpr).getMember().(EnumElementDecl).getName() =
+      ["TLSv10", "TLSv11", "tlsProtocol10", "tlsProtocol11"]
   }
 
   /**
    * Holds for assignment of TLS-related properties of `NSURLSessionConfiguration`
    */
   override predicate isSink(DataFlow::Node node) {
-    exists(AssignExpr assign, MemberRefExpr member, string memberName |
+    exists(AssignExpr assign |
       assign.getSource() = node.asExpr() and
-      assign.getDest() = member and
-      memberName = member.getMember().(ConcreteVarDecl).getName() and
-      memberName in [
+      assign.getDest().(MemberRefExpr).getMember().(ConcreteVarDecl).getName() =
+        [
           "tlsMinimumSupportedProtocolVersion", "tlsMinimumSupportedProtocol",
           "tlsMaximumSupportedProtocolVersion", "tlsMaximumSupportedProtocol"
         ]
