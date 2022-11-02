@@ -389,6 +389,26 @@ class Eq_ extends @py_Eq, Cmpop {
   override string toString() { result = "Eq" }
 }
 
+/** INTERNAL: See the class `ExceptGroupStmt` for further information. */
+class ExceptGroupStmt_ extends @py_ExceptGroupStmt, Stmt {
+  /** Gets the type of this except group block. */
+  Expr getType() { py_exprs(result, _, this, 1) }
+
+  /** Gets the name of this except group block. */
+  Expr getName() { py_exprs(result, _, this, 2) }
+
+  /** Gets the body of this except group block. */
+  StmtList getBody() { py_stmt_lists(result, this, 3) }
+
+  /** Gets the nth statement of this except group block. */
+  Stmt getStmt(int index) { result = this.getBody().getItem(index) }
+
+  /** Gets a statement of this except group block. */
+  Stmt getAStmt() { result = this.getBody().getAnItem() }
+
+  override string toString() { result = "ExceptGroupStmt" }
+}
+
 /** INTERNAL: See the class `ExceptStmt` for further information. */
 class ExceptStmt_ extends @py_ExceptStmt, Stmt {
   /** Gets the type of this except block. */
