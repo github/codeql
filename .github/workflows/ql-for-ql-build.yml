@@ -22,12 +22,15 @@ jobs:
     steps:
       ### Build the queries ###
       - uses: actions/checkout@v3
+      - name: Find latest bundle
+        id: find-latest-bundle
+        uses: ./.github/actions/find-latest-bundle
       - name: Find codeql
         id: find-codeql
         uses: github/codeql-action/init@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
         with:
           languages: javascript # does not matter
-          tools: latest
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Get CodeQL version
         id: get-codeql-version
         run: |
