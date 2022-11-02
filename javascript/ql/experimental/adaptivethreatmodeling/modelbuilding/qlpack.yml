@@ -6,4 +6,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: "*"
-    codeql/javascript-experimental-atm-model: "0.2.0"
+    dsp-testing/javascript-experimental-atm-model: 0.2.1-2022-11-02-14h47m45s.mighty-quill-vh5yv8hq.4030837f844d3530e4f33c004eaac981bc4e9933d95d04843730a1a6c7f484e6
