@@ -29,21 +29,21 @@
 | generic_anonymous.kt:7:3:7:22 | T | T |
 | generic_anonymous.kt:7:15:7:15 | getX$private(...) | new Object(...) { ... } |
 | generic_anonymous.kt:7:15:7:15 | this | Generic |
-| generic_anonymous.kt:7:17:7:22 | getMember(...) | T |
+| generic_anonymous.kt:7:15:7:22 | getMember(...) | T |
 | generic_anonymous.kt:11:1:11:56 | String | String |
 | generic_anonymous.kt:11:20:11:28 | String | String |
 | generic_anonymous.kt:11:33:11:50 | Generic<String> | Generic<String> |
 | generic_anonymous.kt:11:33:11:50 | String | String |
 | generic_anonymous.kt:11:33:11:50 | new Generic<String>(...) | Generic<String> |
+| generic_anonymous.kt:11:33:11:56 | get(...) | String |
 | generic_anonymous.kt:11:49:11:49 | s | String |
-| generic_anonymous.kt:11:52:11:56 | get(...) | String |
 | generic_anonymous.kt:13:1:13:47 | int | int |
 | generic_anonymous.kt:13:17:13:22 | int | int |
 | generic_anonymous.kt:13:27:13:41 | Generic<Integer> | Generic<Integer> |
 | generic_anonymous.kt:13:27:13:41 | Integer | Integer |
 | generic_anonymous.kt:13:27:13:41 | new Generic<Integer>(...) | Generic<Integer> |
+| generic_anonymous.kt:13:27:13:47 | get(...) | int |
 | generic_anonymous.kt:13:40:13:40 | i | int |
-| generic_anonymous.kt:13:43:13:47 | get(...) | int |
 | generic_anonymous.kt:17:9:17:29 | T0 | T0 |
 | generic_anonymous.kt:17:26:17:29 | null | Void |
 | generic_anonymous.kt:21:9:21:29 | T1 | T1 |
