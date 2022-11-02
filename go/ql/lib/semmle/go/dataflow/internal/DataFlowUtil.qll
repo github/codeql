@@ -131,6 +131,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 private newtype TContent =

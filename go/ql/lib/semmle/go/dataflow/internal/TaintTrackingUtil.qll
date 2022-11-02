@@ -9,12 +9,14 @@ private import FlowSummaryImpl as FlowSummaryImpl
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
