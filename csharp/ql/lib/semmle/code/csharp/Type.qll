@@ -824,6 +824,8 @@ class RecordClass extends RecordType, Class {
  */
 class AnonymousClass extends Class {
   AnonymousClass() { anonymous_types(this) }
+
+  override string getAPrimaryQlClass() { result = "AnonymousClass" }
 }
 
 /**
