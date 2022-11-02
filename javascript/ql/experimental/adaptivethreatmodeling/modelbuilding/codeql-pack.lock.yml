@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.2.1-2022-11-02-15h00m03s.maroon-cow-m7qy1vwm.09c68eb731bfab23337f13a6bcac53fa2d2512cbb3a1991c4d05821eb2c4e104
 compiled: false
 lockVersion: 1.0.0
