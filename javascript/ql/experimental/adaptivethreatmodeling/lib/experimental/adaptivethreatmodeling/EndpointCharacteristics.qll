@@ -45,7 +45,7 @@ abstract class EndpointCharacteristic extends string {
  * confidence.
  */
 
-class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
+private class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
   DomBasedXssSinkCharacteristic() { this = "DomBasedXssSink" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof DomBasedXss::Sink }
@@ -62,7 +62,7 @@ class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
  * maximal confidence.
  */
 
-class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
+private class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
   TaintedPathSinkCharacteristic() { this = "TaintedPathSink" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof TaintedPath::Sink }
@@ -79,7 +79,7 @@ class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
  * maximal confidence.
  */
 
-class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
+private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   SqlInjectionSinkCharacteristic() { this = "SqlInjectionSink" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof SqlInjection::Sink }
@@ -98,7 +98,7 @@ class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
  * with maximal confidence.
  */
 
-class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
+private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   NosqlInjectionSinkCharacteristic() { this = "NosqlInjectionSink" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof NosqlInjection::Sink }
