@@ -11,5 +11,5 @@ module.exports.foo = function (name) {
 module.exports.amd = require("./amd.js");
 
 module.exports.arrToShell = function (cmd, arr) {
-    cp.spawn("echo", arr, {shell: true}); // NOT OK - but not flagged [INCONSISTENCY]
+    cp.spawn("echo", arr, {shell: true}); // NOT OK
 }
