@@ -9,8 +9,3 @@ runs:
       shell: bash
       run: |
         bazel run //swift:create-extractor-pack
-    # running all small tests here to avoid spinning another runner and redoing bazel analysis
-    - name: Run unit tests
-      shell: bash
-      run: |
-        bazel test --test_filter=small --build_tests_only //swift/...
