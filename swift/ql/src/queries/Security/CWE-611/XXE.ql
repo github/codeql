@@ -20,5 +20,6 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(XxeConfiguration c).hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "XML parser with enabled external entities depends on $@.",
-  source.getNode(), "user input"
+select sink.getNode(), source, sink,
+  "XML parsing depends on a $@ without guarding against external entity expansion.",
+  source.getNode(), "user-provided value"
