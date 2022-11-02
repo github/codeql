@@ -7,7 +7,7 @@
  */
 
 import experimental.adaptivethreatmodeling.EndpointTypes
-import semmle.javascript.security.dataflow.SqlInjectionCustomizations
+private import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.TaintedPathCustomizations
