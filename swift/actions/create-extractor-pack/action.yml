@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - name: Run xcode-autobuilder tests
-      if: ${{ runner.os == "macOS" }}
+      if: runner.os == "macOS"
       shell: bash
       run: |
         bazel test //swift/xcode-autobuilder/tests
