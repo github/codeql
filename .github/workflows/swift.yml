@@ -45,16 +45,18 @@ jobs:
               - 'swift/**/*.qll'
   # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
   # without waiting for the macOS build
-  build-macos:
+  build-and-test-macos:
     runs-on: macos-12-xl
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/create-and-test-extractor-pack
-  build-linux:
+      - uses: ./swift/actions/create-extractor-pack
+      - uses: ./swift/actions/run-quick-tests
+  build-and-test-linux:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/create-and-test-extractor-pack
+      - uses: ./swift/actions/create-extractor-pack
+      - uses: ./swift/actions/run-quick-tests
   qltests-linux:
     needs: build-linux
     runs-on: ubuntu-latest
