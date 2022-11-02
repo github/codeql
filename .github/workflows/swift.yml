@@ -72,9 +72,15 @@ jobs:
   qltests-macos:
     needs: build-macos
     runs-on: macos-12-xl
+    strategy:
+      fail-fast: false
+      matrix:
+        slice: ["1/2", "2/2"]
     steps:
       - uses: actions/checkout@v3
       - uses: ./swift/actions/run-ql-tests
+        with:
+          flags: --slice ${{ matrix.slice }}
   integration-tests-linux:
     needs: build-linux
     runs-on: ubuntu-latest

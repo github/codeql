@@ -1,5 +1,10 @@
 name: Build Swift CodeQL pack
 description: Builds the Swift CodeQL pack
+inputs:
+  flags:
+    description: "Additional `codeql test run` flags"
+    required: false
+    default: ""
 runs:
   using: composite
   steps:
@@ -23,6 +28,7 @@ runs:
           --check-repeated-labels \
           --check-redefined-labels \
           --check-use-before-definition \
+          ${{ inputs.flags }} \
           ql/test
       env:
         GITHUB_TOKEN: ${{ github.token }}
