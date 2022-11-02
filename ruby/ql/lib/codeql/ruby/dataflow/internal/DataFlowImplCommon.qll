@@ -921,6 +921,12 @@ private module Cached {
     TParamNodeSome(ParamNode p)
 
   cached
+  newtype TReturnCtx =
+    TReturnCtxNone() or
+    TReturnCtxNoFlowThrough() or
+    TReturnCtxMaybeFlowThrough(ReturnPosition pos)
+
+  cached
   newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
 
   cached
@@ -1318,6 +1324,31 @@ class ParamNodeOption extends TParamNodeOption {
     exists(ParamNode p |
       this = TParamNodeSome(p) and
       result = p.toString()
+    )
+  }
+}
+
+/**
+ * A return context used to calculate flow summaries in reverse flow.
+ *
+ * The possible values are:
+ *
+ * - `TReturnCtxNone()`: no return flow.
+ * - `TReturnCtxNoFlowThrough()`: return flow, but flow through is not possible.
+ * - `TReturnCtxMaybeFlowThrough(ReturnPosition pos)`: return flow, of kind `pos`, and
+ *    flow through may be possible.
+ */
+class ReturnCtx extends TReturnCtx {
+  string toString() {
+    this = TReturnCtxNone() and
+    result = "(none)"
+    or
+    this = TReturnCtxNoFlowThrough() and
+    result = "(no flow through)"
+    or
+    exists(ReturnPosition pos |
+      this = TReturnCtxMaybeFlowThrough(pos) and
+      result = pos.toString()
     )
   }
 }
