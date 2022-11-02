@@ -18,3 +18,5 @@ runs:
         $Tag = $Latest.tag
         Write-Output "Latest bundle tag is '${Tag}'."
         "url=https://github.com/github/codeql-action/releases/download/${Tag}/codeql-bundle-linux64.tar.gz" >> $env:GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
