@@ -40,11 +40,10 @@ abstract class EndpointCharacteristic extends string {
   );
 }
 
-/*
+/**
  * Endpoints that were identified as "DomBasedXssSink" by the standard Javascript library are XSS sinks with maximal
  * confidence.
  */
-
 private class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
   DomBasedXssSinkCharacteristic() { this = "DomBasedXssSink" }
 
@@ -57,11 +56,10 @@ private class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
   }
 }
 
-/*
+/**
  * Endpoints that were identified as "TaintedPathSink" by the standard Javascript library are path injection sinks with
  * maximal confidence.
  */
-
 private class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
   TaintedPathSinkCharacteristic() { this = "TaintedPathSink" }
 
@@ -74,11 +72,10 @@ private class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
   }
 }
 
-/*
+/**
  * Endpoints that were identified as "SqlInjectionSink" by the standard Javascript library are SQL injection sinks with
  * maximal confidence.
  */
-
 private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   SqlInjectionSinkCharacteristic() { this = "SqlInjectionSink" }
 
@@ -93,11 +90,10 @@ private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   }
 }
 
-/*
+/**
  * Endpoints that were identified as "NosqlInjectionSink" by the standard Javascript library are NoSQL injection sinks
  * with maximal confidence.
  */
-
 private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   NosqlInjectionSinkCharacteristic() { this = "NosqlInjectionSink" }
 
