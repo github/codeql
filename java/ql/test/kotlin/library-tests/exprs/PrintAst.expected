@@ -3358,6 +3358,8 @@ exprs.kt:
 #  174|           0: [ClassInstanceExpr] new Enum(...)
 #  174|             -3: [TypeAccess] Enum<Direction>
 #  174|               0: [TypeAccess] Direction
+#  174|             0: [NullLiteral] null
+#  174|             1: [IntegerLiteral] 0
 #  174|         1: [BlockStmt] { ... }
 #  175|     5: [FieldDeclaration] Direction NORTH;
 #  175|       -1: [TypeAccess] Direction
@@ -3393,6 +3395,8 @@ exprs.kt:
 #  178|           0: [ClassInstanceExpr] new Enum(...)
 #  178|             -3: [TypeAccess] Enum<Color>
 #  178|               0: [TypeAccess] Color
+#  178|             0: [NullLiteral] null
+#  178|             1: [IntegerLiteral] 0
 #  178|         1: [BlockStmt] { ... }
 #  178|           0: [ExprStmt] <Expr>;
 #  178|             0: [KtInitializerAssignExpr] ...=...
