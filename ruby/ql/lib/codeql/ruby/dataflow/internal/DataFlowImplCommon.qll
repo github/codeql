@@ -916,6 +916,11 @@ private module Cached {
     TDataFlowCallSome(DataFlowCall call)
 
   cached
+  newtype TParamNodeOption =
+    TParamNodeNone() or
+    TParamNodeSome(ParamNode p)
+
+  cached
   newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
 
   cached
@@ -1300,6 +1305,19 @@ class DataFlowCallOption extends TDataFlowCallOption {
     exists(DataFlowCall call |
       this = TDataFlowCallSome(call) and
       result = call.toString()
+    )
+  }
+}
+
+/** An optional `ParamNode`. */
+class ParamNodeOption extends TParamNodeOption {
+  string toString() {
+    this = TParamNodeNone() and
+    result = "(none)"
+    or
+    exists(ParamNode p |
+      this = TParamNodeSome(p) and
+      result = p.toString()
     )
   }
 }
