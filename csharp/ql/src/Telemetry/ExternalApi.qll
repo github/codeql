@@ -37,6 +37,7 @@ class ExternalApi extends DotNet::Callable {
   /**
    * Gets the unbound type, name and parameter types of this API.
    */
+  bindingset[this]
   private string getSignature() {
     result =
       this.getDeclaringType().getUnboundDeclaration() + "." + this.getName() + "(" +
@@ -46,11 +47,13 @@ class ExternalApi extends DotNet::Callable {
   /**
    * Gets the namespace of this API.
    */
+  bindingset[this]
   string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
 
   /**
    * Gets the namespace and signature of this API.
    */
+  bindingset[this]
   string getApiName() { result = this.getNamespace() + "#" + this.getSignature() }
 
   /** Gets a node that is an input to a call to this API. */
