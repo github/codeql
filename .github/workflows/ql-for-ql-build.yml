@@ -27,6 +27,7 @@ jobs:
         uses: github/codeql-action/init@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
         with:
           languages: javascript # does not matter
+          tools: latest
       - name: Get CodeQL version
         id: get-codeql-version
         run: |
@@ -138,6 +139,7 @@ jobs:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
+          tools: latest
       - name: Move pack cache
         run: |
           cp -r ${PACK}/.cache ql/ql/src/.cache
