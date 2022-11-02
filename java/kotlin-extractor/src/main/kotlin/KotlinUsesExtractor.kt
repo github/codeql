@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
+import com.github.codeql.utils.versions.getKotlinType
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -22,6 +23,7 @@ import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
+import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
 import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
@@ -253,19 +255,24 @@ open class KotlinUsesExtractor(
         }
     }
 
+    private fun propertySignature(p: IrProperty) =
+        ((p.getter ?: p.setter)?.extensionReceiverParameter?.let { useType(erase(it.type)).javaResult.signature } ?: "")
+
     private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
             extractExternalClassLater(p.parentAsClass)
-            dependencyCollector?.addDependency(p, externalClassExtractor.propertySignature)
-            externalClassExtractor.extractLater(p)
+            val signature = propertySignature(p) + externalClassExtractor.propertySignature
+            dependencyCollector?.addDependency(p, signature)
+            externalClassExtractor.extractLater(p, signature)
         }
     }
 
     private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
             extractExternalClassLater(f.parentAsClass)
-            dependencyCollector?.addDependency(f, externalClassExtractor.fieldSignature)
-            externalClassExtractor.extractLater(f)
+            val signature = (f.correspondingPropertySymbol?.let { propertySignature(it.owner) } ?: "") + externalClassExtractor.fieldSignature
+            dependencyCollector?.addDependency(f, signature)
+            externalClassExtractor.extractLater(f, signature)
         }
     }
 
@@ -669,7 +676,8 @@ open class KotlinUsesExtractor(
                           otherIsPrimitive: Boolean,
                           javaClass: IrClass,
                           kotlinPackageName: String, kotlinClassName: String): TypeResults {
-            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && primitiveName != null) {
+            // Note the use of `hasEnhancedNullability` here covers cases like `@NotNull Integer`, which must be extracted as `Integer` not `int`.
+            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && getKotlinType(s)?.hasEnhancedNullability() != true && primitiveName != null) {
                     val label: Label<DbPrimitive> = tw.getLabelFor("@\"type;$primitiveName\"", {
                         tw.writePrimitives(it, primitiveName)
                     })
@@ -813,7 +821,7 @@ open class KotlinUsesExtractor(
                 OperatorNameConventions.INVOKE.asString())
 
         fun getSuffixIfInternal() =
-            if (f.visibility == DescriptorVisibilities.INTERNAL) {
+            if (f.visibility == DescriptorVisibilities.INTERNAL && f !is IrConstructor) {
                 "\$" + getJvmModuleName(f)
             } else {
                 ""
@@ -952,27 +960,43 @@ open class KotlinUsesExtractor(
             ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
         }
 
-    private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
+    private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean, javaVariance: Variance?) =
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
             !addByDefault -> false
-            t.hasAnnotation(jvmWildcardSuppressionAnnotation) -> false
+            // If a Java declaration specifies a variance, introduce it even if it's pointless (e.g. ? extends FinalClass, or ? super Object)
+            javaVariance == v -> true
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
             v == Variance.OUT_VARIANCE -> extendsAdditionAllowed(t)
             else -> false
         }
 
+    // Returns true if `t` has `@JvmSuppressWildcards` or `@JvmSuppressWildcards(true)`,
+    // false if it has `@JvmSuppressWildcards(false)`,
+    // and null if the annotation is not present.
+    @Suppress("UNCHECKED_CAST")
+    private fun getWildcardSuppressionDirective(t: IrAnnotationContainer) =
+        t.getAnnotation(jvmWildcardSuppressionAnnotation)?.let { (it.getValueArgument(0) as? IrConst<Boolean>)?.value ?: true }
+
     private fun addJavaLoweringArgumentWildcards(p: IrTypeParameter, t: IrTypeArgument, addByDefault: Boolean, javaType: JavaType?): IrTypeArgument =
         (t as? IrTypeProjection)?.let {
-            val newBase = addJavaLoweringWildcards(it.type, addByDefault, javaType)
+            val newAddByDefault = getWildcardSuppressionDirective(it.type)?.not() ?: addByDefault
+            val newBase = addJavaLoweringWildcards(it.type, newAddByDefault, javaType)
+            // Note javaVariance == null means we don't have a Java type to conform to -- for example if this is a Kotlin source definition.
+            val javaVariance = javaType?.let { jType ->
+                when (jType) {
+                    is JavaWildcardType -> if (jType.isExtends) Variance.OUT_VARIANCE else Variance.IN_VARIANCE
+                    else -> Variance.INVARIANT
+                }
+            }
             val newVariance =
                 if (it.variance == Variance.INVARIANT &&
                     p.variance != Variance.INVARIANT &&
                     // The next line forbids inferring a wildcard type when we have a corresponding Java type with conflicting variance.
                     // For example, Java might declare f(Comparable<CharSequence> cs), in which case we shouldn't add a `? super ...`
                     // wildcard. Note if javaType is unknown (e.g. this is a Kotlin source element), we assume wildcards should be added.
-                    (javaType?.let { jt -> jt is JavaWildcardType && jt.isExtends == (p.variance == Variance.OUT_VARIANCE) } != false) &&
-                    wildcardAdditionAllowed(p.variance, it.type, addByDefault))
+                    (javaVariance == null || javaVariance == p.variance) &&
+                    wildcardAdditionAllowed(p.variance, it.type, newAddByDefault, javaVariance))
                     p.variance
                 else
                     it.variance
@@ -991,12 +1015,13 @@ open class KotlinUsesExtractor(
 
     fun addJavaLoweringWildcards(t: IrType, addByDefault: Boolean, javaType: JavaType?): IrType =
         (t as? IrSimpleType)?.let {
+            val newAddByDefault = getWildcardSuppressionDirective(t)?.not() ?: addByDefault
             val typeParams = it.classOrNull?.owner?.typeParameters ?: return t
             val newArgs = typeParams.zip(it.arguments).mapIndexed { idx, pair ->
                 addJavaLoweringArgumentWildcards(
                     pair.first,
                     pair.second,
-                    addByDefault,
+                    newAddByDefault,
                     javaType?.let { jt -> getJavaTypeArgument(jt, idx) }
                 )
             }
@@ -1044,7 +1069,7 @@ open class KotlinUsesExtractor(
             classTypeArgsIncludingOuterClasses,
             overridesCollectionsMethodWithAlteredParameterTypes(f),
             getJavaCallable(f),
-            !hasWildcardSuppressionAnnotation(f)
+            !getInnermostWildcardSupppressionAnnotation(f)
         )
 
     /*
@@ -1203,10 +1228,11 @@ open class KotlinUsesExtractor(
         else -> null
     }
 
-    fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
-        d.hasAnnotation(jvmWildcardSuppressionAnnotation) ||
+    fun getInnermostWildcardSupppressionAnnotation(d: IrDeclaration) =
+        getWildcardSuppressionDirective(d) ?:
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
-        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotation) == true }
+        d.parents.filterIsInstance<IrAnnotationContainer>().mapNotNull { getWildcardSuppressionDirective(it) }.firstOrNull() ?:
+        false
 
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
@@ -1273,6 +1299,7 @@ open class KotlinUsesExtractor(
                         }
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
+                            !decl.isFakeOverride &&
                             decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size &&
                             decl.valueParameters.zip(f.valueParameters).all { p -> erase(p.first.type).classifierOrNull == erase(p.second.type).classifierOrNull }

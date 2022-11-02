@@ -6,4 +6,4 @@ suites: codeql-suites
 defaultSuiteFile: codeql-suites/ql-code-scanning.qls
 extractor: ql
 dependencies:
-  codeql/typos: 0.0.3-dev
+  codeql/typos: 0.0.4-dev

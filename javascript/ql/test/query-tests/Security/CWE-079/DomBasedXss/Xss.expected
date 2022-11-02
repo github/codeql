@@ -504,6 +504,38 @@ nodes
 | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
 | optionalSanitizer.js:45:41:45:46 | target |
 | optionalSanitizer.js:45:51:45:56 | target |
+| pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:9:5:29 | id |
+| pages/[id].jsx:5:9:5:29 | id |
+| pages/[id].jsx:5:11:5:12 | id |
+| pages/[id].jsx:5:11:5:12 | id |
+| pages/[id].jsx:5:18:5:29 | router.query |
+| pages/[id].jsx:5:18:5:29 | router.query |
+| pages/[id].jsx:5:18:5:29 | router.query |
+| pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:25:11:25:24 | context.params |
+| pages/[id].jsx:25:11:25:24 | context.params |
+| pages/[id].jsx:25:11:25:24 | context.params |
+| pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" |
+| pages/[id].jsx:26:10:26:22 | context.query |
+| pages/[id].jsx:26:10:26:22 | context.query |
+| pages/[id].jsx:26:10:26:22 | context.query |
+| pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -1604,6 +1636,38 @@ edges
 | optionalSanitizer.js:45:41:45:46 | target | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
 | optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
 | optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| pages/[id].jsx:5:9:5:14 | { id } | pages/[id].jsx:5:11:5:12 | id |
+| pages/[id].jsx:5:9:5:14 | { id } | pages/[id].jsx:5:11:5:12 | id |
+| pages/[id].jsx:5:9:5:29 | id | pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:5:9:5:29 | id | pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:5:9:5:29 | id | pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:5:9:5:29 | id | pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:5:11:5:12 | id | pages/[id].jsx:5:9:5:29 | id |
+| pages/[id].jsx:5:11:5:12 | id | pages/[id].jsx:5:9:5:29 | id |
+| pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:27 | context.params.id | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" |
+| pages/[id].jsx:25:11:25:27 | context.params.id | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:30 | context ... .foobar | pages/[id].jsx:26:10:26:36 | context ... r \|\| "" |
+| pages/[id].jsx:26:10:26:30 | context ... .foobar | pages/[id].jsx:26:10:26:36 | context ... r \|\| "" |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:16:44:16:51 | params.q |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
@@ -2287,6 +2351,9 @@ edges
 | optionalSanitizer.js:39:18:39:25 | tainted3 | optionalSanitizer.js:26:16:26:39 | documen ... .search | optionalSanitizer.js:39:18:39:25 | tainted3 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:39 | documen ... .search | user-provided value |
 | optionalSanitizer.js:43:18:43:25 | tainted3 | optionalSanitizer.js:26:16:26:39 | documen ... .search | optionalSanitizer.js:43:18:43:25 | tainted3 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:39 | documen ... .search | user-provided value |
 | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | optionalSanitizer.js:26:16:26:39 | documen ... .search | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:39 | documen ... .search | user-provided value |
+| pages/[id].jsx:10:44:10:45 | id | pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:10:44:10:45 | id | Cross-site scripting vulnerability due to $@. | pages/[id].jsx:5:18:5:29 | router.query | user-provided value |
+| pages/[id].jsx:13:44:13:52 | params.id | pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:13:44:13:52 | params.id | Cross-site scripting vulnerability due to $@. | pages/[id].jsx:25:11:25:24 | context.params | user-provided value |
+| pages/[id].jsx:16:44:16:51 | params.q | pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:16:44:16:51 | params.q | Cross-site scripting vulnerability due to $@. | pages/[id].jsx:26:10:26:22 | context.query | user-provided value |
 | react-native.js:8:18:8:24 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:18:8:24 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | react-native.js:9:27:9:33 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:9:27:9:33 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name | Cross-site scripting vulnerability due to $@. | react-use-context.js:10:22:10:32 | window.name | user-provided value |

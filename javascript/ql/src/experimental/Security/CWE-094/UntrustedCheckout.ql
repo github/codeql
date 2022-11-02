@@ -117,4 +117,4 @@ where
         ]) and
   step instanceof ProbableStep and
   job instanceof ProbableJob
-select step, "Potential unsafe checkout of untrusted pull request on `pull_request_target`"
+select step, "Potential unsafe checkout of untrusted pull request on 'pull_request_target'."

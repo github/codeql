@@ -68,5 +68,5 @@ where
     sink.getNode().(StringOps::ConcatenationLeaf).getRoot() = endsInCodeInjectionSink() and
     remoteFlow() = source.getNode().(DataFlow::InvokeNode).getAnArgument()
   )
-select sink.getNode(), source, sink, "Code construction depends on $@.", source.getNode(),
-  "an improperly sanitized value"
+select sink.getNode(), source, sink, "Code construction depends on an $@.", source.getNode(),
+  "improperly sanitized value"

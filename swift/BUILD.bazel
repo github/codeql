@@ -24,19 +24,6 @@ pkg_files(
 )
 
 pkg_files(
-    name = "scripts",
-    srcs = ["tools/qltest.sh", "tools/autobuild.sh"],
-    attributes = pkg_attributes(mode = "0755"),
-    prefix = "tools",
-)
-
-pkg_files(
-    name = "tracing-config",
-    srcs = ["tools/tracing-config.lua"],
-    prefix = "tools",
-)
-
-pkg_files(
     name = "manifest",
     srcs = ["codeql-extractor.yml"],
 )
@@ -46,8 +33,7 @@ pkg_filegroup(
     srcs = [
         ":dbscheme_files",
         ":manifest",
-        ":tracing-config",
-        ":scripts",
+        "//swift/tools",
     ],
     visibility = ["//visibility:public"],
 )
@@ -66,7 +52,7 @@ pkg_runfiles(
 
 pkg_files(
     name = "swift-test-sdk-arch",
-    srcs = ["//swift/tools/prebuilt:swift-test-sdk"],
+    srcs = ["//swift/third_party/swift-llvm-support:swift-test-sdk"],
     prefix = "qltest/" + codeql_platform,
     strip_prefix = strip_prefix.from_pkg(),
 )
@@ -79,7 +65,7 @@ pkg_filegroup(
     ] + select({
         "@platforms//os:linux": [],
         "@platforms//os:macos": [
-            ":xcode-autobuilder"
+            ":xcode-autobuilder",
         ],
     }),
     visibility = ["//visibility:public"],
@@ -101,7 +87,7 @@ pkg_install(
 
 py_binary(
     name = "create-extractor-pack",
-    srcs = ["tools/create_extractor_pack.py"],
-    main = "tools/create_extractor_pack.py",
+    srcs = ["create_extractor_pack.py"],
+    main = "create_extractor_pack.py",
     deps = [":_create_extractor_pack"],
 )

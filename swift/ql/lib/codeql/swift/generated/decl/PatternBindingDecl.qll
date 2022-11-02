@@ -9,6 +9,12 @@ module Generated {
   class PatternBindingDecl extends Synth::TPatternBindingDecl, Decl {
     override string getAPrimaryQlClass() { result = "PatternBindingDecl" }
 
+    /**
+     * Gets the `index`th init of this pattern binding declaration (0-based), if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Expr getImmediateInit(int index) {
       result =
         Synth::convertExprFromRaw(Synth::convertPatternBindingDeclToRaw(this)
@@ -16,12 +22,27 @@ module Generated {
               .getInit(index))
     }
 
+    /**
+     * Gets the `index`th init of this pattern binding declaration (0-based), if it exists.
+     */
     final Expr getInit(int index) { result = getImmediateInit(index).resolve() }
 
+    /**
+     * Holds if `getInit(index)` exists.
+     */
     final predicate hasInit(int index) { exists(getInit(index)) }
 
+    /**
+     * Gets any of the inits of this pattern binding declaration.
+     */
     final Expr getAnInit() { result = getInit(_) }
 
+    /**
+     * Gets the `index`th pattern of this pattern binding declaration (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Pattern getImmediatePattern(int index) {
       result =
         Synth::convertPatternFromRaw(Synth::convertPatternBindingDeclToRaw(this)
@@ -29,10 +50,19 @@ module Generated {
               .getPattern(index))
     }
 
+    /**
+     * Gets the `index`th pattern of this pattern binding declaration (0-based).
+     */
     final Pattern getPattern(int index) { result = getImmediatePattern(index).resolve() }
 
+    /**
+     * Gets any of the patterns of this pattern binding declaration.
+     */
     final Pattern getAPattern() { result = getPattern(_) }
 
+    /**
+     * Gets the number of patterns of this pattern binding declaration.
+     */
     final int getNumberOfPatterns() { result = count(getAPattern()) }
   }
 }

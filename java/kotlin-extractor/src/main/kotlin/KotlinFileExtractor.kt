@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
+import org.jetbrains.kotlin.config.JvmAnalysisFlags
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
 import org.jetbrains.kotlin.ir.IrElement
@@ -16,6 +17,7 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.symbols.*
@@ -26,6 +28,7 @@ import org.jetbrains.kotlin.load.java.structure.JavaClass
 import org.jetbrains.kotlin.load.java.structure.JavaMethod
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
+import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -97,15 +100,29 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun javaBinaryDeclaresMethod(c: IrClass, name: String) =
+        ((c.source as? JavaSourceElement)?.javaElement as? BinaryJavaClass)?.methods?.any { it.name.asString() == name }
+
+    private fun isJavaBinaryDeclaration(f: IrFunction) =
+        f.parentClassOrNull?.let { javaBinaryDeclaresMethod(it, f.name.asString()) } ?: false
+
+    private fun isJavaBinaryObjectMethodRedeclaration(d: IrDeclaration) =
+        when (d) {
+            is IrFunction ->
+                when (d.name.asString()) {
+                    "toString" -> d.valueParameters.isEmpty()
+                    "hashCode" -> d.valueParameters.isEmpty()
+                    "equals" -> d.valueParameters.singleOrNull()?.type?.isNullableAny() ?: false
+                    else -> false
+                } && isJavaBinaryDeclaration(d)
+            else -> false
+        }
+
     @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun isFake(d: IrDeclarationWithVisibility): Boolean {
-        val visibility = d.visibility
-        if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake) {
+        val hasFakeVisibility = d.visibility.let { it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake } || d.isFakeOverride
+        if (hasFakeVisibility && !isJavaBinaryObjectMethodRedeclaration(d))
             return true
-        }
-        if (d.isFakeOverride) {
-            return true
-        }
         try {
             if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
                 return true
@@ -304,7 +321,7 @@ open class KotlinFileExtractor(
                 val kind = c.kind
                 if (kind == ClassKind.ENUM_CLASS) {
                     tw.writeIsEnumType(classId)
-                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                     logger.errorElement("Unrecognised class kind $kind", c)
                 }
             }
@@ -451,7 +468,7 @@ open class KotlinFileExtractor(
                     val kind = c.kind
                     if (kind == ClassKind.ENUM_CLASS) {
                         tw.writeIsEnumType(classId)
-                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
+                    } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                         logger.warnElement("Unrecognised class kind $kind", c)
                     }
 
@@ -675,7 +692,7 @@ open class KotlinFileExtractor(
                     null
             } ?: vp.type
             val javaType = (vp.parent as? IrFunction)?.let { getJavaCallable(it)?.let { jCallable -> getJavaValueParameterType(jCallable, idx) } }
-            val typeWithWildcards = addJavaLoweringWildcards(maybeAlteredType, !hasWildcardSuppressionAnnotation(vp), javaType)
+            val typeWithWildcards = addJavaLoweringWildcards(maybeAlteredType, !getInnermostWildcardSupppressionAnnotation(vp), javaType)
             val substitutedType = typeSubstitution?.let { it(typeWithWildcards, TypeContext.OTHER, pluginContext) } ?: typeWithWildcards
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
@@ -845,11 +862,71 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun isKotlinDefinedInterface(cls: IrClass?) =
+        cls != null && cls.isInterface && cls.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
+
+    private fun needsInterfaceForwarder(f: IrFunction) =
+        // forAllMethodsWithBody means -Xjvm-default=all or all-compatibility, in which case real Java default interfaces are used, and we don't need to do anything.
+        // Otherwise, for a Kotlin-defined method inheriting a Kotlin-defined default, we need to create a synthetic method like
+        // `int f(int x) { return super.InterfaceWithDefault.f(x); }`, because kotlinc will generate a public method and Java callers may directly target it.
+        // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class called InterfaceWithDefault$DefaultImpls and stores the default methods
+        // there to allow default method usage in Java < 8, but this is hopefully niche.
+        !pluginContext.languageVersionSettings.getFlag(JvmAnalysisFlags.jvmDefaultMode).forAllMethodsWithBody &&
+                f.parentClassOrNull.let { it != null && it.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB && it.modality != Modality.ABSTRACT } &&
+                f.realOverrideTarget.let { it != f && (it as? IrSimpleFunction)?.modality != Modality.ABSTRACT && isKotlinDefinedInterface(it.parentClassOrNull) }
+
+    private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)).also { functionId ->
+            tw.writeCompiler_generated(functionId, CompilerGeneratedKinds.INTERFACE_FORWARDER.kind)
+            if (extractBody) {
+                val realFunctionLocId = tw.getLocation(f)
+                val inheritedDefaultFunction = f.realOverrideTarget
+                val directlyInheritedSymbol =
+                    when(f) {
+                        is IrSimpleFunction ->
+                            f.overriddenSymbols.find { it.owner === inheritedDefaultFunction }
+                                ?: f.overriddenSymbols.find { it.owner.realOverrideTarget === inheritedDefaultFunction }
+                                ?: inheritedDefaultFunction.symbol
+                        else -> inheritedDefaultFunction.symbol // This is strictly invalid, since we shouldn't use A.super.f(...) where A may not be a direct supertype, but this path should also be unreachable.
+                    }
+                val defaultDefiningInterfaceType = (directlyInheritedSymbol.owner.parentClassOrNull ?: return functionId).typeWith()
+
+                extractExpressionBody(functionId, realFunctionLocId).also { returnId ->
+                    extractRawMethodAccess(
+                        f,
+                        realFunctionLocId,
+                        f.returnType,
+                        functionId,
+                        returnId,
+                        0,
+                        returnId,
+                        f.valueParameters.size,
+                        { argParentId, idxOffset ->
+                            f.valueParameters.mapIndexed { idx, param ->
+                                val syntheticParamId = useValueParameter(param, functionId)
+                                extractVariableAccess(syntheticParamId, param.type, realFunctionLocId, argParentId, idxOffset + idx, functionId, returnId)
+                            }
+                        },
+                        f.dispatchReceiverParameter?.type,
+                        { callId ->
+                            extractSuperAccess(defaultDefiningInterfaceType, functionId, callId, -1, returnId, realFunctionLocId)
+                        },
+                        null
+                    )
+                }
+            }
+        }
+
     private fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        if (isFake(f))
-            null
-        else {
-            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also {
+        if (isFake(f)) {
+            if (needsInterfaceForwarder(f))
+                makeInterfaceForwarder(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses)
+            else
+                null
+        } else {
+            // Work around an apparent bug causing redeclarations of `fun toString(): String` specifically in interfaces loaded from Java classes show up like fake overrides.
+            val overriddenVisibility = if (f.isFakeOverride && isJavaBinaryObjectMethodRedeclaration(f)) OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC) else null
+            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenVisibility).also {
                 // The defaults-forwarder function is a static utility, not a member, so we only need to extract this for the unspecialised instance of this class.
                 if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
                     extractDefaultsFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses)
@@ -1112,22 +1189,16 @@ open class KotlinFileExtractor(
                             id
 
                 val extReceiver = f.extensionReceiverParameter
-                val idxOffset = if (extReceiver != null) 1 else 0
-                val fParameters = overriddenAttributes?.valueParameters ?: f.valueParameters
+                val fParameters = listOfNotNull(extReceiver) + (overriddenAttributes?.valueParameters ?: f.valueParameters)
                 val paramTypes = fParameters.mapIndexed { i, vp ->
-                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
+                    extractValueParameter(vp, id, i, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
                 }
-                val allParamTypes = if (extReceiver != null) {
-                    val extendedType = useType(extReceiver.type)
+                if (extReceiver != null) {
+                    val extendedType = paramTypes[0]
                     tw.writeKtExtensionFunctions(id.cast<DbMethod>(), extendedType.javaResult.id, extendedType.kotlinResult.id)
-
-                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
-                    listOf(t) + paramTypes
-                } else {
-                    paramTypes
                 }
 
-                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.javaResult, f) }
+                val paramsSignature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.javaResult, f) }
 
                 val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, (javaCallable as? JavaMethod)?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
@@ -1163,7 +1234,7 @@ open class KotlinFileExtractor(
                     extractBody(body, id)
                 }
 
-                extractVisibility(f, id, f.visibility)
+                extractVisibility(f, id, overriddenAttributes?.visibility ?: f.visibility)
 
                 if (f.isInline) {
                     addModifiers(id, "inline")
@@ -1227,7 +1298,9 @@ open class KotlinFileExtractor(
 
     private fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, extractPrivateMembers: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("property", p) {
-            if (isFake(p)) return
+            fun needsInterfaceForwarderQ(f: IrFunction?) = f?.let { needsInterfaceForwarder(f) } ?: false
+
+            if (isFake(p) && !needsInterfaceForwarderQ(p.getter) && !needsInterfaceForwarderQ(p.setter)) return
 
             DeclarationStackAdjuster(p).use {
 
@@ -1421,7 +1494,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
+    private fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, extractInitializer: Boolean = true) {
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
@@ -1436,7 +1509,7 @@ open class KotlinFileExtractor(
             tw.writeCallableEnclosingExpr(exprId, callable)
             tw.writeStatementEnclosingExpr(exprId, enclosingStmt)
             val i = v.initializer
-            if (i != null) {
+            if (i != null && extractInitializer) {
                 extractExpressionExpr(i, callable, exprId, 0, enclosingStmt)
             }
             if (!v.isVar) {
@@ -1823,7 +1896,7 @@ open class KotlinFileExtractor(
             IrConstImpl.defaultValueForType(0, 0, getDefaultsMethodLastArgType(callTarget))
         )
 
-        extractCallValueArguments(id, valueArgsWithDummies + extraArgs, enclosingStmt, enclosingCallable, nextIdx)
+        extractCallValueArguments(id, valueArgsWithDummies + extraArgs, enclosingStmt, enclosingCallable, nextIdx, extractVarargAsArray = true)
     }
 
     private fun getFunctionInvokeMethod(typeArgs: List<IrTypeArgument>): IrFunction? {
@@ -1884,6 +1957,18 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun getCalleeRealOverrideTarget(f: IrFunction): IrFunction {
+        val target = f.target.realOverrideTarget
+        return if (overridesCollectionsMethodWithAlteredParameterTypes(f))
+        // Cope with the case where an inherited callee can be rewritten with substituted parameter types
+        // if the child class uses it to implement a collections interface
+        // (for example, `class A { boolean contains(Object o) { ... } }; class B<T> extends A implements Set<T> { ... }`
+        // leads to generating a function `A.contains(B::T)`, with `initialSignatureFunction` pointing to `A.contains(Object)`.
+            (target as? IrLazyFunction)?.initialSignatureFunction ?: target
+        else
+            target
+    }
+
     fun extractRawMethodAccess(
         syntacticCallTarget: IrFunction,
         locElement: IrElement,
@@ -1900,8 +1985,12 @@ open class KotlinFileExtractor(
         superQualifierSymbol: IrClassSymbol? = null) {
 
         val locId = tw.getLocation(locElement)
+        val varargParam = syntacticCallTarget.valueParameters.withIndex().find { it.value.isVararg }
+        // If the vararg param is the only one not specified, and it has no default value, then we don't need to call a $default method,
+        // as omitting it already implies passing an empty vararg array.
+        val nullAllowedIdx = if (varargParam != null && varargParam.value.defaultValue == null) varargParam.index else -1
 
-        if (valueArguments.any { it == null }) {
+        if (valueArguments.withIndex().any { (index, it) -> it == null && index != nullAllowedIdx }) {
             extractsDefaultsCall(
                 syntacticCallTarget,
                 locId,
@@ -1952,7 +2041,7 @@ open class KotlinFileExtractor(
         extractClassTypeArguments: Boolean = false,
         superQualifierSymbol: IrClassSymbol? = null) {
 
-        val callTarget = syntacticCallTarget.target.realOverrideTarget
+        val callTarget = getCalleeRealOverrideTarget(syntacticCallTarget)
         val methodId = getCalleeMethodId(callTarget, drType, extractClassTypeArguments)
         if (methodId == null) {
             logger.warn("No method to bind call to for raw method access")
@@ -2021,11 +2110,11 @@ open class KotlinFileExtractor(
     private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
         extractCallValueArguments(callId, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, enclosingStmt, enclosingCallable, idxOffset)
 
-    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) {
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int, extractVarargAsArray: Boolean = false) {
         var i = 0
         valueArguments.forEach { arg ->
             if(arg != null) {
-                if (arg is IrVararg) {
+                if (arg is IrVararg && !extractVarargAsArray) {
                     arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, callId, i + idxOffset + varargNo, enclosingStmt) }
                     i += arg.elements.size
                 } else {
@@ -3093,6 +3182,90 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * This method tries to extract a block as an enhanced for loop.
+     * It returns true if it succeeds, and false otherwise.
+     */
+    private fun tryExtractForLoop(e: IrContainerExpression, callable: Label<out DbCallable>, parent: StmtExprParent): Boolean {
+        /*
+         * We're expecting the pattern
+         * {
+         *   val iterator = [expr].iterator()
+         *   while (iterator.hasNext()) {
+         *    val [loopVar] = iterator.next()
+         *    [block]
+         *   }
+         * }
+         */
+
+        if (e.origin != IrStatementOrigin.FOR_LOOP ||
+            e.statements.size != 2) {
+            return false
+        }
+
+        val iteratorVariable = e.statements[0] as? IrVariable
+        val innerWhile = e.statements[1] as? IrWhileLoop
+
+        if (iteratorVariable == null ||
+            iteratorVariable.origin != IrDeclarationOrigin.FOR_LOOP_ITERATOR ||
+            innerWhile == null ||
+            innerWhile.origin != IrStatementOrigin.FOR_LOOP_INNER_WHILE) {
+            return false
+        }
+
+        val initializer = iteratorVariable.initializer as? IrCall
+        if (initializer == null ||
+            initializer.origin != IrStatementOrigin.FOR_LOOP_ITERATOR ||
+            initializer.symbol.owner.name.asString() != "iterator") {
+            return false
+        }
+
+        val expr = initializer.dispatchReceiver
+        val cond = innerWhile.condition as? IrCall
+        val body = innerWhile.body as? IrBlock
+
+        if (expr == null ||
+            cond == null ||
+            cond.origin != IrStatementOrigin.FOR_LOOP_HAS_NEXT ||
+            (cond.dispatchReceiver as? IrGetValue)?.symbol?.owner != iteratorVariable ||
+            body == null ||
+            body.origin != IrStatementOrigin.FOR_LOOP_INNER_WHILE ||
+            body.statements.size < 2) {
+            return false
+        }
+
+        val loopVar = body.statements[0] as? IrVariable
+        val nextCall = loopVar?.initializer as? IrCall
+
+        if (loopVar == null ||
+            !(loopVar.origin == IrDeclarationOrigin.FOR_LOOP_VARIABLE || loopVar.origin == IrDeclarationOrigin.IR_TEMPORARY_VARIABLE) ||
+            nextCall == null ||
+            nextCall.origin != IrStatementOrigin.FOR_LOOP_NEXT ||
+            (nextCall.dispatchReceiver as? IrGetValue)?.symbol?.owner != iteratorVariable) {
+            return false
+        }
+
+        val id = extractLoop(innerWhile, null, parent, callable) { p, idx ->
+            tw.getFreshIdLabel<DbEnhancedforstmt>().also {
+                tw.writeStmts_enhancedforstmt(it, p, idx, callable)
+            }
+        }
+
+        extractVariableExpr(loopVar, callable, id, 0, id, extractInitializer = false)
+        extractExpressionExpr(expr, callable, id, 1, id)
+        val block = body.statements[1] as? IrBlock
+        if (body.statements.size == 2 && block != null) {
+            // Extract the body that was given to us by the compiler
+            extractExpressionStmt(block, callable, id, 2)
+        } else {
+            // Extract a block with all but the first (loop variable declaration) statement
+            extractBlock(body, body.statements.takeLast(body.statements.size - 1), id, 2, callable)
+        }
+
+        return true
+    }
+
+
+    /**
      * This tried to extract a block as an array update.
      * It returns true if it succeeds, and false otherwise.
      */
@@ -3323,22 +3496,17 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrContainerExpression -> {
-                    if(!tryExtractArrayUpdate(e, callable, parent)) {
-                        val stmtParent = parent.stmt(e, callable)
-                        val id = tw.getFreshIdLabel<DbBlock>()
-                        val locId = tw.getLocation(e)
-                        tw.writeStmts_block(id, stmtParent.parent, stmtParent.idx, callable)
-                        tw.writeHasLocation(id, locId)
-                        e.statements.forEachIndexed { i, s ->
-                            extractStatement(s, callable, id, i)
-                        }
+                    if (!tryExtractArrayUpdate(e, callable, parent) &&
+                        !tryExtractForLoop(e, callable, parent)) {
+
+                        extractBlock(e, e.statements, parent, callable)
                     }
                 }
                 is IrWhileLoop -> {
-                    extractLoop(e, parent, callable)
+                    extractLoopWithCondition(e, parent, callable)
                 }
                 is IrDoWhileLoop -> {
-                    extractLoop(e, parent, callable)
+                    extractLoopWithCondition(e, parent, callable)
                 }
                 is IrInstanceInitializerCall -> {
                     val irConstructor = declarationStack.peek().first as? IrConstructor
@@ -3803,6 +3971,32 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun extractBlock(
+        e: IrContainerExpression,
+        statements: List<IrStatement>,
+        parent: StmtExprParent,
+        callable: Label<out DbCallable>
+    ) {
+        val stmtParent = parent.stmt(e, callable)
+        extractBlock(e, statements, stmtParent.parent, stmtParent.idx, callable)
+    }
+
+    private fun extractBlock(
+        e: IrElement,
+        statements: List<IrStatement>,
+        parent: Label<out DbStmtparent>,
+        idx: Int,
+        callable: Label<out DbCallable>
+    ) {
+        val id = tw.getFreshIdLabel<DbBlock>()
+        val locId = tw.getLocation(e)
+        tw.writeStmts_block(id, parent, idx, callable)
+        tw.writeHasLocation(id, locId)
+        statements.forEachIndexed { i, s ->
+            extractStatement(s, callable, id, i)
+        }
+    }
+
     private inline fun <D: DeclarationDescriptor, reified B: IrSymbolOwner> getBoundSymbolOwner(symbol: IrBindableSymbol<D, B>, e: IrExpression): B? {
         if (symbol.isBound) {
             return symbol.owner
@@ -3911,9 +4105,11 @@ open class KotlinFileExtractor(
 
     private fun extractLoop(
         loop: IrLoop,
+        bodyIdx: Int?,
         stmtExprParent: StmtExprParent,
-        callable: Label<out DbCallable>
-    ) {
+        callable: Label<out DbCallable>,
+        getId: (Label<out DbStmtparent>, Int) -> Label<out DbStmt>
+    ) : Label<out DbStmt> {
         val stmtParent = stmtExprParent.stmt(loop, callable)
         val locId = tw.getLocation(loop)
 
@@ -3934,22 +4130,34 @@ open class KotlinFileExtractor(
             parent = stmtParent.parent
         }
 
-        val id = if (loop is IrWhileLoop) {
-            val id = tw.getFreshIdLabel<DbWhilestmt>()
-            tw.writeStmts_whilestmt(id, parent, idx, callable)
-            id
-        } else {
-            val id = tw.getFreshIdLabel<DbDostmt>()
-            tw.writeStmts_dostmt(id, parent, idx, callable)
-            id
+        val id = getId(parent, idx)
+        tw.writeHasLocation(id, locId)
+
+        val body = loop.body
+        if (body != null && bodyIdx != null) {
+            extractExpressionStmt(body, callable, id, bodyIdx)
         }
 
-        tw.writeHasLocation(id, locId)
-        extractExpressionExpr(loop.condition, callable, id, 0, id)
-        val body = loop.body
-        if (body != null) {
-            extractExpressionStmt(body, callable, id, 1)
+        return id
+    }
+
+    private fun extractLoopWithCondition(
+        loop: IrLoop,
+        stmtExprParent: StmtExprParent,
+        callable: Label<out DbCallable>
+    ) {
+        val id = extractLoop(loop, 1, stmtExprParent, callable) { parent, idx ->
+            if (loop is IrWhileLoop) {
+                tw.getFreshIdLabel<DbWhilestmt>().also {
+                    tw.writeStmts_whilestmt(it, parent, idx, callable)
+                }
+            } else {
+                tw.getFreshIdLabel<DbDostmt>().also {
+                    tw.writeStmts_dostmt(it, parent, idx, callable)
+                }
+            }
         }
+        extractExpressionExpr(loop.condition, callable, id, 0, id)
     }
 
     private fun IrValueParameter.isExtensionReceiver(): Boolean {
@@ -5375,7 +5583,9 @@ open class KotlinFileExtractor(
         val sourceLoc: Label<DbLocation>? = null,
         val valueParameters: List<IrValueParameter>? = null,
         val typeParameters: List<IrTypeParameter>? = null,
-        val isStatic: Boolean? = null)
+        val isStatic: Boolean? = null,
+        val visibility: DescriptorVisibility? = null,
+    )
 
     private fun peekDeclStackAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
         val trapWriter = tw
@@ -5400,6 +5610,7 @@ open class KotlinFileExtractor(
         DELEGATED_PROPERTY_SETTER(7),
         JVMSTATIC_PROXY_METHOD(8),
         JVMOVERLOADS_METHOD(9),
-        DEFAULT_ARGUMENTS_METHOD(10)
+        DEFAULT_ARGUMENTS_METHOD(10),
+        INTERFACE_FORWARDER(11),
     }
 }

@@ -22,16 +22,24 @@ def codeql_workspace(repository_name = "codeql"):
                 _swift_prebuilt_version,
                 repo_arch,
             ),
-            build_file = "@%s//swift/tools/prebuilt:BUILD.swift-prebuilt.bazel" % repository_name,
+            build_file = "@%s//swift/third_party/swift-llvm-support:BUILD.swift-prebuilt.bazel" % repository_name,
             sha256 = sha256,
         )
 
     http_archive(
         name = "fishhook",
         url = "https://github.com/facebook/fishhook/archive/aadc161ac3b80db07a9908851839a17ba63a9eb1.zip",
-        build_file = "@%s//swift/tools/fishhook:BUILD.fishhook.bazel" % repository_name,
+        build_file = "@%s//swift/third_party/fishhook:BUILD.fishhook.bazel" % repository_name,
         strip_prefix = "fishhook-aadc161ac3b80db07a9908851839a17ba63a9eb1",
         sha256 = "9f2cdee6dcc2039d4c47d25ab5141fe0678ce6ed27ef482cab17fe9fa38a30ce",
+    )
+
+    http_archive(
+        name = "picosha2",
+        url = "https://github.com/okdshin/PicoSHA2/archive/27fcf6979298949e8a462e16d09a0351c18fcaf2.zip",
+        strip_prefix = "PicoSHA2-27fcf6979298949e8a462e16d09a0351c18fcaf2",
+        build_file = "@%s//swift/third_party/picosha2:BUILD.picosha2.bazel" % repository_name,
+        sha256 = "d6647ca45a8b7bdaf027ecb68d041b22a899a0218b7206dee755c558a2725abb",
     )
 
     maybe(

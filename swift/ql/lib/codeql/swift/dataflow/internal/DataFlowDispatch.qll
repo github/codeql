@@ -53,17 +53,19 @@ class ParamReturnKind extends ReturnKind, TParamReturnKind {
  * defined in library code.
  */
 class DataFlowCallable extends TDataFlowCallable {
-  CfgScope scope;
-
-  DataFlowCallable() { this = TDataFlowFunc(scope) }
+  /** Gets the location of this callable. */
+  Location getLocation() { none() } // overridden in subclasses
 
   /** Gets a textual representation of this callable. */
-  string toString() { result = scope.toString() }
+  string toString() { none() } // overridden in subclasses
 
-  /** Gets the location of this callable. */
-  Location getLocation() { result = scope.getLocation() }
+  CfgScope asSourceCallable() { this = TDataFlowFunc(result) }
 
-  Callable::TypeRange getUnderlyingCallable() { result = scope }
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
+
+  Callable::TypeRange getUnderlyingCallable() {
+    result = this.asSummarizedCallable() or result = this.asSourceCallable()
+  }
 }
 
 cached
@@ -230,7 +232,7 @@ cached
 private module Cached {
   cached
   newtype TDataFlowCallable =
-    TDataFlowFunc(CfgScope scope) or
+    TDataFlowFunc(CfgScope scope) { not scope instanceof FlowSummary::SummarizedCallable } or
     TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
   /** Gets a viable run-time target for the call `call`. */
@@ -245,6 +247,26 @@ private module Cached {
     result = TDataFlowFunc(call.(PropertyObserverCall).getAccessorDecl())
     or
     result = TSummarizedCallable(call.asCall().getStaticTarget())
+  }
+
+  private class SourceCallable extends DataFlowCallable, TDataFlowFunc {
+    CfgScope scope;
+
+    SourceCallable() { this = TDataFlowFunc(scope) }
+
+    override string toString() { result = scope.toString() }
+
+    override Location getLocation() { result = scope.getLocation() }
+  }
+
+  private class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
+    FlowSummary::SummarizedCallable sc;
+
+    SummarizedCallable() { this = TSummarizedCallable(sc) }
+
+    override string toString() { result = sc.toString() }
+
+    override Location getLocation() { result = sc.getLocation() }
   }
 
   cached

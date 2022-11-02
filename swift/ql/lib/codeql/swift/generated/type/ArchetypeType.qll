@@ -7,6 +7,12 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class ArchetypeType extends Synth::TArchetypeType, SubstitutableType {
+    /**
+     * Gets the interface type of this archetype type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Type getImmediateInterfaceType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertArchetypeTypeToRaw(this)
@@ -14,8 +20,17 @@ module Generated {
               .getInterfaceType())
     }
 
+    /**
+     * Gets the interface type of this archetype type.
+     */
     final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
 
+    /**
+     * Gets the superclass of this archetype type, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Type getImmediateSuperclass() {
       result =
         Synth::convertTypeFromRaw(Synth::convertArchetypeTypeToRaw(this)
@@ -23,10 +38,22 @@ module Generated {
               .getSuperclass())
     }
 
+    /**
+     * Gets the superclass of this archetype type, if it exists.
+     */
     final Type getSuperclass() { result = getImmediateSuperclass().resolve() }
 
+    /**
+     * Holds if `getSuperclass()` exists.
+     */
     final predicate hasSuperclass() { exists(getSuperclass()) }
 
+    /**
+     * Gets the `index`th protocol of this archetype type (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     ProtocolDecl getImmediateProtocol(int index) {
       result =
         Synth::convertProtocolDeclFromRaw(Synth::convertArchetypeTypeToRaw(this)
@@ -34,10 +61,19 @@ module Generated {
               .getProtocol(index))
     }
 
+    /**
+     * Gets the `index`th protocol of this archetype type (0-based).
+     */
     final ProtocolDecl getProtocol(int index) { result = getImmediateProtocol(index).resolve() }
 
+    /**
+     * Gets any of the protocols of this archetype type.
+     */
     final ProtocolDecl getAProtocol() { result = getProtocol(_) }
 
+    /**
+     * Gets the number of protocols of this archetype type.
+     */
     final int getNumberOfProtocols() { result = count(getAProtocol()) }
   }
 }

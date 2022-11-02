@@ -9,6 +9,12 @@ module Generated {
   class UnresolvedPatternExpr extends Synth::TUnresolvedPatternExpr, Expr, UnresolvedElement {
     override string getAPrimaryQlClass() { result = "UnresolvedPatternExpr" }
 
+    /**
+     * Gets the sub pattern of this unresolved pattern expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     Pattern getImmediateSubPattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertUnresolvedPatternExprToRaw(this)
@@ -16,6 +22,9 @@ module Generated {
               .getSubPattern())
     }
 
+    /**
+     * Gets the sub pattern of this unresolved pattern expression.
+     */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
   }
 }

@@ -283,6 +283,9 @@ class Callable extends StmtParent, Member, @callable {
   /** Holds if the last parameter of this callable is a varargs (variable arity) parameter. */
   predicate isVarargs() { this.getAParameter().isVarargs() }
 
+  /** Gets the index of this callable's varargs parameter, if any exists. */
+  int getVaragsParameterIndex() { this.getParameter(result).isVarargs() }
+
   /**
    * Gets the signature of this callable, where all types in the signature have a fully-qualified name.
    * The parameter types are only separated by a comma (without space). If this callable has
@@ -306,7 +309,9 @@ class Callable extends StmtParent, Member, @callable {
    */
   Callable getKotlinParameterDefaultsProxy() {
     this.getDeclaringType() = result.getDeclaringType() and
-    exists(int proxyNParams, int extraLeadingParams, RefType lastParamType |
+    exists(
+      int proxyNParams, int extraLeadingParams, int regularParamsStartIdx, RefType lastParamType
+    |
       proxyNParams = result.getNumberOfParameters() and
       extraLeadingParams = (proxyNParams - this.getNumberOfParameters()) - 2 and
       extraLeadingParams >= 0 and
@@ -316,16 +321,28 @@ class Callable extends StmtParent, Member, @callable {
         this instanceof Constructor and
         result instanceof Constructor and
         extraLeadingParams = 0 and
+        regularParamsStartIdx = 0 and
         lastParamType.hasQualifiedName("kotlin.jvm.internal", "DefaultConstructorMarker")
         or
         this instanceof Method and
         result instanceof Method and
         this.getName() + "$default" = result.getName() and
-        extraLeadingParams <= 2 and
+        extraLeadingParams <= 1 and
+        (
+          if ktExtensionFunctions(this, _, _)
+          then
+            // Both extension receivers are expected to occur at arg0, with any
+            // dispatch receiver inserted afterwards in the $default proxy's parameter list.
+            // Check the extension receiver matches here, and note regular args
+            // are bumped one position to the right.
+            regularParamsStartIdx = extraLeadingParams + 1 and
+            this.getParameterType(0).getErasure() = eraseRaw(result.getParameterType(0))
+          else regularParamsStartIdx = extraLeadingParams
+        ) and
         lastParamType instanceof TypeObject
       )
     |
-      forall(int paramIdx | paramIdx in [extraLeadingParams .. proxyNParams - 3] |
+      forall(int paramIdx | paramIdx in [regularParamsStartIdx .. proxyNParams - 3] |
         this.getParameterType(paramIdx - extraLeadingParams).getErasure() =
           eraseRaw(result.getParameterType(paramIdx))
       )
@@ -471,7 +488,12 @@ class Method extends Callable, @method {
   }
 
   override predicate isAbstract() {
-    Callable.super.isAbstract()
+    // The combination `abstract default` isn't legal in Java,
+    // but it occurs when the Kotlin extractor records a default
+    // body, but the output class file in fact uses an abstract
+    // method and an associated static helper, which we don't
+    // extract as an implementation detail.
+    Callable.super.isAbstract() and not this.isDefault()
     or
     // JLS 9.4: An interface method lacking a `private`, `default`, or `static` modifier
     // is implicitly abstract.

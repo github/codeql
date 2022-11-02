@@ -86,6 +86,7 @@ predicate overlappingExceptions(RefType e1, RefType e2) {
 
 from TryStmt try, int first, int second, RefType masking, RefType masked, string multiCatchMsg
 where
+  try.getFile().isJavaSourceFile() and
   masking = caughtType(try, first) and
   masking.getAStrictAncestor() = masked and
   masked = caughtType(try, second) and

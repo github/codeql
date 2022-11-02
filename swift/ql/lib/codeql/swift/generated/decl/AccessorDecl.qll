@@ -7,12 +7,24 @@ module Generated {
   class AccessorDecl extends Synth::TAccessorDecl, FuncDecl {
     override string getAPrimaryQlClass() { result = "AccessorDecl" }
 
+    /**
+     * Holds if this accessor is a getter.
+     */
     predicate isGetter() { Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isGetter() }
 
+    /**
+     * Holds if this accessor is a setter.
+     */
     predicate isSetter() { Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isSetter() }
 
+    /**
+     * Holds if this accessor is a `willSet`, called before the property is set.
+     */
     predicate isWillSet() { Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isWillSet() }
 
+    /**
+     * Holds if this accessor is a `didSet`, called after the property is set.
+     */
     predicate isDidSet() { Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isDidSet() }
   }
 }

@@ -1,6 +1,14 @@
 #-----| Class
 #-----| super -> Module
 
+#-----| EsotericInstanceMethods
+
+#-----| MyStruct
+
+#-----| Struct
+
+#-----| UnresolvedNamespace
+
 #-----| BasicObject
 
 #-----| Complex
@@ -89,35 +97,44 @@ calls.rb:
 #  377| SingletonOverride1
 #-----| super -> Object
 
-#  404| SingletonOverride2
+#  412| SingletonOverride2
 #-----| super -> SingletonOverride1
 
-#  421| ConditionalInstanceMethods
+#  433| ConditionalInstanceMethods
 #-----| super -> Object
 
-#  484| ExtendSingletonMethod
+#  496| ExtendSingletonMethod
 
-#  494| ExtendSingletonMethod2
+#  506| ExtendSingletonMethod2
 
-#  500| ExtendSingletonMethod3
+#  512| ExtendSingletonMethod3
 
-#  513| ProtectedMethodInModule
+#  525| ProtectedMethodInModule
 
-#  519| ProtectedMethods
+#  531| ProtectedMethods
 #-----| super -> Object
 #-----| include -> ProtectedMethodInModule
 
-#  538| ProtectedMethodsSub
+#  550| ProtectedMethodsSub
 #-----| super -> ProtectedMethods
 
-#  552| SingletonUpCall_Base
+#  564| SingletonUpCall_Base
 #-----| super -> Object
 
-#  556| SingletonUpCall_Sub
+#  568| SingletonUpCall_Sub
 #-----| super -> SingletonUpCall_Base
 
-#  564| SingletonUpCall_SubSub
+#  576| SingletonUpCall_SubSub
 #-----| super -> SingletonUpCall_Sub
+
+#  583| SingletonA
+#-----| super -> Object
+
+#  596| SingletonB
+#-----| super -> SingletonA
+
+#  605| SingletonC
+#-----| super -> SingletonA
 
 hello.rb:
 #    1| EnglishWords
@@ -230,3 +247,16 @@ toplevel_self_singleton.rb:
 #-----| super -> Object
 
 #   24| Good
+
+unresolved_subclass.rb:
+#    1| ResolvableBaseClass
+#-----| super -> Object
+
+#    4| UnresolvedNamespace::Subclass1
+#-----| super -> ResolvableBaseClass
+
+#    7| UnresolvedNamespace::Subclass2
+#-----| super -> UnresolvedNamespace::Subclass1
+
+#   11| UnresolvedNamespace::A
+#-----| super -> Object

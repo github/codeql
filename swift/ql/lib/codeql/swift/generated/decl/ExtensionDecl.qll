@@ -10,6 +10,12 @@ module Generated {
   class ExtensionDecl extends Synth::TExtensionDecl, GenericContext, IterableDeclContext, Decl {
     override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 
+    /**
+     * Gets the extended type declaration of this extension declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     NominalTypeDecl getImmediateExtendedTypeDecl() {
       result =
         Synth::convertNominalTypeDeclFromRaw(Synth::convertExtensionDeclToRaw(this)
@@ -17,6 +23,9 @@ module Generated {
               .getExtendedTypeDecl())
     }
 
+    /**
+     * Gets the extended type declaration of this extension declaration.
+     */
     final NominalTypeDecl getExtendedTypeDecl() {
       result = getImmediateExtendedTypeDecl().resolve()
     }

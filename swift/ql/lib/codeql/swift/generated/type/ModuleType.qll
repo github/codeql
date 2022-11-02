@@ -8,6 +8,12 @@ module Generated {
   class ModuleType extends Synth::TModuleType, Type {
     override string getAPrimaryQlClass() { result = "ModuleType" }
 
+    /**
+     * Gets the module of this module type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
     ModuleDecl getImmediateModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleTypeToRaw(this)
@@ -15,6 +21,9 @@ module Generated {
               .getModule())
     }
 
+    /**
+     * Gets the module of this module type.
+     */
     final ModuleDecl getModule() { result = getImmediateModule().resolve() }
   }
 }
