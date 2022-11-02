@@ -58,13 +58,13 @@ jobs:
       - uses: ./swift/actions/create-extractor-pack
       - uses: ./swift/actions/run-quick-tests
   qltests-linux:
-    needs: build-linux
+    needs: build-and-test-linux
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./swift/actions/run-ql-tests
   qltests-macos:
-    needs: build-macos
+    needs: build-and-test-macos
     runs-on: macos-12-xl
     strategy:
       fail-fast: false
@@ -76,13 +76,13 @@ jobs:
         with:
           flags: --slice ${{ matrix.slice }}
   integration-tests-linux:
-    needs: build-linux
+    needs: build-and-test-linux
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./swift/actions/run-integration-tests
   integration-tests-macos:
-    needs: build-macos
+    needs: build-and-test-macos
     runs-on: macos-12-xl
     steps:
       - uses: actions/checkout@v3
