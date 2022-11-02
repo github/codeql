@@ -326,7 +326,10 @@ Class hierarchy
 Examples of global data flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This query shows a data flow configuration that uses all network input as data sources:
+The following global taint-tracking query finds path arguments in filesystem accesses that can be controlled by a remote user.
+  - Since this is a taint-tracking query, the configuration class extends ``TaintTracking::Configuration``.
+  - The ``isSource`` predicate defines sources as any data-flow nodes that are instances of ``RemoteFlowSource``.
+  - The ``isSink`` predicate defines sinks as path arguments in any filesystem access, using ``FileSystemAccess`` from the ``Concepts`` library.
 
 .. code-block:: ql
 
@@ -349,7 +352,10 @@ This query shows a data flow configuration that uses all network input as data s
     where config.hasFlow(input, fileAccess)
     select fileAccess, "This file access uses data from $@.", input, "user-controllable input."
 
-This data flow configuration tracks data flow from environment variables to opening files:
+The following global data-flow query finds calls to ``File.open`` where the filename argument comes from an environment variable.
+  - Since this is a data-flow query, the configuration class extends ``DataFlow::Configuration``.
+  - The ``isSource`` predicate defines sources as expression nodes representing lookups on the ``ENV`` hash.
+  - The ``isSink`` predicate defines sinks as the first argument in any call to ``File.open``.
 
 .. code-block:: ql
 
