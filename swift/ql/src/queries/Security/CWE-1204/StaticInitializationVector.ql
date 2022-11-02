@@ -16,10 +16,6 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import DataFlow::PathGraph
 
-// from DataFlow::PathNode source, DataFlow::PathNode sink, StaticInitializationVectorConfig conf
-// where conf.hasFlowPath(source, sink)
-// select sink.getNode(), source, sink, "A $@ should not be used for encryption.", source.getNode(),
-//   "static initialization vector"
 /**
  * A static IV is created through either a byte array or string literals.
  */
