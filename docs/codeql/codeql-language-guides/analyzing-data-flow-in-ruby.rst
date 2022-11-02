@@ -15,15 +15,15 @@ For a more general introduction to modeling data flow, see ":ref:`About data flo
 Local data flow
 ---------------
 
-Local data flow is data flow within a single method or callable. Local data flow is easier, faster, and more precise than global data flow, and is sufficient for many queries.
+Local data flow tracks the flow of data within a single method or callable. Local data flow is easier, faster, and more precise than global data flow. Before looking at more complex tracking, you should always consider local tracking because it is sufficient for many queries.
 
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow`` and it defines the class ``Node``, representing any element through which data can flow.
+You can use the local data flow library by importing the ``DataFlow`` module. The library uses the class ``Node`` to represent any element through which data can flow.
 ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``).
-You can map between a data flow ``ParameterNode`` and its corresponding ``Parameter`` AST node using the ``asParameter`` member predicate.
-Meanwhile, the ``asExpr`` member predicate maps between a data flow ``ExprNode`` and its corresponding ``ExprCfgNode`` in the control-flow library.
+You can map a data flow ``ParameterNode`` to its corresponding ``Parameter`` AST node using the ``asParameter`` member predicate.
+Similarly, you can use the ``asExpr`` member predicate to map a data flow ``ExprNode`` to its corresponding ``ExprCfgNode`` in the control-flow library.
 
 .. code-block:: ql
 
@@ -37,7 +37,7 @@ Meanwhile, the ``asExpr`` member predicate maps between a data flow ``ExprNode``
       ...
      }
 
-You can also use the predicates ``exprNode`` and ``parameterNode``:
+You can use the predicates ``exprNode`` and ``parameterNode`` to map from expressions and parameters to their data-flow node:
 
 .. code-block:: ql
 
@@ -52,8 +52,8 @@ You can also use the predicates ``exprNode`` and ``parameterNode``:
      ParameterNode parameterNode(Parameter p) { ... }
 
 Note that since ``asExpr`` and ``exprNode`` map between data-flow and control-flow nodes, you then need to call the ``getExpr`` member predicate on the control-flow node to map to the corresponding AST node,
-e.g. by writing ``node.asExpr().getExpr()``.
-Due to the control-flow graph being split, there can be multiple data-flow and control-flow nodes associated with a single expression AST node.
+for example, by writing ``node.asExpr().getExpr()``.
+A control-flow graph considers every way control can flow through code, consequently, there can be multiple data-flow and control-flow nodes associated with a single expression node in the AST.
 
 The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``.
 You can apply the predicate recursively, by using the ``+`` and ``*`` operators, or you can use the predefined recursive predicate ``localFlow``.
@@ -67,7 +67,7 @@ For example, you can find flow from an expression ``source`` to an expression ``
 Using local taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Local taint tracking extends local data flow by including non-value-preserving flow steps.
+Local taint tracking extends local data flow to include flow steps where values are not preserved, for example, string manipulation.
 For example:
 
 .. code-block:: ruby
@@ -91,17 +91,17 @@ For example, you can find taint propagation from an expression ``source`` to an 
 Using local sources
 ~~~~~~~~~~~~~~~~~~~
 
-When asking for local data flow or taint propagation between two expressions as above, you would normally constrain the expressions to be relevant to a certain investigation.
-The next section will give some concrete examples, but there is a more abstract concept that we should call out explicitly, namely that of a local source.
+When exploring local data flow or taint propagation between two expressions as above, you would normally constrain the expressions to be relevant to your investigation.
+The next section gives some concrete examples, but first it's helpful to introduce the concept of a local source.
 
 A local source is a data-flow node with no local data flow into it.
 As such, it is a local origin of data flow, a place where a new value is created.
-This includes parameters (which only receive global data flow) and most expressions (because they are not value-preserving).
+This includes parameters (which only receive values from global data flow) and most expressions (because they are not value-preserving).
 The class ``LocalSourceNode`` represents data-flow nodes that are also local sources.
 It comes with a useful member predicate ``flowsTo(DataFlow::Node node)``, which holds if there is local data flow from the local source to ``node``.
 
-Examples
-~~~~~~~~
+Examples of local data flow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This query finds the filename argument passed in each call to ``File.open``:
 
@@ -134,8 +134,8 @@ So we use local data flow to find all expressions that flow into the argument:
 Many expressions flow to the same call.
 If you run this query, you may notice that you get several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the ``call`` column).
 We are mostly interested in the "first" of these, what might be called the local source for the file name.
-To restrict attention to such local sources, and to simultaneously make the analysis more performant, we have the QL class ``LocalSourceNode``.
-We could demand that ``expr`` is such a node:
+To restrict the results to local sources for the file name, and to simultaneously make the analysis more efficient, we can use the CodeQL class ``LocalSourceNode``.
+We can update the query to specify that ``expr`` is an instance of a ``LocalSourceNode``.
 
 .. code-block:: ql
 
@@ -149,7 +149,7 @@ We could demand that ``expr`` is such a node:
       expr instanceof DataFlow::LocalSourceNode
     select call, expr
 
-However, we could also enforce this by casting.
+An alternative approach to limit the results to local sources for the file name is to enforce this by casting.
 That would allow us to use the member predicate ``flowsTo`` on ``LocalSourceNode`` like so:
 
 .. code-block:: ql
@@ -181,7 +181,7 @@ We now mostly have one expression per call.
 
 We may still have cases of more than one expression flowing to a call, but then they flow through different code paths (possibly due to control-flow splitting).
 
-We might want to make the source more specific, for example a parameter to a method or block.
+We might want to make the source more specific, for example, a parameter to a method or block.
 This query finds instances where a parameter is used as the name when opening a file:
 
 .. code-block:: ql
@@ -197,7 +197,7 @@ This query finds instances where a parameter is used as the name when opening a 
 
 Using the exact name supplied via the parameter may be too strict.
 If we want to know if the parameter influences the file name, we can use taint tracking instead of data flow.
-This query finds calls to ``File.open`` where the filename is derived from a parameter:
+This query finds calls to ``File.open`` where the file name is derived from a parameter:
 
 .. code-block:: ql
 
@@ -224,7 +224,7 @@ However, global data flow is less precise than local data flow, and the analysis
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The global data flow library is used by extending the class ``DataFlow::Configuration``:
+You can use the global data flow library by extending the class ``DataFlow::Configuration``:
 
 .. code-block:: ql
 
@@ -316,15 +316,15 @@ Class hierarchy
     -  ``Concepts::SystemCommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
     -  ``Concepts::FileSystemAccess`` - a data-flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.
     -  ``Concepts::Path::PathNormalization`` - a data-flow node that performs path normalization. This is often needed in order to safely access paths.
-    -  ``Concepts::CodeExecution`` - a data-flow node that dynamically executes Python code.
+    -  ``Concepts::CodeExecution`` - a data-flow node that dynamically executes Ruby code.
     -  ``Concepts::SqlExecution`` - a data-flow node that executes SQL statements.
     -  ``Concepts::HTTP::Server::RouteSetup`` - a data-flow node that sets up a route on a server.
     -  ``Concepts::HTTP::Server::HttpResponse`` - a data-flow node that creates an HTTP response on a server.
 
 -  ``TaintTracking::Configuration`` - base class for custom global taint tracking analysis.
 
-Examples
-~~~~~~~~
+Examples of global data flow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This query shows a data flow configuration that uses all network input as data sources:
 
