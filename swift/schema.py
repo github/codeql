@@ -37,6 +37,13 @@ class Location(Element):
 class Locatable(Element):
     location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
 
+@use_for_null
+class UnspecifiedElement(Locatable):
+    parent: optional[Element]
+    property: string
+    index: optional[int]
+    error: string
+
 class Comment(Locatable):
     text: string
 
