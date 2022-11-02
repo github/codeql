@@ -222,3 +222,14 @@ fun varargsUserOnlySinkRegularArgs() {
   varargsTestOnlySinkRegularArgs(x = "two-varargs-before sunk 3", "two-vararg-first not sunk 3", "two-vararg-second not sunk 3", z = "two-varargs-after sunk 3")
   varargsTestOnlySinkRegularArgs("no-z-parmeter sunk 3", "no-z-parameter first vararg not sunk 3", "no-z-parameter second vararg not sunk 3")
 }
+
+class VarargsConstructorTest(x: String, vararg y: String) {
+  init {
+    sink(x)
+  }
+}
+
+fun varargsConstructorUser() {
+  VarargsConstructorTest("varargs constructor test sunk")
+  VarargsConstructorTest("varargs constructor test sunk 2", "varargs constructor test not sunk 1", "varargs constructor test not sunk 2")
+}
