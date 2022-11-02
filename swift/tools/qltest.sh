@@ -10,10 +10,12 @@ EXTRACTOR="$CODEQL_EXTRACTOR_SWIFT_ROOT/tools/$CODEQL_PLATFORM/extractor"
 SDK="$CODEQL_EXTRACTOR_SWIFT_ROOT/qltest/$CODEQL_PLATFORM/sdk"
 
 for src in *.swift; do
+  env=()
   opts=(-sdk "$SDK" -c -primary-file "$src")
   opts+=($(sed -n '1 s=//codeql-extractor-options:==p' $src))
+  env+=($(sed -n '1 s=//codeql-extractor-env:==p' $src))
   echo -e "calling extractor with flags: ${opts[@]}\n" >> $QLTEST_LOG
-  if ! "$EXTRACTOR" "${opts[@]}" >> $QLTEST_LOG 2>&1; then
+  if ! env "${env[@]}" "$EXTRACTOR" "${opts[@]}" >> $QLTEST_LOG 2>&1; then
     FAILED=1
   fi
 done

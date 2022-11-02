@@ -65,4 +65,4 @@ def assert_extractor_executed_with(*flags):
                 actual = actual[len(expected_prefix):]
             assert actual, f"\nnot encountered: {expected}"
             assert expected, f"\nunexpected: {actual}"
-            assert actual == expected, f"\nexpecting: {actual}\ngot:       {expected}"
+            assert actual == expected, f"\nexpecting: {expected}\ngot:       {actual}"
