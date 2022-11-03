@@ -83,4 +83,4 @@ implicitVarargsArguments
 | test.kt:45:5:45:39 | new HasVarargConstructor(...) | 1 | test.kt:45:34:45:38 | array |
 | test.kt:55:13:55:43 | new X(...) | 0 | test.kt:55:42:55:42 | 1 |
 | test.kt:55:13:55:43 | new X(...) | 1 | test.kt:55:15:55:35 | tmp0_s |
-| test.kt:55:22:55:35 | toTypedArray(...) | 0 | test.kt:55:19:55:20 | sl |
+| test.kt:55:19:55:35 | toTypedArray(...) | 0 | test.kt:55:19:55:20 | sl |

@@ -7,6 +7,6 @@ suites: codeql-suites
 extractor: javascript
 defaultSuiteFile: codeql-suites/javascript-code-scanning.qls
 dependencies:
-  codeql/javascript-all: "*"
-  codeql/suite-helpers: "*"
-  codeql/typos: 0.0.1-dev
+  codeql/javascript-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
+  codeql/typos: ${workspace}

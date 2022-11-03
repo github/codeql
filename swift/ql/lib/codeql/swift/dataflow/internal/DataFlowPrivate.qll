@@ -574,6 +574,14 @@ private module PostUpdateNodes {
 
     override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
   }
+
+  class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
+    SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, _) }
+
+    override Node getPreUpdateNode() {
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this, result)
+    }
+  }
 }
 
 private import PostUpdateNodes
