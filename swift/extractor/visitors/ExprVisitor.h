@@ -9,72 +9,82 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
  public:
   using AstVisitorBase<ExprVisitor>::AstVisitorBase;
 
-  void visit(const swift::Expr* expr);
-  void visitIntegerLiteralExpr(swift::IntegerLiteralExpr* expr);
-  void visitFloatLiteralExpr(swift::FloatLiteralExpr* expr);
-  void visitBooleanLiteralExpr(swift::BooleanLiteralExpr* expr);
-  void visitMagicIdentifierLiteralExpr(swift::MagicIdentifierLiteralExpr* expr);
-  void visitStringLiteralExpr(swift::StringLiteralExpr* expr);
-  void visitInterpolatedStringLiteralExpr(swift::InterpolatedStringLiteralExpr* expr);
-  void visitNilLiteralExpr(swift::NilLiteralExpr* expr);
-  void visitCallExpr(swift::CallExpr* expr);
-  void visitPrefixUnaryExpr(swift::PrefixUnaryExpr* expr);
-  void visitDeclRefExpr(swift::DeclRefExpr* expr);
-  void visitAssignExpr(swift::AssignExpr* expr);
-  void visitBindOptionalExpr(swift::BindOptionalExpr* expr);
-  void visitCaptureListExpr(swift::CaptureListExpr* expr);
-  void visitBinaryExpr(swift::BinaryExpr* expr);
-  void visitTupleExpr(swift::TupleExpr* expr);
-  void visitDefaultArgumentExpr(swift::DefaultArgumentExpr* expr);
-  void visitDotSyntaxBaseIgnoredExpr(swift::DotSyntaxBaseIgnoredExpr* expr);
-  void visitDynamicTypeExpr(swift::DynamicTypeExpr* expr);
-  void visitEnumIsCaseExpr(swift::EnumIsCaseExpr* expr);
-  void visitMakeTemporarilyEscapableExpr(swift::MakeTemporarilyEscapableExpr* expr);
-  void visitObjCSelectorExpr(swift::ObjCSelectorExpr* expr);
-  void visitOneWayExpr(swift::OneWayExpr* expr);
-  void visitOpenExistentialExpr(swift::OpenExistentialExpr* expr);
-  void visitOptionalEvaluationExpr(swift::OptionalEvaluationExpr* expr);
-  void visitRebindSelfInConstructorExpr(swift::RebindSelfInConstructorExpr* expr);
-  void visitSuperRefExpr(swift::SuperRefExpr* expr);
-  void visitDotSyntaxCallExpr(swift::DotSyntaxCallExpr* expr);
-  void visitVarargExpansionExpr(swift::VarargExpansionExpr* expr);
-  void visitArrayExpr(swift::ArrayExpr* expr);
+  codeql::IntegerLiteralExpr translateIntegerLiteralExpr(const swift::IntegerLiteralExpr& expr);
+  codeql::FloatLiteralExpr translateFloatLiteralExpr(const swift::FloatLiteralExpr& expr);
+  codeql::BooleanLiteralExpr translateBooleanLiteralExpr(const swift::BooleanLiteralExpr& expr);
+  codeql::MagicIdentifierLiteralExpr translateMagicIdentifierLiteralExpr(
+      const swift::MagicIdentifierLiteralExpr& expr);
+  codeql::StringLiteralExpr translateStringLiteralExpr(const swift::StringLiteralExpr& expr);
+  codeql::InterpolatedStringLiteralExpr translateInterpolatedStringLiteralExpr(
+      const swift::InterpolatedStringLiteralExpr& expr);
+  codeql::NilLiteralExpr translateNilLiteralExpr(const swift::NilLiteralExpr& expr);
+  codeql::CallExpr translateCallExpr(const swift::CallExpr& expr);
+  codeql::PrefixUnaryExpr translatePrefixUnaryExpr(const swift::PrefixUnaryExpr& expr);
+  codeql::DeclRefExpr translateDeclRefExpr(const swift::DeclRefExpr& expr);
+  codeql::AssignExpr translateAssignExpr(const swift::AssignExpr& expr);
+  codeql::BindOptionalExpr translateBindOptionalExpr(const swift::BindOptionalExpr& expr);
+  codeql::CaptureListExpr translateCaptureListExpr(const swift::CaptureListExpr& expr);
+  codeql::BinaryExpr translateBinaryExpr(const swift::BinaryExpr& expr);
+  codeql::TupleExpr translateTupleExpr(const swift::TupleExpr& expr);
+  codeql::DefaultArgumentExpr translateDefaultArgumentExpr(const swift::DefaultArgumentExpr& expr);
+  codeql::DotSyntaxBaseIgnoredExpr translateDotSyntaxBaseIgnoredExpr(
+      const swift::DotSyntaxBaseIgnoredExpr& expr);
+  codeql::DynamicTypeExpr translateDynamicTypeExpr(const swift::DynamicTypeExpr& expr);
+  codeql::EnumIsCaseExpr translateEnumIsCaseExpr(const swift::EnumIsCaseExpr& expr);
+  codeql::MakeTemporarilyEscapableExpr translateMakeTemporarilyEscapableExpr(
+      const swift::MakeTemporarilyEscapableExpr& expr);
+  codeql::ObjCSelectorExpr translateObjCSelectorExpr(const swift::ObjCSelectorExpr& expr);
+  codeql::OneWayExpr translateOneWayExpr(const swift::OneWayExpr& expr);
+  codeql::OpenExistentialExpr translateOpenExistentialExpr(const swift::OpenExistentialExpr& expr);
+  codeql::OptionalEvaluationExpr translateOptionalEvaluationExpr(
+      const swift::OptionalEvaluationExpr& expr);
+  codeql::RebindSelfInConstructorExpr translateRebindSelfInConstructorExpr(
+      const swift::RebindSelfInConstructorExpr& expr);
+  codeql::SuperRefExpr translateSuperRefExpr(const swift::SuperRefExpr& expr);
+  codeql::DotSyntaxCallExpr translateDotSyntaxCallExpr(const swift::DotSyntaxCallExpr& expr);
+  codeql::VarargExpansionExpr translateVarargExpansionExpr(const swift::VarargExpansionExpr& expr);
+  codeql::ArrayExpr translateArrayExpr(const swift::ArrayExpr& expr);
 
   template <typename E>
   TrapClassOf<E> translateImplicitConversionExpr(const E& expr) {
-    auto entry = dispatcher_.createEntry(expr);
+    auto entry = createExprEntry(expr);
     entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
     return entry;
   }
 
   codeql::TypeExpr translateTypeExpr(const swift::TypeExpr& expr);
   codeql::ParenExpr translateParenExpr(const swift::ParenExpr& expr);
-  void visitInOutExpr(swift::InOutExpr* expr);
-  void visitOpaqueValueExpr(swift::OpaqueValueExpr* expr);
-  void visitTapExpr(swift::TapExpr* expr);
-  void visitTupleElementExpr(swift::TupleElementExpr* expr);
-  void visitTryExpr(swift::TryExpr* expr);
-  void visitForceTryExpr(swift::ForceTryExpr* expr);
-  void visitOptionalTryExpr(swift::OptionalTryExpr* expr);
-  void visitConstructorRefCallExpr(swift::ConstructorRefCallExpr* expr);
-  void visitDiscardAssignmentExpr(swift::DiscardAssignmentExpr* expr);
+  codeql::InOutExpr translateInOutExpr(const swift::InOutExpr& expr);
+  codeql::OpaqueValueExpr translateOpaqueValueExpr(const swift::OpaqueValueExpr& expr);
+  codeql::TapExpr translateTapExpr(const swift::TapExpr& expr);
+  codeql::TupleElementExpr translateTupleElementExpr(const swift::TupleElementExpr& expr);
+  codeql::TryExpr translateTryExpr(const swift::TryExpr& expr);
+  codeql::ForceTryExpr translateForceTryExpr(const swift::ForceTryExpr& expr);
+  codeql::OptionalTryExpr translateOptionalTryExpr(const swift::OptionalTryExpr& expr);
+  codeql::ConstructorRefCallExpr translateConstructorRefCallExpr(
+      const swift::ConstructorRefCallExpr& expr);
+  codeql::DiscardAssignmentExpr translateDiscardAssignmentExpr(
+      const swift::DiscardAssignmentExpr& expr);
   codeql::ClosureExpr translateClosureExpr(const swift::ClosureExpr& expr);
   codeql::AutoClosureExpr translateAutoClosureExpr(const swift::AutoClosureExpr& expr);
-  void visitCoerceExpr(swift::CoerceExpr* expr);
-  void visitConditionalCheckedCastExpr(swift::ConditionalCheckedCastExpr* expr);
-  void visitForcedCheckedCastExpr(swift::ForcedCheckedCastExpr* expr);
-  void visitIsExpr(swift::IsExpr* expr);
-  void visitLookupExpr(swift::LookupExpr* expr);
-  void visitSubscriptExpr(swift::SubscriptExpr* expr);
-  void visitDictionaryExpr(swift::DictionaryExpr* expr);
-  void visitMemberRefExpr(swift::MemberRefExpr* expr);
-  void visitKeyPathExpr(swift::KeyPathExpr* expr);
-  void visitLazyInitializerExpr(swift::LazyInitializerExpr* expr);
-  void visitForceValueExpr(swift::ForceValueExpr* expr);
-  void visitIfExpr(swift::IfExpr* expr);
-  void visitKeyPathDotExpr(swift::KeyPathDotExpr* expr);
-  void visitKeyPathApplicationExpr(swift::KeyPathApplicationExpr* expr);
-  void visitOtherConstructorDeclRefExpr(swift::OtherConstructorDeclRefExpr* expr);
+  codeql::CoerceExpr translateCoerceExpr(const swift::CoerceExpr& expr);
+  codeql::ConditionalCheckedCastExpr translateConditionalCheckedCastExpr(
+      const swift::ConditionalCheckedCastExpr& expr);
+  codeql::ForcedCheckedCastExpr translateForcedCheckedCastExpr(
+      const swift::ForcedCheckedCastExpr& expr);
+  codeql::IsExpr translateIsExpr(const swift::IsExpr& expr);
+  codeql::SubscriptExpr translateSubscriptExpr(const swift::SubscriptExpr& expr);
+  codeql::DictionaryExpr translateDictionaryExpr(const swift::DictionaryExpr& expr);
+  codeql::MemberRefExpr translateMemberRefExpr(const swift::MemberRefExpr& expr);
+  codeql::KeyPathExpr translateKeyPathExpr(const swift::KeyPathExpr& expr);
+  codeql::LazyInitializerExpr translateLazyInitializerExpr(const swift::LazyInitializerExpr& expr);
+  codeql::ForceValueExpr translateForceValueExpr(const swift::ForceValueExpr& expr);
+  codeql::IfExpr translateIfExpr(const swift::IfExpr& expr);
+  codeql::KeyPathDotExpr translateKeyPathDotExpr(const swift::KeyPathDotExpr& expr);
+  codeql::KeyPathApplicationExpr translateKeyPathApplicationExpr(
+      const swift::KeyPathApplicationExpr& expr);
+  codeql::OtherConstructorDeclRefExpr translateOtherConstructorDeclRefExpr(
+      const swift::OtherConstructorDeclRefExpr& expr);
   codeql::UnresolvedDeclRefExpr translateUnresolvedDeclRefExpr(
       const swift::UnresolvedDeclRefExpr& expr);
   codeql::UnresolvedDotExpr translateUnresolvedDotExpr(const swift::UnresolvedDotExpr& expr);
@@ -83,36 +93,29 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   codeql::SequenceExpr translateSequenceExpr(const swift::SequenceExpr& expr);
   codeql::DotSelfExpr translateDotSelfExpr(const swift::DotSelfExpr& expr);
   codeql::ErrorExpr translateErrorExpr(const swift::ErrorExpr& expr);
-  // The following function requires a non-const parameter because:
-  // * `swift::UnresolvedPatternExpr::getSubPattern` has a `const`-qualified overload returning
-  //   `const swift::Pattern*`
-  // * `swift::ASTVisitor` only visits non-const pointers
-  // either we accept this, or we fix constness, e.g. by providing `visit` on `const` pointers
-  // in `VisitorBase`, or by doing a `const_cast` in `SwifDispatcher::fetchLabel`
-  codeql::UnresolvedPatternExpr translateUnresolvedPatternExpr(swift::UnresolvedPatternExpr& expr);
+  codeql::UnresolvedPatternExpr translateUnresolvedPatternExpr(
+      const swift::UnresolvedPatternExpr& expr);
 
  private:
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
                                codeql::AbstractClosureExpr& entry);
   TrapLabel<ArgumentTag> emitArgument(const swift::Argument& arg);
-  void emitExplicitCastExpr(swift::ExplicitCastExpr* expr, TrapLabel<ExplicitCastExprTag> label);
+  void fillExplicitCastExpr(const swift::ExplicitCastExpr& expr, codeql::ExplicitCastExpr& entry);
   void fillIdentityExpr(const swift::IdentityExpr& expr, codeql::IdentityExpr& entry);
-  void emitAnyTryExpr(swift::AnyTryExpr* expr, TrapLabel<AnyTryExprTag> label);
-  void emitApplyExpr(const swift::ApplyExpr* expr, TrapLabel<ApplyExprTag> label);
-  void emitSelfApplyExpr(const swift::SelfApplyExpr* expr, TrapLabel<SelfApplyExprTag> label);
-  void emitLookupExpr(const swift::LookupExpr* expr, TrapLabel<LookupExprTag> label);
+  void fillAnyTryExpr(const swift::AnyTryExpr& expr, codeql::AnyTryExpr& entry);
+  void fillApplyExpr(const swift::ApplyExpr& expr, codeql::ApplyExpr& entry);
+  void fillSelfApplyExpr(const swift::SelfApplyExpr& expr, codeql::SelfApplyExpr& entry);
+  void fillLookupExpr(const swift::LookupExpr& expr, codeql::LookupExpr& entry);
 
-  /*
-   * `DirectToStorage`, `DirectToImplementation`, and `DirectToImplementation` must be
-   * constructable from a `Label` argument, and values of `T` must have a
-   * `getAccessSemantics` member that returns a `swift::AccessSemantics`.
-   */
-  template <typename DirectToStorage,
-            typename DirectToImplementation,
-            typename Ordinary,
-            typename T,
-            typename Label>
-  void emitAccessorSemantics(T* ast, Label label);
+  template <typename T>
+  void fillAccessorSemantics(const T& ast, TrapClassOf<T>& entry);
+
+  template <typename T>
+  TrapClassOf<T> createExprEntry(const T& expr) {
+    auto entry = dispatcher_.createEntry(expr);
+    entry.type = dispatcher_.fetchOptionalLabel(expr.getType());
+    return entry;
+  }
 };
 
 }  // namespace codeql

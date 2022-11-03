@@ -4,283 +4,236 @@
 
 namespace codeql {
 
-template <typename DirectToStorage,
-          typename DirectToImplementation,
-          typename Ordinary,
-          typename T,
-          typename Label>
-void ExprVisitor::emitAccessorSemantics(T* ast, Label label) {
-  switch (ast->getAccessSemantics()) {
+template <typename T>
+void ExprVisitor::fillAccessorSemantics(const T& ast, TrapClassOf<T>& entry) {
+  switch (ast.getAccessSemantics()) {
     case swift::AccessSemantics::DirectToStorage:
-      dispatcher_.emit(DirectToStorage{label});
+      entry.has_direct_to_storage_semantics = true;
       break;
     case swift::AccessSemantics::DirectToImplementation:
-      dispatcher_.emit(DirectToImplementation{label});
+      entry.has_direct_to_implementation_semantics = true;
       break;
     case swift::AccessSemantics::Ordinary:
-      dispatcher_.emit(Ordinary{label});
+      entry.has_ordinary_semantics = true;
       break;
   }
 }
 
-void ExprVisitor::visit(const swift::Expr* expr) {
-  AstVisitorBase<ExprVisitor>::visit(expr);
-  auto label = dispatcher_.fetchLabel(expr);
-  if (auto type = expr->getType()) {
-    dispatcher_.emit(ExprTypesTrap{label, dispatcher_.fetchLabel(type)});
+codeql::IntegerLiteralExpr ExprVisitor::translateIntegerLiteralExpr(
+    const swift::IntegerLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.string_value = (expr.isNegative() ? "-" : "") + expr.getDigitsText().str();
+  return entry;
+}
+
+codeql::FloatLiteralExpr ExprVisitor::translateFloatLiteralExpr(
+    const swift::FloatLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.string_value = (expr.isNegative() ? "-" : "") + expr.getDigitsText().str();
+  return entry;
+}
+
+codeql::BooleanLiteralExpr ExprVisitor::translateBooleanLiteralExpr(
+    const swift::BooleanLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.value = expr.getValue();
+  return entry;
+}
+
+codeql::MagicIdentifierLiteralExpr ExprVisitor::translateMagicIdentifierLiteralExpr(
+    const swift::MagicIdentifierLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.kind = swift::MagicIdentifierLiteralExpr::getKindString(expr.getKind()).str();
+  return entry;
+}
+
+codeql::StringLiteralExpr ExprVisitor::translateStringLiteralExpr(
+    const swift::StringLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.value = expr.getValue().str();
+  return entry;
+}
+
+codeql::InterpolatedStringLiteralExpr ExprVisitor::translateInterpolatedStringLiteralExpr(
+    const swift::InterpolatedStringLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.interpolation_expr = dispatcher_.fetchOptionalLabel(expr.getInterpolationExpr());
+  // TODO we should be extracting getInterpolationCount and getLiteralCapacity directly to ints
+  // these expressions here are just an internal thing, the ints are actually directly available
+  entry.interpolation_count_expr = dispatcher_.fetchOptionalLabel(expr.getInterpolationCountExpr());
+  entry.literal_capacity_expr = dispatcher_.fetchOptionalLabel(expr.getLiteralCapacityExpr());
+  entry.appending_expr = dispatcher_.fetchOptionalLabel(expr.getAppendingExpr());
+  return entry;
+}
+
+codeql::NilLiteralExpr ExprVisitor::translateNilLiteralExpr(const swift::NilLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  return entry;
+}
+
+codeql::CallExpr ExprVisitor::translateCallExpr(const swift::CallExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillApplyExpr(expr, entry);
+  return entry;
+}
+
+codeql::PrefixUnaryExpr ExprVisitor::translatePrefixUnaryExpr(const swift::PrefixUnaryExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillApplyExpr(expr, entry);
+  return entry;
+}
+
+codeql::DeclRefExpr ExprVisitor::translateDeclRefExpr(const swift::DeclRefExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.decl = dispatcher_.fetchLabel(expr.getDecl());
+  fillAccessorSemantics(expr, entry);
+  entry.replacement_types =
+      dispatcher_.fetchRepeatedLabels(expr.getDeclRef().getSubstitutions().getReplacementTypes());
+  return entry;
+}
+
+codeql::AssignExpr ExprVisitor::translateAssignExpr(const swift::AssignExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.dest = dispatcher_.fetchLabel(expr.getDest());
+  entry.source = dispatcher_.fetchLabel(expr.getSrc());
+  return entry;
+}
+
+codeql::BindOptionalExpr ExprVisitor::translateBindOptionalExpr(
+    const swift::BindOptionalExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  return entry;
+}
+
+codeql::CaptureListExpr ExprVisitor::translateCaptureListExpr(const swift::CaptureListExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.closure_body = dispatcher_.fetchLabel(expr.getClosureBody());
+  for (const auto& item : const_cast<swift::CaptureListExpr&>(expr).getCaptureList()) {
+    entry.binding_decls.push_back(dispatcher_.fetchLabel(item.PBD));
   }
+  return entry;
 }
 
-void ExprVisitor::visitIntegerLiteralExpr(swift::IntegerLiteralExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  auto value = (expr->isNegative() ? "-" : "") + expr->getDigitsText().str();
-  dispatcher_.emit(IntegerLiteralExprsTrap{label, value});
+codeql::BinaryExpr ExprVisitor::translateBinaryExpr(const swift::BinaryExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillApplyExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitFloatLiteralExpr(swift::FloatLiteralExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  auto value = (expr->isNegative() ? "-" : "") + expr->getDigitsText().str();
-  dispatcher_.emit(FloatLiteralExprsTrap{label, value});
+codeql::TupleExpr ExprVisitor::translateTupleExpr(const swift::TupleExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.elements = dispatcher_.fetchRepeatedLabels(expr.getElements());
+  return entry;
 }
 
-void ExprVisitor::visitBooleanLiteralExpr(swift::BooleanLiteralExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(BooleanLiteralExprsTrap{label, expr->getValue()});
-}
-
-void ExprVisitor::visitMagicIdentifierLiteralExpr(swift::MagicIdentifierLiteralExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  auto kind = swift::MagicIdentifierLiteralExpr::getKindString(expr->getKind()).str();
-  dispatcher_.emit(MagicIdentifierLiteralExprsTrap{label, kind});
-}
-
-void ExprVisitor::visitStringLiteralExpr(swift::StringLiteralExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(StringLiteralExprsTrap{label, expr->getValue().str()});
-}
-
-void ExprVisitor::visitInterpolatedStringLiteralExpr(swift::InterpolatedStringLiteralExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(InterpolatedStringLiteralExprsTrap{label});
-  if (auto interpolation = expr->getInterpolationExpr()) {
-    auto ref = dispatcher_.fetchLabel(interpolation);
-    dispatcher_.emit(InterpolatedStringLiteralExprInterpolationExprsTrap{label, ref});
+codeql::DefaultArgumentExpr ExprVisitor::translateDefaultArgumentExpr(
+    const swift::DefaultArgumentExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.param_decl = dispatcher_.fetchLabel(expr.getParamDecl());
+  entry.param_index = expr.getParamIndex();
+  if (expr.isCallerSide()) {
+    entry.caller_side_default = dispatcher_.fetchLabel(expr.getCallerSideDefaultExpr());
   }
-  if (auto count = expr->getInterpolationCountExpr()) {
-    auto ref = dispatcher_.fetchLabel(count);
-    dispatcher_.emit(InterpolatedStringLiteralExprInterpolationCountExprsTrap{label, ref});
-  }
-  if (auto capacity = expr->getLiteralCapacityExpr()) {
-    auto ref = dispatcher_.fetchLabel(capacity);
-    dispatcher_.emit(InterpolatedStringLiteralExprLiteralCapacityExprsTrap{label, ref});
-  }
-  if (auto appending = expr->getAppendingExpr()) {
-    auto ref = dispatcher_.fetchLabel(appending);
-    dispatcher_.emit(InterpolatedStringLiteralExprAppendingExprsTrap{label, ref});
-  }
+  return entry;
 }
 
-void ExprVisitor::visitNilLiteralExpr(swift::NilLiteralExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(NilLiteralExprsTrap{label});
+codeql::DotSyntaxBaseIgnoredExpr ExprVisitor::translateDotSyntaxBaseIgnoredExpr(
+    const swift::DotSyntaxBaseIgnoredExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.qualifier = dispatcher_.fetchLabel(expr.getLHS());
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getRHS());
+  return entry;
 }
 
-void ExprVisitor::visitCallExpr(swift::CallExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(CallExprsTrap{label});
-  emitApplyExpr(expr, label);
+codeql::DynamicTypeExpr ExprVisitor::translateDynamicTypeExpr(const swift::DynamicTypeExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.base = dispatcher_.fetchLabel(expr.getBase());
+  return entry;
 }
 
-void ExprVisitor::visitPrefixUnaryExpr(swift::PrefixUnaryExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(PrefixUnaryExprsTrap{label});
-  emitApplyExpr(expr, label);
+codeql::EnumIsCaseExpr ExprVisitor::translateEnumIsCaseExpr(const swift::EnumIsCaseExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  entry.element = dispatcher_.fetchLabel(expr.getEnumElement());
+  return entry;
 }
 
-void ExprVisitor::visitDeclRefExpr(swift::DeclRefExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(DeclRefExprsTrap{label, dispatcher_.fetchLabel(expr->getDecl())});
-  emitAccessorSemantics<DeclRefExprHasDirectToStorageSemanticsTrap,
-                        DeclRefExprHasDirectToImplementationSemanticsTrap,
-                        DeclRefExprHasOrdinarySemanticsTrap>(expr, label);
-  auto i = 0u;
-  for (auto t : expr->getDeclRef().getSubstitutions().getReplacementTypes()) {
-    dispatcher_.emit(DeclRefExprReplacementTypesTrap{label, i++, dispatcher_.fetchLabel(t)});
-  }
+codeql::MakeTemporarilyEscapableExpr ExprVisitor::translateMakeTemporarilyEscapableExpr(
+    const swift::MakeTemporarilyEscapableExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.escaping_closure = dispatcher_.fetchLabel(expr.getOpaqueValue());
+  entry.nonescaping_closure = dispatcher_.fetchLabel(expr.getNonescapingClosureValue());
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  return entry;
 }
 
-void ExprVisitor::visitAssignExpr(swift::AssignExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getDest() && "AssignExpr has Dest");
-  assert(expr->getSrc() && "AssignExpr has Src");
-  auto dest = dispatcher_.fetchLabel(expr->getDest());
-  auto src = dispatcher_.fetchLabel(expr->getSrc());
-  dispatcher_.emit(AssignExprsTrap{label, dest, src});
+codeql::ObjCSelectorExpr ExprVisitor::translateObjCSelectorExpr(
+    const swift::ObjCSelectorExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  entry.method = dispatcher_.fetchLabel(expr.getMethod());
+  return entry;
 }
 
-void ExprVisitor::visitBindOptionalExpr(swift::BindOptionalExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "BindOptionalExpr has SubExpr");
-  auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  dispatcher_.emit(BindOptionalExprsTrap{label, subExpr});
+codeql::OneWayExpr ExprVisitor::translateOneWayExpr(const swift::OneWayExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  return entry;
 }
 
-void ExprVisitor::visitCaptureListExpr(swift::CaptureListExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getClosureBody() && "CaptureListExpr has ClosureBody");
-  auto closureBody = dispatcher_.fetchLabel(expr->getClosureBody());
-  dispatcher_.emit(CaptureListExprsTrap{label, closureBody});
-  unsigned index = 0;
-  for (auto& entry : expr->getCaptureList()) {
-    auto captureLabel = dispatcher_.fetchLabel(entry.PBD);
-    dispatcher_.emit(CaptureListExprBindingDeclsTrap{label, index++, captureLabel});
-  }
+codeql::OpenExistentialExpr ExprVisitor::translateOpenExistentialExpr(
+    const swift::OpenExistentialExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  entry.existential = dispatcher_.fetchLabel(expr.getExistentialValue());
+  entry.opaque_expr = dispatcher_.fetchLabel(expr.getOpaqueValue());
+  return entry;
 }
 
-void ExprVisitor::visitBinaryExpr(swift::BinaryExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(BinaryExprsTrap{label});
-  emitApplyExpr(expr, label);
+codeql::OptionalEvaluationExpr ExprVisitor::translateOptionalEvaluationExpr(
+    const swift::OptionalEvaluationExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  return entry;
 }
 
-void ExprVisitor::visitTupleExpr(swift::TupleExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(TupleExprsTrap{label});
-  unsigned index = 0;
-  for (auto element : expr->getElements()) {
-    auto elementLabel = dispatcher_.fetchLabel(element);
-    dispatcher_.emit(TupleExprElementsTrap{label, index++, elementLabel});
-  }
+codeql::RebindSelfInConstructorExpr ExprVisitor::translateRebindSelfInConstructorExpr(
+    const swift::RebindSelfInConstructorExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  entry.self = dispatcher_.fetchLabel(expr.getSelf());
+  return entry;
 }
 
-void ExprVisitor::visitDefaultArgumentExpr(swift::DefaultArgumentExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getParamDecl() && "DefaultArgumentExpr has getParamDecl");
-  /// TODO: suddenly, getParamDecl is const, monkey-patching it here
-  auto paramLabel = dispatcher_.fetchLabel((swift::ParamDecl*)expr->getParamDecl());
-  dispatcher_.emit(
-      DefaultArgumentExprsTrap{label, paramLabel, static_cast<int>(expr->getParamIndex())});
-  if (expr->isCallerSide()) {
-    auto callSiteDefaultLabel = dispatcher_.fetchLabel(expr->getCallerSideDefaultExpr());
-    dispatcher_.emit(DefaultArgumentExprCallerSideDefaultsTrap{label, callSiteDefaultLabel});
-  }
+codeql::SuperRefExpr ExprVisitor::translateSuperRefExpr(const swift::SuperRefExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.self = dispatcher_.fetchLabel(expr.getSelf());
+  return entry;
 }
 
-void ExprVisitor::visitDotSyntaxBaseIgnoredExpr(swift::DotSyntaxBaseIgnoredExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getLHS() && "DotSyntaxBaseIgnoredExpr has LHS");
-  assert(expr->getRHS() && "DotSyntaxBaseIgnoredExpr has RHS");
-  auto lhs = dispatcher_.fetchLabel(expr->getLHS());
-  auto rhs = dispatcher_.fetchLabel(expr->getRHS());
-  dispatcher_.emit(DotSyntaxBaseIgnoredExprsTrap{label, lhs, rhs});
+codeql::DotSyntaxCallExpr ExprVisitor::translateDotSyntaxCallExpr(
+    const swift::DotSyntaxCallExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillSelfApplyExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitDynamicTypeExpr(swift::DynamicTypeExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getBase() && "DynamicTypeExpr has Base");
-  auto base = dispatcher_.fetchLabel(expr->getBase());
-  dispatcher_.emit(DynamicTypeExprsTrap{label, base});
+codeql::VarargExpansionExpr ExprVisitor::translateVarargExpansionExpr(
+    const swift::VarargExpansionExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  return entry;
 }
 
-void ExprVisitor::visitEnumIsCaseExpr(swift::EnumIsCaseExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "EnumIsCaseExpr has SubExpr");
-  assert(expr->getCaseTypeRepr() && "EnumIsCaseExpr has CaseTypeRepr");
-  assert(expr->getEnumElement() && "EnumIsCaseExpr has EnumElement");
-  auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  auto enumElement = dispatcher_.fetchLabel(expr->getEnumElement());
-  dispatcher_.emit(EnumIsCaseExprsTrap{label, subExpr, enumElement});
-}
-
-void ExprVisitor::visitMakeTemporarilyEscapableExpr(swift::MakeTemporarilyEscapableExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getOpaqueValue() && "MakeTemporarilyEscapableExpr has OpaqueValue");
-  assert(expr->getNonescapingClosureValue() &&
-         "MakeTemporarilyEscapableExpr has NonescapingClosureValue");
-  assert(expr->getSubExpr() && "MakeTemporarilyEscapableExpr has SubExpr");
-  auto opaqueValue = dispatcher_.fetchLabel(expr->getOpaqueValue());
-  auto nonescapingClosureValue = dispatcher_.fetchLabel(expr->getNonescapingClosureValue());
-  auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  dispatcher_.emit(
-      MakeTemporarilyEscapableExprsTrap{label, opaqueValue, nonescapingClosureValue, subExpr});
-}
-
-void ExprVisitor::visitObjCSelectorExpr(swift::ObjCSelectorExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "ObjCSelectorExpr has SubExpr");
-  assert(expr->getMethod() && "ObjCSelectorExpr has Method");
-  auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  auto method = dispatcher_.fetchLabel(expr->getMethod());
-  dispatcher_.emit(ObjCSelectorExprsTrap{label, subExpr, method});
-}
-
-void ExprVisitor::visitOneWayExpr(swift::OneWayExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "OneWayExpr has SubExpr");
-  auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  dispatcher_.emit(OneWayExprsTrap{label, subExpr});
-}
-
-void ExprVisitor::visitOpenExistentialExpr(swift::OpenExistentialExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "OpenExistentialExpr has SubExpr");
-  assert(expr->getExistentialValue() && "OpenExistentialExpr has ExistentialValue");
-  assert(expr->getOpaqueValue() && "OpenExistentialExpr has OpaqueValue");
-  auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  auto existentialValue = dispatcher_.fetchLabel(expr->getExistentialValue());
-  auto opaqueValue = dispatcher_.fetchLabel(expr->getOpaqueValue());
-  dispatcher_.emit(OpenExistentialExprsTrap{label, subExpr, existentialValue, opaqueValue});
-}
-
-void ExprVisitor::visitOptionalEvaluationExpr(swift::OptionalEvaluationExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "OptionalEvaluationExpr has SubExpr");
-  auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  dispatcher_.emit(OptionalEvaluationExprsTrap{label, subExpr});
-}
-
-void ExprVisitor::visitRebindSelfInConstructorExpr(swift::RebindSelfInConstructorExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "RebindSelfInConstructorExpr has SubExpr");
-  assert(expr->getSelf() && "RebindSelfInConstructorExpr has Self");
-  auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  auto self = dispatcher_.fetchLabel(expr->getSelf());
-  dispatcher_.emit(RebindSelfInConstructorExprsTrap{label, subExpr, self});
-}
-
-void ExprVisitor::visitSuperRefExpr(swift::SuperRefExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSelf() && "SuperRefExpr has Self");
-  auto self = dispatcher_.fetchLabel(expr->getSelf());
-  dispatcher_.emit(SuperRefExprsTrap{label, self});
-}
-
-void ExprVisitor::visitDotSyntaxCallExpr(swift::DotSyntaxCallExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(DotSyntaxCallExprsTrap{label});
-  emitSelfApplyExpr(expr, label);
-}
-
-void ExprVisitor::visitVarargExpansionExpr(swift::VarargExpansionExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "VarargExpansionExpr has getSubExpr()");
-
-  auto subExprLabel = dispatcher_.fetchLabel(expr->getSubExpr());
-  dispatcher_.emit(VarargExpansionExprsTrap{label, subExprLabel});
-}
-
-void ExprVisitor::visitArrayExpr(swift::ArrayExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(ArrayExprsTrap{label});
-  unsigned index = 0;
-  for (auto element : expr->getElements()) {
-    auto elementLabel = dispatcher_.fetchLabel(element);
-    dispatcher_.emit(ArrayExprElementsTrap{label, index++, elementLabel});
-  }
+codeql::ArrayExpr ExprVisitor::translateArrayExpr(const swift::ArrayExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.elements = dispatcher_.fetchRepeatedLabels(expr.getElements());
+  return entry;
 }
 
 codeql::TypeExpr ExprVisitor::translateTypeExpr(const swift::TypeExpr& expr) {
-  TypeExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   if (expr.getTypeRepr() && expr.getInstanceType()) {
     entry.type_repr = dispatcher_.fetchLabel(expr.getTypeRepr(), expr.getInstanceType());
   }
@@ -288,228 +241,192 @@ codeql::TypeExpr ExprVisitor::translateTypeExpr(const swift::TypeExpr& expr) {
 }
 
 codeql::ParenExpr ExprVisitor::translateParenExpr(const swift::ParenExpr& expr) {
-  ParenExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   fillIdentityExpr(expr, entry);
   return entry;
 }
 
-void ExprVisitor::visitInOutExpr(swift::InOutExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "InOutExpr has getSubExpr()");
-
-  auto subExprLabel = dispatcher_.fetchLabel(expr->getSubExpr());
-  dispatcher_.emit(InOutExprsTrap{label, subExprLabel});
+codeql::InOutExpr ExprVisitor::translateInOutExpr(const swift::InOutExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  return entry;
 }
 
-void ExprVisitor::visitOpaqueValueExpr(swift::OpaqueValueExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(OpaqueValueExprsTrap{label});
+codeql::OpaqueValueExpr ExprVisitor::translateOpaqueValueExpr(const swift::OpaqueValueExpr& expr) {
+  auto entry = createExprEntry(expr);
+  return entry;
 }
 
-void ExprVisitor::visitTapExpr(swift::TapExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getVar() && "TapExpr has getVar()");
-  assert(expr->getBody() && "TapExpr has getBody()");
-
-  auto varLabel = dispatcher_.fetchLabel(expr->getVar());
-  auto bodyLabel = dispatcher_.fetchLabel(expr->getBody());
-
-  dispatcher_.emit(TapExprsTrap{label, bodyLabel, varLabel});
-  if (auto subExpr = expr->getSubExpr()) {
-    dispatcher_.emit(TapExprSubExprsTrap{label, dispatcher_.fetchLabel(subExpr)});
-  }
+codeql::TapExpr ExprVisitor::translateTapExpr(const swift::TapExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.var = dispatcher_.fetchLabel(expr.getVar());
+  entry.body = dispatcher_.fetchLabel(expr.getBody());
+  entry.sub_expr = dispatcher_.fetchOptionalLabel(expr.getSubExpr());
+  return entry;
 }
 
-void ExprVisitor::visitTupleElementExpr(swift::TupleElementExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getBase() && "TupleElementExpr has getBase()");
-
-  auto base = dispatcher_.fetchLabel(expr->getBase());
-  auto index = expr->getFieldNumber();
-  dispatcher_.emit(TupleElementExprsTrap{label, base, index});
+codeql::TupleElementExpr ExprVisitor::translateTupleElementExpr(
+    const swift::TupleElementExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getBase());
+  entry.index = expr.getFieldNumber();
+  return entry;
 }
 
-void ExprVisitor::visitTryExpr(swift::TryExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(TryExprsTrap{label});
-  emitAnyTryExpr(expr, label);
+codeql::TryExpr ExprVisitor::translateTryExpr(const swift::TryExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillAnyTryExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitForceTryExpr(swift::ForceTryExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(ForceTryExprsTrap{label});
-  emitAnyTryExpr(expr, label);
+codeql::ForceTryExpr ExprVisitor::translateForceTryExpr(const swift::ForceTryExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillAnyTryExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitOptionalTryExpr(swift::OptionalTryExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(OptionalTryExprsTrap{label});
-  emitAnyTryExpr(expr, label);
+codeql::OptionalTryExpr ExprVisitor::translateOptionalTryExpr(const swift::OptionalTryExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillAnyTryExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitConstructorRefCallExpr(swift::ConstructorRefCallExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(ConstructorRefCallExprsTrap{label});
-  emitSelfApplyExpr(expr, label);
+codeql::ConstructorRefCallExpr ExprVisitor::translateConstructorRefCallExpr(
+    const swift::ConstructorRefCallExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillSelfApplyExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitDiscardAssignmentExpr(swift::DiscardAssignmentExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(DiscardAssignmentExprsTrap{label});
+codeql::DiscardAssignmentExpr ExprVisitor::translateDiscardAssignmentExpr(
+    const swift::DiscardAssignmentExpr& expr) {
+  auto entry = createExprEntry(expr);
+  return entry;
 }
 
 codeql::ClosureExpr ExprVisitor::translateClosureExpr(const swift::ClosureExpr& expr) {
-  ClosureExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   fillAbstractClosureExpr(expr, entry);
   return entry;
 }
 
 codeql::AutoClosureExpr ExprVisitor::translateAutoClosureExpr(const swift::AutoClosureExpr& expr) {
-  AutoClosureExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   fillAbstractClosureExpr(expr, entry);
   return entry;
 }
 
-void ExprVisitor::visitCoerceExpr(swift::CoerceExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(CoerceExprsTrap{label});
-  emitExplicitCastExpr(expr, label);
+codeql::CoerceExpr ExprVisitor::translateCoerceExpr(const swift::CoerceExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillExplicitCastExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitConditionalCheckedCastExpr(swift::ConditionalCheckedCastExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(ConditionalCheckedCastExprsTrap{label});
-  emitExplicitCastExpr(expr, label);
+codeql::ConditionalCheckedCastExpr ExprVisitor::translateConditionalCheckedCastExpr(
+    const swift::ConditionalCheckedCastExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillExplicitCastExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitForcedCheckedCastExpr(swift::ForcedCheckedCastExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(ForcedCheckedCastExprsTrap{label});
-  emitExplicitCastExpr(expr, label);
+codeql::ForcedCheckedCastExpr ExprVisitor::translateForcedCheckedCastExpr(
+    const swift::ForcedCheckedCastExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillExplicitCastExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitIsExpr(swift::IsExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(IsExprsTrap{label});
-  emitExplicitCastExpr(expr, label);
+codeql::IsExpr ExprVisitor::translateIsExpr(const swift::IsExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillExplicitCastExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitLookupExpr(swift::LookupExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  emitLookupExpr(expr, label);
-}
-
-void ExprVisitor::visitSubscriptExpr(swift::SubscriptExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(SubscriptExprsTrap{label});
-
-  emitAccessorSemantics<SubscriptExprHasDirectToStorageSemanticsTrap,
-                        SubscriptExprHasDirectToImplementationSemanticsTrap,
-                        SubscriptExprHasOrdinarySemanticsTrap>(expr, label);
-
-  auto i = 0u;
-  for (const auto& arg : *expr->getArgs()) {
-    dispatcher_.emit(SubscriptExprArgumentsTrap{label, i++, emitArgument(arg)});
+codeql::SubscriptExpr ExprVisitor::translateSubscriptExpr(const swift::SubscriptExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillAccessorSemantics(expr, entry);
+  assert(expr.getArgs() && "SubscriptExpr has getArgs");
+  for (const auto& arg : *expr.getArgs()) {
+    entry.arguments.push_back(emitArgument(arg));
   }
-  emitLookupExpr(expr, label);
+  fillLookupExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitDictionaryExpr(swift::DictionaryExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(DictionaryExprsTrap{label});
-  unsigned index = 0;
-  for (auto element : expr->getElements()) {
-    auto elementLabel = dispatcher_.fetchLabel(element);
-    dispatcher_.emit(DictionaryExprElementsTrap{label, index++, elementLabel});
-  }
+codeql::DictionaryExpr ExprVisitor::translateDictionaryExpr(const swift::DictionaryExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.elements = dispatcher_.fetchRepeatedLabels(expr.getElements());
+  return entry;
 }
 
-void ExprVisitor::visitMemberRefExpr(swift::MemberRefExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(MemberRefExprsTrap{label});
-
-  emitAccessorSemantics<MemberRefExprHasDirectToStorageSemanticsTrap,
-                        MemberRefExprHasDirectToImplementationSemanticsTrap,
-                        MemberRefExprHasOrdinarySemanticsTrap>(expr, label);
-
-  emitLookupExpr(expr, label);
+codeql::MemberRefExpr ExprVisitor::translateMemberRefExpr(const swift::MemberRefExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillAccessorSemantics(expr, entry);
+  fillLookupExpr(expr, entry);
+  return entry;
 }
 
-void ExprVisitor::visitKeyPathExpr(swift::KeyPathExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(KeyPathExprsTrap{label});
-  if (!expr->isObjC()) {
-    if (auto path = expr->getParsedPath()) {
-      auto pathLabel = dispatcher_.fetchLabel(path);
-      dispatcher_.emit(KeyPathExprParsedPathsTrap{label, pathLabel});
-    }
-    // TODO maybe move this logic to QL?
-    if (auto rootTypeRepr = expr->getRootType()) {
-      auto keyPathType = expr->getType()->getAs<swift::BoundGenericClassType>();
+codeql::KeyPathExpr ExprVisitor::translateKeyPathExpr(const swift::KeyPathExpr& expr) {
+  auto entry = createExprEntry(expr);
+  // TODO this should be completely redone, as we are using internal stuff here instead of
+  // extracting expr.getComponents()
+  if (!expr.isObjC()) {
+    entry.parsed_path = dispatcher_.fetchOptionalLabel(expr.getParsedPath());
+    if (auto rootTypeRepr = expr.getRootType()) {
+      auto keyPathType = expr.getType()->getAs<swift::BoundGenericClassType>();
       assert(keyPathType && "KeyPathExpr must have BoundGenericClassType");
       auto keyPathTypeArgs = keyPathType->getGenericArgs();
       assert(keyPathTypeArgs.size() != 0 && "KeyPathExpr type must have generic args");
-      auto rootLabel = dispatcher_.fetchLabel(rootTypeRepr, keyPathTypeArgs[0]);
-      dispatcher_.emit(KeyPathExprRootsTrap{label, rootLabel});
+      entry.root = dispatcher_.fetchLabel(rootTypeRepr, keyPathTypeArgs[0]);
     }
   }
+  return entry;
 }
 
-void ExprVisitor::visitLazyInitializerExpr(swift::LazyInitializerExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "LazyInitializerExpr has getSubExpr()");
-  auto subExprLabel = dispatcher_.fetchLabel(expr->getSubExpr());
-  dispatcher_.emit(LazyInitializerExprsTrap{label, subExprLabel});
+codeql::LazyInitializerExpr ExprVisitor::translateLazyInitializerExpr(
+    const swift::LazyInitializerExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  return entry;
 }
 
-void ExprVisitor::visitForceValueExpr(swift::ForceValueExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getSubExpr() && "ForceValueExpr has getSubExpr()");
-
-  auto subExprLabel = dispatcher_.fetchLabel(expr->getSubExpr());
-  dispatcher_.emit(ForceValueExprsTrap{label, subExprLabel});
+codeql::ForceValueExpr ExprVisitor::translateForceValueExpr(const swift::ForceValueExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+  return entry;
 }
 
-void ExprVisitor::visitIfExpr(swift::IfExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getCondExpr() && "IfExpr has getCond()");
-  assert(expr->getThenExpr() && "IfExpr has getThenExpr()");
-  assert(expr->getElseExpr() && "IfExpr has getElseExpr()");
-
-  auto condLabel = dispatcher_.fetchLabel(expr->getCondExpr());
-  auto thenLabel = dispatcher_.fetchLabel(expr->getThenExpr());
-  auto elseLabel = dispatcher_.fetchLabel(expr->getElseExpr());
-
-  dispatcher_.emit(IfExprsTrap{label, condLabel, thenLabel, elseLabel});
+codeql::IfExpr ExprVisitor::translateIfExpr(const swift::IfExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.condition = dispatcher_.fetchLabel(expr.getCondExpr());
+  entry.then_expr = dispatcher_.fetchLabel(expr.getThenExpr());
+  entry.else_expr = dispatcher_.fetchLabel(expr.getElseExpr());
+  return entry;
 }
 
-void ExprVisitor::visitKeyPathDotExpr(swift::KeyPathDotExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  dispatcher_.emit(KeyPathDotExprsTrap{label});
+codeql::KeyPathDotExpr ExprVisitor::translateKeyPathDotExpr(const swift::KeyPathDotExpr& expr) {
+  auto entry = createExprEntry(expr);
+  return entry;
 }
 
-void ExprVisitor::visitKeyPathApplicationExpr(swift::KeyPathApplicationExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getBase() && "KeyPathApplicationExpr has getBase()");
-  assert(expr->getKeyPath() && "KeyPathApplicationExpr has getKeyPath()");
-
-  auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
-  auto keyPathLabel = dispatcher_.fetchLabel(expr->getKeyPath());
-
-  dispatcher_.emit(KeyPathApplicationExprsTrap{label, baseLabel, keyPathLabel});
+codeql::KeyPathApplicationExpr ExprVisitor::translateKeyPathApplicationExpr(
+    const swift::KeyPathApplicationExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.base = dispatcher_.fetchLabel(expr.getBase());
+  entry.key_path = dispatcher_.fetchLabel(expr.getKeyPath());
+  return entry;
 }
 
-void ExprVisitor::visitOtherConstructorDeclRefExpr(swift::OtherConstructorDeclRefExpr* expr) {
-  auto label = dispatcher_.assignNewLabel(expr);
-  assert(expr->getDecl() && "OtherConstructorDeclRefExpr has getDecl()");
-
-  auto ctorLabel = dispatcher_.fetchLabel(expr->getDecl());
-  dispatcher_.emit(OtherConstructorDeclRefExprsTrap{label, ctorLabel});
+codeql::OtherConstructorDeclRefExpr ExprVisitor::translateOtherConstructorDeclRefExpr(
+    const swift::OtherConstructorDeclRefExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.constructor_decl = dispatcher_.fetchLabel(expr.getDecl());
+  return entry;
 }
 
 codeql::UnresolvedDeclRefExpr ExprVisitor::translateUnresolvedDeclRefExpr(
     const swift::UnresolvedDeclRefExpr& expr) {
-  codeql::UnresolvedDeclRefExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   if (expr.hasName()) {
     llvm::SmallVector<char> scratch;
     entry.name = expr.getName().getString(scratch).str();
@@ -519,8 +436,7 @@ codeql::UnresolvedDeclRefExpr ExprVisitor::translateUnresolvedDeclRefExpr(
 
 codeql::UnresolvedDotExpr ExprVisitor::translateUnresolvedDotExpr(
     const swift::UnresolvedDotExpr& expr) {
-  codeql::UnresolvedDotExpr entry{dispatcher_.assignNewLabel(expr)};
-  assert(expr.getBase() && "Expect UnresolvedDotExpr to have a base");
+  auto entry = createExprEntry(expr);
   entry.base = dispatcher_.fetchLabel(expr.getBase());
   llvm::SmallVector<char> scratch;
   entry.name = expr.getName().getString(scratch).str();
@@ -529,33 +445,32 @@ codeql::UnresolvedDotExpr ExprVisitor::translateUnresolvedDotExpr(
 
 codeql::UnresolvedMemberExpr ExprVisitor::translateUnresolvedMemberExpr(
     const swift::UnresolvedMemberExpr& expr) {
-  UnresolvedMemberExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   llvm::SmallVector<char> scratch;
   entry.name = expr.getName().getString(scratch).str();
   return entry;
 }
 
 codeql::SequenceExpr ExprVisitor::translateSequenceExpr(const swift::SequenceExpr& expr) {
-  SequenceExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   entry.elements = dispatcher_.fetchRepeatedLabels(expr.getElements());
   return entry;
 }
 
 codeql::DotSelfExpr ExprVisitor::translateDotSelfExpr(const swift::DotSelfExpr& expr) {
-  DotSelfExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   fillIdentityExpr(expr, entry);
   return entry;
 }
 
 codeql::ErrorExpr ExprVisitor::translateErrorExpr(const swift::ErrorExpr& expr) {
-  ErrorExpr entry{dispatcher_.assignNewLabel(expr)};
+  auto entry = createExprEntry(expr);
   return entry;
 }
 
 void ExprVisitor::fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
                                           codeql::AbstractClosureExpr& entry) {
   assert(expr.getParameters() && "AbstractClosureExpr has getParameters()");
-  assert(expr.getBody() && "AbstractClosureExpr has getBody()");
   entry.params = dispatcher_.fetchRepeatedLabels(*expr.getParameters());
   entry.body = dispatcher_.fetchLabel(expr.getBody());
 }
@@ -568,53 +483,43 @@ TrapLabel<ArgumentTag> ExprVisitor::emitArgument(const swift::Argument& arg) {
   return entry.id;
 }
 
-void ExprVisitor::emitExplicitCastExpr(swift::ExplicitCastExpr* expr,
-                                       TrapLabel<ExplicitCastExprTag> label) {
-  assert(expr->getSubExpr() && "ExplicitCastExpr has getSubExpr()");
-  dispatcher_.emit(ExplicitCastExprsTrap{label, dispatcher_.fetchLabel(expr->getSubExpr())});
-}
-
-void ExprVisitor::fillIdentityExpr(const swift::IdentityExpr& expr, codeql::IdentityExpr& entry) {
-  assert(expr.getSubExpr() && "IdentityExpr has getSubExpr()");
+void ExprVisitor::fillExplicitCastExpr(const swift::ExplicitCastExpr& expr,
+                                       codeql::ExplicitCastExpr& entry) {
   entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
 }
 
-void ExprVisitor::emitAnyTryExpr(swift::AnyTryExpr* expr, TrapLabel<AnyTryExprTag> label) {
-  assert(expr->getSubExpr() && "AnyTryExpr has getSubExpr()");
-  dispatcher_.emit(AnyTryExprsTrap{label, dispatcher_.fetchLabel(expr->getSubExpr())});
+void ExprVisitor::fillIdentityExpr(const swift::IdentityExpr& expr, codeql::IdentityExpr& entry) {
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
 }
 
-void ExprVisitor::emitApplyExpr(const swift::ApplyExpr* expr, TrapLabel<ApplyExprTag> label) {
-  assert(expr->getFn() && "CallExpr has Fn");
-  auto fnLabel = dispatcher_.fetchLabel(expr->getFn());
-  dispatcher_.emit(ApplyExprsTrap{label, fnLabel});
-  auto i = 0u;
-  for (const auto& arg : *expr->getArgs()) {
-    dispatcher_.emit(ApplyExprArgumentsTrap{label, i++, emitArgument(arg)});
+void ExprVisitor::fillAnyTryExpr(const swift::AnyTryExpr& expr, codeql::AnyTryExpr& entry) {
+  entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+}
+
+void ExprVisitor::fillApplyExpr(const swift::ApplyExpr& expr, codeql::ApplyExpr& entry) {
+  entry.function = dispatcher_.fetchLabel(expr.getFn());
+  assert(expr.getArgs() && "ApplyExpr has getArgs");
+  for (const auto& arg : *expr.getArgs()) {
+    entry.arguments.push_back(emitArgument(arg));
   }
 }
 
-void ExprVisitor::emitSelfApplyExpr(const swift::SelfApplyExpr* expr,
-                                    TrapLabel<SelfApplyExprTag> label) {
-  assert(expr->getBase() && "SelfApplyExpr has getBase()");
-  auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
-  dispatcher_.emit(SelfApplyExprsTrap{label, baseLabel});
-  emitApplyExpr(expr, label);
+void ExprVisitor::fillSelfApplyExpr(const swift::SelfApplyExpr& expr,
+                                    codeql::SelfApplyExpr& entry) {
+  entry.base = dispatcher_.fetchLabel(expr.getBase());
+  fillApplyExpr(expr, entry);
 }
 
-void ExprVisitor::emitLookupExpr(const swift::LookupExpr* expr, TrapLabel<LookupExprTag> label) {
-  assert(expr->getBase() && "LookupExpr has getBase()");
-  auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
-  dispatcher_.emit(LookupExprsTrap{label, baseLabel});
-  if (expr->hasDecl()) {
-    auto declLabel = dispatcher_.fetchLabel(expr->getDecl().getDecl());
-    dispatcher_.emit(LookupExprMembersTrap{label, declLabel});
+void ExprVisitor::fillLookupExpr(const swift::LookupExpr& expr, codeql::LookupExpr& entry) {
+  entry.base = dispatcher_.fetchLabel(expr.getBase());
+  if (expr.hasDecl()) {
+    entry.member = dispatcher_.fetchLabel(expr.getDecl().getDecl());
   }
 }
 
 codeql::UnresolvedPatternExpr ExprVisitor::translateUnresolvedPatternExpr(
-    swift::UnresolvedPatternExpr& expr) {
-  auto entry = dispatcher_.createEntry(expr);
+    const swift::UnresolvedPatternExpr& expr) {
+  auto entry = createExprEntry(expr);
   entry.sub_pattern = dispatcher_.fetchLabel(expr.getSubPattern());
   return entry;
 }

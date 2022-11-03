@@ -16,7 +16,7 @@ cpp_keywords = {"alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "
                 "xor", "xor_eq"}
 
 _field_overrides = [
-    (re.compile(r"(start|end)_(line|column)|index|width|num_.*"), {"type": "unsigned"}),
+    (re.compile(r"(start|end)_(line|column)|(.*_)?index|width|num_.*"), {"type": "unsigned"}),
     (re.compile(r"(.*)_"), lambda m: {"field_name": m[1]}),
 ]
 
