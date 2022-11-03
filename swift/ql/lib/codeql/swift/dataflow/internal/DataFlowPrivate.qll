@@ -513,6 +513,13 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::TupleContent ct | ct.getIndex() = pos))
   )
   or
+  exists(TupleElementExpr tuple, AssignExpr assign |
+    tuple = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2/*.(PostUpdateNode).getPreUpdateNode()*/.asExpr() = tuple.getSubExpr() and
+    c.isSingleton(any(Content::TupleContent ct | ct.getIndex() = tuple.getIndex()))
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 

@@ -289,7 +289,7 @@ func testTuples() {
     t1.0 = source()
 
     sink(arg: t1)
-    sink(arg: t1.0) // $ MISSING: flow=289
+    sink(arg: t1.0) // $ flow=289
     sink(arg: t1.1) // $ SPURIOUS: flow=277
 }
 
