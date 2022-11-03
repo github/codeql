@@ -73,20 +73,13 @@ private int isSource(Expr bufferExpr, Element why) {
   )
 }
 
-private predicate localFlowToExprStep(DataFlow::Node n1, DataFlow::Node n2) {
-  not exists(n2.asExpr()) and
-  DataFlow::localFlowStep(n1, n2)
-}
-
-/** Holds if `n2 + delta` may be equal to `n1`. */
+/**
+ * Holds if data flow steps from `e1` to `e2` without stepping through any
+ * other intermediate expressions.
+ */
 private predicate localFlowStepToExpr(Expr e1, Expr e2) {
   getBufferSizeCand0(e1) and
-  exists(DataFlow::Node n1, DataFlow::Node mid, DataFlow::Node n2 |
-    n1.asExpr() = e1 and
-    localFlowToExprStep*(n1, mid) and
-    DataFlow::localFlowStep(mid, n2) and
-    n2.asExpr() = e2
-  )
+  DataFlow::localExprFlowStep(e1, e2)
 }
 
 /**
