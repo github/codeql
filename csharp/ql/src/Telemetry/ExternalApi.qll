@@ -53,24 +53,24 @@ class ExternalApi extends DotNet::Callable {
    */
   string getApiName() { result = this.getNamespace() + "#" + this.getSignature() }
 
-  /** Gets a call to this API callable. */
-  DispatchCall getACall() {
-    this = result.getADynamicTarget().getUnboundDeclaration()
-    or
-    this = result.getAStaticTarget().getUnboundDeclaration()
-  }
-
   /** Gets a node that is an input to a call to this API. */
   private ArgumentNode getAnInput() {
-    result.getCall().(DataFlowDispatch::NonDelegateDataFlowCall).getDispatchCall() = this.getACall()
+    result
+        .getCall()
+        .(DataFlowDispatch::NonDelegateDataFlowCall)
+        .getATarget(_)
+        .getUnboundDeclaration() = this
   }
 
   /** Gets a node that is an output from a call to this API. */
   private DataFlow::Node getAnOutput() {
-    exists(DataFlowDispatch::NonDelegateDataFlowCall call, DataFlowImplCommon::ReturnKindExt ret |
-      result = ret.getAnOutNode(call)
+    exists(
+      Call c, DataFlowDispatch::NonDelegateDataFlowCall dc, DataFlowImplCommon::ReturnKindExt ret
     |
-      this.getACall() = call.getDispatchCall()
+      dc.getDispatchCall().getCall() = c and
+      c.getTarget().getUnboundDeclaration() = this
+    |
+      result = ret.getAnOutNode(dc)
     )
   }
 
@@ -121,8 +121,8 @@ signature predicate relevantApi(ExternalApi api);
 module Results<relevantApi/1 getRelevantUsages> {
   private int getUsages(string apiName) {
     result =
-      strictcount(DispatchCall c, ExternalApi api |
-        c = api.getACall() and
+      strictcount(Call c, ExternalApi api |
+        c.getTarget().getUnboundDeclaration() = api and
         apiName = api.getApiName() and
         getRelevantUsages(api)
       )
