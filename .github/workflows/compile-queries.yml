@@ -33,25 +33,19 @@ jobs:
           restore-keys: |
             codeql-stable-compile-${{ env.merge-base }}
             codeql-stable-compile-
-      - name: install codeql
-        run: gh extension install github/gh-codeql
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup CodeQL
+        uses: ./.github/actions/fetch-codeql
+        with:
+          channel: 'release'
       - name: check formatting
-        run: gh codeql query format */ql/{src,lib,test}/**/*.{qll,ql} --check-only
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: codeql query format */ql/{src,lib,test}/**/*.{qll,ql} --check-only
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.sha != steps.merge-base.outputs.merge-base }}
         shell: bash
-        run: gh codeql query compile -j0 */ql/src --keep-going --warnings=error --check-only
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: codeql query compile -j0 */ql/src --keep-going --warnings=error --check-only
       - name: compile queries - full
         # do full compile if running on main - this populates the cache
         if : ${{ github.sha == steps.merge-base.outputs.merge-base }}
         shell: bash
-        run: gh codeql query compile -j0 */ql/src --keep-going --warnings=error
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: codeql query compile -j0 */ql/src --keep-going --warnings=error
