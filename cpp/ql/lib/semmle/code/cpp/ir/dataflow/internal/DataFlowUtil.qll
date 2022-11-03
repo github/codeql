@@ -543,7 +543,7 @@ class IndirectReturnNode extends IndirectOperand {
  * A node representing the indirection of a value after it
  * has been returned from a function.
  */
-class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdateNode {
+class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDefinitionNode {
   ArgumentOperand operand;
   int indirectionIndex;
 
@@ -577,6 +577,8 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdate
   }
 
   override Location getLocationImpl() { result = operand.getLocation() }
+
+  override Expr getDefinedExpr() { result = operand.getDef().getUnconvertedResultExpression() }
 }
 
 pragma[nomagic]
