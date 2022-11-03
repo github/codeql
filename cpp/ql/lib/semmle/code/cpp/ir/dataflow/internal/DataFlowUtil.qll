@@ -1333,7 +1333,7 @@ private predicate localStepFromNonExpr(Node n1, Node n2) {
 
 /**
  * Holds if `n1.asExpr()` doesn't have a result, `n2.asExpr() = e2` and
- * `n2` is the first node reachable from `n2` such that `n2.asExpr()` exists.
+ * `n2` is the first node reachable from `n1` such that `n2.asExpr()` exists.
  */
 pragma[nomagic]
 private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
