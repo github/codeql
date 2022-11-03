@@ -195,14 +195,21 @@
 | test.swift:277:9:277:9 | WriteDef | test.swift:279:15:279:15 | t1 |
 | test.swift:277:14:277:26 | (...) | test.swift:277:9:277:9 | WriteDef |
 | test.swift:279:15:279:15 | t1 | test.swift:280:15:280:15 | t1 |
+| test.swift:280:15:280:15 | [post] t1 | test.swift:281:15:281:15 | t1 |
 | test.swift:280:15:280:15 | t1 | test.swift:281:15:281:15 | t1 |
+| test.swift:281:15:281:15 | [post] t1 | test.swift:283:5:283:5 | t1 |
 | test.swift:281:15:281:15 | t1 | test.swift:283:5:283:5 | t1 |
+| test.swift:283:5:283:5 | [post] t1 | test.swift:285:15:285:15 | t1 |
 | test.swift:283:5:283:5 | t1 | test.swift:285:15:285:15 | t1 |
 | test.swift:285:15:285:15 | t1 | test.swift:286:15:286:15 | t1 |
+| test.swift:286:15:286:15 | [post] t1 | test.swift:287:15:287:15 | t1 |
 | test.swift:286:15:286:15 | t1 | test.swift:287:15:287:15 | t1 |
+| test.swift:287:15:287:15 | [post] t1 | test.swift:289:5:289:5 | t1 |
 | test.swift:287:15:287:15 | t1 | test.swift:289:5:289:5 | t1 |
+| test.swift:289:5:289:5 | [post] t1 | test.swift:291:15:291:15 | t1 |
 | test.swift:289:5:289:5 | t1 | test.swift:291:15:291:15 | t1 |
 | test.swift:291:15:291:15 | t1 | test.swift:292:15:292:15 | t1 |
+| test.swift:292:15:292:15 | [post] t1 | test.swift:293:15:293:15 | t1 |
 | test.swift:292:15:292:15 | t1 | test.swift:293:15:293:15 | t1 |
 | test.swift:297:9:297:9 | WriteDef | test.swift:298:14:298:14 | t1 |
 | test.swift:297:14:297:45 | (...) | test.swift:297:9:297:9 | WriteDef |
@@ -217,8 +224,12 @@
 | test.swift:299:21:299:21 | t1 | test.swift:299:9:299:17 | WriteDef |
 | test.swift:299:21:299:21 | t1 | test.swift:301:15:301:15 | t1 |
 | test.swift:301:15:301:15 | t1 | test.swift:302:15:302:15 | t1 |
+| test.swift:302:15:302:15 | [post] t1 | test.swift:303:15:303:15 | t1 |
 | test.swift:302:15:302:15 | t1 | test.swift:303:15:303:15 | t1 |
+| test.swift:303:15:303:15 | [post] t1 | test.swift:304:15:304:15 | t1 |
 | test.swift:303:15:303:15 | t1 | test.swift:304:15:304:15 | t1 |
 | test.swift:305:15:305:15 | t2 | test.swift:306:15:306:15 | t2 |
+| test.swift:306:15:306:15 | [post] t2 | test.swift:307:15:307:15 | t2 |
 | test.swift:306:15:306:15 | t2 | test.swift:307:15:307:15 | t2 |
+| test.swift:307:15:307:15 | [post] t2 | test.swift:308:15:308:15 | t2 |
 | test.swift:307:15:307:15 | t2 | test.swift:308:15:308:15 | t2 |

@@ -284,13 +284,13 @@ func testTuples() {
 
     sink(arg: t1)
     sink(arg: t1.0)
-    sink(arg: t1.1) // $ SPURIOUS: flow=277
+    sink(arg: t1.1) // $ flow=277
 
     t1.0 = source()
 
     sink(arg: t1)
     sink(arg: t1.0) // $ flow=289
-    sink(arg: t1.1) // $ SPURIOUS: flow=277
+    sink(arg: t1.1) // $ flow=277
 }
 
 func testTuples2() {

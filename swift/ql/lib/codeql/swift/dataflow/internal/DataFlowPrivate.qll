@@ -86,7 +86,7 @@ private module Cached {
       hasExprNode(n,
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
-          any(ApplyExpr apply).getQualifier()
+          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr()
         ])
     }
 
@@ -516,7 +516,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(TupleElementExpr tuple, AssignExpr assign |
     tuple = assign.getDest() and
     node1.asExpr() = assign.getSource() and
-    node2/*.(PostUpdateNode).getPreUpdateNode()*/.asExpr() = tuple.getSubExpr() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = tuple.getSubExpr() and
     c.isSingleton(any(Content::TupleContent ct | ct.getIndex() = tuple.getIndex()))
   )
   or
