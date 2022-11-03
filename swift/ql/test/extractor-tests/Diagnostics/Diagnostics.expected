@@ -1,1 +1,1 @@
-| file://:0:0:0:0 | Diagnostics | getText: | Hello, warning | getKind: | 2 |
+| diags.swift:1:10:1:10 | Diagnostics | getText: | Hello, warning | getKind: | 2 |

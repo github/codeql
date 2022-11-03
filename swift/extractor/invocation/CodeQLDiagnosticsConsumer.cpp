@@ -1,6 +1,7 @@
 #include "swift/extractor/invocation/CodeQLDiagnosticsConsumer.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/trap/generated/TrapEntries.h"
+#include "swift/extractor/trap/generated/TrapClasses.h"
 
 #include <swift/AST/DiagnosticEngine.h>
 #include <swift/Basic/SourceManager.h>
@@ -48,13 +49,13 @@ static void attachLocation(TrapDomain& trap,
     return;
   }
   auto filepath = getFilePath(sourceManager.getDisplayNameForLoc(loc));
-  FilesTrap file;
-  file.id = trap.createLabel<FileTag>();
+  DbFile file({});
+  file.id = trap.createLabel<DbFileTag>();
   file.name = filepath;
   trap.emit(file);
 
-  LocationsTrap location;
-  location.id = trap.createLabel<LocationTag>();
+  DbLocation location({});
+  location.id = trap.createLabel<DbLocationTag>();
   location.file = file.id;
   std::tie(location.start_line, location.start_column) =
       sourceManager.getLineAndColumnInBuffer(loc);
