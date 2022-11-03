@@ -329,7 +329,7 @@ class SwiftDispatcher {
   virtual void visit(const swift::StmtConditionElement* cond) = 0;
   virtual void visit(swift::CaseLabelItem* item) = 0;
   virtual void visit(swift::Expr* expr) = 0;
-  virtual void visit(swift::Pattern* pattern) = 0;
+  virtual void visit(const swift::Pattern* pattern) = 0;
   virtual void visit(swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(swift::TypeBase* type) = 0;
 

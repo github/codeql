@@ -31,7 +31,7 @@ class SwiftVisitor : private SwiftDispatcher {
   }
   void visit(swift::CaseLabelItem* item) override { stmtVisitor.visitCaseLabelItem(item); }
   void visit(swift::Expr* expr) override { exprVisitor.visit(expr); }
-  void visit(swift::Pattern* pattern) override { patternVisitor.visit(pattern); }
+  void visit(const swift::Pattern* pattern) override { patternVisitor.visit(pattern); }
   void visit(swift::TypeBase* type) override { typeVisitor.visit(type); }
   void visit(swift::TypeRepr* typeRepr, swift::Type type) override {
     emit(typeVisitor.translateTypeRepr(*typeRepr, type));
