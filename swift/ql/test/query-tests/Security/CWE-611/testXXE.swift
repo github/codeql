@@ -41,7 +41,13 @@ func testInputStream() {
     let remoteStream = InputStream(data: remoteData)
     let parser = XMLParser(stream: remoteStream) // $ hasXXE=39
     parser.shouldResolveExternalEntities = true
+}
 
+func testUrl() {
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+    let remoteUrl = URL(string: remoteString)!
+    let parser = XMLParser(contentsOf: remoteUrl) // $ hasXXE=47
+    parser?.shouldResolveExternalEntities = true
 }
 
 func testDataSafe() {
@@ -55,7 +61,6 @@ func testDataSafeExplicit() {
     let remoteData = Data(remoteString)
     let parser = XMLParser(data: remoteData) // NO XXE: parser disables external entities
     parser.shouldResolveExternalEntities = false
-
 }
 
 func testInputStreamSafe() {
@@ -71,4 +76,17 @@ func testInputStreamSafeExplicit() {
     let remoteStream = InputStream(data: remoteData)
     let parser = XMLParser(stream: remoteStream) // NO XXE: parser disables external entities
     parser.shouldResolveExternalEntities = false
+}
+
+func testUrlSafe() {
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+     let remoteUrl = URL(string: remoteString)!
+     let _ = XMLParser(contentsOf: remoteUrl) // NO XXE: parser doesn't enable external entities
+}
+
+func testUrlSafeExplicit() {
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+    let remoteUrl = URL(string: remoteString)!
+    let parser = XMLParser(contentsOf: remoteUrl) // NO XXE: parser disables external entities
+    parser?.shouldResolveExternalEntities = false
 }

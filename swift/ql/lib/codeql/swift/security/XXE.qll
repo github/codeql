@@ -58,7 +58,10 @@ private class ShouldResolveExternalEntities extends MemberRefExpr {
 
 /** An expression of type `XMLParser`. */
 private class XmlParserRef extends Expr {
-  XmlParserRef() { this.getType() instanceof XmlParserType }
+  XmlParserRef() {
+    this.getType() instanceof XmlParserType or
+    this.getType() = any(OptionalType t | t.getBaseType() instanceof XmlParserType)
+  }
 }
 
 /** The type `XMLParser`. */
