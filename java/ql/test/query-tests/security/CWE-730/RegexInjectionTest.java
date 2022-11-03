@@ -27,10 +27,17 @@ public class RegexInjectionTest extends HttpServlet {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
 
-    return input.replaceFirst(pattern, "").length() > 0;  // $ hasRegexInjection
+    return input.split(pattern, 0).length > 0;  // $ hasRegexInjection
   }
 
   public boolean string4(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return input.replaceFirst(pattern, "").length() > 0;  // $ hasRegexInjection
+  }
+
+  public boolean string5(javax.servlet.http.HttpServletRequest request) {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
 
@@ -58,10 +65,17 @@ public class RegexInjectionTest extends HttpServlet {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
 
-    return Pattern.matches(pattern, input);  // $ hasRegexInjection
+    return Pattern.compile(pattern, 0).matcher(input).matches();  // $ hasRegexInjection
   }
 
   public boolean pattern4(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return Pattern.matches(pattern, input);  // $ hasRegexInjection
+  }
+
+  public boolean pattern5(javax.servlet.http.HttpServletRequest request) {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
 

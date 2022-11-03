@@ -1,6 +1,6 @@
 import java
 import TestUtilities.InlineExpectationsTest
-import semmle.code.java.security.RegexInjectionQuery
+import semmle.code.java.security.regexp.RegexInjectionQuery
 
 //import semmle.code.java.security.regexp.PolynomialReDoSQuery
 class RegexInjectionTest extends InlineExpectationsTest {
