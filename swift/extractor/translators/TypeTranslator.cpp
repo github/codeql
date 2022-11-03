@@ -2,11 +2,10 @@
 
 namespace codeql {
 
-codeql::TypeRepr TypeTranslator::translateTypeRepr(const swift::TypeRepr& typeRepr,
-                                                   swift::Type type) {
-  auto entry = dispatcher_.createEntry(typeRepr);
-  entry.type = dispatcher_.fetchLabel(type);
-  return entry;
+void TypeTranslator::translateAndEmit(const swift::TypeRepr& typeRepr, swift::Type type) {
+  auto entry = dispatcher.createEntry(typeRepr);
+  entry.type = dispatcher.fetchLabel(type);
+  dispatcher.emit(entry);
 }
 
 codeql::ProtocolType TypeTranslator::translateProtocolType(const swift::ProtocolType& type) {
@@ -42,7 +41,7 @@ codeql::FunctionType TypeTranslator::translateFunctionType(const swift::Function
 codeql::TupleType TypeTranslator::translateTupleType(const swift::TupleType& type) {
   auto entry = createTypeEntry(type);
   for (const auto& e : type.getElements()) {
-    entry.types.push_back(dispatcher_.fetchLabel(e.getType()));
+    entry.types.push_back(dispatcher.fetchLabel(e.getType()));
     if (e.hasName()) {
       entry.names.emplace_back(e.getName().str().str());
     } else {
@@ -65,21 +64,21 @@ codeql::ExistentialMetatypeType TypeTranslator::translateExistentialMetatypeType
 
 codeql::TypeAliasType TypeTranslator::translateTypeAliasType(const swift::TypeAliasType& type) {
   auto entry = createTypeEntry(type);
-  entry.decl = dispatcher_.fetchLabel(type.getDecl());
+  entry.decl = dispatcher.fetchLabel(type.getDecl());
   return entry;
 }
 
 codeql::DependentMemberType TypeTranslator::translateDependentMemberType(
     const swift::DependentMemberType& type) {
   auto entry = createTypeEntry(type);
-  entry.base_type = dispatcher_.fetchLabel(type.getBase());
-  entry.associated_type_decl = dispatcher_.fetchLabel(type.getAssocType());
+  entry.base_type = dispatcher.fetchLabel(type.getBase());
+  entry.associated_type_decl = dispatcher.fetchLabel(type.getAssocType());
   return entry;
 }
 
 codeql::ParenType TypeTranslator::translateParenType(const swift::ParenType& type) {
   auto entry = createTypeEntry(type);
-  entry.type = dispatcher_.fetchLabel(type.getUnderlyingType());
+  entry.type = dispatcher.fetchLabel(type.getUnderlyingType());
   return entry;
 }
 
@@ -97,8 +96,8 @@ codeql::ArraySliceType TypeTranslator::translateArraySliceType(const swift::Arra
 
 codeql::DictionaryType TypeTranslator::translateDictionaryType(const swift::DictionaryType& type) {
   auto entry = createTypeEntry(type);
-  entry.key_type = dispatcher_.fetchLabel(type.getKeyType());
-  entry.value_type = dispatcher_.fetchLabel(type.getValueType());
+  entry.key_type = dispatcher.fetchLabel(type.getKeyType());
+  entry.value_type = dispatcher.fetchLabel(type.getValueType());
   return entry;
 }
 
@@ -106,7 +105,7 @@ codeql::GenericFunctionType TypeTranslator::translateGenericFunctionType(
     const swift::GenericFunctionType& type) {
   auto entry = createTypeEntry(type);
   fillAnyFunctionType(type, entry);
-  entry.generic_params = dispatcher_.fetchRepeatedLabels(type.getGenericParams());
+  entry.generic_params = dispatcher.fetchRepeatedLabels(type.getGenericParams());
   return entry;
 }
 
@@ -118,7 +117,7 @@ codeql::GenericTypeParamType TypeTranslator::translateGenericTypeParamType(
 
 codeql::LValueType TypeTranslator::translateLValueType(const swift::LValueType& type) {
   auto entry = createTypeEntry(type);
-  entry.object_type = dispatcher_.fetchLabel(type.getObjectType());
+  entry.object_type = dispatcher.fetchLabel(type.getObjectType());
   return entry;
 }
 
@@ -138,14 +137,14 @@ codeql::UnboundGenericType TypeTranslator::translateUnboundGenericType(
 
 void TypeTranslator::fillUnarySyntaxSugarType(const swift::UnarySyntaxSugarType& type,
                                               codeql::UnarySyntaxSugarType& entry) {
-  entry.base_type = dispatcher_.fetchLabel(type.getBaseType());
+  entry.base_type = dispatcher.fetchLabel(type.getBaseType());
 }
 
 void TypeTranslator::fillAnyFunctionType(const swift::AnyFunctionType& type,
                                          codeql::AnyFunctionType& entry) {
-  entry.result = dispatcher_.fetchLabel(type.getResult());
+  entry.result = dispatcher.fetchLabel(type.getResult());
   for (const auto& p : type.getParams()) {
-    entry.param_types.push_back(dispatcher_.fetchLabel(p.getPlainType()));
+    entry.param_types.push_back(dispatcher.fetchLabel(p.getPlainType()));
     if (p.hasLabel()) {
       entry.param_labels.emplace_back(p.getLabel().str().str());
     } else {
@@ -158,38 +157,38 @@ void TypeTranslator::fillAnyFunctionType(const swift::AnyFunctionType& type,
 
 void TypeTranslator::fillBoundGenericType(const swift::BoundGenericType& type,
                                           codeql::BoundGenericType& entry) {
-  entry.arg_types = dispatcher_.fetchRepeatedLabels(type.getGenericArgs());
+  entry.arg_types = dispatcher.fetchRepeatedLabels(type.getGenericArgs());
   fillAnyGenericType(type, entry);
 }
 
 void TypeTranslator::fillAnyGenericType(const swift::AnyGenericType& type,
                                         codeql::AnyGenericType& entry) {
-  entry.declaration = dispatcher_.fetchLabel(type.getDecl());
-  entry.parent = dispatcher_.fetchOptionalLabel(type.getParent());
+  entry.declaration = dispatcher.fetchLabel(type.getDecl());
+  entry.parent = dispatcher.fetchOptionalLabel(type.getParent());
 }
 
 void TypeTranslator::fillType(const swift::TypeBase& type, codeql::Type& entry) {
   entry.name = type.getString();
-  entry.canonical_type = dispatcher_.fetchLabel(type.getCanonicalType());
+  entry.canonical_type = dispatcher.fetchLabel(type.getCanonicalType());
 }
 
 void TypeTranslator::fillArchetypeType(const swift::ArchetypeType& type, ArchetypeType& entry) {
-  entry.interface_type = dispatcher_.fetchLabel(type.getInterfaceType());
-  entry.protocols = dispatcher_.fetchRepeatedLabels(type.getConformsTo());
-  entry.superclass = dispatcher_.fetchOptionalLabel(type.getSuperclass());
+  entry.interface_type = dispatcher.fetchLabel(type.getInterfaceType());
+  entry.protocols = dispatcher.fetchRepeatedLabels(type.getConformsTo());
+  entry.superclass = dispatcher.fetchOptionalLabel(type.getSuperclass());
 }
 
 codeql::ExistentialType TypeTranslator::translateExistentialType(
     const swift::ExistentialType& type) {
   auto entry = createTypeEntry(type);
-  entry.constraint = dispatcher_.fetchLabel(type.getConstraintType());
+  entry.constraint = dispatcher.fetchLabel(type.getConstraintType());
   return entry;
 }
 
 codeql::DynamicSelfType TypeTranslator::translateDynamicSelfType(
     const swift::DynamicSelfType& type) {
   auto entry = createTypeEntry(type);
-  entry.static_self_type = dispatcher_.fetchLabel(type.getSelfType());
+  entry.static_self_type = dispatcher.fetchLabel(type.getSelfType());
   return entry;
 }
 
@@ -202,19 +201,19 @@ codeql::VariadicSequenceType TypeTranslator::translateVariadicSequenceType(
 
 codeql::InOutType TypeTranslator::translateInOutType(const swift::InOutType& type) {
   auto entry = createTypeEntry(type);
-  entry.object_type = dispatcher_.fetchLabel(type.getObjectType());
+  entry.object_type = dispatcher.fetchLabel(type.getObjectType());
   return entry;
 }
 
 void TypeTranslator::fillReferenceStorageType(const swift::ReferenceStorageType& type,
                                               codeql::ReferenceStorageType& entry) {
-  entry.referent_type = dispatcher_.fetchLabel(type.getReferentType());
+  entry.referent_type = dispatcher.fetchLabel(type.getReferentType());
 }
 
 codeql::ProtocolCompositionType TypeTranslator::translateProtocolCompositionType(
     const swift::ProtocolCompositionType& type) {
   auto entry = createTypeEntry(type);
-  entry.members = dispatcher_.fetchRepeatedLabels(type.getMembers());
+  entry.members = dispatcher.fetchRepeatedLabels(type.getMembers());
   return entry;
 }
 
@@ -240,7 +239,7 @@ codeql::ModuleType TypeTranslator::translateModuleType(const swift::ModuleType& 
     key += "|clang";
   }
   auto entry = createTypeEntry(type, key);
-  entry.module = dispatcher_.fetchLabel(type.getModule());
+  entry.module = dispatcher.fetchLabel(type.getModule());
   return entry;
 }
 }  // namespace codeql

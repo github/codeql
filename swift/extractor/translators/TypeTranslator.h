@@ -7,8 +7,9 @@ namespace codeql {
 class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
  public:
   using TypeTranslatorBase<TypeTranslator>::TypeTranslatorBase;
+  using TypeTranslatorBase<TypeTranslator>::translateAndEmit;
 
-  codeql::TypeRepr translateTypeRepr(const swift::TypeRepr& typeRepr, swift::Type type);
+  void translateAndEmit(const swift::TypeRepr& typeRepr, swift::Type type);
 
   codeql::ProtocolType translateProtocolType(const swift::ProtocolType& type);
   codeql::EnumType translateEnumType(const swift::EnumType& type);
@@ -80,7 +81,7 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
 
   template <typename T, typename... Args>
   auto createTypeEntry(const T& type, const Args&... args) {
-    auto entry = dispatcher_.createEntry(type, args...);
+    auto entry = dispatcher.createEntry(type, args...);
     fillType(type, entry);
     return entry;
   }

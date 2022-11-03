@@ -66,7 +66,7 @@ codeql::PostfixOperatorDecl DeclTranslator::translatePostfixOperatorDecl(
 codeql::InfixOperatorDecl DeclTranslator::translateInfixOperatorDecl(
     const swift::InfixOperatorDecl& decl) {
   auto entry = createEntry(decl);
-  entry.precedence_group = dispatcher_.fetchOptionalLabel(decl.getPrecedenceGroup());
+  entry.precedence_group = dispatcher.fetchOptionalLabel(decl.getPrecedenceGroup());
   fillOperatorDecl(decl, entry);
   return entry;
 }
@@ -91,7 +91,7 @@ codeql::TopLevelCodeDecl DeclTranslator::translateTopLevelCodeDecl(
     const swift::TopLevelCodeDecl& decl) {
   auto entry = createEntry(decl);
   assert(decl.getBody() && "Expect top level code to have body");
-  entry.body = dispatcher_.fetchLabel(decl.getBody());
+  entry.body = dispatcher.fetchLabel(decl.getBody());
   return entry;
 }
 
@@ -101,8 +101,8 @@ codeql::PatternBindingDecl DeclTranslator::translatePatternBindingDecl(
   for (unsigned i = 0; i < decl.getNumPatternEntries(); ++i) {
     auto pattern = decl.getPattern(i);
     assert(pattern && "Expect pattern binding decl to have all patterns");
-    entry.patterns.push_back(dispatcher_.fetchLabel(pattern));
-    entry.inits.push_back(dispatcher_.fetchOptionalLabel(decl.getInit(i)));
+    entry.patterns.push_back(dispatcher.fetchLabel(pattern));
+    entry.inits.push_back(dispatcher.fetchOptionalLabel(decl.getInit(i)));
   }
   return entry;
 }
@@ -161,7 +161,7 @@ std::optional<codeql::ProtocolDecl> DeclTranslator::translateProtocolDecl(
 
 codeql::EnumCaseDecl DeclTranslator::translateEnumCaseDecl(const swift::EnumCaseDecl& decl) {
   auto entry = createEntry(decl);
-  entry.elements = dispatcher_.fetchRepeatedLabels(decl.getElements());
+  entry.elements = dispatcher.fetchRepeatedLabels(decl.getElements());
   return entry;
 }
 
@@ -173,7 +173,7 @@ std::optional<codeql::EnumElementDecl> DeclTranslator::translateEnumElementDecl(
   }
   entry->name = decl.getNameStr().str();
   if (decl.hasParameterList()) {
-    entry->params = dispatcher_.fetchRepeatedLabels(*decl.getParameterList());
+    entry->params = dispatcher.fetchRepeatedLabels(*decl.getParameterList());
   }
   fillValueDecl(decl, *entry);
   return entry;
@@ -235,9 +235,9 @@ std::optional<codeql::SubscriptDecl> DeclTranslator::translateSubscriptDecl(
   if (!entry) {
     return std::nullopt;
   }
-  entry->element_type = dispatcher_.fetchLabel(decl.getElementInterfaceType());
+  entry->element_type = dispatcher.fetchLabel(decl.getElementInterfaceType());
   if (auto indices = decl.getIndices()) {
-    entry->params = dispatcher_.fetchRepeatedLabels(*indices);
+    entry->params = dispatcher.fetchRepeatedLabels(*indices);
   }
   fillAbstractStorageDecl(decl, *entry);
   return entry;
@@ -245,7 +245,7 @@ std::optional<codeql::SubscriptDecl> DeclTranslator::translateSubscriptDecl(
 
 codeql::ExtensionDecl DeclTranslator::translateExtensionDecl(const swift::ExtensionDecl& decl) {
   auto entry = createEntry(decl);
-  entry.extended_type_decl = dispatcher_.fetchLabel(decl.getExtendedNominal());
+  entry.extended_type_decl = dispatcher.fetchLabel(decl.getExtendedNominal());
   fillGenericContext(decl, entry);
   fillIterableDeclContext(decl, entry);
   return entry;
@@ -254,8 +254,8 @@ codeql::ExtensionDecl DeclTranslator::translateExtensionDecl(const swift::Extens
 codeql::ImportDecl DeclTranslator::translateImportDecl(const swift::ImportDecl& decl) {
   auto entry = createEntry(decl);
   entry.is_exported = decl.isExported();
-  entry.imported_module = dispatcher_.fetchOptionalLabel(decl.getModule());
-  entry.declarations = dispatcher_.fetchRepeatedLabels(decl.getDecls());
+  entry.imported_module = dispatcher.fetchOptionalLabel(decl.getModule());
+  entry.declarations = dispatcher.fetchRepeatedLabels(decl.getDecls());
   return entry;
 }
 
@@ -271,12 +271,12 @@ std::optional<codeql::ModuleDecl> DeclTranslator::translateModuleDecl(
   llvm::SmallVector<swift::ImportedModule> imports;
   decl.getImportedModules(imports, K::Default);
   for (const auto& import : imports) {
-    entry->imported_modules.push_back(dispatcher_.fetchLabel(import.importedModule));
+    entry->imported_modules.push_back(dispatcher.fetchLabel(import.importedModule));
   }
   imports.clear();
   decl.getImportedModules(imports, K::Exported);
   for (const auto& import : imports) {
-    entry->exported_modules.push_back(dispatcher_.fetchLabel(import.importedModule));
+    entry->exported_modules.push_back(dispatcher.fetchLabel(import.importedModule));
   }
   fillTypeDecl(decl, *entry);
   return entry;
@@ -316,10 +316,10 @@ void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl&
                                               codeql::AbstractFunctionDecl& entry) {
   assert(decl.hasParameterList() && "Expect functions to have a parameter list");
   entry.name = !decl.hasName() ? "(unnamed function decl)" : constructName(decl.getName());
-  entry.body = dispatcher_.fetchOptionalLabel(decl.getBody());
-  entry.params = dispatcher_.fetchRepeatedLabels(*decl.getParameters());
+  entry.body = dispatcher.fetchOptionalLabel(decl.getBody());
+  entry.params = dispatcher.fetchRepeatedLabels(*decl.getParameters());
   auto self = const_cast<swift::ParamDecl* const>(decl.getImplicitSelfDecl());
-  entry.self_param = dispatcher_.fetchOptionalLabel(self);
+  entry.self_param = dispatcher.fetchOptionalLabel(self);
   fillValueDecl(decl, entry);
   fillGenericContext(decl, entry);
 }
@@ -333,7 +333,7 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
   entry.name = decl.getNameStr().str();
   for (auto& typeLoc : decl.getInherited()) {
     if (auto type = typeLoc.getType()) {
-      entry.base_types.push_back(dispatcher_.fetchLabel(type));
+      entry.base_types.push_back(dispatcher.fetchLabel(type));
     }
   }
   fillValueDecl(decl, entry);
@@ -341,24 +341,24 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
 
 void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
                                              codeql::IterableDeclContext& entry) {
-  entry.members = dispatcher_.fetchRepeatedLabels(decl.getAllMembers());
+  entry.members = dispatcher.fetchRepeatedLabels(decl.getAllMembers());
 }
 
 void DeclTranslator::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry) {
   entry.name = decl.getNameStr().str();
-  entry.type = dispatcher_.fetchLabel(decl.getType());
-  entry.parent_pattern = dispatcher_.fetchOptionalLabel(decl.getParentPattern());
-  entry.parent_initializer = dispatcher_.fetchOptionalLabel(decl.getParentInitializer());
+  entry.type = dispatcher.fetchLabel(decl.getType());
+  entry.parent_pattern = dispatcher.fetchOptionalLabel(decl.getParentPattern());
+  entry.parent_initializer = dispatcher.fetchOptionalLabel(decl.getParentInitializer());
   if (decl.hasAttachedPropertyWrapper()) {
     entry.attached_property_wrapper_type =
-        dispatcher_.fetchOptionalLabel(decl.getPropertyWrapperBackingPropertyType());
+        dispatcher.fetchOptionalLabel(decl.getPropertyWrapperBackingPropertyType());
   }
   fillAbstractStorageDecl(decl, entry);
 }
 
 void DeclTranslator::fillNominalTypeDecl(const swift::NominalTypeDecl& decl,
                                          codeql::NominalTypeDecl& entry) {
-  entry.type = dispatcher_.fetchLabel(decl.getDeclaredType());
+  entry.type = dispatcher.fetchLabel(decl.getDeclaredType());
   fillGenericContext(decl, entry);
   fillIterableDeclContext(decl, entry);
   fillTypeDecl(decl, entry);
@@ -367,25 +367,25 @@ void DeclTranslator::fillNominalTypeDecl(const swift::NominalTypeDecl& decl,
 void DeclTranslator::fillGenericContext(const swift::GenericContext& decl,
                                         codeql::GenericContext& entry) {
   if (auto params = decl.getGenericParams()) {
-    entry.generic_type_params = dispatcher_.fetchRepeatedLabels(*params);
+    entry.generic_type_params = dispatcher.fetchRepeatedLabels(*params);
   }
 }
 
 void DeclTranslator::fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDecl& entry) {
   assert(decl.getInterfaceType() && "Expect ValueDecl to have InterfaceType");
-  entry.interface_type = dispatcher_.fetchLabel(decl.getInterfaceType());
+  entry.interface_type = dispatcher.fetchLabel(decl.getInterfaceType());
 }
 
 void DeclTranslator::fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl,
                                              codeql::AbstractStorageDecl& entry) {
-  entry.accessor_decls = dispatcher_.fetchRepeatedLabels(decl.getAllAccessors());
+  entry.accessor_decls = dispatcher.fetchRepeatedLabels(decl.getAllAccessors());
   fillValueDecl(decl, entry);
 }
 
 codeql::IfConfigDecl DeclTranslator::translateIfConfigDecl(const swift::IfConfigDecl& decl) {
   auto entry = createEntry(decl);
   if (auto activeClause = decl.getActiveClause()) {
-    entry.active_elements = dispatcher_.fetchRepeatedLabels(activeClause->Elements);
+    entry.active_elements = dispatcher.fetchRepeatedLabels(activeClause->Elements);
   }
   return entry;
 }

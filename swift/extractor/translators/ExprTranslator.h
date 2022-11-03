@@ -48,7 +48,7 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   template <typename E>
   TrapClassOf<E> translateImplicitConversionExpr(const E& expr) {
     auto entry = createExprEntry(expr);
-    entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+    entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
     return entry;
   }
 
@@ -112,8 +112,8 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
 
   template <typename T>
   TrapClassOf<T> createExprEntry(const T& expr) {
-    auto entry = dispatcher_.createEntry(expr);
-    entry.type = dispatcher_.fetchOptionalLabel(expr.getType());
+    auto entry = dispatcher.createEntry(expr);
+    entry.type = dispatcher.fetchOptionalLabel(expr.getType());
     return entry;
   }
 };

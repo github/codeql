@@ -8,11 +8,12 @@ namespace codeql {
 class StmtTranslator : public AstTranslatorBase<StmtTranslator> {
  public:
   using AstTranslatorBase<StmtTranslator>::AstTranslatorBase;
+  using AstTranslatorBase<StmtTranslator>::translateAndEmit;
 
-  codeql::StmtCondition translateStmtCondition(const swift::StmtCondition& cond);
-  codeql::ConditionElement translateStmtConditionElement(
-      const swift::StmtConditionElement& element);
-  codeql::CaseLabelItem translateCaseLabelItem(const swift::CaseLabelItem& labelItem);
+  void translateAndEmit(const swift::StmtCondition& cond);
+  void translateAndEmit(const swift::StmtConditionElement& element);
+  void translateAndEmit(const swift::CaseLabelItem& labelItem);
+
   codeql::BraceStmt translateBraceStmt(const swift::BraceStmt& stmt);
   codeql::ReturnStmt translateReturnStmt(const swift::ReturnStmt& stmt);
   codeql::ForEachStmt translateForEachStmt(const swift::ForEachStmt& stmt);
