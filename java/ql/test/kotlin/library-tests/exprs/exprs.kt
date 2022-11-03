@@ -1,6 +1,6 @@
 import java.awt.Polygon
 import java.awt.Rectangle
-import kotlin.experimental.inv
+import kotlin.experimental.*
 fun topLevelMethod(x: Int, y: Int,
                    byx: Byte, byy: Byte,
                    sx: Short, sy: Short,
@@ -44,6 +44,9 @@ fun topLevelMethod(x: Int, y: Int,
     val by11 = byx >= byy
     val by12 = byx === byy
     val by13 = byx !== byy
+    val by14 = byx or byy
+    val by15 = byx and byy
+    val by16 = byx xor byy
 
     val s1 = 1.0
     val s2 = sx + sy
@@ -58,6 +61,9 @@ fun topLevelMethod(x: Int, y: Int,
     val s11 = sx >= sy
     val s12 = sx === sy
     val s13 = sx !== sy
+    val s14 = sx or sy
+    val s15 = sx and sy
+    val s16 = sx xor sy
 
     val l1 = 1.0
     val l2 = lx + ly
