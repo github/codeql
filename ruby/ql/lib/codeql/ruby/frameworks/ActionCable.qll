@@ -6,6 +6,8 @@
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.frameworks.stdlib.Logger::Logger as StdlibLogger
 
 /**
@@ -25,5 +27,34 @@ module ActionCable {
               .getAnInstantiation()
       }
     }
+  }
+
+  /**
+   * The data argument in an RPC endpoint method on a subclass of
+   * `ActionCable::Channel::Base`, considered as a remote flow source.
+   */
+  class ActionCableChannelRpcParam extends RemoteFlowSource::Range {
+    ActionCableChannelRpcParam() {
+      exists(DataFlow::MethodNode m |
+        // Any method on a subclass of `ActionCable::Channel::Base`
+        // automatically becomes an RPC endpoint
+        m =
+          DataFlow::getConstant("ActionCable")
+              .getConstant("Channel")
+              .getConstant("Base")
+              .getADescendentModule()
+              .getAnOwnInstanceMethod() and
+        // as long as it's public
+        m.asCallableAstNode().isPublic() and
+        // and is not called `subscribed` or `unsubscribed`.
+        not m.getMethodName() = ["subscribed", "unsubscribed"]
+      |
+        // If the method takes a parameter, it contains data from the remote
+        // request.
+        this = m.getParameter(0)
+      )
+    }
+
+    override string getSourceType() { result = "ActionCable channel RPC data" }
   }
 }
