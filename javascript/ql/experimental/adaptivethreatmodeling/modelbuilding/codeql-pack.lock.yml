@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.2.1-2022-11-03-14h45m43s.lucid-jicama-t9bpfxrb.caae69430ea2befc17be867498f0de2c9ba3606f6b917af4a94269ecdfb9acdf
 compiled: false
 lockVersion: 1.0.0
