@@ -49,8 +49,8 @@ Models as Data. These strings are often referred to as access paths.
 
 Access paths consist of zero or more components separated by dots (`.`). The
 permitted components differ for input and output paths. The meaning of each
-component is defined relative to the implicit context of the component, which
-itself is defined by the preceding access path. For example,
+component is defined relative to the implicit context of the component as
+defined by the preceding access path. For example,
 
 ```
 Argument[0].Element[1].ReturnValue
@@ -93,10 +93,10 @@ A keyword argument to the call with the given name. For example,
 The block argument passed to the call, if any.
 
 #### `any`
-Any argument to the call. TODO: does this include self and block args?
+Any argument to the call, except `self` or `block` arguments.
 
 #### `any-named`
-TODO
+Any keyword argument to the call.
 
 #### `hash-splat`
 The special "hash splat" argument/parameter, which is written as `**args`.
@@ -139,7 +139,20 @@ typically something like `foo` for the string key `"foo"` and `:foo` for the
 symbol `:foo`.
 
 ## `Field`
-TODO
+A "field" in the object. In practice this refers to a value stored in an
+instance variable in the object. The only valid specifier is `@<string>`, where
+`<string>` is the name of the instance variable. Currently we assume that a
+setter call such as `x.foo = bar` means there is a field `foo` in `x`, backed by
+an instance variable `@foo`.
+
+For example, the access path `Argument[0].Field[@foo]` would refer to the value
+`"foo"` in
+
+```rb
+x = SomeClass.new
+x.foo = "foo"
+some_call(x)
+```
 
 ## `WithElement`
 This component restricts the set of elements that are included in the preceding
