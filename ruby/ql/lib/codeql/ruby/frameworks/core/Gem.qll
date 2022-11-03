@@ -8,7 +8,17 @@ private import codeql.ruby.ApiGraphs
 
 /** Provides modeling for the `Gem` module and `.gemspec` files. */
 module Gem {
-  /** A .gemspec file that lists properties of a Ruby gem. */
+  /**
+   * A .gemspec file that lists properties of a Ruby gem.
+   * The contents of a .gemspec file generally look like:
+   * ```Ruby
+   * Gem::Specification.new do |s|
+   *   s.name = 'library-name'
+   *   s.require_path = "lib"
+   *   # more properties
+   * end
+   * ```
+   */
   class GemSpec instanceof File {
     API::Node specCall;
 
@@ -25,13 +35,13 @@ module Gem {
      * Gets a value of the `name` property of this .gemspec file.
      * These properties are set using the `Gem::Specification.new` method.
      */
-    private Expr getSpecProperty(string key) {
+    private Expr getSpecProperty(string name) {
       exists(Expr rhs |
         rhs =
           specCall
               .getBlock()
               .getParameter(0)
-              .getMethod(key + "=")
+              .getMethod(name + "=")
               .getParameter(0)
               .asSink()
               .asExpr()
@@ -57,14 +67,14 @@ module Gem {
       result = "lib" // the default is "lib"
     }
 
-    /** Gets a file that is loaded when the gem is required. */
-    private File getAnRequiredFile() {
+    /** Gets a file that could be loaded when the gem is required. */
+    private File getAPossiblyRequiredFile() {
       result = File.super.getParentContainer().getFolder(getARequirePath()).getAChildContainer*()
     }
 
     /** Gets a class/module that is exported by this gem. */
     private ModuleBase getAPublicModule() {
-      result.(Toplevel).getLocation().getFile() = getAnRequiredFile()
+      result.(Toplevel).getLocation().getFile() = getAPossiblyRequiredFile()
       or
       result = getAPublicModule().getAModule()
       or

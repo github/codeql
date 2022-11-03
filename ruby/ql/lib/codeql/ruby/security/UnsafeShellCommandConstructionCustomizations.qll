@@ -65,11 +65,11 @@ module UnsafeShellCommandConstruction {
    * A string constructed from a string-literal (e.g. `"foo #{sink}"`),
    * where the resulting string ends up being executed as a shell command.
    */
-  class StringFormatAsSink extends Sink {
+  class StringInterpolationAsSink extends Sink {
     Concepts::SystemCommandExecution s;
     Ast::StringLiteral lit;
 
-    StringFormatAsSink() {
+    StringInterpolationAsSink() {
       isUsedAsShellCommand(any(DataFlow::Node n | n.asExpr().getExpr() = lit), s) and
       this.asExpr().getExpr() = lit.getComponent(_)
     }

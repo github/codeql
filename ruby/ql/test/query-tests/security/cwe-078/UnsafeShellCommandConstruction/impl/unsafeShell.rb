@@ -42,4 +42,9 @@ class Foobar2
   def thisIsSafe()
     IO.popen("echo #{id('foo')}", "w") # OK - only using constants.
   end    
+
+  # class methods
+  def self.foo(target)
+    IO.popen("cat #{target}", "w") # NOT OK
+  end
 end
