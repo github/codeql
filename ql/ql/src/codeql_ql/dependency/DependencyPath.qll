@@ -76,7 +76,7 @@ private TypeExpr getABaseType(Class cls, boolean abstractExtension) {
 }
 
 pragma[nomagic]
-predicate rawEdge(PathNode pred, PathNode succ) {
+private predicate basicEdge(PathNode pred, PathNode succ) {
   exists(Predicate predicat | pred.asAstNode() = predicat |
     succ.asAstNode().getEnclosingPredicate() = predicat
     or
@@ -138,11 +138,36 @@ predicate rawEdge(PathNode pred, PathNode succ) {
     pred.asAstNode() = top and
     succ.asAstNode().getFile() = top.getFile()
   )
+  or
+  // Add bidirectional edges between a class declaration and its type.
+  exists(Class cls |
+    pred.asAstNode() = cls and succ.asType() = cls.getType()
+    or
+    succ.asAstNode() = cls and pred.asType() = cls.getType()
+  )
 }
 
-private PathNode getAPredecessor(PathNode node) { rawEdge(result, node) }
-
-private PathNode getASuccessor(PathNode node) { rawEdge(node, result) }
+private predicate cacheEdge(PathNode pred, PathNode succ) {
+  // At a cached module, add bidirectional edges to every cached member
+  exists(Module mod, Declaration decl |
+    mod.hasAnnotation("cached") and
+    decl = mod.getAChild() and
+    decl.hasAnnotation("cached")
+  |
+    pred.asAstNode() = mod and succ.asAstNode() = decl
+    or
+    succ.asAstNode() = mod and pred.asAstNode() = decl
+  )
+  or
+  // At a cached class, add edges from the class to its cached member predicates
+  exists(Class cls, Predicate member |
+    cls.hasAnnotation("cached") and
+    member = cls.getAClassPredicate() and
+    member.hasAnnotation("cached") and
+    pred.asAstNode() = cls and
+    succ.asAstNode() = member
+  )
+}
 
 signature module DependencyConfig {
   /**
@@ -154,9 +179,30 @@ signature module DependencyConfig {
    * Holds if a transitive dependency from a source to `sink` should be reported.
    */
   predicate isSink(PathNode sink);
+
+  /**
+   * Holds if the `cached` members of a `cached` module or class should be unified.
+   *
+   * Whether to set this depends on your use-case:
+   * - If you wish to know why one predicate causes another predicate to be evaluated, this should be `any()`.
+   * - If you wish to investigate recursion patterns or understand why the value of one predicate
+   *   is influenced by another predicate, it should be `none()`.
+   */
+  predicate followCacheDependencies();
 }
 
 module PathGraph<DependencyConfig C> {
+  private predicate rawEdge(PathNode pred, PathNode succ) {
+    basicEdge(pred, succ)
+    or
+    C::followCacheDependencies() and
+    cacheEdge(pred, succ)
+  }
+
+  private PathNode getAPredecessor(PathNode node) { rawEdge(result, node) }
+
+  private PathNode getASuccessor(PathNode node) { rawEdge(node, result) }
+
   private PathNode reachableFromSource() {
     C::isSource(result)
     or

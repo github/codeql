@@ -29,6 +29,16 @@ module Config implements DependencyConfig {
    * Holds if a transitive dependency from a source to `sink` should be reported.
    */
   predicate isSink(PathNode sink) { sink.asAstNode().(Predicate).getName() = "isLocalSourceNode" }
+
+  /**
+   * Holds if the `cached` members of a `cached` module or class should be unified.
+   *
+   * Whether to set this depends on your use-case:
+   * - If you wish to know why one predicate causes another predicate to be evaluated, this should be `any()`.
+   * - If you wish to investigate recursion patterns or understand why the value of one predicate
+   *   is influenced by another predicate, it should be `none()`.
+   */
+  predicate followCacheDependencies() { any() }
 }
 
 import PathGraph<Config>
