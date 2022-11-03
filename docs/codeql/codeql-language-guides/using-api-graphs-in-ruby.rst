@@ -27,7 +27,7 @@ following snippet demonstrates.
 
     select API::getTopLevelMember("Regexp")
 
-This query selects the API graph nodes corresponding to references to the ``Regexp`` class. For nested
+The example above finds references to a top-level class. For nested
 modules and classes, you can use the ``getMember`` method. For example the following query selects
 references to the ``Net::HTTP`` class.
 
