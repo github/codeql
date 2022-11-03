@@ -32,15 +32,16 @@ abstract class Sink extends DataFlow::Node { }
 class WKWebView extends Sink {
   WKWebView() {
     any(CallExpr ce |
-      ce.getStaticTarget() =
-        getMethodWithQualifiedName("WKWebView",
-          [
-            "evaluateJavaScript(_:)", "evaluateJavaScript(_:completionHandler:)",
-            "evaluateJavaScript(_:in:in:completionHandler:)",
-            "evaluateJavaScript(_:in:contentWorld:)",
-            "callAsyncJavaScript(_:arguments:in:in:completionHandler:)",
-            "callAsyncJavaScript(_:arguments:in:contentWorld:)"
-          ])
+      ce.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName("WKWebView",
+            [
+              "evaluateJavaScript(_:)", "evaluateJavaScript(_:completionHandler:)",
+              "evaluateJavaScript(_:in:in:completionHandler:)",
+              "evaluateJavaScript(_:in:contentWorld:)",
+              "callAsyncJavaScript(_:arguments:in:in:completionHandler:)",
+              "callAsyncJavaScript(_:arguments:in:contentWorld:)"
+            ])
     ).getArgument(0).getExpr() = this.asExpr()
   }
 }
@@ -48,8 +49,9 @@ class WKWebView extends Sink {
 class WKUserContentController extends Sink {
   WKUserContentController() {
     any(CallExpr ce |
-      ce.getStaticTarget() =
-        getMethodWithQualifiedName("WKUserContentController", "addUserScript(_:)")
+      ce.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName("WKUserContentController", "addUserScript(_:)")
     ).getArgument(0).getExpr() = this.asExpr()
   }
 }
@@ -57,8 +59,9 @@ class WKUserContentController extends Sink {
 class UIWebView extends Sink {
   UIWebView() {
     any(CallExpr ce |
-      ce.getStaticTarget() =
-        getMethodWithQualifiedName(["UIWebView", "WebView"], "stringByEvaluatingJavaScript(from:)")
+      ce.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName(["UIWebView", "WebView"], "stringByEvaluatingJavaScript(from:)")
     ).getArgument(0).getExpr() = this.asExpr()
   }
 }
@@ -66,9 +69,9 @@ class UIWebView extends Sink {
 class JSContext extends Sink {
   JSContext() {
     any(CallExpr ce |
-      ce.getStaticTarget() =
-        getMethodWithQualifiedName("JSContext",
-          ["evaluateScript(_:)", "evaluateScript(_:withSourceURL:)"])
+      ce.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName("JSContext", ["evaluateScript(_:)", "evaluateScript(_:withSourceURL:)"])
     ).getArgument(0).getExpr() = this.asExpr()
   }
 }
@@ -76,24 +79,9 @@ class JSContext extends Sink {
 class JSEvaluateScript extends Sink {
   JSEvaluateScript() {
     any(CallExpr ce |
-      ce.getStaticTarget() = getFunctionWithQualifiedName("JSEvaluateScript(_:_:_:_:_:_:)")
+      ce.getStaticTarget().(FreeFunctionDecl).hasName("JSEvaluateScript(_:_:_:_:_:_:)")
     ).getArgument(1).getExpr() = this.asExpr()
   }
-}
-
-// TODO: Consider moving the following to the library, e.g.
-// - Decl.hasQualifiedName(moduleName?, declaringDeclName?, declName)
-// - parentDecl = memberDecl.getDeclaringDecl() <=> parentDecl.getAMember() = memberDecl
-IterableDeclContext getDeclaringDeclOf(Decl member) { result.getAMember() = member }
-
-MethodDecl getMethodWithQualifiedName(string className, string methodName) {
-  result.getName() = methodName and
-  getDeclaringDeclOf(result).(NominalTypeDecl).getName() = className
-}
-
-AbstractFunctionDecl getFunctionWithQualifiedName(string funcName) {
-  result.getName() = funcName and
-  not result.hasSelfParam()
 }
 
 /**
