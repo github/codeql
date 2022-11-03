@@ -211,7 +211,9 @@ class SwiftDispatcher {
   template <typename Iterable>
   auto fetchRepeatedLabels(Iterable&& arg) {
     std::vector<decltype(fetchLabel(*arg.begin()))> ret;
-    ret.reserve(arg.size());
+    if constexpr (HasSize<Iterable>::value) {
+      ret.reserve(arg.size());
+    }
     for (auto&& e : arg) {
       ret.push_back(fetchLabel(e));
     }
@@ -262,6 +264,12 @@ class SwiftDispatcher {
   }
 
  private:
+  template <typename T, typename = void>
+  struct HasSize : std::false_type {};
+
+  template <typename T>
+  struct HasSize<T, decltype(std::declval<T>().size(), void())> : std::true_type {};
+
   void attachLocation(swift::SourceLoc start,
                       swift::SourceLoc end,
                       TrapLabel<LocatableTag> locatableLabel) {
@@ -323,14 +331,14 @@ class SwiftDispatcher {
   // TODO: for const correctness these should consistently be `const` (and maybe const references
   // as we don't expect `nullptr` here. However `swift::ASTVisitor` and `swift::TypeVisitor` do not
   // accept const pointers
-  virtual void visit(swift::Decl* decl) = 0;
-  virtual void visit(swift::Stmt* stmt) = 0;
+  virtual void visit(const swift::Decl* decl) = 0;
+  virtual void visit(const swift::Stmt* stmt) = 0;
   virtual void visit(const swift::StmtCondition* cond) = 0;
   virtual void visit(const swift::StmtConditionElement* cond) = 0;
-  virtual void visit(swift::CaseLabelItem* item) = 0;
-  virtual void visit(swift::Expr* expr) = 0;
+  virtual void visit(const swift::CaseLabelItem* item) = 0;
+  virtual void visit(const swift::Expr* expr) = 0;
   virtual void visit(const swift::Pattern* pattern) = 0;
-  virtual void visit(swift::TypeRepr* typeRepr, swift::Type type) = 0;
+  virtual void visit(const swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(swift::TypeBase* type) = 0;
 
   void visit(const std::filesystem::path& file) {

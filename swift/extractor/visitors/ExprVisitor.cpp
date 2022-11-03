@@ -23,8 +23,8 @@ void ExprVisitor::emitAccessorSemantics(T* ast, Label label) {
   }
 }
 
-void ExprVisitor::visit(swift::Expr* expr) {
-  swift::ExprVisitor<ExprVisitor, void>::visit(expr);
+void ExprVisitor::visit(const swift::Expr* expr) {
+  AstVisitorBase<ExprVisitor>::visit(expr);
   auto label = dispatcher_.fetchLabel(expr);
   if (auto type = expr->getType()) {
     dispatcher_.emit(ExprTypesTrap{label, dispatcher_.fetchLabel(type)});

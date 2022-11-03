@@ -9,7 +9,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
  public:
   using AstVisitorBase<ExprVisitor>::AstVisitorBase;
 
-  void visit(swift::Expr* expr);
+  void visit(const swift::Expr* expr);
   void visitIntegerLiteralExpr(swift::IntegerLiteralExpr* expr);
   void visitFloatLiteralExpr(swift::FloatLiteralExpr* expr);
   void visitBooleanLiteralExpr(swift::BooleanLiteralExpr* expr);

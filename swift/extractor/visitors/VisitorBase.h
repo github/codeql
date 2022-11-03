@@ -83,6 +83,15 @@ class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail:
  public:
   using VisitorBase::VisitorBase;
 
+  // TODO
+  // swift does not provide const visitors, for the moment we const_cast and promise not to
+  // change the entities. When all visitors have been turned to translators, we can ditch
+  // swift::ASTVisitor and roll out our own const-correct TranslatorBase class
+  template <typename E>
+  void visit(const E* entity) {
+    swift::ASTVisitor<CrtpSubclass>::visit(const_cast<E*>(entity));
+  }
+
 #define DECL(CLASS, PARENT) DEFINE_VISIT(Decl, CLASS, PARENT)
 #include "swift/AST/DeclNodes.def"
 

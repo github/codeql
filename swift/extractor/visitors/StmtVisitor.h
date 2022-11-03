@@ -9,34 +9,32 @@ class StmtVisitor : public AstVisitorBase<StmtVisitor> {
  public:
   using AstVisitorBase<StmtVisitor>::AstVisitorBase;
 
-  void visitLabeledStmt(swift::LabeledStmt* stmt);
   codeql::StmtCondition translateStmtCondition(const swift::StmtCondition& cond);
   codeql::ConditionElement translateStmtConditionElement(
       const swift::StmtConditionElement& element);
-  void visitLabeledConditionalStmt(swift::LabeledConditionalStmt* stmt);
-  void visitCaseLabelItem(swift::CaseLabelItem* labelItem);
-  void visitBraceStmt(swift::BraceStmt* stmt);
-  void visitReturnStmt(swift::ReturnStmt* stmt);
-  void visitForEachStmt(swift::ForEachStmt* stmt);
-  void visitIfStmt(swift::IfStmt* stmt);
-  void visitBreakStmt(swift::BreakStmt* stmt);
-  void visitContinueStmt(swift::ContinueStmt* stmt);
-  void visitWhileStmt(swift::WhileStmt* stmt);
-  void visitRepeatWhileStmt(swift::RepeatWhileStmt* stmt);
-  void visitDoCatchStmt(swift::DoCatchStmt* stmt);
-  void visitCaseStmt(swift::CaseStmt* stmt);
-  void visitGuardStmt(swift::GuardStmt* stmt);
-  void visitThrowStmt(swift::ThrowStmt* stmt);
-  void visitDeferStmt(swift::DeferStmt* stmt);
-  void visitDoStmt(swift::DoStmt* stmt);
-  void visitSwitchStmt(swift::SwitchStmt* stmt);
-  void visitFallthroughStmt(swift::FallthroughStmt* stmt);
-  void visitYieldStmt(swift::YieldStmt* stmt);
+  codeql::CaseLabelItem translateCaseLabelItem(const swift::CaseLabelItem& labelItem);
+  codeql::BraceStmt translateBraceStmt(const swift::BraceStmt& stmt);
+  codeql::ReturnStmt translateReturnStmt(const swift::ReturnStmt& stmt);
+  codeql::ForEachStmt translateForEachStmt(const swift::ForEachStmt& stmt);
+  codeql::IfStmt translateIfStmt(const swift::IfStmt& stmt);
+  codeql::BreakStmt translateBreakStmt(const swift::BreakStmt& stmt);
+  codeql::ContinueStmt translateContinueStmt(const swift::ContinueStmt& stmt);
+  codeql::WhileStmt translateWhileStmt(const swift::WhileStmt& stmt);
+  codeql::RepeatWhileStmt translateRepeatWhileStmt(const swift::RepeatWhileStmt& stmt);
+  codeql::DoCatchStmt translateDoCatchStmt(const swift::DoCatchStmt& stmt);
+  codeql::CaseStmt translateCaseStmt(const swift::CaseStmt& stmt);
+  codeql::GuardStmt translateGuardStmt(const swift::GuardStmt& stmt);
+  codeql::ThrowStmt translateThrowStmt(const swift::ThrowStmt& stmt);
+  codeql::DeferStmt translateDeferStmt(const swift::DeferStmt& stmt);
+  codeql::DoStmt translateDoStmt(const swift::DoStmt& stmt);
+  codeql::SwitchStmt translateSwitchStmt(const swift::SwitchStmt& stmt);
+  codeql::FallthroughStmt translateFallthroughStmt(const swift::FallthroughStmt& stmt);
+  codeql::YieldStmt translateYieldStmt(const swift::YieldStmt& stmt);
 
  private:
-  void emitLabeledStmt(const swift::LabeledStmt* stmt, TrapLabel<LabeledStmtTag> label);
-  void emitLabeledConditionalStmt(swift::LabeledConditionalStmt* stmt,
-                                  TrapLabel<LabeledConditionalStmtTag> label);
+  void fillLabeledStmt(const swift::LabeledStmt& stmt, codeql::LabeledStmt& entry);
+  void fillLabeledConditionalStmt(const swift::LabeledConditionalStmt& stmt,
+                                  codeql::LabeledConditionalStmt& entry);
 };
 
 }  // namespace codeql

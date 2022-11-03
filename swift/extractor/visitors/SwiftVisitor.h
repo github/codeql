@@ -21,19 +21,21 @@ class SwiftVisitor : private SwiftDispatcher {
   void extract(swift::Token& comment) { emitComment(comment); }
 
  private:
-  void visit(swift::Decl* decl) override { declVisitor.visit(decl); }
-  void visit(swift::Stmt* stmt) override { stmtVisitor.visit(stmt); }
+  void visit(const swift::Decl* decl) override { declVisitor.visit(decl); }
+  void visit(const swift::Stmt* stmt) override { stmtVisitor.visit(stmt); }
   void visit(const swift::StmtCondition* cond) override {
     emit(stmtVisitor.translateStmtCondition(*cond));
   }
   void visit(const swift::StmtConditionElement* element) override {
     emit(stmtVisitor.translateStmtConditionElement(*element));
   }
-  void visit(swift::CaseLabelItem* item) override { stmtVisitor.visitCaseLabelItem(item); }
-  void visit(swift::Expr* expr) override { exprVisitor.visit(expr); }
+  void visit(const swift::CaseLabelItem* item) override {
+    emit(stmtVisitor.translateCaseLabelItem(*item));
+  }
+  void visit(const swift::Expr* expr) override { exprVisitor.visit(expr); }
   void visit(const swift::Pattern* pattern) override { patternVisitor.visit(pattern); }
   void visit(swift::TypeBase* type) override { typeVisitor.visit(type); }
-  void visit(swift::TypeRepr* typeRepr, swift::Type type) override {
+  void visit(const swift::TypeRepr* typeRepr, swift::Type type) override {
     emit(typeVisitor.translateTypeRepr(*typeRepr, type));
   }
 
