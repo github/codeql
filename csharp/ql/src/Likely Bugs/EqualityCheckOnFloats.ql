@@ -1,8 +1,6 @@
 /**
  * @name Equality check on floating point values
- * @description Comparing results of floating-point computations with '==' or
- *              '!=' is likely to yield surprising results since floating-point
- *              computation does not follow the standard rules of algebra.
+ * @description Equality checks on floating point values can yield unexpected results.
  * @kind problem
  * @problem.severity warning
  * @precision medium
@@ -12,6 +10,13 @@
  */
 
 import csharp
+
+class ZeroFloatLiteral extends FloatLiteral {
+  ZeroFloatLiteral() {
+    this.getValue() = "0" or
+    this.getValue() = "0.0"
+  }
+}
 
 from EqualityOperation e
 where

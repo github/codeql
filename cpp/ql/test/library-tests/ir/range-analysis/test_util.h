@@ -1,1 +1,0 @@
-template<typename T> void range(T value);

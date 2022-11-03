@@ -33,7 +33,7 @@ predicate referencedInXmlFile(Field f) {
  * Gets an XML element with an attribute whose value is the name of `f`,
  * suggesting that it might reference `f`.
  */
-private XmlElement elementReferencingField(Field f) {
+private XMLElement elementReferencingField(Field f) {
   exists(elementReferencingType(f.getDeclaringType())) and
   result.getAnAttribute().getValue() = f.getName()
 }
@@ -42,7 +42,7 @@ private XmlElement elementReferencingField(Field f) {
  * Gets an XML element with an attribute whose value is the fully qualified
  * name of `rt`, suggesting that it might reference `rt`.
  */
-private XmlElement elementReferencingType(RefType rt) {
+private XMLElement elementReferencingType(RefType rt) {
   result.getAnAttribute().getValue() = rt.getSourceDeclaration().getQualifiedName()
 }
 
@@ -75,7 +75,7 @@ class ReflectiveClassIdentifierMethodAccess extends ReflectiveClassIdentifier, M
   /**
    * If the argument to this call is a `StringLiteral`, then return that string.
    */
-  string getTypeName() { result = this.getArgument(0).(StringLiteral).getValue() }
+  string getTypeName() { result = this.getArgument(0).(StringLiteral).getRepresentedString() }
 
   override RefType getReflectivelyIdentifiedClass() {
     // We only handle cases where the class is specified as a string literal to this call.
@@ -150,7 +150,7 @@ private Type parameterForSubTypes(ParameterizedType type) {
       lowerBound = arg.(Wildcard).getLowerBoundType()
     |
       // `T super Foo` implies that `Foo`, or any super-type of `Foo`, may be represented.
-      lowerBound.getAnAncestor() = result
+      lowerBound.(RefType).getAnAncestor() = result
     )
   )
 }
@@ -295,7 +295,7 @@ class NewInstance extends MethodAccess {
       // If we cast the result of this method, then this is either the type specified, or a
       // sub-type of that type. Make sure we exclude overly generic types such as `Object`.
       not overlyGenericType(cast.getType()) and
-      hasDescendant(cast.getType(), result)
+      hasSubtype*(cast.getType(), result)
     )
   }
 }
@@ -355,14 +355,12 @@ class ReflectiveMethodAccess extends ClassMethodAccess {
       then
         // The method must be declared on the type itself.
         result.getDeclaringType() = this.getInferredClassType()
-      else (
-        // The method must be public, and declared or inherited by the inferred class type.
-        result.isPublic() and
+      else
+        // The method may be declared on an inferred type or a super-type.
         this.getInferredClassType().inherits(result)
-      )
     ) and
     // Only consider instances where the method name is provided as a `StringLiteral`.
-    result.hasName(this.getArgument(0).(StringLiteral).getValue())
+    result.hasName(this.getArgument(0).(StringLiteral).getRepresentedString())
   }
 }
 
@@ -402,6 +400,6 @@ class ReflectiveFieldAccess extends ClassMethodAccess {
         this.getInferredClassType().inherits(result)
       )
     ) and
-    result.hasName(this.getArgument(0).(StringLiteral).getValue())
+    result.hasName(this.getArgument(0).(StringLiteral).getRepresentedString())
   }
 }

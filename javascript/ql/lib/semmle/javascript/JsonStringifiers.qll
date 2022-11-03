@@ -14,7 +14,7 @@ class JsonStringifyCall extends DataFlow::CallNode {
       callee =
         DataFlow::moduleMember(["json3", "json5", "flatted", "teleport-javascript", "json-cycle"],
           "stringify") or
-      callee = API::moduleImport("replicator").getInstance().getMember("encode").asSource() or
+      callee = API::moduleImport("replicator").getInstance().getMember("encode").getAnImmediateUse() or
       callee =
         DataFlow::moduleImport([
             "json-stringify-safe", "json-stable-stringify", "stringify-object",
@@ -43,7 +43,7 @@ class JsonStringifyCall extends DataFlow::CallNode {
 /**
  * A taint step through the [`json2csv`](https://www.npmjs.com/package/json2csv) library.
  */
-class Json2CsvTaintStep extends TaintTracking::SharedTaintStep {
+class JSON2CSVTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(API::CallNode call |
       call =
@@ -59,15 +59,12 @@ class Json2CsvTaintStep extends TaintTracking::SharedTaintStep {
   }
 }
 
-/** DEPRECATED: Alias for Json2CsvTaintStep */
-deprecated class JSON2CSVTaintStep = Json2CsvTaintStep;
-
 /**
  * A step through the [`prettyjson`](https://www.npmjs.com/package/prettyjson) library.
  * This is not quite a `JSON.stringify` call, as it e.g. does not wrap keys in double quotes.
- * It's therefore modeled as a taint-step rather than as a `JSON.stringify` call.
+ * It's therefore modelled as a taint-step rather than as a `JSON.stringify` call.
  */
-class PrettyJsonTaintStep extends TaintTracking::SharedTaintStep {
+class PrettyJSONTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(API::CallNode call |
       call = API::moduleImport("prettyjson").getMember("render").getACall()
@@ -77,6 +74,3 @@ class PrettyJsonTaintStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
-
-/** DEPRECATED: Alias for PrettyJsonTaintStep */
-deprecated class PrettyJSONTaintStep = PrettyJsonTaintStep;

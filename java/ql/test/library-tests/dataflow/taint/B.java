@@ -11,7 +11,7 @@ public class B {
 
   public static void sink(Object o) { }
 
-  public static void maintest() throws java.io.UnsupportedEncodingException, java.net.MalformedURLException, java.io.IOException {
+  public static void maintest() throws java.io.UnsupportedEncodingException, java.net.MalformedURLException {
     String[] args = taint();
     // tainted - access to main args
     String[] aaaargs = args;
@@ -41,7 +41,7 @@ public class B {
     String valueOfSubstring = String.valueOf(complex.toCharArray(), 0, 1);
     sink(valueOfSubstring);
     // tainted - unsafe escape
-    String badEscape = constructed.replaceAll("irrelevant", "irrelevant");
+    String badEscape = constructed.replaceAll("(<script>)", "");
     sink(badEscape);
     // tainted - tokenized string
     String token = new StringTokenizer(badEscape).nextToken();
@@ -156,12 +156,6 @@ public class B {
     // Tainted File to Path to File
     sink(new java.io.File(s).toPath().toFile());
 
-    // Tainted file to absolute file
-    sink(new java.io.File(s).getAbsoluteFile());
-
-    // Tainted file to canonical file
-    sink(new java.io.File(s).getCanonicalFile());
-
     return;
   }
 
@@ -188,33 +182,5 @@ public class B {
 
   public static boolean safe() {
     return true;
-  }
-
-  public static void extendedTests(){
-    String s = taint()[0];
-
-    String replReceiver = s.replace("irrelevant", "irrelevant");
-    sink(replReceiver);
-
-    String replChar = "a".replace('a', s.charAt(0));
-    sink(replChar);
-
-    String replCharReceiver = s.replace('a', 'b');
-    sink(replCharReceiver);
-
-    String charAt = "";
-    for(int i = 0; i < 10; i++)
-        charAt = charAt + s.charAt(i);
-    sink(charAt);
-
-    byte[] bytes = new byte[10];
-    s.getBytes(0, 1, bytes, 0);
-    sink(bytes);
-
-    String replAll = s.replaceAll("irrelevant", "irrelevant");
-    sink(replAll);
-
-    String replFirst = s.replaceFirst("irrelevant", "irrelevant");
-    sink(replFirst);
   }
 }

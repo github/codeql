@@ -5,6 +5,7 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module IndirectCommandInjection {
   /**
@@ -74,7 +75,7 @@ module IndirectCommandInjection {
         ].getMember("parse").getACall()
       or
       // `require('commander').myCmdArgumentName`
-      this = commander().getAMember().asSource()
+      this = commander().getAMember().getAnImmediateUse()
       or
       // `require('commander').opt()` => `{a: ..., b: ...}`
       this = commander().getMember("opts").getACall()
@@ -82,7 +83,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * Holds if there is a command line parsing step from `pred` to `succ`.
+   * A command line parsing step from `pred` to `succ`.
    * E.g: `var succ = require("minimist")(pred)`.
    */
   predicate argsParseStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -96,7 +97,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * Gets a Command instance from the `commander` library.
+   * A Command instance from the `commander` library.
    */
   private API::Node commander() {
     result = API::moduleImport("commander")
@@ -132,7 +133,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * An array of command line arguments (`argv`) parsed by the `yargs` library.
+   * An array of command line arguments (`argv`) parsed by the `yargs` libary.
    */
   class YargsArgv extends Source {
     YargsArgv() {

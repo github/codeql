@@ -1,4 +1,5 @@
 import cpp
+import semmle.code.cpp.exprs.ObjectiveC
 
 string arguments(Function f, int i) {
   result = "," and i = -1

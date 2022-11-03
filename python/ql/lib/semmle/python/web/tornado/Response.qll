@@ -4,11 +4,11 @@ import semmle.python.security.strings.Basic
 private import semmle.python.web.Http
 import Tornado
 
-deprecated class TornadoConnection extends TaintKind {
+class TornadoConnection extends TaintKind {
   TornadoConnection() { this = "tornado.http.connection" }
 }
 
-deprecated class TornadoConnectionSource extends TaintSource {
+class TornadoConnectionSource extends TaintSource {
   TornadoConnectionSource() {
     isTornadoRequestHandlerInstance(this.(AttrNode).getObject("connection"))
   }
@@ -18,7 +18,7 @@ deprecated class TornadoConnectionSource extends TaintSource {
   override predicate isSourceOf(TaintKind kind) { kind instanceof TornadoConnection }
 }
 
-deprecated class TornadoConnectionWrite extends HttpResponseTaintSink {
+class TornadoConnectionWrite extends HttpResponseTaintSink {
   override string toString() { result = "tornado.connection.write" }
 
   TornadoConnectionWrite() {
@@ -32,7 +32,7 @@ deprecated class TornadoConnectionWrite extends HttpResponseTaintSink {
   override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 }
 
-deprecated class TornadoHttpRequestHandlerWrite extends HttpResponseTaintSink {
+class TornadoHttpRequestHandlerWrite extends HttpResponseTaintSink {
   override string toString() { result = "tornado.HttpRequestHandler.write" }
 
   TornadoHttpRequestHandlerWrite() {

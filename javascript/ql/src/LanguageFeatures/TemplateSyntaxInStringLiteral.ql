@@ -17,11 +17,12 @@ class CandidateTopLevel extends TopLevel {
 
 /** A string literal in a toplevel that contains at least one template literal. */
 class CandidateStringLiteral extends StringLiteral {
+  CandidateTopLevel tl;
   string v;
 
   CandidateStringLiteral() {
-    this.getTopLevel() instanceof CandidateTopLevel and
-    v = this.getStringValue()
+    tl = this.getTopLevel() and
+    v = getStringValue()
   }
 
   /**
@@ -42,10 +43,10 @@ class CandidateStringLiteral extends StringLiteral {
    * Gets an ancestor node of this string literal in the AST that can be reached without
    * stepping over scope elements.
    */
-  AstNode getIntermediate() {
+  ASTNode getIntermediate() {
     result = this
     or
-    exists(AstNode mid | mid = this.getIntermediate() |
+    exists(ASTNode mid | mid = getIntermediate() |
       not mid instanceof ScopeElement and
       result = mid.getParent()
     )
@@ -56,7 +57,7 @@ class CandidateStringLiteral extends StringLiteral {
    */
   predicate isInScope(Scope scope) {
     scope instanceof GlobalScope or
-    this.getIntermediate().(ScopeElement).getScope() = scope.getAnInnerScope*()
+    getIntermediate().(ScopeElement).getScope() = scope.getAnInnerScope*()
   }
 }
 
@@ -84,10 +85,10 @@ predicate hasObjectProvidingTemplateVariables(CandidateStringLiteral lit) {
  * Gets a declaration of variable `v` in `tl`, where `v` has the given `name` and
  * belongs to `scope`.
  */
-VarDecl getDeclIn(Variable v, Scope scope, string name, CandidateTopLevel tl) {
+VarDecl getDeclIn(Variable v, Scope s, string name, CandidateTopLevel tl) {
   v.getName() = name and
   v.getADeclaration() = result and
-  v.getScope() = scope and
+  v.getScope() = s and
   result.getTopLevel() = tl
 }
 

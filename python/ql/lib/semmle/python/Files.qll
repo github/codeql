@@ -2,6 +2,12 @@ import python
 
 /** A file */
 class File extends Container, @file {
+  /** DEPRECATED: Use `getAbsolutePath` instead. */
+  deprecated override string getName() { result = this.getAbsolutePath() }
+
+  /** DEPRECATED: Use `getAbsolutePath` instead. */
+  deprecated string getFullName() { result = this.getAbsolutePath() }
+
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
@@ -21,7 +27,7 @@ class File extends Container, @file {
 
   /** Whether this file is a source code file. */
   predicate fromSource() {
-    /* If we start to analyze .pyc files, then this will have to change. */
+    /* If we start to analyse .pyc files, then this will have to change. */
     any()
   }
 
@@ -109,6 +115,9 @@ private predicate occupied_line(File f, int n) {
 
 /** A folder (directory) */
 class Folder extends Container, @folder {
+  /** DEPRECATED: Use `getAbsolutePath` instead. */
+  deprecated override string getName() { result = this.getAbsolutePath() }
+
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
@@ -147,6 +156,9 @@ class Folder extends Container, @folder {
 abstract class Container extends @container {
   Container getParent() { containerparent(result, this) }
 
+  /** Gets a child of this container */
+  deprecated Container getChild() { containerparent(this, result) }
+
   /**
    * Gets a textual representation of the path of this container.
    *
@@ -154,11 +166,8 @@ abstract class Container extends @container {
    */
   string toString() { result = this.getAbsolutePath() }
 
-  /**
-   * Gets the name of this container.
-   * DEPRECATED: Use `getAbsolutePath` instead.
-   */
-  deprecated string getName() { result = this.getAbsolutePath() }
+  /** Gets the name of this container */
+  abstract string getName();
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
@@ -330,7 +339,7 @@ abstract class Container extends @container {
    * paths. The list of paths is composed of the paths passed to the extractor and
    * `sys.path`.
    */
-  predicate isImportRoot(int n) { this.getAbsolutePath() = import_path_element(n) }
+  predicate isImportRoot(int n) { this.getName() = import_path_element(n) }
 
   /** Holds if this folder is the root folder for the standard library. */
   predicate isStdLibRoot(int major, int minor) {

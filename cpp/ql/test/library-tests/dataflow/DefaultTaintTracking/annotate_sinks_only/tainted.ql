@@ -5,7 +5,7 @@
  */
 
 import cpp
-import semmle.code.cpp.security.TaintTrackingImpl as AstTaintTracking
+import semmle.code.cpp.security.TaintTrackingImpl as ASTTaintTracking
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IRDefaultTaintTracking
 import IRDefaultTaintTracking::TaintedWithPath as TaintedWithPath
 import TestUtilities.InlineExpectationsTest
@@ -18,7 +18,7 @@ predicate argToSinkCall(Element sink) {
 }
 
 predicate astTaint(Expr source, Element sink) {
-  AstTaintTracking::tainted(source, sink) and argToSinkCall(sink)
+  ASTTaintTracking::tainted(source, sink) and argToSinkCall(sink)
 }
 
 class SourceConfiguration extends TaintedWithPath::TaintTrackingConfiguration {
@@ -55,8 +55,8 @@ class IRDefaultTaintTrackingTest extends InlineExpectationsTest {
   }
 }
 
-class AstTaintTrackingTest extends InlineExpectationsTest {
-  AstTaintTrackingTest() { this = "ASTTaintTrackingTest" }
+class ASTTaintTrackingTest extends InlineExpectationsTest {
+  ASTTaintTrackingTest() { this = "ASTTaintTrackingTest" }
 
   override string getARelevantTag() { result = "ast" }
 

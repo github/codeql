@@ -36,7 +36,7 @@ private predicate isNotNeeded(Locatable el) {
   el.getLocation().getStartLine() = 0 and
   el.getLocation().getStartColumn() = 0
   or
-  // relaxing aggressive type inference.
+  // relaxing aggresive type inference.
   none()
 }
 
@@ -54,26 +54,26 @@ private string getQlClass(Locatable el) {
  */
 private newtype TPrintAstNode =
   // JavaScript / TypeScript
-  TElementNode(AstNode el) { shouldPrint(el, _) and not isNotNeeded(el) } or
+  TElementNode(ASTNode el) { shouldPrint(el, _) and not isNotNeeded(el) } or
   TParametersNode(Function f) { shouldPrint(f, _) and not isNotNeeded(f) } or
   TTypeParametersNode(TypeParameterized f) { shouldPrint(f, _) and not isNotNeeded(f) } or
-  TJsxAttributesNode(JsxElement n) { shouldPrint(n, _) and not isNotNeeded(n) } or
-  TJsxBodyElementsNode(JsxNode n) { shouldPrint(n, _) and not isNotNeeded(n) } or
+  TJSXAttributesNode(JSXElement n) { shouldPrint(n, _) and not isNotNeeded(n) } or
+  TJSXBodyElementsNode(JSXNode n) { shouldPrint(n, _) and not isNotNeeded(n) } or
   TInvokeArgumentsNode(InvokeExpr n) { shouldPrint(n, _) and not isNotNeeded(n) } or
   TInvokeTypeArgumentsNode(InvokeExpr invk) { shouldPrint(invk, _) and not isNotNeeded(invk) } or
   // JSON
-  TJsonNode(JsonValue value) { shouldPrint(value, _) and not isNotNeeded(value) } or
+  TJSONNode(JSONValue value) { shouldPrint(value, _) and not isNotNeeded(value) } or
   // YAML
-  TYamlNode(YamlNode n) { shouldPrint(n, _) and not isNotNeeded(n) } or
-  TYamlMappingNode(YamlMapping mapping, int i) {
+  TYAMLNode(YAMLNode n) { shouldPrint(n, _) and not isNotNeeded(n) } or
+  TYAMLMappingNode(YAMLMapping mapping, int i) {
     shouldPrint(mapping, _) and not isNotNeeded(mapping) and exists(mapping.getKeyNode(i))
   } or
   // HTML
-  THtmlElementNode(HTML::Element e) { shouldPrint(e, _) and not isNotNeeded(e) } or
-  THtmlAttributesNodes(HTML::Element e) { shouldPrint(e, _) and not isNotNeeded(e) } or
-  THtmlAttributeNode(HTML::Attribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) } or
-  THtmlScript(Script script) { shouldPrint(script, _) and not isNotNeeded(script) } or
-  THtmlCodeInAttr(CodeInAttribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) } or
+  THTMLElementNode(HTML::Element e) { shouldPrint(e, _) and not isNotNeeded(e) } or
+  THTMLAttributesNodes(HTML::Element e) { shouldPrint(e, _) and not isNotNeeded(e) } or
+  THTMLAttributeNode(HTML::Attribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) } or
+  THTMLScript(Script script) { shouldPrint(script, _) and not isNotNeeded(script) } or
+  THTMLCodeInAttr(CodeInAttribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) } or
   TRegExpTermNode(RegExpTerm term) {
     shouldPrint(term, _) and
     term.isUsedAsRegExp() and
@@ -98,7 +98,7 @@ class PrintAstNode extends TPrintAstNode {
   /**
    * Gets a child of this node.
    */
-  final PrintAstNode getAChild() { result = this.getChild(_) }
+  final PrintAstNode getAChild() { result = getChild(_) }
 
   /**
    * Gets the parent of this node, if any.
@@ -116,7 +116,7 @@ class PrintAstNode extends TPrintAstNode {
    */
   string getProperty(string key) {
     key = "semmle.label" and
-    result = this.toString()
+    result = toString()
   }
 
   /**
@@ -125,7 +125,7 @@ class PrintAstNode extends TPrintAstNode {
    * this.
    */
   string getChildEdgeLabel(int childIndex) {
-    exists(this.getChild(childIndex)) and
+    exists(getChild(childIndex)) and
     result = childIndex.toString()
   }
 }
@@ -161,14 +161,14 @@ private module PrintJavaScript {
   /**
    * A print node representing an `ASTNode`.
    *
-   * Provides a default implementation that works for some (but not all) ASTNode's.
+   * Provides a default implemention that works for some (but not all) ASTNode's.
    * More specific subclasses can override this class to get more specific behavior.
    *
    * The more specific subclasses are mostly used aggregate the children of the `ASTNode`.
    * For example by aggregating all the parameters of a function under a single child node.
    */
   class ElementNode extends PrintAstNode, TElementNode {
-    AstNode element;
+    ASTNode element;
 
     ElementNode() {
       this = TElementNode(element) and
@@ -183,28 +183,28 @@ private module PrintJavaScript {
     /**
      * Gets the `ASTNode` represented by this node.
      */
-    final AstNode getElement() { result = element }
+    final ASTNode getElement() { result = element }
 
     override PrintAstNode getChild(int childIndex) {
-      exists(AstNode el | result.(ElementNode).getElement() = el |
+      exists(ASTNode el | result.(ElementNode).getElement() = el |
         el = this.getChildNode(childIndex)
       )
     }
 
     /**
      * Gets the `i`th child of `element`.
-     * Can be overridden in subclasses to get more specific behavior for `getChild()`.
+     * Can be overriden in subclasses to get more specific behavior for `getChild()`.
      */
-    AstNode getChildNode(int i) { result = getLocationSortedChild(element, i) }
+    ASTNode getChildNode(int childIndex) { result = getLocationSortedChild(element, childIndex) }
   }
 
-  /** Provides predicates for pretty printing `AstNode`s. */
+  /** Provides predicates for pretty printing `ASTNode`s. */
   private module PrettyPrinting {
     /**
      * Gets a pretty string representation of `element`.
      * Either the result is `ASTNode::toString`, or a custom made string representation of `element`.
      */
-    string print(AstNode element) {
+    string print(ASTNode element) {
       shouldPrint(element, _) and
       (
         result = element.toString().regexpReplaceAll("(\\\\n|\\\\r|\\\\t| )+", " ") and
@@ -217,7 +217,7 @@ private module PrintJavaScript {
     /**
      * Gets a string representing `a`.
      */
-    private string repr(AstNode a) {
+    private string repr(ASTNode a) {
       shouldPrint(a, _) and
       (
         exists(DeclStmt decl | decl = a |
@@ -252,9 +252,9 @@ private module PrintJavaScript {
     }
   }
 
-  private AstNode getLocationSortedChild(AstNode parent, int i) {
+  private ASTNode getLocationSortedChild(ASTNode parent, int i) {
     result =
-      rank[i](AstNode child, int childIndex |
+      rank[i](ASTNode child, int childIndex |
         child = parent.getChild(childIndex)
       |
         child
@@ -370,76 +370,61 @@ private module PrintJavaScript {
    * 2: An aggregate node for all the attributes  (for example `href={foo}` in `<Name href={foo} />`).
    * 3: An aggregate node for all the body element (for example `foo` in `<span>foo</span>`).
    */
-  class JsxNodeNode extends ElementNode {
-    override JsxNode element;
+  class JSXNodeNode extends ElementNode {
+    override JSXNode element;
 
     override PrintAstNode getChild(int childIndex) {
-      childIndex = 0 and result.(ElementNode).getElement() = element.(JsxElement).getNameExpr()
+      childIndex = 0 and result.(ElementNode).getElement() = element.(JSXElement).getNameExpr()
       or
       childIndex = 1 and
       exists(element.getABodyElement()) and
-      result.(JsxBodyElementsNode).getJsxNode() = element
+      result.(JSXBodyElementsNode).getJSXNode() = element
       or
       childIndex = 2 and
-      exists(element.(JsxElement).getAttribute(_)) and
-      result.(JsxAttributesNode).getJsxElement() = element
+      exists(element.(JSXElement).getAttribute(_)) and
+      result.(JSXAttributesNode).getJSXElement() = element
     }
   }
-
-  /** DEPRECATED: Alias for JsxNodeNode */
-  deprecated class JSXNodeNode = JsxNodeNode;
 
   /**
    * An aggregate node representing all the attributes in a `JSXNode`.
    */
-  class JsxAttributesNode extends PrintAstNode, TJsxAttributesNode {
-    JsxElement n;
+  class JSXAttributesNode extends PrintAstNode, TJSXAttributesNode {
+    JSXElement n;
 
-    JsxAttributesNode() { this = TJsxAttributesNode(n) and exists(n.getAttribute(_)) }
+    JSXAttributesNode() { this = TJSXAttributesNode(n) and exists(n.getAttribute(_)) }
 
     override string toString() { result = "(Attributes)" }
 
     /**
      * Gets the `JSXElement` for which this node represents the attributes.
      */
-    JsxElement getJsxElement() { result = n }
-
-    /** DEPRECATED: Alias for getJsxElement */
-    deprecated JSXElement getJSXElement() { result = this.getJsxElement() }
+    JSXElement getJSXElement() { result = n }
 
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = n.getAttribute(childIndex)
     }
   }
 
-  /** DEPRECATED: Alias for JsxAttributesNode */
-  deprecated class JSXAttributesNode = JsxAttributesNode;
-
   /**
    * An aggregate node representing all the body elements in a `JSXNode`.
    */
-  class JsxBodyElementsNode extends PrintAstNode, TJsxBodyElementsNode {
-    JsxNode n;
+  class JSXBodyElementsNode extends PrintAstNode, TJSXBodyElementsNode {
+    JSXNode n;
 
-    JsxBodyElementsNode() { this = TJsxBodyElementsNode(n) and exists(n.getBodyElement(_)) }
+    JSXBodyElementsNode() { this = TJSXBodyElementsNode(n) and exists(n.getBodyElement(_)) }
 
     override string toString() { result = "(Body)" }
 
     /**
      * Gets the `JSXNode` for which this node represents the body elements.
      */
-    JsxNode getJsxNode() { result = n }
-
-    /** DEPRECATED: Alias for getJsxNode */
-    deprecated JSXNode getJSXNode() { result = this.getJsxNode() }
+    JSXNode getJSXNode() { result = n }
 
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = n.getBodyElement(childIndex)
     }
   }
-
-  /** DEPRECATED: Alias for JsxBodyElementsNode */
-  deprecated class JSXBodyElementsNode = JsxBodyElementsNode;
 
   /**
    * A node representing any `ASTNode` that has type-parameters.
@@ -499,7 +484,7 @@ private module PrintJavaScript {
   class ParameterNode extends ElementNode {
     override Parameter element;
 
-    override AstNode getChildNode(int childIndex) {
+    override ASTNode getChildNode(int childIndex) {
       childIndex = 0 and result = element.getTypeAnnotation()
       or
       childIndex = 1 and result = element.getDefault()
@@ -550,14 +535,14 @@ private module PrintJavaScript {
 /**
  * Classes for printing JSON AST.
  */
-private module PrintJson {
+private module PrintJSON {
   /**
    * A print node representing a JSON value in a .json file.
    */
-  class JsonNode extends PrintAstNode, TJsonNode {
-    JsonValue value;
+  class JSONNode extends PrintAstNode, TJSONNode {
+    JSONValue value;
 
-    JsonNode() { this = TJsonNode(value) }
+    JSONNode() { this = TJSONNode(value) }
 
     override string toString() { result = getQlClass(value) + PrettyPrinting::print(value) }
 
@@ -566,17 +551,14 @@ private module PrintJson {
     /**
      * Gets the `JSONValue` represented by this node.
      */
-    final JsonValue getValue() { result = value }
+    final JSONValue getValue() { result = value }
 
     override PrintAstNode getChild(int childIndex) {
-      exists(JsonValue child | result.(JsonNode).getValue() = child |
+      exists(JSONValue child | result.(JSONNode).getValue() = child |
         child = value.getChild(childIndex)
       )
     }
   }
-
-  /** DEPRECATED: Alias for JsonNode */
-  deprecated class JSONNode = JsonNode;
 
   /** Provied predicates for pretty printing JSON. */
   private module PrettyPrinting {
@@ -584,7 +566,7 @@ private module PrintJson {
      * Gets a string representation of `n`.
      * Either using the default `JSONValue::toString`, or a custom printing of the JSON value.
      */
-    string print(JsonValue n) {
+    string print(JSONValue n) {
       shouldPrint(n, _) and
       (
         result = n.toString().regexpReplaceAll("(\\\\n|\\\\r|\\\\t| )+", " ") and
@@ -595,20 +577,20 @@ private module PrintJson {
     }
 
     /** Gets a string representing `n`. */
-    private string repr(JsonValue n) {
+    private string repr(JSONValue n) {
       shouldPrint(n, _) and
       (
-        exists(JsonObject obj, string name, JsonValue prop | obj = n |
+        exists(JSONObject obj, string name, JSONValue prop | obj = n |
           prop = obj.getPropValue(name) and
           prop = obj.getChild(0) and
           result = "{" + name + ": ...}"
         )
         or
-        n instanceof JsonObject and not exists(n.getChild(_)) and result = "{}"
+        n instanceof JSONObject and not exists(n.getChild(_)) and result = "{}"
         or
-        result = n.(JsonPrimitiveValue).getRawValue()
+        result = n.(JSONPrimitiveValue).getRawValue()
         or
-        exists(JsonArray arr | arr = n |
+        exists(JSONArray arr | arr = n |
           result = "[]" and not exists(arr.getChild(_))
           or
           result = "[" + repr(arr.getChild(0)) + "]" and not exists(arr.getChild(1))
@@ -623,14 +605,14 @@ private module PrintJson {
 /**
  * Classes for printing YAML AST.
  */
-module PrintYaml {
+module PrintYAML {
   /**
    * A print node representing a YAML value in a .yml file.
    */
-  class YamlNodeNode extends PrintAstNode, TYamlNode {
-    YamlNode node;
+  class YAMLNodeNode extends PrintAstNode, TYAMLNode {
+    YAMLNode node;
 
-    YamlNodeNode() { this = TYamlNode(node) }
+    YAMLNodeNode() { this = TYAMLNode(node) }
 
     override string toString() { result = getQlClass(node) + node.toString() }
 
@@ -639,82 +621,70 @@ module PrintYaml {
     /**
      * Gets the `YAMLNode` represented by this node.
      */
-    final YamlNode getValue() { result = node }
+    final YAMLNode getValue() { result = node }
 
     override PrintAstNode getChild(int childIndex) {
-      exists(YamlNode child | result.(YamlNodeNode).getValue() = child |
+      exists(YAMLNode child | result.(YAMLNodeNode).getValue() = child |
         child = node.getChildNode(childIndex)
       )
     }
   }
-
-  /** DEPRECATED: Alias for YamlNodeNode */
-  deprecated class YAMLNodeNode = YamlNodeNode;
 
   /**
    * A print node representing a `YAMLMapping`.
    *
    * Each child of this node aggregates the key and value of a mapping.
    */
-  class YamlMappingNode extends YamlNodeNode {
-    override YamlMapping node;
+  class YAMLMappingNode extends YAMLNodeNode {
+    override YAMLMapping node;
 
     override PrintAstNode getChild(int childIndex) {
-      exists(YamlMappingMapNode map | map = result | map.maps(node, childIndex))
+      exists(YAMLMappingMapNode map | map = result | map.maps(node, childIndex))
     }
   }
-
-  /** DEPRECATED: Alias for YamlMappingNode */
-  deprecated class YAMLMappingNode = YamlMappingNode;
 
   /**
    * A print node representing the `i`th mapping in `mapping`.
    */
-  class YamlMappingMapNode extends PrintAstNode, TYamlMappingNode {
-    YamlMapping mapping;
+  class YAMLMappingMapNode extends PrintAstNode, TYAMLMappingNode {
+    YAMLMapping mapping;
     int i;
 
-    YamlMappingMapNode() { this = TYamlMappingNode(mapping, i) }
+    YAMLMappingMapNode() { this = TYAMLMappingNode(mapping, i) }
 
     override string toString() {
-      result = "(Mapping " + i + ")" and not exists(mapping.getKeyNode(i).(YamlScalar).getValue())
+      result = "(Mapping " + i + ")" and not exists(mapping.getKeyNode(i).(YAMLScalar).getValue())
       or
-      result = "(Mapping " + i + ") " + mapping.getKeyNode(i).(YamlScalar).getValue() + ":"
+      result = "(Mapping " + i + ") " + mapping.getKeyNode(i).(YAMLScalar).getValue() + ":"
     }
 
     /**
      * Holds if this print node represents the `index`th mapping of `m`.
      */
-    predicate maps(YamlMapping m, int index) {
+    predicate maps(YAMLMapping m, int index) {
       m = mapping and
       index = i
     }
 
     override PrintAstNode getChild(int childIndex) {
-      childIndex = 0 and result.(YamlNodeNode).getValue() = mapping.getKeyNode(i)
+      childIndex = 0 and result.(YAMLNodeNode).getValue() = mapping.getKeyNode(i)
       or
-      childIndex = 1 and result.(YamlNodeNode).getValue() = mapping.getValueNode(i)
+      childIndex = 1 and result.(YAMLNodeNode).getValue() = mapping.getValueNode(i)
     }
   }
-
-  /** DEPRECATED: Alias for YamlMappingMapNode */
-  deprecated class YAMLMappingMapNode = YamlMappingMapNode;
 }
-
-/** DEPRECATED: Alias for PrintYaml */
-deprecated module PrintYAML = PrintYaml;
 
 /**
  * Classes for printing HTML AST.
  */
-module PrintHtml {
+module PrintHTML {
   /**
    * A print node representing an HTML node in a .html file.
    */
-  class HtmlElementNode extends PrintAstNode, THtmlElementNode {
+  class HTMLElementNode extends PrintAstNode, THTMLElementNode {
     HTML::Element element;
 
-    HtmlElementNode() { this = THtmlElementNode(element) }
+    HTMLElementNode() { this = THTMLElementNode(element) }
 
     override string toString() { result = getQlClass(element) + "<" + element.getName() + " ..." }
 
@@ -726,42 +696,36 @@ module PrintHtml {
     final HTML::Element getElement() { result = element }
 
     override PrintAstNode getChild(int childIndex) {
-      childIndex = -1 and result.(HtmlAttributesNodes).getElement() = element
+      childIndex = -1 and result.(HTMLAttributesNodes).getElement() = element
       or
-      exists(HTML::Element child | result.(HtmlElementNode).getElement() = child |
-        child = element.getChild(childIndex)
+      exists(HTML::Element child | result.(HTMLElementNode).getElement() = child |
+        child = element.(HTML::Element).getChild(childIndex)
       )
     }
   }
 
-  /** DEPRECATED: Alias for HtmlElementNode */
-  deprecated class HTMLElementNode = HtmlElementNode;
-
   /**
    * A print node representing an HTML node in a .html file.
    */
-  class HtmlScriptElementNode extends HtmlElementNode {
+  class HTMLScriptElementNode extends HTMLElementNode {
     override HTML::ScriptElement element;
 
     override PrintAstNode getChild(int childIndex) {
-      childIndex = -200 and result.(HtmlScript).getScript() = element.getScript()
+      childIndex = -200 and result.(HTMLScript).getScript() = element.getScript()
       or
       result = super.getChild(childIndex)
     }
   }
 
-  /** DEPRECATED: Alias for HtmlScriptElementNode */
-  deprecated class HTMLScriptElementNode = HtmlScriptElementNode;
-
   /**
    * A print node representing the code inside a `<script>` element.
    */
-  class HtmlScript extends PrintAstNode, THtmlScript {
+  class HTMLScript extends PrintAstNode, THTMLScript {
     Script script;
 
-    HtmlScript() {
-      this = THtmlScript(script) and
-      any(HtmlScriptElementNode se).getElement().(HTML::ScriptElement).getScript() = script
+    HTMLScript() {
+      this = THTMLScript(script) and
+      any(HTMLScriptElementNode se).getElement().(HTML::ScriptElement).getScript() = script
     }
 
     override string toString() { result = "(Script)" }
@@ -778,18 +742,15 @@ module PrintHtml {
     }
   }
 
-  /** DEPRECATED: Alias for HtmlScript */
-  deprecated class HTMLScript = HtmlScript;
-
   /**
    * A print node representing the code inside an attribute.
    */
-  class HtmlCodeInAttr extends PrintAstNode, THtmlCodeInAttr {
+  class HTMLCodeInAttr extends PrintAstNode, THTMLCodeInAttr {
     CodeInAttribute attr;
 
-    HtmlCodeInAttr() {
-      this = THtmlCodeInAttr(attr) and
-      any(HtmlAttributeNode an).getAttribute().getCodeInAttribute() = attr
+    HTMLCodeInAttr() {
+      this = THTMLCodeInAttr(attr) and
+      any(HTMLAttributeNode an).getAttribute().getCodeInAttribute() = attr
     }
 
     override string toString() { result = "(Script)" }
@@ -806,17 +767,14 @@ module PrintHtml {
     }
   }
 
-  /** DEPRECATED: Alias for HtmlCodeInAttr */
-  deprecated class HTMLCodeInAttr = HtmlCodeInAttr;
-
   /**
    * An aggregate node representing all the attributes of an HTMLElement.
    */
-  class HtmlAttributesNodes extends PrintAstNode, THtmlAttributesNodes {
+  class HTMLAttributesNodes extends PrintAstNode, THTMLAttributesNodes {
     HTML::Element element;
 
-    HtmlAttributesNodes() {
-      this = THtmlAttributesNodes(element) and exists(element.getAttribute(_))
+    HTMLAttributesNodes() {
+      this = THTMLAttributesNodes(element) and exists(element.getAttribute(_))
     }
 
     override string toString() { result = "(Attributes)" }
@@ -827,20 +785,17 @@ module PrintHtml {
     HTML::Element getElement() { result = element }
 
     override PrintAstNode getChild(int childIndex) {
-      result.(HtmlAttributeNode).getAttribute() = element.getAttribute(childIndex)
+      result.(HTMLAttributeNode).getAttribute() = element.getAttribute(childIndex)
     }
   }
-
-  /** DEPRECATED: Alias for HtmlAttributesNodes */
-  deprecated class HTMLAttributesNodes = HtmlAttributesNodes;
 
   /**
    * A print node representing an HTML attribute in a .html file.
    */
-  class HtmlAttributeNode extends PrintAstNode, THtmlAttributeNode {
+  class HTMLAttributeNode extends PrintAstNode, THTMLAttributeNode {
     HTML::Attribute attr;
 
-    HtmlAttributeNode() { this = THtmlAttributeNode(attr) }
+    HTMLAttributeNode() { this = THTMLAttributeNode(attr) }
 
     override string toString() { result = getQlClass(attr) + attr.toString() }
 
@@ -852,16 +807,10 @@ module PrintHtml {
     final HTML::Attribute getAttribute() { result = attr }
 
     override PrintAstNode getChild(int childIndex) {
-      childIndex = 0 and result.(HtmlCodeInAttr).getCode() = attr.getCodeInAttribute()
+      childIndex = 0 and result.(HTMLCodeInAttr).getCode() = attr.getCodeInAttribute()
     }
   }
-
-  /** DEPRECATED: Alias for HtmlAttributeNode */
-  deprecated class HTMLAttributeNode = HtmlAttributeNode;
 }
-
-/** DEPRECATED: Alias for PrintHtml */
-deprecated module PrintHTML = PrintHtml;
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
 query predicate nodes(PrintAstNode node, string key, string value) { value = node.getProperty(key) }

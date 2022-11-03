@@ -8,11 +8,11 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import SafeExternalAPIFunction
 
 /** A node representing untrusted data being passed to an external API. */
-class ExternalApiDataNode extends DataFlow::Node {
+class ExternalAPIDataNode extends DataFlow::Node {
   Call call;
   int i;
 
-  ExternalApiDataNode() {
+  ExternalAPIDataNode() {
     // Argument to call to a function
     (
       this.asExpr() = call.getArgument(i)
@@ -27,7 +27,7 @@ class ExternalApiDataNode extends DataFlow::Node {
       not f instanceof DataFlowFunction and
       not f instanceof TaintFunction and
       // Not a call to a known safe external API
-      not f instanceof SafeExternalApiFunction
+      not f instanceof SafeExternalAPIFunction
     )
   }
 
@@ -38,15 +38,12 @@ class ExternalApiDataNode extends DataFlow::Node {
   int getIndex() { result = i }
 
   /** Gets the description of the function being called. */
-  string getFunctionDescription() { result = this.getExternalFunction().toString() }
+  string getFunctionDescription() { result = getExternalFunction().toString() }
 }
 
-/** DEPRECATED: Alias for ExternalApiDataNode */
-deprecated class ExternalAPIDataNode = ExternalApiDataNode;
-
-/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
-class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
-  UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
+/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
+class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
+  UntrustedDataToExternalAPIConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     exists(RemoteFlowSourceFunction remoteFlow |
@@ -55,8 +52,5 @@ class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalAPIDataNode }
 }
-
-/** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
-deprecated class UntrustedDataToExternalAPIConfig = UntrustedDataToExternalApiConfig;

@@ -18,7 +18,7 @@ private import Imports::IRType
  * by the AST-to-IR translation (`IRTempVariable`).
  */
 class IRVariable extends TIRVariable {
-  Language::Declaration func;
+  Language::Function func;
 
   IRVariable() {
     this = TIRUserVariable(_, _, func) or
@@ -55,10 +55,7 @@ class IRVariable extends TIRVariable {
    * Gets the AST node that declared this variable, or that introduced this
    * variable as part of the AST-to-IR translation.
    */
-  Language::AST getAst() { none() }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated Language::AST getAST() { result = getAst() }
+  Language::AST getAST() { none() }
 
   /**
    * Gets an identifier string for the variable. This identifier is unique
@@ -69,7 +66,7 @@ class IRVariable extends TIRVariable {
   /**
    * Gets the source location of this variable.
    */
-  final Language::Location getLocation() { result = getAst().getLocation() }
+  final Language::Location getLocation() { result = getAST().getLocation() }
 
   /**
    * Gets the IR for the function that references this variable.
@@ -79,7 +76,7 @@ class IRVariable extends TIRVariable {
   /**
    * Gets the function that references this variable.
    */
-  final Language::Declaration getEnclosingFunction() { result = func }
+  final Language::Function getEnclosingFunction() { result = func }
 }
 
 /**
@@ -93,10 +90,7 @@ class IRUserVariable extends IRVariable, TIRUserVariable {
 
   final override string toString() { result = getVariable().toString() }
 
-  final override Language::AST getAst() { result = var }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  final override Language::AST getAST() { result = var }
 
   final override string getUniqueId() {
     result = getVariable().toString() + " " + getVariable().getLocation().toString()
@@ -163,10 +157,7 @@ class IRGeneratedVariable extends IRVariable {
 
   final override Language::LanguageType getLanguageType() { result = type }
 
-  final override Language::AST getAst() { result = ast }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  final override Language::AST getAST() { result = ast }
 
   override string toString() { result = getBaseString() + getLocationString() }
 
@@ -246,7 +237,7 @@ class IREllipsisVariable extends IRTempVariable, IRParameter {
 
   final override string toString() { result = "#ellipsis" }
 
-  final override int getIndex() { result = func.(Language::Function).getNumberOfParameters() }
+  final override int getIndex() { result = func.getNumberOfParameters() }
 }
 
 /**

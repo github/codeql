@@ -2,9 +2,10 @@ import python
 import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import semmle.python.web.falcon.General
+import semmle.python.security.strings.External
 
 /** https://falcon.readthedocs.io/en/stable/api/request_and_response.html */
-deprecated class FalconRequest extends TaintKind {
+class FalconRequest extends TaintKind {
   FalconRequest() { this = "falcon.request" }
 
   override TaintKind getTaintOfAttribute(string name) {
@@ -28,7 +29,7 @@ deprecated class FalconRequest extends TaintKind {
   }
 }
 
-deprecated class FalconRequestParameter extends HttpRequestTaintSource {
+class FalconRequestParameter extends HttpRequestTaintSource {
   FalconRequestParameter() {
     exists(FalconHandlerFunction f | f.getRequest() = this.(ControlFlowNode).getNode())
   }

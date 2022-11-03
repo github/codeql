@@ -8,7 +8,6 @@
  * @id java/predictable-seed
  * @tags security
  *       external/cwe/cwe-335
- *       external/cwe/cwe-337
  */
 
 import java

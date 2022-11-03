@@ -2,7 +2,7 @@
  * @name XML injection
  * @description Building an XML document from user-controlled sources is vulnerable to insertion of
  *              malicious code by the user.
- * @kind path-problem
+ * @kind problem
  * @id cs/xml-injection
  * @problem.severity error
  * @security-severity 8.8
@@ -12,7 +12,6 @@
  */
 
 import csharp
-import DataFlow::PathGraph
 import semmle.code.csharp.security.dataflow.flowsources.Remote
 import semmle.code.csharp.frameworks.system.Xml
 
@@ -46,7 +45,6 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This XML element depends on a $@.", source.getNode(),
-  "user-provided value"
+from TaintTrackingConfiguration c, DataFlow::Node source, DataFlow::Node sink
+where c.hasFlow(source, sink)
+select sink, "$@ flows to here and is inserted as XML.", source, "User-provided value"

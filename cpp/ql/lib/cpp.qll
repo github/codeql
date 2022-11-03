@@ -69,4 +69,6 @@ import semmle.code.cpp.Comments
 import semmle.code.cpp.Preprocessor
 import semmle.code.cpp.Iteration
 import semmle.code.cpp.NameQualifiers
+import semmle.code.cpp.ObjectiveC
+import semmle.code.cpp.exprs.ObjectiveC
 import DefaultOptions

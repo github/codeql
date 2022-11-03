@@ -41,7 +41,9 @@ module PostMessageStar {
    * A sensitive expression, viewed as a data flow source for cross-window communication
    * with unrestricted origin.
    */
-  class SensitiveExprSource extends Source instanceof SensitiveNode { }
+  class SensitiveExprSource extends Source, DataFlow::ValueNode {
+    override SensitiveExpr astNode;
+  }
 
   /** A call to any function whose name suggests that it encodes or encrypts its arguments. */
   class ProtectSanitizer extends Sanitizer {

@@ -8,8 +8,8 @@ import python
 import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 
-/** Source of BaseHttpRequestHandler instances. */
-deprecated class StdLibRequestSource extends HttpRequestTaintSource {
+/** Source of BaseHTTPRequestHandler instances. */
+class StdLibRequestSource extends HttpRequestTaintSource {
   StdLibRequestSource() {
     exists(ClassValue cls |
       cls.getABaseType+() = Value::named("BaseHTTPServer.BaseHTTPRequestHandler")
@@ -23,8 +23,8 @@ deprecated class StdLibRequestSource extends HttpRequestTaintSource {
   override predicate isSourceOf(TaintKind kind) { kind instanceof BaseHTTPRequestHandlerKind }
 }
 
-/** TaintKind for an instance of BaseHttpRequestHandler. */
-deprecated class BaseHTTPRequestHandlerKind extends TaintKind {
+/** TaintKind for an instance of BaseHTTPRequestHandler. */
+class BaseHTTPRequestHandlerKind extends TaintKind {
   BaseHTTPRequestHandlerKind() { this = "BaseHTTPRequestHandlerKind" }
 
   override TaintKind getTaintOfAttribute(string name) {
@@ -39,8 +39,8 @@ deprecated class BaseHTTPRequestHandlerKind extends TaintKind {
   }
 }
 
-/** TaintKind for headers (instance of HttpMessage). */
-deprecated class HTTPMessageKind extends ExternalStringDictKind {
+/** TaintKind for headers (instance of HTTPMessage). */
+class HTTPMessageKind extends ExternalStringDictKind {
   override TaintKind getTaintOfMethodResult(string name) {
     result = super.getTaintOfMethodResult(name)
     or
@@ -63,14 +63,14 @@ deprecated class HTTPMessageKind extends ExternalStringDictKind {
 }
 
 /** Source of parsed HTTP forms (by using the `cgi` module). */
-deprecated class CgiFieldStorageSource extends HttpRequestTaintSource {
+class CgiFieldStorageSource extends HttpRequestTaintSource {
   CgiFieldStorageSource() { this = Value::named("cgi.FieldStorage").getACall() }
 
   override predicate isSourceOf(TaintKind kind) { kind instanceof CgiFieldStorageFormKind }
 }
 
 /** TaintKind for a parsed HTTP form. */
-deprecated class CgiFieldStorageFormKind extends TaintKind {
+class CgiFieldStorageFormKind extends TaintKind {
   /*
    * There is a slight difference between how we model form/fields and how it is handled by the code.
    * In the code
@@ -115,7 +115,7 @@ deprecated class CgiFieldStorageFormKind extends TaintKind {
 }
 
 /** TaintKind for the field of a parsed HTTP form. */
-deprecated class CgiFieldStorageFieldKind extends TaintKind {
+class CgiFieldStorageFieldKind extends TaintKind {
   CgiFieldStorageFieldKind() { this = "CgiFieldStorageFieldKind" }
 
   override TaintKind getTaintOfAttribute(string name) {

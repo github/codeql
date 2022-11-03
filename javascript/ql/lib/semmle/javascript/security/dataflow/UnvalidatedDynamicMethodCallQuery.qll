@@ -38,16 +38,7 @@ class Configuration extends TaintTracking::Configuration {
     sink.(Sink).getFlowLabel() = label
   }
 
-  override predicate isSanitizerEdge(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl
-  ) {
-    any(Sanitizer s).sanitizes(pred, succ, lbl)
-  }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof NumberGuard or
-    guard instanceof FunctionCheck
-  }
+  override predicate isSanitizer(DataFlow::Node nd) { super.isSanitizer(nd) }
 
   override predicate isAdditionalFlowStep(
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
@@ -67,12 +58,5 @@ class Configuration extends TaintTracking::Configuration {
       // avoid overlapping results with unsafe dynamic method access query
       not PropertyInjection::hasUnsafeMethods(read.getBase().getALocalSource())
     )
-    or
-    exists(DataFlow::SourceNode base, DataFlow::CallNode get | get = base.getAMethodCall("get") |
-      src = get.getArgument(0) and
-      dst = get
-    ) and
-    srclabel.isTaint() and
-    dstlabel instanceof MaybeNonFunction
   }
 }

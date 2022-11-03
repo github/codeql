@@ -1,4 +1,0 @@
-libraryPathDependencies:
-  - codeql-java
-  - codeql/java-tests
-  - codeql/java-queries

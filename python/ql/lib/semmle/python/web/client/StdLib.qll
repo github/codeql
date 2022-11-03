@@ -1,7 +1,7 @@
 import python
 private import semmle.python.web.Http
 
-deprecated ClassValue httpConnectionClass() {
+ClassValue httpConnectionClass() {
   // Python 2
   result = Value::named("httplib.HTTPConnection")
   or
@@ -18,7 +18,7 @@ deprecated ClassValue httpConnectionClass() {
   result = Value::named("six.moves.http_client.HTTPSConnection")
 }
 
-deprecated class HttpConnectionHttpRequest extends Client::HttpRequest, CallNode {
+class HttpConnectionHttpRequest extends Client::HttpRequest, CallNode {
   CallNode constructor_call;
   CallableValue func;
 

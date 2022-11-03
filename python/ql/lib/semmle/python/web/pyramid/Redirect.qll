@@ -9,7 +9,7 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.Http
 
-deprecated private ClassValue redirectClass() {
+private ClassValue redirectClass() {
   exists(ModuleValue ex | ex.getName() = "pyramid.httpexceptions" |
     ex.attr("HTTPFound") = result
     or
@@ -20,7 +20,7 @@ deprecated private ClassValue redirectClass() {
 /**
  * Represents an argument to the `tornado.redirect` function.
  */
-deprecated class PyramidRedirect extends HttpRedirectTaintSink {
+class PyramidRedirect extends HttpRedirectTaintSink {
   override string toString() { result = "pyramid.redirect" }
 
   PyramidRedirect() {

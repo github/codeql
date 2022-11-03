@@ -70,8 +70,8 @@ private RefType caughtType(TryStmt try, int index) {
 }
 
 private predicate maybeUnchecked(RefType t) {
-  t.getAnAncestor().hasQualifiedName("java.lang", "RuntimeException") or
-  t.getAnAncestor().hasQualifiedName("java.lang", "Error") or
+  t.getASupertype*().hasQualifiedName("java.lang", "RuntimeException") or
+  t.getASupertype*().hasQualifiedName("java.lang", "Error") or
   t.hasQualifiedName("java.lang", "Exception") or
   t.hasQualifiedName("java.lang", "Throwable")
 }
@@ -80,15 +80,14 @@ predicate overlappingExceptions(RefType e1, RefType e2) {
   exists(RefType throwable | throwable.hasQualifiedName("java.lang", "Throwable") |
     throwable.hasSubtype*(e1) and
     throwable.hasSubtype*(e2) and
-    e1.getADescendant() = e2.getADescendant()
+    e1.getASubtype*() = e2.getASubtype*()
   )
 }
 
 from TryStmt try, int first, int second, RefType masking, RefType masked, string multiCatchMsg
 where
-  try.getFile().isJavaSourceFile() and
   masking = caughtType(try, first) and
-  masking.getAStrictAncestor() = masked and
+  masking.getASupertype+() = masked and
   masked = caughtType(try, second) and
   forall(RefType thrownType |
     thrownType = getAThrownExceptionType(try) and
@@ -107,5 +106,4 @@ where
   else multiCatchMsg = ""
 select try.getCatchClause(second),
   "This catch-clause is unreachable" + multiCatchMsg + "; it is masked $@.",
-  try.getCatchClause(first),
-  "by a previous catch-clause for exceptions of type '" + masking.getName() + "'"
+  try.getCatchClause(first), "here for exceptions of type '" + masking.getName() + "'"

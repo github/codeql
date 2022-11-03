@@ -261,6 +261,11 @@ private module WerkzeugOld {
       deprecated module MultiDict {
         /**
          * DEPRECATED. Use `Werkzeug::MultiDict::InstanceSource` instead.
+         */
+        abstract deprecated class InstanceSource extends DataFlow::Node { }
+
+        /**
+         * DEPRECATED. Use `Werkzeug::MultiDict::InstanceSource` instead.
          *
          * A source of instances of `werkzeug.datastructures.MultiDict`, extend this class to model new instances.
          *
@@ -280,7 +285,7 @@ private module WerkzeugOld {
          * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.getlist
          */
         deprecated DataFlow::Node getlist() {
-          result = any(InstanceSourceApiNode a).getMember("getlist").getAValueReachableFromSource()
+          result = any(InstanceSourceApiNode a).getMember("getlist").getAUse()
         }
 
         private class MultiDictAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
@@ -309,6 +314,11 @@ private module WerkzeugOld {
       deprecated module FileStorage {
         /**
          * DEPRECATED. Use `Werkzeug::FileStorage::InstanceSource` instead.
+         */
+        abstract deprecated class InstanceSource extends DataFlow::Node { }
+
+        /**
+         * DEPRECATED. Use `Werkzeug::FileStorage::InstanceSource` instead.
          *
          * A source of instances of `werkzeug.datastructures.FileStorage`, extend this class to model new instances.
          *
@@ -321,9 +331,7 @@ private module WerkzeugOld {
         abstract deprecated class InstanceSourceApiNode extends API::Node { }
 
         /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
-        deprecated DataFlow::Node instance() {
-          result = any(InstanceSourceApiNode a).getAValueReachableFromSource()
-        }
+        deprecated DataFlow::Node instance() { result = any(InstanceSourceApiNode a).getAUse() }
 
         private class FileStorageAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
           override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

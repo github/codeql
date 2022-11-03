@@ -16,15 +16,15 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
 import DataFlow::PathGraph
 
-class XssLocalConfig extends TaintTracking::Configuration {
-  XssLocalConfig() { this = "XSSLocalConfig" }
+class XSSLocalConfig extends TaintTracking::Configuration {
+  XSSLocalConfig() { this = "XSSLocalConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, XssLocalConfig conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, XSSLocalConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
   source.getNode(), "user-provided value"

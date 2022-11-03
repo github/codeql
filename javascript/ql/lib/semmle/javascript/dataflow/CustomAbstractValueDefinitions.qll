@@ -100,7 +100,7 @@ abstract class CustomAbstractValueDefinition extends Locatable {
    */
   AbstractValue getAPrototype() {
     exists(AbstractProtoProperty proto |
-      proto.getBase() = this.getAbstractValue() and
+      proto.getBase() = getAbstractValue() and
       result = proto.getAValue()
     )
   }

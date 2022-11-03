@@ -1,57 +1,57 @@
 import python
 import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.DataFlow2
 import semmle.python.dataflow.new.TaintTracking
+import semmle.python.dataflow.new.TaintTracking2
 import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.security.dataflow.ChainedConfigs12
 import experimental.semmle.python.Concepts
 import semmle.python.Concepts
 
-module NoSqlInjection {
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "NoSQLInjection" }
+/**
+ * A taint-tracking configuration for detecting string-to-dict conversions.
+ */
+class RFSToDictConfig extends TaintTracking::Configuration {
+  RFSToDictConfig() { this = "RFSToDictConfig" }
 
-    override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-      source instanceof RemoteFlowSource and
-      state instanceof RemoteInput
-    }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-    override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-      sink = any(NoSqlQuery noSqlQuery).getQuery() and
-      state instanceof ConvertedToDict
-    }
-
-    override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
-      // Block `RemoteInput` paths here, since they change state to `ConvertedToDict`
-      exists(Decoding decoding | decoding.getFormat() = "JSON" and node = decoding.getOutput()) and
-      state instanceof RemoteInput
-    }
-
-    override predicate isAdditionalTaintStep(
-      DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
-      DataFlow::FlowState stateTo
-    ) {
-      exists(Decoding decoding | decoding.getFormat() = "JSON" |
-        nodeFrom = decoding.getAnInput() and
-        nodeTo = decoding.getOutput()
-      ) and
-      stateFrom instanceof RemoteInput and
-      stateTo instanceof ConvertedToDict
-    }
-
-    override predicate isSanitizer(DataFlow::Node sanitizer) {
-      sanitizer = any(NoSqlSanitizer noSqlSanitizer).getAnInput()
-    }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(Decoding decoding | decoding.getFormat() = "JSON" and sink = decoding.getOutput())
   }
 
-  /** A flow state signifying remote input. */
-  class RemoteInput extends DataFlow::FlowState {
-    RemoteInput() { this = "RemoteInput" }
-  }
-
-  /** A flow state signifying remote input converted to a dictionary. */
-  class ConvertedToDict extends DataFlow::FlowState {
-    ConvertedToDict() { this = "ConvertedToDict" }
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer = any(NoSQLSanitizer noSQLSanitizer).getAnInput()
   }
 }
 
-/** DEPRECATED: Alias for NoSqlInjection */
-deprecated module NoSQLInjection = NoSqlInjection;
+/**
+ * A taint-tracking configuration for detecting NoSQL injections (previously converted to a dict).
+ */
+class FromDataDictToSink extends TaintTracking2::Configuration {
+  FromDataDictToSink() { this = "FromDataDictToSink" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(Decoding decoding | decoding.getFormat() = "JSON" and source = decoding.getOutput())
+  }
+
+  override predicate isSink(DataFlow::Node sink) { sink = any(NoSQLQuery noSQLQuery).getQuery() }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer = any(NoSQLSanitizer noSQLSanitizer).getAnInput()
+  }
+}
+
+/**
+ * A predicate checking string-to-dict conversion and its arrival to a NoSQL injection sink.
+ */
+predicate noSQLInjectionFlow(CustomPathNode source, CustomPathNode sink) {
+  exists(
+    RFSToDictConfig config, DataFlow::PathNode mid1, DataFlow2::PathNode mid2,
+    FromDataDictToSink config2
+  |
+    config.hasFlowPath(source.asNode1(), mid1) and
+    config2.hasFlowPath(mid2, sink.asNode2()) and
+    mid1.getNode().asCfgNode() = mid2.getNode().asCfgNode()
+  )
+}

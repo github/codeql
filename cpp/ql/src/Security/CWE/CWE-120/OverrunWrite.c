@@ -1,9 +1,9 @@
-void sayHello(uint32_t userId)
+void sayHello()
 {
-	char buffer[18];
+	char buffer[10];
 
-	// BAD: this message overflows the buffer if userId >= 10000
-	sprintf(buffer, "Hello, user %d!", userId);
+	// BAD: this message overflows the buffer
+	strcpy(buffer, "Hello, world!");
 
 	MessageBox(hWnd, buffer, "New Message", MB_OK);
 }

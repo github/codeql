@@ -75,7 +75,7 @@ module Vuex {
         or
         exists(API::CallNode call |
           call = vuex().getMember("createNamespacedHelpers").getACall() and
-          namespace = call.getParameter(0).getAValueReachingSink().getStringValue() + "/" and
+          namespace = call.getParameter(0).getAValueReachingRhs().getStringValue() + "/" and
           this = call.getReturn().getMember(helperName).getACall()
         )
       )
@@ -88,8 +88,7 @@ module Vuex {
     pragma[noinline]
     string getNamespace() {
       getNumArgument() = 2 and
-      result =
-        appendToNamespace(namespace, getParameter(0).getAValueReachingSink().getStringValue())
+      result = appendToNamespace(namespace, getParameter(0).getAValueReachingRhs().getStringValue())
       or
       getNumArgument() = 1 and
       result = namespace
@@ -100,28 +99,28 @@ module Vuex {
      */
     predicate hasMapping(string localName, string storeName) {
       // mapGetters('foo')
-      getLastParameter().getAValueReachingSink().getStringValue() = localName and
+      getLastParameter().getAValueReachingRhs().getStringValue() = localName and
       storeName = getNamespace() + localName
       or
       // mapGetters(['foo', 'bar'])
-      getLastParameter().getUnknownMember().getAValueReachingSink().getStringValue() = localName and
+      getLastParameter().getUnknownMember().getAValueReachingRhs().getStringValue() = localName and
       storeName = getNamespace() + localName
       or
       // mapGetters({foo: 'bar'})
       storeName =
         getNamespace() +
-          getLastParameter().getMember(localName).getAValueReachingSink().getStringValue() and
+          getLastParameter().getMember(localName).getAValueReachingRhs().getStringValue() and
       localName != "*" // ignore special API graph member named "*"
     }
 
     /** Gets the Vue component in which the generated functions are installed. */
     Vue::Component getVueComponent() {
       exists(DataFlow::ObjectLiteralNode obj |
-        obj.getASpreadProperty() = getReturn().getAValueReachableFromSource() and
-        result.getOwnOptions().getAMember().asSink() = obj
+        obj.getASpreadProperty() = getReturn().getAUse() and
+        result.getOwnOptions().getAMember().getARhs() = obj
       )
       or
-      result.getOwnOptions().getAMember().asSink() = this
+      result.getOwnOptions().getAMember().getARhs() = this
     }
   }
 
@@ -147,7 +146,7 @@ module Vuex {
   /** Gets a value that is returned by a getter registered with the given name. */
   private DataFlow::Node getterPred(string name) {
     exists(string prefix, string prop |
-      result = storeConfigObject(prefix).getMember("getters").getMember(prop).getReturn().asSink() and
+      result = storeConfigObject(prefix).getMember("getters").getMember(prop).getReturn().getARhs() and
       name = prefix + prop
     )
   }
@@ -155,12 +154,12 @@ module Vuex {
   /** Gets a property access that may receive the produced by a getter of the given name. */
   private DataFlow::Node getterSucc(string name) {
     exists(string prefix, string prop |
-      result = storeRef(prefix).getMember("getters").getMember(prop).asSource() and
+      result = storeRef(prefix).getMember("getters").getMember(prop).getAnImmediateUse() and
       prop != "*" and
       name = prefix + prop
     )
     or
-    result = getAMappedAccess("mapGetters", name).asSource()
+    result = getAMappedAccess("mapGetters", name).getAnImmediateUse()
   }
 
   /** Holds if `pred -> succ` is a step from a getter function to a relevant property access. */
@@ -213,22 +212,22 @@ module Vuex {
       commitCall = commitLikeFunctionRef(kind, prefix).getACall()
     |
       // commit('name', payload)
-      name = prefix + commitCall.getParameter(0).getAValueReachingSink().getStringValue() and
+      name = prefix + commitCall.getParameter(0).getAValueReachingRhs().getStringValue() and
       result = commitCall.getArgument(1)
       or
       // commit({type: 'name', ...<payload>...})
       name =
         prefix +
-          commitCall.getParameter(0).getMember("type").getAValueReachingSink().getStringValue() and
+          commitCall.getParameter(0).getMember("type").getAValueReachingRhs().getStringValue() and
       result = commitCall.getArgument(0)
     )
     or
     // this.name(payload)
     // methods: {...mapMutations(['name'])} }
-    result = getAMappedAccess(getMapHelperForCommitKind(kind), name).getParameter(0).asSink()
+    result = getAMappedAccess(getMapHelperForCommitKind(kind), name).getParameter(0).getARhs()
   }
 
-  /** Gets a node that refers the payload of a committed mutation with the given `name.` */
+  /** Gets a node that refers the payload of a comitted mutation with the given `name.` */
   private DataFlow::Node committedPayloadSucc(string kind, string name) {
     // mutations: {
     //   name: (state, payload) => { ... }
@@ -239,7 +238,7 @@ module Vuex {
             .getMember(getStorePropForCommitKind(kind))
             .getMember(prop)
             .getParameter(1)
-            .asSource() and
+            .getAnImmediateUse() and
       prop != "*" and
       name = prefix + prop
     )
@@ -294,17 +293,19 @@ module Vuex {
 
   /** Gets a value that flows into the given access path of the state. */
   DataFlow::Node stateMutationPred(string path) {
-    result = stateRefByAccessPath(path).asSink()
+    result = stateRefByAccessPath(path).getARhs()
     or
     exists(ExtendCall call, string base, string prop |
-      call.getDestinationOperand() = stateRefByAccessPath(base).getAValueReachableFromSource() and
+      call.getDestinationOperand() = stateRefByAccessPath(base).getAUse() and
       result = call.getASourceOperand().getALocalSource().getAPropertyWrite(prop).getRhs() and
       path = appendToNamespace(base, prop)
     )
   }
 
   /** Gets a value that refers to the given access path of the state. */
-  DataFlow::Node stateMutationSucc(string path) { result = stateRefByAccessPath(path).asSource() }
+  DataFlow::Node stateMutationSucc(string path) {
+    result = stateRefByAccessPath(path).getAnImmediateUse()
+  }
 
   /** Holds if `pred -> succ` is a step from state mutation to state access. */
   predicate stateMutationStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -324,7 +325,7 @@ module Vuex {
     exists(MapHelperCall call |
       call.getHelperName() = "mapState" and
       component = call.getVueComponent() and
-      result = call.getLastParameter().getMember(name).getReturn().asSink()
+      result = call.getLastParameter().getMember(name).getReturn().getARhs()
     )
   }
 
@@ -335,7 +336,7 @@ module Vuex {
   predicate mapStateHelperStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Vue::Component component, string name |
       pred = mapStateHelperPred(component, name) and
-      succ = pragma[only_bind_out](component).getInstance().getMember(name).asSource()
+      succ = pragma[only_bind_out](component).getInstance().getMember(name).getAnImmediateUse()
     )
   }
 
@@ -364,28 +365,28 @@ module Vuex {
    */
   private module ProgramSlicing {
     /** Gets the innermost `package.json` file in a directory containing the given file. */
-    private PackageJson getPackageJson(Container f) {
+    private PackageJSON getPackageJson(Container f) {
       f = result.getFile().getParentContainer()
       or
       not exists(f.getFile("package.json")) and
       result = getPackageJson(f.getParentContainer())
     }
 
-    private predicate packageDependsOn(PackageJson importer, PackageJson dependency) {
+    private predicate packageDependsOn(PackageJSON importer, PackageJSON dependency) {
       importer.getADependenciesObject("").getADependency(dependency.getPackageName(), _)
     }
 
-    /** Gets a package that can be considered an entry point for a Vuex app. */
-    private PackageJson entryPointPackage() {
-      result = getPackageJson(storeRef().asSource().getFile())
+    /** A package that can be considered an entry point for a Vuex app. */
+    private PackageJSON entryPointPackage() {
+      result = getPackageJson(storeRef().getAnImmediateUse().getFile())
       or
       // Any package that imports a store-creating package is considered a potential entry point.
       packageDependsOn(result, entryPointPackage())
     }
 
     pragma[nomagic]
-    private predicate arePackagesInSameVuexApp(PackageJson a, PackageJson b) {
-      exists(PackageJson entry |
+    private predicate arePackagesInSameVuexApp(PackageJSON a, PackageJSON b) {
+      exists(PackageJSON entry |
         entry = entryPointPackage() and
         packageDependsOn*(entry, a) and
         packageDependsOn*(entry, b)
@@ -395,7 +396,7 @@ module Vuex {
     /** Holds if the two files are considered to be part of the same Vuex app. */
     pragma[inline]
     predicate areFilesInSameVuexApp(File a, File b) {
-      not exists(PackageJson pkg)
+      not exists(PackageJSON pkg)
       or
       arePackagesInSameVuexApp(getPackageJson(a), getPackageJson(b))
     }

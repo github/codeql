@@ -6,6 +6,6 @@ import semmle.code.java.frameworks.spring.SpringXMLElement
  *
  * Its contents can be accessed using `SpringXMLElement.getContentString()`.
  */
-class SpringDescription extends SpringXmlElement {
+class SpringDescription extends SpringXMLElement {
   SpringDescription() { this.getName() = "description" }
 }

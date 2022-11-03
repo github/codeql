@@ -13,7 +13,7 @@
 
 import python
 
-/** The subset of ControlFlowNodes which might raise an exception */
+/** Subset of ControlFlowNodes which might raise an exception */
 class RaisingNode extends ControlFlowNode {
   RaisingNode() {
     exists(this.getAnExceptionalSuccessor())
@@ -41,7 +41,7 @@ class RaisingNode extends ControlFlowNode {
     or
     exists(FunctionObject func | this = func.getACall() | result = func.getARaisedType())
     or
-    result = this.systemExitRaise_objectapi()
+    result = systemExitRaise_objectapi()
   }
 
   /**
@@ -53,7 +53,7 @@ class RaisingNode extends ControlFlowNode {
     or
     exists(FunctionValue func | this = func.getACall() | result = func.getARaisedType())
     or
-    result = this.systemExitRaise()
+    result = systemExitRaise()
   }
 
   pragma[noinline]
@@ -83,7 +83,7 @@ class RaisingNode extends ControlFlowNode {
         result = this.innateException_objectapi()
       )
       or
-      not this.getAnExceptionalSuccessor() instanceof ExceptFlowNode and
+      not exists(ExceptFlowNode except | except = this.getAnExceptionalSuccessor()) and
       sequence_or_mapping(this) and
       result = theLookupErrorType()
       or
@@ -110,7 +110,7 @@ class RaisingNode extends ControlFlowNode {
         result = this.innateException()
       )
       or
-      not this.getAnExceptionalSuccessor() instanceof ExceptFlowNode and
+      not exists(ExceptFlowNode except | except = this.getAnExceptionalSuccessor()) and
       sequence_or_mapping(this) and
       result = ClassValue::lookupError()
       or
@@ -363,7 +363,7 @@ predicate scope_raises_unknown(Scope s) {
   )
 }
 
-/** The ControlFlowNode for an 'except' statement. */
+/** ControlFlowNode for an 'except' statement. */
 class ExceptFlowNode extends ControlFlowNode {
   ExceptFlowNode() { this.getNode() instanceof ExceptStmt }
 

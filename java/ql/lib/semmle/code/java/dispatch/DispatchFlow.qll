@@ -131,8 +131,8 @@ private class RelevantNode extends Node {
  */
 pragma[nomagic]
 private predicate viableParamCand(Call call, int i, ParameterNode p) {
-  exists(DataFlowCallable callable |
-    callable.asCallable() = dispatchCand(call) and
+  exists(Callable callable |
+    callable = dispatchCand(call) and
     p.isParameterOf(callable, i) and
     p instanceof RelevantNode
   )
@@ -189,9 +189,10 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
     n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
   )
   or
-  n2.(FieldValueNode).getField().getAnAssignedValue() = n1.asExpr()
-  or
-  n2.asExpr().(FieldRead).getField() = n1.(FieldValueNode).getField()
+  exists(Field f |
+    f.getAnAssignedValue() = n1.asExpr() and
+    n2.asExpr().(FieldRead).getField() = f
+  )
   or
   exists(EnumType enum, Method getValue |
     enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
@@ -200,7 +201,7 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
     n2.asExpr().(MethodAccess).getMethod() = getValue
   )
   or
-  n2.asExpr().(CastingExpr).getExpr() = n1.asExpr()
+  n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
   or
   n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or

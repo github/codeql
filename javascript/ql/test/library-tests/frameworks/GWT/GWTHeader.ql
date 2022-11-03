@@ -1,4 +1,4 @@
 import semmle.javascript.frameworks.GWT
 
-from GwtHeader h
+from GWTHeader h
 select h

@@ -8,7 +8,6 @@
  * @precision high
  * @id cs/redos
  * @tags security
- *       external/cwe/cwe-1333
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
@@ -29,5 +28,5 @@ where
     sink.getNode() instanceof ExponentialRegexSink
   )
 select sink.getNode(), source, sink,
-  "This regex operation with dangerous complexity depends on a $@.", source.getNode(),
-  "user-provided value"
+  "$@ flows to regular expression operation with dangerous regex.", source.getNode(),
+  "User-provided value"

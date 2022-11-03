@@ -15,8 +15,8 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.ExternalAPIs
 import DataFlow::PathGraph
 
-from UntrustedDataToExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+from UntrustedDataToExternalAPIConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink, source, sink,
-  "Call to " + sink.getNode().(ExternalApiDataNode).getMethodDescription() +
+  "Call to " + sink.getNode().(ExternalAPIDataNode).getMethodDescription() +
     " with untrusted data from $@.", source, source.toString()

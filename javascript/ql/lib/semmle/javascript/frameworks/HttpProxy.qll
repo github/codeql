@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Provides classes and predicates modeling the [http-proxy](https://www.npmjs.com/package/http-proxy) library.
+ * Provides classes and predicates modelling the [http-proxy](https://www.npmjs.com/package/http-proxy) library.
  */
 private module HttpProxy {
   /**
@@ -19,10 +19,10 @@ private module HttpProxy {
             .getACall()
     }
 
-    override DataFlow::Node getUrl() { result = getParameter(0).getMember("target").asSink() }
+    override DataFlow::Node getUrl() { result = getParameter(0).getMember("target").getARhs() }
 
     override DataFlow::Node getHost() {
-      result = getParameter(0).getMember("target").getMember("host").asSink()
+      result = getParameter(0).getMember("target").getMember("host").getARhs()
     }
 
     override DataFlow::Node getADataNode() { none() }
@@ -49,10 +49,10 @@ private module HttpProxy {
       )
     }
 
-    override DataFlow::Node getUrl() { result = getOptionsObject().getMember("target").asSink() }
+    override DataFlow::Node getUrl() { result = getOptionsObject().getMember("target").getARhs() }
 
     override DataFlow::Node getHost() {
-      result = getOptionsObject().getMember("target").getMember("host").asSink()
+      result = getOptionsObject().getMember("target").getMember("host").getARhs()
     }
 
     override DataFlow::Node getADataNode() { none() }
@@ -74,21 +74,24 @@ private module HttpProxy {
    */
   class ProxyListenerCallback extends NodeJSLib::RouteHandler, DataFlow::FunctionNode {
     string event;
+    API::CallNode call;
 
     ProxyListenerCallback() {
-      exists(API::CallNode call |
-        call = any(CreateServerCall server).getReturn().getMember(["on", "once"]).getACall() and
-        call.getParameter(0).asSink().mayHaveStringValue(event) and
-        this = call.getParameter(1).asSink().getAFunctionValue()
+      call = any(CreateServerCall server).getReturn().getMember(["on", "once"]).getACall() and
+      call.getParameter(0).getARhs().mayHaveStringValue(event) and
+      this = call.getParameter(1).getARhs().getAFunctionValue()
+    }
+
+    override Parameter getRequestParameter() {
+      exists(int req | routeHandlingEventHandler(event, req, _) |
+        result = getFunction().getParameter(req)
       )
     }
 
-    override DataFlow::ParameterNode getRequestParameter() {
-      exists(int req | routeHandlingEventHandler(event, req, _) | result = getParameter(req))
-    }
-
-    override DataFlow::ParameterNode getResponseParameter() {
-      exists(int res | routeHandlingEventHandler(event, _, res) | result = getParameter(res))
+    override Parameter getResponseParameter() {
+      exists(int res | routeHandlingEventHandler(event, _, res) |
+        result = getFunction().getParameter(res)
+      )
     }
   }
 }

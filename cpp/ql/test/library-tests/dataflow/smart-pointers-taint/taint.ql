@@ -1,10 +1,10 @@
 import TestUtilities.dataflow.FlowTestCommon
 
-module AstTest {
+module ASTTest {
   private import semmle.code.cpp.dataflow.TaintTracking
 
-  class AstSmartPointerTaintConfig extends TaintTracking::Configuration {
-    AstSmartPointerTaintConfig() { this = "ASTSmartPointerTaintConfig" }
+  class ASTSmartPointerTaintConfig extends TaintTracking::Configuration {
+    ASTSmartPointerTaintConfig() { this = "ASTSmartPointerTaintConfig" }
 
     override predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"

@@ -9,9 +9,8 @@
  * @id js/incomplete-sanitization
  * @tags correctness
  *       security
- *       external/cwe/cwe-020
- *       external/cwe/cwe-080
  *       external/cwe/cwe-116
+ *       external/cwe/cwe-020
  */
 
 import javascript
@@ -96,7 +95,7 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
 /**
  * Holds if `repl` looks like a call to "String.prototype.replace" that deliberately removes the first occurrence of `str`.
  */
-predicate removesFirstOccurrence(StringReplaceCall repl, string str) {
+predicate removesFirstOccurence(StringReplaceCall repl, string str) {
   not exists(repl.getRegExp()) and repl.replaces(str, "")
 }
 
@@ -117,8 +116,8 @@ predicate isDelimiterUnwrapper(
     or
     left = "'" and right = "'"
   |
-    removesFirstOccurrence(leftUnwrap, left) and
-    removesFirstOccurrence(rightUnwrap, right) and
+    removesFirstOccurence(leftUnwrap, left) and
+    removesFirstOccurence(rightUnwrap, right) and
     leftUnwrap.getAMethodCall() = rightUnwrap
   )
 }

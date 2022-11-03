@@ -10,15 +10,16 @@
  * @id py/command-line-injection
  * @tags correctness
  *       security
+ *       external/owasp/owasp-a1
  *       external/cwe/cwe-078
  *       external/cwe/cwe-088
  */
 
 import python
-import semmle.python.security.dataflow.CommandInjectionQuery
+import semmle.python.security.dataflow.CommandInjection
 import DataFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from CommandInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This command line depends on a $@.", source.getNode(),
-  "user-provided value"
+select sink.getNode(), source, sink, "This command depends on $@.", source.getNode(),
+  "a user-provided value"

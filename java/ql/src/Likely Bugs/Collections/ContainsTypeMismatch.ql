@@ -98,14 +98,14 @@ predicate containerAccess(string package, string type, int p, string signature, 
 class MismatchedContainerAccess extends MethodAccess {
   MismatchedContainerAccess() {
     exists(string package, string type, int i |
-      containerAccess(package, type, _, this.getCallee().getSignature(), i)
+      containerAccess(package, type, _, getCallee().getSignature(), i)
     |
-      this.getCallee()
+      getCallee()
           .getDeclaringType()
-          .getASourceSupertype*()
+          .getASupertype*()
           .getSourceDeclaration()
           .hasQualifiedName(package, type) and
-      this.getCallee().getParameter(i).getType() instanceof TypeObject
+      getCallee().getParameter(i).getType() instanceof TypeObject
     )
   }
 
@@ -115,10 +115,10 @@ class MismatchedContainerAccess extends MethodAccess {
    */
   RefType getReceiverElementType(int i) {
     exists(RefType t, GenericType g, string package, string type, int p |
-      containerAccess(package, type, p, this.getCallee().getSignature(), i)
+      containerAccess(package, type, p, getCallee().getSignature(), i)
     |
-      t = this.getCallee().getDeclaringType() and
-      t.getASourceSupertype*().getSourceDeclaration() = g and
+      t = getCallee().getDeclaringType() and
+      t.getASupertype*().getSourceDeclaration() = g and
       g.hasQualifiedName(package, type) and
       indirectlyInstantiates(t, g, p, result)
     )
@@ -139,7 +139,7 @@ from MismatchedContainerAccess ma, RefType typearg, RefType argtype, int idx
 where
   typearg = ma.getReceiverElementType(idx).getSourceDeclaration() and
   argtype = ma.getArgumentType(idx) and
-  notHaveIntersection(typearg, argtype)
+  not haveIntersection(typearg, argtype)
 select ma.getArgument(idx),
   "Actual argument type '" + argtype.getName() + "'" +
     " is incompatible with expected argument type '" + typearg.getName() + "'."

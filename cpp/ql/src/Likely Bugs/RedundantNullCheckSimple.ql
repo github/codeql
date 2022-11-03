@@ -52,7 +52,7 @@ predicate explicitNullTestOfInstruction(Instruction checked, Instruction bool) {
 pragma[noinline]
 predicate candidateResult(LoadInstruction checked, ValueNumber value, IRBlock dominator) {
   explicitNullTestOfInstruction(checked, _) and
-  not checked.getAst().isInMacroExpansion() and
+  not checked.getAST().isInMacroExpansion() and
   value.getAnInstruction() = checked and
   dominator.dominates(checked.getBlock())
 }
@@ -67,5 +67,5 @@ where
   // the pointer was null. To follow this idea to its full generality, we
   // should also give an alert when `check` post-dominates `deref`.
   deref.getBlock() = dominator
-select checked, "This null check is redundant because $@ in any case.", deref,
-  "the value is dereferenced"
+select checked, "This null check is redundant because the value is $@ in any case", deref,
+  "dereferenced here"

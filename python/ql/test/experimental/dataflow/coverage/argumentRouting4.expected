@@ -1,0 +1,10 @@
+edges
+| argumentPassing.py:69:5:69:5 | ControlFlowNode for d | argumentPassing.py:78:11:78:11 | ControlFlowNode for d |
+| argumentPassing.py:69:7:69:10 | ControlFlowNode for arg4 | argumentPassing.py:69:5:69:5 | ControlFlowNode for d |
+nodes
+| argumentPassing.py:69:5:69:5 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+| argumentPassing.py:69:7:69:10 | ControlFlowNode for arg4 | semmle.label | ControlFlowNode for arg4 |
+| argumentPassing.py:78:11:78:11 | ControlFlowNode for d | semmle.label | ControlFlowNode for d |
+subpaths
+#select
+| argumentPassing.py:69:7:69:10 | ControlFlowNode for arg4 | argumentPassing.py:69:7:69:10 | ControlFlowNode for arg4 | argumentPassing.py:78:11:78:11 | ControlFlowNode for d | Flow found |

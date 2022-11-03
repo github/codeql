@@ -79,27 +79,9 @@ module CallGraph {
       cls.getAClassReference(t.continue()) = result
     )
     or
-    exists(DataFlow::SourceNode object, string prop |
-      function = object.getAPropertySource(prop) and
-      result = getAnAllocationSiteRef(object).getAPropertyRead(prop) and
-      t.start()
-    )
-    or
     exists(DataFlow::FunctionNode outer |
       result = getAFunctionReference(outer, 0, t.continue()).getAnInvocation() and
       locallyReturnedFunction(outer, function)
-    )
-    or
-    // dynamic dispatch to unknown property of an object
-    exists(DataFlow::ObjectLiteralNode obj, DataFlow::PropRead read |
-      getAFunctionReference(function, 0, t.continue()) = obj.getAPropertySource() and
-      obj.getAPropertyRead() = read and
-      not exists(read.getPropertyName()) and
-      result = read and
-      // there exists only local reads of the object, nothing else.
-      forex(DataFlow::Node ref | ref = obj.getALocalUse() and exists(ref.asExpr()) |
-        ref = [obj, any(DataFlow::PropRead r).getBase()]
-      )
     )
   }
 
@@ -202,75 +184,24 @@ module CallGraph {
   }
 
   /**
-   * Holds if `write` installs an accessor on an object. Such property writes should not
-   * be considered calls to an accessor.
-   */
-  pragma[nomagic]
-  private predicate isAccessorInstallation(DataFlow::PropWrite write) {
-    exists(write.getInstalledAccessor(_))
-  }
-
-  /**
    * Gets a getter or setter invoked as a result of the given property access.
    */
   cached
   DataFlow::FunctionNode getAnAccessorCallee(DataFlow::PropRef ref) {
-    not isAccessorInstallation(ref) and
-    (
-      exists(DataFlow::ClassNode cls, string name |
-        ref = cls.getAnInstanceMemberAccess(name) and
-        result = cls.getInstanceMember(name, DataFlow::MemberKind::getter())
-        or
-        ref = getAnInstanceMemberAssignment(cls, name) and
-        result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
-        or
-        ref = cls.getAClassReference().getAPropertyRead(name) and
-        result = cls.getStaticMember(name, DataFlow::MemberKind::getter())
-        or
-        ref = cls.getAClassReference().getAPropertyWrite(name) and
-        result = cls.getStaticMember(name, DataFlow::MemberKind::setter())
-      )
+    exists(DataFlow::ClassNode cls, string name |
+      ref = cls.getAnInstanceMemberAccess(name) and
+      result = cls.getInstanceMember(name, DataFlow::MemberKind::getter())
       or
-      exists(DataFlow::ObjectLiteralNode object, string name |
-        ref = getAnAllocationSiteRef(object).getAPropertyRead(name) and
-        result = object.getPropertyGetter(name)
-        or
-        ref = getAnAllocationSiteRef(object).getAPropertyWrite(name) and
-        result = object.getPropertySetter(name)
-      )
+      ref = getAnInstanceMemberAssignment(cls, name) and
+      result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
     )
-  }
-
-  private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
-    (
-      (
-        node instanceof DataFlow::ObjectLiteralNode
-        or
-        node instanceof DataFlow::FunctionNode
-      ) and
-      node.getAPropertySource() instanceof DataFlow::FunctionNode
-      or
-      exists(node.(DataFlow::ObjectLiteralNode).getPropertyGetter(_))
-      or
-      exists(node.(DataFlow::ObjectLiteralNode).getPropertySetter(_))
-    ) and
-    not node.getTopLevel().isExterns()
-  }
-
-  /**
-   * Gets a step summary for tracking object literals.
-   *
-   * To avoid false flow from callbacks passed in via "named parameters", we only track object
-   * literals out of returns, not into calls.
-   */
-  private StepSummary objectWithMethodsStep() { result = LevelStep() or result = ReturnStep() }
-
-  /** Gets a node that refers to the given object, via a limited form of type tracking. */
-  cached
-  DataFlow::SourceNode getAnAllocationSiteRef(DataFlow::SourceNode node) {
-    shouldTrackObjectWithMethods(node) and
-    result = node
     or
-    StepSummary::step(getAnAllocationSiteRef(node), result, objectWithMethodsStep())
+    exists(DataFlow::ObjectLiteralNode object, string name |
+      ref = object.getAPropertyRead(name) and
+      result = object.getPropertyGetter(name)
+      or
+      ref = object.getAPropertyWrite(name) and
+      result = object.getPropertySetter(name)
+    )
   }
 }

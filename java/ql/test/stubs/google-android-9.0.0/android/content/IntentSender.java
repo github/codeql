@@ -13,6 +13,7 @@ import android.util.AndroidException;
 
 public class IntentSender implements Parcelable
 {
+    protected IntentSender() {}
     public String getCreatorPackage(){ return null; }
     public String getTargetPackage(){ return null; }
     public String toString(){ return null; }

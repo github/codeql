@@ -6,7 +6,7 @@ class Circle
     {
         return Math.Pow(radius, 2) * 3.14; // BAD: use the "Pi" constant
     }
-    public double circumference()
+    public double circumfrence()
     {
         return radius * 2 * 3.14; // BAD: use the "Pi" constant
     }

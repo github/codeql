@@ -67,16 +67,16 @@ class IFStream extends Type {
  */
 class CinVariable extends NamespaceVariable {
   CinVariable() {
-    this.getName() = ["cin", "wcin"] and
-    this.getNamespace().getName() = "std"
+    getName() = ["cin", "wcin"] and
+    getNamespace().getName() = "std"
   }
 }
 
 /** A call to `std::operator>>`. */
 class OperatorRShiftCall extends FunctionCall {
   OperatorRShiftCall() {
-    this.getTarget().getNamespace().getName() = "std" and
-    this.getTarget().hasName("operator>>")
+    getTarget().getNamespace().getName() = "std" and
+    getTarget().hasName("operator>>")
   }
 
   /*
@@ -87,15 +87,15 @@ class OperatorRShiftCall extends FunctionCall {
    */
 
   Expr getSource() {
-    if this.getTarget() instanceof MemberFunction
-    then result = this.getQualifier()
-    else result = this.getArgument(0)
+    if getTarget() instanceof MemberFunction
+    then result = getQualifier()
+    else result = getArgument(0)
   }
 
   Expr getDest() {
-    if this.getTarget() instanceof MemberFunction
-    then result = this.getArgument(0)
-    else result = this.getArgument(1)
+    if getTarget() instanceof MemberFunction
+    then result = getArgument(0)
+    else result = getArgument(1)
   }
 }
 
@@ -119,7 +119,7 @@ abstract class PotentiallyDangerousInput extends Expr {
    * Gets the width restriction that applies to the input stream
    * for this expression, if any.
    */
-  Expr getWidth() { result = this.getPreviousAccess().getWidthAfter() }
+  Expr getWidth() { result = getPreviousAccess().getWidthAfter() }
 
   private Expr getWidthSetHere() {
     exists(FunctionCall widthCall |
@@ -154,11 +154,11 @@ abstract class PotentiallyDangerousInput extends Expr {
    * after this expression, if any.
    */
   Expr getWidthAfter() {
-    result = this.getWidthSetHere()
+    result = getWidthSetHere()
     or
-    not exists(this.getWidthSetHere()) and
-    not this.isWidthConsumedHere() and
-    result = this.getWidth()
+    not exists(getWidthSetHere()) and
+    not isWidthConsumedHere() and
+    result = getWidth()
   }
 }
 

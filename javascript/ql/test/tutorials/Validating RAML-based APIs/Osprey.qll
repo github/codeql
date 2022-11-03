@@ -13,8 +13,8 @@ class Osprey extends Variable {
 }
 
 /** A call to `osprey.create`. */
-class OspreyCreateApiCall extends MethodCallExpr {
-  OspreyCreateApiCall() {
+class OspreyCreateAPICall extends MethodCallExpr {
+  OspreyCreateAPICall() {
     getReceiver().(VarAccess).getVariable() instanceof Osprey and
     getMethodName() = "create"
   }
@@ -29,31 +29,22 @@ class OspreyCreateApiCall extends MethodCallExpr {
   }
 }
 
-/** DEPRECATED: Alias for OspreyCreateApiCall */
-deprecated class OspreyCreateAPICall = OspreyCreateApiCall;
-
 /** A variable in which an Osprey API object is stored. */
-class OspreyApi extends Variable {
-  OspreyApi() { getAnAssignedExpr() instanceof OspreyCreateApiCall }
+class OspreyAPI extends Variable {
+  OspreyAPI() { getAnAssignedExpr() instanceof OspreyCreateAPICall }
 
-  File getSpecFile() { result = getAnAssignedExpr().(OspreyCreateApiCall).getSpecFile() }
+  File getSpecFile() { result = getAnAssignedExpr().(OspreyCreateAPICall).getSpecFile() }
 }
-
-/** DEPRECATED: Alias for OspreyApi */
-deprecated class OspreyAPI = OspreyApi;
 
 /** An Osprey REST method definition. */
 class OspreyMethodDefinition extends MethodCallExpr {
   OspreyMethodDefinition() {
-    exists(OspreyApi api | getReceiver() = api.getAnAccess()) and
+    exists(OspreyAPI api | getReceiver() = api.getAnAccess()) and
     getMethodName() = httpVerb()
   }
 
   /** Get the API to which this method belongs. */
-  OspreyApi getApi() { getReceiver() = result.getAnAccess() }
-
-  /** DEPRECATED: Alias for getApi */
-  deprecated OspreyAPI getAPI() { result = getApi() }
+  OspreyAPI getAPI() { getReceiver() = result.getAnAccess() }
 
   /** Get the verb which this method implements. */
   string getVerb() { result = getMethodName() }

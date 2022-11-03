@@ -61,7 +61,7 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
     input.isParameterDeref(0) and
     output.isParameterDeref(0)
     or
-    input.isParameterDeref(1) and
+    input.isParameter(1) and
     output.isParameterDeref(0)
   }
 

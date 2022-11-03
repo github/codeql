@@ -4,16 +4,15 @@
 
 import semmle.javascript.Externs
 
-/** DEPRECATED: Alias for isDomRootType */
-deprecated predicate isDOMRootType = isDomRootType/1;
+/** Holds if `et` is a root interface of the DOM type hierarchy. */
+predicate isDOMRootType(ExternalType et) {
+  exists(string n | n = et.getName() | n = "EventTarget" or n = "StyleSheet")
+}
 
 /** Holds if `p` is declared as a property of a DOM class or interface. */
 pragma[nomagic]
-predicate isDomProperty(string p) {
+predicate isDOMProperty(string p) {
   exists(ExternalMemberDecl emd | emd.getName() = p |
-    isDomRootType(emd.getDeclaringType().getASupertype*())
+    isDOMRootType(emd.getDeclaringType().getASupertype*())
   )
 }
-
-/** DEPRECATED: Alias for isDomProperty */
-deprecated predicate isDOMProperty = isDomProperty/1;

@@ -15,12 +15,12 @@ import semmle.code.xml.WebXML
 private class HttpOnlyConfig extends WebContextParameter {
   HttpOnlyConfig() { this.getParamName().getValue() = "useHttpOnly" }
 
-  string getParamValueElementValue() { result = this.getParamValue().getValue() }
+  string getParamValueElementValue() { result = getParamValue().getValue() }
 
-  predicate isHttpOnlySet() { this.getParamValueElementValue().toLowerCase() = "false" }
+  predicate isHTTPOnlySet() { getParamValueElementValue().toLowerCase() = "false" }
 }
 
 from HttpOnlyConfig config
-where config.isHttpOnlySet()
+where config.isHTTPOnlySet()
 select config,
-  "'httpOnly' should be enabled in tomcat config file to help mitigate cross-site scripting (XSS) attacks."
+  "httpOnly should be enabled in tomcat config file to help mitigate cross-site scripting (XSS) attacks"

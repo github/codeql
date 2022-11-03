@@ -2,7 +2,6 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
-private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A routing test is designed to test that values are routed to the
@@ -26,13 +25,11 @@ abstract class RoutingTest extends InlineExpectationsTest {
       element = fromNode.toString() and
       (
         tag = this.flowTag() and
-        if "\"" + tag + "\"" = this.fromValue(fromNode)
-        then value = ""
-        else value = this.fromValue(fromNode)
+        if "\"" + tag + "\"" = fromValue(fromNode) then value = "" else value = fromValue(fromNode)
         or
         tag = "func" and
-        value = this.toFunc(toNode) and
-        not value = this.fromFunc(fromNode)
+        value = toFunc(toNode) and
+        not value = fromFunc(fromNode)
       )
     )
   }

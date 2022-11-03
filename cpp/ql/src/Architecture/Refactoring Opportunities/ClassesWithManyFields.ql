@@ -63,17 +63,17 @@ class VariableDeclarationLine extends TVariableDeclarationInfo {
   /**
    * Gets a `VariableDeclarationEntry` on this line.
    */
-  VariableDeclarationEntry getAVde() { vdeInfo(result, c, f, line) }
+  VariableDeclarationEntry getAVDE() { vdeInfo(result, c, f, line) }
 
   /**
    * Gets the start column of the first `VariableDeclarationEntry` on this line.
    */
-  int getStartColumn() { result = min(this.getAVde().getLocation().getStartColumn()) }
+  int getStartColumn() { result = min(this.getAVDE().getLocation().getStartColumn()) }
 
   /**
    * Gets the end column of the last `VariableDeclarationEntry` on this line.
    */
-  int getEndColumn() { result = max(this.getAVde().getLocation().getEndColumn()) }
+  int getEndColumn() { result = max(this.getAVDE().getLocation().getEndColumn()) }
 
   /**
    * Gets the rank of this `VariableDeclarationLine` in its file and class
@@ -134,13 +134,13 @@ class VariableDeclarationGroup extends VariableDeclarationLine {
       count(VariableDeclarationLine l |
         l = this.getProximateNext*()
       |
-        l.getAVde().getVariable().getName()
+        l.getAVDE().getVariable().getName()
       )
   }
 
   override string toString() {
     this.getCount() = 1 and
-    result = "declaration of " + this.getAVde().getVariable().getName()
+    result = "declaration of " + this.getAVDE().getVariable().getName()
     or
     this.getCount() > 1 and
     result = "group of " + this.getCount() + " fields here"
@@ -153,12 +153,12 @@ class ExtClass extends Class {
   }
 
   predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-    if this.hasOneVariableGroup()
+    if hasOneVariableGroup()
     then
       exists(VariableDeclarationGroup vdg | vdg.getClass() = this |
         vdg.hasLocationInfo(path, startline, startcol, endline, endcol)
       )
-    else this.getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
+    else getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
   }
 }
 

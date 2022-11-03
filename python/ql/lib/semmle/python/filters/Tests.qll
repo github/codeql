@@ -1,22 +1,21 @@
 import python
-private import semmle.python.ApiGraphs
 
 abstract class TestScope extends Scope { }
 
-class UnitTestClass extends TestScope, Class {
+// don't extend Class directly to avoid ambiguous method warnings
+class UnitTestClass extends TestScope {
   UnitTestClass() {
-    exists(API::Node testCaseClass, string testCaseString |
-      testCaseString.matches("%TestCase") and
-      testCaseClass = any(API::Node mod).getMember(testCaseString)
-    |
-      this.getParent() = testCaseClass.getASubclass*().asSource().asExpr()
+    exists(ClassValue cls | this = cls.getScope() |
+      cls.getABaseType+() = Module::named("unittest").attr(_)
+      or
+      cls.getABaseType+().getName().toLowerCase() = "testcase"
     )
   }
 }
 
 abstract class Test extends TestScope { }
 
-/** A test function that uses the `unittest` framework */
+/** Class of test function that uses the `unittest` framework */
 class UnitTestFunction extends Test {
   UnitTestFunction() {
     this.getScope+() instanceof UnitTestClass and
@@ -38,7 +37,7 @@ class NoseTestFunction extends Test {
   }
 }
 
-/** A function that is clearly a test, but doesn't belong to a specific framework */
+/** Class of functions that are clearly tests, but don't belong to a specific framework */
 class UnknownTestFunction extends Test {
   UnknownTestFunction() {
     this.(Function).getName().matches("test%") and

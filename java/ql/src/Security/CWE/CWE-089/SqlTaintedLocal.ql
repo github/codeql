@@ -14,7 +14,7 @@
 
 import semmle.code.java.Expr
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.SqlInjectionQuery
+import SqlInjectionLib
 import DataFlow::PathGraph
 
 class LocalUserInputToQueryInjectionFlowConfig extends TaintTracking::Configuration {
@@ -36,5 +36,5 @@ class LocalUserInputToQueryInjectionFlowConfig extends TaintTracking::Configurat
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, LocalUserInputToQueryInjectionFlowConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
-  "user-provided value"
+select sink.getNode(), source, sink, "Query might include code from $@.", source.getNode(),
+  "this user input"

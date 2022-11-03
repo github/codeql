@@ -1,4 +1,5 @@
 import python
+import semmle.python.types.Descriptors
 import Util
 
 from ClassMethodObject cm, CallNode call

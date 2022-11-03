@@ -26,7 +26,7 @@ module ImproperCodeSanitization {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A call to an HTML sanitizer seen as a source for improper code sanitization
+   * A call to a HTML sanitizer seen as a source for improper code sanitization
    */
   class HtmlSanitizerCallAsSource extends Source {
     HtmlSanitizerCallAsSource() { this instanceof HtmlSanitizerCall }
@@ -35,12 +35,9 @@ module ImproperCodeSanitization {
   /**
    * A call to `JSON.stringify()` seen as a source for improper code sanitization
    */
-  class JsonStringifyAsSource extends Source {
-    JsonStringifyAsSource() { this instanceof JsonStringifyCall }
+  class JSONStringifyAsSource extends Source {
+    JSONStringifyAsSource() { this instanceof JsonStringifyCall }
   }
-
-  /** DEPRECATED: Alias for JsonStringifyAsSource */
-  deprecated class JSONStringifyAsSource = JsonStringifyAsSource;
 
   /**
    * A leaf in a string-concatenation, where the string-concatenation constructs code that looks like a function.

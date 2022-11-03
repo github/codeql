@@ -33,46 +33,46 @@ class ClassObject extends Object {
   }
 
   /** Gets the short (unqualified) name of this class */
-  string getName() { result = this.theClass().getName() }
+  string getName() { result = theClass().getName() }
 
   /**
    * Gets the qualified name for this class.
    * Should return the same name as the `__qualname__` attribute on classes in Python 3.
    */
   string getQualifiedName() {
-    result = this.theClass().getBuiltin().getName()
+    result = theClass().getBuiltin().getName()
     or
-    result = this.theClass().(PythonClassObjectInternal).getScope().getQualifiedName()
+    result = theClass().(PythonClassObjectInternal).getScope().getQualifiedName()
   }
 
   /** Gets the nth base class of this class */
-  Object getBaseType(int n) { result = Types::getBase(this.theClass(), n).getSource() }
+  Object getBaseType(int n) { result = Types::getBase(theClass(), n).getSource() }
 
   /** Gets a base class of this class */
   Object getABaseType() { result = this.getBaseType(_) }
 
   /** Whether this class has a base class */
-  predicate hasABase() { exists(Types::getBase(this.theClass(), _)) }
+  predicate hasABase() { exists(Types::getBase(theClass(), _)) }
 
   /** Gets a super class of this class (includes transitive super classes) */
   ClassObject getASuperType() {
-    result = Types::getMro(this.theClass()).getTail().getAnItem().getSource()
+    result = Types::getMro(theClass()).getTail().getAnItem().getSource()
   }
 
   /** Gets a super class of this class (includes transitive super classes) or this class */
   ClassObject getAnImproperSuperType() { result = this.getABaseType*() }
 
   /**
-   * Holds if this class is a new style class.
+   * Whether this class is a new style class.
    * A new style class is one that implicitly or explicitly inherits from `object`.
    */
-  predicate isNewStyle() { Types::isNewStyle(this.theClass()) }
+  predicate isNewStyle() { Types::isNewStyle(theClass()) }
 
   /**
-   * Holds if this class is an old style class.
+   * Whether this class is an old style class.
    * An old style class is one that does not inherit from `object`.
    */
-  predicate isOldStyle() { Types::isOldStyle(this.theClass()) }
+  predicate isOldStyle() { Types::isOldStyle(theClass()) }
 
   /**
    * Whether this class is a legal exception class.
@@ -92,14 +92,14 @@ class ClassObject extends Object {
   /** Returns an attribute declared on this class (not on a super-class) */
   Object declaredAttribute(string name) {
     exists(ObjectInternal val |
-      Types::declaredAttribute(this.theClass(), name, val, _) and
+      Types::declaredAttribute(theClass(), name, val, _) and
       result = val.getSource()
     )
   }
 
   /** Returns an attribute declared on this class (not on a super-class) */
   predicate declaresAttribute(string name) {
-    this.theClass().getClassDeclaration().declaresAttribute(name)
+    theClass().getClassDeclaration().declaresAttribute(name)
   }
 
   /**
@@ -108,18 +108,18 @@ class ClassObject extends Object {
    */
   Object lookupAttribute(string name) {
     exists(ObjectInternal val |
-      this.theClass().lookup(name, val, _) and
+      theClass().lookup(name, val, _) and
       result = val.getSource()
     )
   }
 
-  ClassList getMro() { result = Types::getMro(this.theClass()) }
+  ClassList getMro() { result = Types::getMro(theClass()) }
 
   /** Looks up an attribute by searching this class' MRO starting at `start` */
   Object lookupMro(ClassObject start, string name) {
     exists(ClassObjectInternal other, ClassObjectInternal decl, ObjectInternal val |
       other.getSource() = start and
-      decl = Types::getMro(this.theClass()).startingAt(other).findDeclaringClass(name) and
+      decl = Types::getMro(theClass()).startingAt(other).findDeclaringClass(name) and
       Types::declaredAttribute(decl, name, val, _) and
       result = val.getSource()
     )
@@ -133,7 +133,7 @@ class ClassObject extends Object {
   /** Whether the named attribute refers to the object, class and origin */
   predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
     exists(ObjectInternal val, CfgOrigin valorig |
-      this.theClass().lookup(name, val, valorig) and
+      theClass().lookup(name, val, valorig) and
       obj = val.getSource() and
       cls = val.getClass().getSource() and
       origin = valorig.toCfgNode()
@@ -141,7 +141,7 @@ class ClassObject extends Object {
   }
 
   /** Whether this class has a attribute named `name`, either declared or inherited. */
-  predicate hasAttribute(string name) { this.theClass().hasAttribute(name) }
+  predicate hasAttribute(string name) { theClass().hasAttribute(name) }
 
   /**
    * Whether it is impossible to know all the attributes of this class. Usually because it is
@@ -162,11 +162,11 @@ class ClassObject extends Object {
 
   /** Gets the metaclass for this class */
   ClassObject getMetaClass() {
-    result = this.theClass().getClass().getSource() and
+    result = theClass().getClass().getSource() and
     not this.failedInference()
   }
 
-  /** Holds if this class is abstract. */
+  /* Whether this class is abstract. */
   predicate isAbstract() {
     this.getMetaClass() = theAbcMetaClassObject()
     or
@@ -182,7 +182,7 @@ class ClassObject extends Object {
   ControlFlowNode declaredMetaClass() { result = this.getPyClass().getMetaClass().getAFlowNode() }
 
   /** Has type inference failed to compute the full class hierarchy for this class for the reason given. */
-  predicate failedInference(string reason) { Types::failedInference(this.theClass(), reason) }
+  predicate failedInference(string reason) { Types::failedInference(theClass(), reason) }
 
   /** Has type inference failed to compute the full class hierarchy for this class */
   predicate failedInference() { this.failedInference(_) }
@@ -205,7 +205,7 @@ class ClassObject extends Object {
 
   /** This class is only instantiated at one place in the code */
   private predicate hasStaticallyUniqueInstance() {
-    strictcount(SpecificInstanceInternal inst | inst.getClass() = this.theClass()) = 1
+    strictcount(SpecificInstanceInternal inst | inst.getClass() = theClass()) = 1
   }
 
   ImportTimeScope getImportTimeScope() { result = this.getPyClass() }
@@ -221,7 +221,7 @@ class ClassObject extends Object {
   ClassObject nextInMro(ClassObject sup) {
     exists(ClassObjectInternal other |
       other.getSource() = sup and
-      result = Types::getMro(this.theClass()).startingAt(other).getTail().getHead().getSource()
+      result = Types::getMro(theClass()).startingAt(other).getTail().getHead().getSource()
     ) and
     not this.failedInference()
   }
@@ -357,7 +357,7 @@ class ClassObject extends Object {
 }
 
 /**
- * Gets the 'str' class. This is the same as the 'bytes' class for
+ * The 'str' class. This is the same as the 'bytes' class for
  * Python 2 and the 'unicode' class for Python 3
  */
 ClassObject theStrType() {
@@ -375,128 +375,128 @@ ClassObject theAbcMetaClassObject() {
 }
 
 /* Common builtin classes */
-/** Gets the built-in class NoneType */
+/** The built-in class NoneType */
 ClassObject theNoneType() { result.asBuiltin() = Builtin::special("NoneType") }
 
-/** Gets the built-in class 'bool' */
+/** The built-in class 'bool' */
 ClassObject theBoolType() { result.asBuiltin() = Builtin::special("bool") }
 
-/** Gets the builtin class 'type' */
+/** The builtin class 'type' */
 ClassObject theTypeType() { result.asBuiltin() = Builtin::special("type") }
 
-/** Gets the builtin object ClassType (for old-style classes) */
+/** The builtin object ClassType (for old-style classes) */
 ClassObject theClassType() { result.asBuiltin() = Builtin::special("ClassType") }
 
-/** Gets the builtin object InstanceType (for old-style classes) */
+/** The builtin object InstanceType (for old-style classes) */
 ClassObject theInstanceType() { result.asBuiltin() = Builtin::special("InstanceType") }
 
-/** Gets the builtin class 'tuple' */
+/** The builtin class 'tuple' */
 ClassObject theTupleType() { result.asBuiltin() = Builtin::special("tuple") }
 
-/** Gets the builtin class 'int' */
+/** The builtin class 'int' */
 ClassObject theIntType() { result.asBuiltin() = Builtin::special("int") }
 
-/** Gets the builtin class 'long' (Python 2 only) */
+/** The builtin class 'long' (Python 2 only) */
 ClassObject theLongType() { result.asBuiltin() = Builtin::special("long") }
 
-/** Gets the builtin class 'float' */
+/** The builtin class 'float' */
 ClassObject theFloatType() { result.asBuiltin() = Builtin::special("float") }
 
-/** Gets the builtin class 'complex' */
+/** The builtin class 'complex' */
 ClassObject theComplexType() { result.asBuiltin() = Builtin::special("complex") }
 
-/** Gets the builtin class 'object' */
+/** The builtin class 'object' */
 ClassObject theObjectType() { result.asBuiltin() = Builtin::special("object") }
 
-/** Gets the builtin class 'list' */
+/** The builtin class 'list' */
 ClassObject theListType() { result.asBuiltin() = Builtin::special("list") }
 
-/** Gets the builtin class 'dict' */
+/** The builtin class 'dict' */
 ClassObject theDictType() { result.asBuiltin() = Builtin::special("dict") }
 
-/** Gets the builtin class 'Exception' */
+/** The builtin class 'Exception' */
 ClassObject theExceptionType() { result.asBuiltin() = Builtin::special("Exception") }
 
-/** Gets the builtin class for unicode. unicode in Python2, str in Python3 */
+/** The builtin class for unicode. unicode in Python2, str in Python3 */
 ClassObject theUnicodeType() { result.asBuiltin() = Builtin::special("unicode") }
 
-/** Gets the builtin class '(x)range' */
+/** The builtin class '(x)range' */
 ClassObject theRangeType() {
   result = Object::builtin("xrange")
   or
   major_version() = 3 and result = Object::builtin("range")
 }
 
-/** Gets the builtin class for bytes. str in Python2, bytes in Python3 */
+/** The builtin class for bytes. str in Python2, bytes in Python3 */
 ClassObject theBytesType() { result.asBuiltin() = Builtin::special("bytes") }
 
-/** Gets the builtin class 'set' */
+/** The builtin class 'set' */
 ClassObject theSetType() { result.asBuiltin() = Builtin::special("set") }
 
-/** Gets the builtin class 'property' */
+/** The builtin class 'property' */
 ClassObject thePropertyType() { result.asBuiltin() = Builtin::special("property") }
 
-/** Gets the builtin class 'BaseException' */
+/** The builtin class 'BaseException' */
 ClassObject theBaseExceptionType() { result.asBuiltin() = Builtin::special("BaseException") }
 
-/** Gets the class of builtin-functions */
+/** The class of builtin-functions */
 ClassObject theBuiltinFunctionType() {
   result.asBuiltin() = Builtin::special("BuiltinFunctionType")
 }
 
-/** Gets the class of Python functions */
+/** The class of Python functions */
 ClassObject thePyFunctionType() { result.asBuiltin() = Builtin::special("FunctionType") }
 
-/** Gets the builtin class 'classmethod' */
+/** The builtin class 'classmethod' */
 ClassObject theClassMethodType() { result.asBuiltin() = Builtin::special("ClassMethod") }
 
-/** Gets the builtin class 'staticmethod' */
+/** The builtin class 'staticmethod' */
 ClassObject theStaticMethodType() { result.asBuiltin() = Builtin::special("StaticMethod") }
 
-/** Gets the class of modules */
+/** The class of modules */
 ClassObject theModuleType() { result.asBuiltin() = Builtin::special("ModuleType") }
 
-/** Gets the class of generators */
+/** The class of generators */
 ClassObject theGeneratorType() { result.asBuiltin() = Builtin::special("generator") }
 
-/** Gets the builtin class 'TypeError' */
+/** The builtin class 'TypeError' */
 ClassObject theTypeErrorType() { result.asBuiltin() = Builtin::special("TypeError") }
 
-/** Gets the builtin class 'AttributeError' */
+/** The builtin class 'AttributeError' */
 ClassObject theAttributeErrorType() { result.asBuiltin() = Builtin::special("AttributeError") }
 
-/** Gets the builtin class 'KeyError' */
+/** The builtin class 'KeyError' */
 ClassObject theKeyErrorType() { result.asBuiltin() = Builtin::special("KeyError") }
 
-/** Gets the builtin class of bound methods */
+/** The builtin class of bound methods */
 pragma[noinline]
 ClassObject theBoundMethodType() { result.asBuiltin() = Builtin::special("MethodType") }
 
-/** Gets the builtin class of builtin properties */
+/** The builtin class of builtin properties */
 ClassObject theGetSetDescriptorType() {
   result.asBuiltin() = Builtin::special("GetSetDescriptorType")
 }
 
-/** Gets the method descriptor class */
+/** The method descriptor class */
 ClassObject theMethodDescriptorType() {
   result.asBuiltin() = Builtin::special("MethodDescriptorType")
 }
 
-/** Gets the class of builtin properties */
+/** The class of builtin properties */
 ClassObject theBuiltinPropertyType() {
   /* This is CPython specific */
   result.isC() and
   result.getName() = "getset_descriptor"
 }
 
-/** Gets the builtin class 'IOError' */
+/** The builtin class 'IOError' */
 ClassObject theIOErrorType() { result = Object::builtin("IOError") }
 
-/** Gets the builtin class 'super' */
+/** The builtin class 'super' */
 ClassObject theSuperType() { result = Object::builtin("super") }
 
-/** Gets the builtin class 'StopIteration' */
+/** The builtin class 'StopIteration' */
 ClassObject theStopIterationType() { result = Object::builtin("StopIteration") }
 
-/** Gets the builtin class 'NotImplementedError' */
+/** The builtin class 'NotImplementedError' */
 ClassObject theNotImplementedErrorType() { result = Object::builtin("NotImplementedError") }

@@ -5,8 +5,11 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module ClientSideUrlRedirect {
+  private import Xss::DomBasedXss as DomBasedXss
+
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.
    */
@@ -18,12 +21,7 @@ module ClientSideUrlRedirect {
   /**
    * A data flow sink for unvalidated URL redirect vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node {
-    /** Holds if the sink can execute JavaScript code in the current context. */
-    predicate isXssSink() {
-      none() // overwritten in subclasses
-    }
-  }
+  abstract class Sink extends DataFlow::Node { }
 
   /**
    * A sanitizer for unvalidated URL redirect vulnerabilities.
@@ -53,27 +51,34 @@ module ClientSideUrlRedirect {
   }
 
   /**
+   * DEPRECATED. Can usually be replaced with `untrustedUrlSubstring`.
+   * Query accesses via `location.hash` or `location.search` are now independent
+   * `RemoteFlowSource` instances, and only substrings of `location` need to be handled via steps.
+   */
+  deprecated predicate queryAccess = untrustedUrlSubstring/2;
+
+  /**
    * Holds if `substring` refers to a substring of `base` which is considered untrusted
    * when `base` is the current URL.
    */
   predicate untrustedUrlSubstring(DataFlow::Node base, DataFlow::Node substring) {
-    exists(DataFlow::MethodCallNode mcn, string methodName |
-      mcn = substring and mcn.calls(base, methodName)
+    exists(MethodCallExpr mce, string methodName |
+      mce = substring.asExpr() and mce.calls(base.asExpr(), methodName)
     |
       methodName = "split" and
       // exclude all splits where only the prefix is accessed, which is safe for url-redirects.
-      not exists(DataFlow::PropRead pacc | mcn = pacc.getBase() | pacc.getPropertyName() = "0")
+      not exists(PropAccess pacc | mce = pacc.getBase() | pacc.getPropertyName() = "0")
       or
       methodName = StringOps::substringMethodName() and
       // exclude `location.href.substring(0, ...)` and similar, which can
       // never refer to the query string
-      not mcn.getArgument(0).getIntValue() = 0
+      not mce.getArgument(0).(NumberLiteral).getIntValue() = 0
     )
     or
-    exists(DataFlow::MethodCallNode mcn |
-      substring = mcn and
-      mcn = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec") and
-      base = mcn.getArgument(0)
+    exists(MethodCallExpr mce |
+      substring.asExpr() = mce and
+      mce = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec").asExpr() and
+      base.asExpr() = mce.getArgument(0)
     )
   }
 
@@ -81,14 +86,11 @@ module ClientSideUrlRedirect {
    * A sink which is used to set the window location.
    */
   class LocationSink extends Sink, DataFlow::ValueNode {
-    boolean xss;
-
     LocationSink() {
       // A call to a `window.navigate` or `window.open`
       exists(string name | name = ["navigate", "open", "openDialog", "showModalDialog"] |
         this = DataFlow::globalVarRef(name).getACall().getArgument(0)
-      ) and
-      xss = false
+      )
       or
       // A call to `location.replace` or `location.assign`
       exists(DataFlow::MethodCallNode locationCall, string name |
@@ -96,48 +98,24 @@ module ClientSideUrlRedirect {
         this = locationCall.getArgument(0)
       |
         name = ["replace", "assign"]
-      ) and
-      xss = true
-      or
-      // A call to `navigation.navigate`
-      this = DataFlow::globalVarRef("navigation").getAMethodCall("navigate").getArgument(0) and
-      xss = true
+      )
       or
       // An assignment to `location`
-      exists(Assignment assgn |
-        isLocationNode(assgn.getTarget().flow()) and astNode = assgn.getRhs()
-      ) and
-      xss = true
+      exists(Assignment assgn | isLocation(assgn.getTarget()) and astNode = assgn.getRhs())
       or
       // An assignment to `location.href`, `location.protocol` or `location.hostname`
       exists(DataFlow::PropWrite pw, string propName |
         pw = DOM::locationRef().getAPropertyWrite(propName) and
         this = pw.getRhs()
       |
-        propName = ["href", "protocol", "hostname"] and
-        (if propName = "href" then xss = true else xss = false)
+        propName = ["href", "protocol", "hostname"]
       )
       or
       // A redirection using the AngularJS `$location` service
       exists(AngularJS::ServiceReference service |
         service.getName() = "$location" and
-        this = service.getAMethodCall("url").getArgument(0)
-      ) and
-      xss = false
-    }
-
-    override predicate isXssSink() { xss = true }
-  }
-
-  /**
-   * The first argument to a call to `openExternal` seen as a sink for unvalidated URL redirection.
-   * Improper use of openExternal can be leveraged to compromise the user's host.
-   * When openExternal is used with untrusted content, it can be leveraged to execute arbitrary commands.
-   */
-  class ElectronShellOpenExternalSink extends Sink {
-    ElectronShellOpenExternalSink() {
-      this =
-        DataFlow::moduleMember("electron", "shell").getAMemberCall("openExternal").getArgument(0)
+        this.asExpr() = service.getAMethodCall("url").getArgument(0)
+      )
     }
   }
 
@@ -166,23 +144,16 @@ module ClientSideUrlRedirect {
   }
 
   /**
-   * A write to a `href` or similar attribute viewed as a `ScriptUrlSink`.
+   * A script or iframe `src` attribute, viewed as a `ScriptUrlSink`.
    */
-  class AttributeUrlSink extends ScriptUrlSink {
-    AttributeUrlSink() {
-      // e.g. `$("<a>", {href: sink}).appendTo("body")`
+  class SrcAttributeUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
+    SrcAttributeUrlSink() {
       exists(DOM::AttributeDefinition attr |
-        not attr instanceof JsxAttribute and // handled more precisely in `ReactAttributeWriteUrlSink`.
-        attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
-      |
+        attr.getElement().getName() = ["script", "iframe"] and
+        attr.getName() = "src" and
         this = attr.getValueNode()
       )
-      or
-      // e.g. node.setAttribute("href", sink)
-      any(DomMethodCallNode call).interpretsArgumentsAsUrl(this)
     }
-
-    override predicate isXssSink() { any() }
   }
 
   /**
@@ -191,13 +162,11 @@ module ClientSideUrlRedirect {
    */
   class AttributeWriteUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
     AttributeWriteUrlSink() {
-      exists(DomPropertyWrite pw |
+      exists(DomPropWriteNode pw |
         pw.interpretsValueAsJavaScriptUrl() and
-        this = pw.getRhs()
+        this = DataFlow::valueNode(pw.getRhs())
       )
     }
-
-    override predicate isXssSink() { any() }
   }
 
   /**
@@ -205,17 +174,15 @@ module ClientSideUrlRedirect {
    */
   class ReactAttributeWriteUrlSink extends ScriptUrlSink {
     ReactAttributeWriteUrlSink() {
-      exists(JsxAttribute attr |
+      exists(JSXAttribute attr |
         attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl() and
-        attr.getElement().isHtmlElement()
+        attr.getElement().isHTMLElement()
         or
         DataFlow::moduleImport("next/link").flowsToExpr(attr.getElement().getNameExpr())
       |
         this = attr.getValue().flow()
       )
     }
-
-    override predicate isXssSink() { any() }
   }
 
   /**

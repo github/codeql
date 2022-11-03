@@ -16,5 +16,5 @@ from RefType sub, RefType sup
 where
   sub.fromSource() and
   sup = sub.getASupertype() and
-  pragma[only_bind_out](sub.getName()) = pragma[only_bind_out](sup.getName())
+  sub.getName() = sup.getName()
 select sub, sub.getName() + " has the same name as its supertype $@.", sup, sup.getQualifiedName()

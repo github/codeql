@@ -4,7 +4,6 @@
  *              application files and web resources from any origin exposing them to attack.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 6.1
  * @precision medium
  * @id java/android/unsafe-android-webview-fetch
  * @tags security

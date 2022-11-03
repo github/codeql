@@ -6,7 +6,7 @@
 private import IRFunctionBase
 private import TInstruction
 
-module Ssa {
+module SSA {
   class MemoryLocation = boolean;
 
   predicate hasPhiInstruction(TRawInstruction blockStartInstr, MemoryLocation memoryLocation) {
@@ -17,6 +17,3 @@ module Ssa {
 
   predicate hasUnreachedInstruction(IRFunctionBase irFunc) { none() }
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

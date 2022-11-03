@@ -6,9 +6,9 @@ import semmle.code.java.frameworks.spring.SpringBean
  *
  * This class includes methods to access attributes of the `<beans>` element.
  */
-class SpringBeanFile extends XmlFile {
+class SpringBeanFile extends XMLFile {
   SpringBeanFile() {
-    count(XmlElement e | e = this.getAChild()) = 1 and
+    count(XMLElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "beans"
   }
 
@@ -24,7 +24,7 @@ class SpringBeanFile extends XmlFile {
   SpringBean getABean() { exists(SpringBean b | b.getFile() = this and result = b) }
 
   /** Gets the `<beans>` element of the file. */
-  XmlElement getBeansElement() {
+  XMLElement getBeansElement() {
     result = this.getAChild() and
     result.getName() = "beans"
   }
@@ -58,7 +58,7 @@ class SpringBeanFile extends XmlFile {
 
   /** Gets the `default-dependency-check` value for this file. */
   string getDefaultDependencyCheck() {
-    if exists(this.getBeansElement().getAttribute("default-dependency-check"))
+    if exists(XMLAttribute a | this.getBeansElement().getAttribute("default-dependency-check") = a)
     then result = this.getBeansElement().getAttributeValue("default-dependency-check")
     else result = "none"
   }
@@ -70,7 +70,7 @@ class SpringBeanFile extends XmlFile {
 
   /** Holds if this file has a `default-destroy-method` value. */
   predicate hasDefaultDestroyMethod() {
-    exists(this.getBeansElement().getAttribute("default-destroy-method"))
+    exists(XMLAttribute a | this.getBeansElement().getAttribute("default-destroy-method") = a)
   }
 
   /** Gets the `default-init-method` value for this file. */
@@ -80,12 +80,12 @@ class SpringBeanFile extends XmlFile {
 
   /** Holds if the file has a `default-destroy-method` value. */
   predicate hasDefaultInitMethod() {
-    exists(this.getBeansElement().getAttribute("default-init-method"))
+    exists(XMLAttribute a | this.getBeansElement().getAttribute("default-init-method") = a)
   }
 
   /** Holds if `default-lazy-init` is specified to be `true` for this file. */
   predicate isDefaultLazyInit() {
-    exists(XmlAttribute a |
+    exists(XMLAttribute a |
       this.getBeansElement().getAttribute("default-lazy-init") = a and
       a.getValue() = "true"
     )
@@ -93,7 +93,7 @@ class SpringBeanFile extends XmlFile {
 
   /** Holds if `default-merge` is specified to be `true` for this file. */
   predicate isDefaultMerge() {
-    exists(XmlAttribute a |
+    exists(XMLAttribute a |
       this.getBeansElement().getAttribute("default-merge") = a and
       a.getValue() = "true"
     )

@@ -1,4 +1,5 @@
 import java
+import semmle.code.java.JDKAnnotations
 
 /**
  * Direct flow of values (i.e. object references) through expressions.
@@ -59,7 +60,7 @@ predicate exception(EnumConstant e) {
     )
     or
     // Entire `Enum` annotated with reflective annotation.
-    t.getAnAnnotation() instanceof ReflectiveAccessAnnotation
+    exists(ReflectiveAccessAnnotation ann | ann = t.getAnAnnotation())
   )
   or
   // Enum field annotated with reflective annotation.

@@ -4,7 +4,7 @@ import semmle.python.web.Http
 import semmle.python.web.django.General
 
 /** A django.request.HttpRequest object */
-deprecated class DjangoRequest extends TaintKind {
+class DjangoRequest extends TaintKind {
   DjangoRequest() { this = "django.request.HttpRequest" }
 
   override TaintKind getTaintOfAttribute(string name) {
@@ -20,13 +20,13 @@ deprecated class DjangoRequest extends TaintKind {
 
 /* Helper for getTaintForStep() */
 pragma[noinline]
-deprecated private predicate subscript_taint(SubscriptNode sub, ControlFlowNode obj, TaintKind kind) {
+private predicate subscript_taint(SubscriptNode sub, ControlFlowNode obj, TaintKind kind) {
   sub.getObject() = obj and
   kind instanceof ExternalStringKind
 }
 
 /** A django.request.QueryDict object */
-deprecated class DjangoQueryDict extends TaintKind {
+class DjangoQueryDict extends TaintKind {
   DjangoQueryDict() { this = "django.http.request.QueryDict" }
 
   override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
@@ -40,7 +40,7 @@ deprecated class DjangoQueryDict extends TaintKind {
 }
 
 /** A Django request parameter */
-deprecated class DjangoRequestSource extends HttpRequestTaintSource {
+class DjangoRequestSource extends HttpRequestTaintSource {
   DjangoRequestSource() {
     exists(DjangoRoute route, DjangoViewHandler view, int request_arg_index |
       route.getViewHandler() = view and
@@ -55,7 +55,7 @@ deprecated class DjangoRequestSource extends HttpRequestTaintSource {
 }
 
 /** An argument specified in a url routing table */
-deprecated class DjangoRequestParameter extends HttpRequestTaintSource {
+class DjangoRequestParameter extends HttpRequestTaintSource {
   DjangoRequestParameter() {
     exists(DjangoRoute route, Function f, DjangoViewHandler view, int request_arg_index |
       route.getViewHandler() = view and

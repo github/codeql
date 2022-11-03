@@ -33,7 +33,7 @@ predicate inheritsObjectToString(Class t) {
 }
 
 Class getAnImplementation(RefType parent) {
-  result = parent.getADescendant() and
+  result = parent.getASubtype*() and
   not result.isAbstract()
 }
 

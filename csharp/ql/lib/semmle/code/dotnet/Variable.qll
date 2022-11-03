@@ -20,7 +20,7 @@ class Parameter extends Variable, @dotnet_parameter {
   /** Gets the position of this parameter, excluding the `this` parameter. */
   int getPosition() { this = this.getDeclaringElement().getParameter(result) }
 
-  /** Gets the callable defining this parameter, if any. */
+  /** Gets the callable defining this parameter. */
   Callable getCallable() { result = this.getDeclaringElement() }
 
   /** Gets the declaring `Parameterizable`. */

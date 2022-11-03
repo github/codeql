@@ -31,13 +31,13 @@ module PkgCloud {
   /**
    * An expression that is used for authentication through pkgcloud.
    */
-  class Credentials extends CredentialsNode {
+  class Credentials extends CredentialsExpr {
     string kind;
 
     Credentials() {
       exists(string propertyName, DataFlow::InvokeNode invk, int i |
         takesConfigurationObject(invk, i) and
-        this = invk.getOptionArgument(0, propertyName)
+        this = invk.getOptionArgument(0, propertyName).asExpr()
       |
         /*
          * Catch-all support for the following providers:
@@ -55,10 +55,20 @@ module PkgCloud {
          */
 
         kind = "user name" and
-        propertyName = ["account", "keyId", "storageAccount", "username"]
+        (
+          propertyName = "account" or
+          propertyName = "keyId" or
+          propertyName = "storageAccount" or
+          propertyName = "username"
+        )
         or
         kind = "password" and
-        propertyName = ["key", "apiKey", "storageAccessKey", "password"]
+        (
+          propertyName = "key" or
+          propertyName = "apiKey" or
+          propertyName = "storageAccessKey" or
+          propertyName = "password"
+        )
         or
         kind = "token" and
         propertyName = "token"

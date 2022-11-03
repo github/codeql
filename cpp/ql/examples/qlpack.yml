@@ -1,6 +1,4 @@
 name: codeql/cpp-examples
-groups: 
-  - cpp
-  - examples
+version: 0.0.2
 dependencies:
-  codeql/cpp-all: ${workspace}
+  codeql/cpp-all: "*"

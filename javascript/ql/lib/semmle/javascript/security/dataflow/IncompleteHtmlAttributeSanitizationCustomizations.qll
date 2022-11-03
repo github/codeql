@@ -5,6 +5,7 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.RemoteFlowSources
 import semmle.javascript.security.IncompleteBlacklistSanitizer
 
 module IncompleteHtmlAttributeSanitization {
@@ -80,9 +81,9 @@ module IncompleteHtmlAttributeSanitization {
   class HtmlAttributeConcatenationAsSink extends Sink, DataFlow::ValueNode,
     HtmlAttributeConcatenation {
     override string getADangerousCharacter() {
-      this.isInterpretedAsJavaScript() and result = "&"
+      isInterpretedAsJavaScript() and result = "&"
       or
-      result = this.getQuote()
+      result = getQuote()
     }
   }
 

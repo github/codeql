@@ -136,9 +136,50 @@ externalData(
 );
 
 /**
+ * The date of the snapshot.
+ */
+snapshotDate(unique date snapshotDate : date ref);
+
+/**
  * The source location of the snapshot.
  */
 sourceLocationPrefix(string prefix : string ref);
+
+/**
+ * Data used by the 'duplicate code' detection.
+ */
+duplicateCode(
+    unique int id : @duplication,
+    string relativePath : string ref,
+    int equivClass : int ref
+);
+
+/**
+ * Data used by the 'similar code' detection.
+ */
+similarCode(
+    unique int id : @similarity,
+    string relativePath : string ref,
+    int equivClass : int ref
+);
+
+/**
+ * Data used by the 'duplicate code' and 'similar code' detection.
+ */
+@duplication_or_similarity = @duplication | @similarity
+
+/**
+ * Data used by the 'duplicate code' and 'similar code' detection.
+ */
+#keyset[id, offset]
+tokens(
+    int id : @duplication_or_similarity ref,
+    int offset : int ref,
+    int beginLine : int ref,
+    int beginColumn : int ref,
+    int endLine : int ref,
+    int endColumn : int ref
+);
 
 /**
  * Information about packages that provide code used during compilation.
@@ -446,7 +487,6 @@ var_decl_specifiers(
     int id: @var_decl ref,
     string name: string ref
 )
-is_structured_binding(unique int id: @variable ref);
 
 type_decls(
     unique int id: @type_decl,
@@ -522,11 +562,6 @@ autoderivation(
     unique int var: @variable ref,
     int derivation_type: @type ref
 );
-
-orphaned_variables(
-    int var: @localvariable ref,
-    int function: @function ref
-)
 
 enumconstants(
     unique int id: @enumconstant,
@@ -708,7 +743,7 @@ usertype_final(unique int id: @usertype ref);
 
 usertype_uuid(
     unique int id: @usertype ref,
-    string uuid: string ref
+    unique string uuid: string ref
 );
 
 mangled_name(
@@ -746,7 +781,7 @@ type_mentions(
     unique int id: @type_mention,
     int type_id: @type ref,
     int location: @location ref,
-    // a_symbol_reference_kind from the frontend.
+    // a_symbol_reference_kind from the EDG frontend.  See symbol_ref.h there.
     int kind: int ref
 );
 
@@ -904,7 +939,6 @@ case @attribute_arg.kind of
 | 1 = @attribute_arg_token
 | 2 = @attribute_arg_constant
 | 3 = @attribute_arg_type
-| 4 = @attribute_arg_constant_expr
 ;
 
 attribute_arg_value(
@@ -915,10 +949,6 @@ attribute_arg_type(
     unique int arg: @attribute_arg ref,
     int type_id: @type ref
 );
-attribute_arg_constant(
-    unique int arg: @attribute_arg ref,
-    int constant: @expr ref
-)
 attribute_arg_name(
     unique int arg: @attribute_arg ref,
     string name: string ref
@@ -1307,7 +1337,7 @@ funbind(
 
 @assign_op_expr = @assign_arith_expr | @assign_bitwise_expr
 
-@assign_expr = @assignexpr | @assign_op_expr | @blockassignexpr
+@assign_expr = @assignexpr | @assign_op_expr
 
 /*
   case @allocator.form of
@@ -1444,10 +1474,6 @@ initialisers(
     int var: @accessible ref,
     unique int expr: @expr ref,
     int location: @location_expr ref
-);
-
-braced_initialisers(
-    int init: @initialiser ref
 );
 
 /**
@@ -1596,7 +1622,7 @@ case @expr.kind of
 | 117 = @ispolyexpr // __is_polymorphic ::= type
 | 118 = @isunionexpr // __is_union ::= type
 | 119 = @typescompexpr // GNU __builtin_types_compatible ::= type type
-| 120 = @intaddrexpr // frontend internal builtin, used to implement offsetof
+| 120 = @intaddrexpr // EDG internal builtin, used to implement offsetof
 // ...
 | 122 = @hastrivialdestructor // __has_trivial_destructor ::= type
 | 123 = @literal
@@ -1660,39 +1686,6 @@ case @expr.kind of
 | 327 = @co_await
 | 328 = @co_yield
 | 329 = @temp_init
-| 330 = @isassignable
-| 331 = @isaggregate
-| 332 = @hasuniqueobjectrepresentations
-| 333 = @builtinbitcast
-| 334 = @builtinshuffle
-| 335 = @blockassignexpr
-| 336 = @issame
-| 337 = @isfunction
-| 338 = @islayoutcompatible
-| 339 = @ispointerinterconvertiblebaseof
-| 340 = @isarray
-| 341 = @arrayrank
-| 342 = @arrayextent
-| 343 = @isarithmetic
-| 344 = @iscompletetype
-| 345 = @iscompound
-| 346 = @isconst
-| 347 = @isfloatingpoint
-| 348 = @isfundamental
-| 349 = @isintegral
-| 350 = @islvaluereference
-| 351 = @ismemberfunctionpointer
-| 352 = @ismemberobjectpointer
-| 353 = @ismemberpointer
-| 354 = @isobject
-| 355 = @ispointer
-| 356 = @isreference
-| 357 = @isrvaluereference
-| 358 = @isscalar
-| 359 = @issigned
-| 360 = @isunsigned
-| 361 = @isvoid
-| 362 = @isvolatile
 ;
 
 @var_args_expr = @vastartexpr
@@ -1754,38 +1747,6 @@ case @expr.kind of
             | @isfinalexpr
             | @builtinchooseexpr
             | @builtincomplex
-            | @isassignable
-            | @isaggregate
-            | @hasuniqueobjectrepresentations
-            | @builtinbitcast
-            | @builtinshuffle
-            | @issame
-            | @isfunction
-            | @islayoutcompatible
-            | @ispointerinterconvertiblebaseof
-            | @isarray
-            | @arrayrank
-            | @arrayextent
-            | @isarithmetic
-            | @iscompletetype
-            | @iscompound
-            | @isconst
-            | @isfloatingpoint
-            | @isfundamental
-            | @isintegral
-            | @islvaluereference
-            | @ismemberfunctionpointer
-            | @ismemberobjectpointer
-            | @ismemberpointer
-            | @isobject
-            | @ispointer
-            | @isreference
-            | @isrvaluereference
-            | @isscalar
-            | @issigned
-            | @isunsigned
-            | @isvoid
-            | @isvolatile
             ;
 
 new_allocated_type(
@@ -1942,11 +1903,6 @@ variable_vla(
     int decl: @stmt_vla_decl ref
 );
 
-if_initialization(
-    unique int if_stmt: @stmt_if ref,
-    int init_id: @stmt ref
-);
-
 if_then(
     unique int if_stmt: @stmt_if ref,
     int then_id: @stmt ref
@@ -1955,11 +1911,6 @@ if_then(
 if_else(
     unique int if_stmt: @stmt_if ref,
     int else_id: @stmt ref
-);
-
-constexpr_if_initialization(
-    unique int constexpr_if_stmt: @stmt_constexpr_if ref,
-    int init_id: @stmt ref
 );
 
 constexpr_if_then(
@@ -1980,11 +1931,6 @@ while_body(
 do_body(
     unique int do_stmt: @stmt_end_test_while ref,
     int body_id: @stmt ref
-);
-
-switch_initialization(
-    unique int switch_stmt: @stmt_switch ref,
-    int init_id: @stmt ref
 );
 
 #keyset[switch_stmt, index]

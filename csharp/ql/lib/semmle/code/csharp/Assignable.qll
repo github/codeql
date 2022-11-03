@@ -111,7 +111,6 @@ class AssignableRead extends AssignableAccess {
    * - The reads of `i` on lines 7 and 8 are next to the read on line 6.
    * - The read of `this.Field` on line 11 is next to the read on line 10.
    */
-  pragma[nomagic]
   AssignableRead getANextRead() {
     forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
       cfn = this.getAnAdjacentReadSameVar()
@@ -125,7 +124,7 @@ class AssignableRead extends AssignableAccess {
    *
    * This is the transitive closure of `getANextRead()`.
    */
-  deprecated AssignableRead getAReachableRead() { result = this.getANextRead+() }
+  AssignableRead getAReachableRead() { result = this.getANextRead+() }
 }
 
 /**
@@ -206,7 +205,7 @@ private class RefArg extends AssignableAccess {
    */
   predicate isAnalyzable(Parameter p) {
     exists(Callable callable | callable = this.getUnboundDeclarationTarget(p) |
-      not callable.(Overridable).isOverridableOrImplementable() and
+      not callable.(Virtualizable).isOverridableOrImplementable() and
       callable.hasBody()
     )
   }
@@ -480,7 +479,6 @@ class AssignableDefinition extends TAssignableDefinition {
    * Subsequent reads can be found by following the steps defined by
    * `AssignableRead.getANextRead()`.
    */
-  pragma[nomagic]
   AssignableRead getAFirstRead() {
     forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
       exists(Ssa::ExplicitDefinition def | result = def.getAFirstReadAtNode(cfn) |
@@ -496,7 +494,7 @@ class AssignableDefinition extends TAssignableDefinition {
    *
    * This is the equivalent with `getAFirstRead().getANextRead*()`.
    */
-  deprecated AssignableRead getAReachableRead() { result = this.getAFirstRead().getANextRead*() }
+  AssignableRead getAReachableRead() { result = this.getAFirstRead().getANextRead*() }
 
   /** Gets a textual representation of this assignable definition. */
   string toString() { none() }

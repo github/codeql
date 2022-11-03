@@ -64,6 +64,11 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     result = this.getExpressionBody()
   }
 
+  /**
+   * DEPRECATED: Use `getBody()` instead.
+   */
+  deprecated final ControlFlowElement getABody() { result = this.getBody() }
+
   override predicate hasBody() { exists(this.getBody()) }
 
   /**
@@ -146,6 +151,11 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     not result = this.(Constructor).getInitializer()
   }
 
+  /**
+   * DEPRECATED: Use `getExpressionBody()` instead.
+   */
+  deprecated final Expr getAnExpressionBody() { result = this.getExpressionBody() }
+
   /** Holds if this callable has an expression body. */
   final predicate hasExpressionBody() { exists(this.getExpressionBody()) }
 
@@ -215,7 +225,11 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   /** Gets a `Call` that has this callable as a target. */
   Call getACall() { this = result.getTarget() }
 
+  override Parameter getParameter(int n) { result = Parameterizable.super.getParameter(n) }
+
   override Parameter getAParameter() { result = Parameterizable.super.getAParameter() }
+
+  override int getNumberOfParameters() { result = Parameterizable.super.getNumberOfParameters() }
 }
 
 /**
@@ -272,6 +286,8 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   predicate hasParams() { exists(this.getParamsType()) }
 
   // Remove when `Callable.isOverridden()` is removed
+  override predicate isOverridden() { Virtualizable.super.isOverridden() }
+
   override predicate fromSource() {
     Callable.super.fromSource() and
     not this.isCompilerGenerated()
@@ -454,11 +470,6 @@ class Operator extends Callable, Member, Attributable, @operator {
   override string toString() { result = Callable.super.toString() }
 
   override Parameter getRawParameter(int i) { result = this.getParameter(i) }
-
-  override predicate hasQualifiedName(string qualifier, string name) {
-    super.hasQualifiedName(qualifier, _) and
-    name = this.getFunctionName()
-  }
 }
 
 /** A clone method on a record. */
@@ -466,6 +477,8 @@ class RecordCloneMethod extends Method, DotNet::RecordCloneCallable {
   override Constructor getConstructor() {
     result = DotNet::RecordCloneCallable.super.getConstructor()
   }
+
+  override string toString() { result = Method.super.toString() }
 }
 
 /**

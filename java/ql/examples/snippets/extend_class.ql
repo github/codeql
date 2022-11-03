@@ -13,5 +13,5 @@
 import java
 
 from RefType type
-where type.getAStrictAncestor().hasQualifiedName("com.example", "Class")
+where type.getASupertype+().hasQualifiedName("com.example", "Class")
 select type

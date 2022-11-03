@@ -23,8 +23,7 @@ private class NumericCastFlowConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
-    sink.asExpr() instanceof VarAccess
+    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr()
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -32,17 +31,18 @@ private class NumericCastFlowConfig extends TaintTracking::Configuration {
     castCheck(node.asExpr()) or
     node.getType() instanceof SmallType or
     smallExpr(node.asExpr()) or
-    node.getEnclosingCallable() instanceof HashCodeMethod or
-    exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr())
+    node.getEnclosingCallable() instanceof HashCodeMethod
   }
 }
 
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, NumericNarrowingCastExpr exp,
-  NumericCastFlowConfig conf
+  VarAccess tainted, NumericCastFlowConfig conf
 where
-  sink.getNode().asExpr() = exp.getExpr() and
-  conf.hasFlowPath(source, sink)
+  exp.getExpr() = tainted and
+  sink.getNode().asExpr() = tainted and
+  conf.hasFlowPath(source, sink) and
+  not exists(RightShiftOp e | e.getShiftedVariable() = tainted.getVariable())
 select exp, source, sink,
-  "This cast to a narrower type depends on a $@, potentially causing truncation.", source.getNode(),
-  "user-provided value"
+  "$@ flows to here and is cast to a narrower type, potentially causing truncation.",
+  source.getNode(), "User-provided value"

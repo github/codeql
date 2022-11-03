@@ -188,8 +188,8 @@ private predicate nonAnalyzableFunction(Function f) {
  */
 private predicate impossibleFalseEdge(Expr condition, Node succ) {
   conditionAlwaysTrue(condition) and
-  qlCfgFalseSuccessor(condition, succ) and
-  not qlCfgTrueSuccessor(condition, succ)
+  qlCFGFalseSuccessor(condition, succ) and
+  not qlCFGTrueSuccessor(condition, succ)
 }
 
 /**
@@ -197,8 +197,8 @@ private predicate impossibleFalseEdge(Expr condition, Node succ) {
  */
 private predicate impossibleTrueEdge(Expr condition, Node succ) {
   conditionAlwaysFalse(condition) and
-  qlCfgTrueSuccessor(condition, succ) and
-  not qlCfgFalseSuccessor(condition, succ)
+  qlCFGTrueSuccessor(condition, succ) and
+  not qlCFGFalseSuccessor(condition, succ)
 }
 
 /**
@@ -484,7 +484,7 @@ library class ExprEvaluator extends int {
       this.interestingInternal(e, req, true) and
       (
         result = req.(CompileTimeConstantInt).getIntValue() or
-        result = this.getCompoundValue(e, req)
+        result = this.getCompoundValue(e, req.(CompileTimeVariableExpr))
       ) and
       (
         req.getUnderlyingType().(IntegralType).isSigned() or
@@ -611,7 +611,7 @@ library class ExprEvaluator extends int {
       or
       exists(AssignExpr req | req = val | result = this.getValueInternal(e, req.getRValue()))
       or
-      result = this.getVariableValue(e, val)
+      result = this.getVariableValue(e, val.(VariableAccess))
       or
       exists(FunctionCall call | call = val and not callWithMultipleTargets(call) |
         result = this.getFunctionValue(call.getTarget())
@@ -626,9 +626,9 @@ library class ExprEvaluator extends int {
       // All assignments must have the same int value
       result =
         unique(Expr value |
-          value = v.getAnAssignedValue() and not this.ignoreVariableAssignment(e, v, value)
+          value = v.getAnAssignedValue() and not ignoreVariableAssignment(e, v, value)
         |
-          this.getValueInternalNonSubExpr(value)
+          getValueInternalNonSubExpr(value)
         )
     )
   }
@@ -663,7 +663,7 @@ library class ExprEvaluator extends int {
     this.interestingInternal(_, req, false) and
     (
       result = req.(CompileTimeConstantInt).getIntValue() or
-      result = this.getCompoundValueNonSubExpr(req)
+      result = this.getCompoundValueNonSubExpr(req.(CompileTimeVariableExpr))
     ) and
     (
       req.getUnderlyingType().(IntegralType).isSigned() or
@@ -787,7 +787,7 @@ library class ExprEvaluator extends int {
       or
       exists(AssignExpr req | req = val | result = this.getValueInternalNonSubExpr(req.getRValue()))
       or
-      result = this.getVariableValueNonSubExpr(val)
+      result = this.getVariableValueNonSubExpr(val.(VariableAccess))
       or
       exists(FunctionCall call | call = val and not callWithMultipleTargets(call) |
         result = this.getFunctionValue(call.getTarget())
@@ -960,9 +960,9 @@ library class ConditionEvaluator extends ExprEvaluator {
   ConditionEvaluator() { this = 0 }
 
   override predicate interesting(Expr e) {
-    qlCfgFalseSuccessor(e, _)
+    qlCFGFalseSuccessor(e, _)
     or
-    qlCfgTrueSuccessor(e, _)
+    qlCFGTrueSuccessor(e, _)
   }
 }
 

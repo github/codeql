@@ -19,7 +19,7 @@ import semmle.code.csharp.frameworks.system.Web
 /**
  * Holds if the `Web.config` file `webConfig` adds an `X-Frame-Options` header.
  */
-predicate hasWebConfigXFrameOptions(WebConfigXml webConfig) {
+predicate hasWebConfigXFrameOptions(WebConfigXML webConfig) {
   // Looking for an entry in `webConfig` that looks like this:
   // ```xml
   // <system.webServer>
@@ -52,7 +52,7 @@ predicate hasCodeXFrameOptions() {
   )
 }
 
-from WebConfigXml webConfig
+from WebConfigXML webConfig
 where
   not hasWebConfigXFrameOptions(webConfig) and
   not hasCodeXFrameOptions()

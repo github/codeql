@@ -129,8 +129,8 @@ private class AnalyzedEnumDeclaration extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for JSX elements and fragments.
  */
-private class AnalyzedJsxNode extends DataFlow::AnalyzedValueNode {
-  override JsxNode astNode;
+private class AnalyzedJSXNode extends DataFlow::AnalyzedValueNode {
+  override JSXNode astNode;
 
   override AbstractValue getALocalValue() { result = TAbstractOtherObject() }
 }
@@ -138,8 +138,8 @@ private class AnalyzedJsxNode extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for qualified JSX names.
  */
-private class AnalyzedJsxQualifiedName extends DataFlow::AnalyzedValueNode {
-  override JsxQualifiedName astNode;
+private class AnalyzedJSXQualifiedName extends DataFlow::AnalyzedValueNode {
+  override JSXQualifiedName astNode;
 
   override AbstractValue getALocalValue() { result = TAbstractOtherObject() }
 }
@@ -147,8 +147,8 @@ private class AnalyzedJsxQualifiedName extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for empty JSX expressions.
  */
-private class AnalyzedJsxEmptyExpression extends DataFlow::AnalyzedValueNode {
-  override JsxEmptyExpr astNode;
+private class AnalyzedJSXEmptyExpression extends DataFlow::AnalyzedValueNode {
+  override JSXEmptyExpr astNode;
 
   override AbstractValue getALocalValue() { result = TAbstractUndefined() }
 }
@@ -199,7 +199,7 @@ private class AnalyzedNewExpr extends DataFlow::AnalyzedValueNode {
    */
   private predicate isIndefinite() {
     exists(DataFlow::AnalyzedNode callee, AbstractValue calleeVal |
-      callee = astNode.getCallee().analyze() and
+      callee = astNode.(NewExpr).getCallee().analyze() and
       calleeVal = callee.getALocalValue()
     |
       calleeVal.isIndefinite(_) or
@@ -217,7 +217,7 @@ private class NewInstance extends DataFlow::AnalyzedValueNode {
 
   override AbstractValue getALocalValue() {
     exists(DataFlow::AnalyzedNode callee |
-      callee = astNode.getCallee().analyze() and
+      callee = astNode.(NewExpr).getCallee().analyze() and
       result = TAbstractInstance(callee.getALocalValue())
     )
   }

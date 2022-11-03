@@ -1,2 +1,0 @@
-| GenericTest.java:14:7:14:9 | f(...) | A $@ is called instead of a $@. | GenericTest.class:0:0:0:0 | f | method declared in a superclass | GenericTest.java:9:8:9:8 | f | method with the same signature in an enclosing class |
-| Test.java:14:7:14:9 | f(...) | A $@ is called instead of a $@. | Test.java:3:8:3:8 | f | method declared in a superclass | Test.java:9:8:9:8 | f | method with the same signature in an enclosing class |

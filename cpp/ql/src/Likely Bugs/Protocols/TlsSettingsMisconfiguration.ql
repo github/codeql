@@ -3,10 +3,8 @@
  * @description Using the TLS or SSLv23 protocol from the boost::asio library, but not disabling deprecated protocols, or disabling minimum-recommended protocols.
  * @kind problem
  * @problem.severity error
- * @security-severity 7.5
  * @id cpp/boost/tls-settings-misconfiguration
  * @tags security
- *       external/cwe/cwe-326
  */
 
 import cpp
@@ -92,6 +90,5 @@ where
     isOptionSet(cc, BoostorgAsio::getShiftedSslOptionsNoTls1_2(), e) and
     msg = "no_tlsv1_2 was set"
   )
-select cc,
-  "This usage of 'boost::asio::ssl::context::context' with protocol $@ is not configured correctly: The option $@.",
-  protocolSource, protocolSource.toString(), e, msg
+select cc, "Usage of $@ with protocol $@ is not configured correctly: The option $@.", cc,
+  "boost::asio::ssl::context::context", protocolSource, protocolSource.toString(), e, msg

@@ -13,7 +13,7 @@ import SAL
 
 from Parameter p, Call c, Expr arg
 where
-  any(SalNotNull a).getDeclaration() = p and
+  any(SALNotNull a).getDeclaration() = p and
   c.getTarget() = p.getFunction() and
   arg = c.getArgument(p.getIndex()) and
   nullValue(arg)

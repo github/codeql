@@ -1,4 +1,4 @@
 import semmle.javascript.JSON
 
-from JsonValue v
+from JSONValue v
 select v

@@ -2,17 +2,17 @@ import python
 import semmle.python.web.Http
 import semmle.python.types.Extensions
 
-/** Gets the bottle module */
-deprecated ModuleValue theBottleModule() { result = Module::named("bottle") }
+/** The bottle module */
+ModuleValue theBottleModule() { result = Module::named("bottle") }
 
-/** Gets the bottle.Bottle class */
-deprecated ClassValue theBottleClass() { result = theBottleModule().attr("Bottle") }
+/** The bottle.Bottle class */
+ClassValue theBottleClass() { result = theBottleModule().attr("Bottle") }
 
 /**
  * Holds if `route` is routed to `func`
  * by decorating `func` with `app.route(route)` or `route(route)`
  */
-deprecated predicate bottle_route(CallNode route_call, ControlFlowNode route, Function func) {
+predicate bottle_route(CallNode route_call, ControlFlowNode route, Function func) {
   exists(CallNode decorator_call, string name |
     route_call.getFunction().(AttrNode).getObject(name).pointsTo().getClass() = theBottleClass() or
     route_call.getFunction().pointsTo(theBottleModule().attr(name))
@@ -24,7 +24,7 @@ deprecated predicate bottle_route(CallNode route_call, ControlFlowNode route, Fu
   )
 }
 
-deprecated class BottleRoute extends ControlFlowNode {
+class BottleRoute extends ControlFlowNode {
   BottleRoute() { bottle_route(this, _, _) }
 
   string getUrl() {

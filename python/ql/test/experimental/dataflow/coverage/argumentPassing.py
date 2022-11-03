@@ -1,9 +1,8 @@
 import sys
 import os
-import functools
 
 sys.path.append(os.path.dirname(os.path.dirname((__file__))))
-from testlib import expects
+from testlib import *
 
 arg = "source"
 arg1 = "source1"
@@ -30,13 +29,36 @@ def SINK_F(x, unexpected=arg):
     SINK_TEST(x, test=lambda x: x != unexpected)
 
 
-SINK1 = functools.partial(SINK, expected=arg1)
-SINK2 = functools.partial(SINK, expected=arg2)
-SINK3 = functools.partial(SINK, expected=arg3)
-SINK4 = functools.partial(SINK, expected=arg4)
-SINK5 = functools.partial(SINK, expected=arg5)
-SINK6 = functools.partial(SINK, expected=arg6)
-SINK7 = functools.partial(SINK, expected=arg7)
+def SINK1(x):
+    SINK(x, expected=arg1)
+
+
+def SINK2(x):
+    SINK(x, expected=arg2)
+
+
+def SINK2_F(x):
+    SINK_F(x, unexpected=arg2)
+
+
+def SINK3(x):
+    SINK(x, expected=arg3)
+
+
+def SINK4(x):
+    SINK(x, expected=arg4)
+
+
+def SINK5(x):
+    SINK(x, expected=arg5)
+
+
+def SINK6(x):
+    SINK(x, expected=arg6)
+
+
+def SINK7(x):
+    SINK(x, expected=arg7)
 
 
 def argument_passing(
@@ -94,7 +116,7 @@ def with_multiple_kw_args(a, b, c):
 def test_multiple_kw_args():
     with_multiple_kw_args(b=arg2, c=arg3, a=arg1)  #$ arg1 arg2 arg3
     with_multiple_kw_args(arg1, *(arg2,), arg3)  #$ arg1 MISSING: arg2 arg3
-    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg2 arg3 func=with_multiple_kw_args MISSING:
+    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg3 func=with_multiple_kw_args MISSING: arg2
     with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1 arg2 arg3 func=with_multiple_kw_args
 
 

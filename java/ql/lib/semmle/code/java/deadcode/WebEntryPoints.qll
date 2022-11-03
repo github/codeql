@@ -14,7 +14,7 @@ class ServletConstructedClass extends ReflectivelyConstructedClass {
     // referred to as a servlet-class in at least one. If no `web.xml` files are found, we assume
     // that XML extraction was not enabled, and therefore consider all `Servlet` classes as live.
     (
-      isWebXmlIncluded()
+      isWebXMLIncluded()
       implies
       exists(WebServletClass servletClass | this = servletClass.getClass())
     )
@@ -29,12 +29,12 @@ class ServletConstructedClass extends ReflectivelyConstructedClass {
  */
 class ServletListenerClass extends ReflectivelyConstructedClass {
   ServletListenerClass() {
-    this.getAnAncestor() instanceof ServletWebXmlListenerType and
+    this.getAnAncestor() instanceof ServletWebXMLListenerType and
     // If we have seen any `web.xml` files, this listener will be considered to be live only if it is
     // referred to as a listener-class in at least one. If no `web.xml` files are found, we assume
     // that XML extraction was not enabled, and therefore consider all listener classes as live.
     (
-      isWebXmlIncluded()
+      isWebXMLIncluded()
       implies
       exists(WebListenerClass listenerClass | this = listenerClass.getClass())
     )
@@ -47,29 +47,26 @@ class ServletListenerClass extends ReflectivelyConstructedClass {
  */
 class ServletFilterClass extends ReflectivelyConstructedClass {
   ServletFilterClass() {
-    this.getAnAncestor().hasQualifiedName("javax.servlet", "Filter") and
+    this.getASupertype*().hasQualifiedName("javax.servlet", "Filter") and
     // If we have seen any `web.xml` files, this filter will be considered to be live only if it is
     // referred to as a filter-class in at least one. If no `web.xml` files are found, we assume
     // that XML extraction was not enabled, and therefore consider all filter classes as live.
-    (isWebXmlIncluded() implies exists(WebFilterClass filterClass | this = filterClass.getClass()))
+    (isWebXMLIncluded() implies exists(WebFilterClass filterClass | this = filterClass.getClass()))
   }
 }
 
 /**
  * An entry point into a GWT application.
  */
-class GwtEntryPointConstructedClass extends ReflectivelyConstructedClass {
-  GwtEntryPointConstructedClass() { this.(GwtEntryPointClass).isLive() }
+class GWTEntryPointConstructedClass extends ReflectivelyConstructedClass {
+  GWTEntryPointConstructedClass() { this.(GwtEntryPointClass).isLive() }
 }
-
-/** DEPRECATED: Alias for GwtEntryPointConstructedClass */
-deprecated class GWTEntryPointConstructedClass = GwtEntryPointConstructedClass;
 
 /**
  * Servlets referred to from a GWT module config file.
  */
-class GwtServletClass extends ReflectivelyConstructedClass {
-  GwtServletClass() {
+class GWTServletClass extends ReflectivelyConstructedClass {
+  GWTServletClass() {
     this instanceof ServletClass and
     // There must be evidence that GWT is being used, otherwise missing `*.gwt.xml` files could cause
     // all `Servlet`s to be live.
@@ -83,9 +80,6 @@ class GwtServletClass extends ReflectivelyConstructedClass {
     )
   }
 }
-
-/** DEPRECATED: Alias for GwtServletClass */
-deprecated class GWTServletClass = GwtServletClass;
 
 /**
  * Methods that may be called reflectively by the UiHandler framework.

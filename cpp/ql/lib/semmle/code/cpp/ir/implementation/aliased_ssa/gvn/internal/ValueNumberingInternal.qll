@@ -99,19 +99,13 @@ private predicate filteredNumberableInstruction(Instruction instr) {
   // count rather than strictcount to handle missing AST elements
   // separate instanceof and inline casts to avoid failed casts with a count of 0
   instr instanceof VariableAddressInstruction and
-  count(instr.(VariableAddressInstruction).getIRVariable().getAst()) != 1
+  count(instr.(VariableAddressInstruction).getIRVariable().getAST()) != 1
   or
   instr instanceof ConstantInstruction and
   count(instr.getResultIRType()) != 1
   or
   instr instanceof FieldAddressInstruction and
   count(instr.(FieldAddressInstruction).getField()) != 1
-  or
-  instr instanceof InheritanceConversionInstruction and
-  (
-    count(instr.(InheritanceConversionInstruction).getBaseClass()) != 1 or
-    count(instr.(InheritanceConversionInstruction).getDerivedClass()) != 1
-  )
 }
 
 private predicate variableAddressValueNumber(
@@ -121,7 +115,8 @@ private predicate variableAddressValueNumber(
   // The underlying AST element is used as value-numbering key instead of the
   // `IRVariable` to work around a problem where a variable or expression with
   // multiple types gives rise to multiple `IRVariable`s.
-  unique( | | instr.getIRVariable().getAst()) = ast
+  instr.getIRVariable().getAST() = ast and
+  strictcount(instr.getIRVariable().getAST()) = 1
 }
 
 private predicate initializeParameterValueNumber(
@@ -131,14 +126,15 @@ private predicate initializeParameterValueNumber(
   // The underlying AST element is used as value-numbering key instead of the
   // `IRVariable` to work around a problem where a variable or expression with
   // multiple types gives rise to multiple `IRVariable`s.
-  instr.getIRVariable().getAst() = var
+  instr.getIRVariable().getAST() = var
 }
 
 private predicate constantValueNumber(
   ConstantInstruction instr, IRFunction irFunc, IRType type, string value
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  unique( | | instr.getResultIRType()) = type and
+  strictcount(instr.getResultIRType()) = 1 and
+  instr.getResultIRType() = type and
   instr.getValue() = value
 }
 
@@ -155,7 +151,8 @@ private predicate fieldAddressValueNumber(
   TValueNumber objectAddress
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  unique( | | instr.getField()) = field and
+  instr.getField() = field and
+  strictcount(instr.getField()) = 1 and
   tvalueNumber(instr.getObjectAddress()) = objectAddress
 }
 
@@ -198,9 +195,9 @@ private predicate inheritanceConversionValueNumber(
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
-  tvalueNumber(instr.getUnary()) = operand and
-  unique( | | instr.getBaseClass()) = baseClass and
-  unique( | | instr.getDerivedClass()) = derivedClass
+  instr.getBaseClass() = baseClass and
+  instr.getDerivedClass() = derivedClass and
+  tvalueNumber(instr.getUnary()) = operand
 }
 
 private predicate loadTotalOverlapValueNumber(

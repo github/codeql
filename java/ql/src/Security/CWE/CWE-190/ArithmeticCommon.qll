@@ -14,7 +14,9 @@ private import semmle.code.java.controlflow.internal.GuardsLogic
 predicate narrowerThanOrEqualTo(ArithExpr exp, NumType numType) {
   exp.getType().(NumType).widerThan(numType)
   implies
-  exists(CastingExpr cast | cast.getAChildExpr() = exp | numType.widerThanOrEqualTo(cast.getType()))
+  exists(CastExpr cast | cast.getAChildExpr() = exp |
+    numType.widerThanOrEqualTo(cast.getType().(NumType))
+  )
 }
 
 private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
@@ -140,7 +142,7 @@ predicate upcastToWiderType(Expr e) {
   |
     exists(Variable v | v.getAnAssignedValue() = e and t2 = v.getType())
     or
-    exists(CastingExpr c | c.getExpr() = e and t2 = c.getType())
+    exists(CastExpr c | c.getExpr() = e and t2 = c.getType())
     or
     exists(ReturnStmt ret | ret.getResult() = e and t2 = ret.getEnclosingCallable().getReturnType())
     or
@@ -170,7 +172,7 @@ predicate overflowIrrelevant(Expr exp) {
  */
 private predicate unlikelyNode(DataFlow::Node n) {
   n.getTypeBound() instanceof TypeObject and
-  not exists(CastingExpr cast |
+  not exists(CastExpr cast |
     DataFlow::localFlow(n, DataFlow::exprNode(cast.getExpr())) and
     cast.getType() instanceof NumericOrCharType
   )

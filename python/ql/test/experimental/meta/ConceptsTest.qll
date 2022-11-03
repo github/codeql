@@ -128,24 +128,6 @@ class CodeExecutionTest extends InlineExpectationsTest {
   }
 }
 
-class SqlConstructionTest extends InlineExpectationsTest {
-  SqlConstructionTest() { this = "SqlConstructionTest" }
-
-  override string getARelevantTag() { result = "constructedSql" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(SqlConstruction e, DataFlow::Node sql |
-      exists(location.getFile().getRelativePath()) and
-      sql = e.getSql() and
-      location = e.getLocation() and
-      element = sql.toString() and
-      value = prettyNodeForInlineTest(sql) and
-      tag = "constructedSql"
-    )
-  }
-}
-
 class SqlExecutionTest extends InlineExpectationsTest {
   SqlExecutionTest() { this = "SqlExecutionTest" }
 
@@ -160,42 +142,6 @@ class SqlExecutionTest extends InlineExpectationsTest {
       element = sql.toString() and
       value = prettyNodeForInlineTest(sql) and
       tag = "getSql"
-    )
-  }
-}
-
-class XPathConstructionTest extends InlineExpectationsTest {
-  XPathConstructionTest() { this = "XPathConstructionTest" }
-
-  override string getARelevantTag() { result = "constructedXPath" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(XML::XPathConstruction e, DataFlow::Node xpath |
-      exists(location.getFile().getRelativePath()) and
-      xpath = e.getXPath() and
-      location = e.getLocation() and
-      element = xpath.toString() and
-      value = prettyNodeForInlineTest(xpath) and
-      tag = "constructedXPath"
-    )
-  }
-}
-
-class XPathExecutionTest extends InlineExpectationsTest {
-  XPathExecutionTest() { this = "XPathExecutionTest" }
-
-  override string getARelevantTag() { result = "getXPath" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(XML::XPathExecution e, DataFlow::Node xpath |
-      exists(location.getFile().getRelativePath()) and
-      xpath = e.getXPath() and
-      location = e.getLocation() and
-      element = xpath.toString() and
-      value = prettyNodeForInlineTest(xpath) and
-      tag = "getXPath"
     )
   }
 }
@@ -239,7 +185,7 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(Http::Server::RouteSetup setup |
+    exists(HTTP::Server::RouteSetup setup |
       location = setup.getLocation() and
       element = setup.toString() and
       (
@@ -261,14 +207,14 @@ class HttpServerRequestHandlerTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     (
-      exists(Http::Server::RequestHandler handler |
+      exists(HTTP::Server::RequestHandler handler |
         location = handler.getLocation() and
         element = handler.toString() and
         value = "" and
         tag = "requestHandler"
       )
       or
-      exists(Http::Server::RequestHandler handler, Parameter param |
+      exists(HTTP::Server::RequestHandler handler, Parameter param |
         param = handler.getARoutedParameter() and
         location = param.getLocation() and
         element = param.toString() and
@@ -299,21 +245,21 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
     // we need to do this step since we expect subclasses could override getARelevantTag
     tag = getARelevantTag() and
     (
-      exists(Http::Server::HttpResponse response |
+      exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         value = "" and
         tag = "HttpResponse"
       )
       or
-      exists(Http::Server::HttpResponse response |
+      exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         value = prettyNodeForInlineTest(response.getBody()) and
         tag = "responseBody"
       )
       or
-      exists(Http::Server::HttpResponse response |
+      exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         // Ensure that an expectation value such as "mimetype=text/html; charset=utf-8" is parsed as a
@@ -338,14 +284,14 @@ class HttpServerHttpRedirectResponseTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     (
-      exists(Http::Server::HttpRedirectResponse redirect |
+      exists(HTTP::Server::HttpRedirectResponse redirect |
         location = redirect.getLocation() and
         element = redirect.toString() and
         value = "" and
         tag = "HttpRedirectResponse"
       )
       or
-      exists(Http::Server::HttpRedirectResponse redirect |
+      exists(HTTP::Server::HttpRedirectResponse redirect |
         location = redirect.getLocation() and
         element = redirect.toString() and
         value = prettyNodeForInlineTest(redirect.getRedirectLocation()) and
@@ -364,7 +310,7 @@ class HttpServerCookieWriteTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(Http::Server::CookieWrite cookieWrite |
+    exists(HTTP::Server::CookieWrite cookieWrite |
       location = cookieWrite.getLocation() and
       (
         element = cookieWrite.toString() and
@@ -440,15 +386,22 @@ class PathNormalizationTest extends InlineExpectationsTest {
 class SafeAccessCheckTest extends InlineExpectationsTest {
   SafeAccessCheckTest() { this = "SafeAccessCheckTest" }
 
-  override string getARelevantTag() { result = "SafeAccessCheck" }
+  override string getARelevantTag() { result in ["checks", "branch"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(Path::SafeAccessCheck c |
+    exists(Path::SafeAccessCheck c, DataFlow::Node checks, boolean branch |
+      c.checks(checks.asCfgNode(), branch) and
       location = c.getLocation() and
-      element = c.toString() and
-      value = prettyNodeForInlineTest(c) and
-      tag = "SafeAccessCheck"
+      (
+        element = checks.toString() and
+        value = prettyNodeForInlineTest(checks) and
+        tag = "checks"
+        or
+        element = branch.toString() and
+        value = branch.toString() and
+        tag = "branch"
+      )
     )
   }
 }
@@ -480,8 +433,7 @@ class CryptographicOperationTest extends InlineExpectationsTest {
 
   override string getARelevantTag() {
     result in [
-        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm",
-        "CryptographicOperationBlockMode"
+        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm"
       ]
   }
 
@@ -501,90 +453,7 @@ class CryptographicOperationTest extends InlineExpectationsTest {
         element = cryptoOperation.toString() and
         value = cryptoOperation.getAlgorithm().getName() and
         tag = "CryptographicOperationAlgorithm"
-        or
-        element = cryptoOperation.toString() and
-        value = cryptoOperation.getBlockMode() and
-        tag = "CryptographicOperationBlockMode"
       )
-    )
-  }
-}
-
-class HttpClientRequestTest extends InlineExpectationsTest {
-  HttpClientRequestTest() { this = "HttpClientRequestTest" }
-
-  override string getARelevantTag() {
-    result in ["clientRequestUrlPart", "clientRequestCertValidationDisabled"]
-  }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(Http::Client::Request req, DataFlow::Node url |
-      url = req.getAUrlPart() and
-      location = url.getLocation() and
-      element = url.toString() and
-      value = prettyNodeForInlineTest(url) and
-      tag = "clientRequestUrlPart"
-    )
-    or
-    exists(location.getFile().getRelativePath()) and
-    exists(Http::Client::Request req |
-      req.disablesCertificateValidation(_, _) and
-      location = req.getLocation() and
-      element = req.toString() and
-      value = "" and
-      tag = "clientRequestCertValidationDisabled"
-    )
-  }
-}
-
-class CsrfProtectionSettingTest extends InlineExpectationsTest {
-  CsrfProtectionSettingTest() { this = "CsrfProtectionSettingTest" }
-
-  override string getARelevantTag() { result = "CsrfProtectionSetting" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(Http::Server::CsrfProtectionSetting setting |
-      location = setting.getLocation() and
-      element = setting.toString() and
-      value = setting.getVerificationSetting().toString() and
-      tag = "CsrfProtectionSetting"
-    )
-  }
-}
-
-class CsrfLocalProtectionSettingTest extends InlineExpectationsTest {
-  CsrfLocalProtectionSettingTest() { this = "CsrfLocalProtectionSettingTest" }
-
-  override string getARelevantTag() { result = "CsrfLocalProtection" + ["Enabled", "Disabled"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(Http::Server::CsrfLocalProtectionSetting p |
-      location = p.getLocation() and
-      element = p.toString() and
-      value = p.getRequestHandler().getName().toString() and
-      if p.csrfEnabled()
-      then tag = "CsrfLocalProtectionEnabled"
-      else tag = "CsrfLocalProtectionDisabled"
-    )
-  }
-}
-
-class XmlParsingTest extends InlineExpectationsTest {
-  XmlParsingTest() { this = "XmlParsingTest" }
-
-  override string getARelevantTag() { result = "xmlVuln" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(XML::XmlParsing parsing, XML::XmlParsingVulnerabilityKind kind |
-      parsing.vulnerableTo(kind) and
-      location = parsing.getLocation() and
-      element = parsing.toString() and
-      value = "'" + kind + "'" and
-      tag = "xmlVuln"
     )
   }
 }

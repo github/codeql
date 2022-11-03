@@ -34,7 +34,7 @@ private predicate alwaysReturnsTrue(HostnameVerifierVerify m) {
  */
 class TrustAllHostnameVerifier extends RefType {
   TrustAllHostnameVerifier() {
-    this.getAnAncestor() instanceof HostnameVerifier and
+    this.getASupertype*() instanceof HostnameVerifier and
     exists(HostnameVerifierVerify m |
       m.getDeclaringType() = this and
       alwaysReturnsTrue(m)
@@ -121,5 +121,5 @@ where
   not isNodeGuardedByFlag(sink.getNode()) and
   verifier = source.getNode().asExpr().(ClassInstanceExpr).getConstructedType()
 select sink, source, sink,
-  "The $@ defined by $@ always accepts any certificate, even if the hostname does not match.",
-  source, "hostname verifier", verifier, "this type"
+  "$@ that is defined $@ and accepts any certificate as valid, is used here.", source,
+  "This hostname verifier", verifier, "here"

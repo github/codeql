@@ -14,14 +14,6 @@
 
 import python
 
-predicate isInsideLoop(AstNode node) {
-  node.getParentNode() instanceof While
-  or
-  node.getParentNode() instanceof For
-  or
-  exists(AstNode prev | isInsideLoop(prev) | node = prev.getAChildNode())
-}
-
 from Delete del, Expr e, Function f
 where
   f.getLastStatement() = del and
@@ -29,7 +21,7 @@ where
   f.containsInScope(e) and
   not e instanceof Subscript and
   not e instanceof Attribute and
-  not isInsideLoop(del) and
+  not exists(Stmt s | s.(While).contains(del) or s.(For).contains(del)) and
   // False positive: calling `sys.exc_info` within a function results in a
   //       reference cycle, and an explicit call to `del` helps break this cycle.
   not exists(FunctionValue ex |

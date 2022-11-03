@@ -1,6 +1,4 @@
 name: codeql/java-examples
-groups: 
-  - java
-  - examples
+version: 0.0.2
 dependencies:
-  codeql/java-all: ${workspace}
+    codeql/java-all: "*"

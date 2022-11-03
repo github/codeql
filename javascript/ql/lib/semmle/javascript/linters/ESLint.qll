@@ -34,7 +34,7 @@ module ESLint {
   }
 
   /** An ESLint configuration file in JSON format. */
-  abstract private class JsonConfiguration extends Configuration, JsonObject { }
+  abstract private class JsonConfiguration extends Configuration, JSONObject { }
 
   /** An `.eslintrc.json` file. */
   private class EslintrcJson extends JsonConfiguration {
@@ -47,11 +47,11 @@ module ESLint {
   }
 
   /** An ESLint configuration object in JSON format. */
-  private class JsonConfigurationObject extends ConfigurationObject, JsonObject {
+  private class JsonConfigurationObject extends ConfigurationObject, JSONObject {
     override Configuration getConfiguration() { this = result.(JsonConfiguration).getPropValue(_) }
 
     override boolean getBooleanProperty(string p) {
-      exists(string v | v = getPropValue(p).(JsonBoolean).getValue() |
+      exists(string v | v = getPropValue(p).(JSONBoolean).getValue() |
         v = "true" and result = true
         or
         v = "false" and result = false
@@ -60,7 +60,7 @@ module ESLint {
   }
 
   /** An `.eslintrc.yaml` file. */
-  private class EslintrcYaml extends Configuration, YamlDocument, YamlMapping {
+  private class EslintrcYaml extends Configuration, YAMLDocument, YAMLMapping {
     EslintrcYaml() {
       exists(string n | n = getFile().getBaseName() |
         n = ".eslintrc.yaml" or n = ".eslintrc.yml" or n = ".eslintrc"
@@ -71,11 +71,11 @@ module ESLint {
   }
 
   /** An ESLint configuration object in YAML format. */
-  private class YamlConfigurationObject extends ConfigurationObject, YamlMapping {
+  private class YamlConfigurationObject extends ConfigurationObject, YAMLMapping {
     override Configuration getConfiguration() { this = result.(EslintrcYaml).getValue(_) }
 
     override boolean getBooleanProperty(string p) {
-      exists(string v | v = lookup(p).(YamlBool).getValue() |
+      exists(string v | v = lookup(p).(YAMLBool).getValue() |
         v = "true" and result = true
         or
         v = "false" and result = false
@@ -86,7 +86,7 @@ module ESLint {
   /** An ESLint configuration embedded in a `package.json` file. */
   private class EslintConfigInPackageJson extends JsonConfiguration {
     EslintConfigInPackageJson() {
-      exists(PackageJson pkg | this = pkg.getPropValue("eslintConfig"))
+      exists(PackageJSON pkg | this = pkg.getPropValue("eslintConfig"))
     }
 
     override ConfigurationObject getGlobals() { result = getPropValue("globals") }

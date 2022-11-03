@@ -107,8 +107,8 @@ class CommentedOutCode extends JavadocFirst {
   CommentedOutCode() {
     anyCount(this) > 0 and
     codeCount(this).(float) / anyCount(this).(float) > 0.5 and
-    not this instanceof JsniComment and
-    not this instanceof OcniComment
+    not this instanceof JSNIComment and
+    not this instanceof OCNIComment
   }
 
   /**
@@ -122,9 +122,9 @@ class CommentedOutCode extends JavadocFirst {
   }
 
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = this.getLocation().getFile().getAbsolutePath() and
-    sl = this.getLocation().getStartLine() and
-    sc = this.getLocation().getStartColumn() and
+    path = getLocation().getFile().getAbsolutePath() and
+    sl = getLocation().getStartLine() and
+    sc = getLocation().getStartColumn() and
     exists(Location end | end = this.getLastSuccessor().getLocation() |
       el = end.getEndLine() and
       ec = end.getEndColumn()

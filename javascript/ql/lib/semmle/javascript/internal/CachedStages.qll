@@ -56,9 +56,9 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(any(AstNode a).getTopLevel())
+      exists(any(ASTNode a).getTopLevel())
       or
-      exists(any(AstNode a).getParent())
+      exists(any(ASTNode a).getParent())
       or
       exists(any(StmtContainer c).getEnclosingContainer())
       or
@@ -68,15 +68,7 @@ module Stages {
       or
       exists(any(Expr e).getStringValue())
       or
-      any(AstNode node).isAmbient()
-      or
-      exists(any(Identifier e).getName())
-      or
-      exists(any(ExprOrType e).getUnderlyingValue())
-      or
-      exists(ConstantExpr e)
-      or
-      exists(SyntacticConstants::NullConstant n)
+      any(ASTNode node).isAmbient()
     }
   }
 
@@ -176,8 +168,6 @@ module Stages {
       exists(DataFlow::moduleImport(_))
       or
       exists(any(ReExportDeclaration d).getReExportedModule())
-      or
-      exists(any(Module m).getABulkExportedNode())
     }
   }
 
@@ -214,8 +204,6 @@ module Stages {
       any(DataFlow::Node node).hasUnderlyingType(_)
       or
       any(DataFlow::Node node).hasUnderlyingType(_, _)
-      or
-      AccessPath::DominatingPaths::hasDominatingWrite(_)
     }
   }
 
@@ -239,54 +227,11 @@ module Stages {
     predicate backref() {
       1 = 1
       or
+      AccessPath::DominatingPaths::hasDominatingWrite(_)
+      or
       DataFlow::SharedFlowStep::step(_, _)
-      or
-      exists(any(DataFlow::RegExpCreationNode e).getAReference())
     }
   }
-
-  /**
-   * The `APIStage` stage.
-   */
-  cached
-  module ApiStage {
-    /**
-     * Always holds.
-     * Ensures that a predicate is evaluated as part of the APIStage stage.
-     */
-    cached
-    predicate ref() { 1 = 1 }
-
-    /**
-     * DONT USE!
-     * Contains references to each predicate that use the above `ref` predicate.
-     */
-    cached
-    predicate backref() {
-      1 = 1
-      or
-      exists(
-        API::moduleImport("foo")
-            .getMember("bar")
-            .getUnknownMember()
-            .getAMember()
-            .getAParameter()
-            .getPromised()
-            .getReturn()
-            .getParameter(2)
-            .getUnknownMember()
-            .getInstance()
-            .getReceiver()
-            .getPromisedError()
-            .getADecoratedClass()
-            .getADecoratedMember()
-            .getADecoratedParameter()
-      )
-    }
-  }
-
-  /** DEPRECATED: Alias for ApiStage */
-  deprecated module APIStage = ApiStage;
 
   /**
    * The `taint` stage.
@@ -315,22 +260,6 @@ module Stages {
       exists(RemoteFlowSource r)
       or
       exists(Exports::getALibraryInputParameter())
-      or
-      any(RegExpTerm t).isUsedAsRegExp()
-      or
-      any(TaintTracking::AdditionalSanitizerGuardNode e).appliesTo(_)
-    }
-
-    cached
-    class DummySanitizer extends TaintTracking::AdditionalSanitizerGuardNode {
-      cached
-      DummySanitizer() { none() }
-
-      cached
-      override predicate appliesTo(TaintTracking::Configuration cfg) { none() }
-
-      cached
-      override predicate sanitizes(boolean outcome, Expr e) { none() }
     }
   }
 }

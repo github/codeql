@@ -8,7 +8,7 @@ import semmle.code.java.frameworks.android.Android
 /** The `startActivityForResult` method of Android's `Activity` class. */
 class StartActivityForResultMethod extends Method {
   StartActivityForResultMethod() {
-    this.getDeclaringType().getAnAncestor() instanceof AndroidActivity and
+    this.getDeclaringType().getASupertype*() instanceof AndroidActivity and
     this.getName() = "startActivityForResult"
   }
 }
@@ -32,7 +32,9 @@ class GetContentIntent extends ClassInstanceExpr {
 class GetContentIntentConfig extends TaintTracking2::Configuration {
   GetContentIntentConfig() { this = "GetContentIntentConfig" }
 
-  override predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof GetContentIntent }
+  override predicate isSource(DataFlow2::Node src) {
+    exists(GetContentIntent gi | src.asExpr() = gi)
+  }
 
   override predicate isSink(DataFlow2::Node sink) {
     exists(MethodAccess ma |
@@ -40,13 +42,17 @@ class GetContentIntentConfig extends TaintTracking2::Configuration {
     )
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content content) {
     super.allowImplicitRead(node, content)
     or
     // Allow the wrapped intent created by Intent.getChooser to be consumed
     // by at the sink:
-    this.isSink(node) and
-    allowIntentExtrasImplicitRead(node, content)
+    isSink(node) and
+    (
+      content.(DataFlow::SyntheticFieldContent).getField() = "android.content.Intent.extras"
+      or
+      content instanceof DataFlow::MapValueContent
+    )
   }
 }
 
@@ -69,7 +75,7 @@ class AndroidFileIntentInput extends DataFlow::Node {
 /** The `onActivityForResult` method of Android `Activity` */
 class OnActivityForResultMethod extends Method {
   OnActivityForResultMethod() {
-    this.getDeclaringType().getAnAncestor() instanceof AndroidActivity and
+    this.getDeclaringType().getASupertype*() instanceof AndroidActivity and
     this.getName() = "onActivityResult"
   }
 }

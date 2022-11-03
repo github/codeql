@@ -1,7 +1,7 @@
-module.exports.foo = function (x) { /* use=moduleImport("nested-property-export").getMember("exports").getMember("foo").getParameter(0) */
+module.exports.foo = function (x) { /* use (parameter 0 (member foo (member exports (module nested-property-export)))) */
     return x;
 };
 
-module.exports.foo.bar = function (y) { /* use=moduleImport("nested-property-export").getMember("exports").getMember("foo").getMember("bar").getParameter(0) */
+module.exports.foo.bar = function (y) { /* use (parameter 0 (member bar (member foo (member exports (module nested-property-export))))) */
     return y;
 };

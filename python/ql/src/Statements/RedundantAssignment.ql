@@ -70,11 +70,10 @@ predicate same_attribute(Attribute a1, Attribute a2) {
   not is_property_access(a1)
 }
 
-pragma[nomagic]
-Comment pyflakes_comment() { result.getText().toLowerCase().matches("%pyflakes%") }
-
 int pyflakes_commented_line(File file) {
-  pyflakes_comment().getLocation().hasLocationInfo(file.getAbsolutePath(), result, _, _, _)
+  exists(Comment c | c.getText().toLowerCase().matches("%pyflakes%") |
+    c.getLocation().hasLocationInfo(file.getAbsolutePath(), result, _, _, _)
+  )
 }
 
 predicate pyflakes_commented(AssignStmt assignment) {

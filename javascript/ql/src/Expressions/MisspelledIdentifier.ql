@@ -28,7 +28,7 @@ class IdentifierPart extends string {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(Identifier id, int start, Location l, int len |
-      this.occursIn(id, start, len) and l = id.getLocation()
+      occursIn(id, start, len) and l = id.getLocation()
     |
       filepath = l.getFile().getAbsolutePath() and
       startline = l.getStartLine() and
@@ -70,7 +70,7 @@ class WrongIdentifierPart extends IdentifierPart {
   string ppSuggestions() {
     exists(string cat |
       // first, concatenate with commas
-      cat = concat(this.getASuggestion(), ", ") and
+      cat = concat(getASuggestion(), ", ") and
       // then, replace last comma with "or"
       result = cat.regexpReplaceAll(", ([^,]++)$", " or $1")
     )

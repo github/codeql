@@ -12,37 +12,23 @@
  */
 
 import cpp
-import semmle.code.cpp.security.BufferWrite as BufferWrite
+import semmle.code.cpp.security.BufferWrite
+import semmle.code.cpp.security.TaintTracking
 import semmle.code.cpp.security.SensitiveExprs
-import semmle.code.cpp.security.FlowSources
-import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import TaintedWithPath
 
-/**
- * A taint flow configuration for flow from user input to a buffer write.
- */
-class ToBufferConfiguration extends TaintTracking::Configuration {
-  ToBufferConfiguration() { this = "ToBufferConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.asExpr().getUnspecifiedType() instanceof IntegralType
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(BufferWrite::BufferWrite w | w.getASource() = sink.asExpr())
-  }
+class Configuration extends TaintTrackingConfiguration {
+  override predicate isSink(Element tainted) { exists(BufferWrite w | w.getASource() = tainted) }
 }
 
 from
-  ToBufferConfiguration config, BufferWrite::BufferWrite w, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode, FlowSource source, SensitiveExpr dest
+  BufferWrite w, Expr taintedArg, Expr taintSource, PathNode sourceNode, PathNode sinkNode,
+  string taintCause, SensitiveExpr dest
 where
-  config.hasFlowPath(sourceNode, sinkNode) and
-  sourceNode.getNode() = source and
-  w.getASource() = sinkNode.getNode().asExpr() and
+  taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
+  isUserInput(taintSource, taintCause) and
+  w.getASource() = taintedArg and
   dest = w.getDest()
 select w, sourceNode, sinkNode,
-  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@.", source,
-  "user input (" + source.getSourceType() + ")"
+  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@",
+  taintSource, "user input (" + taintCause + ")"

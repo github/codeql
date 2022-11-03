@@ -1,5 +1,3 @@
-// Generated automatically from org.springframework.web.bind.annotation.PathVariable for testing purposes
-
 package org.springframework.web.bind.annotation;
 
 import java.lang.annotation.Documented;
@@ -8,12 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Documented
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
-public @interface PathVariable
-{
-    String name() default "";
+@Documented
+public @interface PathVariable {
+
     String value() default "";
-    boolean required() default false;
 }

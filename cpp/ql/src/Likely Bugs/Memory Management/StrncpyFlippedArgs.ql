@@ -18,7 +18,6 @@
 import cpp
 import Buffer
 private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-private import semmle.code.cpp.models.implementations.Strcpy
 
 predicate isSizePlus(Expr e, BufferSizeExpr baseSize, int plus) {
   // baseSize
@@ -39,6 +38,33 @@ predicate isSizePlus(Expr e, BufferSizeExpr baseSize, int plus) {
     se = e and
     isSizePlus(se.getLeftOperand(), baseSize, plusSub) and
     plus = plusSub - se.getRightOperand().getValue().toInt()
+  )
+}
+
+predicate strncpyFunction(Function f, int argDest, int argSrc, int argLimit) {
+  exists(string name | name = f.getName() |
+    name =
+      [
+        "strcpy_s", // strcpy_s(dst, max_amount, src)
+        "wcscpy_s", // wcscpy_s(dst, max_amount, src)
+        "_mbscpy_s" // _mbscpy_s(dst, max_amount, src)
+      ] and
+    argDest = 0 and
+    argSrc = 2 and
+    argLimit = 1
+    or
+    name =
+      [
+        "strncpy", // strncpy(dst, src, max_amount)
+        "strncpy_l", // strncpy_l(dst, src, max_amount, locale)
+        "wcsncpy", // wcsncpy(dst, src, max_amount)
+        "_wcsncpy_l", // _wcsncpy_l(dst, src, max_amount, locale)
+        "_mbsncpy", // _mbsncpy(dst, src, max_amount)
+        "_mbsncpy_l" // _mbsncpy_l(dst, src, max_amount, locale)
+      ] and
+    argDest = 0 and
+    argSrc = 1 and
+    argLimit = 2
   )
 }
 
@@ -70,13 +96,11 @@ int arrayExprFixedSize(Expr e) {
 }
 
 from
-  StrcpyFunction f, FunctionCall fc, int argDest, int argSrc, int argLimit, int charSize,
-  Access copyDest, Access copySource, string name, string nth
+  Function f, FunctionCall fc, int argDest, int argSrc, int argLimit, int charSize, Access copyDest,
+  Access copySource, string name, string nth
 where
   f = fc.getTarget() and
-  argDest = f.getParamDest() and
-  argSrc = f.getParamSrc() and
-  argLimit = f.getParamSize() and
+  strncpyFunction(f, argDest, argSrc, argLimit) and
   copyDest = fc.getArgument(argDest) and
   copySource = fc.getArgument(argSrc) and
   // Some of the functions operate on a larger char type, like `wchar_t`, so we

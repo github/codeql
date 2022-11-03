@@ -1,22 +1,15 @@
 import python
 import semmle.python.dataflow.DataFlow
 
-class TestConfiguration extends TaintTracking::Configuration {
+class TestConfiguration extends DataFlow::Configuration {
   TestConfiguration() { this = "Test configuration" }
 
-  override predicate isSource(DataFlow::Node source, TaintKind kind) {
-    source.asCfgNode().(NameNode).getId() = "SOURCE" and kind instanceof DataFlowType
-  }
+  override predicate isSource(ControlFlowNode source) { source.(NameNode).getId() = "SOURCE" }
 
-  override predicate isSink(DataFlow::Node sink, TaintKind kind) {
+  override predicate isSink(ControlFlowNode sink) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() = "SINK" and
-      sink.asCfgNode() = call.getAnArg()
-    ) and
-    kind instanceof DataFlowType
+      sink = call.getAnArg()
+    )
   }
-}
-
-private class DataFlowType extends TaintKind {
-  DataFlowType() { this = "Data flow" }
 }

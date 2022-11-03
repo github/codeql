@@ -3,7 +3,6 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.frameworks.system.data.Common
 private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.EntityFramework
@@ -55,9 +54,4 @@ class ORMMappedProperty extends StoredFlowSource {
     this instanceof EntityFramework::StoredFlowSource or
     this instanceof NHibernate::StoredFlowSource
   }
-}
-
-/** A file stream source is considered a stored flow source. */
-class FileStreamStoredFlowSource extends StoredFlowSource {
-  FileStreamStoredFlowSource() { sourceNode(this, "file") }
 }

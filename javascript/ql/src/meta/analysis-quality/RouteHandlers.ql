@@ -11,6 +11,6 @@
 import javascript
 import CallGraphQuality
 
-Http::RouteHandler relevantRouteHandler() { not result.getFile() instanceof IgnoredFile }
+HTTP::RouteHandler relevantRouteHandler() { not result.getFile() instanceof IgnoredFile }
 
 select projectRoot(), count(relevantRouteHandler())

@@ -1,7 +1,9 @@
 /**
  * @name Compilation error
  * @description A compilation error can cause extraction problems, and could lead to inaccurate results.
- * @kind diagnostic
+ * @kind problem
+ * @problem.severity recommendation
+ * @precision high
  * @id cs/compilation-error
  * @tags internal non-attributable
  */

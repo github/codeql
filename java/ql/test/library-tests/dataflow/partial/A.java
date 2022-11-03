@@ -28,5 +28,3 @@ public class A {
     b.elem = new Object();
   }
 }
-
-// Diagnostic Matches: Incomplete inheritance relation for type java.lang.Object and supertype none

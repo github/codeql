@@ -1,8 +1,3 @@
-/**
- * An IR taint tracking library that uses an IR DataFlow configuration to track
- * taint from user inputs as defined by `semmle.code.cpp.security.Security`.
- */
-
 import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
@@ -129,11 +124,11 @@ private class FromGlobalVarTaintTrackingCfg extends TaintTracking2::Configuratio
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
-  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
+  load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
 }
 
 private predicate writesVariable(StoreInstruction store, Variable var) {
-  store.getDestinationAddress().(VariableAddressInstruction).getAstVariable() = var
+  store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
 }
 
 /**
@@ -241,8 +236,8 @@ private module Cached {
     // For compatibility, send flow from arguments to parameters, even for
     // functions with no body.
     exists(FunctionCall call, int i |
-      sink.asExpr() = call.getArgument(pragma[only_bind_into](i)) and
-      result = resolveCall(call).getParameter(pragma[only_bind_into](i))
+      sink.asExpr() = call.getArgument(i) and
+      result = resolveCall(call).getParameter(i)
     )
     or
     // For compatibility, send flow into a `Variable` if there is flow to any
@@ -476,25 +471,6 @@ module TaintedWithPath {
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       none()
-    }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  module Private {
-    /** Gets a predecessor `PathNode` of `pathNode`, if any. */
-    PathNode getAPredecessor(PathNode pathNode) { edges(result, pathNode) }
-
-    /** Gets the element that `pathNode` wraps, if any. */
-    Element getElementFromPathNode(PathNode pathNode) {
-      exists(DataFlow::Node node | node = pathNode.(WrapPathNode).inner().getNode() |
-        result = node.asInstruction().getAst()
-        or
-        result = node.asOperand().getDef().getAst()
-      )
-      or
-      result = pathNode.(EndpointPathNode).inner()
     }
   }
 

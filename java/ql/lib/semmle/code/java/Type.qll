@@ -31,20 +31,10 @@ predicate hasSubtype(RefType t, Type sub) {
   arraySubtype(t, sub) and t != sub
   or
   // Type parameter containment for parameterized types.
-  parContainmentSubtype(t, sub)
+  parContainmentSubtype(t, sub) and t != sub
   or
   // Type variables are subtypes of their upper bounds.
   typeVarSubtypeBound(t, sub) and t != sub
-}
-
-/**
- * Holds if reference type `anc` is a direct or indirect supertype of `sub`, including itself.
- */
-cached
-predicate hasDescendant(RefType anc, Type sub) {
-  anc = sub
-  or
-  exists(RefType mid | hasSubtype(anc, mid) and hasDescendant(mid, sub))
 }
 
 private predicate typeVarSubtypeBound(RefType t, TypeVariable tv) {
@@ -69,23 +59,19 @@ private predicate arraySubtype(Array sup, Array sub) {
  * )
  * ```
  * For performance several transformations are made. First, the `forex` is
- * written as a loop where `typePrefixContains(ppt, ppsub)` encode that
- * `ppt` and `ppsub` are prefixes of `pt` and `ptsub` and that
- * the `forex` holds for `i in [0..n-1]` where `n` is the length of the prefixes.
- * Second, the recursive case that determines containment of length `n+1`
- * prefixes is split into three cases depending on whether there is
- * non-reflexive type parameter containment:
- * - only in the length `n` prefix,
- * - only in the `n`th position,
- * - both in the length `n` prefix and the `n`th position.
+ * written as a loop where `typeArgumentsContain(_, pt, psub, n)` encode that
+ * the `forex` holds for `i in [0..n]`. Second, the relation is split into two
+ * cases depending on whether `pt.getNumberOfTypeArguments()` is 1 or 2+, as
+ * this allows us to unroll the loop and collapse the first two iterations. The
+ * base case for `typeArgumentsContain` is therefore `n=1` and this allows an
+ * improved join order implemented by `contains01`.
  */
 
 private predicate parContainmentSubtype(ParameterizedType pt, ParameterizedType psub) {
-  exists(ParameterizedPrefix ppt, ParameterizedPrefix ppsub |
-    typePrefixContains(ppt, ppsub) and
-    ppt.equals(pt) and
-    ppsub.equals(psub)
-  )
+  pt != psub and
+  typeArgumentsContain(_, pt, psub, pt.getNumberOfTypeArguments() - 1)
+  or
+  typeArgumentsContain0(_, pt, psub)
 }
 
 /**
@@ -108,116 +94,100 @@ private RefType parameterisationTypeArgumentVarianceCand(
   varianceCandidate(t)
 }
 
-private newtype TParameterizedPrefix =
-  TGenericType(GenericType g) or
-  TTypeParam(ParameterizedPrefix pp, RefType t) { prefixMatches(pp, t, _, _) }
-
-/** Holds if `pp` is a length `n` prefix of `pt`. */
-private predicate prefixMatches(ParameterizedPrefix pp, ParameterizedType pt, int n) {
-  pp = TGenericType(pt.getGenericType()) and n = 0
-  or
-  exists(ParameterizedPrefix pp0, RefType t |
-    pp = TTypeParam(pp0, t) and prefixMatches(pp0, t, pt, n - 1)
-  )
-}
-
 /**
- * Holds if `pp` is a length `n` prefix of `pt` and `t` is the `n`th type
- * argument of `pt`.
- */
-private predicate prefixMatches(ParameterizedPrefix pp, RefType t, ParameterizedType pt, int n) {
-  prefixMatches(pp, pt, n) and
-  t = pt.getTypeArgument(n)
-}
-
-/**
- * A prefix of a `ParameterizedType`. This encodes the corresponding
- * `GenericType` and the first `n` type arguments where `n` is the prefix
- * length.
- */
-private class ParameterizedPrefix extends TParameterizedPrefix {
-  string toString() { result = "ParameterizedPrefix" }
-
-  predicate equals(ParameterizedType pt) { prefixMatches(this, pt, pt.getNumberOfTypeArguments()) }
-
-  /** Holds if this prefix has length `n`, applies to `g`, and equals `TTypeParam(pp, t)`. */
-  predicate split(GenericType g, ParameterizedPrefix pp, RefType t, int n) {
-    this = TTypeParam(pp, t) and
-    (
-      pp = TGenericType(g) and n = 0
-      or
-      pp.split(g, _, _, n - 1)
-    )
-  }
-}
-
-/**
- * Holds if every type argument of `pps` contains the corresponding type
- * argument of `ppt`. Both `pps` and `ppt` are constrained to be equal-length
- * prefixes of parameterizations of the same `GenericType`.
+ * Holds if every type argument of `s` (up to `n` with `n >= 1`) contains the
+ * corresponding type argument of `t`. Both `s` and `t` are constrained to
+ * being parameterizations of `g`.
  */
 pragma[nomagic]
-private predicate typePrefixContains(ParameterizedPrefix pps, ParameterizedPrefix ppt) {
-  // Let `pps = TTypeParam(pps0, s)` and `ppt = TTypeParam(ppt0, t)`.
-  // Case 1: pps0 = ppt0 and typeArgumentContains(_, s, t, _)
-  typePrefixContains_base(pps, ppt)
-  or
-  // Case 2: typePrefixContains(pps0, ppt0) and s = t
-  typePrefixContains_ext_eq(pps, ppt)
-  or
-  // Case 3: typePrefixContains(pps0, ppt0) and typeArgumentContains(_, s, t, _)
-  typePrefixContains_ext_neq(pps, ppt)
-}
-
-private predicate typePrefixContains_base(ParameterizedPrefix pps, ParameterizedPrefix ppt) {
-  exists(ParameterizedPrefix pp, RefType s |
-    pps = TTypeParam(pp, s) and
-    typePrefixContainsAux2(ppt, pp, s)
-  )
-}
-
-private predicate typePrefixContains_ext_eq(ParameterizedPrefix pps, ParameterizedPrefix ppt) {
-  exists(ParameterizedPrefix pps0, ParameterizedPrefix ppt0, RefType t |
-    typePrefixContains(pragma[only_bind_into](pps0), pragma[only_bind_into](ppt0)) and
-    pps = TTypeParam(pragma[only_bind_into](pps0), t) and
-    ppt = TTypeParam(ppt0, t)
-  )
-}
-
-private predicate typePrefixContains_ext_neq(ParameterizedPrefix pps, ParameterizedPrefix ppt) {
-  exists(ParameterizedPrefix ppt0, RefType s |
-    typePrefixContainsAux1(pps, ppt0, s) and
-    typePrefixContainsAux2(ppt, ppt0, s)
-  )
-}
-
-pragma[nomagic]
-private predicate typePrefixContainsAux1(
-  ParameterizedPrefix pps, ParameterizedPrefix ppt0, RefType s
+private predicate typeArgumentsContain(
+  GenericType g, ParameterizedType s, ParameterizedType t, int n
 ) {
-  exists(ParameterizedPrefix pps0 |
-    typePrefixContains(pps0, ppt0) and
-    pps = TTypeParam(pps0, s) and
-    s instanceof Wildcard // manual magic, implied by `typeArgumentContains(_, s, t, _)`
+  contains01(g, s, t) and n = 1
+  or
+  contains(g, s, t, n) and
+  typeArgumentsContain(g, s, t, n - 1)
+}
+
+private predicate typeArgumentsContain0(
+  GenericType g, ParameterizedType sParm, ParameterizedType tParm
+) {
+  exists(RefType s, RefType t |
+    containsAux0(g, tParm, s, t) and
+    s = parameterisationTypeArgument(g, sParm, 0) and
+    s != t
+  )
+}
+
+/**
+ * Holds if the `n`-th type argument of `sParm` contain the `n`-th type
+ * argument of `tParm` for both `n = 0` and `n = 1`, where both `sParm` and
+ * `tParm` are parameterizations of the same generic type `g`.
+ *
+ * This is equivalent to
+ * ```
+ * contains(g, sParm, tParm, 0) and
+ * contains(g, sParm, tParm, 1)
+ * ```
+ * except `contains` is restricted to only include `n >= 2`.
+ */
+private predicate contains01(GenericType g, ParameterizedType sParm, ParameterizedType tParm) {
+  exists(RefType s0, RefType t0, RefType s1, RefType t1 |
+    contains01Aux0(g, tParm, s0, t0, t1) and
+    contains01Aux1(g, sParm, s0, s1, t1)
   )
 }
 
 pragma[nomagic]
-private predicate typePrefixContainsAux2(
-  ParameterizedPrefix ppt, ParameterizedPrefix ppt0, RefType s
+private predicate contains01Aux0(
+  GenericType g, ParameterizedType tParm, RefType s0, RefType t0, RefType t1
 ) {
-  exists(GenericType g, int n, RefType t |
-    // Implies `ppt = TTypeParam(ppt0, t)`
-    ppt.split(g, ppt0, t, n) and
-    typeArgumentContains(g, s, t, n)
+  typeArgumentContains(g, s0, t0, 0) and
+  t0 = parameterisationTypeArgument(g, tParm, 0) and
+  t1 = parameterisationTypeArgument(g, tParm, 1)
+}
+
+pragma[nomagic]
+private predicate contains01Aux1(
+  GenericType g, ParameterizedType sParm, RefType s0, RefType s1, RefType t1
+) {
+  typeArgumentContains(g, s1, t1, 1) and
+  s0 = parameterisationTypeArgumentVarianceCand(g, sParm, 0) and
+  s1 = parameterisationTypeArgumentVarianceCand(g, sParm, 1)
+}
+
+pragma[nomagic]
+private predicate containsAux0(GenericType g, ParameterizedType tParm, RefType s, RefType t) {
+  typeArgumentContains(g, s, t, 0) and
+  t = parameterisationTypeArgument(g, tParm, 0) and
+  g.getNumberOfTypeParameters() = 1
+}
+
+/**
+ * Holds if the `n`-th type argument of `sParm` contain the `n`-th type
+ * argument of `tParm`, where both `sParm` and `tParm` are parameterizations of
+ * the same generic type `g`. The index `n` is restricted to `n >= 2`, the
+ * cases `n < 2` are handled by `contains01`.
+ *
+ * See JLS 4.5.1, Type Arguments of Parameterized Types.
+ */
+private predicate contains(GenericType g, ParameterizedType sParm, ParameterizedType tParm, int n) {
+  exists(RefType s, RefType t |
+    containsAux(g, tParm, n, s, t) and
+    s = parameterisationTypeArgumentVarianceCand(g, sParm, n)
   )
+}
+
+pragma[nomagic]
+private predicate containsAux(GenericType g, ParameterizedType tParm, int n, RefType s, RefType t) {
+  typeArgumentContains(g, s, t, n) and
+  t = parameterisationTypeArgument(g, tParm, n) and
+  n >= 2
 }
 
 /**
  * Holds if the type argument `s` contains the type argument `t`, where both
  * type arguments occur as index `n` in an instantiation of `g`.
- *
- * The case `s = t` is not included.
  */
 pragma[noinline]
 private predicate typeArgumentContains(GenericType g, RefType s, RefType t, int n) {
@@ -235,18 +205,18 @@ private predicate typeArgumentContainsAux2(GenericType g, RefType s, RefType t, 
  * Holds if the type argument `s` contains the type argument `t`, where both
  * type arguments occur as index `n` in some parameterized types.
  *
- * The case `s = t` is not included.
- *
  * See JLS 4.5.1, Type Arguments of Parameterized Types.
  */
 private predicate typeArgumentContainsAux1(RefType s, RefType t, int n) {
-  s = parameterisationTypeArgumentVarianceCand(_, _, pragma[only_bind_into](n)) and
-  t = parameterisationTypeArgument(_, _, pragma[only_bind_into](n)) and
-  s != t and
-  (
+  exists(int i |
+    s = parameterisationTypeArgumentVarianceCand(_, _, i) and
+    t = parameterisationTypeArgument(_, _, n) and
+    i <= n and
+    n <= i
+  |
     exists(RefType tUpperBound | tUpperBound = t.(Wildcard).getUpperBound().getType() |
       // ? extends T <= ? extends S if T <: S
-      hasSubtypeStar1(s.(Wildcard).getUpperBound().getType(), tUpperBound)
+      hasSubtypeStar(s.(Wildcard).getUpperBound().getType(), tUpperBound)
       or
       // ? extends T <= ?
       s.(Wildcard).isUnconstrained()
@@ -254,7 +224,7 @@ private predicate typeArgumentContainsAux1(RefType s, RefType t, int n) {
     or
     exists(RefType tLowerBound | tLowerBound = t.(Wildcard).getLowerBound().getType() |
       // ? super T <= ? super S if s <: T
-      hasSubtypeStar2(tLowerBound, s.(Wildcard).getLowerBound().getType())
+      hasSubtypeStar(tLowerBound, s.(Wildcard).getLowerBound().getType())
       or
       // ? super T <= ?
       s.(Wildcard).isUnconstrained()
@@ -263,14 +233,14 @@ private predicate typeArgumentContainsAux1(RefType s, RefType t, int n) {
       wildcardExtendsObject(s)
     )
     or
+    // T <= T
+    s = t
+    or
     // T <= ? extends T
-    hasSubtypeStar1(s.(Wildcard).getUpperBound().getType(), t)
+    hasSubtypeStar(s.(Wildcard).getUpperBound().getType(), t)
     or
     // T <= ? super T
-    hasSubtypeStar2(t, s.(Wildcard).getLowerBound().getType())
-    // or
-    // T <= T
-    // but this case is handled directly in `typePrefixContains`
+    hasSubtypeStar(t, s.(Wildcard).getLowerBound().getType())
   )
 }
 
@@ -279,38 +249,12 @@ private predicate wildcardExtendsObject(Wildcard wc) {
   wc.getUpperBound().getType() instanceof TypeObject
 }
 
-// manual magic for `hasSubtypeStar1`
-private predicate getAWildcardUpperBound(RefType t) {
-  t = any(Wildcard w).getUpperBound().getType()
-}
-
-// manual magic for `hasSubtypeStar2`
-private predicate getAWildcardLowerBound(RefType t) {
-  t = any(Wildcard w).getLowerBound().getType()
-}
-
-/**
- * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardUpperBound(t)`.
- */
-pragma[nomagic]
-private predicate hasSubtypeStar1(RefType t, RefType sub) {
-  sub = t and getAWildcardUpperBound(t)
+private predicate hasSubtypeStar(RefType t, RefType sub) {
+  sub = t
   or
-  hasSubtype(t, sub) and getAWildcardUpperBound(t)
+  hasSubtype(t, sub)
   or
-  exists(RefType mid | hasSubtypeStar1(t, mid) and hasSubtype(mid, sub))
-}
-
-/**
- * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardLowerBound(sub)`.
- */
-pragma[nomagic]
-private predicate hasSubtypeStar2(RefType t, RefType sub) {
-  sub = t and getAWildcardLowerBound(sub)
-  or
-  hasSubtype(t, sub) and getAWildcardLowerBound(sub)
-  or
-  exists(RefType mid | hasSubtype(t, mid) and hasSubtypeStar2(mid, sub))
+  exists(RefType mid | hasSubtypeStar(t, mid) and hasSubtype(mid, sub))
 }
 
 /** Holds if type `t` declares member `m`. */
@@ -404,21 +348,11 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   /** Gets a direct subtype of this type. */
   RefType getASubtype() { hasSubtype(this, result) }
 
-  /** Gets a direct or indirect descendant of this type, including itself. */
-  RefType getADescendant() { hasDescendant(this, result) }
-
   /** Gets a direct supertype of this type. */
   RefType getASupertype() { hasSubtype(result, this) }
 
   /** Gets a direct or indirect supertype of this type, including itself. */
-  RefType getAnAncestor() { hasDescendant(result, this) }
-
-  /**
-   * Gets a direct or indirect supertype of this type.
-   * This does not including itself, unless this type is part of a cycle
-   * in the type hierarchy.
-   */
-  RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }
+  RefType getAnAncestor() { hasSubtype*(result, this) }
 
   /**
    * Gets the source declaration of a direct supertype of this type, excluding itself.
@@ -577,7 +511,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
       this.getSourceDeclaration().inherits(f)
     )
     or
-    this.hasMethod(m, _)
+    this.hasMethod(m.(Method), _)
   }
 
   /** Holds if this is a top-level type, which is not nested inside any other types. */
@@ -670,14 +604,6 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   }
 }
 
-/**
- * An `ErrorType` is generated when CodeQL is unable to correctly
- * extract a type.
- */
-class ErrorType extends RefType, @errortype {
-  override string getAPrimaryQlClass() { result = "ErrorType" }
-}
-
 /** A type that is the same as its source declaration. */
 class SrcRefType extends RefType {
   SrcRefType() { this.isSourceDeclaration() }
@@ -686,7 +612,7 @@ class SrcRefType extends RefType {
 /** A class declaration. */
 class Class extends ClassOrInterface, @class {
   /** Holds if this class is an anonymous class. */
-  predicate isAnonymous() { isAnonymClass(this.getSourceDeclaration(), _) }
+  predicate isAnonymous() { isAnonymClass(this, _) }
 
   override RefType getSourceDeclaration() { classes(this, _, _, result) }
 
@@ -708,29 +634,6 @@ class Class extends ClassOrInterface, @class {
   }
 
   override string getAPrimaryQlClass() { result = "Class" }
-}
-
-/** A Kotlin `object`. */
-class ClassObject extends Class {
-  ClassObject() { class_object(this, _) }
-
-  /** Gets the instance variable that implements this `object`. */
-  Field getInstance() { class_object(this, result) }
-}
-
-/** A Kotlin `companion object`. */
-class CompanionObject extends Class {
-  CompanionObject() { type_companion_object(_, _, this) }
-
-  /** Gets the instance variable that implements this `companion object`. */
-  Field getInstance() { type_companion_object(_, result, this) }
-}
-
-/**
- * A Kotlin data class declaration.
- */
-class DataClass extends Class {
-  DataClass() { ktDataClasses(this) }
 }
 
 /**
@@ -800,13 +703,10 @@ class AnonymousClass extends NestedClass {
   }
 
   /** Gets the class instance expression where this anonymous class occurs. */
-  ClassInstanceExpr getClassInstanceExpr() { isAnonymClass(this.getSourceDeclaration(), result) }
+  ClassInstanceExpr getClassInstanceExpr() { isAnonymClass(this, result) }
 
   override string toString() {
-    // Include super.toString, i.e. the name given in the database, because for Kotlin anonymous
-    // classes we can get specialisations of anonymous generic types, and this will supply the
-    // trailing type arguments.
-    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }" + super.toString()
+    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }"
   }
 
   /**
@@ -959,7 +859,7 @@ class Interface extends ClassOrInterface, @interface {
 /** A class or interface. */
 class ClassOrInterface extends RefType, @classorinterface {
   /** Holds if this class or interface is local. */
-  predicate isLocal() { isLocalClassOrInterface(this.getSourceDeclaration(), _) }
+  predicate isLocal() { isLocalClassOrInterface(this, _) }
 
   /** Holds if this class or interface is package protected, that is, neither public nor private nor protected. */
   predicate isPackageProtected() {
@@ -967,15 +867,6 @@ class ClassOrInterface extends RefType, @classorinterface {
     not this.isProtected() and
     not this.isPublic()
   }
-
-  /** Gets a permitted subtype in case this class or interface is a sealed class (Java 17 feature). */
-  ClassOrInterface getAPermittedSubtype() { permits(this, result) }
-
-  /** Holds if this class or interface is explicitly or implicitly a sealed class (Java 17 feature). */
-  predicate isSealed() { exists(this.getAPermittedSubtype()) }
-
-  /** Get the companion object of this class or interface, if any. */
-  CompanionObject getCompanionObject() { type_companion_object(this, _, result) }
 }
 
 private string getAPublicObjectMethodSignature() {
@@ -1024,9 +915,7 @@ class FunctionalInterface extends Interface {
  * and `double`.
  */
 class PrimitiveType extends Type, @primitive {
-  PrimitiveType() {
-    this.getName() = ["float", "double", "int", "boolean", "short", "byte", "char", "long"]
-  }
+  PrimitiveType() { this.getName().regexpMatch("float|double|int|boolean|short|byte|char|long") }
 
   /** Gets the boxed type corresponding to this primitive type. */
   BoxedType getBoxedType() { result.getPrimitiveType() = this }
@@ -1204,8 +1093,8 @@ private Type erase(Type t) {
 }
 
 /**
- * Holds if there is a common (reflexive, transitive) subtype of the erasures of
- * types `t1` and `t2`.
+ * Is there a common (reflexive, transitive) subtype of the erasures of
+ * types `t1` and `t2`?
  *
  * If there is no such common subtype, then the two types are disjoint.
  * However, the converse is not true; for example, the parameterized types
@@ -1223,25 +1112,6 @@ predicate haveIntersection(RefType t1, RefType t2) {
 }
 
 /**
- * Holds if there is no common (reflexive, transitive) subtype of the erasures
- * of types `t1` and `t2`.
- *
- * If there is no such common subtype, then the two types are disjoint.
- * However, the converse is not true; for example, the parameterized types
- * `List<Integer>` and `Collection<String>` are disjoint,
- * but their erasures (`List` and `Collection`, respectively)
- * do have common subtypes (such as `List` itself).
- *
- * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
- */
-bindingset[t1, t2]
-predicate notHaveIntersection(RefType t1, RefType t2) {
-  exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
-    not erasedHaveIntersection(e1, e2)
-  )
-}
-
-/**
  * Holds if there is a common (reflexive, transitive) subtype of the erased
  * types `t1` and `t2`.
  */
@@ -1253,16 +1123,13 @@ predicate erasedHaveIntersection(RefType t1, RefType t2) {
   t2 = erase(_)
 }
 
-/**
- * An integral type, which may be either a primitive or a boxed type.
- * This includes the types `char` and `Character`.
- */
+/** An integral type, which may be either a primitive or a boxed type. */
 class IntegralType extends Type {
   IntegralType() {
     exists(string name |
-      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
+      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
     |
-      name = ["byte", "char", "short", "int", "long"]
+      name.regexpMatch("byte|char|short|int|long")
     )
   }
 }
@@ -1271,7 +1138,7 @@ class IntegralType extends Type {
 class BooleanType extends Type {
   BooleanType() {
     exists(string name |
-      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
+      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
     |
       name = "boolean"
     )
@@ -1282,20 +1149,9 @@ class BooleanType extends Type {
 class CharacterType extends Type {
   CharacterType() {
     exists(string name |
-      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
+      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
     |
       name = "char"
-    )
-  }
-}
-
-/** A numeric type, including both primitive and boxed types. */
-class NumericType extends Type {
-  NumericType() {
-    exists(string name |
-      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
-    |
-      name = ["byte", "short", "int", "long", "double", "float"]
     )
   }
 }
@@ -1304,9 +1160,9 @@ class NumericType extends Type {
 class NumericOrCharType extends Type {
   NumericOrCharType() {
     exists(string name |
-      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
+      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
     |
-      name = ["byte", "char", "short", "int", "long", "double", "float"]
+      name.regexpMatch("byte|char|short|int|long|double|float")
     )
   }
 }
@@ -1315,9 +1171,9 @@ class NumericOrCharType extends Type {
 class FloatingPointType extends Type {
   FloatingPointType() {
     exists(string name |
-      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
+      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
     |
-      name = ["float", "double"]
+      name.regexpMatch("float|double")
     )
   }
 }

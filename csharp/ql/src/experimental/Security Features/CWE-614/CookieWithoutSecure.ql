@@ -64,12 +64,12 @@ where
         not isPropertySet(oc, "Secure") and
         // the default in config is not set to `true`
         // the `exists` below covers the `cs/web/requiressl-not-set`
-        not exists(XmlElement element |
+        not exists(XMLElement element |
           element instanceof FormsElement and
-          element.(FormsElement).isRequireSsl()
+          element.(FormsElement).isRequireSSL()
           or
           element instanceof HttpCookiesElement and
-          element.(HttpCookiesElement).isRequireSsl()
+          element.(HttpCookiesElement).isRequireSSL()
         )
       )
     )

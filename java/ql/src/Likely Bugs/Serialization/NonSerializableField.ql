@@ -12,6 +12,7 @@
  */
 
 import java
+import semmle.code.java.JDKAnnotations
 import semmle.code.java.Collections
 import semmle.code.java.Maps
 import semmle.code.java.frameworks.javaee.ejb.EJB
@@ -28,7 +29,7 @@ predicate serializableOrExternalizable(Interface interface) {
 predicate collectionOrMapType(RefType t) { t instanceof CollectionType or t instanceof MapType }
 
 predicate serializableType(RefType t) {
-  exists(RefType sup | sup = t.getAnAncestor() | serializableOrExternalizable(sup))
+  exists(RefType sup | sup = t.getASupertype*() | serializableOrExternalizable(sup))
   or
   // Collection interfaces are not serializable, but their implementations are
   // likely to be.
@@ -76,12 +77,12 @@ predicate exceptions(Class c, Field f) {
     f.isStatic()
     or
     // Classes that implement `Externalizable` completely take over control during serialization.
-    externalizable(c.getAStrictAncestor())
+    externalizable(c.getASupertype+())
     or
     // Stateless session beans are not normally serialized during their usual life-cycle
     // but are forced by their expected supertype to be serializable.
     // Arguably, warnings for their non-serializable fields can therefore be suppressed in practice.
-    c instanceof StatelessSessionEjb
+    c instanceof StatelessSessionEJB
     or
     // Enum types are serialized by name, so it doesn't matter if they have non-serializable fields.
     c instanceof EnumType
@@ -91,9 +92,10 @@ predicate exceptions(Class c, Field f) {
 from Class c, Field f, string reason
 where
   c.fromSource() and
-  c.getAStrictAncestor() instanceof TypeSerializable and
+  c.getASupertype+() instanceof TypeSerializable and
   f.getDeclaringType() = c and
   not exceptions(c, f) and
   reason = nonSerialReason(f.getType())
 select f,
-  "This field is in a serializable class, but is not serializable itself because " + reason + "."
+  "This field is in a serializable class, " + " but is not serializable itself because " + reason +
+    "."

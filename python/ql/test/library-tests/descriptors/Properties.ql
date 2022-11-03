@@ -1,4 +1,5 @@
 import python
+import semmle.python.types.Descriptors
 
 from PropertyValue p, string method_name, FunctionValue method
 where

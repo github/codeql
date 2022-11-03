@@ -26,9 +26,3 @@ D.prototype = {
   set setter(x) {},
   m() {}
 }
-
-class StaticMembers {
-  static method() {}
-  static get getter() {}
-  static set setter(x) {}
-}

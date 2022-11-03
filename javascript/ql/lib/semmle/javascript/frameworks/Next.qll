@@ -5,13 +5,13 @@
 import javascript
 
 /**
- * Provides classes and predicates modeling [Next.js](https://www.npmjs.com/package/next).
+ * Provides classes and predicates modelling [Next.js](https://www.npmjs.com/package/next).
  */
 module NextJS {
   /**
    * Gets a `package.json` that depends on the `Next.js` library.
    */
-  PackageJson getANextPackage() { result.getDependencies().getADependency("next", _) }
+  PackageJSON getANextPackage() { result.getDependencies().getADependency("next", _) }
 
   /**
    * Gets a "pages" folder in a `Next.js` application.
@@ -35,15 +35,16 @@ module NextJS {
    */
   Module getAModuleWithFallbackPaths() {
     result = getAPagesModule() and
-    exists(DataFlow::FunctionNode staticPaths, DataFlow::Node fallback |
+    exists(DataFlow::FunctionNode staticPaths, Expr fallback |
       staticPaths = result.getAnExportedValue("getStaticPaths").getAFunctionValue() and
-      fallback = staticPaths.getAReturn().getALocalSource().getAPropertyWrite("fallback").getRhs() and
-      not fallback.mayHaveBooleanValue(false)
+      fallback =
+        staticPaths.getAReturn().getALocalSource().getAPropertyWrite("fallback").getRhs().asExpr() and
+      not fallback.(BooleanLiteral).getValue() = "false"
     )
   }
 
   /**
-   * A user defined path or query parameter in `Next.js`.
+   * User defined path parameter in `Next.js`.
    */
   class NextParams extends RemoteFlowSource {
     NextParams() {
@@ -53,10 +54,6 @@ module NextJS {
             .getAFunctionValue()
             .getParameter(0)
             .getAPropertyRead("params")
-      or
-      this = getServerSidePropsFunction(_).getParameter(0).getAPropertyRead(["params", "query"])
-      or
-      this = nextRouter().getAPropertyRead("query")
     }
 
     override string getSourceType() { result = "Next request parameter" }
@@ -127,7 +124,7 @@ module NextJS {
   }
 
   /**
-   * A step modeling the flow from the server-computed props object to the default exported function that renders the page.
+   * A step modelling the flow from the server-computed props object to the default exported function that renders the page.
    */
   class NextJSStaticPropsStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
@@ -141,7 +138,7 @@ module NextJS {
   }
 
   /**
-   * A step modeling the flow from the server-computed props object to the default exported React component that renders the page.
+   * A step modelling the flow from the server-computed props object to the default exported React component that renders the page.
    */
   class NextJSStaticReactComponentPropsStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
@@ -157,57 +154,34 @@ module NextJS {
   /**
    * A Next.js function that is exected on the server for every request, seen as a routehandler.
    */
-  class NextHttpRouteHandler extends Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    NextHttpRouteHandler() { this = getServerSidePropsFunction(_) or this = getInitialProps(_) }
-  }
+  class NextHttpRouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    Module pageModule;
 
-  /**
-   * A function that handles both a request and response from Next.js, seen as a routehandler.
-   */
-  class NextReqResHandler extends Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    DataFlow::ParameterNode req;
-    DataFlow::ParameterNode res;
-
-    NextReqResHandler() {
-      res = this.getAParameter() and
-      req = this.getAParameter() and
-      req.hasUnderlyingType("next", "NextApiRequest") and
-      res.hasUnderlyingType("next", "NextApiResponse")
+    NextHttpRouteHandler() {
+      this = getServerSidePropsFunction(pageModule) or this = getInitialProps(pageModule)
     }
-
-    /** Gets the request parameter */
-    DataFlow::ParameterNode getRequest() { result = req }
-
-    /** Gets the response parameter */
-    DataFlow::ParameterNode getResponse() { result = res }
   }
 
   /**
    * A NodeJS HTTP request object in a Next.js page.
    */
   class NextHttpRequestSource extends NodeJSLib::RequestSource {
-    Http::RouteHandler rh;
+    NextHttpRouteHandler rh;
 
-    NextHttpRequestSource() {
-      this = rh.(NextHttpRouteHandler).getParameter(0).getAPropertyRead("req") or
-      this = rh.(NextReqResHandler).getRequest()
-    }
+    NextHttpRequestSource() { this = rh.getParameter(0).getAPropertyRead("req") }
 
-    override Http::RouteHandler getRouteHandler() { result = rh }
+    override HTTP::RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
    * A NodeJS HTTP response object in a Next.js page.
    */
   class NextHttpResponseSource extends NodeJSLib::ResponseSource {
-    Http::RouteHandler rh;
+    NextHttpRouteHandler rh;
 
-    NextHttpResponseSource() {
-      this = rh.(NextHttpRouteHandler).getParameter(0).getAPropertyRead("res") or
-      this = rh.(NextReqResHandler).getResponse()
-    }
+    NextHttpResponseSource() { this = rh.getParameter(0).getAPropertyRead("res") }
 
-    override Http::RouteHandler getRouteHandler() { result = rh }
+    override HTTP::RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -225,23 +199,20 @@ module NextJS {
    * The response (res) includes a set of Express.js-like methods,
    * and we therefore model the routehandler as an Express.js routehandler.
    */
-  class NextApiRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
-    Http::Servers::StandardRouteHandler {
-    NextApiRouteHandler() {
+  class NextAPIRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
+    HTTP::Servers::StandardRouteHandler {
+    NextAPIRouteHandler() {
       exists(Module mod | mod.getFile().getParentContainer() = apiFolder() |
         this = mod.getAnExportedValue("default").getAFunctionValue()
       )
     }
 
-    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
-      kind = "request" and result = this.getParameter(0)
+    override Parameter getRouteHandlerParameter(string kind) {
+      kind = "request" and result = getFunction().getParameter(0)
       or
-      kind = "response" and result = this.getParameter(1)
+      kind = "response" and result = getFunction().getParameter(1)
     }
   }
-
-  /** DEPRECATED: Alias for NextApiRouteHandler */
-  deprecated class NextAPIRouteHandler = NextApiRouteHandler;
 
   /**
    * Gets a reference to a [Next.js router](https://nextjs.org/docs/api-reference/next/router).
@@ -255,6 +226,6 @@ module NextJS {
           .getParameter(0)
           .getParameter(0)
           .getMember("router")
-          .asSource()
+          .getAnImmediateUse()
   }
 }

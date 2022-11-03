@@ -4,6 +4,7 @@
 
 import javascript
 import DOMProperties
+import semmle.javascript.frameworks.xUnit
 
 /**
  * Holds if `e` appears in a syntactic context where its value is discarded.
@@ -37,8 +38,6 @@ predicate inVoidContext(Expr e) {
   )
   or
   exists(LogicalBinaryExpr logical | e = logical.getRightOperand() and inVoidContext(logical))
-  or
-  exists(ConditionalExpr cond | e = cond.getABranch() | inVoidContext(cond))
 }
 
 /**
@@ -144,7 +143,7 @@ predicate hasNoEffect(Expr e) {
   // don't complain about declarations
   not isDeclaration(e) and
   // exclude DOM properties, which sometimes have magical auto-update properties
-  not isDomProperty(e.(PropAccess).getPropertyName()) and
+  not isDOMProperty(e.(PropAccess).getPropertyName()) and
   // exclude xUnit.js annotations
   not e instanceof XUnitAnnotation and
   // exclude common patterns that are most likely intentional

@@ -1,14 +1,7 @@
 import semmle.code.cil.Attribute
 import semmle.code.cil.Declaration
 
-private predicate isOsSpecific(Declaration d) {
-  d.getQualifiedName()
-      .matches("%" +
-          [
-            "libobjc", "libproc", "System.Diagnostics.Tracing.XplatEventLogger",
-            "System.Threading.AutoreleasePool"
-          ] + "%")
-}
+private predicate isOsSpecific(Declaration d) { d.getQualifiedName().matches("%libobjc%") }
 
 query predicate attrNoArg(string dec, string attr) {
   exists(Declaration d, Attribute a |

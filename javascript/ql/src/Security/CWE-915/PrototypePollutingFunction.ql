@@ -12,7 +12,6 @@
  *       external/cwe/cwe-079
  *       external/cwe/cwe-094
  *       external/cwe/cwe-400
- *       external/cwe/cwe-471
  *       external/cwe/cwe-915
  */
 
@@ -165,24 +164,23 @@ predicate isPotentiallyObjectPrototype(SourceNode node) {
  * would typically not happen in a merge function.
  */
 predicate dynamicPropWrite(DataFlow::Node base, DataFlow::Node prop, DataFlow::Node rhs) {
-  exists(
-    DataFlow::PropWrite write // includes e.g. Object.defineProperty
-  |
-    write.getBase() = base and
-    write.getPropertyNameExpr().flow() = prop and
-    rhs = write.getRhs()
-  ) and
-  not exists(prop.getStringValue()) and
-  not arePropertiesEnumerated(base.getALocalSource()) and
-  // Prune writes that are unlikely to modify Object.prototype.
-  // This is mainly for performance, but may block certain results due to
-  // not tracking out of function returns and into callbacks.
-  isPotentiallyObjectPrototype(base.getALocalSource()) and
-  // Ignore writes with an obviously safe RHS.
-  not exists(Expr e | e = rhs.asExpr() |
-    e instanceof Literal or
-    e instanceof ObjectExpr or
-    e instanceof ArrayExpr
+  exists(AssignExpr write, IndexExpr index |
+    index = write.getLhs() and
+    base = index.getBase().flow() and
+    prop = index.getPropertyNameExpr().flow() and
+    rhs = write.getRhs().flow() and
+    not exists(prop.getStringValue()) and
+    not arePropertiesEnumerated(base.getALocalSource()) and
+    // Prune writes that are unlikely to modify Object.prototype.
+    // This is mainly for performance, but may block certain results due to
+    // not tracking out of function returns and into callbacks.
+    isPotentiallyObjectPrototype(base.getALocalSource()) and
+    // Ignore writes with an obviously safe RHS.
+    not exists(Expr e | e = rhs.asExpr() |
+      e instanceof Literal or
+      e instanceof ObjectExpr or
+      e instanceof ArrayExpr
+    )
   )
 }
 
@@ -194,7 +192,7 @@ string unsafePropName() {
 }
 
 /**
- * A flow label representing an unsafe property name, or an object obtained
+ * Flow label representing an unsafe property name, or an object obtained
  * by using such a property in a dynamic read.
  */
 class UnsafePropLabel extends FlowLabel {
@@ -296,7 +294,7 @@ class PropNameTracking extends DataFlow::Configuration {
 }
 
 /**
- * A sanitizer guard of form `x === "__proto__"` or `x === "constructor"`.
+ * Sanitizer guard of form `x === "__proto__"` or `x === "constructor"`.
  */
 class DenyListEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNode {
   override EqualityTest astNode;
@@ -339,21 +337,24 @@ class AllowListEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNod
  * but the destination object generally doesn't. It is therefore only a sanitizer when
  * used on the destination object.
  */
-class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode instanceof HasOwnPropertyCall {
+class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode, CallNode {
   HasOwnPropertyGuard() {
+    // Make sure we handle reflective calls since libraries love to do that.
+    getCalleeNode().getALocalSource().(DataFlow::PropRead).getPropertyName() = "hasOwnProperty" and
+    exists(getReceiver()) and
     // Try to avoid `src.hasOwnProperty` by requiring that the receiver
     // does not locally have its properties enumerated. Typically there is no
     // reason to enumerate the properties of the destination object.
-    not arePropertiesEnumerated(super.getObject().getALocalSource())
+    not arePropertiesEnumerated(getReceiver().getALocalSource())
   }
 
   override predicate blocks(boolean outcome, Expr e) {
-    e = super.getProperty().asExpr() and outcome = true
+    e = getArgument(0).asExpr() and outcome = true
   }
 }
 
 /**
- * A sanitizer guard for `key in dst`.
+ * Sanitizer guard for `key in dst`.
  *
  * Since `"__proto__" in obj` and `"constructor" in obj` is true for most objects,
  * this is seen as a sanitizer for `key` in the false outcome.
@@ -372,7 +373,7 @@ class InExprGuard extends DataFlow::BarrierGuardNode, DataFlow::ValueNode {
 }
 
 /**
- * A sanitizer guard for `instanceof` expressions.
+ * Sanitizer guard for `instanceof` expressions.
  *
  * `Object.prototype instanceof X` is never true, so this blocks the `__proto__` label.
  *
@@ -515,9 +516,7 @@ predicate isPrototypePollutingAssignment(Node base, Node prop, Node rhs, Node pr
     if propNameSource instanceof EnumeratedPropName
     then
       cfg.hasFlow(propNameSource, prop) and
-      cfg.hasFlow([propNameSource, AccessPath::getAnAliasedSourceNode(propNameSource)]
-            .(EnumeratedPropName)
-            .getASourceProp(), rhs)
+      cfg.hasFlow(propNameSource.(EnumeratedPropName).getASourceProp(), rhs)
     else (
       cfg.hasFlow(propNameSource.(SplitPropName).getAnAlias(), prop) and
       rhs.getALocalSource() instanceof ParameterNode
@@ -566,27 +565,27 @@ class ObjectCreateNullCall extends CallNode {
 }
 
 from
-  PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Node propNameSource,
-  Node base, string msg, Node col1, Node col2
+  PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Node prop, Node base,
+  string msg, Node col1, Node col2
 where
-  isPollutedPropName(propNameSource) and
+  isPollutedPropName(prop) and
   cfg.hasFlowPath(source, sink) and
-  isPrototypePollutingAssignment(base, _, _, propNameSource) and
+  isPrototypePollutingAssignment(base, _, _, prop) and
   sink.getNode() = base and
-  source.getNode() = propNameSource and
+  source.getNode() = prop and
   (
     getANodeLeadingToBaseBase(base) instanceof ObjectLiteralNode
     or
     not getANodeLeadingToBaseBase(base) instanceof ObjectCreateNullCall
   ) and
   // Generate different messages for deep merge and deep assign cases.
-  if propNameSource instanceof EnumeratedPropName
+  if prop instanceof EnumeratedPropName
   then (
-    col1 = propNameSource.(EnumeratedPropName).getSourceObject() and
+    col1 = prop.(EnumeratedPropName).getSourceObject() and
     col2 = base and
     msg = "Properties are copied from $@ to $@ without guarding against prototype pollution."
   ) else (
-    col1 = propNameSource and
+    col1 = prop and
     col2 = base and
     msg =
       "The property chain $@ is recursively assigned to $@ without guarding against prototype pollution."

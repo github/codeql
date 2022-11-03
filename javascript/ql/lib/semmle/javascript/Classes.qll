@@ -39,7 +39,7 @@ class ClassOrInterface extends @class_or_interface, TypeParameterized {
    * Has no result if no name could be determined.
    */
   string getName() {
-    result = this.getIdentifier().getName() // Overridden in ClassExpr
+    result = getIdentifier().getName() // Overridden in ClassExpr
   }
 
   /** Gets a member declared in this class or interface. */
@@ -50,37 +50,37 @@ class ClassOrInterface extends @class_or_interface, TypeParameterized {
 
   /** Gets the member with the given name declared in this class or interface. */
   MemberDeclaration getMember(string name) {
-    result = this.getAMember() and
+    result = getAMember() and
     result.getName() = name
   }
 
   /** Gets a method declared in this class or interface. */
-  MethodDeclaration getAMethod() { result = this.getAMember() }
+  MethodDeclaration getAMethod() { result = getAMember() }
 
   /**
    * Gets the method with the given name declared in this class or interface.
    *
    * Note that for overloaded method signatures in TypeScript files, this returns every overload.
    */
-  MethodDeclaration getMethod(string name) { result = this.getMember(name) }
+  MethodDeclaration getMethod(string name) { result = getMember(name) }
 
   /** Gets an overloaded version of the method with the given name declared in this class or interface. */
   MethodDeclaration getMethodOverload(string name, int overloadIndex) {
-    result = this.getMethod(name) and
+    result = getMethod(name) and
     overloadIndex = result.getOverloadIndex()
   }
 
   /** Gets a field declared in this class or interface. */
-  FieldDeclaration getAField() { result = this.getAMember() }
+  FieldDeclaration getAField() { result = getAMember() }
 
   /** Gets the field with the given name declared in this class or interface. */
-  FieldDeclaration getField(string name) { result = this.getMember(name) }
+  FieldDeclaration getField(string name) { result = getMember(name) }
 
   /** Gets a call signature declared in this interface. */
-  CallSignature getACallSignature() { result = this.getAMember() }
+  CallSignature getACallSignature() { result = getAMember() }
 
   /** Gets an index signature declared in this interface. */
-  IndexSignature getAnIndexSignature() { result = this.getAMember() }
+  IndexSignature getAnIndexSignature() { result = getAMember() }
 
   /**
    * Gets the expression denoting the super class of this class,
@@ -97,7 +97,7 @@ class ClassOrInterface extends @class_or_interface, TypeParameterized {
   /**
    * Gets any type from the `implements` clause of this class or `extends` clause of this interface.
    */
-  TypeExpr getASuperInterface() { result = this.getSuperInterface(_) }
+  TypeExpr getASuperInterface() { result = getSuperInterface(_) }
 
   /**
    * Holds if this is an interface or a class declared with the `abstract` modifier.
@@ -157,10 +157,10 @@ class ClassOrInterface extends @class_or_interface, TypeParameterized {
  */
 class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNode {
   /** Gets the variable holding this class. */
-  Variable getVariable() { result = this.getIdentifier().getVariable() }
+  Variable getVariable() { result = getIdentifier().getVariable() }
 
   /** Gets the identifier naming the defined class, if any. */
-  override VarDecl getIdentifier() { result = this.getChildExpr(0) }
+  override VarDecl getIdentifier() { result = getChildExpr(0) }
 
   override TypeParameter getTypeParameter(int i) {
     // AST indices for type parameters: -3, -6, -9, ...
@@ -170,9 +170,9 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   }
 
   /** Gets the expression denoting the super class of the defined class, if any. */
-  override Expr getSuperClass() { result = this.getChildExpr(1) }
+  override Expr getSuperClass() { result = getChildExpr(1) }
 
-  /** Gets the `i`th type from the `implements` clause of this class, starting at 0. */
+  /** Gets the `n`th type from the `implements` clause of this class, starting at 0. */
   override TypeExpr getSuperInterface(int i) {
     // AST indices for super interfaces: -1, -4, -7, ...
     exists(int astIndex | typeexprs(result, _, this, astIndex, _) |
@@ -189,7 +189,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
    * Note that every class has a constructor: if no explicit constructor
    * is declared, it has a synthetic default constructor.
    */
-  ConstructorDeclaration getConstructor() { result = this.getAMethod() }
+  ConstructorDeclaration getConstructor() { result = getAMethod() }
 
   /**
    * Gets the `i`th decorator applied to this class.
@@ -210,7 +210,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
    * For example, the class `@A @B class C {}` has
    * decorators `@A` and `@B`.
    */
-  Decorator getADecorator() { result = this.getDecorator(_) }
+  Decorator getADecorator() { result = getDecorator(_) }
 
   /**
    * Holds if this class has the `abstract` modifier.
@@ -218,8 +218,8 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   override predicate isAbstract() { is_abstract_class(this) }
 
   override string describe() {
-    if exists(this.inferNameFromVarDef())
-    then result = this.inferNameFromVarDef()
+    if exists(inferNameFromVarDef())
+    then result = inferNameFromVarDef()
     else result = "anonymous class"
   }
 
@@ -229,8 +229,8 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
    */
   private string inferNameFromVarDef() {
     // in ambiguous cases like `let C = class D {}`, prefer `D` to `C`
-    if exists(this.getIdentifier())
-    then result = "class " + this.getIdentifier().getName()
+    if exists(getIdentifier())
+    then result = "class " + getIdentifier().getName()
     else
       exists(VarDef vd | this = vd.getSource() |
         result = "class " + vd.getTarget().(VarRef).getName()
@@ -243,7 +243,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
    * Note that constructors aren't considered instance methods.
    */
   Function getInstanceMethod(string name) {
-    exists(MemberDefinition mem | mem = this.getMember(name) |
+    exists(MemberDefinition mem | mem = getMember(name) |
       result = mem.getInit() and
       not mem.isStatic() and
       not mem instanceof ConstructorDefinition
@@ -254,7 +254,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
    * Gets the definition of the super class of this class, if it can be determined.
    */
   ClassDefinition getSuperClassDefinition() {
-    result = this.getSuperClass().analyze().getAValue().(AbstractClass).getClass()
+    result = getSuperClass().analyze().getAValue().(AbstractClass).getClass()
   }
 
   override string getAPrimaryQlClass() { result = "ClassDefinition" }
@@ -285,7 +285,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
  */
 class ClassDeclStmt extends @class_decl_stmt, ClassDefinition, Stmt {
   override ControlFlowNode getFirstControlFlowNode() {
-    if has_declare_keyword(this) then result = this else result = this.getIdentifier()
+    if has_declare_keyword(this) then result = this else result = getIdentifier()
   }
 }
 
@@ -307,7 +307,7 @@ class ClassExpr extends @class_expr, ClassDefinition, Expr {
   override string getName() {
     result = ClassDefinition.super.getName()
     or
-    not exists(this.getIdentifier()) and
+    not exists(getIdentifier()) and
     (
       exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
       or
@@ -327,25 +327,21 @@ class ClassExpr extends @class_expr, ClassDefinition, Expr {
   override predicate isImpure() { none() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    if exists(this.getIdentifier())
-    then result = this.getIdentifier()
+    if exists(getIdentifier())
+    then result = getIdentifier()
     else
-      if exists(this.getSuperClass())
-      then result = this.getSuperClass().getFirstControlFlowNode()
+      if exists(getSuperClass())
+      then result = getSuperClass().getFirstControlFlowNode()
       else
-        if exists(this.getClassInitializedMember())
+        if exists(getClassInitializedMember())
         then
           result =
-            min(ClassInitializedMember m |
-              m = this.getClassInitializedMember()
-            |
-              m order by m.getIndex()
-            )
+            min(ClassInitializedMember m | m = getClassInitializedMember() | m order by m.getIndex())
         else result = this
   }
 
   /** Returns a member that is initialized during the creation of this class. */
-  private ClassInitializedMember getClassInitializedMember() { result = this.getAMember() }
+  private ClassInitializedMember getClassInitializedMember() { result = getAMember() }
 }
 
 /**
@@ -375,7 +371,7 @@ class SuperExpr extends @super_expr, Expr {
    * Gets the function whose `super` binding this expression refers to,
    * which is the nearest enclosing non-arrow function.
    */
-  Function getBinder() { result = this.getEnclosingFunction().getThisBinder() }
+  Function getBinder() { result = getEnclosingFunction().getThisBinder() }
 
   override string getAPrimaryQlClass() { result = "SuperExpr" }
 }
@@ -390,13 +386,13 @@ class SuperExpr extends @super_expr, Expr {
  * ```
  */
 class SuperCall extends CallExpr {
-  SuperCall() { this.getCallee().getUnderlyingValue() instanceof SuperExpr }
+  SuperCall() { getCallee().getUnderlyingValue() instanceof SuperExpr }
 
   /**
    * Gets the function whose `super` binding this call refers to,
    * which is the nearest enclosing non-arrow function.
    */
-  Function getBinder() { result = this.getCallee().getUnderlyingValue().(SuperExpr).getBinder() }
+  Function getBinder() { result = getCallee().getUnderlyingValue().(SuperExpr).getBinder() }
 }
 
 /**
@@ -409,7 +405,7 @@ class SuperCall extends CallExpr {
  * ```
  */
 class SuperPropAccess extends PropAccess {
-  SuperPropAccess() { this.getBase().getUnderlyingValue() instanceof SuperExpr }
+  SuperPropAccess() { getBase().getUnderlyingValue() instanceof SuperExpr }
 }
 
 /**
@@ -493,9 +489,6 @@ class MemberDeclaration extends @property, Documentable {
    */
   predicate isStatic() { is_static(this) }
 
-  /** Gets a boolean indicating if this member is static. */
-  boolean getStaticAsBool() { if this.isStatic() then result = true else result = false }
-
   /**
    * Holds if this member is abstract.
    *
@@ -509,7 +502,7 @@ class MemberDeclaration extends @property, Documentable {
    *
    * Class members not declared in a TypeScript file are always considered public.
    */
-  predicate isPublic() { not this.isPrivate() and not this.isProtected() }
+  predicate isPublic() { not isPrivate() and not isProtected() }
 
   /**
    * Holds if this is a TypeScript member explicitly annotated with the `public` keyword.
@@ -530,20 +523,20 @@ class MemberDeclaration extends @property, Documentable {
    * Gets the expression specifying the name of this member,
    * or nothing if this is a call signature.
    */
-  Expr getNameExpr() { result = this.getChildExpr(0) }
+  Expr getNameExpr() { result = getChildExpr(0) }
 
   /**
    * Gets the expression specifying the initial value of the member;
    * for methods and constructors this is always a function, for fields
    * it may not be defined.
    */
-  Expr getInit() { result = this.getChildExpr(1) }
+  Expr getInit() { result = getChildExpr(1) }
 
   /** Gets the name of this member. */
   string getName() {
-    result = this.getNameExpr().(Literal).getValue()
+    result = getNameExpr().(Literal).getValue()
     or
-    not this.isComputed() and result = this.getNameExpr().(Identifier).getName()
+    not isComputed() and result = getNameExpr().(Identifier).getName()
   }
 
   /** Holds if the name of this member is computed. */
@@ -559,7 +552,7 @@ class MemberDeclaration extends @property, Documentable {
   int getMemberIndex() { properties(this, _, result, _, _) }
 
   /** Holds if the name of this member is computed by an impure expression. */
-  predicate hasImpureNameExpr() { this.isComputed() and this.getNameExpr().isImpure() }
+  predicate hasImpureNameExpr() { isComputed() and getNameExpr().isImpure() }
 
   /**
    * Gets the `i`th decorator applied to this member.
@@ -567,7 +560,7 @@ class MemberDeclaration extends @property, Documentable {
    * For example, a method of the form `@A @B m() { ... }` has
    * `@A` as its 0th decorator and `@B` as its first decorator.
    */
-  Decorator getDecorator(int i) { result = this.getChildExpr(-(i + 1)) }
+  Decorator getDecorator(int i) { result = getChildExpr(-(i + 1)) }
 
   /**
    * Gets a decorator applied to this member.
@@ -575,27 +568,27 @@ class MemberDeclaration extends @property, Documentable {
    * For example, a method of the form `@A @B m() { ... }` has
    * decorators `@A` and `@B`.
    */
-  Decorator getADecorator() { result = this.getDecorator(_) }
+  Decorator getADecorator() { result = getDecorator(_) }
 
   override string toString() { properties(this, _, _, _, result) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = this.getNameExpr().getFirstControlFlowNode()
+    result = getNameExpr().getFirstControlFlowNode()
   }
 
   /**
    * True if this is neither abstract, ambient, nor part of an overloaded method signature.
    */
   predicate isConcrete() {
-    not this.isAbstract() and
-    not this.isAmbient() and
+    not isAbstract() and
+    not isAmbient() and
     (this instanceof MethodDeclaration implies this.(MethodDeclaration).getBody().hasBody())
   }
 
   /**
    * True if this is abstract, ambient, or an overload signature.
    */
-  predicate isSignature() { not this.isConcrete() }
+  predicate isSignature() { not isConcrete() }
 
   override string getAPrimaryQlClass() { result = "MemberDeclaration" }
 }
@@ -622,7 +615,7 @@ class MemberDeclaration extends @property, Documentable {
  * ```
  */
 class MemberDefinition extends MemberDeclaration {
-  MemberDefinition() { this.isConcrete() }
+  MemberDefinition() { isConcrete() }
 }
 
 /**
@@ -638,7 +631,7 @@ class MemberDefinition extends MemberDeclaration {
  * ```
  */
 class MemberSignature extends MemberDeclaration {
-  MemberSignature() { this.isSignature() }
+  MemberSignature() { isSignature() }
 }
 
 /**
@@ -675,7 +668,7 @@ class MethodDeclaration extends MemberDeclaration {
   /**
    * Gets the body of this method.
    */
-  FunctionExpr getBody() { result = this.getChildExpr(1) }
+  FunctionExpr getBody() { result = getChildExpr(1) }
 
   /**
    * Holds if this method is overloaded, that is, there are multiple method
@@ -683,10 +676,10 @@ class MethodDeclaration extends MemberDeclaration {
    */
   predicate isOverloaded() {
     not this instanceof ConstructorDeclaration and
-    hasOverloadedMethod(this.getDeclaringType(), this.getName())
+    hasOverloadedMethod(getDeclaringType(), getName())
     or
     this instanceof ConstructorDeclaration and
-    hasOverloadedConstructor(this.getDeclaringClass())
+    hasOverloadedConstructor(getDeclaringClass())
   }
 
   /**
@@ -697,10 +690,10 @@ class MethodDeclaration extends MemberDeclaration {
    * the overload index is defined as if only one of them was concrete.
    */
   int getOverloadIndex() {
-    exists(ClassOrInterface type, string name, boolean static |
+    exists(ClassOrInterface type, string name |
       this =
         rank[result + 1](MethodDeclaration method, int i |
-          methodDeclaredInType(type, name, static, i, method)
+          methodDeclaredInType(type, name, i, method)
         |
           method order by i
         )
@@ -721,11 +714,10 @@ class MethodDeclaration extends MemberDeclaration {
  * Holds if the `index`th member of `type` is `method`, which has the given `name`.
  */
 private predicate methodDeclaredInType(
-  ClassOrInterface type, string name, boolean static, int index, MethodDeclaration method
+  ClassOrInterface type, string name, int index, MethodDeclaration method
 ) {
   not method instanceof ConstructorDeclaration and // distinguish methods named "constructor" from the constructor
   type.getMemberByIndex(index) = method and
-  static = method.getStaticAsBool() and
   method.getName() = name
 }
 
@@ -814,13 +806,13 @@ class MethodSignature extends MethodDeclaration, MemberSignature {
  */
 class ConstructorDeclaration extends MethodDeclaration {
   ConstructorDeclaration() {
-    not this.isComputed() and
-    not this.isStatic() and
-    this.getName() = "constructor"
+    not isComputed() and
+    not isStatic() and
+    getName() = "constructor"
   }
 
   /** Holds if this is a synthetic default constructor. */
-  predicate isSynthetic() { this.getLocation().isEmpty() }
+  predicate isSynthetic() { getLocation().isEmpty() }
 
   override string getAPrimaryQlClass() { result = "ConstructorDeclaration" }
 }
@@ -899,14 +891,7 @@ class SyntheticConstructor extends Function {
  * }
  * ```
  */
-abstract class AccessorMethodDeclaration extends MethodDeclaration {
-  /** Get the corresponding getter (if this is a setter) or setter (if this is a getter). */
-  AccessorMethodDeclaration getOtherAccessor() {
-    getterSetterPair(this, result)
-    or
-    getterSetterPair(result, this)
-  }
-}
+abstract class AccessorMethodDeclaration extends MethodDeclaration { }
 
 /**
  * A concrete accessor method definition in a class, that is, an accessor method with a function body.
@@ -969,9 +954,6 @@ abstract class AccessorMethodSignature extends MethodSignature, AccessorMethodDe
  */
 class GetterMethodDeclaration extends AccessorMethodDeclaration, @property_getter {
   override string getAPrimaryQlClass() { result = "GetterMethodDeclaration" }
-
-  /** Gets the correspinding setter declaration, if any. */
-  SetterMethodDeclaration getCorrespondingSetter() { getterSetterPair(this, result) }
 }
 
 /**
@@ -1034,9 +1016,6 @@ class GetterMethodSignature extends GetterMethodDeclaration, AccessorMethodSigna
  */
 class SetterMethodDeclaration extends AccessorMethodDeclaration, @property_setter {
   override string getAPrimaryQlClass() { result = "SetterMethodDeclaration" }
-
-  /** Gets the correspinding getter declaration, if any. */
-  GetterMethodDeclaration getCorrespondingGetter() { getterSetterPair(result, this) }
 }
 
 /**
@@ -1094,9 +1073,9 @@ class SetterMethodSignature extends SetterMethodDeclaration, AccessorMethodSigna
 class FieldDeclaration extends MemberDeclaration, @field {
   /** Gets the type annotation of this field, if any, such as `T` in `{ x: T }`. */
   TypeAnnotation getTypeAnnotation() {
-    result = this.getChildTypeExpr(2)
+    result = getChildTypeExpr(2)
     or
-    result = this.getDocumentation().getATagByTitle("type").getType()
+    result = getDocumentation().getATagByTitle("type").getType()
   }
 
   /** Holds if this is a TypeScript field annotated with the `readonly` keyword. */
@@ -1157,9 +1136,9 @@ class ParameterField extends FieldDeclaration, @parameter_field {
     )
   }
 
-  override Expr getNameExpr() { result = this.getParameter() }
+  override Expr getNameExpr() { result = getParameter() }
 
-  override TypeAnnotation getTypeAnnotation() { result = this.getParameter().getTypeAnnotation() }
+  override TypeAnnotation getTypeAnnotation() { result = getParameter().getTypeAnnotation() }
 }
 
 /**
@@ -1189,7 +1168,7 @@ class StaticInitializer extends MemberDefinition, @static_initializer {
  * Call signatures are either function call signatures or constructor call signatures.
  */
 class CallSignature extends @call_signature, MemberSignature {
-  FunctionExpr getBody() { result = this.getChildExpr(1) }
+  FunctionExpr getBody() { result = getChildExpr(1) }
 
   /** Gets the interface or function type that declares this call signature. */
   override InterfaceDefinition getDeclaringType() {
@@ -1211,7 +1190,7 @@ class CallSignature extends @call_signature, MemberSignature {
 class FunctionCallSignature extends @function_call_signature, CallSignature {
   /** Gets the index of this function call signature among the function call signatures in the enclosing type. */
   int getOverloadIndex() {
-    exists(ClassOrInterface type | type = this.getDeclaringType() |
+    exists(ClassOrInterface type | type = getDeclaringType() |
       this =
         rank[result + 1](FunctionCallSignature sig, int i |
           sig = type.getMemberByIndex(i)
@@ -1225,7 +1204,7 @@ class FunctionCallSignature extends @function_call_signature, CallSignature {
    * Holds if this function call signature is overloaded, that is, there are multiple function call
    * signatures declared in the enclosing type.
    */
-  predicate isOverloaded() { hasOverloadedFunctionCallSignature(this.getDeclaringType()) }
+  predicate isOverloaded() { hasOverloadedFunctionCallSignature(getDeclaringType()) }
 }
 
 /**
@@ -1242,7 +1221,7 @@ class FunctionCallSignature extends @function_call_signature, CallSignature {
 class ConstructorCallSignature extends @constructor_call_signature, CallSignature {
   /** Gets the index of this constructor call signature among the constructor call signatures in the enclosing type. */
   int getOverloadIndex() {
-    exists(ClassOrInterface type | type = this.getDeclaringType() |
+    exists(ClassOrInterface type | type = getDeclaringType() |
       this =
         rank[result + 1](ConstructorCallSignature sig, int i |
           sig = type.getMemberByIndex(i)
@@ -1256,7 +1235,7 @@ class ConstructorCallSignature extends @constructor_call_signature, CallSignatur
    * Holds if this constructor call signature is overloaded, that is, there are multiple constructor call
    * signatures declared in the enclosing type.
    */
-  predicate isOverloaded() { hasOverloadedConstructorCallSignature(this.getDeclaringType()) }
+  predicate isOverloaded() { hasOverloadedConstructorCallSignature(getDeclaringType()) }
 }
 
 /**
@@ -1271,7 +1250,7 @@ class ConstructorCallSignature extends @constructor_call_signature, CallSignatur
  * ```
  */
 class IndexSignature extends @index_signature, MemberSignature {
-  FunctionExpr getBody() { result = this.getChildExpr(1) }
+  FunctionExpr getBody() { result = getChildExpr(1) }
 
   /** Gets the interface or function type that declares this index signature. */
   override InterfaceDefinition getDeclaringType() {
@@ -1279,26 +1258,4 @@ class IndexSignature extends @index_signature, MemberSignature {
   }
 
   override string getAPrimaryQlClass() { result = "IndexSignature" }
-}
-
-private boolean getStaticness(AccessorMethodDefinition member) {
-  member.isStatic() and result = true
-  or
-  not member.isStatic() and result = false
-}
-
-pragma[nomagic]
-private AccessorMethodDefinition getAnAccessorFromClass(
-  ClassDefinition cls, string name, boolean static
-) {
-  result = cls.getMember(name) and
-  static = getStaticness(result)
-}
-
-pragma[nomagic]
-private predicate getterSetterPair(GetterMethodDeclaration getter, SetterMethodDeclaration setter) {
-  exists(ClassDefinition cls, string name, boolean static |
-    getter = getAnAccessorFromClass(cls, name, static) and
-    setter = getAnAccessorFromClass(cls, name, static)
-  )
 }

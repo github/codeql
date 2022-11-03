@@ -4,14 +4,13 @@
  */
 
 import python
-private import semmle.python.internal.CachedStages
+private import semmle.python.pointsto.Base
 
 cached
 module SsaSource {
   /** Holds if `v` is used as the receiver in a method call. */
   cached
   predicate method_call_refinement(Variable v, ControlFlowNode use, CallNode call) {
-    Stages::AST::ref() and
     use = v.getAUse() and
     call.getFunction().(AttrNode).getObject() = use and
     not test_contains(_, call)
@@ -41,28 +40,6 @@ module SsaSource {
     )
   }
 
-  /** Holds if `v` is defined by a capture pattern. */
-  cached
-  predicate pattern_capture_definition(Variable v, ControlFlowNode defn) {
-    exists(MatchCapturePattern capture, Name var |
-      capture.getVariable() = var and
-      var.getAFlowNode() = defn
-    |
-      var = v.getAStore()
-    )
-  }
-
-  /** Holds if `v` is defined by as the alias of an as-pattern. */
-  cached
-  predicate pattern_alias_definition(Variable v, ControlFlowNode defn) {
-    exists(MatchAsPattern pattern, Name var |
-      pattern.getAlias() = var and
-      var.getAFlowNode() = defn
-    |
-      var = v.getAStore()
-    )
-  }
-
   /** Holds if `v` is defined by multiple assignment at `defn`. */
   cached
   predicate multi_assignment_definition(Variable v, ControlFlowNode defn, int n, SequenceNode lhs) {
@@ -78,9 +55,7 @@ module SsaSource {
 
   /** Holds if `v` is defined by a `for` statement, the definition being `defn` */
   cached
-  deprecated predicate iteration_defined_variable(
-    Variable v, ControlFlowNode defn, ControlFlowNode sequence
-  ) {
+  predicate iteration_defined_variable(Variable v, ControlFlowNode defn, ControlFlowNode sequence) {
     exists(ForNode for | for.iterates(defn, sequence)) and
     defn.(NameNode).defines(v)
   }
@@ -152,7 +127,7 @@ module SsaSource {
     not test_contains(_, call)
   }
 
-  /** Holds if an attribute is deleted at `def` and `use` is the use of `v` for that deletion */
+  /** Holds if an attribute is deleted  at `def` and `use` is the use of `v` for that deletion */
   cached
   predicate attribute_deletion_refinement(Variable v, NameNode use, DeletionNode def) {
     use.uses(v) and

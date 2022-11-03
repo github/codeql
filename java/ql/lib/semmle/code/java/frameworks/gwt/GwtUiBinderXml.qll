@@ -5,7 +5,7 @@
 import java
 
 /** A GWT UiBinder XML template file with a `.ui.xml` suffix. */
-class GwtUiTemplateXmlFile extends XmlFile {
+class GwtUiTemplateXmlFile extends XMLFile {
   GwtUiTemplateXmlFile() { this.getBaseName().matches("%.ui.xml") }
 
   /** Gets the top-level UiBinder element. */
@@ -13,21 +13,21 @@ class GwtUiTemplateXmlFile extends XmlFile {
 }
 
 /** The top-level `<ui:UiBinder>` element of a GWT UiBinder template XML file. */
-class GwtUiBinderTemplateElement extends XmlElement {
+class GwtUiBinderTemplateElement extends XMLElement {
   GwtUiBinderTemplateElement() {
     this.getParent() instanceof GwtUiTemplateXmlFile and
     this.getName() = "UiBinder" and
-    this.getNamespace().getUri() = "urn:ui:com.google.gwt.uibinder"
+    this.getNamespace().getURI() = "urn:ui:com.google.gwt.uibinder"
   }
 }
 
 /**
  * A component reference within a GWT UiBinder template.
  */
-class GwtComponentTemplateElement extends XmlElement {
+class GwtComponentTemplateElement extends XMLElement {
   GwtComponentTemplateElement() {
     exists(GwtUiBinderTemplateElement templateElement | this = templateElement.getAChild*() |
-      this.getNamespace().getUri().substring(0, 10) = "urn:import"
+      this.getNamespace().getURI().substring(0, 10) = "urn:import"
     )
   }
 
@@ -36,7 +36,7 @@ class GwtComponentTemplateElement extends XmlElement {
    */
   Class getClass() {
     exists(string namespace |
-      namespace = this.getNamespace().getUri() and
+      namespace = this.getNamespace().getURI() and
       result.getQualifiedName() = namespace.substring(11, namespace.length()) + "." + this.getName()
     )
   }

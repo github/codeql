@@ -3,6 +3,7 @@
  */
 
 import java
+private import semmle.code.java.ControlFlowGraph
 
 /*
  * Predicates for basic-block-level dominance.

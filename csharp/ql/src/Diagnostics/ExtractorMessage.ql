@@ -1,7 +1,9 @@
 /**
  * @name Extraction message
  * @description An error message reported by the extractor. This could lead to inaccurate results.
- * @kind diagnostic
+ * @kind problem
+ * @problem.severity recommendation
+ * @precision high
  * @id cs/extraction-message
  * @tags internal non-attributable
  */

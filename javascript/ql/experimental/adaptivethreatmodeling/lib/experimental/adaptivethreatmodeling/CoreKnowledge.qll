@@ -61,7 +61,7 @@ predicate isArgumentToKnownLibrarySinkFunction(DataFlow::Node n) {
  * This corresponds to known sinks from security queries whose sources include remote flow and
  * DOM-based sources.
  */
-predicate isKnownExternalApiQuerySink(DataFlow::Node n) {
+predicate isKnownExternalAPIQuerySink(DataFlow::Node n) {
   n instanceof Xxe::Sink or
   n instanceof TaintedPath::Sink or
   n instanceof XpathInjection::Sink or
@@ -86,14 +86,11 @@ predicate isKnownExternalApiQuerySink(DataFlow::Node n) {
   n instanceof HttpToFileAccess::Sink
 }
 
-/** DEPRECATED: Alias for isKnownExternalApiQuerySink */
-deprecated predicate isKnownExternalAPIQuerySink = isKnownExternalApiQuerySink/1;
-
 /**
  * Holds if the node `n` is a known sink in a modeled library.
  */
 predicate isKnownLibrarySink(DataFlow::Node n) {
-  isKnownExternalApiQuerySink(n) or
+  isKnownExternalAPIQuerySink(n) or
   n instanceof CleartextLogging::Sink or
   n instanceof StackTraceExposure::Sink or
   n instanceof ShellCommandInjectionFromEnvironment::Sink or
@@ -106,9 +103,9 @@ predicate isKnownLibrarySink(DataFlow::Node n) {
  * Holds if the node `n` is known as the predecessor in a modeled flow step.
  */
 predicate isKnownStepSrc(DataFlow::Node n) {
-  TaintTracking::sharedTaintStep(n, _) or
-  DataFlow::SharedFlowStep::step(n, _) or
-  DataFlow::SharedFlowStep::step(n, _, _, _)
+  any(TaintTracking::AdditionalTaintStep s).step(n, _) or
+  any(DataFlow::AdditionalFlowStep s).step(n, _) or
+  any(DataFlow::AdditionalFlowStep s).step(n, _, _, _)
 }
 
 /**
@@ -160,9 +157,6 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
   any(LodashUnderscore::Member m).getACall().getAnArgument() = n and
   reason instanceof LodashUnderscoreArgumentReason
   or
-  any(JQuery::MethodCall m).getAnArgument() = n and
-  reason instanceof JQueryArgumentReason
-  or
   exists(ClientRequest r |
     r.getAnArgument() = n or n = r.getUrl() or n = r.getHost() or n = r.getADataNode()
   ) and
@@ -175,7 +169,7 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
   or
   n instanceof CryptographicKey and reason instanceof CryptographicKeyReason
   or
-  any(CryptographicOperation op).getInput() = n and
+  any(CryptographicOperation op).getInput().flow() = n and
   reason instanceof CryptographicOperationFlowReason
   or
   exists(DataFlow::CallNode call | n = call.getAnArgument() |
@@ -203,23 +197,12 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
     or
     call instanceof FileSystemAccess and reason instanceof FileSystemAccessReason
     or
-    // TODO database accesses are less well defined than database query sinks, so this may cover unmodeled sinks on existing database models
-    [
-      call, call.getAMethodCall()
-    /* command pattern where the query is built, and then exec'ed later */ ] instanceof
-      DatabaseAccess and
-    reason instanceof DatabaseAccessReason
+    call instanceof DatabaseAccess and reason instanceof DatabaseAccessReason
     or
-    call = DOM::domValueRef() and reason instanceof DomReason
+    call = DOM::domValueRef() and reason instanceof DOMReason
     or
     call.getCalleeName() = "next" and
     exists(DataFlow::FunctionNode f | call = f.getLastParameter().getACall()) and
     reason instanceof NextFunctionCallReason
-    or
-    call = DataFlow::globalVarRef("dojo").getAPropertyRead("require").getACall() and
-    reason instanceof DojoRequireReason
   )
-  or
-  (exists(Base64::Decode d | n = d.getInput()) or exists(Base64::Encode d | n = d.getInput())) and
-  reason instanceof Base64ManipulationReason
 }

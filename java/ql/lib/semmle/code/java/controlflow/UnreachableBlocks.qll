@@ -133,12 +133,12 @@ class ConstantExpr extends Expr {
       )
       or
       (
-        b instanceof ValueOrReferenceEqualsExpr and
+        b instanceof EQExpr and
         if left = right then result = true else result = false
       )
       or
       (
-        b instanceof ValueOrReferenceNotEqualsExpr and
+        b instanceof NEExpr and
         if left != right then result = true else result = false
       )
     )
@@ -212,7 +212,7 @@ class UnreachableBasicBlock extends BasicBlock {
     not exists(Callable c | c.getBody() = this) and
     not this instanceof Callable and
     not exists(Annotation a | a.getAChildExpr*() = this) and
-    not this.(Expr).getEnclosingStmt() instanceof AssertStmt and
+    not exists(AssertStmt a | a = this.(Expr).getEnclosingStmt()) and
     not this instanceof CatchClause
     or
     // Switch statements with a constant comparison expression may have unreachable cases.

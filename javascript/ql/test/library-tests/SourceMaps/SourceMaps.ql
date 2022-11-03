@@ -1,4 +1,4 @@
 import semmle.javascript.SourceMaps
 
 from SourceMappingComment smc
-select smc, smc.getSourceMappingUrl()
+select smc, smc.getSourceMappingURL()

@@ -4,75 +4,35 @@
 
 import java
 
-class SslClass extends RefType {
-  SslClass() {
-    exists(Class c | this.getAnAncestor() = c |
+class SSLClass extends RefType {
+  SSLClass() {
+    exists(Class c | this.getASupertype*() = c |
       c.hasQualifiedName("javax.net.ssl", _) or
       c.hasQualifiedName("javax.rmi.ssl", _)
     )
   }
 }
 
-/** DEPRECATED: Alias for SslClass */
-deprecated class SSLClass = SslClass;
-
 class X509TrustManager extends RefType {
   X509TrustManager() { this.hasQualifiedName("javax.net.ssl", "X509TrustManager") }
 }
 
-/** The `javax.net.ssl.HttpsURLConnection` class. */
-class HttpsUrlConnection extends RefType {
-  HttpsUrlConnection() { this.hasQualifiedName("javax.net.ssl", "HttpsURLConnection") }
+class HttpsURLConnection extends RefType {
+  HttpsURLConnection() { this.hasQualifiedName("javax.net.ssl", "HttpsURLConnection") }
 }
 
-/** DEPRECATED: Alias for HttpsUrlConnection */
-deprecated class HttpsURLConnection = HttpsUrlConnection;
-
-class SslSocketFactory extends RefType {
-  SslSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
+class SSLSocketFactory extends RefType {
+  SSLSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
 }
 
-/** DEPRECATED: Alias for SslSocketFactory */
-deprecated class SSLSocketFactory = SslSocketFactory;
-
-class SslContext extends RefType {
-  SslContext() { this.hasQualifiedName("javax.net.ssl", "SSLContext") }
+class SSLContext extends RefType {
+  SSLContext() { this.hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
 
-/** DEPRECATED: Alias for SslContext */
-deprecated class SSLContext = SslContext;
-
-/** The `javax.net.ssl.SslSession` class. */
-class SslSession extends RefType {
-  SslSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
+/** The `javax.net.ssl.SSLSession` class. */
+class SSLSession extends RefType {
+  SSLSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
-
-/** DEPRECATED: Alias for SslSession */
-deprecated class SSLSession = SslSession;
-
-/** The `javax.net.ssl.SslEngine` class. */
-class SslEngine extends RefType {
-  SslEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
-}
-
-/** DEPRECATED: Alias for SslEngine */
-deprecated class SSLEngine = SslEngine;
-
-/** The `javax.net.ssl.SslSocket` class. */
-class SslSocket extends RefType {
-  SslSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
-}
-
-/** DEPRECATED: Alias for SslSocket */
-deprecated class SSLSocket = SslSocket;
-
-/** The `javax.net.ssl.SslParameters` class. */
-class SslParameters extends RefType {
-  SslParameters() { this.hasQualifiedName("javax.net.ssl", "SSLParameters") }
-}
-
-/** DEPRECATED: Alias for SslParameters */
-deprecated class SSLParameters = SslParameters;
 
 class HostnameVerifier extends RefType {
   HostnameVerifier() { this.hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
@@ -92,52 +52,44 @@ class KeyPairGenerator extends RefType {
 class HostnameVerifierVerify extends Method {
   HostnameVerifierVerify() {
     this.hasName("verify") and
-    this.getDeclaringType().getAnAncestor() instanceof HostnameVerifier and
+    this.getDeclaringType().getASupertype*() instanceof HostnameVerifier and
     this.getParameterType(0) instanceof TypeString and
-    this.getParameterType(1) instanceof SslSession
+    this.getParameterType(1) instanceof SSLSession
   }
 }
 
 class TrustManagerCheckMethod extends Method {
   TrustManagerCheckMethod() {
     (this.hasName("checkClientTrusted") or this.hasName("checkServerTrusted")) and
-    this.getDeclaringType().getAnAncestor() instanceof X509TrustManager
+    this.getDeclaringType().getASupertype*() instanceof X509TrustManager
   }
 }
 
 class CreateSocket extends Method {
   CreateSocket() {
     this.hasName("createSocket") and
-    this.getDeclaringType() instanceof SslSocketFactory
+    this.getDeclaringType() instanceof SSLSocketFactory
   }
 }
 
 class GetSocketFactory extends Method {
   GetSocketFactory() {
     this.hasName("getSocketFactory") and
-    this.getDeclaringType() instanceof SslContext
-  }
-}
-
-/** The `createSSLEngine` method of the class `javax.net.ssl.SslContext`. */
-class CreateSslEngineMethod extends Method {
-  CreateSslEngineMethod() {
-    this.hasName("createSSLEngine") and
-    this.getDeclaringType() instanceof SslContext
+    this.getDeclaringType() instanceof SSLContext
   }
 }
 
 class SetConnectionFactoryMethod extends Method {
   SetConnectionFactoryMethod() {
     this.hasName("setSSLSocketFactory") and
-    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
+    this.getDeclaringType().getASupertype*() instanceof HttpsURLConnection
   }
 }
 
 class SetHostnameVerifierMethod extends Method {
   SetHostnameVerifierMethod() {
     this.hasName("setHostnameVerifier") and
-    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
+    this.getDeclaringType().getASupertype*() instanceof HttpsURLConnection
   }
 }
 
@@ -145,39 +97,7 @@ class SetHostnameVerifierMethod extends Method {
 class SetDefaultHostnameVerifierMethod extends Method {
   SetDefaultHostnameVerifierMethod() {
     this.hasName("setDefaultHostnameVerifier") and
-    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
-  }
-}
-
-/** The `beginHandshake` method of the class `javax.net.ssl.SslEngine`. */
-class BeginHandshakeMethod extends Method {
-  BeginHandshakeMethod() {
-    this.hasName("beginHandshake") and
-    this.getDeclaringType().getAnAncestor() instanceof SslEngine
-  }
-}
-
-/** The `wrap` method of the class `javax.net.ssl.SslEngine`. */
-class SslWrapMethod extends Method {
-  SslWrapMethod() {
-    this.hasName("wrap") and
-    this.getDeclaringType().getAnAncestor() instanceof SslEngine
-  }
-}
-
-/** The `unwrap` method of the class `javax.net.ssl.SslEngine`. */
-class SslUnwrapMethod extends Method {
-  SslUnwrapMethod() {
-    this.hasName("unwrap") and
-    this.getDeclaringType().getAnAncestor() instanceof SslEngine
-  }
-}
-
-/** The `getSession` method of the class `javax.net.ssl.SslSession`. */
-class GetSslSessionMethod extends Method {
-  GetSslSessionMethod() {
-    this.hasName("getSession") and
-    this.getDeclaringType().getAnAncestor() instanceof SslSession
+    this.getDeclaringType().getASupertype*() instanceof HttpsURLConnection
   }
 }
 
@@ -268,6 +188,34 @@ private string secureAlgorithmString(int i) {
 string getSecureAlgorithmRegex() {
   result = algorithmRegex(secureAlgorithmString(max(int i | exists(rankedSecureAlgorithm(i)))))
 }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getAnInsecureAlgorithmName()`
+ * instead.
+ */
+deprecated string algorithmBlacklist() { result = getAnInsecureAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use
+ * `getAnInsecureHashAlgorithmName()` instead.
+ */
+deprecated string hashAlgorithmBlacklist() { result = getAnInsecureHashAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getInsecureAlgorithmRegex()` instead.
+ */
+deprecated string algorithmBlacklistRegex() { result = getInsecureAlgorithmRegex() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getASecureAlgorithmName()`
+ * instead.
+ */
+deprecated string algorithmWhitelist() { result = getASecureAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getSecureAlgorithmRegex()` instead.
+ */
+deprecated string algorithmWhitelistRegex() { result = getSecureAlgorithmRegex() }
 
 /**
  * Any use of a cryptographic element that specifies an encryption

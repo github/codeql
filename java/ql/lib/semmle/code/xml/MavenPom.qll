@@ -17,7 +17,7 @@ private string normalize(string path) {
  * to retrieve child XML elements named "groupId", "artifactId"
  * and "version", typically contained in Maven POM XML files.
  */
-class ProtoPom extends XmlElement {
+class ProtoPom extends XMLElement {
   /** Gets a child XML element named "groupId". */
   Group getGroup() { result = this.getAChild() }
 
@@ -280,7 +280,7 @@ class PomDependency extends Dependency {
  * An XML element that provides access to its value string
  * in the context of Maven POM XML files.
  */
-class PomElement extends XmlElement {
+class PomElement extends XMLElement {
   /**
    * Gets the value associated with this element. If the value contains a placeholder only, it will be resolved.
    */
@@ -380,7 +380,7 @@ class DeclaredRepository extends PomElement {
    * Gets the url for this repository. If the `url` tag is present, this will
    * be the string contents of that tag.
    */
-  string getRepositoryUrl() { result = this.getAChild("url").(PomElement).getValue() }
+  string getUrl() { result = this.getAChild("url").(PomElement).getValue() }
 }
 
 /**
@@ -395,7 +395,9 @@ class MavenRepo extends Folder {
   /**
    * Gets a Jar file contained within this repository.
    */
-  File getAJarFile() { result = this.getAChildContainer*() and result.getExtension() = "jar" }
+  File getAJarFile() {
+    result = this.getAChildContainer*().(File) and result.getExtension() = "jar"
+  }
 
   /**
    * Gets any jar artifacts in this repository that match the POM project definition. This is an

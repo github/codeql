@@ -51,18 +51,23 @@ module Electron {
   private class BrowserObjectByType extends BrowserObject {
     BrowserObjectByType() {
       exists(string tp | tp = "BrowserWindow" or tp = "BrowserView" |
-        this.asExpr().getType().hasUnderlyingType("electron", tp)
+        asExpr().getType().hasUnderlyingType("electron", tp)
       )
     }
   }
 
-  private API::Node browserObject() { result.asSource() instanceof NewBrowserObject }
+  private DataFlow::SourceNode browserObject(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof NewBrowserObject
+    or
+    exists(DataFlow::TypeTracker t2 | result = browserObject(t2).track(t2, t))
+  }
 
   /**
    * A data flow node whose value may originate from a browser object instantiation.
    */
   private class BrowserObjectByFlow extends BrowserObject {
-    BrowserObjectByFlow() { browserObject().getAValueReachableFromSource() = this }
+    BrowserObjectByFlow() { browserObject(DataFlow::TypeTracker::end()).flowsTo(this) }
   }
 
   /**
@@ -73,7 +78,7 @@ module Electron {
   }
 
   /**
-   * Provides classes and predicates for modeling Electron inter-process communication (IPC).
+   * Provides classes and predicates for modelling Electron inter-process communication (IPC).
    * The Electron IPC are EventEmitters, but they also expose a number of methods on top of the standard EventEmitter.
    */
   private module IPC {
@@ -112,7 +117,7 @@ module Electron {
      */
     class ProcessSender extends Process {
       ProcessSender() {
-        exists(IpcSendRegistration reg | reg.getEmitter() instanceof MainProcess |
+        exists(IPCSendRegistration reg | reg.getEmitter() instanceof MainProcess |
           this = reg.getABoundCallbackParameter(1, 0).getAPropertyRead("sender")
         )
       }
@@ -123,31 +128,28 @@ module Electron {
      * Does mostly the same as an EventEmitter event handler,
      * except that values can be returned through the `event.returnValue` property.
      */
-    class IpcSendRegistration extends EventRegistration::DefaultEventRegistration,
+    class IPCSendRegistration extends EventRegistration::DefaultEventRegistration,
       DataFlow::MethodCallNode {
       override Process emitter;
 
-      IpcSendRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
+      IPCSendRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
 
       override DataFlow::Node getAReturnedValue() {
         result = this.getABoundCallbackParameter(1, 0).getAPropertyWrite("returnValue").getRhs()
       }
 
-      override IpcDispatch getAReturnDispatch() { result.getCalleeName() = "sendSync" }
+      override IPCDispatch getAReturnDispatch() { result.getCalleeName() = "sendSync" }
     }
-
-    /** DEPRECATED: Alias for IpcSendRegistration */
-    deprecated class IPCSendRegistration = IpcSendRegistration;
 
     /**
      * A dispatch of an IPC event.
      * An IPC event is sent from the renderer to the main process.
      * And a value can be returned through the `returnValue` property of the event (first parameter in the callback).
      */
-    class IpcDispatch extends EventDispatch::DefaultEventDispatch, DataFlow::InvokeNode {
+    class IPCDispatch extends EventDispatch::DefaultEventDispatch, DataFlow::InvokeNode {
       override Process emitter;
 
-      IpcDispatch() {
+      IPCDispatch() {
         exists(string methodName | methodName = "sendSync" or methodName = "send" |
           this = emitter.ref().getAMemberCall(methodName)
         )
@@ -160,13 +162,13 @@ module Electron {
        */
       override DataFlow::Node getSentItem(int i) {
         i >= 1 and
-        result = this.getArgument(i)
+        result = getArgument(i)
       }
 
       /**
        * Gets a registration that this dispatch can send an event to.
        */
-      override IpcSendRegistration getAReceiver() {
+      override IPCSendRegistration getAReceiver() {
         this.getEmitter() instanceof RendererProcess and
         result.getEmitter() instanceof MainProcess
         or
@@ -174,9 +176,6 @@ module Electron {
         result.getEmitter() instanceof RendererProcess
       }
     }
-
-    /** DEPRECATED: Alias for IpcDispatch */
-    deprecated class IPCDispatch = IpcDispatch;
   }
 
   /**
@@ -195,6 +194,8 @@ module Electron {
     abstract class Range extends NodeJSLib::NodeJSClientRequest::Range { }
   }
 
+  deprecated class CustomElectronClientRequest = ElectronClientRequest::Range;
+
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.ClientRequest`.
    */
@@ -205,8 +206,8 @@ module Electron {
     }
 
     override DataFlow::Node getUrl() {
-      result = this.getArgument(0) or
-      result = this.getOptionArgument(0, "url")
+      result = getArgument(0) or
+      result = getOptionArgument(0, "url")
     }
 
     override DataFlow::Node getHost() {
@@ -214,7 +215,7 @@ module Electron {
         name = "host" or
         name = "hostname"
       |
-        result = this.getOptionArgument(0, name)
+        result = getOptionArgument(0, name)
       )
     }
 

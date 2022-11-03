@@ -76,8 +76,8 @@ module TemplateObjectInjection {
   predicate usesVulnerableTemplateEngine(Express::RouterDefinition router) {
     // option 1: `app.set("view engine", "theEngine")`.
     // Express will load the engine automatically.
-    exists(DataFlow::MethodCallNode call |
-      router.ref().getAMethodCall() = call and
+    exists(MethodCallExpr call |
+      router.flowsTo(call.getReceiver()) and
       call.getMethodName() = "set" and
       call.getArgument(0).getStringValue() = "view engine" and
       call.getArgument(1).getStringValue() = getAVulnerableTemplateEngine()
@@ -91,11 +91,11 @@ module TemplateObjectInjection {
       DataFlow::MethodCallNode viewEngineCall
     |
       // `app.engine("name", engine)
-      router.ref().getAMethodCall() = registerCall and
+      router.flowsTo(registerCall.getReceiver().asExpr()) and
       registerCall.getMethodName() = ["engine", "register"] and
       engine = registerCall.getArgument(1).getALocalSource() and
       // app.set("view engine", "name")
-      router.ref().getAMethodCall() = viewEngineCall and
+      router.flowsTo(viewEngineCall.getReceiver().asExpr()) and
       viewEngineCall.getMethodName() = "set" and
       viewEngineCall.getArgument(0).getStringValue() = "view engine" and
       // The name set by the `app.engine("name")` call matches `app.set("view engine", "name")`.

@@ -5,8 +5,8 @@ private import Imports::OperandTag
 private import Imports::Overlap
 private import Imports::TInstruction
 private import Imports::RawIR as RawIR
-private import SsaInstructions
-private import SsaOperands
+private import SSAInstructions
+private import SSAOperands
 private import NewIR
 
 private class OldBlock = Reachability::ReachableBlock;
@@ -64,7 +64,7 @@ private module Cached {
     or
     instr = reusedPhiInstruction(_) and
     // Check that the phi instruction is *not* degenerate, but we can't use
-    // getDegeneratePhiOperand in the first stage with phi instructions
+    // getDegeneratePhiOperand in the first stage with phi instyructions
     not exists(
       unique(OldIR::PhiInputOperand operand |
         operand = instr.(OldIR::PhiInstruction).getAnInputOperand() and
@@ -112,7 +112,7 @@ private module Cached {
     exists(Alias::getResultMemoryLocation(oldInstruction))
     or
     // This result was already modeled by a previous iteration of SSA.
-    Alias::canReuseSsaForOldResult(oldInstruction)
+    Alias::canReuseSSAForOldResult(oldInstruction)
   }
 
   cached
@@ -140,6 +140,16 @@ private module Cached {
     exists(Alias::MemoryLocation location |
       instruction = getPhi(_, location) and
       not exists(location.getAllocation())
+    )
+  }
+
+  cached
+  Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
+    exists(OldInstruction oldInstruction, OldIR::RegisterOperand oldOperand |
+      oldInstruction = getOldInstruction(instruction) and
+      oldOperand = oldInstruction.getAnOperand() and
+      tag = oldOperand.getOperandTag() and
+      result = getNewInstruction(oldOperand.getAnyDef())
     )
   }
 
@@ -172,7 +182,7 @@ private module Cached {
    * unreachable, this predicate will recurse through any degenerate `Phi` instructions to find the
    * true definition.
    */
-  private Instruction getNewDefinitionFromOldSsa(OldIR::MemoryOperand oldOperand, Overlap overlap) {
+  private Instruction getNewDefinitionFromOldSSA(OldIR::MemoryOperand oldOperand, Overlap overlap) {
     exists(Overlap originalOverlap |
       originalOverlap = oldOperand.getDefinitionOverlap() and
       (
@@ -181,7 +191,7 @@ private module Cached {
         or
         exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
           phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
-          result = getNewDefinitionFromOldSsa(phiOperand, phiOperandOverlap) and
+          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
           overlap =
             combineOverlap(pragma[only_bind_out](phiOperandOverlap),
               pragma[only_bind_out](originalOverlap))
@@ -223,7 +233,7 @@ private module Cached {
     )
     or
     exists(OldIR::NonPhiMemoryOperand oldOperand |
-      result = getNewDefinitionFromOldSsa(oldOperand, overlap) and
+      result = getNewDefinitionFromOldSSA(oldOperand, overlap) and
       oldOperand.getUse() = instruction and
       tag = oldOperand.getOperandTag()
     )
@@ -297,13 +307,13 @@ private module Cached {
    * Gets the new definition instruction for the operand of `instr` that flows from the block
    * `newPredecessorBlock`, based on that operand's definition in the old IR.
    */
-  private Instruction getNewPhiOperandDefinitionFromOldSsa(
+  private Instruction getNewPhiOperandDefinitionFromOldSSA(
     Instruction instr, IRBlock newPredecessorBlock, Overlap overlap
   ) {
     exists(OldIR::PhiInstruction oldPhi, OldIR::PhiInputOperand oldOperand |
       oldPhi = getOldInstruction(instr) and
       oldOperand = oldPhi.getInputOperand(getOldBlock(newPredecessorBlock)) and
-      result = getNewDefinitionFromOldSsa(oldOperand, overlap)
+      result = getNewDefinitionFromOldSSA(oldOperand, overlap)
     )
   }
 
@@ -323,7 +333,7 @@ private module Cached {
       overlap = Alias::getOverlap(actualDefLocation, useLocation)
     )
     or
-    result = getNewPhiOperandDefinitionFromOldSsa(instr, newPredecessorBlock, overlap)
+    result = getNewPhiOperandDefinitionFromOldSSA(instr, newPredecessorBlock, overlap)
   }
 
   cached
@@ -402,28 +412,22 @@ private module Cached {
   }
 
   cached
-  Language::AST getInstructionAst(Instruction instr) {
-    result = getOldInstruction(instr).getAst()
+  Language::AST getInstructionAST(Instruction instr) {
+    result = getOldInstruction(instr).getAST()
     or
     exists(RawIR::Instruction blockStartInstr |
       instr = phiInstruction(blockStartInstr, _) and
-      result = blockStartInstr.getAst()
+      result = blockStartInstr.getAST()
     )
     or
     exists(RawIR::Instruction primaryInstr |
       instr = chiInstruction(primaryInstr) and
-      result = primaryInstr.getAst()
+      result = primaryInstr.getAST()
     )
     or
     exists(IRFunctionBase irFunc |
       instr = unreachedInstruction(irFunc) and result = irFunc.getFunction()
     )
-  }
-
-  /** DEPRECATED: Alias for getInstructionAst */
-  cached
-  deprecated Language::AST getInstructionAST(Instruction instr) {
-    result = getInstructionAst(instr)
   }
 
   cached
@@ -718,7 +722,7 @@ module DefUse {
   }
 
   /**
-   * Gets the rank index of a hypothetical use one instruction past the end of
+   * Gets the rank index of a hyphothetical use one instruction past the end of
    * the block. This index can be used to determine if a definition reaches the
    * end of the block, even if the definition is the last instruction in the
    * block.
@@ -971,40 +975,34 @@ module DefUse {
   }
 }
 
-predicate canReuseSsaForMemoryResult(Instruction instruction) {
+predicate canReuseSSAForMemoryResult(Instruction instruction) {
   exists(OldInstruction oldInstruction |
     oldInstruction = getOldInstruction(instruction) and
     (
       // The previous iteration said it was reusable, so we should mark it as reusable as well.
-      Alias::canReuseSsaForOldResult(oldInstruction)
+      Alias::canReuseSSAForOldResult(oldInstruction)
       or
       // The current alias analysis says it is reusable.
-      Alias::getResultMemoryLocation(oldInstruction).canReuseSsa()
+      Alias::getResultMemoryLocation(oldInstruction).canReuseSSA()
     )
   )
   or
   exists(Alias::MemoryLocation defLocation |
     // This is a `Phi` for a reusable location, so the result of the `Phi` is reusable as well.
     instruction = phiInstruction(_, defLocation) and
-    defLocation.canReuseSsa()
+    defLocation.canReuseSSA()
   )
   // We don't support reusing SSA for any location that could create a `Chi` instruction.
 }
 
-/** DEPRECATED: Alias for canReuseSsaForMemoryResult */
-deprecated predicate canReuseSSAForMemoryResult = canReuseSsaForMemoryResult/1;
-
 /**
- * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
+ * Expose some of the internal predicates to PrintSSA.qll. We do this by publically importing those modules in the
  * `DebugSSA` module, which is then imported by PrintSSA.
  */
-module DebugSsa {
+module DebugSSA {
   import PhiInsertion
   import DefUse
 }
-
-/** DEPRECATED: Alias for DebugSsa */
-deprecated module DebugSSA = DebugSsa;
 
 import CachedForDebugging
 
@@ -1040,7 +1038,7 @@ private module CachedForDebugging {
 
   private OldIR::IRTempVariable getOldTempVariable(IRTempVariable var) {
     result.getEnclosingFunction() = var.getEnclosingFunction() and
-    result.getAst() = var.getAst() and
+    result.getAST() = var.getAST() and
     result.getTag() = var.getTag()
   }
 
@@ -1063,7 +1061,7 @@ private module CachedForDebugging {
   int maxValue() { result = 2147483647 }
 }
 
-module SsaConsistency {
+module SSAConsistency {
   /**
    * Holds if a `MemoryOperand` has more than one `MemoryLocation` assigned by alias analysis.
    */
@@ -1116,16 +1114,13 @@ module SsaConsistency {
   }
 }
 
-/** DEPRECATED: Alias for SsaConsistency */
-deprecated module SSAConsistency = SsaConsistency;
-
 /**
  * Provides the portion of the parameterized IR interface that is used to construct the SSA stages
  * of the IR. The raw stage of the IR does not expose these predicates.
  * These predicates are all just aliases for predicates defined in the `Cached` module. This ensures
  * that all of SSA construction will be evaluated in the same stage.
  */
-module Ssa {
+module SSA {
   class MemoryLocation = Alias::MemoryLocation;
 
   predicate hasPhiInstruction = Cached::hasPhiInstructionCached/2;
@@ -1134,6 +1129,3 @@ module Ssa {
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

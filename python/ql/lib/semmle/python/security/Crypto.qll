@@ -3,12 +3,12 @@ import semmle.python.dataflow.TaintTracking
 private import semmle.python.security.SensitiveData
 private import semmle.crypto.Crypto as CryptoLib
 
-abstract deprecated class WeakCryptoSink extends TaintSink {
+abstract class WeakCryptoSink extends TaintSink {
   override predicate sinks(TaintKind taint) { taint instanceof SensitiveData }
 }
 
 /** Modeling the 'pycrypto' package https://github.com/dlitz/pycrypto (latest release 2013) */
-deprecated module Pycrypto {
+module Pycrypto {
   ModuleValue cipher(string name) { result = Module::named("Crypto.Cipher").attr(name) }
 
   class CipherInstance extends TaintKind {
@@ -58,7 +58,7 @@ deprecated module Pycrypto {
   }
 }
 
-deprecated module Cryptography {
+module Cryptography {
   ModuleValue ciphers() {
     result = Module::named("cryptography.hazmat.primitives.ciphers") and
     result.isPackage()
@@ -128,7 +128,7 @@ deprecated module Cryptography {
   }
 }
 
-deprecated private class CipherConfig extends TaintTracking::Configuration {
+private class CipherConfig extends TaintTracking::Configuration {
   CipherConfig() { this = "Crypto cipher config" }
 
   override predicate isSource(TaintTracking::Source source) {

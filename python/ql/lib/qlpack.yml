@@ -1,7 +1,7 @@
 name: codeql/python-all
-version: 0.6.3-dev
-groups: python
+version: 0.0.2
 dbscheme: semmlecode.python.dbscheme
 extractor: python
 library: true
-upgrades: upgrades
+dependencies:
+    codeql/python-upgrades: 0.0.2

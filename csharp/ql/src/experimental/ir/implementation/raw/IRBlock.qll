@@ -97,7 +97,7 @@ class IRBlockBase extends TIRBlock {
   /**
    * Gets the `Function` that contains this block.
    */
-  final Language::Declaration getEnclosingFunction() {
+  final Language::Function getEnclosingFunction() {
     result = getFirstInstruction(this).getEnclosingFunction()
   }
 }
@@ -161,13 +161,8 @@ class IRBlock extends IRBlockBase {
    */
   pragma[noinline]
   final IRBlock dominanceFrontier() {
-    this.getASuccessor() = result and
-    not this.immediatelyDominates(result)
-    or
-    exists(IRBlock prev | result = prev.dominanceFrontier() |
-      this.immediatelyDominates(prev) and
-      not this.immediatelyDominates(result)
-    )
+    this.dominates(result.getAPredecessor()) and
+    not this.strictlyDominates(result)
   }
 
   /**
@@ -205,14 +200,9 @@ class IRBlock extends IRBlockBase {
    * post-dominate block `B`, but block `A` does post-dominate an immediate successor of block `B`.
    */
   pragma[noinline]
-  final IRBlock postDominanceFrontier() {
-    this.getAPredecessor() = result and
-    not this.immediatelyPostDominates(result)
-    or
-    exists(IRBlock prev | result = prev.postDominanceFrontier() |
-      this.immediatelyPostDominates(prev) and
-      not this.immediatelyPostDominates(result)
-    )
+  final IRBlock postPominanceFrontier() {
+    this.postDominates(result.getASuccessor()) and
+    not this.strictlyPostDominates(result)
   }
 
   /**

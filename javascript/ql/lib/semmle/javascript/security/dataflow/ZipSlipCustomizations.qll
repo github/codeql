@@ -97,29 +97,6 @@ module ZipSlip {
     }
   }
 
-  private import semmle.javascript.DynamicPropertyAccess as DynamicPropertyAccess
-
-  /** A object key in the JSZip files object */
-  class JSZipFilesSource extends Source instanceof DynamicPropertyAccess::EnumeratedPropName {
-    JSZipFilesSource() {
-      super.getSourceObject() =
-        API::moduleImport("jszip").getInstance().getMember("files").asSource()
-    }
-  }
-
-  /** A relative path from iterating the files in the JSZip object */
-  class JSZipFileSource extends Source {
-    JSZipFileSource() {
-      this =
-        API::moduleImport("jszip")
-            .getInstance()
-            .getMember(["forEach", "filter"])
-            .getParameter(0)
-            .getParameter(0)
-            .asSource()
-    }
-  }
-
   /** A call to `fs.createWriteStream`, as a sink for unsafe archive extraction. */
   class CreateWriteStreamSink extends Sink {
     CreateWriteStreamSink() {

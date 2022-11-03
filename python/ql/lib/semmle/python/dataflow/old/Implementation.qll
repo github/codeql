@@ -79,7 +79,7 @@ abstract class AttributePath extends TAttributePath {
   predicate noAttribute() { this = TNoAttribute() }
 }
 
-/** The `AttributePath` for no attribute. */
+/** AttributePath for no attribute. */
 class NoAttribute extends TNoAttribute, AttributePath {
   override string toString() { result = "no attribute" }
 
@@ -88,7 +88,7 @@ class NoAttribute extends TNoAttribute, AttributePath {
   override AttributePath fromAttribute(string name) { none() }
 }
 
-/** The `AttributePath` for an attribute. */
+/** AttributePath for an attribute. */
 class NamedAttributePath extends TAttribute, AttributePath {
   override string toString() {
     exists(string attr |
@@ -124,8 +124,8 @@ newtype TTaintTrackingNode =
   }
 
 /**
- * A class representing the (node, context, path, kind) tuple.
- * Used for context-sensitive path-aware taint-tracking.
+ * Class representing the (node, context, path, kind) tuple.
+ *  Used for context-sensitive path-aware taint-tracking.
  */
 class TaintTrackingNode extends TTaintTrackingNode {
   /** Gets a textual representation of this element. */
@@ -250,7 +250,7 @@ class TaintTrackingImplementation extends string {
   }
 
   /**
-   * Hold if taint flows to `src` to `(node, context, path, kind)` in a single step, labelled with `edgeLabel` with this configuration.
+   * Hold if taint flows to `src` to `(node, context, path, kind)` in a single step, labelled with `egdeLabel` with this configuration.
    * `edgeLabel` is purely informative.
    */
   predicate flowStep(
@@ -503,7 +503,7 @@ class TaintTrackingImplementation extends string {
     TaintKind kind, string edgeLabel
   ) {
     exists(PythonFunctionValue init, EssaVariable self, TaintTrackingContext callee |
-      this.instantiationCall(node.asCfgNode(), src, init, context, callee) and
+      instantiationCall(node.asCfgNode(), src, init, context, callee) and
       this.(EssaTaintTracking).taintedDefinition(_, self.getDefinition(), callee, path, kind) and
       self.getSourceVariable().(Variable).isSelf() and
       BaseFlow::reaches_exit(self) and
@@ -789,9 +789,9 @@ private class EssaTaintTracking extends string {
     TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path,
     TaintKind kind
   ) {
-    this.taintedPiNodeOneway(src, defn, context, path, kind)
+    taintedPiNodeOneway(src, defn, context, path, kind)
     or
-    this.taintedPiNodeBothways(src, defn, context, path, kind)
+    taintedPiNodeBothways(src, defn, context, path, kind)
   }
 
   pragma[noinline]
@@ -802,7 +802,7 @@ private class EssaTaintTracking extends string {
     exists(DataFlow::Node srcnode, ControlFlowNode use |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense()) and
-      defn.getSense() = this.testEvaluates(defn, defn.getTest(), use, src)
+      defn.getSense() = testEvaluates(defn, defn.getTest(), use, src)
     )
   }
 
@@ -898,7 +898,23 @@ private class EssaTaintTracking extends string {
       )
     )
     or
-    result = this.testEvaluates(defn, not_operand(test), use, src).booleanNot()
+    result = testEvaluates(defn, not_operand(test), use, src).booleanNot()
+  }
+
+  /**
+   * Holds if `test` is the test in a branch and `use` is that test
+   * with all the `not` prefixes removed.
+   */
+  private predicate boolean_filter(ControlFlowNode test, ControlFlowNode use) {
+    any(PyEdgeRefinement ref).getTest() = test and
+    (
+      use = test
+      or
+      exists(ControlFlowNode notuse |
+        boolean_filter(test, notuse) and
+        use = not_operand(notuse)
+      )
+    )
   }
 }
 
@@ -975,7 +991,7 @@ int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_de
 }
 
 module Implementation {
-  /** Holds if `tonode` is a call that returns a copy (or similar) of the argument `fromnode` */
+  /* A call that returns a copy (or similar) of the argument */
   predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getObject("copy") = fromnode
     or

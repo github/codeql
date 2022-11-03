@@ -13,7 +13,7 @@
 import java
 
 class NewStringBufferOrBuilder extends ClassInstanceExpr {
-  NewStringBufferOrBuilder() { this.getConstructedType() instanceof StringBuildingType }
+  NewStringBufferOrBuilder() { getConstructedType() instanceof StringBuildingType }
 
   string getName() { result = this.getConstructedType().getName() }
 }

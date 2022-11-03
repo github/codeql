@@ -1,5 +1,5 @@
 /**
- * Provides classes for modeling the Node.js standard library.
+ * Provides classes for modelling the Node.js standard library.
  */
 
 import javascript
@@ -49,7 +49,7 @@ module NodeJSLib {
   /**
    * Holds if `call` is an invocation of `http.createServer` or `https.createServer`.
    */
-  predicate isCreateServer(DataFlow::CallNode call) {
+  predicate isCreateServer(CallExpr call) {
     exists(string pkg, string fn |
       pkg = "http" and fn = "createServer"
       or
@@ -60,39 +60,17 @@ module NodeJSLib {
       or
       pkg = "http2" and fn = "createSecureServer"
     |
-      call = DataFlow::moduleMember(pkg, fn).getAnInvocation()
+      call = DataFlow::moduleMember(pkg, fn).getAnInvocation().asExpr()
     )
   }
 
   /**
-   * DEPRECATED: Use `ResponseNode` instead.
    * A Node.js HTTP response.
    *
    * A server library that provides an (enhanced) NodesJS HTTP response
    * object should implement a library specific subclass of this class.
    */
-  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
-    ResponseExpr() { this.flow() instanceof ResponseNode }
-  }
-
-  /**
-   * A Node.js HTTP response.
-   *
-   * A server library that provides an (enhanced) NodesJS HTTP response
-   * object should implement a library specific subclass of this class.
-   */
-  abstract class ResponseNode extends Http::Servers::StandardResponseNode { }
-
-  /**
-   * DEPRECATED: Use `RequestNode` instead.
-   * A Node.js HTTP request.
-   *
-   * A server library that provides an (enhanced) NodesJS HTTP request
-   * object should implement a library specific subclass of this class.
-   */
-  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
-    RequestExpr() { this.flow() instanceof RequestNode }
-  }
+  abstract class ResponseExpr extends HTTP::Servers::StandardResponseExpr { }
 
   /**
    * A Node.js HTTP request.
@@ -100,7 +78,7 @@ module NodeJSLib {
    * A server library that provides an (enhanced) NodesJS HTTP request
    * object should implement a library specific subclass of this class.
    */
-  abstract class RequestNode extends Http::Servers::StandardRequestNode { }
+  abstract class RequestExpr extends HTTP::Servers::StandardRequestExpr { }
 
   /**
    * A function used as an Node.js server route handler.
@@ -109,16 +87,16 @@ module NodeJSLib {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    DataFlow::ParameterNode getRequestParameter() { result = this.getParameter(0) }
+    Parameter getRequestParameter() { result = getFunction().getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    DataFlow::ParameterNode getResponseParameter() { result = this.getParameter(1) }
+    Parameter getResponseParameter() { result = getFunction().getParameter(1) }
   }
 
   /**
@@ -131,7 +109,7 @@ module NodeJSLib {
   /**
    * A Node.js response source.
    */
-  abstract class ResponseSource extends Http::Servers::ResponseSource { }
+  abstract class ResponseSource extends HTTP::Servers::ResponseSource { }
 
   /**
    * A standard Node.js response source, that is, the response parameter of a
@@ -140,7 +118,7 @@ module NodeJSLib {
   private class StandardResponseSource extends ResponseSource {
     RouteHandler rh;
 
-    StandardResponseSource() { this = rh.getResponseParameter() }
+    StandardResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
 
     /**
      * Gets the route handler that provides this response.
@@ -151,7 +129,7 @@ module NodeJSLib {
   /**
    * A Node.js request source.
    */
-  abstract class RequestSource extends Http::Servers::RequestSource { }
+  abstract class RequestSource extends HTTP::Servers::RequestSource { }
 
   /**
    * A standard Node.js request source, that is, the request parameter of a
@@ -160,7 +138,7 @@ module NodeJSLib {
   private class StandardRequestSource extends RequestSource {
     RouteHandler rh;
 
-    StandardRequestSource() { this = rh.getRequestParameter() }
+    StandardRequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
 
     /**
      * Gets the route handler that handles this request.
@@ -169,52 +147,36 @@ module NodeJSLib {
   }
 
   /**
-   * DEPRECATED: Use `BuiltinRouteHandlerResponseNode` instead.
    * A builtin Node.js HTTP response.
    */
-  deprecated private class BuiltinRouteHandlerResponseExpr extends ResponseExpr {
+  private class BuiltinRouteHandlerResponseExpr extends ResponseExpr {
     BuiltinRouteHandlerResponseExpr() { src instanceof ResponseSource }
   }
 
   /**
-   * A builtin Node.js HTTP response.
-   */
-  private class BuiltinRouteHandlerResponseNode extends ResponseNode {
-    BuiltinRouteHandlerResponseNode() { src instanceof ResponseSource }
-  }
-
-  /**
-   * DEPRECATED: Use `BuiltinRouteHandlerRequestNode` instead.
    * A builtin Node.js HTTP request.
    */
-  deprecated private class BuiltinRouteHandlerRequestExpr extends RequestExpr {
+  private class BuiltinRouteHandlerRequestExpr extends RequestExpr {
     BuiltinRouteHandlerRequestExpr() { src instanceof RequestSource }
-  }
-
-  /**
-   * A builtin Node.js HTTP request.
-   */
-  private class BuiltinRouteHandlerRequestNode extends RequestNode {
-    BuiltinRouteHandlerRequestNode() { src instanceof RequestSource }
   }
 
   /**
    * An access to a user-controlled Node.js request input.
    */
-  private class RequestInputAccess extends Http::RequestInputAccess {
-    RequestNode request;
+  private class RequestInputAccess extends HTTP::RequestInputAccess {
+    RequestExpr request;
     string kind;
 
     RequestInputAccess() {
-      // `req.url` / `req.body`
-      kind = ["url", "body"] and
-      this.(DataFlow::PropRead).accesses(request, kind)
+      // `req.url`
+      kind = "url" and
+      this.asExpr().(PropAccess).accesses(request, "url")
       or
-      exists(DataFlow::PropRead headers |
+      exists(PropAccess headers |
         // `req.headers.cookie`
         kind = "cookie" and
         headers.accesses(request, "headers") and
-        this.(DataFlow::PropRead).accesses(headers, "cookie")
+        this.asExpr().(PropAccess).accesses(headers, "cookie")
       )
       or
       exists(RequestHeaderAccess access | this = access |
@@ -223,7 +185,7 @@ module NodeJSLib {
       )
     }
 
-    override Http::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = kind }
   }
@@ -231,15 +193,15 @@ module NodeJSLib {
   /**
    * An access to an HTTP header (other than "Cookie") on an incoming Node.js request object.
    */
-  private class RequestHeaderAccess extends Http::RequestHeaderAccess {
-    RequestNode request;
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+    RequestExpr request;
 
     RequestHeaderAccess() {
-      exists(DataFlow::PropRead headers, string name |
+      exists(PropAccess headers, string name |
         // `req.headers.<name>`
         name != "cookie" and
         headers.accesses(request, "headers") and
-        this.(DataFlow::PropRead).accesses(headers, name)
+        this.asExpr().(PropAccess).accesses(headers, name)
       )
     }
 
@@ -247,72 +209,64 @@ module NodeJSLib {
       result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
     }
 
-    override Http::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = "header" }
 
-    RequestNode getRequest() { result = request }
+    RequestExpr getRequest() { result = request }
   }
 
-  class RouteSetup extends DataFlow::CallNode, Http::Servers::StandardRouteSetup {
+  class RouteSetup extends CallExpr, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-    DataFlow::Node handler;
+    Expr handler;
 
     RouteSetup() {
-      server.ref() = this and
-      handler = this.getLastArgument()
+      server.flowsTo(this) and
+      handler = getLastArgument()
       or
-      server.ref().getAMethodCall() = this and
-      this.getCalleeName().regexpMatch("on(ce)?") and
-      this.getArgument(0).getStringValue() = "request" and
-      handler = this.getArgument(1)
+      server.flowsTo(getReceiver()) and
+      this.(MethodCallExpr).getMethodName().regexpMatch("on(ce)?") and
+      getArgument(0).getStringValue() = "request" and
+      handler = getArgument(1)
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
+      result = getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = handler.getALocalSource()
+      result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ |
-        succ = this.getARouteHandler(t2)
-      |
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
         result = succ.backtrack(t2, t)
         or
         t = t2 and
-        Http::routeHandlerStep(result, succ)
+        HTTP::routeHandlerStep(result, succ)
       )
     }
 
-    override DataFlow::Node getServer() { result = server }
-
-    /**
-     * DEPRECATED: Use `getRouteHandlerNode` instead.
-     * Gets the expression for the handler registered by this setup.
-     */
-    deprecated Expr getRouteHandlerExpr() { result = handler.asExpr() }
+    override Expr getServer() { result = server }
 
     /**
      * Gets the expression for the handler registered by this setup.
      */
-    DataFlow::Node getRouteHandlerNode() { result = handler }
+    Expr getRouteHandlerExpr() { result = handler }
   }
 
-  abstract private class HeaderDefinition extends Http::Servers::StandardHeaderDefinition {
-    ResponseNode r;
+  abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
+    ResponseExpr r;
 
-    HeaderDefinition() { this.getReceiver() = r }
+    HeaderDefinition() { astNode.getReceiver() = r }
 
-    override Http::RouteHandler getRouteHandler() { result = r.getRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = r.getRouteHandler() }
   }
 
   /**
    * A call to the `setHeader` method of an HTTP response.
    */
   private class SetHeader extends HeaderDefinition {
-    SetHeader() { this.getMethodName() = "setHeader" }
+    SetHeader() { astNode.getMethodName() = "setHeader" }
   }
 
   /**
@@ -320,15 +274,15 @@ module NodeJSLib {
    */
   private class WriteHead extends HeaderDefinition {
     WriteHead() {
-      this.getMethodName() = "writeHead" and
-      this.getNumArgument() >= 1
+      astNode.getMethodName() = "writeHead" and
+      astNode.getNumArgument() >= 1
     }
 
-    override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
-      this.getNumArgument() > 1 and
+    override predicate definesExplicitly(string headerName, Expr headerValue) {
+      astNode.getNumArgument() > 1 and
       exists(DataFlow::SourceNode headers, string header |
-        headers.flowsTo(this.getLastArgument()) and
-        headers.hasPropertyWrite(header, headerValue) and
+        headers.flowsToExpr(astNode.getLastArgument()) and
+        headers.hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
         headerName = header.toLowerCase()
       )
     }
@@ -403,33 +357,34 @@ module NodeJSLib {
    * An expression passed as the first argument to the `write` or `end` method
    * of an HTTP response.
    */
-  private class ResponseSendArgument extends Http::ResponseSendArgument {
-    Http::RouteHandler rh;
+  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
+    HTTP::RouteHandler rh;
 
     ResponseSendArgument() {
-      exists(DataFlow::MethodCallNode mcn, string m | m = "write" or m = "end" |
-        mcn.calls(any(ResponseNode e | e.getRouteHandler() = rh), m) and
-        this = mcn.getArgument(0) and
+      exists(MethodCallExpr mce, string m | m = "write" or m = "end" |
+        mce.calls(any(ResponseExpr e | e.getRouteHandler() = rh), m) and
+        this = mce.getArgument(0) and
         // don't mistake callback functions as data
         not this.analyze().getAValue() instanceof AbstractFunction
       )
     }
 
-    override Http::RouteHandler getRouteHandler() { result = rh }
+    override HTTP::RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
    * An expression that creates a new Node.js server.
    */
-  class ServerDefinition extends Http::Servers::StandardServerDefinition {
+  class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
     ServerDefinition() { isCreateServer(this) }
   }
 
   /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
-  class Credentials extends CredentialsNode {
+  class Credentials extends CredentialsExpr {
     Credentials() {
       exists(string http | http = "http" or http = "https" |
-        this = DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth")
+        this =
+          DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth").asExpr()
       )
     }
 
@@ -451,13 +406,11 @@ module NodeJSLib {
 
   /**
    * Holds if the `i`th parameter of method `methodName` of the Node.js
-   * `fs` module or the `fs-extra` module might represent a file path.
+   * `fs` module might represent a file path.
    *
-   * For `fs`, we determine this by looking for an externs declaration for
+   * We determine this by looking for an externs declaration for
    * `fs.methodName` where the `i`th parameter's name is `filename` or
    * `path` or a variation thereof.
-   *
-   * For `fs-extra`, we use a manually maintained list.
    */
   private predicate fsFileParam(string methodName, int i) {
     exists(ExternalMemberDecl decl, Function f, JSDocParamTag p, string n |
@@ -468,47 +421,6 @@ module NodeJSLib {
     |
       n = "filename" or n.regexpMatch("(old|new|src|dst|)path")
     )
-    or
-    fsExtraExtensionFileParam(methodName, i)
-  }
-
-  /**
-   * Holds if `methodName` is a function defined in the `fs-extra` library
-   * as an extension to node.js' `fs` module and parameter `i` of of the
-   * method might represent a file path.
-   */
-  private predicate fsExtraExtensionFileParam(string methodName, int i) {
-    methodName = ["copy", "copySync", "copyFile"] and i = [0, 1]
-    or
-    methodName = ["move", "moveSync"] and i = [0, 1]
-    or
-    methodName = ["createFile", "createFileSync"] and i = 0
-    or
-    methodName = ["createSymLink", "createSymlinkSync"] and i = [0, 1]
-    or
-    methodName = ["ensureDir", "ensureDirSync"] and i = 0
-    or
-    methodName = ["mkdirs", "mkdirp", "mkdirsSync", "mkdirpSync"] and i = 0
-    or
-    methodName = ["outputFile", "outputFileSync"] and i = 0
-    or
-    methodName = ["readJson", "readJSON", "readJsonSync", "readJSONSync"] and i = 0
-    or
-    methodName = ["remove", "removeSync"] and i = 0
-    or
-    methodName =
-      ["outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync"] and
-    i = 0
-    or
-    methodName = ["ensureFile", "ensureFileSync"] and i = 0
-    or
-    methodName = ["ensureLink", "createLink", "ensureLinkSync", "createLinkSync"] and i = [0, 1]
-    or
-    methodName = ["ensureSymlink", "ensureSymlinkSync"] and i = [0, 1]
-    or
-    methodName = ["emptyDir", "emptyDirSync"] and i = 0
-    or
-    methodName = ["pathExists", "pathExistsSync"] and i = 0
   }
 
   /**
@@ -517,17 +429,17 @@ module NodeJSLib {
    * that receives the data.
    *
    * We determine this by looking for an externs declaration for
-   * `fs.methodName` where the `i`th parameter's name (`paramName`) is `data` or
+   * `fs.methodName` where the `i`th parameter's name is `data` or
    * `buffer` or a `callback`.
    */
-  private predicate fsDataParam(string methodName, int i, string paramName) {
+  private predicate fsDataParam(string methodName, int i, string n) {
     exists(ExternalMemberDecl decl, Function f, JSDocParamTag p |
       decl.hasQualifiedName("fs", methodName) and
       f = decl.getInit() and
       p.getDocumentedParameter() = f.getParameter(i).getAVariable() and
-      paramName = p.getName().toLowerCase()
+      n = p.getName().toLowerCase()
     |
-      paramName = ["data", "buffer", "callback"]
+      n = "data" or n = "buffer" or n = "callback"
     )
   }
 
@@ -536,7 +448,7 @@ module NodeJSLib {
    */
   module FS {
     /**
-     * Gets a member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+     * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
      */
     DataFlow::SourceNode moduleMember(string member) {
       result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
@@ -604,7 +516,7 @@ module NodeJSLib {
     string getMethodName() { result = methodName }
 
     override DataFlow::Node getAPathArgument() {
-      exists(int i | fsFileParam(methodName, i) | result = this.getArgument(i))
+      exists(int i | fsFileParam(methodName, i) | result = getArgument(i))
     }
   }
 
@@ -623,32 +535,37 @@ module NodeJSLib {
         if paramName = "callback"
         then
           exists(DataFlow::ParameterNode p |
-            p = this.getCallback(i).getAParameter() and
+            p = getCallback(i).getAParameter() and
             p.getName().regexpMatch("(?i)data|buffer|string") and
             result = p
           )
-        else result = this.getArgument(i)
+        else result = getArgument(i)
       )
     }
   }
 
   /** A file system read. */
   private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
-    NodeJSFileSystemAccessRead() { methodName = ["read", "readSync", "readFile", "readFileSync"] }
+    NodeJSFileSystemAccessRead() {
+      methodName = "read" or
+      methodName = "readSync" or
+      methodName = "readFile" or
+      methodName = "readFileSync"
+    }
 
     override DataFlow::Node getADataNode() {
-      if methodName.matches("%Sync")
+      if methodName.regexpMatch(".*Sync")
       then result = this
       else
         exists(int i, string paramName | fsDataParam(methodName, i, paramName) |
           if paramName = "callback"
           then
             exists(DataFlow::ParameterNode p |
-              p = this.getCallback(i).getAParameter() and
+              p = getCallback(i).getAParameter() and
               p.getName().regexpMatch("(?i)data|buffer|string") and
               result = p
             )
-          else result = this.getArgument(i)
+          else result = getArgument(i)
         )
     }
   }
@@ -669,7 +586,7 @@ module NodeJSLib {
       )
     }
 
-    override DataFlow::Node getADataNode() { result = this.getArgument(0) }
+    override DataFlow::Node getADataNode() { result = getArgument(0) }
 
     override DataFlow::Node getAPathArgument() { result = stream.getAPathArgument() }
   }
@@ -692,11 +609,11 @@ module NodeJSLib {
       result = this
       or
       method = "pipe" and
-      result = this.getArgument(0)
+      result = getArgument(0)
       or
       method = EventEmitter::on() and
-      this.getArgument(0).mayHaveStringValue("data") and
-      result = this.getCallback(1).getParameter(0)
+      getArgument(0).mayHaveStringValue("data") and
+      result = getCallback(1).getParameter(0)
     }
 
     override DataFlow::Node getAPathArgument() { result = stream.getAPathArgument() }
@@ -782,19 +699,17 @@ module NodeJSLib {
         methodName = ["execFile", "execFileSync", "spawn", "spawnSync", "fork"]
       ) and
       // all of the above methods take the command as their first argument
-      result = this.getParameter(0).asSink()
+      result = getParameter(0).getARhs()
     }
 
-    override DataFlow::Node getACommandArgument() { result = this.getACommandArgument(_) }
+    override DataFlow::Node getACommandArgument() { result = getACommandArgument(_) }
 
-    override predicate isShellInterpreted(DataFlow::Node arg) {
-      arg = this.getACommandArgument(true)
-    }
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument(true) }
 
     override DataFlow::Node getArgumentList() {
       methodName = ["execFile", "execFileSync", "fork", "spawn", "spawnSync"] and
       // all of the above methods take the argument list as their second argument
-      result = this.getParameter(1).asSink()
+      result = getParameter(1).getARhs()
     }
 
     override predicate isSync() { methodName.matches("%Sync") }
@@ -802,16 +717,16 @@ module NodeJSLib {
     override DataFlow::Node getOptionsArg() {
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
       not result.getALocalSource() instanceof DataFlow::ArrayCreationNode and // looks like argumentlist
-      not result = this.getParameter(0).asSink() and
+      not result = getParameter(0).getARhs() and
       // fork/spawn and all sync methos always has options as the last argument
       if
-        methodName.matches("fork%") or
-        methodName.matches("spawn%") or
-        methodName.matches("%Sync")
-      then result = this.getLastArgument()
+        methodName.regexpMatch("fork.*") or
+        methodName.regexpMatch("spawn.*") or
+        methodName.regexpMatch(".*Sync")
+      then result = getLastArgument()
       else
         // the rest (exec/execFile) has the options argument as their second last.
-        result = this.getParameter(this.getNumArgument() - 2).asSink()
+        result = getParameter(this.getNumArgument() - 2).getARhs()
     }
   }
 
@@ -820,7 +735,7 @@ module NodeJSLib {
    *
    * For example, this could be the function `function(req, res){...}`.
    */
-  class RouteHandlerCandidate extends Http::RouteHandlerCandidate {
+  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
     RouteHandlerCandidate() {
       exists(string request, string response |
         (request = "request" or request = "req") and
@@ -840,9 +755,14 @@ module NodeJSLib {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
+
+  /**
+   * DEPRECATED Use `VmModuleMemberInvocation` instead.
+   */
+  deprecated class VmModuleMethodCall = VmModuleMemberInvocation;
 
   /**
    * An invocation of a member from module `vm`
@@ -861,7 +781,7 @@ module NodeJSLib {
           "runInThisContext"
         ] and
       // all of the above methods/constructors take the command as their first argument
-      result = this.getArgument(0)
+      result = getArgument(0)
     }
   }
 
@@ -871,16 +791,16 @@ module NodeJSLib {
    * For example, this could be the call `server.on("request", handler)`
    * where it is unknown if `server` is a Node.js server.
    */
-  class RouteSetupCandidate extends Http::RouteSetupCandidate, DataFlow::MethodCallNode {
+  class RouteSetupCandidate extends HTTP::RouteSetupCandidate, DataFlow::MethodCallNode {
     DataFlow::ValueNode arg;
 
     RouteSetupCandidate() {
-      this.getMethodName() = "createServer" and
-      arg = this.getLastArgument()
+      getMethodName() = "createServer" and
+      arg = getLastArgument()
       or
-      this.getMethodName().regexpMatch("on(ce)?") and
-      this.getArgument(0).mayHaveStringValue("request") and
-      arg = this.getArgument(1)
+      getMethodName().regexpMatch("on(ce)?") and
+      getArgument(0).mayHaveStringValue("request") and
+      arg = getArgument(1)
     }
 
     override DataFlow::ValueNode getARouteHandlerArg() { result = arg }
@@ -902,6 +822,8 @@ module NodeJSLib {
     abstract class Range extends ClientRequest::Range { }
   }
 
+  deprecated class CustomNodeJSClientRequest = NodeJSClientRequest::Range;
+
   /**
    * A model of a URL request in the Node.js `http` library.
    */
@@ -912,11 +834,11 @@ module NodeJSLib {
       exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
         (moduleName = "http" or moduleName = "https") and
         (
-          callee = DataFlow::moduleMember(moduleName, any(Http::RequestMethodName m).toLowerCase())
+          callee = DataFlow::moduleMember(moduleName, any(HTTP::RequestMethodName m).toLowerCase())
           or
           callee = DataFlow::moduleMember(moduleName, "request")
         ) and
-        url = this.getArgument(0)
+        url = getArgument(0)
       )
     }
 
@@ -927,7 +849,7 @@ module NodeJSLib {
         name = "host" or
         name = "hostname"
       |
-        result = this.getOptionArgument(1, name)
+        result = getOptionArgument(1, name)
       )
     }
 
@@ -940,7 +862,7 @@ module NodeJSLib {
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       promise = false and
       exists(DataFlow::ParameterNode res, DataFlow::CallNode onData |
-        res = this.getCallback(1).getParameter(0) and
+        res = getCallback(1).getParameter(0) and
         onData = res.getAMethodCall(EventEmitter::on()) and
         onData.getArgument(0).mayHaveStringValue("data") and
         result = onData.getCallback(1).getParameter(0) and
@@ -1011,7 +933,7 @@ module NodeJSLib {
    * A data flow node that is a login callback for an HTTP or HTTPS request made by a Node.js process.
    */
   private class ClientRequestLoginHandler extends ClientRequestHandler {
-    ClientRequestLoginHandler() { this.getAHandledEvent() = "login" }
+    ClientRequestLoginHandler() { getAHandledEvent() = "login" }
   }
 
   /**
@@ -1037,9 +959,11 @@ module NodeJSLib {
   /**
    * A data flow node that is the username passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `username` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
-  private class ClientRequestLoginUsername extends CredentialsNode {
+  private class ClientRequestLoginUsername extends CredentialsExpr {
     ClientRequestLoginUsername() {
-      exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(0))
+      exists(ClientRequestLoginCallback callback |
+        this = callback.getACall().getArgument(0).asExpr()
+      )
     }
 
     override string getCredentialsKind() { result = "Node.js http(s) client login username" }
@@ -1048,9 +972,11 @@ module NodeJSLib {
   /**
    * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
-  private class ClientRequestLoginPassword extends CredentialsNode {
+  private class ClientRequestLoginPassword extends CredentialsExpr {
     ClientRequestLoginPassword() {
-      exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(1))
+      exists(ClientRequestLoginCallback callback |
+        this = callback.getACall().getArgument(1).asExpr()
+      )
     }
 
     override string getCredentialsKind() { result = "Node.js http(s) client login password" }
@@ -1109,7 +1035,7 @@ module NodeJSLib {
    */
   private class EventEmitterSubClass extends DataFlow::ClassNode {
     EventEmitterSubClass() {
-      this.getASuperClassNode() = getAnEventEmitterImport().getAValueReachableFromSource() or
+      this.getASuperClassNode() = getAnEventEmitterImport().getAUse() or
       this.getADirectSuperClass() instanceof EventEmitterSubClass
     }
   }
@@ -1190,30 +1116,30 @@ module NodeJSLib {
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and result = this
       or
-      exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
 
     /**
      * Gets a reference to this server.
      */
-    DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
   }
 
   /**
    * A connection opened on a NodeJS net server.
    */
   private class NodeJSNetServerConnection extends EventEmitter::Range {
+    NodeJSNetServer server;
+
     NodeJSNetServerConnection() {
-      exists(NodeJSNetServer server |
-        exists(DataFlow::MethodCallNode call |
-          call = server.ref().getAMethodCall("on") and
-          call.getArgument(0).mayHaveStringValue("connection")
-        |
-          this = call.getCallback(1).getParameter(0)
-        )
-        or
-        this = server.getCallback([0, 1]).getParameter(0)
+      exists(DataFlow::MethodCallNode call |
+        call = server.ref().getAMethodCall("on") and
+        call.getArgument(0).mayHaveStringValue("connection")
+      |
+        this = call.getCallback(1).getParameter(0)
       )
+      or
+      this = server.getCallback([0, 1]).getParameter(0)
     }
 
     DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
@@ -1233,9 +1159,9 @@ module NodeJSLib {
    * A data flow node representing data received from a client to a NodeJS net server, viewed as remote user input.
    */
   private class NodeJSNetServerItemAsRemoteFlow extends RemoteFlowSource {
-    NodeJSNetServerItemAsRemoteFlow() {
-      this = any(NodeJSNetServerRegistration reg).getReceivedItem(_)
-    }
+    NodeJSNetServerRegistration reg;
+
+    NodeJSNetServerItemAsRemoteFlow() { this = reg.getReceivedItem(_) }
 
     override string getSourceType() { result = "NodeJS server" }
   }

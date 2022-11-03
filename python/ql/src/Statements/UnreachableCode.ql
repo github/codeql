@@ -61,4 +61,4 @@ predicate reportable_unreachable(Stmt s) {
 
 from Stmt s
 where reportable_unreachable(s)
-select s, "This statement is unreachable."
+select s, "Unreachable statement."

@@ -89,7 +89,7 @@ private ControlFlowNode getControlFlowEntry(ControlFlowNode node) {
  * graph so that we can use the dominator tree to find the most recent
  * side-effect.
  */
-private predicate sideEffectCfg(ControlFlowNode src, ControlFlowNode dst) {
+private predicate sideEffectCFG(ControlFlowNode src, ControlFlowNode dst) {
   src.getASuccessor() = dst
   or
   // Add an edge from the entry point to any node that might have a side
@@ -103,7 +103,7 @@ private predicate sideEffectCfg(ControlFlowNode src, ControlFlowNode dst) {
  * the side-effect CFG.
  */
 private predicate iDomEffect(ControlFlowNode dominator, ControlFlowNode node) =
-  idominance(functionEntry/1, sideEffectCfg/2)(_, dominator, node)
+  idominance(functionEntry/1, sideEffectCFG/2)(_, dominator, node)
 
 /**
  * Gets the most recent side effect. To be more precise, `result` is a
@@ -165,7 +165,7 @@ private ControlFlowNode mostRecentSideEffect(ControlFlowNode node) {
 
 /** Used to represent the "global value number" of an expression. */
 cached
-private newtype GvnBase =
+private newtype GVNBase =
   GVN_IntConst(int val, Type t) { mk_IntConst(val, t, _) } or
   GVN_FloatConst(float val, Type t) { mk_FloatConst(val, t, _) } or
   // If the local variable does not have a defining value, then
@@ -221,8 +221,8 @@ private newtype GvnBase =
  * expression with this `GVN` and using its `toString` and `getLocation`
  * methods.
  */
-class GVN extends GvnBase {
-  GVN() { this instanceof GvnBase }
+class GVN extends GVNBase {
+  GVN() { this instanceof GVNBase }
 
   /** Gets an expression that has this GVN. */
   Expr getAnExpr() { this = globalValueNumber(result) }

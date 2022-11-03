@@ -5,6 +5,7 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module DifferentKindsComparisonBypass {
   /**
@@ -31,7 +32,7 @@ module DifferentKindsComparisonBypass {
    * A HTTP request input that is suspicious to compare with another HTTP request input of a different kind.
    */
   class RequestInputComparisonSource extends Source {
-    Http::RequestInputAccess input;
+    HTTP::RequestInputAccess input;
 
     RequestInputComparisonSource() { input = this }
 
@@ -42,7 +43,7 @@ module DifferentKindsComparisonBypass {
     /**
      * Gets the HTTP request input of this source.
      */
-    private Http::RequestInputAccess getInput() { result = input }
+    private HTTP::RequestInputAccess getInput() { result = input }
   }
 
   /**

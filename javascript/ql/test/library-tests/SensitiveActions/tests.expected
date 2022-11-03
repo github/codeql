@@ -12,11 +12,10 @@ cleartextPasswordExpr
 dummyPasswords
 |  | true |
 | XXXXXXXX | true |
-| abcdefgh | true |
+| abcdefgh | false |
 | admin | true |
 | change_me | true |
 | example_password | true |
-| hgfedcba | false |
 | insert-auth-from-gui | true |
 | root | true |
 | sOKY6ccizpmvF*32so%Q | false |

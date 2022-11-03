@@ -23,7 +23,9 @@ class ApiObject extends DataFlow::NewNode {
 }
 
 class Connection extends DataFlow::SourceNode {
-  Connection() { this = any(ApiObject api).ref().getAMethodCall("createConnection") }
+  ApiObject api;
+
+  Connection() { this = api.ref().getAMethodCall("createConnection") }
 
   DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
     t.start() and
@@ -47,7 +49,9 @@ class Connection extends DataFlow::SourceNode {
 }
 
 class DataValue extends DataFlow::SourceNode {
-  DataValue() { this = any(Connection connection).getACallback().getParameter(0) }
+  Connection connection;
+
+  DataValue() { this = connection.getACallback().getParameter(0) }
 
   DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
     t.start() and

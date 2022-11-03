@@ -27,13 +27,13 @@ predicate containsArray(Type t) {
   )
 }
 
-predicate functionApiViolation(MemberFunction f) {
+predicate functionAPIViolation(MemberFunction f) {
   f.isPublic() and
   containsArray(f.getAParameter().getType())
 }
 
 from MemberFunction m
 where
-  functionApiViolation(m) and
+  functionAPIViolation(m) and
   not m.getDeclaringType() instanceof Struct
 select m, "Raw arrays should not be used in interfaces. A container class should be used instead."

@@ -7,5 +7,5 @@ suites: codeql-suites
 extractor: swift
 defaultSuiteFile: codeql-suites/swift-code-scanning.qls
 dependencies:
-  codeql/swift-all: ${workspace}
-  codeql/suite-helpers: ${workspace}
+  codeql/swift-all: "*"
+  codeql/suite-helpers: "*"

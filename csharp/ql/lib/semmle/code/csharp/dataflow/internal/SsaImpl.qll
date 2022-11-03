@@ -3,53 +3,7 @@
  */
 
 import csharp
-private import codeql.ssa.Ssa as SsaImplCommon
-private import AssignableDefinitions
-
-private module SsaInput implements SsaImplCommon::InputSig {
-  class BasicBlock = ControlFlow::BasicBlock;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
-
-  class SourceVariable = Ssa::SourceVariable;
-
-  /**
-   * Holds if the `i`th node of basic block `bb` is a (potential) write to source
-   * variable `v`. The Boolean `certain` indicates whether the write is certain.
-   *
-   * This includes implicit writes via calls.
-   */
-  predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
-    variableWriteDirect(bb, i, v, certain)
-    or
-    variableWriteQualifier(bb, i, v, certain)
-    or
-    updatesNamedFieldOrProp(bb, i, _, v, _) and
-    certain = false
-    or
-    updatesCapturedVariable(bb, i, _, v, _, _) and
-    certain = false
-  }
-
-  /**
-   * Holds if the `i`th of basic block `bb` reads source variable `v`.
-   *
-   * This includes implicit reads via calls.
-   */
-  predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
-    variableReadActual(bb, i, v) and
-    certain = true
-    or
-    variableReadPseudo(bb, i, v) and
-    certain = false
-  }
-}
-
-import SsaImplCommon::Make<SsaInput>
+import SsaImplCommon
 
 /**
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
@@ -217,8 +171,7 @@ private module SourceVariableImpl {
       def.getTarget() = lv and
       lv.isRef() and
       lv = v.getAssignable() and
-      bb.getNode(i) = def.getAControlFlowNode() and
-      not def.getAssignment() instanceof LocalVariableDeclAndInitExpr
+      bb.getNode(i) = def.getAControlFlowNode()
     )
   }
 
@@ -803,14 +756,14 @@ private module CapturedVariableImpl {
    * Holds if `c` is a relevant part of the call graph for
    * `updatesCapturedVariable` based on following edges in forward direction.
    */
-  private predicate reachableFromSource(Callable c) {
+  private predicate reachbleFromSource(Callable c) {
     source(_, _, _, c, _)
     or
-    exists(Callable mid | reachableFromSource(mid) | callEdge(mid, c))
+    exists(Callable mid | reachbleFromSource(mid) | callEdge(mid, c))
   }
 
   private predicate sink(Callable c, CapturedWrittenLocalScopeVariable captured) {
-    reachableFromSource(c) and
+    reachbleFromSource(c) and
     relevantDefinition(c, captured, _)
   }
 
@@ -849,6 +802,24 @@ private module CapturedVariableImpl {
       )
     )
   }
+}
+
+/**
+ * Holds if the `i`th node of basic block `bb` is a (potential) write to source
+ * variable `v`. The Boolean `certain` indicates whether the write is certain.
+ *
+ * This includes implicit writes via calls.
+ */
+predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  variableWriteDirect(bb, i, v, certain)
+  or
+  variableWriteQualifier(bb, i, v, certain)
+  or
+  updatesNamedFieldOrProp(bb, i, _, v, _) and
+  certain = false
+  or
+  updatesCapturedVariable(bb, i, _, v, _, _) and
+  certain = false
 }
 
 /**
@@ -932,14 +903,14 @@ private module CapturedVariableLivenessImpl {
    * Holds if `c` is a relevant part of the call graph for
    * `readsCapturedVariable` based on following edges in forward direction.
    */
-  private predicate reachableFromSource(Callable c) {
+  private predicate reachbleFromSource(Callable c) {
     source(_, _, _, c, _)
     or
-    exists(Callable mid | reachableFromSource(mid) | callEdge(mid, c))
+    exists(Callable mid | reachbleFromSource(mid) | callEdge(mid, c))
   }
 
   private predicate sink(Callable c, CapturedReadLocalScopeVariable captured) {
-    reachableFromSource(c) and
+    reachbleFromSource(c) and
     capturerReads(c, captured)
   }
 
@@ -1067,57 +1038,17 @@ private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::Sou
   capturedReadIn(bb, i, v, _, _, _)
 }
 
-pragma[noinline]
-private predicate adjacentDefRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
-  SsaInput::SourceVariable v
-) {
-  adjacentDefRead(def, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
-private predicate adjacentDefReachesRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
+/**
+ * Holds if the `i`th of basic block `bb` reads source variable `v`.
+ *
+ * This includes implicit reads via calls.
+ */
+predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  variableReadActual(bb, i, v) and
+  certain = true
   or
-  exists(SsaInput::BasicBlock bb3, int i3 |
-    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-/** Same as `adjacentDefRead`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReads(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
-}
-
-private predicate adjacentDefReachesUncertainRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, false)
-}
-
-/** Same as `lastRefRedef`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate lastRefSkipUncertainReads(Definition def, SsaInput::BasicBlock bb, int i) {
-  lastRef(def, bb, i) and
-  not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
-  or
-  exists(SsaInput::BasicBlock bb0, int i0 |
-    lastRef(def, bb0, i0) and
-    adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
-  )
+  variableReadPseudo(bb, i, v) and
+  certain = false
 }
 
 cached
@@ -1219,7 +1150,7 @@ private module Cached {
   predicate variableWriteQualifier(
     ControlFlow::BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable v, boolean certain
   ) {
-    SsaInput::variableWrite(bb, i, v.getQualifier(), certain) and
+    variableWrite(bb, i, v.getQualifier(), certain) and
     // Eliminate corner case where a call definition can overlap with a
     // qualifier definition: if method `M` updates field `F`, then a call
     // to `M` is both an update of `x.M` and `x.M.M`, so the former call
@@ -1290,7 +1221,7 @@ private module Cached {
   predicate firstReadSameVar(Definition def, ControlFlow::Node cfn) {
     exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
       def.definesAt(_, bb1, i1) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
+      adjacentDefNoUncertainReads(def, bb1, i1, bb2, i2) and
       cfn = bb2.getNode(i2)
     )
   }
@@ -1305,27 +1236,20 @@ private module Cached {
     exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
       cfn1 = bb1.getNode(i1) and
       variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
+      adjacentDefNoUncertainReads(def, bb1, i1, bb2, i2) and
       cfn2 = bb2.getNode(i2)
     )
   }
 
-  /** Same as `lastRefRedef`, but skips uncertain reads. */
   cached
   predicate lastRefBeforeRedef(Definition def, ControlFlow::BasicBlock bb, int i, Definition next) {
-    lastRefRedef(def, bb, i, next) and
-    not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
-    or
-    exists(SsaInput::BasicBlock bb0, int i0 |
-      lastRefRedef(def, bb0, i0, next) and
-      adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
-    )
+    lastRefRedefNoUncertainReads(def, bb, i, next)
   }
 
   cached
   predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
     exists(ControlFlow::BasicBlock bb, int i |
-      lastRefSkipUncertainReads(def, bb, i) and
+      lastRefNoUncertainReads(def, bb, i) and
       variableReadActual(bb, i, _) and
       cfn = bb.getNode(i)
     )

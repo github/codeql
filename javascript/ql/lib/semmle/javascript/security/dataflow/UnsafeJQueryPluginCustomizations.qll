@@ -6,7 +6,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
-import semmle.javascript.security.dataflow.DomBasedXssCustomizations
+import semmle.javascript.security.dataflow.Xss
 
 module UnsafeJQueryPlugin {
   private import DataFlow::FlowLabel
@@ -32,7 +32,7 @@ module UnsafeJQueryPlugin {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * An argument that may act as an HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
+   * An argument that may act as a HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
    */
   class AmbiguousHtmlOrSelectorArgument extends DataFlow::Node,
     DomBasedXss::JQueryHtmlOrSelectorArgument {
@@ -100,7 +100,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * An expression of form `isElement(x)`, which sanitizes `x`.
+   * Expression of form `isElement(x)`, which sanitizes `x`.
    */
   class IsElementSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
     IsElementSanitizer() {
@@ -116,7 +116,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * An expression like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
+   * Expression like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
    */
   class PropertyPresenceSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
     DataFlow::Node input;
@@ -153,16 +153,6 @@ module UnsafeJQueryPlugin {
     }
   }
 
-  /** A guard that checks whether `x` is a number. */
-  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
-    Expr x;
-    boolean polarity;
-
-    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
-
-    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
-  }
-
   /**
    * The client-provided options object for a jQuery plugin, considered as a source for unsafe jQuery plugins.
    */
@@ -173,7 +163,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * An argument that may act as an HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
+   * An argument that may act as a HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
    */
   class AmbiguousHtmlOrSelectorArgumentAsSink extends Sink {
     AmbiguousHtmlOrSelectorArgumentAsSink() {
@@ -182,7 +172,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * A hint that a value is expected to be treated as an HTML fragment later.
+   * A hint that a value is expected to be treated as a HTML fragment later.
    */
   class IntentionalHtmlFragmentHint extends Sanitizer {
     IntentionalHtmlFragmentHint() {
@@ -191,7 +181,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Holds if there exists a jQuery plugin that likely expects `sink` to be treated as an HTML fragment.
+   * Holds if there exists a jQuery plugin that likely expects `sink` to be treated as a HTML fragment.
    */
   predicate isLikelyIntentionalHtmlSink(DataFlow::Node sink) {
     exists(
@@ -199,17 +189,17 @@ module UnsafeJQueryPlugin {
       DataFlow::PropRead finalRead
     |
       hasDefaultOption(plugin, defaultDef) and
-      defaultDef = getALikelyHtmlWrite(finalRead.getPropertyName()) and
+      defaultDef = getALikelyHTMLWrite(finalRead.getPropertyName()) and
       finalRead.flowsTo(sink) and
       sink.getTopLevel() = plugin.getTopLevel()
     )
   }
 
   /**
-   * Gets a property-write that writes an HTML-like constant string to `prop`.
+   * Gets a property-write that writes a HTML-like constant string to `prop`.
    */
   pragma[noinline]
-  private DataFlow::PropWrite getALikelyHtmlWrite(string prop) {
+  private DataFlow::PropWrite getALikelyHTMLWrite(string prop) {
     exists(string default |
       result.getRhs().mayHaveStringValue(default) and
       default.regexpMatch("\\s*<.*") and

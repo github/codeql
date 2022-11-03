@@ -12,6 +12,12 @@ private class StdPair extends ClassTemplateInstantiation {
 }
 
 /**
+ * DEPRECATED: This is now called `StdPair` and is a private part of the
+ * library implementation.
+ */
+deprecated class StdPairClass = StdPair;
+
+/**
  * Any of the single-parameter constructors of `std::pair` that takes a reference to an
  * instantiation of `std::pair`. These constructors allow conversion between pair types when the
  * underlying element types are convertible.

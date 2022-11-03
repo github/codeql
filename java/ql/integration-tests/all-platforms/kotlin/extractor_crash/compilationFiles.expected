@@ -1,3 +1,0 @@
-| <compilation> | 0 | code/A.kt:0:0:0:0 | A | Extraction successful | Not recoverable errors | Not non-recoverable errors |
-| <compilation> | 1 | code/B.kt:0:0:0:0 | code/B.kt | Not extraction successful | Not recoverable errors | Non-recoverable errors |
-| <compilation> | 2 | code/C.kt:0:0:0:0 | C | Extraction successful | Not recoverable errors | Not non-recoverable errors |

@@ -12,11 +12,11 @@ import semmle.code.java.frameworks.spring.SpringReplacedMethod
  */
 
 /** A `<bean>` element in a Spring XML file. */
-class SpringBean extends SpringXmlElement {
+class SpringBean extends SpringXMLElement {
   SpringBean() {
     this.getName() = "bean" and
     // Do not capture Camel beans, which are different
-    not this.getNamespace().getUri() = "http://camel.apache.org/schema/spring"
+    not this.getNamespace().getURI() = "http://camel.apache.org/schema/spring"
   }
 
   override string toString() { result = this.getBeanIdentifier() }
@@ -57,7 +57,7 @@ class SpringBean extends SpringXmlElement {
 
   /** Holds if the bean is abstract. */
   predicate isAbstract() {
-    exists(XmlAttribute a |
+    exists(XMLAttribute a |
       a = this.getAttribute("abstract") and
       a.getValue() = "true"
     )
@@ -233,7 +233,7 @@ class SpringBean extends SpringXmlElement {
   SpringBean getBeanParent() { result.getBeanIdentifier() = this.getBeanParentName() }
 
   /** Holds if this bean has a parent bean. */
-  predicate hasBeanParent() { exists(this.getBeanParent()) }
+  predicate hasBeanParent() { exists(SpringBean b | b = this.getBeanParent()) }
 
   predicate hasBeanAncestor(SpringBean ancestor) {
     ancestor = this.getBeanParent() or
@@ -255,7 +255,7 @@ class SpringBean extends SpringXmlElement {
 
   /** Holds if the bean has been declared to be a `primary` bean for autowiring. */
   predicate isPrimary() {
-    exists(XmlAttribute a | a = this.getAttribute("primary") and a.getValue() = "true")
+    exists(XMLAttribute a | a = this.getAttribute("primary") and a.getValue() = "true")
   }
 
   /** Gets the scope of the bean. */
@@ -268,7 +268,7 @@ class SpringBean extends SpringXmlElement {
   /**
    * Holds if this bean element has the same bean identifier as `other`.
    */
-  override predicate isSimilar(SpringXmlElement other) {
+  override predicate isSimilar(SpringXMLElement other) {
     this.getBeanIdentifier() = other.(SpringBean).getBeanIdentifier()
   }
 

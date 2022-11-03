@@ -163,16 +163,3 @@ void test_captured_contructor()
 
 	myFunction2( [obj](){} );
 }
-
-// ---
-
-void test_switch_initializer()
-{
-	bool a = 42, b = 43; // GOOD: a, b are both used
-
-	switch (a = b; a)
-	{
-	default:
-		// ...
-	}
-}

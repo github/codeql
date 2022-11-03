@@ -17,7 +17,7 @@
 import csharp
 import semmle.code.asp.WebConfig
 
-from SystemWebXmlElement web, XmlAttribute debugAttribute
+from SystemWebXMLElement web, XMLAttribute debugAttribute
 where
   debugAttribute = web.getAChild("compilation").getAttribute("debug") and
   not debugAttribute.getValue().toLowerCase() = "false"

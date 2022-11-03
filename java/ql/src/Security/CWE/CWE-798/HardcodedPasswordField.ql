@@ -11,8 +11,11 @@
  */
 
 import java
-import semmle.code.java.security.HardcodedPasswordField
+import HardcodedCredentials
 
 from PasswordVariable f, CompileTimeConstantExpr e
-where passwordFieldAssignedHardcodedValue(f, e)
+where
+  f instanceof Field and
+  f.getAnAssignedValue() = e and
+  not e.(StringLiteral).getValue() = ""
 select f, "Sensitive field is assigned a hard-coded $@.", e, "value"

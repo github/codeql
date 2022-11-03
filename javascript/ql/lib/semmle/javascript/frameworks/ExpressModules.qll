@@ -16,74 +16,74 @@ module ExpressLibraries {
   }
 
   /**
-   * A header produced by a route handler of the "x-frame-options" module.
+   * Header produced by a route handler of the "x-frame-options" module.
    */
-  class XFrameOptionsRouteHandlerHeader extends Http::ImplicitHeaderDefinition {
+  class XFrameOptionsRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     XFrameOptionsRouteHandlerHeader() { this instanceof XFrameOptionsRouteHandler }
 
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
 
-    override Http::RouteHandler getRouteHandler() { result = this }
+    override HTTP::RouteHandler getRouteHandler() { result = this }
   }
 
   /**
-   * A route handler from the "x-frame-options" module.
+   * Route handler from the "x-frame-options" module.
    */
-  class XFrameOptionsRouteHandler extends Http::RouteHandler {
+  class XFrameOptionsRouteHandler extends HTTP::RouteHandler {
     XFrameOptionsRouteHandler() {
       this = DataFlow::moduleImport("x-frame-options").getAnInvocation()
     }
 
-    override Http::HeaderDefinition getAResponseHeader(string name) {
+    override HTTP::HeaderDefinition getAResponseHeader(string name) {
       name = this.(XFrameOptionsRouteHandlerHeader).getAHeaderName() and
       result = this
     }
   }
 
   /**
-   * A header produced by a route handler of the "frameguard" module.
+   * Header produced by a route handler of the "frameguard" module.
    */
-  class FrameGuardRouteHandlerHeader extends Http::ImplicitHeaderDefinition {
+  class FrameGuardRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     FrameGuardRouteHandlerHeader() { this instanceof FrameGuardRouteHandler }
 
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
 
-    override Http::RouteHandler getRouteHandler() { result = this }
+    override HTTP::RouteHandler getRouteHandler() { result = this }
   }
 
   /**
-   * A route handler from the "frameguard" module.
+   * Route handler from the "frameguard" module.
    */
-  class FrameGuardRouteHandler extends Http::RouteHandler {
+  class FrameGuardRouteHandler extends HTTP::RouteHandler {
     FrameGuardRouteHandler() { this = DataFlow::moduleImport("frameguard").getAnInvocation() }
 
-    override Http::HeaderDefinition getAResponseHeader(string name) {
+    override HTTP::HeaderDefinition getAResponseHeader(string name) {
       name = this.(FrameGuardRouteHandlerHeader).getAHeaderName() and
       result = this
     }
   }
 
   /**
-   * A header produced by a route handler of the "helmet" module.
+   * Header produced by a route handler of the "helmet" module.
    */
-  class HelmetRouteHandlerHeader extends Http::ImplicitHeaderDefinition {
+  class HelmetRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
     HelmetRouteHandlerHeader() { this instanceof HelmetRouteHandler }
 
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
 
-    override Http::RouteHandler getRouteHandler() { result = this }
+    override HTTP::RouteHandler getRouteHandler() { result = this }
   }
 
   /**
-   * A route handler from the "helmet" module.
+   * Route handler from the "helmet" module.
    */
-  class HelmetRouteHandler extends Http::RouteHandler {
+  class HelmetRouteHandler extends HTTP::RouteHandler {
     HelmetRouteHandler() {
       exists(DataFlow::ModuleImportNode m | "helmet" = m.getPath() |
         this = m.getAnInvocation() or
@@ -91,7 +91,7 @@ module ExpressLibraries {
       )
     }
 
-    override Http::HeaderDefinition getAResponseHeader(string name) {
+    override HTTP::HeaderDefinition getAResponseHeader(string name) {
       name = this.(HelmetRouteHandlerHeader).getAHeaderName() and
       result = this
     }
@@ -108,7 +108,7 @@ module ExpressLibraries {
     /**
      * A call that creates an `express-session` middleware instance.
      */
-    class MiddlewareInstance extends DataFlow::InvokeNode, Http::CookieMiddlewareInstance {
+    class MiddlewareInstance extends DataFlow::InvokeNode, HTTP::CookieMiddlewareInstance {
       MiddlewareInstance() { this = expressSession().getACall() }
 
       /**
@@ -135,7 +135,7 @@ module ExpressLibraries {
     /**
      * A call that creates a `cookie-parser` middleware instance.
      */
-    class MiddlewareInstance extends DataFlow::InvokeNode, Http::CookieMiddlewareInstance {
+    class MiddlewareInstance extends DataFlow::InvokeNode, HTTP::CookieMiddlewareInstance {
       MiddlewareInstance() { this = cookieParser().getACall() }
 
       /**
@@ -164,7 +164,7 @@ module ExpressLibraries {
     /**
      * A call that creates a `cookie-session` middleware instance.
      */
-    class MiddlewareInstance extends DataFlow::InvokeNode, Http::CookieMiddlewareInstance {
+    class MiddlewareInstance extends DataFlow::InvokeNode, HTTP::CookieMiddlewareInstance {
       MiddlewareInstance() { this = cookieSession().getACall() }
 
       /**
@@ -224,32 +224,5 @@ module ExpressLibraries {
      * in user-controlled objects (as opposed to user-controlled strings).
      */
     predicate producesUserControlledObjects() { isJson() or isExtendedUrlEncoded() }
-  }
-}
-
-/**
- * Provides classes for working with the `express-fileupload` package (https://github.com/richardgirges/express-fileupload);
- */
-module FileUpload {
-  /** Gets a data flow node referring to `req.files`. */
-  private DataFlow::SourceNode filesRef(Express::RequestSource req, DataFlow::TypeTracker t) {
-    t.start() and
-    result = req.ref().getAPropertyRead("files")
-    or
-    exists(DataFlow::TypeTracker t2 | result = filesRef(req, t2).track(t2, t))
-  }
-
-  /**
-   * A call to `req.files.<name>.mv`
-   */
-  class Move extends FileSystemWriteAccess, DataFlow::MethodCallNode {
-    Move() {
-      exists(DataFlow::moduleImport("express-fileupload")) and
-      this = filesRef(_, DataFlow::TypeTracker::end()).getAPropertyRead().getAMethodCall("mv")
-    }
-
-    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
-
-    override DataFlow::Node getADataNode() { none() }
   }
 }

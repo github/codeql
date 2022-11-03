@@ -6,8 +6,8 @@ query predicate cleartextPasswordExpr(CleartextPasswordExpr e) { any() }
 string getASamplePassword() {
   result =
     [
-      "hgfedcba", "abcdefgh", "sOKY6ccizpmvF*32so%Q", "XXXXXXXX", "example_password", "change_me",
-      "", "insert-auth-from-gui", "admin", "root"
+      "abcdefgh", "sOKY6ccizpmvF*32so%Q", "XXXXXXXX", "example_password", "change_me", "",
+      "insert-auth-from-gui", "admin", "root"
     ]
 }
 
@@ -20,4 +20,4 @@ query predicate processTermination(NodeJSLib::ProcessTermination term) { any() }
 
 query predicate sensitiveAction(SensitiveAction ac) { any() }
 
-query predicate sensitiveExpr(SensitiveNode e) { any() }
+query predicate sensitiveExpr(SensitiveExpr e) { any() }

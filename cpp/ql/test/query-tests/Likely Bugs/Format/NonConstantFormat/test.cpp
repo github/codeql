@@ -1,7 +1,6 @@
 extern "C" int printf(const char *fmt, ...);
 extern "C" int sprintf(char *buf, const char *fmt, ...);
-extern "C" char *gettext(const char *);
-extern "C" char *strcpy(char *dst, const char *src);
+extern "C" char *gettext (const char *);
 
 #define MYSPRINTF sprintf
 
@@ -150,9 +149,4 @@ void print_ith_message() {
   int i;
   set_value_of(&i);
   printf(messages[i], 1U); // GOOD
-}
-
-void fmt_via_strcpy(char *data) {
-    strcpy(data, "some string");
-    printf(data); // BAD
 }

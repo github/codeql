@@ -705,6 +705,24 @@ private float getTruncatedUpperBounds(Expr expr) {
     result = exprMaxVal(expr)
 }
 
+/**
+ * Holds if the expression might overflow negatively. This predicate
+ * does not consider the possibility that the expression might overflow
+ * due to a conversion.
+ *
+ * DEPRECATED: use `exprMightOverflowNegatively` instead.
+ */
+deprecated predicate negative_overflow(Expr expr) { exprMightOverflowNegatively(expr) }
+
+/**
+ * Holds if the expression might overflow positively. This predicate
+ * does not consider the possibility that the expression might overflow
+ * due to a conversion.
+ *
+ * DEPRECATED: use `exprMightOverflowPositively` instead.
+ */
+deprecated predicate positive_overflow(Expr expr) { exprMightOverflowPositively(expr) }
+
 /** Only to be called by `getTruncatedLowerBounds`. */
 private float getLowerBoundsImpl(Expr expr) {
   (
@@ -1573,7 +1591,7 @@ private module SimpleRangeAnalysisCached {
     result = min([max(getTruncatedUpperBounds(expr)), getGuardedUpperBound(expr)])
   }
 
-  /** Holds if the upper bound of `expr` may have been widened. This means the upper bound is in practice likely to be overly wide. */
+  /** Holds if the upper bound of `expr` may have been widened. This means the the upper bound is in practice likely to be overly wide. */
   cached
   predicate upperBoundMayBeWidened(Expr e) {
     isRecursiveExpr(e) and
@@ -1802,3 +1820,5 @@ module SimpleRangeAnalysisInternal {
     defMightOverflowNegatively(def, v) and result = varMaxVal(v)
   }
 }
+
+private import SimpleRangeAnalysisInternal

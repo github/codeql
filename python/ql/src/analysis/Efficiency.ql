@@ -8,7 +8,7 @@ import semmle.python.pointsto.PointsTo
 import semmle.python.pointsto.PointsToContext
 
 predicate trivial(ControlFlowNode f) {
-  f.getNode() instanceof Parameter
+  exists(Parameter p | p = f.getNode())
   or
   f instanceof NameConstantNode
   or

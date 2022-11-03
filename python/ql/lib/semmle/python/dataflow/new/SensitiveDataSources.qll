@@ -1,5 +1,5 @@
 /**
- * Provides an extension point for modeling sensitive data, such as secrets, certificates, or passwords.
+ * Provides an extension point for for modeling sensitive data, such as secrets, certificates, or passwords.
  * Sensitive data can be interesting to use as data-flow sources in security queries.
  */
 
@@ -227,7 +227,7 @@ private module SensitiveDataModeling {
   }
 
   /**
-   * A variable assignment (also including with/for) where the name indicates
+   * Any kind of variable assignment (also including with/for) where the name indicates
    * it contains sensitive data.
    *
    * Note: We _could_ make any access to a variable with a sensitive name a source of

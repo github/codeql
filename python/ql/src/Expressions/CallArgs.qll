@@ -99,14 +99,14 @@ private ControlFlowNode get_a_call(Value callable) {
 
 /** Gets the function object corresponding to the given class or function. */
 FunctionObject get_function_or_initializer_objectapi(Object func_or_cls) {
-  result = func_or_cls
+  result = func_or_cls.(FunctionObject)
   or
   result = func_or_cls.(ClassObject).declaredAttribute("__init__")
 }
 
 /** Gets the function object corresponding to the given class or function. */
 FunctionValue get_function_or_initializer(Value func_or_cls) {
-  result = func_or_cls
+  result = func_or_cls.(FunctionValue)
   or
   result = func_or_cls.(ClassValue).declaredAttribute("__init__")
 }

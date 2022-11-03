@@ -13,11 +13,10 @@
 
 import cpp
 
-from EnumSwitch es, float missing, float total, EnumConstant case
+from EnumSwitch es, float missing, float total
 where
   not es.hasDefaultCase() and
   missing = count(es.getAMissingCase()) and
   total = missing + count(es.getASwitchCase()) and
-  missing / total < 0.3 and
-  case = es.getAMissingCase()
-select es, "Switch statement does not have a case for $@.", case, case.getName()
+  missing / total < 0.3
+select es, "Switch statement is missing case for " + es.getAMissingCase().getName()

@@ -21,10 +21,7 @@ from OverridingMethod m, Method overridden
 where
   m.fromSource() and
   m.overrides(overridden) and
-  not m.hasModifier("override") and
   not m.isOverrideAnnotated() and
-  not exists(FunctionalExpr mref | mref.asMethod() = m) and
-  // Ignore generated constructs, such as <clinit> functions extracted from Kotlin code:
-  not m.isCompilerGenerated()
+  not exists(FunctionalExpr mref | mref.asMethod() = m)
 select m, "This method overrides $@; it is advisable to add an Override annotation.", overridden,
   overridden.getDeclaringType() + "." + overridden.getName()

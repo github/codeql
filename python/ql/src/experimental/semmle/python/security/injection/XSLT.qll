@@ -11,24 +11,21 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.web.HttpRequest
 
 /** Models XSLT Injection related classes and functions */
-module XsltInjection {
+module XSLTInjection {
   /** Returns a class value which refers to `lxml.etree` */
   Value etree() { result = Value::named("lxml.etree") }
 
   /** A generic taint sink that is vulnerable to XSLT injection. */
-  abstract class XsltInjectionSink extends TaintSink { }
-
-  /** DEPRECATED: Alias for XsltInjectionSink */
-  deprecated class XSLTInjectionSink = XsltInjectionSink;
+  abstract class XSLTInjectionSink extends TaintSink { }
 
   /**
    * A kind of "taint", representing an untrusted XML string
    */
-  deprecated private class ExternalXmlStringKind extends ExternalStringKind {
+  private class ExternalXmlStringKind extends ExternalStringKind {
     ExternalXmlStringKind() { this = "etree.XML string" }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-      etreeXml(fromnode, tonode) and result instanceof ExternalXmlKind
+      etreeXML(fromnode, tonode) and result instanceof ExternalXmlKind
       or
       etreeFromStringList(fromnode, tonode) and result instanceof ExternalXmlKind
       or
@@ -43,7 +40,7 @@ module XsltInjection {
     ExternalXmlKind() { this = "lxml etree xml" }
   }
 
-  private predicate etreeXml(ControlFlowNode fromnode, CallNode tonode) {
+  private predicate etreeXML(ControlFlowNode fromnode, CallNode tonode) {
     // etree.XML("<xmlContent>")
     exists(CallNode call | call.getFunction().(AttrNode).getObject("XML").pointsTo(etree()) |
       call.getArg(0) = fromnode and
@@ -76,10 +73,10 @@ module XsltInjection {
    *    root = etree.XML("<xmlContent>")
    *    find_text = etree.XSLT("`sink`")
    */
-  private class EtreeXsltArgument extends XsltInjectionSink {
+  private class EtreeXSLTArgument extends XSLTInjectionSink {
     override string toString() { result = "lxml.etree.XSLT" }
 
-    EtreeXsltArgument() {
+    EtreeXSLTArgument() {
       exists(CallNode call | call.getFunction().(AttrNode).getObject("XSLT").pointsTo(etree()) |
         call.getArg(0) = this
       )
@@ -97,10 +94,10 @@ module XsltInjection {
    *    tree = etree.parse(f)
    *    result_tree = tree.xslt(`sink`)
    */
-  private class ParseXsltArgument extends XsltInjectionSink {
+  private class ParseXSLTArgument extends XSLTInjectionSink {
     override string toString() { result = "lxml.etree.parse.xslt" }
 
-    ParseXsltArgument() {
+    ParseXSLTArgument() {
       exists(
         CallNode parseCall, CallNode xsltCall, ControlFlowNode obj, Variable var, AssignStmt assign
       |
@@ -116,6 +113,3 @@ module XsltInjection {
     override predicate sinks(TaintKind kind) { kind instanceof ExternalXmlKind }
   }
 }
-
-/** DEPRECATED: Alias for XsltInjection */
-deprecated module XSLTInjection = XsltInjection;

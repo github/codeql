@@ -15,13 +15,13 @@ import semmle.code.java.NumberFormatException
 
 from Expr e
 where
-  throwsNfe(e) and
+  throwsNFE(e) and
   not exists(TryStmt t |
     t.getBlock() = e.getEnclosingStmt().getEnclosingStmt*() and
-    catchesNfe(t)
+    catchesNFE(t)
   ) and
   not exists(Callable c |
     e.getEnclosingCallable() = c and
-    c.getAThrownExceptionType().getADescendant() instanceof NumberFormatException
+    c.getAThrownExceptionType().getASubtype*() instanceof NumberFormatException
   )
 select e, "Potential uncaught 'java.lang.NumberFormatException'."

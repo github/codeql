@@ -1,7 +1,7 @@
 import javascript
 
 query predicate test_ServerDefinition_getARouteHandler(
-  NodeJSLib::ServerDefinition s, Http::RouteHandler res
+  NodeJSLib::ServerDefinition s, HTTP::RouteHandler res
 ) {
   res = s.getARouteHandler()
 }

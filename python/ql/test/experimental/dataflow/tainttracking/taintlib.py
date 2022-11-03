@@ -5,11 +5,6 @@ TAINTED_DICT = {"name": TAINTED_STRING, "some key": "foo"}
 
 NOT_TAINTED = "NOT_TAINTED"
 
-# Use this to force expressions to be tainted
-def taint(*args):
-    pass
-
-
 def ensure_tainted(*args):
     print("- ensure_tainted")
     for i, arg in enumerate(args):

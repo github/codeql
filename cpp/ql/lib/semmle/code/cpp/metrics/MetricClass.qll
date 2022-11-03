@@ -308,45 +308,45 @@ class MetricClass extends Class {
   }
 
   private string getAUsedHalsteadN1Operator() {
-    this.getAnEnclosedExpression() instanceof CommaExpr and result = "comma"
+    exists(CommaExpr e | e = this.getAnEnclosedExpression()) and result = "comma"
     or
-    this.getAnEnclosedExpression() instanceof ReferenceToExpr and result = "refTo"
+    exists(ReferenceToExpr e | e = this.getAnEnclosedExpression()) and result = "refTo"
     or
-    this.getAnEnclosedExpression() instanceof PointerDereferenceExpr and result = "dereference"
+    exists(PointerDereferenceExpr e | e = this.getAnEnclosedExpression()) and result = "dereference"
     or
-    this.getAnEnclosedExpression() instanceof CStyleCast and result = "cCast"
+    exists(CStyleCast e | e = this.getAnEnclosedExpression()) and result = "cCast"
     or
-    this.getAnEnclosedExpression() instanceof StaticCast and result = "staticCast"
+    exists(StaticCast e | e = this.getAnEnclosedExpression()) and result = "staticCast"
     or
-    this.getAnEnclosedExpression() instanceof ConstCast and result = "constCast"
+    exists(ConstCast e | e = this.getAnEnclosedExpression()) and result = "constCast"
     or
-    this.getAnEnclosedExpression() instanceof ReinterpretCast and result = "reinterpretCast"
+    exists(ReinterpretCast e | e = this.getAnEnclosedExpression()) and result = "reinterpretCast"
     or
-    this.getAnEnclosedExpression() instanceof DynamicCast and result = "dynamicCast"
+    exists(DynamicCast e | e = this.getAnEnclosedExpression()) and result = "dynamicCast"
     or
-    this.getAnEnclosedExpression() instanceof SizeofExprOperator and result = "sizeofExpr"
+    exists(SizeofExprOperator e | e = this.getAnEnclosedExpression()) and result = "sizeofExpr"
     or
-    this.getAnEnclosedExpression() instanceof SizeofTypeOperator and result = "sizeofType"
+    exists(SizeofTypeOperator e | e = this.getAnEnclosedExpression()) and result = "sizeofType"
     or
-    this.getAnEnclosedStmt() instanceof IfStmt and result = "ifVal"
+    exists(IfStmt e | e = this.getAnEnclosedStmt()) and result = "ifVal"
     or
-    this.getAnEnclosedStmt() instanceof SwitchStmt and result = "switchVal"
+    exists(SwitchStmt e | e = this.getAnEnclosedStmt()) and result = "switchVal"
     or
-    this.getAnEnclosedStmt() instanceof ForStmt and result = "forVal"
+    exists(ForStmt e | e = this.getAnEnclosedStmt()) and result = "forVal"
     or
-    this.getAnEnclosedStmt() instanceof DoStmt and result = "doVal"
+    exists(DoStmt e | e = this.getAnEnclosedStmt()) and result = "doVal"
     or
-    this.getAnEnclosedStmt() instanceof WhileStmt and result = "whileVal"
+    exists(WhileStmt e | e = this.getAnEnclosedStmt()) and result = "whileVal"
     or
-    this.getAnEnclosedStmt() instanceof GotoStmt and result = "gotoVal"
+    exists(GotoStmt e | e = this.getAnEnclosedStmt()) and result = "gotoVal"
     or
-    this.getAnEnclosedStmt() instanceof ContinueStmt and result = "continueVal"
+    exists(ContinueStmt e | e = this.getAnEnclosedStmt()) and result = "continueVal"
     or
-    this.getAnEnclosedStmt() instanceof BreakStmt and result = "breakVal"
+    exists(BreakStmt e | e = this.getAnEnclosedStmt()) and result = "breakVal"
     or
-    this.getAnEnclosedStmt() instanceof ReturnStmt and result = "returnVal"
+    exists(ReturnStmt e | e = this.getAnEnclosedStmt()) and result = "returnVal"
     or
-    this.getAnEnclosedStmt() instanceof SwitchCase and result = "caseVal"
+    exists(SwitchCase e | e = this.getAnEnclosedStmt()) and result = "caseVal"
     or
     exists(IfStmt s | s = this.getAnEnclosedStmt() and s.hasElse()) and
     result = "elseVal"

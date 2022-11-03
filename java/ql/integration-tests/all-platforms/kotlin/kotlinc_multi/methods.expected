@@ -1,3 +1,0 @@
-| FileA.kt:6:2:8:2 | f |
-| FileB.kt:4:2:5:2 | called |
-| FileB.kt:6:2:7:2 | notCalled |

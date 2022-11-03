@@ -214,7 +214,7 @@ abstract class SplitKind extends SplitKindBase {
   abstract string toString();
 }
 
-/** An interface for implementing an entity to split on. */
+/** Provides the interface for implementing an entity to split on. */
 abstract class SplitImpl extends Split {
   /** Gets the kind of this split. */
   abstract SplitKind getKind();
@@ -342,7 +342,7 @@ private predicate succExitSplits(
   ControlFlowElement pred, Splits predSplits, CfgScope succ, SuccessorType t
 ) {
   exists(Reachability::SameSplitsBlock b, Completion c | pred = b.getAnElement() |
-    b.isReachable(succ, predSplits) and
+    b.isReachable(predSplits) and
     t = getAMatchingSuccessorType(c) and
     scopeLast(succ, pred, c) and
     forall(SplitImpl predSplit | predSplit = predSplits.getASplit() |
@@ -399,7 +399,7 @@ private module SuccSplits {
     ControlFlowElement succ, Completion c
   ) {
     pred = b.getAnElement() and
-    b.isReachable(_, predSplits) and
+    b.isReachable(predSplits) and
     succ(pred, succ, c)
   }
 
@@ -728,12 +728,12 @@ private module Reachability {
      * Holds if the elements of this block are reachable from a callable entry
      *  point, with the splits `splits`.
      */
-    predicate isReachable(CfgScope scope, Splits splits) {
+    predicate isReachable(Splits splits) {
       // Base case
-      succEntrySplits(scope, this, splits, _)
+      succEntrySplits(_, this, splits, _)
       or
       // Recursive case
-      exists(SameSplitsBlock pred, Splits predSplits | pred.isReachable(scope, predSplits) |
+      exists(SameSplitsBlock pred, Splits predSplits | pred.isReachable(predSplits) |
         this = pred.getASuccessor(predSplits, splits)
       )
     }
@@ -744,7 +744,7 @@ cached
 private module Cached {
   /**
    * If needed, call this predicate from `ControlFlowGraphImplSpecific.qll` in order to
-   * force a stage-dependency on the `ControlFlowGraphImplShared.qll` stage and thereby
+   * force a stage-dependency on the `ControlFlowGraphImplShared.qll` stage and therby
    * collapsing the two stages.
    */
   cached
@@ -788,48 +788,46 @@ private module Cached {
    * The control flow graph is pruned for unreachable nodes.
    */
   cached
-  newtype TCfgNode =
+  newtype TNode =
     TEntryNode(CfgScope scope) { succEntrySplits(scope, _, _, _) } or
     TAnnotatedExitNode(CfgScope scope, boolean normal) {
-      exists(Reachability::SameSplitsBlock b, SuccessorType t | b.isReachable(scope, _) |
+      exists(Reachability::SameSplitsBlock b, SuccessorType t | b.isReachable(_) |
         succExitSplits(b.getAnElement(), _, scope, t) and
         if isAbnormalExitType(t) then normal = false else normal = true
       )
     } or
     TExitNode(CfgScope scope) {
-      exists(Reachability::SameSplitsBlock b | b.isReachable(scope, _) |
+      exists(Reachability::SameSplitsBlock b | b.isReachable(_) |
         succExitSplits(b.getAnElement(), _, scope, _)
       )
     } or
-    TElementNode(CfgScope scope, ControlFlowElement cfe, Splits splits) {
-      exists(Reachability::SameSplitsBlock b | b.isReachable(scope, splits) |
-        cfe = b.getAnElement()
-      )
+    TElementNode(ControlFlowElement cfe, Splits splits) {
+      exists(Reachability::SameSplitsBlock b | b.isReachable(splits) | cfe = b.getAnElement())
     }
 
   /** Gets a successor node of a given flow type, if any. */
   cached
-  TCfgNode getASuccessor(TCfgNode pred, SuccessorType t) {
+  TNode getASuccessor(TNode pred, SuccessorType t) {
     // Callable entry node -> callable body
     exists(ControlFlowElement succElement, Splits succSplits, CfgScope scope |
-      result = TElementNode(scope, succElement, succSplits) and
+      result = TElementNode(succElement, succSplits) and
       pred = TEntryNode(scope) and
       succEntrySplits(scope, succElement, succSplits, t)
     )
     or
-    exists(CfgScope scope, ControlFlowElement predElement, Splits predSplits |
-      pred = TElementNode(pragma[only_bind_into](scope), predElement, predSplits)
+    exists(ControlFlowElement predElement, Splits predSplits |
+      pred = TElementNode(predElement, predSplits)
     |
       // Element node -> callable exit (annotated)
-      exists(boolean normal |
-        result = TAnnotatedExitNode(pragma[only_bind_into](scope), normal) and
+      exists(CfgScope scope, boolean normal |
+        result = TAnnotatedExitNode(scope, normal) and
         succExitSplits(predElement, predSplits, scope, t) and
         if isAbnormalExitType(t) then normal = false else normal = true
       )
       or
       // Element node -> element node
       exists(ControlFlowElement succElement, Splits succSplits, Completion c |
-        result = TElementNode(pragma[only_bind_into](scope), succElement, succSplits)
+        result = TElementNode(succElement, succSplits)
       |
         succSplits(predElement, predSplits, succElement, succSplits, c) and
         t = getAMatchingSuccessorType(c)
@@ -855,23 +853,6 @@ private module Cached {
    */
   cached
   ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) { last(cfe, result, _) }
-
-  /**
-   * Gets the CFG scope of node `n`. Unlike `getCfgScope`, this predicate
-   * is calculated based on reachability from an entry node, and it may
-   * yield different results for AST elements that are split into multiple
-   * scopes.
-   */
-  cached
-  CfgScope getNodeCfgScope(TCfgNode n) {
-    n = TEntryNode(result)
-    or
-    n = TAnnotatedExitNode(result, _)
-    or
-    n = TExitNode(result)
-    or
-    n = TElementNode(result, _, _)
-  }
 }
 
 import Cached
@@ -881,12 +862,7 @@ import Cached
  * graph is restricted to nodes from `RelevantNode`.
  */
 module TestOutput {
-  abstract class RelevantNode extends Node {
-    /**
-     * Gets a string used to resolve ties in node and edge ordering.
-     */
-    string getOrderDisambiguation() { result = "" }
-  }
+  abstract class RelevantNode extends Node { }
 
   query predicate nodes(RelevantNode n, string attr, string val) {
     attr = "semmle.order" and
@@ -899,33 +875,16 @@ module TestOutput {
             p
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
-              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString(),
-              p.getOrderDisambiguation()
+              l.getStartColumn()
           )
       ).toString()
   }
 
   query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
-    attr = "semmle.label" and
     exists(SuccessorType t | succ = getASuccessor(pred, t) |
+      attr = "semmle.label" and
       if successorTypeIsSimple(t) then val = "" else val = t.toString()
     )
-    or
-    attr = "semmle.order" and
-    val =
-      any(int i |
-        succ =
-          rank[i](RelevantNode s, SuccessorType t, Location l |
-            s = getASuccessor(pred, t) and
-            l = s.getLocation()
-          |
-            s
-            order by
-              l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
-              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), t.toString(), s.toString(),
-              s.getOrderDisambiguation()
-          )
-      ).toString()
   }
 }
 
@@ -965,8 +924,7 @@ module Consistency {
     succSplits(pred, predSplits, succ, succSplits, c) and
     split.hasEntry(pred, succ, c) and
     not split.getKind() = predSplits.getASplit().getKind() and
-    not split = succSplits.getASplit() and
-    split.getKind().isEnabled(succ)
+    not split = succSplits.getASplit()
   }
 
   query predicate breakInvariant5(
@@ -979,45 +937,9 @@ module Consistency {
     not split.hasEntry(pred, succ, c)
   }
 
-  private class SimpleSuccessorType extends SuccessorType {
-    SimpleSuccessorType() {
-      this = getAMatchingSuccessorType(any(Completion c | completionIsSimple(c)))
-    }
-  }
-
-  private class NormalSuccessorType extends SuccessorType {
-    NormalSuccessorType() {
-      this = getAMatchingSuccessorType(any(Completion c | completionIsNormal(c)))
-    }
-  }
-
   query predicate multipleSuccessors(Node node, SuccessorType t, Node successor) {
+    not node instanceof TEntryNode and
     strictcount(getASuccessor(node, t)) > 1 and
-    successor = getASuccessor(node, t) and
-    // allow for functions with multiple bodies
-    not (t instanceof SimpleSuccessorType and node instanceof TEntryNode)
-  }
-
-  query predicate simpleAndNormalSuccessors(
-    Node node, NormalSuccessorType t1, SimpleSuccessorType t2, Node succ1, Node succ2
-  ) {
-    t1 != t2 and
-    succ1 = getASuccessor(node, t1) and
-    succ2 = getASuccessor(node, t2)
-  }
-
-  query predicate deadEnd(Node node) {
-    not node instanceof TExitNode and
-    not exists(getASuccessor(node, _))
-  }
-
-  query predicate nonUniqueSplitKind(SplitImpl split, SplitKind sk) {
-    sk = split.getKind() and
-    strictcount(split.getKind()) > 1
-  }
-
-  query predicate nonUniqueListOrder(SplitKind sk, int ord) {
-    ord = sk.getListOrder() and
-    strictcount(sk.getListOrder()) > 1
+    successor = getASuccessor(node, t)
   }
 }

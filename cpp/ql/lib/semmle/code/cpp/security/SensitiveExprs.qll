@@ -1,25 +1,22 @@
 /**
  * Provides classes for heuristically identifying variables and functions that
- * might contain or return a password or other credential.
- *
- * This library is not concerned with other kinds of sensitive private
- * information. See `PrivateData.qll` for expressions related to that.
+ * might contain or return a password or other sensitive information.
  */
 
 import cpp
 
 /**
  * Holds if the name `s` suggests something might contain or return a password
- * or other credential.
+ * or other sensitive information.
  */
 bindingset[s]
 private predicate suspicious(string s) {
-  s.regexpMatch(".*(password|passwd|accountid|account.?key|accnt.?key|license.?key|trusted).*") and
-  not s.matches(["%hash%", "%crypt%", "%file%", "%path%", "%invalid%"])
+  s.matches(["%password%", "%passwd%", "%trusted%"]) and
+  not s.matches(["%hash%", "%crypt%", "%file%", "%path%"])
 }
 
 /**
- * A variable that might contain a password or other credential.
+ * A variable that might contain a password or other sensitive information.
  */
 class SensitiveVariable extends Variable {
   SensitiveVariable() {
@@ -29,7 +26,7 @@ class SensitiveVariable extends Variable {
 }
 
 /**
- * A function that might return a password or other credential.
+ * A function that might return a password or other sensitive information.
  */
 class SensitiveFunction extends Function {
   SensitiveFunction() {
@@ -39,7 +36,7 @@ class SensitiveFunction extends Function {
 }
 
 /**
- * An expression whose value might be a password or other credential.
+ * An expression whose value might be a password or other sensitive information.
  */
 class SensitiveExpr extends Expr {
   SensitiveExpr() {

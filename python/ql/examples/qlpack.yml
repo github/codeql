@@ -1,6 +1,4 @@
 name: codeql/python-examples
-groups: 
-  - python
-  - examples
+version: 0.0.2
 dependencies:
-  codeql/python-all: ${workspace}
+    codeql/python-all: "*"

@@ -1,23 +1,25 @@
 import TestUtilities.dataflow.FlowTestCommon
 
-module AstTest {
+module ASTTest {
   private import semmle.code.cpp.dataflow.DataFlow
-  private import semmle.code.cpp.controlflow.Guards
 
   /**
    * A `BarrierGuard` that stops flow to all occurrences of `x` within statement
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(GuardCondition g, Expr checked, boolean isTrue) {
-    g.(FunctionCall).getTarget().getName() = "guarded" and
-    checked = g.(FunctionCall).getArgument(0) and
-    isTrue = true
+  class TestBarrierGuard extends DataFlow::BarrierGuard {
+    TestBarrierGuard() { this.(FunctionCall).getTarget().getName() = "guarded" }
+
+    override predicate checks(Expr checked, boolean isTrue) {
+      checked = this.(FunctionCall).getArgument(0) and
+      isTrue = true
+    }
   }
 
   /** Common data flow configuration to be used by tests. */
-  class AstTestAllocationConfig extends DataFlow::Configuration {
-    AstTestAllocationConfig() { this = "ASTTestAllocationConfig" }
+  class ASTTestAllocationConfig extends DataFlow::Configuration {
+    ASTTestAllocationConfig() { this = "ASTTestAllocationConfig" }
 
     override predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
@@ -38,26 +40,29 @@ module AstTest {
     }
 
     override predicate isBarrier(DataFlow::Node barrier) {
-      barrier.asExpr().(VariableAccess).getTarget().hasName("barrier") or
-      barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getABarrierNode()
+      barrier.asExpr().(VariableAccess).getTarget().hasName("barrier")
     }
+
+    override predicate isBarrierGuard(DataFlow::BarrierGuard bg) { bg instanceof TestBarrierGuard }
   }
 }
 
 module IRTest {
   private import semmle.code.cpp.ir.dataflow.DataFlow
   private import semmle.code.cpp.ir.IR
-  private import semmle.code.cpp.controlflow.IRGuards
 
   /**
    * A `BarrierGuard` that stops flow to all occurrences of `x` within statement
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(IRGuardCondition g, Instruction checked, boolean isTrue) {
-    g.(CallInstruction).getStaticCallTarget().getName() = "guarded" and
-    checked = g.(CallInstruction).getPositionalArgument(0) and
-    isTrue = true
+  class TestBarrierGuard extends DataFlow::BarrierGuard {
+    TestBarrierGuard() { this.(CallInstruction).getStaticCallTarget().getName() = "guarded" }
+
+    override predicate checksInstr(Instruction checked, boolean isTrue) {
+      checked = this.(CallInstruction).getPositionalArgument(0) and
+      isTrue = true
+    }
   }
 
   /** Common data flow configuration to be used by tests. */
@@ -88,16 +93,17 @@ module IRTest {
     }
 
     override predicate isBarrier(DataFlow::Node barrier) {
-      barrier.asExpr().(VariableAccess).getTarget().hasName("barrier") or
-      barrier = DataFlow::InstructionBarrierGuard<testBarrierGuard/3>::getABarrierNode()
+      barrier.asExpr().(VariableAccess).getTarget().hasName("barrier")
     }
+
+    override predicate isBarrierGuard(DataFlow::BarrierGuard bg) { bg instanceof TestBarrierGuard }
   }
 
   private predicate readsVariable(LoadInstruction load, Variable var) {
-    load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
+    load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
   }
 
   private predicate writesVariable(StoreInstruction store, Variable var) {
-    store.getDestinationAddress().(VariableAddressInstruction).getAstVariable() = var
+    store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
   }
 }

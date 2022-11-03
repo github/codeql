@@ -2,7 +2,7 @@ import semmle.code.csharp.Conversion
 
 // Avoid printing conversions for type parameters from library
 class LibraryTypeParameter extends TypeParameter {
-  LibraryTypeParameter() { this.fromLibrary() }
+  LibraryTypeParameter() { fromLibrary() }
 
   override string toString() { none() }
 }

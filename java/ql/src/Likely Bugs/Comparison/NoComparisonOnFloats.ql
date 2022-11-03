@@ -12,6 +12,16 @@
 import semmle.code.java.Type
 import semmle.code.java.Expr
 
+// Either `float`, `double`, `Float`, or `Double`.
+class Floating extends Type {
+  Floating() {
+    exists(string s | s = this.getName().toLowerCase() |
+      s = "float" or
+      s = "double"
+    )
+  }
+}
+
 predicate trivialLiteral(Literal e) {
   e.getValue() = "0.0" or
   e.getValue() = "0" or
@@ -51,7 +61,7 @@ predicate similarVarComparison(EqualityTest e) {
 
 from EqualityTest ee
 where
-  ee.getAnOperand().getType() instanceof FloatingPointType and
+  ee.getAnOperand().getType() instanceof Floating and
   not ee.getAnOperand() instanceof NullLiteral and
   not trivialLiteral(ee.getAnOperand()) and
   not definedConstant(ee.getAnOperand()) and

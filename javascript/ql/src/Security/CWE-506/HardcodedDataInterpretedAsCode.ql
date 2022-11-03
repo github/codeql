@@ -19,5 +19,5 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "$@ is interpreted as " + sink.getNode().(Sink).getKind() + ".", source.getNode(),
-  "Hard-coded data"
+  "Hard-coded data from $@ is interpreted as " + sink.getNode().(Sink).getKind() + ".",
+  source.getNode(), "here"

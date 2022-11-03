@@ -4,7 +4,6 @@
  *                lead to execution of arbitrary code.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 9.8
  * @precision high
  * @id java/ognl-injection
  * @tags security
@@ -17,5 +16,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, OgnlInjectionFlowConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "OGNL Expression Language statement depends on a $@.",
-  source.getNode(), "user-provided value"
+select sink.getNode(), source, sink, "OGNL expression might include data from $@.",
+  source.getNode(), "this user input"

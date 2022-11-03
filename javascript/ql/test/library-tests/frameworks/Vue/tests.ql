@@ -1,5 +1,5 @@
 import javascript
-import semmle.javascript.security.dataflow.DomBasedXssCustomizations
+import semmle.javascript.security.dataflow.Xss
 
 query predicate component_getAPropertyValue(Vue::Component c, string name, DataFlow::Node prop) {
   c.getAPropertyValue(name) = prop

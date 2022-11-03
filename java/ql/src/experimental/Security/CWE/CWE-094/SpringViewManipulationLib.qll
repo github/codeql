@@ -59,7 +59,7 @@ class SpringViewManipulationConfig extends TaintTracking::Configuration {
     exists(AddExpr e, StringLiteral sl |
       node.asExpr() = e.getControlFlowNode().getASuccessor*() and
       sl = e.getLeftOperand*() and
-      sl.getValue().matches(["redirect:%", "ajaxredirect:%", "forward:%"])
+      sl.getRepresentedString().matches(["redirect:%", "ajaxredirect:%", "forward:%"])
     )
     or
     // Block flows like
@@ -79,7 +79,7 @@ class SpringViewManipulationConfig extends TaintTracking::Configuration {
         sl = ca.getQualifier()
       ) and
       ca = getAStringCombiningCall() and
-      sl.getValue().matches(["redirect:%", "ajaxredirect:%", "forward:%"])
+      sl.getRepresentedString().matches(["redirect:%", "ajaxredirect:%", "forward:%"])
     |
       exists(Call cc | DataFlow::localExprFlow(ca.getQualifier(), cc.getQualifier()) |
         cc = node.asExpr()

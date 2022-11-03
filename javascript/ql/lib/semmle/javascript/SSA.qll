@@ -12,7 +12,7 @@
  *    affect `x`, while `yield` expressions in functions other than `f`
  *    still may affect it.
  *
- * This is modeled as follows.
+ * This is modelled as follows.
  *
  * Within each function `g` that accesses a variable `x` declared in an
  * enclosing function `f`, we introduce a pseudo-assignment to `x` called
@@ -180,7 +180,7 @@ private module Internal {
 
   /**
    * Holds if the `i`th node of basic block `bb` may induce a pseudo-definition for
-   * modeling updates to captured variable `v`. Whether the definition is actually
+   * modelling updates to captured variable `v`. Whether the definition is actually
    * introduced depends on whether `v` is live at this point in the program.
    */
   private predicate mayCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
@@ -501,9 +501,9 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   }
 
   /** This SSA definition corresponds to the definition of `v` at `def`. */
-  predicate defines(VarDef def, SsaSourceVariable v) { this = TExplicitDef(_, _, def, v) }
+  predicate defines(VarDef d, SsaSourceVariable v) { this = TExplicitDef(_, _, d, v) }
 
-  /** Gets the variable definition wrapped by this SSA definition. */
+  /** The variable definition wrapped by this SSA definition. */
   VarDef getDef() { this = TExplicitDef(_, _, result, _) }
 
   /** Gets the basic block to which this definition belongs. */
@@ -737,7 +737,7 @@ class SsaRefinementNode extends SsaPseudoDefinition, TRefinement {
   }
 }
 
-module Ssa {
+module SSA {
   /** Gets the SSA definition corresponding to the implicit initialization of `v`. */
   SsaImplicitInit implicitInit(SsaSourceVariable v) { result.getSourceVariable() = v }
 
@@ -747,6 +747,3 @@ module Ssa {
   /** Gets the SSA variable corresponding to `d`. */
   SsaVariable variable(VarDef d) { result.getDefinition() = definition(d) }
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

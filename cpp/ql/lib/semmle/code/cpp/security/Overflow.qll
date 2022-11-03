@@ -5,9 +5,10 @@
 
 import cpp
 import semmle.code.cpp.controlflow.Dominance
+// `GlobalValueNumbering` is only imported to prevent IR re-evaluation.
+private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
-import semmle.code.cpp.controlflow.Guards
 
 /**
  * Holds if the value of `use` is guarded using `abs`.
@@ -15,8 +16,28 @@ import semmle.code.cpp.controlflow.Guards
 predicate guardedAbs(Operation e, Expr use) {
   exists(FunctionCall fc | fc.getTarget().getName() = ["abs", "labs", "llabs", "imaxabs"] |
     fc.getArgument(0).getAChild*() = use and
-    exists(GuardCondition c | c.ensuresLt(fc, _, _, e.getBasicBlock(), true))
+    guardedLesser(e, fc)
   )
+}
+
+/**
+ * Gets the position of `stmt` in basic block `block` (this is a thin layer
+ * over `BasicBlock.getNode`, intended to improve performance).
+ */
+pragma[noinline]
+private int getStmtIndexInBlock(BasicBlock block, Stmt stmt) { block.getNode(result) = stmt }
+
+pragma[inline]
+private predicate stmtDominates(Stmt dominator, Stmt dominated) {
+  // In same block
+  exists(BasicBlock block, int dominatorIndex, int dominatedIndex |
+    dominatorIndex = getStmtIndexInBlock(block, dominator) and
+    dominatedIndex = getStmtIndexInBlock(block, dominated) and
+    dominatedIndex >= dominatorIndex
+  )
+  or
+  // In (possibly) different blocks
+  bbStrictlyDominates(dominator.getBasicBlock(), dominated.getBasicBlock())
 }
 
 /**
@@ -25,7 +46,23 @@ predicate guardedAbs(Operation e, Expr use) {
  */
 pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
-  exists(GuardCondition c | c.ensuresLt(use, _, _, e.getBasicBlock(), true))
+  exists(IfStmt c, RelationalOperation guard |
+    use = guard.getLesserOperand().getAChild*() and
+    guard = c.getControllingExpr().getAChild*() and
+    stmtDominates(c.getThen(), e.getEnclosingStmt())
+  )
+  or
+  exists(Loop c, RelationalOperation guard |
+    use = guard.getLesserOperand().getAChild*() and
+    guard = c.getControllingExpr().getAChild*() and
+    stmtDominates(c.getStmt(), e.getEnclosingStmt())
+  )
+  or
+  exists(ConditionalExpr c, RelationalOperation guard |
+    use = guard.getLesserOperand().getAChild*() and
+    guard = c.getCondition().getAChild*() and
+    c.getThen().getAChild*() = e
+  )
   or
   guardedAbs(e, use)
 }
@@ -36,7 +73,23 @@ predicate guardedLesser(Operation e, Expr use) {
  */
 pragma[nomagic]
 predicate guardedGreater(Operation e, Expr use) {
-  exists(GuardCondition c | c.ensuresLt(use, _, _, e.getBasicBlock(), false))
+  exists(IfStmt c, RelationalOperation guard |
+    use = guard.getGreaterOperand().getAChild*() and
+    guard = c.getControllingExpr().getAChild*() and
+    stmtDominates(c.getThen(), e.getEnclosingStmt())
+  )
+  or
+  exists(Loop c, RelationalOperation guard |
+    use = guard.getGreaterOperand().getAChild*() and
+    guard = c.getControllingExpr().getAChild*() and
+    stmtDominates(c.getStmt(), e.getEnclosingStmt())
+  )
+  or
+  exists(ConditionalExpr c, RelationalOperation guard |
+    use = guard.getGreaterOperand().getAChild*() and
+    guard = c.getCondition().getAChild*() and
+    c.getThen().getAChild*() = e
+  )
   or
   guardedAbs(e, use)
 }
@@ -50,7 +103,7 @@ VariableAccess varUse(LocalScopeVariable v) { result = v.getAnAccess() }
  * Holds if `e` potentially overflows and `use` is an operand of `e` that is not guarded.
  */
 predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
-  // Since `e` is guaranteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
+  // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
   // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
   // `convertedExprMightOverflowPositively` will have a result even when `e` is not analyzable
   // by `SimpleRangeAnalysis`.
@@ -80,7 +133,7 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
  * Holds if `e` potentially underflows and `use` is an operand of `e` that is not guarded.
  */
 predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
-  // Since `e` is guaranteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
+  // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
   // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
   // `convertedExprMightOverflowNegatively` will have a result even when `e` is not analyzable
   // by `SimpleRangeAnalysis`.

@@ -25,7 +25,7 @@ class RangeCallable extends Callable {
       or
       not exists(this.getBody()) and
       (
-        this.lastParameter().hasLocationInfo(path, _, _, el, ec)
+        lastParameter().hasLocationInfo(path, _, _, el, ec)
         or
         not exists(this.getAParameter()) and el = elSuper and ec = ecSuper
       )
@@ -33,8 +33,8 @@ class RangeCallable extends Callable {
   }
 
   private Parameter lastParameter() {
-    result = this.getAParameter() and
-    not this.getAParameter().getPosition() > result.getPosition()
+    result = getAParameter() and
+    not getAParameter().getPosition() > result.getPosition()
   }
 }
 
@@ -45,7 +45,7 @@ class RangeCallable extends Callable {
 class RangeRefType extends RefType {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int elSuper, int ecSuper | super.hasLocationInfo(path, sl, sc, elSuper, ecSuper) |
-      this.lastMember().hasLocationInfo(path, _, _, el, ec)
+      lastMember().hasLocationInfo(path, _, _, el, ec)
       or
       not exists(this.getAMember()) and el = elSuper and ec = ecSuper
     )

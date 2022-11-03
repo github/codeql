@@ -15,6 +15,7 @@ import Dynamic
 import Literal
 import LogicalOperation
 import semmle.code.csharp.controlflow.ControlFlowElement
+import semmle.code.csharp.Callable
 import semmle.code.csharp.Location
 import semmle.code.csharp.Stmt
 import semmle.code.csharp.Type
@@ -192,7 +193,7 @@ class Operation extends Expr, @op_expr {
 }
 
 /**
- * A unary operation. Either a unary arithmetic operation
+ * A unary operation. Either a unary arithemtic operation
  * (`UnaryArithmeticOperation`), a unary bitwise operation
  * (`UnaryBitwiseOperation`), a `sizeof` operation (`SizeofExpr`), a pointer
  * indirection operation (`PointerIndirectionExpr`), an address-of operation
@@ -206,7 +207,7 @@ class UnaryOperation extends Operation, @un_op {
 }
 
 /**
- * A binary operation. Either a binary arithmetic operation
+ * A binary operation. Either a binary arithemtic operation
  * (`BinaryArithmeticOperation`), a binary bitwise operation
  * (`BinaryBitwiseOperation`), a comparison operation (`ComparisonOperation`),
  * or a binary logical operation (`BinaryLogicalOperation`).
@@ -315,12 +316,6 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
     child = mid.getChildExpr(0) or
     child = mid.getChildExpr(1)
   )
-  or
-  exists(Expr mid |
-    hasChildPattern(pm, mid) and
-    mid instanceof @tuple_expr and
-    child = mid.getAChildExpr()
-  )
 }
 
 /**
@@ -425,10 +420,13 @@ class TypeAccessPatternExpr extends TypePatternExpr, TypeAccess {
   override string getAPrimaryQlClass() { result = "TypeAccessPatternExpr" }
 }
 
-private class TBindingPatternExpr = @local_var_decl_expr or @recursive_pattern_expr;
-
 /** A pattern that may bind a variable, for example `string s` in `x is string s`. */
-class BindingPatternExpr extends PatternExpr, TBindingPatternExpr {
+class BindingPatternExpr extends PatternExpr {
+  BindingPatternExpr() {
+    this instanceof LocalVariableDeclExpr or
+    this instanceof @recursive_pattern_expr
+  }
+
   /**
    * Gets the local variable declaration of this pattern, if any. For example,
    * `string s` in `string { Length: 5 } s`.
@@ -776,7 +774,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  * struct A {
  *   public void M() { }
  *
- *   unsafe int DirectDereference() {
+ *   unsafe int DirectDerefence() {
  *     int n = 10;
  *     int *pn = &n;
  *     return *pn;
@@ -788,7 +786,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  *     pa->M();
  *   }
  *
- *   unsafe void ArrayDereference() {
+ *   unsafe void ArrayDerefence() {
  *     char* cp = stackalloc char[10];
  *     cp[1] = 'a';
  *   }
@@ -813,7 +811,7 @@ class PointerIndirectionExpr extends UnaryOperation, @pointer_indirection_expr {
  *
  * ```csharp
  * class A {
- *   unsafe int DirectDereference() {
+ *   unsafe int DirectDerefence() {
  *     int n = 10;
  *     int *pn = &n;
  *     return *pn;
@@ -937,7 +935,7 @@ class ThrowExpr extends Expr, ThrowElement, @throw_expr {
    * For example, `new ArgumentException("i")` in
    * `return i != 0 ? 1 / i : throw new ArgumentException("i");`.
    */
-  // overridden for more precise qldoc
+  // overriden for more precise qldoc
   override Expr getExpr() { result = ThrowElement.super.getExpr() }
 
   override string getAPrimaryQlClass() { result = "ThrowExpr" }
@@ -998,7 +996,7 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
    */
   predicate targetIsOverridableOrImplementable() {
     not this.getQualifier() instanceof BaseAccess and
-    this.getQualifiedDeclaration().(Overridable).isOverridableOrImplementable()
+    this.getQualifiedDeclaration().(Virtualizable).isOverridableOrImplementable()
   }
 
   /** Holds if this expression has a conditional qualifier `?.` */
@@ -1035,6 +1033,9 @@ class TupleExpr extends Expr, @tuple_expr {
 
   /** Gets an argument of this tuple. */
   Expr getAnArgument() { result = this.getArgument(_) }
+
+  /** Holds if this tuple is a read access. */
+  deprecated predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
 
   /** Holds if this expression is a tuple construction. */
   predicate isConstruction() {
@@ -1080,8 +1081,6 @@ class DiscardExpr extends Expr, @discard_expr {
 
 private class UnknownExpr extends Expr, @unknown_expr {
   override string toString() { result = "Expression" }
-
-  override string getAPrimaryQlClass() { result = "UnknownExpr" }
 }
 
 /**
@@ -1170,10 +1169,8 @@ class WithExpr extends Expr, @with_expr {
   /** Gets the expression on which this `with` is called. */
   Expr getExpr() { result = this.getChild(0) }
 
-  /** Gets the clone method of the `record` that is targeted by this `with` expression. */
-  RecordCloneMethod getCloneMethod() {
-    result = this.getExpr().getType().(RecordClass).getCloneMethod()
-  }
+  /** Gets the clone method of the `record` that is targetted by this `with` expression. */
+  RecordCloneMethod getCloneMethod() { result = this.getExpr().getType().(Record).getCloneMethod() }
 
   override string toString() { result = "... with { ... }" }
 

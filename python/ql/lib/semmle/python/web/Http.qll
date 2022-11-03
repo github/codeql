@@ -4,13 +4,13 @@ import semmle.python.security.strings.External
 import HttpConstants
 
 /** Generic taint source from a http request */
-abstract deprecated class HttpRequestTaintSource extends TaintSource { }
+abstract class HttpRequestTaintSource extends TaintSource { }
 
 /**
  * Taint kind representing the WSGI environment.
  * As specified in PEP 3333. https://www.python.org/dev/peps/pep-3333/#environ-variables
  */
-deprecated class WsgiEnvironment extends TaintKind {
+class WsgiEnvironment extends TaintKind {
   WsgiEnvironment() { this = "wsgi.environment" }
 
   override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
@@ -43,7 +43,7 @@ deprecated class WsgiEnvironment extends TaintKind {
  * A standard morsel object from a HTTP request, a value in a cookie,
  * typically an instance of `http.cookies.Morsel`
  */
-deprecated class UntrustedMorsel extends TaintKind {
+class UntrustedMorsel extends TaintKind {
   UntrustedMorsel() { this = "http.Morsel" }
 
   override TaintKind getTaintOfAttribute(string name) {
@@ -53,7 +53,7 @@ deprecated class UntrustedMorsel extends TaintKind {
 }
 
 /** A standard cookie object from a HTTP request, typically an instance of `http.cookies.SimpleCookie` */
-deprecated class UntrustedCookie extends TaintKind {
+class UntrustedCookie extends TaintKind {
   UntrustedCookie() { this = "http.Cookie" }
 
   override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
@@ -62,7 +62,7 @@ deprecated class UntrustedCookie extends TaintKind {
   }
 }
 
-abstract deprecated class CookieOperation extends @py_flow_node {
+abstract class CookieOperation extends @py_flow_node {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
@@ -71,20 +71,20 @@ abstract deprecated class CookieOperation extends @py_flow_node {
   abstract ControlFlowNode getValue();
 }
 
-abstract deprecated class CookieGet extends CookieOperation { }
+abstract class CookieGet extends CookieOperation { }
 
-abstract deprecated class CookieSet extends CookieOperation { }
+abstract class CookieSet extends CookieOperation { }
 
 /** Generic taint sink in a http response */
-abstract deprecated class HttpResponseTaintSink extends TaintSink {
+abstract class HttpResponseTaintSink extends TaintSink {
   override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }
 
-abstract deprecated class HttpRedirectTaintSink extends TaintSink {
+abstract class HttpRedirectTaintSink extends TaintSink {
   override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }
 
-deprecated module Client {
+module Client {
   // TODO: user-input in other than URL:
   // - `data`, `json` for `requests.post`
   // - `body` for `HTTPConnection.request`

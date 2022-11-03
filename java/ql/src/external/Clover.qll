@@ -7,14 +7,14 @@ import java
  * top-level children (usually, in fact, there is only one) is
  * a tag with the name "coverage".
  */
-class CloverReport extends XmlFile {
+class CloverReport extends XMLFile {
   CloverReport() { this.getAChild().getName() = "coverage" }
 }
 
 /**
  * The Clover "coverage" tag contains one or more "projects".
  */
-class CloverCoverage extends XmlElement {
+class CloverCoverage extends XMLElement {
   CloverCoverage() {
     this.getParent() instanceof CloverReport and
     this.getName() = "coverage"
@@ -29,7 +29,7 @@ class CloverCoverage extends XmlElement {
  * contains various numbers, aggregated to the different levels. They are
  * all subclasses of this class, to share code.
  */
-abstract class CloverMetricsContainer extends XmlElement {
+abstract class CloverMetricsContainer extends XMLElement {
   /** Gets the Clover `metrics` child element for this element. */
   CloverMetrics getMetrics() { result = this.getAChild() }
 }
@@ -38,7 +38,7 @@ abstract class CloverMetricsContainer extends XmlElement {
  * A "metrics" element contains a range of numbers for the current
  * aggregation level.
  */
-class CloverMetrics extends XmlElement {
+class CloverMetrics extends XMLElement {
   CloverMetrics() {
     this.getParent() instanceof CloverMetricsContainer and
     this.getName() = "metrics"
@@ -46,66 +46,64 @@ class CloverMetrics extends XmlElement {
 
   private int attr(string name) { result = this.getAttribute(name).getValue().toInt() }
 
-  private float ratio(string name) {
-    result = this.attr("covered" + name) / this.attr(name).(float)
-  }
+  private float ratio(string name) { result = attr("covered" + name) / attr(name).(float) }
 
   /** Gets the value of the `conditionals` attribute. */
-  int getNumConditionals() { result = this.attr("conditionals") }
+  int getNumConditionals() { result = attr("conditionals") }
 
   /** Gets the value of the `coveredconditionals` attribute. */
-  int getNumCoveredConditionals() { result = this.attr("coveredconditionals") }
+  int getNumCoveredConditionals() { result = attr("coveredconditionals") }
 
   /** Gets the value of the `statements` attribute. */
-  int getNumStatements() { result = this.attr("statements") }
+  int getNumStatements() { result = attr("statements") }
 
   /** Gets the value of the `coveredstatements` attribute. */
-  int getNumCoveredStatements() { result = this.attr("coveredstatements") }
+  int getNumCoveredStatements() { result = attr("coveredstatements") }
 
   /** Gets the value of the `elements` attribute. */
-  int getNumElements() { result = this.attr("elements") }
+  int getNumElements() { result = attr("elements") }
 
   /** Gets the value of the `coveredelements` attribute. */
-  int getNumCoveredElements() { result = this.attr("coveredelements") }
+  int getNumCoveredElements() { result = attr("coveredelements") }
 
   /** Gets the value of the `methods` attribute. */
-  int getNumMethods() { result = this.attr("methods") }
+  int getNumMethods() { result = attr("methods") }
 
   /** Gets the value of the `coveredmethods` attribute. */
-  int getNumCoveredMethods() { result = this.attr("coveredmethods") }
+  int getNumCoveredMethods() { result = attr("coveredmethods") }
 
   /** Gets the value of the `loc` attribute. */
-  int getNumLoC() { result = this.attr("loc") }
+  int getNumLoC() { result = attr("loc") }
 
   /** Gets the value of the `ncloc` attribute. */
-  int getNumNonCommentedLoC() { result = this.attr("ncloc") }
+  int getNumNonCommentedLoC() { result = attr("ncloc") }
 
   /** Gets the value of the `packages` attribute. */
-  int getNumPackages() { result = this.attr("packages") }
+  int getNumPackages() { result = attr("packages") }
 
   /** Gets the value of the `files` attribute. */
-  int getNumFiles() { result = this.attr("files") }
+  int getNumFiles() { result = attr("files") }
 
   /** Gets the value of the `classes` attribute. */
-  int getNumClasses() { result = this.attr("classes") }
+  int getNumClasses() { result = attr("classes") }
 
   /** Gets the value of the `complexity` attribute. */
-  int getCloverComplexity() { result = this.attr("complexity") }
+  int getCloverComplexity() { result = attr("complexity") }
 
   /** Gets the ratio of the `coveredconditionals` attribute over the `conditionals` attribute. */
-  float getConditionalCoverage() { result = this.ratio("conditionals") }
+  float getConditionalCoverage() { result = ratio("conditionals") }
 
   /** Gets the ratio of the `coveredstatements` attribute over the `statements` attribute. */
-  float getStatementCoverage() { result = this.ratio("statements") }
+  float getStatementCoverage() { result = ratio("statements") }
 
   /** Gets the ratio of the `coveredelements` attribute over the `elements` attribute. */
-  float getElementCoverage() { result = this.ratio("elements") }
+  float getElementCoverage() { result = ratio("elements") }
 
   /** Gets the ratio of the `coveredmethods` attribute over the `methods` attribute. */
-  float getMethodCoverage() { result = this.ratio("methods") }
+  float getMethodCoverage() { result = ratio("methods") }
 
   /** Gets the ratio of the `ncloc` attribute over the `loc` attribute. */
-  float getNonCommentedLoCRatio() { result = this.attr("ncloc") / this.attr("loc") }
+  float getNonCommentedLoCRatio() { result = attr("ncloc") / attr("loc") }
 }
 
 /**
@@ -126,7 +124,7 @@ class CloverPackage extends CloverMetricsContainer {
   }
 
   /** Gets the Java package for this Clover package. */
-  Package getRealPackage() { result.hasName(this.getAttribute("name").getValue()) }
+  Package getRealPackage() { result.hasName(getAttribute("name").getValue()) }
 }
 
 /**
@@ -149,13 +147,13 @@ class CloverClass extends CloverMetricsContainer {
   }
 
   /** Gets the Clover package for this Clover class. */
-  CloverPackage getPackage() { result = this.getParent().(CloverFile).getParent() }
+  CloverPackage getPackage() { result = getParent().(CloverFile).getParent() }
 
   /** Gets the Java type for this Clover class. */
   RefType getRealClass() {
     result
         .hasQualifiedName(this.getPackage().getAttribute("name").getValue(),
-          this.getAttribute("name").getValue())
+          getAttribute("name").getValue())
   }
 }
 

@@ -5,7 +5,7 @@ private import Common
 /**
  * An extensible kind of taint representing an externally controlled string.
  */
-abstract deprecated class ExternalStringKind extends StringKind {
+abstract class ExternalStringKind extends StringKind {
   bindingset[this]
   ExternalStringKind() { this = this }
 
@@ -30,15 +30,15 @@ abstract deprecated class ExternalStringKind extends StringKind {
 }
 
 /** A kind of "taint", representing a sequence, with a "taint" member */
-deprecated class ExternalStringSequenceKind extends SequenceKind {
+class ExternalStringSequenceKind extends SequenceKind {
   ExternalStringSequenceKind() { this.getItem() instanceof ExternalStringKind }
 }
 
 /**
- * An hierarchical dictionary or list where the entire structure is externally controlled
+ * An hierachical dictionary or list where the entire structure is externally controlled
  * This is typically a parsed JSON object.
  */
-deprecated class ExternalJsonKind extends TaintKind {
+class ExternalJsonKind extends TaintKind {
   ExternalJsonKind() { this = "json[" + any(ExternalStringKind key) + "]" }
 
   /** Gets the taint kind for item in this sequence */
@@ -61,7 +61,7 @@ deprecated class ExternalJsonKind extends TaintKind {
 }
 
 /** A kind of "taint", representing a dictionary mapping keys to tainted strings. */
-deprecated class ExternalStringDictKind extends DictKind {
+class ExternalStringDictKind extends DictKind {
   ExternalStringDictKind() { this.getValue() instanceof ExternalStringKind }
 }
 
@@ -69,22 +69,28 @@ deprecated class ExternalStringDictKind extends DictKind {
  * A kind of "taint", representing a dictionary mapping keys to sequences of
  *  tainted strings.
  */
-deprecated class ExternalStringSequenceDictKind extends DictKind {
+class ExternalStringSequenceDictKind extends DictKind {
   ExternalStringSequenceDictKind() { this.getValue() instanceof ExternalStringSequenceKind }
 }
 
 /** TaintKind for the result of `urlsplit(tainted_string)` */
-deprecated class ExternalUrlSplitResult extends ExternalStringSequenceKind {
+class ExternalUrlSplitResult extends ExternalStringSequenceKind {
   // https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlsplit
   override TaintKind getTaintOfAttribute(string name) {
     result = super.getTaintOfAttribute(name)
     or
-    name in [
-        // namedtuple field names
-        "scheme", "netloc", "path", "query", "fragment",
-        // class methods
-        "password", "username", "hostname",
-      ] and
+    (
+      // namedtuple field names
+      name = "scheme" or
+      name = "netloc" or
+      name = "path" or
+      name = "query" or
+      name = "fragment" or
+      // class methods
+      name = "username" or
+      name = "password" or
+      name = "hostname"
+    ) and
     result instanceof ExternalStringKind
   }
 
@@ -97,17 +103,24 @@ deprecated class ExternalUrlSplitResult extends ExternalStringSequenceKind {
 }
 
 /** TaintKind for the result of `urlparse(tainted_string)` */
-deprecated class ExternalUrlParseResult extends ExternalStringSequenceKind {
+class ExternalUrlParseResult extends ExternalStringSequenceKind {
   // https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlparse
   override TaintKind getTaintOfAttribute(string name) {
     result = super.getTaintOfAttribute(name)
     or
-    name in [
-        // namedtuple field names
-        "scheme", "netloc", "path", "params", "query", "fragment",
-        // class methods
-        "username", "password", "hostname",
-      ] and
+    (
+      // namedtuple field names
+      name = "scheme" or
+      name = "netloc" or
+      name = "path" or
+      name = "params" or
+      name = "query" or
+      name = "fragment" or
+      // class methods
+      name = "username" or
+      name = "password" or
+      name = "hostname"
+    ) and
     result instanceof ExternalStringKind
   }
 
@@ -121,7 +134,7 @@ deprecated class ExternalUrlParseResult extends ExternalStringSequenceKind {
 
 /* Helper for getTaintForStep() */
 pragma[noinline]
-deprecated private predicate json_subscript_taint(
+private predicate json_subscript_taint(
   SubscriptNode sub, ControlFlowNode obj, ExternalJsonKind seq, TaintKind key
 ) {
   sub.isLoad() and
@@ -129,12 +142,12 @@ deprecated private predicate json_subscript_taint(
   key = seq.getValue()
 }
 
-deprecated private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
+private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
   tonode = Value::named("json.loads").getACall() and
   tonode.getArg(0) = fromnode
 }
 
-deprecated private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode) {
+private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode) {
   // This could be implemented as `exists(FunctionValue` without the explicit six part,
   // but then our tests will need to import +100 modules, so for now this slightly
   // altered version gets to live on.
@@ -153,7 +166,7 @@ deprecated private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode)
   )
 }
 
-deprecated private predicate urlparse(ControlFlowNode fromnode, CallNode tonode) {
+private predicate urlparse(ControlFlowNode fromnode, CallNode tonode) {
   // This could be implemented as `exists(FunctionValue` without the explicit six part,
   // but then our tests will need to import +100 modules, so for now this slightly
   // altered version gets to live on.
@@ -172,7 +185,7 @@ deprecated private predicate urlparse(ControlFlowNode fromnode, CallNode tonode)
   )
 }
 
-deprecated private predicate parse_qs(ControlFlowNode fromnode, CallNode tonode) {
+private predicate parse_qs(ControlFlowNode fromnode, CallNode tonode) {
   // This could be implemented as `exists(FunctionValue` without the explicit six part,
   // but then our tests will need to import +100 modules, so for now this slightly
   // altered version gets to live on.
@@ -198,7 +211,7 @@ deprecated private predicate parse_qs(ControlFlowNode fromnode, CallNode tonode)
   )
 }
 
-deprecated private predicate parse_qsl(ControlFlowNode fromnode, CallNode tonode) {
+private predicate parse_qsl(ControlFlowNode fromnode, CallNode tonode) {
   // This could be implemented as `exists(FunctionValue` without the explicit six part,
   // but then our tests will need to import +100 modules, so for now this slightly
   // altered version gets to live on.
@@ -225,7 +238,7 @@ deprecated private predicate parse_qsl(ControlFlowNode fromnode, CallNode tonode
 }
 
 /** A kind of "taint", representing an open file-like object from an external source. */
-deprecated class ExternalFileObject extends TaintKind {
+class ExternalFileObject extends TaintKind {
   ExternalStringKind valueKind;
 
   ExternalFileObject() { this = "file[" + valueKind + "]" }
@@ -253,7 +266,7 @@ deprecated class ExternalFileObject extends TaintKind {
  * - `if splitres.netloc == "KNOWN_VALUE"`
  * - `if splitres[0] == "KNOWN_VALUE"`
  */
-deprecated class UrlsplitUrlparseTempSanitizer extends Sanitizer {
+class UrlsplitUrlparseTempSanitizer extends Sanitizer {
   // TODO: remove this once we have better support for named tuples
   UrlsplitUrlparseTempSanitizer() { this = "UrlsplitUrlparseTempSanitizer" }
 
@@ -268,19 +281,19 @@ deprecated class UrlsplitUrlparseTempSanitizer extends Sanitizer {
       or
       full_use.(AttrNode).getObject() = test.getInput().getAUse()
     |
-      this.clears_taint(full_use, test.getTest(), test.getSense())
+      clears_taint(full_use, test.getTest(), test.getSense())
     )
   }
 
   private predicate clears_taint(ControlFlowNode tainted, ControlFlowNode test, boolean sense) {
-    this.test_equality_with_const(test, tainted, sense)
+    test_equality_with_const(test, tainted, sense)
     or
-    this.test_in_const_seq(test, tainted, sense)
+    test_in_const_seq(test, tainted, sense)
     or
     test.(UnaryExprNode).getNode().getOp() instanceof Not and
     exists(ControlFlowNode nested_test |
       nested_test = test.(UnaryExprNode).getOperand() and
-      this.clears_taint(tainted, nested_test, sense.booleanNot())
+      clears_taint(tainted, nested_test, sense.booleanNot())
     )
   }
 

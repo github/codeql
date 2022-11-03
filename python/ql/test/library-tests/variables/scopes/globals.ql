@@ -1,4 +1,4 @@
 import python
 
 from GlobalVariable l
-select l, l.getScope()
+select l.toString(), l.getScope().toString()

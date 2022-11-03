@@ -11,6 +11,13 @@ private import semmle.python.ApiGraphs
 import semmle.python.frameworks.internal.PEP249Impl
 
 /**
+ * A module implementing PEP 249. Extend this class for implementations.
+ *
+ * DEPRECATED: Extend `PEP249::PEP249ModuleApiNode` instead.
+ */
+abstract deprecated class PEP249Module extends DataFlow::Node { }
+
+/**
  * DEPRECATED: Use `PEP249::PEP249ModuleApiNode` instead.
  */
 deprecated class PEP249ModuleApiNode = PEP249::PEP249ModuleApiNode;

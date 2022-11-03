@@ -15,12 +15,12 @@ public class FileCredentialTest {
 
 		String p = readText(new File(file));
 
-		DriverManager.getConnection("", "admin", p); // $ HardcodedCredentialsApiCall
+		DriverManager.getConnection("", "admin", p); // sensitive call (flow target)
 		test(url, u, p);
 	}
 
 	public static void test(String url, String v, String q) throws SQLException {
-		DriverManager.getConnection(url, v, q); // $ HardcodedCredentialsApiCall
+		DriverManager.getConnection(url, v, q); // sensitive call (flow target)
 	}
 
 	public static String readText(File f) throws IOException

@@ -9,7 +9,6 @@
  * @tags security
  *       external/cwe/cwe-346
  *       external/cwe/cwe-639
- *       external/cwe/cwe-942
  */
 
 import javascript
@@ -18,6 +17,6 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ leak vulnerability due to a $@.",
+select sink.getNode(), source, sink, "$@ leak vulnerability due to $@.",
   sink.getNode().(Sink).getCredentialsHeader(), "Credential", source.getNode(),
-  "misconfigured CORS header value"
+  "a misconfigured CORS header value"

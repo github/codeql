@@ -35,7 +35,7 @@ class Call extends Expr, NameQualifiableElement, TCall {
    *
    * For example, `ptr->f()` has a qualifier, whereas plain `f()` does not.
    */
-  predicate hasQualifier() { exists(this.getChild(-1)) }
+  predicate hasQualifier() { exists(Expr e | this.getChild(-1) = e) }
 
   /**
    * Gets the expression to the left of the function name or function pointer variable name.
@@ -255,10 +255,8 @@ class FunctionCall extends Call, @funbindexpr {
   /**
    * Gets the function called by this call.
    *
-   * In the case of virtual function calls, the result is the most-specific function in the override tree
-   * such that the target at runtime will be one of `result.getAnOverridingFunction*()`. The most-specific
-   * function is determined by the compiler based on the compile time type of the object the function is a
-   * member of.
+   * In the case of virtual function calls, the result is the most-specific function in the override tree (as
+   * determined by the compiler) such that the target at runtime will be one of `result.getAnOverridingFunction*()`.
    */
   override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
 
@@ -494,7 +492,7 @@ class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
  * An initialization of a base class or member variable performed as part
  * of a constructor's explicit initializer list or implicit actions.
  *
- * This is a QL root class for representing various types of constructor
+ * This is a QL root class for reprenting various types of constructor
  * initializations.
  */
 class ConstructorInit extends Expr, @ctorinit {

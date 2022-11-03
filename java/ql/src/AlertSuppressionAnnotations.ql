@@ -23,7 +23,7 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   string text;
 
   SuppressionAnnotation() {
-    text = this.getASuppressedWarning() and
+    text = this.getASuppressedWarningLiteral().getValue() and
     exists(getAnnotationText(text))
   }
 
@@ -33,11 +33,8 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   string getText() { result = text }
 
   private Annotation getASiblingAnnotation() {
-    result = this.getAnnotatedElement().(Annotatable).getAnAnnotation() and
-    (
-      this.getAnnotatedElement() instanceof Callable or
-      this.getAnnotatedElement() instanceof RefType
-    )
+    result = getAnnotatedElement().(Annotatable).getAnAnnotation() and
+    (getAnnotatedElement() instanceof Callable or getAnnotatedElement() instanceof RefType)
   }
 
   private Annotation firstAnnotation() {
@@ -53,13 +50,11 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
    * to column `endcolumn` of line `endline` in file `filepath`.
    */
   predicate covers(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    if this.firstAnnotation().hasLocationInfo(filepath, _, _, _, _)
+    if firstAnnotation().hasLocationInfo(filepath, _, _, _, _)
     then
-      this.getAnnotatedElement().hasLocationInfo(filepath, _, _, endline, endcolumn) and
-      this.firstAnnotation().hasLocationInfo(filepath, startline, startcolumn, _, _)
-    else
-      this.getAnnotatedElement()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      getAnnotatedElement().hasLocationInfo(filepath, _, _, endline, endcolumn) and
+      firstAnnotation().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    else getAnnotatedElement().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets the scope of this suppression. */

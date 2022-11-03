@@ -61,8 +61,4 @@ class LocalScopeVariableShadowsMember
     {
         public C4(int f) { } // GOOD
     }
-
-    record class GoodRecordClass(object Prop1, object Prop2) { } // GOOD
-
-    record struct GoodRecordStruct(object Prop1, object Prop2) { } // GOOD
 }

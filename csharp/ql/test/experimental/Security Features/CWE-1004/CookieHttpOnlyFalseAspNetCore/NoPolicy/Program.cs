@@ -1,3 +1,5 @@
+// semmle-extractor-options: ${testdir}/../../../../../resources/stubs/Microsoft.AspNetCore.Http.cs ${testdir}/../../../../../resources/stubs/Microsoft.AspNetCore.Mvc.cs
+
 public class MyController : Microsoft.AspNetCore.Mvc.Controller
 {
     public void CookieDelete()

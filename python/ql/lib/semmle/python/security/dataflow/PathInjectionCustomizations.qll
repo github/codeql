@@ -33,21 +33,9 @@ module PathInjection {
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for "path injection" vulnerabilities.
-   *
-   * This should only be used for things like calls to library functions that perform their own
-   * (correct) normalization/escaping of untrusted paths.
-   *
-   * Please also see `Path::SafeAccessCheck` and `Path::PathNormalization` Concepts.
-   */
-  abstract class Sanitizer extends DataFlow::Node { }
-
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
    * A sanitizer guard for "path injection" vulnerabilities.
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -61,14 +49,8 @@ module PathInjection {
     FileSystemAccessAsSink() { this = any(FileSystemAccess e).getAPathArgument() }
   }
 
-  private import semmle.python.frameworks.data.ModelsAsData
-
-  private class DataAsFileSink extends Sink {
-    DataAsFileSink() { this = ModelOutput::getASinkNode("path-injection").asSink() }
-  }
-
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
 }

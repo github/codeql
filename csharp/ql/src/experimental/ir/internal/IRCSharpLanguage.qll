@@ -8,12 +8,6 @@ class OpaqueTypeTag = CSharp::ValueOrRefType;
 
 class Function = CSharp::Callable;
 
-class GlobalVariable extends CSharp::Field {
-  GlobalVariable() { this.isStatic() }
-}
-
-class Declaration = CSharp::Declaration;
-
 class Location = CSharp::Location;
 
 class UnknownLocation = CSharp::EmptyLocation;
@@ -161,4 +155,4 @@ int getFieldBitOffset(Field f) {
 /**
  * Holds if the specified `Function` can be overridden in a derived class.
  */
-predicate isFunctionVirtual(Function f) { f.(CSharp::Overridable).isOverridableOrImplementable() }
+predicate isFunctionVirtual(Function f) { f.(CSharp::Virtualizable).isOverridableOrImplementable() }

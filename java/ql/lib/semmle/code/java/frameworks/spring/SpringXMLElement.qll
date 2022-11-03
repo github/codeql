@@ -3,11 +3,11 @@ import semmle.code.java.frameworks.spring.SpringBeanFile
 import semmle.code.java.frameworks.spring.SpringBean
 
 /** A common superclass for all Spring XML elements. */
-class SpringXmlElement extends XmlElement {
-  SpringXmlElement() { this.getFile() instanceof SpringBeanFile }
+class SpringXMLElement extends XMLElement {
+  SpringXMLElement() { this.getFile() instanceof SpringBeanFile }
 
   /** Gets a child of this Spring XML element. */
-  SpringXmlElement getASpringChild() { result = this.getAChild() }
+  SpringXMLElement getASpringChild() { result = this.getAChild() }
 
   /** Gets the bean file of this XML element. */
   SpringBeanFile getSpringBeanFile() { result = this.getFile() }
@@ -18,7 +18,7 @@ class SpringXmlElement extends XmlElement {
    */
   string getAttributeValueWithDefault(string attributeName) {
     this.hasAttribute(attributeName) and
-    if exists(this.getAttribute(attributeName))
+    if exists(XMLAttribute a | a = this.getAttribute(attributeName))
     then result = this.getAttributeValue(attributeName)
     else result = "default"
   }
@@ -27,16 +27,13 @@ class SpringXmlElement extends XmlElement {
   SpringBean getEnclosingBean() {
     if this instanceof SpringBean
     then result = this
-    else result = this.getParent().(SpringXmlElement).getEnclosingBean()
+    else result = this.getParent().(SpringXMLElement).getEnclosingBean()
   }
 
   /**
    * Overridden by subclasses. Used to match `value`, `property` and `ref` elements for similarity.
    */
-  predicate isSimilar(SpringXmlElement other) { none() }
+  predicate isSimilar(SpringXMLElement other) { none() }
 
   string getContentString() { result = this.allCharactersString() }
 }
-
-/** DEPRECATED: Alias for SpringXmlElement */
-deprecated class SpringXMLElement = SpringXmlElement;

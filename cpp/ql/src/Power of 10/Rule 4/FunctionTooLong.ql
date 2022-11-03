@@ -13,7 +13,7 @@ import cpp
 
 class MacroFunctionCall extends MacroInvocation {
   MacroFunctionCall() {
-    not exists(this.getParentInvocation()) and
+    not exists(getParentInvocation()) and
     this.getMacro().getHead().matches("%(%")
   }
 

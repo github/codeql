@@ -80,7 +80,7 @@ module HtmlSanitization {
   }
 
   /**
-   * Gets an HTML-relevant character that is replaced by `chain`.
+   * Gets a HTML-relevant character that is replaced by `chain`.
    */
   private string getALikelyReplacedCharacter(StringReplaceCallSequence chain) {
     result = "\"" and
@@ -121,37 +121,39 @@ module HtmlSanitization {
   /**
    * An incomplete sanitizer for HTML-relevant characters.
    */
-  class IncompleteSanitizer extends IncompleteBlacklistSanitizer instanceof StringReplaceCallSequence {
+  class IncompleteSanitizer extends IncompleteBlacklistSanitizer {
+    StringReplaceCallSequence chain;
     string unsanitized;
 
     IncompleteSanitizer() {
-      fixedGlobalReplacement(this) and
-      not getALikelyReplacedCharacter(this) = unsanitized and
+      this = chain and
+      fixedGlobalReplacement(chain) and
+      not getALikelyReplacedCharacter(chain) = unsanitized and
       (
         // replaces `<` and `>`
-        getALikelyReplacedCharacter(this) = "<" and
-        getALikelyReplacedCharacter(this) = ">" and
+        getALikelyReplacedCharacter(chain) = "<" and
+        getALikelyReplacedCharacter(chain) = ">" and
         unsanitized = ["\"", "'", "&"]
         or
         // replaces '&' and either `<` or `>`
-        getALikelyReplacedCharacter(this) = "&" and
+        getALikelyReplacedCharacter(chain) = "&" and
         (
-          getALikelyReplacedCharacter(this) = ">" and
+          getALikelyReplacedCharacter(chain) = ">" and
           unsanitized = ">"
           or
-          getALikelyReplacedCharacter(this) = "<" and
+          getALikelyReplacedCharacter(chain) = "<" and
           unsanitized = "<"
         )
       ) and
       // does not replace special characters that the browser doesn't care for
-      not super.getAReplacedString() = ["!", "#", "*", "?", "@", "|", "~"] and
+      not chain.getAReplacedString() = ["!", "#", "*", "?", "@", "|", "~"] and
       /// only replaces explicit characters: exclude character ranges and negated character classes
-      not exists(RegExpTerm t | t = super.getAMember().getRegExp().getRoot().getAChild*() |
+      not exists(RegExpTerm t | t = chain.getAMember().getRegExp().getRoot().getAChild*() |
         t.(RegExpCharacterClass).isInverted() or
         t instanceof RegExpCharacterRange
       ) and
       // the replacements are either empty or HTML entities
-      super.getAReplacementString().regexpMatch("(?i)(|(&[#a-z0-9]+;))")
+      chain.getAReplacementString().regexpMatch("(?i)(|(&[#a-z0-9]+;))")
     }
 
     override string getKind() { result = "HTML" }

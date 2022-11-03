@@ -4,9 +4,9 @@ import semmle.python.security.strings.External
 import semmle.python.web.Http
 import semmle.python.web.bottle.General
 
-deprecated private Value theBottleRequestObject() { result = theBottleModule().attr("request") }
+private Value theBottleRequestObject() { result = theBottleModule().attr("request") }
 
-deprecated class BottleRequestKind extends TaintKind {
+class BottleRequestKind extends TaintKind {
   BottleRequestKind() { this = "bottle.request" }
 
   override TaintKind getTaintOfAttribute(string name) {
@@ -21,13 +21,13 @@ deprecated class BottleRequestKind extends TaintKind {
   }
 }
 
-deprecated private class RequestSource extends HttpRequestTaintSource {
+private class RequestSource extends HttpRequestTaintSource {
   RequestSource() { this.(ControlFlowNode).pointsTo(theBottleRequestObject()) }
 
   override predicate isSourceOf(TaintKind kind) { kind instanceof BottleRequestKind }
 }
 
-deprecated class BottleFormsDict extends TaintKind {
+class BottleFormsDict extends TaintKind {
   BottleFormsDict() { this = "bottle.FormsDict" }
 
   override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
@@ -48,7 +48,7 @@ deprecated class BottleFormsDict extends TaintKind {
   }
 }
 
-deprecated class FileUpload extends TaintKind {
+class FileUpload extends TaintKind {
   FileUpload() { this = "bottle.FileUpload" }
 
   override TaintKind getTaintOfAttribute(string name) {
@@ -60,7 +60,7 @@ deprecated class FileUpload extends TaintKind {
   }
 }
 
-deprecated class UntrustedFile extends TaintKind {
+class UntrustedFile extends TaintKind {
   UntrustedFile() { this = "Untrusted file" }
 }
 
@@ -68,8 +68,8 @@ deprecated class UntrustedFile extends TaintKind {
 //   TO DO.. File uploads -- Should check about file uploads for other frameworks as well.
 //  Move UntrustedFile to shared location
 //
-/** A parameter to a bottle request handler function */
-deprecated class BottleRequestParameter extends HttpRequestTaintSource {
+/** Parameter to a bottle request handler function */
+class BottleRequestParameter extends HttpRequestTaintSource {
   BottleRequestParameter() {
     exists(BottleRoute route | route.getANamedArgument() = this.(ControlFlowNode).getNode())
   }

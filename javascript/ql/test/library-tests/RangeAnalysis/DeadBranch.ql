@@ -4,9 +4,9 @@ class AssertionComment extends LineComment {
   boolean isOK;
 
   AssertionComment() {
-    isOK = true and this.getText().trim().matches("OK%")
+    isOK = true and getText().trim().regexpMatch("OK.*")
     or
-    isOK = false and this.getText().trim().matches("NOT OK%")
+    isOK = false and getText().trim().regexpMatch("NOT OK.*")
   }
 
   ConditionGuardNode getAGuardNode() {
@@ -14,22 +14,21 @@ class AssertionComment extends LineComment {
     result.getFile() = this.getFile()
   }
 
-  Expr getTestExpr() { result = this.getAGuardNode().getTest() }
+  Expr getTestExpr() { result = getAGuardNode().getTest() }
 
   string getMessage() {
-    not exists(this.getAGuardNode()) and result = "Error: no guard node on this line"
+    not exists(getAGuardNode()) and result = "Error: no guard node on this line"
     or
     isOK = true and
-    exists(ConditionGuardNode guard | guard = this.getAGuardNode() |
+    exists(ConditionGuardNode guard | guard = getAGuardNode() |
       RangeAnalysis::isContradictoryGuardNode(guard) and
       result =
-        "Error: analysis claims " + this.getTestExpr() + " is always " +
-          guard.getOutcome().booleanNot()
+        "Error: analysis claims " + getTestExpr() + " is always " + guard.getOutcome().booleanNot()
     )
     or
     isOK = false and
-    not RangeAnalysis::isContradictoryGuardNode(this.getAGuardNode()) and
-    result = "Error: " + this.getTestExpr() + " is always true or always false"
+    not RangeAnalysis::isContradictoryGuardNode(getAGuardNode()) and
+    result = "Error: " + getTestExpr() + " is always true or always false"
   }
 }
 

@@ -136,7 +136,6 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
   /** Gets the init module of this package */
   PythonModuleObjectInternal getInitModule() { result = TPythonModule(this.getSourceModule()) }
 
-  /** Holds if the folder for this package has no init module. */
   predicate hasNoInitModule() {
     exists(Folder f |
       f = this.getFolder() and

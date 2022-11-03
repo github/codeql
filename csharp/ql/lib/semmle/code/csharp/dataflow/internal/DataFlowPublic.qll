@@ -40,8 +40,8 @@ class Node extends TNode {
   final DotNet::Type getType() { result = this.(NodeImpl).getTypeImpl() }
 
   /** Gets the enclosing callable of this node. */
-  final Callable getEnclosingCallable() {
-    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable()
+  final DataFlowCallable getEnclosingCallable() {
+    result = this.(NodeImpl).getEnclosingCallableImpl()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
@@ -101,21 +101,14 @@ class ExprNode extends Node, TExprNode_ {
 class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   DotNet::Parameter getParameter() {
-    exists(DataFlowCallable c, ParameterPosition ppos |
-      super.isParameterOf(c, ppos) and
-      result = c.asCallable().getParameter(ppos.getPosition())
-    )
+    exists(DataFlowCallable c, int i | this.isParameterOf(c, i) and result = c.getParameter(i))
   }
 
   /**
-   * DEPRECATED
-   *
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  deprecated predicate isParameterOf(DataFlowCallable c, int i) {
-    super.isParameterOf(c, any(ParameterPosition pos | i = pos.getPosition()))
-  }
+  predicate isParameterOf(DataFlowCallable c, int i) { super.isParameterOf(c, i) }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
@@ -160,8 +153,7 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
-pragma[inline]
-predicate localExprFlow(DotNet::Expr e1, DotNet::Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
+predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
  * A data flow node that jumps between callables. This can be extended in
@@ -173,33 +165,6 @@ abstract class NonLocalJumpNode extends Node {
 }
 
 /**
- * Holds if the guard `g` validates the expression `e` upon evaluating to `v`.
- *
- * The expression `e` is expected to be a syntactic part of the guard `g`.
- * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
- * the argument `x`.
- */
-signature predicate guardChecksSig(Guard g, Expr e, AbstractValue v);
-
-/**
- * Provides a set of barrier nodes for a guard that validates an expression.
- *
- * This is expected to be used in `isBarrier`/`isSanitizer` definitions
- * in data flow and taint tracking.
- */
-module BarrierGuard<guardChecksSig/3 guardChecks> {
-  /** Gets a node that is safely guarded by the given guard check. */
-  ExprNode getABarrierNode() {
-    exists(Guard g, Expr e, AbstractValue v |
-      guardChecks(g, e, v) and
-      g.controlsNode(result.getControlFlowNode(), e, v)
-    )
-  }
-}
-
-/**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -208,7 +173,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-deprecated class BarrierGuard extends Guard {
+class BarrierGuard extends Guard {
   /** Holds if this guard validates `e` upon evaluating to `v`. */
   abstract predicate checks(Expr e, AbstractValue v);
 
@@ -231,6 +196,12 @@ class Content extends TContent {
 
   /** Gets the location of this content. */
   Location getLocation() { none() }
+
+  /** Gets the type of the object containing this content. */
+  deprecated Gvn::GvnType getContainerType() { none() }
+
+  /** Gets the type of this content. */
+  deprecated Gvn::GvnType getType() { none() }
 }
 
 /** A reference to a field. */
@@ -245,18 +216,12 @@ class FieldContent extends Content, TFieldContent {
   override string toString() { result = "field " + f.getName() }
 
   override Location getLocation() { result = f.getLocation() }
-}
 
-/** A reference to a synthetic field. */
-class SyntheticFieldContent extends Content, TSyntheticFieldContent {
-  private SyntheticField f;
+  deprecated override Gvn::GvnType getContainerType() {
+    result = Gvn::getGlobalValueNumber(f.getDeclaringType())
+  }
 
-  SyntheticFieldContent() { this = TSyntheticFieldContent(f) }
-
-  /** Gets the underlying synthetic field. */
-  SyntheticField getField() { result = f }
-
-  override string toString() { result = "synthetic " + f.toString() }
+  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
 /** A reference to a property. */
@@ -271,6 +236,12 @@ class PropertyContent extends Content, TPropertyContent {
   override string toString() { result = "property " + p.getName() }
 
   override Location getLocation() { result = p.getLocation() }
+
+  deprecated override Gvn::GvnType getContainerType() {
+    result = Gvn::getGlobalValueNumber(p.getDeclaringType())
+  }
+
+  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
 }
 
 /** A reference to an element in a collection. */
@@ -278,24 +249,4 @@ class ElementContent extends Content, TElementContent {
   override string toString() { result = "element" }
 
   override Location getLocation() { result instanceof EmptyLocation }
-}
-
-/**
- * An entity that represents a set of `Content`s.
- *
- * The set may be interpreted differently depending on whether it is
- * stored into (`getAStoreContent`) or read from (`getAReadContent`).
- */
-class ContentSet instanceof Content {
-  /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { result = this }
-
-  /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { result = this }
-
-  /** Gets a textual representation of this content set. */
-  string toString() { result = super.toString() }
-
-  /** Gets the location of this content set. */
-  Location getLocation() { result = super.getLocation() }
 }

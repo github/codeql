@@ -1,4 +1,0 @@
-
-class TestClassA<T> {
-}
-

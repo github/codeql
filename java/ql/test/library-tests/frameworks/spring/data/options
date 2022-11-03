@@ -1,1 +1,0 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/spring-data-commons-2.5.1

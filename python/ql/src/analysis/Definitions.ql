@@ -6,7 +6,7 @@
  */
 
 import python
-import analysis.DefinitionTracking
+import DefinitionTracking
 
 from NiceLocationExpr use, Definition defn, string kind
 where defn = definitionOf(use, kind)

@@ -19,7 +19,7 @@ import javascript
 private string channelName() { result = "message" }
 
 /**
- * The names of the libraries modeled in this file.
+ * The names of the libraries modelled in this file.
  */
 private module LibraryNames {
   string sockjs() { result = "SockJS" }
@@ -91,7 +91,7 @@ module ClientWebSocket {
      */
     LibraryName getLibrary() { result = socketClass.getLibrary() }
 
-    override DataFlow::Node getUrl() { result = this.getArgument(0) }
+    override DataFlow::Node getUrl() { result = getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
@@ -226,31 +226,28 @@ module ServerWebSocket {
    * A `socket.on("connection", (msg, req) => {})` call seen as a HTTP route handler.
    * `req` is a `HTTP::IncomingMessage` instance.
    */
-  class ConnectionCallAsRouteHandler extends Http::RouteHandler, DataFlow::CallNode {
+  class ConnectionCallAsRouteHandler extends HTTP::RouteHandler, DataFlow::CallNode {
     ConnectionCallAsRouteHandler() { this = getAConnectionCall(_) }
 
-    override Http::HeaderDefinition getAResponseHeader(string name) { none() }
+    override HTTP::HeaderDefinition getAResponseHeader(string name) { none() }
   }
 
   /**
    * The `req` parameter of a `socket.on("connection", (msg, req) => {})` call.
    */
-  class ServerHttpRequest extends Http::Servers::RequestSource {
+  class ServerHTTPRequest extends HTTP::Servers::RequestSource {
     ConnectionCallAsRouteHandler handler;
 
-    ServerHttpRequest() { this = handler.getCallback(1).getParameter(1) }
+    ServerHTTPRequest() { this = handler.getCallback(1).getParameter(1) }
 
-    override Http::RouteHandler getRouteHandler() { result = handler }
+    override HTTP::RouteHandler getRouteHandler() { result = handler }
   }
-
-  /** DEPRECATED: Alias for ServerHttpRequest */
-  deprecated class ServerHTTPRequest = ServerHttpRequest;
 
   /**
    * An access user-controlled HTTP request input in a request to a WebSocket server.
    */
-  class WebSocketRequestInput extends Http::RequestInputAccess {
-    ServerHttpRequest request;
+  class WebSocketRequestInput extends HTTP::RequestInputAccess {
+    ServerHTTPRequest request;
     string kind;
 
     WebSocketRequestInput() {
@@ -267,7 +264,7 @@ module ServerWebSocket {
 
     override string getKind() { result = kind }
 
-    override Http::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
   }
 
   /**
@@ -288,7 +285,7 @@ module ServerWebSocket {
 
     override DataFlow::Node getSentItem(int i) {
       i = 0 and
-      result = this.getArgument(0)
+      result = getArgument(0)
     }
 
     override ClientWebSocket::ReceiveNode getAReceiver() {

@@ -1,8 +1,0 @@
-<manifest ... >
-    <!-- GOOD: 'android:allowBackup' set to 'false' -->
-    <application
-        android:allowBackup="false">
-        <activity ... >
-        </activity>
-    </application>
-</manifest>

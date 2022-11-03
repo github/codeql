@@ -4,6 +4,7 @@
 
 import semmle.code.cpp.ir.dataflow.DataFlow
 import IRConfiguration
+import cpp
 import DataFlow::PathGraph
 
 from DataFlow::PathNode src, DataFlow::PathNode sink, IRConf conf

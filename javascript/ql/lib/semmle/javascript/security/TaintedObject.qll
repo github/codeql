@@ -75,11 +75,11 @@ module TaintedObject {
 
   /** Request input accesses as a JSON source. */
   private class RequestInputAsSource extends Source {
-    RequestInputAsSource() { this.(Http::RequestInputAccess).isUserControlledObject() }
+    RequestInputAsSource() { this.(HTTP::RequestInputAccess).isUserControlledObject() }
   }
 
   /**
-   * A sanitizer guard that blocks deep object taint.
+   * Sanitizer guard that blocks deep object taint.
    */
   abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode { }
 
@@ -108,16 +108,6 @@ module TaintedObject {
       e = operand and
       label = label()
     }
-  }
-
-  /** A guard that checks whether `x` is a number. */
-  class NumberGuard extends SanitizerGuard instanceof DataFlow::CallNode {
-    Expr x;
-    boolean polarity;
-
-    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
-
-    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
   /**

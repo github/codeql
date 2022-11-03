@@ -19,10 +19,6 @@
  * `pointstoinfo` predicate determines the transitively implied points-to
  * information by collapsing pointers into equivalence classes. These
  * equivalence classes are called "points-to sets".
- *
- * WARNING: This library may perform poorly on very large projects.
- * Consider using another library such as `semmle.code.cpp.dataflow.DataFlow`
- * instead.
  */
 
 import semmle.code.cpp.commons.File
@@ -76,7 +72,7 @@ predicate lvalue(Element e) {
   or
   exists(Cast c | lvalue(c) and e.(Expr).getConversion() = c)
   or
-  e.(Expr).getConversion() instanceof ReferenceToExpr
+  exists(ReferenceToExpr toref | e.(Expr).getConversion() = toref)
   or
   // If f is a function-pointer, then the following two
   // calls are equivalent:  f()  and  (*f)()

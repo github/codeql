@@ -47,8 +47,6 @@ predicate simple_literal(Expr e) {
 }
 
 /**
- * Holds if the redefinition is uninteresting.
- *
  * A multiple definition is 'uninteresting' if it sets a variable to a
  * simple literal before reassigning it.
  * x = None
@@ -67,5 +65,5 @@ where
   forall(Name el | el = asgn1.getParentNode().(Tuple).getAnElt() | multiply_defined(el, _, _)) and
   not uninteresting_definition(asgn1)
 select asgn1,
-  "This assignment to '" + v.getId() + "' is unnecessary as it is $@ before this value is used.",
-  asgn2, "redefined"
+  "This assignment to '" + v.getId() +
+    "' is unnecessary as it is redefined $@ before this value is used.", asgn2 as t, "here"

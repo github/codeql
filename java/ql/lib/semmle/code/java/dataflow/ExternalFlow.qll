@@ -5,14 +5,11 @@
  *
  * The CSV specification has the following columns:
  * - Sources:
- *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
+ *   `namespace; type; subtypes; name; signature; ext; output; kind`
  * - Sinks:
- *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
+ *   `namespace; type; subtypes; name; signature; ext; input; kind`
  * - Summaries:
- *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
- * - Negative Summaries:
- *   `namespace; type; name; signature; provenance`
- *   A negative summary is used to indicate that there is no flow via a callable.
+ *   `namespace; type; subtypes; name; signature; ext; input; output; kind`
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -65,18 +62,13 @@
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step.
- * 9. The `provenance` column is a tag to indicate the origin of the summary.
- *    There are two supported values: "generated" and "manual". "generated" means that
- *    the model has been emitted by the model generator tool and "manual" means
- *    that the model has been written by hand.
  */
 
 import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
-private import internal.AccessPathSyntax
+private import internal.FlowSummaryImplSpecific
 private import FlowSummary
 
 /**
@@ -86,43 +78,27 @@ private import FlowSummary
 private module Frameworks {
   private import internal.ContainerFlow
   private import semmle.code.java.frameworks.android.Android
-  private import semmle.code.java.frameworks.android.ContentProviders
-  private import semmle.code.java.frameworks.android.ExternalStorage
   private import semmle.code.java.frameworks.android.Intent
-  private import semmle.code.java.frameworks.android.Notifications
-  private import semmle.code.java.frameworks.android.SharedPreferences
-  private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
-  private import semmle.code.java.frameworks.android.Widget
   private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
-  private import semmle.code.java.frameworks.apache.IO
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.Flexjson
-  private import semmle.code.java.frameworks.generated
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
-  private import semmle.code.java.frameworks.JavaIo
   private import semmle.code.java.frameworks.JavaxJson
   private import semmle.code.java.frameworks.JaxWS
   private import semmle.code.java.frameworks.JoddJson
   private import semmle.code.java.frameworks.JsonJava
-  private import semmle.code.java.frameworks.Logging
   private import semmle.code.java.frameworks.Objects
-  private import semmle.code.java.frameworks.OkHttp
   private import semmle.code.java.frameworks.Optional
-  private import semmle.code.java.frameworks.Regex
-  private import semmle.code.java.frameworks.Retrofit
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
-  private import semmle.code.java.frameworks.Thymeleaf
   private import semmle.code.java.frameworks.ratpack.Ratpack
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
-  private import semmle.code.java.frameworks.spring.SpringContext
-  private import semmle.code.java.frameworks.spring.SpringData
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
   private import semmle.code.java.frameworks.spring.SpringUi
@@ -131,31 +107,273 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringBeans
   private import semmle.code.java.frameworks.spring.SpringWebMultipart
   private import semmle.code.java.frameworks.spring.SpringWebUtil
-  private import semmle.code.java.security.AndroidIntentRedirection
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
-  private import semmle.code.java.security.Files
   private import semmle.code.java.security.GroovyInjection
-  private import semmle.code.java.security.ImplicitPendingIntents
   private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.JndiInjection
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.MvelInjection
   private import semmle.code.java.security.OgnlInjection
-  private import semmle.code.java.security.TemplateInjection
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
   private import semmle.code.java.frameworks.Jdbc
-  private import semmle.code.java.frameworks.Jdbi
-  private import semmle.code.java.frameworks.HikariCP
   private import semmle.code.java.frameworks.SpringJdbc
   private import semmle.code.java.frameworks.MyBatis
   private import semmle.code.java.frameworks.Hibernate
   private import semmle.code.java.frameworks.jOOQ
-  private import semmle.code.java.frameworks.JMS
-  private import semmle.code.java.frameworks.RabbitMQ
-  private import semmle.code.java.regex.RegexFlowModels
-  private import semmle.code.java.frameworks.kotlin.StdLib
+  private import semmle.code.java.frameworks.spring.SpringHttp
+}
+
+private predicate sourceModelCsv(string row) {
+  row =
+    [
+      // org.springframework.security.web.savedrequest.SavedRequest
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getRedirectUrl;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getCookies;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getHeaderValues;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getHeaderNames;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getParameterValues;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getParameterMap;;;ReturnValue;remote",
+      // ServletRequestGetParameterMethod
+      "javax.servlet;ServletRequest;false;getParameter;(String);;ReturnValue;remote",
+      "javax.servlet;ServletRequest;false;getParameterValues;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getParameter;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getParameterValues;(String);;ReturnValue;remote",
+      // ServletRequestGetParameterMapMethod
+      "javax.servlet;ServletRequest;false;getParameterMap;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getParameterMap;();;ReturnValue;remote",
+      // ServletRequestGetParameterNamesMethod
+      "javax.servlet;ServletRequest;false;getParameterNames;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getParameterNames;();;ReturnValue;remote",
+      // HttpServletRequestGetQueryStringMethod
+      "javax.servlet.http;HttpServletRequest;false;getQueryString;();;ReturnValue;remote",
+      //
+      // URLConnectionGetInputStreamMethod
+      "java.net;URLConnection;false;getInputStream;();;ReturnValue;remote",
+      // SocketGetInputStreamMethod
+      "java.net;Socket;false;getInputStream;();;ReturnValue;remote",
+      // BeanValidationSource
+      "javax.validation;ConstraintValidator;true;isValid;;;Parameter[0];remote",
+      // SpringMultipartRequestSource
+      "org.springframework.web.multipart;MultipartRequest;true;getFile;(String);;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFileMap;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFileNames;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFiles;(String);;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getMultipartContentType;(String);;ReturnValue;remote",
+      // SpringMultipartFileSource
+      "org.springframework.web.multipart;MultipartFile;true;getBytes;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getContentType;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getInputStream;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getName;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getResource;();;ReturnValue;remote",
+      // HttpServletRequest.get*
+      "javax.servlet.http;HttpServletRequest;false;getHeader;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getHeaders;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getHeaderNames;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRemoteUser;();;ReturnValue;remote",
+      // SpringWebRequestGetMethod
+      "org.springframework.web.context.request;WebRequest;false;getDescription;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeader;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeaderNames;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeaderValues;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameter;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterMap;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterNames;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterValues;;;ReturnValue;remote",
+      // TODO consider org.springframework.web.context.request.WebRequest.getRemoteUser
+      // ServletRequestGetBodyMethod
+      "javax.servlet;ServletRequest;false;getInputStream;();;ReturnValue;remote",
+      "javax.servlet;ServletRequest;false;getReader;();;ReturnValue;remote",
+      // CookieGet*
+      "javax.servlet.http;Cookie;false;getValue;();;ReturnValue;remote",
+      "javax.servlet.http;Cookie;false;getName;();;ReturnValue;remote",
+      "javax.servlet.http;Cookie;false;getComment;();;ReturnValue;remote",
+      // ApacheHttp*
+      "org.apache.http;HttpMessage;false;getParams;();;ReturnValue;remote",
+      "org.apache.http;HttpEntity;false;getContent;();;ReturnValue;remote",
+      // In the setting of Android we assume that XML has been transmitted over
+      // the network, so may be tainted.
+      // XmlPullGetMethod
+      "org.xmlpull.v1;XmlPullParser;false;getName;();;ReturnValue;remote",
+      "org.xmlpull.v1;XmlPullParser;false;getNamespace;();;ReturnValue;remote",
+      "org.xmlpull.v1;XmlPullParser;false;getText;();;ReturnValue;remote",
+      // XmlAttrSetGetMethod
+      "android.util;AttributeSet;false;getAttributeBooleanValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeCount;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeFloatValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeIntValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeListValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeName;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeNameResource;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeNamespace;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeResourceValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeUnsignedIntValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getClassAttribute;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getIdAttribute;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getIdAttributeResourceValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getPositionDescription;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getStyleAttribute;;;ReturnValue;remote",
+      // The current URL in a browser may be untrusted or uncontrolled.
+      // WebViewGetUrlMethod
+      "android.webkit;WebView;false;getUrl;();;ReturnValue;remote",
+      "android.webkit;WebView;false;getOriginalUrl;();;ReturnValue;remote",
+      // SpringRestTemplateResponseEntityMethod
+      "org.springframework.web.client;RestTemplate;false;exchange;;;ReturnValue;remote",
+      "org.springframework.web.client;RestTemplate;false;getForEntity;;;ReturnValue;remote",
+      "org.springframework.web.client;RestTemplate;false;postForEntity;;;ReturnValue;remote",
+      // WebSocketMessageParameterSource
+      "java.net.http;WebSocket$Listener;true;onText;(WebSocket,CharSequence,boolean);;Parameter[1];remote",
+      // PlayRequestGetMethod
+      "play.mvc;Http$RequestHeader;false;queryString;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;getQueryString;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;header;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;getHeader;;;ReturnValue;remote"
+    ]
+}
+
+private predicate sinkModelCsv(string row) {
+  row =
+    [
+      // Open URL
+      "java.net;URL;false;openConnection;;;Argument[-1];open-url",
+      "java.net;URL;false;openStream;;;Argument[-1];open-url",
+      "java.net.http;HttpRequest;false;newBuilder;;;Argument[0];open-url",
+      "java.net.http;HttpRequest$Builder;false;uri;;;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[]);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[],ClassLoader);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[],ClassLoader,URLStreamHandlerFactory);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader);;Argument[1];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader,URLStreamHandlerFactory);;Argument[1];open-url",
+      "java.net;URLClassLoader;false;newInstance;;;Argument[0];open-url",
+      // Create file
+      "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
+      "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
+      "java.io;FileWriter;false;FileWriter;;;Argument[0];create-file",
+      "java.nio.file;Files;false;move;;;Argument[1];create-file",
+      "java.nio.file;Files;false;copy;;;Argument[1];create-file",
+      "java.nio.file;Files;false;newOutputStream;;;Argument[0];create-file",
+      "java.nio.file;Files;false;newBufferedReader;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createDirectory;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createFile;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createLink;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createSymbolicLink;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createTempDirectory;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createTempFile;;;Argument[0];create-file",
+      // Bean validation
+      "javax.validation;ConstraintValidatorContext;true;buildConstraintViolationWithTemplate;;;Argument[0];bean-validation",
+      // Set hostname
+      "javax.net.ssl;HttpsURLConnection;true;setDefaultHostnameVerifier;;;Argument[0];set-hostname-verifier",
+      "javax.net.ssl;HttpsURLConnection;true;setHostnameVerifier;;;Argument[0];set-hostname-verifier"
+    ]
+}
+
+private predicate summaryModelCsv(string row) {
+  row =
+    [
+      // qualifier to arg
+      "java.io;InputStream;true;read;(byte[]);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;read;(byte[],int,int);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;readNBytes;(byte[],int,int);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;transferTo;(OutputStream);;Argument[-1];Argument[0];taint",
+      "java.io;ByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint",
+      "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint",
+      // qualifier to return
+      "java.io;ByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint",
+      "java.io;ByteArrayOutputStream;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.io;InputStream;true;readAllBytes;;;Argument[-1];ReturnValue;taint",
+      "java.io;InputStream;true;readNBytes;(int);;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextElement;();;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;getInputSource;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint",
+      "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.nio;ByteBuffer;false;array;();;Argument[-1];ReturnValue;taint",
+      "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;BufferedReader;true;readLine;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint",
+      // arg to return
+      "java.nio;ByteBuffer;false;wrap;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encodeToString;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;wrap;(OutputStream);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
+      "cn.hutool.core.codec;Base64;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.shiro.codec;Base64;false;decode;(String);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Encoder;true;encode;(Object);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Decoder;true;decode;(Object);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;BinaryEncoder;true;encode;(byte[]);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;BinaryDecoder;true;decode;(byte[]);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;StringEncoder;true;encode;(String);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;StringDecoder;true;decode;(String);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;buffer;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readLines;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,int);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedReader;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toByteArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toCharArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toString;;;Argument[0];ReturnValue;taint",
+      "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint",
+      "java.net;URI;false;create;;;Argument[0];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint",
+      // arg to arg
+      "java.lang;System;false;arraycopy;;;Argument[0];Argument[2];taint",
+      "org.apache.commons.io;IOUtils;false;copy;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;copyLarge;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;read;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[]);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,ByteBuffer);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(ReadableByteChannel,ByteBuffer);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[]);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[],int,int);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;write;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;writeChunked;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[0];Argument[2];taint",
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[1];Argument[2];taint",
+      // constructor flow
+      "java.io;File;false;File;;;Argument[0];Argument[-1];taint",
+      "java.io;File;false;File;;;Argument[1];Argument[-1];taint",
+      "java.net;URI;false;URI;(String);;Argument[0];Argument[-1];taint",
+      "java.net;URL;false;URL;(String);;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.stream;StreamSource;false;StreamSource;;;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(InputSource);;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(XMLReader,InputSource);;Argument[1];Argument[-1];taint",
+      "org.xml.sax;InputSource;false;InputSource;;;Argument[0];Argument[-1];taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[0];Argument[-1];taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[1];Argument[-1];taint",
+      "java.util.zip;ZipInputStream;false;ZipInputStream;;;Argument[0];Argument[-1];taint",
+      "java.util.zip;GZIPInputStream;false;GZIPInputStream;;;Argument[0];Argument[-1];taint",
+      "java.util;StringTokenizer;false;StringTokenizer;;;Argument[0];Argument[-1];taint",
+      "java.beans;XMLDecoder;false;XMLDecoder;;;Argument[0];Argument[-1];taint",
+      "com.esotericsoftware.kryo.io;Input;false;Input;;;Argument[0];Argument[-1];taint",
+      "com.esotericsoftware.kryo5.io;Input;false;Input;;;Argument[0];Argument[-1];taint",
+      "java.io;BufferedInputStream;false;BufferedInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;DataInputStream;false;DataInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;ByteArrayInputStream;false;ByteArrayInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;ObjectInputStream;false;ObjectInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;StringReader;false;StringReader;;;Argument[0];Argument[-1];taint",
+      "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];Argument[-1];taint",
+      "java.io;BufferedReader;false;BufferedReader;;;Argument[0];Argument[-1];taint",
+      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint"
+    ]
 }
 
 /**
@@ -188,252 +406,25 @@ class SummaryModelCsv extends Unit {
   abstract predicate row(string row);
 }
 
-/**
- * A unit class for adding negative summary model rows.
- *
- * Extend this class to add additional flow summary definitions.
- */
-class NegativeSummaryModelCsv extends Unit {
-  /** Holds if `row` specifies a negative summary definition. */
-  abstract predicate row(string row);
+private predicate sourceModel(string row) {
+  sourceModelCsv(row) or
+  any(SourceModelCsv s).row(row)
 }
 
-private class SourceModelCsvBase extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // org.springframework.security.web.savedrequest.SavedRequest
-        "org.springframework.security.web.savedrequest;SavedRequest;true;getRedirectUrl;;;ReturnValue;remote;manual",
-        "org.springframework.security.web.savedrequest;SavedRequest;true;getCookies;;;ReturnValue;remote;manual",
-        "org.springframework.security.web.savedrequest;SavedRequest;true;getHeaderValues;;;ReturnValue;remote;manual",
-        "org.springframework.security.web.savedrequest;SavedRequest;true;getHeaderNames;;;ReturnValue;remote;manual",
-        "org.springframework.security.web.savedrequest;SavedRequest;true;getParameterValues;;;ReturnValue;remote;manual",
-        "org.springframework.security.web.savedrequest;SavedRequest;true;getParameterMap;;;ReturnValue;remote;manual",
-        // ServletRequestGetParameterMethod
-        "javax.servlet;ServletRequest;false;getParameter;(String);;ReturnValue;remote;manual",
-        "javax.servlet;ServletRequest;false;getParameterValues;(String);;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getParameter;(String);;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getParameterValues;(String);;ReturnValue;remote;manual",
-        // ServletRequestGetParameterMapMethod
-        "javax.servlet;ServletRequest;false;getParameterMap;();;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getParameterMap;();;ReturnValue;remote;manual",
-        // ServletRequestGetParameterNamesMethod
-        "javax.servlet;ServletRequest;false;getParameterNames;();;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getParameterNames;();;ReturnValue;remote;manual",
-        // HttpServletRequestGetQueryStringMethod
-        "javax.servlet.http;HttpServletRequest;false;getQueryString;();;ReturnValue;remote;manual",
-        //
-        // URLConnectionGetInputStreamMethod
-        "java.net;URLConnection;false;getInputStream;();;ReturnValue;remote;manual",
-        // SocketGetInputStreamMethod
-        "java.net;Socket;false;getInputStream;();;ReturnValue;remote;manual",
-        // BeanValidationSource
-        "javax.validation;ConstraintValidator;true;isValid;;;Parameter[0];remote;manual",
-        // SpringMultipartRequestSource
-        "org.springframework.web.multipart;MultipartRequest;true;getFile;(String);;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartRequest;true;getFileMap;();;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartRequest;true;getFileNames;();;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartRequest;true;getFiles;(String);;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;();;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartRequest;true;getMultipartContentType;(String);;ReturnValue;remote;manual",
-        // SpringMultipartFileSource
-        "org.springframework.web.multipart;MultipartFile;true;getBytes;();;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartFile;true;getContentType;();;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartFile;true;getInputStream;();;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartFile;true;getName;();;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;();;ReturnValue;remote;manual",
-        "org.springframework.web.multipart;MultipartFile;true;getResource;();;ReturnValue;remote;manual",
-        // HttpServletRequest.get*
-        "javax.servlet.http;HttpServletRequest;false;getHeader;(String);;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getHeaders;(String);;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getHeaderNames;();;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;remote;manual",
-        "javax.servlet.http;HttpServletRequest;false;getRemoteUser;();;ReturnValue;remote;manual",
-        // SpringWebRequestGetMethod
-        "org.springframework.web.context.request;WebRequest;false;getDescription;;;ReturnValue;remote;manual",
-        "org.springframework.web.context.request;WebRequest;false;getHeader;;;ReturnValue;remote;manual",
-        "org.springframework.web.context.request;WebRequest;false;getHeaderNames;;;ReturnValue;remote;manual",
-        "org.springframework.web.context.request;WebRequest;false;getHeaderValues;;;ReturnValue;remote;manual",
-        "org.springframework.web.context.request;WebRequest;false;getParameter;;;ReturnValue;remote;manual",
-        "org.springframework.web.context.request;WebRequest;false;getParameterMap;;;ReturnValue;remote;manual",
-        "org.springframework.web.context.request;WebRequest;false;getParameterNames;;;ReturnValue;remote;manual",
-        "org.springframework.web.context.request;WebRequest;false;getParameterValues;;;ReturnValue;remote;manual",
-        // TODO consider org.springframework.web.context.request.WebRequest.getRemoteUser
-        // ServletRequestGetBodyMethod
-        "javax.servlet;ServletRequest;false;getInputStream;();;ReturnValue;remote;manual",
-        "javax.servlet;ServletRequest;false;getReader;();;ReturnValue;remote;manual",
-        // CookieGet*
-        "javax.servlet.http;Cookie;false;getValue;();;ReturnValue;remote;manual",
-        "javax.servlet.http;Cookie;false;getName;();;ReturnValue;remote;manual",
-        "javax.servlet.http;Cookie;false;getComment;();;ReturnValue;remote;manual",
-        // ApacheHttp*
-        "org.apache.http;HttpMessage;false;getParams;();;ReturnValue;remote;manual",
-        "org.apache.http;HttpEntity;false;getContent;();;ReturnValue;remote;manual",
-        // In the setting of Android we assume that XML has been transmitted over
-        // the network, so may be tainted.
-        // XmlPullGetMethod
-        "org.xmlpull.v1;XmlPullParser;false;getName;();;ReturnValue;remote;manual",
-        "org.xmlpull.v1;XmlPullParser;false;getNamespace;();;ReturnValue;remote;manual",
-        "org.xmlpull.v1;XmlPullParser;false;getText;();;ReturnValue;remote;manual",
-        // XmlAttrSetGetMethod
-        "android.util;AttributeSet;false;getAttributeBooleanValue;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeCount;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeFloatValue;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeIntValue;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeListValue;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeName;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeNameResource;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeNamespace;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeResourceValue;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeUnsignedIntValue;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getAttributeValue;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getClassAttribute;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getIdAttribute;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getIdAttributeResourceValue;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getPositionDescription;;;ReturnValue;remote;manual",
-        "android.util;AttributeSet;false;getStyleAttribute;;;ReturnValue;remote;manual",
-        // The current URL in a browser may be untrusted or uncontrolled.
-        // WebViewGetUrlMethod
-        "android.webkit;WebView;false;getUrl;();;ReturnValue;remote;manual",
-        "android.webkit;WebView;false;getOriginalUrl;();;ReturnValue;remote;manual",
-        // SpringRestTemplateResponseEntityMethod
-        "org.springframework.web.client;RestTemplate;false;exchange;;;ReturnValue;remote;manual",
-        "org.springframework.web.client;RestTemplate;false;getForEntity;;;ReturnValue;remote;manual",
-        "org.springframework.web.client;RestTemplate;false;postForEntity;;;ReturnValue;remote;manual",
-        // WebSocketMessageParameterSource
-        "java.net.http;WebSocket$Listener;true;onText;(WebSocket,CharSequence,boolean);;Parameter[1];remote;manual",
-        // PlayRequestGetMethod
-        "play.mvc;Http$RequestHeader;false;queryString;;;ReturnValue;remote;manual",
-        "play.mvc;Http$RequestHeader;false;getQueryString;;;ReturnValue;remote;manual",
-        "play.mvc;Http$RequestHeader;false;header;;;ReturnValue;remote;manual",
-        "play.mvc;Http$RequestHeader;false;getHeader;;;ReturnValue;remote;manual"
-      ]
-  }
+private predicate sinkModel(string row) {
+  sinkModelCsv(row) or
+  any(SinkModelCsv s).row(row)
 }
 
-private class SinkModelCsvBase extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // Open URL
-        "java.net;URL;false;openConnection;;;Argument[-1];open-url;manual",
-        "java.net;URL;false;openStream;;;Argument[-1];open-url;manual",
-        "java.net.http;HttpRequest;false;newBuilder;;;Argument[0];open-url;manual",
-        "java.net.http;HttpRequest$Builder;false;uri;;;Argument[0];open-url;manual",
-        "java.net;URLClassLoader;false;URLClassLoader;(URL[]);;Argument[0];open-url;manual",
-        "java.net;URLClassLoader;false;URLClassLoader;(URL[],ClassLoader);;Argument[0];open-url;manual",
-        "java.net;URLClassLoader;false;URLClassLoader;(URL[],ClassLoader,URLStreamHandlerFactory);;Argument[0];open-url;manual",
-        "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader);;Argument[1];open-url;manual",
-        "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader,URLStreamHandlerFactory);;Argument[1];open-url;manual",
-        "java.net;URLClassLoader;false;newInstance;;;Argument[0];open-url;manual",
-        // Bean validation
-        "javax.validation;ConstraintValidatorContext;true;buildConstraintViolationWithTemplate;;;Argument[0];bean-validation;manual",
-        // Set hostname
-        "javax.net.ssl;HttpsURLConnection;true;setDefaultHostnameVerifier;;;Argument[0];set-hostname-verifier;manual",
-        "javax.net.ssl;HttpsURLConnection;true;setHostnameVerifier;;;Argument[0];set-hostname-verifier;manual"
-      ]
-  }
+private predicate summaryModel(string row) {
+  summaryModelCsv(row) or
+  any(SummaryModelCsv s).row(row)
 }
-
-private class SummaryModelCsvBase extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // qualifier to arg
-        "java.io;InputStream;true;read;(byte[]);;Argument[-1];Argument[0];taint;manual",
-        "java.io;InputStream;true;read;(byte[],int,int);;Argument[-1];Argument[0];taint;manual",
-        "java.io;InputStream;true;readNBytes;(byte[],int,int);;Argument[-1];Argument[0];taint;manual",
-        "java.io;InputStream;true;transferTo;(OutputStream);;Argument[-1];Argument[0];taint;manual",
-        "java.io;ByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint;manual",
-        "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint;manual",
-        // qualifier to return
-        "java.io;ByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;ByteArrayOutputStream;false;toString;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;InputStream;true;readAllBytes;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;InputStream;true;readNBytes;(int);;Argument[-1];ReturnValue;taint;manual",
-        "java.util;StringTokenizer;false;nextElement;();;Argument[-1];ReturnValue;taint;manual",
-        "java.util;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint;manual",
-        "javax.xml.transform.sax;SAXSource;false;getInputSource;;;Argument[-1];ReturnValue;taint;manual",
-        "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint;manual",
-        "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint;manual",
-        "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint;manual",
-        "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint;manual",
-        "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint;manual",
-        "java.nio;ByteBuffer;false;array;();;Argument[-1];ReturnValue;taint;manual",
-        "java.io;BufferedReader;true;readLine;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint;manual",
-        // arg to return
-        "java.nio;ByteBuffer;false;wrap;(byte[]);;Argument[0];ReturnValue;taint;manual",
-        "java.util;Base64$Encoder;false;encode;(byte[]);;Argument[0];ReturnValue;taint;manual",
-        "java.util;Base64$Encoder;false;encode;(ByteBuffer);;Argument[0];ReturnValue;taint;manual",
-        "java.util;Base64$Encoder;false;encodeToString;(byte[]);;Argument[0];ReturnValue;taint;manual",
-        "java.util;Base64$Encoder;false;wrap;(OutputStream);;Argument[0];ReturnValue;taint;manual",
-        "java.util;Base64$Decoder;false;decode;(byte[]);;Argument[0];ReturnValue;taint;manual",
-        "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint;manual",
-        "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint;manual",
-        "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint;manual",
-        "cn.hutool.core.codec;Base64;true;decode;;;Argument[0];ReturnValue;taint;manual",
-        "org.apache.shiro.codec;Base64;false;decode;(String);;Argument[0];ReturnValue;taint;manual",
-        "org.apache.commons.codec;Encoder;true;encode;(Object);;Argument[0];ReturnValue;taint;manual",
-        "org.apache.commons.codec;Decoder;true;decode;(Object);;Argument[0];ReturnValue;taint;manual",
-        "org.apache.commons.codec;BinaryEncoder;true;encode;(byte[]);;Argument[0];ReturnValue;taint;manual",
-        "org.apache.commons.codec;BinaryDecoder;true;decode;(byte[]);;Argument[0];ReturnValue;taint;manual",
-        "org.apache.commons.codec;StringEncoder;true;encode;(String);;Argument[0];ReturnValue;taint;manual",
-        "org.apache.commons.codec;StringDecoder;true;decode;(String);;Argument[0];ReturnValue;taint;manual",
-        "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint;manual",
-        "java.net;URI;false;create;;;Argument[0];ReturnValue;taint;manual",
-        "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint;manual",
-        // arg to arg
-        "java.lang;System;false;arraycopy;;;Argument[0];Argument[2];taint;manual",
-        // constructor flow
-        "java.net;URI;false;URI;(String);;Argument[0];Argument[-1];taint;manual",
-        "java.net;URL;false;URL;(String);;Argument[0];Argument[-1];taint;manual",
-        "javax.xml.transform.stream;StreamSource;false;StreamSource;;;Argument[0];Argument[-1];taint;manual",
-        "javax.xml.transform.sax;SAXSource;false;SAXSource;(InputSource);;Argument[0];Argument[-1];taint;manual",
-        "javax.xml.transform.sax;SAXSource;false;SAXSource;(XMLReader,InputSource);;Argument[1];Argument[-1];taint;manual",
-        "org.xml.sax;InputSource;false;InputSource;;;Argument[0];Argument[-1];taint;manual",
-        "javax.servlet.http;Cookie;false;Cookie;;;Argument[0];Argument[-1];taint;manual",
-        "javax.servlet.http;Cookie;false;Cookie;;;Argument[1];Argument[-1];taint;manual",
-        "java.util.zip;ZipInputStream;false;ZipInputStream;;;Argument[0];Argument[-1];taint;manual",
-        "java.util.zip;GZIPInputStream;false;GZIPInputStream;;;Argument[0];Argument[-1];taint;manual",
-        "java.util;StringTokenizer;false;StringTokenizer;;;Argument[0];Argument[-1];taint;manual",
-        "java.beans;XMLDecoder;false;XMLDecoder;;;Argument[0];Argument[-1];taint;manual",
-        "com.esotericsoftware.kryo.io;Input;false;Input;;;Argument[0];Argument[-1];taint;manual",
-        "com.esotericsoftware.kryo5.io;Input;false;Input;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;BufferedInputStream;false;BufferedInputStream;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;DataInputStream;false;DataInputStream;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;ByteArrayInputStream;false;ByteArrayInputStream;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;ObjectInputStream;false;ObjectInputStream;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;StringReader;false;StringReader;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;BufferedReader;false;BufferedReader;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;OutputStream;true;write;(byte[]);;Argument[0];Argument[-1];taint;manual",
-        "java.io;OutputStream;true;write;(byte[],int,int);;Argument[0];Argument[-1];taint;manual",
-        "java.io;OutputStream;true;write;(int);;Argument[0];Argument[-1];taint;manual",
-        "java.io;FilterOutputStream;true;FilterOutputStream;(OutputStream);;Argument[0];Argument[-1];taint;manual"
-      ]
-  }
-}
-
-/** Holds if `row` is a source model. */
-predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
-
-/** Holds if `row` is a sink model. */
-predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
-
-/** Holds if `row` is a summary model. */
-predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
-
-/** Holds if `row` is negative summary model. */
-predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
+  string output, string kind
 ) {
   exists(string row |
     sourceModel(row) and
@@ -445,15 +436,14 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind and
-    row.splitAt(";", 8) = provenance
+    row.splitAt(";", 7) = kind
   )
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
+  string input, string kind
 ) {
   exists(string row |
     sinkModel(row) and
@@ -465,23 +455,22 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind and
-    row.splitAt(";", 8) = provenance
+    row.splitAt(";", 7) = kind
   )
 }
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
+  string input, string output, string kind
 ) {
-  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
+  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, _)
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, string row
+  string input, string output, string kind, string row
 ) {
   summaryModel(row) and
   row.splitAt(";", 0) = namespace and
@@ -493,28 +482,13 @@ predicate summaryModel(
   row.splitAt(";", 5) = ext and
   row.splitAt(";", 6) = input and
   row.splitAt(";", 7) = output and
-  row.splitAt(";", 8) = kind and
-  row.splitAt(";", 9) = provenance
-}
-
-/** Holds if a summary model exists indicating there is no flow for the given parameters. */
-predicate negativeSummaryModel(
-  string namespace, string type, string name, string signature, string provenance
-) {
-  exists(string row |
-    negativeSummaryModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = name and
-    row.splitAt(";", 3) = signature and
-    row.splitAt(";", 4) = provenance
-  )
+  row.splitAt(";", 8) = kind
 }
 
 private predicate relevantPackage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _, _, _)
+  sourceModel(package, _, _, _, _, _, _, _) or
+  sinkModel(package, _, _, _, _, _, _, _) or
+  summaryModel(package, _, _, _, _, _, _, _, _)
 }
 
 private predicate packageLink(string shortpkg, string longpkg) {
@@ -542,36 +516,60 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
+        string ext, string output |
         canonicalPkgLink(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance)
+        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind)
       )
     or
     part = "sink" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
+        string ext, string input |
         canonicalPkgLink(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance)
+        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind)
       )
     or
     part = "summary" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
+        string ext, string input, string output |
         canonicalPkgLink(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance)
+        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind)
       )
   )
 }
 
 /** Provides a query predicate to check the CSV data for validation errors. */
 module CsvValidation {
-  private string getInvalidModelInput() {
-    exists(string pred, string input, string part |
-      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
+  /** Holds if some row in a CSV-based flow model appears to contain typos. */
+  query predicate invalidModelRow(string msg) {
+    exists(string pred, string namespace, string type, string name, string signature, string ext |
+      sourceModel(namespace, type, _, name, signature, ext, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
+      sinkModel(namespace, type, _, name, signature, ext, _, _) and pred = "sink"
+      or
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "summary"
+    |
+      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
+      msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
+      or
+      not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
+      msg = "Dubious type \"" + type + "\" in " + pred + " model."
+      or
+      not name.regexpMatch("[a-zA-Z0-9_]*") and
+      msg = "Dubious name \"" + name + "\" in " + pred + " model."
+      or
+      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
+      msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
+      or
+      not ext.regexpMatch("|Annotated") and
+      msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+    )
+    or
+    exists(string pred, string input, string part |
+      sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
+      or
+      summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -579,134 +577,44 @@ module CsvValidation {
         not (part = "Argument" and pred = "sink") and
         not parseArg(part, _)
         or
-        part = input.(AccessPath).getToken(0) and
+        part = specLast(input) and
         parseParam(part, _)
       ) and
-      result = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
+      msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
-  }
-
-  private string getInvalidModelOutput() {
+    or
     exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
+      sourceModel(_, _, _, _, _, _, output, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
       not (part = ["Argument", "Parameter"] and pred = "source") and
-      result = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
-    )
-  }
-
-  private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
+      msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
     or
-    exists(string row, string kind | sinkModel(row) |
-      kind = row.splitAt(";", 7) and
-      not kind =
-        [
-          "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
-          "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
-          "url-open-stream", "url-redirect", "create-file", "write-file", "set-hostname-verifier",
-          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation", "ssti"
-        ] and
-      not kind.matches("regex-use%") and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string row, string kind | sourceModel(row) |
-      kind = row.splitAt(";", 7) and
-      not kind = ["remote", "contentprovider", "android-widget", "android-external-storage-dir"] and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
-  }
-
-  private string getInvalidModelSubtype() {
-    exists(string pred, string row |
-      sourceModel(row) and pred = "source"
-      or
-      sinkModel(row) and pred = "sink"
-      or
-      summaryModel(row) and pred = "summary"
-    |
-      exists(string b |
-        b = row.splitAt(";", 2) and
-        not b = ["true", "false"] and
-        result = "Invalid boolean \"" + b + "\" in " + pred + " model."
-      )
-    )
-  }
-
-  private string getInvalidModelColumnCount() {
     exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 9 and pred = "source"
+      sourceModel(row) and expect = 8 and pred = "source"
       or
-      sinkModel(row) and expect = 9 and pred = "sink"
+      sinkModel(row) and expect = 8 and pred = "sink"
       or
-      summaryModel(row) and expect = 10 and pred = "summary"
-      or
-      negativeSummaryModel(row) and expect = 5 and pred = "negative summary"
+      summaryModel(row) and expect = 9 and pred = "summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
         cols != expect and
-        result =
+        msg =
           "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            " in " + row + "."
+            "."
+      )
+      or
+      exists(string b |
+        b = row.splitAt(";", 2) and
+        not b = ["true", "false"] and
+        msg = "Invalid boolean \"" + b + "\" in " + pred + " model."
       )
     )
-  }
-
-  private string getInvalidModelSignature() {
-    exists(
-      string pred, string namespace, string type, string name, string signature, string ext,
-      string provenance
-    |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "source"
-      or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
-      or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
-      pred = "summary"
-      or
-      negativeSummaryModel(namespace, type, name, signature, provenance) and
-      ext = "" and
-      pred = "negative summary"
-    |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
-      result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
-      or
-      not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
-      result = "Dubious type \"" + type + "\" in " + pred + " model."
-      or
-      not name.regexpMatch("[a-zA-Z0-9_]*") and
-      result = "Dubious name \"" + name + "\" in " + pred + " model."
-      or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
-      result = "Dubious signature \"" + signature + "\" in " + pred + " model."
-      or
-      not ext.regexpMatch("|Annotated") and
-      result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
-      or
-      not provenance = ["manual", "generated"] and
-      result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
-    )
-  }
-
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
-  query predicate invalidModelRow(string msg) {
-    msg =
-      [
-        getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
-      ]
   }
 }
 
@@ -714,13 +622,9 @@ pragma[nomagic]
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _)
-  or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _)
-  or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
-  or
-  negativeSummaryModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
 }
 
 private string paramsStringPart(Callable c, int i) {
@@ -769,7 +673,7 @@ private Element interpretElement0(
   )
 }
 
-/** Gets the source/sink/summary/negativesummary element corresponding to the supplied parameters. */
+/** Gets the source/sink/summary element corresponding to the supplied parameters. */
 Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
@@ -781,16 +685,13 @@ Element interpretElement(
   )
 }
 
-private predicate parseField(AccessPathToken c, FieldContent f) {
-  exists(
-    string fieldRegex, string qualifiedName, string package, string className, string fieldName
-  |
-    c.getName() = "Field" and
-    qualifiedName = c.getAnArgument() and
-    fieldRegex = "^(.*)\\.([^.]+)\\.([^.]+)$" and
-    package = qualifiedName.regexpCapture(fieldRegex, 1) and
-    className = qualifiedName.regexpCapture(fieldRegex, 2) and
-    fieldName = qualifiedName.regexpCapture(fieldRegex, 3) and
+private predicate parseField(string c, FieldContent f) {
+  specSplit(_, c, _) and
+  exists(string fieldRegex, string package, string className, string fieldName |
+    fieldRegex = "^Field\\[(.*)\\.([^.]+)\\.([^.]+)\\]$" and
+    package = c.regexpCapture(fieldRegex, 1) and
+    className = c.regexpCapture(fieldRegex, 2) and
+    fieldName = c.regexpCapture(fieldRegex, 3) and
     f.getField().hasQualifiedName(package, className, fieldName)
   )
 }
@@ -806,13 +707,13 @@ class SyntheticField extends string {
   Type getType() { result instanceof TypeObject }
 }
 
-private predicate parseSynthField(AccessPathToken c, string f) {
-  c.getName() = "SyntheticField" and
-  f = c.getAnArgument()
+private predicate parseSynthField(string c, string f) {
+  specSplit(_, c, _) and
+  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
 }
 
 /** Holds if the specification component parses as a `Content`. */
-predicate parseContent(AccessPathToken component, Content content) {
+predicate parseContent(string component, Content content) {
   parseField(component, content)
   or
   parseSynthField(component, content.(SyntheticFieldContent).getField())
@@ -834,7 +735,7 @@ private module Cached {
    */
   cached
   predicate sourceNode(Node node, string kind) {
-    exists(FlowSummaryImplSpecific::InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
   }
 
   /**
@@ -843,7 +744,7 @@ private module Cached {
    */
   cached
   predicate sinkNode(Node node, string kind) {
-    exists(FlowSummaryImplSpecific::InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
   }
 }
 

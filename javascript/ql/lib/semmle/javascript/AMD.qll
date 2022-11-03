@@ -5,7 +5,6 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
-private import Expressions.ExprHasNoEffect
 
 /**
  * An AMD `define` call.
@@ -27,7 +26,7 @@ private import Expressions.ExprHasNoEffect
  */
 class AmdModuleDefinition extends CallExpr {
   AmdModuleDefinition() {
-    inVoidContext(this) and
+    getParent() instanceof ExprStmt and
     getCallee().(GlobalVarAccess).getName() = "define" and
     exists(int n | n = getNumArgument() |
       n = 1
@@ -186,6 +185,11 @@ class AmdModuleDefinition extends CallExpr {
   }
 }
 
+/**
+ * DEPRECATED: Use `AmdModuleDefinition` instead.
+ */
+deprecated class AMDModuleDefinition = AmdModuleDefinition;
+
 /** An AMD dependency, considered as a path expression. */
 private class AmdDependencyPath extends PathExprCandidate {
   AmdDependencyPath() {
@@ -204,21 +208,12 @@ private class ConstantAmdDependencyPathElement extends PathExpr, ConstantString 
 }
 
 /**
- * Holds if `nd` is nested inside an AMD module definition.
- */
-private predicate inAmdModuleDefinition(AstNode nd) {
-  nd.getParent() instanceof AmdModuleDefinition
-  or
-  inAmdModuleDefinition(nd.getParent())
-}
-
-/**
  * Holds if `def` is an AMD module definition in `tl` which is not
  * nested inside another module definition.
  */
 private predicate amdModuleTopLevel(AmdModuleDefinition def, TopLevel tl) {
   def.getTopLevel() = tl and
-  not inAmdModuleDefinition(def)
+  not def.getParent+() instanceof AmdModuleDefinition
 }
 
 /**
@@ -332,3 +327,8 @@ class AmdModule extends Module {
     result = getDefine().getModuleExpr().flow()
   }
 }
+
+/**
+ * DEPRECATED: Use `AmdModule` instead.
+ */
+deprecated class AMDModule = AmdModule;

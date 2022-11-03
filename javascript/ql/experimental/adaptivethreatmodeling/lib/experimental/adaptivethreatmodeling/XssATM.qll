@@ -24,22 +24,21 @@ module SinkEndpointFilter {
    * effective sink.
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
-    result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
-    or
-    exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
-      call.getCalleeName() = "setState"
+    (
+      result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
+      or
+      exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
+        call.getCalleeName() = "setState"
+      ) and
+      result = "setState calls ought to be safe in react applications"
     ) and
-    result = "setState calls ought to be safe in react applications"
-    or
-    // Require XSS sink candidates to be (a) arguments to external library calls (possibly
-    // indirectly), or (b) heuristic sinks.
-    //
-    // Heuristic sinks are copied from the `HeuristicDomBasedXssSink` class defined within
-    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
-    // We can't reuse the class because importing that file would cause us to treat these
-    // heuristic sinks as known sinks.
-    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(sinkCandidate) and
     not (
+      // Explicitly allow the following heuristic sinks.
+      //
+      // These are copied from the `HeuristicDomBasedXssSink` class defined within
+      // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+      // We can't reuse the class because importing that file would cause us to treat these
+      // heuristic sinks as known sinks.
       isAssignedToOrConcatenatedWith(sinkCandidate, "(?i)(html|innerhtml)")
       or
       isArgTo(sinkCandidate, "(?i)(html|render)")
@@ -55,13 +54,12 @@ module SinkEndpointFilter {
         pw.getPropertyName().regexpMatch("(?i).*html*") and
         pw.getRhs() = sinkCandidate
       )
-    ) and
-    result = "not a direct argument to a likely external library call or a heuristic sink"
+    )
   }
 }
 
-class DomBasedXssAtmConfig extends AtmConfig {
-  DomBasedXssAtmConfig() { this = "DomBasedXssATMConfig" }
+class DomBasedXssATMConfig extends ATMConfig {
+  DomBasedXssATMConfig() { this = "DomBasedXssATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof DomBasedXss::Source }
 
@@ -73,9 +71,6 @@ class DomBasedXssAtmConfig extends AtmConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof XssSinkType }
 }
-
-/** DEPRECATED: Alias for DomBasedXssAtmConfig */
-deprecated class DomBasedXssATMConfig = DomBasedXssAtmConfig;
 
 /**
  * A taint-tracking configuration for reasoning about XSS vulnerabilities.
@@ -90,7 +85,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof DomBasedXss::Sink or
-    any(DomBasedXssAtmConfig cfg).isEffectiveSink(sink)
+    any(DomBasedXssATMConfig cfg).isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -99,31 +94,10 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof PrefixStringSanitizerActivated or
-    guard instanceof QuoteGuard or
-    guard instanceof ContainsHtmlGuard
+    guard instanceof DomBasedXss::SanitizerGuard
   }
 
   override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
     DomBasedXss::isOptionallySanitizedEdge(pred, succ)
   }
-}
-
-private import semmle.javascript.security.dataflow.Xss::Shared as Shared
-
-private class PrefixStringSanitizerActivated extends TaintTracking::SanitizerGuardNode,
-  DomBasedXss::PrefixStringSanitizer {
-  PrefixStringSanitizerActivated() { this = this }
-}
-
-private class PrefixStringActivated extends DataFlow::FlowLabel, DomBasedXss::PrefixString {
-  PrefixStringActivated() { this = this }
-}
-
-private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
-  QuoteGuard() { this = this }
-}
-
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard {
-  ContainsHtmlGuard() { this = this }
 }

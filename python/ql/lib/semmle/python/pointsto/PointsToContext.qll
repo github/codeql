@@ -23,20 +23,19 @@ private int max_context_cost() {
 }
 
 private int syntactic_call_count(Scope s) {
-  exists(Function f, string name | f = s and name = f.getName() and name != "__init__" |
-    result = count(function_call(name)) + count(method_call(name))
+  exists(Function f | f = s and f.getName() != "__init__" |
+    result =
+      count(CallNode call |
+        call.getFunction().(NameNode).getId() = f.getName()
+        or
+        call.getFunction().(AttrNode).getName() = f.getName()
+      )
   )
   or
   s.getName() = "__init__" and result = 1
   or
   not s instanceof Function and result = 0
 }
-
-pragma[nomagic]
-private CallNode function_call(string name) { result.getFunction().(NameNode).getId() = name }
-
-pragma[nomagic]
-private CallNode method_call(string name) { result.getFunction().(AttrNode).getName() = name }
 
 private int incoming_call_cost(Scope s) {
   /*
@@ -122,12 +121,12 @@ private newtype TPointsToContext =
   } or
   TObjectContext(SelfInstanceInternal object)
 
-deprecated module Context {
+module Context {
   PointsToContext forObject(ObjectInternal object) { result = TObjectContext(object) }
 }
 
 /**
- * A points-to context. Context can be one of:
+ * Points-to context. Context can be one of:
  *    * "main": Used for scripts.
  *    * "import": Use for non-script modules.
  *    * "default": Use for functions and methods without caller context.

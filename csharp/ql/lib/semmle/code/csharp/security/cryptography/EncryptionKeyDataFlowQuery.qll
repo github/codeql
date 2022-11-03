@@ -6,7 +6,7 @@ import csharp
 private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
 
 /** Array of type Byte */
-deprecated class ByteArray extends ArrayType {
+class ByteArray extends ArrayType {
   ByteArray() { getElementType() instanceof ByteType }
 }
 

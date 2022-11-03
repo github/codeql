@@ -5,8 +5,8 @@
  */
 
 import javascript
-private import FeaturizationConfig
-private import FunctionBodyFeatures as FunctionBodyFeatures
+import CodeToFeatures
+import EndpointScoring
 
 /**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
@@ -14,65 +14,265 @@ private import FunctionBodyFeatures as FunctionBodyFeatures
  * This is a single string containing a space-separated list of tokens.
  */
 private string getTokenFeature(DataFlow::Node endpoint, string featureName) {
-  // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
-  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-  exists(EndpointFeature f | f.getName() = featureName and result = f.getValue(endpoint)) and
-  featureName = getASupportedFeatureName()
+  // Features for endpoints that are contained within a function.
+  exists(DatabaseFeatures::Entity entity | entity = getRepresentativeEntityForEndpoint(endpoint) |
+    // The name of the function that encloses the endpoint.
+    featureName = "enclosingFunctionName" and result = entity.getName()
+    or
+    // A feature containing natural language tokens from the function that encloses the endpoint in
+    // the order that they appear in the source code.
+    featureName = "enclosingFunctionBody" and
+    result = unique(string x | x = FunctionBodies::getBodyTokenFeatureForEntity(entity))
+  )
+  or
+  exists(getACallBasedTokenFeatureComponent(endpoint, _, featureName)) and
+  result =
+    concat(DataFlow::CallNode call, string component |
+      component = getACallBasedTokenFeatureComponent(endpoint, call, featureName)
+    |
+      component, " "
+    )
+  or
+  // The access path of the function being called, both with and without structural info, if the
+  // function being called originates from an external API. For example, the endpoint here:
+  //
+  // ```js
+  // const mongoose = require('mongoose'),
+  //   User = mongoose.model('User', null);
+  // User.findOne(ENDPOINT);
+  // ```
+  //
+  // would have a callee access path with structural info of
+  // `mongoose member model instanceorreturn member findOne instanceorreturn`, and a callee access
+  // path without structural info of `mongoose model findOne`.
+  //
+  // These features indicate that the callee comes from (reading the access path backwards) an
+  // instance of the `findOne` member of an instance of the `model` member of the `mongoose`
+  // external library.
+  exists(AccessPaths::Boolean includeStructuralInfo |
+    featureName =
+      "calleeAccessPath" +
+        any(string x | if includeStructuralInfo = true then x = "WithStructuralInfo" else x = "") and
+    result =
+      concat(API::Node node, string accessPath |
+        node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
+        accessPath = AccessPaths::getAccessPath(node, includeStructuralInfo)
+      |
+        accessPath, " "
+      )
+  )
 }
 
-private module FunctionNames {
-  /**
-   * Get the name of the function.
-   *
-   * We attempt to assign unnamed entities approximate names if they are passed to a likely
-   * external library function. If we can't assign them an approximate name, we give them the name
-   * `""`, so that these entities are included in `AdaptiveThreatModeling.qll`.
-   *
-   * For entities which have multiple names, we choose the lexically smallest name.
-   */
-  string getNameToFeaturize(Function function) {
-    if exists(function.getName())
-    then result = min(function.getName())
-    else
-      if exists(getApproximateNameForFunction(function))
-      then result = getApproximateNameForFunction(function)
-      else result = ""
-  }
+/**
+ * Gets a value of the function-call-related token-based feature named `featureName` associated
+ * with the function call `call` and the endpoint `endpoint`.
+ *
+ * This may in general report multiple strings, each containing a space-separated list of tokens.
+ *
+ * **Technical details:** This predicate can have multiple values per endpoint and feature name.  As a
+ * result, the results from this predicate must be concatenated together.  However concatenating
+ * other features like the function body tokens is expensive, so we separate out this predicate
+ * from others like `FunctionBodies::getBodyTokenFeatureForEntity` to avoid having to perform this
+ * concatenation operation on other features like the function body tokens.
+ */
+private string getACallBasedTokenFeatureComponent(
+  DataFlow::Node endpoint, DataFlow::CallNode call, string featureName
+) {
+  // Features for endpoints that are an argument to a function call.
+  endpoint = call.getAnArgument() and
+  (
+    // The name of the function being called, e.g. in a call `Artist.findOne(...)`, this is `findOne`.
+    featureName = "calleeName" and result = call.getCalleeName()
+    or
+    // The name of the receiver of the call, e.g. in a call `Artist.findOne(...)`, this is `Artist`.
+    featureName = "receiverName" and result = call.getReceiver().asExpr().(VarRef).getName()
+    or
+    // The argument index of the endpoint, e.g. in `f(a, endpoint, b)`, this is 1.
+    featureName = "argumentIndex" and
+    result = any(int argIndex | call.getArgument(argIndex) = endpoint).toString()
+    or
+    // The name of the API that the function being called originates from, if the function being
+    // called originates from an external API. For example, the endpoint here:
+    //
+    // ```js
+    // const mongoose = require('mongoose'),
+    //   User = mongoose.model('User', null);
+    // User.findOne(ENDPOINT);
+    // ```
+    //
+    // would have a callee API name of `mongoose`.
+    featureName = "calleeApiName" and
+    result = getAnApiName(call)
+  )
+}
 
-  /**
-   * Holds if the call `call` has `function` is its `argumentIndex`th argument.
-   */
-  private predicate functionUsedAsArgumentToCall(
-    Function function, DataFlow::CallNode call, int argumentIndex
+/** This module provides functionality for getting the function body feature associated with a particular entity. */
+module FunctionBodies {
+  /** Holds if `node` is an AST node within the entity `entity` and `token` is a node attribute associated with `node`. */
+  private predicate bodyTokens(
+    DatabaseFeatures::Entity entity, DatabaseFeatures::AstNode node, string token
   ) {
-    DataFlow::localFlowStep*(call.getArgument(argumentIndex), function.flow())
+    DatabaseFeatures::astNodes(entity, _, _, node, _) and
+    token = unique(string t | DatabaseFeatures::nodeAttributes(node, t))
   }
 
   /**
-   * Returns a generated name for the function. This name is generated such that
-   * entities with the same names have similar behavior.
+   * Gets the body token feature for the specified entity.
+   *
+   * This is a string containing natural language tokens in the order that they appear in the source code for the entity.
    */
-  private string getApproximateNameForFunction(Function function) {
-    count(DataFlow::CallNode call, int index | functionUsedAsArgumentToCall(function, call, index)) =
-      1 and
-    exists(DataFlow::CallNode call, int index, string basePart |
-      functionUsedAsArgumentToCall(function, call, index) and
-      (
-        if count(getReceiverName(call)) = 1
-        then basePart = getReceiverName(call) + "."
-        else basePart = ""
-      ) and
-      result = basePart + call.getCalleeName() + "#functionalargument"
+  string getBodyTokenFeatureForEntity(DatabaseFeatures::Entity entity) {
+    // If a function has more than 256 body subtokens, then featurize it as absent. This
+    // approximates the behavior of the classifer on non-generic body features where large body
+    // features are replaced by the absent token.
+    if count(DatabaseFeatures::AstNode node, string token | bodyTokens(entity, node, token)) > 256
+    then result = ""
+    else
+      result =
+        concat(int i, string rankedToken |
+          rankedToken =
+            rank[i](DatabaseFeatures::AstNode node, string token, Location l |
+              bodyTokens(entity, node, token) and l = node.getLocation()
+            |
+              token
+              order by
+                l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+                l.getEndColumn(), token
+            )
+        |
+          rankedToken, " " order by i
+        )
+  }
+}
+
+/**
+ * Returns a name of the API that a node originates from, if the node originates from an API.
+ *
+ * This predicate may have multiple results if the node corresponds to multiple nodes in the API graph forest.
+ */
+pragma[inline]
+private string getAnApiName(DataFlow::Node node) {
+  API::moduleImport(result).getASuccessor*().getInducingNode() = node
+}
+
+/**
+ * This module provides functionality for getting a representation of the access path of nodes
+ * within the program.
+ *
+ * For example, it gives the `User.find` callee here:
+ *
+ * ```js
+ * const mongoose = require('mongoose'),
+ * User = mongoose.model('User', null);
+ * User.find({ 'isAdmin': true })
+ * ```
+ * the access path `mongoose member model instanceorreturn member find instanceorreturn`.
+ *
+ * This access path is based on the simplified access path that the untrusted data flowing to
+ * external API query associates to each of its sinks, with modifications to optionally include
+ * explicit structural information and to improve how well the path tokenizes.
+ */
+private module AccessPaths {
+  bindingset[str]
+  private predicate isNumericString(string str) { exists(str.toInt()) }
+
+  /**
+   * Gets a parameter of `base` with name `name`, or a property named `name` of a destructuring parameter.
+   */
+  private API::Node getNamedParameter(API::Node base, string name) {
+    exists(API::Node param |
+      param = base.getAParameter() and
+      not param = base.getReceiver()
+    |
+      result = param and
+      name = param.getAnImmediateUse().asExpr().(Parameter).getName()
+      or
+      param.getAnImmediateUse().asExpr() instanceof DestructuringPattern and
+      result = param.getMember(name)
     )
   }
 
-  private string getReceiverName(DataFlow::CallNode call) {
-    result = call.getReceiver().asExpr().(VarAccess).getName()
+  /**
+   * A utility class that is equivalent to `boolean` but does not require type joining.
+   */
+  class Boolean extends boolean {
+    Boolean() { this = true or this = false }
+  }
+
+  /** Get the access path for the node. This includes structural information like `member`, `param`, and `functionalarg` if `includeStructuralInfo` is true. */
+  string getAccessPath(API::Node node, Boolean includeStructuralInfo) {
+    node = API::moduleImport(result)
+    or
+    exists(API::Node base, string baseName |
+      base.getDepth() < node.getDepth() and baseName = getAccessPath(base, includeStructuralInfo)
+    |
+      // e.g. `new X`, `X()`
+      node = [base.getInstance(), base.getReturn()] and
+      if includeStructuralInfo = true
+      then result = baseName + " instanceorreturn"
+      else result = baseName
+      or
+      // e.g. `x.y`, `x[y]`, `const { y } = x`, where `y` is non-numeric and is known at analysis
+      // time.
+      exists(string member |
+        node = base.getMember(member) and
+        not node = base.getUnknownMember() and
+        not isNumericString(member) and
+        not (member = "default" and base = API::moduleImport(_)) and
+        not member = "then" // use the 'promised' edges for .then callbacks
+      |
+        if includeStructuralInfo = true
+        then result = baseName + " member " + member
+        else result = baseName + " " + member
+      )
+      or
+      // e.g. `x.y`, `x[y]`, `const { y } = x`, where `y` is numeric or not known at analysis time.
+      (
+        node = base.getUnknownMember() or
+        node = base.getMember(any(string s | isNumericString(s)))
+      ) and
+      if includeStructuralInfo = true then result = baseName + " member" else result = baseName
+      or
+      // e.g. `x.then(y => ...)`
+      node = base.getPromised() and
+      result = baseName
+      or
+      // e.g. `x.y((a, b) => ...)`
+      // Name callback parameters after their name in the source code.
+      // For example, the `res` parameter in `express.get('/foo', (req, res) => {...})` will be
+      // named `express member get functionalarg param res`.
+      exists(string paramName |
+        node = getNamedParameter(base.getAParameter(), paramName) and
+        (
+          if includeStructuralInfo = true
+          then result = baseName + " functionalarg param " + paramName
+          else result = baseName + " " + paramName
+        )
+        or
+        exists(string callbackName, string index |
+          node =
+            getNamedParameter(base.getASuccessor("param " + index).getMember(callbackName),
+              paramName) and
+          index != "-1" and // ignore receiver
+          if includeStructuralInfo = true
+          then
+            result =
+              baseName + " functionalarg " + index + " " + callbackName + " param " + paramName
+          else result = baseName + " " + index + " " + callbackName + " " + paramName
+        )
+      )
+    )
   }
 }
 
 /** Get a name of a supported generic token-based feature. */
-string getASupportedFeatureName() { result = any(EndpointFeature f).getName() }
+private string getASupportedFeatureName() {
+  result =
+    [
+      "enclosingFunctionName", "calleeName", "receiverName", "argumentIndex", "calleeApiName",
+      "calleeAccessPath", "calleeAccessPathWithStructuralInfo", "enclosingFunctionBody"
+    ]
+}
 
 /**
  * Generic token-based features for ATM.
@@ -81,595 +281,10 @@ string getASupportedFeatureName() { result = any(EndpointFeature f).getName() }
  * `featureValue` for the endpoint `endpoint`.
  */
 predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
-  // Performance optimization: Restrict feature extraction to endpoints we've explicitly asked to featurize.
-  endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-  featureValue = getTokenFeature(endpoint, featureName)
-}
-
-/**
- * See EndpointFeature
- */
-private newtype TEndpointFeature =
-  TEnclosingFunctionName() or
-  TReceiverName() or
-  TEnclosingFunctionBody() or
-  TFileImports() or
-  TCalleeImports() or
-  TCalleeFlexibleAccessPath() or
-  TInputAccessPathFromCallee() or
-  TInputArgumentIndex() or
-  TContextFunctionInterfaces() or
-  TContextSurroundingFunctionParameters() or
-  TAssignedToPropName() or
-  TStringConcatenatedWith()
-
-/**
- * An implementation of an endpoint feature: defines feature-name/value tuples for use in ML.
- */
-abstract class EndpointFeature extends TEndpointFeature {
-  /**
-   * Gets the name of the feature. Used by the ML model.
-   * Names are coupled to models: changing the name of a feature requires retraining the model.
-   */
-  abstract string getName();
-
-  /**
-   * Gets the value of the feature. Used by the ML model.
-   * Models are trained based on feature values, so changing the value of a feature requires retraining the model.
-   */
-  abstract string getValue(DataFlow::Node endpoint);
-
-  string toString() { result = this.getName() }
-}
-
-/**
- * The feature for the name of the function that encloses the endpoint.
- */
-class EnclosingFunctionName extends EndpointFeature, TEnclosingFunctionName {
-  override string getName() { result = "enclosingFunctionName" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result =
-      FunctionNames::getNameToFeaturize(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
-  }
-}
-
-/**
- * The feature for the name of the receiver of the call, e.g. in a call `Artist.findOne(...)`, this is `Artist`.
- */
-class ReceiverName extends EndpointFeature, TReceiverName {
-  override string getName() { result = "receiverName" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result =
-      strictconcat(DataFlow::CallNode call, string component |
-        endpoint = call.getAnArgument() and
-        component = call.getReceiver().asExpr().(VarRef).getName()
-      |
-        component, " "
-      )
-  }
-}
-
-/**
- * The feature for the natural language tokens from the function that encloses the endpoint in
- * the order that they appear in the source code.
- */
-class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
-  override string getName() { result = "enclosingFunctionBody" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
-    result =
-      FunctionBodyFeatures::getBodyTokensFeature(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
-  }
-}
-
-/**
- * The feature for the imports defined in the file containing an endpoint.
- *
- * ### Example
- *
- * ```javascript
- * import { findOne } from 'mongoose';
- * import * as _ from 'lodash';
- * const pg = require('pg');
- *
- * // ...
- * ```
- *
- * In this file, all endpoints will have the value `lodash mongoose pg` for the feature `fileImports`.
- */
-class FileImports extends EndpointFeature, TFileImports {
-  override string getName() { result = "fileImports" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result = SyntacticUtilities::getImportPathsForFile(endpoint.getFile())
-  }
-}
-
-/**
- * The feature for the function parameters of the functions that enclose an endpoint.
- *
- * ### Example
- * ```javascript
- * function f(a, b) {
- *   // ...
- *   const g = (c, d) => x.foo(endpoint);
- * //                          ^^^^^^^^
- * }
- * ```
- * In the above example, the feature for the marked endpoint has value '(a, b)\n(c, d)'.
- * The line breaks act as a separator between the parameters of different functions but
- * will be treated by tokenization as if they were spaces.
- */
-class ContextSurroundingFunctionParameters extends EndpointFeature,
-  TContextSurroundingFunctionParameters {
-  override string getName() { result = "contextSurroundingFunctionParameters" }
-
-  Function getRelevantFunction(DataFlow::Node endpoint) {
-    result = endpoint.asExpr().getEnclosingFunction*()
-  }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result =
-      concat(string functionParameterLine, Function f |
-        f = this.getRelevantFunction(endpoint) and
-        functionParameterLine = SyntacticUtilities::getFunctionParametersFeatureComponent(f)
-      |
-        functionParameterLine, "\n"
-        order by
-          f.getLocation().getStartLine(), f.getLocation().getStartColumn()
-      )
-  }
-}
-
-/**
- * The feature that gives the name of any properties an endpoint is assigned to (if any).
- *
- * ### Example
- * ```javascript
- * const div = document.createElement('div');
- * div.innerHTML = endpoint; // feature value is 'innerHTML'
- *
- * foo({x: endpoint}); // feature value is 'x'
- * ```
- */
-class AssignedToPropName extends EndpointFeature, TAssignedToPropName {
-  override string getName() { result = "assignedToPropName" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    exists(DataFlow::PropWrite w | w.getRhs().asExpr().getUnderlyingValue().flow() = endpoint |
-      result = w.getPropertyName()
-    )
-  }
-}
-
-/**
- * The feature that shows the text an endpoint is being concatenated with.
- *
- * ### Example
- *
- * ```javascript
- * const x = 'foo' + endpoint + 'bar'; // feature value is `'foo' -endpoint- 'bar'
- * ```
- */
-class StringConcatenatedWith extends EndpointFeature, TStringConcatenatedWith {
-  override string getName() { result = "stringConcatenatedWith" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    exists(StringOps::ConcatenationRoot root |
-      root.getALeaf() = endpoint and
-      result =
-        concat(StringOps::ConcatenationLeaf p |
-            p.getRoot() = root and
-            (
-              p.getStartLine() < endpoint.getStartLine()
-              or
-              p.getStartLine() = endpoint.getStartLine() and
-              p.getStartColumn() < endpoint.getStartColumn()
-            )
-          |
-            SyntacticUtilities::renderStringConcatOperand(p), " + "
-            order by
-              p.getStartLine(), p.getStartColumn()
-          ) + " -endpoint- " +
-          concat(StringOps::ConcatenationLeaf p |
-            p.getRoot() = root and
-            (
-              p.getStartLine() > endpoint.getStartLine()
-              or
-              p.getStartLine() = endpoint.getStartLine() and
-              p.getStartColumn() > endpoint.getStartColumn()
-            )
-          |
-            SyntacticUtilities::renderStringConcatOperand(p), " + "
-            order by
-              p.getStartLine(), p.getStartColumn()
-          )
-    )
-  }
-}
-
-/**
- * The feature for the imports used in the callee of an invocation.
- *
- * ### Example
- *
- * ```javascript
- * import * as _ from 'lodash';
- *
- * // ...
- * _.deepClone(someObject);
- * //          ^^^^^^^^^^ will have the value `lodash` for the feature `calleeImports`.
- * ```
- */
-class CalleeImports extends EndpointFeature, TCalleeImports {
-  override string getName() { result = "calleeImports" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    not result = SyntacticUtilities::getUnknownSymbol() and
-    exists(DataFlow::InvokeNode invk |
-      (
-        invk.getAnArgument() = endpoint or
-        SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
-              .asExpr()
-              .getUnderlyingValue()).flow() = endpoint
-      ) and
-      result =
-        concat(string importPath |
-          importPath = SyntacticUtilities::getCalleeImportPath(invk.getCalleeNode())
-        |
-          importPath, " " order by importPath
-        )
-    )
-  }
-}
-
-/**
- * The feature for the interfaces of all named functions in the same file as the endpoint.
- *
- * ### Example
- * ```javascript
- * // Will return: "f(a, b, c)\ng(x, y, z)\nh(u, v)" for this file.
- * function f(a, b, c) { ... }
- *
- * function g(x, y, z) {
- *   function h(u, v) { ... }
- *   ...
- * }
- * ```
- */
-class ContextFunctionInterfaces extends EndpointFeature, TContextFunctionInterfaces {
-  override string getName() { result = "contextFunctionInterfaces" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result = SyntacticUtilities::getFunctionInterfacesForFile(endpoint.getFile())
-  }
-}
-
-/**
- * Syntactic utilities for feature value computation.
- */
-private module SyntacticUtilities {
-  /**
-   * Renders an operand in a string concatenation by surrounding a constant in quotes, and
-   * by using `getSimpleAccessPath` for everything else.
-   */
-  string renderStringConcatOperand(DataFlow::Node operand) {
-    if exists(unique(string v | operand.mayHaveStringValue(v)))
-    then result = "'" + any(string v | operand.mayHaveStringValue(v)) + "'"
-    else result = getSimpleAccessPath(operand)
-  }
-
-  /** Gets all the imports defined in the file containing the endpoint. */
-  string getImportPathsForFile(File file) {
-    result =
-      concat(string importPath |
-        importPath = SyntacticUtilities::getImportPathForFile(file)
-      |
-        importPath, " " order by importPath
-      )
-  }
-
-  /** Gets an import located in `file`. */
-  string getImportPathForFile(File file) {
-    result = any(Import imp | imp.getFile() = file).getImportedPath().getValue()
-  }
-
-  /**
-   * Gets the feature component for the parameters of a function.
-   *
-   * ```javascript
-   * function f(a, b, c) { // will return "(a, b, c)" for this function
-   *  return a + b + c;
-   * }
-   *
-   * async function g(a) { // will return "(a)" for this function
-   *   return 2*a
-   * };
-   *
-   * const h = (b) => 3*b; // will return "(b)" for this function
-   * ```
-   */
-  string getFunctionParametersFeatureComponent(Function f) {
-    result =
-      "(" +
-        concat(string parameter, int i |
-          parameter = getParameterNameOrUnknown(f.getParameter(i))
-        |
-          parameter, ", " order by i
-        ) + ")"
-  }
-
-  /**
-   * Gets the function interfaces of all named functions in a file, concatenated together.
-   *
-   * ```javascript
-   * // Will return: "f(a, b, c)\ng(x, y, z)\nh(u, v)" for this file.
-   * function f(a, b, c) { ... }
-   *
-   * function g(x, y, z) {
-   *   function h(u, v) { ... }
-   *   ...
-   * }
-   */
-  string getFunctionInterfacesForFile(File file) {
-    result =
-      concat(Function func, string line |
-        func.getFile() = file and
-        line = func.getName() + getFunctionParametersFeatureComponent(func)
-      |
-        line, "\n" order by line
-      )
-  }
-
-  /**
-   * Gets a property initializer value in an object literal or one of its nested object literals.
-   */
-  Expr getANestedInitializerValue(ObjectExpr o) {
-    exists(Expr init | init = o.getAProperty().getInit().getUnderlyingValue() |
-      result = [init, getANestedInitializerValue(init)]
-    )
-  }
-
-  /**
-   * Computes a simple access path for how a callee can refer to a value that appears in an argument to a call.
-   *
-   * Supports:
-   * - direct arguments
-   * - properties of (nested) objects that are arguments
-   *
-   * Unknown cases and property names result in `?`.
-   */
-  string getSimpleParameterAccessPath(DataFlow::Node node) {
-    if exists(DataFlow::CallNode call | node = call.getArgument(_))
-    then exists(DataFlow::CallNode call, int i | node = call.getArgument(i) | result = i + "")
-    else result = getSimplePropertyAccessPath(node)
-  }
-
-  /**
-   * Computes a simple access path for how a user can refer to a value that appears in an (nested) object.
-   *
-   * Supports:
-   * - properties of (nested) objects
-   *
-   * Unknown cases and property names result in `?`.
-   */
-  string getSimplePropertyAccessPath(DataFlow::Node node) {
-    if exists(ObjectExpr o | o.getAProperty().getInit().getUnderlyingValue() = node.asExpr())
-    then
-      exists(DataFlow::PropWrite w |
-        w.getRhs() = node and
-        result = getSimpleParameterAccessPath(w.getBase()) + "." + getPropertyNameOrUnknown(w)
-      )
-    else result = getUnknownSymbol()
-  }
-
-  /**
-   * Gets the imported package path that this node depends on, if any.
-   *
-   * Otherwise, returns '?'.
-   *
-   * XXX Be careful with using this in your features, as it might teach the model
-   * a fixed list of "dangerous" libraries that could lead to bad generalization.
-   */
-  string getCalleeImportPath(DataFlow::Node node) {
-    exists(DataFlow::Node src | src = node.getALocalSource() |
-      if src instanceof DataFlow::ModuleImportNode
-      then result = src.(DataFlow::ModuleImportNode).getPath()
-      else
-        if src instanceof DataFlow::PropRead
-        then result = getCalleeImportPath(src.(DataFlow::PropRead).getBase())
-        else
-          if src instanceof DataFlow::InvokeNode
-          then result = getCalleeImportPath(src.(DataFlow::InvokeNode).getCalleeNode())
-          else
-            if src.asExpr() instanceof AwaitExpr
-            then result = getCalleeImportPath(src.asExpr().(AwaitExpr).getOperand().flow())
-            else result = getUnknownSymbol()
-    )
-  }
-
-  /**
-   * Computes a simple access path for a node.
-   *
-   * Supports:
-   * - variable reads (including `this` and `super`)
-   * - imports
-   * - await
-   * - property reads
-   * - invocations
-   *
-   * Unknown cases and property names results in `?`.
-   *
-   * # Examples
-   *
-   *  - The node `x.foo` will have the simple access path `x.foo`.
-   *  - In the following file, the simple access path will be `import("./foo").bar.baz`:
-   *
-   * ```javascript
-   * import * as lib from "./foo"
-   * console.log(lib.bar.baz());
-   * //          ^^^^^^^^^^^ node
-   */
-  string getSimpleAccessPath(DataFlow::Node node) {
-    exists(Expr e | e = node.asExpr().getUnderlyingValue() |
-      if
-        e instanceof SuperAccess or
-        e instanceof ThisAccess or
-        e instanceof VarAccess or
-        e instanceof Import or
-        e instanceof AwaitExpr or
-        node instanceof DataFlow::PropRead or
-        node instanceof DataFlow::InvokeNode
-      then
-        e instanceof SuperAccess and result = "super"
-        or
-        e instanceof ThisAccess and result = "this"
-        or
-        e instanceof VarAccess and result = e.(VarAccess).getName()
-        or
-        e instanceof Import and result = "import(" + getSimpleImportPath(e) + ")"
-        or
-        e instanceof AwaitExpr and
-        result = "(await " + getSimpleAccessPath(e.(AwaitExpr).getOperand().flow()) + ")"
-        or
-        node instanceof DataFlow::PropRead and
-        result =
-          getSimpleAccessPath(node.(DataFlow::PropRead).getBase()) + "." +
-            getPropertyNameOrUnknown(node)
-        or
-        (node instanceof DataFlow::InvokeNode and not e instanceof Import) and
-        result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
-      else result = getUnknownSymbol()
-    )
-  }
-
-  string getUnknownSymbol() { result = "?" }
-
-  /**
-   * Gets the imported path.
-   *
-   * XXX To avoid teaching the ML model about npm packages, only relative paths are supported
-   *
-   * Unknown paths result in `?`.
-   */
-  string getSimpleImportPath(Import i) {
-    if exists(i.getImportedPath().getValue())
-    then
-      exists(string p | p = i.getImportedPath().getValue() |
-        // Hide absolute imports from ML training data.
-        // ============================================
-        // There is the hypothesis that exposing absolute imports to the model
-        // might lead to bad generalization. For example, the model might learn
-        // to strongly associate a specific database client with sinks and no
-        // longer be able to flag sinks when data flow is broken.
-        // Placing this logic so deeply within the feature extraction code is
-        // perhaps a bit of a hack and it is a use case to consider when refactoring
-        // endpoint filters/data extraction.
-        if p.matches(".%") then result = "\"p\"" else result = "!"
-      )
-    else result = getUnknownSymbol()
-  }
-
-  /**
-   * Gets the property name of a property reference or `?` if it is unknown.
-   */
-  string getPropertyNameOrUnknown(DataFlow::PropRef ref) {
-    if exists(ref.getPropertyName())
-    then result = ref.getPropertyName()
-    else result = getUnknownSymbol()
-  }
-
-  /**
-   * Gets the parameter name if it exists, or `?` if it is unknown.
-   */
-  string getParameterNameOrUnknown(Parameter p) {
-    if exists(p.getName()) then result = p.getName() else result = getUnknownSymbol()
-  }
-}
-
-/**
- * The feature for the access path of the callee node of a call that has an argument that "contains" the endpoint.
- *
- * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
- *
- * Examples:
- * ```
- * foo(endpoint); // -> foo
- * foo.bar(endpoint); // -> foo.bar
- * foo.bar({ baz: endpoint }); // -> foo.bar
- * this.foo.bar(endpoint); // -> this.foo.bar
- * foo[complex()].bar(endpoint); // -> foo.?.bar
- * ```
- */
-class CalleeFlexibleAccessPath extends EndpointFeature, TCalleeFlexibleAccessPath {
-  override string getName() { result = "CalleeFlexibleAccessPath" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    exists(DataFlow::InvokeNode invk |
-      result = SyntacticUtilities::getSimpleAccessPath(invk.getCalleeNode()) and
-      // ignore the unknown path
-      not result = SyntacticUtilities::getUnknownSymbol() and
-      (
-        invk.getAnArgument() = endpoint or
-        SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
-              .asExpr()
-              .getUnderlyingValue()).flow() = endpoint
-      )
-    )
-  }
-}
-
-/**
- * The feature for how a callee can refer to a the endpoint that is "contained" in some argument to a call
- *
- * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
- *
- * Examples:
- * ```
- * foo({ bar: endpoint }); // -> bar
- * foo(x, { bar: { baz: endpoint } }); // -> bar.baz
- * ```
- */
-class InputAccessPathFromCallee extends EndpointFeature, TInputAccessPathFromCallee {
-  override string getName() { result = "InputAccessPathFromCallee" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    exists(DataFlow::InvokeNode invk |
-      result = SyntacticUtilities::getSimpleParameterAccessPath(endpoint) and
-      SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
-            .asExpr()
-            .getUnderlyingValue()).flow() = endpoint
-    )
-  }
-}
-
-/**
- * The feature for how the index of an argument that "contains" and endpoint.
- *
- * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
- *
- * Examples:
- * ```
- * foo(endpoint); // -> 0
- * foo({ bar: endpoint }); // -> 0
- * foo(x, { bar: { baz: endpoint } }); // -> 1
- * ```
- */
-class InputArgumentIndex extends EndpointFeature, TInputArgumentIndex {
-  override string getName() { result = "InputArgumentIndex" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    exists(DataFlow::InvokeNode invk, DataFlow::Node arg, int i | arg = invk.getArgument(i) |
-      result = i + "" and
-      (
-        invk.getArgument(i) = endpoint
-        or
-        SyntacticUtilities::getANestedInitializerValue(arg.asExpr().getUnderlyingValue()).flow() =
-          endpoint
-      )
-    )
-  }
+  featureName = getASupportedFeatureName() and
+  (
+    featureValue = unique(string x | x = getTokenFeature(endpoint, featureName))
+    or
+    not exists(unique(string x | x = getTokenFeature(endpoint, featureName))) and featureValue = ""
+  )
 }

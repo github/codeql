@@ -85,7 +85,7 @@ class MockitoInitedTest extends Class {
  */
 class MockitoAnnotation extends Annotation {
   MockitoAnnotation() {
-    this.getType().getPackage().hasName("org.mockito") or
+    this.getType().getPackage().getName().matches("org.mockito") or
     this.getType().getPackage().getName().matches("org.mockito.%")
   }
 }
@@ -357,7 +357,7 @@ class MockitoSettableField extends Field {
   MockitoSettableField() {
     not this.isFinal() and
     not this.isStatic() and
-    this.getDeclaringType() instanceof MockitoMockInjectedClass
+    exists(MockitoMockInjectedClass injectedClass | injectedClass = this.getDeclaringType())
   }
 
   /**

@@ -8,8 +8,9 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 
-public class TypedArray implements AutoCloseable
+public class TypedArray
 {
+    protected TypedArray() {}
     public CharSequence getText(int p0){ return null; }
     public CharSequence[] getTextArray(int p0){ return null; }
     public ColorStateList getColorStateList(int p0){ return null; }
@@ -42,6 +43,5 @@ public class TypedArray implements AutoCloseable
     public int getSourceResourceId(int p0, int p1){ return 0; }
     public int getType(int p0){ return 0; }
     public int length(){ return 0; }
-    public void close(){}
     public void recycle(){}
 }

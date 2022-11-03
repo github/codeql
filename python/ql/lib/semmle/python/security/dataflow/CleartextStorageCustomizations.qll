@@ -39,10 +39,6 @@ module CleartextStorage {
    * A source of sensitive data, considered as a flow source.
    */
   class SensitiveDataSourceAsSource extends Source, SensitiveDataSource {
-    SensitiveDataSourceAsSource() {
-      not SensitiveDataSource.super.getClassification() = SensitiveDataClassification::id()
-    }
-
     override SensitiveDataClassification getClassification() {
       result = SensitiveDataSource.super.getClassification()
     }
@@ -56,7 +52,7 @@ module CleartextStorage {
   /** The data written to a cookie on a HTTP response, considered as a flow sink. */
   class CookieWriteAsSink extends Sink {
     CookieWriteAsSink() {
-      exists(Http::Server::CookieWrite write |
+      exists(HTTP::Server::CookieWrite write |
         this = write.getValueArg()
         or
         this = write.getHeaderArg()

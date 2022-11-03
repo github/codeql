@@ -3,7 +3,7 @@ import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.SpringBean
 
 /** A common supertype of `SpringRef` and `SpringIdRef`. */
-class SpringAbstractRef extends SpringXmlElement {
+class SpringAbstractRef extends SpringXMLElement {
   SpringAbstractRef() {
     this.getName() = "idref" or
     this.getName() = "ref"
@@ -29,7 +29,7 @@ class SpringAbstractRef extends SpringXmlElement {
   }
 
   /** Holds if `other` is also a reference and points to the same bean as this reference. */
-  override predicate isSimilar(SpringXmlElement other) {
+  override predicate isSimilar(SpringXMLElement other) {
     exists(SpringAbstractRef otherRef |
       otherRef = other and
       this.getBean() = otherRef.getBean()

@@ -14,7 +14,7 @@
 
 import csharp
 
-from XmlAttribute a
+from XMLAttribute a
 where
   a.getName().toLowerCase() = "password" and not a.getValue() = ""
   or

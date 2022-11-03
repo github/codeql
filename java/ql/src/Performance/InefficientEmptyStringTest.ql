@@ -16,7 +16,7 @@ where
   mc.getQualifier().getType() instanceof TypeString and
   mc.getMethod().hasName("equals") and
   (
-    mc.getArgument(0).(StringLiteral).getValue() = "" or
-    mc.getQualifier().(StringLiteral).getValue() = ""
+    mc.getArgument(0).(StringLiteral).getRepresentedString() = "" or
+    mc.getQualifier().(StringLiteral).getRepresentedString() = ""
   )
 select mc, "Inefficient comparison to empty string, check for zero length instead."

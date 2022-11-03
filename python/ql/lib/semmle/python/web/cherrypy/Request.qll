@@ -5,7 +5,7 @@ import semmle.python.web.Http
 import semmle.python.web.cherrypy.General
 
 /** The cherrypy.request local-proxy object */
-deprecated class CherryPyRequest extends TaintKind {
+class CherryPyRequest extends TaintKind {
   CherryPyRequest() { this = "cherrypy.request" }
 
   override TaintKind getTaintOfAttribute(string name) {
@@ -15,12 +15,17 @@ deprecated class CherryPyRequest extends TaintKind {
   }
 
   override TaintKind getTaintOfMethodResult(string name) {
-    name in ["getHeader", "getCookie", "getUser", "getPassword"] and
+    (
+      name = "getHeader" or
+      name = "getCookie" or
+      name = "getUser" or
+      name = "getPassword"
+    ) and
     result instanceof ExternalStringKind
   }
 }
 
-deprecated class CherryPyExposedFunctionParameter extends HttpRequestTaintSource {
+class CherryPyExposedFunctionParameter extends HttpRequestTaintSource {
   CherryPyExposedFunctionParameter() {
     exists(Parameter p |
       p = any(CherryPyExposedFunction f).getAnArg() and
@@ -34,7 +39,7 @@ deprecated class CherryPyExposedFunctionParameter extends HttpRequestTaintSource
   override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalStringKind }
 }
 
-deprecated class CherryPyRequestSource extends HttpRequestTaintSource {
+class CherryPyRequestSource extends HttpRequestTaintSource {
   CherryPyRequestSource() { this.(ControlFlowNode).pointsTo(Value::named("cherrypy.request")) }
 
   override predicate isSourceOf(TaintKind kind) { kind instanceof CherryPyRequest }

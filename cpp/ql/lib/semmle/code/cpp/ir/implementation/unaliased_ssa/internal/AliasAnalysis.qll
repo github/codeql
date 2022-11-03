@@ -266,20 +266,6 @@ private predicate operandReturned(Operand operand, IntValue bitOffset) {
   bitOffset = Ints::unknown()
 }
 
-pragma[nomagic]
-private predicate initializeParameterInstructionHasVariable(
-  IRVariable var, InitializeParameterInstruction init
-) {
-  init.getIRVariable() = var
-}
-
-private predicate instructionInitializesThisInFunction(
-  Language::Function f, InitializeParameterInstruction init
-) {
-  initializeParameterInstructionHasVariable(any(IRThisVariable var), pragma[only_bind_into](init)) and
-  init.getEnclosingFunction() = f
-}
-
 private predicate isArgumentForParameter(
   CallInstruction ci, Operand operand, InitializeParameterInstruction init
 ) {
@@ -289,7 +275,8 @@ private predicate isArgumentForParameter(
     (
       init.getParameter() = f.getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
-      instructionInitializesThisInFunction(f, init) and
+      init.getIRVariable() instanceof IRThisVariable and
+      unique( | | init.getEnclosingFunction()) = f and
       operand instanceof ThisArgumentOperand
     ) and
     not Language::isFunctionVirtual(f) and

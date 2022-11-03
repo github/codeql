@@ -8,9 +8,9 @@ import semmle.code.java.Type
  * The interface `javax.servlet.ServletRequest` or
  * `javax.servlet.http.HttpServletRequest`.
  */
-class ServletRequest extends RefType {
+library class ServletRequest extends RefType {
   ServletRequest() {
-    this.hasQualifiedName("javax.servlet", "ServletRequest") or
+    hasQualifiedName("javax.servlet", "ServletRequest") or
     this instanceof HttpServletRequest
   }
 }
@@ -18,56 +18,56 @@ class ServletRequest extends RefType {
 /**
  * The interface `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequest extends RefType {
-  HttpServletRequest() { this.hasQualifiedName("javax.servlet.http", "HttpServletRequest") }
+library class HttpServletRequest extends RefType {
+  HttpServletRequest() { hasQualifiedName("javax.servlet.http", "HttpServletRequest") }
 }
 
 /**
  * The method `getParameter(String)` or `getParameterValues(String)`
  * declared in `javax.servlet.ServletRequest`.
  */
-class ServletRequestGetParameterMethod extends Method {
+library class ServletRequestGetParameterMethod extends Method {
   ServletRequestGetParameterMethod() {
-    this.getDeclaringType() instanceof ServletRequest and
+    getDeclaringType() instanceof ServletRequest and
     (
-      this.hasName("getParameter") or
-      this.hasName("getParameterValues")
+      hasName("getParameter") or
+      hasName("getParameterValues")
     ) and
-    this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType() instanceof TypeString
+    getNumberOfParameters() = 1 and
+    getParameter(0).getType() instanceof TypeString
   }
 }
 
 /**
  * The method `getParameterNames()` declared in `javax.servlet.ServletRequest`.
  */
-class ServletRequestGetParameterNamesMethod extends Method {
+library class ServletRequestGetParameterNamesMethod extends Method {
   ServletRequestGetParameterNamesMethod() {
-    this.getDeclaringType() instanceof ServletRequest and
-    this.hasName("getParameterNames") and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof ServletRequest and
+    hasName("getParameterNames") and
+    getNumberOfParameters() = 0
   }
 }
 
 /**
  * The method `getParameterMap()` declared in `javax.servlet.ServletRequest`.
  */
-class ServletRequestGetParameterMapMethod extends Method {
+library class ServletRequestGetParameterMapMethod extends Method {
   ServletRequestGetParameterMapMethod() {
-    this.getDeclaringType() instanceof ServletRequest and
-    this.hasName("getParameterMap") and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof ServletRequest and
+    hasName("getParameterMap") and
+    getNumberOfParameters() = 0
   }
 }
 
 /**
  * The method `getQueryString()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetQueryStringMethod extends Method {
+library class HttpServletRequestGetQueryStringMethod extends Method {
   HttpServletRequestGetQueryStringMethod() {
-    this.getDeclaringType() instanceof HttpServletRequest and
-    this.hasName("getQueryString") and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof HttpServletRequest and
+    hasName("getQueryString") and
+    getNumberOfParameters() = 0
   }
 }
 
@@ -76,93 +76,87 @@ class HttpServletRequestGetQueryStringMethod extends Method {
  */
 class HttpServletRequestGetPathMethod extends Method {
   HttpServletRequestGetPathMethod() {
-    this.getDeclaringType() instanceof HttpServletRequest and
-    this.hasName("getPathInfo") and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof HttpServletRequest and
+    hasName("getPathInfo") and
+    getNumberOfParameters() = 0
   }
 }
 
 /**
  * The method `getHeader(String)` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetHeaderMethod extends Method {
+library class HttpServletRequestGetHeaderMethod extends Method {
   HttpServletRequestGetHeaderMethod() {
-    this.getDeclaringType() instanceof HttpServletRequest and
-    this.hasName("getHeader") and
-    this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType() instanceof TypeString
+    getDeclaringType() instanceof HttpServletRequest and
+    hasName("getHeader") and
+    getNumberOfParameters() = 1 and
+    getParameter(0).getType() instanceof TypeString
   }
 }
 
 /**
  * The method `getHeaders(String)` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetHeadersMethod extends Method {
+library class HttpServletRequestGetHeadersMethod extends Method {
   HttpServletRequestGetHeadersMethod() {
-    this.getDeclaringType() instanceof HttpServletRequest and
-    this.hasName("getHeaders") and
-    this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType() instanceof TypeString
+    getDeclaringType() instanceof HttpServletRequest and
+    hasName("getHeaders") and
+    getNumberOfParameters() = 1 and
+    getParameter(0).getType() instanceof TypeString
   }
 }
 
 /**
  * The method `getHeaderNames()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetHeaderNamesMethod extends Method {
+library class HttpServletRequestGetHeaderNamesMethod extends Method {
   HttpServletRequestGetHeaderNamesMethod() {
-    this.getDeclaringType() instanceof HttpServletRequest and
-    this.hasName("getHeaderNames") and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof HttpServletRequest and
+    hasName("getHeaderNames") and
+    getNumberOfParameters() = 0
   }
 }
 
 /**
  * The method `getRequestURL()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetRequestUrlMethod extends Method {
-  HttpServletRequestGetRequestUrlMethod() {
-    this.getDeclaringType() instanceof HttpServletRequest and
-    this.hasName("getRequestURL") and
-    this.getNumberOfParameters() = 0
+class HttpServletRequestGetRequestURLMethod extends Method {
+  HttpServletRequestGetRequestURLMethod() {
+    getDeclaringType() instanceof HttpServletRequest and
+    hasName("getRequestURL") and
+    getNumberOfParameters() = 0
   }
 }
-
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUrlMethod */
-deprecated class HttpServletRequestGetRequestURLMethod = HttpServletRequestGetRequestUrlMethod;
 
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetRequestUriMethod extends Method {
-  HttpServletRequestGetRequestUriMethod() {
-    this.getDeclaringType() instanceof HttpServletRequest and
-    this.hasName("getRequestURI") and
-    this.getNumberOfParameters() = 0
+class HttpServletRequestGetRequestURIMethod extends Method {
+  HttpServletRequestGetRequestURIMethod() {
+    getDeclaringType() instanceof HttpServletRequest and
+    hasName("getRequestURI") and
+    getNumberOfParameters() = 0
   }
 }
-
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUriMethod */
-deprecated class HttpServletRequestGetRequestURIMethod = HttpServletRequestGetRequestUriMethod;
 
 /**
  * The method `getRemoteUser()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetRemoteUserMethod extends Method {
+library class HttpServletRequestGetRemoteUserMethod extends Method {
   HttpServletRequestGetRemoteUserMethod() {
-    this.getDeclaringType() instanceof HttpServletRequest and
-    this.hasName("getRemoteUser") and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof HttpServletRequest and
+    hasName("getRemoteUser") and
+    getNumberOfParameters() = 0
   }
 }
 
 /**
  * The method `getInputStream()` or `getReader()` declared in `javax.servlet.ServletRequest`.
  */
-class ServletRequestGetBodyMethod extends Method {
+library class ServletRequestGetBodyMethod extends Method {
   ServletRequestGetBodyMethod() {
-    this.getDeclaringType() instanceof ServletRequest and
-    (this.hasName("getInputStream") or this.hasName("getReader"))
+    getDeclaringType() instanceof ServletRequest and
+    (hasName("getInputStream") or hasName("getReader"))
   }
 }
 
@@ -172,7 +166,7 @@ class ServletRequestGetBodyMethod extends Method {
  */
 class ServletResponse extends RefType {
   ServletResponse() {
-    this.hasQualifiedName("javax.servlet", "ServletResponse") or
+    hasQualifiedName("javax.servlet", "ServletResponse") or
     this instanceof HttpServletResponse
   }
 }
@@ -181,7 +175,7 @@ class ServletResponse extends RefType {
  * The interface `javax.servlet.http.HttpServletResponse`.
  */
 class HttpServletResponse extends RefType {
-  HttpServletResponse() { this.hasQualifiedName("javax.servlet.http", "HttpServletResponse") }
+  HttpServletResponse() { hasQualifiedName("javax.servlet.http", "HttpServletResponse") }
 }
 
 /**
@@ -189,11 +183,11 @@ class HttpServletResponse extends RefType {
  */
 class HttpServletResponseSendErrorMethod extends Method {
   HttpServletResponseSendErrorMethod() {
-    this.getDeclaringType() instanceof HttpServletResponse and
-    this.hasName("sendError") and
-    this.getNumberOfParameters() = 2 and
-    this.getParameter(0).getType().hasName("int") and
-    this.getParameter(1).getType() instanceof TypeString
+    getDeclaringType() instanceof HttpServletResponse and
+    hasName("sendError") and
+    getNumberOfParameters() = 2 and
+    getParameter(0).getType().hasName("int") and
+    getParameter(1).getType() instanceof TypeString
   }
 }
 
@@ -202,8 +196,8 @@ class HttpServletResponseSendErrorMethod extends Method {
  */
 class ServletRequestGetRequestDispatcherMethod extends Method {
   ServletRequestGetRequestDispatcherMethod() {
-    this.getDeclaringType() instanceof ServletRequest and
-    this.hasName("getRequestDispatcher")
+    getDeclaringType() instanceof ServletRequest and
+    hasName("getRequestDispatcher")
   }
 }
 
@@ -212,10 +206,10 @@ class ServletRequestGetRequestDispatcherMethod extends Method {
  */
 class HttpServletResponseSendRedirectMethod extends Method {
   HttpServletResponseSendRedirectMethod() {
-    this.getDeclaringType() instanceof HttpServletResponse and
-    this.hasName("sendRedirect") and
-    this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType() instanceof TypeString
+    getDeclaringType() instanceof HttpServletResponse and
+    hasName("sendRedirect") and
+    getNumberOfParameters() = 1 and
+    getParameter(0).getType() instanceof TypeString
   }
 }
 
@@ -224,9 +218,9 @@ class HttpServletResponseSendRedirectMethod extends Method {
  */
 class ServletResponseGetWriterMethod extends Method {
   ServletResponseGetWriterMethod() {
-    this.getDeclaringType() instanceof ServletResponse and
-    this.hasName("getWriter") and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof ServletResponse and
+    hasName("getWriter") and
+    getNumberOfParameters() = 0
   }
 }
 
@@ -235,49 +229,49 @@ class ServletResponseGetWriterMethod extends Method {
  */
 class ServletResponseGetOutputStreamMethod extends Method {
   ServletResponseGetOutputStreamMethod() {
-    this.getDeclaringType() instanceof ServletResponse and
-    this.hasName("getOutputStream") and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof ServletResponse and
+    hasName("getOutputStream") and
+    getNumberOfParameters() = 0
   }
 }
 
 /** The class `javax.servlet.http.Cookie`. */
-class TypeCookie extends Class {
-  TypeCookie() { this.hasQualifiedName("javax.servlet.http", "Cookie") }
+library class TypeCookie extends Class {
+  TypeCookie() { hasQualifiedName("javax.servlet.http", "Cookie") }
 }
 
 /**
  * The method `getValue(String)` declared in `javax.servlet.http.Cookie`.
  */
-class CookieGetValueMethod extends Method {
+library class CookieGetValueMethod extends Method {
   CookieGetValueMethod() {
-    this.getDeclaringType() instanceof TypeCookie and
-    this.hasName("getValue") and
-    this.getReturnType() instanceof TypeString
+    getDeclaringType() instanceof TypeCookie and
+    hasName("getValue") and
+    getReturnType() instanceof TypeString
   }
 }
 
 /**
  * The method `getName()` declared in `javax.servlet.http.Cookie`.
  */
-class CookieGetNameMethod extends Method {
+library class CookieGetNameMethod extends Method {
   CookieGetNameMethod() {
-    this.getDeclaringType() instanceof TypeCookie and
-    this.hasName("getName") and
-    this.getReturnType() instanceof TypeString and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof TypeCookie and
+    hasName("getName") and
+    getReturnType() instanceof TypeString and
+    getNumberOfParameters() = 0
   }
 }
 
 /**
  * The method `getComment()` declared in `javax.servlet.http.Cookie`.
  */
-class CookieGetCommentMethod extends Method {
+library class CookieGetCommentMethod extends Method {
   CookieGetCommentMethod() {
-    this.getDeclaringType() instanceof TypeCookie and
-    this.hasName("getComment") and
-    this.getReturnType() instanceof TypeString and
-    this.getNumberOfParameters() = 0
+    getDeclaringType() instanceof TypeCookie and
+    hasName("getComment") and
+    getReturnType() instanceof TypeString and
+    getNumberOfParameters() = 0
   }
 }
 
@@ -286,8 +280,8 @@ class CookieGetCommentMethod extends Method {
  */
 class ResponseAddCookieMethod extends Method {
   ResponseAddCookieMethod() {
-    this.getDeclaringType() instanceof HttpServletResponse and
-    this.hasName("addCookie")
+    getDeclaringType() instanceof HttpServletResponse and
+    hasName("addCookie")
   }
 }
 
@@ -296,8 +290,8 @@ class ResponseAddCookieMethod extends Method {
  */
 class ResponseAddHeaderMethod extends Method {
   ResponseAddHeaderMethod() {
-    this.getDeclaringType() instanceof HttpServletResponse and
-    this.hasName("addHeader")
+    getDeclaringType() instanceof HttpServletResponse and
+    hasName("addHeader")
   }
 }
 
@@ -306,8 +300,8 @@ class ResponseAddHeaderMethod extends Method {
  */
 class ResponseSetHeaderMethod extends Method {
   ResponseSetHeaderMethod() {
-    this.getDeclaringType() instanceof HttpServletResponse and
-    this.hasName("setHeader")
+    getDeclaringType() instanceof HttpServletResponse and
+    hasName("setHeader")
   }
 }
 
@@ -315,7 +309,7 @@ class ResponseSetHeaderMethod extends Method {
  * A class that has `javax.servlet.Servlet` as an ancestor.
  */
 class ServletClass extends Class {
-  ServletClass() { this.getAnAncestor().hasQualifiedName("javax.servlet", "Servlet") }
+  ServletClass() { getAnAncestor().hasQualifiedName("javax.servlet", "Servlet") }
 }
 
 /**
@@ -324,23 +318,20 @@ class ServletClass extends Class {
  * Note: There are a number of other listener interfaces in the `javax.servlet` package that cannot
  * be configured in `web.xml` and therefore are not covered by this class.
  */
-class ServletWebXmlListenerType extends RefType {
-  ServletWebXmlListenerType() {
-    this.hasQualifiedName("javax.servlet", "ServletContextAttributeListener") or
-    this.hasQualifiedName("javax.servlet", "ServletContextListener") or
-    this.hasQualifiedName("javax.servlet", "ServletRequestAttributeListener") or
-    this.hasQualifiedName("javax.servlet", "ServletRequestListener") or
-    this.hasQualifiedName("javax.servlet.http", "HttpSessionAttributeListener") or
-    this.hasQualifiedName("javax.servlet.http", "HttpSessionIdListener") or
-    this.hasQualifiedName("javax.servlet.http", "HttpSessionListener")
+class ServletWebXMLListenerType extends RefType {
+  ServletWebXMLListenerType() {
+    hasQualifiedName("javax.servlet", "ServletContextAttributeListener") or
+    hasQualifiedName("javax.servlet", "ServletContextListener") or
+    hasQualifiedName("javax.servlet", "ServletRequestAttributeListener") or
+    hasQualifiedName("javax.servlet", "ServletRequestListener") or
+    hasQualifiedName("javax.servlet.http", "HttpSessionAttributeListener") or
+    hasQualifiedName("javax.servlet.http", "HttpSessionIdListener") or
+    hasQualifiedName("javax.servlet.http", "HttpSessionListener")
     // Listeners that are not configured in `web.xml`:
     //  - `HttpSessionActivationListener`
     //  - `HttpSessionBindingListener`
   }
 }
-
-/** DEPRECATED: Alias for ServletWebXmlListenerType */
-deprecated class ServletWebXMLListenerType = ServletWebXmlListenerType;
 
 /** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
 predicate isServletRequestMethod(Method m) {
@@ -355,51 +346,4 @@ predicate isRequestGetParamMethod(MethodAccess ma) {
   ma.getMethod() instanceof ServletRequestGetParameterMethod or
   ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
   ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
-}
-
-/** The Java EE RequestDispatcher. */
-class RequestDispatcher extends RefType {
-  RequestDispatcher() {
-    this.hasQualifiedName(["javax.servlet", "jakarta.servlet"], "RequestDispatcher") or
-    this.hasQualifiedName("javax.portlet", "PortletRequestDispatcher")
-  }
-}
-
-/** The `getRequestDispatcher` method. */
-class GetRequestDispatcherMethod extends Method {
-  GetRequestDispatcherMethod() {
-    this.getReturnType() instanceof RequestDispatcher and
-    this.getName() = "getRequestDispatcher"
-  }
-}
-
-/** The request dispatch method. */
-class RequestDispatchMethod extends Method {
-  RequestDispatchMethod() {
-    this.getDeclaringType() instanceof RequestDispatcher and
-    this.hasName(["forward", "include"])
-  }
-}
-
-/**
- * The interface `javax.servlet.ServletContext`.
- */
-class ServletContext extends RefType {
-  ServletContext() { this.hasQualifiedName("javax.servlet", "ServletContext") }
-}
-
-/** The `getResource` method of `ServletContext`. */
-class GetServletResourceMethod extends Method {
-  GetServletResourceMethod() {
-    this.getDeclaringType() instanceof ServletContext and
-    this.hasName("getResource")
-  }
-}
-
-/** The `getResourceAsStream` method of `ServletContext`. */
-class GetServletResourceAsStreamMethod extends Method {
-  GetServletResourceAsStreamMethod() {
-    this.getDeclaringType() instanceof ServletContext and
-    this.hasName("getResourceAsStream")
-  }
 }

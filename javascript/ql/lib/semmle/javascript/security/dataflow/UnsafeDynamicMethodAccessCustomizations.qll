@@ -44,7 +44,7 @@ module UnsafeDynamicMethodAccess {
   UnsafeFunction unsafeFunction() { any() }
 
   /**
-   * A flow label describing values that may refer to an unsafe
+   * Flow label describing values that may refer to an unsafe
    * function as a result of an attacker-controlled property name.
    */
   abstract class UnsafeFunction extends DataFlow::FlowLabel {

@@ -105,12 +105,31 @@ private module ConstantComparisonOperation {
   }
 }
 
+private class StructuralComparisonConfig extends StructuralComparison::StructuralComparisonConfiguration {
+  StructuralComparisonConfig() { this = "CompareIdenticalValues" }
+
+  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
+    exists(ComparisonTest ct |
+      x = ct.getFirstArgument() and
+      y = ct.getSecondArgument()
+    )
+  }
+
+  ComparisonTest getComparisonTest() {
+    exists(Element x, Element y |
+      result.getFirstArgument() = x and
+      result.getSecondArgument() = y and
+      same(x, y)
+    )
+  }
+}
+
 /**
  * Holds if comparison test `ct` compares two structurally identical
  * expressions.
  */
 predicate comparesIdenticalValues(ComparisonTest ct) {
-  StructuralComparison::sameGvn(ct.getFirstArgument(), ct.getSecondArgument())
+  ct = any(StructuralComparisonConfig c).getComparisonTest()
 }
 
 /**

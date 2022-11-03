@@ -14,7 +14,7 @@
 
 import java
 import semmle.code.java.security.SqlUnescapedLib
-import semmle.code.java.security.SqlInjectionQuery
+import SqlInjectionLib
 
 class UncontrolledStringBuilderSource extends DataFlow::ExprNode {
   UncontrolledStringBuilderSource() {

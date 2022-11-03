@@ -9,33 +9,28 @@ private import semmle.code.cpp.models.interfaces.Taint
 import ExternalAPIsSpecific
 
 /** A node representing untrusted data being passed to an external API. */
-class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  UntrustedExternalApiDataNode() { any(UntrustedDataToExternalApiConfig c).hasFlow(_, this) }
+class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {
+  UntrustedExternalAPIDataNode() { any(UntrustedDataToExternalAPIConfig c).hasFlow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
   DataFlow::Node getAnUntrustedSource() {
-    any(UntrustedDataToExternalApiConfig c).hasFlow(result, this)
+    any(UntrustedDataToExternalAPIConfig c).hasFlow(result, this)
   }
 }
 
-/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
-deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
-
-/** An external API which is used with untrusted data. */
-private newtype TExternalApi =
-  /** An untrusted API method `m` where untrusted data is passed at `index`. */
-  TExternalApiParameter(Function f, int index) {
-    exists(UntrustedExternalApiDataNode n |
+private newtype TExternalAPI =
+  TExternalAPIParameter(Function f, int index) {
+    exists(UntrustedExternalAPIDataNode n |
       f = n.getExternalFunction() and
       index = n.getIndex()
     )
   }
 
 /** An external API which is used with untrusted data. */
-class ExternalApiUsedWithUntrustedData extends TExternalApi {
+class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
   /** Gets a possibly untrusted use of this external API. */
-  UntrustedExternalApiDataNode getUntrustedDataNode() {
-    this = TExternalApiParameter(result.getExternalFunction(), result.getIndex())
+  UntrustedExternalAPIDataNode getUntrustedDataNode() {
+    this = TExternalAPIParameter(result.getExternalFunction(), result.getIndex())
   }
 
   /** Gets the number of untrusted sources used with this external API. */
@@ -48,11 +43,8 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
     exists(Function f, int index, string indexString |
       if index = -1 then indexString = "qualifier" else indexString = "param " + index
     |
-      this = TExternalApiParameter(f, index) and
+      this = TExternalAPIParameter(f, index) and
       result = f.toString() + " [" + indexString + "]"
     )
   }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

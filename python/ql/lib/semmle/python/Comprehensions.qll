@@ -1,6 +1,6 @@
 import python
 
-/** The base class for list, set and dictionary comprehensions, and generator expressions. */
+/** Base class for list, set and dictionary comprehensions, and generator expressions. */
 abstract class Comp extends Expr {
   abstract Function getFunction();
 
@@ -67,6 +67,8 @@ class ListComp extends ListComp_, Comp {
   override Function getFunction() { result = ListComp_.super.getFunction() }
 
   override Expr getIterable() { result = ListComp_.super.getIterable() }
+
+  override string toString() { result = ListComp_.super.toString() }
 
   override Expr getElt() { result = Comp.super.getElt() }
 }

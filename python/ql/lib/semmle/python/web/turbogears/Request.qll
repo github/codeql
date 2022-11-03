@@ -3,7 +3,7 @@ import semmle.python.security.strings.External
 import semmle.python.web.Http
 import TurboGears
 
-deprecated private class ValidatedMethodParameter extends Parameter {
+private class ValidatedMethodParameter extends Parameter {
   ValidatedMethodParameter() {
     exists(string name, TurboGearsControllerMethod method |
       method.getArgByName(name) = this and
@@ -12,7 +12,7 @@ deprecated private class ValidatedMethodParameter extends Parameter {
   }
 }
 
-deprecated class UnvalidatedControllerMethodParameter extends HttpRequestTaintSource {
+class UnvalidatedControllerMethodParameter extends HttpRequestTaintSource {
   UnvalidatedControllerMethodParameter() {
     exists(Parameter p |
       any(TurboGearsControllerMethod m | not m.getName() = "onerror").getAnArg() = p and

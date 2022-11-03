@@ -1,7 +1,7 @@
 import python
 
 /** A string constant that looks like it may be used in string formatting operations. */
-class PossibleAdvancedFormatString extends StrConst {
+library class PossibleAdvancedFormatString extends StrConst {
   PossibleAdvancedFormatString() { this.getText().matches("%{%}%") }
 
   private predicate field(int start, int end) {
@@ -40,7 +40,9 @@ class PossibleAdvancedFormatString extends StrConst {
 
   private predicate implicitlyNumberedField(int start, int end) {
     this.field(start, end) and
-    exists(string c | start + 1 = this.getText().indexOf(c) | c in ["}", ":", "!", "."])
+    exists(string c | start + 1 = this.getText().indexOf(c) |
+      c = "}" or c = ":" or c = "!" or c = "."
+    )
   }
 
   /** Whether this format string has implicitly numbered fields */

@@ -366,7 +366,7 @@ private module SsaImpl {
 
   pragma[nomagic]
   private predicate innerclassSupertypeStar(InnerClass t1, RefType t2) {
-    t1.getASourceSupertype*().getSourceDeclaration() = t2
+    t1.getASupertype*().getSourceDeclaration() = t2
   }
 
   /**
@@ -641,7 +641,7 @@ private module SsaImpl {
         ssaDefReachesRank(v, def, b, lastRank(v, b))
         or
         exists(BasicBlock idom |
-          bbIDominates(pragma[only_bind_into](idom), b) and // It is sufficient to traverse the dominator graph, cf. discussion above.
+          bbIDominates(idom, b) and // It is sufficient to traverse the dominator graph, cf. discussion above.
           ssaDefReachesEndOfBlock(v, def, idom) and
           not any(TrackedSsaDef other).definesAt(v, b, _)
         )
@@ -768,12 +768,12 @@ private module SsaImpl {
      */
     private predicate varBlockReaches(TrackedVar v, BasicBlock b1, BasicBlock b2) {
       varOccursInBlock(v, b1) and
-      pragma[only_bind_into](b2) = b1.getABBSuccessor() and
+      b2 = b1.getABBSuccessor() and
       blockPrecedesVar(v, b2)
       or
       exists(BasicBlock mid |
         varBlockReaches(v, b1, mid) and
-        pragma[only_bind_into](b2) = mid.getABBSuccessor() and
+        b2 = mid.getABBSuccessor() and
         not varOccursInBlock(v, mid) and
         blockPrecedesVar(v, b2)
       )
@@ -920,7 +920,7 @@ class SsaVariable extends TSsaVariable {
   }
 
   /** Gets the `ControlFlowNode` at which this SSA variable is defined. */
-  ControlFlowNode getCfgNode() {
+  ControlFlowNode getCFGNode() {
     this = TSsaPhiNode(_, result) or
     this = TSsaCertainUpdate(_, result, _, _) or
     this = TSsaUncertainUpdate(_, result, _, _) or
@@ -928,17 +928,14 @@ class SsaVariable extends TSsaVariable {
     this = TSsaUntracked(_, result)
   }
 
-  /** DEPRECATED: Alias for getCfgNode */
-  deprecated ControlFlowNode getCFGNode() { result = this.getCfgNode() }
-
   /** Gets a textual representation of this SSA variable. */
   string toString() { none() }
 
   /** Gets the source location for this element. */
-  Location getLocation() { result = this.getCfgNode().getLocation() }
+  Location getLocation() { result = this.getCFGNode().getLocation() }
 
   /** Gets the `BasicBlock` in which this SSA variable is defined. */
-  BasicBlock getBasicBlock() { result = this.getCfgNode().getBasicBlock() }
+  BasicBlock getBasicBlock() { result = this.getCFGNode().getBasicBlock() }
 
   /** Gets an access of this SSA variable. */
   RValue getAUse() {
@@ -993,7 +990,7 @@ class SsaUpdate extends SsaVariable {
 class SsaExplicitUpdate extends SsaUpdate, TSsaCertainUpdate {
   SsaExplicitUpdate() {
     exists(VariableUpdate upd |
-      upd = this.getCfgNode() and getDestVar(upd) = this.getSourceVariable()
+      upd = this.getCFGNode() and getDestVar(upd) = this.getSourceVariable()
     )
   }
 
@@ -1001,7 +998,7 @@ class SsaExplicitUpdate extends SsaUpdate, TSsaCertainUpdate {
 
   /** Gets the `VariableUpdate` defining the SSA variable. */
   VariableUpdate getDefiningExpr() {
-    result = this.getCfgNode() and getDestVar(result) = this.getSourceVariable()
+    result = this.getCFGNode() and getDestVar(result) = this.getSourceVariable()
   }
 }
 
@@ -1021,10 +1018,10 @@ class SsaImplicitUpdate extends SsaUpdate {
   private string getKind() {
     this = TSsaUntracked(_, _) and result = "untracked"
     or
-    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCfgNode(), _, _) and
+    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _) and
     result = "explicit qualifier"
     or
-    if uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCfgNode(), _, _)
+    if uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _)
     then
       if exists(this.getANonLocalUpdate())
       then result = "nonlocal + nonlocal qualifier"
@@ -1041,7 +1038,7 @@ class SsaImplicitUpdate extends SsaUpdate {
     exists(SsaSourceField f, Callable setter |
       f = this.getSourceVariable() and
       relevantFieldUpdate(setter, f.getField(), result) and
-      updatesNamedField(this.getCfgNode(), f, setter)
+      updatesNamedField(this.getCFGNode(), f, setter)
     )
   }
 
@@ -1054,8 +1051,8 @@ class SsaImplicitUpdate extends SsaUpdate {
    */
   predicate assignsUnknownValue() {
     this = TSsaUntracked(_, _) or
-    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCfgNode(), _, _) or
-    uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCfgNode(), _, _)
+    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _) or
+    uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _)
   }
 }
 
@@ -1089,7 +1086,7 @@ class SsaImplicitInit extends SsaVariable, TSsaEntryDef {
    */
   predicate isParameterDefinition(Parameter p) {
     this.getSourceVariable() = TLocalVar(p.getCallable(), p) and
-    p.getCallable().getBody() = this.getCfgNode()
+    p.getCallable().getBody() = this.getCFGNode()
   }
 }
 
@@ -1101,7 +1098,7 @@ class SsaPhiNode extends SsaVariable, TSsaPhiNode {
   SsaVariable getAPhiInput() {
     exists(BasicBlock phiPred, TrackedVar v |
       v = this.getSourceVariable() and
-      this.getCfgNode().(BasicBlock).getABBPredecessor() = phiPred and
+      this.getCFGNode().(BasicBlock).getABBPredecessor() = phiPred and
       ssaDefReachesEndOfBlock(v, result, phiPred)
     )
   }
@@ -1114,11 +1111,8 @@ class SsaPhiNode extends SsaVariable, TSsaPhiNode {
   }
 }
 
-private class RefTypeCastingExpr extends CastingExpr {
-  RefTypeCastingExpr() {
-    this.getType() instanceof RefType and
-    not this instanceof SafeCastExpr
-  }
+private class RefTypeCastExpr extends CastExpr {
+  RefTypeCastExpr() { this.getType() instanceof RefType }
 }
 
 /**
@@ -1133,5 +1127,5 @@ Expr sameValue(SsaVariable v, VarAccess va) {
   or
   result.(AssignExpr).getSource() = sameValue(v, va)
   or
-  result.(RefTypeCastingExpr).getExpr() = sameValue(v, va)
+  result.(RefTypeCastExpr).getExpr() = sameValue(v, va)
 }

@@ -61,72 +61,72 @@ class PointerArithmeticAccess extends BufferAccess, Expr {
  * A pair of buffer accesses through a call to memcpy.
  */
 class MemCpy extends BufferAccess, FunctionCall {
-  MemCpy() { this.getTarget().hasName("memcpy") }
+  MemCpy() { getTarget().hasName("memcpy") }
 
   override Expr getPointer() {
-    result = this.getArgument(0) or
-    result = this.getArgument(1)
+    result = getArgument(0) or
+    result = getArgument(1)
   }
 
-  override Expr getAccessedLength() { result = this.getArgument(2) }
+  override Expr getAccessedLength() { result = getArgument(2) }
 }
 
 class StrncpySizeExpr extends BufferAccess, FunctionCall {
-  StrncpySizeExpr() { this.getTarget().hasName("strncpy") }
+  StrncpySizeExpr() { getTarget().hasName("strncpy") }
 
   override Expr getPointer() {
-    result = this.getArgument(0) or
-    result = this.getArgument(1)
+    result = getArgument(0) or
+    result = getArgument(1)
   }
 
-  override Expr getAccessedLength() { result = this.getArgument(2) }
+  override Expr getAccessedLength() { result = getArgument(2) }
 }
 
 class RecvSizeExpr extends BufferAccess, FunctionCall {
-  RecvSizeExpr() { this.getTarget().hasName("recv") }
+  RecvSizeExpr() { getTarget().hasName("recv") }
 
-  override Expr getPointer() { result = this.getArgument(1) }
+  override Expr getPointer() { result = getArgument(1) }
 
-  override Expr getAccessedLength() { result = this.getArgument(2) }
+  override Expr getAccessedLength() { result = getArgument(2) }
 }
 
 class SendSizeExpr extends BufferAccess, FunctionCall {
-  SendSizeExpr() { this.getTarget().hasName("send") }
+  SendSizeExpr() { getTarget().hasName("send") }
 
-  override Expr getPointer() { result = this.getArgument(1) }
+  override Expr getPointer() { result = getArgument(1) }
 
-  override Expr getAccessedLength() { result = this.getArgument(2) }
+  override Expr getAccessedLength() { result = getArgument(2) }
 }
 
 class SnprintfSizeExpr extends BufferAccess, FunctionCall {
-  SnprintfSizeExpr() { this.getTarget().hasName("snprintf") }
+  SnprintfSizeExpr() { getTarget().hasName("snprintf") }
 
-  override Expr getPointer() { result = this.getArgument(0) }
+  override Expr getPointer() { result = getArgument(0) }
 
-  override Expr getAccessedLength() { result = this.getArgument(1) }
+  override Expr getAccessedLength() { result = getArgument(1) }
 }
 
 class MemcmpSizeExpr extends BufferAccess, FunctionCall {
-  MemcmpSizeExpr() { this.getTarget().hasName("Memcmp") }
+  MemcmpSizeExpr() { getTarget().hasName("Memcmp") }
 
   override Expr getPointer() {
-    result = this.getArgument(0) or
-    result = this.getArgument(1)
+    result = getArgument(0) or
+    result = getArgument(1)
   }
 
-  override Expr getAccessedLength() { result = this.getArgument(2) }
+  override Expr getAccessedLength() { result = getArgument(2) }
 }
 
 class MallocSizeExpr extends BufferAccess, FunctionCall {
-  MallocSizeExpr() { this.getTarget().hasName("malloc") }
+  MallocSizeExpr() { getTarget().hasName("malloc") }
 
   override Expr getPointer() { none() }
 
-  override Expr getAccessedLength() { result = this.getArgument(0) }
+  override Expr getAccessedLength() { result = getArgument(0) }
 }
 
 class NetworkFunctionCall extends FunctionCall {
-  NetworkFunctionCall() { this.getTarget().hasName(["ntohd", "ntohf", "ntohl", "ntohll", "ntohs"]) }
+  NetworkFunctionCall() { getTarget().hasName(["ntohd", "ntohf", "ntohl", "ntohll", "ntohs"]) }
 }
 
 class NetworkToBufferSizeConfiguration extends DataFlow::Configuration {

@@ -42,7 +42,7 @@ private class UnsafeBeanInitMethod extends Method {
     exists(Annotation a | this.getAnAnnotation() = a |
       a.getType().hasQualifiedName("org.springframework.context.annotation", "Bean") and
       if a.getValue("name") instanceof StringLiteral
-      then identifier = a.getValue("name").(StringLiteral).getValue()
+      then identifier = a.getValue("name").(StringLiteral).getRepresentedString()
       else identifier = this.getName()
     )
   }
@@ -55,4 +55,4 @@ private class UnsafeBeanInitMethod extends Method {
 
 from UnsafeBeanInitMethod method
 select method,
-  "Unsafe deserialization in a Spring exporter bean '" + method.getBeanIdentifier() + "'."
+  "Unsafe deserialization in a Spring exporter bean '" + method.getBeanIdentifier() + "'"

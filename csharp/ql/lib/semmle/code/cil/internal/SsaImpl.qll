@@ -1,40 +1,8 @@
-private import cil
-private import codeql.ssa.Ssa as SsaImplCommon
-
-private module SsaInput implements SsaImplCommon::InputSig {
-  class BasicBlock = CIL::BasicBlock;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  class ExitBasicBlock = CIL::ExitBasicBlock;
-
-  class SourceVariable = CIL::StackVariable;
-
-  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    forceCachingInSameStage() and
-    exists(CIL::VariableUpdate vu |
-      vu.updatesAt(bb, i) and
-      v = vu.getVariable() and
-      certain = true
-    )
-  }
-
-  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    exists(CIL::ReadAccess ra | bb.getNode(i) = ra |
-      ra.getTarget() = v and
-      certain = true
-    )
-  }
-}
-
-import SsaImplCommon::Make<SsaInput>
+private import semmle.code.cil.CIL
+private import SsaImplCommon
 
 cached
 private module Cached {
-  private import CIL
-
   cached
   predicate forceCachingInSameStage() { any() }
 
@@ -68,8 +36,9 @@ private module Cached {
   Definition getAPhiInput(PhiNode phi) { phiHasInputFromBlock(phi, result, _) }
 
   cached
-  predicate lastRefBeforeRedef(Definition def, BasicBlock bb, int i, Definition next) {
-    lastRefRedef(def, bb, i, next)
+  predicate hasLastInputRef(Definition phi, Definition def, BasicBlock bb, int i) {
+    lastRefRedef(def, bb, i, phi) and
+    def = getAPhiInput(phi)
   }
 }
 

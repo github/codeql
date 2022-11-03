@@ -53,8 +53,6 @@ private module Cached {
     DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
     or
     awaitStep(nodeFrom, nodeTo)
-    or
-    asyncWithStep(nodeFrom, nodeTo)
   }
 }
 
@@ -161,25 +159,8 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
  */
 predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // construction by literal
-  //
-  // TODO: once we have proper flow-summary modeling, we might not need this step any
-  // longer -- but there needs to be a matching read-step for the store-step, and we
-  // don't provide that right now.
-  DataFlowPrivate::listStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::setStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::tupleStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::dictStoreStep(nodeFrom, _, nodeTo)
-  or
-  // comprehension, so there is taint-flow from `x` in `[x for x in xs]` to the
-  // resulting list of the list-comprehension.
-  //
-  // TODO: once we have proper flow-summary modeling, we might not need this step any
-  // longer -- but there needs to be a matching read-step for the store-step, and we
-  // don't provide that right now.
-  DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
+  // TODO: Not limiting the content argument here feels like a BIG hack, but we currently get nothing for free :|
+  DataFlowPrivate::storeStep(nodeFrom, _, nodeTo)
   or
   // constructor call
   exists(DataFlow::CallCfgNode call | call = nodeTo |
@@ -229,25 +210,4 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
  */
 predicate awaitStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   nodeTo.asExpr().(Await).getValue() = nodeFrom.asExpr()
-}
-
-/**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` inside an `async with` statement.
- *
- * For example in
- * ```python
- * async with open("foo") as f:
- * ```
- * the variable `f` is tainted if the result of `open("foo")` is tainted.
- */
-predicate asyncWithStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
-    nodeFrom.(DataFlow::CfgNode).getNode() = contextManager and
-    nodeTo.(DataFlow::EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
-    // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
-    with.getContextExpr() = contextManager.getNode() and
-    with.getOptionalVars() = var.getNode() and
-    with.isAsync() and
-    contextManager.strictlyDominates(var)
-  )
 }

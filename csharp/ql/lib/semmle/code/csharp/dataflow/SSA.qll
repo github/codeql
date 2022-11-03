@@ -163,17 +163,21 @@ module Ssa {
    * (`ImplicitDefinition`), or a phi node (`PhiNode`).
    */
   class Definition extends SsaImpl::Definition {
+    final override SourceVariable getSourceVariable() {
+      result = SsaImpl::Definition.super.getSourceVariable()
+    }
+
     /**
      * Gets the control flow node of this SSA definition, if any. Phi nodes are
      * examples of SSA definitions without a control flow node, as they are
-     * modeled at index `-1` in the relevant basic block.
+     * modelled at index `-1` in the relevant basic block.
      */
     final ControlFlow::Node getControlFlowNode() {
       exists(ControlFlow::BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(i))
     }
 
     /**
-     * Holds if this SSA definition is live at the end of basic block `bb`.
+     * Holds is this SSA definition is live at the end of basic block `bb`.
      * That is, this definition reaches the end of basic block `bb`, at which
      * point it is still live, without crossing another SSA definition of the
      * same source variable.
@@ -424,6 +428,11 @@ module Ssa {
     }
 
     /**
+     * DEPRECATED: Use `definesAt/3` instead.
+     */
+    deprecated predicate definesAt(ControlFlow::BasicBlock bb, int i) { this.definesAt(_, bb, i) }
+
+    /**
      * Gets the syntax element associated with this SSA definition, if any.
      * This is either an expression, for example `x = 0`, a parameter, or a
      * callable. Phi nodes have no associated syntax element.
@@ -645,6 +654,14 @@ module Ssa {
 
     override Location getLocation() { result = this.getQualifierDefinition().getLocation() }
   }
+
+  /**
+   * An SSA definition that has no actual semantics, but simply serves to
+   * merge or filter data flow.
+   *
+   * Phi nodes are the canonical (and currently only) example.
+   */
+  deprecated class PseudoDefinition = PhiNode;
 
   /**
    * An SSA phi node, that is, a pseudo definition for a variable at a point

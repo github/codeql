@@ -17,4 +17,4 @@ from JavadocText c
 where
   c.getText().matches("%TODO%") or
   c.getText().matches("%FIXME%")
-select c, "TODO comments should be addressed."
+select c, "TODO/FIXME comment."

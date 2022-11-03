@@ -39,19 +39,14 @@ import javascript
 class Function extends @function, Parameterized, TypeParameterized, StmtContainer, Documentable,
   AST::ValueNode {
   /** Gets the `i`th parameter of this function. */
-  Parameter getParameter(int i) { result = this.getChildExpr(i) }
-
-  /** Gets the `...rest` parameter, if any. */
-  Parameter getRestParameter() {
-    result = this.getParameter(this.getNumParameter() - 1) and result.isRestParameter()
-  }
+  Parameter getParameter(int i) { result = getChildExpr(i) }
 
   /** Gets a parameter of this function. */
-  override Parameter getAParameter() { exists(int idx | result = this.getParameter(idx)) }
+  override Parameter getAParameter() { exists(int idx | result = getParameter(idx)) }
 
   /** Gets the parameter named `name` of this function, if any. */
   SimpleParameter getParameterByName(string name) {
-    result = this.getAParameter() and
+    result = getAParameter() and
     result.getName() = name
   }
 
@@ -77,9 +72,9 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * `this` parameter types are specific to TypeScript.
    */
   TypeAnnotation getThisTypeAnnotation() {
-    result = this.getChildTypeExpr(-4)
+    result = getChildTypeExpr(-4)
     or
-    result = this.getDocumentation().getATagByTitle("this").getType()
+    result = getDocumentation().getATagByTitle("this").getType()
   }
 
   /**
@@ -87,10 +82,10 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    *
    * Gets the identifier specifying the name of this function, if any.
    */
-  deprecated VarDecl getId() { result = this.getIdentifier() }
+  deprecated VarDecl getId() { result = getIdentifier() }
 
   /** Gets the identifier specifying the name of this function, if any. */
-  VarDecl getIdentifier() { result = this.getChildExpr(-1) }
+  VarDecl getIdentifier() { result = getChildExpr(-1) }
 
   /**
    * Gets the name of this function if it has one, or a name inferred from its context.
@@ -101,9 +96,9 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * can be inferred, there is no result.
    */
   string getName() {
-    result = this.getIdentifier().getName()
+    result = getIdentifier().getName()
     or
-    not exists(this.getIdentifier()) and
+    not exists(getIdentifier()) and
     (
       exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
       or
@@ -123,17 +118,17 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /** Gets the variable holding this function. */
-  Variable getVariable() { result = this.getIdentifier().getVariable() }
+  Variable getVariable() { result = getIdentifier().getVariable() }
 
   /** Gets the `arguments` variable of this function, if any. */
   ArgumentsVariable getArgumentsVariable() { result.getFunction() = this }
 
   /** Holds if the body of this function refers to the function's `arguments` variable. */
   predicate usesArgumentsObject() {
-    exists(this.getArgumentsVariable().getAnAccess())
+    exists(getArgumentsVariable().getAnAccess())
     or
     exists(PropAccess read |
-      read.getBase() = this.getVariable().getAnAccess() and
+      read.getBase() = getVariable().getAnAccess() and
       read.getPropertyName() = "arguments"
     )
   }
@@ -141,31 +136,29 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   /**
    * Holds if this function declares a parameter or local variable named `arguments`.
    */
-  predicate declaresArguments() {
-    exists(this.getScope().getVariable("arguments").getADeclaration())
-  }
+  predicate declaresArguments() { exists(getScope().getVariable("arguments").getADeclaration()) }
 
   /** Gets the statement enclosing this function, if any. */
   Stmt getEnclosingStmt() { none() }
 
   /** Gets the body of this function. */
-  override ExprOrStmt getBody() { result = this.getChild(-2) }
+  override ExprOrStmt getBody() { result = getChild(-2) }
 
   /** Gets the `i`th statement in the body of this function. */
-  Stmt getBodyStmt(int i) { result = this.getBody().(BlockStmt).getStmt(i) }
+  Stmt getBodyStmt(int i) { result = getBody().(BlockStmt).getStmt(i) }
 
   /** Gets a statement in the body of this function. */
-  Stmt getABodyStmt() { result = this.getBodyStmt(_) }
+  Stmt getABodyStmt() { result = getBodyStmt(_) }
 
   /** Gets the number of statements in the body of this function. */
-  int getNumBodyStmt() { result = count(this.getABodyStmt()) }
+  int getNumBodyStmt() { result = count(getABodyStmt()) }
 
   /** Gets the return type annotation on this function, if any. */
   TypeAnnotation getReturnTypeAnnotation() {
     typeexprs(result, _, this, -3, _)
     or
     exists(string title | title = "return" or title = "returns" |
-      result = this.getDocumentation().getATagByTitle(title).getType()
+      result = getDocumentation().getATagByTitle(title).getType()
     )
   }
 
@@ -186,7 +179,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    */
   private Token lastTokenOfParameterList() {
     // if there are any parameters, it's the last token of the last parameter
-    exists(Parameter lastParam | lastParam = this.getParameter(this.getNumParameter() - 1) |
+    exists(Parameter lastParam | lastParam = getParameter(getNumParameter() - 1) |
       result = lastParam.getDefault().getLastToken()
       or
       not exists(lastParam.getDefault()) and result = lastParam.getLastToken()
@@ -194,34 +187,32 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     or
     // otherwise we have an empty parameter list `()`, and
     // we want to return the opening parenthesis
-    not exists(this.getAParameter()) and
+    not exists(getAParameter()) and
     (
       // if the function has a name, the opening parenthesis comes right after it
-      result = this.getIdentifier().getLastToken().getNextToken()
+      result = getIdentifier().getLastToken().getNextToken()
       or
       // otherwise this must be an arrow function with no parameters, so the opening
       // parenthesis is the very first token of the function
-      not exists(this.getIdentifier()) and result = this.getFirstToken()
+      not exists(getIdentifier()) and result = getFirstToken()
     )
   }
 
   /** Holds if the parameter list of this function has a trailing comma. */
-  predicate hasTrailingComma() { this.lastTokenOfParameterList().getNextToken().getValue() = "," }
+  predicate hasTrailingComma() { lastTokenOfParameterList().getNextToken().getValue() = "," }
 
   /** Holds if this function is an asynchronous function. */
   predicate isAsync() { is_async(this) }
 
   /** Holds if this function is asynchronous or a generator. */
-  predicate isAsyncOrGenerator() { this.isAsync() or this.isGenerator() }
+  predicate isAsyncOrGenerator() { isAsync() or isGenerator() }
 
   /** Gets the enclosing function or toplevel of this function. */
-  override StmtContainer getEnclosingContainer() { result = this.getEnclosingStmt().getContainer() }
+  override StmtContainer getEnclosingContainer() { result = getEnclosingStmt().getContainer() }
 
   /** Gets the number of lines in this function. */
   int getNumberOfLines() {
-    exists(int sl, int el | this.getLocation().hasLocationInfo(_, sl, _, el, _) |
-      result = el - sl + 1
-    )
+    exists(int sl, int el | getLocation().hasLocationInfo(_, sl, _, el, _) | result = el - sl + 1)
   }
 
   /** Gets the number of lines containing code in this function. */
@@ -256,8 +247,8 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
 
   /** Gets an expression that could be returned by this function, if any. */
   Expr getAReturnedExpr() {
-    result = this.getBody() or
-    result = this.getAReturnStmt().getExpr()
+    result = getBody() or
+    result = getAReturnStmt().getExpr()
   }
 
   /**
@@ -271,10 +262,10 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * which is the nearest enclosing non-arrow function or top-level.
    */
   StmtContainer getThisBindingContainer() {
-    result = this.getThisBinder()
+    result = getThisBinder()
     or
-    not exists(this.getThisBinder()) and
-    result = this.getTopLevel()
+    not exists(getThisBinder()) and
+    result = getTopLevel()
   }
 
   /**
@@ -285,12 +276,12 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * parameter, no parameter default values, and no destructuring parameters.
    */
   predicate hasMappedArgumentsVariable() {
-    exists(this.getArgumentsVariable()) and
-    not this.isStrict() and
-    forall(Parameter p | p = this.getAParameter() |
+    exists(getArgumentsVariable()) and
+    not isStrict() and
+    forall(Parameter p | p = getAParameter() |
       p instanceof SimpleParameter and not exists(p.getDefault())
     ) and
-    not this.hasRestParameter()
+    not hasRestParameter()
   }
 
   /**
@@ -302,23 +293,23 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * can be inferred, the result is "anonymous function".
    */
   override string describe() {
-    if exists(this.inferNameFromVarDef())
-    then result = this.inferNameFromVarDef()
+    if exists(inferNameFromVarDef())
+    then result = inferNameFromVarDef()
     else
-      if exists(this.inferNameFromProp())
-      then result = this.inferNameFromProp()
+      if exists(inferNameFromProp())
+      then result = inferNameFromProp()
       else
-        if exists(this.inferNameFromMemberDef())
-        then result = this.inferNameFromMemberDef()
+        if exists(inferNameFromMemberDef())
+        then result = inferNameFromMemberDef()
         else
-          if exists(this.inferNameFromCallSig())
-          then result = this.inferNameFromCallSig()
+          if exists(inferNameFromCallSig())
+          then result = inferNameFromCallSig()
           else
-            if exists(this.inferNameFromIndexSig())
-            then result = this.inferNameFromIndexSig()
+            if exists(inferNameFromIndexSig())
+            then result = inferNameFromIndexSig()
             else
-              if exists(this.inferNameFromFunctionType())
-              then result = this.inferNameFromFunctionType()
+              if exists(inferNameFromFunctionType())
+              then result = inferNameFromFunctionType()
               else result = "anonymous function"
   }
 
@@ -328,8 +319,8 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    */
   private string inferNameFromVarDef() {
     // in ambiguous cases like `var f = function g() {}`, prefer `g` to `f`
-    if exists(this.getIdentifier())
-    then result = "function " + this.getIdentifier().getName()
+    if exists(getIdentifier())
+    then result = "function " + getIdentifier().getName()
     else
       exists(VarDef vd | this = vd.getSource() |
         result = "function " + vd.getTarget().(VarRef).getName()
@@ -409,7 +400,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    *
    * A JavaScript function always has a body.
    */
-  predicate hasBody() { exists(this.getBody()) }
+  predicate hasBody() { exists(getBody()) }
 
   /**
    * Holds if this function is part of an abstract class member.
@@ -428,10 +419,10 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     this instanceof ArrowFunctionExpr and
     kind = "an arrow function"
     or
-    this.isGenerator() and
+    isGenerator() and
     kind = "a generator function"
     or
-    this.isAsync() and
+    isAsync() and
     kind = "an async function"
   }
 

@@ -17,14 +17,12 @@ import java.nio.Buffer;
 
 public class Bitmap implements Parcelable
 {
-    public Bitmap asShared(){ return null; }
     public Bitmap copy(Bitmap.Config p0, boolean p1){ return null; }
     public Bitmap extractAlpha(){ return null; }
     public Bitmap extractAlpha(Paint p0, int[] p1){ return null; }
     public Bitmap.Config getConfig(){ return null; }
     public Color getColor(int p0, int p1){ return null; }
     public ColorSpace getColorSpace(){ return null; }
-    public HardwareBuffer getHardwareBuffer(){ return null; }
     public boolean compress(Bitmap.CompressFormat p0, int p1, OutputStream p2){ return false; }
     public boolean hasAlpha(){ return false; }
     public boolean hasMipMap(){ return false; }
@@ -88,7 +86,7 @@ public class Bitmap implements Parcelable
     public void writeToParcel(Parcel p0, int p1){}
     static public enum CompressFormat
     {
-        JPEG, PNG, WEBP, WEBP_LOSSLESS, WEBP_LOSSY;
+        JPEG, PNG, WEBP;
         private CompressFormat() {}
     }
     static public enum Config

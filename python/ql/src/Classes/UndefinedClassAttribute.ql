@@ -11,6 +11,7 @@
  */
 
 import python
+import semmle.python.SelfAttribute
 import ClassAttributes
 
 predicate undefined_class_attribute(SelfAttributeRead a, CheckClass c, int line, string name) {
@@ -30,4 +31,4 @@ predicate report_undefined_class_attribute(Attribute a, ClassObject c, string na
 
 from Attribute a, ClassObject c, string name
 where report_undefined_class_attribute(a, c, name)
-select a, "Attribute '" + name + "' is not defined in either the class body or in any method."
+select a, "Attribute '" + name + "' is not defined in either the class body or in any method"

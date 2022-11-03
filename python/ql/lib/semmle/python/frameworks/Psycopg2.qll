@@ -22,10 +22,7 @@ private module Psycopg2 {
   // ---------------------------------------------------------------------------
   // Psycopg
   // ---------------------------------------------------------------------------
-  /**
-   * A model of psycopg2 as a module that implements PEP 249, providing ways to execute SQL statements
-   * against a database.
-   */
+  /** psycopg2 implements PEP 249, providing ways to execute SQL statements against a database. */
   class Psycopg2 extends PEP249::PEP249ModuleApiNode {
     Psycopg2() { this = API::moduleImport("psycopg2") }
   }

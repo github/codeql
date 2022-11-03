@@ -56,9 +56,9 @@ private import internal.TranslatedCompilerGeneratedElement
  * Module that exposes the functions needed for the translation of the `foreach` stmt.
  */
 module ForeachElements {
-  TranslatedForeachTry getTry(ForeachStmt generatedBy) { result.getAst() = generatedBy }
+  TranslatedForeachTry getTry(ForeachStmt generatedBy) { result.getAST() = generatedBy }
 
-  TranslatedForeachEnumerator getEnumDecl(ForeachStmt generatedBy) { result.getAst() = generatedBy }
+  TranslatedForeachEnumerator getEnumDecl(ForeachStmt generatedBy) { result.getAST() = generatedBy }
 
   int noGeneratedElements() { result = 13 }
 }
@@ -71,14 +71,14 @@ private class TranslatedForeachTry extends TranslatedCompilerGeneratedTry,
 
   override TranslatedElement getFinally() {
     exists(TranslatedForeachFinally ff |
-      ff.getAst() = generatedBy and
+      ff.getAST() = generatedBy and
       result = ff
     )
   }
 
   override TranslatedElement getBody() {
     exists(TranslatedForeachWhile fw |
-      fw.getAst() = generatedBy and
+      fw.getAST() = generatedBy and
       result = fw
     )
   }
@@ -96,7 +96,7 @@ private class TranslatedForeachFinally extends TranslatedCompilerGeneratedBlock,
   override TranslatedElement getStmt(int index) {
     index = 0 and
     exists(TranslatedForeachDispose fd |
-      fd.getAst() = generatedBy and
+      fd.getAST() = generatedBy and
       result = fd
     )
   }
@@ -147,14 +147,14 @@ class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionC
 
   TranslatedElement getInit() {
     exists(TranslatedForeachIterVar iv |
-      iv.getAst() = generatedBy and
+      iv.getAST() = generatedBy and
       result = iv
     )
   }
 
   ValueConditionBase getCondition() {
     exists(TranslatedForeachWhileCondition cond |
-      cond.getAst() = generatedBy and
+      cond.getAST() = generatedBy and
       result = cond
     )
   }
@@ -180,7 +180,7 @@ private class TranslatedForeachMoveNext extends TranslatedCompilerGeneratedCall,
 
   override TranslatedExprBase getQualifier() {
     exists(TranslatedMoveNextEnumAcc acc |
-      acc.getAst() = generatedBy and
+      acc.getAST() = generatedBy and
       result = acc
     )
   }
@@ -230,7 +230,7 @@ private class TranslatedForeachCurrent extends TranslatedCompilerGeneratedCall,
 
   override TranslatedExprBase getQualifier() {
     exists(TranslatedForeachCurrentEnumAcc acc |
-      acc.getAst() = generatedBy and
+      acc.getAST() = generatedBy and
       result = acc
     )
   }
@@ -263,7 +263,7 @@ private class TranslatedForeachDispose extends TranslatedCompilerGeneratedCall,
 
   override TranslatedExprBase getQualifier() {
     exists(TranslatedForeachDisposeEnumAcc acc |
-      acc.getAst() = generatedBy and
+      acc.getAST() = generatedBy and
       result = acc
     )
   }
@@ -282,7 +282,7 @@ private class TranslatedForeachWhileCondition extends TranslatedCompilerGenerate
 
   override TranslatedCompilerGeneratedCall getValueExpr() {
     exists(TranslatedForeachMoveNext mn |
-      mn.getAst() = generatedBy and
+      mn.getAST() = generatedBy and
       result = mn
     )
   }
@@ -311,7 +311,7 @@ private class TranslatedForeachEnumerator extends TranslatedCompilerGeneratedDec
 
   override TranslatedCompilerGeneratedCall getInitialization() {
     exists(TranslatedForeachGetEnumerator ge |
-      ge.getAst() = generatedBy and
+      ge.getAST() = generatedBy and
       result = ge
     )
   }
@@ -339,7 +339,7 @@ private class TranslatedForeachIterVar extends TranslatedCompilerGeneratedDeclar
 
   override TranslatedCompilerGeneratedCall getInitialization() {
     exists(TranslatedForeachCurrent crtProp |
-      crtProp.getAst() = generatedBy and
+      crtProp.getAST() = generatedBy and
       result = crtProp
     )
   }
@@ -361,7 +361,7 @@ private class TranslatedMoveNextEnumAcc extends TTranslatedCompilerGeneratedElem
 
   override Type getVariableType() {
     exists(TranslatedForeachGetEnumerator ge |
-      ge.getAst() = generatedBy and
+      ge.getAST() = generatedBy and
       result = ge.getCallResultType()
     )
   }
@@ -393,7 +393,7 @@ private class TranslatedForeachCurrentEnumAcc extends TTranslatedCompilerGenerat
 
   override Type getVariableType() {
     exists(TranslatedForeachGetEnumerator ge |
-      ge.getAst() = generatedBy and
+      ge.getAST() = generatedBy and
       result = ge.getCallResultType()
     )
   }
@@ -425,7 +425,7 @@ private class TranslatedForeachDisposeEnumAcc extends TTranslatedCompilerGenerat
 
   override Type getVariableType() {
     exists(TranslatedForeachGetEnumerator ge |
-      ge.getAst() = generatedBy and
+      ge.getAST() = generatedBy and
       result = ge.getCallResultType()
     )
   }

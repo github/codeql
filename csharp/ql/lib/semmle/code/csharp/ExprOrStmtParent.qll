@@ -140,9 +140,7 @@ private module Cached {
   }
 
   private Expr getAChildExpr(ExprOrStmtParent parent) {
-    result = parent.getAChildExpr() and
-    not result = parent.(DeclarationWithGetSetAccessors).getExpressionBody()
-    or
+    result = parent.getAChildExpr() or
     result = parent.(AssignOperation).getExpandedAssignment()
   }
 
@@ -161,7 +159,7 @@ private module Cached {
 
   private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {
     child = getAChild(parent) and
-    not child = any(Callable c).getBody()
+    not child instanceof Callable
   }
 
   /** Holds if the enclosing body of `cfe` is `body`. */

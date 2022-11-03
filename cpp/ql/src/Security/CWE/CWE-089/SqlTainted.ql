@@ -18,15 +18,15 @@ import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.TaintTracking
 import TaintedWithPath
 
-class SqlLikeFunction extends FunctionWithWrappers {
-  SqlLikeFunction() { sqlArgument(this.getName(), _) }
+class SQLLikeFunction extends FunctionWithWrappers {
+  SQLLikeFunction() { sqlArgument(this.getName(), _) }
 
   override predicate interestingArg(int arg) { sqlArgument(this.getName(), arg) }
 }
 
 class Configuration extends TaintTrackingConfiguration {
   override predicate isSink(Element tainted) {
-    exists(SqlLikeFunction runSql | runSql.outermostWrapperFunctionCall(tainted, _))
+    exists(SQLLikeFunction runSql | runSql.outermostWrapperFunctionCall(tainted, _))
   }
 
   override predicate isBarrier(Expr e) {
@@ -43,12 +43,12 @@ class Configuration extends TaintTrackingConfiguration {
 }
 
 from
-  SqlLikeFunction runSql, Expr taintedArg, Expr taintSource, PathNode sourceNode, PathNode sinkNode,
+  SQLLikeFunction runSql, Expr taintedArg, Expr taintSource, PathNode sourceNode, PathNode sinkNode,
   string taintCause, string callChain
 where
   runSql.outermostWrapperFunctionCall(taintedArg, callChain) and
   taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
   isUserInput(taintSource, taintCause)
 select taintedArg, sourceNode, sinkNode,
-  "This argument to a SQL query function is derived from $@ and then passed to " + callChain + ".",
+  "This argument to a SQL query function is derived from $@ and then passed to " + callChain,
   taintSource, "user input (" + taintCause + ")"

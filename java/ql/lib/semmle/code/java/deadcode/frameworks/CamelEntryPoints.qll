@@ -12,6 +12,6 @@ import semmle.code.java.frameworks.Camel
 class CamelMessageCallableEntryPoint extends CallableEntryPoint {
   CamelMessageCallableEntryPoint() {
     exists(CamelTargetClass camelTargetClass | this = camelTargetClass.getACamelCalledMethod()) or
-    this instanceof CamelConsumeMethod
+    exists(CamelConsumeMethod consumeMethod | this = consumeMethod)
   }
 }

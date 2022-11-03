@@ -462,7 +462,7 @@ definitions.cs:
 #  181|         0: [Parameter] c
 #  181|           -1: [TypeMention] C6
 #-----|           0: (Attributes)
-#  181|             1: [DefaultAttribute] [My(...)]
+#  181|             1: [Attribute] [My(...)]
 #  181|               0: [TypeMention] MyAttribute
 #  182|       4: [BlockStmt] {...}
 #  183|         0: [ReturnStmt] return ...;

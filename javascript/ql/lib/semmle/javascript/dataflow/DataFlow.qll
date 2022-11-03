@@ -73,21 +73,21 @@ module DataFlow {
      * additionally includes the `InvokeExpr` corresponding to reflective calls.
      */
     Expr getEnclosingExpr() {
-      result = this.asExpr() or
+      result = asExpr() or
       this = DataFlow::reflectiveCallNode(result)
     }
 
     /** Gets the AST node corresponding to this data flow node, if any. */
-    AstNode getAstNode() { none() }
+    ASTNode getAstNode() { none() }
 
     /** Gets the basic block to which this node belongs. */
     BasicBlock getBasicBlock() { none() }
 
     /** Gets the container in which this node occurs. */
-    StmtContainer getContainer() { result = this.getBasicBlock().getContainer() }
+    StmtContainer getContainer() { result = getBasicBlock().getContainer() }
 
     /** Gets the toplevel in which this node occurs. */
-    TopLevel getTopLevel() { result = this.getContainer().getTopLevel() }
+    TopLevel getTopLevel() { result = getContainer().getTopLevel() }
 
     /**
      * Holds if this data flow node accesses the global variable `g`, either directly
@@ -98,25 +98,25 @@ module DataFlow {
     /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
     pragma[nomagic]
     predicate mayHaveStringValue(string s) {
-      this.getAPredecessor().mayHaveStringValue(s)
+      getAPredecessor().mayHaveStringValue(s)
       or
-      s = this.getStringValue()
+      s = getStringValue()
     }
 
     /** Gets the string value of this node, if it is a string literal or constant string concatenation. */
-    string getStringValue() { result = this.asExpr().getStringValue() }
+    string getStringValue() { result = asExpr().getStringValue() }
 
     /** Holds if this node may evaluate to the Boolean value `b`. */
     predicate mayHaveBooleanValue(boolean b) {
-      this.getAPredecessor().mayHaveBooleanValue(b)
+      getAPredecessor().mayHaveBooleanValue(b)
       or
-      b = true and this.asExpr().(BooleanLiteral).getValue() = "true"
+      b = true and asExpr().(BooleanLiteral).getValue() = "true"
       or
-      b = false and this.asExpr().(BooleanLiteral).getValue() = "false"
+      b = false and asExpr().(BooleanLiteral).getValue() = "false"
     }
 
     /** Gets the integer value of this node, if it is an integer constant. */
-    int getIntValue() { result = this.asExpr().getIntValue() }
+    int getIntValue() { result = asExpr().getIntValue() }
 
     /** Gets a function value that may reach this node. */
     final FunctionNode getAFunctionValue() {
@@ -133,18 +133,15 @@ module DataFlow {
      * possibly derived from a partial function invocation.
      */
     final FunctionNode getABoundFunctionValue(int boundArgs) {
-      result = this.getAFunctionValue() and boundArgs = 0
+      result = getAFunctionValue() and boundArgs = 0
       or
       CallGraph::getABoundFunctionReference(result, boundArgs, _).flowsTo(this)
     }
 
     /**
-     * DEPRECATED: Use `DataFlow::ParameterNode::flowsTo()` instead.
      * Holds if this expression may refer to the initial value of parameter `p`.
      */
-    deprecated predicate mayReferToParameter(Parameter p) {
-      parameterNode(p).(SourceNode).flowsTo(this)
-    }
+    predicate mayReferToParameter(Parameter p) { parameterNode(p).(SourceNode).flowsTo(this) }
 
     /**
      * Holds if this element is at the specified location.
@@ -164,16 +161,16 @@ module DataFlow {
     File getFile() { none() } // overridden in subclasses
 
     /** Gets the start line of this data flow node. */
-    int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
+    int getStartLine() { hasLocationInfo(_, result, _, _, _) }
 
     /** Gets the start column of this data flow node. */
-    int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
+    int getStartColumn() { hasLocationInfo(_, _, result, _, _) }
 
     /** Gets the end line of this data flow node. */
-    int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
+    int getEndLine() { hasLocationInfo(_, _, _, result, _) }
 
     /** Gets the end column of this data flow node. */
-    int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+    int getEndColumn() { hasLocationInfo(_, _, _, _, result) }
 
     /** Gets a textual representation of this element. */
     cached
@@ -245,7 +242,7 @@ module DataFlow {
         result = pattern.getTypeAnnotation()
       )
       or
-      result = this.getAPredecessor().getFallbackTypeAnnotation()
+      result = getAPredecessor().getFallbackTypeAnnotation()
       or
       exists(DataFlow::ClassNode cls, string fieldName |
         this = cls.getAReceiverNode().getAPropertyRead(fieldName) and
@@ -260,9 +257,9 @@ module DataFlow {
     cached
     predicate hasUnderlyingType(string globalName) {
       Stages::TypeTracking::ref() and
-      this.getType().hasUnderlyingType(globalName)
+      getType().hasUnderlyingType(globalName)
       or
-      this.getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(globalName)
+      getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(globalName)
     }
 
     /**
@@ -272,9 +269,9 @@ module DataFlow {
     cached
     predicate hasUnderlyingType(string moduleName, string typeName) {
       Stages::TypeTracking::ref() and
-      this.getType().hasUnderlyingType(moduleName, typeName)
+      getType().hasUnderlyingType(moduleName, typeName)
       or
-      this.getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
+      getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
     }
   }
 
@@ -335,7 +332,7 @@ module DataFlow {
 
     override File getFile() { result = ssa.getBasicBlock().getFile() }
 
-    override AstNode getAstNode() { none() }
+    override ASTNode getAstNode() { none() }
   }
 
   /**
@@ -356,11 +353,11 @@ module DataFlow {
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override string toString() { result = prop.(AstNode).toString() }
+    override string toString() { result = prop.(ASTNode).toString() }
 
-    override File getFile() { result = prop.(AstNode).getFile() }
+    override File getFile() { result = prop.(ASTNode).getFile() }
 
-    override AstNode getAstNode() { result = prop }
+    override ASTNode getAstNode() { result = prop }
   }
 
   /**
@@ -385,7 +382,7 @@ module DataFlow {
 
     override File getFile() { result = pattern.getFile() }
 
-    override AstNode getAstNode() { result = rest }
+    override ASTNode getAstNode() { result = rest }
   }
 
   /**
@@ -410,7 +407,7 @@ module DataFlow {
 
     override File getFile() { result = pattern.getFile() }
 
-    override AstNode getAstNode() { result = elt }
+    override ASTNode getAstNode() { result = elt }
   }
 
   /**
@@ -439,7 +436,7 @@ module DataFlow {
 
     override File getFile() { result = arr.getFile() }
 
-    override AstNode getAstNode() { result = elt }
+    override ASTNode getAstNode() { result = elt }
   }
 
   /**
@@ -448,8 +445,9 @@ module DataFlow {
    */
   private class ReflectiveCallNode extends Node, TReflectiveCallNode {
     MethodCallExpr call;
+    string kind;
 
-    ReflectiveCallNode() { this = TReflectiveCallNode(call, _) }
+    ReflectiveCallNode() { this = TReflectiveCallNode(call, kind) }
 
     override BasicBlock getBasicBlock() { result = call.getBasicBlock() }
 
@@ -530,13 +528,13 @@ module DataFlow {
      * Holds if this data flow node accesses property `p` on base node `base`.
      */
     pragma[noinline]
-    predicate accesses(Node base, string p) { this.getBase() = base and this.getPropertyName() = p }
+    predicate accesses(Node base, string p) { getBase() = base and getPropertyName() = p }
 
     /**
      * Holds if this data flow node reads or writes a private field in a class.
      */
     predicate isPrivateField() {
-      this.getPropertyName().charAt(0) = "#" and this.getPropertyNameExpr() instanceof Label
+      getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
     }
 
     /**
@@ -583,22 +581,15 @@ module DataFlow {
      */
     pragma[noinline]
     predicate writes(DataFlow::Node base, string prop, DataFlow::Node rhs) {
-      base = this.getBase() and
-      prop = this.getPropertyName() and
-      rhs = this.getRhs()
+      base = getBase() and
+      prop = getPropertyName() and
+      rhs = getRhs()
     }
 
     /**
      * Gets the node where the property write happens in the control flow graph.
      */
     abstract ControlFlowNode getWriteNode();
-
-    /**
-     * If this installs an accessor on an object, as opposed to a regular property,
-     * gets the body of the accessor. `isSetter` is true if installing a setter, and
-     * false is installing a getter.
-     */
-    DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) { none() }
   }
 
   /**
@@ -638,17 +629,6 @@ module DataFlow {
 
     override Node getRhs() { result = valueNode(prop.(ValueProperty).getInit()) }
 
-    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
-      (
-        prop instanceof PropertySetter and
-        isSetter = true
-        or
-        prop instanceof PropertyGetter and
-        isSetter = false
-      ) and
-      result = valueNode(prop.getInit())
-    }
-
     override ControlFlowNode getWriteNode() { result = prop }
   }
 
@@ -671,18 +651,10 @@ module DataFlow {
     override string getPropertyName() { result = astNode.getArgument(1).getStringValue() }
 
     override Node getRhs() {
-      exists(DataFlow::SourceNode descriptor |
-        descriptor = astNode.getArgument(2).flow().getALocalSource()
-      |
-        result =
-          descriptor
-              .getAPropertyWrite("get")
-              .getRhs()
-              .getALocalSource()
-              .(DataFlow::FunctionNode)
-              .getAReturn()
+      exists(ObjectExpr obj | obj = astNode.getArgument(2) |
+        result = obj.getPropertyByName("value").getInit().flow()
         or
-        result = descriptor.getAPropertyWrite("value").getRhs()
+        result = obj.getPropertyByName("get").getInit().flow().(DataFlow::FunctionNode).getAReturn()
       )
     }
 
@@ -709,17 +681,6 @@ module DataFlow {
       result = valueNode(prop.getInit())
     }
 
-    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
-      (
-        prop instanceof SetterMethodDefinition and
-        isSetter = true
-        or
-        prop instanceof GetterMethodDefinition and
-        isSetter = false
-      ) and
-      result = valueNode(prop.getInit())
-    }
-
     override ControlFlowNode getWriteNode() { result = prop }
   }
 
@@ -743,17 +704,6 @@ module DataFlow {
       result = valueNode(prop.getInit())
     }
 
-    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
-      (
-        prop instanceof SetterMethodDefinition and
-        isSetter = true
-        or
-        prop instanceof GetterMethodDefinition and
-        isSetter = false
-      ) and
-      result = valueNode(prop.getInit())
-    }
-
     override ControlFlowNode getWriteNode() { result = prop }
   }
 
@@ -762,7 +712,7 @@ module DataFlow {
    * the JSX element it is in.
    */
   private class JsxAttributeAsPropWrite extends PropWrite, PropNode {
-    override JsxAttribute prop;
+    override JSXAttribute prop;
 
     override Node getBase() { result = valueNode(prop.getElement()) }
 
@@ -931,7 +881,6 @@ module DataFlow {
 
     ImportSpecifierAsPropRead() {
       astNode = imprt.getASpecifier() and
-      not astNode.isTypeOnly() and
       exists(astNode.getImportedName())
     }
 
@@ -1033,32 +982,6 @@ module DataFlow {
   }
 
   /**
-   * A data flow node representing the arguments object given to a function.
-   */
-  class ReflectiveParametersNode extends DataFlow::Node, TReflectiveParametersNode {
-    Function function;
-
-    ReflectiveParametersNode() { this = TReflectiveParametersNode(function) }
-
-    override string toString() { result = "'arguments' object of " + function.describe() }
-
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
-
-    override BasicBlock getBasicBlock() { result = function.getEntry().getBasicBlock() }
-
-    /**
-     * Gets the function whose `arguments` object is represented by this node.
-     */
-    Function getFunction() { result = function }
-
-    override File getFile() { result = function.getFile() }
-  }
-
-  /**
    * A data flow node representing the exceptions thrown by the callee of an invocation.
    */
   class ExceptionalInvocationReturnNode extends DataFlow::Node, TExceptionalInvocationReturnNode {
@@ -1111,7 +1034,7 @@ module DataFlow {
    * Provides classes representing various kinds of calls.
    *
    * Subclass the classes in this module to introduce new kinds of calls. If you want to
-   * refine the behavior of the analysis on existing kinds of calls, subclass `InvokeNode`
+   * refine the behaviour of the analysis on existing kinds of calls, subclass `InvokeNode`
    * instead.
    */
   module Impl {
@@ -1187,11 +1110,11 @@ module DataFlow {
         astNode.isSpreadArgument(i)
         or
         exists(astNode.getArgument(i)) and
-        this.isIndexAfterSpread(i - 1)
+        isIndexAfterSpread(i - 1)
       }
 
       override DataFlow::Node getArgument(int i) {
-        not this.isIndexAfterSpread(i) and
+        not isIndexAfterSpread(i) and
         result = DataFlow::valueNode(astNode.getArgument(i))
       }
 
@@ -1262,7 +1185,7 @@ module DataFlow {
       }
 
       override DataFlow::Node getAnArgument() {
-        kind = "call" and result = originalCall.getAnArgument() and result != this.getReceiver()
+        kind = "call" and result = originalCall.getAnArgument() and result != getReceiver()
       }
 
       override DataFlow::Node getASpreadArgument() {
@@ -1355,12 +1278,10 @@ module DataFlow {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      this.getTag()
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      getTag().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override string toString() { result = this.getTag().toString() }
+    override string toString() { result = getTag().toString() }
   }
 
   /**
@@ -1376,7 +1297,7 @@ module DataFlow {
    * This predicate is only defined for expressions, properties, and for statements that declare
    * a function, a class, or a TypeScript namespace or enum.
    */
-  ValueNode valueNode(AstNode nd) { result.getAstNode() = nd }
+  ValueNode valueNode(ASTNode nd) { result.getAstNode() = nd }
 
   /**
    * Gets the data flow node corresponding to `e`.
@@ -1656,35 +1577,6 @@ module DataFlow {
     exists(Function f | not f.isAsyncOrGenerator() |
       DataFlow::functionReturnNode(succ, f) and pred = valueNode(f.getAReturnedExpr())
     )
-    or
-    // from a reflective params node to a reference to the arguments object.
-    exists(DataFlow::ReflectiveParametersNode params, Function f | f = params.getFunction() |
-      succ = f.getArgumentsVariable().getAnAccess().flow() and
-      pred = params
-    )
-  }
-
-  /** A load step from a reflective parameter node to each parameter. */
-  private class ReflectiveParamsStep extends PreCallGraphStep {
-    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
-      exists(DataFlow::ReflectiveParametersNode params, DataFlow::FunctionNode f, int i |
-        f.getFunction() = params.getFunction() and
-        obj = params and
-        prop = i + "" and
-        element = f.getParameter(i)
-      )
-    }
-  }
-
-  /** A taint step from the reflective parameters node to any parameter. */
-  private class ReflectiveParamsTaintStep extends TaintTracking::SharedTaintStep {
-    override predicate step(DataFlow::Node obj, DataFlow::Node element) {
-      exists(DataFlow::ReflectiveParametersNode params, DataFlow::FunctionNode f |
-        f.getFunction() = params.getFunction() and
-        obj = params and
-        element = f.getAParameter()
-      )
-    }
   }
 
   /**
@@ -1711,7 +1603,7 @@ module DataFlow {
   }
 
   /**
-   * Holds if the flow information for the node `nd`.
+   * Holds if the flow information for this node is incomplete.
    *
    * This predicate holds if there may be a source flow node from which data flows into
    * this node, but that node is not a result of `getALocalSource()` due to analysis incompleteness.
@@ -1767,11 +1659,11 @@ module DataFlow {
     or
     exists(Expr e | e = nd.asExpr() and cause = "heap" |
       e instanceof PropAccess or
-      e instanceof E4X::XmlAnyName or
-      e instanceof E4X::XmlAttributeSelector or
-      e instanceof E4X::XmlDotDotExpression or
-      e instanceof E4X::XmlFilterExpression or
-      e instanceof E4X::XmlQualifiedIdentifier or
+      e instanceof E4X::XMLAnyName or
+      e instanceof E4X::XMLAttributeSelector or
+      e instanceof E4X::XMLDotDotExpression or
+      e instanceof E4X::XMLFilterExpression or
+      e instanceof E4X::XMLQualifiedIdentifier or
       e instanceof Angular2::PipeRefExpr
     )
     or
@@ -1813,8 +1705,9 @@ module DataFlow {
   import Sources
   import TypeInference
   import Configuration
+  import TrackedNodes
   import TypeTracking
   import internal.FunctionWrapperSteps
 
-  deprecated predicate localTaintStep = TaintTracking::localTaintStep/2;
+  predicate localTaintStep = TaintTracking::localTaintStep/2;
 }

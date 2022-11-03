@@ -25,43 +25,41 @@ module SinkEndpointFilter {
    * effective sink.
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
-    result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
-    or
-    exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
-      // prepared statements for SQL
-      any(DataFlow::CallNode cn | cn.getCalleeName() = "prepare")
-          .getAMethodCall("run")
-          .getAnArgument() = sinkCandidate and
-      result = "prepared SQL statement"
+    (
+      result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
       or
-      sinkCandidate instanceof DataFlow::ArrayCreationNode and
-      result = "array creation"
-      or
-      // UI is unrelated to SQL
-      call.getCalleeName().regexpMatch("(?i).*(render|html).*") and
-      result = "HTML / rendering"
-    )
-    or
-    // Require SQL injection sink candidates to be (a) arguments to external library calls
-    // (possibly indirectly), or (b) heuristic sinks.
-    //
-    // Heuristic sinks are copied from the `HeuristicSqlInjectionSink` class defined within
-    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
-    // We can't reuse the class because importing that file would cause us to treat these
-    // heuristic sinks as known sinks.
-    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(sinkCandidate) and
+      exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
+        // prepared statements for SQL
+        any(DataFlow::CallNode cn | cn.getCalleeName() = "prepare")
+            .getAMethodCall("run")
+            .getAnArgument() = sinkCandidate and
+        result = "prepared SQL statement"
+        or
+        sinkCandidate instanceof DataFlow::ArrayCreationNode and
+        result = "array creation"
+        or
+        // UI is unrelated to SQL
+        call.getCalleeName().regexpMatch("(?i).*(render|html).*") and
+        result = "HTML / rendering"
+      )
+    ) and
     not (
+      // Explicitly allow the following heuristic sinks.
+      //
+      // These are copied from the `HeuristicSqlInjectionSink` class defined within
+      // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+      // We can't reuse the class because importing that file would cause us to treat these
+      // heuristic sinks as known sinks.
       isAssignedToOrConcatenatedWith(sinkCandidate, "(?i)(sql|query)") or
       isArgTo(sinkCandidate, "(?i)(query)") or
       isConcatenatedWithString(sinkCandidate,
         "(?s).*(ALTER|COUNT|CREATE|DATABASE|DELETE|DISTINCT|DROP|FROM|GROUP|INSERT|INTO|LIMIT|ORDER|SELECT|TABLE|UPDATE|WHERE).*")
-    ) and
-    result = "not an argument to a likely external library call or a heuristic sink"
+    )
   }
 }
 
-class SqlInjectionAtmConfig extends AtmConfig {
-  SqlInjectionAtmConfig() { this = "SqlInjectionATMConfig" }
+class SqlInjectionATMConfig extends ATMConfig {
+  SqlInjectionATMConfig() { this = "SqlInjectionATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof SqlInjection::Source }
 
@@ -73,9 +71,6 @@ class SqlInjectionAtmConfig extends AtmConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof SqlInjectionSinkType }
 }
-
-/** DEPRECATED: Alias for SqlInjectionAtmConfig */
-deprecated class SqlInjectionATMConfig = SqlInjectionAtmConfig;
 
 /**
  * A taint-tracking configuration for reasoning about SQL injection vulnerabilities.
@@ -89,7 +84,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof SqlInjection::Source }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink instanceof SqlInjection::Sink or any(SqlInjectionAtmConfig cfg).isEffectiveSink(sink)
+    sink instanceof SqlInjection::Sink or any(SqlInjectionATMConfig cfg).isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

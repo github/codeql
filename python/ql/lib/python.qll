@@ -10,7 +10,6 @@ import semmle.python.Class
 import semmle.python.Import
 import semmle.python.Stmts
 import semmle.python.Exprs
-import semmle.python.Patterns
 import semmle.python.Keywords
 import semmle.python.Comprehensions
 import semmle.python.Flow

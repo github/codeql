@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Provides classes and predicates modeling the `jwt-decode` library.
+ * Provides classes and predicates modeling the `jwt-decode` libary.
  */
 private module JwtDecode {
   /**
@@ -23,7 +23,7 @@ private module JwtDecode {
 }
 
 /**
- * Provides classes and predicates modeling the `jsonwebtoken` library.
+ * Provides classes and predicates modeling the `jsonwebtoken` libary.
  */
 private module JsonWebToken {
   /**
@@ -40,10 +40,12 @@ private module JsonWebToken {
   }
 
   /**
-   * The private key for a JWT as a `CredentialsNode`.
+   * The private key for a JWT as a `CredentialsExpr`.
    */
-  private class JwtKey extends CredentialsNode {
-    JwtKey() { this = DataFlow::moduleMember("jsonwebtoken", "sign").getACall().getArgument(1) }
+  private class JWTKey extends CredentialsExpr {
+    JWTKey() {
+      this = DataFlow::moduleMember("jsonwebtoken", "sign").getACall().getArgument(1).asExpr()
+    }
 
     override string getCredentialsKind() { result = "key" }
   }

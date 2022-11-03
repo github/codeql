@@ -22,7 +22,7 @@ predicate isCommonPredefinedTypeName(string name) {
 }
 
 /**
- * A local type declaration, excluding imported names that are not explicitly used as types.
+ * Any local type declaration, excluding imported names that are not explicitly used as types.
  */
 class DefiniteTypeDecl extends TypeDecl {
   DefiniteTypeDecl() {

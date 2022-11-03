@@ -4,7 +4,7 @@ import semmle.python.security.strings.Untrusted
 import semmle.python.web.Http
 import semmle.python.web.cherrypy.General
 
-deprecated class CherryPyExposedFunctionResult extends HttpResponseTaintSink {
+class CherryPyExposedFunctionResult extends HttpResponseTaintSink {
   CherryPyExposedFunctionResult() {
     exists(Return ret |
       ret.getScope() instanceof CherryPyExposedFunction and

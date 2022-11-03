@@ -2,7 +2,7 @@ import java
 import semmle.code.java.frameworks.spring.SpringXMLElement
 
 /** A `<meta>` element in Spring XML files. */
-class SpringMeta extends SpringXmlElement {
+class SpringMeta extends SpringXMLElement {
   SpringMeta() { this.getName() = "meta" }
 
   /** Gets the value of the `key` attribute. */

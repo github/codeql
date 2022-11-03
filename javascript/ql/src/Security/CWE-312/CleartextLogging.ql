@@ -9,8 +9,8 @@
  * @id js/clear-text-logging
  * @tags security
  *       external/cwe/cwe-312
+ *       external/cwe/cwe-315
  *       external/cwe/cwe-359
- *       external/cwe/cwe-532
  */
 
 import javascript
@@ -38,5 +38,5 @@ where
   cfg.hasFlowPath(source, sink) and
   // ignore logging to the browser console (even though it is not a good practice)
   not inBrowserEnvironment(sink.getNode().asExpr().getTopLevel())
-select sink.getNode(), source, sink, "This logs sensitive data returned by $@ as clear text.",
+select sink.getNode(), source, sink, "Sensitive data returned by $@ is logged here.",
   source.getNode(), source.getNode().(Source).describe()

@@ -18,7 +18,7 @@ import semmle.code.java.dataflow.DefUse
 predicate relevantType(RefType t) {
   t instanceof Array
   or
-  exists(RefType sup | sup = t.getAnAncestor().getSourceDeclaration() |
+  exists(RefType sup | sup = t.getASupertype*().getSourceDeclaration() |
     sup.hasQualifiedName("java.util", "Map") or
     sup.hasQualifiedName("java.util", "Collection")
   )
@@ -41,14 +41,14 @@ predicate modifyMethod(Method m) {
 }
 
 predicate storesArray(Callable c, int i, Field f) {
-  f.getDeclaringType() = c.getDeclaringType().getAnAncestor().getSourceDeclaration() and
+  f.getDeclaringType() = c.getDeclaringType().getASupertype*().getSourceDeclaration() and
   relevantType(f.getType()) and
   exists(Parameter p | p = c.getParameter(i) | f.getAnAssignedValue() = p.getAnAccess()) and
   not c.isStatic()
 }
 
 predicate returnsArray(Callable c, Field f) {
-  f.getDeclaringType() = c.getDeclaringType().getAnAncestor().getSourceDeclaration() and
+  f.getDeclaringType() = c.getDeclaringType().getASupertype*().getSourceDeclaration() and
   relevantType(f.getType()) and
   exists(ReturnStmt rs | rs.getEnclosingCallable() = c and rs.getResult() = f.getAnAccess()) and
   not c.isStatic()
@@ -72,7 +72,7 @@ predicate mayWriteToArray(Expr modified) {
   // return __array__;    ...  method()[1] = 0
   exists(ReturnStmt rs | modified = rs.getResult() and relevantType(modified.getType()) |
     exists(Callable enclosing, MethodAccess ma |
-      enclosing = rs.getEnclosingCallable() and ma.getMethod().getSourceDeclaration() = enclosing
+      enclosing = rs.getEnclosingCallable() and ma.getMethod() = enclosing
     |
       mayWriteToArray(ma)
     )
@@ -100,7 +100,7 @@ VarAccess varPassedInto(Callable c, int i) {
 predicate exposesByReturn(Callable c, Field f, Expr why, string whyText) {
   returnsArray(c, f) and
   exists(MethodAccess ma |
-    ma.getMethod().getSourceDeclaration() = c and ma.getCompilationUnit() != c.getCompilationUnit()
+    ma.getMethod() = c and ma.getCompilationUnit() != c.getCompilationUnit()
   |
     mayWriteToArray(ma) and
     why = ma and
@@ -120,12 +120,8 @@ predicate exposesByStore(Callable c, Field f, Expr why, string whyText) {
 
 from Callable c, Field f, Expr why, string whyText
 where
-  (
-    exposesByReturn(c, f, why, whyText) or
-    exposesByStore(c, f, why, whyText)
-  ) and
-  // Kotlin properties expose internal representation, but it's not accidental, so ignore them
-  not exists(Property p | p.getBackingField() = f)
+  exposesByReturn(c, f, why, whyText) or
+  exposesByStore(c, f, why, whyText)
 select c,
   c.getName() + " exposes the internal representation stored in field " + f.getName() +
     ". The value may be modified $@.", why.getLocation(), whyText

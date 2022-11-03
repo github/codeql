@@ -623,7 +623,7 @@ private predicate boundedInstruction(
   )
   or
   exists(PropertyAccess pa |
-    i.(CallInstruction).getAst() = pa and
+    i.(CallInstruction).getAST() = pa and
     pa.getProperty().getName() = "Length" and
     b instanceof ZeroBound and
     delta = origdelta and

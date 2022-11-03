@@ -15,8 +15,8 @@ public class HardcodedAzureCredentials {
 	public void testHardcodedUsernamePassword(String input) {
 		UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder()
 		.clientId(clientId)
-		.username(username) // $ HardcodedCredentialsApiCall $ HardcodedCredentialsSourceCall
-		.password(clientSecret) // $ HardcodedCredentialsApiCall $ HardcodedCredentialsSourceCall
+		.username(username)
+		.password(clientSecret)
 		.build();
 
 		SecretClient client = new SecretClientBuilder()
@@ -43,7 +43,7 @@ public class HardcodedAzureCredentials {
 	public void testHardcodedClientSecret(String input) {
 		ClientSecretCredential defaultCredential = new ClientSecretCredentialBuilder()
 		.clientId(clientId)
-		.clientSecret(clientSecret) // $ HardcodedCredentialsApiCall
+		.clientSecret(clientSecret)
 		.tenantId(tenantId)
 		.build();
 	}

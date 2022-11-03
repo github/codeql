@@ -26,11 +26,11 @@ Stmt getASuccessorStmt(Stmt s) {
 }
 
 class IfThenStmt extends IfStmt {
-  IfThenStmt() { not exists(getElse()) }
+  IfThenStmt() { not exists(Stmt s | getElse() = s) }
 }
 
 class IfThenElseStmt extends IfStmt {
-  IfThenElseStmt() { exists(getElse()) }
+  IfThenElseStmt() { exists(Stmt s | getElse() = s) }
 }
 
 Stmt getTrailingBody(Stmt s) {

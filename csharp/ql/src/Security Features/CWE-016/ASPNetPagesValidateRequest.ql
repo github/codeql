@@ -13,7 +13,7 @@
 import csharp
 import semmle.code.asp.WebConfig
 
-from SystemWebXmlElement web, XmlAttribute requestvalidateAttribute
+from SystemWebXMLElement web, XMLAttribute requestvalidateAttribute
 where
   requestvalidateAttribute = web.getAChild("pages").getAttribute("validateRequest") and
   requestvalidateAttribute.getValue().toLowerCase() = "false"

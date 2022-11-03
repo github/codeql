@@ -86,10 +86,3 @@ new webpackDevServer(compiler, {
         });
     }
 });
-
-import Router from "koa-router";
-const router = new Router();
-
-router.get("/ping/:host", async (ctx) => {
-  cp.exec("ping " + ctx.params.host); // NOT OK
-});

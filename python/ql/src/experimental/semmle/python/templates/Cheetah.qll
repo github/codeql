@@ -5,12 +5,10 @@ import semmle.python.web.HttpRequest
 import experimental.semmle.python.templates.SSTISink
 
 /** returns the ClassValue representing `Cheetah.Template.Template` */
-deprecated ClassValue theCheetahTemplateClass() {
-  result = Value::named("Cheetah.Template.Template")
-}
+ClassValue theCheetahTemplateClass() { result = Value::named("Cheetah.Template.Template") }
 
 /**
- * A sink representing the instantiation argument of any class which derives from
+ * Sink representing the instantiation argument of any class which derives from
  * the `Cheetah.Template.Template` class .
  *
  *  from Cheetah.Template import Template
@@ -24,7 +22,7 @@ deprecated ClassValue theCheetahTemplateClass() {
  *  from Cheetah.Template import Template
  *  t3 = Template("sink")
  */
-deprecated class CheetahTemplateInstantiationSink extends SSTISink {
+class CheetahTemplateInstantiationSink extends SSTISink {
   override string toString() { result = "argument to Cheetah.Template.Template()" }
 
   CheetahTemplateInstantiationSink() {

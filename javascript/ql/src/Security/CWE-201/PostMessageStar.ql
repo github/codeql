@@ -19,5 +19,6 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ is sent to another window without origin restriction.",
-  source.getNode(), "Sensitive data"
+select sink.getNode(), source, sink,
+  "Sensitive data returned from $@ is sent to another window without origin restriction.",
+  source.getNode(), "here"

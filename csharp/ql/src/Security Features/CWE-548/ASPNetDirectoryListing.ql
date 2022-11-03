@@ -13,7 +13,7 @@
 import csharp
 import semmle.code.asp.WebConfig
 
-from SystemWebServerXmlElement ws, XmlAttribute a
+from SystemWebServerXMLElement ws, XMLAttribute a
 where
   ws.getAChild("directoryBrowse").getAttribute("enabled") = a and
   a.getValue() = "true"

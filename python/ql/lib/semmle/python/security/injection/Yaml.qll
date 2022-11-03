@@ -11,10 +11,10 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
-deprecated private FunctionObject yamlLoad() { result = ModuleObject::named("yaml").attr("load") }
+private FunctionObject yamlLoad() { result = ModuleObject::named("yaml").attr("load") }
 
 /** `yaml.load(untrusted)` vulnerability. */
-deprecated class YamlLoadNode extends DeserializationSink {
+class YamlLoadNode extends DeserializationSink {
   override string toString() { result = "yaml.load vulnerability" }
 
   YamlLoadNode() {

@@ -1,5 +1,5 @@
 import javascript
 
-from AngularJS::ScopeServiceReference s, DataFlow::MethodCallNode mce
+from AngularJS::ScopeServiceReference s, MethodCallExpr mce
 where mce = s.getAMethodCall(_)
 select mce

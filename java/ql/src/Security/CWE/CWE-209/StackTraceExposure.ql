@@ -23,11 +23,11 @@ import semmle.code.java.security.InformationLeak
  */
 class PrintStackTraceMethod extends Method {
   PrintStackTraceMethod() {
-    this.getDeclaringType()
+    getDeclaringType()
         .getSourceDeclaration()
         .getASourceSupertype*()
         .hasQualifiedName("java.lang", "Throwable") and
-    this.getName() = "printStackTrace"
+    getName() = "printStackTrace"
   }
 }
 

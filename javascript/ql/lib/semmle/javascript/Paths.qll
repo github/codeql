@@ -113,7 +113,7 @@ abstract class PathString extends string {
   string getComponent(int i) { result = this.splitAt("/", i) }
 
   /** Gets the number of components of this path. */
-  int getNumComponent() { result = count(int i | exists(this.getComponent(i))) }
+  int getNumComponent() { result = count(int i | exists(getComponent(i))) }
 
   /** Gets the base name of the folder or file this path refers to. */
   string getBaseName() { result = this.regexpCapture(pathRegex(), 2) }
@@ -147,7 +147,7 @@ abstract class PathString extends string {
    * Gets the absolute path that this path refers to when resolved relative to
    * `root`.
    */
-  Path resolve(Folder root) { result = this.resolveUpTo(this.getNumComponent(), root) }
+  Path resolve(Folder root) { result = resolveUpTo(getNumComponent(), root) }
 }
 
 /**
@@ -180,7 +180,7 @@ private Path resolveUpTo(PathString p, int n, Folder root, boolean inTS) {
 }
 
 /**
- * Gets the `n`th component of the path `str`, where `base` is the resolved path one level up.
+ * Gets the `i`th component of the path `str`, where `base` is the resolved path one level up.
  * Supports that the root directory might be compiled output from TypeScript.
  * `inTS` is true if the result is TypeScript that is compiled into the path specified by `str`.
  */
@@ -212,7 +212,7 @@ private module TypeScriptOutDir {
    * Gets a folder of TypeScript files that is compiled to JavaScript files in `outdir` relative to a `parent`.
    */
   string getOriginalTypeScriptFolder(string outdir, Folder parent) {
-    exists(JsonObject tsconfig |
+    exists(JSONObject tsconfig |
       outdir = removeLeadingSlash(getOutDir(tsconfig, parent)) and
       result = removeLeadingSlash(getEffectiveRootDirFromTSConfig(tsconfig))
     )
@@ -227,9 +227,9 @@ private module TypeScriptOutDir {
   }
 
   /**
-   * Gets the "outDir" option from a `tsconfig` file from the folder `parent`.
+   * Gets the `outDir` option from a tsconfig file from the folder `parent`.
    */
-  private string getOutDir(JsonObject tsconfig, Folder parent) {
+  private string getOutDir(JSONObject tsconfig, Folder parent) {
     tsconfig.getFile().getBaseName().regexpMatch("tsconfig.*\\.json") and
     tsconfig.isTopLevel() and
     tsconfig.getFile().getParentContainer() = parent and
@@ -241,7 +241,7 @@ private module TypeScriptOutDir {
    * Based on the tsconfig.json file `tsconfig`.
    */
   pragma[inline]
-  private string getEffectiveRootDirFromTSConfig(JsonObject tsconfig) {
+  private string getEffectiveRootDirFromTSConfig(JSONObject tsconfig) {
     // if an explicit "rootDir" option exists, then use that.
     result = getRootDir(tsconfig)
     or
@@ -273,7 +273,7 @@ private module TypeScriptOutDir {
    * Can have multiple results if the includes are from multiple folders.
    */
   pragma[inline]
-  private string getARootDirFromInclude(JsonObject tsconfig) {
+  private string getARootDirFromInclude(JSONObject tsconfig) {
     result =
       getRootFolderFromPath(tsconfig.getPropValue("include").getElementValue(_).getStringValue())
   }
@@ -282,7 +282,7 @@ private module TypeScriptOutDir {
    * Gets the value of the "rootDir" option from a tsconfig.json.
    */
   pragma[inline]
-  private string getRootDir(JsonObject tsconfig) {
+  private string getRootDir(JSONObject tsconfig) {
     result = tsconfig.getPropValue("compilerOptions").getPropValue("rootDir").getStringValue()
   }
 }
@@ -306,9 +306,9 @@ abstract class PathExpr extends Locatable {
   /** Gets the root folder of priority `priority` associated with this path expression. */
   Folder getSearchRoot(int priority) {
     // We default to the enclosing module's search root, though this may be overridden.
-    this.getEnclosingModule().searchRoot(this, result, priority)
+    getEnclosingModule().searchRoot(this, result, priority)
     or
-    result = this.getAdditionalSearchRoot(priority)
+    result = getAdditionalSearchRoot(priority)
   }
 
   /**
@@ -320,16 +320,16 @@ abstract class PathExpr extends Locatable {
   Folder getAdditionalSearchRoot(int priority) { none() }
 
   /** Gets the `i`th component of this path. */
-  string getComponent(int i) { result = this.getValue().(PathString).getComponent(i) }
+  string getComponent(int i) { result = getValue().(PathString).getComponent(i) }
 
   /** Gets the number of components of this path. */
-  int getNumComponent() { result = this.getValue().(PathString).getNumComponent() }
+  int getNumComponent() { result = getValue().(PathString).getNumComponent() }
 
   /** Gets the base name of the folder or file this path refers to. */
-  string getBaseName() { result = this.getValue().(PathString).getBaseName() }
+  string getBaseName() { result = getValue().(PathString).getBaseName() }
 
   /** Gets the stem, that is, base name without extension, of the folder or file this path refers to. */
-  string getStem() { result = this.getValue().(PathString).getStem() }
+  string getStem() { result = getValue().(PathString).getStem() }
 
   /**
    * Gets the extension of the folder or file this path refers to, that is, the suffix of the base name
@@ -337,7 +337,7 @@ abstract class PathExpr extends Locatable {
    *
    * Has no result if the base name does not contain a dot.
    */
-  string getExtension() { result = this.getValue().(PathString).getExtension() }
+  string getExtension() { result = getValue().(PathString).getExtension() }
 
   /**
    * Gets the file or folder that the first `n` components of this path refer to
@@ -345,25 +345,22 @@ abstract class PathExpr extends Locatable {
    */
   pragma[nomagic]
   Container resolveUpTo(int n, int priority) {
-    result =
-      this.getValue().(PathString).resolveUpTo(n, this.getSearchRoot(priority)).getContainer()
+    result = getValue().(PathString).resolveUpTo(n, getSearchRoot(priority)).getContainer()
   }
 
   /**
    * Gets the file or folder that this path refers to when resolved relative to
    * the root folder of the given `priority`.
    */
-  Container resolve(int priority) { result = this.resolveUpTo(this.getNumComponent(), priority) }
+  Container resolve(int priority) { result = resolveUpTo(getNumComponent(), priority) }
 
   /**
    * Gets the file or folder that the first `n` components of this path refer to.
    */
-  Container resolveUpTo(int n) {
-    result = this.resolveUpTo(n, min(int p | exists(this.resolveUpTo(n, p))))
-  }
+  Container resolveUpTo(int n) { result = resolveUpTo(n, min(int p | exists(resolveUpTo(n, p)))) }
 
   /** Gets the file or folder that this path refers to. */
-  Container resolve() { result = this.resolveUpTo(this.getNumComponent()) }
+  Container resolve() { result = resolveUpTo(getNumComponent()) }
 
   /** Gets the module containing this path expression, if any. */
   Module getEnclosingModule() {
@@ -421,5 +418,5 @@ abstract class PathExprCandidate extends Expr {
    * `ConstantString`s).
    */
   pragma[nomagic]
-  Expr getAPart() { result = this or result = this.getAPart().getAChildExpr() }
+  Expr getAPart() { result = this or result = getAPart().getAChildExpr() }
 }

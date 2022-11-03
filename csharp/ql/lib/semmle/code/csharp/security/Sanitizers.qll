@@ -54,12 +54,7 @@ class UrlSanitizedExpr extends Expr {
  * An expression node with a simple type.
  */
 class SimpleTypeSanitizedExpr extends DataFlow::ExprNode {
-  SimpleTypeSanitizedExpr() {
-    exists(Type t | t = this.getType() |
-      t instanceof SimpleType or
-      t instanceof SystemDateTimeStruct
-    )
-  }
+  SimpleTypeSanitizedExpr() { this.getType() instanceof SimpleType }
 }
 
 /**

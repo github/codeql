@@ -16,45 +16,45 @@ import javascript
  */
 predicate isABuiltinEventName(string name) {
   // $rootScope.Scope
-  name = "$destroy"
-  or
+  name = "$destroy" or
   // $location
-  name = ["$locationChangeStart", "$locationChangeSuccess"]
-  or
+  name = "$locationChangeStart" or
+  name = "$locationChangeSuccess" or
   // ngView
-  name = "$viewContentLoaded"
-  or
+  name = "$viewContentLoaded" or
   // angular-ui/ui-router
-  name =
-    [
-      "$stateChangeStart", "$stateNotFound", "$stateChangeSuccess", "$stateChangeError",
-      "$viewContentLoading ", "$viewContentLoaded "
-    ]
-  or
+  name = "$stateChangeStart" or
+  name = "$stateNotFound" or
+  name = "$stateChangeSuccess" or
+  name = "$stateChangeError" or
+  name = "$viewContentLoading " or
+  name = "$viewContentLoaded " or
   // $route
-  name = ["$routeChangeStart", "$routeChangeSuccess", "$routeChangeError", "$routeUpdate"]
-  or
+  name = "$routeChangeStart" or
+  name = "$routeChangeSuccess" or
+  name = "$routeChangeError" or
+  name = "$routeUpdate" or
   // ngInclude
-  name = ["$includeContentRequested", "$includeContentLoaded", "$includeContentError"]
+  name = "$includeContentRequested" or
+  name = "$includeContentLoaded" or
+  name = "$includeContentError"
 }
 
 /**
  * Holds if user code emits or broadcasts an event named `name`.
  */
 predicate isAUserDefinedEventName(string name) {
-  exists(string methodName, DataFlow::MethodCallNode mcn |
-    methodName = "$emit" or methodName = "$broadcast"
-  |
-    mcn.getArgument(0).mayHaveStringValue(name) and
+  exists(string methodName, MethodCallExpr mce | methodName = "$emit" or methodName = "$broadcast" |
+    mce.getArgument(0).mayHaveStringValue(name) and
     (
       // dataflow based scope resolution
-      mcn = any(AngularJS::ScopeServiceReference scope).getAMethodCall(methodName)
+      mce = any(AngularJS::ScopeServiceReference scope).getAMethodCall(methodName)
       or
       // heuristic scope resolution: assume parameters like `$scope` or `$rootScope` are AngularJS scope objects
-      exists(DataFlow::ParameterNode param |
+      exists(SimpleParameter param |
         param.getName() = any(AngularJS::ScopeServiceReference scope).getName() and
-        param.getAMethodCall() = mcn and
-        mcn.getMethodName() = methodName
+        mce.getReceiver().mayReferToParameter(param) and
+        mce.getMethodName() = methodName
       )
       or
       // a call in an AngularJS expression
@@ -66,7 +66,7 @@ predicate isAUserDefinedEventName(string name) {
   )
 }
 
-from AngularJS::ScopeServiceReference scope, DataFlow::MethodCallNode mce, string eventName
+from AngularJS::ScopeServiceReference scope, MethodCallExpr mce, string eventName
 where
   mce = scope.getAMethodCall("$on") and
   mce.getArgument(0).mayHaveStringValue(eventName) and

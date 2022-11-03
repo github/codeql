@@ -1,5 +1,0 @@
-noGeneratedStubs
-multipleGeneratedStubs
-#select
-| org.test.SampleAnnotationType | // Generated automatically from org.test.SampleAnnotationType for testing purposes\n\npackage org.test;\n\nimport java.lang.annotation.Annotation;\nimport java.lang.annotation.ElementType;\nimport java.lang.annotation.Target;\n\n@Target(value={java.lang.annotation.ElementType.METHOD})\npublic @interface SampleAnnotationType\n{\n}\n |
-| org.test.SampleType | // Generated automatically from org.test.SampleType for testing purposes\n\npackage org.test;\n\n\npublic class SampleType\n{\n    public Object sampleField = null;\n    public SampleType(){}\n    public void sampleMethod(){}\n}\n |

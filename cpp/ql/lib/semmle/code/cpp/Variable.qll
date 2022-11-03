@@ -6,7 +6,6 @@ import semmle.code.cpp.Element
 import semmle.code.cpp.exprs.Access
 import semmle.code.cpp.Initializer
 private import semmle.code.cpp.internal.ResolveClass
-private import semmle.code.cpp.internal.ResolveGlobalVariable
 
 /**
  * A C/C++ variable. For example, in the following code there are four
@@ -33,8 +32,6 @@ private import semmle.code.cpp.internal.ResolveGlobalVariable
  * can have multiple declarations.
  */
 class Variable extends Declaration, @variable {
-  Variable() { isVariable(underlyingElement(this)) }
-
   override string getAPrimaryQlClass() { result = "Variable" }
 
   /** Gets the initializer of this variable, if any. */
@@ -144,7 +141,7 @@ class Variable extends Declaration, @variable {
    * `Variable.getInitializer()` to get the variable's initializer,
    * or use `Variable.getAnAssignedValue()` to get an expression that
    * is the right-hand side of an assignment or an initialization of
-   * the variable.
+   * the varible.
    */
   Assignment getAnAssignment() { result.getLValue() = this.getAnAccess() }
 
@@ -171,12 +168,6 @@ class Variable extends Declaration, @variable {
   predicate isConstructedFrom(Variable v) {
     variable_instantiation(underlyingElement(this), unresolveElement(v))
   }
-
-  /**
-   * Holds if this variable is declared as part of a structured binding
-   * declaration. For example, `x` in `auto [x, y] = ...`.
-   */
-  predicate isStructuredBinding() { is_structured_binding(underlyingElement(this)) }
 
   /**
    * Holds if this is a compiler-generated variable. For example, a
@@ -398,8 +389,6 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result)
     or
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
-    or
-    orphaned_variables(underlyingElement(this), unresolveElement(result))
   }
 }
 
@@ -473,9 +462,6 @@ class GlobalOrNamespaceVariable extends Variable, @globalvariable {
   override Type getType() { globalvariables(underlyingElement(this), unresolveElement(result), _) }
 
   override Element getEnclosingElement() { none() }
-
-  /** Gets a link target which compiled or referenced this global or namespace variable. */
-  LinkTarget getALinkTarget() { this = result.getAGlobalOrNamespaceVariable() }
 }
 
 /**
@@ -562,6 +548,24 @@ class MemberVariable extends Variable, @membervariable {
   predicate isMutable() { this.getADeclarationEntry().hasSpecifier("mutable") }
 
   private Type getAType() { membervariables(underlyingElement(this), unresolveElement(result), _) }
+}
+
+/**
+ * A C/C++ function pointer variable.
+ *
+ * DEPRECATED: use `Variable.getType() instanceof FunctionPointerType` instead.
+ */
+deprecated class FunctionPointerVariable extends Variable {
+  FunctionPointerVariable() { this.getType() instanceof FunctionPointerType }
+}
+
+/**
+ * A C/C++ function pointer member variable.
+ *
+ * DEPRECATED: use `MemberVariable.getType() instanceof FunctionPointerType` instead.
+ */
+deprecated class FunctionPointerMemberVariable extends MemberVariable {
+  FunctionPointerMemberVariable() { this instanceof FunctionPointerVariable }
 }
 
 /**

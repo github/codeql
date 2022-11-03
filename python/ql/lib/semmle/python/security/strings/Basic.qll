@@ -3,7 +3,7 @@ private import Common
 import semmle.python.dataflow.TaintTracking
 
 /** An extensible kind of taint representing any kind of string. */
-abstract deprecated class StringKind extends TaintKind {
+abstract class StringKind extends TaintKind {
   bindingset[this]
   StringKind() { this = this }
 
@@ -42,10 +42,10 @@ abstract deprecated class StringKind extends TaintKind {
   }
 }
 
-deprecated private class StringEqualitySanitizer extends Sanitizer {
+private class StringEqualitySanitizer extends Sanitizer {
   StringEqualitySanitizer() { this = "string equality sanitizer" }
 
-  /* The test `if untrusted == "KNOWN_VALUE":` sanitizes `untrusted` on its `true` edge. */
+  /** The test `if untrusted == "KNOWN_VALUE":` sanitizes `untrusted` on its `true` edge. */
   override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
     taint instanceof StringKind and
     exists(ControlFlowNode const, Cmpop op | const.getNode() instanceof StrConst |
@@ -64,13 +64,13 @@ deprecated private class StringEqualitySanitizer extends Sanitizer {
 }
 
 /** tonode = ....format(fromnode) */
-deprecated private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
+private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
   tonode.getFunction().(AttrNode).getName() = "format" and
   tonode.getAnArg() = fromnode
 }
 
 /** tonode = codec.[en|de]code(fromnode) */
-deprecated private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
+private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
   exists(FunctionObject func, string name |
     not func.getFunction().isMethod() and
     func.getACall() = tonode and
@@ -84,7 +84,7 @@ deprecated private predicate encode_decode(ControlFlowNode fromnode, CallNode to
 }
 
 /** tonode = str(fromnode) */
-deprecated private predicate to_str(ControlFlowNode fromnode, CallNode tonode) {
+private predicate to_str(ControlFlowNode fromnode, CallNode tonode) {
   tonode.getAnArg() = fromnode and
   (
     tonode = ClassValue::bytes().getACall()
@@ -94,7 +94,7 @@ deprecated private predicate to_str(ControlFlowNode fromnode, CallNode tonode) {
 }
 
 /** tonode = fromnode[:] */
-deprecated private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
+private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
   exists(Slice all |
     all = tonode.getIndex().getNode() and
     not exists(all.getStart()) and
@@ -104,13 +104,13 @@ deprecated private predicate slice(ControlFlowNode fromnode, SubscriptNode tonod
 }
 
 /** tonode = os.path.join(..., fromnode, ...) */
-deprecated private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
+private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
   tonode = Value::named("os.path.join").getACall() and
   tonode.getAnArg() = fromnode
 }
 
 /** tonode = f"... {fromnode} ..." */
-deprecated private predicate f_string(ControlFlowNode fromnode, ControlFlowNode tonode) {
+private predicate f_string(ControlFlowNode fromnode, ControlFlowNode tonode) {
   tonode.getNode().(Fstring).getAValue() = fromnode.getNode()
 }
 

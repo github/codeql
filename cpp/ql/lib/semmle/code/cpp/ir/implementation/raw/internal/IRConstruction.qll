@@ -13,7 +13,6 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedStmt
 private import TranslatedFunction
-private import TranslatedGlobalVar
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
   instruction = TRawInstruction(result, _)
@@ -37,40 +36,28 @@ module Raw {
   predicate functionHasIR(Function func) { exists(getTranslatedFunction(func)) }
 
   cached
-  predicate varHasIRFunc(GlobalOrNamespaceVariable var) {
-    var.hasInitializer() and
-    (
-      not var.getType().isDeeplyConst()
-      or
-      var.getInitializer().getExpr() instanceof StringLiteral
-    )
-  }
-
-  cached
   predicate hasInstruction(TranslatedElement element, InstructionTag tag) {
     element.hasInstruction(_, tag, _)
   }
 
   cached
-  predicate hasUserVariable(Declaration decl, Variable var, CppType type) {
-    getTranslatedFunction(decl).hasUserVariable(var, type)
-    or
-    getTranslatedVarInit(decl).hasUserVariable(var, type)
+  predicate hasUserVariable(Function func, Variable var, CppType type) {
+    getTranslatedFunction(func).hasUserVariable(var, type)
   }
 
   cached
-  predicate hasTempVariable(Declaration decl, Locatable ast, TempVariableTag tag, CppType type) {
+  predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag, CppType type) {
     exists(TranslatedElement element |
-      element.getAst() = ast and
-      decl = element.getFunction() and
+      element.getAST() = ast and
+      func = element.getFunction() and
       element.hasTempVariable(tag, type)
     )
   }
 
   cached
-  predicate hasStringLiteral(Declaration decl, Locatable ast, CppType type, StringLiteral literal) {
+  predicate hasStringLiteral(Function func, Locatable ast, CppType type, StringLiteral literal) {
     literal = ast and
-    literal.getEnclosingDeclaration() = decl and
+    literal.getEnclosingFunction() = func and
     getTypeForPRValue(literal.getType()) = type
   }
 
@@ -88,7 +75,7 @@ module Raw {
       tag = getInstructionTag(instruction) and
       (
         result = element.getInstructionVariable(tag) or
-        result.(IRStringLiteral).getAst() = element.getInstructionStringLiteral(tag)
+        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
       )
     )
   }
@@ -256,6 +243,12 @@ CppType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) 
         .getInstructionMemoryOperandType(getInstructionTag(instruction), tag)
 }
 
+Instruction getPhiOperandDefinition(
+  PhiInstruction instruction, IRBlock predecessorBlock, Overlap overlap
+) {
+  none()
+}
+
 Instruction getPhiInstructionBlockStart(PhiInstruction instr) { none() }
 
 Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
@@ -346,7 +339,7 @@ Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind ki
   // such a `goto` creates a back edge.
   exists(TranslatedElement s, GotoStmt goto |
     not isStrictlyForwardGoto(goto) and
-    goto = s.getAst() and
+    goto = s.getAST() and
     exists(InstructionTag tag |
       result = s.getInstructionSuccessor(tag, kind) and
       instruction = s.getInstruction(tag)
@@ -356,16 +349,11 @@ Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind ki
 
 /** Holds if `goto` jumps strictly forward in the program text. */
 private predicate isStrictlyForwardGoto(GotoStmt goto) {
-  goto.getLocation().isBefore(goto.getTarget().getLocation(), _)
+  goto.getLocation().isBefore(goto.getTarget().getLocation())
 }
 
-Locatable getInstructionAst(TStageInstruction instr) {
-  result = getInstructionTranslatedElement(instr).getAst()
-}
-
-/** DEPRECATED: Alias for getInstructionAst */
-deprecated Locatable getInstructionAST(TStageInstruction instr) {
-  result = getInstructionAst(instr)
+Locatable getInstructionAST(TStageInstruction instr) {
+  result = getInstructionTranslatedElement(instr).getAST()
 }
 
 CppType getInstructionResultType(TStageInstruction instr) {

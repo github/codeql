@@ -1,3 +1,0 @@
-| tst.js:11:20:11:24 | event | Postmessage handler has no origin check. |
-| tst.js:24:27:24:27 | e | Postmessage handler has no origin check. |
-| tst.js:40:27:40:27 | e | Postmessage handler has no origin check. |

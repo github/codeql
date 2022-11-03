@@ -7,8 +7,8 @@ import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IR
 import semmle.code.cpp.dataflow.DataFlow::DataFlow as AST
 import Nodes
 
-class AstPartialDefNode extends AstNode {
-  AstPartialDefNode() { exists(n.asPartialDefinition()) }
+class ASTPartialDefNode extends ASTNode {
+  ASTPartialDefNode() { exists(n.asPartialDefinition()) }
 
   override string toString() { result = n.asPartialDefinition().toString() }
 }
@@ -29,7 +29,7 @@ where
   msg = "IR only"
   or
   exists(AST::Node astNode, Expr partial |
-    node.asAst() = astNode and
+    node.asAST() = astNode and
     partial = astNode.asPartialDefinition() and
     not exists(IR::Node otherNode | otherNode.asPartialDefinition() = partial)
   ) and

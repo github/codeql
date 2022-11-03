@@ -8,12 +8,12 @@ module DigitalOcean {
   /**
    * An expression that is used for authentication at DigitalOcean: `digitalocean.client(<token>)`.
    */
-  class Credentials extends CredentialsNode {
+  class Credentials extends CredentialsExpr {
     string kind;
 
     Credentials() {
-      exists(DataFlow::CallNode mce |
-        mce = DataFlow::moduleMember("digitalocean", "client").getACall()
+      exists(CallExpr mce |
+        mce = DataFlow::moduleMember("digitalocean", "client").getACall().asExpr()
       |
         this = mce.getArgument(0) and kind = "token"
       )

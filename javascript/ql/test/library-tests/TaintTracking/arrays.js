@@ -12,11 +12,4 @@ function test() {
 
     const flat = require("arr-flatten");
     sink(flat(foo)); // NOT OK
-
-    let res = foo.reduce((prev, current) => {
-        return prev + '<b>' + current + '</b>';
-    }, '');
-    sink(res); // NOT OK
-
-    sink(foo.at(-1)); // NOT OK
 }

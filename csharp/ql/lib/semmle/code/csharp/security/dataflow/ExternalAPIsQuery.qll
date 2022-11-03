@@ -5,24 +5,22 @@
 
 import csharp
 private import semmle.code.csharp.dataflow.flowsources.Remote
+private import semmle.code.csharp.dataflow.TaintTracking
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.dataflow.FlowSummary
 
 /**
  * A callable that is considered a "safe" external API from a security perspective.
  */
-abstract class SafeExternalApiCallable extends Callable { }
+abstract class SafeExternalAPICallable extends Callable { }
 
-/** DEPRECATED: Alias for SafeExternalApiCallable */
-deprecated class SafeExternalAPICallable = SafeExternalApiCallable;
-
-private class SummarizedCallableSafe extends SafeExternalApiCallable {
+private class SummarizedCallableSafe extends SafeExternalAPICallable {
   SummarizedCallableSafe() { this instanceof SummarizedCallable }
 }
 
 /** The default set of "safe" external APIs. */
-private class DefaultSafeExternalApiCallable extends SafeExternalApiCallable {
-  DefaultSafeExternalApiCallable() {
+private class DefaultSafeExternalAPICallable extends SafeExternalAPICallable {
+  DefaultSafeExternalAPICallable() {
     this instanceof EqualsMethod or
     this instanceof IEquatableEqualsMethod or
     this = any(SystemObjectClass s).getEqualsMethod() or
@@ -38,11 +36,11 @@ private class DefaultSafeExternalApiCallable extends SafeExternalApiCallable {
 }
 
 /** A node representing data being passed to an external API. */
-class ExternalApiDataNode extends DataFlow::Node {
+class ExternalAPIDataNode extends DataFlow::Node {
   Call call;
   int i;
 
-  ExternalApiDataNode() {
+  ExternalAPIDataNode() {
     (
       // Argument to call
       this.asExpr() = call.getArgument(i)
@@ -56,12 +54,12 @@ class ExternalApiDataNode extends DataFlow::Node {
     // Defined outside the source archive
     not call.getTarget().fromSource() and
     // Not a call to a method which is overridden in source
-    not exists(Overridable m |
+    not exists(Virtualizable m |
       m.overridesOrImplementsOrEquals(call.getTarget().getUnboundDeclaration()) and
       m.fromSource()
     ) and
     // Not a call to a known safe external API
-    not call.getTarget().getUnboundDeclaration() instanceof SafeExternalApiCallable
+    not call.getTarget().getUnboundDeclaration() instanceof SafeExternalAPICallable
   }
 
   /** Gets the called API callable. */
@@ -74,49 +72,38 @@ class ExternalApiDataNode extends DataFlow::Node {
   string getCallableDescription() { result = this.getCallable().getQualifiedName() }
 }
 
-/** DEPRECATED: Alias for ExternalApiDataNode */
-deprecated class ExternalAPIDataNode = ExternalApiDataNode;
-
-/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
-class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
-  UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
+/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
+class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
+  UntrustedDataToExternalAPIConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalAPIDataNode }
 }
 
-/** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
-deprecated class UntrustedDataToExternalAPIConfig = UntrustedDataToExternalApiConfig;
-
 /** A node representing untrusted data being passed to an external API. */
-class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  private UntrustedDataToExternalApiConfig c;
+class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {
+  private UntrustedDataToExternalAPIConfig c;
 
-  UntrustedExternalApiDataNode() { c.hasFlow(_, this) }
+  UntrustedExternalAPIDataNode() { c.hasFlow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
   DataFlow::Node getAnUntrustedSource() { c.hasFlow(result, this) }
 }
 
-/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
-deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
-
-/** An external API which is used with untrusted data. */
-private newtype TExternalApi =
-  /** An untrusted API method `m` where untrusted data is passed at `index`. */
-  TExternalApiParameter(Callable m, int index) {
-    exists(UntrustedExternalApiDataNode n |
+private newtype TExternalAPI =
+  TExternalAPIParameter(Callable m, int index) {
+    exists(UntrustedExternalAPIDataNode n |
       m = n.getCallable().getUnboundDeclaration() and
       index = n.getIndex()
     )
   }
 
 /** An external API which is used with untrusted data. */
-class ExternalApiUsedWithUntrustedData extends TExternalApi {
+class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
   /** Gets a possibly untrusted use of this external API. */
-  UntrustedExternalApiDataNode getUntrustedDataNode() {
-    this = TExternalApiParameter(result.getCallable().getUnboundDeclaration(), result.getIndex())
+  UntrustedExternalAPIDataNode getUntrustedDataNode() {
+    this = TExternalAPIParameter(result.getCallable().getUnboundDeclaration(), result.getIndex())
   }
 
   /** Gets the number of untrusted sources used with this external API. */
@@ -129,13 +116,10 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
     exists(Callable m, int index, string indexString |
       if index = -1 then indexString = "qualifier" else indexString = "param " + index
     |
-      this = TExternalApiParameter(m, index) and
+      this = TExternalAPIParameter(m, index) and
       result =
         m.getDeclaringType().getQualifiedName() + "." + m.toStringWithTypes() + " [" + indexString +
           "]"
     )
   }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

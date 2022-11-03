@@ -1,7 +1,5 @@
 #!/usr/bin/python
 import tarfile
-import os
-import sys
 
 unsafe_filename_tar = sys.argv[1]
 safe_filename_tar = "safe_path.tar"

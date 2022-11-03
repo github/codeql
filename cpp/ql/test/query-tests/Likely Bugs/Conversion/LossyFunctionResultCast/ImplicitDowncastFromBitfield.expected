@@ -1,0 +1,9 @@
+| test.cpp:33:6:33:13 | call to getFloat | Return value of type float is implicitly converted to bool here. |
+| test.cpp:35:13:35:20 | call to getFloat | Return value of type float is implicitly converted to int here. |
+| test.cpp:38:6:38:14 | call to getDouble | Return value of type double is implicitly converted to bool here. |
+| test.cpp:40:13:40:21 | call to getDouble | Return value of type double is implicitly converted to int here. |
+| test.cpp:43:6:43:12 | call to getMyLD | Return value of type long double is implicitly converted to bool here. |
+| test.cpp:45:13:45:19 | call to getMyLD | Return value of type long double is implicitly converted to int here. |
+| test.cpp:101:10:101:12 | call to pow | Return value of type double is implicitly converted to int here. |
+| test.cpp:103:10:103:12 | call to pow | Return value of type double is implicitly converted to int here. |
+| test.cpp:105:10:105:12 | call to pow | Return value of type double is implicitly converted to int here. |

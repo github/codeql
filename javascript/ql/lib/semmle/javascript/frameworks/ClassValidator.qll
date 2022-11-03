@@ -39,8 +39,7 @@ module ClassValidator {
 
   /** Holds if the given field has a decorator that sanitizes its value for the purpose of taint tracking. */
   predicate isFieldSanitizedByDecorator(FieldDefinition field) {
-    field.getADecorator().getExpression().flow() =
-      sanitizingDecorator().getReturn().getAValueReachableFromSource()
+    field.getADecorator().getExpression().flow() = sanitizingDecorator().getReturn().getAUse()
   }
 
   pragma[noinline]

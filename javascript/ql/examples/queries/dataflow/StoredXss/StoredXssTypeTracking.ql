@@ -13,7 +13,7 @@ import semmle.javascript.security.dataflow.StoredXssQuery
 import DataFlow::PathGraph
 
 /**
- * Gets an instance of `mysql.createConnection()`, tracked globally.
+ * An instance of `mysql.createConnection()`, tracked globally.
  */
 DataFlow::SourceNode mysqlConnection(DataFlow::TypeTracker t) {
   t.start() and
@@ -23,12 +23,12 @@ DataFlow::SourceNode mysqlConnection(DataFlow::TypeTracker t) {
 }
 
 /**
- * Gets an instance of `mysql.createConnection()`, tracked globally.
+ * An instance of `mysql.createConnection()`, tracked globally.
  */
 DataFlow::SourceNode mysqlConnection() { result = mysqlConnection(DataFlow::TypeTracker::end()) }
 
 /**
- * The data returned from a MySQL query.
+ * Data returned from a MySQL query.
  *
  * For example:
  * ```

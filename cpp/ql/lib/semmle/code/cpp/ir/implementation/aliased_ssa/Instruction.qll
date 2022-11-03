@@ -41,7 +41,7 @@ class Instruction extends Construction::TStageInstruction {
   }
 
   /** Gets a textual representation of this element. */
-  final string toString() { result = this.getOpcode().toString() + ": " + this.getAst().toString() }
+  final string toString() { result = this.getOpcode().toString() + ": " + this.getAST().toString() }
 
   /**
    * Gets a string showing the result, opcode, and operands of the instruction, equivalent to what
@@ -136,7 +136,7 @@ class Instruction extends Construction::TStageInstruction {
   string getResultId() {
     this.shouldGenerateDumpStrings() and
     result =
-      this.getResultPrefix() + this.getAst().getLocation().getStartLine() + "_" + this.getLineRank()
+      this.getResultPrefix() + this.getAST().getLocation().getStartLine() + "_" + this.getLineRank()
   }
 
   /**
@@ -194,7 +194,7 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the function that contains this instruction.
    */
-  final Language::Declaration getEnclosingFunction() {
+  final Language::Function getEnclosingFunction() {
     result = this.getEnclosingIRFunction().getFunction()
   }
 
@@ -208,15 +208,12 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the AST that caused this instruction to be generated.
    */
-  final Language::AST getAst() { result = Construction::getInstructionAst(this) }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated Language::AST getAST() { result = this.getAst() }
+  final Language::AST getAST() { result = Construction::getInstructionAST(this) }
 
   /**
    * Gets the location of the source code for this instruction.
    */
-  final Language::Location getLocation() { result = this.getAst().getLocation() }
+  final Language::Location getLocation() { result = this.getAST().getLocation() }
 
   /**
    * Gets the  `Expr` whose result is computed by this instruction, if any. The `Expr` may be a
@@ -462,10 +459,7 @@ class VariableInstruction extends Instruction {
   /**
    * Gets the AST variable that this instruction's IR variable refers to, if one exists.
    */
-  final Language::Variable getAstVariable() { result = var.(IRUserVariable).getVariable() }
-
-  /** DEPRECATED: Alias for getAstVariable */
-  deprecated Language::Variable getASTVariable() { result = this.getAstVariable() }
+  final Language::Variable getASTVariable() { result = var.(IRUserVariable).getVariable() }
 }
 
 /**
@@ -742,7 +736,7 @@ class NoOpInstruction extends Instruction {
  * The `ReturnInstruction` for a function will have a control-flow successor edge to a block
  * containing the `ExitFunction` instruction for that function.
  *
- * There are two different return instructions: `ReturnValueInstruction`, for returning a value from
+ * There are two differet return instructions: `ReturnValueInstruction`, for returning a value from
  * a non-`void`-returning function, and `ReturnVoidInstruction`, for returning from a
  * `void`-returning function.
  */
@@ -769,20 +763,10 @@ class ReturnValueInstruction extends ReturnInstruction {
   final LoadOperand getReturnValueOperand() { result = this.getAnOperand() }
 
   /**
-   * Gets the operand that provides the address of the value being returned by the function.
-   */
-  final AddressOperand getReturnAddressOperand() { result = this.getAnOperand() }
-
-  /**
    * Gets the instruction whose result provides the value being returned by the function, if an
    * exact definition is available.
    */
   final Instruction getReturnValue() { result = this.getReturnValueOperand().getDef() }
-
-  /**
-   * Gets the instruction whose result provides the address of the value being returned by the function.
-   */
-  final Instruction getReturnAddress() { result = this.getReturnAddressOperand().getDef() }
 }
 
 /**
@@ -1331,7 +1315,7 @@ class CheckedConvertOrThrowInstruction extends UnaryInstruction {
  *
  * If the operand holds a null address, the result is a null address.
  *
- * This instruction is used to represent `dynamic_cast<void*>` in C++, which returns the pointer to
+ * This instruction is used to represent `dyanmic_cast<void*>` in C++, which returns the pointer to
  * the most-derived object.
  */
 class CompleteObjectAddressInstruction extends UnaryInstruction {

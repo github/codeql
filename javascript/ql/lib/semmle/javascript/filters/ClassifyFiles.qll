@@ -46,52 +46,6 @@ private predicate looksLikeExterns(TopLevel tl) {
 }
 
 /**
- * Holds if `f` contains generated or minified code.
- */
-predicate isGeneratedCodeFile(File f) { isGenerated(f.getATopLevel()) }
-
-/**
- * Holds if `f` contains test code.
- */
-predicate isTestFile(File f) {
-  exists(Test t | t.getFile() = f)
-  or
-  exists(string stemExt | stemExt = "test" or stemExt = "spec" |
-    f = getTestFile(any(File orig), stemExt)
-  )
-  or
-  f.getAbsolutePath().regexpMatch(".*/__(mocks|tests)__/.*")
-}
-
-/**
- * Holds if `f` contains externs declarations.
- */
-predicate isExternsFile(File f) {
-  (f.getATopLevel().isExterns() or looksLikeExterns(f.getATopLevel()))
-}
-
-/**
- * Holds if `f` contains library code.
- */
-predicate isLibraryFile(File f) { f.getATopLevel() instanceof FrameworkLibraryInstance }
-
-/** DEPRECATED: Alias for isLibraryFile */
-deprecated predicate isLibaryFile = isLibraryFile/1;
-
-/**
- * Holds if `f` contains template code.
- */
-predicate isTemplateFile(File f) {
-  exists(JSParseError err | maybeCausedByTemplate(err) | f = err.getFile())
-  or
-  // Polymer templates
-  exists(HTML::Element elt | elt.getName() = "template" |
-    f = elt.getFile() and
-    not f.getExtension() = "vue"
-  )
-}
-
-/**
  * Holds if `f` is classified as belonging to `category`.
  *
  * There are currently four categories:
@@ -101,15 +55,33 @@ predicate isTemplateFile(File f) {
  *   - `"library"`: `f` contains library code;
  *   - `"template"`: `f` contains template code.
  */
-pragma[inline]
 predicate classify(File f, string category) {
-  isGeneratedCodeFile(f) and category = "generated"
+  isGenerated(f.getATopLevel()) and category = "generated"
   or
-  isTestFile(f) and category = "test"
+  (
+    exists(Test t | t.getFile() = f)
+    or
+    exists(string stemExt | stemExt = "test" or stemExt = "spec" |
+      f = getTestFile(any(File orig), stemExt)
+    )
+    or
+    f.getAbsolutePath().regexpMatch(".*/__(mocks|tests)__/.*")
+  ) and
+  category = "test"
   or
-  isExternsFile(f) and category = "externs"
+  (f.getATopLevel().isExterns() or looksLikeExterns(f.getATopLevel())) and
+  category = "externs"
   or
-  isLibraryFile(f) and category = "library"
+  f.getATopLevel() instanceof FrameworkLibraryInstance and category = "library"
   or
-  isTemplateFile(f) and category = "template"
+  exists(JSParseError err | maybeCausedByTemplate(err) |
+    f = err.getFile() and category = "template"
+  )
+  or
+  // Polymer templates
+  exists(HTML::Element elt | elt.getName() = "template" |
+    f = elt.getFile() and
+    category = "template" and
+    not f.getExtension() = "vue"
+  )
 }

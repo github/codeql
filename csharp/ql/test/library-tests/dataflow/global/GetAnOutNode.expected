@@ -158,18 +158,7 @@
 | GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait | normal | GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait |
 | GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter | normal | GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter |
 | GlobalDataFlow.cs:477:22:477:40 | call to method GetResult | normal | GlobalDataFlow.cs:477:22:477:40 | call to method GetResult |
-| GlobalDataFlow.cs:505:18:505:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:505:18:505:34 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:506:18:506:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:506:18:506:34 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:511:18:511:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:511:18:511:34 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:512:18:512:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:512:18:512:34 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:513:18:513:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:513:18:513:34 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:524:17:524:36 | object creation of type SubSimpleClass | normal | GlobalDataFlow.cs:524:17:524:36 | object creation of type SubSimpleClass |
-| GlobalDataFlow.cs:531:17:531:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:531:17:531:33 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:539:17:539:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:539:17:539:33 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:540:17:540:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:540:17:540:33 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:541:17:541:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:541:17:541:33 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:562:17:562:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:562:17:562:33 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:575:44:575:47 | delegate call | normal | GlobalDataFlow.cs:575:44:575:47 | delegate call |
+| GlobalDataFlow.cs:501:44:501:47 | delegate call | normal | GlobalDataFlow.cs:501:44:501:47 | delegate call |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> |
 | Splitting.cs:20:22:20:30 | call to method Return<String> | normal | Splitting.cs:20:22:20:30 | call to method Return<String> |
@@ -185,3 +174,151 @@
 | This.cs:17:9:17:18 | object creation of type This | normal | This.cs:17:9:17:18 | object creation of type This |
 | This.cs:22:9:22:11 | call to constructor This | normal | This.cs:22:9:22:11 | call to constructor This |
 | This.cs:28:13:28:21 | object creation of type Sub | normal | This.cs:28:13:28:21 | object creation of type Sub |
+| file://:0:0:0:0 | [summary] call to collectionSelector in SelectMany<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany<,,> |
+| file://:0:0:0:0 | [summary] call to collectionSelector in SelectMany<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany<,,> |
+| file://:0:0:0:0 | [summary] call to collectionSelector in SelectMany<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany<,,> |
+| file://:0:0:0:0 | [summary] call to collectionSelector in SelectMany<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany<,,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAll<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAll<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<,> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith<> |
+| file://:0:0:0:0 | [summary] call to elementSelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in ToDictionary<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in ToDictionary<,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in ToDictionary<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in ToDictionary<,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in ToLookup<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in ToLookup<,,> |
+| file://:0:0:0:0 | [summary] call to elementSelector in ToLookup<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in ToLookup<,,> |
+| file://:0:0:0:0 | [summary] call to func in Aggregate<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in Aggregate<,,> |
+| file://:0:0:0:0 | [summary] call to func in Aggregate<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in Aggregate<,,> |
+| file://:0:0:0:0 | [summary] call to func in Aggregate<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in Aggregate<,> |
+| file://:0:0:0:0 | [summary] call to func in Aggregate<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in Aggregate<,> |
+| file://:0:0:0:0 | [summary] call to func in Aggregate<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in Aggregate<> |
+| file://:0:0:0:0 | [summary] call to func in Aggregate<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in Aggregate<> |
+| file://:0:0:0:0 | [summary] call to function in Run<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Run<> |
+| file://:0:0:0:0 | [summary] call to function in Run<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Run<> |
+| file://:0:0:0:0 | [summary] call to function in Run<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Run<> |
+| file://:0:0:0:0 | [summary] call to function in Run<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Run<> |
+| file://:0:0:0:0 | [summary] call to function in StartNew | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew |
+| file://:0:0:0:0 | [summary] call to function in StartNew | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew |
+| file://:0:0:0:0 | [summary] call to function in StartNew | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew |
+| file://:0:0:0:0 | [summary] call to function in StartNew | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew |
+| file://:0:0:0:0 | [summary] call to function in StartNew | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew |
+| file://:0:0:0:0 | [summary] call to function in StartNew | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew |
+| file://:0:0:0:0 | [summary] call to function in StartNew | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew |
+| file://:0:0:0:0 | [summary] call to function in StartNew | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew |
+| file://:0:0:0:0 | [summary] call to function in StartNew<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew<> |
+| file://:0:0:0:0 | [summary] call to function in StartNew<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew<> |
+| file://:0:0:0:0 | [summary] call to function in StartNew<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew<> |
+| file://:0:0:0:0 | [summary] call to function in StartNew<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew<> |
+| file://:0:0:0:0 | [summary] call to function in StartNew<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew<> |
+| file://:0:0:0:0 | [summary] call to function in StartNew<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew<> |
+| file://:0:0:0:0 | [summary] call to function in StartNew<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew<> |
+| file://:0:0:0:0 | [summary] call to function in StartNew<> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in StartNew<> |
+| file://:0:0:0:0 | [summary] call to function in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
+| file://:0:0:0:0 | [summary] call to function in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
+| file://:0:0:0:0 | [summary] call to function in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
+| file://:0:0:0:0 | [summary] call to function in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
+| file://:0:0:0:0 | [summary] call to function in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
+| file://:0:0:0:0 | [summary] call to function in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
+| file://:0:0:0:0 | [summary] call to function in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
+| file://:0:0:0:0 | [summary] call to function in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to keySelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in Aggregate<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 3 in Aggregate<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 3 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 3 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 3 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupBy<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 3 in GroupBy<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupBy<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupJoin<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 4 in GroupJoin<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupJoin<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 4 in GroupJoin<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupJoin<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 4 in GroupJoin<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in GroupJoin<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 4 in GroupJoin<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in Join<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 4 in Join<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in Join<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 4 in Join<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in Join<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 4 in Join<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in Join<,,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 4 in Join<,,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in SelectMany<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in SelectMany<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in SelectMany<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in SelectMany<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in SelectMany<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in SelectMany<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in SelectMany<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in SelectMany<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in Zip<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in Zip<,,> |
+| file://:0:0:0:0 | [summary] call to resultSelector in Zip<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in Zip<,,> |
+| file://:0:0:0:0 | [summary] call to selector in Aggregate<,,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 3 in Aggregate<,,> |
+| file://:0:0:0:0 | [summary] call to selector in Select<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in Select<,> |
+| file://:0:0:0:0 | [summary] call to selector in Select<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in Select<,> |
+| file://:0:0:0:0 | [summary] call to selector in Select<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in Select<,> |
+| file://:0:0:0:0 | [summary] call to selector in Select<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in Select<,> |
+| file://:0:0:0:0 | [summary] call to selector in SelectMany<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany<,> |
+| file://:0:0:0:0 | [summary] call to selector in SelectMany<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany<,> |
+| file://:0:0:0:0 | [summary] call to selector in SelectMany<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany<,> |
+| file://:0:0:0:0 | [summary] call to selector in SelectMany<,> | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany<,> |
+| file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
+| file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
+| file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
+| file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
+| file://:0:0:0:0 | [summary] call to valueSelector in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |

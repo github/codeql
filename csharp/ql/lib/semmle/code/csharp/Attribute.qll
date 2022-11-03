@@ -10,8 +10,8 @@ private import TypeRef
  * An element that can have attributes. Either an assembly (`Assembly`), a field (`Field`),
  * a parameter (`Parameter`), an operator (`Operator`), a method (`Method`), a constructor (`Constructor`),
  * a destructor (`Destructor`), a callable accessor (`CallableAccessor`), a value or reference type
- * (`ValueOrRefType`), a declaration with accessors (`DeclarationWithAccessors`), a local function
- * (`LocalFunction`) or a lambda expression (`LambdaExp`).
+ * (`ValueOrRefType`), a declaration with accessors (`DeclarationWithAccessors`), or a local function
+ * (`LocalFunction`).
  */
 class Attributable extends @attributable {
   /** Gets an attribute attached to this element, if any. */
@@ -36,12 +36,6 @@ class Attributable extends @attributable {
   }
 }
 
-private string getAttributeName(Attribute a) {
-  exists(string type | type = a.getType().getName() |
-    if type.matches("%Attribute") then result = type.prefix(type.length() - 9) else result = type
-  )
-}
-
 /**
  * An attribute, for example `[...]` on line 1 in
  *
@@ -56,10 +50,10 @@ private string getAttributeName(Attribute a) {
  */
 class Attribute extends TopLevelExprParent, @attribute {
   /** Gets the type of this attribute. */
-  Class getType() { attributes(this, _, getTypeRef(result), _) }
+  Class getType() { attributes(this, getTypeRef(result), _) }
 
   /** Gets the element that this attribute is attached to. */
-  Attributable getTarget() { attributes(this, _, _, result) }
+  Attributable getTarget() { attributes(this, _, result) }
 
   /**
    * Gets the `i`th argument of this attribute. This includes both constructor
@@ -94,55 +88,12 @@ class Attribute extends TopLevelExprParent, @attribute {
 
   override Location getALocation() { attribute_location(this, result) }
 
-  override string toString() { result = "[" + getAttributeName(this) + "(...)]" }
+  override string toString() {
+    exists(string type, string name | type = this.getType().getName() |
+      (if type.matches("%Attribute") then name = type.prefix(type.length() - 9) else name = type) and
+      result = "[" + name + "(...)]"
+    )
+  }
 
   override string getAPrimaryQlClass() { result = "Attribute" }
-}
-
-/**
- * An attribute with default kind, for example `[...]` on line 1 in
- * ```csharp
- * [MyAttribute(0)]
- * int SomeMethod() { return 1; }
- * ```
- */
-class DefaultAttribute extends Attribute, @attribute_default {
-  override string getAPrimaryQlClass() { result = "DefaultAttribute" }
-}
-
-/**
- * An attribute with return kind, for example `[...]` on line 1 in
- * ```csharp
- * [return: MyAttribute(0)]
- * int SomeMethod() { return 1; }
- * ```
- */
-class ReturnAttribute extends Attribute, @attribute_return {
-  override string toString() { result = "[return: " + getAttributeName(this) + "(...)]" }
-
-  override string getAPrimaryQlClass() { result = "ReturnAttribute" }
-}
-
-/**
- * An attribute with assembly kind, for example `[...]` on line 1 in
- * ```csharp
- * [assembly: MyAttribute(0)]
- * ```
- */
-class AssemblyAttribute extends Attribute, @attribute_assembly {
-  override string toString() { result = "[assembly: " + getAttributeName(this) + "(...)]" }
-
-  override string getAPrimaryQlClass() { result = "AssemblyAttribute" }
-}
-
-/**
- * An attribute with module kind, for example `[...]` on line 1 in
- * ```csharp
- * [module: MyAttribute(0)]
- * ```
- */
-class ModuleAttribute extends Attribute, @attribute_module {
-  override string toString() { result = "[module: " + getAttributeName(this) + "(...)]" }
-
-  override string getAPrimaryQlClass() { result = "ModuleAttribute" }
 }

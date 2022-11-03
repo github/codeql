@@ -49,6 +49,16 @@ class RelationalOperation extends ComparisonOperation, @rel_op_expr {
   override int getPrecedence() { result = 10 }
 
   /**
+   * DEPRECATED: Use `getGreaterOperand()` instead.
+   */
+  deprecated Expr getLarge() { result = getGreaterOperand() }
+
+  /**
+   * DEPRECATED: Use `getLesserOperand()` instead.
+   */
+  deprecated Expr getSmall() { result = getLesserOperand() }
+
+  /**
    * Gets the operand on the "greater" (or "greater-or-equal") side
    * of this relational expression, that is, the side that is larger
    * if the overall expression evaluates to `true`; for example on

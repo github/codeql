@@ -4,7 +4,6 @@
  *              without encountering an extraction or compiler error in the file.
  * @kind diagnostic
  * @id cs/diagnostics/successfully-extracted-files
- * @tags successfully-extracted-files
  */
 
 import csharp

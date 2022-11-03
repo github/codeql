@@ -3,7 +3,7 @@
  */
 
 import python
-import analysis.DefinitionTracking
+import DefinitionTracking
 
 predicate want_to_have_definition(Expr e) {
   /* not builtin object like len, tuple, etc. */

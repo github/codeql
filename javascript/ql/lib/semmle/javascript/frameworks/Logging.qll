@@ -35,7 +35,9 @@ private module Console {
   private class ConsoleGlobalEntry extends API::EntryPoint {
     ConsoleGlobalEntry() { this = "ConsoleGlobalEntry" }
 
-    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("console") }
+    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("console") }
+
+    override DataFlow::Node getARhs() { none() }
   }
 
   /**
@@ -43,7 +45,7 @@ private module Console {
    */
   private API::Node console() {
     result = API::moduleImport("console") or
-    result = any(ConsoleGlobalEntry e).getANode()
+    result = API::root().getASuccessor(any(ConsoleGlobalEntry e))
   }
 
   /**
@@ -121,7 +123,7 @@ private module Winston {
 /**
  * Provides classes for working with [log4js](https://github.com/log4js-node/log4js-node).
  */
-private module Log4js {
+private module log4js {
   /**
    * A call to the log4js logging mechanism.
    */
@@ -184,7 +186,7 @@ private module Fancylog {
 }
 
 /**
- * A class modeling [debug](https://npmjs.org/package/debug) as a logging mechanism.
+ * A class modelling [debug](https://npmjs.org/package/debug) as a logging mechanism.
  */
 private class DebugLoggerCall extends LoggerCall, API::CallNode {
   DebugLoggerCall() { this = API::moduleImport("debug").getReturn().getACall() }
@@ -349,8 +351,8 @@ private module Pino {
     or
     // `pino` is installed as the "log" property on the request object in `Express` and similar libraries.
     // in `Hapi` the property is "logger".
-    exists(Http::RequestNode req, API::Node reqNode |
-      reqNode.asSource() = req.getALocalSource() and
+    exists(HTTP::RequestExpr req, API::Node reqNode |
+      reqNode.getAnImmediateUse() = req.flow().getALocalSource() and
       result = reqNode.getMember(["log", "logger"])
     )
   }

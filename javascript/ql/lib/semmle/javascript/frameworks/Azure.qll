@@ -8,14 +8,13 @@ module Azure {
   /**
    * An expression that is used for authentication at Azure`.
    */
-  class Credentials extends CredentialsNode {
+  class Credentials extends CredentialsExpr {
     string kind;
 
     Credentials() {
-      exists(DataFlow::CallNode mce |
-        mce =
-          DataFlow::moduleMember("ms-rest-azure",
-            ["loginWithUsernamePassword", "loginWithServicePrincipalSecret"]).getACall()
+      exists(CallExpr mce, string methodName |
+        (methodName = "loginWithUsernamePassword" or methodName = "loginWithServicePrincipalSecret") and
+        mce = DataFlow::moduleMember("ms-rest-azure", methodName).getACall().asExpr()
       |
         this = mce.getArgument(0) and kind = "user name"
         or

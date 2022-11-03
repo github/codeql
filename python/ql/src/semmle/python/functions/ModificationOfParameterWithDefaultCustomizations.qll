@@ -33,7 +33,7 @@ module ModificationOfParameterWithDefault {
    * should determine if the node (which is perhaps about to be modified)
    * can be the default value or not.
    *
-   * In this query we do not track the default value exactly, but rather whether
+   * In this query we do not track the default value exactly, but rather wheter
    * it is empty or not (see `Source`).
    *
    * This is the extension point for determining that a node must be empty and
@@ -46,7 +46,7 @@ module ModificationOfParameterWithDefault {
    * should determine if the node (which is perhaps about to be modified)
    * can be the default value or not.
    *
-   * In this query we do not track the default value exactly, but rather whether
+   * In this query we do not track the default value exactly, but rather wheter
    * it is empty or not (see `Source`).
    *
    * This is the extension point for determining that a node must be non-empty
@@ -54,7 +54,7 @@ module ModificationOfParameterWithDefault {
    */
   abstract class MustBeNonEmpty extends DataFlow::Node { }
 
-  /** Gets the truthiness (non emptiness) of the default of `p` if that value is mutable */
+  /** Gets the truthiness (non emptyness) of the default of `p` if that value is mutable */
   private boolean mutableDefaultValue(Parameter p) {
     exists(Dict d | p.getDefault() = d |
       exists(d.getAKey()) and result = true
@@ -81,7 +81,7 @@ module ModificationOfParameterWithDefault {
   }
 
   /**
-   * Gets the name of a list function that modifies the list.
+   * A name of a list function that modifies the list.
    * See https://docs.python.org/3/tutorial/datastructures.html#more-on-lists
    */
   string list_modifying_method() {
@@ -89,7 +89,7 @@ module ModificationOfParameterWithDefault {
   }
 
   /**
-   * Gets the name of a dict function that modifies the dict.
+   * A name of a dict function that modifies the dict.
    * See https://docs.python.org/3/library/stdtypes.html#dict
    */
   string dict_modifying_method() { result in ["clear", "pop", "popitem", "setdefault", "update"] }

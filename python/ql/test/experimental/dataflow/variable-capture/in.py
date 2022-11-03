@@ -7,7 +7,7 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.dirname((__file__))))
-from testlib import expects
+from testlib import *
 
 # These are defined so that we can evaluate the test code.
 NONSOURCE = "not a source"
@@ -93,3 +93,4 @@ def inLocal():
 @expects(3)
 def test_inLocal():
     inLocal()
+

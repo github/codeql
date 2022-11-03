@@ -42,6 +42,8 @@ class DeclarationWithAccessors extends AssignableMember, Virtualizable, Attribut
   }
 
   override Type getType() { none() }
+
+  override string toString() { result = AssignableMember.super.toString() }
 }
 
 /**
@@ -136,7 +138,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * }
    * ```
    *
-   * Note that this information is only available for properties in source
+   * Note that this information is only avaiable for properties in source
    * code.
    */
   predicate isAutoImplemented() {
@@ -313,7 +315,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
  * An accessor. Either a getter (`Getter`), a setter (`Setter`), or event
  * accessor (`EventAccessor`).
  */
-class Accessor extends Callable, Modifiable, Attributable, Overridable, @callable_accessor {
+class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
   override ValueOrRefType getDeclaringType() { result = this.getDeclaration().getDeclaringType() }
 
   /** Gets the assembly name of this accessor. */
@@ -372,10 +374,6 @@ class Accessor extends Callable, Modifiable, Attributable, Overridable, @callabl
     or
     result = this.getDeclaration().getAModifier() and
     not (result instanceof AccessModifier and exists(this.getAnAccessModifier()))
-  }
-
-  override predicate isOverridableOrImplementable() {
-    this.getDeclaration().isOverridableOrImplementable()
   }
 
   override Accessor getUnboundDeclaration() { accessors(this, _, _, _, result) }

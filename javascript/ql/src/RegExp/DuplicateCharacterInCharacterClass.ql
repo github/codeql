@@ -32,4 +32,5 @@ where
   constantInCharacterClass(recc, rnk, repeat, val) and
   rnk > 1 and
   recc.isPartOfRegExpLiteral()
-select first, "Character '" + first + "' is $@.", repeat, "repeated in the same character class"
+select first, "Character '" + first + "' is repeated $@ in the same character class.", repeat,
+  "here"

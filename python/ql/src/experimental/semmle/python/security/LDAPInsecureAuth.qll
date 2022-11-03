@@ -18,8 +18,8 @@ string getPrivateHostRegex() {
 }
 
 // "ldap://somethingon.theinternet.com"
-class LdapFullHost extends StrConst {
-  LdapFullHost() {
+class LDAPFullHost extends StrConst {
+  LDAPFullHost() {
     exists(string s |
       s = this.getText() and
       s.regexpMatch(getFullHostRegex()) and
@@ -29,39 +29,27 @@ class LdapFullHost extends StrConst {
   }
 }
 
-/** DEPRECATED: Alias for LdapFullHost */
-deprecated class LDAPFullHost = LdapFullHost;
-
-class LdapSchema extends StrConst {
-  LdapSchema() { this.getText().regexpMatch(getSchemaRegex()) }
+class LDAPSchema extends StrConst {
+  LDAPSchema() { this.getText().regexpMatch(getSchemaRegex()) }
 }
 
-/** DEPRECATED: Alias for LdapSchema */
-deprecated class LDAPSchema = LdapSchema;
-
-class LdapPrivateHost extends StrConst {
-  LdapPrivateHost() { this.getText().regexpMatch(getPrivateHostRegex()) }
+class LDAPPrivateHost extends StrConst {
+  LDAPPrivateHost() { this.getText().regexpMatch(getPrivateHostRegex()) }
 }
 
-/** DEPRECATED: Alias for LdapPrivateHost */
-deprecated class LDAPPrivateHost = LdapPrivateHost;
-
-predicate concatAndCompareAgainstFullHostRegex(LdapSchema schema, StrConst host) {
-  not host instanceof LdapPrivateHost and
+predicate concatAndCompareAgainstFullHostRegex(LDAPSchema schema, StrConst host) {
+  not host instanceof LDAPPrivateHost and
   (schema.getText() + host.getText()).regexpMatch(getFullHostRegex())
 }
 
 // "ldap://" + "somethingon.theinternet.com"
-class LdapBothStrings extends BinaryExpr {
-  LdapBothStrings() { concatAndCompareAgainstFullHostRegex(this.getLeft(), this.getRight()) }
+class LDAPBothStrings extends BinaryExpr {
+  LDAPBothStrings() { concatAndCompareAgainstFullHostRegex(this.getLeft(), this.getRight()) }
 }
 
-/** DEPRECATED: Alias for LdapBothStrings */
-deprecated class LDAPBothStrings = LdapBothStrings;
-
 // schema + host
-class LdapBothVar extends BinaryExpr {
-  LdapBothVar() {
+class LDAPBothVar extends BinaryExpr {
+  LDAPBothVar() {
     exists(SsaVariable schemaVar, SsaVariable hostVar |
       this.getLeft() = schemaVar.getVariable().getALoad() and // getAUse is incompatible with Expr
       this.getRight() = hostVar.getVariable().getALoad() and
@@ -73,12 +61,9 @@ class LdapBothVar extends BinaryExpr {
   }
 }
 
-/** DEPRECATED: Alias for LdapBothVar */
-deprecated class LDAPBothVar = LdapBothVar;
-
 // schema + "somethingon.theinternet.com"
-class LdapVarString extends BinaryExpr {
-  LdapVarString() {
+class LDAPVarString extends BinaryExpr {
+  LDAPVarString() {
     exists(SsaVariable schemaVar |
       this.getLeft() = schemaVar.getVariable().getALoad() and
       concatAndCompareAgainstFullHostRegex(schemaVar
@@ -89,12 +74,9 @@ class LdapVarString extends BinaryExpr {
   }
 }
 
-/** DEPRECATED: Alias for LdapVarString */
-deprecated class LDAPVarString = LdapVarString;
-
 // "ldap://" + host
-class LdapStringVar extends BinaryExpr {
-  LdapStringVar() {
+class LDAPStringVar extends BinaryExpr {
+  LDAPStringVar() {
     exists(SsaVariable hostVar |
       this.getRight() = hostVar.getVariable().getALoad() and
       concatAndCompareAgainstFullHostRegex(this.getLeft(),
@@ -103,28 +85,22 @@ class LdapStringVar extends BinaryExpr {
   }
 }
 
-/** DEPRECATED: Alias for LdapStringVar */
-deprecated class LDAPStringVar = LdapStringVar;
-
 /**
  * A taint-tracking configuration for detecting LDAP insecure authentications.
  */
-class LdapInsecureAuthConfig extends TaintTracking::Configuration {
-  LdapInsecureAuthConfig() { this = "LDAPInsecureAuthConfig" }
+class LDAPInsecureAuthConfig extends TaintTracking::Configuration {
+  LDAPInsecureAuthConfig() { this = "LDAPInsecureAuthConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource or
-    source.asExpr() instanceof LdapFullHost or
-    source.asExpr() instanceof LdapBothStrings or
-    source.asExpr() instanceof LdapBothVar or
-    source.asExpr() instanceof LdapVarString or
-    source.asExpr() instanceof LdapStringVar
+    source.asExpr() instanceof LDAPFullHost or
+    source.asExpr() instanceof LDAPBothStrings or
+    source.asExpr() instanceof LDAPBothVar or
+    source.asExpr() instanceof LDAPVarString or
+    source.asExpr() instanceof LDAPStringVar
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(LdapBind ldapBind | not ldapBind.useSsl() and sink = ldapBind.getHost())
+    exists(LDAPBind ldapBind | not ldapBind.useSSL() and sink = ldapBind.getHost())
   }
 }
-
-/** DEPRECATED: Alias for LdapInsecureAuthConfig */
-deprecated class LDAPInsecureAuthConfig = LdapInsecureAuthConfig;

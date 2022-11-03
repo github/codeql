@@ -114,13 +114,13 @@ module Firebase {
     class QueryListenCall extends DataFlow::MethodCallNode {
       QueryListenCall() {
         this = query().getAMethodCall() and
-        (this.getMethodName() = "on" or this.getMethodName() = "once")
+        (getMethodName() = "on" or getMethodName() = "once")
       }
 
       /**
        * Gets the argument in which the callback is passed.
        */
-      DataFlow::Node getCallbackNode() { result = this.getArgument(1) }
+      DataFlow::Node getCallbackNode() { result = getArgument(1) }
     }
 
     /**
@@ -179,50 +179,54 @@ module Firebase {
     /** Gets a data flow node holding a `RefBuilder` object. */
     DataFlow::SourceNode ref() { result = refBuilder(DataFlow::TypeTracker::end()) }
 
-    /** A call that registers a listener on a `RefBuilder`, such as `ref.onCreate(...)`. */
+    /** Gets a call that registers a listener on a `RefBuilder`, such as `ref.onCreate(...)`. */
     class RefBuilderListenCall extends DataFlow::MethodCallNode {
       RefBuilderListenCall() {
         this = ref().getAMethodCall() and
-        this.getMethodName() = "on" + any(string s)
+        getMethodName() = "on" + any(string s)
       }
 
       /**
        * Gets the data flow node holding the listener callback.
        */
-      DataFlow::Node getCallbackNode() { result = this.getArgument(0) }
+      DataFlow::Node getCallbackNode() { result = getArgument(0) }
     }
 
     /**
      * A call to a Firebase method that sets up a route.
      */
-    private class RouteSetup extends Http::Servers::StandardRouteSetup, DataFlow::CallNode {
-      RouteSetup() { this = namespace().getAPropertyRead("https").getAMemberCall("onRequest") }
+    private class RouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+      RouteSetup() {
+        this = namespace().getAPropertyRead("https").getAMemberCall("onRequest").asExpr()
+      }
 
       override DataFlow::SourceNode getARouteHandler() {
-        result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
+        result = getARouteHandler(DataFlow::TypeBackTracker::end())
       }
 
       private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
         t.start() and
-        result = this.getArgument(0).getALocalSource()
+        result = getArgument(0).flow().getALocalSource()
         or
-        exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
+        exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
       }
 
-      override DataFlow::Node getServer() { none() }
+      override Expr getServer() { none() }
     }
 
     /**
      * A function used as a route handler.
      */
-    private class RouteHandler extends Express::RouteHandler, Http::Servers::StandardRouteHandler,
-      DataFlow::FunctionNode {
+    private class RouteHandler extends Express::RouteHandler, HTTP::Servers::StandardRouteHandler,
+      DataFlow::ValueNode {
+      override Function astNode;
+
       RouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-      override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
-        kind = "request" and result = this.getParameter(0)
+      override Parameter getRouteHandlerParameter(string kind) {
+        kind = "request" and result = astNode.getParameter(0)
         or
-        kind = "response" and result = this.getParameter(1)
+        kind = "response" and result = astNode.getParameter(1)
       }
     }
   }

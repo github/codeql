@@ -13,12 +13,11 @@
  */
 
 import python
-import semmle.python.ApiGraphs
 
 predicate doesnt_reraise(ExceptStmt ex) { ex.getAFlowNode().getBasicBlock().reachesExit() }
 
 predicate catches_base_exception(ExceptStmt ex) {
-  ex.getType() = API::builtin("BaseException").getAValueReachableFromSource().asExpr()
+  ex.getType().pointsTo(ClassValue::baseException())
   or
   not exists(ex.getType())
 }

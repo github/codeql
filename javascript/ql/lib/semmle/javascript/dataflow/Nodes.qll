@@ -49,9 +49,7 @@ class ParameterNode extends DataFlow::SourceNode {
   predicate isRestParameter() { p.isRestParameter() }
 
   /** Gets the data flow node for an expression that is applied to this decorator. */
-  DataFlow::Node getADecorator() {
-    result = this.getParameter().getADecorator().getExpression().flow()
-  }
+  DataFlow::Node getADecorator() { result = getParameter().getADecorator().getExpression().flow() }
 }
 
 /**
@@ -63,15 +61,17 @@ class ParameterNode extends DataFlow::SourceNode {
  * new Array(16)
  * ```
  */
-class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeNodeDef {
+class InvokeNode extends DataFlow::SourceNode {
+  InvokeNode() { this instanceof DataFlow::Impl::InvokeNodeDef }
+
   /** Gets the syntactic invoke expression underlying this function invocation. */
-  InvokeExpr getInvokeExpr() { result = super.getInvokeExpr() }
+  InvokeExpr getInvokeExpr() { result = this.(DataFlow::Impl::InvokeNodeDef).getInvokeExpr() }
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
-  string getCalleeName() { result = super.getCalleeName() }
+  string getCalleeName() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeName() }
 
   /** Gets the data flow node specifying the function to be called. */
-  DataFlow::Node getCalleeNode() { result = super.getCalleeNode() }
+  DataFlow::Node getCalleeNode() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeNode() }
 
   /**
    * Gets the data flow node corresponding to the `i`th argument of this invocation.
@@ -92,13 +92,13 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * but the position of `z` cannot be determined, hence there are no first and second
    * argument nodes.
    */
-  DataFlow::Node getArgument(int i) { result = super.getArgument(i) }
+  DataFlow::Node getArgument(int i) { result = this.(DataFlow::Impl::InvokeNodeDef).getArgument(i) }
 
   /** Gets the data flow node corresponding to an argument of this invocation. */
-  DataFlow::Node getAnArgument() { result = super.getAnArgument() }
+  DataFlow::Node getAnArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getAnArgument() }
 
   /** Gets the data flow node corresponding to the last argument of this invocation. */
-  DataFlow::Node getLastArgument() { result = this.getArgument(this.getNumArgument() - 1) }
+  DataFlow::Node getLastArgument() { result = getArgument(getNumArgument() - 1) }
 
   /**
    * Gets a data flow node corresponding to an array of values being passed as
@@ -112,12 +112,14 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * ```
    *  .
    */
-  DataFlow::Node getASpreadArgument() { result = super.getASpreadArgument() }
+  DataFlow::Node getASpreadArgument() {
+    result = this.(DataFlow::Impl::InvokeNodeDef).getASpreadArgument()
+  }
 
   /** Gets the number of arguments of this invocation, if it can be determined. */
-  int getNumArgument() { result = super.getNumArgument() }
+  int getNumArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getNumArgument() }
 
-  Function getEnclosingFunction() { result = this.getBasicBlock().getContainer() }
+  Function getEnclosingFunction() { result = getBasicBlock().getContainer() }
 
   /**
    * Gets a function passed as the `i`th argument of this invocation.
@@ -125,7 +127,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * This predicate only performs local data flow tracking.
    * Consider using `getABoundCallbackParameter` to handle interprocedural flow of callback functions.
    */
-  FunctionNode getCallback(int i) { result.flowsTo(this.getArgument(i)) }
+  FunctionNode getCallback(int i) { result.flowsTo(getArgument(i)) }
 
   /**
    * Gets a parameter of a callback passed into this call.
@@ -153,7 +155,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
   ParameterNode getABoundCallbackParameter(int callback, int param) {
     exists(int boundArgs |
       result =
-        this.getArgument(callback).getABoundFunctionValue(boundArgs).getParameter(param + boundArgs)
+        getArgument(callback).getABoundFunctionValue(boundArgs).getParameter(param + boundArgs)
     )
   }
 
@@ -163,16 +165,16 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    */
   pragma[nomagic]
   DataFlow::ValueNode getOptionArgument(int i, string name) {
-    this.getOptionsArgument(i).hasPropertyWrite(name, result)
+    getOptionsArgument(i).hasPropertyWrite(name, result)
   }
 
   pragma[noinline]
-  private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(this.getArgument(i)) }
+  private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
   final AbstractValue getACalleeValue() {
     exists(DataFlow::Node callee, DataFlow::AnalyzedNode analyzed |
-      pragma[only_bind_into](callee) = this.getCalleeNode() and
+      pragma[only_bind_into](callee) = getCalleeNode() and
       pragma[only_bind_into](analyzed) = callee.analyze() and
       pragma[only_bind_into](result) = analyzed.getAValue()
     )
@@ -184,7 +186,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * To alter the call graph as seen by the interprocedural data flow libraries, override
    * the `getACallee(int imprecision)` predicate instead.
    */
-  final Function getACallee() { result = this.getACallee(0) }
+  final Function getACallee() { result = getACallee(0) }
 
   /**
    * Gets a callee of this call site where `imprecision` is a heuristic measure of how
@@ -206,9 +208,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * Holds if the approximation of possible callees for this call site is
    * affected by the given analysis incompleteness `cause`.
    */
-  predicate isIndefinite(DataFlow::Incompleteness cause) {
-    this.getACalleeValue().isIndefinite(cause)
-  }
+  predicate isIndefinite(DataFlow::Incompleteness cause) { getACalleeValue().isIndefinite(cause) }
 
   /**
    * Holds if our approximation of possible callees for this call site is
@@ -222,8 +222,8 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * imprecision.
    */
   predicate isImprecise() {
-    this.isIndefinite("global") and
-    exists(DefiniteAbstractValue v | v = this.getACalleeValue() | not v instanceof AbstractCallable)
+    isIndefinite("global") and
+    exists(DefiniteAbstractValue v | v = getACalleeValue() | not v instanceof AbstractCallable)
   }
 
   /**
@@ -233,20 +233,20 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
   predicate isIncomplete() {
     // the flow analysis identifies a source of incompleteness other than
     // global flow (which usually leads to imprecision rather than incompleteness)
-    any(DataFlow::Incompleteness cause | this.isIndefinite(cause)) != "global"
+    any(DataFlow::Incompleteness cause | isIndefinite(cause)) != "global"
   }
 
   /**
    * Holds if our approximation of possible callees for this call site is
    * likely to be imprecise or incomplete.
    */
-  predicate isUncertain() { this.isImprecise() or this.isIncomplete() }
+  predicate isUncertain() { isImprecise() or isIncomplete() }
 
   /**
    * Gets the data flow node representing an exception thrown from this invocation.
    */
   DataFlow::ExceptionalInvocationReturnNode getExceptionalReturn() {
-    DataFlow::exceptionalInvocationReturnNode(result, this.asExpr())
+    DataFlow::exceptionalInvocationReturnNode(result, asExpr())
   }
 }
 
@@ -258,13 +258,15 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
  * Math.abs(x)
  * ```
  */
-class CallNode extends InvokeNode instanceof DataFlow::Impl::CallNodeDef {
+class CallNode extends InvokeNode {
+  CallNode() { this instanceof DataFlow::Impl::CallNodeDef }
+
   /**
    * Gets the data flow node corresponding to the receiver expression of this method call.
    *
    * For example, the receiver of `x.m()` is `x`.
    */
-  DataFlow::Node getReceiver() { result = super.getReceiver() }
+  DataFlow::Node getReceiver() { result = this.(DataFlow::Impl::CallNodeDef).getReceiver() }
 }
 
 /**
@@ -277,16 +279,18 @@ class CallNode extends InvokeNode instanceof DataFlow::Impl::CallNodeDef {
  * Math.abs(x)
  * ```
  */
-class MethodCallNode extends CallNode instanceof DataFlow::Impl::MethodCallNodeDef {
+class MethodCallNode extends CallNode {
+  MethodCallNode() { this instanceof DataFlow::Impl::MethodCallNodeDef }
+
   /** Gets the name of the invoked method, if it can be determined. */
-  string getMethodName() { result = super.getMethodName() }
+  string getMethodName() { result = this.(DataFlow::Impl::MethodCallNodeDef).getMethodName() }
 
   /**
    * Holds if this data flow node calls method `methodName` on receiver node `receiver`.
    */
   predicate calls(DataFlow::Node receiver, string methodName) {
-    receiver = this.getReceiver() and
-    methodName = this.getMethodName()
+    receiver = getReceiver() and
+    methodName = getMethodName()
   }
 }
 
@@ -470,19 +474,13 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   ParameterNode getParameter(int i) { result = DataFlow::parameterNode(astNode.getParameter(i)) }
 
   /** Gets a parameter of this function. */
-  ParameterNode getAParameter() { result = this.getParameter(_) }
-
-  /** Gets the parameter named `name` of this function, if any. */
-  DataFlow::ParameterNode getParameterByName(string name) {
-    result = this.getAParameter() and
-    result.getName() = name
-  }
+  ParameterNode getAParameter() { result = getParameter(_) }
 
   /** Gets the number of parameters declared on this function. */
   int getNumParameter() { result = count(astNode.getAParameter()) }
 
   /** Gets the last parameter of this function. */
-  ParameterNode getLastParameter() { result = this.getParameter(this.getNumParameter() - 1) }
+  ParameterNode getLastParameter() { result = getParameter(getNumParameter() - 1) }
 
   /** Holds if the last parameter of this function is a rest parameter. */
   predicate hasRestParameter() { astNode.hasRestParameter() }
@@ -502,7 +500,7 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
    * Gets the function whose `this` binding a `this` expression in this function refers to,
    * which is the nearest enclosing non-arrow function.
    */
-  FunctionNode getThisBinder() { result.getFunction() = this.getFunction().getThisBinder() }
+  FunctionNode getThisBinder() { result.getFunction() = getFunction().getThisBinder() }
 
   /**
    * Gets the dataflow node holding the value of the receiver passed to the given function.
@@ -562,14 +560,6 @@ class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   DataFlow::FunctionNode getPropertySetter(string name) {
     result = astNode.getPropertyByName(name).(PropertySetter).getInit().flow()
   }
-
-  /** Gets the value of a computed property name of this object literal, such as `x` in `{[x]: 1}` */
-  DataFlow::Node getAComputedPropertyName() {
-    exists(Property prop | prop = astNode.getAProperty() |
-      prop.isComputed() and
-      result = prop.getNameExpr().flow()
-    )
-  }
 }
 
 /**
@@ -626,25 +616,25 @@ class RegExpLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
  * ```
  */
 class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
-  ArrayConstructorInvokeNode() { this.getCalleeNode() = DataFlow::globalVarRef("Array") }
+  ArrayConstructorInvokeNode() { getCalleeNode() = DataFlow::globalVarRef("Array") }
 
   /** Gets the `i`th initial element of this array, if one is provided. */
   DataFlow::ValueNode getElement(int i) {
-    this.getNumArgument() > 1 and // A single-argument invocation specifies the array length, not an element.
-    result = this.getArgument(i)
+    getNumArgument() > 1 and // A single-argument invocation specifies the array length, not an element.
+    result = getArgument(i)
   }
 
   /** Gets an initial element of this array, if one is provided. */
   DataFlow::ValueNode getAnElement() {
-    this.getNumArgument() > 1 and
-    result = this.getAnArgument()
+    getNumArgument() > 1 and
+    result = getAnArgument()
   }
 
   /** Gets the initial size of the created array, if it can be determined. */
   int getSize() {
-    if this.getNumArgument() = 1
-    then result = this.getArgument(0).getIntValue()
-    else result = count(this.getAnElement())
+    if getNumArgument() = 1
+    then result = getArgument(0).getIntValue()
+    else result = count(getAnElement())
   }
 }
 
@@ -675,7 +665,7 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   }
 
   /** Gets an initial element of this array, if one if provided. */
-  DataFlow::ValueNode getAnElement() { result = this.getElement(_) }
+  DataFlow::ValueNode getAnElement() { result = getElement(_) }
 
   /** Gets the initial size of the created array, if it can be determined. */
   int getSize() {
@@ -688,7 +678,7 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
    * individual arguments to this array creation.
    */
   DataFlow::Node getASpreadArgument() {
-    exists(SpreadElement arg | arg = this.getAnElement().getEnclosingExpr() |
+    exists(SpreadElement arg | arg = getAnElement().getEnclosingExpr() |
       result = DataFlow::valueNode(arg.getOperand())
     )
   }
@@ -755,10 +745,7 @@ module ModuleImportNode {
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
 cached
-ModuleImportNode moduleImport(string path) {
-  // NB. internal modules may be imported with a "node:" prefix
-  Stages::Imports::ref() and result.getPath() = ["node:" + path, path]
-}
+ModuleImportNode moduleImport(string path) { Stages::Imports::ref() and result.getPath() = path }
 
 /**
  * Gets a (default) import of the given dependency `dep`, such as
@@ -800,19 +787,17 @@ class MemberKind extends string {
   predicate isAccessor() { this = MemberKind::accessor() }
 }
 
-private import internal.StepSummary
-
 module MemberKind {
-  /** Gets the kind of a method, such as `m() {}` */
+  /** The kind of a method, such as `m() {}` */
   MemberKind method() { result = "method" }
 
-  /** Gets the kind of a getter accessor, such as `get f() {}`. */
+  /** The kind of a getter accessor, such as `get f() {}`. */
   MemberKind getter() { result = "getter" }
 
-  /** Gets the kind of a setter accessor, such as `set f() {}`. */
+  /** The kind of a setter accessor, such as `set f() {}`. */
   MemberKind setter() { result = "setter" }
 
-  /** Gets the `getter` and `setter` kinds. */
+  /** The `getter` and `setter` kinds. */
   MemberKind accessor() { result = getter() or result = setter() }
 
   /**
@@ -913,30 +898,16 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
   FunctionNode getAnInstanceMember() { result = super.getAnInstanceMember(_) }
 
   /**
-   * Gets the static method, getter, or setter declared in this class with the given name and kind.
-   */
-  FunctionNode getStaticMember(string name, MemberKind kind) {
-    result = super.getStaticMember(name, kind)
-  }
-
-  /**
    * Gets the static method declared in this class with the given name.
    */
-  FunctionNode getStaticMethod(string name) {
-    result = this.getStaticMember(name, MemberKind::method())
-  }
-
-  /**
-   * Gets a static method, getter, or setter declared in this class with the given kind.
-   */
-  FunctionNode getAStaticMember(MemberKind kind) { result = super.getAStaticMember(kind) }
+  FunctionNode getStaticMethod(string name) { result = super.getStaticMethod(name) }
 
   /**
    * Gets a static method declared in this class.
    *
    * The constructor is not considered a static method.
    */
-  FunctionNode getAStaticMethod() { result = this.getAStaticMember(MemberKind::method()) }
+  FunctionNode getAStaticMethod() { result = super.getAStaticMethod() }
 
   /**
    * Gets a dataflow node that refers to the superclass of this class.
@@ -948,9 +919,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    *
    * This predicate can be overridden to customize the class hierarchy.
    */
-  ClassNode getADirectSuperClass() {
-    result.getAClassReference().flowsTo(this.getASuperClassNode())
-  }
+  ClassNode getADirectSuperClass() { result.getAClassReference().flowsTo(getASuperClassNode()) }
 
   /**
    * Gets a direct subclass of this class.
@@ -961,9 +930,9 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    * Gets the receiver of an instance member or constructor of this class.
    */
   DataFlow::SourceNode getAReceiverNode() {
-    result = this.getConstructor().getReceiver()
+    result = getConstructor().getReceiver()
     or
-    result = this.getAnInstanceMember().getReceiver()
+    result = getAnInstanceMember().getReceiver()
   }
 
   /**
@@ -974,7 +943,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
   /**
    * Gets the abstract value representing an instance of this class.
    */
-  AbstractValue getAbstractInstanceValue() { result = AbstractInstance::of(this.getAstNode()) }
+  AbstractValue getAbstractInstanceValue() { result = AbstractInstance::of(getAstNode()) }
 
   /**
    * Gets a dataflow node that refers to this class object.
@@ -983,23 +952,14 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    */
   DataFlow::SourceNode getAClassReference(DataFlow::TypeTracker t) {
     t.start() and
-    result.(AnalyzedNode).getAValue() = this.getAbstractClassValue() and
+    result.(AnalyzedNode).getAValue() = getAbstractClassValue() and
     (
       not CallGraph::isIndefiniteGlobal(result)
       or
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
-    result = this.getAClassReferenceRec(t)
-  }
-
-  pragma[noopt]
-  private DataFlow::SourceNode getAClassReferenceRec(DataFlow::TypeTracker t) {
-    exists(DataFlow::TypeTracker t2, StepSummary summary, DataFlow::SourceNode prev |
-      prev = this.getAClassReference(t2) and
-      StepSummary::step(prev, result, summary) and
-      t = t2.append(summary)
-    )
+    exists(DataFlow::TypeTracker t2 | result = getAClassReference(t2).track(t2, t))
   }
 
   /**
@@ -1007,7 +967,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    */
   cached
   final DataFlow::SourceNode getAClassReference() {
-    result = this.getAClassReference(DataFlow::TypeTracker::end())
+    result = getAClassReference(DataFlow::TypeTracker::end())
   }
 
   /**
@@ -1016,14 +976,14 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    * This predicate can be overridden to customize the tracking of class instances.
    */
   DataFlow::SourceNode getAnInstanceReference(DataFlow::TypeTracker t) {
-    result = this.getAClassReference(t.continue()).getAnInstantiation()
+    result = getAClassReference(t.continue()).getAnInstantiation()
     or
     t.start() and
-    result.(AnalyzedNode).getAValue() = this.getAbstractInstanceValue() and
+    result.(AnalyzedNode).getAValue() = getAbstractInstanceValue() and
     not result = any(DataFlow::ClassNode cls).getAReceiverNode()
     or
     t.start() and
-    result = this.getAReceiverNode()
+    result = getAReceiverNode()
     or
     // Use a parameter type as starting point of type tracking.
     // Use `t.call()` to emulate the value being passed in through an unseen
@@ -1034,7 +994,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result = DataFlow::parameterNode(param)
     )
     or
-    result = this.getAnInstanceReferenceAux(t) and
+    result = getAnInstanceReferenceAux(t) and
     // Avoid tracking into the receiver of other classes.
     // Note that this also blocks flows into a property of the receiver,
     // but the `localFieldStep` rule will often compensate for this.
@@ -1043,7 +1003,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
 
   pragma[noinline]
   private DataFlow::SourceNode getAnInstanceReferenceAux(DataFlow::TypeTracker t) {
-    exists(DataFlow::TypeTracker t2 | result = this.getAnInstanceReference(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = getAnInstanceReference(t2).track(t2, t))
   }
 
   /**
@@ -1051,7 +1011,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    */
   cached
   final DataFlow::SourceNode getAnInstanceReference() {
-    result = this.getAnInstanceReference(DataFlow::TypeTracker::end())
+    result = getAnInstanceReference(DataFlow::TypeTracker::end())
   }
 
   /**
@@ -1083,7 +1043,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    * Gets an access to a static member of this class.
    */
   DataFlow::PropRead getAStaticMemberAccess(string name) {
-    result = this.getAClassReference().getAPropertyRead(name)
+    result = getAClassReference().getAPropertyRead(name)
   }
 
   /**
@@ -1091,7 +1051,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    */
   pragma[noinline]
   predicate hasQualifiedName(string name) {
-    this.getAClassReference().flowsTo(AccessPath::getAnAssignmentTo(name))
+    getAClassReference().flowsTo(AccessPath::getAnAssignmentTo(name))
   }
 
   /**
@@ -1147,34 +1107,18 @@ module ClassNode {
     abstract FunctionNode getAnInstanceMember(MemberKind kind);
 
     /**
-     * Gets the static member of this class with the given name and kind.
-     */
-    cached
-    abstract FunctionNode getStaticMember(string name, MemberKind kind);
-
-    /**
-     * DEPRECATED. Override `getStaticMember` instead.
-     *
      * Gets the static method of this class with the given name.
      */
     cached
-    deprecated FunctionNode getStaticMethod(string name) { none() }
+    abstract FunctionNode getStaticMethod(string name);
 
     /**
-     * Gets a static member of this class of the given kind.
-     */
-    cached
-    abstract FunctionNode getAStaticMember(MemberKind kind);
-
-    /**
-     * DEPRECATED. Override `getAStaticMember` instead.
-     *
      * Gets a static method of this class.
      *
      * The constructor is not considered a static method.
      */
     cached
-    deprecated FunctionNode getAStaticMethod() { none() }
+    abstract FunctionNode getAStaticMethod();
 
     /**
      * Gets a dataflow node representing a class to be used as the super-class
@@ -1215,7 +1159,7 @@ module ClassNode {
       )
       or
       kind = MemberKind::method() and
-      result = this.getConstructor().getReceiver().getAPropertySource(name)
+      result = getConstructor().getReceiver().getAPropertySource(name)
     }
 
     override FunctionNode getAnInstanceMember(MemberKind kind) {
@@ -1227,31 +1171,27 @@ module ClassNode {
       )
       or
       kind = MemberKind::method() and
-      result = this.getConstructor().getReceiver().getAPropertySource()
+      result = getConstructor().getReceiver().getAPropertySource()
     }
 
-    override FunctionNode getStaticMember(string name, MemberKind kind) {
+    override FunctionNode getStaticMethod(string name) {
       exists(MethodDeclaration method |
         method = astNode.getMethod(name) and
         method.isStatic() and
-        kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
       or
-      kind.isMethod() and
-      result = this.getAPropertySource(name)
+      result = getAPropertySource(name)
     }
 
-    override FunctionNode getAStaticMember(MemberKind kind) {
+    override FunctionNode getAStaticMethod() {
       exists(MethodDeclaration method |
         method = astNode.getAMethod() and
         method.isStatic() and
-        kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
       or
-      kind.isMethod() and
-      result = this.getAPropertySource()
+      result = getAPropertySource()
     }
 
     override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }
@@ -1299,7 +1239,7 @@ module ClassNode {
         or
         exists(string name |
           this = AccessPath::getAnAssignmentTo(name) and
-          exists(getAPrototypeReferenceInFile(name, this.getFile()))
+          exists(getAPrototypeReferenceInFile(name, getFile()))
         )
       )
     }
@@ -1311,7 +1251,7 @@ module ClassNode {
     override FunctionNode getConstructor() { result = this }
 
     private PropertyAccessor getAnAccessor(MemberKind kind) {
-      result.getObjectExpr() = this.getAPrototypeReference().asExpr() and
+      result.getObjectExpr() = getAPrototypeReference().asExpr() and
       (
         kind = MemberKind::getter() and
         result instanceof PropertyGetter
@@ -1323,13 +1263,13 @@ module ClassNode {
 
     override FunctionNode getInstanceMember(string name, MemberKind kind) {
       kind = MemberKind::method() and
-      result = this.getAPrototypeReference().getAPropertySource(name)
+      result = getAPrototypeReference().getAPropertySource(name)
       or
       kind = MemberKind::method() and
-      result = this.getConstructor().getReceiver().getAPropertySource(name)
+      result = getConstructor().getReceiver().getAPropertySource(name)
       or
       exists(PropertyAccessor accessor |
-        accessor = this.getAnAccessor(kind) and
+        accessor = getAnAccessor(kind) and
         accessor.getName() = name and
         result = accessor.getInit().flow()
       )
@@ -1337,26 +1277,20 @@ module ClassNode {
 
     override FunctionNode getAnInstanceMember(MemberKind kind) {
       kind = MemberKind::method() and
-      result = this.getAPrototypeReference().getAPropertySource()
+      result = getAPrototypeReference().getAPropertySource()
       or
       kind = MemberKind::method() and
-      result = this.getConstructor().getReceiver().getAPropertySource()
+      result = getConstructor().getReceiver().getAPropertySource()
       or
       exists(PropertyAccessor accessor |
-        accessor = this.getAnAccessor(kind) and
+        accessor = getAnAccessor(kind) and
         result = accessor.getInit().flow()
       )
     }
 
-    override FunctionNode getStaticMember(string name, MemberKind kind) {
-      kind.isMethod() and
-      result = this.getAPropertySource(name)
-    }
+    override FunctionNode getStaticMethod(string name) { result = getAPropertySource(name) }
 
-    override FunctionNode getAStaticMember(MemberKind kind) {
-      kind.isMethod() and
-      result = this.getAPropertySource()
-    }
+    override FunctionNode getAStaticMethod() { result = getAPropertySource() }
 
     /**
      * Gets a reference to the prototype of this class.
@@ -1370,11 +1304,11 @@ module ClassNode {
       or
       exists(string name |
         this = AccessPath::getAnAssignmentTo(name) and
-        result = getAPrototypeReferenceInFile(name, this.getFile())
+        result = getAPrototypeReferenceInFile(name, getFile())
       )
       or
       exists(ExtendCall call |
-        call.getDestinationOperand() = this.getAPrototypeReference() and
+        call.getDestinationOperand() = getAPrototypeReference() and
         result = call.getASourceOperand()
       )
     }
@@ -1382,7 +1316,7 @@ module ClassNode {
     override DataFlow::Node getASuperClassNode() {
       // C.prototype = Object.create(D.prototype)
       exists(DataFlow::InvokeNode objectCreate, DataFlow::PropRead superProto |
-        this.getAPropertySource("prototype") = objectCreate and
+        getAPropertySource("prototype") = objectCreate and
         objectCreate = DataFlow::globalVarRef("Object").getAMemberCall("create") and
         superProto.flowsTo(objectCreate.getArgument(0)) and
         superProto.getPropertyName() = "prototype" and
@@ -1391,7 +1325,7 @@ module ClassNode {
       or
       // C.prototype = new D()
       exists(DataFlow::NewNode newCall |
-        this.getAPropertySource("prototype") = newCall and
+        getAPropertySource("prototype") = newCall and
         result = newCall.getCalleeNode()
       )
       or
@@ -1419,9 +1353,9 @@ module ClassNode {
 class PartialInvokeNode extends DataFlow::Node instanceof PartialInvokeNode::Range {
   /** Gets a node holding a callback invoked by this partial invocation node. */
   DataFlow::Node getACallbackNode() {
-    this.isPartialArgument(result, _, _)
+    isPartialArgument(result, _, _)
     or
-    exists(this.getBoundReceiver(result))
+    exists(getBoundReceiver(result))
   }
 
   /**
@@ -1469,6 +1403,13 @@ module PartialInvokeNode {
     DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) { none() }
 
     /**
+     * DEPRECATED. Use the one-argument version of `getBoundReceiver` instead.
+     *
+     * Gets the node holding the receiver to be passed to the bound function, if specified.
+     */
+    deprecated DataFlow::Node getBoundReceiver() { none() }
+
+    /**
      * Gets the node holding the receiver to be passed to `callback`.
      */
     DataFlow::Node getBoundReceiver(DataFlow::Node callback) { none() }
@@ -1479,27 +1420,27 @@ module PartialInvokeNode {
    */
   private class BindPartialCall extends PartialInvokeNode::Range, DataFlow::MethodCallNode {
     BindPartialCall() {
-      this.getMethodName() = "bind" and
+      getMethodName() = "bind" and
       // Avoid overlap with angular.bind and goog.bind
       not this = AngularJS::angular().getAMethodCall() and
-      not this.getReceiver().accessesGlobal("goog")
+      not getReceiver().accessesGlobal("goog")
     }
 
     override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
       index >= 0 and
-      callback = this.getReceiver() and
-      argument = this.getArgument(index + 1)
+      callback = getReceiver() and
+      argument = getArgument(index + 1)
     }
 
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
-      callback = this.getReceiver() and
-      boundArgs = this.getNumArgument() - 1 and
+      callback = getReceiver() and
+      boundArgs = getNumArgument() - 1 and
       result = this
     }
 
     override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
-      callback = this.getReceiver() and
-      result = this.getArgument(0)
+      callback = getReceiver() and
+      result = getArgument(0)
     }
   }
 
@@ -1511,13 +1452,13 @@ module PartialInvokeNode {
 
     override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
       index >= 0 and
-      callback = this.getArgument(0) and
-      argument = this.getArgument(index + 1)
+      callback = getArgument(0) and
+      argument = getArgument(index + 1)
     }
 
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
-      callback = this.getArgument(0) and
-      boundArgs = this.getNumArgument() - 1 and
+      callback = getArgument(0) and
+      boundArgs = getNumArgument() - 1 and
       result = this
     }
   }
@@ -1552,10 +1493,10 @@ module PartialInvokeNode {
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
       (
         callbackIndex >= 0 and
-        callback = this.getArgument(callbackIndex)
+        callback = getArgument(callbackIndex)
         or
         callbackIndex = -1 and
-        callback = this.getLastArgument()
+        callback = getLastArgument()
       ) and
       boundArgs = 0 and
       result = this
@@ -1568,16 +1509,16 @@ module PartialInvokeNode {
   private class RamdaPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
     RamdaPartialCall() { this = DataFlow::moduleMember("ramda", "partial").getACall() }
 
-    private DataFlow::ArrayCreationNode getArgumentsArray() { result.flowsTo(this.getArgument(1)) }
+    private DataFlow::ArrayCreationNode getArgumentsArray() { result.flowsTo(getArgument(1)) }
 
     override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
-      callback = this.getArgument(0) and
-      argument = this.getArgumentsArray().getElement(index)
+      callback = getArgument(0) and
+      argument = getArgumentsArray().getElement(index)
     }
 
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
-      callback = this.getArgument(0) and
-      boundArgs = this.getArgumentsArray().getSize() and
+      callback = getArgument(0) and
+      boundArgs = getArgumentsArray().getSize() and
       result = this
     }
   }
@@ -1593,11 +1534,21 @@ module PartialInvokeNode {
     }
 
     override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
-      callback = this.getArgument(1) and
-      result = this.getArgument(2)
+      callback = getArgument(1) and
+      result = getArgument(2)
     }
   }
 }
+
+/**
+ * DEPRECATED. Subclasses should extend `PartialInvokeNode::Range` instead,
+ * and predicates should use `PartialInvokeNode` instead.
+ *
+ * An invocation that is modeled as a partial function application.
+ *
+ * This contributes additional argument-passing flow edges that should be added to all data flow configurations.
+ */
+deprecated class AdditionalPartialInvokeNode = PartialInvokeNode::Range;
 
 /**
  * An invocation of the `RegExp` constructor.
@@ -1615,7 +1566,7 @@ class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
    * Gets the AST of the regular expression created here, provided that the
    * first argument is a string literal.
    */
-  RegExpTerm getRoot() { result = this.getArgument(0).asExpr().(StringLiteral).asRegExp() }
+  RegExpTerm getRoot() { result = getArgument(0).asExpr().(StringLiteral).asRegExp() }
 
   /**
    * Gets the flags provided in the second argument, or an empty string if no
@@ -1624,9 +1575,9 @@ class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
    * Has no result if the flags are provided but are not constant.
    */
   string getFlags() {
-    result = this.getArgument(1).getStringValue()
+    result = getArgument(1).getStringValue()
     or
-    not exists(this.getArgument(1)) and
+    not exists(getArgument(1)) and
     result = ""
   }
 
@@ -1635,9 +1586,9 @@ class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
    * flags are provided, or the string `"?"` if the provided flags are not known.
    */
   string tryGetFlags() {
-    result = this.getFlags()
+    result = getFlags()
     or
-    not exists(this.getFlags()) and
+    not exists(getFlags()) and
     result = RegExp::unknownFlag()
   }
 }
@@ -1687,20 +1638,16 @@ class RegExpCreationNode extends DataFlow::SourceNode {
   }
 
   /** Holds if the constructed predicate has the `g` flag. */
-  predicate isGlobal() { RegExp::isGlobal(this.getFlags()) }
+  predicate isGlobal() { RegExp::isGlobal(getFlags()) }
 
   /** Gets a data flow node referring to this regular expression. */
   private DataFlow::SourceNode getAReference(DataFlow::TypeTracker t) {
     t.start() and
     result = this
     or
-    exists(DataFlow::TypeTracker t2 | result = this.getAReference(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = getAReference(t2).track(t2, t))
   }
 
   /** Gets a data flow node referring to this regular expression. */
-  cached
-  DataFlow::SourceNode getAReference() {
-    Stages::FlowSteps::ref() and
-    result = this.getAReference(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode getAReference() { result = getAReference(DataFlow::TypeTracker::end()) }
 }

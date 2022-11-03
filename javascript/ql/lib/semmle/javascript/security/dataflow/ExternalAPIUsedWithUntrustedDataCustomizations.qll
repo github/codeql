@@ -9,7 +9,7 @@ import javascript
  * Provides sources, sinks and sanitizers for reasoning about flow of
  * untrusted data into an external API.
  */
-module ExternalApiUsedWithUntrustedData {
+module ExternalAPIUsedWithUntrustedData {
   /**
    * A source of untrusted data.
    */
@@ -48,7 +48,7 @@ module ExternalApiUsedWithUntrustedData {
   }
 
   /** Holds if `node` corresponds to a deep object argument. */
-  private predicate isDeepObjectSink(API::Node node) { node.asSink() instanceof DeepObjectSink }
+  private predicate isDeepObjectSink(API::Node node) { node.getARhs() instanceof DeepObjectSink }
 
   /**
    * A sanitizer for data flowing to an external API.
@@ -62,15 +62,12 @@ module ExternalApiUsedWithUntrustedData {
   /**
    * A package name whose entire API is considered "safe" for the purpose of this query.
    */
-  abstract class SafeExternalApiPackage extends string {
-    SafeExternalApiPackage() { exists(API::moduleImport(this)) }
+  abstract class SafeExternalAPIPackage extends string {
+    SafeExternalAPIPackage() { exists(API::moduleImport(this)) }
   }
 
-  /** DEPRECATED: Alias for SafeExternalApiPackage */
-  deprecated class SafeExternalAPIPackage = SafeExternalApiPackage;
-
-  private class DefaultSafeExternalApiPackage extends SafeExternalApiPackage {
-    DefaultSafeExternalApiPackage() {
+  private class DefaultSafeExternalAPIPackage extends SafeExternalAPIPackage {
+    DefaultSafeExternalAPIPackage() {
       // Promise libraries are safe and generate too much noise if included
       this =
         [
@@ -83,17 +80,14 @@ module ExternalApiUsedWithUntrustedData {
   /**
    * A function that is considered a "safe" external API from a security perspective.
    */
-  abstract class SafeExternalApiFunction extends API::Node { }
-
-  /** DEPRECATED: Alias for SafeExternalApiFunction */
-  deprecated class SafeExternalAPIFunction = SafeExternalApiFunction;
+  abstract class SafeExternalAPIFunction extends API::Node { }
 
   /** Holds if data read from a use of `f` may originate from an imported package. */
   private predicate mayComeFromLibrary(API::Node f) {
     // base case: import
     exists(string path |
       f = API::moduleImport(path) and
-      not path instanceof SafeExternalApiPackage and
+      not path instanceof SafeExternalAPIPackage and
       // Exclude paths that can be resolved to a file in the project
       not exists(Import imprt |
         imprt.getImportedPath().getValue() = path and exists(imprt.getImportedModule())
@@ -138,10 +132,10 @@ module ExternalApiUsedWithUntrustedData {
    */
   private predicate nodeIsRelevant(API::Node node) {
     mayComeFromLibrary(node) and
-    not node instanceof SafeExternalApiFunction
+    not node instanceof SafeExternalAPIFunction
     or
     nodeIsRelevant(node.getASuccessor()) and
-    not node = API::moduleImport(any(SafeExternalApiPackage p))
+    not node = API::moduleImport(any(SafeExternalAPIPackage p))
   }
 
   /** Holds if the edge `pred -> succ` may lead to an external API call. */
@@ -165,9 +159,9 @@ module ExternalApiUsedWithUntrustedData {
       not param = base.getReceiver()
     |
       result = param and
-      name = param.asSource().(DataFlow::ParameterNode).getName()
+      name = param.getAnImmediateUse().asExpr().(Parameter).getName()
       or
-      param.asSource().asExpr() instanceof DestructuringPattern and
+      param.getAnImmediateUse().asExpr() instanceof DestructuringPattern and
       result = param.getMember(name)
     )
   }
@@ -217,8 +211,11 @@ module ExternalApiUsedWithUntrustedData {
         node = getNamedParameter(base.getAParameter(), paramName) and
         result = basename + ".[callback].[param '" + paramName + "']"
         or
-        exists(string callbackName, int index |
-          node = getNamedParameter(base.getParameter(index).getMember(callbackName), paramName) and
+        exists(string callbackName, string index |
+          node =
+            getNamedParameter(base.getASuccessor("parameter " + index).getMember(callbackName),
+              paramName) and
+          index != "-1" and // ignore receiver
           result =
             basename + ".[callback " + index + " '" + callbackName + "'].[param '" + paramName +
               "']"
@@ -373,6 +370,3 @@ module ExternalApiUsedWithUntrustedData {
     }
   }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated module ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

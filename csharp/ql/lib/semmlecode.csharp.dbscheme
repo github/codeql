@@ -36,9 +36,10 @@ compilations(
  * --- | ---
  * 0   | --compiler
  * 1   | *path to compiler*
- * 2   | f1.cs
- * 3   | f2.cs
- * 4   | f3.cs
+ * 2   | --cil
+ * 3   | f1.cs
+ * 4   | f2.cs
+ * 5   | f3.cs
  */
 #keyset[id, num]
 compilation_args(
@@ -165,15 +166,58 @@ compilation_assembly(
   int assembly: @assembly ref
 )
 
-// Populated by the CSV extractor
+/*
+ * External artifacts
+ */
+
+externalDefects(
+  unique int id: @externalDefect,
+  string queryPath: string ref,
+  int location: @location ref,
+  string message: string ref,
+  float severity: float ref);
+
+externalMetrics(
+  unique int id: @externalMetric,
+  string queryPath: string ref,
+  int location: @location ref,
+  float value: float ref);
+
 externalData(
-   int id: @externalDataElement,
-   string path: string ref,
-   int column: int ref,
-   string value: string ref);
+  int id: @externalDataElement,
+  string path: string ref,
+  int column: int ref,
+  string value: string ref);
+
+snapshotDate(
+  unique date snapshotDate: date ref);
 
 sourceLocationPrefix(
   string prefix: string ref);
+
+/*
+ * Duplicate code
+ */
+
+duplicateCode(
+  unique int id: @duplication,
+  string relativePath: string ref,
+  int equivClass: int ref);
+
+similarCode(
+  unique int id: @similarity,
+  string relativePath: string ref,
+  int equivClass: int ref);
+
+@duplication_or_similarity = @duplication | @similarity
+
+tokens(
+  int id: @duplication_or_similarity ref,
+  int offset: int ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref);
 
 /*
  * C# dbscheme
@@ -182,7 +226,7 @@ sourceLocationPrefix(
 /** ELEMENTS **/
 
 @element = @declaration | @stmt | @expr | @modifier | @attribute | @namespace_declaration
-         | @using_directive | @type_parameter_constraints | @externalDataElement
+         | @using_directive | @type_parameter_constraints | @external_element
          | @xmllocatable | @asp_element | @namespace | @preprocessor_directive;
 
 @declaration = @callable | @generic | @assignable | @namespace;
@@ -195,9 +239,11 @@ sourceLocationPrefix(
 
 @assignable_with_accessors = @property | @indexer;
 
+@external_element = @externalMetric | @externalDefect | @externalDataElement;
+
 @attributable = @assembly | @field | @parameter | @operator | @method | @constructor
               | @destructor | @callable_accessor | @value_or_ref_type | @declaration_with_accessors
-              | @local_function | @lambda_expr;
+              | @local_function;
 
 /** LOCATIONS, ASEMMBLIES, MODULES, FILES and FOLDERS **/
 
@@ -278,10 +324,6 @@ parent_namespace_declaration(
 
 @using_directive = @using_namespace_directive | @using_static_directive;
 
-using_global(
-  unique int id: @using_directive ref
-);
-
 using_namespace_directives(
   unique int id: @using_namespace_directive,
   int namespace_id: @namespace ref);
@@ -339,7 +381,7 @@ directive_endregions(
 
 directive_lines(
   unique int id: @directive_line,
-  int kind: int ref); /* 0: default, 1: hidden, 2: numeric, 3: span */
+  int kind: int ref); /* 0: default, 1: hidden, 2: numeric */
 
 directive_line_value(
   unique int id: @directive_line ref,
@@ -347,18 +389,8 @@ directive_line_value(
 
 directive_line_file(
   unique int id: @directive_line ref,
-  int file: @file ref);
-
-directive_line_offset(
-  unique int id: @directive_line ref,
-  int offset: int ref);
-
-directive_line_span(
-  unique int id: @directive_line ref,
-  int startLine: int ref,
-  int startColumn: int ref,
-  int endLine: int ref,
-  int endColumn: int ref);
+  int file: @file ref
+)
 
 directive_nullables(
   unique int id: @directive_nullable,
@@ -526,16 +558,8 @@ tuple_element(
 
 attributes(
   unique int id: @attribute,
-  int kind: int ref,
   int type_id: @type_or_ref ref,
   int target:  @attributable ref);
-
-case @attribute.kind of
-  0 = @attribute_default
-| 1 = @attribute_return
-| 2 = @attribute_assembly
-| 3 = @attribute_module
-;
 
 attribute_location(
   int id: @attribute ref,
@@ -662,7 +686,7 @@ has_modifiers(
   int id: @modifiable_direct ref,
   int mod_id: @modifier ref);
 
-compiler_generated(unique int id: @modifiable ref);
+compiler_generated(unique int id: @modifiable_direct ref);
 
 /** MEMBERS **/
 
@@ -1275,10 +1299,6 @@ expr_argument_name(
   unique int id: @expr ref,
   string name: string ref);
 
-lambda_expr_return_type(
-  unique int id: @lambda_expr ref,
-  int type_id: @type_or_ref ref);
-  
 /** CONTROL/DATA FLOW **/
 
 @control_flow_element = @stmt | @expr;

@@ -16,6 +16,7 @@ private import common.TranslatedExprBase
 private import desugar.Delegate
 private import desugar.internal.TranslatedCompilerGeneratedCall
 import TranslatedCall
+private import experimental.ir.Util
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 /**
@@ -61,10 +62,7 @@ abstract class TranslatedExpr extends TranslatedExprBase {
    */
   final Type getResultType() { result = expr.getType() }
 
-  final override Language::AST getAst() { result = expr }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
+  final override Language::AST getAST() { result = expr }
 
   final override Callable getFunction() { result = expr.getEnclosingCallable() }
 
@@ -579,9 +577,9 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
     result = this.getInstruction(ElementsAddressTag(0))
     or
     // The successor of an offset expression is a `PointerAdd` expression.
-    child = this.getOffsetOperand(child.getAst().getIndex()) and
-    child.getAst().getIndex() >= 0 and
-    result = this.getInstruction(PointerAddTag(child.getAst().getIndex()))
+    child = this.getOffsetOperand(child.getAST().getIndex()) and
+    child.getAST().getIndex() >= 0 and
+    result = this.getInstruction(PointerAddTag(child.getAST().getIndex()))
   }
 
   override Instruction getResult() {
@@ -815,6 +813,10 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
     if exists(this.getQualifier())
     then result = this.getQualifier().getFirstInstruction()
     else result = this.getInstruction(AddressTag())
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    result = TranslatedVariableAccess.super.getInstructionOperand(tag, operandTag)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
@@ -1081,7 +1083,7 @@ class TranslatedCast extends TranslatedNonConstantExpr {
     )
   }
 
-  private TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getExpr()) }
+  private TranslatedExpr getOperand() { result = getTranslatedExpr(expr.(Cast).getExpr()) }
 
   private Opcode getOpcode() {
     expr instanceof CastExpr and result instanceof Opcode::CheckedConvertOrThrow
@@ -1181,9 +1183,9 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   }
 
   override Opcode getOpcode() {
-    result = binaryArithmeticOpcode(expr) or
-    result = binaryBitwiseOpcode(expr) or
-    result = comparisonOpcode(expr)
+    result = binaryArithmeticOpcode(expr.(BinaryArithmeticOperation)) or
+    result = binaryBitwiseOpcode(expr.(BinaryBitwiseOperation)) or
+    result = comparisonOpcode(expr.(ComparisonOperation))
   }
 
   override int getInstructionElementSize(InstructionTag tag) {
@@ -1710,7 +1712,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     result = this.getParent().getChildSuccessor(this)
     or
     (
-      tag = GeneratedNeqTag() and
+      tag = GeneratedNEQTag() and
       kind instanceof GotoEdge and
       if this.hasVar()
       then result = this.getInstruction(GeneratedBranchTag())
@@ -1733,7 +1735,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     kind instanceof GotoEdge and
     if this.hasVar()
     then result = this.getPatternVarDecl().getFirstInstruction()
-    else result = this.getInstruction(GeneratedNeqTag())
+    else result = this.getInstruction(GeneratedNEQTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -1742,7 +1744,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     or
     this.hasVar() and
     child = this.getPatternVarDecl() and
-    result = this.getInstruction(GeneratedNeqTag())
+    result = this.getInstruction(GeneratedNEQTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
@@ -1755,7 +1757,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     opcode instanceof Opcode::CheckedConvertOrNull and
     resultType = getTypeForPRValue(expr.getPattern().getType())
     or
-    tag = GeneratedNeqTag() and
+    tag = GeneratedNEQTag() and
     opcode instanceof Opcode::CompareNE and
     resultType = getTypeForPRValue(expr.getType())
     or
@@ -1775,7 +1777,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     result = "0"
   }
 
-  override Instruction getResult() { result = this.getInstruction(GeneratedNeqTag()) }
+  override Instruction getResult() { result = this.getInstruction(GeneratedNEQTag()) }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = ConvertTag() and
@@ -1792,7 +1794,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
       result = this.getPatternVarDecl().getTargetAddress()
     )
     or
-    tag = GeneratedNeqTag() and
+    tag = GeneratedNEQTag() and
     (
       operandTag instanceof LeftOperandTag and
       result = this.getInstruction(ConvertTag())
@@ -1804,7 +1806,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     this.hasVar() and
     tag = GeneratedBranchTag() and
     operandTag instanceof ConditionOperandTag and
-    result = this.getInstruction(GeneratedNeqTag())
+    result = this.getInstruction(GeneratedNEQTag())
   }
 
   private TranslatedExpr getIsExpr() { result = getTranslatedExpr(expr.getExpr()) }
@@ -2037,7 +2039,7 @@ class TranslatedObjectCreation extends TranslatedCreation {
     // Since calls are also expressions, we can't
     // use the predicate getTranslatedExpr (since that would
     // also return `this`).
-    result.getAst() = this.getAst()
+    result.getAST() = this.getAST()
   }
 
   override predicate needsLoad() { expr.getObjectType().isValueType() }

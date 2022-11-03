@@ -10,12 +10,9 @@ import SSAUtils
  * The SSA logic comes in two versions: the standard SSA and range-analysis RangeSSA.
  * This class provides the standard SSA logic.
  */
-library class StandardSsa extends SsaHelper {
-  StandardSsa() { this = 0 }
+library class StandardSSA extends SSAHelper {
+  StandardSSA() { this = 0 }
 }
-
-/** DEPRECATED: Alias for StandardSsa */
-deprecated class StandardSSA = StandardSsa;
 
 /**
  * A definition of one or more SSA variables, including phi node definitions.
@@ -30,22 +27,22 @@ deprecated class StandardSSA = StandardSsa;
  * statically seen to be unreachable.
  */
 class SsaDefinition extends ControlFlowNodeBase {
-  SsaDefinition() { exists(StandardSsa x | x.ssa_defn(_, this, _, _)) }
+  SsaDefinition() { exists(StandardSSA x | x.ssa_defn(_, this, _, _)) }
 
   /**
    * Gets a variable corresponding to an SSA StackVariable defined by
    * this definition.
    */
-  StackVariable getAVariable() { exists(StandardSsa x | x.ssa_defn(result, this, _, _)) }
+  StackVariable getAVariable() { exists(StandardSSA x | x.ssa_defn(result, this, _, _)) }
 
   /**
    * Gets a string representation of the SSA variable represented by the pair
    * `(this, v)`.
    */
-  string toString(StackVariable v) { exists(StandardSsa x | result = x.toString(this, v)) }
+  string toString(StackVariable v) { exists(StandardSSA x | result = x.toString(this, v)) }
 
   /** Gets a use of the SSA variable represented by the pair `(this, v)`. */
-  VariableAccess getAUse(StackVariable v) { exists(StandardSsa x | result = x.getAUse(this, v)) }
+  VariableAccess getAUse(StackVariable v) { exists(StandardSSA x | result = x.getAUse(this, v)) }
 
   /**
    * Gets the control-flow node for this definition. This will usually be the
@@ -65,7 +62,7 @@ class SsaDefinition extends ControlFlowNodeBase {
   BasicBlock getBasicBlock() { result.contains(this.getDefinition()) }
 
   /** Holds if this definition is a phi node for variable `v`. */
-  predicate isPhiNode(StackVariable v) { exists(StandardSsa x | x.phi_node(v, this)) }
+  predicate isPhiNode(StackVariable v) { exists(StandardSSA x | x.phi_node(v, this.(BasicBlock))) }
 
   /** Gets the location of this definition. */
   Location getLocation() { result = this.(ControlFlowNode).getLocation() }
@@ -127,7 +124,7 @@ class SsaDefinition extends ControlFlowNodeBase {
 
   /** Holds if `(this, v)` reaches the end of basic block `b`. */
   predicate reachesEndOfBB(StackVariable v, BasicBlock b) {
-    exists(StandardSsa x | x.ssaDefinitionReachesEndOfBB(v, this, b))
+    exists(StandardSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
   }
 
   /**
@@ -149,5 +146,16 @@ class SsaDefinition extends ControlFlowNodeBase {
    */
   Expr getAnUltimateDefiningValue(StackVariable v) {
     result = this.getAnUltimateSsaDefinition(v).getDefiningValue(v)
+  }
+
+  /**
+   * DEPRECATED: this is the old name for `getAnUltimateDefiningValue`. The
+   * name was confusing as it seemed analogous to `getDefinition` rather than
+   * `getDefiningValue`. The SSA libraries for other languages use the name
+   * `getAnUltimateSsaDefinition` to refer to a predicate named
+   * `getAnUltimateSsaDefinition` in this class.
+   */
+  deprecated Expr getAnUltimateDefinition(StackVariable v) {
+    result = this.getAnUltimateDefiningValue(v)
   }
 }

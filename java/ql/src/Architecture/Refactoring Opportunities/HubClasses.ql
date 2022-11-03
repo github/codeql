@@ -19,6 +19,6 @@ where
   eff = t.getMetrics().getEfferentSourceCoupling() and
   aff > 15 and
   eff > 15
-select t as class_,
+select t as Class,
   "Hub class: this class depends on " + eff.toString() + " classes and is used by " + aff.toString()
     + " classes."

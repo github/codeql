@@ -11,7 +11,7 @@ import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 
-// This content provider isn't exported, so there shouldn't be any flow
+// This Content Provider isn't exported, so there shouldn't be any flow
 public class Safe extends ContentProvider {
 
 	void sink(Object o) {}
@@ -85,7 +85,7 @@ public class Safe extends ContentProvider {
 
 	@Override
 	public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts,
-			CancellationSignal signal) {
+			CancellationSignal signal) throws RemoteException, FileNotFoundException {
 		sink(uri);
 		sink(mimeTypeFilter);
 		sink(opts.get("some_key"));
@@ -94,7 +94,8 @@ public class Safe extends ContentProvider {
 	}
 
 	@Override
-	public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts) {
+	public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts)
+			throws FileNotFoundException {
 		sink(uri);
 		sink(mimeTypeFilter);
 		sink(opts.get("some_key"));

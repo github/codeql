@@ -44,6 +44,8 @@ private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand t
     fromInstr = readInstr.getArgumentDef() and
     toOperand = readInstr.getSideEffectOperand()
   )
+  or
+  toOperand.(LoadOperand).getAnyDef() = fromInstr
 }
 
 /**
@@ -81,6 +83,8 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     or
     instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
+  or
+  instrTo.(LoadInstruction).getSourceAddressOperand() = opFrom
   or
   // Flow from an element to an array or union that contains it.
   instrTo.(ChiInstruction).getPartialOperand() = opFrom and
@@ -121,14 +125,12 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
  * Holds if taint may propagate from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
-pragma[inline]
 predicate localTaint(DataFlow::Node source, DataFlow::Node sink) { localTaintStep*(source, sink) }
 
 /**
  * Holds if taint can flow from `i1` to `i2` in zero or more
  * local (intra-procedural) steps.
  */
-pragma[inline]
 predicate localInstructionTaint(Instruction i1, Instruction i2) {
   localTaint(DataFlow::instructionNode(i1), DataFlow::instructionNode(i2))
 }
@@ -137,7 +139,6 @@ predicate localInstructionTaint(Instruction i1, Instruction i2) {
  * Holds if taint can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
-pragma[inline]
 predicate localExprTaint(Expr e1, Expr e2) {
   localTaint(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
 }

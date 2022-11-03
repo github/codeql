@@ -55,15 +55,7 @@ private predicate isDeeplyConstBelow(Type t) {
   isDeeplyConstBelow(t.(TypedefType).getBaseType())
 }
 
-/**
- * INTERNAL: Do not use.
- *
- * Holds if `t` is a pointer-like type (i.e., a pointer,
- * an array a reference, or a pointer-wrapper such as
- * `std::unique_ptr`) that is constant and only contains
- * constant types, excluding the type itself.
- */
-predicate isConstPointerLike(Type t) {
+private predicate isConstPointerLike(Type t) {
   (
     t instanceof PointerWrapper
     or
@@ -115,45 +107,6 @@ private predicate hasDefaultSideEffect(Call call, ParameterIndex i, boolean buff
         or
         isWrite = false
       )
-    )
-  )
-}
-
-/**
- * A `Call` or `NewOrNewArrayExpr`.
- *
- * Both kinds of expression invoke a function as part of their evaluation. This class provides a
- * way to treat both kinds of function similarly, and to get the invoked `Function`.
- */
-class CallOrAllocationExpr extends Expr {
-  CallOrAllocationExpr() {
-    this instanceof Call
-    or
-    this instanceof NewOrNewArrayExpr
-  }
-
-  /** Gets the `Function` invoked by this expression, if known. */
-  final Function getTarget() {
-    result = this.(Call).getTarget()
-    or
-    result = this.(NewOrNewArrayExpr).getAllocator()
-  }
-}
-
-/**
- * Returns the side effect opcode, if any, that represents any side effects not specifically modeled
- * by an argument side effect.
- */
-Opcode getCallSideEffectOpcode(CallOrAllocationExpr expr) {
-  not exists(expr.getTarget().(SideEffectFunction)) and result instanceof Opcode::CallSideEffect
-  or
-  exists(SideEffectFunction sideEffectFunction |
-    sideEffectFunction = expr.getTarget() and
-    if not sideEffectFunction.hasOnlySpecificWriteSideEffects()
-    then result instanceof Opcode::CallSideEffect
-    else (
-      not sideEffectFunction.hasOnlySpecificReadSideEffects() and
-      result instanceof Opcode::CallReadSideEffect
     )
   )
 }

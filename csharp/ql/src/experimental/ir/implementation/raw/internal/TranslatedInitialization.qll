@@ -11,6 +11,7 @@ private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
+private import experimental.ir.Util
 private import IRInternal
 private import desugar.Delegate
 
@@ -50,10 +51,7 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
 
   final override Callable getFunction() { result = expr.getEnclosingCallable() }
 
-  final override Language::AST getAst() { result = expr }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
+  final override Language::AST getAST() { result = expr }
 
   /**
    * Gets the expression that is doing the initialization.
@@ -208,10 +206,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = initList.toString() + "[" + this.getElementIndex().toString() + "]"
   }
 
-  final override Language::AST getAst() { result = initList }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
+  final override Language::AST getAST() { result = initList }
 
   final override Callable getFunction() { result = initList.getEnclosingCallable() }
 
@@ -315,10 +310,7 @@ abstract class TranslatedConstructorCallFromConstructor extends TranslatedElemen
   ConstructorCallContext {
   Call call;
 
-  final override Language::AST getAst() { result = call }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
+  final override Language::AST getAST() { result = call }
 
   final override TranslatedElement getChild(int id) {
     id = 0 and result = this.getConstructorCall()
@@ -335,7 +327,7 @@ abstract class TranslatedConstructorCallFromConstructor extends TranslatedElemen
 }
 
 TranslatedConstructorInitializer getTranslatedConstructorInitializer(ConstructorInitializer ci) {
-  result.getAst() = ci
+  result.getAST() = ci
 }
 
 /**

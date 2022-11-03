@@ -1,6 +1,7 @@
 /**
  * @name Sign check of bitwise operation
- * @description Checking the sign of the result of a bitwise operation may yield unexpected results.
+ * @description Checking the sign of a bitwise operation often has surprising
+ *              edge cases.
  * @kind problem
  * @problem.severity warning
  * @precision high
@@ -25,4 +26,4 @@ where
   forall(int op | op = lhs.(BitwiseAndExpr).getAnOperand().getValue().toInt() | op < 0) and
   // exception for cases involving macros
   not e.isAffectedByMacro()
-select e, "Potentially unsafe sign check of a bitwise operation."
+select e, "Potential unsafe sign check of a bitwise operation."

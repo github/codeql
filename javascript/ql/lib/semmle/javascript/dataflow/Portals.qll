@@ -180,7 +180,7 @@ private class NpmPackagePortal extends Portal, MkNpmPackagePortal {
 private module NpmPackagePortal {
   /** Gets an import of `imported` inside package `importer`. */
   pragma[noinline]
-  private DataFlow::SourceNode getAModuleImport(NpmPackage importer, string imported) {
+  private DataFlow::SourceNode getAModuleImport(NPMPackage importer, string imported) {
     result = DataFlow::moduleImport(imported) and
     result.getTopLevel() = importer.getAModule()
   }
@@ -188,7 +188,7 @@ private module NpmPackagePortal {
   /** Gets an import of `member` from `imported` inside package `importer`. */
   pragma[noinline]
   private DataFlow::SourceNode getAModuleMemberImport(
-    NpmPackage importer, string imported, string member
+    NPMPackage importer, string imported, string member
   ) {
     result = DataFlow::moduleMember(imported, member) and
     result.getTopLevel() = importer.getAModule()
@@ -196,7 +196,7 @@ private module NpmPackagePortal {
 
   /** Holds if `imp` is an import of package `pkgName`. */
   predicate imports(DataFlow::SourceNode imp, string pkgName) {
-    exists(NpmPackage pkg |
+    exists(NPMPackage pkg |
       imp = getAModuleImport(pkg, pkgName) and
       pkgName.regexpMatch("[^./].*")
     )
@@ -204,7 +204,7 @@ private module NpmPackagePortal {
 
   /** Holds if `imp` imports `member` from package `pkgName`. */
   predicate imports(DataFlow::SourceNode imp, string pkgName, string member) {
-    exists(NpmPackage pkg |
+    exists(NPMPackage pkg |
       imp = getAModuleMemberImport(pkg, pkgName, member) and
       pkgName.regexpMatch("[^./].*")
     )
@@ -212,7 +212,7 @@ private module NpmPackagePortal {
 
   /** Gets the main module of package `pkgName`. */
   Module packageMain(string pkgName) {
-    exists(PackageJson pkg |
+    exists(PackageJSON pkg |
       // don't construct portals for private packages
       not pkg.isPrivate() and
       // don't construct portals for vendored-in packages
@@ -498,7 +498,7 @@ private module ReturnPortal {
     invk = callee.getAnExitNode(isRemote).getAnInvocation()
   }
 
-  /** Holds if `ret` is a return node of a function flowing through `base`. */
+  /** Holds if `ret` is a return node of a function flowing through `callee`. */
   predicate returns(Portal base, DataFlow::Node ret, boolean escapes) {
     ret = base.getAnEntryNode(escapes).getALocalSource().(DataFlow::FunctionNode).getAReturn()
   }

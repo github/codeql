@@ -11,6 +11,9 @@ predicate configStep(Node pred, Node succ) {
   )
 }
 
-class CustomStep extends SharedTypeTrackingStep {
-  override predicate step(Node pred, Node succ) { configStep(pred, succ) }
+class CustomStep extends AdditionalTypeTrackingStep, Node {
+  override predicate step(Node pred, Node succ) {
+    pred = this and
+    configStep(pred, succ)
+  }
 }

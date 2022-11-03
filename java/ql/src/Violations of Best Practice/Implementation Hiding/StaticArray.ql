@@ -16,7 +16,7 @@ predicate nonEmptyArrayLiteralOrNull(Expr e) {
   exists(ArrayCreationExpr arr | arr = e |
     // Array initializer expressions such as `{1, 2, 3}`.
     // Array is empty if the initializer expression is empty.
-    exists(arr.getInit().getAnInit())
+    exists(Expr arrayValue | arrayValue = arr.getInit().getAnInit())
     or
     // Array creation with dimensions (but without initializers).
     // Empty if the first dimension is 0.
@@ -41,4 +41,4 @@ where
   f.getType() instanceof Array and
   f.fromSource() and
   forall(AssignExpr a | a.getDest() = f.getAnAccess() | nonEmptyArrayLiteralOrNull(a.getSource()))
-select f, "The array constant '" + f.getName() + "' is vulnerable to mutation."
+select f, "The array constant " + f.getName() + " is vulnerable to mutation."

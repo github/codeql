@@ -2,19 +2,19 @@ import python
 import semmle.python.web.Http
 import semmle.python.web.flask.Response
 
-/** Gets the flask app class */
-deprecated ClassValue theFlaskClass() { result = Value::named("flask.Flask") }
+/** The flask app class */
+ClassValue theFlaskClass() { result = Value::named("flask.Flask") }
 
-/** Gets the flask MethodView class */
-deprecated ClassValue theFlaskMethodViewClass() { result = Value::named("flask.views.MethodView") }
+/** The flask MethodView class */
+ClassValue theFlaskMethodViewClass() { result = Value::named("flask.views.MethodView") }
 
-deprecated ClassValue theFlaskReponseClass() { result = Value::named("flask.Response") }
+ClassValue theFlaskReponseClass() { result = Value::named("flask.Response") }
 
 /**
  * Holds if `route` is routed to `func`
  * by decorating `func` with `app.route(route)`
  */
-deprecated predicate app_route(ControlFlowNode route, Function func) {
+predicate app_route(ControlFlowNode route, Function func) {
   exists(CallNode route_call, CallNode decorator_call |
     route_call.getFunction().(AttrNode).getObject("route").pointsTo().getClass() = theFlaskClass() and
     decorator_call.getFunction() = route_call and
@@ -24,7 +24,7 @@ deprecated predicate app_route(ControlFlowNode route, Function func) {
 }
 
 /* Helper for add_url_rule */
-deprecated private predicate add_url_rule_call(ControlFlowNode regex, ControlFlowNode callable) {
+private predicate add_url_rule_call(ControlFlowNode regex, ControlFlowNode callable) {
   exists(CallNode call |
     call.getFunction().(AttrNode).getObject("add_url_rule").pointsTo().getClass() = theFlaskClass() and
     regex = call.getArg(0)
@@ -35,7 +35,7 @@ deprecated private predicate add_url_rule_call(ControlFlowNode regex, ControlFlo
 }
 
 /** Holds if urls matching `regex` are routed to `func` */
-deprecated predicate add_url_rule(ControlFlowNode regex, Function func) {
+predicate add_url_rule(ControlFlowNode regex, Function func) {
   exists(ControlFlowNode callable | add_url_rule_call(regex, callable) |
     exists(PythonFunctionValue f | f.getScope() = func and callable.pointsTo(f))
     or
@@ -51,14 +51,14 @@ deprecated predicate add_url_rule(ControlFlowNode regex, Function func) {
  * Holds if urls matching `regex` are routed to `func` using
  * any of flask's routing mechanisms.
  */
-deprecated predicate flask_routing(ControlFlowNode regex, Function func) {
+predicate flask_routing(ControlFlowNode regex, Function func) {
   app_route(regex, func)
   or
   add_url_rule(regex, func)
 }
 
 /** A class that extends flask.views.MethodView */
-deprecated private class MethodViewClass extends ClassValue {
+private class MethodViewClass extends ClassValue {
   MethodViewClass() { this.getASuperType() = theFlaskMethodViewClass() }
 
   /* As we are restricted to strings for taint kinds, we need to map these classes to strings. */
@@ -68,12 +68,12 @@ deprecated private class MethodViewClass extends ClassValue {
   TaintKind asTaint() { result = this.taintString() }
 }
 
-deprecated private class MethodViewTaint extends TaintKind {
+private class MethodViewTaint extends TaintKind {
   MethodViewTaint() { any(MethodViewClass cls).taintString() = this }
 }
 
 /** A source of method view "taint"s. */
-deprecated private class AsView extends TaintSource {
+private class AsView extends TaintSource {
   AsView() {
     exists(ClassValue view_class |
       view_class.getASuperType() = theFlaskMethodViewClass() and
@@ -91,7 +91,7 @@ deprecated private class AsView extends TaintSource {
   }
 }
 
-deprecated class FlaskCookieSet extends CookieSet, CallNode {
+class FlaskCookieSet extends CookieSet, CallNode {
   FlaskCookieSet() {
     any(FlaskResponseTaintKind t).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
   }

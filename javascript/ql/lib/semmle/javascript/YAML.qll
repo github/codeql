@@ -20,13 +20,13 @@ import javascript
  * << : *DEFAULTS  # an alias node referring to anchor `DEFAULTS`
  * ```
  */
-class YamlNode extends @yaml_node, Locatable {
+class YAMLNode extends @yaml_node, Locatable {
   override Location getLocation() { yaml_locations(this, result) }
 
   /**
    * Gets the parent node of this node, which is always a collection.
    */
-  YamlCollection getParentNode() { yaml(this, _, result, _, _, _) }
+  YAMLCollection getParentNode() { yaml(this, _, result, _, _, _) }
 
   /**
    * Gets the `i`th child node of this node.
@@ -34,27 +34,27 @@ class YamlNode extends @yaml_node, Locatable {
    * _Note_: The index of a child node relative to its parent is considered
    * an implementation detail and may change between versions of the extractor.
    */
-  YamlNode getChildNode(int i) { yaml(result, _, this, i, _, _) }
+  YAMLNode getChildNode(int i) { yaml(result, _, this, i, _, _) }
 
   /**
    * Gets a child node of this node.
    */
-  YamlNode getAChildNode() { result = this.getChildNode(_) }
+  YAMLNode getAChildNode() { result = getChildNode(_) }
 
   /**
    * Gets the number of child nodes of this node.
    */
-  int getNumChild() { result = count(this.getAChildNode()) }
+  int getNumChild() { result = count(getAChildNode()) }
 
   /**
    * Gets the `i`th child of this node, as a YAML value.
    */
-  YamlValue getChild(int i) { result = this.getChildNode(i).eval() }
+  YAMLValue getChild(int i) { result = getChildNode(i).eval() }
 
   /**
    * Gets a child of this node, as a YAML value.
    */
-  YamlValue getAChild() { result = this.getChild(_) }
+  YAMLValue getAChild() { result = getChild(_) }
 
   /**
    * Gets the tag of this node.
@@ -65,9 +65,7 @@ class YamlNode extends @yaml_node, Locatable {
    * Holds if this node is tagged with a standard type tag of the form
    * `tag:yaml.org,2002:<t>`.
    */
-  predicate hasStandardTypeTag(string t) {
-    t = this.getTag().regexpCapture("tag:yaml.org,2002:(.*)", 1)
-  }
+  predicate hasStandardTypeTag(string t) { t = getTag().regexpCapture("tag:yaml.org,2002:(.*)", 1) }
 
   override string toString() { yaml(this, _, _, _, _, result) }
 
@@ -79,18 +77,15 @@ class YamlNode extends @yaml_node, Locatable {
   /**
    * Gets the toplevel document to which this node belongs.
    */
-  YamlDocument getDocument() { result = this.getParentNode*() }
+  YAMLDocument getDocument() { result = getParentNode*() }
 
   /**
    * Gets the YAML value this node corresponds to after resolving aliases and includes.
    */
-  YamlValue eval() { result = this }
+  YAMLValue eval() { result = this }
 
-  override string getAPrimaryQlClass() { result = "YamlNode" }
+  override string getAPrimaryQlClass() { result = "YAMLNode" }
 }
-
-/** DEPRECATED: Alias for YamlNode */
-deprecated class YAMLNode = YamlNode;
 
 /**
  * A YAML value; that is, either a scalar or a collection.
@@ -105,10 +100,7 @@ deprecated class YAMLNode = YamlNode;
  * - sequence
  * ```
  */
-abstract class YamlValue extends YamlNode { }
-
-/** DEPRECATED: Alias for YamlValue */
-deprecated class YAMLValue = YamlValue;
+abstract class YAMLValue extends YAMLNode { }
 
 /**
  * A YAML scalar.
@@ -124,7 +116,7 @@ deprecated class YAMLValue = YamlValue;
  * "hello"
  * ```
  */
-class YamlScalar extends YamlValue, @yaml_scalar_node {
+class YAMLScalar extends YAMLValue, @yaml_scalar_node {
   /**
    * Gets the style of this scalar, which is one of the following:
    *
@@ -153,11 +145,8 @@ class YamlScalar extends YamlValue, @yaml_scalar_node {
    */
   string getValue() { yaml_scalars(this, _, result) }
 
-  override string getAPrimaryQlClass() { result = "YamlScalar" }
+  override string getAPrimaryQlClass() { result = "YAMLScalar" }
 }
-
-/** DEPRECATED: Alias for YamlScalar */
-deprecated class YAMLScalar = YamlScalar;
 
 /**
  * A YAML scalar representing an integer value.
@@ -169,17 +158,14 @@ deprecated class YAMLScalar = YamlScalar;
  * 0xffff
  * ```
  */
-class YamlInteger extends YamlScalar {
-  YamlInteger() { this.hasStandardTypeTag("int") }
+class YAMLInteger extends YAMLScalar {
+  YAMLInteger() { hasStandardTypeTag("int") }
 
   /**
    * Gets the value of this scalar, as an integer.
    */
-  int getIntValue() { result = this.getValue().toInt() }
+  int getIntValue() { result = getValue().toInt() }
 }
-
-/** DEPRECATED: Alias for YamlInteger */
-deprecated class YAMLInteger = YamlInteger;
 
 /**
  * A YAML scalar representing a floating point value.
@@ -191,17 +177,14 @@ deprecated class YAMLInteger = YamlInteger;
  * 6.626e-34
  * ```
  */
-class YamlFloat extends YamlScalar {
-  YamlFloat() { this.hasStandardTypeTag("float") }
+class YAMLFloat extends YAMLScalar {
+  YAMLFloat() { hasStandardTypeTag("float") }
 
   /**
    * Gets the value of this scalar, as a floating point number.
    */
-  float getFloatValue() { result = this.getValue().toFloat() }
+  float getFloatValue() { result = getValue().toFloat() }
 }
-
-/** DEPRECATED: Alias for YamlFloat */
-deprecated class YAMLFloat = YamlFloat;
 
 /**
  * A YAML scalar representing a time stamp.
@@ -212,17 +195,14 @@ deprecated class YAMLFloat = YamlFloat;
  * 2001-12-15T02:59:43.1Z
  * ```
  */
-class YamlTimestamp extends YamlScalar {
-  YamlTimestamp() { this.hasStandardTypeTag("timestamp") }
+class YAMLTimestamp extends YAMLScalar {
+  YAMLTimestamp() { hasStandardTypeTag("timestamp") }
 
   /**
    * Gets the value of this scalar, as a date.
    */
-  date getDateValue() { result = this.getValue().toDate() }
+  date getDateValue() { result = getValue().toDate() }
 }
-
-/** DEPRECATED: Alias for YamlTimestamp */
-deprecated class YAMLTimestamp = YamlTimestamp;
 
 /**
  * A YAML scalar representing a Boolean value.
@@ -233,17 +213,14 @@ deprecated class YAMLTimestamp = YamlTimestamp;
  * true
  * ```
  */
-class YamlBool extends YamlScalar {
-  YamlBool() { this.hasStandardTypeTag("bool") }
+class YAMLBool extends YAMLScalar {
+  YAMLBool() { hasStandardTypeTag("bool") }
 
   /**
    * Gets the value of this scalar, as a Boolean.
    */
-  boolean getBoolValue() { if this.getValue() = "true" then result = true else result = false }
+  boolean getBoolValue() { if getValue() = "true" then result = true else result = false }
 }
-
-/** DEPRECATED: Alias for YamlBool */
-deprecated class YAMLBool = YamlBool;
 
 /**
  * A YAML scalar representing the null value.
@@ -254,12 +231,9 @@ deprecated class YAMLBool = YamlBool;
  * null
  * ```
  */
-class YamlNull extends YamlScalar {
-  YamlNull() { this.hasStandardTypeTag("null") }
+class YAMLNull extends YAMLScalar {
+  YAMLNull() { hasStandardTypeTag("null") }
 }
-
-/** DEPRECATED: Alias for YamlNull */
-deprecated class YAMLNull = YamlNull;
 
 /**
  * A YAML scalar representing a string value.
@@ -270,12 +244,9 @@ deprecated class YAMLNull = YamlNull;
  * "hello"
  * ```
  */
-class YamlString extends YamlScalar {
-  YamlString() { this.hasStandardTypeTag("str") }
+class YAMLString extends YAMLScalar {
+  YAMLString() { hasStandardTypeTag("str") }
 }
-
-/** DEPRECATED: Alias for YamlString */
-deprecated class YAMLString = YamlString;
 
 /**
  * A YAML scalar representing a merge key.
@@ -287,12 +258,9 @@ deprecated class YAMLString = YamlString;
  * << : *DEFAULTS  # merge key
  * ```
  */
-class YamlMergeKey extends YamlScalar {
-  YamlMergeKey() { this.hasStandardTypeTag("merge") }
+class YAMLMergeKey extends YAMLScalar {
+  YAMLMergeKey() { hasStandardTypeTag("merge") }
 }
-
-/** DEPRECATED: Alias for YamlMergeKey */
-deprecated class YAMLMergeKey = YamlMergeKey;
 
 /**
  * A YAML scalar representing an `!include` directive.
@@ -301,12 +269,12 @@ deprecated class YAMLMergeKey = YamlMergeKey;
  * !include common.yaml
  * ```
  */
-class YamlInclude extends YamlScalar {
-  YamlInclude() { this.getTag() = "!include" }
+class YAMLInclude extends YAMLScalar {
+  YAMLInclude() { getTag() = "!include" }
 
-  override YamlValue eval() {
-    exists(YamlDocument targetDoc |
-      targetDoc.getFile().getAbsolutePath() = this.getTargetPath() and
+  override YAMLValue eval() {
+    exists(YAMLDocument targetDoc |
+      targetDoc.getFile().getAbsolutePath() = getTargetPath() and
       result = targetDoc.eval()
     )
   }
@@ -315,16 +283,13 @@ class YamlInclude extends YamlScalar {
    * Gets the absolute path of the file included by this directive.
    */
   private string getTargetPath() {
-    exists(string path | path = this.getValue() |
+    exists(string path | path = getValue() |
       if path.matches("/%")
       then result = path
-      else result = this.getDocument().getFile().getParentContainer().getAbsolutePath() + "/" + path
+      else result = getDocument().getFile().getParentContainer().getAbsolutePath() + "/" + path
     )
   }
 }
-
-/** DEPRECATED: Alias for YamlInclude */
-deprecated class YAMLInclude = YamlInclude;
 
 /**
  * A YAML collection, that is, either a mapping or a sequence.
@@ -343,12 +308,9 @@ deprecated class YAMLInclude = YamlInclude;
  * - -blue
  * ```
  */
-class YamlCollection extends YamlValue, @yaml_collection_node {
-  override string getAPrimaryQlClass() { result = "YamlCollection" }
+class YAMLCollection extends YAMLValue, @yaml_collection_node {
+  override string getAPrimaryQlClass() { result = "YAMLCollection" }
 }
-
-/** DEPRECATED: Alias for YamlCollection */
-deprecated class YAMLCollection = YamlCollection;
 
 /**
  * A YAML mapping.
@@ -360,52 +322,49 @@ deprecated class YAMLCollection = YamlCollection;
  * y: 1
  * ```
  */
-class YamlMapping extends YamlCollection, @yaml_mapping_node {
+class YAMLMapping extends YAMLCollection, @yaml_mapping_node {
   /**
    * Gets the `i`th key of this mapping.
    */
-  YamlNode getKeyNode(int i) {
+  YAMLNode getKeyNode(int i) {
     i >= 0 and
-    exists(int j | i = j - 1 and result = this.getChildNode(j))
+    exists(int j | i = j - 1 and result = getChildNode(j))
   }
 
   /**
    * Gets the `i`th value of this mapping.
    */
-  YamlNode getValueNode(int i) {
+  YAMLNode getValueNode(int i) {
     i >= 0 and
-    exists(int j | i = -j - 1 and result = this.getChildNode(j))
+    exists(int j | i = -j - 1 and result = getChildNode(j))
   }
 
   /**
    * Gets the `i`th key of this mapping, as a YAML value.
    */
-  YamlValue getKey(int i) { result = this.getKeyNode(i).eval() }
+  YAMLValue getKey(int i) { result = getKeyNode(i).eval() }
 
   /**
    * Gets the `i`th value of this mapping, as a YAML value.
    */
-  YamlValue getValue(int i) { result = this.getValueNode(i).eval() }
+  YAMLValue getValue(int i) { result = getValueNode(i).eval() }
 
   /**
    * Holds if this mapping maps `key` to `value`.
    */
-  predicate maps(YamlValue key, YamlValue value) {
-    exists(int i | key = this.getKey(i) and value = this.getValue(i))
+  predicate maps(YAMLValue key, YAMLValue value) {
+    exists(int i | key = getKey(i) and value = getValue(i))
     or
-    exists(YamlMergeKey merge, YamlMapping that | this.maps(merge, that) | that.maps(key, value))
+    exists(YAMLMergeKey merge, YAMLMapping that | maps(merge, that) | that.maps(key, value))
   }
 
   /**
    * Gets the value that this mapping maps `key` to.
    */
-  YamlValue lookup(string key) { exists(YamlScalar s | s.getValue() = key | this.maps(s, result)) }
+  YAMLValue lookup(string key) { exists(YAMLScalar s | s.getValue() = key | maps(s, result)) }
 
-  override string getAPrimaryQlClass() { result = "YamlMapping" }
+  override string getAPrimaryQlClass() { result = "YAMLMapping" }
 }
-
-/** DEPRECATED: Alias for YamlMapping */
-deprecated class YAMLMapping = YamlMapping;
 
 /**
  * A YAML sequence.
@@ -418,22 +377,19 @@ deprecated class YAMLMapping = YamlMapping;
  * - blue
  * ```
  */
-class YamlSequence extends YamlCollection, @yaml_sequence_node {
+class YAMLSequence extends YAMLCollection, @yaml_sequence_node {
   /**
    * Gets the `i`th element in this sequence.
    */
-  YamlNode getElementNode(int i) { result = this.getChildNode(i) }
+  YAMLNode getElementNode(int i) { result = getChildNode(i) }
 
   /**
    * Gets the `i`th element in this sequence, as a YAML value.
    */
-  YamlValue getElement(int i) { result = this.getElementNode(i).eval() }
+  YAMLValue getElement(int i) { result = getElementNode(i).eval() }
 
-  override string getAPrimaryQlClass() { result = "YamlSequence" }
+  override string getAPrimaryQlClass() { result = "YAMLSequence" }
 }
-
-/** DEPRECATED: Alias for YamlSequence */
-deprecated class YAMLSequence = YamlSequence;
 
 /**
  * A YAML alias node referring to a target anchor.
@@ -444,9 +400,9 @@ deprecated class YAMLSequence = YamlSequence;
  * *DEFAULTS
  * ```
  */
-class YamlAliasNode extends YamlNode, @yaml_alias_node {
-  override YamlValue eval() {
-    result.getAnchor() = this.getTarget() and
+class YAMLAliasNode extends YAMLNode, @yaml_alias_node {
+  override YAMLValue eval() {
+    result.getAnchor() = getTarget() and
     result.getDocument() = this.getDocument()
   }
 
@@ -455,11 +411,8 @@ class YamlAliasNode extends YamlNode, @yaml_alias_node {
    */
   string getTarget() { yaml_aliases(this, result) }
 
-  override string getAPrimaryQlClass() { result = "YamlAliasNode" }
+  override string getAPrimaryQlClass() { result = "YAMLAliasNode" }
 }
-
-/** DEPRECATED: Alias for YamlAliasNode */
-deprecated class YAMLAliasNode = YamlAliasNode;
 
 /**
  * A YAML document.
@@ -472,97 +425,17 @@ deprecated class YAMLAliasNode = YamlAliasNode;
  * y: 1
  * ```
  */
-class YamlDocument extends YamlNode {
-  YamlDocument() { not exists(this.getParentNode()) }
+class YAMLDocument extends YAMLNode {
+  YAMLDocument() { not exists(getParentNode()) }
 }
-
-/** DEPRECATED: Alias for YamlDocument */
-deprecated class YAMLDocument = YamlDocument;
 
 /**
  * An error message produced by the YAML parser while processing a YAML file.
  */
-class YamlParseError extends @yaml_error, Error {
+class YAMLParseError extends @yaml_error, Error {
   override Location getLocation() { yaml_locations(this, result) }
 
   override string getMessage() { yaml_errors(this, result) }
 
-  override string toString() { result = this.getMessage() }
+  override string toString() { result = getMessage() }
 }
-
-/** DEPRECATED: Alias for YamlParseError */
-deprecated class YAMLParseError = YamlParseError;
-
-/**
- * A YAML node that may contain sub-nodes that can be identified by a name.
- * I.e. a mapping, sequence, or scalar.
- *
- * Is used in e.g. GithHub Actions, which is quite flexible in parsing YAML.
- *
- * For example:
- * ```
- * on: pull_request
- * ```
- * and
- * ```
- * on: [pull_request]
- * ```
- * and
- * ```
- * on:
- *   pull_request:
- * ```
- *
- * are equivalent.
- */
-class YamlMappingLikeNode extends YamlNode {
-  YamlMappingLikeNode() {
-    this instanceof YamlMapping
-    or
-    this instanceof YamlSequence
-    or
-    this instanceof YamlScalar
-  }
-
-  /** Gets sub-name identified by `name`. */
-  YamlNode getNode(string name) {
-    exists(YamlMapping mapping |
-      mapping = this and
-      result = mapping.lookup(name)
-    )
-    or
-    exists(YamlSequence sequence, YamlNode node |
-      sequence = this and
-      sequence.getAChildNode() = node and
-      node.eval().toString() = name and
-      result = node
-    )
-    or
-    exists(YamlScalar scalar |
-      scalar = this and
-      scalar.getValue() = name and
-      result = scalar
-    )
-  }
-
-  /** Gets the number of elements in this mapping or sequence. */
-  int getElementCount() {
-    exists(YamlMapping mapping |
-      mapping = this and
-      result = mapping.getNumChild() / 2
-    )
-    or
-    exists(YamlSequence sequence |
-      sequence = this and
-      result = sequence.getNumChild()
-    )
-    or
-    exists(YamlScalar scalar |
-      scalar = this and
-      result = 1
-    )
-  }
-}
-
-/** DEPRECATED: Alias for YamlMappingLikeNode */
-deprecated class YAMLMappingLikeNode = YamlMappingLikeNode;

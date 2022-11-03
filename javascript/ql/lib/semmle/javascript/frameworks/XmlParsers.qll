@@ -2,9 +2,9 @@
  * Provides classes for working with XML parser APIs.
  */
 
-private import javascript as JS
-private import JS::DataFlow as DataFlow
-private import JS::API as API
+private import javascript as js
+private import js::DataFlow as DataFlow
+private import js::API as API
 
 module XML {
   /**
@@ -21,9 +21,9 @@ module XML {
   /**
    * A call to an XML parsing function.
    */
-  abstract class ParserInvocation extends JS::InvokeExpr {
+  abstract class ParserInvocation extends js::InvokeExpr {
     /** Gets an argument to this call that is parsed as XML. */
-    abstract JS::Expr getSourceArgument();
+    abstract js::Expr getSourceArgument();
 
     /** Holds if this call to the XML parser resolves entities of the given `kind`. */
     abstract predicate resolvesEntities(EntityKind kind);
@@ -46,21 +46,21 @@ module XML {
       )
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
       // internal entities are always resolved
       kind = InternalEntity()
       or
       // other entities are only resolved if the configuration option `noent` is set to `true`
-      exists(JS::Expr noent |
+      exists(js::Expr noent |
         hasOptionArgument(1, "noent", noent) and
         noent.mayHaveBooleanValue(true)
       )
     }
 
     /**
-     * Gets a document from the `libxmljs` library.
+     * A document from the `libxmljs` library.
      * The API is based on https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/libxmljs/index.d.ts
      */
     private API::Node doc() {
@@ -74,7 +74,7 @@ module XML {
     }
 
     /**
-     * Gets an `Element` from the `libxmljs` library.
+     * An `Element` from the `libxmljs` library.
      */
     private API::Node element() {
       result = doc().getMember(["child", "get", "node", "root"]).getReturn()
@@ -91,7 +91,7 @@ module XML {
     }
 
     /**
-     * Gets an `Attr` from the `libxmljs` library.
+     * An `Attr` from the `libxmljs` library.
      */
     private API::Node attr() {
       result = element().getMember("attr").getReturn()
@@ -100,7 +100,7 @@ module XML {
     }
 
     override DataFlow::Node getAResult() {
-      result = [doc(), element(), attr()].asSource()
+      result = [doc(), element(), attr()].getAnImmediateUse()
       or
       result = element().getMember(["name", "text"]).getACall()
       or
@@ -121,7 +121,7 @@ module XML {
       this = parser.getMember("parseString").getACall().asExpr()
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
       // entities are resolved by default
@@ -144,7 +144,7 @@ module XML {
       this = parser.getMember("push").getACall().asExpr()
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
       // entities are resolved by default
@@ -167,7 +167,7 @@ module XML {
       this = parser.getMember(["parse", "write"]).getACall().asExpr()
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
       // only internal entities are resolved by default
@@ -182,8 +182,8 @@ module XML {
   /**
    * An invocation of `DOMParser.parseFromString`.
    */
-  private class DomParserXmlParserInvocation extends XML::ParserInvocation {
-    DomParserXmlParserInvocation() {
+  private class DOMParserXmlParserInvocation extends XML::ParserInvocation {
+    DOMParserXmlParserInvocation() {
       this =
         DataFlow::globalVarRef("DOMParser")
             .getAnInstantiation()
@@ -193,12 +193,12 @@ module XML {
       getArgument(1).mayHaveStringValue(any(string tp | tp.matches("%xml%")))
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
 
     // The result is an XMLDocument (https://developer.mozilla.org/en-US/docs/Web/API/XMLDocument).
-    // The API of the XMLDocument is not modeled.
+    // The API of the XMLDocument is not modelled.
     override DataFlow::Node getAResult() { result.asExpr() = this }
   }
 
@@ -215,7 +215,7 @@ module XML {
       )
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) { any() }
   }
@@ -225,10 +225,10 @@ module XML {
    */
   private class GoogDomXmlParserInvocation extends XML::ParserInvocation {
     GoogDomXmlParserInvocation() {
-      this.getCallee().(JS::PropAccess).getQualifiedName() = "goog.dom.xml.loadXml"
+      this.getCallee().(js::PropAccess).getQualifiedName() = "goog.dom.xml.loadXml"
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
   }
@@ -246,7 +246,7 @@ module XML {
       )
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) {
       // sax-js (the parser used) does not expand entities.
@@ -273,7 +273,7 @@ module XML {
       this = parser.getAMemberCall("write").asExpr()
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) {
       // sax-js does not expand entities.
@@ -282,7 +282,11 @@ module XML {
 
     override DataFlow::Node getAResult() {
       result =
-        parser.getReturn().getMember(any(string s | s.matches("on%"))).getAParameter().asSource()
+        parser
+            .getReturn()
+            .getMember(any(string s | s.matches("on%")))
+            .getAParameter()
+            .getAnImmediateUse()
     }
   }
 
@@ -298,7 +302,7 @@ module XML {
             .asExpr()
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) {
       // xml-js does not expand custom entities.
@@ -319,14 +323,13 @@ module XML {
       this = parser.getReturn().getMember("write").getACall().asExpr()
     }
 
-    override JS::Expr getSourceArgument() { result = getArgument(0) }
+    override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) {
       // htmlparser2 does not expand entities.
       none()
     }
 
-    pragma[noinline]
     override DataFlow::Node getAResult() {
       result =
         parser
@@ -338,7 +341,7 @@ module XML {
     }
   }
 
-  private class XmlParserTaintStep extends JS::TaintTracking::SharedTaintStep {
+  private class XMLParserTaintStep extends js::TaintTracking::SharedTaintStep {
     override predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(XML::ParserInvocation parser |
         pred.asExpr() = parser.getSourceArgument() and

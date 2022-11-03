@@ -102,10 +102,3 @@ app.get('/user/:id', function (req, res) {
   res.send(markdownIt.use(require('markdown-it-sanitizer')).render(req.body)); // OK - HTML is sanitized. 
   res.send(markdownIt.use(require('markdown-it-abbr')).use(unknown).render(req.body)); // NOT OK
 });
-
-var Hapi = require('hapi');
-var hapi = new Hapi.Server();
-hapi.route({
-    handler: function (request){
-        return request.query.p; // NOT OK
-    }});

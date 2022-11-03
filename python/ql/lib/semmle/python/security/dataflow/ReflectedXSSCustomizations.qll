@@ -15,7 +15,7 @@ private import semmle.python.dataflow.new.BarrierGuards
  * "reflected server-side cross-site scripting"
  * vulnerabilities, as well as extension points for adding your own.
  */
-module ReflectedXss {
+module ReflectedXSS {
   /**
    * A data flow source for "reflected server-side cross-site scripting" vulnerabilities.
    */
@@ -32,11 +32,9 @@ module ReflectedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
    * A sanitizer guard for "reflected server-side cross-site scripting" vulnerabilities.
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -48,7 +46,7 @@ module ReflectedXss {
    */
   class ServerHttpResponseBodyAsSink extends Sink {
     ServerHttpResponseBodyAsSink() {
-      exists(Http::Server::HttpResponse response |
+      exists(HTTP::Server::HttpResponse response |
         response.getMimetype().toLowerCase() = "text/html" and
         this = response.getBody()
       )
@@ -74,8 +72,5 @@ module ReflectedXss {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
 }
-
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;

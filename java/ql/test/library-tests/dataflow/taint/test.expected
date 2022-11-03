@@ -3,7 +3,6 @@
 | A.java:33:23:33:29 | taint(...) | A.java:34:10:34:27 | toByteArray(...) |
 | A.java:46:27:46:33 | taint(...) | A.java:47:10:47:30 | toByteArray(...) |
 | A.java:55:58:55:64 | taint(...) | A.java:61:10:61:16 | dh.data |
-| A.java:78:19:78:25 | taint(...) | A.java:81:10:81:21 | filterOutput |
 | B.java:15:21:15:27 | taint(...) | B.java:18:10:18:16 | aaaargs |
 | B.java:15:21:15:27 | taint(...) | B.java:21:10:21:10 | s |
 | B.java:15:21:15:27 | taint(...) | B.java:24:10:24:15 | concat |
@@ -41,22 +40,8 @@
 | B.java:15:21:15:27 | taint(...) | B.java:151:10:151:44 | toURL(...) |
 | B.java:15:21:15:27 | taint(...) | B.java:154:10:154:37 | toPath(...) |
 | B.java:15:21:15:27 | taint(...) | B.java:157:10:157:46 | toFile(...) |
-| B.java:15:21:15:27 | taint(...) | B.java:160:10:160:46 | getAbsoluteFile(...) |
-| B.java:15:21:15:27 | taint(...) | B.java:163:10:163:47 | getCanonicalFile(...) |
-| B.java:194:16:194:22 | taint(...) | B.java:197:10:197:21 | replReceiver |
-| B.java:194:16:194:22 | taint(...) | B.java:200:10:200:17 | replChar |
-| B.java:194:16:194:22 | taint(...) | B.java:203:10:203:25 | replCharReceiver |
-| B.java:194:16:194:22 | taint(...) | B.java:208:10:208:15 | charAt |
-| B.java:194:16:194:22 | taint(...) | B.java:212:10:212:14 | bytes |
-| B.java:194:16:194:22 | taint(...) | B.java:215:10:215:16 | replAll |
-| B.java:194:16:194:22 | taint(...) | B.java:218:10:218:18 | replFirst |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:8:12:8:14 | seq |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:11:12:11:21 | seqFromSeq |
-| CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:14:12:14:24 | stringFromSeq |
-| JavaIo.java:13:20:13:26 | taint(...) | JavaIo.java:16:10:16:21 | toString(...) |
-| JavaIo.java:13:20:13:26 | taint(...) | JavaIo.java:17:10:17:33 | toString(...) |
-| JavaIo.java:30:24:30:30 | taint(...) | JavaIo.java:33:10:33:24 | toCharArray(...) |
-| JavaIo.java:37:74:37:80 | taint(...) | JavaIo.java:41:10:41:12 | buf |
 | MethodFlow.java:7:22:7:28 | taint(...) | MethodFlow.java:8:10:8:16 | tainted |
 | MethodFlow.java:9:31:9:37 | taint(...) | MethodFlow.java:10:10:10:17 | tainted2 |
 | MethodFlow.java:11:35:11:41 | taint(...) | MethodFlow.java:12:10:12:17 | tainted3 |
@@ -69,9 +54,6 @@
 | StringBuilderTests.java:48:69:48:75 | taint(...) | StringBuilderTests.java:50:10:50:22 | toString(...) |
 | StringBuilderTests.java:56:24:56:30 | taint(...) | StringBuilderTests.java:57:10:57:22 | toString(...) |
 | StringBuilderTests.java:63:19:63:25 | taint(...) | StringBuilderTests.java:64:10:64:22 | toString(...) |
-| StringBuilderTests.java:70:15:70:21 | taint(...) | StringBuilderTests.java:73:10:73:26 | new String(...) |
-| StringBuilderTests.java:79:15:79:21 | taint(...) | StringBuilderTests.java:80:10:80:40 | toString(...) |
-| StringBuilderTests.java:86:15:86:21 | taint(...) | StringBuilderTests.java:87:10:87:27 | substring(...) |
 | Varargs.java:7:8:7:14 | taint(...) | Varargs.java:14:10:14:10 | s |
 | Varargs.java:8:8:8:14 | taint(...) | Varargs.java:19:10:19:10 | s |
 | Varargs.java:8:17:8:23 | taint(...) | Varargs.java:19:10:19:10 | s |

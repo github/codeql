@@ -11,6 +11,7 @@
 
 import csharp
 import DataFlow::PathGraph
+import semmle.code.csharp.dataflow.TaintTracking
 
 class UnsafeYearCreationFromArithmeticConfiguration extends TaintTracking::Configuration {
   UnsafeYearCreationFromArithmeticConfiguration() {
@@ -20,7 +21,7 @@ class UnsafeYearCreationFromArithmeticConfiguration extends TaintTracking::Confi
   override predicate isSource(DataFlow::Node source) {
     exists(ArithmeticOperation ao, PropertyAccess pa | ao = source.asExpr() |
       pa = ao.getAChild*() and
-      pa.getProperty().hasQualifiedName("System.DateTime.Year")
+      pa.getProperty().getQualifiedName().matches("System.DateTime.Year")
     )
   }
 

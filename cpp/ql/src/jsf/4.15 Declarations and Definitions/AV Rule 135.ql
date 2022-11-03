@@ -31,8 +31,8 @@ from Variable v, Variable shadowed
 where
   not v.getParentScope().(BlockStmt).isInMacroExpansion() and
   (
-    v.(LocalVariableOrParameter).shadowsGlobal(shadowed) or
+    v.(LocalVariableOrParameter).shadowsGlobal(shadowed.(GlobalVariable)) or
     localShadowsParameter(v, shadowed) or
     shadowing(v, shadowed)
   )
-select v, "Identifiers in an inner scope should not hide identifiers in an outer scope."
+select v, "Identifiers in an inner scope should not hide identifiers in an outer scope"

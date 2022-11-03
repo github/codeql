@@ -6,7 +6,7 @@ import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
-private import semmle.code.csharp.security.xml.InsecureXMLQuery as InsecureXml
+private import semmle.code.csharp.security.xml.InsecureXMLQuery as InsecureXML
 private import semmle.code.csharp.security.Sanitizers
 
 /**
@@ -28,11 +28,11 @@ abstract class Sink extends DataFlow::ExprNode {
   abstract string getReason();
 }
 
-private class InsecureXmlSink extends Sink {
+private class InsecureXMLSink extends Sink {
   private string reason;
 
-  InsecureXmlSink() {
-    exists(InsecureXml::InsecureXmlProcessing r | r.isUnsafe(reason) |
+  InsecureXMLSink() {
+    exists(InsecureXML::InsecureXmlProcessing r | r.isUnsafe(reason) |
       this.getExpr() = r.getAnArgument()
     )
   }

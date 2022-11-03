@@ -14,4 +14,4 @@ import csharp
 
 from CommentLine c
 where c.getText().regexpMatch("(?s).*FIXME.*|.*TODO.*|.*(?<!=)\\s*XXX.*")
-select c, "TODO comments should be addressed."
+select c, "TODO comment."

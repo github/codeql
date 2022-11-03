@@ -36,4 +36,5 @@ where
   not inSystemMacroExpansion(use) and
   // Avoid double-counting: don't include all the conversions of `use`.
   not use instanceof Conversion
-select use, "$@ flows an expression which might " + kind + ".", origin, "User-provided value"
+select use, "$@ flows to here and is used in an expression which might " + kind + ".", origin,
+  "User-provided value"

@@ -26,11 +26,6 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof TaintedObject::SanitizerGuard
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-
   override predicate isAdditionalFlowStep(
     DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
   ) {

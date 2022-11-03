@@ -1,4 +1,0 @@
-| User.java:3:21:3:24 | test |
-| test1.kt:3:12:3:22 | f$main |
-| test2.kt:3:12:3:22 | f$mymodule |
-| test3.kt:3:12:3:22 | f$reservedchars___ |

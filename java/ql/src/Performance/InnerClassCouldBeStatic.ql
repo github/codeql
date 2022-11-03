@@ -21,7 +21,7 @@ pragma[nomagic]
 predicate inherits(Class c, Field f) {
   f = c.getAField()
   or
-  not f.isPrivate() and c.getAStrictAncestor().getAField() = f
+  not f.isPrivate() and c.getASupertype+().getAField() = f
 }
 
 /**
@@ -78,7 +78,7 @@ RefType enclosingInstanceAccess(Expr expr) {
       result = ma.getMethod().getDeclaringType() and
       not exists(ma.getQualifier()) and
       not ma.getMethod().isStatic() and
-      not enclosing.inherits(ma.getMethod())
+      not exists(Method m | m.getSourceDeclaration() = ma.getMethod() | enclosing.inherits(m))
     )
   )
 }
@@ -130,9 +130,7 @@ predicate potentiallyStatic(InnerClass c) {
     )
   ) and
   // JUnit Nested test classes are required to be non-static.
-  not c.hasAnnotation("org.junit.jupiter.api", "Nested") and
-  // There's no `static` in kotlin:
-  not c.getLocation().getFile().isKotlinSourceFile()
+  not c.hasAnnotation("org.junit.jupiter.api", "Nested")
 }
 
 /**

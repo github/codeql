@@ -1,5 +1,5 @@
 import javascript
-private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
+private import semmle.javascript.security.dataflow.Xss
 
 query Angular2::PipeRefExpr pipeRef() { any() }
 

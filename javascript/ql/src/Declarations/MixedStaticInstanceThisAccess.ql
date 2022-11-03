@@ -12,7 +12,7 @@
 import javascript
 
 /** Holds if `base` declares or inherits method `m` with the given `name`. */
-predicate hasMethod(ClassDefinition base, string name, MethodDeclaration m) {
+predicate hasMethod(ClassDefinition base, string name, MethodDefinition m) {
   m = base.getMethod(name) or
   hasMethod(base.getSuperClassDefinition(), name, m)
 }
@@ -22,7 +22,7 @@ predicate hasMethod(ClassDefinition base, string name, MethodDeclaration m) {
  * where `fromMethod` and `toMethod` are of kind `fromKind` and `toKind`, respectively.
  */
 predicate isLocalMethodAccess(
-  PropAccess access, MethodDefinition fromMethod, string fromKind, MethodDeclaration toMethod,
+  PropAccess access, MethodDefinition fromMethod, string fromKind, MethodDefinition toMethod,
   string toKind
 ) {
   hasMethod(fromMethod.getDeclaringClass(), access.getPropertyName(), toMethod) and
@@ -32,7 +32,7 @@ predicate isLocalMethodAccess(
   toKind = getKind(toMethod)
 }
 
-string getKind(MethodDeclaration m) {
+string getKind(MethodDefinition m) {
   if m.isStatic() then result = "static" else result = "instance"
 }
 

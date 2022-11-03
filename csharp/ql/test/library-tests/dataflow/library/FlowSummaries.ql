@@ -1,16 +1,8 @@
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-import shared.FlowSummaries
+import semmle.code.csharp.dataflow.FlowSummary
+import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::TestOutput
 
-private class IncludeAllSummarizedCallable extends IncludeSummarizedCallable {
-  IncludeAllSummarizedCallable() { exists(this) }
-}
+private class IncludeSummarizedCallable extends RelevantSummarizedCallable {
+  IncludeSummarizedCallable() { this instanceof SummarizedCallable }
 
-private class IncludeNegativeSummarizedCallable extends RelevantNegativeSummarizedCallable {
-  IncludeNegativeSummarizedCallable() {
-    this instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
-  }
-
-  /** Gets a string representing the callable in semi-colon separated format for use in flow summaries. */
-  final override string getCallableCsv() { result = Csv::asPartialNegativeModel(this) }
+  override string getFullString() { result = this.(Callable).getQualifiedNameWithTypes() }
 }

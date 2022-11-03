@@ -37,28 +37,22 @@ def html4():  # $requestHandler
 
 @app.route("/html5")  # $routeSetup="/html5"
 def html5():  # $requestHandler
-    resp = Response(response="<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
-    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
-
-
-@app.route("/html6")  # $routeSetup="/html6"
-def html6():  # $requestHandler
     # note: flask.Flask.response_class is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
     resp = Flask.response_class("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
-@app.route("/html7")  # $routeSetup="/html7"
-def html7():  # $requestHandler
+@app.route("/html6")  # $routeSetup="/html6"
+def html6():  # $requestHandler
     # note: app.response_class (flask.Flask.response_class) is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
     resp = app.response_class("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
-@app.route("/html8")  # $routeSetup="/html8"
-def html8():  # $requestHandler
+@app.route("/html7")  # $routeSetup="/html7"
+def html7():  # $requestHandler
     resp = make_response()  # $HttpResponse mimetype=text/html
     resp.set_data("<h1>hello</h1>")  # $ MISSING: responseBody="<h1>hello</h1>"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
@@ -66,8 +60,8 @@ def html8():  # $requestHandler
 
 @app.route("/jsonify")  # $routeSetup="/jsonify"
 def jsonify_route():  # $requestHandler
-    x = "x"; y = "y"; z = "z"
-    resp = jsonify(x, y, z=z)  # $ HttpResponse mimetype=application/json responseBody=x responseBody=y responseBody=z
+    data = {"foo": "bar"}
+    resp = jsonify(data)  # $ MISSING: HttpResponse mimetype=application/json responseBody=data
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 ################################################################################

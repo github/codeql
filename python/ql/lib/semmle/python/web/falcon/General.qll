@@ -1,24 +1,22 @@
 import python
 import semmle.python.web.Http
 
-/** Gets the falcon API class */
-deprecated ClassValue theFalconAPIClass() { result = Value::named("falcon.API") }
+/** The falcon API class */
+ClassValue theFalconAPIClass() { result = Value::named("falcon.API") }
 
 /** Holds if `route` is routed to `resource` */
-deprecated private predicate api_route(
-  CallNode route_call, ControlFlowNode route, ClassValue resource
-) {
+private predicate api_route(CallNode route_call, ControlFlowNode route, ClassValue resource) {
   route_call.getFunction().(AttrNode).getObject("add_route").pointsTo().getClass() =
     theFalconAPIClass() and
   route_call.getArg(0) = route and
   route_call.getArg(1).pointsTo().getClass() = resource
 }
 
-deprecated private predicate route(FalconRoute route, Function target, string funcname) {
+private predicate route(FalconRoute route, Function target, string funcname) {
   route.getResourceClass().lookup("on_" + funcname).(FunctionValue).getScope() = target
 }
 
-deprecated class FalconRoute extends ControlFlowNode {
+class FalconRoute extends ControlFlowNode {
   FalconRoute() { api_route(this, _, _) }
 
   string getUrl() {
@@ -33,7 +31,7 @@ deprecated class FalconRoute extends ControlFlowNode {
   FalconHandlerFunction getHandlerFunction(string method) { route(this, result, method) }
 }
 
-deprecated class FalconHandlerFunction extends Function {
+class FalconHandlerFunction extends Function {
   FalconHandlerFunction() { route(_, this, _) }
 
   private string methodName() { route(_, this, result) }

@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If an LDAP query is built using string concatenation or string formatting, and the
+components of the concatenation include user input without any proper sanitization, a user 
+is likely to be able to run malicious LDAP queries.</p>
+</overview>
+
+<recommendation>
+<p>If user input must be included in an LDAP query, it should be escaped to
+avoid a malicious user providing special characters that change the meaning
+of the query. In NodeJS, it is possible to build the LDAP query using frameworks like <code>ldapjs</code>. 
+The library provides a <code>Filter API</code>, however it's still possibile to pass a string version of an LDAP filter.
+A good practice is to escape filter characters that could change the meaning of the query (https://tools.ietf.org/search/rfc4515#section-3).</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the code accepts a <code>username</code> from the user, which it uses in a LDAP query.</p>
+
+<p>The first and the second example uses the unsanitized user input directly
+in the search filter for the LDAP query.
+A malicious user could provide special characters to change the meaning of these
+queries, and search for a completely different set of values.
+</p>
+<sample src="examples/example_bad1.js" />
+<sample src="examples/example_bad2.js" />
+
+
+<p>In the third example the <code>username</code> is sanitized before it is included in the search filters. 
+This ensures the meaning of the query cannot be changed by a malicious user.</p>
+
+<sample src="examples/example_good1.js" />
+
+<p>In the fourth example the <code>username</code> is passed to an <code>OrFilter</code> filter before it is included in the search filters. 
+This ensures the meaning of the query cannot be changed by a malicious user.</p>
+
+<sample src="examples/example_good2.js" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html">LDAP Injection Prevention Cheat Sheet</a>.</li>
+<li>LDAPjs: <a href="http://ldapjs.org/index.html">Documentation for LDAPjs</a>.</li>
+<li>Github: <a href="https://github.com/ldapjs/node-ldapjs">ldapjs</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/LDAP_injection">LDAP injection</a>.</li>
+<li>BlackHat: <a href="https://www.blackhat.com/presentations/bh-europe-08/Alonso-Parada/Whitepaper/bh-eu-08-alonso-parada-WP.pdf">LDAP Injection and Blind LDAP Injection</a>.</li>
+<li>LDAP: <a href="https://ldap.com/2018/05/04/understanding-and-defending-against-ldap-injection-attacks/">Understanding and Defending Against LDAP Injection Attacks</a>.</li>
+</references>
+</qhelp>

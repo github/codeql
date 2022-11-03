@@ -3,7 +3,7 @@ import javascript
 /**
  * INTERNAL: Do not use in ordinary queries.
  *
- * Extraction metrics for profiling extraction behaviors.
+ * Extraction metrics for profiling extraction behaviours.
  */
 module ExtractionMetrics {
   /**

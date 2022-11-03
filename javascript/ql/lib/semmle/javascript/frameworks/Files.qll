@@ -76,51 +76,76 @@ private class GlobFileNameSource extends FileNameSource {
 
 /**
  * Gets a file name or an array of file names from the `globby` library.
+ * The predicate uses type-tracking. However, type-tracking is only used to track a step out of a promise.
  */
-private API::Node globbyFileNameSource() {
-  // `require('globby').sync(_)`
-  result = API::moduleImport("globby").getMember("sync").getReturn()
+private DataFlow::SourceNode globbyFileNameSource(DataFlow::TypeTracker t) {
+  exists(string moduleName | moduleName = "globby" |
+    // `require('globby').sync(_)`
+    t.start() and
+    result = DataFlow::moduleMember(moduleName, "sync").getACall()
+    or
+    // `files` in `require('globby')(_).then(files => ...)`
+    t.startInPromise() and
+    result = DataFlow::moduleImport(moduleName).getACall()
+  )
   or
-  // `files` in `require('globby')(_).then(files => ...)`
-  result = API::moduleImport("globby").getReturn().getPromised()
+  // Tracking out of a promise
+  exists(DataFlow::TypeTracker t2 |
+    result = PromiseTypeTracking::promiseStep(globbyFileNameSource(t2), t, t2)
+  )
 }
 
 /**
  * A file name or an array of file names from the `globby` library.
  */
 private class GlobbyFileNameSource extends FileNameSource {
-  GlobbyFileNameSource() { this = globbyFileNameSource().asSource() }
+  GlobbyFileNameSource() { this = globbyFileNameSource(DataFlow::TypeTracker::end()) }
 }
 
-/** Gets a file name or an array of file names from the `fast-glob` library. */
-private API::Node fastGlobFileName() {
-  // `require('fast-glob').sync(_)
-  result = API::moduleImport("fast-glob").getMember("sync").getReturn()
-  or
-  exists(API::Node base |
-    base = [API::moduleImport("fast-glob"), API::moduleImport("fast-glob").getMember("async")]
-  |
-    result = base.getReturn().getPromised()
+/**
+ * Gets a file name or an array of file names from the `fast-glob` library.
+ * The predicate uses type-tracking. However, type-tracking is only used to track a step out of a promise.
+ */
+private DataFlow::Node fastGlobFileNameSource(DataFlow::TypeTracker t) {
+  exists(string moduleName | moduleName = "fast-glob" |
+    // `require('fast-glob').sync(_)
+    t.start() and result = DataFlow::moduleMember(moduleName, "sync").getACall()
+    or
+    exists(DataFlow::SourceNode f |
+      f = DataFlow::moduleImport(moduleName)
+      or
+      f = DataFlow::moduleMember(moduleName, "async")
+    |
+      // `files` in `require('fast-glob')(_).then(files => ...)` and
+      // `files` in `require('fast-glob').async(_).then(files => ...)`
+      t.startInPromise() and result = f.getACall()
+    )
+    or
+    // `file` in `require('fast-glob').stream(_).on(_,  file => ...)`
+    t.start() and
+    result =
+      DataFlow::moduleMember(moduleName, "stream")
+          .getACall()
+          .getAMethodCall(EventEmitter::on())
+          .getCallback(1)
+          .getParameter(0)
   )
   or
-  result =
-    API::moduleImport("fast-glob")
-        .getMember("stream")
-        .getReturn()
-        .getMember(EventEmitter::on())
-        .getParameter(1)
-        .getParameter(0)
+  // Tracking out of a promise
+  exists(DataFlow::TypeTracker t2 |
+    result = PromiseTypeTracking::promiseStep(fastGlobFileNameSource(t2), t, t2)
+  )
 }
 
 /**
  * A file name or an array of file names from the `fast-glob` library.
  */
 private class FastGlobFileNameSource extends FileNameSource {
-  FastGlobFileNameSource() { this = fastGlobFileName().asSource() }
+  FastGlobFileNameSource() { this = fastGlobFileNameSource(DataFlow::TypeTracker::end()) }
 }
 
 /**
- * Classes and predicates for modeling the `fstream` library (https://www.npmjs.com/package/fstream).
+ * Classes and predicates for modelling the `fstream` library (https://www.npmjs.com/package/fstream).
  */
 private module FStream {
   /**
@@ -134,7 +159,7 @@ private module FStream {
         or
         readOrWrite = "Writer" and writer = true
       ) and
-      subMod = ["File", "Dir", "Link", "Proxy"]
+      (subMod = "File" or subMod = "Dir" or subMod = "Link" or subMod = "Proxy")
     |
       result = mod.getAPropertyRead(readOrWrite) or
       result = mod.getAPropertyRead(readOrWrite).getAPropertyRead(subMod) or
@@ -151,10 +176,10 @@ private module FStream {
     FStream() { this = getAnFStreamProperty(writer).getAnInvocation() }
 
     override DataFlow::Node getAPathArgument() {
-      result = this.getOptionArgument(0, "path")
+      result = getOptionArgument(0, "path")
       or
-      not exists(this.getOptionArgument(0, "path")) and
-      result = this.getArgument(0)
+      not exists(getOptionArgument(0, "path")) and
+      result = getArgument(0)
     }
   }
 
@@ -187,109 +212,109 @@ private class WriteFileAtomic extends FileSystemWriteAccess, DataFlow::CallNode 
     this = DataFlow::moduleMember("write-file-atomic", "sync").getACall()
   }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-  override DataFlow::Node getADataNode() { result = this.getArgument(1) }
-}
-
-/**
- * A call to the library `chownr`.
- * The library changes the owner of a file or directory recursively.
- */
-private class Chownr extends FileSystemWriteAccess, DataFlow::CallNode {
-  Chownr() { this = DataFlow::moduleImport("chownr").getACall() }
-
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
-
-  override DataFlow::Node getADataNode() { none() }
+  override DataFlow::Node getADataNode() { result = getArgument(1) }
 }
 
 /**
  * A call to the library `recursive-readdir`.
  */
-private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, API::CallNode {
-  RecursiveReadDir() { this = API::moduleImport("recursive-readdir").getACall() }
+private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, DataFlow::CallNode {
+  RecursiveReadDir() { this = DataFlow::moduleImport("recursive-readdir").getACall() }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-  override DataFlow::Node getAFileName() { result = this.trackFileSource().asSource() }
+  override DataFlow::Node getAFileName() { result = trackFileSource(DataFlow::TypeTracker::end()) }
 
-  private API::Node trackFileSource() {
-    result = this.getParameter([1 .. 2]).getParameter(1)
+  private DataFlow::SourceNode trackFileSource(DataFlow::TypeTracker t) {
+    t.start() and result = getCallback([1 .. 2]).getParameter(1)
     or
-    not exists(this.getCallback([1 .. 2])) and result = this.getReturn().getPromised()
+    t.startInPromise() and not exists(getCallback([1 .. 2])) and result = this
+    or
+    // Tracking out of a promise
+    exists(DataFlow::TypeTracker t2 |
+      result = PromiseTypeTracking::promiseStep(trackFileSource(t2), t, t2)
+    )
   }
 }
 
 /**
- * Classes and predicates for modeling the `jsonfile` library (https://www.npmjs.com/package/jsonfile).
+ * Classes and predicates for modelling the `jsonfile` library (https://www.npmjs.com/package/jsonfile).
  */
-private module JsonFile {
+private module JSONFile {
   /**
    * A reader for JSON files.
    */
-  class JsonFileReader extends FileSystemReadAccess, API::CallNode {
-    JsonFileReader() {
-      this = API::moduleImport("jsonfile").getMember(["readFile", "readFileSync"]).getACall()
+  class JSONFileReader extends FileSystemReadAccess, DataFlow::CallNode {
+    JSONFileReader() {
+      this =
+        DataFlow::moduleMember("jsonfile", any(string s | s = "readFile" or s = "readFileSync"))
+            .getACall()
     }
 
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-    override DataFlow::Node getADataNode() { result = this.trackRead().asSource() }
+    override DataFlow::Node getADataNode() { result = trackRead(DataFlow::TypeTracker::end()) }
 
-    private API::Node trackRead() {
+    private DataFlow::SourceNode trackRead(DataFlow::TypeTracker t) {
       this.getCalleeName() = "readFile" and
       (
-        result = this.getParameter([1 .. 2]).getParameter(1)
+        t.start() and result = getCallback([1 .. 2]).getParameter(1)
         or
-        not exists(this.getCallback([1 .. 2])) and result = this.getReturn().getPromised()
+        t.startInPromise() and not exists(getCallback([1 .. 2])) and result = this
       )
       or
+      t.start() and
       this.getCalleeName() = "readFileSync" and
-      result = this.getReturn()
+      result = this
+      or
+      // Tracking out of a promise
+      exists(DataFlow::TypeTracker t2 |
+        result = PromiseTypeTracking::promiseStep(trackRead(t2), t, t2)
+      )
     }
   }
-
-  /** DEPRECATED: Alias for JsonFileReader */
-  deprecated class JSONFileReader = JsonFileReader;
 
   /**
    * A writer for JSON files.
    */
-  class JsonFileWriter extends FileSystemWriteAccess, DataFlow::CallNode {
-    JsonFileWriter() {
+  class JSONFileWriter extends FileSystemWriteAccess, DataFlow::CallNode {
+    JSONFileWriter() {
       this =
         DataFlow::moduleMember("jsonfile", any(string s | s = "writeFile" or s = "writeFileSync"))
             .getACall()
     }
 
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-    override DataFlow::Node getADataNode() { result = this.getArgument(1) }
+    override DataFlow::Node getADataNode() { result = getArgument(1) }
   }
-
-  /** DEPRECATED: Alias for JsonFileWriter */
-  deprecated class JSONFileWriter = JsonFileWriter;
 }
 
 /**
  * A call to the library `load-json-file`.
  */
-private class LoadJsonFile extends FileSystemReadAccess, API::CallNode {
+private class LoadJsonFile extends FileSystemReadAccess, DataFlow::CallNode {
   LoadJsonFile() {
-    this = API::moduleImport("load-json-file").getACall()
+    this = DataFlow::moduleImport("load-json-file").getACall()
     or
-    this = API::moduleImport("load-json-file").getMember("sync").getACall()
+    this = DataFlow::moduleMember("load-json-file", "sync").getACall()
   }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-  override DataFlow::Node getADataNode() { result = this.trackRead().asSource() }
+  override DataFlow::Node getADataNode() { result = trackRead(DataFlow::TypeTracker::end()) }
 
-  private API::Node trackRead() {
-    this.getCalleeName() = "sync" and result = this.getReturn()
+  private DataFlow::SourceNode trackRead(DataFlow::TypeTracker t) {
+    this.getCalleeName() = "sync" and t.start() and result = this
     or
-    not this.getCalleeName() = "sync" and result = this.getReturn().getPromised()
+    not this.getCalleeName() = "sync" and t.startInPromise() and result = this
+    or
+    // Tracking out of a promise
+    exists(DataFlow::TypeTracker t2 |
+      result = PromiseTypeTracking::promiseStep(trackRead(t2), t, t2)
+    )
   }
 }
 
@@ -303,38 +328,44 @@ private class WriteJsonFile extends FileSystemWriteAccess, DataFlow::CallNode {
     this = DataFlow::moduleMember("write-json-file", "sync").getACall()
   }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-  override DataFlow::Node getADataNode() { result = this.getArgument(1) }
+  override DataFlow::Node getADataNode() { result = getArgument(1) }
 }
 
 /**
  * A call to the library `walkdir`.
  */
-private class WalkDir extends FileNameProducer, FileSystemAccess, API::CallNode {
+private class WalkDir extends FileNameProducer, FileSystemAccess, DataFlow::CallNode {
   WalkDir() {
-    this = API::moduleImport("walkdir").getACall()
+    this = DataFlow::moduleImport("walkdir").getACall()
     or
-    this = API::moduleImport("walkdir").getMember("sync").getACall()
+    this = DataFlow::moduleMember("walkdir", "sync").getACall()
     or
-    this = API::moduleImport("walkdir").getMember("async").getACall()
+    this = DataFlow::moduleMember("walkdir", "async").getACall()
   }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-  override DataFlow::Node getAFileName() { result = this.trackFileSource().asSource() }
+  override DataFlow::Node getAFileName() { result = trackFileSource(DataFlow::TypeTracker::end()) }
 
-  private API::Node trackFileSource() {
-    not this.getCalleeName() = ["sync", "async"] and
+  private DataFlow::SourceNode trackFileSource(DataFlow::TypeTracker t) {
+    not this.getCalleeName() = any(string s | s = "sync" or s = "async") and
+    t.start() and
     (
-      result = this.getParameter(this.getNumArgument() - 1).getParameter(0)
+      result = getCallback(getNumArgument() - 1).getParameter(0)
       or
-      result = this.getReturn().getMember(EventEmitter::on()).getParameter(1).getParameter(0)
+      result = getAMethodCall(EventEmitter::on()).getCallback(1).getParameter(0)
     )
     or
-    this.getCalleeName() = "sync" and result = this.getReturn()
+    t.start() and this.getCalleeName() = "sync" and result = this
     or
-    this.getCalleeName() = "async" and result = this.getReturn().getPromised()
+    t.startInPromise() and this.getCalleeName() = "async" and result = this
+    or
+    // Tracking out of a promise
+    exists(DataFlow::TypeTracker t2 |
+      result = PromiseTypeTracking::promiseStep(trackFileSource(t2), t, t2)
+    )
   }
 }
 
@@ -356,14 +387,13 @@ private class Globule extends FileNameProducer, FileSystemAccess, DataFlow::Call
 
   override DataFlow::Node getAPathArgument() {
     (this.getCalleeName() = "match" or this.getCalleeName() = "isMatch") and
-    result = this.getArgument(1)
+    result = getArgument(1)
     or
     this.getCalleeName() = "mapping" and
     (
-      result = this.getAnArgument() and
-      not exists(result.getALocalSource().getAPropertyWrite("src"))
+      result = getAnArgument() and not exists(result.getALocalSource().getAPropertyWrite("src"))
       or
-      result = this.getAnArgument().getALocalSource().getAPropertyWrite("src").getRhs()
+      result = getAnArgument().getALocalSource().getAPropertyWrite("src").getRhs()
     )
   }
 
@@ -398,7 +428,9 @@ private class LibraryAccess extends FileSystemAccess, DataFlow::InvokeNode {
       or
       this =
         DataFlow::moduleMember("node-dir",
-          ["readFiles", "readFilesStream", "files", "promiseFiles", "subdirs", "paths"]).getACall()
+          any(string s |
+            s = ["readFiles", "readFilesStream", "files", "promiseFiles", "subdirs", "paths"]
+          )).getACall()
     )
     or
     pathArgument = 0 and
@@ -413,7 +445,7 @@ private class LibraryAccess extends FileSystemAccess, DataFlow::InvokeNode {
     )
   }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArgument) }
+  override DataFlow::Node getAPathArgument() { result = getArgument(pathArgument) }
 }
 
 /**
@@ -422,11 +454,11 @@ private class LibraryAccess extends FileSystemAccess, DataFlow::InvokeNode {
 class Chokidar extends FileNameProducer, FileSystemAccess, API::CallNode {
   Chokidar() { this = API::moduleImport("chokidar").getMember("watch").getACall() }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
   override DataFlow::Node getAFileName() {
     exists(DataFlow::CallNode onCall, int pathIndex |
-      onCall = this.getAChainedMethodCall("on") and
+      onCall = getAChainedMethodCall("on") and
       if onCall.getArgument(0).mayHaveStringValue("all") then pathIndex = 1 else pathIndex = 0
     |
       result = onCall.getCallback(1).getParameter(pathIndex)
@@ -444,5 +476,5 @@ private class Mkdirp extends FileSystemAccess, API::CallNode {
     this = API::moduleImport("mkdirp").getMember("sync").getACall()
   }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 }

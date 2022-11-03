@@ -15,11 +15,11 @@ import javascript
 abstract class NgSourceProvider extends Locatable {
   /**
    * Holds if this element provides the source as `src` for an AngularJS expression at the specified location.
-   * The location spans column `startColumn` of line `startLine` to
-   * column `endColumn` of line `endLine` in file `filepath`.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
    */
   abstract predicate providesSourceAt(
-    string src, string filepath, int startLine, int startColumn, int endLine, int endColumn
+    string src, string path, int startLine, int startColumn, int endLine, int endColumn
   );
 
   /**
@@ -52,7 +52,7 @@ class NgSource extends MkNgSource {
   NgSourceProvider getProvider() { result = provider }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = this.getText() }
+  string toString() { result = getText() }
 }
 
 /**
@@ -65,19 +65,20 @@ private string getInterpolatedExpressionPattern() { result = "(?<=\\{\\{).*?(?=\
  */
 private class HtmlTextNodeAsNgSourceProvider extends NgSourceProvider, HTML::TextNode {
   string source;
+  int offset;
 
   HtmlTextNodeAsNgSourceProvider() {
-    source = this.getText().regexpFind(getInterpolatedExpressionPattern(), _, _)
+    source = getText().regexpFind(getInterpolatedExpressionPattern(), _, offset)
   }
 
   override predicate providesSourceAt(
     string src, string path, int startLine, int startColumn, int endLine, int endColumn
   ) {
     src = source and
-    this.getLocation().hasLocationInfo(path, startLine, startColumn, endLine, endColumn) // this is the entire surrounding text element, we could be more precise by counting lines
+    getLocation().hasLocationInfo(path, startLine, startColumn, endLine, endColumn) // this is the entire surrounding text element, we could be more precise by counting lines
   }
 
-  override DOM::ElementDefinition getEnclosingElement() { result = this.getParent() }
+  override DOM::ElementDefinition getEnclosingElement() { result = getParent() }
 }
 
 /**
@@ -87,18 +88,18 @@ abstract private class HtmlAttributeAsNgSourceProvider extends NgSourceProvider,
   override predicate providesSourceAt(
     string src, string path, int startLine, int startColumn, int endLine, int endColumn
   ) {
-    src = this.getSource() and
-    this.getLocation().hasLocationInfo(path, startLine, startColumn - this.getOffset(), endLine, _) and
+    src = getSource() and
+    getLocation().hasLocationInfo(path, startLine, startColumn - getOffset(), endLine, _) and
     endColumn = startColumn + src.length() - 1
   }
 
-  /** Gets the source code of the expression. */
+  /** The source code of the expression. */
   abstract string getSource();
 
-  /** Gets the offset into the attribute where the expression starts. */
+  /** The offset into the attribute where the expression starts. */
   abstract int getOffset();
 
-  override DOM::ElementDefinition getEnclosingElement() { result = this.getElement() }
+  override DOM::ElementDefinition getEnclosingElement() { result = getElement() }
 }
 
 /**
@@ -109,7 +110,7 @@ private class HtmlAttributeAsInterpolatedNgSourceProvider extends HtmlAttributeA
   int offset;
 
   HtmlAttributeAsInterpolatedNgSourceProvider() {
-    source = this.getValue().regexpFind(getInterpolatedExpressionPattern(), _, offset) and
+    source = getValue().regexpFind(getInterpolatedExpressionPattern(), _, offset) and
     not this instanceof HtmlAttributeAsPlainNgSourceProvider
   }
 
@@ -136,7 +137,7 @@ private class HtmlAttributeAsPlainNgSourceProvider extends HtmlAttributeAsNgSour
     )
   }
 
-  override string getSource() { result = this.getValue() }
+  override string getSource() { result = getValue() }
 
   override int getOffset() { result = 0 }
 }
@@ -161,7 +162,7 @@ private class TemplateFieldNgSourceProvider extends NgSourceProvider {
     string src, string path, int startLine, int startColumn, int endLine, int endColumn
   ) {
     src = source and
-    this.getLocation().hasLocationInfo(path, startLine, startColumn - offset, endLine, _) and
+    getLocation().hasLocationInfo(path, startLine, startColumn - offset, endLine, _) and
     endColumn = startColumn + src.length() - 1
   }
 
@@ -179,7 +180,7 @@ abstract class NgToken extends TNgToken {
   /** Gets a textual representation of this element. */
   string toString() {
     exists(string content |
-      this.is(content) and
+      is(content) and
       result = "(" + this.ppKind() + ": " + content + ")"
     )
   }
@@ -369,7 +370,7 @@ abstract class NgAstNode extends TNode {
   string ppChildren() {
     result =
       concat(NgAstNode child, int idx |
-        child = this.getChild(idx) and
+        child = getChild(idx) and
         not child instanceof Empty
       |
         child.pp(), " " order by idx
@@ -377,7 +378,7 @@ abstract class NgAstNode extends TNode {
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = this.pp() }
+  string toString() { result = pp() }
 
   /**
    * Pretty-prints this node.
@@ -393,8 +394,8 @@ class NgAst extends TNgAst, NgAstNode {
 
   override string pp() {
     exists(string oneTime |
-      (if this.isOneTime() then oneTime = " <oneTime>" else oneTime = "") and
-      result = "(NgAst:" + oneTime + " " + this.ppChildren() + ")"
+      (if isOneTime() then oneTime = " <oneTime>" else oneTime = "") and
+      result = "(NgAst:" + oneTime + " " + ppChildren() + ")"
     )
   }
 
@@ -412,7 +413,7 @@ class NgAst extends TNgAst, NgAstNode {
 class NgExprStmt extends TNgExprStmt, NgAstNode {
   override predicate at(NgToken start, NgToken end) { this = TNgExprStmt(start, end, _) }
 
-  override string pp() { result = "(NgExprStmt: " + this.ppChildren() + ")" }
+  override string pp() { result = "(NgExprStmt: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) { n = 0 and this = TNgExprStmt(_, _, result) }
 }
@@ -425,12 +426,12 @@ class NgExprStmt extends TNgExprStmt, NgAstNode {
 class NgFilterChain extends TNgFilterChain, NgAstNode {
   override predicate at(NgToken start, NgToken end) { this = TNgFilterChain(start, end, _, _) }
 
-  override string pp() { result = "(NgFilterChain: " + this.ppChildren() + ")" }
+  override string pp() { result = "(NgFilterChain: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
-    n = 0 and result = this.getExpr()
+    n = 0 and result = getExpr()
     or
-    n = 1 and result = this.getFilter()
+    n = 1 and result = getFilter()
   }
 
   /**
@@ -457,12 +458,12 @@ abstract class NgMaybeFilter extends NgAstNode { }
 class NgFilter extends TNgFilter, NgMaybeFilter {
   override predicate at(NgToken start, NgToken end) { this = TNgFilter(start, end, _, _) }
 
-  override string pp() { result = "(NgFilter: " + this.ppChildren() + ")" }
+  override string pp() { result = "(NgFilter: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
-    n = 0 and result = this.getHeadFilter()
+    n = 0 and result = getHeadFilter()
     or
-    n = 1 and result = this.getTailFilter()
+    n = 1 and result = getTailFilter()
   }
 
   /**
@@ -487,11 +488,11 @@ class NgSingleFilter extends TNgSingleFilter, NgAstNode {
   override string pp() {
     exists(string sep |
       (
-        if forall(NgAstNode child | child = this.getChild(_) | child instanceof Empty)
+        if forall(NgAstNode child | child = getChild(_) | child instanceof Empty)
         then sep = ""
         else sep = " "
       ) and
-      result = "(NgSingleFilter: " + this.getName() + sep + this.ppChildren() + ")"
+      result = "(NgSingleFilter: " + getName() + sep + ppChildren() + ")"
     )
   }
 
@@ -505,7 +506,7 @@ class NgSingleFilter extends TNgSingleFilter, NgAstNode {
   /**
    * Gets the `i`th argument expression of this filter call.
    */
-  NgExpr getArgument(int i) { result = this.getChild(0).(NgFilterArgument).getElement(i) }
+  NgExpr getArgument(int i) { result = getChild(0).(NgFilterArgument).getElement(i) }
 }
 
 /**
@@ -523,7 +524,7 @@ class NgVarExpr extends TNgVarExpr, NgExpr {
 
   override predicate at(NgToken start, NgToken end) { start = end and start = identifier }
 
-  override string pp() { result = "(NgVarExpr: " + this.getName() + ")" }
+  override string pp() { result = "(NgVarExpr: " + getName() + ")" }
 
   override NgAstNode getChild(int n) { none() }
 
@@ -539,11 +540,9 @@ class NgVarExpr extends TNgVarExpr, NgExpr {
 class NgDotExpr extends TNgDotExpr, NgExpr {
   override predicate at(NgToken start, NgToken end) { this = TNgDotExpr(start, end, _, _) }
 
-  override string pp() {
-    result = "(NgDotExpr: " + this.getBase().pp() + "." + this.getName() + ")"
-  }
+  override string pp() { result = "(NgDotExpr: " + getBase().pp() + "." + getName() + ")" }
 
-  override NgAstNode getChild(int n) { n = 0 and result = this.getBase() }
+  override NgAstNode getChild(int n) { n = 0 and result = getBase() }
 
   /**
    * Gets the node for the base expression of this expression.
@@ -562,7 +561,7 @@ class NgDotExpr extends TNgDotExpr, NgExpr {
 class NgCallExpr extends TNgCallExpr, NgExpr {
   override predicate at(NgToken start, NgToken end) { this = TNgCallExpr(start, end, _, _) }
 
-  override string pp() { result = "(NgCallExpr: " + this.ppChildren() + ")" }
+  override string pp() { result = "(NgCallExpr: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
     n = 0 and this = TNgCallExpr(_, _, result, _)
@@ -573,12 +572,12 @@ class NgCallExpr extends TNgCallExpr, NgExpr {
   /**
    * Gets the callee expression of this call.
    */
-  NgExpr getCallee() { result = this.getChild(0) }
+  NgExpr getCallee() { result = getChild(0) }
 
   /**
    * Gets the `i`th argument expression of this call.
    */
-  NgExpr getArgument(int i) { result = this.getChild(1).(NgConsCallArgument).getElement(i) }
+  NgExpr getArgument(int i) { result = getChild(1).(NgConsCallArgument).getElement(i) }
 }
 
 /**
@@ -591,7 +590,7 @@ class NgString extends TNgString, NgExpr {
 
   override predicate at(NgToken start, NgToken end) { start = end and start = stringToken }
 
-  override string pp() { result = this.getRawValue() }
+  override string pp() { result = getRawValue() }
 
   override NgAstNode getChild(int n) { none() }
 
@@ -603,9 +602,7 @@ class NgString extends TNgString, NgExpr {
   /**
    * Gets the string value of this expression, excluding surrounding quotes.
    */
-  string getStringValue() {
-    result = this.getRawValue().substring(1, this.getRawValue().length() - 1)
-  }
+  string getStringValue() { result = getRawValue().substring(1, getRawValue().length() - 1) }
 }
 
 /**
@@ -618,7 +615,7 @@ class NgNumber extends TNgNumber, NgExpr {
 
   override predicate at(NgToken start, NgToken end) { start = end and start = numberToken }
 
-  override string pp() { result = this.getValue() }
+  override string pp() { result = getValue() }
 
   override NgAstNode getChild(int n) { none() }
 
@@ -639,7 +636,7 @@ abstract class NgMaybeFilterArgument extends NgAstNode { }
 class NgFilterArgument extends TNgFilterArgument, NgMaybeFilterArgument {
   override predicate at(NgToken start, NgToken end) { this = TNgFilterArgument(start, end, _, _) }
 
-  override string pp() { result = "(NgFilterArgument: " + this.ppChildren() + ")" }
+  override string pp() { result = "(NgFilterArgument: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
     n = 0 and this = TNgFilterArgument(_, _, result, _)
@@ -652,8 +649,8 @@ class NgFilterArgument extends TNgFilterArgument, NgMaybeFilterArgument {
    */
   NgExpr getElement(int i) {
     if i = 0
-    then result = this.getChild(0)
-    else result = this.getChild(1).(NgFilterArgument).getElement(i - 1)
+    then result = getChild(0)
+    else result = getChild(1).(NgFilterArgument).getElement(i - 1)
   }
 }
 
@@ -668,7 +665,7 @@ abstract class NgCallArguments extends NgAstNode { }
 class NgConsCallArgument extends TNgConsCallArgument, NgCallArguments {
   override predicate at(NgToken start, NgToken end) { this = TNgConsCallArgument(start, end, _, _) }
 
-  override string pp() { result = "(NgConsCallArgument: " + this.ppChildren() + ")" }
+  override string pp() { result = "(NgConsCallArgument: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
     n = 0 and this = TNgConsCallArgument(_, _, result, _)
@@ -681,8 +678,8 @@ class NgConsCallArgument extends TNgConsCallArgument, NgCallArguments {
    */
   NgExpr getElement(int i) {
     if i = 0
-    then result = this.getChild(0)
-    else result = this.getChild(1).(NgConsCallArgument).getElement(i - 1)
+    then result = getChild(0)
+    else result = getChild(1).(NgConsCallArgument).getElement(i - 1)
   }
 }
 
@@ -836,7 +833,7 @@ class NgDataFlowNode extends TNode {
 private predicate fileIsImplicitlyAngularJS(HTML::HtmlFile file) {
   // The file contains ng-* attributes.
   exists(HTML::Attribute attrib |
-    attrib.getName().matches("ng-%") and
+    attrib.getName().regexpMatch("ng-.*") and
     attrib.getFile() = file
   ) and
   // But does not contain the ng-app root element, implying that file is

@@ -1,2 +1,0 @@
-| TestExplicitlyEnabled/AndroidManifest.xml:6:5:27:19 | application | Backups are allowed in this Android application. |
-| TestMissing/AndroidManifest.xml:6:5:27:19 | application | Backups are allowed in this Android application. |

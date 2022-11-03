@@ -2,8 +2,8 @@ import semmle.code.java.Type
 
 predicate typeIsInCU(Type tpe, CompilationUnit cu) { tpe.getCompilationUnit() = cu }
 
-from Type tpe, CompilationUnit aJava
+from Type tpe, CompilationUnit Ajava
 where
-  aJava.hasName("A") and
-  typeIsInCU(tpe, aJava)
+  Ajava.hasName("A") and
+  typeIsInCU(tpe, Ajava)
 select tpe

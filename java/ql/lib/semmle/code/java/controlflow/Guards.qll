@@ -86,7 +86,7 @@ class Guard extends ExprParent {
     or
     this instanceof SwitchCase
     or
-    conditionCheckArgument(this, _, _)
+    conditionCheck(this, _)
   }
 
   /** Gets the immediately enclosing callable whose body contains this guard. */
@@ -189,7 +189,7 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
 private predicate preconditionBranchEdge(
   MethodAccess ma, BasicBlock bb1, BasicBlock bb2, boolean branch
 ) {
-  conditionCheckArgument(ma, _, branch) and
+  conditionCheck(ma, branch) and
   bb1.getLastNode() = ma.getControlFlowNode() and
   bb2 = bb1.getLastNode().getANormalSuccessor()
 }
@@ -232,7 +232,6 @@ predicate guardControls_v2(Guard guard, BasicBlock controlled, boolean branch) {
   )
 }
 
-pragma[nomagic]
 private predicate guardControls_v3(Guard guard, BasicBlock controlled, boolean branch) {
   guard.directlyControls(controlled, branch)
   or

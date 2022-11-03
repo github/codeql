@@ -10,6 +10,7 @@
  */
 
 import java
+import semmle.code.java.JDKAnnotations
 
 class NonConstantSourceField extends Field {
   NonConstantSourceField() {

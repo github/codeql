@@ -20,7 +20,7 @@ private import semmle.python.frameworks.PEP249
  */
 module ClickhouseDriver {
   /**
-   * A model of `clickhouse-driver`, which implements PEP249,
+   * `clickhouse_driver` implements PEP249,
    * providing ways to execute SQL statements against a database.
    */
   class ClickHouseDriverPEP249 extends PEP249::PEP249ModuleApiNode {
@@ -50,7 +50,7 @@ module ClickhouseDriver {
   string getExecuteMethodName() { result in ["execute_with_progress", "execute", "execute_iter"] }
 
   /**
-   * A call to any of the execute methods on a `clickhouse_driver.Client` method
+   * A call to any of the the execute methods on a `clickhouse_driver.Client` method
    *
    * See
    * - https://clickhouse-driver.readthedocs.io/en/latest/api.html#clickhouse_driver.Client.execute

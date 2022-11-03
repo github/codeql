@@ -1,7 +1,19 @@
 import python
 
+/** DEPRECATED: Use `Value::named("django.shortcuts.redirect")` instead. */
+deprecated FunctionValue redirect() { result = Value::named("django.shortcuts.redirect") }
+
+/** DEPRECATED: Use `DjangoRedirectResponseClass` instead. */
+deprecated ClassValue theDjangoHttpRedirectClass() {
+  // version 1.x
+  result = Value::named("django.http.response.HttpResponseRedirectBase")
+  or
+  // version 2.x
+  result = Value::named("django.http.HttpResponseRedirectBase")
+}
+
 /** A class that is a Django Redirect Response (subclass of `django.http.HttpResponseRedirectBase`). */
-deprecated class DjangoRedirectResponseClass extends ClassValue {
+class DjangoRedirectResponseClass extends ClassValue {
   DjangoRedirectResponseClass() {
     exists(ClassValue redirect_base |
       // version 1.x
@@ -19,7 +31,7 @@ deprecated class DjangoRedirectResponseClass extends ClassValue {
  * A class that is a Django Response, which can contain content.
  * A subclass of `django.http.HttpResponse` that is not a `DjangoRedirectResponseClass`.
  */
-deprecated class DjangoContentResponseClass extends ClassValue {
+class DjangoContentResponseClass extends ClassValue {
   ClassValue base;
 
   DjangoContentResponseClass() {
@@ -47,7 +59,7 @@ deprecated class DjangoContentResponseClass extends ClassValue {
 }
 
 /** A class that is a Django Response, and is vulnerable to XSS. */
-deprecated class DjangoXSSVulnerableResponseClass extends DjangoContentResponseClass {
+class DjangoXSSVulnerableResponseClass extends DjangoContentResponseClass {
   DjangoXSSVulnerableResponseClass() {
     // We want to avoid FPs on subclasses that are not exposed to XSS, for example `JsonResponse`.
     // The easiest way is to disregard any subclass that has a special `__init__` method.

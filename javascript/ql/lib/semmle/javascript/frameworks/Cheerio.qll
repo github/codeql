@@ -3,21 +3,33 @@
  */
 
 import javascript
-private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
+private import semmle.javascript.security.dataflow.Xss as Xss
 
 module Cheerio {
-  /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
-  private API::Node cheerioApi() {
-    result = API::moduleImport("cheerio")
+  /**
+   * A reference to the `cheerio` function, possibly with a loaded DOM.
+   */
+  private DataFlow::SourceNode cheerioRef(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      result = DataFlow::moduleImport("cheerio")
+      or
+      exists(string name | result = cheerioRef().getAMemberCall(name) |
+        name = "load" or
+        name = "parseHTML"
+      )
+    )
     or
-    result = cheerioApi().getMember(["load", "parseHTML"]).getReturn()
+    exists(DataFlow::TypeTracker t2 | result = cheerioRef(t2).track(t2, t))
   }
 
-  /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
-  DataFlow::SourceNode cheerioRef() { result = cheerioApi().getAValueReachableFromSource() }
+  /**
+   * A reference to the `cheerio` function, possibly with a loaded DOM.
+   */
+  DataFlow::SourceNode cheerioRef() { result = cheerioRef(DataFlow::TypeTracker::end()) }
 
   /**
-   * A creation of `cheerio` object, a collection of virtual DOM elements
+   * Creation of `cheerio` object, a collection of virtual DOM elements
    * with an interface similar to that of a jQuery object.
    */
   class CheerioObjectCreation extends DataFlow::SourceNode instanceof CheerioObjectCreation::Range {
@@ -25,15 +37,15 @@ module Cheerio {
 
   module CheerioObjectCreation {
     /**
-     * The creation of a `cheerio` object.
+     * Creation of a `cheerio` object.
      */
     abstract class Range extends DataFlow::SourceNode { }
 
     private class DefaultRange extends Range {
       DefaultRange() {
-        this = cheerioApi().getACall()
+        this = cheerioRef().getACall()
         or
-        this = cheerioApi().getAMember().getACall()
+        this = cheerioRef().getAMethodCall()
       }
     }
   }
@@ -52,10 +64,10 @@ module Cheerio {
       call = cheerioObjectRef().getAMethodCall(name) and
       result = call
     |
-      if name = ["attr", "data", "prop", "css"]
+      if name = "attr" or name = "data" or name = "prop" or name = "css"
       then call.getNumArgument() = 2
       else
-        if name = ["val", "html", "text"]
+        if name = "val" or name = "html" or name = "text"
         then call.getNumArgument() = 1
         else (
           name != "toString" and
@@ -76,7 +88,7 @@ module Cheerio {
   }
 
   /**
-   * A definition of a DOM attribute through `cheerio`.
+   * Definition of a DOM attribute through `cheerio`.
    */
   class AttributeDef extends DOM::AttributeDefinition {
     DataFlow::CallNode call;
@@ -93,9 +105,9 @@ module Cheerio {
   }
 
   /**
-   * An XSS sink through `cheerio`.
+   * XSS sink through `cheerio`.
    */
-  class XssSink extends DomBasedXss::Sink {
+  class XssSink extends Xss::DomBasedXss::Sink {
     XssSink() {
       exists(string name | this = cheerioObjectRef().getAMethodCall(name).getAnArgument() |
         JQuery::isMethodArgumentInterpretedAsHtml(name)

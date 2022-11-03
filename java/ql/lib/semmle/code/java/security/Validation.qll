@@ -2,6 +2,9 @@ import semmle.code.java.Expr
 import semmle.code.java.dataflow.SSA
 import semmle.code.java.controlflow.Guards
 
+bindingset[result, i]
+private int unbindInt(int i) { i <= result and i >= result }
+
 /** Holds if the method `method` validates its `arg`-th argument in some way. */
 predicate validationMethod(Method method, int arg) {
   // The method examines the contents of the string argument.
@@ -19,8 +22,8 @@ predicate validationMethod(Method method, int arg) {
   // The method calls another one that verifies the argument.
   exists(Parameter param, MethodAccess call, int recursiveArg |
     method.getParameter(arg) = param and
-    call.getArgument(pragma[only_bind_into](recursiveArg)) = param.getAnAccess() and
-    validationMethod(pragma[only_bind_into](call.getMethod()), pragma[only_bind_into](recursiveArg))
+    call.getArgument(recursiveArg) = param.getAnAccess() and
+    validationMethod(call.getMethod(), unbindInt(recursiveArg))
   )
 }
 

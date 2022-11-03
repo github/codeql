@@ -1,5 +1,0 @@
-| test.kt:28:14:28:21 | getSecond(...) | Unexpected result: hasTaintFlow=a |
-| test.kt:35:14:35:27 | component1(...) | Unexpected result: hasTaintFlow=d |
-| test.kt:41:14:41:22 | getSecond(...) | Unexpected result: hasTaintFlow=e |
-| test.kt:53:14:53:24 | getDuration(...) | Unexpected result: hasTaintFlow=f |
-| test.kt:58:14:58:29 | component2(...) | Unexpected result: hasTaintFlow=g |

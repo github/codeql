@@ -11,17 +11,13 @@ private predicate isDisposeMethod(DotNet::Callable method) {
   method.getNumberOfParameters() = 0
 }
 
-private predicate cilVariableReadFlowsToNode(CIL::Variable variable, DataFlow::Node n) {
-  n.asExpr() = variable.getARead()
-  or
-  exists(DataFlow::Node mid |
-    cilVariableReadFlowsToNode(variable, mid) and
-    DataFlow::localFlowStep(mid, n)
-  )
-}
-
 private predicate cilVariableReadFlowsTo(CIL::Variable variable, CIL::DataFlowNode n) {
-  cilVariableReadFlowsToNode(variable, DataFlow::exprNode(n))
+  n = variable.getARead()
+  or
+  exists(CIL::DataFlowNode mid |
+    cilVariableReadFlowsTo(variable, mid) and
+    mid.getALocalFlowSucc(n, any(CIL::Untainted u))
+  )
 }
 
 private predicate disposedCilVariable(CIL::Variable variable) {

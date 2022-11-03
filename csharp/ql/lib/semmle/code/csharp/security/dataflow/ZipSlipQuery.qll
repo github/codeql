@@ -21,11 +21,9 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `Sanitizer` instead.
- *
  * A guard for unsafe zip extraction.
  */
-abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
 /** A taint tracking configuration for Zip Slip */
 class TaintTrackingConfiguration extends TaintTracking::Configuration {
@@ -37,7 +35,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof SanitizerGuard
   }
 }
@@ -128,22 +126,26 @@ class SubstringSanitizer extends Sanitizer {
   }
 }
 
-private predicate stringCheckGuard(Guard g, Expr e, AbstractValue v) {
-  g.(MethodCall).getTarget().hasQualifiedName("System.String", "StartsWith") and
-  g.(MethodCall).getQualifier() = e and
-  // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
-  // not yet been resolved.
-  not exists(MethodCall combineCall |
-    combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
-    DataFlow::localExprFlow(combineCall, e)
-  ) and
-  v.(AbstractValues::BooleanValue).getValue() = true
-}
-
 /**
  * A call to `String.StartsWith()` that indicates that the tainted path value is being
  * validated to ensure that it occurs within a permitted output path.
  */
-class StringCheckSanitizer extends Sanitizer {
-  StringCheckSanitizer() { this = DataFlow::BarrierGuard<stringCheckGuard/3>::getABarrierNode() }
+class StringCheckGuard extends SanitizerGuard, MethodCall {
+  private Expr q;
+
+  StringCheckGuard() {
+    this.getTarget().hasQualifiedName("System.String", "StartsWith") and
+    this.getQualifier() = q and
+    // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
+    // not yet been resolved.
+    not exists(MethodCall combineCall |
+      combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
+      DataFlow::localExprFlow(combineCall, q)
+    )
+  }
+
+  override predicate checks(Expr e, AbstractValue v) {
+    e = q and
+    v.(AbstractValues::BooleanValue).getValue() = true
+  }
 }

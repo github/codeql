@@ -1,11 +1,11 @@
 import python
 import semmle.python.web.Http
 
-deprecated module CherryPy {
+module CherryPy {
   FunctionValue expose() { result = Value::named("cherrypy.expose") }
 }
 
-deprecated class CherryPyExposedFunction extends Function {
+class CherryPyExposedFunction extends Function {
   CherryPyExposedFunction() {
     this.getADecorator().pointsTo(CherryPy::expose())
     or
@@ -13,7 +13,7 @@ deprecated class CherryPyExposedFunction extends Function {
   }
 }
 
-deprecated class CherryPyRoute extends CallNode {
+class CherryPyRoute extends CallNode {
   CherryPyRoute() {
     /* cherrypy.quickstart(root, script_name, config) */
     Value::named("cherrypy.quickstart").(FunctionValue).getACall() = this

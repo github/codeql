@@ -40,7 +40,7 @@ abstract class AttrRef extends Node {
     or
     exists(LocalSourceNode nodeFrom |
       nodeFrom.flowsTo(this.getAttributeNameExpr()) and
-      attrName = nodeFrom.(CfgNode).getNode().getNode().(StrConst).getText()
+      attrName = nodeFrom.asExpr().(StrConst).getText()
     )
   }
 
@@ -50,9 +50,6 @@ abstract class AttrRef extends Node {
    * better results.
    */
   abstract string getAttributeName();
-
-  /** Holds if a name could not be determined for this attribute. */
-  predicate unknownAttribute() { not exists(this.getAttributeName()) }
 }
 
 /**
@@ -73,7 +70,9 @@ abstract class AttrWrite extends AttrRef {
  * ```
  * Also gives access to the `value` being written, by extending `DefinitionNode`.
  */
-private class AttributeAssignmentNode extends DefinitionNode, AttrNode { }
+private class AttributeAssignmentNode extends DefinitionNode, AttrNode {
+  override ControlFlowNode getValue() { result = DefinitionNode.super.getValue() }
+}
 
 /** A simple attribute assignment: `object.attr = value`. */
 private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
@@ -82,32 +81,6 @@ private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
   override Node getValue() { result.asCfgNode() = node.getValue() }
 
   override Node getObject() { result.asCfgNode() = node.getObject() }
-
-  override ExprNode getAttributeNameExpr() {
-    // Attribute names don't exist as `Node`s in the control flow graph, as they can only ever be
-    // identifiers, and are therefore represented directly as strings.
-    // Use `getAttributeName` to access the name of the attribute.
-    none()
-  }
-
-  override string getAttributeName() { result = node.getName() }
-}
-
-/**
- * An attribute assignment where the object is a global variable: `global_var.attr = value`.
- *
- * Syntactically, this is identical to the situation that is covered by
- * `AttributeAssignmentAsAttrWrite`, however in this case we want to behave as if the object that is
- * being written is the underlying `ModuleVariableNode`.
- */
-private class GlobalAttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
-  override AttributeAssignmentNode node;
-
-  override Node getValue() { result.asCfgNode() = node.getValue() }
-
-  override Node getObject() {
-    result.(ModuleVariableNode).getVariable() = node.getObject().getNode().(Name).getVariable()
-  }
 
   override ExprNode getAttributeNameExpr() {
     // Attribute names don't exist as `Node`s in the control flow graph, as they can only ever be
@@ -178,7 +151,7 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
   override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
-    result = this.getAttributeNameExpr().(CfgNode).getNode().getNode().(StrConst).getText()
+    result = this.getAttributeNameExpr().asExpr().(StrConst).getText()
   }
 }
 
@@ -231,8 +204,6 @@ abstract class AttrRead extends AttrRef, Node, LocalSourceNode { }
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {
   override AttrNode node;
 
-  AttributeReadAsAttrRead() { node.isLoad() }
-
   override Node getObject() { result.asCfgNode() = node.getObject() }
 
   override ExprNode getAttributeNameExpr() {
@@ -254,7 +225,7 @@ private class GetAttrCallAsAttrRead extends AttrRead, CfgNode {
   override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
-    result = this.getAttributeNameExpr().(CfgNode).getNode().getNode().(StrConst).getText()
+    result = this.getAttributeNameExpr().asExpr().(StrConst).getText()
   }
 }
 

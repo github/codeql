@@ -2,35 +2,20 @@
  * @name External libraries
  * @description A list of external libraries used in the code
  * @kind metric
- * @tags summary telemetry
+ * @metricType callable
  * @id java/telemetry/external-libs
  */
 
 import java
-import ExternalApi
+import ExternalAPI
 
-private predicate getRelevantUsages(string jarname, int usages) {
+from int usages, string jarname
+where
   usages =
-    strictcount(Call c, ExternalApi a |
+    strictcount(Call c, ExternalAPI a |
       c.getCallee().getSourceDeclaration() = a and
       not c.getFile() instanceof GeneratedFile and
       a.jarContainer() = jarname and
       not a.isUninteresting()
     )
-}
-
-private int getOrder(string jarname) {
-  jarname =
-    rank[result](string jar, int usages |
-      getRelevantUsages(jar, usages)
-    |
-      jar order by usages desc, jar
-    )
-}
-
-from ExternalApi api, string jarname, int usages
-where
-  jarname = api.jarContainer() and
-  getRelevantUsages(jarname, usages) and
-  getOrder(jarname) <= resultLimit()
 select jarname, usages order by usages desc

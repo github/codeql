@@ -6,6 +6,7 @@
 
 import javascript
 private import semmle.javascript.security.SensitiveActions
+private import semmle.javascript.frameworks.CryptoLibraries
 
 module InsufficientPasswordHash {
   /**
@@ -30,12 +31,14 @@ module InsufficientPasswordHash {
    * A potential clear-text password, considered as a source for password hashing
    * with insufficient computational effort.
    */
-  class CleartextPasswordSource extends Source instanceof SensitiveNode {
+  class CleartextPasswordSource extends Source, DataFlow::ValueNode {
+    override SensitiveExpr astNode;
+
     CleartextPasswordSource() {
-      super.getClassification() = SensitiveDataClassification::password()
+      astNode.getClassification() = SensitiveDataClassification::password()
     }
 
-    override string describe() { result = SensitiveNode.super.describe() }
+    override string describe() { result = astNode.describe() }
   }
 
   /**
@@ -47,7 +50,7 @@ module InsufficientPasswordHash {
         application.getAlgorithm().isWeak() or
         not application.getAlgorithm() instanceof PasswordHashingAlgorithm
       |
-        this = application.getInput()
+        this.asExpr() = application.getInput()
       )
     }
   }

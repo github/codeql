@@ -29,4 +29,7 @@ where
   n = strictcount(ComplexStmt s | s = b.getAStmt()) and
   n > 3 and
   complexStmt = b.getAStmt()
-select b, "Block with too many statements (" + n.toString() + " complex statements in the block)."
+select b,
+  "Block with too many statements (" + n.toString() +
+    " complex statements in the block). Complex statements at: $@", complexStmt,
+  complexStmt.toString()

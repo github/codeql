@@ -1,5 +1,5 @@
 /**
- * Provides classes modeling the [live-server](https://npmjs.com/package/live-server) package.
+ * Provides classes modelling the [live-server](https://npmjs.com/package/live-server) package.
  */
 
 import javascript
@@ -9,10 +9,15 @@ private module LiveServer {
   /**
    * An expression that imports the live-server package, seen as a server-definition.
    */
-  class ServerDefinition extends Http::Servers::StandardServerDefinition {
-    ServerDefinition() { this = DataFlow::moduleImport("live-server") }
+  class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
+    API::Node imp;
 
-    API::Node getImportNode() { result.asSource() = this }
+    ServerDefinition() {
+      imp = API::moduleImport("live-server") and
+      this = imp.getAnImmediateUse().asExpr()
+    }
+
+    API::Node getImportNode() { result = imp }
   }
 
   /**
@@ -22,22 +27,26 @@ private module LiveServer {
   class RouteHandler extends Connect::RouteHandler, DataFlow::FunctionNode {
     RouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-    override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
-      result = ConnectExpressShared::getRouteHandlerParameter(this, kind)
+    override Parameter getRouteHandlerParameter(string kind) {
+      result = ConnectExpressShared::getRouteHandlerParameter(astNode, kind)
     }
   }
 
   /**
    * The call to `require("live-server").start()`, seen as a route setup.
    */
-  class RouteSetup extends Http::Servers::StandardRouteSetup instanceof API::CallNode {
+  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
+    API::CallNode call;
 
-    RouteSetup() { this = server.getImportNode().getMember("start").getACall() }
+    RouteSetup() {
+      call = server.getImportNode().getMember("start").getACall() and
+      this = call.asExpr()
+    }
 
     override DataFlow::SourceNode getARouteHandler() {
       exists(DataFlow::SourceNode middleware |
-        middleware = super.getParameter(0).getMember("middleware").getAValueReachingSink()
+        middleware = call.getParameter(0).getMember("middleware").getAValueReachingRhs()
       |
         result = middleware.getAMemberCall(["push", "unshift"]).getArgument(0).getAFunctionValue()
         or
@@ -45,6 +54,6 @@ private module LiveServer {
       )
     }
 
-    override DataFlow::Node getServer() { result = server }
+    override Expr getServer() { result = server }
   }
 }

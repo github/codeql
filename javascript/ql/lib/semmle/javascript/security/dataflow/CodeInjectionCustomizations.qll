@@ -17,15 +17,9 @@ module CodeInjection {
    */
   abstract class Sink extends DataFlow::Node {
     /**
-     * DEPRECATED: Use `getMessagePrefix()` instead.
      * Gets the substitute for `X` in the message `User-provided value flows to X`.
      */
-    deprecated string getMessageSuffix() { result = "this location and is interpreted as code" }
-
-    /**
-     * Gets the prefix for the message `X depends on a user-provided value.`.
-     */
-    string getMessagePrefix() { result = "This code execution" }
+    string getMessageSuffix() { result = "here and is interpreted as code" }
   }
 
   /**
@@ -43,7 +37,7 @@ module CodeInjection {
    */
   class AngularJSExpressionSink extends Sink, DataFlow::ValueNode {
     AngularJSExpressionSink() {
-      any(AngularJS::AngularJSCallNode call).interpretsArgumentAsCode(this)
+      any(AngularJS::AngularJSCall call).interpretsArgumentAsCode(this.asExpr())
     }
   }
 
@@ -57,20 +51,8 @@ module CodeInjection {
     }
   }
 
-  /** An expression parsed by the `gray-matter` library. */
-  class GrayMatterSink extends Sink {
-    GrayMatterSink() {
-      exists(API::CallNode call |
-        call = DataFlow::moduleImport("gray-matter").getACall() and
-        this = call.getArgument(0) and
-        // if the js/javascript engine is set, then we assume they are set to something safe.
-        not exists(call.getParameter(1).getMember("engines").getMember(["js", "javascript"]))
-      )
-    }
-  }
-
   /**
-   * A template tag occurring in JS code, viewed as a code injection sink.
+   * A template tag occuring in JS code, viewed as a code injection sink.
    */
   class TemplateTagInScriptSink extends Sink {
     TemplateTagInScriptSink() {
@@ -131,13 +113,8 @@ module CodeInjection {
       )
     }
 
-    deprecated override string getMessageSuffix() {
-      result =
-        "this location and is interpreted by " + templateType + ", which may evaluate it as code"
-    }
-
-    override string getMessagePrefix() {
-      result = "This " + templateType + " template, which may contain code,"
+    override string getMessageSuffix() {
+      result = "here and is interpreted by " + templateType + ", which may evaluate it as code"
     }
   }
 
@@ -181,7 +158,7 @@ module CodeInjection {
         exists(string callName | c = DataFlow::globalVarRef(callName).getAnInvocation() |
           callName = "eval" and index = 0
           or
-          callName = "Function" and index = -1
+          callName = "Function"
           or
           callName = "execScript" and index = 0
           or
@@ -196,13 +173,14 @@ module CodeInjection {
           callName = "setImmediate" and index = 0
         )
         or
-        c = DataFlow::globalVarRef("WebAssembly").getAMemberCall(["compile", "compileStreaming"]) and
-        index = -1
+        exists(DataFlow::GlobalVarRefNode wasm, string methodName |
+          wasm.getName() = "WebAssembly" and c = wasm.getAMemberCall(methodName)
+        |
+          methodName = "compile" or
+          methodName = "compileStreaming"
+        )
       |
         this = c.getArgument(index)
-        or
-        index = -1 and
-        this = c.getAnArgument()
       )
       or
       // node-serialize is not intended to be safe for untrusted inputs
@@ -230,7 +208,7 @@ module CodeInjection {
    */
   class ReactScriptTag extends Sink {
     ReactScriptTag() {
-      exists(JsxElement element | element.getName() = "script" |
+      exists(JSXElement element | element.getName() = "script" |
         this = element.getBodyElement(_).flow()
       )
     }
@@ -245,7 +223,7 @@ module CodeInjection {
         def.getName().regexpMatch("(?i)on.+") and
         this = def.getValueNode() and
         // JSX event handlers are functions, not strings
-        not def instanceof JsxAttribute
+        not def instanceof JSXAttribute
       )
     }
   }
@@ -253,12 +231,9 @@ module CodeInjection {
   /**
    * A code operator of a NoSQL query as a code injection sink.
    */
-  class NoSqlCodeInjectionSink extends Sink {
-    NoSqlCodeInjectionSink() { any(NoSql::Query q).getACodeOperator() = this }
+  class NoSQLCodeInjectionSink extends Sink {
+    NoSQLCodeInjectionSink() { any(NoSQL::Query q).getACodeOperator() = this }
   }
-
-  /** DEPRECATED: Alias for NoSqlCodeInjectionSink */
-  deprecated class NoSQLCodeInjectionSink = NoSqlCodeInjectionSink;
 
   /**
    * The first argument to `Module.prototype._compile`, considered as a code-injection sink.
@@ -277,32 +252,11 @@ module CodeInjection {
     }
   }
 
-  /**
-   * A system command execution of "node", where the executed code is seen as a code injection sink.
-   */
-  class NodeCallSink extends Sink {
-    NodeCallSink() {
-      exists(SystemCommandExecution s |
-        s.getACommandArgument().mayHaveStringValue("node")
-        or
-        s.getACommandArgument() =
-          DataFlow::globalVarRef("process").getAPropertyRead("argv").getAPropertyRead("0")
-      |
-        exists(DataFlow::SourceNode arr | arr = s.getArgumentList().getALocalSource() |
-          arr.getAPropertyWrite().getRhs().mayHaveStringValue("-e") and
-          this = arr.getAPropertyWrite().getRhs()
-        )
-      )
-    }
-  }
-
   /** A sink for code injection via template injection. */
   abstract private class TemplateSink extends Sink {
-    deprecated override string getMessageSuffix() {
-      result = "this location and is interpreted as a template, which may contain code"
+    override string getMessageSuffix() {
+      result = "here and is interpreted as a template, which may contain code"
     }
-
-    override string getMessagePrefix() { result = "Template, which may contain code," }
   }
 
   /**
@@ -402,12 +356,4 @@ module CodeInjection {
       this = LodashUnderscore::member("template").getACall().getArgument(0)
     }
   }
-
-  /**
-   * A call to JSON.stringify() seen as a sanitizer.
-   */
-  class JsonStringifySanitizer extends Sanitizer, JsonStringifyCall { }
-
-  /** DEPRECATED: Alias for JsonStringifySanitizer */
-  deprecated class JSONStringifySanitizer = JsonStringifySanitizer;
 }

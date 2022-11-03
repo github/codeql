@@ -3,7 +3,7 @@ private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
- * Classes and predicates for modeling TaintTracking steps for arrays.
+ * Classes and predicates for modelling TaintTracking steps for arrays.
  */
 module ArrayTaintTracking {
   /**
@@ -16,7 +16,7 @@ module ArrayTaintTracking {
   }
 
   /**
-   * Holds if there is a taint propagating data flow edge from `pred` to `succ` caused by a call `call` to a builtin array functions.
+   * A taint propagating data flow edge from `pred` to `succ` caused by a call `call` to a builtin array functions.
    */
   predicate arrayFunctionTaintStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode call) {
     // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
@@ -36,35 +36,18 @@ module ArrayTaintTracking {
       succ = call
     )
     or
-    // `array.filter(x => x)` and `array.filter(x => !!x)` keeps the taint
+    // `array.filter(x => x)` keeps the taint
     call.(DataFlow::MethodCallNode).getMethodName() = "filter" and
     pred = call.getReceiver() and
     succ = call and
-    exists(DataFlow::FunctionNode callback, DataFlow::Node param, DataFlow::Node ret |
-      callback = call.getArgument(0).getAFunctionValue() and
-      param = callback.getParameter(0).getALocalUse() and
-      ret = callback.getAReturn()
-    |
-      param = ret
-      or
-      param = DataFlow::exprNode(ret.asExpr().(LogNotExpr).getOperand().(LogNotExpr).getOperand())
+    exists(DataFlow::FunctionNode callback | callback = call.getArgument(0).getAFunctionValue() |
+      callback.getParameter(0).getALocalUse() = callback.getAReturn()
     )
     or
     // `array.reduce` with tainted value in callback
-    // The callback parameters are: (previousValue, currentValue, currentIndex, array)
     call.(DataFlow::MethodCallNode).getMethodName() = "reduce" and
-    exists(DataFlow::FunctionNode callback |
-      callback = call.getArgument(0) // Require the argument to be a closure to avoid spurious call/return flow
-    |
-      pred = callback.getAReturn() and
-      succ = call
-      or
-      pred = call.getReceiver() and
-      succ = callback.getParameter([1, 3]) // into currentValue or array
-      or
-      pred = [call.getArgument(1), callback.getAReturn()] and
-      succ = callback.getParameter(0) // into previousValue
-    )
+    pred = call.getArgument(0).(DataFlow::FunctionNode).getAReturn() and // Require the argument to be a closure to avoid spurious call/return flow
+    succ = call
     or
     // `array.push(e)`, `array.unshift(e)`: if `e` is tainted, then so is `array`.
     pred = call.getAnArgument() and
@@ -81,7 +64,7 @@ module ArrayTaintTracking {
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
     // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
-    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice", "at"]) and
+    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice"]) and
     succ = call
     or
     // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
@@ -105,13 +88,13 @@ module ArrayTaintTracking {
 }
 
 /**
- * Classes and predicates for modeling data-flow for arrays.
+ * Classes and predicates for modelling data-flow for arrays.
  */
 private module ArrayDataFlow {
   private import DataFlow::PseudoProperties
 
   /**
-   * A step modeling the creation of an Array using the `Array.from(x)` method.
+   * A step modelling the creation of an Array using the `Array.from(x)` method.
    * The step copies the elements of the argument (set, array, or iterator elements) into the resulting array.
    */
   private class ArrayFrom extends DataFlow::SharedFlowStep {
@@ -129,7 +112,7 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step modeling an array copy where the spread operator is used.
+   * A step modelling an array copy where the spread operator is used.
    * The result is essentially array concatenation.
    *
    * Such a step can occur both with the `push` and `unshift` methods, or when creating a new array.
@@ -169,12 +152,15 @@ private module ArrayDataFlow {
   /**
    * A node that reads or writes an element from an array inside a for-loop.
    */
-  private class ArrayIndexingAccess extends DataFlow::Node instanceof DataFlow::PropRef {
+  private class ArrayIndexingAccess extends DataFlow::Node {
+    DataFlow::PropRef read;
+
     ArrayIndexingAccess() {
+      read = this and
       TTNumber() =
-        unique(InferredType type | type = super.getPropertyNameExpr().flow().analyze().getAType()) and
+        unique(InferredType type | type = read.getPropertyNameExpr().flow().analyze().getAType()) and
       exists(VarAccess i, ExprOrVarDecl init |
-        i = super.getPropertyNameExpr() and init = any(ForStmt f).getInit()
+        i = read.getPropertyNameExpr() and init = any(ForStmt f).getInit()
       |
         i.getVariable().getADefinition() = init or
         i.getVariable().getADefinition().(VariableDeclarator).getDeclStmt() = init
@@ -205,13 +191,13 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step for retrieving an element from an array using `.pop()`, `.shift()`, or `.at()`.
+   * A step for retrieving an element from an array using `.pop()` or `.shift()`.
    * E.g. `array.pop()`.
    */
   private class ArrayPopStep extends DataFlow::SharedFlowStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = ["pop", "shift", "at"] and
+        call.getMethodName() = ["pop", "shift"] and
         prop = arrayElement() and
         obj = call.getReceiver() and
         element = call
@@ -261,18 +247,20 @@ private module ArrayDataFlow {
   /**
    * A step for creating an array and storing the elements in the array.
    */
-  private class ArrayCreationStep extends PreCallGraphStep {
+  private class ArrayCreationStep extends DataFlow::SharedFlowStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::ArrayCreationNode array, int i |
         element = array.getElement(i) and
         obj = array and
-        prop = arrayElement(i)
+        if array = any(PromiseAllCreation c).getArrayNode()
+        then prop = arrayElement(i)
+        else prop = arrayElement()
       )
     }
   }
 
   /**
-   * A step modeling that `splice` can insert elements into an array.
+   * A step modelling that `splice` can insert elements into an array.
    * For example in `array.splice(i, del, e)`: if `e` is tainted, then so is `array
    */
   private class ArraySpliceStep extends DataFlow::SharedFlowStep {
@@ -287,7 +275,7 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step for modeling `concat`.
+   * A step for modelling `concat`.
    * For example in `e = arr1.concat(arr2, arr3)`: if any of the `arr` is tainted, then so is `e`.
    */
   private class ArrayConcatStep extends DataFlow::SharedFlowStep {
@@ -302,7 +290,7 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step for modeling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`.
+   * A step for modelling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`.
    */
   private class ArraySliceStep extends DataFlow::SharedFlowStep {
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
@@ -316,7 +304,7 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step modeling that elements from an array `arr` are received by calling `find`.
+   * A step modelling that elements from an array `arr` are received by calling `find`.
    */
   private class ArrayFindStep extends DataFlow::SharedFlowStep {
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
@@ -332,7 +320,7 @@ private module ArrayDataFlow {
 private import ArrayLibraries
 
 /**
- * Classes and predicates modeling various libraries that work on arrays or array-like structures.
+ * Classes and predicates modelling various libraries that work on arrays or array-like structures.
  */
 private module ArrayLibraries {
   private import DataFlow::PseudoProperties
@@ -344,14 +332,6 @@ private module ArrayLibraries {
     result = DataFlow::globalVarRef("Array").getAMemberCall("from")
     or
     result = DataFlow::moduleImport("array-from").getACall()
-    or
-    // Array.prototype.slice.call acts the same as Array.from, and is sometimes used with e.g. the arguments object.
-    result =
-      DataFlow::globalVarRef("Array")
-          .getAPropertyRead("prototype")
-          .getAPropertyRead("slice")
-          .getAMethodCall("call") and
-    result.getNumArgument() = 1
   }
 
   /**
@@ -377,7 +357,7 @@ private module ArrayLibraries {
   }
 
   /**
-   * Gets a call to a library that copies the elements of an array into another array.
+   * A call to a library that copies the elements of an array into another array.
    * E.g. `array-union` that creates a union of multiple arrays, or `array-uniq` that creates an array with unique elements.
    */
   DataFlow::CallNode arrayCopyCall(DataFlow::Node array) {

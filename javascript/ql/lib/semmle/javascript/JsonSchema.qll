@@ -25,7 +25,7 @@ module JsonSchema {
      * Gets a value that indicates whether the validation was successful.
      */
     DataFlow::Node getAValidationResultAccess(boolean polarity) {
-      result = this and polarity = this.getPolarity()
+      result = this and polarity = getPolarity()
     }
   }
 
@@ -35,7 +35,7 @@ module JsonSchema {
   /** An object literal with a `$schema` property indicating it is the root of a JSON schema. */
   private class SchemaNodeByTag extends SchemaRoot, DataFlow::ObjectLiteralNode {
     SchemaNodeByTag() {
-      this.getAPropertyWrite("$schema").getRhs().getStringValue().matches("%//json-schema.org%")
+      getAPropertyWrite("$schema").getRhs().getStringValue().matches("%//json-schema.org%")
     }
   }
 
@@ -56,7 +56,7 @@ module JsonSchema {
 
   /** Provides a model of the `ajv` library. */
   module Ajv {
-    /** Gets a method on `Ajv` that returns `this`. */
+    /** A method on `Ajv` that returns `this`. */
     private string chainedMethod() {
       result =
         ["addSchema", "addMetaSchema", "removeSchema", "addFormat", "addKeyword", "removeKeyword"]
@@ -67,13 +67,13 @@ module JsonSchema {
       Instance() { this = API::moduleImport("ajv").getAnInstantiation() }
 
       /** Gets the data flow node holding the options passed to this `Ajv` instance. */
-      DataFlow::Node getOptionsArg() { result = this.getArgument(0) }
+      DataFlow::Node getOptionsArg() { result = getArgument(0) }
 
       /** Gets an API node that refers to this object. */
       API::Node ref() {
-        result = this.getReturn()
+        result = getReturn()
         or
-        result = this.ref().getMember(chainedMethod()).getReturn()
+        result = ref().getMember(chainedMethod()).getReturn()
       }
 
       /**
@@ -83,16 +83,16 @@ module JsonSchema {
        * signature is different.
        */
       API::Node getAValidationFunction() {
-        result = this.ref().getMember(["compile", "getSchema"]).getReturn()
+        result = ref().getMember(["compile", "getSchema"]).getReturn()
         or
-        result = this.ref().getMember("compileAsync").getPromised()
+        result = ref().getMember("compileAsync").getPromised()
       }
 
       /**
        * Gets an API node that refers to an error produced by this Ajv instance.
        */
       API::Node getAValidationError() {
-        exists(API::Node base | base = [this.ref(), this.getAValidationFunction()] |
+        exists(API::Node base | base = [ref(), getAValidationFunction()] |
           result = base.getMember("errors")
           or
           result = base.getMember("errorsText").getReturn()
@@ -111,14 +111,14 @@ module JsonSchema {
         this = instance.getAValidationFunction().getACall() and argIndex = 0
       }
 
-      override DataFlow::Node getInput() { result = this.getArgument(argIndex) }
+      override DataFlow::Node getInput() { result = getArgument(argIndex) }
 
       /** Gets the argument holding additional options to the call. */
-      DataFlow::Node getOwnOptionsArg() { result = this.getArgument(argIndex + 1) }
+      DataFlow::Node getOwnOptionsArg() { result = getArgument(argIndex + 1) }
 
       /** Gets a data flow passed as the extra options to this validation call or to the underlying `Ajv` instance. */
       DataFlow::Node getAnOptionsArg() {
-        result = this.getOwnOptionsArg()
+        result = getOwnOptionsArg()
         or
         result = instance.getOptionsArg()
       }
@@ -134,14 +134,14 @@ module JsonSchema {
               .ref()
               .getMember(["addSchema", "validate", "compile", "compileAsync"])
               .getParameter(0)
-              .asSink()
+              .getARhs()
       }
     }
   }
 
   /** Provides a model for working with the [`joi`](https://npmjs.org/package/joi) library. */
   module Joi {
-    /** Gets a schema created using `joi.object()` or other schemas that might refer an object schema. */
+    /** A schema created using `joi.object()` or other schemas that might refer an object schema. */
     private API::Node objectSchema() {
       // A call that creates a schema that might be an object schema.
       result =
@@ -184,7 +184,7 @@ module JsonSchema {
       override boolean getPolarity() { none() }
 
       override DataFlow::Node getAValidationResultAccess(boolean polarity) {
-        result = this.getReturn().getMember("error").asSource() and
+        result = this.getReturn().getMember("error").getAnImmediateUse() and
         polarity = false
       }
     }

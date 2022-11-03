@@ -1,4 +1,5 @@
 import csharp
+import semmle.code.csharp.dataflow.TaintTracking
 
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "Json.NET test" }

@@ -1,49 +1,5 @@
 import cpp
-import semmle.code.cpp.commons.unix.Constants as UnixConstants
-
-/**
- * Gets the number corresponding to the contents of `input` in base-16.
- * Note: the first two characters of `input` must be `0x`. For example:
- * `parseHex("0x123abc") = 1194684`.
- */
-bindingset[input]
-int parseHex(string input) {
-  exists(string lowerCaseInput | lowerCaseInput = input.toLowerCase() |
-    lowerCaseInput.regexpMatch("0x[0-9a-f]+") and
-    result =
-      strictsum(int ix |
-        ix in [2 .. input.length()]
-      |
-        16.pow(input.length() - (ix + 1)) * "0123456789abcdef".indexOf(lowerCaseInput.charAt(ix))
-      )
-  )
-}
-
-/**
- * Gets the value defined by the `O_CREAT` macro if the macro
- * exists and if every definition defines the same value.
- */
-int o_creat() {
-  result =
-    unique(int v |
-      exists(Macro m | m.getName() = "O_CREAT" |
-        v = parseHex(m.getBody()) or v = UnixConstants::parseOctal(m.getBody())
-      )
-    )
-}
-
-/**
- * Gets the value defined by the `O_TMPFILE` macro if the macro
- * exists and if every definition defines the same value.
- */
-int o_tmpfile() {
-  result =
-    unique(int v |
-      exists(Macro m | m.getName() = "O_TMPFILE" |
-        v = parseHex(m.getBody()) or v = UnixConstants::parseOctal(m.getBody())
-      )
-    )
-}
+import semmle.code.cpp.commons.unix.Constants
 
 bindingset[n, digit]
 private string octalDigit(int n, int digit) {
@@ -65,16 +21,10 @@ string octalFileMode(int mode) {
 }
 
 /**
- * Holds if the bitmask `value` sets the bits in `flag`.
- */
-bindingset[value, flag]
-predicate setsFlag(int value, int flag) { value.bitAnd(flag) = flag }
-
-/**
  * Holds if the bitmask `mask` sets any of the bit fields in `fields`.
  */
 bindingset[mask, fields]
-predicate setsAnyBits(int mask, int fields) { mask.bitAnd(fields) != 0 }
+predicate sets(int mask, int fields) { mask.bitAnd(fields) != 0 }
 
 /**
  * Gets the value that `fc` sets the umask to, if `fc` is a call to
@@ -133,24 +83,16 @@ abstract class FileCreationExpr extends FunctionCall {
   abstract int getMode();
 }
 
-abstract class FileCreationWithOptionalModeExpr extends FileCreationExpr {
-  abstract predicate hasModeArgument();
-}
-
-class OpenCreationExpr extends FileCreationWithOptionalModeExpr {
+class OpenCreationExpr extends FileCreationExpr {
   OpenCreationExpr() {
-    this.getTarget().hasGlobalOrStdName(["open", "_open", "_wopen"]) and
-    exists(int flag | flag = this.getArgument(1).getValue().toInt() |
-      setsFlag(flag, o_creat()) or setsFlag(flag, o_tmpfile())
-    )
+    this.getTarget().getName() = ["open", "_open", "_wopen"] and
+    sets(this.getArgument(1).getValue().toInt(), o_creat())
   }
 
   override Expr getPath() { result = this.getArgument(0) }
 
-  override predicate hasModeArgument() { exists(this.getArgument(2)) }
-
   override int getMode() {
-    if this.hasModeArgument()
+    if exists(this.getArgument(2))
     then result = this.getArgument(2).getValue().toInt()
     else
       // assume anything is permitted
@@ -166,35 +108,20 @@ class CreatCreationExpr extends FileCreationExpr {
   override int getMode() { result = this.getArgument(1).getValue().toInt() }
 }
 
-class OpenatCreationExpr extends FileCreationWithOptionalModeExpr {
+class OpenatCreationExpr extends FileCreationExpr {
   OpenatCreationExpr() {
-    this.getTarget().hasGlobalOrStdName("openat") and
-    exists(int flag | flag = this.getArgument(2).getValue().toInt() |
-      setsFlag(flag, o_creat()) or setsFlag(flag, o_tmpfile())
-    )
+    this.getTarget().getName() = "openat" and
+    this.getNumberOfArguments() = 4
   }
 
   override Expr getPath() { result = this.getArgument(1) }
 
-  override predicate hasModeArgument() { exists(this.getArgument(3)) }
-
-  override int getMode() {
-    if this.hasModeArgument()
-    then result = this.getArgument(3).getValue().toInt()
-    else
-      // assume anything is permitted
-      result = 0.bitNot()
-  }
+  override int getMode() { result = this.getArgument(3).getValue().toInt() }
 }
 
 private int fopenMode() {
   result =
-    UnixConstants::s_irusr()
-        .bitOr(UnixConstants::s_irgrp())
-        .bitOr(UnixConstants::s_iroth())
-        .bitOr(UnixConstants::s_iwusr())
-        .bitOr(UnixConstants::s_iwgrp())
-        .bitOr(UnixConstants::s_iwoth())
+    s_irusr().bitOr(s_irgrp()).bitOr(s_iroth()).bitOr(s_iwusr()).bitOr(s_iwgrp()).bitOr(s_iwoth())
 }
 
 class FopenCreationExpr extends FileCreationExpr {
@@ -226,6 +153,6 @@ class FopensCreationExpr extends FileCreationExpr {
     // fopen_s has restrictive permissions unless you have "u" in the mode
     if this.getArgument(2).getValue().charAt(_) = "u"
     then result = fopenMode()
-    else result = UnixConstants::s_irusr().bitOr(UnixConstants::s_iwusr())
+    else result = s_irusr().bitOr(s_iwusr())
   }
 }

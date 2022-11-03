@@ -1,3 +1,0 @@
-| Test.java:11:82:11:98 | fieldWithSingular | Test.java:11:3:11:68 | ArrayValues | Test.java:11:35:11:67 | {...} | Test.java:11:35:11:67 | CustomAnnotation |
-| Test.java:12:119:12:135 | fieldWithMultiple | Test.java:12:3:12:105 | ArrayValues | Test.java:12:35:12:104 | {...} | Test.java:12:36:12:68 | CustomAnnotation |
-| Test.java:12:119:12:135 | fieldWithMultiple | Test.java:12:3:12:105 | ArrayValues | Test.java:12:35:12:104 | {...} | Test.java:12:71:12:103 | CustomAnnotation |

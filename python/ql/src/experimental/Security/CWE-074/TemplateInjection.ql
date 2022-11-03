@@ -21,11 +21,11 @@ import semmle.python.security.strings.Untrusted
 class TemplateInjectionConfiguration extends TaintTracking::Configuration {
   TemplateInjectionConfiguration() { this = "Template injection configuration" }
 
-  deprecated override predicate isSource(TaintTracking::Source source) {
+  override predicate isSource(TaintTracking::Source source) {
     source instanceof HttpRequestTaintSource
   }
 
-  deprecated override predicate isSink(TaintTracking::Sink sink) { sink instanceof SSTISink }
+  override predicate isSink(TaintTracking::Sink sink) { sink instanceof SSTISink }
 }
 
 from TemplateInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink

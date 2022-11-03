@@ -94,13 +94,19 @@ private string getNodeProperty(DataFlow::Node node, string key) {
       any(DataFlow::Configuration cfg).isBarrierIn(node) and kind = "in"
       or
       any(DataFlow::Configuration cfg).isBarrierOut(node) and kind = "out"
+      or
+      exists(DataFlow::BarrierGuard guard |
+        any(DataFlow::Configuration cfg).isBarrierGuard(guard) and
+        node = guard.getAGuardedNode() and
+        kind = "guard(" + guard.getResultId() + ")"
+      )
     |
       kind, ", "
     )
   or
   // Is there partial flow from a source to this node?
   // This property will only be emitted if partial flow is enabled by overriding
-  // `DataFlow::Configuration::explorationLimit()`.
+  // `DataFlow::Configration::explorationLimit()`.
   key = "pflow" and
   result =
     strictconcat(DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode destNode, int dist,

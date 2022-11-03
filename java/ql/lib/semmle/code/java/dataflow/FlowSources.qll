@@ -17,8 +17,6 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Android
-import semmle.code.java.frameworks.android.ExternalStorage
-import semmle.code.java.frameworks.android.OnActivityResultSource
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.play.Play
 import semmle.code.java.frameworks.spring.SpringWeb
@@ -88,7 +86,7 @@ private class ReverseDnsSource extends RemoteFlowSource {
   ReverseDnsSource() {
     // Try not to trigger on `localhost`.
     exists(MethodAccess m | m = this.asExpr() |
-      m.getMethod() instanceof ReverseDnsMethod and
+      m.getMethod() instanceof ReverseDNSMethod and
       not exists(MethodAccess l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
         l.getMethod().getName() = "getLocalHost"
@@ -111,7 +109,7 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
 }
 
 private class PlayParameterSource extends RemoteFlowSource {
-  PlayParameterSource() { this.asParameter() instanceof PlayActionMethodQueryParameter }
+  PlayParameterSource() { exists(PlayActionMethodQueryParameter p | p = this.asParameter()) }
 
   override string getSourceType() { result = "Play Query Parameters" }
 }
@@ -151,12 +149,6 @@ private class ThriftIfaceParameterSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "Thrift Iface parameter" }
-}
-
-private class AndroidExternalStorageSource extends RemoteFlowSource {
-  AndroidExternalStorageSource() { androidExternalStorageSource(this) }
-
-  override string getSourceType() { result = "Android external storage" }
 }
 
 /** Class for `tainted` user input. */
@@ -210,7 +202,6 @@ class EnvReadMethod extends Method {
   EnvReadMethod() {
     this instanceof MethodSystemGetenv or
     this instanceof PropertiesGetPropertyMethod or
-    this instanceof PropertiesGetMethod or
     this instanceof MethodSystemGetProperty
   }
 }
@@ -221,8 +212,8 @@ class TypeInetAddr extends RefType {
 }
 
 /** A reverse DNS method. */
-class ReverseDnsMethod extends Method {
-  ReverseDnsMethod() {
+class ReverseDNSMethod extends Method {
+  ReverseDNSMethod() {
     this.getDeclaringType() instanceof TypeInetAddr and
     (
       this.getName() = "getHostName" or
@@ -230,9 +221,6 @@ class ReverseDnsMethod extends Method {
     )
   }
 }
-
-/** DEPRECATED: Alias for ReverseDnsMethod */
-deprecated class ReverseDNSMethod = ReverseDnsMethod;
 
 /** Android `Intent` that may have come from a hostile application. */
 class AndroidIntentInput extends DataFlow::Node {
@@ -248,12 +236,6 @@ class AndroidIntentInput extends DataFlow::Node {
     exists(Method m, AndroidReceiveIntentMethod rI |
       m.overrides*(rI) and
       this.asParameter() = m.getParameter(1) and
-      receiverType = m.getDeclaringType()
-    )
-    or
-    exists(Method m, AndroidServiceIntentMethod sI |
-      m.overrides*(sI) and
-      this.asParameter() = m.getParameter(0) and
       receiverType = m.getDeclaringType()
     )
   }
@@ -281,15 +263,4 @@ class ExportedAndroidContentProviderInput extends RemoteFlowSource, AndroidConte
   ExportedAndroidContentProviderInput() { declaringType.isExported() }
 
   override string getSourceType() { result = "Exported Android content provider source" }
-}
-
-/**
- * The data Intent parameter in the `onActivityResult` method in an Activity or Fragment that
- * calls `startActivityForResult` with an implicit Intent.
- */
-class OnActivityResultIntentSource extends OnActivityResultIncomingIntent, RemoteFlowSource {
-  cached
-  OnActivityResultIntentSource() { this.isRemoteSource() }
-
-  override string getSourceType() { result = "Android onActivityResult incoming Intent" }
 }

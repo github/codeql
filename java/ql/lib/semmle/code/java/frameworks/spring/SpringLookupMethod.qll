@@ -3,7 +3,7 @@ import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.SpringBean
 
 /** A `<lookup-method>` element in a Spring XML file. */
-class SpringLookupMethod extends SpringXmlElement {
+class SpringLookupMethod extends SpringXMLElement {
   SpringLookupMethod() { this.getName() = "lookup-method" }
 
   /** Gets the value of the `bean` attribute. */

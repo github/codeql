@@ -11,17 +11,17 @@
  */
 
 import python
-private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.Concepts
+import semmle.python.web.Http
 
-from
-  Http::Client::Request request, DataFlow::Node disablingNode, DataFlow::Node origin, string ending
+FunctionValue requestFunction() { result = Module::named("requests").attr(httpVerbLower()) }
+
+/** requests treats None as the default and all other "falsey" values as False */
+predicate falseNotNone(Value v) { v.getDefiniteBooleanValue() = false and not v = Value::none_() }
+
+from CallNode call, FunctionValue func, Value falsey, ControlFlowNode origin
 where
-  request.disablesCertificateValidation(disablingNode, origin) and
-  // Showing the origin is only useful when it's a different node than the one disabling
-  // certificate validation, for example in `requests.get(..., verify=arg)`, `arg` would
-  // be the `disablingNode`, and the `origin` would be the place were `arg` got its
-  // value from.
-  if disablingNode = origin then ending = "." else ending = " by $@."
-select request, "This request may run without certificate validation because $@" + ending,
-  disablingNode, "it is disabled", origin, "this value"
+  func = requestFunction() and
+  func.getACall() = call and
+  falseNotNone(falsey) and
+  call.getArgByName("verify").pointsTo(falsey, origin)
+select call, "Call to $@ with verify=$@", func, "requests." + func.getName(), origin, "False"

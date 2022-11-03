@@ -1,5 +1,5 @@
 /**
- * Provides classes for modeling Torrent libraries.
+ * Provides classes for modelling Torrent libraries.
  */
 
 import javascript
@@ -8,39 +8,39 @@ import javascript
  * Provides classes for working with [parse-torrent](https://github.com/webtorrent/parse-torrent) code.
  */
 module ParseTorrent {
-  private API::Node mod() { result = API::moduleImport("parse-torrent") }
+  private DataFlow::SourceNode mod() { result = DataFlow::moduleImport("parse-torrent") }
 
   /**
    * A torrent that has been parsed into a JavaScript object.
    */
   class ParsedTorrent extends DataFlow::SourceNode {
-    API::Node node;
-
     ParsedTorrent() {
-      (
-        node = mod().getReturn() or
-        node = mod().getMember("remote").getParameter(1).getParameter(1)
-      ) and
-      this = node.asSource()
+      this = mod().getACall() or
+      this = mod().getAMemberCall("remote").getCallback(1).getParameter(1)
     }
+  }
 
-    /** Gets the API node for this torrent object. */
-    API::Node asApiNode() { result = node }
+  private DataFlow::SourceNode parsedTorrentRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof ParsedTorrent
+    or
+    exists(DataFlow::TypeTracker t2 | result = parsedTorrentRef(t2).track(t2, t))
   }
 
   /** Gets a data flow node referring to a parsed torrent. */
   DataFlow::SourceNode parsedTorrentRef() {
-    result = any(ParsedTorrent t).asApiNode().getAValueReachableFromSource()
+    result = parsedTorrentRef(DataFlow::TypeTracker::end())
   }
 
   /**
    * An access to user-controlled torrent information.
    */
-  class UserControlledTorrentInfo extends RemoteFlowSource instanceof DataFlow::PropRead {
+  class UserControlledTorrentInfo extends RemoteFlowSource {
     UserControlledTorrentInfo() {
-      exists(API::Node read |
-        read = any(ParsedTorrent t).asApiNode().getAMember() and
-        this = read.asSource()
+      exists(DataFlow::SourceNode ref, DataFlow::PropRead read |
+        ref = parsedTorrentRef() and
+        read = ref.getAPropertyRead() and
+        this = read
       |
         exists(string prop |
           not (
@@ -49,10 +49,10 @@ module ParseTorrent {
             prop = "length"
             // "pieceLength" and "lastPieceLength" are not guaranteed to be numbers as of commit ae3ad15d
           ) and
-          super.getPropertyName() = prop
+          read.getPropertyName() = prop
         )
         or
-        not exists(super.getPropertyName())
+        not exists(read.getPropertyName())
       )
     }
 

@@ -1,7 +1,6 @@
 let express = require('express');
-let app = express()
 
-app.put('/todos/:id', (req, res) => {
+express.put('/todos/:id', (req, res) => {
     let id = req.params.id;
     let items = req.session.todos.get(id);
     if (!items) {

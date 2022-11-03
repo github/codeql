@@ -1,7 +1,7 @@
 /**
  * DEPRECATED: we now use `semmle.code.cpp.ir.dataflow.DefaultTaintTracking`,
  * which is based on the IR but designed to behave similarly to this old
- * library.
+ * libarary.
  *
  * Provides the implementation of `semmle.code.cpp.security.TaintTracking`. Do
  * not import this file directly.
@@ -258,7 +258,7 @@ private predicate insideFunctionValueMoveTo(Element src, Element dest) {
           format.getConversionChar(sourceArg - ffc.getTarget().getNumberOfParameters()) = ["s", "S"]
         )
         or
-        not c.(FormattingFunctionCall).getFormat() instanceof FormatLiteral
+        not exists(FormatLiteral fl | fl = c.(FormattingFunctionCall).getFormat())
         or
         not c instanceof FormattingFunctionCall
       ) and

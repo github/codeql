@@ -57,22 +57,20 @@ module Templating {
      * in the output without escaping it.
      */
     predicate isRawInterpolation() {
-      this.getRawText()
-          .regexpMatch(getLikelyTemplateSyntax(this.getFile()).getRawInterpolationRegexp())
+      getRawText().regexpMatch(getLikelyTemplateSyntax(getFile()).getRawInterpolationRegexp())
     }
 
     /**
      * Holds if this performs HTML escaping on the result before inserting it in the template.
      */
     predicate isEscapingInterpolation() {
-      this.getRawText()
-          .regexpMatch(getLikelyTemplateSyntax(this.getFile()).getEscapingInterpolationRegexp())
+      getRawText().regexpMatch(getLikelyTemplateSyntax(getFile()).getEscapingInterpolationRegexp())
     }
 
     /** Holds if this occurs in a `script` tag. */
     predicate isInScriptTag() {
       // We want to exclude non-code scripts like JSON.
-      toplevel_parent_xml_node(any(InlineScript scr), this.getParent())
+      toplevel_parent_xml_node(any(InlineScript scr), getParent())
     }
 
     /**
@@ -82,14 +80,14 @@ module Templating {
      * which cancels out the benefit of HTML escaping.
      */
     predicate isInCodeAttribute() {
-      exists(TopLevel code | code = this.getParent().(HTML::Attribute).getCodeInAttribute() |
+      exists(TopLevel code | code = getParent().(HTML::Attribute).getCodeInAttribute() |
         code instanceof EventHandlerCode or
-        code instanceof JavaScriptUrl
+        code instanceof JavaScriptURL
       )
     }
 
     /** Holds if this placeholder occurs in JS code. */
-    predicate isInCodeContext() { this.isInScriptTag() or this.isInCodeAttribute() }
+    predicate isInCodeContext() { isInScriptTag() or isInCodeAttribute() }
 
     /**
      * Holds if this placeholder occurs in the definition of another template, which means the output
@@ -97,17 +95,17 @@ module Templating {
      */
     predicate isInNestedTemplateContext(string templateType) {
       templateType = "AngularJS" and
-      AngularJS::isInterpretedByAngularJS(this.getParent()) and
+      AngularJS::isInterpretedByAngularJS(getParent()) and
       // Exclude delimiters that coincide with those of AngularJS's own template engine.
       // It's too unlikely to happen, more likely is that one of our heuristics got it wrong.
-      not this.getRawText().regexpMatch("(?s)\\{\\{.*\\}\\}")
+      not getRawText().regexpMatch("(?s)\\{\\{.*\\}\\}")
     }
 
     /**
      * Gets the innermost JavaScript expression containing this template tag, if any.
      */
     pragma[nomagic]
-    Expr getEnclosingExpr() { expr_contains_template_tag_location(result, this.getLocation()) }
+    Expr getEnclosingExpr() { expr_contains_template_tag_location(result, getLocation()) }
   }
 
   /**
@@ -119,10 +117,10 @@ module Templating {
    */
   class PipeRefExpr extends Expr, @template_pipe_ref {
     /** Gets the identifier node naming the pipe. */
-    Identifier getIdentifier() { result = this.getChildExpr(0) }
+    Identifier getIdentifier() { result = getChildExpr(0) }
 
     /** Gets the name of the pipe being referenced. */
-    string getName() { result = this.getIdentifier().getName() }
+    string getName() { result = getIdentifier().getName() }
 
     override string getAPrimaryQlClass() { result = "Templating::PipeRefExpr" }
   }
@@ -147,27 +145,16 @@ module Templating {
   /** The top-level containing the expression in a template placeholder. */
   class TemplateTopLevel extends TopLevel, @template_toplevel {
     /** Gets the expression in this top-level. */
-    Expr getExpression() { result = this.getChildStmt(0).(ExprStmt).getExpr() }
+    Expr getExpression() { result = getChildStmt(0).(ExprStmt).getExpr() }
 
     /** Gets the data flow node representing the initialization of the given variable in this scope. */
     DataFlow::Node getVariableInit(string name) {
-      result = DataFlow::ssaDefinitionNode(Ssa::implicitInit(this.getScope().getVariable(name)))
+      result = DataFlow::ssaDefinitionNode(SSA::implicitInit(getScope().getVariable(name)))
     }
 
     /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
     DataFlow::SourceNode getAVariableUse(string name) {
-      result = this.getScope().getVariable(name).getAnAccess().flow()
-    }
-
-    /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
-    DataFlow::SourceNode getAnAccessPathUse(string accessPath) {
-      result = this.getAVariableUse(accessPath)
-      or
-      exists(string varName, string suffix |
-        accessPath = varName + "." + suffix and
-        suffix != "" and
-        result = AccessPath::getAReferenceTo(this.getAVariableUse(varName), suffix)
-      )
+      result = getScope().getVariable(name).getAnAccess().flow()
     }
   }
 
@@ -188,14 +175,9 @@ module Templating {
     /** Gets a data flow node that refers to an object whose properties become variables in the template. */
     DataFlow::Node getTemplateParamsNode() { result = range.getTemplateParamsNode() }
 
-    /** Gets a data flow node that provides the value for the template variable at the given access path. */
-    DataFlow::Node getTemplateParamForValue(string accessPath) {
-      result = range.getTemplateParamForValue(accessPath)
-    }
-
     /** Gets the template file instantiated here, if any. */
     TemplateFile getTemplateFile() {
-      result = this.getTemplateFileNode().(TemplateFileReference).getTemplateFile()
+      result = getTemplateFileNode().(TemplateFileReference).getTemplateFile()
     }
 
     /**
@@ -218,9 +200,6 @@ module Templating {
       /** Gets a data flow node that refers to an object whose properties become variables in the template. */
       abstract DataFlow::Node getTemplateParamsNode();
 
-      /** Gets a data flow node that provides the value for the template variable at the given access path. */
-      DataFlow::Node getTemplateParamForValue(string accessPath) { none() }
-
       /**
        * Gets the template syntax used by this template instantiation, if known.
        *
@@ -233,7 +212,7 @@ module Templating {
   /** Gets an API node that may flow to `succ` through a template instantiation. */
   private API::Node getTemplateInput(DataFlow::SourceNode succ) {
     exists(TemplateInstantiation inst, API::Node base, string name |
-      base.asSink() = inst.getTemplateParamsNode() and
+      base.getARhs() = inst.getTemplateParamsNode() and
       result = base.getMember(name) and
       succ =
         inst.getTemplateFile()
@@ -241,16 +220,6 @@ module Templating {
             .getAPlaceholder()
             .getInnerTopLevel()
             .getAVariableUse(name)
-    )
-    or
-    exists(TemplateInstantiation inst, string accessPath |
-      result.asSink() = inst.getTemplateParamForValue(accessPath) and
-      succ =
-        inst.getTemplateFile()
-            .getAnImportedFile*()
-            .getAPlaceholder()
-            .getInnerTopLevel()
-            .getAnAccessPathUse(accessPath)
     )
     or
     exists(string prop, DataFlow::SourceNode prev |
@@ -261,7 +230,7 @@ module Templating {
 
   private class TemplateInputStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      getTemplateInput(succ).asSink() = pred
+      getTemplateInput(succ).getARhs() = pred
     }
   }
 
@@ -298,13 +267,13 @@ module Templating {
 
     /** Gets a template file referenced by this one via a template inclusion tag, such as `{% include foo %}` */
     TemplateFile getAnImportedFile() {
-      result = this.getAPlaceholder().(TemplateInclusionTag).getImportedFile()
+      result = getAPlaceholder().(TemplateInclusionTag).getImportedFile()
     }
   }
 
   /** Any HTML file, seen as a possible target for template instantiation. */
   private class TemplateFileByExtension extends TemplateFile {
-    TemplateFileByExtension() { this.getFileType().isHtml() }
+    TemplateFileByExtension() { getFileType().isHtml() }
   }
 
   /**
@@ -318,20 +287,20 @@ module Templating {
   abstract class TemplateFileReference extends DataFlow::Node {
     /** Gets the value that identifies the template. */
     string getValue() {
-      result = this.getStringValue()
+      result = getStringValue()
       or
       exists(API::Node node |
-        this = node.asSink() and
-        result = node.getAValueReachingSink().getStringValue()
+        this = node.getARhs() and
+        result = node.getAValueReachingRhs().getStringValue()
       )
     }
 
     pragma[nomagic]
-    private Folder getFolder() { result = this.getFile().getParentContainer() }
+    private Folder getFolder() { result = getFile().getParentContainer() }
 
     /** Gets the template file referenced by this node. */
     final TemplateFile getTemplateFile() {
-      result = this.getValue().(TemplateFileReferenceString).getTemplateFile(this.getFolder())
+      result = this.getValue().(TemplateFileReferenceString).getTemplateFile(getFolder())
     }
   }
 
@@ -368,7 +337,7 @@ module Templating {
     /**
      * Gets the stem, similar to `Container.getStem`.
      */
-    string getStem() { result = this.getBaseName().regexpCapture("(.*?)(?:\\.([^.]*))?", 1) }
+    string getStem() { result = getBaseName().regexpCapture("(.*?)(?:\\.([^.]*))?", 1) }
 
     /** Gets the template file referenced by this string when resolved from `baseFolder`. */
     final TemplateFile getTemplateFile(Folder baseFolder) {
@@ -377,7 +346,7 @@ module Templating {
       exists(UpwardTraversalSuffix up |
         this = up.getOriginal() and
         result = up.(TemplateFileReferenceString).getTemplateFile(baseFolder.getParentContainer()) and
-        baseFolder = this.getContextFolder()
+        baseFolder = getContextFolder()
       )
     }
   }
@@ -394,7 +363,7 @@ module Templating {
       result = pragma[only_bind_out](r).getFile().getParentContainer()
     }
 
-    override Folder getContextFolder() { result = this.getFileReferenceFolder() }
+    override Folder getContextFolder() { result = getFileReferenceFolder() }
   }
 
   /** The `X` in a path of form `../X`, treated as a separate path string with a different context folder. */
@@ -551,11 +520,9 @@ module Templating {
   private class MustacheStyleSyntax extends TemplateSyntax {
     MustacheStyleSyntax() { this = "mustache" }
 
-    override string getRawInterpolationRegexp() {
-      result = "(?s)\\{\\{\\{(.*?)\\}\\}\\}|\\{\\{&(.*?)\\}\\}"
-    }
+    override string getRawInterpolationRegexp() { result = "(?s)\\{\\{\\{(.*?)\\}\\}\\}" }
 
-    override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{[^{&](.*?)\\}\\}" }
+    override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{[^{](.*?)\\}\\}" }
 
     override string getAFileExtension() { result = ["hbs", "njk"] }
 
@@ -642,10 +609,10 @@ module Templating {
     override DataFlow::SourceNode getOutput() { result = this }
 
     /** Gets a data flow node that refers a template file to be instantiated, if any. */
-    override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
     /** Gets a data flow node that refers to an object whose properties become variables in the template. */
-    override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
+    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
 
   /**
@@ -657,9 +624,11 @@ module Templating {
   private class IncludeFunctionAsEntryPoint extends API::EntryPoint {
     IncludeFunctionAsEntryPoint() { this = "IncludeFunctionAsEntryPoint" }
 
-    override DataFlow::SourceNode getASource() {
+    override DataFlow::SourceNode getAUse() {
       result = any(TemplatePlaceholderTag tag).getInnerTopLevel().getAVariableUse("include")
     }
+
+    override DataFlow::Node getARhs() { none() }
   }
 
   /**
@@ -677,11 +646,11 @@ module Templating {
 
     TemplateInclusionTag() {
       rawPath =
-        this.getRawText()
+        getRawText()
             .regexpCapture("[{<]% *(?:import|include|extend|require)s? *(?:[(] *)?['\"]?(.*?)['\"]? *(?:[)] *)?%[}>]",
               1)
       or
-      rawPath = this.getRawText().regexpCapture("\\{\\{!?[<>](.*?)\\}\\}", 1)
+      rawPath = getRawText().regexpCapture("\\{\\{!?[<>](.*?)\\}\\}", 1)
     }
 
     /** Gets the imported path (normalized). */
@@ -690,9 +659,7 @@ module Templating {
     /** Gets the file referenced by this inclusion tag. */
     TemplateFile getImportedFile() {
       result =
-        this.getPath()
-            .(TemplateFileReferenceString)
-            .getTemplateFile(this.getFile().getParentContainer())
+        getPath().(TemplateFileReferenceString).getTemplateFile(getFile().getParentContainer())
     }
   }
 
@@ -716,14 +683,14 @@ module Templating {
     override TemplateSyntax getTemplateSyntax() { result.getAPackageName() = engine }
 
     override DataFlow::SourceNode getOutput() {
-      result = this.getParameter([1, 2]).getParameter(1).asSource()
+      result = getParameter([1, 2]).getParameter(1).getAnImmediateUse()
       or
-      not exists(this.getParameter([1, 2]).getParameter(1)) and
+      not exists(getParameter([1, 2]).getParameter(1)) and
       result = this
     }
 
-    override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
-    override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
+    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
   }
 }

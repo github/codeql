@@ -39,12 +39,7 @@ newtype TRegExpParent =
   /** A special character */
   TRegExpSpecialChar(Regex re, int start, int end) { re.specialCharacter(start, end, _) } or
   /** A normal character */
-  TRegExpNormalChar(Regex re, int start, int end) {
-    re.normalCharacterSequence(start, end)
-    or
-    re.escapedCharacter(start, end) and
-    not re.specialCharacter(start, end, _)
-  } or
+  TRegExpNormalChar(Regex re, int start, int end) { re.normalCharacter(start, end) } or
   /** A back reference */
   TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
@@ -445,8 +440,6 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
   override string getPrimaryQLClass() { result = "RegExpAlt" }
 }
 
-class RegExpCharEscape = RegExpEscape;
-
 /**
  * An escaped regular expression term, that is, a regular expression
  * term starting with a backslash, which is not a backreference.
@@ -466,9 +459,7 @@ class RegExpEscape extends RegExpNormalChar {
    * TODO: Handle named escapes.
    */
   override string getValue() {
-    not this.isUnicode() and
-    this.isIdentityEscape() and
-    result = this.getUnescaped()
+    this.isIdentityEscape() and result = this.getUnescaped()
     or
     this.getUnescaped() = "n" and result = "\n"
     or
@@ -476,10 +467,9 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "t" and result = "\t"
     or
-    this.getUnescaped() = "f" and result = 12.toUnicode()
-    or
-    this.getUnescaped() = "v" and result = 11.toUnicode()
-    or
+    // TODO: Find a way to include a formfeed character
+    // this.getUnescaped() = "f" and result = ""
+    // or
     this.isUnicode() and
     result = this.getUnicode()
   }
@@ -490,7 +480,7 @@ class RegExpEscape extends RegExpNormalChar {
   override string getPrimaryQLClass() { result = "RegExpEscape" }
 
   /** Gets the part of the term following the escape character. That is e.g. "w" if the term is "\w". */
-  string getUnescaped() { result = this.getText().suffix(1) }
+  private string getUnescaped() { result = this.getText().suffix(1) }
 
   /**
    * Gets the text for this escape. That is e.g. "\w".
@@ -546,15 +536,8 @@ private int toHex(string hex) {
 }
 
 /**
- * A word boundary, that is, a regular expression term of the form `\b`.
- */
-class RegExpWordBoundary extends RegExpSpecialChar {
-  RegExpWordBoundary() { this.getChar() = "\\b" }
-}
-
-/**
  * A character class escape in a regular expression.
- * That is, an escaped character that denotes multiple characters.
+ * That is, an escaped charachter that denotes multiple characters.
  *
  * Examples:
  *
@@ -755,9 +738,6 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
    */
   int getNumber() { result = re.getGroupNumber(start, end) }
 
-  /** Holds if this is a capture group. */
-  predicate isCapture() { exists(this.getNumber()) }
-
   /** Holds if this is a named capture group. */
   predicate isNamed() { exists(this.getName()) }
 
@@ -821,7 +801,7 @@ class RegExpDot extends RegExpSpecialChar {
 }
 
 /**
- * A dollar assertion `$` or `\Z` matching the end of a line.
+ * A dollar assertion `$` matching the end of a line.
  *
  * Example:
  *
@@ -830,13 +810,13 @@ class RegExpDot extends RegExpSpecialChar {
  * ```
  */
 class RegExpDollar extends RegExpSpecialChar {
-  RegExpDollar() { this.getChar() = ["$", "\\Z"] }
+  RegExpDollar() { this.getChar() = "$" }
 
   override string getPrimaryQLClass() { result = "RegExpDollar" }
 }
 
 /**
- * A caret assertion `^` or `\A` matching the beginning of a line.
+ * A caret assertion `^` matching the beginning of a line.
  *
  * Example:
  *
@@ -845,7 +825,7 @@ class RegExpDollar extends RegExpSpecialChar {
  * ```
  */
 class RegExpCaret extends RegExpSpecialChar {
-  RegExpCaret() { this.getChar() = ["^", "\\A"] }
+  RegExpCaret() { this.getChar() = "^" }
 
   override string getPrimaryQLClass() { result = "RegExpCaret" }
 }
@@ -1002,22 +982,11 @@ class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
 
   /** Gets the capture group this back reference refers to. */
   RegExpGroup getGroup() {
-    this.hasLiteralAndNumber(result.getLiteral(), result.getNumber()) or
-    this.hasLiteralAndName(result.getLiteral(), result.getName())
-  }
-
-  /** Join-order helper for `getGroup`. */
-  pragma[nomagic]
-  private predicate hasLiteralAndNumber(RegExpLiteral literal, int number) {
-    literal = this.getLiteral() and
-    number = this.getNumber()
-  }
-
-  /** Join-order helper for `getGroup`. */
-  pragma[nomagic]
-  private predicate hasLiteralAndName(RegExpLiteral literal, string name) {
-    literal = this.getLiteral() and
-    name = this.getName()
+    result.getLiteral() = this.getLiteral() and
+    (
+      result.getNumber() = this.getNumber() or
+      result.getName() = this.getName()
+    )
   }
 
   override RegExpTerm getChild(int i) { none() }

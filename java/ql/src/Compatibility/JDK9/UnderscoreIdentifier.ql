@@ -22,7 +22,7 @@ class IdentifierElement extends Element {
 
 from IdentifierElement e, string msg
 where
-  e.getCompilationUnit().isJavaSourceFile() and
+  e.fromSource() and
   not e.(Constructor).isDefaultConstructor() and
   (
     e.getName() = "_" and

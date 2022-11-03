@@ -71,8 +71,7 @@ newtype TInstructionTag =
   AsmTag() or
   AsmInputTag(int elementIndex) { exists(AsmStmt asm | exists(asm.getChild(elementIndex))) } or
   ThisAddressTag() or
-  ThisLoadTag() or
-  StructuredBindingAccessTag()
+  ThisLoadTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() { result = "Tag" }
@@ -222,6 +221,4 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = ThisAddressTag() and result = "ThisAddress"
   or
   tag = ThisLoadTag() and result = "ThisLoad"
-  or
-  tag = StructuredBindingAccessTag() and result = "StructuredBindingAccess"
 }

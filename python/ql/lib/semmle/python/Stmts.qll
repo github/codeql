@@ -18,15 +18,10 @@ class Stmt extends Stmt_, AstNode {
   /** Gets an immediate (non-nested) sub-statement of this statement */
   Stmt getASubStatement() { none() }
 
-  /** Gets an immediate (non-nested) sub-pattern of this statement */
-  Pattern getASubPattern() { none() }
-
   override AstNode getAChildNode() {
     result = this.getASubExpression()
     or
     result = this.getASubStatement()
-    or
-    result = this.getASubPattern()
   }
 
   private ControlFlowNode possibleEntryNode() {
@@ -99,13 +94,13 @@ class AugAssign extends AugAssign_ {
    * Gets the target of this augmented assignment statement.
    * That is, the `a` in `a += b`.
    */
-  Expr getTarget() { result = this.getOperation().getLeft() }
+  Expr getTarget() { result = this.getOperation().(BinaryExpr).getLeft() }
 
   /**
    * Gets the value of this augmented assignment statement.
    * That is, the `b` in `a += b`.
    */
-  Expr getValue() { result = this.getOperation().getRight() }
+  Expr getValue() { result = this.getOperation().(BinaryExpr).getRight() }
 
   override Stmt getASubStatement() { none() }
 }
@@ -323,7 +318,7 @@ class Raise extends Raise_ {
   override Expr getASubExpression() { py_exprs(result, _, this, _) }
 
   /**
-   * Gets the expression immediately following the `raise`. This is the
+   * The expression immediately following the `raise`, this is the
    * exception raised, but not accounting for tuples in Python 2.
    */
   Expr getException() {
@@ -332,7 +327,7 @@ class Raise extends Raise_ {
     result = this.getExc()
   }
 
-  /** Gets the exception raised, accounting for tuples in Python 2. */
+  /** The exception raised, accounting for tuples in Python 2. */
   Expr getRaised() {
     exists(Expr raw | raw = this.getException() |
       if not major_version() = 2 or not exists(raw.(Tuple).getAnElt())
@@ -415,24 +410,6 @@ class With extends With_ {
   override Stmt getASubStatement() { result = this.getAStmt() }
 
   override Stmt getLastStatement() { result = this.getBody().getLastItem().getLastStatement() }
-}
-
-/** A match statement */
-class MatchStmt extends MatchStmt_ {
-  /* syntax: match subject: */
-  override Expr getASubExpression() { result = this.getSubject() }
-
-  override Stmt getASubStatement() { result = this.getCase(_) }
-}
-
-/** A case statement */
-class Case extends Case_ {
-  /* syntax: case pattern if guard: */
-  override Expr getASubExpression() { result = this.getGuard() }
-
-  override Stmt getASubStatement() { result = this.getStmt(_) }
-
-  override Pattern getASubPattern() { result = this.getPattern() }
 }
 
 /** A plain text used in a template is wrapped in a TemplateWrite statement */

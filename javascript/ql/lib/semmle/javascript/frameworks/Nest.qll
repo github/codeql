@@ -34,7 +34,7 @@ module NestJS {
    * }
    * ```
    */
-  private class NestJSRouteHandler extends Http::RouteHandler, DataFlow::FunctionNode {
+  private class NestJSRouteHandler extends HTTP::RouteHandler, DataFlow::FunctionNode {
     NestJSRouteHandler() {
       getAFunctionDecorator(this) =
         nestjs()
@@ -42,7 +42,7 @@ module NestJS {
             .getACall()
     }
 
-    override Http::HeaderDefinition getAResponseHeader(string name) { none() }
+    override HTTP::HeaderDefinition getAResponseHeader(string name) { none() }
 
     /**
      * Holds if this has the `@Redirect()` decorator.
@@ -56,7 +56,7 @@ module NestJS {
      */
     predicate isReturnValueReflected() {
       getAFunctionDecorator(this) = nestjs().getMember(["Get", "Post"]).getACall() and
-      not this.hasRedirectDecorator() and
+      not hasRedirectDecorator() and
       not getAFunctionDecorator(this) = nestjs().getMember("Render").getACall()
     }
 
@@ -93,7 +93,7 @@ module NestJS {
     NestJSRequestInput() {
       decoratorName =
         ["Query", "Param", "Headers", "Body", "HostParam", "UploadedFile", "UploadedFiles"] and
-      decorator = this.getADecorator() and
+      decorator = getADecorator() and
       decorator = nestjs().getMember(decoratorName).getACall()
     }
 
@@ -105,7 +105,7 @@ module NestJS {
 
     /** Gets a pipe applied to this parameter, not including global pipes. */
     DataFlow::Node getAPipe() {
-      result = this.getNestRouteHandler().getAPipe()
+      result = getNestRouteHandler().getAPipe()
       or
       result = decorator.getArgument(1)
       or
@@ -132,7 +132,7 @@ module NestJS {
       hasSanitizingPipe(this, false)
       or
       hasSanitizingPipe(this, true) and
-      isSanitizingType(this.getParameter().getType().unfold())
+      isSanitizingType(getParameter().getType().unfold())
     }
   }
 
@@ -140,16 +140,18 @@ module NestJS {
   private class ValidationNodeEntry extends API::EntryPoint {
     ValidationNodeEntry() { this = "ValidationNodeEntry" }
 
-    override DataFlow::SourceNode getASource() {
+    override DataFlow::SourceNode getAUse() {
       result.(DataFlow::ClassNode).getName() = "ValidationPipe"
     }
+
+    override DataFlow::Node getARhs() { none() }
   }
 
   /** Gets an API node referring to the constructor of `ValidationPipe` */
   private API::Node validationPipe() {
     result = nestjs().getMember("ValidationPipe")
     or
-    result = any(ValidationNodeEntry e).getANode()
+    result = API::root().getASuccessor(any(ValidationNodeEntry e))
   }
 
   /**
@@ -179,7 +181,7 @@ module NestJS {
   predicate hasGlobalValidationPipe(Folder folder) {
     exists(DataFlow::CallNode call |
       call.getCalleeName() = "useGlobalPipes" and
-      call.getArgument(0) = validationPipe().getInstance().getAValueReachableFromSource() and
+      call.getArgument(0) = validationPipe().getInstance().getAUse() and
       folder = call.getFile().getParentContainer()
     )
     or
@@ -191,7 +193,7 @@ module NestJS {
           .getAMember()
           .getMember("useFactory")
           .getReturn()
-          .asSink() = validationPipe().getInstance().getAValueReachableFromSource() and
+          .getARhs() = validationPipe().getInstance().getAUse() and
       folder = decorator.getFile().getParentContainer()
     )
     or
@@ -202,7 +204,7 @@ module NestJS {
    * Holds if `param` is affected by a pipe that sanitizes inputs.
    */
   private predicate hasSanitizingPipe(NestJSRequestInput param, boolean dependsOnType) {
-    param.getAPipe() = sanitizingPipe(dependsOnType).getAValueReachableFromSource()
+    param.getAPipe() = sanitizingPipe(dependsOnType).getAUse()
     or
     hasGlobalValidationPipe(param.getFile().getParentContainer()) and
     dependsOnType = true
@@ -240,14 +242,14 @@ module NestJS {
       )
     }
 
-    DataFlow::FunctionNode getTransformFunction() { result = this.getInstanceMethod("transform") }
+    DataFlow::FunctionNode getTransformFunction() { result = getInstanceMethod("transform") }
 
-    DataFlow::ParameterNode getInputData() { result = this.getTransformFunction().getParameter(0) }
+    DataFlow::ParameterNode getInputData() { result = getTransformFunction().getParameter(0) }
 
-    DataFlow::Node getOutputData() { result = this.getTransformFunction().getReturnNode() }
+    DataFlow::Node getOutputData() { result = getTransformFunction().getReturnNode() }
 
     NestJSRequestInput getAnAffectedParameter() {
-      [this.getAnInstanceReference(), this.getAClassReference()].flowsTo(result.getAPipe())
+      [getAnInstanceReference(), getAClassReference()].flowsTo(result.getAPipe())
     }
   }
 
@@ -257,7 +259,7 @@ module NestJS {
    * The type of remote flow depends on which decorator is applied at the parameter, so
    * we just classify it as a `RemoteFlowSource`.
    */
-  private class NestJSCustomPipeInput extends Http::RequestInputAccess {
+  private class NestJSCustomPipeInput extends HTTP::RequestInputAccess {
     CustomPipeClass pipe;
 
     NestJSCustomPipeInput() {
@@ -273,7 +275,7 @@ module NestJS {
       result = pipe.getAnAffectedParameter().getInputKind()
     }
 
-    override Http::RouteHandler getRouteHandler() {
+    override HTTP::RouteHandler getRouteHandler() {
       result = pipe.getAnAffectedParameter().getNestRouteHandler()
     }
   }
@@ -295,18 +297,18 @@ module NestJS {
    * as a source of untrusted data.
    */
   private class NestJSRequestInputAsRequestInputAccess extends NestJSRequestInput,
-    Http::RequestInputAccess {
+    HTTP::RequestInputAccess {
     NestJSRequestInputAsRequestInputAccess() {
-      not this.isSanitizedByPipe() and
+      not isSanitizedByPipe() and
       not this = any(CustomPipeClass cls).getAnAffectedParameter()
     }
 
-    override Http::RouteHandler getRouteHandler() { result = this.getNestRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = getNestRouteHandler() }
 
-    override string getKind() { result = this.getInputKind() }
+    override string getKind() { result = getInputKind() }
 
     override predicate isUserControlledObject() {
-      not exists(this.getAPipe()) and // value is not transformed by a pipe
+      not exists(getAPipe()) and // value is not transformed by a pipe
       (
         decorator.getNumArgument() = 0
         or
@@ -316,7 +318,7 @@ module NestJS {
   }
 
   private class NestJSHeaderAccess extends NestJSRequestInputAsRequestInputAccess,
-    Http::RequestHeaderAccess {
+    HTTP::RequestHeaderAccess {
     NestJSHeaderAccess() { decoratorName = "Headers" and decorator.getNumArgument() > 0 }
 
     override string getAHeaderName() {
@@ -344,20 +346,20 @@ module NestJS {
    * ```
    * writes `<b>Hello</b>` to the response.
    */
-  private class ReturnValueAsResponseSend extends Http::ResponseSendArgument {
+  private class ReturnValueAsResponseSend extends HTTP::ResponseSendArgument {
     NestJSRouteHandler handler;
 
     ReturnValueAsResponseSend() {
       handler.isReturnValueReflected() and
-      this = handler.getAReturn() and
+      this = handler.getAReturn().asExpr() and
       // Only returned strings are sinks
       not exists(Type type |
-        type = this.asExpr().getType() and
+        type = getType() and
         not isStringType(type.unfold())
       )
     }
 
-    override Http::RouteHandler getRouteHandler() { result = handler }
+    override HTTP::RouteHandler getRouteHandler() { result = handler }
   }
 
   /**
@@ -374,11 +376,11 @@ module NestJS {
    * redirects to `https://example.com`.
    */
   private class ReturnValueAsRedirection extends ServerSideUrlRedirect::Sink {
+    NestJSRouteHandler handler;
+
     ReturnValueAsRedirection() {
-      exists(NestJSRouteHandler handler |
-        handler.hasRedirectDecorator() and
-        this = handler.getAReturn().getALocalSource().getAPropertyWrite("url").getRhs()
-      )
+      handler.hasRedirectDecorator() and
+      this = handler.getAReturn().getALocalSource().getAPropertyWrite("url").getRhs()
     }
   }
 
@@ -389,15 +391,15 @@ module NestJS {
     CustomParameterDecorator() { this = nestjs().getMember("createParamDecorator").getACall() }
 
     /** Gets the `context` parameter. */
-    API::Node getExecutionContext() { result = this.getParameter(0).getParameter(1) }
+    API::Node getExecutionContext() { result = getParameter(0).getParameter(1) }
 
     /** Gets a parameter with this decorator applied. */
     DataFlow::ParameterNode getADecoratedParameter() {
-      result.getADecorator() = this.getReturn().getReturn().getAValueReachableFromSource()
+      result.getADecorator() = getReturn().getReturn().getAUse()
     }
 
     /** Gets a value returned by the decorator's callback, which becomes the value of the decorated parameter. */
-    DataFlow::Node getResult() { result = this.getParameter(0).getReturn().asSink() }
+    DataFlow::Node getResult() { result = getParameter(0).getReturn().getARhs() }
   }
 
   /**
@@ -425,7 +427,7 @@ module NestJS {
   private class ExpressRequestSource extends Express::RequestSource {
     ExpressRequestSource() {
       this.(DataFlow::ParameterNode).getADecorator() =
-        nestjs().getMember(["Req", "Request"]).getReturn().asSource()
+        nestjs().getMember(["Req", "Request"]).getReturn().getAnImmediateUse()
       or
       this =
         executionContext()
@@ -433,13 +435,13 @@ module NestJS {
             .getReturn()
             .getMember("getRequest")
             .getReturn()
-            .asSource()
+            .getAnImmediateUse()
     }
 
     /**
      * Gets the route handler that handles this request.
      */
-    override Http::RouteHandler getRouteHandler() {
+    override HTTP::RouteHandler getRouteHandler() {
       result.(DataFlow::FunctionNode).getAParameter() = this
     }
   }
@@ -450,13 +452,13 @@ module NestJS {
   private class ExpressResponseSource extends Express::ResponseSource {
     ExpressResponseSource() {
       this.(DataFlow::ParameterNode).getADecorator() =
-        nestjs().getMember(["Res", "Response"]).getReturn().asSource()
+        nestjs().getMember(["Res", "Response"]).getReturn().getAnImmediateUse()
     }
 
     /**
      * Gets the route handler that handles this request.
      */
-    override Http::RouteHandler getRouteHandler() {
+    override HTTP::RouteHandler getRouteHandler() {
       result.(DataFlow::FunctionNode).getAParameter() = this
     }
   }

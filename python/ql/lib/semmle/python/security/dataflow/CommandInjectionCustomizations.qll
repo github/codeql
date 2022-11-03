@@ -32,11 +32,9 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
    * A sanitizer guard for "command injection" vulnerabilities.
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -85,5 +83,5 @@ module CommandInjection {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
 }

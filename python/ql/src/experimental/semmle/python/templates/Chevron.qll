@@ -5,15 +5,15 @@ import semmle.python.web.HttpRequest
 import experimental.semmle.python.templates.SSTISink
 
 /** returns the Value representing `chevron.render` function */
-deprecated Value theChevronRenderFunc() { result = Value::named("chevron.render") }
+Value theChevronRenderFunc() { result = Value::named("chevron.render") }
 
 /**
- * A sink representing the `chevron.render` function call argument.
+ * Sink representing the `chevron.render` function call argument.
  *
  *  import chevron
  *  tmp = chevron.render(`sink`,{ 'key' : 'value' })
  */
-deprecated class ChevronRenderSink extends SSTISink {
+class ChevronRenderSink extends SSTISink {
   override string toString() { result = "argument to chevron.render()" }
 
   ChevronRenderSink() {

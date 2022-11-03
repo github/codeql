@@ -8,8 +8,8 @@ import java
 /**
  * A JavaEE persistence configuration XML file (persistence.xml).
  */
-class PersistenceXmlFile extends XmlFile {
-  PersistenceXmlFile() { this.getStem() = "persistence" }
+class PersistenceXMLFile extends XMLFile {
+  PersistenceXMLFile() { this.getStem() = "persistence" }
 
   /** Gets the root XML element in this `persistence.xml` file. */
   PersistenceXmlRoot getRoot() { result = this.getAChild() }
@@ -26,13 +26,10 @@ class PersistenceXmlFile extends XmlFile {
   }
 }
 
-/** DEPRECATED: Alias for PersistenceXmlFile */
-deprecated class PersistenceXMLFile = PersistenceXmlFile;
-
 /** The root `persistence` XML element in a `persistence.xml` file. */
-class PersistenceXmlRoot extends XmlElement {
+class PersistenceXmlRoot extends XMLElement {
   PersistenceXmlRoot() {
-    this.getParent() instanceof PersistenceXmlFile and
+    this.getParent() instanceof PersistenceXMLFile and
     this.getName() = "persistence"
   }
 
@@ -44,7 +41,7 @@ class PersistenceXmlRoot extends XmlElement {
  * A `persistence-unit` child XML element of the root
  * `persistence` XML element in a `persistence.xml` file.
  */
-class PersistenceUnitElement extends XmlElement {
+class PersistenceUnitElement extends XMLElement {
   PersistenceUnitElement() {
     this.getParent() instanceof PersistenceXmlRoot and
     this.getName() = "persistence-unit"
@@ -61,7 +58,7 @@ class PersistenceUnitElement extends XmlElement {
  * A `shared-cache-mode` child XML element of a `persistence-unit`
  * XML element in a `persistence.xml` file.
  */
-class SharedCacheModeElement extends XmlElement {
+class SharedCacheModeElement extends XMLElement {
   SharedCacheModeElement() {
     this.getParent() instanceof PersistenceUnitElement and
     this.getName() = "shared-cache-mode"
@@ -78,7 +75,7 @@ class SharedCacheModeElement extends XmlElement {
  * A `properties` child XML element of a `persistence-unit`
  * XML element in a `persistence.xml` file.
  */
-class PersistencePropertiesElement extends XmlElement {
+class PersistencePropertiesElement extends XMLElement {
   PersistencePropertiesElement() {
     this.getParent() instanceof PersistenceUnitElement and
     this.getName() = "properties"
@@ -92,7 +89,7 @@ class PersistencePropertiesElement extends XmlElement {
  * A `property` child XML element of a `properties`
  * XML element in a `persistence.xml` file.
  */
-class PersistencePropertyElement extends XmlElement {
+class PersistencePropertyElement extends XMLElement {
   PersistencePropertyElement() {
     this.getParent() instanceof PersistencePropertiesElement and
     this.getName() = "property"

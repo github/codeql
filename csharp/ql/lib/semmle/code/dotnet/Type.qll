@@ -89,6 +89,4 @@ class ArrayType extends ValueOrRefType, @dotnet_array_type {
   final override string getLabel() { result = this.getElementType().getLabel() + "[]" }
 
   override string toStringWithTypes() { result = this.getElementType().toStringWithTypes() + "[]" }
-
-  override string getAPrimaryQlClass() { result = "ArrayType" }
 }

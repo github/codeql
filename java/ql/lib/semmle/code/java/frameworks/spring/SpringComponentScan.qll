@@ -8,8 +8,8 @@ import semmle.code.xml.WebXML
  * An element in a Spring configuration file that configures which packages are considered to be
  * "base" packages when performing the Spring component scan.
  */
-class SpringXmlComponentScan extends SpringXmlElement {
-  SpringXmlComponentScan() {
+class SpringXMLComponentScan extends SpringXMLElement {
+  SpringXMLComponentScan() {
     this.getName() = "component-scan" and
     this.getNamespace().getPrefix() = "context"
   }
@@ -22,9 +22,6 @@ class SpringXmlComponentScan extends SpringXmlElement {
    */
   string getAProfileExpr() { result = this.getSpringBeanFile().getAProfileExpr() }
 }
-
-/** DEPRECATED: Alias for SpringXmlComponentScan */
-deprecated class SpringXMLComponentScan = SpringXmlComponentScan;
 
 /**
  * An annotation of a class that configures which packages are considered to be "base" packages
@@ -40,10 +37,16 @@ class SpringComponentScan extends Annotation {
    */
   string getBasePackages() {
     // "value" and "basePackages" are synonymous, and are simple strings
-    result = this.getAStringArrayValue(["basePackages", "value"])
+    result = this.getAValue("basePackages").(StringLiteral).getRepresentedString()
     or
-    // Base package classes are type literals whose package should be considered a base package.
-    result = this.getATypeArrayValue("basePackageClasses").(RefType).getPackage().getName()
+    result = this.getAValue("value").(StringLiteral).getRepresentedString()
+    or
+    exists(TypeLiteral typeLiteral |
+      // Base package classes are type literals whose package should be considered a base package.
+      typeLiteral = this.getAValue("basePackageClasses")
+    |
+      result = typeLiteral.getReferencedType().(RefType).getPackage().getName()
+    )
   }
 }
 
@@ -56,11 +59,11 @@ class SpringBasePackage extends string {
     exists(string basePackages |
       // Interpret the contexts of the `web.xml` "contextConfigLocation" parameter as a base package,
       // but only if the appropriate context class is chosen.
-      exists(WebXmlFile webXml |
-        webXml.getContextParamValue("contextClass") =
+      exists(WebXMLFile webXML |
+        webXML.getContextParamValue("contextClass") =
           "org.springframework.web.context.support.AnnotationConfigWebApplicationContext"
       |
-        basePackages = webXml.getContextParamValue("contextConfigLocation")
+        basePackages = webXML.getContextParamValue("contextConfigLocation")
       )
       or
       exists(SpringComponent c, Annotation componentScan |
@@ -72,7 +75,7 @@ class SpringBasePackage extends string {
         c.isLive()
       )
       or
-      exists(SpringXmlComponentScan xmlComponentScan |
+      exists(SpringXMLComponentScan xmlComponentScan |
         basePackages = xmlComponentScan.getBasePackages() and
         // The component scan profile must be active, if one is specified.
         (
@@ -107,7 +110,7 @@ class SpringComponentAnnotation extends AnnotationType {
  * In order for Spring XML to be "enabled", XML must have been indexed into the snapshot, and that
  * XML must contain the appropriate Spring configuration files.
  */
-private predicate isSpringXmlEnabled() { exists(SpringXmlElement springXmlElement) }
+private predicate isSpringXMLEnabled() { exists(SpringXMLElement springXMLElement) }
 
 /**
  * A Spring component class, identified by the presence of a particular annotation.
@@ -138,7 +141,8 @@ class SpringComponent extends RefType {
     if exists(this.getComponentAnnotation().getValue("value"))
     then
       // If the name has been specified in the component annotation, use that.
-      result = this.getComponentAnnotation().getStringValue("value")
+      result =
+        this.getComponentAnnotation().getValue("value").(CompileTimeConstantExpr).getStringValue()
     else
       // Otherwise use the name of the class, with the initial letter lower cased.
       exists(string name | name = this.getName() |
@@ -174,7 +178,7 @@ class SpringComponent extends RefType {
     // only validate whether this class is ever picked up if XML indexing is enabled. If it's
     // enabled, then the package of this class must belong in one of the packages defined as a base
     // package.
-    not isSpringXmlEnabled()
+    not isSpringXMLEnabled()
     or
     exists(SpringBasePackage sbp |
       this.getPackage().getName().prefix(sbp.length() + 1) = sbp + "." or
@@ -197,7 +201,7 @@ class SpringComponent extends RefType {
           .getType()
           .hasQualifiedName("org.springframework.context.annotation", "Profile")
     |
-      result = profileAnnotation.getAStringArrayValue("value")
+      result = profileAnnotation.getAValue("value").(StringLiteral).getRepresentedString()
     )
   }
 }

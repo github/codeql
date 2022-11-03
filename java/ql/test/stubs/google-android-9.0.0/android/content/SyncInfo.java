@@ -8,6 +8,7 @@ import android.os.Parcelable;
 
 public class SyncInfo implements Parcelable
 {
+    protected SyncInfo() {}
     public final Account account = null;
     public final String authority = null;
     public final long startTime = 0;

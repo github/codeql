@@ -6,7 +6,7 @@
 import python
 private import semmle.python.web.Http
 
-deprecated class RequestsHttpRequest extends Client::HttpRequest, CallNode {
+class RequestsHttpRequest extends Client::HttpRequest, CallNode {
   CallableValue func;
   string method;
 

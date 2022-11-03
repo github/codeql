@@ -32,13 +32,13 @@ predicate hasEmbeddedPassword(string value) {
   )
 }
 
-from XmlAttribute nameAttr
+from XMLAttribute nameAttr
 where
   nameAttr.getName().toLowerCase() in ["password", "pwd"] and
   not isNotPassword(nameAttr.getValue().trim()) // Attribute name "password" or "pwd"
   or
   exists(
-    XmlAttribute valueAttr // name/value pair like <property name="password" value="mysecret"/>
+    XMLAttribute valueAttr // name/value pair like <property name="password" value="mysecret"/>
   |
     valueAttr.getElement() = nameAttr.getElement() and
     nameAttr.getName().toLowerCase() = "name" and
@@ -48,4 +48,4 @@ where
   )
   or
   hasEmbeddedPassword(nameAttr.getValue().trim()) // Attribute value matches password pattern
-select nameAttr, "Avoid plaintext passwords in configuration files."
+select nameAttr, "Plaintext password in configuration file."

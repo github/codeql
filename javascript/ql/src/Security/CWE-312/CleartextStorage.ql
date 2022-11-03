@@ -19,5 +19,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This stores sensitive data returned by $@ as clear text.",
+select sink.getNode(), source, sink, "Sensitive data returned by $@ is stored here.",
   source.getNode(), source.getNode().(Source).describe()

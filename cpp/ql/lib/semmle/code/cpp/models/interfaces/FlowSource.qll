@@ -20,12 +20,18 @@ abstract class RemoteFlowSourceFunction extends Function {
   abstract predicate hasRemoteFlowSource(FunctionOutput output, string description);
 
   /**
-   * Holds if remote data from this source comes from a socket or stream
-   * described by `input`. There is no result if none is specified by a
-   * parameter.
+   * Holds if remote data from this source comes from a socket described by
+   * `input`. There is no result if a socket is not specified.
    */
   predicate hasSocketInput(FunctionInput input) { none() }
 }
+
+/**
+ * DEPRECATED: Use `RemoteFlowSourceFunction` instead.
+ *
+ * A library function that returns data that may be read from a network connection.
+ */
+deprecated class RemoteFlowFunction = RemoteFlowSourceFunction;
 
 /**
  * A library function that returns data that is directly controlled by a user.
@@ -37,6 +43,13 @@ abstract class LocalFlowSourceFunction extends Function {
   abstract predicate hasLocalFlowSource(FunctionOutput output, string description);
 }
 
+/**
+ * DEPRECATED: Use `LocalFlowSourceFunction` instead.
+ *
+ * A library function that returns data that is directly controlled by a user.
+ */
+deprecated class LocalFlowFunction = LocalFlowSourceFunction;
+
 /** A library function that sends data over a network connection. */
 abstract class RemoteFlowSinkFunction extends Function {
   /**
@@ -46,9 +59,8 @@ abstract class RemoteFlowSinkFunction extends Function {
   abstract predicate hasRemoteFlowSink(FunctionInput input, string description);
 
   /**
-   * Holds if data put into this sink is transmitted through a socket or stream
-   * described by `input`. There is no result if none is specified by a
-   * parameter.
+   * Holds if data put into this sink is transmitted through a socket described
+   * by `input`. There is no result if a socket is not specified.
    */
   predicate hasSocketInput(FunctionInput input) { none() }
 }

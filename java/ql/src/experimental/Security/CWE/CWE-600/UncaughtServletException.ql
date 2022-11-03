@@ -24,7 +24,7 @@ private predicate exceptionIsCaught(TryStmt t, RefType exType) {
   exists(CatchClause cc, LocalVariableDeclExpr v |
     t.getACatchClause() = cc and
     cc.getVariable() = v and
-    v.getType().(RefType).getADescendant() = exType and // Detect the case that a subclass exception is thrown but its parent class is declared in the catch clause.
+    v.getType().(RefType).getASubtype*() = exType and // Detect the case that a subclass exception is thrown but its parent class is declared in the catch clause.
     not exists(
       ThrowStmt ts // Detect the edge case that exception is caught then rethrown without processing in a catch clause
     |
@@ -75,5 +75,5 @@ class UncaughtServletExceptionConfiguration extends TaintTracking::Configuration
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UncaughtServletExceptionConfiguration c
 where c.hasFlowPath(source, sink) and not hasErrorPage()
-select sink.getNode(), source, sink, "This value depends on a $@ and can throw uncaught exception.",
-  source.getNode(), "user-provided value"
+select sink.getNode(), source, sink, "$@ flows to here and can throw uncaught exception.",
+  source.getNode(), "User-provided value"

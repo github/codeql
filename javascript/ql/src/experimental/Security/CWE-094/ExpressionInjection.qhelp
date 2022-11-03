@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+
+		<p>
+
+			Using user-controlled input in GitHub Actions may lead to
+			code injection in contexts like <i>run:</i> or <i>script:</i>.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+
+		<p>
+
+			The best practice to avoid code injection vulnerabilities
+			in GitHub workflows is to set the untrusted input value of the expression
+			to an intermediate environment variable.
+
+		</p>
+
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example lets a user inject an arbitrary shell command:
+
+		</p>
+
+		<sample src="examples/comment_issue_bad.yml" />
+
+		<p>
+
+			The following example uses shell syntax to read
+			the environment variable and will prevent the attack:
+
+		</p>
+
+		<sample src="examples/comment_issue_good.yml" />
+
+	</example>
+
+	<references>
+		<li>GitHub Security Lab Research: <a href="https://securitylab.github.com/research/github-actions-untrusted-input">Keeping your GitHub Actions and workflows secure: Untrusted input</a>.</li>
+	</references>
+
+</qhelp>

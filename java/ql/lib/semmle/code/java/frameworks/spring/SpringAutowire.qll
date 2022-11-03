@@ -58,8 +58,8 @@ class SpringBeanPropertySetterMethod extends Method {
  *
  * Confusingly, this is a different form of autowiring to the `@Autowired` annotation.
  */
-class SpringBeanXmlAutowiredSetterMethod extends Method {
-  SpringBeanXmlAutowiredSetterMethod() {
+class SpringBeanXMLAutowiredSetterMethod extends Method {
+  SpringBeanXMLAutowiredSetterMethod() {
     // The bean as marked with some form of autowiring in the XML file.
     exists(string xmlAutowire |
       xmlAutowire = this.getDeclaringType().(SpringBeanRefType).getSpringBean().getAutowire()
@@ -99,9 +99,6 @@ class SpringBeanXmlAutowiredSetterMethod extends Method {
     )
   }
 }
-
-/** DEPRECATED: Alias for SpringBeanXmlAutowiredSetterMethod */
-deprecated class SpringBeanXMLAutowiredSetterMethod = SpringBeanXmlAutowiredSetterMethod;
 
 /**
  * A callable that is annotated with `@Autowired`.
@@ -311,7 +308,9 @@ class SpringQualifierDefinitionAnnotation extends Annotation {
   /**
    * Gets the value of the qualifier field for this qualifier.
    */
-  string getQualifierValue() { result = this.getStringValue("value") }
+  string getQualifierValue() {
+    result = this.getValue("value").(CompileTimeConstantExpr).getStringValue()
+  }
 }
 
 /**
@@ -323,7 +322,9 @@ class SpringQualifierAnnotation extends Annotation {
   /**
    * Gets the value of the qualifier field for this qualifier.
    */
-  string getQualifierValue() { result = this.getStringValue("value") }
+  string getQualifierValue() {
+    result = this.getValue("value").(CompileTimeConstantExpr).getStringValue()
+  }
 
   /**
    * Gets the bean definition in an XML file that this qualifier resolves to, if any.
@@ -346,7 +347,9 @@ class SpringResourceAnnotation extends Annotation {
   /**
    * Gets the specified name value, if any.
    */
-  string getNameValue() { result = this.getStringValue("name") }
+  string getNameValue() {
+    result = this.getValue("name").(CompileTimeConstantExpr).getStringValue()
+  }
 
   /**
    * Gets the bean definition in an XML file that the resource resolves to, if any.

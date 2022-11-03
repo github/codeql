@@ -1,16 +1,12 @@
 /** Provides classes and predicates for defining flow summaries. */
 
 import csharp
-private import dotnet
 private import internal.FlowSummaryImpl as Impl
-private import internal.DataFlowDispatch as DataFlowDispatch
-
-class ParameterPosition = DataFlowDispatch::ParameterPosition;
-
-class ArgumentPosition = DataFlowDispatch::ArgumentPosition;
+private import internal.DataFlowDispatch
 
 // import all instances below
 private module Summaries {
+  private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
   private import semmle.code.csharp.frameworks.EntityFramework
 }
 
@@ -18,35 +14,10 @@ class SummaryComponent = Impl::Public::SummaryComponent;
 
 /** Provides predicates for constructing summary components. */
 module SummaryComponent {
-  private import Impl::Public::SummaryComponent as SummaryComponentInternal
-
-  predicate content = SummaryComponentInternal::content/1;
-
-  /** Gets a summary component for parameter `i`. */
-  SummaryComponent parameter(int i) {
-    exists(ArgumentPosition pos |
-      result = SummaryComponentInternal::parameter(pos) and
-      i = pos.getPosition()
-    )
-  }
-
-  /** Gets a summary component for argument `i`. */
-  SummaryComponent argument(int i) {
-    exists(ParameterPosition pos |
-      result = SummaryComponentInternal::argument(pos) and
-      i = pos.getPosition()
-    )
-  }
-
-  predicate return = SummaryComponentInternal::return/1;
+  import Impl::Public::SummaryComponent
 
   /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() {
-    exists(ParameterPosition pos |
-      result = SummaryComponentInternal::argument(pos) and
-      pos.isThisParameter()
-    )
-  }
+  SummaryComponent qualifier() { result = argument(-1) }
 
   /** Gets a summary component that represents an element in a collection. */
   SummaryComponent element() { result = content(any(DataFlow::ElementContent c)) }
@@ -62,14 +33,14 @@ module SummaryComponent {
   }
 
   /** Gets a summary component that represents the return value of a call. */
-  SummaryComponent return() { result = return(any(DataFlowDispatch::NormalReturnKind rk)) }
+  SummaryComponent return() { result = return(any(NormalReturnKind rk)) }
 
   /** Gets a summary component that represents a jump to `c`. */
   SummaryComponent jump(Callable c) {
     result =
-      return(any(DataFlowDispatch::JumpReturnKind jrk |
+      return(any(JumpReturnKind jrk |
           jrk.getTarget() = c.getUnboundDeclaration() and
-          jrk.getTargetReturnKind() instanceof DataFlowDispatch::NormalReturnKind
+          jrk.getTargetReturnKind() instanceof NormalReturnKind
         ))
   }
 }
@@ -78,16 +49,7 @@ class SummaryComponentStack = Impl::Public::SummaryComponentStack;
 
 /** Provides predicates for constructing stacks of summary components. */
 module SummaryComponentStack {
-  private import Impl::Public::SummaryComponentStack as SummaryComponentStackInternal
-
-  predicate singleton = SummaryComponentStackInternal::singleton/1;
-
-  predicate push = SummaryComponentStackInternal::push/2;
-
-  /** Gets a singleton stack for argument `i`. */
-  SummaryComponentStack argument(int i) { result = singleton(SummaryComponent::argument(i)) }
-
-  predicate return = SummaryComponentStackInternal::return/1;
+  import Impl::Public::SummaryComponentStack
 
   /** Gets a singleton stack representing a qualifier. */
   SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
@@ -97,7 +59,7 @@ module SummaryComponentStack {
     result = push(SummaryComponent::element(), container)
   }
 
-  /** Gets a stack representing a property `p` of `object`. */
+  /** Gets a stack representing a propery `p` of `object`. */
   SummaryComponentStack propertyOf(Property p, SummaryComponentStack object) {
     result = push(SummaryComponent::property(p), object)
   }
@@ -116,37 +78,21 @@ module SummaryComponentStack {
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
-private predicate recordConstructorFlow(Constructor c, int i, Property p) {
-  c = any(RecordType r).getAMember() and
-  exists(string name |
-    c.getParameter(i).getName() = name and
-    c.getDeclaringType().getAMember(name) = p
-  )
-}
+private class SummarizedCallableDefaultClearsContent extends Impl::Public::SummarizedCallable {
+  SummarizedCallableDefaultClearsContent() {
+    this instanceof Impl::Public::SummarizedCallable or none()
+  }
 
-private class RecordConstructorFlow extends SummarizedCallable {
-  RecordConstructorFlow() { recordConstructorFlow(this, _, _) }
-
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    exists(int i, Property p |
-      recordConstructorFlow(this, i, p) and
-      input = SummaryComponentStack::argument(i) and
-      output = SummaryComponentStack::propertyOf(p, SummaryComponentStack::return()) and
-      preservesValue = true
+  // By default, we assume that all stores into arguments are definite
+  override predicate clearsContent(int i, DataFlow::Content content) {
+    exists(SummaryComponentStack output |
+      this.propagatesFlow(_, output, _) and
+      output.drop(_) =
+        SummaryComponentStack::push(SummaryComponent::content(content),
+          SummaryComponentStack::argument(i)) and
+      not content instanceof DataFlow::ElementContent
     )
   }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
-
-private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-    exists(Property p |
-      recordConstructorFlow(_, _, p) and
-      head = SummaryComponent::property(p) and
-      tail = SummaryComponentStack::return()
-    )
-  }
-}

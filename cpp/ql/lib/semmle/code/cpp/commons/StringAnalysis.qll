@@ -27,14 +27,11 @@ predicate canValueFlow(Expr fromExpr, Expr toExpr) {
   fromExpr = toExpr.(ConditionalExpr).getElse()
 }
 
-/** DEPRECATED: Alias for AnalyzedString */
-deprecated class AnalysedString = AnalyzedString;
-
 /**
- * An analyzed null terminated string.
+ * An analysed null terminated string.
  */
-class AnalyzedString extends Expr {
-  AnalyzedString() {
+class AnalysedString extends Expr {
+  AnalysedString() {
     this.getUnspecifiedType() instanceof ArrayType or
     this.getUnspecifiedType() instanceof PointerType
   }
@@ -44,15 +41,15 @@ class AnalyzedString extends Expr {
    * can be calculated.
    */
   int getMaxLength() {
-    // take the longest AnalyzedString its value could 'flow' from; however if even one doesn't
+    // take the longest AnalysedString it's value could 'flow' from; however if even one doesn't
     // return a value (this essentially means 'infinity') we can't return a value either.
     result =
-      max(AnalyzedString expr, int toMax |
+      max(AnalysedString expr, int toMax |
         canValueFlow*(expr, this) and toMax = expr.(StringLiteral).getOriginalLength()
       |
         toMax
       ) and // maximum length
-    forall(AnalyzedString expr | canValueFlow(expr, this) | exists(expr.getMaxLength())) // all sources return a value (recursive)
+    forall(AnalysedString expr | canValueFlow(expr, this) | exists(expr.getMaxLength())) // all sources return a value (recursive)
   }
 }
 

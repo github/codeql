@@ -1,4 +1,4 @@
 import javascript
 
-from JQuery::MethodCall jqmc
+from JQueryMethodCall jqmc
 select jqmc, jqmc.getMethodName()

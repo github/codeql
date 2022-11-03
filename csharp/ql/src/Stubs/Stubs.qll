@@ -160,7 +160,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
 
   private string stubBaseTypesString() {
     if this instanceof Enum
-    then result = " : " + this.(Enum).getUnderlyingType().toStringWithTypes()
+    then result = ""
     else
       if exists(this.getAnInterestingBaseType())
       then
@@ -502,48 +502,23 @@ private string stubClassName(Type t) {
                       else
                         if t instanceof TupleType
                         then
-                          exists(TupleType tt | tt = t |
-                            if tt.getArity() < 2
-                            then result = stubClassName(tt.getUnderlyingType())
-                            else
-                              result =
-                                "(" +
-                                  concat(int i, Type element |
-                                    element = tt.getElementType(i)
-                                  |
-                                    stubClassName(element), "," order by i
-                                  ) + ")"
-                          )
-                        else
-                          if t instanceof FunctionPointerType
-                          then
-                            exists(
-                              FunctionPointerType fpt, CallingConvention callconvention,
-                              string calltext
-                            |
-                              fpt = t
-                            |
-                              callconvention = fpt.getCallingConvention() and
-                              (
-                                if callconvention instanceof UnmanagedCallingConvention
-                                then calltext = "unmanaged"
-                                else calltext = ""
-                              ) and
-                              result =
-                                "delegate* " + calltext + "<" +
-                                  concat(int i, Parameter p |
-                                    p = fpt.getParameter(i)
-                                  |
-                                    stubClassName(p.getType()) + "," order by i
-                                  ) + stubClassName(fpt.getReturnType()) + ">"
-                            )
+                          if t.(TupleType).getArity() < 2
+                          then result = stubClassName(t.(TupleType).getUnderlyingType())
                           else
-                            if t instanceof ValueOrRefType
-                            then
-                              result =
-                                stubQualifiedNamePrefix(t) + t.getUndecoratedName() +
-                                  stubGenericArguments(t)
-                            else result = "<error>"
+                            result =
+                              "(" +
+                                concat(int i, Type element |
+                                  element = t.(TupleType).getElementType(i)
+                                |
+                                  stubClassName(element), "," order by i
+                                ) + ")"
+                        else
+                          if t instanceof ValueOrRefType
+                          then
+                            result =
+                              stubQualifiedNamePrefix(t) + t.getUndecoratedName() +
+                                stubGenericArguments(t)
+                          else result = "<error>"
 }
 
 language[monotonicAggregates]
@@ -722,7 +697,7 @@ private string stubMethod(Method m, Assembly assembly) {
   if not m.getDeclaringType() instanceof Enum
   then
     result =
-      "    " + stubModifiers(m) + stubClassName(m.getReturnType()) + " " +
+      "    " + stubModifiers(m) + stubClassName(m.(Method).getReturnType()) + " " +
         stubExplicitImplementation(m) + escapeIfKeyword(m.getUndecoratedName()) +
         stubGenericMethodParams(m) + "(" + stubParameters(m) + ")" +
         stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
@@ -751,7 +726,7 @@ pragma[noinline]
 private string stubEnumConstant(EnumConstant ec, Assembly assembly) {
   ec instanceof GeneratedMember and
   ec.getALocation() = assembly and
-  result = "    " + escapeIfKeyword(ec.getName()) + " = " + ec.getValue() + ",\n"
+  result = "    " + escapeIfKeyword(ec.getName()) + ",\n"
 }
 
 pragma[noinline]

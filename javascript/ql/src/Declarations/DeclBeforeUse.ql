@@ -10,7 +10,7 @@
  */
 
 import javascript
-private import Declarations.Declarations
+private import Declarations
 
 from VarAccess acc, VarDecl decl, Variable var, StmtContainer sc
 where

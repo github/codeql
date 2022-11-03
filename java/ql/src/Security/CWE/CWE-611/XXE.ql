@@ -19,10 +19,10 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph
 
-class SafeSaxSourceFlowConfig extends TaintTracking2::Configuration {
-  SafeSaxSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
+class SafeSAXSourceFlowConfig extends TaintTracking2::Configuration {
+  SafeSAXSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSaxSource }
+  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSAXSource }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(XmlParserCall parse).getSink()
@@ -33,7 +33,7 @@ class SafeSaxSourceFlowConfig extends TaintTracking2::Configuration {
 
 class UnsafeXxeSink extends DataFlow::ExprNode {
   UnsafeXxeSink() {
-    not exists(SafeSaxSourceFlowConfig safeSource | safeSource.hasFlowTo(this)) and
+    not exists(SafeSAXSourceFlowConfig safeSource | safeSource.hasFlowTo(this)) and
     exists(XmlParserCall parse |
       parse.getSink() = this.getExpr() and
       not parse.isSafe()
@@ -51,6 +51,5 @@ class XxeConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, XxeConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
-  "XML parsing depends on a $@ without guarding against external entity expansion.",
-  source.getNode(), "user-provided value"
+select sink.getNode(), source, sink, "Unsafe parsing of XML file from $@.", source.getNode(),
+  "user input"

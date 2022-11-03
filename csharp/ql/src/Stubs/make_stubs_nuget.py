@@ -8,7 +8,7 @@ import shutil
 def write_csproj_prefix(ioWrapper):
     ioWrapper.write('<Project Sdk="Microsoft.NET.Sdk">\n')
     ioWrapper.write('  <PropertyGroup>\n')
-    ioWrapper.write('    <TargetFramework>net6.0</TargetFramework>\n')
+    ioWrapper.write('    <TargetFramework>net5.0</TargetFramework>\n')
     ioWrapper.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
     ioWrapper.write('    <OutputPath>bin\</OutputPath>\n')
     ioWrapper.write(
@@ -17,7 +17,7 @@ def write_csproj_prefix(ioWrapper):
 
 
 print('Script to generate stub file from a nuget package')
-print(' Usage: python3 ' + sys.argv[0] +
+print(' Usage: python ' + sys.argv[0] +
       ' NUGET_PACKAGE_NAME [VERSION=latest] [WORK_DIR=tempDir]')
 print(' The script uses the dotnet cli, codeql cli, and dotnet format global tool')
 
@@ -33,9 +33,6 @@ nuget = sys.argv[1]
 workDir = os.path.abspath(helpers.get_argv(3, "tempDir"))
 projectNameIn = "input"
 projectDirIn = os.path.join(workDir, projectNameIn)
-
-def run_cmd(cmd, msg="Failed to run command"):
-    helpers.run_cmd_cwd(cmd, workDir, msg)
 
 # /output contains the output of the stub generation
 outputDirName = "output"
@@ -60,7 +57,7 @@ jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 version = helpers.get_argv(2, "latest")
 
 print("\n* Creating new input project")
-run_cmd(['dotnet', 'new', 'classlib', "-f", "net6.0", "--language", "C#", '--name',
+helpers.run_cmd(['dotnet', 'new', 'classlib', "--language", "C#", '--name',
                  projectNameIn, '--output', projectDirIn])
 helpers.remove_files(projectDirIn, '.cs')
 
@@ -69,14 +66,10 @@ cmd = ['dotnet', 'add', projectDirIn, 'package', nuget]
 if (version != "latest"):
     cmd.append('--version')
     cmd.append(version)
-run_cmd(cmd)
-
-sdk_version = '6.0.202'
-print("\n* Creating new global.json file and setting SDK to " + sdk_version)
-run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', workDir])
+helpers.run_cmd(cmd)
 
 print("\n* Creating DB")
-run_cmd(['codeql', 'database', 'create', dbDir, '--language=csharp',
+helpers.run_cmd(['codeql', 'database', 'create', dbDir, '--language=csharp',
                  '--command', 'dotnet build /t:rebuild ' + projectDirIn])
 
 if not os.path.isdir(dbDir):
@@ -84,16 +77,16 @@ if not os.path.isdir(dbDir):
     exit(1)
 
 print("\n* Running stubbing CodeQL query")
-run_cmd(['codeql', 'query', 'run', os.path.join(
+helpers.run_cmd(['codeql', 'query', 'run', os.path.join(
     thisDir, 'AllStubsFromReference.ql'), '--database', dbDir, '--output', bqrsFile])
 
-run_cmd(['codeql', 'bqrs', 'decode', bqrsFile, '--output',
+helpers.run_cmd(['codeql', 'bqrs', 'decode', bqrsFile, '--output',
                  jsonFile, '--format=json'])
 
 print("\n* Creating new raw output project")
 rawSrcOutputDirName = 'src'
 rawSrcOutputDir = os.path.join(rawOutputDir, rawSrcOutputDirName)
-run_cmd(['dotnet', 'new', 'classlib', "--language", "C#",
+helpers.run_cmd(['dotnet', 'new', 'classlib', "--language", "C#",
                 '--name', rawSrcOutputDirName, '--output', rawSrcOutputDir])
 helpers.remove_files(rawSrcOutputDir, '.cs')
 
@@ -109,7 +102,7 @@ with open(jsonFile) as json_data:
 print("\n --> Generated stub files: " + rawSrcOutputDir)
 
 print("\n* Formatting files")
-run_cmd(['dotnet', 'format', rawSrcOutputDir])
+helpers.run_cmd(['dotnet', 'format', rawSrcOutputDir])
 
 print("\n --> Generated (formatted) stub files: " + rawSrcOutputDir)
 

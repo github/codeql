@@ -2,7 +2,7 @@ import java
 import semmle.code.java.frameworks.spring.SpringXMLElement
 
 /** A `<value>` element in a Spring XML file. */
-class SpringValue extends SpringXmlElement {
+class SpringValue extends SpringXMLElement {
   SpringValue() { this.getName() = "value" }
 
   /** Gets the value of the `type` attribute. */

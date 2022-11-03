@@ -12,7 +12,6 @@
  */
 
 import python
-import semmle.python.ApiGraphs
 
 predicate empty_except(ExceptStmt ex) {
   not exists(Stmt s | s = ex.getAStmt() and not s instanceof Pass)
@@ -29,7 +28,7 @@ predicate no_comment(ExceptStmt ex) {
 }
 
 predicate non_local_control_flow(ExceptStmt ex) {
-  ex.getType() = API::builtin("StopIteration").getAValueReachableFromSource().asExpr()
+  ex.getType().pointsTo(ClassValue::stopIteration())
 }
 
 predicate try_has_normal_exit(Try try) {
@@ -62,32 +61,27 @@ predicate subscript(Stmt s) {
   s.(Delete).getATarget() instanceof Subscript
 }
 
-predicate encode_decode(Call ex, Expr type) {
+predicate encode_decode(Call ex, ClassValue type) {
   exists(string name | ex.getFunc().(Attribute).getName() = name |
-    name = "encode" and
-    type = API::builtin("UnicodeEncodeError").getAValueReachableFromSource().asExpr()
+    name = "encode" and type = ClassValue::unicodeEncodeError()
     or
-    name = "decode" and
-    type = API::builtin("UnicodeDecodeError").getAValueReachableFromSource().asExpr()
+    name = "decode" and type = ClassValue::unicodeDecodeError()
   )
 }
 
-predicate small_handler(ExceptStmt ex, Stmt s, Expr type) {
+predicate small_handler(ExceptStmt ex, Stmt s, ClassValue type) {
   not exists(ex.getTry().getStmt(1)) and
   s = ex.getTry().getStmt(0) and
-  ex.getType() = type
+  ex.getType().pointsTo(type)
 }
 
 predicate focussed_handler(ExceptStmt ex) {
-  exists(Stmt s, Expr type | small_handler(ex, s, type) |
-    subscript(s) and
-    type = API::builtin("IndexError").getASubclass*().getAValueReachableFromSource().asExpr()
+  exists(Stmt s, ClassValue type | small_handler(ex, s, type) |
+    subscript(s) and type.getASuperType() = ClassValue::lookupError()
     or
-    attribute_access(s) and
-    type = API::builtin("AttributeError").getAValueReachableFromSource().asExpr()
+    attribute_access(s) and type = ClassValue::attributeError()
     or
-    s.(ExprStmt).getValue() instanceof Name and
-    type = API::builtin("NameError").getAValueReachableFromSource().asExpr()
+    s.(ExprStmt).getValue() instanceof Name and type = ClassValue::nameError()
     or
     encode_decode(s.(ExprStmt).getValue(), type)
   )

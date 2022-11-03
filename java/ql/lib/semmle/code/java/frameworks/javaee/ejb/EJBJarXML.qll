@@ -8,8 +8,8 @@ import java
 /**
  * An EJB deployment descriptor XML file named `ejb-jar.xml`.
  */
-class EjbJarXmlFile extends XmlFile {
-  EjbJarXmlFile() { this.getStem() = "ejb-jar" }
+class EjbJarXMLFile extends XMLFile {
+  EjbJarXMLFile() { this.getStem() = "ejb-jar" }
 
   /** Gets the root `ejb-jar` XML element of this `ejb-jar.xml` file. */
   EjbJarRootElement getRoot() { result = this.getAChild() }
@@ -35,13 +35,10 @@ class EjbJarXmlFile extends XmlFile {
   }
 }
 
-/** DEPRECATED: Alias for EjbJarXmlFile */
-deprecated class EjbJarXMLFile = EjbJarXmlFile;
-
 /** The root `ejb-jar` XML element in an `ejb-jar.xml` file. */
-class EjbJarRootElement extends XmlElement {
+class EjbJarRootElement extends XMLElement {
   EjbJarRootElement() {
-    this.getParent() instanceof EjbJarXmlFile and
+    this.getParent() instanceof EjbJarXMLFile and
     this.getName() = "ejb-jar"
   }
 
@@ -53,7 +50,7 @@ class EjbJarRootElement extends XmlElement {
  * An `enterprise-beans` child XML element of the root
  * `ejb-jar` XML element in an `ejb-jar.xml` file.
  */
-class EjbJarEnterpriseBeansElement extends XmlElement {
+class EjbJarEnterpriseBeansElement extends XMLElement {
   EjbJarEnterpriseBeansElement() {
     this.getParent() instanceof EjbJarRootElement and
     this.getName() = "enterprise-beans"
@@ -83,11 +80,11 @@ class EjbJarEnterpriseBeansElement extends XmlElement {
  *
  * This is either a `message-driven` element, a `session` element, or an `entity` element.
  */
-abstract class EjbJarBeanTypeElement extends XmlElement {
+abstract class EjbJarBeanTypeElement extends XMLElement {
   EjbJarBeanTypeElement() { this.getParent() instanceof EjbJarEnterpriseBeansElement }
 
   /** Gets an `ejb-class` child XML element of this bean type element. */
-  XmlElement getAnEjbClassElement() {
+  XMLElement getAnEjbClassElement() {
     result = this.getAChild() and
     result.getName() = "ejb-class"
   }
@@ -100,13 +97,13 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
   EjbJarSessionElement() { this.getName() = "session" }
 
   /** Gets a `business-local` child XML element of this `session` XML element. */
-  XmlElement getABusinessLocalElement() {
+  XMLElement getABusinessLocalElement() {
     result = this.getAChild() and
     result.getName() = "business-local"
   }
 
   /** Gets a `business-remote` child XML element of this `session` XML element. */
-  XmlElement getABusinessRemoteElement() {
+  XMLElement getABusinessRemoteElement() {
     result = this.getAChild() and
     result.getName() = "business-remote"
   }
@@ -116,31 +113,31 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
    *
    * This is either a `business-local` or `business-remote` element.
    */
-  XmlElement getABusinessElement() {
+  XMLElement getABusinessElement() {
     result = this.getABusinessLocalElement() or
     result = this.getABusinessRemoteElement()
   }
 
   /** Gets a `remote` child XML element of this `session` XML element. */
-  XmlElement getARemoteElement() {
+  XMLElement getARemoteElement() {
     result = this.getAChild() and
     result.getName() = "remote"
   }
 
   /** Gets a `home` child XML element of this `session` XML element. */
-  XmlElement getARemoteHomeElement() {
+  XMLElement getARemoteHomeElement() {
     result = this.getAChild() and
     result.getName() = "home"
   }
 
   /** Gets a `local` child XML element of this `session` XML element. */
-  XmlElement getALocalElement() {
+  XMLElement getALocalElement() {
     result = this.getAChild() and
     result.getName() = "local"
   }
 
   /** Gets a `local-home` child XML element of this `session` XML element. */
-  XmlElement getALocalHomeElement() {
+  XMLElement getALocalHomeElement() {
     result = this.getAChild() and
     result.getName() = "local-home"
   }
@@ -155,7 +152,7 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
    * Gets a `method-name` child XML element of a `create-method`
    * XML element nested within this `session` XML element.
    */
-  XmlElement getACreateMethodNameElement() {
+  XMLElement getACreateMethodNameElement() {
     result = this.getAnInitMethodElement().getACreateMethodElement().getAMethodNameElement()
   }
 
@@ -163,7 +160,7 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
    * Gets a `method-name` child XML element of a `bean-method`
    * XML element nested within this `session` XML element.
    */
-  XmlElement getABeanMethodNameElement() {
+  XMLElement getABeanMethodNameElement() {
     result = this.getAnInitMethodElement().getABeanMethodElement().getAMethodNameElement()
   }
 }
@@ -183,7 +180,7 @@ class EjbJarEntityElement extends EjbJarBeanTypeElement {
 }
 
 /** A `session-type` child XML element of a `session` element in an `ejb-jar.xml` file. */
-class EjbJarSessionTypeElement extends XmlElement {
+class EjbJarSessionTypeElement extends XMLElement {
   EjbJarSessionTypeElement() {
     this.getParent() instanceof EjbJarSessionElement and
     this.getName() = "session-type"
@@ -197,7 +194,7 @@ class EjbJarSessionTypeElement extends XmlElement {
 }
 
 /** An `init-method` child XML element of a `session` element in an `ejb-jar.xml` file. */
-class EjbJarInitMethodElement extends XmlElement {
+class EjbJarInitMethodElement extends XMLElement {
   EjbJarInitMethodElement() {
     this.getParent() instanceof EjbJarSessionElement and
     this.getName() = "init-method"
@@ -221,9 +218,9 @@ class EjbJarInitMethodElement extends XmlElement {
  *
  * This is either a `create-method` element, or a `bean-method` element.
  */
-abstract class EjbJarInitMethodChildElement extends XmlElement {
+abstract class EjbJarInitMethodChildElement extends XMLElement {
   /** Gets a `method-name` child XML element of this `create-method` or `bean-method` XML element. */
-  XmlElement getAMethodNameElement() {
+  XMLElement getAMethodNameElement() {
     result = this.getAChild() and
     result.getName() = "method-name"
   }

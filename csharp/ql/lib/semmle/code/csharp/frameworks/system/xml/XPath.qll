@@ -1,20 +1,20 @@
 /** Provides classes related to the namespace `System.Xml.XPath`. */
 
-private import csharp as CSharp
-private import semmle.code.csharp.frameworks.system.Xml as Xml
+import csharp as csharp
+private import semmle.code.csharp.frameworks.system.Xml as xml
 
 /** Definitions relating to the `System.Xml.XPath` namespace. */
 module SystemXmlXPath {
   /** The `System.Xml.XPath` namespace. */
-  class Namespace extends CSharp::Namespace {
+  class Namespace extends csharp::Namespace {
     Namespace() {
-      this.getParentNamespace() instanceof Xml::SystemXmlNamespace and
+      this.getParentNamespace() instanceof xml::SystemXmlNamespace and
       this.hasName("XPath")
     }
   }
 
   /** A class in the `System.Xml.XPath` namespace. */
-  class Class extends CSharp::Class {
+  class Class extends csharp::Class {
     Class() { this.getNamespace() instanceof Namespace }
   }
 
@@ -28,17 +28,17 @@ module SystemXmlXPath {
     XPathNavigator() { this.hasName("XPathNavigator") }
 
     /** Gets a method that selects nodes. */
-    CSharp::Method getASelectMethod() {
+    csharp::Method getASelectMethod() {
       result = this.getAMethod() and result.getName().matches("Select%")
     }
 
     /** Gets the `Compile` method. */
-    CSharp::Method getCompileMethod() { result = this.getAMethod("Compile") }
+    csharp::Method getCompileMethod() { result = this.getAMethod("Compile") }
 
     /** Gets an `Evaluate` method. */
-    CSharp::Method getAnEvaluateMethod() { result = this.getAMethod("Evaluate") }
+    csharp::Method getAnEvaluateMethod() { result = this.getAMethod("Evaluate") }
 
     /** Gets a `Matches` method. */
-    CSharp::Method getAMatchesMethod() { result = this.getAMethod("Matches") }
+    csharp::Method getAMatchesMethod() { result = this.getAMethod("Matches") }
   }
 }

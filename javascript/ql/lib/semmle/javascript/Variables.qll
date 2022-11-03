@@ -14,17 +14,17 @@ class Scope extends @scope {
   Scope getAnInnerScope() { result.getOuterScope() = this }
 
   /** Gets the program element this scope is associated with, if any. */
-  AstNode getScopeElement() { scopenodes(result, this) }
+  ASTNode getScopeElement() { scopenodes(result, this) }
 
   /** Gets the location of the program element this scope is associated with, if any. */
-  Location getLocation() { result = this.getScopeElement().getLocation() }
+  Location getLocation() { result = getScopeElement().getLocation() }
 
   /** Gets a variable declared in this scope. */
   Variable getAVariable() { result.getScope() = this }
 
   /** Gets the variable with the given name declared in this scope. */
   Variable getVariable(string name) {
-    result = this.getAVariable() and
+    result = getAVariable() and
     result.getName() = name
   }
 }
@@ -32,7 +32,7 @@ class Scope extends @scope {
 /**
  * A program element that induces a scope.
  */
-class ScopeElement extends AstNode {
+class ScopeElement extends ASTNode {
   Scope s;
 
   ScopeElement() { this = s.getScopeElement() }
@@ -56,7 +56,7 @@ class LocalScope extends Scope {
  */
 class ModuleScope extends Scope, @module_scope {
   /** Gets the module that induces this scope. */
-  Module getModule() { result = this.getScopeElement() }
+  Module getModule() { result = getScopeElement() }
 
   override string toString() { result = "module scope" }
 }
@@ -64,7 +64,7 @@ class ModuleScope extends Scope, @module_scope {
 /** A scope induced by a function. */
 class FunctionScope extends Scope, @function_scope {
   /** Gets the function that induces this scope. */
-  Function getFunction() { result = this.getScopeElement() }
+  Function getFunction() { result = getScopeElement() }
 
   override string toString() { result = "function scope" }
 }
@@ -72,7 +72,7 @@ class FunctionScope extends Scope, @function_scope {
 /** A scope induced by a catch clause. */
 class CatchScope extends Scope, @catch_scope {
   /** Gets the catch clause that induces this scope. */
-  CatchClause getCatchClause() { result = this.getScopeElement() }
+  CatchClause getCatchClause() { result = getScopeElement() }
 
   override string toString() { result = "catch scope" }
 }
@@ -80,7 +80,7 @@ class CatchScope extends Scope, @catch_scope {
 /** A scope induced by a block of statements. */
 class BlockScope extends Scope, @block_scope {
   /** Gets the block of statements that induces this scope. */
-  BlockStmt getBlock() { result = this.getScopeElement() }
+  BlockStmt getBlock() { result = getScopeElement() }
 
   override string toString() { result = "block scope" }
 }
@@ -88,7 +88,7 @@ class BlockScope extends Scope, @block_scope {
 /** A scope induced by a `for` statement. */
 class ForScope extends Scope, @for_scope {
   /** Gets the `for` statement that induces this scope. */
-  ForStmt getLoop() { result = this.getScopeElement() }
+  ForStmt getLoop() { result = getScopeElement() }
 
   override string toString() { result = "for scope" }
 }
@@ -96,7 +96,7 @@ class ForScope extends Scope, @for_scope {
 /** A scope induced by a `for`-`in` or `for`-`of` statement. */
 class ForInScope extends Scope, @for_in_scope {
   /** Gets the `for`-`in` or `for`-`of` statement that induces this scope. */
-  EnhancedForLoop getLoop() { result = this.getScopeElement() }
+  EnhancedForLoop getLoop() { result = getScopeElement() }
 
   override string toString() { result = "for-in scope" }
 }
@@ -104,7 +104,7 @@ class ForInScope extends Scope, @for_in_scope {
 /** A scope induced by a comprehension block. */
 class ComprehensionBlockScope extends Scope, @comprehension_block_scope {
   /** Gets the comprehension block that induces this scope. */
-  ComprehensionBlock getComprehensionBlock() { result = this.getScopeElement() }
+  ComprehensionBlock getComprehensionBlock() { result = getScopeElement() }
 
   override string toString() { result = "comprehension block scope" }
 }
@@ -129,7 +129,7 @@ class Variable extends @variable, LexicalName {
   override Scope getScope() { variables(this, _, result) }
 
   /** Holds if this is a global variable. */
-  predicate isGlobal() { this.getScope() instanceof GlobalScope }
+  predicate isGlobal() { getScope() instanceof GlobalScope }
 
   /**
    * Holds if this is a variable exported from a TypeScript namespace.
@@ -137,7 +137,7 @@ class Variable extends @variable, LexicalName {
    * Note that such variables are also considered local for the time being.
    */
   predicate isNamespaceExport() {
-    this.getScope() instanceof NamespaceScope and
+    getScope() instanceof NamespaceScope and
     exists(ExportNamedDeclaration decl | decl.getADecl().getVariable() = this)
   }
 
@@ -146,7 +146,7 @@ class Variable extends @variable, LexicalName {
    *
    * Parameters and `arguments` variables are considered to be local.
    */
-  predicate isLocal() { not this.isGlobal() }
+  predicate isLocal() { not isGlobal() }
 
   /** Holds if this variable is a parameter. */
   predicate isParameter() { exists(Parameter p | p.getAVariable() = this) }
@@ -179,7 +179,7 @@ class Variable extends @variable, LexicalName {
     exists(FunctionExpr fn | fn.getVariable() = this | result = fn)
     or
     // there is an assignment to this variable
-    exists(Assignment assgn | assgn.getLhs() = this.getAnAccess() and assgn.getRhs() = result)
+    exists(Assignment assgn | assgn.getLhs() = getAnAccess() and assgn.getRhs() = result)
   }
 
   /**
@@ -189,15 +189,15 @@ class Variable extends @variable, LexicalName {
    */
   predicate isCaptured() {
     this instanceof GlobalVariable or
-    this.getAnAccess().getContainer().getFunctionBoundary() !=
+    getAnAccess().getContainer().getFunctionBoundary() !=
       this.(LocalVariable).getDeclaringContainer().getFunctionBoundary()
   }
 
   /** Holds if there is a declaration of this variable in `tl`. */
-  predicate declaredIn(TopLevel tl) { this.getADeclaration().getTopLevel() = tl }
+  predicate declaredIn(TopLevel tl) { getADeclaration().getTopLevel() = tl }
 
   /** Gets a textual representation of this element. */
-  override string toString() { result = this.getName() }
+  override string toString() { result = getName() }
 
   override DeclarationSpace getDeclarationSpace() { result = "variable" }
 }
@@ -209,7 +209,7 @@ class ArgumentsVariable extends Variable {
   override FunctionScope getScope() { result = Variable.super.getScope() }
 
   /** Gets the function declaring this 'arguments' variable. */
-  Function getFunction() { result = this.getScope().getFunction() }
+  Function getFunction() { result = getScope().getFunction() }
 }
 
 /**
@@ -226,7 +226,7 @@ class ArgumentsVariable extends Variable {
  */
 class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   /** Gets the variable this identifier refers to. */
-  override Variable getVariable() { none() } // Overridden in VarAccess and VarDecl
+  override Variable getVariable() { none() } // Overriden in VarAccess and VarDecl
 
   override string getName() { result = Identifier.super.getName() }
 
@@ -270,7 +270,7 @@ class VarAccess extends @varaccess, VarRef, LexicalAccess {
     exists(BindingPattern p | this = p.getABindingVarRef() and p.isLValue())
   }
 
-  override Variable getAVariable() { result = this.getVariable() }
+  override Variable getAVariable() { result = getVariable() }
 }
 
 /**
@@ -294,12 +294,12 @@ class ExportVarAccess extends VarAccess, @export_varaccess {
 
 /** A global variable. */
 class GlobalVariable extends Variable {
-  GlobalVariable() { this.isGlobal() }
+  GlobalVariable() { isGlobal() }
 }
 
 /** A local variable or a parameter. */
 class LocalVariable extends Variable {
-  LocalVariable() { this.isLocal() }
+  LocalVariable() { isLocal() }
 
   /**
    * Gets the function or toplevel in which this variable is declared;
@@ -313,7 +313,7 @@ class LocalVariable extends Variable {
   StmtContainer getDeclaringContainer() {
     this = result.getScope().getAVariable()
     or
-    exists(VarDecl d | d = this.getADeclaration() |
+    exists(VarDecl d | d = getADeclaration() |
       if d = any(FunctionDeclStmt fds).getIdentifier()
       then
         exists(FunctionDeclStmt fds | d = fds.getIdentifier() |
@@ -332,19 +332,19 @@ class LocalVariable extends Variable {
   Location getLocation() {
     result =
       min(Location loc |
-        loc = this.getADeclaration().getLocation()
+        loc = getADeclaration().getLocation()
       |
         loc order by loc.getStartLine(), loc.getStartColumn()
       )
     or
-    not exists(this.getADeclaration()) and
-    result = this.getDeclaringContainer().getEntry().getLocation()
+    not exists(getADeclaration()) and
+    result = getDeclaringContainer().getEntry().getLocation()
   }
 }
 
 /** A local variable that is not captured. */
 class PurelyLocalVariable extends LocalVariable {
-  PurelyLocalVariable() { not this.isCaptured() }
+  PurelyLocalVariable() { not isCaptured() }
 }
 
 /**
@@ -358,7 +358,7 @@ class PurelyLocalVariable extends LocalVariable {
  * ```
  */
 class GlobalVarAccess extends VarAccess {
-  GlobalVarAccess() { this.getVariable().isGlobal() }
+  GlobalVarAccess() { getVariable().isGlobal() }
 }
 
 /**
@@ -387,7 +387,7 @@ class BindingPattern extends @pattern, Expr {
   VarRef getABindingVarRef() { none() }
 
   /** Gets a variable bound by this pattern. */
-  Variable getAVariable() { result = this.getABindingVarRef().getVariable() }
+  Variable getAVariable() { result = getABindingVarRef().getVariable() }
 
   /** Holds if this pattern appears in an l-value position. */
   predicate isLValue() { any() }
@@ -467,7 +467,7 @@ class VarDecl extends @var_decl, VarRef, LexicalDecl {
  * ```
  */
 class GlobalVarDecl extends VarDecl {
-  GlobalVarDecl() { this.getVariable() instanceof GlobalVariable }
+  GlobalVarDecl() { getVariable() instanceof GlobalVariable }
 }
 
 /**
@@ -494,35 +494,35 @@ class ArrayPattern extends DestructuringPattern, @array_pattern {
 
   /** Gets the default expression for the `i`th element of this array pattern, if any. */
   Expr getDefault(int i) {
-    i in [0 .. this.getSize() - 1] and
-    result = this.getChildExpr(-2 - i)
+    i in [0 .. getSize() - 1] and
+    result = getChildExpr(-2 - i)
   }
 
   /** Holds if the `i`th element of this array pattern has a default expression. */
-  predicate hasDefault(int i) { exists(this.getDefault(i)) }
+  predicate hasDefault(int i) { exists(getDefault(i)) }
 
   /** Gets the rest pattern of this array pattern, if any. */
-  override Expr getRest() { result = this.getChildExpr(-1) }
+  override Expr getRest() { result = getChildExpr(-1) }
 
   /** Holds if this array pattern has a rest pattern. */
-  predicate hasRest() { exists(this.getRest()) }
+  predicate hasRest() { exists(getRest()) }
 
   /** Gets the number of elements in this array pattern, not including any rest pattern. */
   int getSize() { array_size(this, result) }
 
   /** Holds if the `i`th element of this array pattern is omitted. */
   predicate elementIsOmitted(int i) {
-    i in [0 .. this.getSize() - 1] and
-    not exists(this.getElement(i))
+    i in [0 .. getSize() - 1] and
+    not exists(getElement(i))
   }
 
   /** Holds if this array pattern has an omitted element. */
-  predicate hasOmittedElement() { this.elementIsOmitted(_) }
+  predicate hasOmittedElement() { elementIsOmitted(_) }
 
-  override predicate isImpure() { this.getAnElement().isImpure() }
+  override predicate isImpure() { getAnElement().isImpure() }
 
   override VarRef getABindingVarRef() {
-    result = this.getAnElement().(BindingPattern).getABindingVarRef()
+    result = getAnElement().(BindingPattern).getABindingVarRef()
   }
 
   override string getAPrimaryQlClass() { result = "ArrayPattern" }
@@ -557,13 +557,13 @@ class ObjectPattern extends DestructuringPattern, @object_pattern {
   }
 
   /** Gets the rest property pattern of this object pattern, if any. */
-  override Expr getRest() { result = this.getChildExpr(-1) }
+  override Expr getRest() { result = getChildExpr(-1) }
 
-  override predicate isImpure() { this.getAPropertyPattern().isImpure() }
+  override predicate isImpure() { getAPropertyPattern().isImpure() }
 
   override VarRef getABindingVarRef() {
-    result = this.getAPropertyPattern().getValuePattern().(BindingPattern).getABindingVarRef() or
-    result = this.getRest().(BindingPattern).getABindingVarRef()
+    result = getAPropertyPattern().getValuePattern().(BindingPattern).getABindingVarRef() or
+    result = getRest().(BindingPattern).getABindingVarRef()
   }
 
   override string getAPrimaryQlClass() { result = "ObjectPattern" }
@@ -581,7 +581,7 @@ class ObjectPattern extends DestructuringPattern, @object_pattern {
  * }
  * ```
  */
-class PropertyPattern extends @property, AstNode {
+class PropertyPattern extends @property, ASTNode {
   PropertyPattern() {
     // filter out ordinary properties
     exists(ObjectPattern obj | properties(this, obj, _, _, _))
@@ -600,16 +600,14 @@ class PropertyPattern extends @property, AstNode {
   Expr getDefault() { result = this.getChildExpr(2) }
 
   /** Holds if this property pattern is a shorthand pattern. */
-  predicate isShorthand() {
-    this.getNameExpr().getLocation() = this.getValuePattern().getLocation()
-  }
+  predicate isShorthand() { getNameExpr().getLocation() = getValuePattern().getLocation() }
 
   /** Gets the name of the property matched by this pattern. */
   string getName() {
-    not this.isComputed() and
-    result = this.getNameExpr().(Identifier).getName()
+    not isComputed() and
+    result = getNameExpr().(Identifier).getName()
     or
-    result = this.getNameExpr().(Literal).getValue()
+    result = getNameExpr().(Literal).getValue()
   }
 
   /** Gets the object pattern this property pattern belongs to. */
@@ -617,15 +615,15 @@ class PropertyPattern extends @property, AstNode {
 
   /** Holds if this pattern is impure, that is, if its evaluation could have side effects. */
   predicate isImpure() {
-    this.isComputed() and this.getNameExpr().isImpure()
+    isComputed() and getNameExpr().isImpure()
     or
-    this.getValuePattern().isImpure()
+    getValuePattern().isImpure()
   }
 
   override string toString() { properties(this, _, _, _, result) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = this.getNameExpr().getFirstControlFlowNode()
+    result = getNameExpr().getFirstControlFlowNode()
   }
 
   override string getAPrimaryQlClass() { result = "PropertyPattern" }
@@ -653,7 +651,7 @@ class VariableDeclarator extends Expr, @var_declarator {
   TypeAnnotation getTypeAnnotation() {
     result = this.getChildTypeExpr(2)
     or
-    result = this.getDeclStmt().getDocumentation().getATagByTitle("type").getType()
+    result = getDeclStmt().getDocumentation().getATagByTitle("type").getType()
   }
 
   /** Holds if this is a TypeScript variable marked as definitely assigned with the `!` operator. */
@@ -663,7 +661,7 @@ class VariableDeclarator extends Expr, @var_declarator {
   DeclStmt getDeclStmt() { this = result.getADecl() }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    result = this.getBindingPattern().getFirstControlFlowNode()
+    result = getBindingPattern().getFirstControlFlowNode()
   }
 
   override string getAPrimaryQlClass() { result = "VariableDeclarator" }
@@ -673,11 +671,11 @@ class VariableDeclarator extends Expr, @var_declarator {
  * For internal use, holding the decorators of a function parameter.
  */
 private class DecoratorList extends Expr, @decorator_list {
-  Decorator getDecorator(int i) { result = this.getChildExpr(i) }
+  Decorator getDecorator(int i) { result = getChildExpr(i) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    if exists(this.getDecorator(0))
-    then result = this.getDecorator(0).getFirstControlFlowNode()
+    if exists(getDecorator(0))
+    then result = getDecorator(0).getFirstControlFlowNode()
     else result = this
   }
 }
@@ -702,11 +700,11 @@ class Parameterized extends @parameterized, Documentable {
   Parameter getAParameter() { this = result.getParent() }
 
   /** Gets the number of parameters declared by this element. */
-  int getNumParameter() { result = count(this.getAParameter()) }
+  int getNumParameter() { result = count(getAParameter()) }
 
   /** Gets a variable of the given name that is a parameter of this element. */
   Variable getParameterVariable(string name) {
-    result = this.getAParameter().getAVariable() and
+    result = getAParameter().getAVariable() and
     result.getName() = name
   }
 }
@@ -752,7 +750,7 @@ class Parameter extends BindingPattern {
   override TypeAnnotation getTypeAnnotation() {
     exists(Function f, int n | this = f.getParameter(n) | result = f.getChildTypeExpr(-(4 * n + 6)))
     or
-    result = this.getJSDocTag().getType()
+    result = getJSDocTag().getType()
   }
 
   /** Holds if this parameter is a rest parameter. */
@@ -768,13 +766,13 @@ class Parameter extends BindingPattern {
   }
 
   /** Gets the `i`th decorator applied to this parameter. */
-  Decorator getDecorator(int i) { result = this.getDecoratorList().getDecorator(i) }
+  Decorator getDecorator(int i) { result = getDecoratorList().getDecorator(i) }
 
   /** Gets a decorator applied to this parameter. */
-  Decorator getADecorator() { result = this.getDecorator(_) }
+  Decorator getADecorator() { result = getDecorator(_) }
 
   /** Gets the number of decorators applied to this parameter. */
-  int getNumDecorator() { result = count(this.getADecorator()) }
+  int getNumDecorator() { result = count(getADecorator()) }
 
   override predicate isLValue() { any() }
 
@@ -871,18 +869,6 @@ class FieldParameter extends SimpleParameter {
  */
 class DeclarationSpace extends string {
   DeclarationSpace() { this = "variable" or this = "type" or this = "namespace" }
-}
-
-/** Module containing the `DeclarationSpace` constants. */
-module DeclarationSpace {
-  /** Gets the declaration space for variables/values. */
-  DeclarationSpace variable() { result = "variable" }
-
-  /** Gets the declaration space for types. */
-  DeclarationSpace type() { result = "type" }
-
-  /** Gets the declaration space for namespaces. */
-  DeclarationSpace namespace() { result = "namespace" }
 }
 
 /**

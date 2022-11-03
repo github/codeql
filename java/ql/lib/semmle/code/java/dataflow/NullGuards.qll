@@ -12,7 +12,7 @@ private import IntegerGuards
 /** Gets an expression that is always `null`. */
 Expr alwaysNullExpr() {
   result instanceof NullLiteral or
-  result.(CastingExpr).getExpr() = alwaysNullExpr()
+  result.(CastExpr).getExpr() = alwaysNullExpr()
 }
 
 /** Gets an equality test between an expression `e` and an enum constant `c`. */
@@ -33,8 +33,6 @@ InstanceOfExpr instanceofExpr(SsaVariable v, RefType type) {
 /**
  * Gets an expression of the form `v1 == v2` or `v1 != v2`.
  * The predicate is symmetric in `v1` and `v2`.
- *
- * Note this includes Kotlin's `==` and `!=` operators, which are value-equality tests.
  */
 EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
   result.hasOperands(v1.getAUse(), v2.getAUse()) and
@@ -63,12 +61,6 @@ Expr clearlyNotNullExpr(Expr reason) {
   )
   or
   result.(CastExpr).getExpr() = clearlyNotNullExpr(reason)
-  or
-  result.(ImplicitCastExpr).getExpr() = clearlyNotNullExpr(reason)
-  or
-  result instanceof ImplicitNotNullExpr and reason = result
-  or
-  result instanceof ImplicitCoercionToUnitExpr and reason = result
   or
   result.(AssignExpr).getSource() = clearlyNotNullExpr(reason)
   or
@@ -242,9 +234,8 @@ Guard nullGuard(SsaVariable v, boolean branch, boolean isnull) {
 }
 
 /**
- * A return statement in a non-overridable method that on a return value of
- * `retval` allows the conclusion that the parameter `p` either is null or
- * non-null as specified by `isnull`.
+ * A return statement that on a return value of `retval` allows the conclusion that the
+ * parameter `p` either is null or non-null as specified by `isnull`.
  */
 private predicate validReturnInCustomNullGuard(
   ReturnStmt ret, Parameter p, boolean retval, boolean isnull
@@ -252,10 +243,7 @@ private predicate validReturnInCustomNullGuard(
   exists(Method m |
     ret.getEnclosingCallable() = m and
     p.getCallable() = m and
-    m.getReturnType().(PrimitiveType).hasName("boolean") and
-    not p.isVarargs() and
-    p.getType() instanceof RefType and
-    not m.isOverridable()
+    m.getReturnType().(PrimitiveType).hasName("boolean")
   ) and
   exists(SsaImplicitInit ssa | ssa.isParameterDefinition(p) |
     nullGuardedReturn(ret, ssa, isnull) and
@@ -271,11 +259,6 @@ private predicate nullGuardedReturn(ReturnStmt ret, SsaImplicitInit ssa, boolean
   )
 }
 
-pragma[nomagic]
-private Method returnStmtGetEnclosingCallable(ReturnStmt ret) {
-  ret.getEnclosingCallable() = result
-}
-
 /**
  * Gets a non-overridable method with a boolean return value that performs a null-check
  * on the `index`th parameter. A return value equal to `retval` allows us to conclude
@@ -283,10 +266,14 @@ private Method returnStmtGetEnclosingCallable(ReturnStmt ret) {
  */
 private Method customNullGuard(int index, boolean retval, boolean isnull) {
   exists(Parameter p |
+    result.getReturnType().(PrimitiveType).hasName("boolean") and
+    not result.isOverridable() and
     p.getCallable() = result and
+    not p.isVarargs() and
+    p.getType() instanceof RefType and
     p.getPosition() = index and
     forex(ReturnStmt ret |
-      returnStmtGetEnclosingCallable(ret) = result and
+      ret.getEnclosingCallable() = result and
       exists(Expr res | res = ret.getResult() |
         not res.(BooleanLiteral).getBooleanValue() = retval.booleanNot()
       )

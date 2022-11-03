@@ -100,14 +100,14 @@ void local_references(int &source1, int clean1) {
     int t = source();
     int &ref = t;
     t = clean1;
-    sink(ref); // $ SPURIOUS: ast,ir
+    sink(ref); // $ SPURIOUS: ast
   }
 
   {
     int t = clean1;
     int &ref = t;
     t = source();
-    sink(ref); // $ MISSING: ast,ir
+    sink(ref); // $ ir MISSING: ast
   }
 }
 
@@ -334,19 +334,19 @@ namespace FlowThroughGlobals {
   }
 
   int f() {
-    sink(globalVar); // $ ir=333:17 ir=347:17 // tainted or clean? Not sure.
+    sink(globalVar); // tainted or clean? Not sure.
     taintGlobal();
-    sink(globalVar); // $ ir=333:17 ir=347:17 MISSING: ast
+    sink(globalVar); // $ MISSING: ast,ir
   }
 
   int calledAfterTaint() {
-    sink(globalVar); // $ ir=333:17 ir=347:17 MISSING: ast
+    sink(globalVar); // $ MISSING: ast,ir
   }
 
   int taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast ir=333:17 ir=347:17
+    sink(globalVar); // $ ast MISSING: ir
   }
 }
 
@@ -355,21 +355,21 @@ namespace FlowThroughGlobals {
 class FlowThroughFields {
   int field = 0;
 
-  void taintField() {
+  int taintField() {
     field = source();
   }
 
-  void f() {
+  int f() {
     sink(field); // tainted or clean? Not sure.
     taintField();
+    sink(field); // $ ast MISSING: ir
+  }
+
+  int calledAfterTaint() {
     sink(field); // $ ast,ir
   }
 
-  void calledAfterTaint() {
-    sink(field); // $ ast,ir
-  }
-
-  void taintAndCall() {
+  int taintAndCall() {
     field = source();
     calledAfterTaint();
     sink(field); // $ ast,ir
@@ -481,16 +481,4 @@ void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) {
   writes_to_content(s->content);
   int* p_content = s->content;
   sink(*p_content);
-}
-
-bool unknown();
-
-void regression_with_phi_flow(int clean1) {
-  int x = 0;
-  while (unknown()) {
-    x = clean1;
-    if (unknown()) { }
-    sink(x); // clean
-    x = source();
-  }
 }

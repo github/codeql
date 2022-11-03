@@ -66,7 +66,7 @@ predicate functionDefinedInIfDefRecursive(Function f) {
  */
 predicate baseCall(FunctionCall call) {
   call.getNameQualifier().getQualifyingElement() =
-    call.getEnclosingFunction().getDeclaringType().getABaseClass+()
+    call.getEnclosingFunction().getDeclaringType().(Class).getABaseClass+()
 }
 
 from PureExprInVoidContext peivc, Locatable parent, Locatable info, string info_text, string tail

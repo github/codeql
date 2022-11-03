@@ -158,13 +158,13 @@ private predicate defn_of_instance_attribute(Assign asgn, Class c, string name) 
   )
 }
 
-/** Holds if asgn defines an attribute of a class */
+/* Whether asgn defines an attribute of a class */
 private predicate defn_of_class_attribute(Assign asgn, Class c, string name) {
   asgn.getScope() = c and
   asgn.getATarget().(Name).getId() = name
 }
 
-/** Holds if `value` is a value assigned to the `name`d attribute of module `m`. */
+/* Holds if `value` is a value assigned to the `name`d attribute of module `m`. */
 private predicate defn_of_module_attribute(ControlFlowNode value, Module m, string name) {
   exists(DefinitionNode def |
     def.getScope() = m and

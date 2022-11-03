@@ -13,6 +13,4 @@ function main() {
     document.body.innerHTML = `<span class="${safeStyle(window.name)}">Hello<span>`; // NOT OK
     document.body.innerHTML = `<span class="${safeStyle('foo')}">Hello<span>`; // OK
     document.body.innerHTML = `<span class="${clsx(window.name)}">Hello<span>`; // NOT OK
-
-    document.body.innerHTML += `<span class="${clsx(window.name)}">Hello<span>`; // NOT OK
 }

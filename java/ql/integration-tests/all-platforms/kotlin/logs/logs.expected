@@ -1,6 +1,0 @@
-| 1 | 1 | Test script | Log file | 1 |
-| 1 | 2 | CodeQL Kotlin extractor | INFO | Extraction started |
-| 1 | 3 | CodeQL Kotlin extractor | INFO | Extraction for invocation TRAP file <FILENAME> |
-| 1 | 4 | CodeQL Kotlin extractor | INFO | Kotlin version <VERSION> |
-| 1 | 5 | CodeQL Kotlin extractor | INFO | Extracting file test.kt |
-| 1 | 6 | CodeQL Kotlin extractor | INFO | Extraction completed |

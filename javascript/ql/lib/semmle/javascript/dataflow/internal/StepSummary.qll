@@ -45,8 +45,7 @@ private module Cached {
       CopyStep(PropertyName prop) or
       LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
         SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
-      } or
-      WithoutPropStep(PropertySet props) { SharedTypeTrackingStep::withoutPropStep(_, _, props) }
+      }
   }
 
   /**
@@ -55,18 +54,6 @@ private module Cached {
   cached
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
     exists(DataFlow::Node mid | pred.flowsTo(mid) | StepSummary::smallstep(mid, succ, summary))
-  }
-
-  pragma[nomagic]
-  private DataFlow::Node getAGlobalStepPredecessor(string global) {
-    result = AccessPath::getAnAssignmentTo(global) and
-    AccessPath::isAssignedInUniqueFile(global)
-  }
-
-  pragma[nomagic]
-  private DataFlow::Node getAGlobalStepSuccessor(string global) {
-    result = AccessPath::getAReferenceTo(global) and
-    AccessPath::isAssignedInUniqueFile(global)
   }
 
   /**
@@ -111,11 +98,6 @@ private module Cached {
       summary = CopyStep(prop)
     )
     or
-    exists(PropertySet props |
-      SharedTypeTrackingStep::withoutPropStep(pred, succ, props) and
-      summary = WithoutPropStep(props)
-    )
-    or
     exists(string fromProp, string toProp |
       SharedTypeTrackingStep::loadStoreStep(pred, succ, fromProp, toProp) and
       summary = LoadStoreStep(fromProp, toProp)
@@ -124,10 +106,20 @@ private module Cached {
     SharedTypeTrackingStep::step(pred, succ) and
     summary = LevelStep()
     or
-    summary = LevelStep() and
-    exists(string global |
-      pred = getAGlobalStepPredecessor(global) and
-      succ = getAGlobalStepSuccessor(global)
+    // Store to global access path
+    exists(string name |
+      pred = AccessPath::getAnAssignmentTo(name) and
+      AccessPath::isAssignedInUniqueFile(name) and
+      succ = DataFlow::globalAccessPathRootPseudoNode() and
+      summary = StoreStep(name)
+    )
+    or
+    // Load from global access path
+    exists(string name |
+      succ = AccessPath::getAReferenceTo(name) and
+      AccessPath::isAssignedInUniqueFile(name) and
+      pred = DataFlow::globalAccessPathRootPseudoNode() and
+      summary = LoadStep(name)
     )
     or
     // Store to non-global access path
@@ -199,8 +191,6 @@ class StepSummary extends TStepSummary {
     exists(string prop | this = LoadStep(prop) | result = "load " + prop)
     or
     exists(string prop | this = CopyStep(prop) | result = "copy " + prop)
-    or
-    exists(string prop | this = WithoutPropStep(prop) | result = "without " + prop)
     or
     exists(string fromProp, string toProp | this = LoadStoreStep(fromProp, toProp) |
       result = "load " + fromProp + " and store to " + toProp

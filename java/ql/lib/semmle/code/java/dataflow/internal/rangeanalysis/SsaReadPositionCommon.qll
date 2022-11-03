@@ -3,7 +3,6 @@
  */
 
 private import SsaReadPositionSpecific
-import SsaReadPositionSpecific::Public
 
 private newtype TSsaReadPosition =
   TSsaReadPositionBlock(BasicBlock bb) { bb = getAReadBasicBlock(_) } or
@@ -55,11 +54,4 @@ class SsaReadPositionPhiInputEdge extends SsaReadPosition, TSsaReadPositionPhiIn
   }
 
   override string toString() { result = "edge" }
-}
-
-/**
- * Holds if `rix` is the number of input edges to `phi`.
- */
-predicate maxPhiInputRank(SsaPhiNode phi, int rix) {
-  rix = max(int r | rankedPhiInput(phi, _, _, r))
 }

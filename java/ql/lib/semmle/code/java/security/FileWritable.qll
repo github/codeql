@@ -17,7 +17,7 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
   enumSetRef
       .getType()
       .(RefType)
-      .getAnAncestor()
+      .getASupertype*()
       .getSourceDeclaration()
       .hasQualifiedName("java.util", "Set") and
   (
@@ -62,12 +62,12 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
 private VarAccess getFileForPathConversion(Expr pathExpr) {
   pathExpr.getType().(RefType).hasQualifiedName("java.nio.file", "Path") and
   (
-    // Look for conversion from `File` to `Path` using `file.toPath()`.
+    // Look for conversion from `File` to `Path` using `file.getPath()`.
     exists(MethodAccess fileToPath |
       fileToPath = pathExpr and
       result = fileToPath.getQualifier() and
       fileToPath.getMethod().hasName("toPath") and
-      fileToPath.getMethod().getDeclaringType() instanceof TypeFile
+      fileToPath.getMethod().getDeclaringType().hasQualifiedName("java.io", "File")
     )
     or
     // Look for the pattern `Paths.get(file.get*Path())` for converting between a `File` and a `Path`.

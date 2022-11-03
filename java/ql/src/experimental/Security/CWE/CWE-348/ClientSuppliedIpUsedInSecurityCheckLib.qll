@@ -2,6 +2,7 @@ import java
 import DataFlow
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.QueryInjection
+import experimental.semmle.code.java.Logging
 
 /**
  * A data flow source of the client ip obtained according to the remote endpoint identifier specified

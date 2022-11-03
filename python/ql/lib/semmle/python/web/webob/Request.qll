@@ -2,7 +2,7 @@ import python
 import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 
-abstract deprecated class BaseWebobRequest extends TaintKind {
+abstract class BaseWebobRequest extends TaintKind {
   bindingset[this]
   BaseWebobRequest() { any() }
 
@@ -31,7 +31,7 @@ abstract deprecated class BaseWebobRequest extends TaintKind {
   }
 }
 
-deprecated class WebobRequest extends BaseWebobRequest {
+class WebobRequest extends BaseWebobRequest {
   WebobRequest() { this = "webob.Request" }
 
   override ClassValue getType() { result = Value::named("webob.request.Request") }

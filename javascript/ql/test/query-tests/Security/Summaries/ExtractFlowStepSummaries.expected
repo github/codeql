@@ -1,0 +1,6 @@
+| (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | data | (return (member h (root https://www.npmjs.com/package/infer-sources))) | data | CodeInjection |
+| (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member h (root https://www.npmjs.com/package/infer-sources))) | taint | CodeInjection |
+| (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | CodeInjection |
+| (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | CodeInjection |
+| (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | CodeInjection |
+| (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | CodeInjection |

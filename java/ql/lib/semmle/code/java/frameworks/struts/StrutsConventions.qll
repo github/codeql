@@ -53,7 +53,7 @@ private predicate isStrutsConventionPluginUsed(RefType refType) {
   strutsConventionAnnotationUsedInFolder(getSourceFolder(refType.getCompilationUnit()))
   or
   // The struts configuration file for this file sets a convention property
-  getRootXmlFile(refType).getAConstant().getName().matches("struts.convention%")
+  getRootXMLFile(refType).getAConstant().getName().matches("struts.convention%")
   or
   // We've found the POM for this RefType, and it includes a dependency on the convention plugin
   exists(Pom pom |
@@ -68,7 +68,7 @@ private predicate isStrutsConventionPluginUsed(RefType refType) {
  * We guess by identifying the "nearest" `struts.xml` configuration file, i.e. the Struts
  * configuration file with the lowest common ancestor to this file.
  */
-StrutsXmlFile getRootXmlFile(RefType refType) {
+StrutsXMLFile getRootXMLFile(RefType refType) {
   exists(StrutsFolder strutsFolder |
     strutsFolder = refType.getFile().getParentContainer*() and
     strutsFolder.isUnique()
@@ -77,17 +77,14 @@ StrutsXmlFile getRootXmlFile(RefType refType) {
   )
 }
 
-/** DEPRECATED: Alias for getRootXmlFile */
-deprecated StrutsXMLFile getRootXMLFile(RefType refType) { result = getRootXmlFile(refType) }
-
 /**
  * Gets the suffix used for automatically identifying actions when using the convention plugin.
  *
  * If no configuration is supplied, or identified, the default is "Action".
  */
 private string getConventionSuffix(RefType refType) {
-  if exists(getRootXmlFile(refType).getConstantValue("struts.convention.action.suffix"))
-  then result = getRootXmlFile(refType).getConstantValue("struts.convention.action.suffix")
+  if exists(getRootXMLFile(refType).getConstantValue("struts.convention.action.suffix"))
+  then result = getRootXMLFile(refType).getConstantValue("struts.convention.action.suffix")
   else result = "Action"
 }
 
@@ -104,7 +101,12 @@ class Struts2ConventionActionClass extends Class {
     exists(string ancestorPackage |
       // Has an ancestor package on the whitelist
       ancestorPackage = this.getPackage().getName().splitAt(".") and
-      ancestorPackage = ["struts", "struts2", "action", "actions"]
+      (
+        ancestorPackage = "struts" or
+        ancestorPackage = "struts2" or
+        ancestorPackage = "action" or
+        ancestorPackage = "actions"
+      )
     ) and
     (
       this.getName().matches("%" + getConventionSuffix(this)) or

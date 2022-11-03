@@ -12,13 +12,13 @@
 import cpp
 
 // whether f is to be considered an API entry point, and hence reachable by default
-predicate isApi(Function f) {
+predicate isAPI(Function f) {
   f.hasName("main") or
   f.(MemberFunction).hasSpecifier("public")
 }
 
 predicate unusedFunction(Function f) {
-  not isApi(f) and
+  not isAPI(f) and
   not exists(FunctionCall c | c.getTarget() = f) and
   not exists(Access acc | acc.getTarget() = f) and
   f.hasDefinition()

@@ -11,7 +11,7 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 import semmle.python.security.SQL
 
-deprecated private StringObject first_part(ControlFlowNode command) {
+private StringObject first_part(ControlFlowNode command) {
   command.(BinaryExprNode).getOp() instanceof Add and
   command.(BinaryExprNode).getLeft().refersTo(result)
   or
@@ -26,7 +26,7 @@ deprecated private StringObject first_part(ControlFlowNode command) {
 }
 
 /** Holds if `command` appears to be a SQL command string of which `inject` is a part. */
-deprecated predicate probable_sql_command(ControlFlowNode command, ControlFlowNode inject) {
+predicate probable_sql_command(ControlFlowNode command, ControlFlowNode inject) {
   exists(string prefix |
     inject = command.getAChild*() and
     first_part(command).getText().regexpMatch(" *" + prefix + ".*")
@@ -39,7 +39,7 @@ deprecated predicate probable_sql_command(ControlFlowNode command, ControlFlowNo
  * A taint kind representing a DB cursor.
  * This will be overridden to provide specific kinds of DB cursor.
  */
-abstract deprecated class DbCursor extends TaintKind {
+abstract class DbCursor extends TaintKind {
   bindingset[this]
   DbCursor() { any() }
 
@@ -50,7 +50,7 @@ abstract deprecated class DbCursor extends TaintKind {
  * A part of a string that appears to be a SQL command and is thus
  * vulnerable to malicious input.
  */
-deprecated class SimpleSqlStringInjection extends SqlInjectionSink {
+class SimpleSqlStringInjection extends SqlInjectionSink {
   override string toString() { result = "simple SQL string injection" }
 
   SimpleSqlStringInjection() { probable_sql_command(_, this) }
@@ -62,13 +62,13 @@ deprecated class SimpleSqlStringInjection extends SqlInjectionSink {
  * A taint source representing sources of DB connections.
  * This will be overridden to provide specific kinds of DB connection sources.
  */
-abstract deprecated class DbConnectionSource extends TaintSource { }
+abstract class DbConnectionSource extends TaintSource { }
 
 /**
  * A taint sink that is vulnerable to malicious SQL queries.
  * The `vuln` in `db.connection.execute(vuln)` and similar.
  */
-deprecated class DbConnectionExecuteArgument extends SqlInjectionSink {
+class DbConnectionExecuteArgument extends SqlInjectionSink {
   override string toString() { result = "db.connection.execute" }
 
   DbConnectionExecuteArgument() {

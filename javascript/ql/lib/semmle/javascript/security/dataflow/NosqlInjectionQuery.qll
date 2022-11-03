@@ -44,8 +44,8 @@ class Configuration extends TaintTracking::Configuration {
     // additional flow step to track taint through NoSQL query objects
     inlbl = TaintedObject::label() and
     outlbl = TaintedObject::label() and
-    exists(NoSql::Query query, DataFlow::SourceNode queryObj |
-      queryObj.flowsTo(query) and
+    exists(NoSQL::Query query, DataFlow::SourceNode queryObj |
+      queryObj.flowsToExpr(query) and
       queryObj.flowsTo(trg) and
       src = queryObj.getAPropertyWrite().getRhs()
     )

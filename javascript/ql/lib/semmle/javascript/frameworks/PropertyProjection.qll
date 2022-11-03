@@ -1,5 +1,5 @@
 /**
- * Provides classes for modeling property projection functions.
+ * Provides classes for modelling property projection functions.
  *
  * Subclass `PropertyProjection` to refine the behavior of the analysis on existing property projections.
  * Subclass `CustomPropertyProjection` to introduce new kinds of property projections.
@@ -58,6 +58,8 @@ module PropertyProjection {
     abstract predicate isSingletonProjection();
   }
 }
+
+deprecated class CustomPropertyProjection = PropertyProjection::Range;
 
 /**
  * Gets a callee of a simple property projection call.

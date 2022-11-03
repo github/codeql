@@ -11,7 +11,7 @@
  */
 
 import csharp
-import Linq.Helpers
+import Helpers
 
 predicate oversized(LocalVariableDeclStmt s) {
   exists(Location loc |
@@ -25,5 +25,5 @@ where
   missedSelectOpportunity(fes, s) and
   not oversized(s)
 select fes,
-  "This foreach loop immediately $@ - consider mapping the sequence explicitly using '.Select(...)'.",
-  s, "maps its iteration variable to another variable"
+  "This foreach loop immediately maps its iteration variable to another variable $@ - consider mapping the sequence explicitly using '.Select(...)'.",
+  s, "here"

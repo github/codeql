@@ -179,7 +179,7 @@ module InitializerSplitting {
    *
    * respectively.
    */
-  private class InitializerSplit extends Split, TInitializerSplit {
+  class InitializerSplit extends Split, TInitializerSplit {
     private Constructor c;
 
     InitializerSplit() { this = TInitializerSplit(c) }
@@ -509,6 +509,13 @@ module FinallySplitting {
 
     /** Holds if this node is the entry node in the `finally` block it belongs to. */
     predicate isEntryNode() { first(try.getFinally(), this) }
+  }
+
+  /** A control flow element that does not belong to a `finally` block. */
+  private class NonFinallyControlFlowElement extends ControlFlowElement {
+    NonFinallyControlFlowElement() {
+      not this = any(Statements::TryStmtTree t).getAFinallyDescendant()
+    }
   }
 
   /**
@@ -911,7 +918,7 @@ module BooleanSplitting {
      * ```
      *
      * the branch taken in the condition on line 2 can be recorded, and the
-     * recorded value will determine the branch taken in the condition on line 4.
+     * recorded value will detmine the branch taken in the condition on line 4.
      */
     abstract predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted);
 

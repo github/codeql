@@ -9,10 +9,8 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.frameworks.Werkzeug
-private import semmle.python.frameworks.Stdlib
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
-private import semmle.python.security.dataflow.PathInjectionCustomizations
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -75,11 +73,7 @@ module Flask {
    */
   module Blueprint {
     /** Gets a reference to the `flask.Blueprint` class. */
-    API::Node classRef() {
-      result = API::moduleImport("flask").getMember("Blueprint")
-      or
-      result = API::moduleImport("flask").getMember("blueprints").getMember("Blueprint")
-    }
+    API::Node classRef() { result = API::moduleImport("flask").getMember("Blueprint") }
 
     /** Gets a reference to an instance of `flask.Blueprint`. */
     API::Node instance() { result = classRef().getReturn() }
@@ -116,15 +110,13 @@ module Flask {
      *
      * Use the predicate `Response::instance()` to get references to instances of `flask.Response`.
      */
-    abstract class InstanceSource extends Http::Server::HttpResponse::Range, DataFlow::Node { }
+    abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node { }
 
     /** A direct instantiation of `flask.Response`. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
-      override DataFlow::Node getBody() {
-        result in [this.getArg(0), this.getArgByName("response")]
-      }
+      override DataFlow::Node getBody() { result = this.getArg(0) }
 
       override string getMimetypeDefault() { result = "text/html" }
 
@@ -171,22 +163,6 @@ module Flask {
       override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
     }
 
-    /**
-     * A call to `flask.jsonify` function. This creates a JSON response.
-     *
-     * See
-     * - https://flask.palletsprojects.com/en/2.2.x/api/#flask.json.jsonify
-     */
-    private class FlaskJsonifyCall extends InstanceSource, DataFlow::CallCfgNode {
-      FlaskJsonifyCall() { this = API::moduleImport("flask").getMember("jsonify").getACall() }
-
-      override DataFlow::Node getBody() { result in [this.getArg(_), this.getArgByName(_)] }
-
-      override string getMimetypeDefault() { result = "application/json" }
-
-      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
-    }
-
     /** Gets a reference to an instance of `flask.Response`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
@@ -210,8 +186,8 @@ module Flask {
     API::Node api_node;
 
     FlaskViewClass() {
-      api_node = Views::View::subclassRef() and
-      this.getParent() = api_node.asSource().asExpr()
+      this.getABase() = Views::View::subclassRef().getAUse().asExpr() and
+      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
 
     /** Gets a function that could handle incoming requests, if any. */
@@ -235,8 +211,8 @@ module Flask {
    */
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
-      api_node = Views::MethodView::subclassRef() and
-      this.getParent() = api_node.asSource().asExpr()
+      this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
+      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
 
     override Function getARequestHandler() {
@@ -245,7 +221,7 @@ module Flask {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
-      result.getName() = Http::httpVerbLower()
+      result.getName() = HTTP::httpVerbLower()
     }
   }
 
@@ -257,7 +233,7 @@ module Flask {
   }
 
   /** A route setup made by flask (sharing handling of URL patterns). */
-  abstract class FlaskRouteSetup extends Http::Server::RouteSetup::Range {
+  abstract private class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
     override Parameter getARoutedParameter() {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
@@ -317,18 +293,18 @@ module Flask {
     override Function getARequestHandler() {
       exists(DataFlow::LocalSourceNode func_src |
         func_src.flowsTo(this.getViewArg()) and
-        func_src.asExpr() = result.getDefinition()
+        func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
       or
       exists(FlaskViewClass vc |
-        this.getViewArg() = vc.asViewResult().getAValueReachableFromSource() and
+        this.getViewArg() = vc.asViewResult().getAUse() and
         result = vc.getARequestHandler()
       )
     }
   }
 
   /** A request handler defined in a django view class, that has no known route. */
-  private class FlaskViewClassHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
+  private class FlaskViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
     FlaskViewClassHandlerWithoutKnownRoute() {
       exists(FlaskViewClass vc | vc.getARequestHandler() = this) and
       not exists(FlaskRouteSetup setup | setup.getARequestHandler() = this)
@@ -354,7 +330,13 @@ module Flask {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
   private class FlaskRequestSource extends RemoteFlowSource::Range {
-    FlaskRequestSource() { this = request().asSource() }
+    FlaskRequestSource() {
+      this = request().getAUse() and
+      not any(Import imp).contains(this.asExpr()) and
+      not exists(ControlFlowNode def | this.asVar().getSourceVariable().hasDefiningNode(def) |
+        any(Import imp).contains(def.getNode())
+      )
+    }
 
     override string getSourceType() { result = "flask.request" }
   }
@@ -367,7 +349,7 @@ module Flask {
   private class InstanceTaintSteps extends InstanceTaintStepsHelper {
     InstanceTaintSteps() { this = "flask.Request" }
 
-    override DataFlow::Node getInstance() { result = request().getAValueReachableFromSource() }
+    override DataFlow::Node getInstance() { result = request().getAUse() }
 
     override string getAttributeName() {
       result in [
@@ -413,41 +395,54 @@ module Flask {
   }
 
   private class RequestAttrMultiDict extends Werkzeug::MultiDict::InstanceSource {
-    RequestAttrMultiDict() {
-      this = request().getMember(["args", "values", "form", "files"]).asSource()
-    }
-  }
+    string attr_name;
 
-  private API::Node requestFileStorage() {
-    // TODO: This approach for identifying member-access is very adhoc, and we should
-    // be able to do something more structured for providing modeling of the members
-    // of a container-object.
-    result = request().getMember("files").getASubscript()
-    or
-    result = request().getMember("files").getMember("get").getReturn()
-    or
-    result = request().getMember("files").getMember("getlist").getReturn().getASubscript()
+    RequestAttrMultiDict() {
+      attr_name in ["args", "values", "form", "files"] and
+      this.(DataFlow::AttrRead).accesses(request().getAUse(), attr_name)
+    }
   }
 
   /** An `FileStorage` instance that originates from a flask request. */
   private class FlaskRequestFileStorageInstances extends Werkzeug::FileStorage::InstanceSource {
-    FlaskRequestFileStorageInstances() { this = requestFileStorage().asSource() }
+    FlaskRequestFileStorageInstances() {
+      // TODO: this currently only works in local-scope, since writing type-trackers for
+      // this is a little too much effort. Once API-graphs are available for more
+      // things, we can rewrite this.
+      //
+      // TODO: This approach for identifying member-access is very adhoc, and we should
+      // be able to do something more structured for providing modeling of the members
+      // of a container-object.
+      exists(DataFlow::AttrRead files | files.accesses(request().getAUse(), "files") |
+        this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
+        or
+        this.(DataFlow::MethodCallNode).calls(files, "get")
+        or
+        exists(DataFlow::MethodCallNode getlistCall | getlistCall.calls(files, "getlist") |
+          this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
+        )
+      )
+    }
   }
 
   /** An `Headers` instance that originates from a flask request. */
   private class FlaskRequestHeadersInstances extends Werkzeug::Headers::InstanceSource {
-    FlaskRequestHeadersInstances() { this = request().getMember("headers").asSource() }
+    FlaskRequestHeadersInstances() {
+      this.(DataFlow::AttrRead).accesses(request().getAUse(), "headers")
+    }
   }
 
   /** An `Authorization` instance that originates from a flask request. */
   private class FlaskRequestAuthorizationInstances extends Werkzeug::Authorization::InstanceSource {
-    FlaskRequestAuthorizationInstances() { this = request().getMember("authorization").asSource() }
+    FlaskRequestAuthorizationInstances() {
+      this.(DataFlow::AttrRead).accesses(request().getAUse(), "authorization")
+    }
   }
 
   // ---------------------------------------------------------------------------
   // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
-  private class FlaskRouteHandlerReturn extends Http::Server::HttpResponse::Range, DataFlow::CfgNode {
+  private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
@@ -470,7 +465,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.redirect
    */
-  private class FlaskRedirectCall extends Http::Server::HttpRedirectResponse::Range,
+  private class FlaskRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
     FlaskRedirectCall() { this = API::moduleImport("flask").getMember("redirect").getACall() }
 
@@ -498,7 +493,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
    */
-  class FlaskResponseSetCookieCall extends Http::Server::CookieWrite::Range,
+  class FlaskResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
     DataFlow::MethodCallNode {
     FlaskResponseSetCookieCall() { this.calls(Flask::Response::instance(), "set_cookie") }
 
@@ -514,7 +509,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.delete_cookie
    */
-  class FlaskResponseDeleteCookieCall extends Http::Server::CookieWrite::Range,
+  class FlaskResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
     DataFlow::MethodCallNode {
     FlaskResponseDeleteCookieCall() { this.calls(Flask::Response::instance(), "delete_cookie") }
 
@@ -523,64 +518,5 @@ module Flask {
     override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("key")] }
 
     override DataFlow::Node getValueArg() { none() }
-  }
-
-  /**
-   * A call to `flask.send_from_directory`.
-   *
-   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_from_directory
-   */
-  private class FlaskSendFromDirectoryCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    FlaskSendFromDirectoryCall() {
-      this = API::moduleImport("flask").getMember("send_from_directory").getACall()
-    }
-
-    override DataFlow::Node getAPathArgument() {
-      result in [
-          this.getArg(0), this.getArgByName("directory"),
-          // as described in the docs, the `filename` argument is restrained to be within
-          // the provided directory, so is not exposed to path-injection. (but is still a
-          // path-argument).
-          this.getArg(1), this.getArgByName("filename")
-        ]
-    }
-  }
-
-  /**
-   * To exclude `filename` argument to `flask.send_from_directory` as a path-injection sink.
-   */
-  private class FlaskSendFromDirectoryCallFilenameSanitizer extends PathInjection::Sanitizer {
-    FlaskSendFromDirectoryCallFilenameSanitizer() {
-      this = any(FlaskSendFromDirectoryCall c).getArg(1)
-      or
-      this = any(FlaskSendFromDirectoryCall c).getArgByName("filename")
-    }
-  }
-
-  /**
-   * A call to `flask.send_file`.
-   *
-   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_file
-   */
-  private class FlaskSendFileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    FlaskSendFileCall() { this = API::moduleImport("flask").getMember("send_file").getACall() }
-
-    override DataFlow::Node getAPathArgument() {
-      result in [this.getArg(0), this.getArgByName("filename_or_fp")]
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // Logging
-  // ---------------------------------------------------------------------------
-  /**
-   * A Flask application provides a standard Python logger via the `logger` attribute.
-   *
-   * See
-   * - https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.logger
-   * - https://flask.palletsprojects.com/en/2.0.x/logging/
-   */
-  private class FlaskLogger extends Stdlib::Logger::InstanceSource {
-    FlaskLogger() { this = FlaskApp::instance().getMember("logger").asSource() }
   }
 }

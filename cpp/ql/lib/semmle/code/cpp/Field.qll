@@ -4,6 +4,7 @@
 
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Enum
+import semmle.code.cpp.exprs.Access
 
 /**
  * A C structure member or C++ non-static member variable. For example the
@@ -31,7 +32,7 @@ class Field extends MemberVariable {
   int getByteOffset() { fieldoffsets(underlyingElement(this), result, _) }
 
   /**
-   * Gets the byte offset within `mostDerivedClass` of each occurrence of this
+   * Gets the byte offset within `mostDerivedClass` of each occurence of this
    * field within `mostDerivedClass` itself or a base class subobject of
    * `mostDerivedClass`.
    * Note that for fields of virtual base classes, and non-virtual base classes

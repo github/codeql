@@ -45,9 +45,9 @@ edges
 | test.py:114:16:114:16 | SSA variable y | test.py:114:10:114:10 | ControlFlowNode for y |
 | test.py:114:21:114:21 | ControlFlowNode for l [List element] | test.py:114:16:114:16 | SSA variable y |
 | test.py:115:10:115:10 | ControlFlowNode for x [List element] | test.py:115:10:115:13 | ControlFlowNode for Subscript |
-| test.py:125:9:125:16 | ControlFlowNode for Set [Set element] | test.py:126:10:126:10 | ControlFlowNode for x [Set element] |
-| test.py:125:10:125:15 | ControlFlowNode for SOURCE | test.py:125:9:125:16 | ControlFlowNode for Set [Set element] |
-| test.py:126:10:126:10 | ControlFlowNode for x [Set element] | test.py:126:10:126:16 | ControlFlowNode for Attribute() |
+| test.py:125:9:125:16 | ControlFlowNode for Set [List element] | test.py:126:10:126:10 | ControlFlowNode for x [List element] |
+| test.py:125:10:125:15 | ControlFlowNode for SOURCE | test.py:125:9:125:16 | ControlFlowNode for Set [List element] |
+| test.py:126:10:126:10 | ControlFlowNode for x [List element] | test.py:126:10:126:16 | ControlFlowNode for Attribute() |
 | test.py:130:9:130:37 | ControlFlowNode for SetComp [Set element] | test.py:131:10:131:10 | ControlFlowNode for x [Set element] |
 | test.py:130:10:130:15 | ControlFlowNode for SOURCE | test.py:130:9:130:37 | ControlFlowNode for SetComp [Set element] |
 | test.py:131:10:131:10 | ControlFlowNode for x [Set element] | test.py:131:10:131:16 | ControlFlowNode for Attribute() |
@@ -57,12 +57,12 @@ edges
 | test.py:135:21:135:28 | ControlFlowNode for List [List element] | test.py:135:16:135:16 | SSA variable y |
 | test.py:135:22:135:27 | ControlFlowNode for SOURCE | test.py:135:21:135:28 | ControlFlowNode for List [List element] |
 | test.py:136:10:136:10 | ControlFlowNode for x [Set element] | test.py:136:10:136:16 | ControlFlowNode for Attribute() |
-| test.py:140:9:140:16 | ControlFlowNode for Set [Set element] | test.py:141:21:141:21 | ControlFlowNode for l [Set element] |
-| test.py:140:10:140:15 | ControlFlowNode for SOURCE | test.py:140:9:140:16 | ControlFlowNode for Set [Set element] |
+| test.py:140:9:140:16 | ControlFlowNode for Set [List element] | test.py:141:21:141:21 | ControlFlowNode for l [List element] |
+| test.py:140:10:140:15 | ControlFlowNode for SOURCE | test.py:140:9:140:16 | ControlFlowNode for Set [List element] |
 | test.py:141:9:141:22 | ControlFlowNode for SetComp [Set element] | test.py:142:10:142:10 | ControlFlowNode for x [Set element] |
 | test.py:141:10:141:10 | ControlFlowNode for y | test.py:141:9:141:22 | ControlFlowNode for SetComp [Set element] |
 | test.py:141:16:141:16 | SSA variable y | test.py:141:10:141:10 | ControlFlowNode for y |
-| test.py:141:21:141:21 | ControlFlowNode for l [Set element] | test.py:141:16:141:16 | SSA variable y |
+| test.py:141:21:141:21 | ControlFlowNode for l [List element] | test.py:141:16:141:16 | SSA variable y |
 | test.py:142:10:142:10 | ControlFlowNode for x [Set element] | test.py:142:10:142:16 | ControlFlowNode for Attribute() |
 | test.py:152:9:152:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:153:10:153:10 | ControlFlowNode for x [Dictionary element at key s] |
 | test.py:152:15:152:20 | ControlFlowNode for SOURCE | test.py:152:9:152:21 | ControlFlowNode for Dict [Dictionary element at key s] |
@@ -449,9 +449,9 @@ nodes
 | test.py:114:21:114:21 | ControlFlowNode for l [List element] | semmle.label | ControlFlowNode for l [List element] |
 | test.py:115:10:115:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
 | test.py:115:10:115:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:125:9:125:16 | ControlFlowNode for Set [Set element] | semmle.label | ControlFlowNode for Set [Set element] |
+| test.py:125:9:125:16 | ControlFlowNode for Set [List element] | semmle.label | ControlFlowNode for Set [List element] |
 | test.py:125:10:125:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:126:10:126:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
+| test.py:126:10:126:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
 | test.py:126:10:126:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:130:9:130:37 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
 | test.py:130:10:130:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -464,12 +464,12 @@ nodes
 | test.py:135:22:135:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:136:10:136:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
 | test.py:136:10:136:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:140:9:140:16 | ControlFlowNode for Set [Set element] | semmle.label | ControlFlowNode for Set [Set element] |
+| test.py:140:9:140:16 | ControlFlowNode for Set [List element] | semmle.label | ControlFlowNode for Set [List element] |
 | test.py:140:10:140:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:141:9:141:22 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
 | test.py:141:10:141:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
 | test.py:141:16:141:16 | SSA variable y | semmle.label | SSA variable y |
-| test.py:141:21:141:21 | ControlFlowNode for l [Set element] | semmle.label | ControlFlowNode for l [Set element] |
+| test.py:141:21:141:21 | ControlFlowNode for l [List element] | semmle.label | ControlFlowNode for l [List element] |
 | test.py:142:10:142:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
 | test.py:142:10:142:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:152:9:152:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |

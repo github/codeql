@@ -3,4 +3,4 @@ groups:
   - go
   - examples
 dependencies:
-  codeql/go-all: ${workspace}
+  codeql/go-all: "*"

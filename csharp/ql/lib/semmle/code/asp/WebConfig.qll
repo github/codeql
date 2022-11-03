@@ -7,112 +7,85 @@ import csharp
 /**
  * A `Web.config` file.
  */
-class WebConfigXml extends XmlFile {
-  WebConfigXml() { this.getName().matches("%Web.config") }
+class WebConfigXML extends XMLFile {
+  WebConfigXML() { this.getName().matches("%Web.config") }
 }
-
-/** DEPRECATED: Alias for WebConfigXml */
-deprecated class WebConfigXML = WebConfigXml;
 
 /** A `<configuration>` tag in an ASP.NET configuration file. */
-class ConfigurationXmlElement extends XmlElement {
-  ConfigurationXmlElement() { this.getName().toLowerCase() = "configuration" }
+class ConfigurationXMLElement extends XMLElement {
+  ConfigurationXMLElement() { this.getName().toLowerCase() = "configuration" }
 }
 
-/** DEPRECATED: Alias for ConfigurationXmlElement */
-deprecated class ConfigurationXMLElement = ConfigurationXmlElement;
-
 /** A `<location>` tag in an ASP.NET configuration file. */
-class LocationXmlElement extends XmlElement {
-  LocationXmlElement() {
-    this.getParent() instanceof ConfigurationXmlElement and
+class LocationXMLElement extends XMLElement {
+  LocationXMLElement() {
+    this.getParent() instanceof ConfigurationXMLElement and
     this.getName().toLowerCase() = "location"
   }
 }
 
-/** DEPRECATED: Alias for LocationXmlElement */
-deprecated class LocationXMLElement = LocationXmlElement;
-
 /** A `<system.web>` tag in an ASP.NET configuration file. */
-class SystemWebXmlElement extends XmlElement {
-  SystemWebXmlElement() {
+class SystemWebXMLElement extends XMLElement {
+  SystemWebXMLElement() {
     (
-      this.getParent() instanceof ConfigurationXmlElement
+      this.getParent() instanceof ConfigurationXMLElement
       or
-      this.getParent() instanceof LocationXmlElement
+      this.getParent() instanceof LocationXMLElement
     ) and
     this.getName().toLowerCase() = "system.web"
   }
 }
 
-/** DEPRECATED: Alias for SystemWebXmlElement */
-deprecated class SystemWebXMLElement = SystemWebXmlElement;
-
 /** A `<system.webServer>` tag in an ASP.NET configuration file. */
-class SystemWebServerXmlElement extends XmlElement {
-  SystemWebServerXmlElement() {
+class SystemWebServerXMLElement extends XMLElement {
+  SystemWebServerXMLElement() {
     (
-      this.getParent() instanceof ConfigurationXmlElement
+      this.getParent() instanceof ConfigurationXMLElement
       or
-      this.getParent() instanceof LocationXmlElement
+      this.getParent() instanceof LocationXMLElement
     ) and
     this.getName().toLowerCase() = "system.webserver"
   }
 }
 
-/** DEPRECATED: Alias for SystemWebServerXmlElement */
-deprecated class SystemWebServerXMLElement = SystemWebServerXmlElement;
-
 /** A `<customErrors>` tag in an ASP.NET configuration file. */
-class CustomErrorsXmlElement extends XmlElement {
-  CustomErrorsXmlElement() {
-    this.getParent() instanceof SystemWebXmlElement and
+class CustomErrorsXMLElement extends XMLElement {
+  CustomErrorsXMLElement() {
+    this.getParent() instanceof SystemWebXMLElement and
     this.getName().toLowerCase() = "customerrors"
   }
 }
 
-/** DEPRECATED: Alias for CustomErrorsXmlElement */
-deprecated class CustomErrorsXMLElement = CustomErrorsXmlElement;
-
 /** A `<httpRuntime>` tag in an ASP.NET configuration file. */
-class HttpRuntimeXmlElement extends XmlElement {
-  HttpRuntimeXmlElement() {
-    this.getParent() instanceof SystemWebXmlElement and
+class HttpRuntimeXMLElement extends XMLElement {
+  HttpRuntimeXMLElement() {
+    this.getParent() instanceof SystemWebXMLElement and
     this.getName().toLowerCase() = "httpruntime"
   }
 }
 
-/** DEPRECATED: Alias for HttpRuntimeXmlElement */
-deprecated class HttpRuntimeXMLElement = HttpRuntimeXmlElement;
-
 /** A `<forms>` tag under `<system.web><authentication>` in an ASP.NET configuration file. */
-class FormsElement extends XmlElement {
+class FormsElement extends XMLElement {
   FormsElement() {
-    this = any(SystemWebXmlElement sw).getAChild("authentication").getAChild("forms")
+    this = any(SystemWebXMLElement sw).getAChild("authentication").getAChild("forms")
   }
 
   /**
    * Gets attribute's `requireSSL` value.
    */
-  string getRequireSsl() {
+  string getRequireSSL() {
     result = this.getAttribute("requireSSL").getValue().trim().toLowerCase()
   }
-
-  /** DEPRECATED: Alias for getRequireSsl */
-  deprecated string getRequireSSL() { result = this.getRequireSsl() }
 
   /**
    * Holds if `requireSSL` value is true.
    */
-  predicate isRequireSsl() { this.getRequireSsl() = "true" }
-
-  /** DEPRECATED: Alias for isRequireSsl */
-  deprecated predicate isRequireSSL() { this.isRequireSsl() }
+  predicate isRequireSSL() { this.getRequireSSL() = "true" }
 }
 
 /** A `<httpCookies>` tag in an ASP.NET configuration file. */
-class HttpCookiesElement extends XmlElement {
-  HttpCookiesElement() { this = any(SystemWebXmlElement sw).getAChild("httpCookies") }
+class HttpCookiesElement extends XMLElement {
+  HttpCookiesElement() { this = any(SystemWebXMLElement sw).getAChild("httpCookies") }
 
   /**
    * Gets attribute's `httpOnlyCookies` value.
@@ -129,23 +102,17 @@ class HttpCookiesElement extends XmlElement {
   /**
    * Gets attribute's `requireSSL` value.
    */
-  string getRequireSsl() {
+  string getRequireSSL() {
     result = this.getAttribute("requireSSL").getValue().trim().toLowerCase()
   }
-
-  /** DEPRECATED: Alias for getRequireSsl */
-  deprecated string getRequireSSL() { result = this.getRequireSsl() }
 
   /**
    * Holds if there is any chance that `requireSSL` is set to `true` either globally or for Forms.
    */
-  predicate isRequireSsl() {
-    this.getRequireSsl() = "true"
+  predicate isRequireSSL() {
+    this.getRequireSSL() = "true"
     or
-    not this.getRequireSsl() = "false" and // not set all, i.e. default
-    exists(FormsElement forms | forms.getFile() = this.getFile() | forms.isRequireSsl())
+    not this.getRequireSSL() = "false" and // not set all, i.e. default
+    exists(FormsElement forms | forms.getFile() = this.getFile() | forms.isRequireSSL())
   }
-
-  /** DEPRECATED: Alias for isRequireSsl */
-  deprecated predicate isRequireSSL() { this.isRequireSsl() }
 }

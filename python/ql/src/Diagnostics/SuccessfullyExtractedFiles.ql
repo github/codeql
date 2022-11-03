@@ -4,7 +4,6 @@
  *   without encountering an error.
  * @kind diagnostic
  * @id py/diagnostics/successfully-extracted-files
- * @tags successfully-extracted-files
  */
 
 import python

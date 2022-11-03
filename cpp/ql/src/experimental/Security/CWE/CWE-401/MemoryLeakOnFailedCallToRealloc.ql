@@ -24,7 +24,7 @@ class CallMayNotReturn extends FunctionCall {
     not exists(this.(ControlFlowNode).getASuccessor())
     or
     // call to another function that may not return
-    exists(CallMayNotReturn exit | this.getTarget() = exit.getEnclosingFunction())
+    exists(CallMayNotReturn exit | getTarget() = exit.getEnclosingFunction())
   }
 }
 
@@ -58,4 +58,4 @@ class ReallocCallLeak extends FunctionCall {
 
 from ReallocCallLeak rcl
 where not rcl.mayHandleByTermination()
-select rcl, "Possible loss of original pointer on unsuccessful call to 'realloc'."
+select rcl, "possible loss of original pointer on unsuccessful call realloc"

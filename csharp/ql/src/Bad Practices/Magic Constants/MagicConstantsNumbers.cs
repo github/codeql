@@ -5,7 +5,7 @@ class Circle
     {
         return Math.Pow(radius, 2) * 3.14;
     }
-    public double circumference()
+    public double circumfrence()
     {
         return radius * 2 * 3.14;
     }

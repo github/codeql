@@ -29,7 +29,7 @@ predicate sortedCollectionBaseType(RefType t) {
 }
 
 predicate sortedCollectionType(RefType t) {
-  sortedCollectionBaseType(t.getAnAncestor().getSourceDeclaration())
+  sortedCollectionBaseType(t.getASupertype*().getSourceDeclaration())
 }
 
 string nameFor(Class c) {

@@ -14,30 +14,14 @@ def emulated_authentication_check(arg):
         raise Exception("user unauthenticated")
 
 
-def test_custom_sanitizer_exception_raise():
+def test_custom_sanitizer():
     s = TAINTED_STRING
 
     try:
         emulated_authentication_check(s)
         ensure_not_tainted(s)
     except:
-        ensure_tainted(s) # $ tainted
-        raise
-
-    ensure_not_tainted(s)
-
-
-def test_custom_sanitizer_exception_pass():
-    s = TAINTED_STRING
-
-    try:
-        emulated_authentication_check(s)
-        ensure_not_tainted(s)
-    except:
-        ensure_tainted(s) # $ tainted
         pass
-
-    ensure_tainted(s) # $ tainted
 
 
 def emulated_is_safe(arg):
@@ -50,10 +34,10 @@ def test_custom_sanitizer_guard():
 
     if emulated_is_safe(s):
         ensure_not_tainted(s)
+        s = TAINTED_STRING
+        ensure_tainted(s) # $ tainted
     else:
         ensure_tainted(s) # $ tainted
-
-    ensure_tainted(s) # $ tainted
 
 
 def emulated_escaping(arg):
@@ -65,15 +49,10 @@ def test_escape():
 
     s2 = emulated_escaping(s)
     ensure_not_tainted(s2)
-    ensure_tainted(s) # $ tainted
 
 
 # Make tests runable
 
-test_custom_sanitizer_exception_pass()
-try:
-    test_custom_sanitizer_exception_raise()
-except Exception:
-    pass
+test_custom_sanitizer()
 test_custom_sanitizer_guard()
 test_escape()

@@ -10,6 +10,12 @@ private predicate reaches(ControlFlowNode a, ControlFlowNode b) = fastTC(success
 
 private predicate successor(ControlFlowNode a, ControlFlowNode b) { b = a.getASuccessor() }
 
+class WhitelistedCallsConfig extends string {
+  WhitelistedCallsConfig() { this = "config" }
+
+  abstract predicate isWhitelisted(Call c);
+}
+
 abstract class WhitelistedCall extends Call {
   override Function getTarget() { none() }
 }
@@ -38,7 +44,7 @@ class ConditionallyInitializedVariable extends LocalVariable {
     // Find a call that conditionally initializes this variable
     hasConditionalInitialization(f, call, this, initAccess, e) and
     // Ignore cases where the variable is assigned prior to the call
-    not reaches(this.getAnAssignedValue(), initAccess) and
+    not reaches(getAnAssignedValue(), initAccess) and
     // Ignore cases where the variable is assigned field-wise prior to the call.
     not exists(FieldAccess fa |
       exists(Assignment a |
@@ -50,7 +56,7 @@ class ConditionallyInitializedVariable extends LocalVariable {
     ) and
     // Ignore cases where the variable is assigned by a prior call to an initialization function
     not exists(Call c |
-      this.getAnAccess() = getAnInitializedArgument(c).(AddressOfExpr).getOperand() and
+      getAnAccess() = getAnInitializedArgument(c).(AddressOfExpr).getOperand() and
       reaches(c, initAccess)
     ) and
     /*
@@ -58,7 +64,7 @@ class ConditionallyInitializedVariable extends LocalVariable {
      * the CFG, but should always be considered as initialized, so exclude them.
      */
 
-    not exists(this.getInitializer().getExpr())
+    not exists(getInitializer().getExpr())
   }
 
   /**
@@ -84,7 +90,7 @@ class ConditionallyInitializedVariable extends LocalVariable {
     // Variable associated with this particular call
     call = initializingCall and
     // Access is a meaningful read access
-    result = this.getAReadAccess() and
+    result = getAReadAccess() and
     // Which occurs after the call
     reaches(call, result) and
     /*
@@ -118,7 +124,7 @@ class ConditionallyInitializedVariable extends LocalVariable {
     call = initializingCall and
     initializingFunction = f and
     e = evidence and
-    result = this.getAReadAccessAfterCall(initializingCall) and
+    result = getAReadAccessAfterCall(initializingCall) and
     (
       // Access is risky because status return code ignored completely
       call instanceof ExprInVoidContext
@@ -142,7 +148,7 @@ class ConditionallyInitializedVariable extends LocalVariable {
     call = initializingCall and
     initializingFunction = f and
     e = evidence and
-    result = this.getAReadAccessAfterCall(initializingCall) and
+    result = getAReadAccessAfterCall(initializingCall) and
     exists(LocalVariable status, Assignment a |
       a.getRValue() = call and
       call = status.getAnAssignedValue() and
@@ -178,7 +184,7 @@ class ConditionallyInitializedVariable extends LocalVariable {
     ConditionalInitializationFunction initializingFunction,
     ConditionalInitializationCall initializingCall, Evidence evidence
   ) {
-    result = this.getARiskyAccessBeforeStatusCheck(initializingFunction, initializingCall, evidence) or
-    result = this.getARiskyAccessWithNoStatusCheck(initializingFunction, initializingCall, evidence)
+    result = getARiskyAccessBeforeStatusCheck(initializingFunction, initializingCall, evidence) or
+    result = getARiskyAccessWithNoStatusCheck(initializingFunction, initializingCall, evidence)
   }
 }

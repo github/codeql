@@ -26,7 +26,7 @@ import cpp
 from Assignment a, Variable global, Variable local
 where
   a.fromSource() and
-  global.getAnAccess() = a.getLValue() and
+  global.getAnAccess() = a.getLValue().(VariableAccess) and
   local.getAnAccess() = a.getRValue().(AddressOfExpr).getOperand() and
   local.hasSpecifier("auto") and
   (
@@ -35,4 +35,4 @@ where
     global.hasSpecifier("static")
   )
 select a,
-  "AV Rule 173: The address of an object with automatic storage shall not be assigned to another object that may persist after the first object has ceased to exist."
+  "AV Rule 173: The address of an object with automatic storage shall not be assigned to another object that may persist after the first object has ceased to exist"

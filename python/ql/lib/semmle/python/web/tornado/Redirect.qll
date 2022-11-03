@@ -13,7 +13,7 @@ import Tornado
 /**
  * Represents an argument to the `tornado.redirect` function.
  */
-deprecated class TornadoHttpRequestHandlerRedirect extends HttpRedirectTaintSink {
+class TornadoHttpRequestHandlerRedirect extends HttpRedirectTaintSink {
   override string toString() { result = "tornado.HttpRequestHandler.redirect" }
 
   TornadoHttpRequestHandlerRedirect() {

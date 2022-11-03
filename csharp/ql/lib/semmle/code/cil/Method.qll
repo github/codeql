@@ -89,7 +89,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   override Location getLocation() { result = Element.super.getLocation() }
 
-  override Location getALocation() { cil_method_location(this.getUnboundMethod+(), result) }
+  override Location getALocation() { cil_method_location(this.getUnboundDeclaration(), result) }
 
   override MethodParameter getParameter(int n) {
     if this.isStatic()
@@ -270,7 +270,7 @@ class Setter extends Accessor {
  */
 class TrivialSetter extends Method {
   TrivialSetter() {
-    exists(MethodImplementation impl | impl = this.getAnImplementation() |
+    exists(MethodImplementation impl | impl = this.getImplementation() |
       impl.getInstruction(0) instanceof ThisAccess and
       impl.getInstruction(1).(ParameterReadAccess).getTarget().getIndex() = 1 and
       impl.getInstruction(2) instanceof FieldWriteAccess

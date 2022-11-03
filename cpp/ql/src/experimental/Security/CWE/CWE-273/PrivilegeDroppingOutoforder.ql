@@ -1,7 +1,7 @@
 /**
  * @name LinuxPrivilegeDroppingOutoforder
  * @description A syscall commonly associated with privilege dropping is being called out of order.
- *                Normally a process drops group ID and sets supplemental groups for the target user
+ *                Normally a process drops group ID and sets supplimental groups for the target user
  *                before setting the target user ID. This can have security impact if the return code
  *                from these methods is not checked.
  * @kind problem
@@ -21,9 +21,9 @@ predicate argumentMayBeRoot(Expr e) {
 
 class SetuidLikeFunctionCall extends FunctionCall {
   SetuidLikeFunctionCall() {
-    (this.getTarget().hasGlobalName("setuid") or this.getTarget().hasGlobalName("setresuid")) and
+    (getTarget().hasGlobalName("setuid") or getTarget().hasGlobalName("setresuid")) and
     // setuid/setresuid with the root user are false positives.
-    not argumentMayBeRoot(this.getArgument(0))
+    not argumentMayBeRoot(getArgument(0))
   }
 }
 
@@ -44,7 +44,7 @@ class SetuidLikeWrapperCall extends FunctionCall {
 
 class CallBeforeSetuidFunctionCall extends FunctionCall {
   CallBeforeSetuidFunctionCall() {
-    this.getTarget()
+    getTarget()
         .hasGlobalName([
             "setgid", "setresgid",
             // Compatibility may require skipping initgroups and setgroups return checks.
@@ -52,7 +52,7 @@ class CallBeforeSetuidFunctionCall extends FunctionCall {
             "initgroups", "setgroups"
           ]) and
     // setgid/setresgid/etc with the root group are false positives.
-    not argumentMayBeRoot(this.getArgument(0))
+    not argumentMayBeRoot(getArgument(0))
   }
 }
 

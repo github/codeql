@@ -231,7 +231,7 @@ private class PostOrderInitializer extends Initializer {
       or
       this.getDeclaration() = for.getRangeVariable()
       or
-      this.getDeclaration() = for.getBeginEndDeclaration().getADeclaration()
+      this.getDeclaration() = for.getBeginEndDeclaration().(DeclStmt).getADeclaration()
     )
   }
 }
@@ -444,6 +444,26 @@ private predicate skipInitializer(Initializer init) {
   exists(StaticLocalVariable local |
     init = local.getInitializer() and
     not local.hasDynamicInitialization()
+  )
+}
+
+/**
+ * Holds if `e` is an expression in a static initializer that must be evaluated
+ * at run time. This predicate computes "is non-const" instead of "is const" in
+ * order to avoid recursion through forall.
+ */
+private predicate runtimeExprInStaticInitializer(Expr e) {
+  inStaticInitializer(e) and
+  if e instanceof AggregateLiteral
+  then runtimeExprInStaticInitializer(e.getAChild())
+  else not e.getFullyConverted().isConstant()
+}
+
+/** Holds if `e` is part of the initializer of a local static variable. */
+private predicate inStaticInitializer(Expr e) {
+  exists(LocalVariable local |
+    local.isStatic() and
+    e.getParent+() = local.getInitializer()
   )
 }
 
@@ -708,33 +728,30 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
   or
   scope =
     any(SwitchStmt s |
-      // SwitchStmt [-> init] -> expr
       i = -1 and ni = s and spec.isAt()
       or
-      i = 0 and ni = s.getInitialization() and spec.isAround()
-      or
-      i = 1 and ni = s.getExpr() and spec.isAround()
+      i = 0 and ni = s.getExpr() and spec.isAround()
       or
       // If the switch body is not a block then this step is skipped, and the
       // expression jumps directly to the cases.
-      i = 2 and ni = s.getStmt().(BlockStmt) and spec.isAt()
+      i = 1 and ni = s.getStmt().(BlockStmt) and spec.isAt()
       or
-      i = 3 and ni = s.getASwitchCase() and spec.isBefore()
+      i = 2 and ni = s.getASwitchCase() and spec.isBefore()
       or
       // If there is no default case, we can jump to after the block. Note: `i`
       // is same value as above.
       not s.getASwitchCase() instanceof DefaultCase and
-      i = 3 and
+      i = 2 and
       ni = s.getStmt() and
       spec.isAfter()
       or
-      i = 4 and /* BARRIER */ ni = s and spec.isBarrier()
+      i = 3 and /* BARRIER */ ni = s and spec.isBarrier()
       or
-      i = 5 and ni = s.getStmt() and spec.isAfter()
+      i = 4 and ni = s.getStmt() and spec.isAfter()
       or
-      i = 6 and ni = s and spec.isAroundDestructors()
+      i = 5 and ni = s and spec.isAroundDestructors()
       or
-      i = 7 and ni = s and spec.isAfter()
+      i = 6 and ni = s and spec.isAfter()
     )
   or
   scope =
@@ -839,15 +856,8 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeAt(n2, f)
   )
   or
-  // IfStmt -> [ init -> ] condition ; { then, else } ->
+  // IfStmt -> condition ; { then, else } ->
   exists(IfStmt s |
-    p1.nodeAt(n1, s) and
-    p2.nodeBefore(n2, s.getInitialization())
-    or
-    p1.nodeAfter(n1, s.getInitialization()) and
-    p2.nodeBefore(n2, s.getCondition())
-    or
-    not exists(s.getInitialization()) and
     p1.nodeAt(n1, s) and
     p2.nodeBefore(n2, s.getCondition())
     or
@@ -861,15 +871,8 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeAfter(n2, s)
   )
   or
-  // ConstexprIfStmt -> [ init -> ] condition ; { then, else } -> // same as IfStmt
+  // ConstexprIfStmt -> condition ; { then, else } -> // same as IfStmt
   exists(ConstexprIfStmt s |
-    p1.nodeAt(n1, s) and
-    p2.nodeBefore(n2, s.getInitialization())
-    or
-    p1.nodeAfter(n1, s.getInitialization()) and
-    p2.nodeBefore(n2, s.getCondition())
-    or
-    not exists(s.getInitialization()) and
     p1.nodeAt(n1, s) and
     p2.nodeBefore(n2, s.getCondition())
     or
@@ -970,7 +973,7 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
 private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) {
   subEdge(p1, n1, n2, p2)
   or
-  // If `n1` has sub-nodes to accommodate destructors, but there are none to be
+  // If `n1` has sub-nodes to accomodate destructors, but there are none to be
   // called, connect the "before destructors" node directly to the "after
   // destructors" node. For performance, only do this when the nodes exist.
   exists(Pos afterDtors | afterDtors.isAfterDestructors() | subEdge(afterDtors, n1, _, _)) and
@@ -1140,7 +1143,7 @@ private class ExceptionSource extends Node {
       this.reachesParent(mid) and
       not mid = any(TryStmt try).getStmt() and
       not mid = any(MicrosoftTryStmt try).getStmt() and
-      parent = mid.getParentNode()
+      parent = mid.(Node).getParentNode()
     )
   }
 
@@ -1376,7 +1379,7 @@ private module Cached {
    * true-successors and false-successors.
    */
   cached
-  predicate qlCfgSuccessor(Node n1, Node n2) {
+  predicate qlCFGSuccessor(Node n1, Node n2) {
     exists(Node memberNode, Pos memberPos |
       subEdgeIncludingDestructors(any(Pos at | at.isAt()), n1, memberNode, memberPos) and
       normalGroupMember(memberNode, memberPos, n2)
@@ -1385,32 +1388,23 @@ private module Cached {
     conditionalSuccessor(n1, _, n2)
   }
 
-  /** DEPRECATED: Alias for qlCfgSuccessor */
-  deprecated predicate qlCFGSuccessor = qlCfgSuccessor/2;
-
   /**
    * Holds if `n2` is a control-flow node such that the control-flow
    * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
    */
   cached
-  predicate qlCfgTrueSuccessor(Node n1, Node n2) {
+  predicate qlCFGTrueSuccessor(Node n1, Node n2) {
     conditionalSuccessor(n1, true, n2) and
     not conditionalSuccessor(n1, false, n2)
   }
-
-  /** DEPRECATED: Alias for qlCfgTrueSuccessor */
-  deprecated predicate qlCFGTrueSuccessor = qlCfgTrueSuccessor/2;
 
   /**
    * Holds if `n2` is a control-flow node such that the control-flow
    * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
    */
   cached
-  predicate qlCfgFalseSuccessor(Node n1, Node n2) {
+  predicate qlCFGFalseSuccessor(Node n1, Node n2) {
     conditionalSuccessor(n1, false, n2) and
     not conditionalSuccessor(n1, true, n2)
   }
-
-  /** DEPRECATED: Alias for qlCfgFalseSuccessor */
-  deprecated predicate qlCFGFalseSuccessor = qlCfgFalseSuccessor/2;
 }

@@ -2,20 +2,6 @@ private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
-private import DataFlowImplConsistency
-
-/** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
-
-/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c, pos)
-}
-
-/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
-predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
-  arg.argumentOf(c, pos)
-}
 
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
@@ -48,7 +34,7 @@ private class Argument extends Expr {
  */
 class ArgumentNode extends Node {
   ArgumentNode() {
-    this.asExpr() instanceof Argument or
+    exists(Argument arg | this.asExpr() = arg) or
     this = getInstanceArgument(_)
   }
 
@@ -198,12 +184,6 @@ predicate clearsContent(Node n, Content c) {
   none() // stub implementation
 }
 
-/**
- * Holds if the value that is being tracked is expected to be stored inside content `c`
- * at node `n`.
- */
-predicate expectsContent(Node n, ContentSet c) { none() }
-
 /** Gets the type of `n` used for type pruning. */
 Type getNodeType(Node n) {
   suppressUnusedNode(n) and
@@ -273,6 +253,27 @@ class Unit extends TUnit {
   string toString() { result = "unit" }
 }
 
+/**
+ * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
+ * modified or its modification cannot be observed, for example if it is a
+ * freshly created object that is not saved in a variable.
+ *
+ * This predicate is only used for consistency checks.
+ */
+predicate isImmutableOrUnobservable(Node n) {
+  // Is the null pointer (or something that's not really a pointer)
+  exists(n.asExpr().getValue())
+  or
+  // Isn't a pointer or is a pointer to const
+  forall(DerivedType dt | dt = n.asExpr().getActualType() |
+    dt.getBaseType().isConst()
+    or
+    dt.getBaseType() instanceof RoutineType
+  )
+  // The above list of cases isn't exhaustive, but it narrows down the
+  // consistency alerts enough that most of them are interesting.
+}
+
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
 
@@ -295,19 +296,3 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
-
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    // Is the null pointer (or something that's not really a pointer)
-    exists(n.asExpr().getValue())
-    or
-    // Isn't a pointer or is a pointer to const
-    forall(DerivedType dt | dt = n.asExpr().getActualType() |
-      dt.getBaseType().isConst()
-      or
-      dt.getBaseType() instanceof RoutineType
-    )
-    // The above list of cases isn't exhaustive, but it narrows down the
-    // consistency alerts enough that most of them are interesting.
-  }
-}

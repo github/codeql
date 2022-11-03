@@ -126,3 +126,9 @@ class BlockStmt extends Stmt, @stmt_block {
 
   override predicate mayBeGloballyImpure() { this.getAStmt().mayBeGloballyImpure() }
 }
+
+/**
+ * DEPRECATED: This is now called `BlockStmt` to avoid confusion with
+ * `BasicBlock`.
+ */
+deprecated class Block = BlockStmt;

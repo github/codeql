@@ -1,4 +1,0 @@
-| DefUse.cs:63:9:63:14 | this.Field2 | DefUse.cs:80:30:80:31 | access to local variable x1 |
-| Fields.cs:65:24:65:32 | this.LoopField | Fields.cs:63:16:63:28 | this access |
-| Properties.cs:65:24:65:31 | this.LoopProp | Properties.cs:63:16:63:16 | access to parameter i |
-| Test.cs:78:13:78:13 | x | Test.cs:90:9:97:9 | if (...) ... |

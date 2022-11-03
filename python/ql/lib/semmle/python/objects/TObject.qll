@@ -5,7 +5,6 @@ private import semmle.python.types.Builtins
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
-private import semmle.python.internal.CachedStages
 
 /**
  * Internal type backing `ObjectInternal` and `Value`
@@ -151,10 +150,8 @@ newtype TObject =
   TBuiltinTuple(Builtin bltn) { bltn.getClass() = Builtin::special("tuple") } or
   /** Represents a tuple in the Python source */
   TPythonTuple(TupleNode origin, PointsToContext context) {
-    exists(Scope s |
-      context.appliesToScope(s) and
-      scope_loads_tuplenode(s, origin)
-    )
+    origin.isLoad() and
+    context.appliesTo(origin)
   } or
   /** Varargs tuple */
   TVarargsTuple(CallNode call, PointsToContext context, int offset, int length) {
@@ -178,7 +175,7 @@ newtype TObject =
     not count(instantiation.getAnArg()) = 1 and
     Types::getMro(metacls).contains(TType())
   } or
-  /** Represents `sys.version_info`. Acts like a tuple with a range of values depending on the version being analyzed. */
+  /** Represents `sys.version_info`. Acts like a tuple with a range of values depending on the version being analysed. */
   TSysVersionInfo() or
   /** Represents a module that is inferred to perhaps exist, but is not present in the database. */
   TAbsentModule(string name) { missing_imported_module(_, _, name) } or
@@ -203,13 +200,6 @@ newtype TObject =
     index.isNotSubscriptedType() and
     Expressions::subscriptPartsPointsTo(_, _, generic, index)
   }
-
-/** Join-order helper for TPythonTuple */
-pragma[nomagic]
-private predicate scope_loads_tuplenode(Scope s, TupleNode origin) {
-  origin.isLoad() and
-  origin.getScope() = s
-}
 
 /** Holds if the object `t` is a type. */
 predicate isType(ObjectInternal t) {
@@ -243,7 +233,7 @@ predicate class_method(
  * Holds if the literal corresponding to the control flow node `n` has class `cls`.
  *
  * Helper predicate for `literal_instantiation`. Prevents a bad join with
- * `PointsToContext::appliesTo` from occurring.
+ * `PointsToContext::appliesTo` from occuring.
  */
 pragma[nomagic]
 private predicate literal_node_class(ControlFlowNode n, ClassObjectInternal cls) {
@@ -334,7 +324,7 @@ predicate call3(
 }
 
 bindingset[self, function]
-deprecated predicate method_binding(
+predicate method_binding(
   AttrNode instantiation, ObjectInternal self, CallableObjectInternal function,
   PointsToContext context
 ) {
@@ -357,9 +347,7 @@ deprecated predicate method_binding(
 
 /** Helper for method_binding */
 pragma[noinline]
-deprecated predicate receiver(
-  AttrNode instantiation, PointsToContext context, ObjectInternal obj, string name
-) {
+predicate receiver(AttrNode instantiation, PointsToContext context, ObjectInternal obj, string name) {
   PointsToInternal::pointsTo(instantiation.getObject(name), context, obj, _)
 }
 
@@ -456,7 +444,7 @@ predicate common_module_name(string name) { name = ["zope.interface", "six.moves
  * This acts as a helper for ClassObjectInternal allowing some lookup without
  * recursion.
  */
-class ClassDecl extends @py_object {
+library class ClassDecl extends @py_object {
   ClassDecl() {
     this.(Builtin).isClass() and not this = Builtin::unknownType()
     or

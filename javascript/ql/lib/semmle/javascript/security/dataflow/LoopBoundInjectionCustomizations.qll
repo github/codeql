@@ -134,8 +134,10 @@ module LoopBoundInjection {
    * such as `_.filter(sink, ...)`.
    */
   private class LodashIterationSink extends Sink {
+    DataFlow::CallNode call;
+
     LodashIterationSink() {
-      exists(string name, DataFlow::CallNode call |
+      exists(string name |
         loopableLodashMethod(name) and
         call = LodashUnderscore::member(name).getACall() and
         call.getArgument(0) = this and

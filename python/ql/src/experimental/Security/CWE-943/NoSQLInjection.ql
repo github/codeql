@@ -5,15 +5,15 @@
  * @kind path-problem
  * @problem.severity error
  * @id py/nosql-injection
- * @tags security
+ * @tags experimental
+ *       security
  *       external/cwe/cwe-943
  */
 
 import python
 import experimental.semmle.python.security.injection.NoSQLInjection
-import DataFlow::PathGraph
 
-from NoSqlInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink, source, sink, "This NoSQL query contains an unsanitized $@.", source,
+from CustomPathNode source, CustomPathNode sink
+where noSQLInjectionFlow(source, sink)
+select sink, source, sink, "$@ NoSQL query contains an unsanitized $@", sink, "This", source,
   "user-provided value"

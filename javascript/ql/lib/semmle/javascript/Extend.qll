@@ -47,7 +47,12 @@ private DataFlow::SourceNode localDollar() {
  */
 private class ExtendCallWithFlag extends ExtendCall {
   ExtendCallWithFlag() {
-    this = DataFlow::moduleImport(["extend", "extend2", "just-extend", "node.extend"]).getACall()
+    exists(string name | this = DataFlow::moduleImport(name).getACall() |
+      name = "extend" or
+      name = "extend2" or
+      name = "just-extend" or
+      name = "node.extend"
+    )
     or
     this = localDollar().getAMemberCall("extend")
   }
@@ -182,8 +187,6 @@ private class CloneStep extends PreCallGraphStep {
       call = DataFlow::moduleImport(["clone", "fclone", "sort-keys", "camelcase-keys"]).getACall()
       or
       call = DataFlow::moduleMember("json-cycle", ["decycle", "retrocycle"]).getACall()
-      or
-      call = LodashUnderscore::member(["clone", "cloneDeep"]).getACall()
     |
       pred = call.getArgument(0) and
       succ = call

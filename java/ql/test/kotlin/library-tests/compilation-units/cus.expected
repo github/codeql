@@ -1,9 +1,0 @@
-| AbstractList | .../AbstractList.class:0:0:0:0 |
-| AbstractList$RandomAccessSpliterator | .../AbstractList$RandomAccessSpliterator.class:0:0:0:0 |
-| ArrayList | .../ArrayList.class:0:0:0:0 |
-| ArrayList$ArrayListSpliterator | .../ArrayList$ArrayListSpliterator.class:0:0:0:0 |
-| List | .../List.class:0:0:0:0 |
-| ListIterator | .../ListIterator.class:0:0:0:0 |
-| MutableList | .../MutableList.class:0:0:0:0 |
-| MutableListIterator | .../MutableListIterator.class:0:0:0:0 |
-| test | .../test.kt:0:0:0:0 |

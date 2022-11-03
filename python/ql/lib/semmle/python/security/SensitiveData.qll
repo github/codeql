@@ -15,7 +15,7 @@ import semmle.python.web.HttpRequest
 import semmle.python.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
-abstract deprecated class SensitiveData extends TaintKind {
+abstract class SensitiveData extends TaintKind {
   bindingset[this]
   SensitiveData() { this = this }
 
@@ -23,7 +23,7 @@ abstract deprecated class SensitiveData extends TaintKind {
   abstract SensitiveDataClassification getClassification();
 }
 
-deprecated module SensitiveData {
+module SensitiveData {
   class Secret extends SensitiveData {
     Secret() { this = "sensitive.data.secret" }
 
@@ -115,4 +115,4 @@ deprecated module SensitiveData {
 }
 
 //Backwards compatibility
-deprecated class SensitiveDataSource = SensitiveData::Source;
+class SensitiveDataSource = SensitiveData::Source;

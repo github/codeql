@@ -49,6 +49,19 @@ abstract class TranslatedCall extends TranslatedExpr {
     tag = CallTag() and
     opcode instanceof Opcode::Call and
     resultType = getTypeForPRValue(getCallResultType())
+    or
+    hasSideEffect() and
+    tag = CallSideEffectTag() and
+    (
+      if hasWriteSideEffect()
+      then (
+        opcode instanceof Opcode::CallSideEffect and
+        resultType = getUnknownType()
+      ) else (
+        opcode instanceof Opcode::CallReadSideEffect and
+        resultType = getVoidType()
+      )
+    )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -71,8 +84,25 @@ abstract class TranslatedCall extends TranslatedExpr {
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
-    tag = CallTag() and
-    result = getSideEffects().getFirstInstruction()
+    (
+      (
+        tag = CallTag() and
+        if hasSideEffect()
+        then result = getInstruction(CallSideEffectTag())
+        else
+          if hasPreciseSideEffect()
+          then result = getSideEffects().getFirstInstruction()
+          else result = getParent().getChildSuccessor(this)
+      )
+      or
+      (
+        hasSideEffect() and
+        tag = CallSideEffectTag() and
+        if hasPreciseSideEffect()
+        then result = getSideEffects().getFirstInstruction()
+        else result = getParent().getChildSuccessor(this)
+      )
+    )
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -89,6 +119,15 @@ abstract class TranslatedCall extends TranslatedExpr {
         result = getArgument(argTag.getArgIndex()).getResult()
       )
     )
+  }
+
+  final override CppType getInstructionMemoryOperandType(
+    InstructionTag tag, TypedOperandTag operandTag
+  ) {
+    tag = CallSideEffectTag() and
+    hasSideEffect() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getUnknownType()
   }
 
   final override Instruction getResult() { result = getInstruction(CallTag()) }
@@ -161,34 +200,40 @@ abstract class TranslatedCall extends TranslatedExpr {
    */
   abstract predicate hasArguments();
 
+  predicate hasReadSideEffect() { any() }
+
+  predicate hasWriteSideEffect() { any() }
+
+  private predicate hasSideEffect() { hasReadSideEffect() or hasWriteSideEffect() }
+
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    hasSideEffect() and
+    tag = CallSideEffectTag() and
+    result = getResult()
+  }
+
+  predicate hasPreciseSideEffect() { exists(getSideEffects()) }
+
   final TranslatedSideEffects getSideEffects() { result.getExpr() = expr }
 }
 
-/**
- * The IR translation of the side effects of the parent `TranslatedElement`.
- *
- * This object does not itself generate the side effect instructions. Instead, its children provide
- * the actual side effects, with this object acting as a placeholder so the parent only needs to
- * insert this one element at the point where all the side effects are supposed to occur.
- */
 abstract class TranslatedSideEffects extends TranslatedElement {
-  /** Gets the expression whose side effects are being modeled. */
   abstract Expr getExpr();
 
-  final override Locatable getAst() { result = getExpr() }
+  final override Locatable getAST() { result = getExpr() }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  final override Function getFunction() { result = getExpr().getEnclosingFunction() }
 
-  final override Declaration getFunction() { result = getExpr().getEnclosingDeclaration() }
-
-  final override TranslatedElement getChild(int i) {
+  override TranslatedElement getChild(int i) {
     result =
-      rank[i + 1](TranslatedSideEffect tse, int group, int indexInGroup |
-        tse.getPrimaryExpr() = getExpr() and
-        tse.sortOrder(group, indexInGroup)
+      rank[i + 1](TranslatedSideEffect tse, int isWrite, int index |
+        (
+          tse.getCall() = getExpr() and
+          tse.getArgumentIndex() = index and
+          if tse.isWrite() then isWrite = 1 else isWrite = 0
+        )
       |
-        tse order by group, indexInGroup
+        tse order by isWrite, index
       )
   }
 
@@ -201,21 +246,12 @@ abstract class TranslatedSideEffects extends TranslatedElement {
     )
   }
 
-  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
-    none()
+  /**
+   * Gets the `TranslatedFunction` containing this expression.
+   */
+  final TranslatedFunction getEnclosingFunction() {
+    result = getTranslatedFunction(getExpr().getEnclosingFunction())
   }
-
-  final override Instruction getFirstInstruction() {
-    result = getChild(0).getFirstInstruction()
-    or
-    // Some functions, like `std::move()`, have no side effects whatsoever.
-    not exists(getChild(0)) and result = getParent().getChildSuccessor(this)
-  }
-
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
-
-  /** Gets the primary instruction to be associated with each side effect instruction. */
-  abstract Instruction getPrimaryInstruction();
 }
 
 /**
@@ -289,6 +325,14 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
     tag = CallTargetTag() and result = expr.getTarget()
   }
 
+  override predicate hasReadSideEffect() {
+    not expr.getTarget().(SideEffectFunction).hasOnlySpecificReadSideEffects()
+  }
+
+  override predicate hasWriteSideEffect() {
+    not expr.getTarget().(SideEffectFunction).hasOnlySpecificWriteSideEffects()
+  }
+
   override Instruction getQualifierResult() {
     hasQualifier() and
     result = getQualifier().getResult()
@@ -319,124 +363,139 @@ class TranslatedStructorCall extends TranslatedFunctionCall {
   override predicate hasQualifier() { any() }
 }
 
-/**
- * The IR translation of the side effects of a function call, including the implicit allocator
- * call in a `new` or `new[]` expression.
- */
+class TranslatedAllocationSideEffects extends TranslatedSideEffects,
+  TTranslatedAllocationSideEffects {
+  AllocationExpr expr;
+
+  TranslatedAllocationSideEffects() { this = TTranslatedAllocationSideEffects(expr) }
+
+  final override AllocationExpr getExpr() { result = expr }
+
+  override string toString() { result = "(allocation side effects for " + expr.toString() + ")" }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
+    opcode instanceof Opcode::InitializeDynamicAllocation and
+    tag = OnlyInstructionTag() and
+    type = getUnknownType()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind = EdgeKind::gotoEdge() and
+    if exists(getChild(0))
+    then result = getChild(0).getFirstInstruction()
+    else result = getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = addressOperand() and
+    result = getPrimaryInstructionForSideEffect(OnlyInstructionTag())
+  }
+
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    if expr instanceof NewOrNewArrayExpr
+    then result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
+    else result = getTranslatedCallInstruction(expr)
+  }
+}
+
 class TranslatedCallSideEffects extends TranslatedSideEffects, TTranslatedCallSideEffects {
-  Expr expr;
+  Call expr;
 
   TranslatedCallSideEffects() { this = TTranslatedCallSideEffects(expr) }
 
-  final override string toString() { result = "(side effects  for " + expr.toString() + ")" }
+  override string toString() { result = "(side effects  for " + expr.toString() + ")" }
 
-  final override Expr getExpr() { result = expr }
+  override Call getExpr() { result = expr }
 
-  final override Instruction getPrimaryInstruction() {
-    expr instanceof Call and result = getTranslatedCallInstruction(expr)
-    or
-    expr instanceof NewOrNewArrayExpr and
-    result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
-  }
-}
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) { none() }
 
-/** Returns the sort group index for argument read side effects. */
-private int argumentReadGroup() { result = 1 }
+  override Instruction getFirstInstruction() { result = getChild(0).getFirstInstruction() }
 
-/** Returns the sort group index for conservative call side effects. */
-private int callSideEffectGroup() {
-  result = 0 // Make this group first for now to preserve the existing ordering
-}
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-/** Returns the sort group index for argument write side effects. */
-private int argumentWriteGroup() { result = 2 }
-
-/** Returns the sort group index for dynamic allocation side effects. */
-private int initializeAllocationGroup() { result = 3 }
-
-/**
- * The IR translation of a single side effect of a call.
- */
-abstract class TranslatedSideEffect extends TranslatedElement {
-  final override TranslatedElement getChild(int n) { none() }
-
-  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
-
-  final override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
-
-  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    sideEffectInstruction(opcode, type)
+    result = getTranslatedCallInstruction(expr)
+  }
+}
+
+class TranslatedStructorCallSideEffects extends TranslatedCallSideEffects {
+  TranslatedStructorCallSideEffects() {
+    getParent().(TranslatedStructorCall).hasQualifier() and
+    getASideEffectOpcode(expr, -1) instanceof WriteSideEffectOpcode
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    result = getParent().getChildSuccessor(this) and
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType t) {
+    tag instanceof OnlyInstructionTag and
+    t = getTypeForPRValue(expr.getTarget().getDeclaringType()) and
+    opcode = getASideEffectOpcode(expr, -1).(WriteSideEffectOpcode)
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    (
+      if exists(getChild(0))
+      then result = getChild(0).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    ) and
     tag = OnlyInstructionTag() and
     kind instanceof GotoEdge
   }
 
-  final override Declaration getFunction() { result = getParent().getFunction() }
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
-  final override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
-    tag = OnlyInstructionTag() and
-    result = getParent().(TranslatedSideEffects).getPrimaryInstruction()
-  }
-
-  /**
-   * Gets the expression that caused this side effect.
-   *
-   * All side effects with the same `getPrimaryExpr()` will appear in the same contiguous sequence
-   * in the IR.
-   */
-  abstract Expr getPrimaryExpr();
-
-  /**
-   * Gets the order in which this side effect should be sorted with respect to other side effects
-   * for the same expression.
-   *
-   * Side effects are sorted first by `group`, and then by `indexInGroup`.
-   */
-  abstract predicate sortOrder(int group, int indexInGroup);
-
-  /**
-   * Gets the opcode and result type for the side effect instruction.
-   */
-  abstract predicate sideEffectInstruction(Opcode opcode, CppType type);
-}
-
-/**
- * The IR translation of a single argument side effect for a call.
- */
-abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
-  Call call;
-  int index;
-  SideEffectOpcode sideEffectOpcode;
-
-  // All subclass charpreds must bind the `index` field.
-  bindingset[index]
-  TranslatedArgumentSideEffect() { any() }
-
-  override string toString() {
-    isWrite() and
-    result = "(write side effect for " + getArgString() + ")"
-    or
-    not isWrite() and
-    result = "(read side effect for " + getArgString() + ")"
-  }
-
-  override Call getPrimaryExpr() { result = call }
-
-  override predicate sortOrder(int group, int indexInGroup) {
-    indexInGroup = index and
-    if isWrite() then group = argumentWriteGroup() else group = argumentReadGroup()
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof AddressOperandTag and
+    result = getParent().(TranslatedStructorCall).getQualifierResult()
   }
 
   final override int getInstructionIndex(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = index
+    result = -1
+  }
+}
+
+class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEffect {
+  Call call;
+  Expr arg;
+  int index;
+  SideEffectOpcode sideEffectOpcode;
+
+  TranslatedSideEffect() {
+    this = TTranslatedArgumentSideEffect(call, arg, index, sideEffectOpcode)
   }
 
-  final override predicate sideEffectInstruction(Opcode opcode, CppType type) {
+  override Locatable getAST() { result = arg }
+
+  Expr getExpr() { result = arg }
+
+  Call getCall() { result = call }
+
+  int getArgumentIndex() { result = index }
+
+  predicate isWrite() { sideEffectOpcode instanceof WriteSideEffectOpcode }
+
+  override string toString() {
+    isWrite() and
+    result = "(write side effect for " + arg.toString() + ")"
+    or
+    not isWrite() and
+    result = "(read side effect for " + arg.toString() + ")"
+  }
+
+  override TranslatedElement getChild(int n) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
+    tag = OnlyInstructionTag() and
     opcode = sideEffectOpcode and
     (
       isWrite() and
@@ -445,11 +504,15 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
         type = getUnknownType()
         or
         not opcode instanceof BufferAccessOpcode and
-        exists(Type indirectionType | indirectionType = getIndirectionType() |
-          if indirectionType instanceof VoidType
+        exists(Type baseType | baseType = arg.getUnspecifiedType().(DerivedType).getBaseType() |
+          if baseType instanceof VoidType
           then type = getUnknownType()
-          else type = getTypeForPRValueOrUnknown(indirectionType)
+          else type = getTypeForPRValueOrUnknown(baseType)
         )
+        or
+        index = -1 and
+        not arg.getUnspecifiedType() instanceof DerivedType and
+        type = getTypeForPRValueOrUnknown(arg.getUnspecifiedType())
       )
       or
       not isWrite() and
@@ -457,31 +520,16 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
     )
   }
 
-  final override CppType getInstructionMemoryOperandType(
-    InstructionTag tag, TypedOperandTag operandTag
-  ) {
-    not isWrite() and
-    if sideEffectOpcode instanceof BufferAccessOpcode
-    then
-      result = getUnknownType() and
-      tag instanceof OnlyInstructionTag and
-      operandTag instanceof SideEffectOperandTag
-    else
-      exists(Type operandType |
-        tag instanceof OnlyInstructionTag and
-        operandType = getIndirectionType() and
-        operandTag instanceof SideEffectOperandTag
-      |
-        // If the type we select is an incomplete type (e.g. a forward-declared `struct`), there will
-        // not be a `CppType` that represents that type. In that case, fall back to `UnknownCppType`.
-        result = getTypeForPRValueOrUnknown(operandType)
-      )
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    result = getParent().getChildSuccessor(this) and
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge
   }
 
-  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag instanceof OnlyInstructionTag and
     operandTag instanceof AddressOperandTag and
-    result = getArgInstruction()
+    result = getTranslatedExpr(arg).getResult()
     or
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
@@ -491,153 +539,49 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
               .getParameterSizeIndex(index)).getFullyConverted()).getResult()
   }
 
-  /** Holds if this side effect is a write side effect, rather than a read side effect. */
-  final predicate isWrite() { sideEffectOpcode instanceof WriteSideEffectOpcode }
-
-  /** Gets a text representation of the argument. */
-  abstract string getArgString();
-
-  /** Gets the `Instruction` whose result is the value of the argument. */
-  abstract Instruction getArgInstruction();
-
-  /** Gets the type pointed to by the argument. */
-  abstract Type getIndirectionType();
-}
-
-/**
- * The IR translation of an argument side effect where the argument has an `Expr` object in the AST.
- *
- * This generally applies to all positional arguments, as well as qualifier (`this`) arguments for
- * calls other than constructor calls.
- */
-class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
-  TTranslatedArgumentExprSideEffect {
-  Expr arg;
-
-  TranslatedArgumentExprSideEffect() {
-    this = TTranslatedArgumentExprSideEffect(call, arg, index, sideEffectOpcode)
-  }
-
-  final override Locatable getAst() { result = arg }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
-
-  final override Type getIndirectionType() {
-    result = arg.getUnspecifiedType().(DerivedType).getBaseType()
-    or
-    // Sometimes the qualifier type gets the type of the class itself, rather than a pointer to the
-    // class.
-    index = -1 and
-    not arg.getUnspecifiedType() instanceof DerivedType and
-    result = arg.getUnspecifiedType()
-  }
-
-  final override string getArgString() { result = arg.toString() }
-
-  final override Instruction getArgInstruction() { result = getTranslatedExpr(arg).getResult() }
-}
-
-/**
- * The IR translation of an argument side effect for `*this` on a call, where there is no `Expr`
- * object that represents the `this` argument.
- *
- * The applies only to constructor calls, as the AST has exploit qualifier `Expr`s for all other
- * calls to non-static member functions.
- */
-class TranslatedStructorQualifierSideEffect extends TranslatedArgumentSideEffect,
-  TTranslatedStructorQualifierSideEffect {
-  TranslatedStructorQualifierSideEffect() {
-    this = TTranslatedStructorQualifierSideEffect(call, sideEffectOpcode) and
-    index = -1
-  }
-
-  final override Locatable getAst() { result = call }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
-
-  final override Type getIndirectionType() { result = call.getTarget().getDeclaringType() }
-
-  final override string getArgString() { result = "this" }
-
-  final override Instruction getArgInstruction() {
-    exists(TranslatedStructorCall structorCall |
-      structorCall.getExpr() = call and
-      result = structorCall.getQualifierResult()
-    )
-  }
-}
-
-/** The IR translation of the non-argument-specific side effect of a call. */
-class TranslatedCallSideEffect extends TranslatedSideEffect, TTranslatedCallSideEffect {
-  Expr expr;
-  SideEffectOpcode sideEffectOpcode;
-
-  TranslatedCallSideEffect() { this = TTranslatedCallSideEffect(expr, sideEffectOpcode) }
-
-  override Locatable getAst() { result = expr }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
-
-  override Expr getPrimaryExpr() { result = expr }
-
-  override predicate sortOrder(int group, int indexInGroup) {
-    group = callSideEffectGroup() and indexInGroup = 0
-  }
-
-  override string toString() { result = "(call side effect for '" + expr.toString() + "')" }
-
-  override predicate sideEffectInstruction(Opcode opcode, CppType type) {
-    opcode = sideEffectOpcode and
-    (
-      opcode instanceof Opcode::CallSideEffect and
-      type = getUnknownType()
-      or
-      opcode instanceof Opcode::CallReadSideEffect and
-      type = getVoidType()
-    )
-  }
-
   override CppType getInstructionMemoryOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    tag instanceof OnlyInstructionTag and
-    operandTag instanceof SideEffectOperandTag and
-    result = getUnknownType()
-  }
-}
-
-/**
- * The IR translation of the allocation side effect of a call to a memory allocation function.
- *
- * This side effect provides a definition for the newly-allocated memory.
- */
-class TranslatedAllocationSideEffect extends TranslatedSideEffect, TTranslatedAllocationSideEffect {
-  AllocationExpr expr;
-
-  TranslatedAllocationSideEffect() { this = TTranslatedAllocationSideEffect(expr) }
-
-  override Locatable getAst() { result = expr }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
-
-  override Expr getPrimaryExpr() { result = expr }
-
-  override predicate sortOrder(int group, int indexInGroup) {
-    group = initializeAllocationGroup() and indexInGroup = 0
+    not isWrite() and
+    if sideEffectOpcode instanceof BufferAccessOpcode
+    then
+      result = getUnknownType() and
+      tag instanceof OnlyInstructionTag and
+      operandTag instanceof SideEffectOperandTag
+    else
+      exists(Type operandType |
+        tag instanceof OnlyInstructionTag and
+        operandType = arg.getType().getUnspecifiedType().(DerivedType).getBaseType() and
+        operandTag instanceof SideEffectOperandTag
+        or
+        tag instanceof OnlyInstructionTag and
+        operandType = arg.getType().getUnspecifiedType() and
+        not operandType instanceof DerivedType and
+        operandTag instanceof SideEffectOperandTag
+      |
+        // If the type we select is an incomplete type (e.g. a forward-declared `struct`), there will
+        // not be a `CppType` that represents that type. In that case, fall back to `UnknownCppType`.
+        result = getTypeForPRValueOrUnknown(operandType)
+      )
   }
 
-  override string toString() { result = "(allocation side effect for '" + expr.toString() + "')" }
-
-  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    operandTag = addressOperand() and
-    result = getPrimaryInstructionForSideEffect(OnlyInstructionTag())
+    result = getTranslatedCallInstruction(call)
   }
 
-  override predicate sideEffectInstruction(Opcode opcode, CppType type) {
-    opcode instanceof Opcode::InitializeDynamicAllocation and
-    type = getUnknownType()
+  final override int getInstructionIndex(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = index
   }
+
+  /**
+   * Gets the `TranslatedFunction` containing this expression.
+   */
+  final TranslatedFunction getEnclosingFunction() {
+    result = getTranslatedFunction(arg.getEnclosingFunction())
+  }
+
+  /**
+   * Gets the `Function` containing this expression.
+   */
+  override Function getFunction() { result = arg.getEnclosingFunction() }
 }

@@ -17,5 +17,4 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, JexlInjectionConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "JEXL expression depends on a $@.", source.getNode(),
-  "user-provided value"
+select sink.getNode(), source, sink, "JEXL injection from $@.", source.getNode(), "this user input"

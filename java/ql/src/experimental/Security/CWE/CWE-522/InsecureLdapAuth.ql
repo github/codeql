@@ -23,7 +23,7 @@ import DataFlow::PathGraph
 class InsecureLdapUrlLiteral extends StringLiteral {
   InsecureLdapUrlLiteral() {
     // Match connection strings with the LDAP protocol and without private IP addresses to reduce false positives.
-    exists(string s | this.getValue() = s |
+    exists(string s | this.getRepresentedString() = s |
       s.regexpMatch("(?i)ldap://[\\[a-zA-Z0-9].*") and
       not s.substring(7, s.length()) instanceof PrivateHostName
     )
@@ -125,7 +125,7 @@ predicate isBasicAuthEnv(MethodAccess ma) {
 /**
  * Holds if `ma` sets `java.naming.security.protocol` (also known as `Context.SECURITY_PROTOCOL`) to `ssl` in some `Hashtable`.
  */
-predicate isSslEnv(MethodAccess ma) {
+predicate isSSLEnv(MethodAccess ma) {
   hasFieldValueEnv(ma, "java.naming.security.protocol", "ssl") or
   hasFieldNameEnv(ma, "SECURITY_PROTOCOL", "ssl")
 }
@@ -142,7 +142,7 @@ class InsecureUrlFlowConfig extends TaintTracking::Configuration {
   /** Sink of directory context creation. */
   override predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
-      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
+      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
       sink.asExpr() = cc.getArgument(0)
     )
   }
@@ -173,7 +173,7 @@ class BasicAuthFlowConfig extends DataFlow::Configuration {
   /** Sink of directory context creation. */
   override predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
-      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
+      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
       sink.asExpr() = cc.getArgument(0)
     )
   }
@@ -182,20 +182,20 @@ class BasicAuthFlowConfig extends DataFlow::Configuration {
 /**
  * A taint-tracking configuration for `ssl` configuration in LDAP authentication.
  */
-class SslFlowConfig extends DataFlow::Configuration {
-  SslFlowConfig() { this = "InsecureLdapAuth:SSLFlowConfig" }
+class SSLFlowConfig extends DataFlow::Configuration {
+  SSLFlowConfig() { this = "InsecureLdapAuth:SSLFlowConfig" }
 
   /** Source of `ssl` configuration. */
   override predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
-      isSslEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
+      isSSLEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
   /** Sink of directory context creation. */
   override predicate isSink(DataFlow::Node sink) {
     exists(ConstructorCall cc |
-      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
+      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
       sink.asExpr() = cc.getArgument(0)
     )
   }
@@ -205,6 +205,6 @@ from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureUrlFlowConfig c
 where
   config.hasFlowPath(source, sink) and
   exists(BasicAuthFlowConfig bc | bc.hasFlowTo(sink.getNode())) and
-  not exists(SslFlowConfig sc | sc.hasFlowTo(sink.getNode()))
+  not exists(SSLFlowConfig sc | sc.hasFlowTo(sink.getNode()))
 select sink.getNode(), source, sink, "Insecure LDAP authentication from $@.", source.getNode(),
   "LDAP connection string"

@@ -26,24 +26,38 @@ module ServerSideUrlRedirect {
   /** A source of third-party user input, considered as a flow source for URL redirects. */
   class ThirdPartyRequestInputAccessAsSource extends Source {
     ThirdPartyRequestInputAccessAsSource() {
-      this.(Http::RequestInputAccess).isThirdPartyControllable()
+      this.(HTTP::RequestInputAccess).isThirdPartyControllable()
     }
   }
 
   /**
    * An HTTP redirect, considered as a sink for `Configuration`.
    */
-  class RedirectSink extends Sink {
-    RedirectSink() { this = any(Http::RedirectInvocation redir).getUrlArgument() }
+  class RedirectSink extends Sink, DataFlow::ValueNode {
+    RedirectSink() { astNode = any(HTTP::RedirectInvocation redir).getUrlArgument() }
   }
 
   /**
    * A definition of the HTTP "Location" header, considered as a sink for
    * `Configuration`.
    */
-  class LocationHeaderSink extends Sink {
+  class LocationHeaderSink extends Sink, DataFlow::ValueNode {
     LocationHeaderSink() {
-      any(Http::ExplicitHeaderDefinition def).definesHeaderValue("location", this)
+      any(HTTP::ExplicitHeaderDefinition def).definesExplicitly("location", astNode)
+    }
+  }
+
+  /**
+   * A call to a function called `isLocalUrl` or similar, which is
+   * considered to sanitize a variable for purposes of URL redirection.
+   */
+  class LocalUrlSanitizingGuard extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+    LocalUrlSanitizingGuard() { this.getCalleeName().regexpMatch("(?i)(is_?)?local_?url") }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      // `isLocalUrl(e)` sanitizes `e` if it evaluates to `true`
+      getAnArgument().asExpr() = e and
+      outcome = true
     }
   }
 

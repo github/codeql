@@ -7,82 +7,35 @@
  * @problem.severity error
  * @security-severity 6.1
  * @precision high
- * @id java/netty-http-request-or-response-splitting
+ * @id java/netty-http-response-splitting
  * @tags security
- *       external/cwe/cwe-93
  *       external/cwe/cwe-113
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
 
-abstract private class InsecureNettyObjectCreation extends ClassInstanceExpr {
-  int vulnerableArgumentIndex;
+abstract private class InsecureNettyObjectCreation extends ClassInstanceExpr { }
 
-  InsecureNettyObjectCreation() {
-    DataFlow::localExprFlow(any(CompileTimeConstantExpr ctce | ctce.getBooleanValue() = false),
-      this.getArgument(vulnerableArgumentIndex))
-  }
-
-  abstract string splittingType();
-}
-
-abstract private class RequestOrResponseSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation {
-  override string splittingType() { result = "Request splitting or response splitting" }
-}
-
-/**
- * Request splitting can allowing an attacker to inject/smuggle an additional HTTP request into the socket connection.
- */
-abstract private class RequestSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation {
-  override string splittingType() { result = "Request splitting" }
-}
-
-/**
- * Response splitting can lead to HTTP vulnerabilities like XSS and cache poisoning.
- */
-abstract private class ResponseSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation {
-  override string splittingType() { result = "Response splitting" }
-}
-
-private class InsecureDefaultHttpHeadersClassInstantiation extends RequestOrResponseSplittingInsecureNettyObjectCreation {
+private class InsecureDefaultHttpHeadersClassInstantiation extends InsecureNettyObjectCreation {
   InsecureDefaultHttpHeadersClassInstantiation() {
-    this.getConstructedType()
-        .hasQualifiedName("io.netty.handler.codec.http",
-          ["DefaultHttpHeaders", "CombinedHttpHeaders"]) and
-    vulnerableArgumentIndex = 0
+    getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpHeaders") and
+    getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false
   }
 }
 
-private class InsecureDefaultHttpResponseClassInstantiation extends ResponseSplittingInsecureNettyObjectCreation {
+private class InsecureDefaultHttpResponseClassInstantiation extends InsecureNettyObjectCreation {
   InsecureDefaultHttpResponseClassInstantiation() {
-    this.getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpResponse") and
-    vulnerableArgumentIndex = 2
+    getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpResponse") and
+    getArgument(2).(CompileTimeConstantExpr).getBooleanValue() = false
   }
 }
 
-private class InsecureDefaultHttpRequestClassInstantiation extends RequestSplittingInsecureNettyObjectCreation {
-  InsecureDefaultHttpRequestClassInstantiation() {
-    this.getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpRequest") and
-    vulnerableArgumentIndex = 3
-  }
-}
-
-private class InsecureDefaultFullHttpResponseClassInstantiation extends ResponseSplittingInsecureNettyObjectCreation {
+private class InsecureDefaultFullHttpResponseClassInstantiation extends InsecureNettyObjectCreation {
   InsecureDefaultFullHttpResponseClassInstantiation() {
-    this.getConstructedType()
-        .hasQualifiedName("io.netty.handler.codec.http", "DefaultFullHttpResponse") and
-    vulnerableArgumentIndex = [2, 3]
-  }
-}
-
-private class InsecureDefaultFullHttpRequestClassInstantiation extends RequestSplittingInsecureNettyObjectCreation {
-  InsecureDefaultFullHttpRequestClassInstantiation() {
-    this.getConstructedType()
-        .hasQualifiedName("io.netty.handler.codec.http", "DefaultFullHttpRequest") and
-    vulnerableArgumentIndex = [3, 4]
+    getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultFullHttpResponse") and
+    getArgument(3).(CompileTimeConstantExpr).getBooleanValue() = false
   }
 }
 
 from InsecureNettyObjectCreation new
-select new, new.splittingType() + " vulnerability due to header value verification being disabled."
+select new, "Response-splitting vulnerability due to header value verification being disabled."

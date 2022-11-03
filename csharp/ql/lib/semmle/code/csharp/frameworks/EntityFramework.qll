@@ -1,5 +1,5 @@
 /**
- * Classes modeling EntityFramework and EntityFrameworkCore.
+ * Classes modelling EntityFramework and EntityFrameworkCore.
  */
 
 import csharp
@@ -88,16 +88,17 @@ module EntityFramework {
   }
 
   /** A flow summary for EntityFramework. */
-  abstract class EFSummarizedCallable extends SummarizedCallable {
-    bindingset[this]
-    EFSummarizedCallable() { any() }
-  }
+  abstract class EFSummarizedCallable extends SummarizedCallable { }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-      head = SummaryComponent::element() and
-      tail = SummaryComponentStack::argument([-1, 0])
+    private SummaryComponent head;
+
+    DbSetAddOrUpdateRequiredSummaryComponentStack() {
+      this = SummaryComponentStack::argument([-1, 0]) and
+      head = SummaryComponent::element()
     }
+
+    override predicate required(SummaryComponent c) { c = head }
   }
 
   private class DbSetAddOrUpdate extends EFSummarizedCallable {
@@ -113,7 +114,7 @@ module EntityFramework {
         then input = SummaryComponentStack::elementOf(SummaryComponentStack::argument(0))
         else input = SummaryComponentStack::argument(0)
       ) and
-      output = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
+      output = SummaryComponentStack::elementOf(SummaryComponentStack::argument(-1)) and
       preservesValue = true
     }
   }
@@ -173,34 +174,32 @@ module EntityFramework {
     }
   }
 
-  private class RawSqlStringConstructorSummarizedCallable extends EFSummarizedCallable {
-    RawSqlStringConstructorSummarizedCallable() {
+  private class RawSqlStringSummarizedCallable extends EFSummarizedCallable {
+    private SummaryComponentStack input_;
+    private SummaryComponentStack output_;
+    private boolean preservesValue_;
+
+    RawSqlStringSummarizedCallable() {
       exists(RawSqlStringStruct s |
         this = s.getAConstructor() and
-        this.getNumberOfParameters() > 0
+        input_ = SummaryComponentStack::argument(0) and
+        this.getNumberOfParameters() > 0 and
+        output_ = SummaryComponentStack::return() and
+        preservesValue_ = false
+        or
+        this = s.getAConversionTo() and
+        input_ = SummaryComponentStack::argument(0) and
+        output_ = SummaryComponentStack::return() and
+        preservesValue_ = false
       )
     }
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      input = SummaryComponentStack::argument(0) and
-      output = SummaryComponentStack::return() and
-      preservesValue = false
-    }
-  }
-
-  private class RawSqlStringConversionSummarizedCallable extends EFSummarizedCallable {
-    RawSqlStringConversionSummarizedCallable() {
-      exists(RawSqlStringStruct s | this = s.getAConversionTo())
-    }
-
-    override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-    ) {
-      input = SummaryComponentStack::argument(0) and
-      output = SummaryComponentStack::return() and
-      preservesValue = false
+      input = input_ and
+      output = output_ and
+      preservesValue = preservesValue_
     }
   }
 
@@ -240,7 +239,7 @@ module EntityFramework {
   private class SystemDataEntityDbSetSqlQuerySinkModelCsv extends SinkModelCsv {
     override predicate row(string row) {
       row =
-        "System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql;manual"
+        "System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql"
     }
   }
 
@@ -249,38 +248,14 @@ module EntityFramework {
     override predicate row(string row) {
       row =
         [
-          "System.Data.Entity;Database;false;SqlQuery;(System.Type,System.String,System.Object[]);;Argument[1];sql;manual",
-          "System.Data.Entity;Database;false;SqlQuery<>;(System.String,System.Object[]);;Argument[0];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.String,System.Object[]);;Argument[0];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[]);;Argument[1];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Threading.CancellationToken,System.Object[]);;Argument[0];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Object[]);;Argument[0];sql;manual",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql;manual"
-        ]
-    }
-  }
-
-  /** A sink method in `Microsoft.EntityFrameworkCore.RelationalQueryableExtensions` that executes SQL. */
-  private class MicrosoftEntityFrameworkCoreRelationalQueryableExtensionsSinkModelCsv extends SinkModelCsv {
-    override predicate row(string row) {
-      row =
-        [
-          "Microsoft.EntityFrameworkCore;RelationalQueryableExtensions;false;FromSqlRaw<>;(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[]);;Argument[1];sql;manual",
-        ]
-    }
-  }
-
-  /** A sink method in `Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions` that executes SQL. */
-  private class MicrosoftEntityFrameworkCoreRelationalDatabaseFacadeExtensionsSinkModelCsv extends SinkModelCsv {
-    override predicate row(string row) {
-      row =
-        [
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>);;Argument[1];sql;manual",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql;manual",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken);;Argument[1];sql;manual",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql;manual",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Argument[1];sql;manual",
+          "System.Data.Entity;Database;false;SqlQuery;(System.Type,System.String,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;SqlQuery<>;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Threading.CancellationToken,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql"
         ]
     }
   }
@@ -485,12 +460,14 @@ module EntityFramework {
   }
 
   private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-      exists(Content c | head = SummaryComponent::content(c) |
-        any(DbContextClass cls).requiresComponentStackIn(c, _, tail, _)
-        or
-        any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _)
-      )
+    private Content head;
+
+    DbContextSaveChangesRequiredSummaryComponentStack() {
+      any(DbContextClass c).requiresComponentStackIn(head, _, this, _)
+      or
+      any(DbContextClass c).requiresComponentStackOut(head, _, this, _)
     }
+
+    override predicate required(SummaryComponent c) { c = SummaryComponent::content(head) }
   }
 }

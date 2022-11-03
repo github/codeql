@@ -19,12 +19,12 @@ import semmle.code.csharp.frameworks.system.Web
 
 // the query is a subset of `cs/web/cookie-secure-not-set` and
 // should be removed once it is promoted from experimental
-from XmlElement element
+from XMLElement element
 where
   element instanceof FormsElement and
-  not element.(FormsElement).isRequireSsl()
+  not element.(FormsElement).isRequireSSL()
   or
   element instanceof HttpCookiesElement and
-  not element.(HttpCookiesElement).isRequireSsl() and
+  not element.(HttpCookiesElement).isRequireSSL() and
   not any(SystemWebHttpCookie c).getSecureProperty().getAnAssignedValue().getValue() = "true"
 select element, "The 'requireSSL' attribute is not set to 'true'."

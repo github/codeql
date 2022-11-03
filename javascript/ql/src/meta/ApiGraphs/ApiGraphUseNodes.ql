@@ -11,4 +11,4 @@
 import javascript
 import meta.MetaMetrics
 
-select projectRoot(), count(any(API::Node nd).getAValueReachableFromSource())
+select projectRoot(), count(any(API::Node nd).getAUse())

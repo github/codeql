@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteClosable;
 
 abstract public class SQLiteProgram extends SQLiteClosable
 {
+    protected SQLiteProgram() {}
     protected void onAllReferencesReleased(){}
     public final int getUniqueId(){ return 0; }
     public void bindAllArgsAsStrings(String[] p0){}

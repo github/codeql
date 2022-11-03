@@ -15,7 +15,6 @@ private import semmle.code.java.dataflow.internal.DataFlowUtil
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.dataflow.InstanceAccess
-private import semmle.code.java.dispatch.internal.Unification
 
 /**
  * Gets a viable dispatch target for `ma`. This is the input dispatch relation.
@@ -34,8 +33,8 @@ private Callable dispatchCand(Call c) {
  */
 pragma[nomagic]
 private predicate viableParam(Call call, int i, ParameterNode p) {
-  exists(DataFlowCallable callable |
-    callable.asCallable() = dispatchCand(call) and
+  exists(Callable callable |
+    callable = dispatchCand(call) and
     p.isParameterOf(callable, i)
   )
 }
@@ -54,7 +53,7 @@ private predicate returnStep(Node n1, Node n2) {
   exists(ReturnStmt ret, Method m |
     ret.getEnclosingCallable() = m and
     ret.getResult() = n1.asExpr() and
-    pragma[only_bind_out](m) = dispatchCand(n2.asExpr())
+    m = dispatchCand(n2.asExpr())
   )
 }
 
@@ -95,11 +94,12 @@ private predicate step(Node n1, Node n2) {
     n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
   )
   or
-  n2.(FieldValueNode).getField().getAnAssignedValue() = n1.asExpr()
+  exists(Field f |
+    f.getAnAssignedValue() = n1.asExpr() and
+    n2.asExpr().(FieldRead).getField() = f
+  )
   or
-  n2.asExpr().(FieldRead).getField() = n1.(FieldValueNode).getField()
-  or
-  n2.asExpr().(CastingExpr).getExpr() = n1.asExpr()
+  n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
   or
   n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or
@@ -132,7 +132,7 @@ private predicate step(Node n1, Node n2) {
   or
   exists(Field v |
     containerStep(n1.asExpr(), v.getAnAccess()) and
-    n2.(FieldValueNode).getField() = v
+    n2.asExpr() = v.getAnAccess()
   )
 }
 
@@ -267,10 +267,67 @@ Method viableImpl_out(MethodAccess ma) {
   )
 }
 
-private predicate unificationTargetLeft(ParameterizedType t1) { objectToStringQualType(_, t1) }
+private module Unification {
+  pragma[noinline]
+  private predicate unificationTargetLeft(ParameterizedType t1, GenericType g) {
+    objectToStringQualType(_, t1) and t1.getGenericType() = g
+  }
 
-private predicate unificationTargetRight(ParameterizedType t2) {
-  exists(viableMethodImpl(_, _, t2))
+  pragma[noinline]
+  private predicate unificationTargetRight(ParameterizedType t2, GenericType g) {
+    exists(viableMethodImpl(_, _, t2)) and t2.getGenericType() = g
+  }
+
+  private predicate unificationTargets(Type t1, Type t2) {
+    exists(GenericType g | unificationTargetLeft(t1, g) and unificationTargetRight(t2, g))
+    or
+    exists(Array a1, Array a2 |
+      unificationTargets(a1, a2) and
+      t1 = a1.getComponentType() and
+      t2 = a2.getComponentType()
+    )
+    or
+    exists(ParameterizedType pt1, ParameterizedType pt2, int pos |
+      unificationTargets(pt1, pt2) and
+      not pt1.getSourceDeclaration() != pt2.getSourceDeclaration() and
+      t1 = pt1.getTypeArgument(pos) and
+      t2 = pt2.getTypeArgument(pos)
+    )
+  }
+
+  pragma[noinline]
+  private predicate typeArgsOfUnificationTargets(
+    ParameterizedType t1, ParameterizedType t2, int pos, RefType arg1, RefType arg2
+  ) {
+    unificationTargets(t1, t2) and
+    arg1 = t1.getTypeArgument(pos) and
+    arg2 = t2.getTypeArgument(pos)
+  }
+
+  pragma[nomagic]
+  predicate failsUnification(Type t1, Type t2) {
+    unificationTargets(t1, t2) and
+    (
+      exists(RefType arg1, RefType arg2 |
+        typeArgsOfUnificationTargets(t1, t2, _, arg1, arg2) and
+        failsUnification(arg1, arg2)
+      )
+      or
+      failsUnification(t1.(Array).getComponentType(), t2.(Array).getComponentType())
+      or
+      not (
+        t1 instanceof Array and t2 instanceof Array
+        or
+        t1.(PrimitiveType) = t2.(PrimitiveType)
+        or
+        t1.(Class).getSourceDeclaration() = t2.(Class).getSourceDeclaration()
+        or
+        t1.(Interface).getSourceDeclaration() = t2.(Interface).getSourceDeclaration()
+        or
+        t1 instanceof BoundedType and t2 instanceof RefType
+        or
+        t1 instanceof RefType and t2 instanceof BoundedType
+      )
+    )
+  }
 }
-
-private module Unification = MkUnification<unificationTargetLeft/1, unificationTargetRight/1>;

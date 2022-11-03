@@ -17,7 +17,7 @@ private import semmle.code.cpp.ir.IR
  */
 Function resolveCall(Call call) {
   exists(CallInstruction callInstruction |
-    callInstruction.getAst() = call and
+    callInstruction.getAST() = call and
     result = viableCallable(callInstruction)
   )
 }

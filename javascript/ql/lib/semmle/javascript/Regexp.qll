@@ -7,7 +7,6 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
-private import semmle.javascript.internal.CachedStages
 
 /**
  * An element containing a regular expression term, that is, either
@@ -49,13 +48,13 @@ class RegExpTerm extends Locatable, @regexpterm {
   RegExpTerm getChild(int i) { regexpterm(result, _, this, i, _) }
 
   /** Gets a child term of this term. */
-  RegExpTerm getAChild() { result = this.getChild(_) }
+  RegExpTerm getAChild() { result = getChild(_) }
 
   /** Gets the number of child terms of this term. */
-  int getNumChild() { result = count(this.getAChild()) }
+  int getNumChild() { result = count(getAChild()) }
 
   /** Gets the last child term of this term. */
-  RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
+  RegExpTerm getLastChild() { result = getChild(getNumChild() - 1) }
 
   /**
    * Gets the parent term of this regular expression term, or the
@@ -64,7 +63,7 @@ class RegExpTerm extends Locatable, @regexpterm {
   RegExpParent getParent() { regexpterm(this, _, result, _, _) }
 
   /** Gets the regular expression literal this term belongs to, if any. */
-  RegExpLiteral getLiteral() { result = this.getRootTerm().getParent() }
+  RegExpLiteral getLiteral() { result = getRootTerm().getParent() }
 
   override string toString() { regexpterm(this, _, _, _, result) }
 
@@ -76,7 +75,7 @@ class RegExpTerm extends Locatable, @regexpterm {
 
   /** Gets the regular expression term that is matched (textually) before this one, if any. */
   RegExpTerm getPredecessor() {
-    exists(RegExpTerm parent | parent = this.getParent() |
+    exists(RegExpTerm parent | parent = getParent() |
       result = parent.(RegExpSequence).previousElement(this)
       or
       not exists(parent.(RegExpSequence).previousElement(this)) and
@@ -87,7 +86,7 @@ class RegExpTerm extends Locatable, @regexpterm {
 
   /** Gets the regular expression term that is matched (textually) after this one, if any. */
   RegExpTerm getSuccessor() {
-    exists(RegExpTerm parent | parent = this.getParent() |
+    exists(RegExpTerm parent | parent = getParent() |
       result = parent.(RegExpSequence).nextElement(this)
       or
       not exists(parent.(RegExpSequence).nextElement(this)) and
@@ -100,7 +99,7 @@ class RegExpTerm extends Locatable, @regexpterm {
    * Holds if this regular term is in a forward-matching context, that is,
    * it has no enclosing lookbehind assertions.
    */
-  predicate isInForwardMatchingContext() { not this.isInBackwardMatchingContext() }
+  predicate isInForwardMatchingContext() { not isInBackwardMatchingContext() }
 
   /**
    * Holds if this regular term is in a backward-matching context, that is,
@@ -111,22 +110,22 @@ class RegExpTerm extends Locatable, @regexpterm {
   /**
    * Holds if this is the root term of a regular expression.
    */
-  predicate isRootTerm() { not this.getParent() instanceof RegExpTerm }
+  predicate isRootTerm() { not getParent() instanceof RegExpTerm }
 
   /**
    * Gets the outermost term of this regular expression.
    */
   RegExpTerm getRootTerm() {
-    this.isRootTerm() and
+    isRootTerm() and
     result = this
     or
-    result = this.getParent().(RegExpTerm).getRootTerm()
+    result = getParent().(RegExpTerm).getRootTerm()
   }
 
   /**
    * Holds if this term occurs as part of a regular expression literal.
    */
-  predicate isPartOfRegExpLiteral() { exists(this.getLiteral()) }
+  predicate isPartOfRegExpLiteral() { exists(getLiteral()) }
 
   /**
    * Holds if this term occurs as part of a string literal.
@@ -134,7 +133,7 @@ class RegExpTerm extends Locatable, @regexpterm {
    * This predicate holds regardless of whether the string literal is actually
    * used as a regular expression. See `isUsedAsRegExp`.
    */
-  predicate isPartOfStringLiteral() { this.getRootTerm().getParent() instanceof StringLiteral }
+  predicate isPartOfStringLiteral() { getRootTerm().getParent() instanceof StringLiteral }
 
   /**
    * Holds if this term is part of a regular expression literal, or a string literal
@@ -153,10 +152,10 @@ class RegExpTerm extends Locatable, @regexpterm {
    * ```
    */
   predicate isUsedAsRegExp() {
-    exists(RegExpParent parent | parent = this.getRootTerm().getParent() |
+    exists(RegExpParent parent | parent = getRootTerm().getParent() |
       parent instanceof RegExpLiteral
       or
-      parent.(Expr).flow() instanceof RegExpPatternSource
+      parent.(StringLiteral).flow() instanceof RegExpPatternSource
     )
   }
 
@@ -175,7 +174,7 @@ class RegExpTerm extends Locatable, @regexpterm {
   /**
    * Gets a string that is matched by this regular-expression term.
    */
-  string getAMatchedString() { result = this.getConstantValue() }
+  string getAMatchedString() { result = getConstantValue() }
 }
 
 /**
@@ -242,7 +241,7 @@ class RegExpConstant extends RegExpTerm, @regexp_constant {
 
   override predicate isNullable() { none() }
 
-  override string getConstantValue() { result = this.getValue() }
+  override string getConstantValue() { result = getValue() }
 
   override string getAPrimaryQlClass() { result = "RegExpConstant" }
 }
@@ -260,8 +259,8 @@ class RegExpCharEscape extends RegExpEscape, RegExpConstant, @regexp_char_escape
   override predicate isCharacter() {
     not (
       // unencodable characters are represented as '?' or \uFFFD in the database
-      this.getValue() = ["?", 65533.toUnicode()] and
-      exists(string s | s = this.toString().toLowerCase() |
+      getValue() = ["?", 65533.toUnicode()] and
+      exists(string s | s = toString().toLowerCase() |
         // only Unicode escapes give rise to unencodable characters
         s.matches("\\\\u%") and
         // but '\u003f' actually is the '?' character itself
@@ -284,14 +283,14 @@ class RegExpCharEscape extends RegExpEscape, RegExpConstant, @regexp_char_escape
  */
 class RegExpAlt extends RegExpTerm, @regexp_alt {
   /** Gets an alternative of this term. */
-  RegExpTerm getAlternative() { result = this.getAChild() }
+  RegExpTerm getAlternative() { result = getAChild() }
 
   /** Gets the number of alternatives of this term. */
-  int getNumAlternative() { result = this.getNumChild() }
+  int getNumAlternative() { result = getNumChild() }
 
-  override predicate isNullable() { this.getAlternative().isNullable() }
+  override predicate isNullable() { getAlternative().isNullable() }
 
-  override string getAMatchedString() { result = this.getAlternative().getAMatchedString() }
+  override string getAMatchedString() { result = getAlternative().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
 }
@@ -309,30 +308,30 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
  */
 class RegExpSequence extends RegExpTerm, @regexp_seq {
   /** Gets an element of this sequence. */
-  RegExpTerm getElement() { result = this.getAChild() }
+  RegExpTerm getElement() { result = getAChild() }
 
   /** Gets the number of elements in this sequence. */
-  int getNumElement() { result = this.getNumChild() }
+  int getNumElement() { result = getNumChild() }
 
   override predicate isNullable() {
-    forall(RegExpTerm child | child = this.getAChild() | child.isNullable())
+    forall(RegExpTerm child | child = getAChild() | child.isNullable())
   }
 
-  override string getConstantValue() { result = this.getConstantValue(0) }
+  override string getConstantValue() { result = getConstantValue(0) }
 
   /**
    * Gets the single string matched by the `i`th child and all following children of
    * this sequence, if any.
    */
   private string getConstantValue(int i) {
-    i = this.getNumChild() and
+    i = getNumChild() and
     result = ""
     or
-    result = this.getChild(i).getConstantValue() + this.getConstantValue(i + 1)
+    result = getChild(i).getConstantValue() + getConstantValue(i + 1)
   }
 
   /** Gets the element preceding `element` in this sequence. */
-  RegExpTerm previousElement(RegExpTerm element) { element = this.nextElement(result) }
+  RegExpTerm previousElement(RegExpTerm element) { element = nextElement(result) }
 
   /** Gets the element following `element` in this sequence. */
   RegExpTerm nextElement(RegExpTerm element) {
@@ -431,7 +430,7 @@ class RegExpNonWordBoundary extends RegExpTerm, @regexp_nonwordboundary {
  */
 class RegExpSubPattern extends RegExpTerm, @regexp_subpattern {
   /** Gets the lookahead term. */
-  RegExpTerm getOperand() { result = this.getAChild() }
+  RegExpTerm getOperand() { result = getAChild() }
 
   override predicate isNullable() { any() }
 }
@@ -541,7 +540,7 @@ class RegExpStar extends RegExpQuantifier, @regexp_star {
  * ```
  */
 class RegExpPlus extends RegExpQuantifier, @regexp_plus {
-  override predicate isNullable() { this.getAChild().isNullable() }
+  override predicate isNullable() { getAChild().isNullable() }
 
   override string getAPrimaryQlClass() { result = "RegExpPlus" }
 }
@@ -586,8 +585,8 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
   int getUpperBound() { range_quantifier_upper_bound(this, result) }
 
   override predicate isNullable() {
-    this.getAChild().isNullable() or
-    this.getLowerBound() = 0
+    getAChild().isNullable() or
+    getLowerBound() = 0
   }
 
   override string getAPrimaryQlClass() { result = "RegExpRange" }
@@ -640,11 +639,11 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
   /** Gets the name of this capture group, if any. */
   string getName() { is_named_capture(this, result) }
 
-  override predicate isNullable() { this.getAChild().isNullable() }
+  override predicate isNullable() { getAChild().isNullable() }
 
-  override string getConstantValue() { result = this.getAChild().getConstantValue() }
+  override string getConstantValue() { result = getAChild().getConstantValue() }
 
-  override string getAMatchedString() { result = this.getAChild().getAMatchedString() }
+  override string getAMatchedString() { result = getAChild().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpGroup" }
 }
@@ -662,6 +661,15 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
 class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant {
   override string getAPrimaryQlClass() { result = "RegExpNormalConstant" }
 }
+
+/**
+ * DEPRECATED. Use `RegExpNormalConstant` instead.
+ *
+ * This class used to represent an individual normal character but has been superseded by
+ * `RegExpNormalConstant`, which represents a sequence of normal characters.
+ * There is no longer a separate node for each individual character in a constant.
+ */
+deprecated class RegExpNormalChar = RegExpNormalConstant;
 
 /**
  * A hexadecimal character escape in a regular expression.
@@ -823,7 +831,7 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
     )
   }
 
-  override predicate isNullable() { this.getGroup().isNullable() }
+  override predicate isNullable() { getGroup().isNullable() }
 
   override string getAPrimaryQlClass() { result = "RegExpBackRef" }
 }
@@ -845,7 +853,7 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   override predicate isNullable() { none() }
 
   override string getAMatchedString() {
-    not this.isInverted() and result = this.getAChild().getAMatchedString()
+    not isInverted() and result = getAChild().getAMatchedString()
   }
 
   /**
@@ -853,13 +861,13 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
    */
   predicate isUniversalClass() {
     // [^]
-    this.isInverted() and not exists(this.getAChild())
+    isInverted() and not exists(getAChild())
     or
     // [\w\W] and similar
-    not this.isInverted() and
+    not isInverted() and
     exists(string cce1, string cce2 |
-      cce1 = this.getAChild().(RegExpCharacterClassEscape).getValue() and
-      cce2 = this.getAChild().(RegExpCharacterClassEscape).getValue()
+      cce1 = getAChild().(RegExpCharacterClassEscape).getValue() and
+      cce2 = getAChild().(RegExpCharacterClassEscape).getValue()
     |
       cce1 != cce2 and cce1.toLowerCase() = cce2.toLowerCase()
     )
@@ -882,8 +890,8 @@ class RegExpCharacterRange extends RegExpTerm, @regexp_char_range {
 
   /** Holds if `lo` is the lower bound of this character range and `hi` the upper bound. */
   predicate isRange(string lo, string hi) {
-    lo = this.getChild(0).(RegExpConstant).getValue() and
-    hi = this.getChild(1).(RegExpConstant).getValue()
+    lo = getChild(0).(RegExpConstant).getValue() and
+    hi = getChild(1).(RegExpConstant).getValue()
   }
 
   override string getAPrimaryQlClass() { result = "RegExpCharacterRange" }
@@ -895,11 +903,11 @@ class RegExpParseError extends Error, @regexp_parse_error {
   RegExpTerm getTerm() { regexp_parse_errors(this, result, _) }
 
   /** Gets the regular expression literal in which the parse error occurred. */
-  RegExpLiteral getLiteral() { result = this.getTerm().getLiteral() }
+  RegExpLiteral getLiteral() { result = getTerm().getLiteral() }
 
   override string getMessage() { regexp_parse_errors(this, _, result) }
 
-  override string toString() { result = this.getMessage() }
+  override string toString() { result = getMessage() }
 
   override predicate isFatal() { none() }
 }
@@ -947,9 +955,7 @@ private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
 /**
  * Holds if `source` may be interpreted as a regular expression.
  */
-cached
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
-  Stages::Taint::ref() and
   source.analyze().getAType() = TTString() and
   (
     // The first argument to an invocation of `RegExp` (with or without `new`).
@@ -990,25 +996,16 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
 }
 
 /**
- * Provides utility predicates related to regular expressions.
+ * Provides regular expression patterns.
  */
 module RegExpPatterns {
   /**
    * Gets a pattern that matches common top-level domain names in lower case.
    */
-  string getACommonTld() {
+  string commonTLD() {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
     result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }
-
-  /**
-   * Gets a pattern that matches common top-level domain names in lower case.
-   * DEPRECATED: use `getACommonTld` instead
-   */
-  deprecated predicate commonTld = getACommonTld/0;
-
-  /** DEPRECATED: Alias for commonTld */
-  deprecated predicate commonTLD = commonTld/0;
 }
 
 /**
@@ -1102,33 +1099,9 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
     )
   }
 
-  override string getPattern() { result = this.getStringValue() }
+  override string getPattern() { result = getStringValue() }
 
-  override RegExpTerm getRegExpTerm() { result = this.asExpr().(StringLiteral).asRegExp() }
-}
-
-/**
- * A node whose string value may flow to a position where it is interpreted
- * as a part of a regular expression.
- */
-private class StringConcatRegExpPatternSource extends RegExpPatternSource {
-  DataFlow::Node parse;
-
-  StringConcatRegExpPatternSource() { this = regExpSource(parse) }
-
-  override DataFlow::Node getAParse() { result = parse }
-
-  override DataFlow::SourceNode getARegExpObject() {
-    exists(DataFlow::InvokeNode constructor |
-      constructor = DataFlow::globalVarRef("RegExp").getAnInvocation() and
-      parse = constructor.getArgument(0) and
-      result = constructor
-    )
-  }
-
-  override string getPattern() { result = this.getStringValue() }
-
-  override RegExpTerm getRegExpTerm() { result = this.asExpr().(AddExpr).asRegExp() }
+  override RegExpTerm getRegExpTerm() { result = asExpr().(StringLiteral).asRegExp() }
 }
 
 module RegExp {
@@ -1300,8 +1273,8 @@ module RegExp {
   /**
    * A meta character used by HTML.
    */
-  private class HtmlMetaCharacter extends MetaCharacter {
-    HtmlMetaCharacter() { this = ["<", "'", "\""] }
+  private class HTMLMetaCharacter extends MetaCharacter {
+    HTMLMetaCharacter() { this = ["<", "'", "\""] }
   }
 
   /**
@@ -1312,7 +1285,7 @@ module RegExp {
   }
 
   /**
-   * Holds if `term` can match any occurrence of `char` within a string (not taking into account
+   * Holds if `term` can match any occurence of `char` within a string (not taking into account
    * the context in which `term` appears).
    *
    * This predicate is under-approximate and never considers sequences to guarantee a match.

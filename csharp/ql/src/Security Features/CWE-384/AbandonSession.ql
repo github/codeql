@@ -34,10 +34,10 @@ class SystemWebSessionStateHttpSessionStateClass extends Class {
   }
 
   /** Gets the `Abandon` method. */
-  Method getAbandonMethod() { result = this.getAMethod("Abandon") }
+  Method getAbandonMethod() { result = getAMethod("Abandon") }
 
   /** Gets the `Clear` method. */
-  Method getClearMethod() { result = this.getAMethod("Clear") }
+  Method getClearMethod() { result = getAMethod("Clear") }
 }
 
 /** A method that directly or indirectly clears `HttpSessionState`. */
@@ -69,5 +69,5 @@ where
   loginMethod(loginMethod, fromLoginFlow) and
   sessionUse(sessionUse.getElement()) and
   controlStep+(loginCall.getASuccessorByType(fromLoginFlow), sessionUse)
-select sessionUse, "This session has not been invalidated following the call to $@.", loginCall,
+select sessionUse, "This session has not been invalidated following the call to '$@'.", loginCall,
   loginMethod.getName()

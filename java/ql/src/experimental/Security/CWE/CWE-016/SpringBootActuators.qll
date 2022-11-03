@@ -42,8 +42,8 @@ class TypeEndpointRequest extends Class {
 /** A call to `EndpointRequest.toAnyEndpoint` method. */
 class ToAnyEndpointCall extends MethodAccess {
   ToAnyEndpointCall() {
-    this.getMethod().hasName("toAnyEndpoint") and
-    this.getMethod().getDeclaringType() instanceof TypeEndpointRequest
+    getMethod().hasName("toAnyEndpoint") and
+    getMethod().getDeclaringType() instanceof TypeEndpointRequest
   }
 }
 
@@ -52,9 +52,9 @@ class ToAnyEndpointCall extends MethodAccess {
  */
 class RequestMatcherCall extends MethodAccess {
   RequestMatcherCall() {
-    this.getMethod().hasName("requestMatcher") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity and
-    this.getArgument(0) instanceof ToAnyEndpointCall
+    getMethod().hasName("requestMatcher") and
+    getMethod().getDeclaringType() instanceof TypeHttpSecurity and
+    getArgument(0) instanceof ToAnyEndpointCall
   }
 }
 
@@ -64,25 +64,25 @@ class RequestMatcherCall extends MethodAccess {
  */
 class RequestMatchersCall extends MethodAccess {
   RequestMatchersCall() {
-    this.getMethod().hasName("requestMatchers") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity and
-    this.getArgument(0).(LambdaExpr).getExprBody() instanceof ToAnyEndpointCall
+    getMethod().hasName("requestMatchers") and
+    getMethod().getDeclaringType() instanceof TypeHttpSecurity and
+    getArgument(0).(LambdaExpr).getExprBody() instanceof ToAnyEndpointCall
   }
 }
 
 /** A call to `HttpSecurity.authorizeRequests` method. */
 class AuthorizeRequestsCall extends MethodAccess {
   AuthorizeRequestsCall() {
-    this.getMethod().hasName("authorizeRequests") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
+    getMethod().hasName("authorizeRequests") and
+    getMethod().getDeclaringType() instanceof TypeHttpSecurity
   }
 }
 
 /** A call to `AuthorizedUrl.permitAll` method. */
 class PermitAllCall extends MethodAccess {
   PermitAllCall() {
-    this.getMethod().hasName("permitAll") and
-    this.getMethod().getDeclaringType() instanceof TypeAuthorizedUrl
+    getMethod().hasName("permitAll") and
+    getMethod().getDeclaringType() instanceof TypeAuthorizedUrl
   }
 
   /** Holds if `permitAll` is called on request(s) mapped to actuator endpoint(s). */
@@ -137,8 +137,8 @@ class PermitAllCall extends MethodAccess {
 /** A call to `AbstractRequestMatcherRegistry.anyRequest` method. */
 class AnyRequestCall extends MethodAccess {
   AnyRequestCall() {
-    this.getMethod().hasName("anyRequest") and
-    this.getMethod().getDeclaringType() instanceof TypeAbstractRequestMatcherRegistry
+    getMethod().hasName("anyRequest") and
+    getMethod().getDeclaringType() instanceof TypeAbstractRequestMatcherRegistry
   }
 }
 
@@ -148,8 +148,8 @@ class AnyRequestCall extends MethodAccess {
  */
 class RegistryRequestMatchersCall extends MethodAccess {
   RegistryRequestMatchersCall() {
-    this.getMethod().hasName("requestMatchers") and
-    this.getMethod().getDeclaringType() instanceof TypeAbstractRequestMatcherRegistry and
-    this.getAnArgument() instanceof ToAnyEndpointCall
+    getMethod().hasName("requestMatchers") and
+    getMethod().getDeclaringType() instanceof TypeAbstractRequestMatcherRegistry and
+    getAnArgument() instanceof ToAnyEndpointCall
   }
 }

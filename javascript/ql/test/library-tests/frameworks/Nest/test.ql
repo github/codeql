@@ -1,19 +1,19 @@
 import javascript
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
 
-query Http::RouteHandler routeHandler() { any() }
+query HTTP::RouteHandler routeHandler() { any() }
 
-query Http::Servers::RequestSource requestSource() { any() }
+query HTTP::Servers::RequestSource requestSource() { any() }
 
-query Http::Servers::ResponseSource responseSource() { any() }
+query HTTP::Servers::ResponseSource responseSource() { any() }
 
 query RemoteFlowSource requestInputAccess(string kind) {
-  kind = result.(Http::RequestInputAccess).getKind()
+  kind = result.(HTTP::RequestInputAccess).getKind()
   or
-  not result instanceof Http::RequestInputAccess and
+  not result instanceof HTTP::RequestInputAccess and
   kind = "RemoteFlowSource"
 }
 
-query Http::ResponseSendArgument responseSendArgument() { any() }
+query HTTP::ResponseSendArgument responseSendArgument() { any() }
 
 query ServerSideUrlRedirect::Sink redirectSink() { any() }

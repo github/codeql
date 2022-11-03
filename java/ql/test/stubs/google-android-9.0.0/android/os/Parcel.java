@@ -53,7 +53,6 @@ public class Parcel
     public Object readValue(ClassLoader p0){ return null; }
     public Object[] readArray(ClassLoader p0){ return null; }
     public ParcelFileDescriptor readFileDescriptor(){ return null; }
-    public Parcelable.Creator<? extends Object> readParcelableCreator(ClassLoader p0){ return null; }
     public Parcelable[] readParcelableArray(ClassLoader p0){ return null; }
     public PersistableBundle readPersistableBundle(){ return null; }
     public PersistableBundle readPersistableBundle(ClassLoader p0){ return null; }
@@ -131,7 +130,6 @@ public class Parcel
     public void writeMap(Map p0){}
     public void writeNoException(){}
     public void writeParcelable(Parcelable p0, int p1){}
-    public void writeParcelableCreator(Parcelable p0){}
     public void writePersistableBundle(PersistableBundle p0){}
     public void writeSerializable(Serializable p0){}
     public void writeSize(Size p0){}

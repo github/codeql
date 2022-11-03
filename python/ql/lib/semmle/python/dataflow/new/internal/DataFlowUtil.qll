@@ -2,29 +2,19 @@
  * Contains utility functions for writing data flow queries
  */
 
-private import python
 private import DataFlowPrivate
 import DataFlowPublic
-private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
-  or
-  // Simple flow through library code is included in the exposed local
-  // step relation, even though flow is technically inter-procedural.
-  // This is a convention followed across languages.
-  FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
-}
+predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
-pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
@@ -79,7 +69,7 @@ deprecated Node importNode(string name) {
   // ```
   //
   // Where `foo_module_tracker` is a type tracker that tracks references to the `foo` module.
-  // Because named imports are modeled as `AttrRead`s, the statement `from foo import bar as baz`
+  // Because named imports are modelled as `AttrRead`s, the statement `from foo import bar as baz`
   // is interpreted as if it was an assignment `baz = foo.bar`, which means `baz` gets tracked as a
   // reference to `foo.bar`, as desired.
   exists(ImportExpr imp_expr |

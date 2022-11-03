@@ -87,18 +87,15 @@ abstract class WhitelistedLiveField extends Field { }
  * A static, final, long field named `serialVersionUID` in a class that extends `Serializable` acts as
  * a version number for the serialization framework.
  */
-class SerialVersionUidField extends ReflectivelyReadField {
-  SerialVersionUidField() {
+class SerialVersionUIDField extends ReflectivelyReadField {
+  SerialVersionUIDField() {
     this.hasName("serialVersionUID") and
     this.isStatic() and
     this.isFinal() and
     this.getType().hasName("long") and
-    this.getDeclaringType().getAnAncestor() instanceof TypeSerializable
+    this.getDeclaringType().getASupertype*() instanceof TypeSerializable
   }
 }
-
-/** DEPRECATED: Alias for SerialVersionUidField */
-deprecated class SerialVersionUIDField = SerialVersionUidField;
 
 /**
  * A field is read by the JAXB during serialization if it is a JAXB bound field, and if the
@@ -157,8 +154,8 @@ class JacksonMixinReflextivelyReadField extends ReflectivelyReadField {
 /**
  * A field which is read by a JPA compatible Java persistence framework.
  */
-class JpaReadField extends ReflectivelyReadField {
-  JpaReadField() {
+class JPAReadField extends ReflectivelyReadField {
+  JPAReadField() {
     exists(PersistentEntity entity |
       this = entity.getAField() and
       (
@@ -172,6 +169,3 @@ class JpaReadField extends ReflectivelyReadField {
     )
   }
 }
-
-/** DEPRECATED: Alias for JpaReadField */
-deprecated class JPAReadField = JpaReadField;

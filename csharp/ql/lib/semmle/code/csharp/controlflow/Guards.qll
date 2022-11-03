@@ -8,7 +8,7 @@ private import dotnet
 private import ControlFlow::SuccessorTypes
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
-private import semmle.code.csharp.commons.StructuralComparison as SC
+private import semmle.code.csharp.commons.StructuralComparison::Internal
 private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.frameworks.System
@@ -33,19 +33,11 @@ class Guard extends Expr {
   }
 
   /**
-   * Holds if `cfn` is guarded by this expression having value `v`.
-   *
-   * Note: This predicate is inlined.
-   */
-  pragma[inline]
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AbstractValue v) {
-    guardControls(this, cfn.getBasicBlock(), v)
-  }
-
-  /**
    * Holds if basic block `bb` is guarded by this expression having value `v`.
    */
-  predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) { guardControls(this, bb, v) }
+  predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) {
+    Internal::guardControls(this, bb, v)
+  }
 
   /**
    * Holds if this guard is an equality test between `e1` and `e2`. If the test is
@@ -54,7 +46,7 @@ class Guard extends Expr {
    */
   predicate isEquality(Expr e1, Expr e2, boolean polarity) {
     exists(BooleanValue v |
-      this = getAnEqualityCheck(e1, v, e2) and
+      this = Internal::getAnEqualityCheck(e1, v, e2) and
       polarity = v.getValue()
     )
   }
@@ -1000,7 +992,7 @@ module Internal {
   // The predicates in this module should be evaluated in the same stage as the CFG
   // construction stage. This is to avoid recomputation of pre-basic-blocks and
   // pre-SSA predicates
-  private module PreCfg {
+  private module PreCFG {
     private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
     private import semmle.code.csharp.controlflow.internal.PreSsa
 
@@ -1094,7 +1086,7 @@ module Internal {
      */
     private Callable customNullCheck(Parameter p, BooleanValue retVal, boolean isNull) {
       result.getReturnType() instanceof BoolType and
-      not result.(Overridable).isOverridableOrImplementable() and
+      not result.(Virtualizable).isOverridableOrImplementable() and
       p.getCallable() = result and
       not p.isParams() and
       p.getType() = any(Type t | t instanceof RefType or t instanceof NullableType) and
@@ -1414,7 +1406,7 @@ module Internal {
     }
 
     cached
-    private module CachedWithCfg {
+    private module CachedWithCFG {
       private import semmle.code.csharp.Caching
 
       cached
@@ -1470,7 +1462,7 @@ module Internal {
         )
       }
 
-      private predicate firstReadSameVarUniquePredecessor(
+      private predicate firstReadSameVarUniquePredecesssor(
         PreSsa::Definition def, AssignableRead read
       ) {
         read = def.getAFirstRead() and
@@ -1603,7 +1595,7 @@ module Internal {
           g1 = def.getARead() and
           isGuard(g1, v1) and
           v2 = v1 and
-          if v1.isReferentialProperty() then firstReadSameVarUniquePredecessor(def, g1) else any()
+          if v1.isReferentialProperty() then firstReadSameVarUniquePredecesssor(def, g1) else any()
         )
         or
         exists(PreSsa::Definition def, AbstractValue v |
@@ -1684,7 +1676,7 @@ module Internal {
           mid = e.(Cast).getExpr()
         )
         or
-        exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecessor(def, e))
+        exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecesssor(def, e))
         or
         exists(MethodCall mc |
           mc.getTarget().getAnUltimateImplementee().getUnboundDeclaration() =
@@ -1708,7 +1700,7 @@ module Internal {
         )
         or
         exists(PreSsa::Definition def | nonEmptyDef(def) |
-          firstReadSameVarUniquePredecessor(def, e)
+          firstReadSameVarUniquePredecesssor(def, e)
         )
         or
         exists(MethodCall mc |
@@ -1719,10 +1711,10 @@ module Internal {
       }
     }
 
-    import CachedWithCfg
+    import CachedWithCFG
   }
 
-  import PreCfg
+  import PreCFG
 
   private predicate interestingDescendantCandidate(Expr e) {
     guardControls(e, _, _)
@@ -1798,30 +1790,32 @@ module Internal {
   }
 
   /**
-   * Holds if access/call expression `e` (targeting declaration `target`)
-   * is a sub expression of a guard that controls whether basic block
-   * `bb` is reached.
+   * A helper class for calculating structurally equal access/call expressions.
    */
-  pragma[noinline]
-  private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
-    target = e.getTarget() and
-    guardControlsSub(_, bb, e)
-  }
+  private class ConditionOnExprComparisonConfig extends InternalStructuralComparisonConfiguration {
+    ConditionOnExprComparisonConfig() { this = "ConditionOnExprComparisonConfig" }
 
-  private predicate candidate(AccessOrCallExpr x, AccessOrCallExpr y) {
-    exists(BasicBlock bb, Declaration d |
-      candidateAux(x, d, bb) and
-      y =
-        any(AccessOrCallExpr e |
-          e.getAControlFlowNode().getBasicBlock() = bb and
-          e.getTarget() = d
-        )
-    )
-  }
+    override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
+      exists(BasicBlock bb, Declaration d |
+        this.candidateAux(x, d, bb) and
+        y =
+          any(AccessOrCallExpr e |
+            e.getAControlFlowNode().getBasicBlock() = bb and
+            e.getTarget() = d
+          )
+      )
+    }
 
-  private predicate same(AccessOrCallExpr x, AccessOrCallExpr y) {
-    candidate(x, y) and
-    SC::sameGvn(x, y)
+    /**
+     * Holds if access/call expression `e` (targeting declaration `target`)
+     * is a sub expression of a guard that controls whether basic block
+     * `bb` is reached.
+     */
+    pragma[noinline]
+    private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
+      target = e.getTarget() and
+      guardControlsSub(_, bb, e)
+    }
   }
 
   cached
@@ -1847,7 +1841,7 @@ module Internal {
     pragma[nomagic]
     private predicate guardControlsSubSame(Guard g, BasicBlock bb, ControlGuardDescendant sub) {
       guardControlsSub(g, bb, sub) and
-      same(sub, _)
+      any(ConditionOnExprComparisonConfig c).same(sub, _)
     }
 
     pragma[nomagic]
@@ -1860,7 +1854,7 @@ module Internal {
       guardedBB = guardedCfn.getBasicBlock() and
       guardControls(g, guardedBB, v) and
       guardControlsSubSame(g, guardedBB, sub) and
-      same(sub, guarded)
+      any(ConditionOnExprComparisonConfig c).same(sub, guarded)
     }
 
     pragma[nomagic]

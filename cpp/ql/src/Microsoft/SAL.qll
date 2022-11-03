@@ -8,8 +8,8 @@ import cpp
 /**
  * A SAL macro defined in `sal.h` or a similar header file.
  */
-class SalMacro extends Macro {
-  SalMacro() {
+class SALMacro extends Macro {
+  SALMacro() {
     this.getFile().getBaseName() =
       ["sal.h", "specstrings_strict.h", "specstrings.h", "w32p.h", "minwindef.h"] and
     (
@@ -22,18 +22,15 @@ class SalMacro extends Macro {
   }
 }
 
-/** DEPRECATED: Alias for SalMacro */
-deprecated class SALMacro = SalMacro;
-
 pragma[noinline]
 private predicate isTopLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
 
 /**
  * An invocation of a SAL macro (excluding invocations inside other macros).
  */
-class SalAnnotation extends MacroInvocation {
-  SalAnnotation() {
-    this.getMacro() instanceof SalMacro and
+class SALAnnotation extends MacroInvocation {
+  SALAnnotation() {
+    this.getMacro() instanceof SALMacro and
     isTopLevelMacroAccess(this)
   }
 
@@ -50,29 +47,23 @@ class SalAnnotation extends MacroInvocation {
   }
 }
 
-/** DEPRECATED: Alias for SalAnnotation */
-deprecated class SALAnnotation = SalAnnotation;
-
 /**
  * A SAL macro indicating that the return value of a function should always be
  * checked.
  */
-class SalCheckReturn extends SalAnnotation {
-  SalCheckReturn() {
-    this.getMacro().(SalMacro).getName() = ["_Check_return_", "_Must_inspect_result_"]
+class SALCheckReturn extends SALAnnotation {
+  SALCheckReturn() {
+    this.getMacro().(SALMacro).getName() = ["_Check_return_", "_Must_inspect_result_"]
   }
 }
-
-/** DEPRECATED: Alias for SalCheckReturn */
-deprecated class SALCheckReturn = SalCheckReturn;
 
 /**
  * A SAL macro indicating that a pointer variable or return value should not be
  * `NULL`.
  */
-class SalNotNull extends SalAnnotation {
-  SalNotNull() {
-    exists(SalMacro m | m = this.getMacro() |
+class SALNotNull extends SALAnnotation {
+  SALNotNull() {
+    exists(SALMacro m | m = this.getMacro() |
       not m.getName().matches("%\\_opt\\_%") and
       (
         m.getName().matches("_In%") or
@@ -89,15 +80,12 @@ class SalNotNull extends SalAnnotation {
   }
 }
 
-/** DEPRECATED: Alias for SalNotNull */
-deprecated class SALNotNull = SalNotNull;
-
 /**
  * A SAL macro indicating that a value may be `NULL`.
  */
-class SalMaybeNull extends SalAnnotation {
-  SalMaybeNull() {
-    exists(SalMacro m | m = this.getMacro() |
+class SALMaybeNull extends SALAnnotation {
+  SALMaybeNull() {
+    exists(SALMacro m | m = this.getMacro() |
       m.getName().matches("%\\_opt\\_%") or
       m.getName().matches("\\_Ret_maybenull\\_%") or
       m.getName() = "_Result_nullonfailure_"
@@ -105,17 +93,14 @@ class SalMaybeNull extends SalAnnotation {
   }
 }
 
-/** DEPRECATED: Alias for SalMaybeNull */
-deprecated class SALMaybeNull = SalMaybeNull;
-
 /**
  * A parameter annotated by one or more SAL annotations.
  */
-class SalParameter extends Parameter {
+class SALParameter extends Parameter {
   /** One of this parameter's annotations. */
-  SalAnnotation a;
+  SALAnnotation a;
 
-  SalParameter() { annotatesAt(a, this.getADeclarationEntry(), _, _) }
+  SALParameter() { annotatesAt(a, this.getADeclarationEntry(), _, _) }
 
   predicate isIn() { a.getMacroName().toLowerCase().matches("%\\_in%") }
 
@@ -124,17 +109,14 @@ class SalParameter extends Parameter {
   predicate isInOut() { a.getMacroName().toLowerCase().matches("%\\_inout%") }
 }
 
-/** DEPRECATED: Alias for SalParameter */
-deprecated class SALParameter = SalParameter;
-
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation details
 /**
  * Holds if `a` annotates the declaration entry `d` and
  * its start position is the `idx`th position in `file` that holds a SAL element.
  */
-private predicate annotatesAt(SalAnnotation a, DeclarationEntry d, File file, int idx) {
-  annotatesAtPosition(a.(SalElement).getStartPosition(), d, file, idx)
+private predicate annotatesAt(SALAnnotation a, DeclarationEntry d, File file, int idx) {
+  annotatesAtPosition(a.(SALElement).getStartPosition(), d, file, idx)
 }
 
 /**
@@ -145,12 +127,12 @@ private predicate annotatesAt(SalAnnotation a, DeclarationEntry d, File file, in
 // For performance reasons, do not mention the annotation itself here,
 // but compute with positions instead. This performs better on databases
 // with many annotations at the same position.
-private predicate annotatesAtPosition(SalPosition pos, DeclarationEntry d, File file, int idx) {
+private predicate annotatesAtPosition(SALPosition pos, DeclarationEntry d, File file, int idx) {
   pos = salRelevantPositionAt(file, idx) and
   salAnnotationPos(pos) and
   (
     // Base case: `pos` right before `d`
-    d.(SalElement).getStartPosition() = salRelevantPositionAt(file, idx + 1)
+    d.(SALElement).getStartPosition() = salRelevantPositionAt(file, idx + 1)
     or
     // Recursive case: `pos` right before some annotation on `d`
     annotatesAtPosition(_, d, file, idx + 1)
@@ -161,10 +143,10 @@ private predicate annotatesAtPosition(SalPosition pos, DeclarationEntry d, File 
  * A SAL element, that is, a SAL annotation or a declaration entry
  * that may have SAL annotations.
  */
-library class SalElement extends Element {
-  SalElement() {
-    containsSalAnnotation(this.(DeclarationEntry).getFile()) or
-    this instanceof SalAnnotation
+library class SALElement extends Element {
+  SALElement() {
+    containsSALAnnotation(this.(DeclarationEntry).getFile()) or
+    this instanceof SALAnnotation
   }
 
   predicate hasStartPosition(File file, int line, int col) {
@@ -191,28 +173,25 @@ library class SalElement extends Element {
     )
   }
 
-  SalPosition getStartPosition() {
+  SALPosition getStartPosition() {
     exists(File file, int line, int col |
       this.hasStartPosition(file, line, col) and
-      result = MkSalPosition(file, line, col)
+      result = MkSALPosition(file, line, col)
     )
   }
 }
 
-/** DEPRECATED: Alias for SalElement */
-deprecated class SALElement = SalElement;
-
 /** Holds if `file` contains a SAL annotation. */
 pragma[noinline]
-private predicate containsSalAnnotation(File file) { any(SalAnnotation a).getFile() = file }
+private predicate containsSALAnnotation(File file) { any(SALAnnotation a).getFile() = file }
 
 /**
  * A source-file position of a `SALElement`. Unlike location, this denotes a
  * point in the file rather than a range.
  */
-private newtype SalPosition =
-  MkSalPosition(File file, int line, int col) {
-    exists(SalElement e |
+private newtype SALPosition =
+  MkSALPosition(File file, int line, int col) {
+    exists(SALElement e |
       e.hasStartPosition(file, line, col)
       or
       e.hasEndPosition(file, line, col)
@@ -221,18 +200,18 @@ private newtype SalPosition =
 
 /** Holds if `pos` is the start position of a SAL annotation. */
 pragma[noinline]
-private predicate salAnnotationPos(SalPosition pos) {
-  any(SalAnnotation a).(SalElement).getStartPosition() = pos
+private predicate salAnnotationPos(SALPosition pos) {
+  any(SALAnnotation a).(SALElement).getStartPosition() = pos
 }
 
 /**
  * Gets the `idx`th position in `file` that holds a SAL element,
  * ordering positions lexicographically by their start line and start column.
  */
-private SalPosition salRelevantPositionAt(File file, int idx) {
+private SALPosition salRelevantPositionAt(File file, int idx) {
   result =
-    rank[idx](SalPosition pos, int line, int col |
-      pos = MkSalPosition(file, line, col)
+    rank[idx](SALPosition pos, int line, int col |
+      pos = MkSALPosition(file, line, col)
     |
       pos order by line, col
     )

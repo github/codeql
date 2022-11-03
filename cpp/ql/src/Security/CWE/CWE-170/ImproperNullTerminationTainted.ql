@@ -42,7 +42,7 @@ class TaintSource extends VariableAccess {
     definitionUsePair(_, this, va)
     or
     exists(VariableAccess mid, Expr def |
-      this.sourceReaches(mid) and
+      sourceReaches(mid) and
       exprDefinition(_, def, mid) and
       definitionUsePair(_, def, va)
     )
@@ -53,11 +53,11 @@ class TaintSource extends VariableAccess {
    * from `va`, possibly using intermediate reassignments.
    */
   private predicate reachesSink(VariableAccess va, VariableAccess sink) {
-    this.isSink(sink) and
+    isSink(sink) and
     va = sink
     or
     exists(VariableAccess mid, Expr def |
-      this.reachesSink(mid, sink) and
+      reachesSink(mid, sink) and
       exprDefinition(_, def, va) and
       definitionUsePair(_, def, mid)
     )
@@ -71,20 +71,19 @@ class TaintSource extends VariableAccess {
    * this source to `sink` found via `tainted(source, sink)`.)
    */
   predicate reaches(VariableAccess sink) {
-    this.isSink(sink) and
+    isSink(sink) and
     not exists(VariableAccess va |
       va != this and
       va != sink and
       mayAddNullTerminator(_, va)
     |
-      this.sourceReaches(va)
+      sourceReaches(va)
       or
-      this.reachesSink(va, sink)
+      reachesSink(va, sink)
     )
   }
 }
 
 from TaintSource source, VariableAccess sink
 where source.reaches(sink)
-select sink, "String operation depends on a $@ that may not be null terminated.", source,
-  "user-provided value"
+select sink, "$@ flows to here and may not be null terminated.", source, "User-provided value"

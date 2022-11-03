@@ -25,62 +25,42 @@ class AnnotatedFunction extends Function {
 }
 
 /** A function annotated with `calls:NAME` */
-class AnnotatedCall extends DataFlow::Node {
+class AnnotatedCall extends InvokeExpr {
   string calls;
-  string kind;
 
-  AnnotatedCall() {
-    this instanceof DataFlow::InvokeNode and
-    calls = getAnnotation(this.asExpr(), kind) and
-    kind = "calls"
-    or
-    this instanceof DataFlow::PropRef and
-    calls = getAnnotation(this.getAstNode(), kind) and
-    kind = "callsAccessor"
-  }
+  AnnotatedCall() { calls = getAnnotation(this, "calls") }
 
   string getCallTargetName() { result = calls }
 
-  AnnotatedFunction getAnExpectedCallee(string kind_) {
-    result.getCalleeName() = this.getCallTargetName() and
-    kind = kind_
-  }
+  AnnotatedFunction getAnExpectedCallee() { result.getCalleeName() = getCallTargetName() }
 
-  int getBoundArgs() { result = getAnnotation(this.getAstNode(), "boundArgs").toInt() }
+  int getBoundArgs() { result = getAnnotation(this, "boundArgs").toInt() }
 
   int getBoundArgsOrMinusOne() {
-    result = this.getBoundArgs()
+    result = getBoundArgs()
     or
-    not exists(this.getBoundArgs()) and
+    not exists(getBoundArgs()) and
     result = -1
   }
-
-  string getKind() { result = kind }
 }
 
 predicate callEdge(AnnotatedCall call, AnnotatedFunction target, int boundArgs) {
-  FlowSteps::calls(call, target) and boundArgs = -1
+  FlowSteps::calls(call.flow(), target) and boundArgs = -1
   or
-  FlowSteps::callsBound(call, target, boundArgs)
+  FlowSteps::callsBound(call.flow(), target, boundArgs)
 }
 
-query predicate spuriousCallee(
-  AnnotatedCall call, AnnotatedFunction target, int boundArgs, string kind
-) {
+query predicate spuriousCallee(AnnotatedCall call, AnnotatedFunction target, int boundArgs) {
   callEdge(call, target, boundArgs) and
-  kind = call.getKind() and
   not (
-    target = call.getAnExpectedCallee(kind) and
+    target = call.getAnExpectedCallee() and
     boundArgs = call.getBoundArgsOrMinusOne()
   )
 }
 
-query predicate missingCallee(
-  AnnotatedCall call, AnnotatedFunction target, int boundArgs, string kind
-) {
+query predicate missingCallee(AnnotatedCall call, AnnotatedFunction target, int boundArgs) {
   not callEdge(call, target, boundArgs) and
-  kind = call.getKind() and
-  target = call.getAnExpectedCallee(kind) and
+  target = call.getAnExpectedCallee() and
   boundArgs = call.getBoundArgsOrMinusOne()
 }
 
@@ -91,8 +71,4 @@ query predicate badAnnotation(string name) {
   or
   not name = any(AnnotatedCall cl).getCallTargetName() and
   name = any(AnnotatedFunction cl).getCalleeName()
-}
-
-query predicate accessorCall(DataFlow::PropRef ref, Function target) {
-  FlowSteps::calls(ref, target)
 }

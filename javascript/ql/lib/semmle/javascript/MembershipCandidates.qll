@@ -165,7 +165,6 @@ module MembershipCandidate {
     EnumerationRegExp enumeration;
     boolean polarity;
 
-    pragma[nomagic]
     RegExpEnumerationCandidate() {
       exists(DataFlow::MethodCallNode mcn, DataFlow::Node base, string m, DataFlow::Node firstArg |
         (
@@ -229,10 +228,10 @@ module MembershipCandidate {
         membersNode = inExpr.getRightOperand()
       )
       or
-      exists(HasOwnPropertyCall hasOwn |
-        this = hasOwn.getProperty() and
-        test = hasOwn.asExpr() and
-        membersNode = hasOwn.getObject().asExpr()
+      exists(MethodCallExpr hasOwn |
+        this = hasOwn.getArgument(0).flow() and
+        test = hasOwn and
+        hasOwn.calls(membersNode, "hasOwnProperty")
       )
     }
 

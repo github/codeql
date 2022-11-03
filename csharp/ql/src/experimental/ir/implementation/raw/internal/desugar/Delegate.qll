@@ -27,10 +27,10 @@ private import experimental.ir.implementation.raw.internal.common.TranslatedExpr
  */
 module DelegateElements {
   TranslatedDelegateConstructorCall getConstructor(DelegateCreation generatedBy) {
-    result.getAst() = generatedBy
+    result.getAST() = generatedBy
   }
 
-  TranslatedDelegateInvokeCall getInvoke(DelegateCall generatedBy) { result.getAst() = generatedBy }
+  TranslatedDelegateInvokeCall getInvoke(DelegateCall generatedBy) { result.getAST() = generatedBy }
 
   int noGeneratedElements(Element generatedBy) {
     (

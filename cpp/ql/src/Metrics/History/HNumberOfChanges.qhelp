@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the total number of file-level changes made to files
+below this location in the tree. For an individual file, it measures the
+number of commits that have affected that file. For a directory of files, it
+measures the sum of the file-level changes for each of the files in the
+directory.
+</p>
+
+<p>
+For example, suppose we have a directory containing two files, A and B. If the
+number of file-level changes to A is <code>100</code>, and the number of
+file-level changes to B is <code>80</code>, then the total number of
+file-level changes to the directory is <code>180</code>. Note that this is
+likely to be different (in some cases very different) from the number of
+commits that affected any file in the directory, since more than one file can
+be changed by a single commit. (Note what would happen if we performed
+<code>80</code> commits on A and B, followed by another <code>20</code>
+commits on A alone - the total number of file-level changes would be
+<code>180</code>, but the number of commits involved would be
+<code>100</code>.)
+</p>
+
+
+</overview>
+</qhelp>

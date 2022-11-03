@@ -46,7 +46,7 @@ predicate mismatched_tuple_rhs(Assign a, int lcount, int rcount, Location loc) {
     lcount = len(l) and
     rcount = r.length() and
     lcount != rcount and
-    not l.getAnItem() instanceof Starred
+    not exists(Starred s | l.getAnItem() = s)
   )
 }
 

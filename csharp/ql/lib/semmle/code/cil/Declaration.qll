@@ -23,6 +23,13 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
   }
 
   override Declaration getUnboundDeclaration() { result = this }
+
+  /**
+   * DEPRECATED: Use `isUnboundDeclaration()` instead.
+   *
+   * Holds if this declaration is a source declaration.
+   */
+  deprecated final predicate isSourceDeclaration() { this.isUnboundDeclaration() }
 }
 
 private CS::Declaration toCSharpNonTypeParameter(Declaration d) { result.matchesHandle(d) }

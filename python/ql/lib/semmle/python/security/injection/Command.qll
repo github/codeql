@@ -11,18 +11,18 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 
 /** Abstract taint sink that is potentially vulnerable to malicious shell commands. */
-abstract deprecated class CommandSink extends TaintSink { }
+abstract class CommandSink extends TaintSink { }
 
-deprecated private ModuleObject osOrPopenModule() { result.getName() = ["os", "popen2"] }
+private ModuleObject osOrPopenModule() { result.getName() = ["os", "popen2"] }
 
-deprecated private Object makeOsCall() {
+private Object makeOsCall() {
   exists(string name | result = ModuleObject::named("subprocess").attr(name) |
     name = ["Popen", "call", "check_call", "check_output", "run"]
   )
 }
 
 /**Special case for first element in sequence. */
-deprecated class FirstElementKind extends TaintKind {
+class FirstElementKind extends TaintKind {
   FirstElementKind() { this = "sequence[" + any(ExternalStringKind key) + "][0]" }
 
   override string repr() { result = "first item in sequence of " + this.getItem().repr() }
@@ -31,7 +31,7 @@ deprecated class FirstElementKind extends TaintKind {
   ExternalStringKind getItem() { this = "sequence[" + result + "][0]" }
 }
 
-deprecated class FirstElementFlow extends DataFlowExtension::DataFlowNode {
+class FirstElementFlow extends DataFlowExtension::DataFlowNode {
   FirstElementFlow() { this = any(SequenceNode s).getElement(0) }
 
   override ControlFlowNode getASuccessorNode(TaintKind fromkind, TaintKind tokind) {
@@ -43,7 +43,7 @@ deprecated class FirstElementFlow extends DataFlowExtension::DataFlowNode {
  * A taint sink that is potentially vulnerable to malicious shell commands.
  * The `vuln` in `subprocess.call(shell=vuln)` and similar calls.
  */
-deprecated class ShellCommand extends CommandSink {
+class ShellCommand extends CommandSink {
   override string toString() { result = "shell command" }
 
   ShellCommand() {
@@ -81,7 +81,7 @@ deprecated class ShellCommand extends CommandSink {
  * A taint sink that is potentially vulnerable to malicious shell commands.
  * The `vuln` in `subprocess.call(vuln, ...)` and similar calls.
  */
-deprecated class OsCommandFirstArgument extends CommandSink {
+class OsCommandFirstArgument extends CommandSink {
   override string toString() { result = "OS command first argument" }
 
   OsCommandFirstArgument() {
@@ -111,7 +111,7 @@ deprecated class OsCommandFirstArgument extends CommandSink {
  * A taint sink that is potentially vulnerable to malicious shell commands.
  * The `vuln` in `invoke.run(vuln, ...)` and similar calls.
  */
-deprecated class InvokeRun extends CommandSink {
+class InvokeRun extends CommandSink {
   InvokeRun() {
     this = Value::named("invoke.run").(FunctionValue).getArgumentForCall(_, 0)
     or
@@ -127,12 +127,12 @@ deprecated class InvokeRun extends CommandSink {
  * Internal TaintKind to track the invoke.Context instance passed to functions
  * marked with @invoke.task
  */
-deprecated private class InvokeContextArg extends TaintKind {
+private class InvokeContextArg extends TaintKind {
   InvokeContextArg() { this = "InvokeContextArg" }
 }
 
 /** Internal TaintSource to track the context passed to functions marked with @invoke.task */
-deprecated private class InvokeContextArgSource extends TaintSource {
+private class InvokeContextArgSource extends TaintSource {
   InvokeContextArgSource() {
     exists(Function f, Expr decorator |
       count(f.getADecorator()) = 1 and
@@ -158,7 +158,7 @@ deprecated private class InvokeContextArgSource extends TaintSource {
  * A taint sink that is potentially vulnerable to malicious shell commands.
  * The `vuln` in `invoke.Context().run(vuln, ...)` and similar calls.
  */
-deprecated class InvokeContextRun extends CommandSink {
+class InvokeContextRun extends CommandSink {
   InvokeContextRun() {
     exists(CallNode call |
       any(InvokeContextArg k).taints(call.getFunction().(AttrNode).getObject("run"))
@@ -187,7 +187,7 @@ deprecated class InvokeContextRun extends CommandSink {
  * A taint sink that is potentially vulnerable to malicious shell commands.
  * The `vuln` in `fabric.Group().run(vuln, ...)` and similar calls.
  */
-deprecated class FabricGroupRun extends CommandSink {
+class FabricGroupRun extends CommandSink {
   FabricGroupRun() {
     exists(ClassValue cls |
       cls.getASuperType() = Value::named("fabric.Group") and
@@ -203,7 +203,7 @@ deprecated class FabricGroupRun extends CommandSink {
 // -------------------------------------------------------------------------- //
 // Modeling of the 'invoke' package and 'fabric' package (v 1.x)
 // -------------------------------------------------------------------------- //
-deprecated class FabricV1Commands extends CommandSink {
+class FabricV1Commands extends CommandSink {
   FabricV1Commands() {
     // since `run` and `sudo` are decorated, we can't use FunctionValue's :(
     exists(CallNode call |
@@ -228,7 +228,7 @@ deprecated class FabricV1Commands extends CommandSink {
  * An extension that propagates taint from the arguments of `fabric.api.execute(func, arg0, arg1, ...)`
  * to the parameters of `func`, since this will call `func(arg0, arg1, ...)`.
  */
-deprecated class FabricExecuteExtension extends DataFlowExtension::DataFlowNode {
+class FabricExecuteExtension extends DataFlowExtension::DataFlowNode {
   CallNode call;
 
   FabricExecuteExtension() {

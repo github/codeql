@@ -12,7 +12,7 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module Werkzeug {
-  module Datastructures {
+  module datastructures {
     module Headers {
       class WerkzeugHeaderAddCall extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
         WerkzeugHeaderAddCall() {

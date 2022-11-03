@@ -39,8 +39,6 @@ class Namespace extends Declaration, @namespace {
   final override string getName() { namespaces(this, result) }
 
   final override string getUndecoratedName() { namespaces(this, result) }
-
-  override string getAPrimaryQlClass() { result = "Namespace" }
 }
 
 /** The global namespace. */

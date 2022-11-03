@@ -29,12 +29,12 @@ class GuardCondition extends Expr {
     exists(IRGuardCondition ir | this = ir.getUnconvertedResultExpression())
     or
     // no binary operators in the IR
-    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
+    exists(GuardCondition gc | this.(BinaryLogicalOperation).getAnOperand() = gc)
     or
     // the IR short-circuits if(!x)
     // don't produce a guard condition for `y = !x` and other non-short-circuited cases
-    not exists(Instruction inst | this.getFullyConverted() = inst.getAst()) and
-    exists(IRGuardCondition ir | this.(NotExpr).getOperand() = ir.getAst())
+    not exists(Instruction inst | this.getFullyConverted() = inst.getAST()) and
+    exists(IRGuardCondition ir | this.(NotExpr).getOperand() = ir.getAST())
   }
 
   /**
@@ -98,7 +98,7 @@ class GuardCondition extends Expr {
  */
 private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   GuardConditionFromBinaryLogicalOperator() {
-    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
+    exists(GuardCondition gc | this.(BinaryLogicalOperation).getAnOperand() = gc)
   }
 
   override predicate controls(BasicBlock controlled, boolean testIsTrue) {
@@ -146,8 +146,8 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
  */
 private class GuardConditionFromShortCircuitNot extends GuardCondition, NotExpr {
   GuardConditionFromShortCircuitNot() {
-    not exists(Instruction inst | this.getFullyConverted() = inst.getAst()) and
-    exists(IRGuardCondition ir | this.getOperand() = ir.getAst())
+    not exists(Instruction inst | this.getFullyConverted() = inst.getAST()) and
+    exists(IRGuardCondition ir | this.getOperand() = ir.getAST())
   }
 
   override predicate controls(BasicBlock controlled, boolean testIsTrue) {
@@ -241,7 +241,7 @@ private class GuardConditionFromIR extends GuardCondition {
   private predicate controlsBlock(BasicBlock controlled, boolean testIsTrue) {
     exists(IRBlock irb |
       forex(IRGuardCondition inst | inst = ir | inst.controls(irb, testIsTrue)) and
-      irb.getAnInstruction().getAst().(ControlFlowNode).getBasicBlock() = controlled and
+      irb.getAnInstruction().getAST().(ControlFlowNode).getBasicBlock() = controlled and
       not isUnreachedBlock(irb)
     )
   }

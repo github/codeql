@@ -17,5 +17,4 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Write to file system depends on $@.", source.getNode(),
-  "Untrusted data"
+select sink.getNode(), source, sink, "$@ flows to file system", source.getNode(), "Untrusted data"

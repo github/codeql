@@ -6,6 +6,7 @@
 
 import javascript
 private import semmle.javascript.security.SensitiveActions
+private import semmle.javascript.frameworks.CryptoLibraries
 
 module BrokenCryptoAlgorithm {
   /**
@@ -30,8 +31,10 @@ module BrokenCryptoAlgorithm {
    * A sensitive expression, viewed as a data flow source for sensitive information
    * in broken or weak cryptographic algorithms.
    */
-  class SensitiveExprSource extends Source instanceof SensitiveNode {
-    override string describe() { result = SensitiveNode.super.describe() }
+  class SensitiveExprSource extends Source, DataFlow::ValueNode {
+    override SensitiveExpr astNode;
+
+    override string describe() { result = astNode.describe() }
   }
 
   /**
@@ -41,7 +44,7 @@ module BrokenCryptoAlgorithm {
     WeakCryptographicOperationSink() {
       exists(CryptographicOperation application |
         application.getAlgorithm().isWeak() and
-        this = application.getInput()
+        this.asExpr() = application.getInput()
       )
     }
   }

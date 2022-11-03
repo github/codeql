@@ -11,7 +11,7 @@ import Location
 /**
  * A single line of comment.
  *
- * Either a single line comment (`SinglelineComment`), an XML comment (`XmlCommentLine`),
+ * Either a single line comment (`SinglelineComment`), an XML comment (`XmlComment`),
  * or a line in a multi-line comment (`MultilineComment`).
  */
 class CommentLine extends @commentline {
@@ -66,7 +66,7 @@ class MultilineComment extends CommentLine, @multilinecomment {
  * /// </summary>
  * ```
  */
-class XmlCommentLine extends CommentLine, @xmldoccomment {
+class XmlComment extends CommentLine, @xmldoccomment {
   override string toString() { result = "/// ..." }
 
   private string xmlAttributeRegex() {
@@ -196,7 +196,7 @@ class CommentBlock extends @commentblock {
 
   /** Holds if this block consists entirely of XML comments. */
   predicate isXmlCommentBlock() {
-    forall(CommentLine l | l = getAChild() | l instanceof XmlCommentLine)
+    forall(CommentLine l | l = getAChild() | l instanceof XmlComment)
   }
 
   /** Gets a `CommentLine` containing text. */

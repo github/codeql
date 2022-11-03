@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 8.6
- * @precision high
+ * @precision medium
  * @id cpp/uncontrolled-arithmetic
  * @tags security
  *       external/cwe/cwe-190
@@ -82,11 +82,8 @@ predicate missingGuard(VariableAccess va, string effect) {
     op.getUnspecifiedType().(IntegralType).isUnsigned() and
     not op instanceof MulExpr
     or
-    // overflow - only report signed integer overflow since unsigned overflow
-    // is well-defined.
-    op.getUnspecifiedType().(IntegralType).isSigned() and
-    missingGuardAgainstOverflow(op, va) and
-    effect = "overflow"
+    // overflow
+    missingGuardAgainstOverflow(op, va) and effect = "overflow"
   )
 }
 
@@ -135,5 +132,5 @@ where
   sink.getNode().asExpr() = va and
   missingGuard(va, effect)
 select sink.getNode(), source, sink,
-  "This arithmetic expression depends on an $@, potentially causing an " + effect + ".",
-  getExpr(source.getNode()), "uncontrolled value"
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+  getExpr(source.getNode()), "Uncontrolled value"

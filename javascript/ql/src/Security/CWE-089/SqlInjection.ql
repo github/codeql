@@ -9,8 +9,6 @@
  * @id js/sql-injection
  * @tags security
  *       external/cwe/cwe-089
- *       external/cwe/cwe-090
- *       external/cwe/cwe-943
  */
 
 import javascript
@@ -25,5 +23,5 @@ where
     cfg instanceof NosqlInjection::Configuration
   ) and
   cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
-  "user-provided value"
+select sink.getNode(), source, sink, "This query depends on $@.", source.getNode(),
+  "a user-provided value"

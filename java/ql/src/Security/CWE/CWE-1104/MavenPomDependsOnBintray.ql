@@ -14,10 +14,10 @@ import java
 import semmle.code.xml.MavenPom
 
 predicate isBintrayRepositoryUsage(DeclaredRepository repository) {
-  repository.getRepositoryUrl().matches("%.bintray.com%")
+  repository.getUrl().matches("%.bintray.com%")
 }
 
 from DeclaredRepository repository
 where isBintrayRepositoryUsage(repository)
 select repository,
-  "Downloading or uploading artifacts to deprecated repository " + repository.getRepositoryUrl()
+  "Downloading or uploading artifacts to deprecated repository " + repository.getUrl()

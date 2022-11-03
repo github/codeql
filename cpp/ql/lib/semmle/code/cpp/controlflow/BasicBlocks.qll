@@ -12,7 +12,7 @@ private import internal.ConstantExprs
  * relation). The refinement manifests itself in two changes:
  *
  * - The successor relation on `BasicBlock`s uses `successors_adapted`
- * (instead of `successors_extended` used by `PrimitiveBasicBlock`s). Consequently,
+ * (instead of `successors_extended` used by `PrimtiveBasicBlock`s). Consequently,
  * some edges between `BasicBlock`s may be removed. Example:
  * ```
  * x = 1;      // s1
@@ -224,6 +224,20 @@ class BasicBlock extends ControlFlowNodeBase {
   predicate inLoop() { this.getASuccessor+() = this }
 
   /**
+   * DEPRECATED since version 1.11: this predicate does not match the standard
+   * definition of _loop header_.
+   *
+   * Holds if this basic block is in a loop of the control-flow graph and
+   * additionally has an incoming edge that is not part of any loop containing
+   * this basic block. A typical example would be the basic block that computes
+   * `x > 0` in an outermost loop `while (x > 0) { ... }`.
+   */
+  deprecated predicate isLoopHeader() {
+    this.inLoop() and
+    exists(BasicBlock pred | pred = this.getAPredecessor() and not pred = this.getASuccessor+())
+  }
+
+  /**
    * Holds if control flow may reach this basic block from a function entry
    * point or any handler of a reachable `try` statement.
    */
@@ -231,7 +245,7 @@ class BasicBlock extends ControlFlowNodeBase {
     exists(Function f | f.getBlock() = this)
     or
     exists(TryStmt t, BasicBlock tryblock |
-      // a `Handler` precedes the `CatchBlock`, and is always the beginning
+      // a `Handler` preceeds the `CatchBlock`, and is always the beginning
       // of a new `BasicBlock` (see `primitive_basic_block_entry_node`).
       this.(Handler).getTryStmt() = t and
       tryblock.isReachable() and

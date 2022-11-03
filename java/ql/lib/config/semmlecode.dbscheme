@@ -17,19 +17,8 @@ compilations(
      *   javac A.java B.java C.java
      */
     unique int id : @compilation,
-    int kind: int ref,
-    string cwd : string ref,
-    string name : string ref
+    string cwd : string ref
 );
-
-case @compilation.kind of
-   1  = @javacompilation
-|  2  = @kotlincompilation
-;
-
-compilation_started(
-    int id : @compilation ref
-)
 
 /**
  * The arguments that were passed to the extractor for a compiler
@@ -76,24 +65,6 @@ compilation_compiling_files(
 );
 
 /**
- * For each file recorded in `compilation_compiling_files`,
- * there will be a corresponding row in
- * `compilation_compiling_files_completed` once extraction
- * of that file is complete. The `result` will indicate the
- * extraction result:
- *
- *     0: Successfully extracted
- *     1: Errors were encountered, but extraction recovered
- *     2: Errors were encountered, and extraction could not recover
- */
-#keyset[id, num]
-compilation_compiling_files_completed(
-    int id : @compilation ref,
-    int num : int ref,
-    int result : int ref
-);
-
-/**
  * The time taken by the extractor for a compiler invocation.
  *
  * For each file `num`, there will be rows for
@@ -135,36 +106,18 @@ diagnostic_for(
 );
 
 /**
- * The `cpu_seconds` and `elapsed_seconds` are the CPU time and elapsed
- * time (respectively) that the original compilation (not the extraction)
- * took for compiler invocation `id`.
+ * If extraction was successful, then `cpu_seconds` and
+ * `elapsed_seconds` are the CPU time and elapsed time (respectively)
+ * that extraction took for compiler invocation `id`.
  */
-compilation_compiler_times(
+compilation_finished(
     unique int id : @compilation ref,
     float cpu_seconds : float ref,
     float elapsed_seconds : float ref
 );
 
-/**
- * If extraction was successful, then `cpu_seconds` and
- * `elapsed_seconds` are the CPU time and elapsed time (respectively)
- * that extraction took for compiler invocation `id`.
- * The `result` will indicate the extraction result:
- *
- *     0: Successfully extracted
- *     1: Errors were encountered, but extraction recovered
- *     2: Errors were encountered, and extraction could not recover
- */
-compilation_finished(
-    unique int id : @compilation ref,
-    float cpu_seconds : float ref,
-    float elapsed_seconds : float ref,
-    int result : int ref
-);
-
 diagnostics(
     unique int id: @diagnostic,
-    string generated_by: string ref, // TODO: Sync this with the other languages?
     int severity: int ref,
     string error_tag: string ref,
     string error_message: string ref,
@@ -332,53 +285,12 @@ modifiers(
   string nodeName: string ref
 );
 
-/**
- * An errortype is used when the extractor is unable to extract a type
- * correctly for some reason.
- */
-error_type(
-  unique int id: @errortype
-);
-
 classes(
   unique int id: @class,
   string nodeName: string ref,
   int parentid: @package ref,
   int sourceid: @class ref
 );
-
-file_class(
-  int id: @class ref
-);
-
-class_object(
-  unique int id: @class ref,
-  unique int instance: @field ref
-);
-
-type_companion_object(
-  unique int id: @classorinterface ref,
-  unique int instance: @field ref,
-  unique int companion_object: @class ref
-);
-
-kt_nullable_types(
-  unique int id: @kt_nullable_type,
-  int classid: @reftype ref
-)
-
-kt_notnull_types(
-  unique int id: @kt_notnull_type,
-  int classid: @reftype ref
-)
-
-kt_type_alias(
-  unique int id: @kt_type_alias,
-  string name: string ref,
-  int kttypeid: @kt_type ref
-)
-
-@kt_type = @kt_nullable_type | @kt_notnull_type
 
 isRecord(
   unique int id: @class ref
@@ -411,11 +323,6 @@ fields(
   int sourceid: @field ref
 );
 
-fieldsKotlinType(
-  unique int id: @field ref,
-  int kttypeid: @kt_type ref
-);
-
 constrs(
   unique int id: @constructor,
   string nodeName: string ref,
@@ -423,11 +330,6 @@ constrs(
   int typeid: @type ref,
   int parentid: @reftype ref,
   int sourceid: @constructor ref
-);
-
-constrsKotlinType(
-  unique int id: @constructor ref,
-  int kttypeid: @kt_type ref
 );
 
 methods(
@@ -439,11 +341,6 @@ methods(
   int sourceid: @method ref
 );
 
-methodsKotlinType(
-  unique int id: @method ref,
-  int kttypeid: @kt_type ref
-);
-
 #keyset[parentid,pos]
 params(
   unique int id: @param,
@@ -451,11 +348,6 @@ params(
   int pos: int ref,
   int parentid: @callable ref,
   int sourceid: @param ref
-);
-
-paramsKotlinType(
-  unique int id: @param ref,
-  int kttypeid: @kt_type ref
 );
 
 paramName(
@@ -609,7 +501,7 @@ stmts(
   int bodydecl: @callable ref
 );
 
-@stmtparent = @callable | @stmt | @switchexpr | @whenexpr| @stmtexpr;
+@stmtparent = @callable | @stmt | @switchexpr;
 
 case @stmt.kind of
   0 = @block
@@ -636,8 +528,6 @@ case @stmt.kind of
 | 21 = @case
 | 22 = @catchclause
 | 23 = @yieldstmt
-| 24 = @errorstmt
-| 25 = @whenbranch
 ;
 
 #keyset[parent,idx]
@@ -647,11 +537,6 @@ exprs(
   int typeid: @type ref,
   int parent: @exprparent ref,
   int idx: int ref
-);
-
-exprsKotlinType(
-  unique int id: @expr ref,
-  int kttypeid: @kt_type ref
 );
 
 callableEnclosingExpr(
@@ -743,30 +628,9 @@ case @expr.kind of
 | 71  = @typeannotation
 | 72  = @intersectiontypeaccess
 | 73  = @switchexpr
-| 74  = @errorexpr
-| 75  = @whenexpr
-| 76  = @getclassexpr
-| 77  = @safecastexpr
-| 78  = @implicitcastexpr
-| 79  = @implicitnotnullexpr
-| 80  = @implicitcoerciontounitexpr
-| 81  = @notinstanceofexpr
-| 82  = @stmtexpr
-| 83  = @stringtemplateexpr
-| 84  = @notnullexpr
-| 85  = @unsafecoerceexpr
-| 86  = @valueeqexpr
-| 87  = @valueneexpr
-| 88  = @propertyref
 ;
 
-/** Holds if this `when` expression was written as an `if` expression. */
-when_if(unique int id: @whenexpr ref);
-
-/** Holds if this `when` branch was written as an `else` branch. */
-when_branch_else(unique int id: @whenbranch ref);
-
-@classinstancexpr = @newexpr | @lambdaexpr | @memberref | @propertyref
+@classinstancexpr = @newexpr | @lambdaexpr | @memberref
 
 @annotation = @declannotation | @typeannotation
 @typeaccess = @unannotatedtypeaccess | @annotatedtypeaccess
@@ -818,9 +682,7 @@ when_branch_else(unique int id: @whenbranch ref);
              | @leexpr
              | @geexpr
              | @eqexpr
-             | @neexpr
-             | @valueeqexpr
-             | @valueneexpr;
+             | @neexpr;
 
 @unaryexpr =   @postincexpr
              | @postdecexpr
@@ -829,8 +691,7 @@ when_branch_else(unique int id: @whenbranch ref);
              | @minusexpr
              | @plusexpr
              | @bitnotexpr
-             | @lognotexpr
-             | @notnullexpr;
+             | @lognotexpr;
 
 @caller =  @classinstancexpr
          | @methodaccess
@@ -847,22 +708,7 @@ memberRefBinding(
   int callable: @callable ref
 );
 
-propertyRefGetBinding(
-  unique int id: @expr ref,
-  int getter: @callable ref
-);
-
-propertyRefFieldBinding(
-  unique int id: @expr ref,
-  int field: @field ref
-);
-
-propertyRefSetBinding(
-  unique int id: @expr ref,
-  int setter: @callable ref
-);
-
-@exprparent = @stmt | @expr | @whenbranch | @callable | @field | @fielddecl | @class | @interface | @param | @localvar | @typevariable;
+@exprparent = @stmt | @expr | @callable | @field | @fielddecl | @class | @interface | @param | @localvar | @typevariable;
 
 variableBinding(
   unique int expr: @varaccess ref,
@@ -878,11 +724,6 @@ localvars(
   string nodeName: string ref,
   int typeid: @type ref,
   int parentid: @localvariabledeclexpr ref
-);
-
-localvarsKotlinType(
-  unique int id: @localvar ref,
-  int kttypeid: @kt_type ref
 );
 
 @namedexprorstmt = @breakstmt
@@ -1020,28 +861,23 @@ javadocText(
 @classorinterfaceorpackage = @classorinterface | @package;
 @classorinterfaceorcallable = @classorinterface | @callable;
 @boundedtype = @typevariable | @wildcard;
-@reftype = @classorinterface | @array | @boundedtype | @errortype;
+@reftype = @classorinterface | @array | @boundedtype;
 @classorarray = @class | @array;
 @type = @primitive | @reftype;
 @callable = @method | @constructor;
+@element = @file | @package | @primitive | @class | @interface | @method | @constructor | @modifier | @param | @exception | @field |
+           @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl;
 
-/** A program element that has a name. */
-@element = @package | @modifier | @annotation | @errortype |
-           @locatableElement;
+@modifiable = @member_modifiable| @param | @localvar ;
 
-@locatableElement = @file | @primitive | @class | @interface | @method | @constructor | @param | @exception | @field |
-                    @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl | @kt_type | @kt_type_alias |
-                    @kt_property;
-
-@modifiable = @member_modifiable| @param | @localvar | @typevariable;
-
-@member_modifiable = @class | @interface | @method | @constructor | @field | @kt_property;
+@member_modifiable = @class | @interface | @method | @constructor | @field ;
 
 @member = @method | @constructor | @field | @reftype ;
 
-/** A program element that has a location. */
-@locatable = @typebound | @javadoc | @javadocTag | @javadocText | @xmllocatable | @ktcomment |
-             @locatableElement;
+@locatable = @file | @class | @interface | @fielddecl | @field | @constructor | @method | @param | @exception
+             | @boundedtype | @typebound | @array | @primitive
+             | @import | @stmt | @expr | @localvar | @javadoc | @javadocTag | @javadocText
+             | @xmllocatable;
 
 @top = @element | @locatable | @folder;
 
@@ -1144,97 +980,3 @@ configLocations(
 );
 
 @configLocatable = @config | @configName | @configValue;
-
-ktComments(
-  unique int id: @ktcomment,
-  int kind: int ref,
-  string text : string ref
-)
-
-ktCommentSections(
-  unique int id: @ktcommentsection,
-  int comment: @ktcomment ref,
-  string content : string ref
-)
-
-ktCommentSectionNames(
-  unique int id: @ktcommentsection ref,
-  string name : string ref
-)
-
-ktCommentSectionSubjectNames(
-  unique int id: @ktcommentsection ref,
-  string subjectname : string ref
-)
-
-#keyset[id, owner]
-ktCommentOwners(
-  int id: @ktcomment ref,
-  int owner: @top ref
-)
-
-ktExtensionFunctions(
-  unique int id: @method ref,
-  int typeid: @type ref,
-  int kttypeid: @kt_type ref
-)
-
-ktProperties(
-  unique int id: @kt_property,
-  string nodeName: string ref
-)
-
-ktPropertyGetters(
-  unique int id: @kt_property ref,
-  int getter: @method ref
-)
-
-ktPropertySetters(
-  unique int id: @kt_property ref,
-  int setter: @method ref
-)
-
-ktPropertyBackingFields(
-  unique int id: @kt_property ref,
-  int backingField: @field ref
-)
-
-ktSyntheticBody(
-  unique int id: @callable ref,
-  int kind: int ref
-  // 1: ENUM_VALUES
-  // 2: ENUM_VALUEOF
-)
-
-ktLocalFunction(
-  unique int id: @method ref
-)
-
-ktInitializerAssignment(
-  unique int id: @assignexpr ref
-)
-
-ktPropertyDelegates(
-  unique int id: @kt_property ref,
-  unique int variableId: @variable ref
-)
-
-/**
- * If `id` is a compiler generated element, then the kind indicates the
- * reason that the compiler generated it.
- * See `Element.compilerGeneratedReason()` for an explanation of what
- * each `kind` means.
- */
-compiler_generated(
-  unique int id: @element ref,
-  int kind: int ref
-)
-
-ktFunctionOriginalNames(
-  unique int id: @method ref,
-  string name: string ref
-)
-
-ktDataClasses(
-  unique int id: @class ref
-)

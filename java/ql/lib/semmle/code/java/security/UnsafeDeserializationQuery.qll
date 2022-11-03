@@ -28,8 +28,8 @@ private class ObjectInputStreamReadObjectMethod extends Method {
   }
 }
 
-private class XmlDecoderReadObjectMethod extends Method {
-  XmlDecoderReadObjectMethod() {
+private class XMLDecoderReadObjectMethod extends Method {
+  XMLDecoderReadObjectMethod() {
     this.getDeclaringType().hasQualifiedName("java.beans", "XMLDecoder") and
     this.hasName("readObject")
   }
@@ -140,7 +140,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
           .hasQualifiedName("org.apache.commons.io.serialization", "ValidatingObjectInputStream")
     )
     or
-    m instanceof XmlDecoderReadObjectMethod and
+    m instanceof XMLDecoderReadObjectMethod and
     sink = ma.getQualifier()
     or
     m instanceof XStreamReadObjectMethod and
@@ -240,7 +240,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       (
         cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader or
         cie.getConstructor().getDeclaringType() instanceof YamlBeansReader or
-        cie.getConstructor().getDeclaringType().getAnAncestor() instanceof UnsafeHessianInput or
+        cie.getConstructor().getDeclaringType().getASupertype*() instanceof UnsafeHessianInput or
         cie.getConstructor().getDeclaringType() instanceof BurlapInput
       )
     )
@@ -312,7 +312,7 @@ MethodAccess getASafeFlexjsonUseCall() {
     result.getArgument(0) instanceof NullLiteral
     or
     result.getMethod().getParameterType(0) instanceof FlexjsonObjectFactory and
-    result.getAnArgument() instanceof NullLiteral
+    exists(NullLiteral e | e = result.getAnArgument())
   )
 }
 

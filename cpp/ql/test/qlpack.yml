@@ -1,7 +1,7 @@
 name: codeql/cpp-tests
-groups: [cpp, test]
+version: 0.0.2
 dependencies:
-  codeql/cpp-all: ${workspace}
-  codeql/cpp-queries: ${workspace}
+  codeql/cpp-all: "*"
+  codeql/cpp-queries: "*"
 extractor: cpp
 tests: .

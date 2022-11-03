@@ -12,7 +12,6 @@
  */
 
 import java
-private import semmle.code.java.frameworks.android.Compose
 
 class VisibleInstanceField extends Field {
   VisibleInstanceField() {
@@ -29,8 +28,6 @@ where
   masked.getName() = masking.getName() and
   // Exclude intentional masking.
   not exists(VarAccess va | va.getVariable() = masked | va.getQualifier() instanceof SuperAccess) and
-  type.fromSource() and
-  // Exclude live literal variables, which is generated code.
-  not masking.getInitializer() instanceof LiveLiteral
+  type.fromSource()
 select masking, "This field shadows another field called $@ in a superclass.", masked,
   masked.getName()

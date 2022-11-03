@@ -15,7 +15,7 @@ private import experimental.ir.internal.IRCSharpLanguage as Language
 /**
  * Gets the `TranslatedFunction` that represents function `callable`.
  */
-TranslatedFunction getTranslatedFunction(Callable callable) { result.getAst() = callable }
+TranslatedFunction getTranslatedFunction(Callable callable) { result.getAST() = callable }
 
 /**
  * Represents the IR translation of a function. This is the root element for
@@ -28,10 +28,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
 
   final override string toString() { result = callable.toString() }
 
-  final override Language::AST getAst() { result = callable }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
+  final override Language::AST getAST() { result = callable }
 
   /**
    * Gets the function being translated.
@@ -272,7 +269,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
 /**
  * Gets the `TranslatedParameter` that represents parameter `param`.
  */
-TranslatedParameter getTranslatedParameter(Parameter param) { result.getAst() = param }
+TranslatedParameter getTranslatedParameter(Parameter param) { result.getAST() = param }
 
 /**
  * Represents the IR translation of a function parameter, including the
@@ -285,10 +282,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
 
   final override string toString() { result = param.toString() }
 
-  final override Language::AST getAst() { result = param }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
+  final override Language::AST getAST() { result = param }
 
   final override Callable getFunction() { result = param.getCallable() }
 

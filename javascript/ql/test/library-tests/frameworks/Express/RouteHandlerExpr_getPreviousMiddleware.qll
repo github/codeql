@@ -1,7 +1,7 @@
 import javascript
 
 query predicate test_RouteHandlerExpr_getPreviousMiddleware(
-  Express::RouteHandlerNode expr, Express::RouteHandlerNode res
+  Express::RouteHandlerExpr expr, Express::RouteHandlerExpr res
 ) {
   res = expr.getPreviousMiddleware()
 }

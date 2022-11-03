@@ -5,10 +5,10 @@ import semmle.code.xml.XML
 /**
  * Holds if any `*.gwt.xml` files are included in this snapshot.
  */
-predicate isGwtXmlIncluded() { exists(GwtXmlFile webXml) }
+predicate isGwtXmlIncluded() { exists(GwtXmlFile webXML) }
 
 /** A GWT module XML file with a `.gwt.xml` suffix. */
-class GwtXmlFile extends XmlFile {
+class GwtXmlFile extends XMLFile {
   GwtXmlFile() { this.getBaseName().matches("%.gwt.xml") }
 
   /** Gets the top-level module element of a GWT module XML file. */
@@ -57,7 +57,7 @@ class GwtXmlFile extends XmlFile {
 }
 
 /** The top-level `<module>` element of a GWT module XML file. */
-class GwtModuleElement extends XmlElement {
+class GwtModuleElement extends XMLElement {
   GwtModuleElement() {
     this.getParent() instanceof GwtXmlFile and
     this.getName() = "module"
@@ -74,7 +74,7 @@ class GwtModuleElement extends XmlElement {
 }
 
 /** An `<inherits>` element within a GWT module XML file. */
-class GwtInheritsElement extends XmlElement {
+class GwtInheritsElement extends XMLElement {
   GwtInheritsElement() {
     this.getParent() instanceof GwtModuleElement and
     this.getName() = "inherits"
@@ -85,7 +85,7 @@ class GwtInheritsElement extends XmlElement {
 }
 
 /** An `<entry-point>` element within a GWT module XML file. */
-class GwtEntryPointElement extends XmlElement {
+class GwtEntryPointElement extends XMLElement {
   GwtEntryPointElement() {
     this.getParent() instanceof GwtModuleElement and
     this.getName() = "entry-point"
@@ -96,7 +96,7 @@ class GwtEntryPointElement extends XmlElement {
 }
 
 /** A `<source>` element within a GWT module XML file. */
-class GwtSourceElement extends XmlElement {
+class GwtSourceElement extends XMLElement {
   GwtSourceElement() {
     this.getParent() instanceof GwtModuleElement and
     this.getName() = "source"
@@ -113,7 +113,7 @@ class GwtSourceElement extends XmlElement {
 }
 
 /** A `<servlet>` element within a GWT module XML file. */
-class GwtServletElement extends XmlElement {
+class GwtServletElement extends XMLElement {
   GwtServletElement() {
     this.getParent() instanceof GwtModuleElement and
     this.getName() = "servlet"

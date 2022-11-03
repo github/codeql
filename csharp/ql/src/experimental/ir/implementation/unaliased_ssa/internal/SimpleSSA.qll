@@ -41,13 +41,10 @@ predicate isVariableModeled(Allocation var) {
  * subsequent iterations will recompute SSA for any variable that we assumed did not escape, but
  * actually would have escaped if we had used a sound escape analysis.
  */
-predicate canReuseSsaForVariable(IRAutomaticVariable var) {
+predicate canReuseSSAForVariable(IRAutomaticVariable var) {
   isVariableModeled(var) and
   not allocationEscapes(var)
 }
-
-/** DEPRECATED: Alias for canReuseSsaForVariable */
-deprecated predicate canReuseSSAForVariable = canReuseSsaForVariable/1;
 
 private newtype TMemoryLocation = MkMemoryLocation(Allocation var) { isVariableModeled(var) }
 
@@ -72,16 +69,10 @@ class MemoryLocation extends TMemoryLocation {
 
   final string getUniqueId() { result = var.getUniqueId() }
 
-  final predicate canReuseSsa() { canReuseSsaForVariable(var) }
-
-  /** DEPRECATED: Alias for canReuseSsa */
-  deprecated predicate canReuseSSA() { canReuseSsa() }
+  final predicate canReuseSSA() { canReuseSSAForVariable(var) }
 }
 
-predicate canReuseSsaForOldResult(Instruction instr) { none() }
-
-/** DEPRECATED: Alias for canReuseSsaForOldResult */
-deprecated predicate canReuseSSAForOldResult = canReuseSsaForOldResult/1;
+predicate canReuseSSAForOldResult(Instruction instr) { none() }
 
 /**
  * Represents a set of `MemoryLocation`s that cannot overlap with

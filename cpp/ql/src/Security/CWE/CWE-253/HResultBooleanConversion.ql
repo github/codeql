@@ -8,6 +8,11 @@
  * @precision high
  * @tags security
  *       external/cwe/cwe-253
+ *       external/microsoft/C6214
+ *       external/microsoft/C6215
+ *       external/microsoft/C6216
+ *       external/microsoft/C6217
+ *       external/microsoft/C6230
  */
 
 import cpp
@@ -39,13 +44,9 @@ where
     isHresultBooleanConverted(e1, e2) and
     if e2.isImplicit()
     then
-      msg =
-        "Implicit conversion from " + e1.getType().toString() + " to " + e2.getType().toString() +
-          "."
+      msg = "Implicit conversion from " + e1.getType().toString() + " to " + e2.getType().toString()
     else
-      msg =
-        "Explicit conversion from " + e1.getType().toString() + " to " + e2.getType().toString() +
-          "."
+      msg = "Explicit conversion from " + e1.getType().toString() + " to " + e2.getType().toString()
   )
   or
   exists(ControlStructure ctls |
@@ -53,7 +54,7 @@ where
     e1.getType().(TypedefType).hasName("HRESULT") and
     not isHresultBooleanConverted(e1) and
     not ctls instanceof SwitchStmt and // not controlled by a boolean condition
-    msg = "Direct usage of a type " + e1.getType().toString() + " as a conditional expression."
+    msg = "Direct usage of a type " + e1.getType().toString() + " as a conditional expression"
   )
   or
   (
@@ -61,14 +62,14 @@ where
       e1.getType().(TypedefType).hasName("HRESULT") and
       msg =
         "Usage of a type " + e1.getType().toString() +
-          " as an argument of a binary logical operation."
+          " as an argument of a binary logical operation"
     )
     or
     exists(UnaryLogicalOperation ulop | ulop.getAnOperand() = e1 |
       e1.getType().(TypedefType).hasName("HRESULT") and
       msg =
         "Usage of a type " + e1.getType().toString() +
-          " as an argument of a unary logical operation."
+          " as an argument of a unary logical operation"
     ) and
     not isHresultBooleanConverted(e1)
   )

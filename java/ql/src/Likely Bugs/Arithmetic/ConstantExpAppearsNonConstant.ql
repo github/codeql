@@ -10,7 +10,6 @@
  */
 
 import java
-import semmle.code.java.frameworks.kotlin.Serialization
 
 int eval(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }
 
@@ -31,7 +30,7 @@ predicate isConstantExp(Expr e) {
   )
   or
   // A cast expression is constant if its expression is.
-  exists(CastingExpr c | c = e | isConstantExp(c.getExpr()))
+  exists(CastExpr c | c = e | isConstantExp(c.getExpr()))
   or
   // Multiplication by 0 is constant.
   exists(MulExpr m | m = e | eval(m.getAnOperand()) = 0)
@@ -60,7 +59,5 @@ where
   // Exclude explicit zero multiplication.
   not e.(MulExpr).getAnOperand().(IntegerLiteral).getIntValue() = 0 and
   // Exclude expressions that appear to be disabled deliberately (e.g. `false && ...`).
-  not e.(AndLogicalExpr).getAnOperand().(BooleanLiteral).getBooleanValue() = false and
-  // Exclude expressions that are in serialization constructors, which are auto-generated.
-  not e.getEnclosingCallable() instanceof SerializationConstructor
+  not e.(AndLogicalExpr).getAnOperand().(BooleanLiteral).getBooleanValue() = false
 select e, "Expression always evaluates to the same value."

@@ -1,15 +1,11 @@
 import python
 import semmle.python.dataflow.TaintTracking
 
-deprecated private ClassValue theTurboGearsControllerClass() {
-  result = Value::named("tg.TGController")
-}
+private ClassValue theTurboGearsControllerClass() { result = Value::named("tg.TGController") }
 
-deprecated ClassValue aTurboGearsControllerClass() {
-  result.getABaseType+() = theTurboGearsControllerClass()
-}
+ClassValue aTurboGearsControllerClass() { result.getABaseType+() = theTurboGearsControllerClass() }
 
-deprecated class TurboGearsControllerMethod extends Function {
+class TurboGearsControllerMethod extends Function {
   ControlFlowNode decorator;
 
   TurboGearsControllerMethod() {
@@ -25,7 +21,7 @@ deprecated class TurboGearsControllerMethod extends Function {
 
   private ControlFlowNode templateName() { result = decorator.(CallNode).getArg(0) }
 
-  predicate isTemplated() { exists(this.templateName()) }
+  predicate isTemplated() { exists(templateName()) }
 
   Dict getValidationDict() {
     exists(Call call, Value dict |

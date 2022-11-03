@@ -5,7 +5,7 @@
  */
 
 import python
-import analysis.DefinitionTracking
+import DefinitionTracking
 
 predicate uniqueness_error(int number, string what, string problem) {
   what in [
@@ -194,7 +194,7 @@ predicate function_object_consistency(string clsname, string problem, string wha
   exists(FunctionObject func | clsname = func.getAQlClass() |
     what = func.getName() and
     (
-      not exists(func.descriptiveString()) and problem = "no descriptiveString()"
+      count(func.descriptiveString()) = 0 and problem = "no descriptiveString()"
       or
       exists(int c | c = strictcount(func.descriptiveString()) and c > 1 |
         problem = c + "descriptiveString()s"
@@ -259,7 +259,7 @@ predicate file_consistency(string clsname, string problem, string what) {
   exists(Container f |
     clsname = f.getAQlClass() and
     uniqueness_error(count(f.toString()), "toString", problem) and
-    what = "file " + f.getAbsolutePath()
+    what = "file " + f.getName()
   )
 }
 

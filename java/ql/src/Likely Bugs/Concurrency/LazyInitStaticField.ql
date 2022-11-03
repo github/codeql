@@ -16,7 +16,7 @@
 import java
 
 /** A comparison (using `==`) with `null`. */
-class NullEQExpr extends ValueOrReferenceEqualsExpr {
+class NullEQExpr extends EQExpr {
   NullEQExpr() { exists(NullLiteral l | l.getParent() = this) }
 }
 
@@ -28,12 +28,12 @@ class StaticFieldInit extends AssignExpr {
 
   IfStmt getAnEnclosingNullCheck() {
     result.getThen().getAChild*() = this.getEnclosingStmt() and
-    result.getCondition().(NullEQExpr).getAChildExpr() = this.getField().getAnAccess()
+    result.getCondition().(NullEQExpr).getAChildExpr() = getField().getAnAccess()
   }
 
   IfStmt getNearestNullCheck() {
-    result = this.getAnEnclosingNullCheck() and
-    not result.getAChild+() = this.getAnEnclosingNullCheck()
+    result = getAnEnclosingNullCheck() and
+    not result.getAChild+() = getAnEnclosingNullCheck()
   }
 }
 

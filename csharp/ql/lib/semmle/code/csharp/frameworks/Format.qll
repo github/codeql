@@ -71,20 +71,6 @@ class FormatMethod extends Method {
   }
 }
 
-pragma[nomagic]
-private predicate parameterReadPostDominatesEntry(ParameterRead pr) {
-  pr.getAControlFlowNode().postDominates(pr.getEnclosingCallable().getEntryPoint()) and
-  getParameterType(pr.getTarget()) instanceof ObjectType
-}
-
-pragma[nomagic]
-private predicate alwaysPassedToFormatItemParameter(ParameterRead pr) {
-  pr = any(StringFormatItemParameter other).getAnAssignedArgument() and
-  parameterReadPostDominatesEntry(pr)
-  or
-  alwaysPassedToFormatItemParameter(pr.getANextRead())
-}
-
 /**
  * A parameter that is used as a format item for `string.Format()`. Either a
  * format item parameter of `string.Format()`, or a parameter of a method that
@@ -99,9 +85,15 @@ class StringFormatItemParameter extends Parameter {
     )
     or
     // Parameter of a source method that forwards to `string.Format()`
-    exists(AssignableDefinitions::ImplicitParameterDefinition def |
+    exists(
+      AssignableDefinitions::ImplicitParameterDefinition def, ParameterRead pr,
+      StringFormatItemParameter other
+    |
       def.getParameter() = this and
-      alwaysPassedToFormatItemParameter(def.getAFirstRead())
+      pr = def.getAReachableRead() and
+      pr.getAControlFlowNode().postDominates(this.getCallable().getEntryPoint()) and
+      other.getAnAssignedArgument() = pr and
+      getParameterType(this) instanceof ObjectType
     )
   }
 }
@@ -178,6 +170,40 @@ class InvalidFormatString extends StringLiteral {
   }
 }
 
+/** Provides a dataflow configuration for format strings. */
+deprecated module FormatFlow {
+  private import semmle.code.csharp.dataflow.DataFlow
+
+  private class FormatConfiguration extends DataFlow2::Configuration {
+    FormatConfiguration() { this = "format" }
+
+    override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof StringLiteral }
+
+    override predicate isSink(DataFlow::Node n) {
+      exists(FormatCall c | n.asExpr() = c.getFormatExpr())
+    }
+  }
+
+  deprecated query predicate nodes = DataFlow2::PathGraph::nodes/3;
+
+  deprecated query predicate edges = DataFlow2::PathGraph::edges/2;
+
+  deprecated class PathNode = DataFlow2::PathNode;
+
+  /**
+   * Holds if there is flow from string literal `lit` to the format string in
+   * `call`. `litNode` and `formatNode` are the corresponding data-flow path
+   * nodes.
+   */
+  deprecated predicate hasFlowPath(
+    StringLiteral lit, PathNode litNode, FormatCall call, PathNode formatNode
+  ) {
+    litNode.getNode().asExpr() = lit and
+    formatNode.getNode().asExpr() = call.getFormatExpr() and
+    any(FormatConfiguration conf).hasFlowPath(litNode, formatNode)
+  }
+}
+
 /**
  * A method call to a method that formats a string, for example a call
  * to `string.Format()`.
@@ -204,6 +230,14 @@ class FormatCall extends MethodCall {
   }
 
   /**
+   * DEPRECATED: Use `FormatFlow::hasFlowPath()` instead.
+   *
+   * Gets a format string. Global data flow analysis is applied to retrieve all
+   * sources that can reach this method call.
+   */
+  deprecated StringLiteral getAFormatSource() { FormatFlow::hasFlowPath(result, _, this, _) }
+
+  /**
    * Gets the number of supplied arguments (excluding the format string and format
    * provider). Does not return a value if the arguments are supplied in an array,
    * in which case we generally can't assess the size of the array.
@@ -220,5 +254,12 @@ class FormatCall extends MethodCall {
   Expr getSuppliedExpr(int index) {
     index = this.getASuppliedArgument() and
     result = this.getArgument(this.getFirstArgument() + index)
+  }
+
+  /** Gets a supplied argument that is not used in the format string `src`. */
+  deprecated int getAnUnusedArgument(ValidFormatString src) {
+    result = this.getASuppliedArgument() and
+    FormatFlow::hasFlowPath(src, _, this, _) and
+    not result = src.getAnInsert()
   }
 }

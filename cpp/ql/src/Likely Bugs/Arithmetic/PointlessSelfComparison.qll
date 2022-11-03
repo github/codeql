@@ -29,9 +29,7 @@ predicate pointlessSelfComparison(ComparisonOperation cmp) {
     not exists(lhs.getQualifier()) and // Avoid structure fields
     not exists(rhs.getQualifier()) and // Avoid structure fields
     not convertedExprMightOverflow(lhs) and
-    not convertedExprMightOverflow(rhs) and
-    // Don't warn if the comparison is part of a template argument.
-    not any(ClassTemplateInstantiation inst).getATemplateArgument() = cmp.getParent*()
+    not convertedExprMightOverflow(rhs)
   )
 }
 

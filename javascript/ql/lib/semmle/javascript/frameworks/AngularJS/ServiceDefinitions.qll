@@ -27,7 +27,7 @@ private newtype TServiceReference =
  */
 abstract class ServiceReference extends TServiceReference {
   /** Gets a textual representation of this element. */
-  string toString() { result = this.getName() }
+  string toString() { result = getName() }
 
   /**
    * Gets the name of this reference.
@@ -38,26 +38,26 @@ abstract class ServiceReference extends TServiceReference {
    * Gets a data flow node that may refer to this service.
    */
   DataFlow::SourceNode getAReference() {
-    result = any(ServiceRequestNode request).getDependencyParameter(this)
+    result = DataFlow::parameterNode(any(ServiceRequest request).getDependencyParameter(this))
   }
 
   /**
    * Gets an access to the referenced service.
    */
-  DataFlow::Node getAnAccess() {
-    any(ServiceRequestNode request).getDependencyParameter(this).flowsTo(result)
+  Expr getAnAccess() {
+    result.mayReferToParameter(any(ServiceRequest request).getDependencyParameter(this))
   }
 
   /**
    * Gets a call that invokes the referenced service.
    */
-  DataFlow::CallNode getACall() { result.getCalleeNode() = this.getAnAccess() }
+  CallExpr getACall() { result.getCallee() = getAnAccess() }
 
   /**
    * Gets a method call that invokes method `methodName` on the referenced service.
    */
-  DataFlow::MethodCallNode getAMethodCall(string methodName) {
-    result.getReceiver() = this.getAnAccess() and
+  MethodCallExpr getAMethodCall(string methodName) {
+    result.getReceiver() = getAnAccess() and
     result.getMethodName() = methodName
   }
 
@@ -65,7 +65,7 @@ abstract class ServiceReference extends TServiceReference {
    * Gets an access to property `propertyName` on the referenced service.
    */
   DataFlow::PropRef getAPropertyAccess(string propertyName) {
-    result.getBase() = this.getAnAccess() and
+    result.getBase().asExpr() = getAnAccess() and
     result.getPropertyName() = propertyName
   }
 
@@ -93,7 +93,7 @@ class BuiltinServiceReference extends ServiceReference, MkBuiltinServiceReferenc
 DataFlow::ParameterNode builtinServiceRef(string serviceName) {
   exists(InjectableFunction f, BuiltinServiceReference service |
     service.getName() = serviceName and
-    result = f.getDependencyParameter(serviceName)
+    result = DataFlow::parameterNode(f.getDependencyParameter(serviceName))
   )
 }
 
@@ -126,49 +126,67 @@ private string getBuiltinKind(string name) {
   result = "service" and
   (
     // ng
-    name =
-      [
-        "$anchorScroll", "$animate", "$animateCss", "$cacheFactory", "$controller", "$document",
-        "$exceptionHandler", "$filter", "$http", "$httpBackend", "$httpParamSerializer",
-        "$httpParamSerializerJQLike", "$interpolate", "$interval", "$jsonpCallbacks", "$locale",
-        "$location", "$log", "$parse", "$q", "$rootElement", "$rootScope", "$sce", "$sceDelegate",
-        "$templateCache", "$templateRequest", "$timeout", "$window", "$xhrFactory"
-      ]
-    or
+    name = "$anchorScroll" or
+    name = "$animate" or
+    name = "$animateCss" or
+    name = "$cacheFactory" or
+    name = "$controller" or
+    name = "$document" or
+    name = "$exceptionHandler" or
+    name = "$filter" or
+    name = "$http" or
+    name = "$httpBackend" or
+    name = "$httpParamSerializer" or
+    name = "$httpParamSerializerJQLike" or
+    name = "$interpolate" or
+    name = "$interval" or
+    name = "$jsonpCallbacks" or
+    name = "$locale" or
+    name = "$location" or
+    name = "$log" or
+    name = "$parse" or
+    name = "$q" or
+    name = "$rootElement" or
+    name = "$rootScope" or
+    name = "$sce" or
+    name = "$sceDelegate" or
+    name = "$templateCache" or
+    name = "$templateRequest" or
+    name = "$timeout" or
+    name = "$window" or
+    name = "$xhrFactory" or
     // auto
-    name = ["$injector", "$provide"]
-    or
+    name = "$injector" or
+    name = "$provide" or
     // ngAnimate
-    name = ["$animate", "$animateCss"]
-    or
+    name = "$animate" or
+    name = "$animateCss" or
     // ngAria
-    name = "$aria"
-    or
+    name = "$aria" or
     // ngComponentRouter
-    name = ["$rootRouter", "$routerRootComponent"]
-    or
+    name = "$rootRouter" or
+    name = "$routerRootComponent" or
     // ngCookies
-    name = ["$cookieStore", "$cookies"]
-    or
+    name = "$cookieStore" or
+    name = "$cookies" or
     //ngMock
-    name =
-      [
-        "$animate", "$componentController", "$controller", "$exceptionHandler", "$httpBackend",
-        "$interval", "$log", "$timeout"
-      ]
-    or
+    name = "$animate" or
+    name = "$componentController" or
+    name = "$controller" or
+    name = "$exceptionHandler" or
+    name = "$httpBackend" or
+    name = "$interval" or
+    name = "$log" or
+    name = "$timeout" or
     //ngMockE2E
-    name = "$httpBackend"
-    or
+    name = "$httpBackend" or
     // ngResource
-    name = "$resource"
-    or
+    name = "$resource" or
     // ngRoute
-    name = ["$route", "$routeParams"]
-    or
+    name = "$route" or
+    name = "$routeParams" or
     // ngSanitize
-    name = "$sanitize"
-    or
+    name = "$sanitize" or
     // ngTouch
     name = "$swipe"
   )
@@ -176,29 +194,32 @@ private string getBuiltinKind(string name) {
   result = "provider" and
   (
     // ng
-    name =
-      [
-        "$anchorScrollProvider", "$animateProvider", "$compileProvider", "$controllerProvider",
-        "$filterProvider", "$httpProvider", "$interpolateProvider", "$locationProvider",
-        "$logProvider", "$parseProvider", "$provider", "$qProvider", "$rootScopeProvider",
-        "$sceDelegateProvider", "$sceProvider", "$templateRequestProvider"
-      ]
-    or
+    name = "$anchorScrollProvider" or
+    name = "$animateProvider" or
+    name = "$compileProvider" or
+    name = "$controllerProvider" or
+    name = "$filterProvider" or
+    name = "$httpProvider" or
+    name = "$interpolateProvider" or
+    name = "$locationProvider" or
+    name = "$logProvider" or
+    name = "$parseProvider" or
+    name = "$provider" or
+    name = "$qProvider" or
+    name = "$rootScopeProvider" or
+    name = "$sceDelegateProvider" or
+    name = "$sceProvider" or
+    name = "$templateRequestProvider" or
     // ngAria
-    name = "$ariaProvider"
-    or
+    name = "$ariaProvider" or
     // ngCookies
-    name = "$cookiesProvider"
-    or
+    name = "$cookiesProvider" or
     // ngmock
-    name = "$exceptionHandlerProvider"
-    or
+    name = "$exceptionHandlerProvider" or
     // ngResource
-    name = "$resourceProvider"
-    or
+    name = "$resourceProvider" or
     // ngRoute
-    name = "$routeProvider"
-    or
+    name = "$routeProvider" or
     // ngSanitize
     name = "$sanitizeProvider"
   )
@@ -206,8 +227,9 @@ private string getBuiltinKind(string name) {
   result = "type" and
   (
     // ng
-    name = ["$cacheFactory", "$compile", "$rootScope"]
-    or
+    name = "$cacheFactory" or
+    name = "$compile" or
+    name = "$rootScope" or
     // ngMock
     name = "$rootScope"
   )
@@ -244,17 +266,17 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
       this = moduleRef(_).getAMethodCall(methodName) or
       this = builtinServiceRef("$provide").getAMethodCall(methodName)
     ) and
-    this.getArgument(0).mayHaveStringValue(name)
+    getArgument(0).asExpr().mayHaveStringValue(name)
   }
 
   override string getName() { result = name }
 
-  override DataFlow::SourceNode getAFactoryFunction() { result.flowsTo(this.getArgument(1)) }
+  override DataFlow::SourceNode getAFactoryFunction() { result.flowsTo(getArgument(1)) }
 
   override DataFlow::Node getAnInjectableFunction() {
     methodName != "value" and
     methodName != "constant" and
-    result = this.getAFactoryFunction()
+    result = getAFactoryFunction()
   }
 }
 
@@ -269,7 +291,7 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
  */
 abstract private class CustomSpecialServiceDefinition extends CustomServiceDefinition,
   DependencyInjection {
-  override DataFlow::Node getAnInjectableFunction() { result = this.getAFactoryFunction() }
+  override DataFlow::Node getAnInjectableFunction() { result = getAFactoryFunction() }
 }
 
 /**
@@ -278,11 +300,11 @@ abstract private class CustomSpecialServiceDefinition extends CustomServiceDefin
 bindingset[moduleMethodName]
 private predicate isCustomServiceDefinitionOnModule(
   DataFlow::CallNode mce, string moduleMethodName, string serviceName,
-  DataFlow::Node factoryFunction
+  DataFlow::Node factoryArgument
 ) {
   mce = moduleRef(_).getAMethodCall(moduleMethodName) and
-  mce.getArgument(0).mayHaveStringValue(serviceName) and
-  factoryFunction = mce.getArgument(1)
+  mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
+  factoryArgument = mce.getArgument(1)
 }
 
 pragma[inline]
@@ -296,7 +318,7 @@ private predicate isCustomServiceDefinitionOnProvider(
     factoryArgument = mce.getOptionArgument(0, serviceName)
     or
     mce.getNumArgument() = 2 and
-    mce.getArgument(0).mayHaveStringValue(serviceName) and
+    mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
     factoryArgument = mce.getArgument(1)
   )
 }
@@ -338,7 +360,7 @@ class FilterDefinition extends CustomSpecialServiceDefinition {
   override DataFlow::SourceNode getAService() {
     exists(InjectableFunction f |
       f = factoryFunction.getALocalSource() and
-      result.flowsTo(f.asFunction().getAReturn())
+      result.flowsToExpr(f.asFunction().getAReturnedExpr())
     )
   }
 
@@ -428,7 +450,7 @@ class AnimationDefinition extends CustomSpecialServiceDefinition {
   override DataFlow::SourceNode getAService() {
     exists(InjectableFunction f |
       f = factoryFunction.getALocalSource() and
-      result.flowsTo(f.asFunction().getAReturn())
+      result.flowsToExpr(f.asFunction().getAReturnedExpr())
     )
   }
 
@@ -446,37 +468,22 @@ BuiltinServiceReference getBuiltinServiceOfKind(string kind) {
 }
 
 /**
- * DEPRECATED: Use `ServiceRequestNode` instead.
  * A request for one or more AngularJS services.
  */
-deprecated class ServiceRequest extends Expr {
-  ServiceRequestNode node;
-
-  ServiceRequest() { this.flow() = node }
-
-  /** Gets the parameter of this request into which `service` is injected. */
-  deprecated Parameter getDependencyParameter(ServiceReference service) {
-    result.flow() = node.getDependencyParameter(service)
-  }
-}
-
-/**
- * A request for one or more AngularJS services.
- */
-abstract class ServiceRequestNode extends DataFlow::Node {
+abstract class ServiceRequest extends Expr {
   /**
    * Gets the parameter of this request into which `service` is injected.
    */
-  abstract DataFlow::ParameterNode getDependencyParameter(ServiceReference service);
+  abstract Parameter getDependencyParameter(ServiceReference service);
 }
 
 /**
  * The request for a scope service in the form of the link-function of a directive.
  */
-private class LinkFunctionWithScopeInjection extends ServiceRequestNode {
+private class LinkFunctionWithScopeInjection extends ServiceRequest {
   LinkFunctionWithScopeInjection() { this instanceof LinkFunction }
 
-  override DataFlow::ParameterNode getDependencyParameter(ServiceReference service) {
+  override Parameter getDependencyParameter(ServiceReference service) {
     service instanceof ScopeServiceReference and
     result = this.(LinkFunction).getScopeParameter()
   }
@@ -485,10 +492,10 @@ private class LinkFunctionWithScopeInjection extends ServiceRequestNode {
 /**
  * A request for a service, in the form of a dependency-injected function.
  */
-class InjectableFunctionServiceRequest extends ServiceRequestNode {
+class InjectableFunctionServiceRequest extends ServiceRequest {
   InjectableFunction injectedFunction;
 
-  InjectableFunctionServiceRequest() { injectedFunction = this }
+  InjectableFunctionServiceRequest() { injectedFunction.getAstNode() = this }
 
   /**
    * Gets the function of this request.
@@ -498,9 +505,7 @@ class InjectableFunctionServiceRequest extends ServiceRequestNode {
   /**
    * Gets a name of a requested service.
    */
-  string getAServiceName() {
-    exists(this.getAnInjectedFunction().getADependencyDeclaration(result))
-  }
+  string getAServiceName() { exists(getAnInjectedFunction().getADependencyDeclaration(result)) }
 
   /**
    * Gets a service with the specified name, relative to this request.
@@ -511,16 +516,16 @@ class InjectableFunctionServiceRequest extends ServiceRequestNode {
     result.isInjectable()
   }
 
-  override DataFlow::ParameterNode getDependencyParameter(ServiceReference service) {
+  override Parameter getDependencyParameter(ServiceReference service) {
     service = injectedFunction.getAResolvedDependency(result)
   }
 }
 
 private DataFlow::SourceNode getFactoryFunctionResult(RecipeDefinition def) {
-  exists(DataFlow::FunctionNode factoryFunction, InjectableFunction f |
+  exists(Function factoryFunction, InjectableFunction f |
     f = def.getAFactoryFunction() and
     factoryFunction = f.asFunction() and
-    result.flowsTo(factoryFunction.getAReturn())
+    result.flowsToExpr(factoryFunction.getAReturnedExpr())
   )
 }
 
@@ -578,8 +583,8 @@ class ServiceRecipeDefinition extends RecipeDefinition {
      */
 
     exists(InjectableFunction f |
-      f = this.getAFactoryFunction() and
-      result = f.asFunction()
+      f = getAFactoryFunction() and
+      result.getAstNode() = f.asFunction()
     )
   }
 }
@@ -591,7 +596,7 @@ class ServiceRecipeDefinition extends RecipeDefinition {
 class ValueRecipeDefinition extends RecipeDefinition {
   ValueRecipeDefinition() { methodName = "value" }
 
-  override DataFlow::SourceNode getAService() { result = this.getAFactoryFunction() }
+  override DataFlow::SourceNode getAService() { result = getAFactoryFunction() }
 }
 
 /**
@@ -601,7 +606,7 @@ class ValueRecipeDefinition extends RecipeDefinition {
 class ConstantRecipeDefinition extends RecipeDefinition {
   ConstantRecipeDefinition() { methodName = "constant" }
 
-  override DataFlow::SourceNode getAService() { result = this.getAFactoryFunction() }
+  override DataFlow::SourceNode getAService() { result = getAFactoryFunction() }
 }
 
 /**
@@ -624,8 +629,8 @@ class ProviderRecipeDefinition extends RecipeDefinition {
      */
 
     exists(DataFlow::ThisNode thiz, InjectableFunction f |
-      f = this.getAFactoryFunction() and
-      thiz.getBinder() = f.asFunction() and
+      f = getAFactoryFunction() and
+      thiz.getBinder().getFunction() = f.asFunction() and
       result = thiz.getAPropertySource("$get")
     )
   }
@@ -649,9 +654,7 @@ class ConfigMethodDefinition extends ModuleApiCall {
   /**
    * Gets a provided configuration method.
    */
-  InjectableFunction getConfigMethod() {
-    result.(DataFlow::SourceNode).flowsTo(this.getArgument(0))
-  }
+  InjectableFunction getConfigMethod() { result.(DataFlow::SourceNode).flowsTo(getArgument(0)) }
 }
 
 /**
@@ -664,12 +667,12 @@ class RunMethodDefinition extends ModuleApiCall {
   /**
    * Gets a provided run method.
    */
-  InjectableFunction getRunMethod() { result.(DataFlow::SourceNode).flowsTo(this.getArgument(0)) }
+  InjectableFunction getRunMethod() { result.(DataFlow::SourceNode).flowsTo(getArgument(0)) }
 }
 
 /**
  * The `$scope` or `$rootScope` service.
  */
 class ScopeServiceReference extends BuiltinServiceReference {
-  ScopeServiceReference() { this.getName() = "$scope" or this.getName() = "$rootScope" }
+  ScopeServiceReference() { getName() = "$scope" or getName() = "$rootScope" }
 }

@@ -9,25 +9,25 @@ module Koa {
   /**
    * An expression that creates a new Koa application.
    */
-  class AppDefinition extends Http::Servers::StandardServerDefinition, DataFlow::InvokeNode {
+  class AppDefinition extends HTTP::Servers::StandardServerDefinition, InvokeExpr {
     AppDefinition() {
       // `app = new Koa()` / `app = Koa()`
-      this = DataFlow::moduleImport("koa").getAnInvocation()
+      this = DataFlow::moduleImport("koa").getAnInvocation().asExpr()
     }
   }
 
   /**
    * An HTTP header defined in a Koa application.
    */
-  private class HeaderDefinition extends Http::Servers::StandardHeaderDefinition {
+  private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
     RouteHandler rh;
 
     HeaderDefinition() {
       // ctx.set('Cache-Control', 'no-cache');
-      this.calls(rh.getAResponseOrContextNode(), "set")
+      astNode.calls(rh.getAResponseOrContextExpr(), "set")
       or
       // ctx.response.header('Cache-Control', 'no-cache')
-      this.calls(rh.getAResponseNode(), "header")
+      astNode.calls(rh.getAResponseExpr(), "header")
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -36,20 +36,11 @@ module Koa {
   /**
    * A Koa route handler.
    */
-  abstract class RouteHandler extends Http::Servers::StandardRouteHandler, DataFlow::SourceNode {
+  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::SourceNode {
     /**
      * Gets the parameter of the route handler that contains the context object.
      */
-    DataFlow::ParameterNode getContextParameter() {
-      result = this.getAFunctionValue().getParameter(0)
-    }
-
-    /**
-     * DEPRECATED: Use `getAContextNode` instead.
-     * Gets an expression that contains the "context" object of
-     * a route handler invocation.
-     */
-    deprecated Expr getAContextExpr() { result = this.getAContextNode().asExpr() }
+    Parameter getContextParameter() { result = getAFunctionValue().getFunction().getParameter(0) }
 
     /**
      * Gets an expression that contains the "context" object of
@@ -59,45 +50,25 @@ module Koa {
      * `this` or `ctx`, given as the first and only argument to the
      * route handler.
      */
-    DataFlow::Node getAContextNode() { result.(ContextNode).getRouteHandler() = this }
-
-    /**
-     * DEPRECATED: Use `getAResponseOrContextNode` instead.
-     * Gets an expression that contains the context or response
-     * object of a route handler invocation.
-     */
-    deprecated Expr getAResponseOrContextExpr() {
-      result = this.getAResponseOrContextNode().asExpr()
-    }
+    Expr getAContextExpr() { result.(ContextExpr).getRouteHandler() = this }
 
     /**
      * Gets an expression that contains the context or response
      * object of a route handler invocation.
      */
-    DataFlow::Node getAResponseOrContextNode() {
-      result = this.getAResponseNode() or result = this.getAContextNode()
-    }
-
-    /**
-     * DEPRECATED: Use `getARequestOrContextNode` instead.
-     * Gets an expression that contains the context or request
-     * object of a route handler invocation.
-     */
-    deprecated Expr getARequestOrContextExpr() { result = this.getARequestOrContextNode().asExpr() }
+    Expr getAResponseOrContextExpr() { result = getAResponseExpr() or result = getAContextExpr() }
 
     /**
      * Gets an expression that contains the context or request
      * object of a route handler invocation.
      */
-    DataFlow::Node getARequestOrContextNode() {
-      result = this.getARequestNode() or result = this.getAContextNode()
-    }
+    Expr getARequestOrContextExpr() { result = getARequestExpr() or result = getAContextExpr() }
 
     /**
      * Gets a reference to a request parameter defined by this route handler.
      */
     DataFlow::Node getARequestParameterAccess() {
-      none() // overridden in subclasses.
+      none() // overriden in subclasses.
     }
 
     /**
@@ -131,7 +102,7 @@ module Koa {
     RouteHandler rh;
 
     ContextSource() {
-      this = rh.getContextParameter()
+      this = DataFlow::parameterNode(rh.getContextParameter())
       or
       this.(DataFlow::ThisNode).getBinder() = rh
     }
@@ -141,15 +112,17 @@ module Koa {
      */
     RouteHandler getRouteHandler() { result = rh }
 
+    predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
+
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
       result = this
       or
-      exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
 
     /** Gets a source node that refers to this context object. */
-    DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
   }
 
   /**
@@ -227,10 +200,10 @@ module Koa {
    * A Koa request source, that is, an access to the `request` property
    * of a context object.
    */
-  private class RequestSource extends Http::Servers::RequestSource instanceof DataFlow::PropRead {
-    ContextNode ctx;
+  private class RequestSource extends HTTP::Servers::RequestSource {
+    ContextExpr ctx;
 
-    RequestSource() { super.accesses(ctx, "request") }
+    RequestSource() { asExpr().(PropAccess).accesses(ctx, "request") }
 
     /**
      * Gets the route handler that provides this response.
@@ -242,7 +215,7 @@ module Koa {
    * A Koa request source, accessed through the a request property of a
    * generator route handler (deprecated in Koa 3).
    */
-  private class GeneratorRequestSource extends Http::Servers::RequestSource {
+  private class GeneratorRequestSource extends HTTP::Servers::RequestSource {
     RouteHandler rh;
 
     GeneratorRequestSource() {
@@ -262,10 +235,10 @@ module Koa {
    * A Koa response source, that is, an access to the `response` property
    * of a context object.
    */
-  private class ResponseSource extends Http::Servers::ResponseSource instanceof DataFlow::PropRead {
-    ContextNode ctx;
+  private class ResponseSource extends HTTP::Servers::ResponseSource {
+    ContextExpr ctx;
 
-    ResponseSource() { super.accesses(ctx, "response") }
+    ResponseSource() { asExpr().(PropAccess).accesses(ctx, "response") }
 
     /**
      * Gets the route handler that provides this response.
@@ -274,25 +247,12 @@ module Koa {
   }
 
   /**
-   * DEPRECATED: Use `ContextNode` instead.
    * An expression that may hold a Koa context object.
    */
-  deprecated class ContextExpr extends Expr {
-    ContextNode node;
-
-    ContextExpr() { node.asExpr() = this }
-
-    /** Gets the route handler that provides this response. */
-    deprecated RouteHandler getRouteHandler() { result = node.getRouteHandler() }
-  }
-
-  /**
-   * An expression that may hold a Koa context object.
-   */
-  class ContextNode extends DataFlow::Node {
+  class ContextExpr extends Expr {
     ContextSource src;
 
-    ContextNode() { src.ref().flowsTo(this) }
+    ContextExpr() { src.flowsTo(DataFlow::valueNode(this)) }
 
     /**
      * Gets the route handler that provides this response.
@@ -301,39 +261,23 @@ module Koa {
   }
 
   /**
-   * DEPRECATED: Use `RequestNode` instead.
    * An expression that may hold a Koa request object.
    */
-  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
-    RequestExpr() { this.flow() instanceof RequestNode }
-  }
-
-  /**
-   * An expression that may hold a Koa request object.
-   */
-  class RequestNode extends Http::Servers::StandardRequestNode {
+  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
     override RequestSource src;
   }
 
   /**
-   * DEPRECATED: Use `ResponseNode` instead.
    * An expression that may hold a Koa response object.
    */
-  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
-    ResponseExpr() { this.flow() instanceof ResponseNode }
-  }
-
-  /**
-   * An expression that may hold a Koa response object.
-   */
-  class ResponseNode extends Http::Servers::StandardResponseNode {
+  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
     override ResponseSource src;
   }
 
   /**
    * An access to a user-controlled Koa request input.
    */
-  private class RequestInputAccess extends Http::RequestInputAccess {
+  private class RequestInputAccess extends HTTP::RequestInputAccess {
     RouteHandler rh;
     string kind;
 
@@ -344,11 +288,11 @@ module Koa {
       kind = "parameter" and
       this = rh.getARequestParameterAccess()
       or
-      exists(DataFlow::Node e | rh.getARequestOrContextNode() = e |
+      exists(Expr e | rh.getARequestOrContextExpr() = e |
         // `ctx.request.url`, `ctx.request.originalUrl`, or `ctx.request.href`
         exists(string propName |
           kind = "url" and
-          this.(DataFlow::PropRead).accesses(e, propName)
+          this.asExpr().(PropAccess).accesses(e, propName)
         |
           propName = "url"
           or
@@ -359,19 +303,19 @@ module Koa {
         or
         // params, when handler is registered by `koa-router` or similar.
         kind = "parameter" and
-        this.(DataFlow::PropRead).accesses(e, "params")
+        this.asExpr().(PropAccess).accesses(e, "params")
         or
         // `ctx.request.body`
-        e instanceof RequestNode and
+        e instanceof RequestExpr and
         kind = "body" and
-        this.(DataFlow::PropRead).accesses(e, "body")
+        this.asExpr().(PropAccess).accesses(e, "body")
         or
         // `ctx.cookies.get(<name>)`
-        exists(DataFlow::PropRead cookies |
-          e instanceof ContextNode and
+        exists(PropAccess cookies |
+          e instanceof ContextExpr and
           kind = "cookie" and
           cookies.accesses(e, "cookies") and
-          this = cookies.getAMethodCall("get")
+          this = cookies.flow().(DataFlow::SourceNode).getAMethodCall("get")
         )
         or
         exists(RequestHeaderAccess access | access = this |
@@ -390,31 +334,31 @@ module Koa {
 
   private DataFlow::Node getAQueryParameterAccess(RouteHandler rh) {
     // `ctx.query.name` or `ctx.request.query.name`
-    exists(DataFlow::PropRead q |
-      q.accesses(rh.getARequestOrContextNode(), "query") and
-      result = q.getAPropertyRead()
+    exists(PropAccess q |
+      q.accesses(rh.getARequestOrContextExpr(), "query") and
+      result = q.flow().(DataFlow::SourceNode).getAPropertyRead()
     )
   }
 
   /**
    * An access to an HTTP header on a Koa request.
    */
-  private class RequestHeaderAccess extends Http::RequestHeaderAccess {
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
     RouteHandler rh;
 
     RequestHeaderAccess() {
-      exists(DataFlow::Node e | e = rh.getARequestOrContextNode() |
-        exists(string propName, DataFlow::PropRead headers |
+      exists(Expr e | e = rh.getARequestOrContextExpr() |
+        exists(string propName, PropAccess headers |
           // `ctx.request.header.<name>`, `ctx.request.headers.<name>`
           headers.accesses(e, propName) and
-          this = headers.getAPropertyRead()
+          this = headers.flow().(DataFlow::SourceNode).getAPropertyRead()
         |
           propName = "header" or
           propName = "headers"
         )
         or
         // `ctx.request.get(<name>)`
-        this.(DataFlow::MethodCallNode).calls(e, "get")
+        this.asExpr().(MethodCallExpr).calls(e, "get")
       )
     }
 
@@ -435,33 +379,37 @@ module Koa {
   /**
    * A call to a Koa method that sets up a route.
    */
-  class RouteSetup extends Http::Servers::StandardRouteSetup, DataFlow::MethodCallNode {
+  class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
     AppDefinition server;
 
     RouteSetup() {
       // app.use(fun)
-      server.ref().getAMethodCall("use") = this
+      server.flowsTo(getReceiver()) and
+      getMethodName() = "use"
     }
 
     override DataFlow::SourceNode getARouteHandler() {
       // `StandardRouteHandler` uses this predicate in it's charpred, so making this predicate return a `RouteHandler` would give an empty recursion.
-      result.flowsTo(this.getArgument(0))
+      result.flowsToExpr(getArgument(0))
       or
       // For the route-handlers that does not depend on this predicate in their charpred.
-      result.(RouteHandler).getARouteHandlerRegistrationObject().flowsTo(this.getArgument(0))
+      result.(RouteHandler).getARouteHandlerRegistrationObject().flowsToExpr(getArgument(0))
     }
 
-    override DataFlow::Node getServer() { result = server }
+    override Expr getServer() { result = server }
   }
 
   /**
    * A value assigned to the body of an HTTP response object.
    */
-  private class ResponseSendArgument extends Http::ResponseSendArgument {
+  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
     RouteHandler rh;
 
     ResponseSendArgument() {
-      exists(DataFlow::PropWrite pwn | pwn.writes(rh.getAResponseOrContextNode(), "body", this))
+      exists(DataFlow::PropWrite pwn |
+        pwn.writes(DataFlow::valueNode(rh.getAResponseOrContextExpr()), "body",
+          DataFlow::valueNode(this))
+      )
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -470,12 +418,12 @@ module Koa {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends Http::RedirectInvocation instanceof DataFlow::MethodCallNode {
+  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
     RouteHandler rh;
 
-    RedirectInvocation() { super.calls(rh.getAResponseOrContextNode(), "redirect") }
+    RedirectInvocation() { this.(MethodCallExpr).calls(rh.getAResponseOrContextExpr(), "redirect") }
 
-    override DataFlow::Node getUrlArgument() { result = this.getArgument(0) }
+    override Expr getUrlArgument() { result = getArgument(0) }
 
     override RouteHandler getRouteHandler() { result = rh }
   }
@@ -490,10 +438,10 @@ module Koa {
 
     override DataFlow::SourceNode getOutput() { none() }
 
-    override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
 
     override DataFlow::Node getTemplateParamsNode() {
-      result = this.getArgument(1)
+      result = getArgument(1)
       or
       result = ctx.ref().getAPropertyReference("state")
     }

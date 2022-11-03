@@ -11,6 +11,7 @@
  */
 
 import python
+import python
 import AdvancedFormatting
 
 int field_count(AdvancedFormatString fmt) { result = max(fmt.getFieldNumber(_, _)) + 1 }

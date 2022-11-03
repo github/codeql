@@ -1,4 +1,4 @@
 import javascript
 
-from Http::ResponseBody rb
+from HTTP::ResponseBody rb
 select rb

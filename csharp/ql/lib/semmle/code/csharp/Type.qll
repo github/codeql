@@ -372,8 +372,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     nested_types(this, _, result)
   }
 
-  override predicate isRecord() { this.hasModifier("record") }
-
   override string toString() { result = Type.super.toString() }
 }
 
@@ -415,8 +413,6 @@ class VoidType extends DotNet::ValueOrRefType, Type, @void_type {
   final override string getUndecoratedName() { result = "Void" }
 
   override SystemNamespace getDeclaringNamespace() { any() }
-
-  override string getAPrimaryQlClass() { result = "VoidType" }
 }
 
 /**
@@ -452,22 +448,12 @@ class SimpleType extends ValueType, @simple_type {
 }
 
 /**
- * A `record` like type.
- * This can be either a `class` or a `struct`.
- */
-class RecordType extends ValueOrRefType {
-  RecordType() { this.isRecord() }
-}
-
-/**
  * The Boolean type, `bool`.
  */
 class BoolType extends SimpleType, @bool_type {
   override string toStringWithTypes() { result = "bool" }
 
   override int getSize() { result = 1 }
-
-  override string getAPrimaryQlClass() { result = "BoolType" }
 }
 
 /**
@@ -481,8 +467,6 @@ class CharType extends SimpleType, @char_type {
   override int minValue() { result = 0 }
 
   override int maxValue() { result = 65535 }
-
-  override string getAPrimaryQlClass() { result = "CharType" }
 }
 
 /**
@@ -522,8 +506,6 @@ class SByteType extends SignedIntegralType, @sbyte_type {
   override int minValue() { result = -128 }
 
   override int maxValue() { result = 127 }
-
-  override string getAPrimaryQlClass() { result = "SByteType" }
 }
 
 /**
@@ -537,8 +519,6 @@ class ShortType extends SignedIntegralType, @short_type {
   override int minValue() { result = -32768 }
 
   override int maxValue() { result = 32767 }
-
-  override string getAPrimaryQlClass() { result = "ShortType" }
 }
 
 /**
@@ -552,8 +532,6 @@ class IntType extends SignedIntegralType, @int_type {
   override int minValue() { result = -2147483647 - 1 }
 
   override int maxValue() { result = 2147483647 }
-
-  override string getAPrimaryQlClass() { result = "IntType" }
 }
 
 /**
@@ -563,8 +541,6 @@ class LongType extends SignedIntegralType, @long_type {
   override string toStringWithTypes() { result = "long" }
 
   override int getSize() { result = 8 }
-
-  override string getAPrimaryQlClass() { result = "LongType" }
 }
 
 /**
@@ -576,8 +552,6 @@ class ByteType extends UnsignedIntegralType, @byte_type {
   override int getSize() { result = 1 }
 
   override int maxValue() { result = 255 }
-
-  override string getAPrimaryQlClass() { result = "ByteType" }
 }
 
 /**
@@ -589,8 +563,6 @@ class UShortType extends UnsignedIntegralType, @ushort_type {
   override int getSize() { result = 2 }
 
   override int maxValue() { result = 65535 }
-
-  override string getAPrimaryQlClass() { result = "UShortType" }
 }
 
 /**
@@ -600,8 +572,6 @@ class UIntType extends UnsignedIntegralType, @uint_type {
   override string toStringWithTypes() { result = "uint" }
 
   override int getSize() { result = 4 }
-
-  override string getAPrimaryQlClass() { result = "UIntType" }
 }
 
 /**
@@ -611,8 +581,6 @@ class ULongType extends UnsignedIntegralType, @ulong_type {
   override string toStringWithTypes() { result = "ulong" }
 
   override int getSize() { result = 8 }
-
-  override string getAPrimaryQlClass() { result = "ULongType" }
 }
 
 /**
@@ -629,8 +597,6 @@ class FloatType extends FloatingPointType, @float_type {
   override string toStringWithTypes() { result = "float" }
 
   override int getSize() { result = 4 }
-
-  override string getAPrimaryQlClass() { result = "FloatType" }
 }
 
 /**
@@ -640,8 +606,6 @@ class DoubleType extends FloatingPointType, @double_type {
   override string toStringWithTypes() { result = "double" }
 
   override int getSize() { result = 8 }
-
-  override string getAPrimaryQlClass() { result = "DoubleType" }
 }
 
 /**
@@ -651,8 +615,6 @@ class DecimalType extends SimpleType, @decimal_type {
   override string toStringWithTypes() { result = "decimal" }
 
   override int getSize() { result = 16 }
-
-  override string getAPrimaryQlClass() { result = "DecimalType" }
 }
 
 /**
@@ -722,18 +684,6 @@ class Struct extends ValueType, @struct_type {
 }
 
 /**
- * A `record struct`, for example
- * ```csharp
- * record struct RS {
- *   ...
- * }
- * ```
- */
-class RecordStruct extends RecordType, Struct {
-  override string getAPrimaryQlClass() { result = "RecordStruct" }
-}
-
-/**
  * A reference type.
  *
  * Either a `class` (`Class`), an `interface` (`Interface`), a `delegate` (`DelegateType`),
@@ -788,16 +738,6 @@ class Class extends RefType, @class_type {
 }
 
 /**
- * DEPRECATED: Use `RecordClass` instead.
- */
-deprecated class Record extends Class {
-  Record() { this.isRecord() }
-
-  /** Gets the clone method of this record. */
-  RecordCloneMethod getCloneMethod() { result = this.getAMember() }
-}
-
-/**
  * A `record`, for example
  *
  * ```csharp
@@ -806,11 +746,13 @@ deprecated class Record extends Class {
  * }
  * ```
  */
-class RecordClass extends RecordType, Class {
+class Record extends Class {
+  Record() { this.isRecord() }
+
   /** Gets the clone method of this record. */
   RecordCloneMethod getCloneMethod() { result = this.getAMember() }
 
-  override string getAPrimaryQlClass() { result = "RecordClass" }
+  override string getAPrimaryQlClass() { result = "Record" }
 }
 
 /**
@@ -833,8 +775,6 @@ class ObjectType extends Class {
   ObjectType() { this.hasQualifiedName("System.Object") }
 
   override string toStringWithTypes() { result = "object" }
-
-  override string getAPrimaryQlClass() { result = "ObjectType" }
 }
 
 /**
@@ -844,8 +784,6 @@ class StringType extends Class {
   StringType() { this.hasQualifiedName("System.String") }
 
   override string toStringWithTypes() { result = "string" }
-
-  override string getAPrimaryQlClass() { result = "StringType" }
 }
 
 /**
@@ -882,7 +820,7 @@ private newtype TCallingConvention =
   MkCallingConvention(int i) { function_pointer_calling_conventions(_, i) }
 
 /**
- * A signature representing a calling convention. Specifies how arguments in a given
+ * Represents a signature calling convention. Specifies how arguments in a given
  * signature are passed from the caller to the callee.
  */
 class CallingConvention extends TCallingConvention {
@@ -890,21 +828,21 @@ class CallingConvention extends TCallingConvention {
   string toString() { result = "CallingConvention" }
 }
 
-/** A managed calling convention with fixed-length argument list. */
+/** Managed calling convention with fixed-length argument list. */
 class DefaultCallingConvention extends CallingConvention {
   DefaultCallingConvention() { this = MkCallingConvention(0) }
 
   override string toString() { result = "DefaultCallingConvention" }
 }
 
-/** An unmanaged C/C++-style calling convention where the call stack is cleaned by the caller. */
+/** Unmanaged C/C++-style calling convention where the call stack is cleaned by the caller. */
 class CDeclCallingConvention extends CallingConvention {
   CDeclCallingConvention() { this = MkCallingConvention(1) }
 
   override string toString() { result = "CDeclCallingConvention" }
 }
 
-/** An unmanaged calling convention where call stack is cleaned up by the callee. */
+/** Unmanaged calling convention where call stack is cleaned up by the callee. */
 class StdCallCallingConvention extends CallingConvention {
   StdCallCallingConvention() { this = MkCallingConvention(2) }
 
@@ -912,7 +850,7 @@ class StdCallCallingConvention extends CallingConvention {
 }
 
 /**
- * An unmanaged C++-style calling convention for calling instance member functions
+ * Unmanaged C++-style calling convention for calling instance member functions
  * with a fixed argument list.
  */
 class ThisCallCallingConvention extends CallingConvention {
@@ -921,28 +859,18 @@ class ThisCallCallingConvention extends CallingConvention {
   override string toString() { result = "ThisCallCallingConvention" }
 }
 
-/** An unmanaged calling convention where arguments are passed in registers when possible. */
+/** Unmanaged calling convention where arguments are passed in registers when possible. */
 class FastCallCallingConvention extends CallingConvention {
   FastCallCallingConvention() { this = MkCallingConvention(4) }
 
   override string toString() { result = "FastCallCallingConvention" }
 }
 
-/** A managed calling convention for passing extra arguments. */
+/** Managed calling convention for passing extra arguments. */
 class VarArgsCallingConvention extends CallingConvention {
   VarArgsCallingConvention() { this = MkCallingConvention(5) }
 
   override string toString() { result = "VarArgsCallingConvention" }
-}
-
-/**
- * An unmanaged calling convention that indicates that the specifics
- * are encoded as modopts.
- */
-class UnmanagedCallingConvention extends CallingConvention {
-  UnmanagedCallingConvention() { this = MkCallingConvention(9) }
-
-  override string toString() { result = "UnmanagedCallingConvention" }
 }
 
 /**
@@ -982,9 +910,7 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
 /**
  * The `null` type. The type of the `null` literal.
  */
-class NullType extends RefType, @null_type {
-  override string getAPrimaryQlClass() { result = "NullType" }
-}
+class NullType extends RefType, @null_type { }
 
 /**
  * A nullable type, for example `int?`.
@@ -1198,8 +1124,6 @@ class TupleType extends ValueType, @tuple_type {
   final override predicate hasQualifiedName(string qualifier, string name) {
     this.getUnderlyingType().hasQualifiedName(qualifier, name)
   }
-
-  override string getAPrimaryQlClass() { result = "TupleType" }
 }
 
 /**

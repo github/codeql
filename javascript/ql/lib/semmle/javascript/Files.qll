@@ -48,7 +48,7 @@ abstract class Container extends @container {
    */
   string getRelativePath() {
     exists(string absPath, string pref |
-      absPath = this.getAbsolutePath() and sourceLocationPrefix(pref)
+      absPath = getAbsolutePath() and sourceLocationPrefix(pref)
     |
       absPath = pref and result = ""
       or
@@ -74,9 +74,7 @@ abstract class Container extends @container {
    * <tr><td>"//FileServer/"</td><td>""</td></tr>
    * </table>
    */
-  string getBaseName() {
-    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 1)
-  }
+  string getBaseName() { result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 1) }
 
   /**
    * Gets the extension of this container, that is, the suffix of its base name
@@ -102,7 +100,7 @@ abstract class Container extends @container {
    * </table>
    */
   string getExtension() {
-    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 4)
+    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 4)
   }
 
   /**
@@ -122,9 +120,7 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() {
-    result = this.getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 2)
-  }
+  string getStem() { result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 2) }
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() { containerparent(result, this) }
@@ -133,20 +129,20 @@ abstract class Container extends @container {
   Container getAChildContainer() { this = result.getParentContainer() }
 
   /** Gets a file in this container. */
-  File getAFile() { result = this.getAChildContainer() }
+  File getAFile() { result = getAChildContainer() }
 
   /** Gets the file in this container that has the given `baseName`, if any. */
   File getFile(string baseName) {
-    result = this.getAFile() and
+    result = getAFile() and
     result.getBaseName() = baseName
   }
 
   /** Gets a sub-folder in this container. */
-  Folder getAFolder() { result = this.getAChildContainer() }
+  Folder getAFolder() { result = getAChildContainer() }
 
   /** Gets the sub-folder in this container that has the given `baseName`, if any. */
   Folder getFolder(string baseName) {
-    result = this.getAFolder() and
+    result = getAFolder() and
     result.getBaseName() = baseName
   }
 
@@ -155,7 +151,7 @@ abstract class Container extends @container {
    *
    * This is the absolute path of the container.
    */
-  string toString() { result = this.getAbsolutePath() }
+  string toString() { result = getAbsolutePath() }
 }
 
 /** A folder. */
@@ -164,24 +160,15 @@ class Folder extends Container, @folder {
 
   /** Gets the file or subfolder in this folder that has the given `name`, if any. */
   Container getChildContainer(string name) {
-    result = this.getAChildContainer() and
+    result = getAChildContainer() and
     result.getBaseName() = name
   }
 
   /** Gets the file in this folder that has the given `stem` and `extension`, if any. */
   File getFile(string stem, string extension) {
-    result = this.getAChildContainer() and
+    result = getAChildContainer() and
     result.getStem() = stem and
     result.getExtension() = extension
-  }
-
-  /** Like `getFile` except `d.ts` is treated as a single extension. */
-  private File getFileLongExtension(string stem, string extension) {
-    not (stem.matches("%.d") and extension = "ts") and
-    result = this.getFile(stem, extension)
-    or
-    extension = "d.ts" and
-    result = this.getFile(stem + ".d", "ts")
   }
 
   /**
@@ -197,18 +184,14 @@ class Folder extends Container, @folder {
    */
   File getJavaScriptFile(string stem) {
     result =
-      min(int p, string ext |
-        p = getFileExtensionPriority(ext)
-      |
-        this.getFileLongExtension(stem, ext) order by p
-      )
+      min(int p, string ext | p = getFileExtensionPriority(ext) | getFile(stem, ext) order by p)
   }
 
   /** Gets a subfolder contained in this folder. */
-  Folder getASubFolder() { result = this.getAChildContainer() }
+  Folder getASubFolder() { result = getAChildContainer() }
 
   /** Gets the URL of this folder. */
-  override string getURL() { result = "folder://" + this.getAbsolutePath() }
+  override string getURL() { result = "folder://" + getAbsolutePath() }
 }
 
 /** A file. */
@@ -233,6 +216,8 @@ class File extends Container, @file {
 
   /** Gets a toplevel piece of JavaScript code in this file. */
   TopLevel getATopLevel() { result.getFile() = this }
+
+  override string toString() { result = Container.super.toString() }
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }

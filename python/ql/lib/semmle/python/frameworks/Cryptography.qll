@@ -14,7 +14,7 @@ private import semmle.python.ApiGraphs
  */
 private module CryptographyModel {
   /**
-   * Provides helper predicates for the elliptic curve cryptography parts in
+   * Provides helper predicates for the eliptic curve cryptography parts in
    * `cryptography.hazmat.primitives.asymmetric.ec`.
    */
   module Ecc {
@@ -22,7 +22,7 @@ private module CryptographyModel {
      * Gets a predefined curve class from
      * `cryptography.hazmat.primitives.asymmetric.ec` with a specific key size (in bits).
      */
-    API::Node predefinedCurveClass(int keySize) {
+    private API::Node predefinedCurveClass(int keySize) {
       exists(string curveName |
         result =
           API::moduleImport("cryptography")
@@ -72,6 +72,41 @@ private module CryptographyModel {
         or
         curveName = "BrainpoolP512R1" and keySize = 512
       )
+    }
+
+    /** Gets a reference to a predefined curve class with a specific key size (in bits), as well as the origin of the class. */
+    private DataFlow::TypeTrackingNode curveClassWithKeySize(
+      DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
+    ) {
+      t.start() and
+      result = predefinedCurveClass(keySize).getAnImmediateUse() and
+      origin = result
+      or
+      exists(DataFlow::TypeTracker t2 |
+        result = curveClassWithKeySize(t2, keySize, origin).track(t2, t)
+      )
+    }
+
+    /** Gets a reference to a predefined curve class with a specific key size (in bits), as well as the origin of the class. */
+    DataFlow::Node curveClassWithKeySize(int keySize, DataFlow::Node origin) {
+      curveClassWithKeySize(DataFlow::TypeTracker::end(), keySize, origin).flowsTo(result)
+    }
+
+    /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
+    private DataFlow::TypeTrackingNode curveClassInstanceWithKeySize(
+      DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
+    ) {
+      t.start() and
+      result.(DataFlow::CallCfgNode).getFunction() = curveClassWithKeySize(keySize, origin)
+      or
+      exists(DataFlow::TypeTracker t2 |
+        result = curveClassInstanceWithKeySize(t2, keySize, origin).track(t2, t)
+      )
+    }
+
+    /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
+    DataFlow::Node curveClassInstanceWithKeySize(int keySize, DataFlow::Node origin) {
+      curveClassInstanceWithKeySize(DataFlow::TypeTracker::end(), keySize, origin).flowsTo(result)
     }
   }
 
@@ -144,11 +179,9 @@ private module CryptographyModel {
     DataFlow::Node getCurveArg() { result in [this.getArg(0), this.getArgByName("curve")] }
 
     override int getKeySizeWithOrigin(DataFlow::Node origin) {
-      exists(API::Node n | n = Ecc::predefinedCurveClass(result) and origin = n.asSource() |
-        this.getCurveArg() = n.getAValueReachableFromSource()
-        or
-        this.getCurveArg() = n.getReturn().getAValueReachableFromSource()
-      )
+      this.getCurveArg() = Ecc::curveClassInstanceWithKeySize(result, origin)
+      or
+      this.getCurveArg() = Ecc::curveClassWithKeySize(result, origin)
     }
 
     // Note: There is not really a key-size argument, since it's always specified by the curve.
@@ -168,20 +201,10 @@ private module CryptographyModel {
             .getMember(algorithmName)
     }
 
-    /** Gets a reference to a `cryptography.hazmat.primitives.ciphers.modes` Class */
-    API::Node modeClassRef(string modeName) {
-      result =
-        API::moduleImport("cryptography")
-            .getMember("hazmat")
-            .getMember("primitives")
-            .getMember("ciphers")
-            .getMember("modes")
-            .getMember(modeName)
-    }
-
     /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
-    API::Node cipherInstance(string algorithmName, string modeName) {
-      exists(API::CallNode call | result = call.getReturn() |
+    DataFlow::TypeTrackingNode cipherInstance(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::CallCfgNode call | result = call |
         call =
           API::moduleImport("cryptography")
               .getMember("hazmat")
@@ -189,15 +212,51 @@ private module CryptographyModel {
               .getMember("ciphers")
               .getMember("Cipher")
               .getACall() and
-        algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
+        algorithmClassRef(algorithmName).getReturn().getAUse() in [
             call.getArg(0), call.getArgByName("algorithm")
-          ] and
-        exists(DataFlow::Node modeArg | modeArg in [call.getArg(1), call.getArgByName("mode")] |
-          if modeArg = modeClassRef(_).getReturn().getAValueReachableFromSource()
-          then modeArg = modeClassRef(modeName).getReturn().getAValueReachableFromSource()
-          else modeName = "<None or unknown>"
-        )
+          ]
       )
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherInstance(t2, algorithmName).track(t2, t))
+    }
+
+    /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::Node cipherInstance(string algorithmName) {
+      cipherInstance(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /** Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::TypeTrackingNode cipherEncryptor(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      result.(DataFlow::MethodCallNode).calls(cipherInstance(algorithmName), "encryptor")
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherEncryptor(t2, algorithmName).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`.
+     *
+     * You obtain an encryptor by using the `encryptor()` method on a Cipher instance.
+     */
+    DataFlow::Node cipherEncryptor(string algorithmName) {
+      cipherEncryptor(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /** Gets a reference to the dncryptor of a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::TypeTrackingNode cipherDecryptor(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      result.(DataFlow::MethodCallNode).calls(cipherInstance(algorithmName), "decryptor")
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherDecryptor(t2, algorithmName).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to the decryptor of a Cipher instance using algorithm with `algorithmName`.
+     *
+     * You obtain an decryptor by using the `decryptor()` method on a Cipher instance.
+     */
+    DataFlow::Node cipherDecryptor(string algorithmName) {
+      cipherDecryptor(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
     }
 
     /**
@@ -206,15 +265,13 @@ private module CryptographyModel {
     class CryptographyGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
       DataFlow::MethodCallNode {
       string algorithmName;
-      string modeName;
 
       CryptographyGenericCipherOperation() {
-        this =
-          cipherInstance(algorithmName, modeName)
-              .getMember(["decryptor", "encryptor"])
-              .getReturn()
-              .getMember(["update", "update_into"])
-              .getACall()
+        exists(DataFlow::Node object, string method |
+          object in [cipherEncryptor(algorithmName), cipherDecryptor(algorithmName)] and
+          method in ["update", "update_into"] and
+          this.calls(object, method)
+        )
       }
 
       override Cryptography::CryptographicAlgorithm getAlgorithm() {
@@ -222,8 +279,6 @@ private module CryptographyModel {
       }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
-
-      override Cryptography::BlockMode getBlockMode() { result = modeName }
     }
   }
 
@@ -243,8 +298,9 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
-    private API::Node hashInstance(string algorithmName) {
-      exists(API::CallNode call | result = call.getReturn() |
+    private DataFlow::TypeTrackingNode hashInstance(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::CallCfgNode call | result = call |
         call =
           API::moduleImport("cryptography")
               .getMember("hazmat")
@@ -252,10 +308,17 @@ private module CryptographyModel {
               .getMember("hashes")
               .getMember("Hash")
               .getACall() and
-        algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
+        algorithmClassRef(algorithmName).getReturn().getAUse() in [
             call.getArg(0), call.getArgByName("algorithm")
           ]
       )
+      or
+      exists(DataFlow::TypeTracker t2 | result = hashInstance(t2, algorithmName).track(t2, t))
+    }
+
+    /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
+    DataFlow::Node hashInstance(string algorithmName) {
+      hashInstance(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
     }
 
     /**
@@ -265,17 +328,13 @@ private module CryptographyModel {
       DataFlow::MethodCallNode {
       string algorithmName;
 
-      CryptographyGenericHashOperation() {
-        this = hashInstance(algorithmName).getMember("update").getACall()
-      }
+      CryptographyGenericHashOperation() { this.calls(hashInstance(algorithmName), "update") }
 
       override Cryptography::CryptographicAlgorithm getAlgorithm() {
         result.matchesName(algorithmName)
       }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
-
-      override Cryptography::BlockMode getBlockMode() { none() }
     }
   }
 }

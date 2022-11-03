@@ -1,7 +1,7 @@
 name: codeql-csharp-tests
-groups: [csharp, test]
+version: 0.0.2
 dependencies:
-  codeql/csharp-all: ${workspace}
-  codeql/csharp-queries: ${workspace}
+  codeql/csharp-all: "*"
+  codeql/csharp-queries: "*"
 extractor: csharp
 tests: .

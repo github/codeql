@@ -101,7 +101,7 @@ class GenericInterface extends GenericType, Interface {
  */
 abstract class BoundedType extends RefType, @boundedtype {
   /** Holds if this type is bounded. */
-  predicate hasTypeBound() { exists(this.getATypeBound()) }
+  predicate hasTypeBound() { exists(TypeBound tb | tb = this.getATypeBound()) }
 
   /** Gets a type bound for this type, if any. */
   TypeBound getATypeBound() { result.getBoundedType() = this }
@@ -137,7 +137,7 @@ abstract class BoundedType extends RefType, @boundedtype {
  * For example, `T` is a type parameter in
  * `class X<T> { }` and in `<T> void m() { }`.
  */
-class TypeVariable extends BoundedType, Modifiable, @typevariable {
+class TypeVariable extends BoundedType, @typevariable {
   /** Gets the generic type that is parameterized by this type parameter, if any. */
   GenericType getGenericType() { typeVars(this, _, _, _, result) }
 

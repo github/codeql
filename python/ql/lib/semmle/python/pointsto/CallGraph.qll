@@ -23,8 +23,6 @@ private newtype TTInvocation =
   }
 
 /**
- * A function invocation.
- *
  * This class represents a static approximation to the
  * dynamic call-graph. A `FunctionInvocation` represents
  * all calls made to a function for a given context.

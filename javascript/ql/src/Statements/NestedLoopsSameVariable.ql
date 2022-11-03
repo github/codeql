@@ -15,17 +15,16 @@ import javascript
 /**
  * Gets an iteration variable that loop `for` tests and updates.
  */
-Variable getAnIterationVariable(ForStmt for, Expr upAccess) {
+Variable getAnIterationVariable(ForStmt for) {
   result.getAnAccess().getParentExpr*() = for.getTest() and
   exists(UpdateExpr upd | upd.getParentExpr*() = for.getUpdate() |
-    upAccess = upd.getOperand() and upAccess = result.getAnAccess()
+    upd.getOperand() = result.getAnAccess()
   )
 }
 
-from ForStmt outer, ForStmt inner, Variable iteration, Expr upAccess
+from ForStmt outer, ForStmt inner
 where
   inner.nestedIn(outer) and
-  iteration = getAnIterationVariable(outer, _) and
-  iteration = getAnIterationVariable(inner, upAccess)
-select inner.getTest(), "Nested for statement uses loop variable $@ of enclosing $@.", upAccess,
-  iteration.getName(), outer, "for statement"
+  getAnIterationVariable(outer) = getAnIterationVariable(inner)
+select inner.getTest(), "This for statement uses the same loop variable as an enclosing $@.", outer,
+  "for statement"

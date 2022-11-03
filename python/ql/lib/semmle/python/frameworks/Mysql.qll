@@ -21,11 +21,17 @@ private import semmle.python.frameworks.PEP249
  * - https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
  */
 private module Mysql {
-  /**
-   * The mysql.connector module
-   * See https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
-   */
-  class MysqlConnector extends PEP249::PEP249ModuleApiNode {
-    MysqlConnector() { this = API::moduleImport("mysql").getMember("connector") }
+  // ---------------------------------------------------------------------------
+  // mysql
+  // ---------------------------------------------------------------------------
+  /** Provides models for the `mysql` module. */
+  module mysql {
+    /**
+     * The mysql.connector module
+     * See https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
+     */
+    class MysqlConnector extends PEP249::PEP249ModuleApiNode {
+      MysqlConnector() { this = API::moduleImport("mysql").getMember("connector") }
+    }
   }
 }

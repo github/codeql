@@ -12,7 +12,7 @@
 
 import java
 
-predicate usefulUpcast(CastingExpr e) {
+predicate usefulUpcast(CastExpr e) {
   // Upcasts that may be performed to affect resolution of methods or constructors.
   exists(Call c, int i, Callable target |
     c.getArgument(i) = e and
@@ -25,7 +25,7 @@ predicate usefulUpcast(CastingExpr e) {
       other.getName() = target.getName() and
       other.getSourceDeclaration() != target.getSourceDeclaration()
     |
-      c.(MethodAccess).getReceiverType().inherits(other.(Method)) or
+      c.(MethodAccess).getReceiverType().(RefType).inherits(other.(Method)) or
       other = target.(Constructor).getDeclaringType().getAConstructor()
     )
   )
@@ -59,13 +59,12 @@ predicate usefulUpcast(CastingExpr e) {
 
 from Expr e, RefType src, RefType dest
 where
-  exists(CastingExpr cse | cse = e |
-    (cse instanceof CastExpr or cse instanceof SafeCastExpr) and
+  exists(CastExpr cse | cse = e |
     exists(cse.getLocation()) and
     src = cse.getExpr().getType() and
     dest = cse.getType()
   ) and
-  dest = src.getAStrictAncestor() and
+  dest = src.getASupertype+() and
   not usefulUpcast(e)
 select e, "There is no need to upcast from $@ to $@ - the conversion can be done implicitly.", src,
   src.getName(), dest, dest.getName()

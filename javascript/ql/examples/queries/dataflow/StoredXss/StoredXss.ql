@@ -12,7 +12,7 @@ import semmle.javascript.security.dataflow.StoredXssQuery
 import DataFlow::PathGraph
 
 /**
- * The data returned from a MySQL query, such as the `data` parameter in this example:
+ * Data returned from a MySQL query, such as the `data` parameter in this example:
  * ```
  * let mysql = require('mysql');
  * let connection = mysql.createConnection();

@@ -109,7 +109,7 @@ where
         // the property wasn't explicitly set, so a default value from config is used
         not isPropertySet(oc, "HttpOnly") and
         // the default in config is not set to `true`
-        not exists(XmlElement element |
+        not exists(XMLElement element |
           element instanceof HttpCookiesElement and
           element.(HttpCookiesElement).isHttpOnlyCookies()
         )

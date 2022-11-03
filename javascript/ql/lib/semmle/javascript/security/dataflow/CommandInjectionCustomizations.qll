@@ -5,6 +5,7 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module CommandInjection {
   /**

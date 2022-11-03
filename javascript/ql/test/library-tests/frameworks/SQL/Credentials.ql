@@ -1,4 +1,4 @@
 import javascript
 
-from CredentialsNode ce
+from CredentialsExpr ce
 select ce, ce.getCredentialsKind()

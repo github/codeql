@@ -1,2 +1,0 @@
-| Test.kt:11:8:11:18 | a | The parameter 'a' is never used. |
-| Test.kt:19:5:19:5 | <this> | The parameter '<this>' is never used. |

@@ -51,4 +51,4 @@ where
         100 * sum(Class c | c.fromSource() | c.getMetrics().getEfferentSourceCoupling()) /
           sum(Class c | c.fromSource() | c.getMetrics().getEfferentCoupling())
       ).toString() + "%"
-select l as title, n as value
+select l as Title, n as Value

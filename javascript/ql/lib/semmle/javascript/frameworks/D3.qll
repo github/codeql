@@ -1,15 +1,17 @@
-/** Provides classes and predicates modeling aspects of the `d3` library. */
+/** Provides classes and predicates modelling aspects of the `d3` library. */
 
 private import javascript
-private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
+private import semmle.javascript.security.dataflow.Xss
 
-/** Provides classes and predicates modeling aspects of the `d3` library. */
+/** Provides classes and predicates modelling aspects of the `d3` library. */
 module D3 {
   /** The global variable `d3` as an entry point for API graphs. */
   private class D3GlobalEntry extends API::EntryPoint {
     D3GlobalEntry() { this = "D3GlobalEntry" }
 
-    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("d3") }
+    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("d3") }
+
+    override DataFlow::Node getARhs() { none() }
   }
 
   /** Gets an API node referring to the `d3` module. */
@@ -21,7 +23,7 @@ module D3 {
     or
     result = API::moduleImport("d3-node").getInstance().getMember("d3")
     or
-    result = any(D3GlobalEntry i).getANode()
+    result = API::root().getASuccessor(any(D3GlobalEntry i))
   }
 
   /**
@@ -69,18 +71,18 @@ module D3 {
     D3XssSink() {
       exists(API::Node htmlArg |
         htmlArg = d3Selection().getMember("html").getParameter(0) and
-        this = [htmlArg, htmlArg.getReturn()].asSink()
+        this = [htmlArg, htmlArg.getReturn()].getARhs()
       )
     }
   }
 
   private class D3DomValueSource extends DOM::DomValueSource::Range {
     D3DomValueSource() {
-      this = d3Selection().getMember("each").getReceiver().asSource()
+      this = d3Selection().getMember("each").getReceiver().getAnImmediateUse()
       or
-      this = d3Selection().getMember("node").getReturn().asSource()
+      this = d3Selection().getMember("node").getReturn().getAnImmediateUse()
       or
-      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().asSource()
+      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().getAnImmediateUse()
     }
   }
 

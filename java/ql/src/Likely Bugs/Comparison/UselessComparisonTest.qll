@@ -7,7 +7,12 @@ import semmle.code.java.dataflow.SSA
  * The kind of bound that is known to hold for some variable.
  */
 library class BoundKind extends string {
-  BoundKind() { this = ["=", "!=", ">=", "<="] }
+  BoundKind() {
+    this = "=" or
+    this = "!=" or
+    this = ">=" or
+    this = "<="
+  }
 
   predicate isEqual() { this = "=" }
 

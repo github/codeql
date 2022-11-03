@@ -9,18 +9,18 @@ module Babel {
    * A Babel configuration object, either from `package.json` or from a
    * `.babelrc` file.
    */
-  class Config extends JsonObject {
+  class Config extends JSONObject {
     Config() {
       isTopLevel() and getJsonFile().getBaseName().matches(".babelrc%")
       or
-      this = any(PackageJson pkg).getPropValue("babel")
+      this = any(PackageJSON pkg).getPropValue("babel")
     }
 
     /**
      * Gets the configuration for the plugin with the given name.
      */
-    JsonValue getPluginConfig(string pluginName) {
-      exists(JsonArray plugins |
+    JSONValue getPluginConfig(string pluginName) {
+      exists(JSONArray plugins |
         plugins = getPropValue("plugins") and
         result = plugins.getElementValue(_)
       |
@@ -38,7 +38,7 @@ module Babel {
       or
       result = getAContainerInScope().getAChildContainer() and
       // File-relative .babelrc search stops at any package.json or .babelrc file.
-      not result.getAChildContainer() = any(PackageJson pkg).getJsonFile() and
+      not result.getAChildContainer() = any(PackageJSON pkg).getJsonFile() and
       not result.getAChildContainer() = any(Config pkg).getJsonFile()
     }
 
@@ -49,9 +49,9 @@ module Babel {
   }
 
   /**
-   * A configuration object for a Babel plugin.
+   * Configuration object for a Babel plugin.
    */
-  class Plugin extends JsonValue {
+  class Plugin extends JSONValue {
     Config cfg;
     string pluginName;
 
@@ -64,10 +64,10 @@ module Babel {
     Config getConfig() { result = cfg }
 
     /** Gets the options value passed to the plugin, if any. */
-    JsonValue getOptions() { result = this.(JsonArray).getElementValue(1) }
+    JSONValue getOptions() { result = this.(JSONArray).getElementValue(1) }
 
     /** Gets a named option from the option object, if present. */
-    JsonValue getOption(string name) { result = getOptions().getPropValue(name) }
+    JSONValue getOption(string name) { result = getOptions().getPropValue(name) }
 
     /** Holds if this plugin applies to `tl`. */
     predicate appliesTo(TopLevel tl) { cfg.appliesTo(tl) }
@@ -99,12 +99,12 @@ module Babel {
     /**
      * Gets an object specifying a root prefix.
      */
-    private JsonObject getARootPathSpec() {
+    private JSONObject getARootPathSpec() {
       // ["babel-plugin-root-import", <spec>]
       result = getOptions() and
       exists(result.getPropValue("rootPathSuffix"))
       or
-      exists(JsonArray pathSpecs |
+      exists(JSONArray pathSpecs |
         // ["babel-plugin-root-import", [ <spec>... ] ]
         pathSpecs = getOptions()
         or
@@ -119,7 +119,7 @@ module Babel {
      * Gets the (explicitly specified) root for the given prefix.
      */
     private string getExplicitRoot(string prefix) {
-      exists(JsonObject rootPathSpec |
+      exists(JSONObject rootPathSpec |
         rootPathSpec = getARootPathSpec() and
         result = rootPathSpec.getPropStringValue("rootPathSuffix")
       |
@@ -140,6 +140,7 @@ module Babel {
    */
   private class BabelRootTransformedPathExpr extends PathExpr, Expr {
     RootImportConfig plugin;
+    string rawPath;
     string prefix;
     string mappedPrefix;
     string suffix;
@@ -147,8 +148,9 @@ module Babel {
     BabelRootTransformedPathExpr() {
       this instanceof PathExpr and
       plugin.appliesTo(getTopLevel()) and
-      prefix = getStringValue().regexpCapture("(.)/(.*)", 1) and
-      suffix = getStringValue().regexpCapture("(.)/(.*)", 2) and
+      rawPath = getStringValue() and
+      prefix = rawPath.regexpCapture("(.)/(.*)", 1) and
+      suffix = rawPath.regexpCapture("(.)/(.*)", 2) and
       mappedPrefix = plugin.getRoot(prefix)
     }
 
@@ -198,7 +200,7 @@ module Babel {
               .getMember(["transform", "transformSync", "transformAsync"])
               .getACall() and
         pred = call.getArgument(0) and
-        succ = [call, call.getParameter(2).getParameter(0).asSource()]
+        succ = [call, call.getParameter(2).getParameter(0).getAnImmediateUse()]
       )
     }
   }

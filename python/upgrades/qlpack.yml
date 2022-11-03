@@ -1,0 +1,4 @@
+name: codeql/python-upgrades
+upgrades: .
+library: true
+version: 0.0.2

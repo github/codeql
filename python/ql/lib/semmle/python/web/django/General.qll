@@ -5,7 +5,7 @@ import semmle.python.web.Http
 // TODO: Since django uses `path = partial(...)`, our analysis doesn't understand this is
 // a FunctionValue, so we can't use `FunctionValue.getArgumentForCall`
 // https://github.com/django/django/blob/master/django/urls/conf.py#L76
-abstract deprecated class DjangoRoute extends CallNode {
+abstract class DjangoRoute extends CallNode {
   DjangoViewHandler getViewHandler() {
     result = view_handler_from_view_arg(this.getArg(1))
     or
@@ -26,7 +26,7 @@ abstract deprecated class DjangoRoute extends CallNode {
  * https://docs.djangoproject.com/en/1.11/topics/http/views/
  * https://docs.djangoproject.com/en/3.0/topics/http/views/
  */
-deprecated class DjangoViewHandler extends PythonFunctionValue {
+class DjangoViewHandler extends PythonFunctionValue {
   /** Gets the index of the 'request' argument */
   int getRequestArgIndex() { result = 0 }
 }
@@ -36,7 +36,7 @@ deprecated class DjangoViewHandler extends PythonFunctionValue {
  * https://docs.djangoproject.com/en/1.11/topics/class-based-views/
  * https://docs.djangoproject.com/en/3.0/topics/class-based-views/
  */
-deprecated private class DjangoViewClass extends ClassValue {
+private class DjangoViewClass extends ClassValue {
   DjangoViewClass() {
     Value::named("django.views.generic.View") = this.getASuperType()
     or
@@ -44,7 +44,7 @@ deprecated private class DjangoViewClass extends ClassValue {
   }
 }
 
-deprecated class DjangoClassBasedViewHandler extends DjangoViewHandler {
+class DjangoClassBasedViewHandler extends DjangoViewHandler {
   DjangoClassBasedViewHandler() { exists(DjangoViewClass cls | cls.lookup(httpVerbLower()) = this) }
 
   override int getRequestArgIndex() {
@@ -57,7 +57,7 @@ deprecated class DjangoClassBasedViewHandler extends DjangoViewHandler {
  * Gets the function that will handle requests when `view_arg` is used as the view argument to a
  * django route. That is, this methods handles Class-based Views and its `as_view()` function.
  */
-deprecated private DjangoViewHandler view_handler_from_view_arg(ControlFlowNode view_arg) {
+private DjangoViewHandler view_handler_from_view_arg(ControlFlowNode view_arg) {
   // Function-based view
   result = view_arg.pointsTo()
   or
@@ -70,11 +70,11 @@ deprecated private DjangoViewHandler view_handler_from_view_arg(ControlFlowNode 
 
 // We need this "dummy" class, since otherwise the regex argument would not be considered
 // a regex (RegexString is abstract)
-deprecated class DjangoRouteRegex extends RegexString {
+class DjangoRouteRegex extends RegexString {
   DjangoRouteRegex() { exists(DjangoRegexRoute route | route.getRouteArg() = this.getAFlowNode()) }
 }
 
-deprecated class DjangoRegexRoute extends DjangoRoute {
+class DjangoRegexRoute extends DjangoRoute {
   ControlFlowNode route;
 
   DjangoRegexRoute() {
@@ -109,7 +109,7 @@ deprecated class DjangoRegexRoute extends DjangoRoute {
   }
 }
 
-deprecated class DjangoPathRoute extends DjangoRoute {
+class DjangoPathRoute extends DjangoRoute {
   ControlFlowNode route;
 
   DjangoPathRoute() {

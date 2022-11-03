@@ -2,25 +2,19 @@
 
 import semmle.code.java.Type
 
-library class JaxbElement extends Class {
-  JaxbElement() {
-    this.getAnAncestor().getQualifiedName() = "javax.xml.bind.JAXBElement" or
+library class JAXBElement extends Class {
+  JAXBElement() {
+    this.getASupertype*().getQualifiedName() = "javax.xml.bind.JAXBElement" or
     this.getAnAnnotation().getType().getName() = "XmlRootElement"
   }
 }
 
-/** DEPRECATED: Alias for JaxbElement */
-deprecated class JAXBElement = JaxbElement;
-
-library class JaxbMarshalMethod extends Method {
-  JaxbMarshalMethod() {
+library class JAXBMarshalMethod extends Method {
+  JAXBMarshalMethod() {
     this.getDeclaringType().getQualifiedName() = "javax.xml.bind.Marshaller" and
     this.getName() = "marshal"
   }
 }
-
-/** DEPRECATED: Alias for JaxbMarshalMethod */
-deprecated class JAXBMarshalMethod = JaxbMarshalMethod;
 
 class JaxbAnnotationType extends AnnotationType {
   JaxbAnnotationType() { this.getPackage().getName() = "javax.xml.bind.annotation" }
@@ -60,7 +54,7 @@ class JaxbType extends Class {
       this.getAnAnnotation() = a and
       a.getType().(JaxbAnnotationType).hasName("XmlAccessorType")
     |
-      result = a.getEnumConstantValue("value")
+      result.getAnAccess() = a.getValue("value").(VarAccess)
     )
   }
 

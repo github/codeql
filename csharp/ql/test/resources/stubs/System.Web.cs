@@ -42,7 +42,6 @@ namespace System.Web
     {
         public void Transfer(string path) { }
         public string UrlEncode(string s) => null;
-        public string HtmlEncode(string s) => null;
     }
 
     public class HttpApplication : IHttpHandler
@@ -156,7 +155,6 @@ namespace System.Web
     public class HttpResponse
     {
         public void Write(object o) { }
-        public void WriteFile(string s) { }
         public HttpCookieCollection Cookies => null;
         public void AddHeader(string name, string value) { }
         public void Redirect(string url) { }
@@ -169,6 +167,14 @@ namespace System.Web
         public HttpResponse Response => null;
         public SessionState.HttpSessionState Session => null;
         public HttpServerUtility Server => null;
+    }
+
+    public class HttpUtility
+    {
+        public static string HtmlEncode(object value) => null;
+        public static string HtmlEncode(string value) => null;
+        public static string UrlEncode(string value) => null;
+        public static string HtmlAttributeEncode(string value) => null;
     }
 
     public class HttpCookie

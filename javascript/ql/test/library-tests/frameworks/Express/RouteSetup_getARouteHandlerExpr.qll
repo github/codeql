@@ -1,5 +1,5 @@
 import javascript
 
-query predicate test_RouteSetup_getARouteHandlerExpr(Express::RouteSetup r, DataFlow::Node res) {
-  res = r.getARouteHandlerNode()
+query predicate test_RouteSetup_getARouteHandlerExpr(Express::RouteSetup r, Expr res) {
+  res = r.getARouteHandlerExpr()
 }

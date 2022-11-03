@@ -1,6 +1,0 @@
-| test_subscript.py:4:11:4:28 | Use moduleImport("mypkg").getMember("foo").getReturn().getASubscript() |
-| test_subscript.py:5:26:5:27 | Def moduleImport("mypkg").getMember("foo").getReturn().getASubscript() |
-| test_subscript.py:6:5:6:22 | Use moduleImport("mypkg").getMember("foo").getReturn().getASubscript() |
-| test_subscript.py:6:5:6:28 | Def moduleImport("mypkg").getMember("foo").getReturn().getASubscript() |
-| test_subscript.py:7:5:7:22 | Use moduleImport("mypkg").getMember("foo").getReturn().getASubscript() |
-| test_subscript.py:7:5:7:28 | Def moduleImport("mypkg").getMember("foo").getReturn().getASubscript() |

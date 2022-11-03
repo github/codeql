@@ -25,7 +25,7 @@ private module Cached {
   cached
   predicate alwaysThrowsException(Method m, Type t) {
     alwaysThrowsMethod(m) and
-    forex(Throw ex | ex = m.getImplementation().getAnInstruction() | t = ex.getExceptionType())
+    forex(Throw ex | ex = m.getImplementation().getAnInstruction() | t = ex.getExpr().getType())
   }
 }
 
@@ -56,7 +56,7 @@ private predicate alwaysNotNullVariableUpdate(VariableUpdate vu) {
 
 /** Holds if expression `expr` always evaluates to non-null. */
 private predicate alwaysNotNullExpr(Expr expr) {
-  expr instanceof Opcodes::NewObj
+  expr instanceof Opcodes::Newobj
   or
   expr instanceof Literal and not expr instanceof NullLiteral
   or

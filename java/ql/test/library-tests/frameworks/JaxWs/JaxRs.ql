@@ -14,7 +14,7 @@ class JaxRsTest extends InlineExpectationsTest {
         "InjectionAnnotation", "ResponseDeclaration", "ResponseBuilderDeclaration",
         "ClientDeclaration", "BeanParamConstructor", "MessageBodyReaderDeclaration",
         "MessageBodyReaderReadFromCall", "MessageBodyReaderReadCall", "ProducesAnnotation",
-        "ConsumesAnnotation", "XssSink"
+        "ConsumesAnnotation"
       ]
   }
 
@@ -55,7 +55,7 @@ class JaxRsTest extends InlineExpectationsTest {
     or
     tag = "ResourceMethodOnResourceClass" and
     exists(JaxRsResourceMethod resourceMethod |
-      resourceMethod = any(JaxRsResourceClass resourceClass).getAResourceMethod()
+      resourceMethod = any(JaxRsResourceClass ResourceClass).getAResourceMethod()
     |
       resourceMethod.getLocation() = location and
       element = resourceMethod.toString() and

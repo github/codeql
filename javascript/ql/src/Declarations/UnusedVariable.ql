@@ -37,20 +37,20 @@ predicate isPropertyFilter(UnusedLocal v) {
 }
 
 predicate hasJsxInScope(UnusedLocal v) {
-  any(JsxNode n).getParent+() = v.getScope().getScopeElement()
+  any(JSXNode n).getParent+() = v.getScope().getScopeElement()
 }
 
 /**
  * Holds if `v` is a "React" variable that is implicitly used by a JSX element.
  */
-predicate isReactForJsx(UnusedLocal v) {
+predicate isReactForJSX(UnusedLocal v) {
   hasJsxInScope(v) and
   (
     v.getName() = "React"
     or
     exists(TopLevel tl | tl = v.getADeclaration().getTopLevel() |
       // legacy `@jsx` pragmas
-      exists(JsxPragma p | p.getTopLevel() = tl | p.getDomName() = v.getName())
+      exists(JSXPragma p | p.getTopLevel() = tl | p.getDOMName() = v.getName())
       or
       // JSX pragma from a .babelrc file
       exists(Babel::TransformReactJsxConfig plugin |
@@ -59,7 +59,7 @@ predicate isReactForJsx(UnusedLocal v) {
       )
     )
     or
-    exists(JsonObject tsconfig |
+    exists(JSONObject tsconfig |
       tsconfig.isTopLevel() and tsconfig.getFile().getBaseName() = "tsconfig.json"
     |
       v.getName() =
@@ -144,14 +144,11 @@ predicate whitelisted(UnusedLocal v) {
   // exclude variables mentioned in JSDoc comments in externs
   mentionedInJSDocComment(v)
   or
-  // the attributes in .vue files are not extracted, so we can get false positives in those.
-  v.getADeclaration().getFile().getExtension() = "vue"
-  or
   // exclude variables used to filter out unwanted properties
   isPropertyFilter(v)
   or
   // exclude imports of React that are implicitly referenced by JSX
-  isReactForJsx(v)
+  isReactForJSX(v)
   or
   // exclude names that are used as types
   exists(VarDecl vd | v = vd.getVariable() |
@@ -168,9 +165,6 @@ predicate whitelisted(UnusedLocal v) {
     or
     // ignore ambient declarations - too noisy
     vd.isAmbient()
-    or
-    // ignore variables in template placeholders, as each placeholder sees a different copy of the variable
-    vd.getTopLevel() instanceof Templating::TemplateTopLevel
   )
   or
   exists(Expr eval | eval instanceof DirectEval or eval instanceof GeneratedCodeExpr |
@@ -204,7 +198,7 @@ predicate unusedImports(ImportVarDeclProvider provider, string msg) {
   )
 }
 
-from AstNode sel, string msg
+from ASTNode sel, string msg
 where
   (
     unusedNonImports(sel, msg) or

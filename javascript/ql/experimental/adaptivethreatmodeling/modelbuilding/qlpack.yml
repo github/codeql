@@ -1,9 +1,0 @@
-name: codeql/javascript-experimental-atm-model-building
-extractor: javascript
-library: false
-groups:
-    - javascript
-    - experimental
-dependencies:
-    codeql/javascript-experimental-atm-lib: "*"
-    codeql/javascript-experimental-atm-model: "0.2.1-2022-09-06-08h55m54s.bubbly-basin-xpztl8fh.f3c3c9360a727959e428ecc6932257e6a546dc65d8a9baac525a49247123822d"

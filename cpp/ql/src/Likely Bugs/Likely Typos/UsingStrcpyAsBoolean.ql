@@ -7,7 +7,8 @@
  * @problem.severity error
  * @precision high
  * @id cpp/string-copy-return-value-as-boolean
- * @tags correctness
+ * @tags external/microsoft/C6324
+ *       correctness
  */
 
 import cpp

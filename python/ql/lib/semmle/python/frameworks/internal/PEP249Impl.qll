@@ -33,9 +33,7 @@ module PEP249 {
   }
 
   /** Gets a reference to the `connect` function of a module that implements PEP 249. */
-  DataFlow::Node connect() {
-    result = any(PEP249ModuleApiNode a).getMember("connect").getAValueReachableFromSource()
-  }
+  DataFlow::Node connect() { result = any(PEP249ModuleApiNode a).getMember("connect").getAUse() }
 
   /**
    * Provides models for database connections (following PEP 249).
@@ -146,7 +144,7 @@ module PEP249 {
    * Note: while `execute` method on a connection is not part of PEP249, if it is used, we
    * recognize it as an alias for constructing a cursor and calling `execute` on it.
    *
-   * See https://peps.python.org/pep-0249/#execute.
+   * See https://www.python.org/dev/peps/pep-0249/#id15.
    */
   private DataFlow::TypeTrackingNode execute(DataFlow::TypeTracker t) {
     t.startInAttr("execute") and
@@ -161,43 +159,13 @@ module PEP249 {
    * Note: while `execute` method on a connection is not part of PEP249, if it is used, we
    * recognize it as an alias for constructing a cursor and calling `execute` on it.
    *
-   * See https://peps.python.org/pep-0249/#execute.
+   * See https://www.python.org/dev/peps/pep-0249/#id15.
    */
   DataFlow::Node execute() { execute(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-  /**
-   * A call to the `execute` method on a cursor or a connection.
-   *
-   * See https://peps.python.org/pep-0249/#execute
-   *
-   * Note: While `execute` method on a connection is not part of PEP249, if it is used, we
-   * recognize it as an alias for constructing a cursor and calling `execute` on it.
-   */
+  /** A call to the `execute` method on a cursor (or on a connection). */
   private class ExecuteCall extends SqlExecution::Range, DataFlow::CallCfgNode {
     ExecuteCall() { this.getFunction() = execute() }
-
-    override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
-  }
-
-  private DataFlow::TypeTrackingNode executemany(DataFlow::TypeTracker t) {
-    t.startInAttr("executemany") and
-    result in [Cursor::instance(), Connection::instance()]
-    or
-    exists(DataFlow::TypeTracker t2 | result = executemany(t2).track(t2, t))
-  }
-
-  private DataFlow::Node executemany() { executemany(DataFlow::TypeTracker::end()).flowsTo(result) }
-
-  /**
-   * A call to the `executemany` method on a cursor or a connection.
-   *
-   * See https://peps.python.org/pep-0249/#executemany
-   *
-   * Note: While `executemany` method on a connection is not part of PEP249, if it is used, we
-   * recognize it as an alias for constructing a cursor and calling `executemany` on it.
-   */
-  private class ExecutemanyCall extends SqlExecution::Range, DataFlow::CallCfgNode {
-    ExecutemanyCall() { this.getFunction() = executemany() }
 
     override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
   }

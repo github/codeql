@@ -17,11 +17,10 @@ module ConnectExpressShared {
    */
   private class RouteHandlerSignature extends string {
     RouteHandlerSignature() {
-      this =
-        [
-          "request,response", "request,response,next", "request,response,next,parameter",
-          "error,request,response,next"
-        ]
+      this = "request,response" or
+      this = "request,response,next" or
+      this = "request,response,next,parameter" or
+      this = "error,request,response,next"
     }
 
     /** Gets the index of the parameter corresonding to the given `kind`, if any. */
@@ -30,10 +29,10 @@ module ConnectExpressShared {
 
     /** Gets the number of parameters taken by this signature. */
     pragma[noinline]
-    int getArity() { result = count(this.getParameterIndex(_)) }
+    int getArity() { result = count(getParameterIndex(_)) }
 
     /** Holds if this signature takes a parameter of the given kind. */
-    predicate has(string kind) { exists(this.getParameterIndex(kind)) }
+    predicate has(string kind) { exists(getParameterIndex(kind)) }
   }
 
   private module RouteHandlerSignature {
@@ -50,9 +49,9 @@ module ConnectExpressShared {
   }
 
   /**
-   * Holds if `function` appears to match the given signature based on parameter naming.
+   * Holds if `fun` appears to match the given signature based on parameter naming.
    */
-  private predicate matchesSignature(DataFlow::FunctionNode function, RouteHandlerSignature sig) {
+  private predicate matchesSignature(Function function, RouteHandlerSignature sig) {
     function.getNumParameter() = sig.getArity() and
     function.getParameter(sig.getParameterIndex("request")).getName() = ["req", "request"] and
     function.getParameter(sig.getParameterIndex("response")).getName() = ["res", "response"] and
@@ -71,8 +70,8 @@ module ConnectExpressShared {
    * so the caller should restrict the function accordingly.
    */
   pragma[inline]
-  private DataFlow::ParameterNode getRouteHandlerParameter(
-    DataFlow::FunctionNode routeHandler, RouteHandlerSignature sig, string kind
+  private Parameter getRouteHandlerParameter(
+    Function routeHandler, RouteHandlerSignature sig, string kind
   ) {
     result = routeHandler.getParameter(sig.getParameterIndex(kind))
   }
@@ -83,9 +82,7 @@ module ConnectExpressShared {
    * `kind` is one of: "error", "request", "response", "next".
    */
   pragma[inline]
-  DataFlow::ParameterNode getRouteParameterHandlerParameter(
-    DataFlow::FunctionNode routeHandler, string kind
-  ) {
+  Parameter getRouteParameterHandlerParameter(Function routeHandler, string kind) {
     result =
       getRouteHandlerParameter(routeHandler, RouteHandlerSignature::requestResponseNextParameter(),
         kind)
@@ -97,7 +94,7 @@ module ConnectExpressShared {
    * `kind` is one of: "error", "request", "response", "next".
    */
   pragma[inline]
-  DataFlow::ParameterNode getRouteHandlerParameter(DataFlow::FunctionNode routeHandler, string kind) {
+  Parameter getRouteHandlerParameter(Function routeHandler, string kind) {
     if routeHandler.getNumParameter() = 4
     then
       // For arity 4 there is ambiguity between (err, req, res, next) and (req, res, next, param)
@@ -115,9 +112,9 @@ module ConnectExpressShared {
    *
    * For example, this could be the function `function(req, res, next){...}`.
    */
-  class RouteHandlerCandidate extends Http::RouteHandlerCandidate {
+  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
     RouteHandlerCandidate() {
-      matchesSignature(this, _) and
+      matchesSignature(astNode, _) and
       not (
         // heuristic: not a class method (the server invokes this with a function call)
         astNode = any(MethodDefinition def).getBody()

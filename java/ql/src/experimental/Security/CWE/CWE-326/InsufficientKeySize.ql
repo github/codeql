@@ -21,16 +21,16 @@ class ECGenParameterSpec extends RefType {
 /** The `init` method declared in `javax.crypto.KeyGenerator`. */
 class KeyGeneratorInitMethod extends Method {
   KeyGeneratorInitMethod() {
-    this.getDeclaringType() instanceof KeyGenerator and
-    this.hasName("init")
+    getDeclaringType() instanceof KeyGenerator and
+    hasName("init")
   }
 }
 
 /** The `initialize` method declared in `java.security.KeyPairGenerator`. */
 class KeyPairGeneratorInitMethod extends Method {
   KeyPairGeneratorInitMethod() {
-    this.getDeclaringType() instanceof KeyPairGenerator and
-    this.hasName("initialize")
+    getDeclaringType() instanceof KeyPairGenerator and
+    hasName("initialize")
   }
 }
 
@@ -52,7 +52,7 @@ class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof JavaxCryptoKeyGenerator
+    exists(JavaxCryptoKeyGenerator jcg | jcg = source.asExpr())
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -68,7 +68,7 @@ class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
   KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof JavaSecurityKeyPairGenerator
+    exists(JavaSecurityKeyPairGenerator jkg | jkg = source.asExpr())
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -117,12 +117,12 @@ predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
 }
 
 /** Holds if a DSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
-predicate hasShortDsaKeyPair(MethodAccess ma, string msg) {
+predicate hasShortDSAKeyPair(MethodAccess ma, string msg) {
   hasShortAsymmetricKeyPair(ma, msg, "DSA") or hasShortAsymmetricKeyPair(ma, msg, "DH")
 }
 
 /** Holds if a RSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
-predicate hasShortRsaKeyPair(MethodAccess ma, string msg) {
+predicate hasShortRSAKeyPair(MethodAccess ma, string msg) {
   hasShortAsymmetricKeyPair(ma, msg, "RSA")
 }
 
@@ -139,7 +139,7 @@ predicate hasShortECKeyPair(MethodAccess ma, string msg) {
     kc.hasFlowPath(source, dest) and
     DataFlow::localExprFlow(cie, ma.getArgument(0)) and
     ma.getArgument(0).getType() instanceof ECGenParameterSpec and
-    getECKeySize(cie.getArgument(0).(StringLiteral).getValue()) < 256
+    getECKeySize(cie.getArgument(0).(StringLiteral).getRepresentedString()) < 256
   ) and
   msg = "Key size should be at least 256 bits for EC encryption."
 }
@@ -147,7 +147,7 @@ predicate hasShortECKeyPair(MethodAccess ma, string msg) {
 from Expr e, string msg
 where
   hasShortAESKey(e, msg) or
-  hasShortDsaKeyPair(e, msg) or
-  hasShortRsaKeyPair(e, msg) or
+  hasShortDSAKeyPair(e, msg) or
+  hasShortRSAKeyPair(e, msg) or
   hasShortECKeyPair(e, msg)
 select e, msg

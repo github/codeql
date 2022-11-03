@@ -1,7 +1,7 @@
 import javascript
 
 query predicate test_RouteHandler_getAResponseExpr(
-  NodeJSLib::RouteHandler rh, Http::ResponseNode res
+  NodeJSLib::RouteHandler rh, HTTP::ResponseExpr res
 ) {
-  res = rh.getAResponseNode()
+  res = rh.getAResponseExpr()
 }

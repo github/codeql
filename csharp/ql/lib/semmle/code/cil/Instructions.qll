@@ -199,9 +199,9 @@ module Opcodes {
     override string getOpcodeName() { result = "neg" }
 
     override NumericType getType() {
-      result = this.getOperandType(0)
+      result = this.getOperand().getType()
       or
-      this.getOperandType(0) instanceof Enum and result instanceof IntType
+      this.getOperand().getType() instanceof Enum and result instanceof IntType
     }
   }
 
@@ -260,7 +260,7 @@ module Opcodes {
 
     override int getPushCount() { result = 2 } // This is the only instruction that pushes 2 items
 
-    override Type getType() { result = this.getOperandType(0) }
+    override Type getType() { result = this.getOperand(0).getType() }
   }
 
   /** A `ret` instruction. */
@@ -491,7 +491,7 @@ module Opcodes {
 
     override Callable getTarget() { none() }
 
-    /** Gets the function pointer type targeted by this instruction. */
+    /** Gets the function pointer type targetted by this instruction. */
     FunctionPointerType getTargetType() { cil_access(this, result) }
 
     // The number of items popped/pushed from the stack depends on the target of
@@ -766,7 +766,7 @@ module Opcodes {
   }
 
   /** A `newobj` instruction. */
-  class NewObj extends Call, @cil_newobj {
+  class Newobj extends Call, @cil_newobj {
     override string getOpcodeName() { result = "newobj" }
 
     override int getPushCount() { result = 1 }
@@ -787,9 +787,6 @@ module Opcodes {
       )
     }
   }
-
-  /** DEPRECATED: Alias for NewObj */
-  deprecated class Newobj = NewObj;
 
   /** An `initobj` instruction. */
   class Initobj extends Instruction, @cil_initobj {
@@ -850,12 +847,9 @@ module Opcodes {
   }
 
   /** A `rethrow` instruction. */
-  class ReThrow extends Throw, @cil_rethrow {
+  class Rethrow extends Throw, @cil_rethrow {
     override string getOpcodeName() { result = "rethrow" }
   }
-
-  /** DEPRECATED: Alias for ReThrow */
-  deprecated class Rethrow = ReThrow;
 
   /** A `ldlen` instruction. */
   class Ldlen extends UnaryExpr, @cil_ldlen {
@@ -893,7 +887,7 @@ module Opcodes {
   class Ldelem_ref extends ReadArrayElement, @cil_ldelem_ref {
     override string getOpcodeName() { result = "ldelem.ref" }
 
-    override Type getType() { result = this.getOperandType(1) }
+    override Type getType() { result = this.getArray().getType() }
   }
 
   /** An `ldelema` instruction. */

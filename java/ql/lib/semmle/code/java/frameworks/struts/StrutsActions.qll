@@ -6,7 +6,7 @@ import semmle.code.java.frameworks.struts.StrutsXML
  * Gets the custom struts mapper class used for this `refType`, if any.
  */
 private string getStrutsMapperClass(RefType refType) {
-  result = getRootXmlFile(refType).getConstantValue("struts.mapper.class")
+  result = getRootXMLFile(refType).getConstantValue("struts.mapper.class")
 }
 
 /**
@@ -16,12 +16,12 @@ class Struts2ActionClass extends Class {
   Struts2ActionClass() {
     // If there are no XML files present, then we assume we any class that extends a struts 2
     // action must be reflectively constructed, as we have no better indication.
-    not exists(XmlFile xmlFile) and
+    not exists(XMLFile xmlFile) and
     this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action")
     or
     // If there is a struts.xml file, then any class that is specified as an action is considered
     // to be reflectively constructed.
-    exists(StrutsXmlAction strutsAction | this = strutsAction.getActionClass())
+    exists(StrutsXMLAction strutsAction | this = strutsAction.getActionClass())
     or
     // We have determined that this is an action class due to the conventions plugin.
     this instanceof Struts2ConventionActionClass
@@ -64,7 +64,7 @@ class Struts2ActionClass extends Class {
           any()
         else (
           // Use the default mapping
-          exists(StrutsXmlAction strutsAction |
+          exists(StrutsXMLAction strutsAction |
             this = strutsAction.getActionClass() and
             result = strutsAction.getActionMethod()
           )
@@ -72,7 +72,7 @@ class Struts2ActionClass extends Class {
           result = this.(Struts2ConventionActionClass).getAnActionMethod()
           or
           // In the fall-back case, use both the "execute" and any annotated methods
-          not exists(XmlFile xmlFile) and
+          not exists(XMLFile xmlFile) and
           (
             result.hasName("executes") or
             exists(StrutsActionAnnotation actionAnnotation |
@@ -130,7 +130,7 @@ class Struts2PrepareMethod extends Method {
  */
 class Struts2ActionSupportClass extends Class {
   Struts2ActionSupportClass() {
-    this.getAStrictAncestor().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport")
+    this.getASupertype+().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport")
   }
 
   /**

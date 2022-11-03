@@ -15,6 +15,7 @@
  */
 
 import csharp
+import semmle.code.csharp.dataflow.DataFlow
 import ParallelSink
 import ICryptoTransform
 

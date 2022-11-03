@@ -27,7 +27,7 @@ module Private {
 
   class LongLiteral = J::LongLiteral;
 
-  class CastingExpr extends J::CastingExpr {
+  class CastExpr extends J::CastExpr {
     /** Gets the source type of this cast. */
     J::Type getSourceType() { result = this.getExpr().getType() }
   }
@@ -49,7 +49,7 @@ module Private {
   /** Class to represent float and double literals. */
   class RealLiteral extends J::Literal {
     RealLiteral() {
-      this instanceof J::FloatLiteral or
+      this instanceof J::FloatingPointLiteral or
       this instanceof J::DoubleLiteral
     }
   }
@@ -191,7 +191,7 @@ private module Impl {
   /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
   float getNonIntegerValue(Expr e) {
     result = e.(LongLiteral).getValue().toFloat() or
-    result = e.(FloatLiteral).getValue().toFloat() or
+    result = e.(FloatingPointLiteral).getValue().toFloat() or
     result = e.(DoubleLiteral).getValue().toFloat()
   }
 
@@ -307,7 +307,7 @@ private module Impl {
     result = e.(PostIncExpr).getExpr() or
     result = e.(PostDecExpr).getExpr() or
     result = e.(ChooseExpr).getAResultExpr() or
-    result = e.(CastingExpr).getExpr()
+    result = e.(CastExpr).getExpr()
   }
 
   Expr getARead(SsaVariable v) { result = v.getAUse() }

@@ -4,14 +4,10 @@ using System.Data.SqlClient;
 namespace Test
 {
 
-    using System.Data.SQLite;
-    using System.IO;
-    using System.Text;
-
     class SecondOrderSqlInjection
     {
 
-        public void ProcessRequest()
+        public void processRequest()
         {
             using (SqlConnection connection = new SqlConnection(""))
             {
@@ -27,28 +23,5 @@ namespace Test
                 customerReader.Close();
             }
         }
-
-        public void RunSQLFromFile()
-        {
-            using (FileStream fs = new FileStream("myfile.txt", FileMode.Open))
-            {
-                using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
-                {
-                    var sql = String.Empty;
-                    while ((sql = sr.ReadLine()) != null)
-                    {
-                        sql = sql.Trim();
-                        if (sql.StartsWith("--"))
-                            continue;
-                        using (var connection = new SQLiteConnection(""))
-                        {
-                            var cmd = new SQLiteCommand(sql, connection);
-                            cmd.ExecuteScalar();
-                        }
-                    }
-                }
-            }
-        }
-
     }
 }

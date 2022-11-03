@@ -7,6 +7,31 @@ private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.internal.CachedStages
 
+deprecated module GlobalAccessPath {
+  /**
+   * DEPRECATED. Instead use `AccessPath::getAReferenceTo` with the result and parameter reversed.
+   */
+  pragma[inline]
+  string fromReference(DataFlow::Node node) { node = AccessPath::getAReferenceTo(result) }
+
+  /**
+   * DEPRECATED. Instead use `AccessPath::getAnAssignmentTo` with the result and parameter reversed.
+   */
+  pragma[inline]
+  string fromRhs(DataFlow::Node node) { node = AccessPath::getAnAssignmentTo(result) }
+
+  /**
+   * DEPRECATED. Use `AccessPath::getAReferenceOrAssignmentTo`.
+   */
+  pragma[inline]
+  string getAccessPath(DataFlow::Node node) {
+    result = fromReference(node)
+    or
+    not exists(fromReference(node)) and
+    result = fromRhs(node)
+  }
+}
+
 /**
  * Provides predicates for associating access paths with data flow nodes.
  *
@@ -55,7 +80,7 @@ module AccessPath {
     SsaExplicitDefinition getSsaDefinition() { result.getSourceVariable() = this }
 
     /** Gets the data flow node representing the value of this variable, if one exists. */
-    DataFlow::Node getValue() { result = this.getSsaDefinition().getRhsNode() }
+    DataFlow::Node getValue() { result = getSsaDefinition().getRhsNode() }
   }
 
   /**
@@ -401,17 +426,6 @@ module AccessPath {
       result = AccessPath::getAReferenceTo(root, accessPath)
     )
     or
-    // step over extend calls. Handle aliasing both ways through the extend call.
-    exists(
-      DataFlow::SourceNode rootOne, DataFlow::SourceNode rootTwo, string accessPath,
-      ExtendCall extendCall
-    |
-      rootOne = [extendCall, extendCall.getAnOperand().getALocalSource()] and
-      rootTwo = [extendCall, extendCall.getAnOperand().getALocalSource()] and
-      node = pragma[only_bind_into](AccessPath::getAReferenceTo(rootOne, accessPath)) and
-      result = AccessPath::getAReferenceTo(rootTwo, accessPath)
-    )
-    or
     result = node.getALocalSource()
   }
 
@@ -420,7 +434,7 @@ module AccessPath {
    */
   module DominatingPaths {
     /**
-     * A classification of access paths into reads and writes.
+     * A classification of acccess paths into reads and writes.
      */
     private newtype AccessPathKind =
       AccessPathRead() or
@@ -532,7 +546,7 @@ module AccessPath {
      */
     cached
     predicate hasDominatingWrite(DataFlow::PropRead read) {
-      Stages::TypeTracking::ref() and
+      Stages::FlowSteps::ref() and
       // within the same basic block.
       exists(ReachableBasicBlock bb, Root root, string path, int ranking |
         read.asExpr() = rankedAccessPath(bb, root, path, ranking, AccessPathRead()) and
@@ -543,21 +557,6 @@ module AccessPath {
       exists(Root root, string path |
         read.asExpr() = getAccessTo(root, path, AccessPathRead()) and
         getAWriteBlock(root, path).strictlyDominates(read.getBasicBlock())
-      )
-      or
-      // Dynamic write where the same variable is used to index the read and write (in the same basic block)
-      // For example, this is true for `dst[x]` on line 2 below:
-      // ```js
-      // dst[x] = {};
-      // dst[x][y] = src[y];
-      // ```
-      exists(DataFlow::PropWrite write, BasicBlock bb, int i, int j, SsaVariable ssaVar |
-        write = read.getBase().getALocalSource().getAPropertyWrite() and
-        bb.getNode(i) = write.getWriteNode() and
-        bb.getNode(j) = read.asExpr() and
-        i < j and
-        write.getPropertyNameExpr() = ssaVar.getAUse() and
-        read.getPropertyNameExpr() = ssaVar.getAUse()
       )
     }
   }

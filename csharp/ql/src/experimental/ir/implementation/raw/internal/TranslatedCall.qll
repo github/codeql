@@ -5,6 +5,7 @@ private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
+private import experimental.ir.Util
 private import experimental.ir.implementation.raw.internal.common.TranslatedCallBase
 private import experimental.ir.internal.IRCSharpLanguage as Language
 

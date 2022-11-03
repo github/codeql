@@ -2,4 +2,4 @@ import javascript
 
 query File files() { any() }
 
-query PackageJson packageJsons() { any() }
+query PackageJSON packageJsons() { any() }

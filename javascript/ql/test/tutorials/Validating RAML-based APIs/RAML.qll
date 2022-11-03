@@ -3,18 +3,15 @@ import javascript
 import HTTP
 
 /** A RAML specification. */
-class RamlSpec extends YamlDocument, YamlMapping {
-  RamlSpec() { getLocation().getFile().getExtension() = "raml" }
+class RAMLSpec extends YAMLDocument, YAMLMapping {
+  RAMLSpec() { getLocation().getFile().getExtension() = "raml" }
 }
 
-/** DEPRECATED: Alias for RamlSpec */
-deprecated class RAMLSpec = RamlSpec;
-
 /** A RAML resource specification. */
-class RamlResource extends YamlMapping {
-  RamlResource() {
-    getDocument() instanceof RamlSpec and
-    exists(YamlMapping m, string name |
+class RAMLResource extends YAMLMapping {
+  RAMLResource() {
+    getDocument() instanceof RAMLSpec and
+    exists(YAMLMapping m, string name |
       this = m.lookup(name) and
       name.matches("/%")
     )
@@ -22,40 +19,34 @@ class RamlResource extends YamlMapping {
 
   /** Get the path of this resource relative to the API root. */
   string getPath() {
-    exists(RamlSpec spec | this = spec.lookup(result))
+    exists(RAMLSpec spec | this = spec.lookup(result))
     or
-    exists(RamlResource that, string p |
+    exists(RAMLResource that, string p |
       this = that.lookup(p) and
       result = that.getPath() + p
     )
   }
 
   /** Get the method for this resource with the given verb. */
-  RamlMethod getMethod(string verb) {
+  RAMLMethod getMethod(string verb) {
     verb = httpVerb() and
     result = lookup(verb)
   }
 }
 
-/** DEPRECATED: Alias for RamlResource */
-deprecated class RAMLResource = RamlResource;
-
 /** A RAML method specification. */
-class RamlMethod extends YamlValue {
-  RamlMethod() {
-    getDocument() instanceof RamlSpec and
-    exists(YamlMapping obj | this = obj.lookup(httpVerb()))
+class RAMLMethod extends YAMLValue {
+  RAMLMethod() {
+    getDocument() instanceof RAMLSpec and
+    exists(YAMLMapping obj | this = obj.lookup(httpVerb()))
   }
 
   /** Get the response specification for the given status code. */
-  YamlValue getResponse(int code) {
-    exists(YamlMapping obj, string s |
-      obj = this.(YamlMapping).lookup("responses") and
+  YAMLValue getResponse(int code) {
+    exists(YAMLMapping obj, string s |
+      obj = this.(YAMLMapping).lookup("responses") and
       result = obj.lookup(s) and
       code = s.toInt()
     )
   }
 }
-
-/** DEPRECATED: Alias for RamlMethod */
-deprecated class RAMLMethod = RamlMethod;

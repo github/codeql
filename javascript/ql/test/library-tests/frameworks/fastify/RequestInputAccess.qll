@@ -1,7 +1,7 @@
 import javascript
 
 query predicate test_RequestInputAccess(
-  Http::RequestInputAccess ria, string res, Fastify::RouteHandler rh, boolean isUserControlledObject
+  HTTP::RequestInputAccess ria, string res, Fastify::RouteHandler rh, boolean isUserControlledObject
 ) {
   ria.getRouteHandler() = rh and
   res = ria.getKind() and

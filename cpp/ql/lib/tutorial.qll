@@ -6,22 +6,122 @@
  */
 class Person extends string {
   Person() {
-    this =
-      [
-        "Ronil", "Dina", "Ravi", "Bruce", "Jo", "Aida", "Esme", "Charlie", "Fred", "Meera", "Maya",
-        "Chad", "Tiana", "Laura", "George", "Will", "Mary", "Almira", "Susannah", "Rhoda",
-        "Cynthia", "Eunice", "Olive", "Virginia", "Angeline", "Helen", "Cornelia", "Harriet",
-        "Mahala", "Abby", "Margaret", "Deb", "Minerva", "Severus", "Lavina", "Adeline", "Cath",
-        "Elisa", "Lucretia", "Anne", "Eleanor", "Joanna", "Adam", "Agnes", "Rosanna", "Clara",
-        "Melissa", "Amy", "Isabel", "Jemima", "Cordelia", "Melinda", "Delila", "Jeremiah", "Elijah",
-        "Hester", "Walter", "Oliver", "Hugh", "Aaron", "Reuben", "Eli", "Amos", "Augustus",
-        "Theodore", "Ira", "Timothy", "Cyrus", "Horace", "Simon", "Asa", "Frank", "Nelson",
-        "Leonard", "Harrison", "Anthony", "Louis", "Milton", "Noah", "Cornelius", "Abdul", "Warren",
-        "Harvey", "Dennis", "Wesley", "Sylvester", "Gilbert", "Sullivan", "Edmund", "Wilson",
-        "Perry", "Matthew", "Simba", "Nala", "Rafiki", "Shenzi", "Ernest", "Gertrude", "Oscar",
-        "Lilian", "Raymond", "Elgar", "Elmer", "Herbert", "Maude", "Mae", "Otto", "Edwin",
-        "Ophelia", "Parsley", "Sage", "Rosemary", "Thyme", "Garfunkel", "King Basil", "Stephen"
-      ]
+    this = "Ronil" or
+    this = "Dina" or
+    this = "Ravi" or
+    this = "Bruce" or
+    this = "Jo" or
+    this = "Aida" or
+    this = "Esme" or
+    this = "Charlie" or
+    this = "Fred" or
+    this = "Meera" or
+    this = "Maya" or
+    this = "Chad" or
+    this = "Tiana" or
+    this = "Laura" or
+    this = "George" or
+    this = "Will" or
+    this = "Mary" or
+    this = "Almira" or
+    this = "Susannah" or
+    this = "Rhoda" or
+    this = "Cynthia" or
+    this = "Eunice" or
+    this = "Olive" or
+    this = "Virginia" or
+    this = "Angeline" or
+    this = "Helen" or
+    this = "Cornelia" or
+    this = "Harriet" or
+    this = "Mahala" or
+    this = "Abby" or
+    this = "Margaret" or
+    this = "Deb" or
+    this = "Minerva" or
+    this = "Severus" or
+    this = "Lavina" or
+    this = "Adeline" or
+    this = "Cath" or
+    this = "Elisa" or
+    this = "Lucretia" or
+    this = "Anne" or
+    this = "Eleanor" or
+    this = "Joanna" or
+    this = "Adam" or
+    this = "Agnes" or
+    this = "Rosanna" or
+    this = "Clara" or
+    this = "Melissa" or
+    this = "Amy" or
+    this = "Isabel" or
+    this = "Jemima" or
+    this = "Cordelia" or
+    this = "Melinda" or
+    this = "Delila" or
+    this = "Jeremiah" or
+    this = "Elijah" or
+    this = "Hester" or
+    this = "Walter" or
+    this = "Oliver" or
+    this = "Hugh" or
+    this = "Aaron" or
+    this = "Reuben" or
+    this = "Eli" or
+    this = "Amos" or
+    this = "Augustus" or
+    this = "Theodore" or
+    this = "Ira" or
+    this = "Timothy" or
+    this = "Cyrus" or
+    this = "Horace" or
+    this = "Simon" or
+    this = "Asa" or
+    this = "Frank" or
+    this = "Nelson" or
+    this = "Leonard" or
+    this = "Harrison" or
+    this = "Anthony" or
+    this = "Louis" or
+    this = "Milton" or
+    this = "Noah" or
+    this = "Cornelius" or
+    this = "Abdul" or
+    this = "Warren" or
+    this = "Harvey" or
+    this = "Dennis" or
+    this = "Wesley" or
+    this = "Sylvester" or
+    this = "Gilbert" or
+    this = "Sullivan" or
+    this = "Edmund" or
+    this = "Wilson" or
+    this = "Perry" or
+    this = "Matthew" or
+    this = "Simba" or
+    this = "Nala" or
+    this = "Rafiki" or
+    this = "Shenzi" or
+    this = "Ernest" or
+    this = "Gertrude" or
+    this = "Oscar" or
+    this = "Lilian" or
+    this = "Raymond" or
+    this = "Elgar" or
+    this = "Elmer" or
+    this = "Herbert" or
+    this = "Maude" or
+    this = "Mae" or
+    this = "Otto" or
+    this = "Edwin" or
+    this = "Ophelia" or
+    this = "Parsley" or
+    this = "Sage" or
+    this = "Rosemary" or
+    this = "Thyme" or
+    this = "Garfunkel" or
+    this = "King Basil" or
+    this = "Stephen"
   }
 
   /** Gets the hair color of the person. If the person is bald, there is no result. */
@@ -836,12 +936,25 @@ class Person extends string {
 
   /** Holds if the person is deceased. */
   predicate isDeceased() {
-    this =
-      [
-        "Ernest", "Gertrude", "Oscar", "Lilian", "Edwin", "Raymond", "Elgar", "Elmer", "Herbert",
-        "Maude", "Mae", "Otto", "Ophelia", "Parsley", "Sage", "Rosemary", "Thyme", "Garfunkel",
-        "King Basil"
-      ]
+    this = "Ernest" or
+    this = "Gertrude" or
+    this = "Oscar" or
+    this = "Lilian" or
+    this = "Edwin" or
+    this = "Raymond" or
+    this = "Elgar" or
+    this = "Elmer" or
+    this = "Herbert" or
+    this = "Maude" or
+    this = "Mae" or
+    this = "Otto" or
+    this = "Ophelia" or
+    this = "Parsley" or
+    this = "Sage" or
+    this = "Rosemary" or
+    this = "Thyme" or
+    this = "Garfunkel" or
+    this = "King Basil"
   }
 
   /** Gets a parent of the person (alive or deceased). */
@@ -1082,7 +1195,12 @@ class Person extends string {
   }
 
   /** Holds if the person is allowed in the region. Initially, all villagers are allowed in every region. */
-  predicate isAllowedIn(string region) { region = ["north", "south", "east", "west"] }
+  predicate isAllowedIn(string region) {
+    region = "north" or
+    region = "south" or
+    region = "east" or
+    region = "west"
+  }
 }
 
 /** Returns a parent of the person. */

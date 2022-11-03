@@ -23,6 +23,8 @@ private class Printf extends FormattingFunction, AliasFunction {
 
   override int getFormatParameterIndex() { result = 0 }
 
+  deprecated override predicate isWideCharDefault() { hasName(["wprintf", "wprintf_s"]) }
+
   override predicate isOutputGlobal() { any() }
 
   override predicate parameterNeverEscapes(int n) { n = 0 }
@@ -46,6 +48,8 @@ private class Fprintf extends FormattingFunction {
   }
 
   override int getFormatParameterIndex() { result = 1 }
+
+  deprecated override predicate isWideCharDefault() { hasName("fwprintf") }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = true }
 }
@@ -71,6 +75,15 @@ private class Sprintf extends FormattingFunction {
         ])
     ) and
     not exists(getDefinition().getFile().getRelativePath())
+  }
+
+  deprecated override predicate isWideCharDefault() {
+    getParameter(getFormatParameterIndex())
+        .getType()
+        .getUnspecifiedType()
+        .(PointerType)
+        .getBaseType()
+        .getSize() > 1
   }
 
   override int getFormatParameterIndex() {
@@ -120,6 +133,15 @@ private class SnprintfImpl extends Snprintf {
     else result = getFirstFormatArgumentIndex() - 1
   }
 
+  deprecated override predicate isWideCharDefault() {
+    getParameter(getFormatParameterIndex())
+        .getType()
+        .getUnspecifiedType()
+        .(PointerType)
+        .getBaseType()
+        .getSize() > 1
+  }
+
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
 
   override int getFirstFormatArgumentIndex() {
@@ -158,6 +180,15 @@ private class StringCchPrintf extends FormattingFunction {
 
   override int getFormatParameterIndex() {
     if getName().matches("%Ex") then result = 5 else result = 2
+  }
+
+  deprecated override predicate isWideCharDefault() {
+    getParameter(getFormatParameterIndex())
+        .getType()
+        .getUnspecifiedType()
+        .(PointerType)
+        .getBaseType()
+        .getSize() > 1
   }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }

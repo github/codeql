@@ -104,7 +104,7 @@ private newtype HC_Alloc =
   HC_HasAlloc(HashCons hc) { mk_HasAlloc(hc, _) }
 
 /**
- * Used to implement optional extent expression on `new[]` expressions
+ * Used to implement optional extent expression on `new[]` exprtessions
  */
 private newtype HC_Extent =
   HC_NoExtent() or
@@ -116,7 +116,7 @@ private newtype HC_Args =
   HC_ArgCons(HashCons hc, int i, HC_Args list) { mk_ArgCons(hc, i, list, _) }
 
 /**
- * Used to implement hash-consing of struct initializers.
+ * Used to implement hash-consing of struct initizializers.
  */
 private newtype HC_Fields =
   HC_EmptyFields(Class c) { exists(ClassAggregateLiteral cal | c = cal.getUnspecifiedType()) } or
@@ -589,7 +589,7 @@ private predicate mk_HasAlloc(HashCons hc, NewOrNewArrayExpr new) {
 }
 
 private predicate mk_HasExtent(HashCons hc, NewArrayExpr new) {
-  hc = hashCons(new.getExtent().getFullyConverted())
+  hc = hashCons(new.(NewArrayExpr).getExtent().getFullyConverted())
 }
 
 private predicate analyzableNewExpr(NewExpr new) {
@@ -619,7 +619,7 @@ private predicate analyzableNewArrayExpr(NewArrayExpr new) {
   strictcount(new.getAllocatedType().getUnspecifiedType()) = 1 and
   count(new.getAllocatorCall().getFullyConverted()) <= 1 and
   count(new.getInitializer().getFullyConverted()) <= 1 and
-  count(new.getExtent().getFullyConverted()) <= 1
+  count(new.(NewArrayExpr).getExtent().getFullyConverted()) <= 1
 }
 
 private predicate mk_NewArrayExpr(

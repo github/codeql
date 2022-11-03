@@ -18,7 +18,7 @@ private import semmle.python.types.Builtins
 
 class ObjectSource = Object;
 
-/** An alias for Function used for scopes */
+/* Aliases for scopes */
 class FunctionScope = Function;
 
 class ClassScope = Class;
@@ -26,7 +26,7 @@ class ClassScope = Class;
 class ModuleScope = Module;
 
 /**
- * A value in the Python program.
+ * Class representing values in the Python program
  * Each `Value` is a static approximation to a set of one or more real objects.
  */
 class Value extends TObject {
@@ -138,16 +138,18 @@ class Value extends TObject {
    * The result can be `none()`, but never both `true` and `false`.
    */
   boolean getDefiniteBooleanValue() {
-    result = this.getABooleanValue() and
-    not (this.getABooleanValue() = true and this.getABooleanValue() = false)
+    result = getABooleanValue() and
+    not (getABooleanValue() = true and getABooleanValue() = false)
   }
 }
 
 /**
- * A module in the Python program.
+ * Class representing modules in the Python program
  * Each `ModuleValue` represents a module object in the Python program.
  */
-class ModuleValue extends Value instanceof ModuleObjectInternal {
+class ModuleValue extends Value {
+  ModuleValue() { this instanceof ModuleObjectInternal }
+
   /**
    * Holds if this module "exports" name.
    * That is, does it define `name` in `__all__` or is
@@ -157,7 +159,7 @@ class ModuleValue extends Value instanceof ModuleObjectInternal {
   predicate exports(string name) { PointsTo::moduleExports(this, name) }
 
   /** Gets the scope for this module, provided that it is a Python module. */
-  ModuleScope getScope() { result = super.getSourceModule() }
+  ModuleScope getScope() { result = this.(ModuleObjectInternal).getSourceModule() }
 
   /**
    * Gets the container path for this module. Will be the file for a Python module,
@@ -179,7 +181,7 @@ class ModuleValue extends Value instanceof ModuleObjectInternal {
   predicate isPackage() { this instanceof PackageObjectInternal }
 
   /** Whether the complete set of names "exported" by this module can be accurately determined */
-  predicate hasCompleteExportInfo() { super.hasCompleteExportInfo() }
+  predicate hasCompleteExportInfo() { this.(ModuleObjectInternal).hasCompleteExportInfo() }
 
   /** Get a module that this module imports */
   ModuleValue getAnImportedModule() { result.importedAs(this.getScope().getAnImportedModuleName()) }
@@ -197,7 +199,7 @@ class ModuleValue extends Value instanceof ModuleObjectInternal {
 
   /** When used (exclusively) as a script (will not include normal modules that can also be run as a script) */
   predicate isUsedAsScript() {
-    not this.isUsedAsModule() and
+    not isUsedAsModule() and
     (
       not this.getPath().getExtension() = "py"
       or
@@ -324,7 +326,7 @@ module Value {
   Value none_() { result = ObjectInternal::none_() }
 
   /**
-   * Shortcuts added by the `site` module to exit your interactive session.
+   * Shorcuts added by the `site` module to exit your interactive session.
    *
    * see https://docs.python.org/3/library/constants.html#constants-added-by-the-site-module
    */
@@ -339,7 +341,7 @@ module Value {
 }
 
 /**
- * A callable in the Python program.
+ * Class representing callables in the Python program
  * Callables include Python functions, built-in functions and bound-methods,
  * but not classes.
  */
@@ -447,28 +449,30 @@ class CallableValue extends Value {
 }
 
 /**
- * A bound-method, such as `o.func`, where `o` is an instance
+ * Class representing bound-methods, such as `o.func`, where `o` is an instance
  * of a class that has a callable attribute `func`.
  */
-class BoundMethodValue extends CallableValue instanceof BoundMethodObjectInternal {
+class BoundMethodValue extends CallableValue {
+  BoundMethodValue() { this instanceof BoundMethodObjectInternal }
+
   /**
    * Gets the callable that will be used when `this` is called.
    * The actual callable for `func` in `o.func`.
    */
-  CallableValue getFunction() { result = super.getFunction() }
+  CallableValue getFunction() { result = this.(BoundMethodObjectInternal).getFunction() }
 
   /**
    * Gets the value that will be used for the `self` parameter when `this` is called.
    * The value for `o` in `o.func`.
    */
-  Value getSelf() { result = super.getSelf() }
+  Value getSelf() { result = this.(BoundMethodObjectInternal).getSelf() }
 
   /** Gets the parameter node that will be used for `self`. */
-  NameNode getSelfParameter() { result = super.getSelfParameter() }
+  NameNode getSelfParameter() { result = this.(BoundMethodObjectInternal).getSelfParameter() }
 }
 
 /**
- * A class in the Python program, both Python and built-in.
+ * Class representing classes in the Python program, both Python and built-in.
  */
 class ClassValue extends Value {
   ClassValue() { this.(ObjectInternal).isClass() = true }
@@ -655,7 +659,7 @@ class ClassValue extends Value {
 }
 
 /**
- * A function in the Python program, both Python and built-in.
+ * Class representing functions in the Python program, both Python and built-in.
  * Note that this does not include other callables such as bound-methods.
  */
 abstract class FunctionValue extends CallableValue {
@@ -721,7 +725,7 @@ abstract class FunctionValue extends CallableValue {
   predicate isLambda() { this.getOrigin().getNode() instanceof Lambda }
 }
 
-/** A Python function. */
+/** Class representing Python functions */
 class PythonFunctionValue extends FunctionValue {
   PythonFunctionValue() { this instanceof PythonFunctionObjectInternal }
 
@@ -769,7 +773,7 @@ class PythonFunctionValue extends FunctionValue {
   }
 }
 
-/** A builtin function, such as `len` or `print`. */
+/** Class representing builtin functions, such as `len` or `print` */
 class BuiltinFunctionValue extends FunctionValue {
   BuiltinFunctionValue() { this instanceof BuiltinFunctionObjectInternal }
 
@@ -796,7 +800,7 @@ class BuiltinFunctionValue extends FunctionValue {
   }
 }
 
-/** A builtin method, such as `list.append` or `set.add` */
+/** Class representing builtin methods, such as `list.append` or `set.add` */
 class BuiltinMethodValue extends FunctionValue {
   BuiltinMethodValue() { this instanceof BuiltinMethodObjectInternal }
 
@@ -827,10 +831,12 @@ class BuiltinMethodValue extends FunctionValue {
 /**
  * A class representing sequence objects with a length and tracked items.
  */
-class SequenceValue extends Value instanceof SequenceObjectInternal {
-  Value getItem(int n) { result = super.getItem(n) }
+class SequenceValue extends Value {
+  SequenceValue() { this instanceof SequenceObjectInternal }
 
-  int length() { result = super.length() }
+  Value getItem(int n) { result = this.(SequenceObjectInternal).getItem(n) }
+
+  int length() { result = this.(SequenceObjectInternal).length() }
 }
 
 /** A class representing tuple objects */
@@ -881,12 +887,14 @@ class NumericValue extends Value {
  * https://docs.python.org/3/howto/descriptor.html#properties
  * https://docs.python.org/3/library/functions.html#property
  */
-class PropertyValue extends Value instanceof PropertyInternal {
-  CallableValue getGetter() { result = super.getGetter() }
+class PropertyValue extends Value {
+  PropertyValue() { this instanceof PropertyInternal }
 
-  CallableValue getSetter() { result = super.getSetter() }
+  CallableValue getGetter() { result = this.(PropertyInternal).getGetter() }
 
-  CallableValue getDeleter() { result = super.getDeleter() }
+  CallableValue getSetter() { result = this.(PropertyInternal).getSetter() }
+
+  CallableValue getDeleter() { result = this.(PropertyInternal).getDeleter() }
 }
 
 /** A method-resolution-order sequence of classes */

@@ -47,8 +47,8 @@ class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod 
         .getType()
         .hasQualifiedName("org.springframework.web.bind.annotation", "RequestMapping") and
     (
-      this.getAnAnnotation().getAnEnumConstantArrayValue("method").getName() = "GET" or
-      not exists(this.getAnAnnotation().getAnArrayValue("method")) //Java code example: @RequestMapping(value = "test")
+      this.getAnAnnotation().getValue("method").(VarAccess).getVariable().getName() = "GET" or
+      this.getAnAnnotation().getValue("method").(ArrayInit).getSize() = 0 //Java code example: @RequestMapping(value = "test")
     ) and
     not this.getAParamType().getName() = "MultipartFile"
   }
@@ -61,8 +61,8 @@ class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod 
  */
 class JsonpBuilderExpr extends AddExpr {
   JsonpBuilderExpr() {
-    this.getRightOperand().(CompileTimeConstantExpr).getStringValue().regexpMatch("\\);?") and
-    this.getLeftOperand()
+    getRightOperand().(CompileTimeConstantExpr).getStringValue().regexpMatch("\\);?") and
+    getLeftOperand()
         .(AddExpr)
         .getLeftOperand()
         .(AddExpr)
@@ -73,11 +73,11 @@ class JsonpBuilderExpr extends AddExpr {
 
   /** Get the jsonp function name of this expression. */
   Expr getFunctionName() {
-    result = this.getLeftOperand().(AddExpr).getLeftOperand().(AddExpr).getLeftOperand()
+    result = getLeftOperand().(AddExpr).getLeftOperand().(AddExpr).getLeftOperand()
   }
 
   /** Get the json data of this expression. */
-  Expr getJsonExpr() { result = this.getLeftOperand().(AddExpr).getRightOperand() }
+  Expr getJsonExpr() { result = getLeftOperand().(AddExpr).getRightOperand() }
 }
 
 /** A data flow configuration tracing flow from remote sources to jsonp function name. */

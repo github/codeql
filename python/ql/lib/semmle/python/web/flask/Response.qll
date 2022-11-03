@@ -7,7 +7,7 @@ import semmle.python.web.flask.General
  * A flask response, which is vulnerable to any sort of
  * http response malice.
  */
-deprecated class FlaskRoutedResponse extends HttpResponseTaintSink {
+class FlaskRoutedResponse extends HttpResponseTaintSink {
   FlaskRoutedResponse() {
     exists(PythonFunctionValue response |
       flask_routing(_, response.getScope()) and
@@ -20,7 +20,7 @@ deprecated class FlaskRoutedResponse extends HttpResponseTaintSink {
   override string toString() { result = "flask.routed.response" }
 }
 
-deprecated class FlaskResponseArgument extends HttpResponseTaintSink {
+class FlaskResponseArgument extends HttpResponseTaintSink {
   FlaskResponseArgument() {
     exists(CallNode call |
       (
@@ -37,11 +37,11 @@ deprecated class FlaskResponseArgument extends HttpResponseTaintSink {
   override string toString() { result = "flask.response.argument" }
 }
 
-deprecated class FlaskResponseTaintKind extends TaintKind {
+class FlaskResponseTaintKind extends TaintKind {
   FlaskResponseTaintKind() { this = "flask.Response" }
 }
 
-deprecated class FlaskResponseConfiguration extends TaintTracking::Configuration {
+class FlaskResponseConfiguration extends TaintTracking::Configuration {
   FlaskResponseConfiguration() { this = "Flask response configuration" }
 
   override predicate isSource(DataFlow::Node node, TaintKind kind) {

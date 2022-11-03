@@ -6,11 +6,9 @@
  * local tracking within a function.
  */
 
-private import python
+import python
 import DataFlowPublic
 private import DataFlowPrivate
-private import semmle.python.internal.CachedStages
-private import semmle.python.internal.Awaited
 
 /**
  * A data flow node that is a source of local flow. This includes things like
@@ -35,9 +33,8 @@ private import semmle.python.internal.Awaited
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    Stages::DataFlow::ref() and
     this instanceof ExprNode and
-    not simpleLocalFlowStepForTypetracking(_, this)
+    not simpleLocalFlowStep(_, this)
     or
     // We include all module variable nodes, as these act as stepping stones between writes and
     // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be
@@ -95,16 +92,6 @@ class LocalSourceNode extends Node {
    * Gets a call to this node.
    */
   CallCfgNode getACall() { Cached::call(this, result) }
-
-  /**
-   * Gets an awaited value from this node.
-   */
-  Node getAnAwaited() { Cached::await(this, result) }
-
-  /**
-   * Gets a subscript of this node.
-   */
-  Node getSubscript(Node index) { Cached::subscript(this, result, index) }
 
   /**
    * Gets a call to the method `methodName` on this node.
@@ -185,11 +172,10 @@ private module Cached {
   /**
    * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local flow steps.
    *
-   * The slightly backwards parameter ordering is to force correct indexing.
+   * The slightly backwards parametering ordering is to force correct indexing.
    */
   cached
   predicate hasLocalSource(Node sink, LocalSourceNode source) {
-    Stages::DataFlow::ref() and
     source = sink
     or
     exists(Node second |
@@ -234,29 +220,6 @@ private module Cached {
     exists(CfgNode n |
       func.flowsTo(n) and
       n = call.getFunction()
-    )
-  }
-
-  /**
-   * Holds if `node` flows to a value that, when awaited, results in `awaited`.
-   */
-  cached
-  predicate await(LocalSourceNode node, Node awaited) {
-    exists(Node awaitedValue |
-      node.flowsTo(awaitedValue) and
-      awaited = awaited(awaitedValue)
-    )
-  }
-
-  /**
-   * Holds if `node` flows to a sequence/mapping of which `subscript` is a subscript with index/key `index`.
-   */
-  cached
-  predicate subscript(LocalSourceNode node, CfgNode subscript, CfgNode index) {
-    exists(CfgNode seq, SubscriptNode subscriptNode | subscriptNode = subscript.getNode() |
-      node.flowsTo(seq) and
-      seq.getNode() = subscriptNode.getObject() and
-      index.getNode() = subscriptNode.getIndex()
     )
   }
 }

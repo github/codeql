@@ -24,9 +24,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
     guard instanceof PathExistsSanitizerGuard or
-    guard instanceof TaintTracking::AdHocWhitelistCheckSanitizer or
-    guard instanceof NumberGuard or
-    guard instanceof TypeOfSanitizer
+    guard instanceof TaintTracking::AdHocWhitelistCheckSanitizer
   }
 
   // override to require that there is a path without unmatched return steps

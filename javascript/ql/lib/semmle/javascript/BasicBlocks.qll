@@ -129,7 +129,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
   BasicBlock getAPredecessor() { result.getASuccessor() = this }
 
   /** Gets a node in this block. */
-  ControlFlowNode getANode() { result = this.getNode(_) }
+  ControlFlowNode getANode() { result = getNode(_) }
 
   /** Gets the node at the given position in this block. */
   ControlFlowNode getNode(int pos) { bbIndex(this, result, pos) }
@@ -138,7 +138,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
   ControlFlowNode getFirstNode() { result = this }
 
   /** Gets the last node in this block. */
-  ControlFlowNode getLastNode() { result = this.getNode(this.length() - 1) }
+  ControlFlowNode getLastNode() { result = getNode(length() - 1) }
 
   /** Gets the length of this block. */
   int length() { result = bbLength(this) }
@@ -146,7 +146,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
   /** Holds if this basic block uses variable `v` in its `i`th node `u`. */
   predicate useAt(int i, Variable v, VarUse u) { useAt(this, i, v, u) }
 
-  /** Holds if this basic block defines variable `v` in its `i`th node `d`. */
+  /** Holds if this basic block defines variable `v` in its `i`th node `u`. */
   predicate defAt(int i, Variable v, VarDef d) { defAt(this, i, v, d) }
 
   /**
@@ -160,13 +160,13 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    */
   predicate isLiveAtEntry(Variable v, VarUse u) {
     // restrict `u` to be reachable from this basic block
-    u = this.getASuccessor*().getANode() and
+    u = getASuccessor*().getANode() and
     (
       // shortcut: if `v` is never defined, then it must be live
-      this.isDefinedInSameContainer(v)
+      isDefinedInSameContainer(v)
       implies
       // otherwise, do full liveness computation
-      this.isLiveAtEntryImpl(v, u)
+      isLiveAtEntryImpl(v, u)
     )
   }
 
@@ -176,11 +176,11 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * function or script.
    */
   private predicate isLiveAtEntryImpl(Variable v, VarUse u) {
-    this.isLocallyLiveAtEntry(v, u)
+    isLocallyLiveAtEntry(v, u)
     or
-    this.isDefinedInSameContainer(v) and
+    isDefinedInSameContainer(v) and
     not this.defAt(_, v, _) and
-    this.getASuccessor().isLiveAtEntryImpl(v, u)
+    getASuccessor().isLiveAtEntryImpl(v, u)
   }
 
   /**
@@ -188,7 +188,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * this basic block belongs.
    */
   private predicate isDefinedInSameContainer(Variable v) {
-    exists(VarDef def | def.getAVariable() = v and def.getContainer() = this.getContainer())
+    exists(VarDef def | def.getAVariable() = v and def.getContainer() = getContainer())
   }
 
   /**
@@ -198,9 +198,9 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * be more efficient on large databases.
    */
   predicate isLiveAtEntry(Variable v) {
-    this.isLocallyLiveAtEntry(v, _)
+    isLocallyLiveAtEntry(v, _)
     or
-    not this.defAt(_, v, _) and this.getASuccessor().isLiveAtEntry(v)
+    not this.defAt(_, v, _) and getASuccessor().isLiveAtEntry(v)
   }
 
   /**
@@ -208,18 +208,18 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * `u` is a use of `v` witnessing the liveness.
    */
   predicate localIsLiveAtEntry(LocalVariable v, VarUse u) {
-    this.isLocallyLiveAtEntry(v, u)
+    isLocallyLiveAtEntry(v, u)
     or
-    not this.defAt(_, v, _) and this.getASuccessor().localIsLiveAtEntry(v, u)
+    not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v, u)
   }
 
   /**
    * Holds if local variable `v` is live at entry to this basic block.
    */
   predicate localIsLiveAtEntry(LocalVariable v) {
-    this.isLocallyLiveAtEntry(v, _)
+    isLocallyLiveAtEntry(v, _)
     or
-    not this.defAt(_, v, _) and this.getASuccessor().localIsLiveAtEntry(v)
+    not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v)
   }
 
   /**
@@ -227,9 +227,9 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * this basic block without going through a redefinition of `v`.
    */
   predicate localMayBeOverwritten(LocalVariable v, VarDef d) {
-    this.isLocallyOverwritten(v, d)
+    isLocallyOverwritten(v, d)
     or
-    not this.defAt(_, v, _) and this.getASuccessor().localMayBeOverwritten(v, d)
+    not defAt(_, v, _) and getASuccessor().localMayBeOverwritten(v, d)
   }
 
   /**
@@ -239,10 +239,10 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * result is the length of this basic block.
    */
   private int nextDefOrUseAfter(PurelyLocalVariable v, int i, VarDef d) {
-    this.defAt(i, v, d) and
+    defAt(i, v, d) and
     result =
       min(int j |
-        (this.defAt(j, v, _) or this.useAt(j, v, _) or j = this.length()) and
+        (defAt(j, v, _) or useAt(j, v, _) or j = length()) and
         j > i
       )
   }
@@ -253,10 +253,10 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * definition and before a re-definition.
    */
   predicate localLiveDefAt(PurelyLocalVariable v, int i, VarDef d) {
-    exists(int j | j = this.nextDefOrUseAfter(v, i, d) |
-      this.useAt(j, v, _)
+    exists(int j | j = nextDefOrUseAfter(v, i, d) |
+      useAt(j, v, _)
       or
-      j = this.length() and this.getASuccessor().localIsLiveAtEntry(v)
+      j = length() and getASuccessor().localIsLiveAtEntry(v)
     )
   }
 
@@ -265,7 +265,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * no definitions of `v` before it.
    */
   private predicate isLocallyLiveAtEntry(Variable v, VarUse u) {
-    exists(int n | this.useAt(n, v, u) | not exists(int m | m < n | this.defAt(m, v, _)))
+    exists(int n | useAt(n, v, u) | not exists(int m | m < n | defAt(m, v, _)))
   }
 
   /**
@@ -273,7 +273,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * no other definitions of `v` before it.
    */
   private predicate isLocallyOverwritten(Variable v, VarDef d) {
-    exists(int n | this.defAt(n, v, d) | not exists(int m | m < n | this.defAt(m, v, _)))
+    exists(int n | defAt(n, v, d) | not exists(int m | m < n | defAt(m, v, _)))
   }
 
   /**
@@ -287,7 +287,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
  * whose first node is unreachable.
  */
 class UnreachableBlock extends BasicBlock {
-  UnreachableBlock() { this.getFirstNode().isUnreachable() }
+  UnreachableBlock() { getFirstNode().isUnreachable() }
 }
 
 /**
@@ -337,7 +337,7 @@ class ReachableBasicBlock extends BasicBlock {
  * A reachable basic block with more than one predecessor.
  */
 class ReachableJoinBlock extends ReachableBasicBlock {
-  ReachableJoinBlock() { this.getFirstNode().isJoin() }
+  ReachableJoinBlock() { getFirstNode().isJoin() }
 
   /**
    * Holds if this basic block belongs to the dominance frontier of `b`, that is
@@ -348,11 +348,11 @@ class ReachableJoinBlock extends ReachableBasicBlock {
    * its use in optimization".
    */
   predicate inDominanceFrontierOf(ReachableBasicBlock b) {
-    b = this.getAPredecessor() and not b = this.getImmediateDominator()
+    b = getAPredecessor() and not b = getImmediateDominator()
     or
-    exists(ReachableBasicBlock prev | this.inDominanceFrontierOf(prev) |
+    exists(ReachableBasicBlock prev | inDominanceFrontierOf(prev) |
       b = prev.getImmediateDominator() and
-      not b = this.getImmediateDominator()
+      not b = getImmediateDominator()
     )
   }
 }

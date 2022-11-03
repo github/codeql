@@ -6,5 +6,5 @@ dbscheme: ruby.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
-  codeql/ssa: ${workspace}
+  codeql/ssa: "*"
 

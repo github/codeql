@@ -130,7 +130,7 @@ module XmlSettings {
         |
           not isSafeDtdSetting(dtdVal) and evidence = dtdVal
         ) and
-        reason = "DTD processing enabled in settings"
+        reason = "DTD procesing enabled in settings"
         or
         not exists(getAValueForProp(creation, "ProhibitDtd")) and
         reason = "DTD processing is enabled by default in versions before 4.0" and
@@ -209,7 +209,9 @@ module XmlReader {
 /** Provides predicates related to `System.Xml.XmlTextReader`. */
 module XmlTextReader {
   private class InsecureXmlTextReader extends InsecureXmlProcessing, ObjectCreation {
-    InsecureXmlTextReader() { this.getObjectType().hasQualifiedName("System.Xml.XmlTextReader") }
+    InsecureXmlTextReader() {
+      this.getObjectType().(ValueOrRefType).hasQualifiedName("System.Xml.XmlTextReader")
+    }
 
     override predicate isUnsafe(string reason) {
       not exists(Expr xmlResolverVal |

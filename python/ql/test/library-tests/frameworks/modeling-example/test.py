@@ -41,7 +41,7 @@ def sink_func(arg):
     sink(val)
 
 
-def test_across_functions():
+def test_accross_functions():
     src = source()
     sink_func(src)
 

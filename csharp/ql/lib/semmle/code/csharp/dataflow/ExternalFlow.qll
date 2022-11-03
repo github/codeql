@@ -5,14 +5,11 @@
  *
  * The CSV specification has the following columns:
  * - Sources:
- *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
+ *   `namespace; type; subtypes; name; signature; ext; output; kind`
  * - Sinks:
- *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
+ *   `namespace; type; subtypes; name; signature; ext; input; kind`
  * - Summaries:
- *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
- * - Negative Summaries:
- *   `namespace; type; name; signature; provenance`
- *   A negative summary is used to indicate that there is no flow via a callable.
+ *   `namespace; type; subtypes; name; signature; ext; input; output; kind`
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -72,16 +69,9 @@
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step.
- * 9. The `provenance` column is a tag to indicate the origin of the summary.
- *    There are two supported values: "generated" and "manual". "generated" means that
- *    the model has been emitted by the model generator tool and "manual" means
- *    that the model has been written by hand. This information is used in a heuristic
- *    for dataflow analysis to determine, if a model or source code should be used for
- *    determining flow.
  */
 
 import csharp
-private import internal.AccessPathSyntax
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
 private import internal.DataFlowPublic
@@ -94,49 +84,13 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
-  private import semmle.code.csharp.frameworks.EntityFramework
-  private import semmle.code.csharp.frameworks.Generated
-  private import semmle.code.csharp.frameworks.JsonNET
-  private import semmle.code.csharp.frameworks.microsoft.extensions.Primitives
-  private import semmle.code.csharp.frameworks.microsoft.VisualBasic
+  private import semmle.code.csharp.security.dataflow.flowsources.Local
+  private import semmle.code.csharp.security.dataflow.flowsinks.Html
+  private import semmle.code.csharp.frameworks.System
+  private import semmle.code.csharp.security.dataflow.XSSSinks
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
-  private import semmle.code.csharp.frameworks.System
-  private import semmle.code.csharp.frameworks.system.CodeDom
-  private import semmle.code.csharp.frameworks.system.Collections
-  private import semmle.code.csharp.frameworks.system.collections.Concurrent
-  private import semmle.code.csharp.frameworks.system.collections.Generic
-  private import semmle.code.csharp.frameworks.system.collections.Immutable
-  private import semmle.code.csharp.frameworks.system.collections.ObjectModel
-  private import semmle.code.csharp.frameworks.system.collections.Specialized
-  private import semmle.code.csharp.frameworks.system.ComponentModel
-  private import semmle.code.csharp.frameworks.system.componentmodel.Design
-  private import semmle.code.csharp.frameworks.system.Configuration
-  private import semmle.code.csharp.frameworks.system.Data
-  private import semmle.code.csharp.frameworks.system.data.Common
-  private import semmle.code.csharp.frameworks.system.Diagnostics
-  private import semmle.code.csharp.frameworks.system.Dynamic
-  private import semmle.code.csharp.frameworks.system.Linq
-  private import semmle.code.csharp.frameworks.system.Net
-  private import semmle.code.csharp.frameworks.system.net.Http
-  private import semmle.code.csharp.frameworks.system.net.Mail
-  private import semmle.code.csharp.frameworks.system.IO
-  private import semmle.code.csharp.frameworks.system.io.Compression
-  private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
-  private import semmle.code.csharp.frameworks.system.Security
-  private import semmle.code.csharp.frameworks.system.security.Cryptography
-  private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
-  private import semmle.code.csharp.frameworks.system.Text
-  private import semmle.code.csharp.frameworks.system.text.RegularExpressions
-  private import semmle.code.csharp.frameworks.system.threading.Tasks
-  private import semmle.code.csharp.frameworks.system.Web
-  private import semmle.code.csharp.frameworks.system.web.ui.WebControls
-  private import semmle.code.csharp.frameworks.system.Xml
-  private import semmle.code.csharp.frameworks.system.xml.Schema
-  private import semmle.code.csharp.frameworks.system.xml.Serialization
-  private import semmle.code.csharp.security.dataflow.flowsinks.Html
-  private import semmle.code.csharp.security.dataflow.flowsources.Local
-  private import semmle.code.csharp.security.dataflow.XSSSinks
+  private import semmle.code.csharp.frameworks.EntityFramework
 }
 
 /**
@@ -169,32 +123,16 @@ class SummaryModelCsv extends Unit {
   abstract predicate row(string row);
 }
 
-/**
- * A unit class for adding negative summary model rows.
- *
- * Extend this class to add additional flow summary definitions.
- */
-class NegativeSummaryModelCsv extends Unit {
-  /** Holds if `row` specifies a negative summary definition. */
-  abstract predicate row(string row);
-}
+private predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
 
-/** Holds if `row` is a source model. */
-predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
+private predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 
-/** Holds if `row` is a sink model. */
-predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
-
-/** Holds if `row` is a summary model. */
-predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
-
-/** Holds if `row` is a negative summary model. */
-predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
+private predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
+  string output, string kind
 ) {
   exists(string row |
     sourceModel(row) and
@@ -206,15 +144,14 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind and
-    row.splitAt(";", 8) = provenance
+    row.splitAt(";", 7) = kind
   )
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
+  string input, string kind
 ) {
   exists(string row |
     sinkModel(row) and
@@ -226,15 +163,14 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind and
-    row.splitAt(";", 8) = provenance
+    row.splitAt(";", 7) = kind
   )
 }
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
+  string input, string output, string kind
 ) {
   exists(string row |
     summaryModel(row) and
@@ -247,29 +183,14 @@ predicate summaryModel(
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind and
-    row.splitAt(";", 9) = provenance
-  )
-}
-
-/** Holds if a summary model exists indicating there is no flow for the given parameters. */
-predicate negativeSummaryModel(
-  string namespace, string type, string name, string signature, string provenance
-) {
-  exists(string row |
-    negativeSummaryModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = name and
-    row.splitAt(";", 3) = signature and
-    row.splitAt(";", 4) = provenance
+    row.splitAt(";", 8) = kind
   )
 }
 
 private predicate relevantNamespace(string namespace) {
-  sourceModel(namespace, _, _, _, _, _, _, _, _) or
-  sinkModel(namespace, _, _, _, _, _, _, _, _) or
-  summaryModel(namespace, _, _, _, _, _, _, _, _, _)
+  sourceModel(namespace, _, _, _, _, _, _, _) or
+  sinkModel(namespace, _, _, _, _, _, _, _) or
+  summaryModel(namespace, _, _, _, _, _, _, _, _)
 }
 
 private predicate namespaceLink(string shortns, string longns) {
@@ -297,36 +218,60 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
     part = "source" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
+        string ext, string output |
         canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance)
+        sourceModel(subns, type, subtypes, name, signature, ext, output, kind)
       )
     or
     part = "sink" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
+        string ext, string input |
         canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance)
+        sinkModel(subns, type, subtypes, name, signature, ext, input, kind)
       )
     or
     part = "summary" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
+        string ext, string input, string output |
         canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance)
+        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind)
       )
   )
 }
 
 /** Provides a query predicate to check the CSV data for validation errors. */
 module CsvValidation {
-  private string getInvalidModelInput() {
-    exists(string pred, AccessPath input, string part |
-      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
+  /** Holds if some row in a CSV-based flow model appears to contain typos. */
+  query predicate invalidModelRow(string msg) {
+    exists(string pred, string namespace, string type, string name, string signature, string ext |
+      sourceModel(namespace, type, _, name, signature, ext, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
+      sinkModel(namespace, type, _, name, signature, ext, _, _) and pred = "sink"
+      or
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "summary"
+    |
+      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
+      msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
+      or
+      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
+      msg = "Dubious type \"" + type + "\" in " + pred + " model."
+      or
+      not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
+      msg = "Dubious member name \"" + name + "\" in " + pred + " model."
+      or
+      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+,\\[\\]]*\\)") and
+      msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
+      or
+      not ext.regexpMatch("|Attribute") and
+      msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+    )
+    or
+    exists(string pred, string input, string part |
+      sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
+      or
+      summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -334,139 +279,53 @@ module CsvValidation {
         not (part = "Argument" and pred = "sink") and
         not parseArg(part, _)
         or
-        part = input.getToken(_) and
+        specSplit(input, part, _) and
         parseParam(part, _)
       ) and
-      result = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
+      msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
-  }
-
-  private string getInvalidModelOutput() {
+    or
     exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
+      sourceModel(_, _, _, _, _, _, output, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
       not (part = ["Argument", "Parameter"] and pred = "source") and
-      result = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
-    )
-  }
-
-  private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
+      msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
     or
-    exists(string row, string kind | sinkModel(row) |
-      kind = row.splitAt(";", 7) and
-      not kind = ["code", "sql", "xss", "remote", "html"] and
-      not kind.matches("encryption-%") and
-      result = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string row, string kind | sourceModel(row) |
-      kind = row.splitAt(";", 7) and
-      not kind = ["local", "file"] and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
-  }
-
-  private string getInvalidModelSubtype() {
-    exists(string pred, string row |
-      sourceModel(row) and pred = "source"
-      or
-      sinkModel(row) and pred = "sink"
-      or
-      summaryModel(row) and pred = "summary"
-    |
-      exists(string b |
-        b = row.splitAt(";", 2) and
-        not b = ["true", "false"] and
-        result = "Invalid boolean \"" + b + "\" in " + pred + " model."
-      )
-    )
-  }
-
-  private string getInvalidModelColumnCount() {
     exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 9 and pred = "source"
+      sourceModel(row) and expect = 8 and pred = "source"
       or
-      sinkModel(row) and expect = 9 and pred = "sink"
+      sinkModel(row) and expect = 8 and pred = "sink"
       or
-      summaryModel(row) and expect = 10 and pred = "summary"
-      or
-      negativeSummaryModel(row) and expect = 5 and pred = "negative summary"
+      summaryModel(row) and expect = 9 and pred = "summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
         cols != expect and
-        result =
+        msg =
           "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            " in " + row + "."
+            "."
+      )
+      or
+      exists(string b |
+        b = row.splitAt(";", 2) and
+        not b = ["true", "false"] and
+        msg = "Invalid boolean \"" + b + "\" in " + pred + " model."
       )
     )
-  }
-
-  private string getInvalidModelSignature() {
-    exists(
-      string pred, string namespace, string type, string name, string signature, string ext,
-      string provenance
-    |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "source"
-      or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
-      or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
-      pred = "summary"
-      or
-      negativeSummaryModel(namespace, type, name, signature, provenance) and
-      ext = "" and
-      pred = "negative summary"
-    |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
-      result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
-      or
-      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
-      result = "Dubious type \"" + type + "\" in " + pred + " model."
-      or
-      not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
-      result = "Dubious member name \"" + name + "\" in " + pred + " model."
-      or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
-      result = "Dubious signature \"" + signature + "\" in " + pred + " model."
-      or
-      not ext.regexpMatch("|Attribute") and
-      result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
-      or
-      not provenance = ["manual", "generated"] and
-      result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
-    )
-  }
-
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
-  query predicate invalidModelRow(string msg) {
-    msg =
-      [
-        getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
-      ]
   }
 }
 
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _)
-  or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _)
-  or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
-  or
-  negativeSummaryModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
 }
 
 private predicate elementSpec(
@@ -488,52 +347,28 @@ private class UnboundValueOrRefType extends ValueOrRefType {
   }
 }
 
-/** An unbound callable. */
-class UnboundCallable extends Callable {
+private class UnboundCallable extends Callable, Virtualizable {
   UnboundCallable() { this.isUnboundDeclaration() }
 
-  /**
-   * Holds if this unbound callable overrides or implements (transitively)
-   * `that` unbound callable.
-   */
   predicate overridesOrImplementsUnbound(UnboundCallable that) {
     exists(Callable c |
-      this.(Overridable).overridesOrImplements(c) and
+      this.overridesOrImplementsOrEquals(c) and
+      this != c and
       that = c.getUnboundDeclaration()
     )
   }
 }
 
-pragma[nomagic]
-private predicate callableSpecInfo(Callable c, string namespace, string type, string name) {
-  c.getDeclaringType().hasQualifiedName(namespace, type) and
-  c.getName() = name
-}
-
-pragma[nomagic]
-private predicate subtypeSpecCandidate(string name, UnboundValueOrRefType t) {
-  exists(UnboundValueOrRefType t0 |
-    elementSpec(_, _, true, name, _, _, t0) and
-    t = t0.getASubTypeUnbound+()
-  )
-}
-
-pragma[nomagic]
-private predicate callableInfo(Callable c, string name, UnboundValueOrRefType decl) {
-  name = c.getName() and
-  decl = c.getDeclaringType()
-}
-
 private class InterpretedCallable extends Callable {
   InterpretedCallable() {
-    exists(string namespace, string type, string name |
-      callableSpecInfo(this, namespace, type, name) and
-      elementSpec(namespace, type, _, name, _, _)
-    )
-    or
-    exists(string name, UnboundValueOrRefType t |
-      callableInfo(this, name, t) and
-      subtypeSpecCandidate(name, t)
+    exists(UnboundValueOrRefType t, boolean subtypes, string name |
+      elementSpec(_, _, subtypes, name, _, _, t) and
+      this.hasName(name)
+    |
+      this.getDeclaringType() = t
+      or
+      subtypes = true and
+      this.getDeclaringType() = t.getASubTypeUnbound+()
     )
   }
 }
@@ -574,7 +409,7 @@ private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
   exists(UnboundValueOrRefType t | elementSpec(namespace, type, subtypes, name, signature, _, t) |
-    exists(Declaration m |
+    exists(Member m |
       (
         result = m
         or
@@ -592,7 +427,7 @@ private Element interpretElement0(
       result = t
       or
       subtypes = true and
-      result = t.getASubTypeUnbound+()
+      result = t.(UnboundValueOrRefType).getASubTypeUnbound+()
     ) and
     result = t and
     name = "" and
@@ -600,7 +435,7 @@ private Element interpretElement0(
   )
 }
 
-/** Gets the source/sink/summary/negativesummary element corresponding to the supplied parameters. */
+/** Gets the source/sink/summary element corresponding to the supplied parameters. */
 Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
@@ -611,11 +446,6 @@ Element interpretElement(
     ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = e
   )
 }
-
-/**
- * Holds if `c` has a `generated` summary.
- */
-predicate hasSummary(Callable c, boolean generated) { summaryElement(c, _, _, _, generated) }
 
 cached
 private module Cached {

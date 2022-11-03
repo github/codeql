@@ -27,7 +27,7 @@ class UnsafeTlsVersionConfig extends TaintTracking::Configuration {
 class SslContextGetInstanceSink extends DataFlow::ExprNode {
   SslContextGetInstanceSink() {
     exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType() instanceof SslContext and
+      m.getDeclaringType() instanceof SSLContext and
       m.hasName("getInstance") and
       ma.getArgument(0) = asExpr()
     )
@@ -40,7 +40,7 @@ class SslContextGetInstanceSink extends DataFlow::ExprNode {
  */
 class CreateSslParametersSink extends DataFlow::ExprNode {
   CreateSslParametersSink() {
-    exists(ConstructorCall cc | cc.getConstructedType() instanceof SslParameters |
+    exists(ConstructorCall cc | cc.getConstructedType() instanceof SSLParameters |
       cc.getArgument(1) = asExpr()
     )
   }
@@ -53,7 +53,7 @@ class CreateSslParametersSink extends DataFlow::ExprNode {
 class SslParametersSetProtocolsSink extends DataFlow::ExprNode {
   SslParametersSetProtocolsSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType() instanceof SslParameters and
+      m.getDeclaringType() instanceof SSLParameters and
       m.hasName("setProtocols") and
       ma.getArgument(0) = asExpr()
     )
@@ -70,9 +70,9 @@ class SetEnabledProtocolsSink extends DataFlow::ExprNode {
       m = ma.getMethod() and type = m.getDeclaringType()
     |
       (
-        type instanceof SslSocket or
-        type instanceof SslServerSocket or
-        type instanceof SslEngine
+        type instanceof SSLSocket or
+        type instanceof SSLServerSocket or
+        type instanceof SSLEngine
       ) and
       m.hasName("setEnabledProtocols") and
       ma.getArgument(0) = asExpr()
@@ -94,6 +94,18 @@ class UnsafeTlsVersion extends StringLiteral {
   }
 }
 
-class SslServerSocket extends RefType {
-  SslServerSocket() { hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
+class SSLParameters extends RefType {
+  SSLParameters() { hasQualifiedName("javax.net.ssl", "SSLParameters") }
+}
+
+class SSLSocket extends RefType {
+  SSLSocket() { hasQualifiedName("javax.net.ssl", "SSLSocket") }
+}
+
+class SSLServerSocket extends RefType {
+  SSLServerSocket() { hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
+}
+
+class SSLEngine extends RefType {
+  SSLEngine() { hasQualifiedName("javax.net.ssl", "SSLEngine") }
 }

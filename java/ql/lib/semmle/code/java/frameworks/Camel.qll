@@ -10,22 +10,19 @@ import semmle.code.java.frameworks.camel.CamelJavaAnnotations
 /**
  * A string describing a URI specified in an Apache Camel "to" declaration.
  */
-class CamelToUri extends string {
-  CamelToUri() {
-    exists(SpringCamelXmlToElement toXmlElement | this = toXmlElement.getUri()) or
-    exists(CamelJavaDslToDecl toJavaDsl | this = toJavaDsl.getUri())
+class CamelToURI extends string {
+  CamelToURI() {
+    exists(SpringCamelXMLToElement toXMLElement | this = toXMLElement.getURI()) or
+    exists(CamelJavaDSLToDecl toJavaDSL | this = toJavaDSL.getURI())
   }
 }
-
-/** DEPRECATED: Alias for CamelToUri */
-deprecated class CamelToURI = CamelToUri;
 
 /**
  * A string describing a URI specified in an Apache Camel "to" declaration that maps to a
  * SpringBean.
  */
-class CamelToBeanUri extends CamelToUri {
-  CamelToBeanUri() {
+class CamelToBeanURI extends CamelToURI {
+  CamelToBeanURI() {
     // A `<to>` element references a bean if the URI starts with "bean:", or there is no scheme.
     matches("bean:%") or
     not exists(indexOf(":"))
@@ -54,36 +51,33 @@ class CamelToBeanUri extends CamelToUri {
   SpringBean getRefBean() { result.getBeanIdentifier() = this.getBeanIdentifier() }
 }
 
-/** DEPRECATED: Alias for CamelToBeanUri */
-deprecated class CamelToBeanURI = CamelToBeanUri;
-
 /**
  * A Class whose methods may be called in response to an Apache Camel message.
  */
 class CamelTargetClass extends Class {
   CamelTargetClass() {
-    exists(SpringCamelXmlBeanRef camelXmlBeanRef |
+    exists(SpringCamelXMLBeanRef camelXMLBeanRef |
       // A target may be defined by referencing an existing Spring Bean.
-      this = camelXmlBeanRef.getRefBean().getClass()
+      this = camelXMLBeanRef.getRefBean().getClass()
       or
       // A target may be defined by referencing a class, which Apache Camel will create into a bean.
-      this = camelXmlBeanRef.getBeanType()
+      this = camelXMLBeanRef.getBeanType()
     )
     or
-    exists(CamelToBeanUri toBeanUri | this = toBeanUri.getRefBean().getClass())
+    exists(CamelToBeanURI toBeanURI | this = toBeanURI.getRefBean().getClass())
     or
-    exists(SpringCamelXmlMethodElement xmlMethod |
+    exists(SpringCamelXMLMethodElement xmlMethod |
       this = xmlMethod.getRefBean().getClass() or
       this = xmlMethod.getBeanType()
     )
     or
-    exists(CamelJavaDslMethodDecl methodDecl | this = methodDecl.getABean())
+    exists(CamelJavaDSLMethodDecl methodDecl | this = methodDecl.getABean())
     or
     // Any beans referred to in Java DSL bean or beanRef elements are considered as possible
     // targets. Whether the route builder is ever constructed or called is not considered.
-    exists(CamelJavaDslBeanDecl beanDecl | this = beanDecl.getABeanClass())
+    exists(CamelJavaDSLBeanDecl beanDecl | this = beanDecl.getABeanClass())
     or
-    exists(CamelJavaDslBeanRefDecl beanRefDecl | this = beanRefDecl.getABeanClass())
+    exists(CamelJavaDSLBeanRefDecl beanRefDecl | this = beanRefDecl.getABeanClass())
   }
 
   /**

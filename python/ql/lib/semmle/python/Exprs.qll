@@ -1,7 +1,6 @@
 import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.ObjectInternal
-private import semmle.python.internal.CachedStages
 
 /** An expression */
 class Expr extends Expr_, AstNode {
@@ -9,11 +8,7 @@ class Expr extends Expr_, AstNode {
   override Scope getScope() { py_scopes(this, result) }
 
   /** Gets a textual representation of this element. */
-  cached
-  override string toString() {
-    Stages::AST::ref() and
-    result = "Expression"
-  }
+  override string toString() { result = "Expression" }
 
   /** Gets the module in which this expression occurs */
   Module getEnclosingModule() { result = this.getScope().getEnclosingModule() }
@@ -35,6 +30,9 @@ class Expr extends Expr_, AstNode {
   /** Whether this expression is a constant */
   predicate isConstant() { not this.isVariable() }
 
+  /** Use isParenthesized instead. */
+  deprecated override predicate isParenthesised() { this.isParenthesized() }
+
   /** Whether the parenthesized property of this expression is true. */
   predicate isParenthesized() { Expr_.super.isParenthesised() }
 
@@ -50,6 +48,9 @@ class Expr extends Expr_, AstNode {
 
   /** Gets an immediate (non-nested) sub-expression of this expression */
   Expr getASubExpression() { none() }
+
+  /** Use StrConst.getText() instead */
+  deprecated string strValue() { none() }
 
   override AstNode getAChildNode() { result = this.getASubExpression() }
 
@@ -189,16 +190,7 @@ class Call extends Call_ {
    */
   Keyword getKeyword(int index) {
     result = this.getNamedArg(index) and
-    (
-      not exists(this.getMinimumUnpackingIndex())
-      or
-      index <= this.getMinimumUnpackingIndex()
-    )
-  }
-
-  /** Gets the minimum index (if any) at which a dictionary unpacking (`**foo`) occurs in this call. */
-  private int getMinimumUnpackingIndex() {
-    result = min(int i | this.getNamedArg(i) instanceof DictUnpacking)
+    not exists(DictUnpacking d, int lower | d = this.getNamedArg(lower) and lower < index)
   }
 
   /**
@@ -245,12 +237,10 @@ class Call extends Call_ {
     result = count(Expr arg | arg = this.getAPositionalArg() and not arg instanceof Starred)
   }
 
-  /** Gets the first tuple (*) argument of this call, if any. */
+  /** Gets the tuple (*) argument of this call, provided there is exactly one. */
   Expr getStarArg() {
-    exists(int firstStarArgIndex |
-      firstStarArgIndex = min(int i | this.getPositionalArg(i) instanceof Starred | i) and
-      result = this.getPositionalArg(firstStarArgIndex).(Starred).getValue()
-    )
+    count(this.getStarargs()) < 2 and
+    result = this.getStarargs()
   }
 }
 
@@ -325,7 +315,7 @@ class Ellipsis extends Ellipsis_ {
 }
 
 /**
- * An immutable literal expression (except tuples).
+ * Immutable literal expressions (except tuples).
  * Consists of string (both unicode and byte) literals and numeric literals.
  */
 abstract class ImmutableLiteral extends Expr {
@@ -456,8 +446,6 @@ class Unicode extends StrConst {
   }
 
   /**
-   * Gets the quoted representation fo this string.
-   *
    * The extractor puts quotes into the name of each string (to prevent "0" clashing with 0).
    * The following predicate help us match up a string/byte literals in the source
    * which the equivalent object.
@@ -618,9 +606,6 @@ private string non_byte_prefix() {
   not result.charAt(_) in ["b", "B"]
 }
 
-/** A string constant. This is a placeholder class -- use `StrConst` instead. */
-class Str = StrConst;
-
 /** A string constant. */
 class StrConst extends Str_, ImmutableLiteral {
   /* syntax: "hello" */
@@ -634,6 +619,8 @@ class StrConst extends Str_, ImmutableLiteral {
       this.getEnclosingModule().hasFromFuture("unicode_literals")
     )
   }
+
+  deprecated override string strValue() { result = this.getS() }
 
   override Expr getASubExpression() { none() }
 
@@ -698,7 +685,7 @@ class False extends BooleanLiteral {
   override boolean booleanValue() { result = false }
 }
 
-/** The `None` constant. */
+/** `None` */
 class None extends NameConstant {
   /* syntax: None */
   None() { name_consts(this, "None") }
@@ -731,30 +718,24 @@ class FormattedValue extends FormattedValue_ {
   }
 }
 
-/** A guard in a case statement */
-class Guard extends Guard_ {
-  /* syntax: if Expr */
-  override Expr getASubExpression() { result = this.getTest() }
-}
-
 /* Expression Contexts */
 /** A context in which an expression used */
 class ExprContext extends ExprContext_ { }
 
-/** The load context, the context of var in len(var) */
+/** Load context, the context of var in len(var) */
 class Load extends Load_ { }
 
-/** The store context, the context of var in var = 0 */
+/** Store context, the context of var in var = 0 */
 class Store extends Store_ { }
 
-/** The delete context, the context of var in del var */
+/** Delete context, the context of var in del var */
 class Del extends Del_ { }
 
-/** The context of an augmented load. This is an artifact of the Python grammar which includes an AugLoad context, even though it is never used. */
-class AugLoad extends AugLoad_ { }
+/** This is an artifact of the Python grammar which includes an AugLoad context, even though it is never used. */
+library class AugLoad extends AugLoad_ { }
 
-/** The augmented store context, the context of var in var += 1 */
+/** Augmented store context, the context of var in var += 1 */
 class AugStore extends AugStore_ { }
 
-/** The parameter context, the context of var in def f(var): pass */
+/** Parameter context, the context of var in def f(var): pass */
 class Param extends Param_ { }

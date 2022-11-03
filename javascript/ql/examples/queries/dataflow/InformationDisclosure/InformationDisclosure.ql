@@ -13,8 +13,7 @@ import DataFlow
 import DataFlow::PathGraph
 
 /**
- * A dataflow configuration that tracks authentication tokens ("authKey")
- * to a postMessage call with unrestricted target origin.
+ * Tracks authentication tokens ("authKey") to a postMessage call with unrestricted target origin.
  *
  * For example:
  * ```

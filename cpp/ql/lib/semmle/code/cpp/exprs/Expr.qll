@@ -31,7 +31,7 @@ class Expr extends StmtParent, @expr {
   override Stmt getEnclosingStmt() {
     result = this.getParent().(Expr).getEnclosingStmt()
     or
-    result = this.getParent()
+    result = this.getParent().(Stmt)
     or
     exists(Expr other | result = other.getEnclosingStmt() and other.getConversion() = this)
     or
@@ -48,9 +48,6 @@ class Expr extends StmtParent, @expr {
 
   /** Gets the enclosing variable of this expression, if any. */
   Variable getEnclosingVariable() { result = exprEnclosingElement(this) }
-
-  /** Gets the enclosing variable or function of this expression. */
-  Declaration getEnclosingDeclaration() { result = exprEnclosingElement(this) }
 
   /** Gets a child of this expression. */
   Expr getAChild() { exists(int n | result = this.getChild(n)) }
@@ -116,6 +113,13 @@ class Expr extends StmtParent, @expr {
    * stripped and typedefs have been resolved.
    */
   Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
+
+  /**
+   * Gets an integer indicating the type of expression that this represents.
+   *
+   * DEPRECATED: use the subclasses of `Expr` rather than relying on this predicate.
+   */
+  deprecated int getKind() { exprs(underlyingElement(this), result, _) }
 
   /** Gets a textual representation of this expression. */
   override string toString() { none() }
@@ -451,7 +455,7 @@ class Expr extends StmtParent, @expr {
     // For performance, we avoid a full transitive closure over `getConversion`.
     // Since there can be several implicit conversions before and after an
     // explicit conversion, use `getImplicitlyConverted` to step over them
-    // cheaply. Then, if there is an explicit conversion following the implicit
+    // cheaply. Then, if there is an explicit conversion following the implict
     // conversion sequence, recurse to handle multiple explicit conversions.
     if this.getImplicitlyConverted().hasExplicitConversion()
     then result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()
@@ -596,12 +600,9 @@ class ParenthesisExpr extends Conversion, @parexpr {
 }
 
 /**
- * A C/C++ expression that could not be resolved, or that can no longer be
- * represented due to a database upgrade or downgrade.
+ * A C/C++ expression that has not been resolved.
  *
- * If the expression could not be resolved, it has type `ErroneousType`. In the
- * case of a database upgrade or downgrade, the original type from before the
- * upgrade or downgrade is kept if that type can be represented.
+ * It is assigned `ErroneousType` as its type.
  */
 class ErrorExpr extends Expr, @errorexpr {
   override string toString() { result = "<error expr>" }

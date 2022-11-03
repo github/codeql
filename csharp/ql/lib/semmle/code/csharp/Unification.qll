@@ -80,8 +80,7 @@ module Gvn {
     LeafType() {
       not this instanceof GenericType and
       not this instanceof TypeParameter and
-      not this instanceof DynamicType and
-      not this instanceof TupleType
+      not this instanceof DynamicType
     }
   }
 
@@ -479,8 +478,6 @@ module Gvn {
     GvnType getGlobalValueNumber(Type t) {
       result = TLeafGvnType(t)
       or
-      result = TLeafGvnType(t.(TupleType).getUnderlyingType())
-      or
       t instanceof DynamicType and
       result = TLeafGvnType(any(ObjectType ot))
       or
@@ -672,7 +669,7 @@ module Unification {
    *    `ConstrainedTypeParameter::unifiable()` can be used.
    *
    *
-   * For performance reasons, type parameter constraints inside `t1` and `t2` are
+   * For performance reasons, type paramater constraints inside `t1` and `t2` are
    * *not* taken into account, and there is also no guarantee that the same type
    * parameter can be substituted with two different terms. For example, in
    *

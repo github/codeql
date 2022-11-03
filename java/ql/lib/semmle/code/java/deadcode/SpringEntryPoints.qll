@@ -13,7 +13,7 @@ class SpringInjectionCallableEntryPoint extends CallableEntryPoint {
     this instanceof SpringBeanReflectivelyConstructed or
     // A setter method specified in the context.
     this instanceof SpringBeanPropertySetterMethod or
-    exists(this.(SpringBeanXmlAutowiredSetterMethod).getInjectedBean()) or
+    exists(this.(SpringBeanXMLAutowiredSetterMethod).getInjectedBean()) or
     this instanceof SpringBeanAutowiredCallable
   }
 }
@@ -104,8 +104,8 @@ class SpringAspect extends CallableEntryPoint {
 /**
  * Spring Shell provides annotations for identifying methods that contribute CLI commands.
  */
-class SpringCli extends CallableEntryPoint {
-  SpringCli() {
+class SpringCLI extends CallableEntryPoint {
+  SpringCLI() {
     (
       hasAnnotation("org.springframework.shell.core.annotation", "CliCommand") or
       hasAnnotation("org.springframework.shell.core.annotation", "CliAvailabilityIndicator")
@@ -115,9 +115,6 @@ class SpringCli extends CallableEntryPoint {
         .hasQualifiedName("org.springframework.shell.core", "CommandMarker")
   }
 }
-
-/** DEPRECATED: Alias for SpringCli */
-deprecated class SpringCLI = SpringCli;
 
 /**
  * An entry point which acts as a remote API for a Flex application to access a Spring application.

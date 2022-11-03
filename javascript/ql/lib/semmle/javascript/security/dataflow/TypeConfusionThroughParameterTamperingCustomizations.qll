@@ -5,6 +5,7 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.dataflow.InferredTypes
 
 module TypeConfusionThroughParameterTampering {
@@ -29,7 +30,7 @@ module TypeConfusionThroughParameterTampering {
    * Node.js-based HTTP servers turn request parameters into arrays if their names are repeated.
    */
   private class TypeTamperableRequestParameter extends Source {
-    TypeTamperableRequestParameter() { this.(Http::RequestInputAccess).isUserControlledObject() }
+    TypeTamperableRequestParameter() { this.(HTTP::RequestInputAccess).isUserControlledObject() }
   }
 
   /**

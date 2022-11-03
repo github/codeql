@@ -5,12 +5,12 @@ import semmle.python.web.Http
 import semmle.python.security.injection.Sql
 
 /** A django model class */
-deprecated class DjangoModel extends ClassValue {
+class DjangoModel extends ClassValue {
   DjangoModel() { Value::named("django.db.models.Model") = this.getASuperType() }
 }
 
 /** A "taint" for django database tables */
-deprecated class DjangoDbTableObjects extends TaintKind {
+class DjangoDbTableObjects extends TaintKind {
   DjangoDbTableObjects() { this = "django.db.models.Model.objects" }
 
   override TaintKind getTaintOfMethodResult(string name) {
@@ -24,7 +24,7 @@ deprecated class DjangoDbTableObjects extends TaintKind {
 }
 
 /** Django model objects, which are sources of django database table "taint" */
-deprecated class DjangoModelObjects extends TaintSource {
+class DjangoModelObjects extends TaintSource {
   DjangoModelObjects() {
     this.(AttrNode).isLoad() and this.(AttrNode).getObject("objects").pointsTo(any(DjangoModel m))
   }
@@ -38,7 +38,7 @@ deprecated class DjangoModelObjects extends TaintSource {
  * A call to the `raw` method on a django model. This allows a raw SQL query
  * to be sent to the database, which is a security risk.
  */
-deprecated class DjangoModelRawCall extends SqlInjectionSink {
+class DjangoModelRawCall extends SqlInjectionSink {
   DjangoModelRawCall() {
     exists(CallNode raw_call, ControlFlowNode queryset | this = raw_call.getArg(0) |
       raw_call.getFunction().(AttrNode).getObject("raw") = queryset and
@@ -55,7 +55,7 @@ deprecated class DjangoModelRawCall extends SqlInjectionSink {
  * A call to the `extra` method on a django model. This allows a raw SQL query
  * to be sent to the database, which is a security risk.
  */
-deprecated class DjangoModelExtraCall extends SqlInjectionSink {
+class DjangoModelExtraCall extends SqlInjectionSink {
   DjangoModelExtraCall() {
     exists(CallNode extra_call, ControlFlowNode queryset | this = extra_call.getArg(0) |
       extra_call.getFunction().(AttrNode).getObject("extra") = queryset and

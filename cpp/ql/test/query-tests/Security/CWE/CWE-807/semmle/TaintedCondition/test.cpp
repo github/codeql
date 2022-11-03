@@ -35,7 +35,7 @@ void processRequest()
         adminPrivileges = 0; // OK, since it's a 0 and not a 1
      }
 
-     // BAD (requires pointer analysis to catch) [NOT DETECTED]
+     // BAD (requires pointer analysis to catch)
      const char** userp = &currentUser;
      *userp = userName;
      if (!strcmp(currentUser, "admin")) {

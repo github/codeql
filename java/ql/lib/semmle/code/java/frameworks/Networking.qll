@@ -14,11 +14,6 @@ class TypeSocket extends RefType {
   TypeSocket() { this.hasQualifiedName("java.net", "Socket") }
 }
 
-/** The type `javax.net.SocketFactory` */
-class TypeSocketFactory extends RefType {
-  TypeSocketFactory() { this.hasQualifiedName("javax.net", "SocketFactory") }
-}
-
 /** The type `java.net.URL`. */
 class TypeUrl extends RefType {
   TypeUrl() { this.hasQualifiedName("java.net", "URL") }
@@ -30,31 +25,19 @@ class TypeUri extends RefType {
 }
 
 /** The method `java.net.URLConnection::getInputStream`. */
-class UrlConnectionGetInputStreamMethod extends Method {
-  UrlConnectionGetInputStreamMethod() {
+class URLConnectionGetInputStreamMethod extends Method {
+  URLConnectionGetInputStreamMethod() {
     this.getDeclaringType() instanceof TypeUrlConnection and
     this.hasName("getInputStream") and
     this.hasNoParameters()
   }
 }
 
-/** DEPRECATED: Alias for UrlConnectionGetInputStreamMethod */
-deprecated class URLConnectionGetInputStreamMethod = UrlConnectionGetInputStreamMethod;
-
 /** The method `java.net.Socket::getInputStream`. */
 class SocketGetInputStreamMethod extends Method {
   SocketGetInputStreamMethod() {
     this.getDeclaringType() instanceof TypeSocket and
     this.hasName("getInputStream") and
-    this.hasNoParameters()
-  }
-}
-
-/** The method `java.net.Socket::getOutputStream`. */
-class SocketGetOutputStreamMethod extends Method {
-  SocketGetOutputStreamMethod() {
-    this.getDeclaringType() instanceof TypeSocket and
-    this.hasName("getOutputStream") and
     this.hasNoParameters()
   }
 }
@@ -157,22 +140,6 @@ class UrlOpenConnectionMethod extends Method {
   UrlOpenConnectionMethod() {
     this.getDeclaringType() instanceof TypeUrl and
     this.getName() = "openConnection"
-  }
-}
-
-/** The method `javax.net.SocketFactory::createSocket`. */
-class CreateSocketMethod extends Method {
-  CreateSocketMethod() {
-    this.hasName("createSocket") and
-    this.getDeclaringType().getAnAncestor() instanceof TypeSocketFactory
-  }
-}
-
-/** The method `javax.net.Socket::connect`. */
-class SocketConnectMethod extends Method {
-  SocketConnectMethod() {
-    this.hasName("connect") and
-    this.getDeclaringType() instanceof TypeSocket
   }
 }
 

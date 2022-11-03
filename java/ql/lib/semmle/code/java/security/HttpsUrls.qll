@@ -12,13 +12,13 @@ private import semmle.code.java.frameworks.Networking
  */
 class HttpStringLiteral extends StringLiteral {
   HttpStringLiteral() {
-    exists(string s | this.getValue() = s |
+    exists(string s | this.getRepresentedString() = s |
       s = "http"
       or
       s.matches("http://%") and
       not s.substring(7, s.length()) instanceof PrivateHostName and
       not TaintTracking::localExprTaint(any(StringLiteral p |
-          p.getValue() instanceof PrivateHostName
+          p.getRepresentedString() instanceof PrivateHostName
         ), this.getParent*())
     )
   }

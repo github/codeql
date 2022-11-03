@@ -177,19 +177,6 @@ private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, AlwaysNullE
   )
 }
 
-/**
- * Holds if `edef` is an implicit entry definition for a captured variable that
- * may be guarded, because a call to the capturing callable is guarded.
- */
-private predicate isMaybeGuardedCapturedDef(Ssa::ImplicitEntryDefinition edef) {
-  exists(Ssa::ExplicitDefinition def, ControlFlow::Nodes::ElementNode c, G::Guard g, NullValue nv |
-    def.isCapturedVariableDefinitionFlowIn(edef, c, _) and
-    g = def.getARead() and
-    g.controlsNode(c, nv) and
-    nv.isNonNull()
-  )
-}
-
 /** Holds if `def` is an SSA definition that may be `null`. */
 private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) {
   not nonNullDef(def) and
@@ -227,7 +214,6 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     exists(Dereference d | dereferenceAt(_, _, def, d) |
       d.hasNullableType() and
       not def instanceof Ssa::PhiNode and
-      not isMaybeGuardedCapturedDef(def) and
       reason = def.getSourceVariable().getAssignable() and
       msg = "because it has a nullable type"
     )

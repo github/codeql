@@ -73,7 +73,7 @@ class SafeValidator extends VarAccess {
   SafeValidator() {
     exists(Variable v | v = this.getVariable() |
       exists(ValidatorConfig config | config.getQualifier() = v.getAnAccess() |
-        config.disables(configAccessExternalDtd())
+        config.disables(configAccessExternalDTD())
       ) and
       exists(ValidatorConfig config | config.getQualifier() = v.getAnAccess() |
         config.disables(configAccessExternalSchema())
@@ -95,6 +95,26 @@ private class SafeValidatorFlowConfig extends DataFlow3::Configuration {
   }
 
   override int fieldFlowBranchLimit() { result = 0 }
+}
+
+/** The class `org.dom4j.DocumentHelper`. */
+class DocumentHelper extends RefType {
+  DocumentHelper() { this.hasQualifiedName("org.dom4j", "DocumentHelper") }
+}
+
+/** A call to `DocumentHelper.parseText`. */
+class DocumentHelperParseText extends XmlParserCall {
+  DocumentHelperParseText() {
+    exists(Method m |
+      this.getMethod() = m and
+      m.getDeclaringType() instanceof DocumentHelper and
+      m.hasName("parseText")
+    )
+  }
+
+  override Expr getSink() { result = this.getArgument(0) }
+
+  override predicate isSafe() { none() }
 }
 
 /**
@@ -185,19 +205,16 @@ private class SafeDigesterFlowConfig extends DataFlow4::Configuration {
 }
 
 /** The class `java.beans.XMLDecoder`. */
-class XmlDecoder extends RefType {
-  XmlDecoder() { this.hasQualifiedName("java.beans", "XMLDecoder") }
+class XMLDecoder extends RefType {
+  XMLDecoder() { this.hasQualifiedName("java.beans", "XMLDecoder") }
 }
 
-/** DEPRECATED: Alias for XmlDecoder */
-deprecated class XMLDecoder = XmlDecoder;
-
 /** A call to `XMLDecoder.readObject`. */
-class XmlDecoderReadObject extends XmlParserCall {
-  XmlDecoderReadObject() {
+class XMLDecoderReadObject extends XmlParserCall {
+  XMLDecoderReadObject() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType() instanceof XmlDecoder and
+      m.getDeclaringType() instanceof XMLDecoder and
       m.hasName("readObject")
     )
   }
@@ -206,9 +223,6 @@ class XmlDecoderReadObject extends XmlParserCall {
 
   override predicate isSafe() { none() }
 }
-
-/** DEPRECATED: Alias for XmlDecoderReadObject */
-deprecated class XMLDecoderReadObject = XmlDecoderReadObject;
 
 private predicate constantStringExpr(Expr e, string val) {
   e.(CompileTimeConstantExpr).getStringValue() = val
@@ -221,8 +235,8 @@ private predicate constantStringExpr(Expr e, string val) {
 }
 
 /** A call to `SAXTransformerFactory.newTransformerHandler`. */
-class SaxTransformerFactoryNewTransformerHandler extends XmlParserCall {
-  SaxTransformerFactoryNewTransformerHandler() {
+class SAXTransformerFactoryNewTransformerHandler extends XmlParserCall {
+  SAXTransformerFactoryNewTransformerHandler() {
     exists(Method m |
       this.getMethod() = m and
       m.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXTransformerFactory") and
@@ -236,10 +250,6 @@ class SaxTransformerFactoryNewTransformerHandler extends XmlParserCall {
     exists(SafeTransformerFactoryFlowConfig stf | stf.hasFlowToExpr(this.getQualifier()))
   }
 }
-
-/** DEPRECATED: Alias for SaxTransformerFactoryNewTransformerHandler */
-deprecated class SAXTransformerFactoryNewTransformerHandler =
-  SaxTransformerFactoryNewTransformerHandler;
 
 /** An expression that always has the same string value. */
 private class ConstantStringExpr extends Expr {

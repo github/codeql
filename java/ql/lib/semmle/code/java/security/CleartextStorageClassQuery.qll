@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.frameworks.JAXB
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.security.CleartextStorageQuery
 import semmle.code.java.security.CleartextStoragePropertiesQuery
 
@@ -29,7 +30,7 @@ abstract class ClassStore extends Storable, ClassInstanceExpr {
  */
 private class Serializable extends ClassStore {
   Serializable() {
-    this.getConstructor().getDeclaringType().getAnAncestor() instanceof TypeSerializable and
+    this.getConstructor().getDeclaringType().getASupertype*() instanceof TypeSerializable and
     // `Properties` are `Serializable`, but handled elsewhere.
     not this instanceof Properties and
     // restrict attention to tainted instances
@@ -49,7 +50,7 @@ private class Serializable extends ClassStore {
 
 /** The instantiation of a marshallable class, which can be stored to disk as XML. */
 private class Marshallable extends ClassStore {
-  Marshallable() { this.getConstructor().getDeclaringType() instanceof JaxbElement }
+  Marshallable() { this.getConstructor().getDeclaringType() instanceof JAXBElement }
 
   /** Gets a store, for example `marshaller.marshal(instance)`. */
   override Expr getAStore() {
@@ -69,11 +70,11 @@ private Expr getInstanceInput(DataFlow::Node instance, RefType t) {
     fa.getField().getDeclaringType() = t
   |
     t.getASourceSupertype*() instanceof TypeSerializable or
-    t instanceof JaxbElement
+    t instanceof JAXBElement
   )
 }
 
-private class ClassStoreFlowConfig extends DataFlow::Configuration {
+private class ClassStoreFlowConfig extends DataFlow2::Configuration {
   ClassStoreFlowConfig() { this = "ClassStoreFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ClassStore }
@@ -98,7 +99,7 @@ private predicate serializableStore(DataFlow::Node instance, Expr store) {
 private predicate marshallableStore(DataFlow::Node instance, Expr store) {
   exists(MethodAccess m |
     store = m and
-    m.getMethod() instanceof JaxbMarshalMethod and
+    m.getMethod() instanceof JAXBMarshalMethod and
     instance.asExpr() = m.getArgument(0)
   )
 }

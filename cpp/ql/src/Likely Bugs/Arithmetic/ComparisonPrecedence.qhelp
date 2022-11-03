@@ -6,7 +6,7 @@
 
 <overview>
 <p>
-This rule finds comparison expressions that use 2 or more comparison operators and are not completely parenthesized. 
+This rule finds comparison expressions that use 2 or more comparison operators and are not completely paranthesized. 
 It is best to fully parenthesize complex comparison expressions to explicitly define the order of the comparison operators.
 </p> 
 

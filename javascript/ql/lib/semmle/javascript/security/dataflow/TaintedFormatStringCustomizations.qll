@@ -3,13 +3,10 @@
  * format injections, as well as extension points for adding your own.
  */
 
-/**
- * Provides default sources, sinks and sanitizers for reasoning about
- * format injections, as well as extension points for adding your own.
- */
-module TaintedFormatString {
-  import TaintedFormatStringSpecific
+import javascript
+import semmle.javascript.security.dataflow.DOM
 
+module TaintedFormatString {
   /**
    * A data flow source for format injections.
    */
@@ -26,7 +23,9 @@ module TaintedFormatString {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for format injection. */
-  class RemoteSource extends Source instanceof RemoteFlowSource { }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /**
    * A format argument to a printf-like function, considered as a flow sink for format injection.

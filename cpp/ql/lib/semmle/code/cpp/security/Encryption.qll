@@ -51,15 +51,15 @@ string getInsecureAlgorithmRegex() {
 
 /**
  * Holds if `name` looks like it might be related to operations with an
- * insecure encryption algorithm.
+ * insecure encyption algorithm.
  */
 bindingset[name]
 predicate isInsecureEncryption(string name) { name.regexpMatch(getInsecureAlgorithmRegex()) }
 
 /**
  * Holds if there is additional evidence that `name` looks like it might be
- * related to operations with an encryption algorithm, besides the name of a
- * specific algorithm. This can be used in conjunction with
+ * related to operations with an encyption algorithm, besides the name of a
+ * specific algorithm. This can be used in conjuction with
  * `isInsecureEncryption` to produce a stronger heuristic.
  */
 bindingset[name]
@@ -84,3 +84,31 @@ string getSecureAlgorithmRegex() {
       "(^|.*[A-Z]{2}|.*[^a-zA-Z0-9])(" + strictconcat(getASecureAlgorithmName().toLowerCase(), "|") +
       ")([^a-z0-9].*|$)"
 }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getAnInsecureAlgorithmName()`
+ * instead.
+ */
+deprecated string algorithmBlacklist() { result = getAnInsecureAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use
+ * `getAnInsecureHashAlgorithmName()` instead.
+ */
+deprecated string hashAlgorithmBlacklist() { result = getAnInsecureHashAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getInsecureAlgorithmRegex()` instead.
+ */
+deprecated string algorithmBlacklistRegex() { result = getInsecureAlgorithmRegex() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getASecureAlgorithmName()`
+ * instead.
+ */
+deprecated string algorithmWhitelist() { result = getASecureAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getSecureAlgorithmRegex()` instead.
+ */
+deprecated string algorithmWhitelistRegex() { result = getSecureAlgorithmRegex() }

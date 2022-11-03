@@ -13,10 +13,10 @@
  */
 
 import javascript
-import semmle.javascript.Actions
+import experimental.semmle.javascript.Actions
 
 /**
- * An action step that doesn't contain `actor` or `label` check in `if:` or
+ * Action step that doesn't contain `actor` or `label` check in `if:` or
  * the check requires manual analysis.
  */
 class ProbableStep extends Actions::Step {
@@ -46,7 +46,7 @@ class ProbableStep extends Actions::Step {
 }
 
 /**
- * An action job that doesn't contain `actor` or `label` check in `if:` or
+ * Action job that doesn't contain `actor` or `label` check in `if:` or
  * the check requires manual analysis.
  */
 class ProbableJob extends Actions::Job {
@@ -76,11 +76,11 @@ class ProbableJob extends Actions::Job {
 }
 
 /**
- * An action step that doesn't contain `actor` or `label` check in `if:` or
+ * Action step that doesn't contain `actor` or `label` check in `if:` or
  */
-class ProbablePullRequestTarget extends Actions::On, YamlMappingLikeNode {
+class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceOrScalar {
   ProbablePullRequestTarget() {
-    exists(YamlNode prtNode |
+    exists(YAMLNode prtNode |
       // The `on:` is triggered on `pull_request_target`
       this.getNode("pull_request_target") = prtNode and
       (
@@ -88,7 +88,7 @@ class ProbablePullRequestTarget extends Actions::On, YamlMappingLikeNode {
         not exists(prtNode.getAChild())
         or
         // or has the filter, that is something else than just [labeled]
-        exists(YamlMappingLikeNode prt, YamlMappingLikeNode types |
+        exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
           types = prt.getNode("types") and
           prtNode = prt and
           (
@@ -110,11 +110,13 @@ where
   ref.getWith().getStep() = step and
   step.getJob() = job and
   uses.getGitHubRepository() = "actions/checkout" and
-  ref.getValue()
-      .matches([
-          "%github.event.pull_request.head.ref%", "%github.event.pull_request.head.sha%",
-          "%github.event.pull_request.number%", "%github.event.number%", "%github.head_ref%"
-        ]) and
+  (
+    ref.getValue().matches("%github.event.pull_request.head.ref%") or
+    ref.getValue().matches("%github.event.pull_request.head.sha%") or
+    ref.getValue().matches("%github.event.pull_request.number%") or
+    ref.getValue().matches("%github.event.number%") or
+    ref.getValue().matches("%github.head_ref%")
+  ) and
   step instanceof ProbableStep and
   job instanceof ProbableJob
-select step, "Potential unsafe checkout of untrusted pull request on 'pull_request_target'."
+select step, "Potential unsafe checkout of untrusted pull request on `pull_request_target`"

@@ -75,7 +75,7 @@ private class AnalyzedSsaVariableUseWithNonLocalFlow extends AnalyzedValueNode {
 }
 
 /**
- * A vardef with helper predicates for flow analysis.
+ * Flow analysis for `VarDef`s.
  */
 class AnalyzedVarDef extends VarDef {
   /**
@@ -138,7 +138,7 @@ class AnalyzedVarDef extends VarDef {
   /**
    * Gets the toplevel syntactic unit to which this definition belongs.
    */
-  TopLevel getTopLevel() { result = this.(AstNode).getTopLevel() }
+  TopLevel getTopLevel() { result = this.(ASTNode).getTopLevel() }
 }
 
 /**
@@ -184,7 +184,7 @@ private class AnalyzedAmdParameter extends AnalyzedVarDef {
 }
 
 /**
- * An SSA definitions that has been analyzed.
+ * Flow analysis for SSA definitions.
  */
 abstract class AnalyzedSsaDefinition extends SsaDefinition {
   /**
@@ -237,7 +237,7 @@ private class AnalyzedPhiNode extends AnalyzedSsaDefinition, SsaPhiNode {
 }
 
 /**
- * An analyzed refinement node.
+ * Flow analysis for refinement nodes.
  */
 class AnalyzedRefinement extends AnalyzedSsaDefinition, SsaRefinementNode {
   override AbstractValue getAnRhsValue() {
@@ -254,7 +254,7 @@ class AnalyzedRefinement extends AnalyzedSsaDefinition, SsaRefinementNode {
 }
 
 /**
- * A refinement node where the guard is a condition.
+ * Flow analysis for refinement nodes where the guard is a condition.
  *
  * For such nodes, we want to split any indefinite abstract values flowing into the node
  * into sets of more precise abstract values to enable them to be refined.
@@ -272,7 +272,7 @@ class AnalyzedConditionGuard extends AnalyzedRefinement {
 }
 
 /**
- * A refinement for a condition guard with an outcome of `true`.
+ * Flow analysis for condition guards with an outcome of `true`.
  *
  * For example, in `if(x) s; else t;`, this will restrict the possible values of `x` at
  * the beginning of `s` to those that are truthy.
@@ -290,7 +290,7 @@ class AnalyzedPositiveConditionGuard extends AnalyzedRefinement {
 }
 
 /**
- * A refinement for a condition guard with an outcome of `false`.
+ * Flow analysis for condition guards with an outcome of `false`.
  *
  * For example, in `if(x) s; else t;`, this will restrict the possible values of `x` at
  * the beginning of `t` to those that are falsy.
@@ -475,7 +475,7 @@ private newtype TAnalyzedGlobal =
   TAnalyzedGlocal(GlobalVariable gv, TopLevel tl) { useIn(gv, _, tl) and exists(defIn(gv, tl)) } or
   /**
    * A global variable that is used in at least one toplevel where it is not defined, and
-   * hence has to be modeled as a truly global variable.
+   * hence has to be modelled as a truly global variable.
    */
   TAnalyzedGenuineGlobal(GlobalVariable gv) {
     exists(TopLevel tl |
@@ -525,7 +525,7 @@ private class AnalyzedGlocal extends AnalyzedGlobal, TAnalyzedGlocal {
 
 /**
  * A global variable that is used in at least one toplevel where it is not defined, and
- * hence has to be modeled as a truly global variable.
+ * hence has to be modelled as a truly global variable.
  */
 private class AnalyzedGenuineGlobal extends AnalyzedGlobal, TAnalyzedGenuineGlobal {
   GlobalVariable gv;
@@ -692,10 +692,10 @@ abstract private class CallWithAnalyzedParameters extends FunctionWithAnalyzedPa
 /**
  * Flow analysis for simple parameters of IIFEs.
  */
-private class IifeWithAnalyzedParameters extends CallWithAnalyzedParameters {
+private class IIFEWithAnalyzedParameters extends CallWithAnalyzedParameters {
   ImmediatelyInvokedFunctionExpr iife;
 
-  IifeWithAnalyzedParameters() {
+  IIFEWithAnalyzedParameters() {
     this = iife and
     iife.getInvocationKind() = "direct"
   }

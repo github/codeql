@@ -10,6 +10,7 @@
  * @precision medium
  * @tags security
  *       external/cwe/cwe-480
+ *       external/microsoft/c6317
  */
 
 import cpp
@@ -17,7 +18,7 @@ import cpp
 /**
  * It's common in some projects to use "a double negation" to normalize the boolean
  * result to either 1 or 0.
- * This predicate is intended to filter explicit usage of a double negation as it typically
+ * This predciate is intended to filter explicit usage of a double negation as it typically
  * indicates the explicit purpose to normalize the result for bit-wise or arithmetic purposes.
  */
 predicate doubleNegationNormalization(NotExpr notexpr) { notexpr.getAnOperand() instanceof NotExpr }

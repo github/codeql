@@ -45,4 +45,5 @@ predicate sameVariable(VarAccess left, VarAccess right) {
 from AssignExpr assign
 where sameVariable(assign.getDest(), assign.getSource())
 select assign,
-  "This expression assigns " + assign.getDest().(VarAccess).getVariable().getName() + " to itself."
+  "This assigns the variable " + assign.getDest().(VarAccess).getVariable().getName() +
+    " to itself and has no effect."

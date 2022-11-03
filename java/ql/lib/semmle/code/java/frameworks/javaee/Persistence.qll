@@ -33,12 +33,12 @@ class PersistentEntity extends RefType {
   }
 
   /**
-   * Gets the access type for this entity as defined by a `@javax.persistence.Access` annotation,
-   * if any, in lower case.
+   * Gets the access type for this entity as defined by a `@javax.persistence.Access` annotation, if any.
    */
   string getAccessTypeFromAnnotation() {
     exists(AccessAnnotation accessType | accessType = this.getAnAnnotation() |
-      result = accessType.getEnumConstantValue("value").getName().toLowerCase()
+      result =
+        accessType.getValue("value").(FieldRead).getField().(EnumConstant).getName().toLowerCase()
     )
   }
 }

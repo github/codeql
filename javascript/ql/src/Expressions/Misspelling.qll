@@ -4,7 +4,7 @@
 
 import javascript
 // import typo database (generated from Wikipedia, licensed under CC BY-SA 3.0)
-import codeql.typos.TypoDatabase
+import TypoDatabase
 
 /**
  * Holds if `wrong` is a misspelling of `right` that might be intentional or

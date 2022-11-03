@@ -16,8 +16,7 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubKeyword() {
-    this instanceof Interface and
-    (if this instanceof AnnotationType then result = "@interface" else result = "interface")
+    this instanceof Interface and result = "interface"
     or
     this instanceof Class and
     (if this instanceof EnumType then result = "enum" else result = "class")
@@ -28,32 +27,19 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubStaticModifier() {
-    if this.(NestedType).isStatic() then result = "static " else result = ""
+    if this.isStatic() then result = "static " else result = ""
   }
 
   private string stubAccessibilityModifier() {
     if this.isPublic() then result = "public " else result = ""
   }
 
-  private string stubAnnotations() {
-    if exists(this.(AnnotationType).getAnAnnotation())
-    then
-      result =
-        concat(Annotation an |
-            this.(AnnotationType).getAnAnnotation() = an
-          |
-            stubAnnotation(an), "\n" order by an.getType().getQualifiedName()
-          ) + "\n"
-    else result = ""
-  }
-
   /** Gets the entire Java stub code for this type. */
   final string getStub() {
     result =
-      this.stubAnnotations() + this.stubAbstractModifier() + this.stubStaticModifier() +
-        this.stubAccessibilityModifier() + this.stubKeyword() + " " + this.getName() +
-        stubGenericArguments(this, true) + this.stubBaseTypesString() + "\n{\n" + this.stubMembers()
-        + "}"
+      this.stubAbstractModifier() + this.stubStaticModifier() + this.stubAccessibilityModifier() +
+        this.stubKeyword() + " " + this.getName() + stubGenericArguments(this, true) +
+        stubBaseTypesString() + "\n{\n" + stubMembers() + "}"
   }
 
   private RefType getAnInterestingBaseType() {
@@ -65,21 +51,19 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubBaseTypesString() {
-    if exists(this.getAnInterestingBaseType())
+    if exists(getAnInterestingBaseType())
     then
       exists(string cls, string interface, string int_kw | result = cls + int_kw + interface |
         (
-          if exists(this.getAnInterestingBaseType().(Class))
-          then cls = " extends " + stubTypeName(this.getAnInterestingBaseType().(Class))
+          if exists(getAnInterestingBaseType().(Class))
+          then cls = " extends " + stubTypeName(getAnInterestingBaseType().(Class))
           else cls = ""
         ) and
         (
-          if
-            exists(this.getAnInterestingBaseType().(Interface)) and
-            not this instanceof AnnotationType
+          if exists(getAnInterestingBaseType().(Interface))
           then (
             (if this instanceof Class then int_kw = " implements " else int_kw = " extends ") and
-            interface = concat(stubTypeName(this.getAnInterestingBaseType().(Interface)), ", ")
+            interface = concat(stubTypeName(getAnInterestingBaseType().(Interface)), ", ")
           ) else (
             int_kw = "" and interface = ""
           )
@@ -112,14 +96,15 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   final Type getAGeneratedType() {
-    result = this.getAnInterestingBaseType() or
-    result = this.getAGeneratedMember().(Callable).getReturnType() or
-    result = this.getAGeneratedMember().(Callable).getAParameter().getType() or
-    result = this.getAGeneratedMember().(Field).getType() or
-    result = this.getAGeneratedMember().(NestedType) or
-    result = this.(AnnotationType).getAnAnnotation().getType() or
-    result = this.(AnnotationType).getAnAnnotation().getValue(_).getType() or
-    result = this.(AnnotationType).getAnAnnotation().getAnArrayValue(_).getType()
+    result = getAnInterestingBaseType()
+    or
+    result = getAGeneratedMember().(Callable).getReturnType()
+    or
+    result = getAGeneratedMember().(Callable).getAParameter().getType()
+    or
+    result = getAGeneratedMember().(Field).getType()
+    or
+    result = getAGeneratedMember().(NestedType)
   }
 }
 
@@ -406,47 +391,6 @@ private string stubMember(Member m) {
   )
 }
 
-language[monotonicAggregates]
-private string stubAnnotation(Annotation a) {
-  if exists(a.getValue(_))
-  then
-    result =
-      "@" + a.getType().getName() + "(" +
-        concat(string name, Expr value |
-          value = a.getValue(name)
-        |
-          name + "=" + stubAnnotationValue(value), ","
-        ) + ")"
-  else result = "@" + a.getType().getName()
-}
-
-language[monotonicAggregates]
-private string stubAnnotationValue(Expr value) {
-  result = value.(FieldAccess).getField().getQualifiedName()
-  or
-  (
-    value instanceof Literal or
-    value instanceof CompileTimeConstantExpr
-  ) and
-  if value instanceof StringLiteral
-  then result = "\"\""
-  else result = stubDefaultValue(value.getType())
-  or
-  result = stubAnnotation(value)
-  or
-  result = value.(TypeLiteral).getReferencedType().getName() + ".class"
-  or
-  value instanceof ArrayInit and
-  result =
-    "{" +
-      concat(int i, Expr arrayElement |
-        i >= 0 and
-        arrayElement = value.(ArrayInit).getInit(i)
-      |
-        stubAnnotationValue(arrayElement), "," order by i
-      ) + "}"
-}
-
 bindingset[s]
 private string indent(string s) { result = "    " + s.replaceAll("\n", "\n    ") + "\n" }
 
@@ -505,7 +449,7 @@ class GeneratedTopLevel extends TopLevelType {
 
   private string stubAnImport() {
     exists(RefType t, string pkg, string name |
-      t = this.getAnImportedType() and
+      t = getAnImportedType() and
       (t instanceof Class or t instanceof Interface) and
       t.hasQualifiedName(pkg, name) and
       t != this and
@@ -515,7 +459,7 @@ class GeneratedTopLevel extends TopLevelType {
     )
   }
 
-  private string stubImports() { result = concat(this.stubAnImport()) + "\n" }
+  private string stubImports() { result = concat(stubAnImport()) + "\n" }
 
   private string stubPackage() {
     if this.getPackage().getName() != ""
@@ -530,8 +474,6 @@ class GeneratedTopLevel extends TopLevelType {
 
   /** Creates a full stub for the file containing this type. */
   string stubFile() {
-    result =
-      this.stubComment() + this.stubPackage() + this.stubImports() + this.(GeneratedType).getStub() +
-        "\n"
+    result = stubComment() + stubPackage() + stubImports() + this.(GeneratedType).getStub() + "\n"
   }
 }

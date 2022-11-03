@@ -666,6 +666,13 @@ class TypeidOperator extends Expr, @type_id {
    */
   Type getResultType() { typeid_bind(underlyingElement(this), unresolveElement(result)) }
 
+  /**
+   * DEPRECATED: Use `getResultType()` instead.
+   *
+   * Gets the type that is returned by this typeid expression.
+   */
+  deprecated Type getSpecifiedType() { result = this.getResultType() }
+
   override string getAPrimaryQlClass() { result = "TypeidOperator" }
 
   /**
@@ -717,12 +724,19 @@ class SizeofOperator extends Expr, @runtime_sizeof {
  * ```
  */
 class SizeofExprOperator extends SizeofOperator {
-  SizeofExprOperator() { exists(this.getChild(0)) }
+  SizeofExprOperator() { exists(Expr e | this.getChild(0) = e) }
 
   override string getAPrimaryQlClass() { result = "SizeofExprOperator" }
 
   /** Gets the contained expression. */
   Expr getExprOperand() { result = this.getChild(0) }
+
+  /**
+   * DEPRECATED: Use `getExprOperand()` instead
+   *
+   * Gets the contained expression.
+   */
+  deprecated Expr getExpr() { result = this.getExprOperand() }
 
   override string toString() { result = "sizeof(<expr>)" }
 
@@ -745,6 +759,13 @@ class SizeofTypeOperator extends SizeofOperator {
   /** Gets the contained type. */
   Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
 
+  /**
+   * DEPRECATED: Use `getTypeOperand()` instead
+   *
+   * Gets the contained type.
+   */
+  deprecated Type getSpecifiedType() { result = this.getTypeOperand() }
+
   override string toString() { result = "sizeof(" + this.getTypeOperand().getName() + ")" }
 
   override predicate mayBeImpure() { none() }
@@ -766,12 +787,17 @@ class AlignofOperator extends Expr, @runtime_alignof {
  * ```
  */
 class AlignofExprOperator extends AlignofOperator {
-  AlignofExprOperator() { exists(this.getChild(0)) }
+  AlignofExprOperator() { exists(Expr e | this.getChild(0) = e) }
 
   /**
    * Gets the contained expression.
    */
   Expr getExprOperand() { result = this.getChild(0) }
+
+  /**
+   * DEPRECATED: Use `getExprOperand()` instead.
+   */
+  deprecated Expr getExpr() { result = this.getExprOperand() }
 
   override string toString() { result = "alignof(<expr>)" }
 }
@@ -779,7 +805,7 @@ class AlignofExprOperator extends AlignofOperator {
 /**
  * A C++11 `alignof` expression whose operand is a type name.
  * ```
- * bool proper_alignment = (alignof(T) == alignof(T[0]);
+ * bool proper_alignment = (alingof(T) == alignof(T[0]);
  * ```
  */
 class AlignofTypeOperator extends AlignofOperator {
@@ -787,6 +813,11 @@ class AlignofTypeOperator extends AlignofOperator {
 
   /** Gets the contained type. */
   Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * DEPRECATED: Use `getTypeOperand()` instead.
+   */
+  deprecated Type getSpecifiedType() { result = this.getTypeOperand() }
 
   override string toString() { result = "alignof(" + this.getTypeOperand().getName() + ")" }
 }

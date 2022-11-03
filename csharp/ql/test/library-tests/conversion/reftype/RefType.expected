@@ -1,5 +1,7 @@
 | Byte[] | Object |
 | Byte[] | dynamic |
+| Byte[][] | Object |
+| Byte[][] | dynamic |
 | C1 | Object |
 | C1 | dynamic |
 | C1[] | ICollection<C1> |
@@ -231,6 +233,7 @@
 | UInt64[] | dynamic |
 | dynamic | Object |
 | null | Byte[] |
+| null | Byte[][] |
 | null | C1 |
 | null | C1[] |
 | null | C2 |

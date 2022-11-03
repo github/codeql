@@ -1,6 +1,6 @@
 import python
 
-/** The base class for operators */
+/** Base class for operators */
 class Operator extends Operator_ {
   /** Gets the name of the special method used to implement this operator */
   string getSpecialMethodName() { none() }
@@ -98,7 +98,7 @@ class LShift extends LShift_ {
   override string getSpecialMethodName() { result = "__lshift__" }
 }
 
-/** A modulo (`%`) binary operator, which includes string formatting */
+/** A modulo (`%`) binary operator, which includes  string formatting */
 class Mod extends Mod_ {
   override string getSpecialMethodName() { result = "__mod__" }
 }
@@ -131,7 +131,7 @@ class Compare extends Compare_ {
   }
 }
 
-/** A list of comparison operators in a comparison */
+/** List of comparison operators in a comparison */
 class CmpopList extends CmpopList_ { }
 
 /** A comparison operator */

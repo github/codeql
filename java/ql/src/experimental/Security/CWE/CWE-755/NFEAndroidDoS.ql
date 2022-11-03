@@ -21,8 +21,8 @@ import DataFlow::PathGraph
 /**
  * Taint configuration tracking flow from untrusted inputs to number conversion calls in exported Android compononents.
  */
-class NfeLocalDoSConfiguration extends TaintTracking::Configuration {
-  NfeLocalDoSConfiguration() { this = "NFELocalDoSConfiguration" }
+class NFELocalDoSConfiguration extends TaintTracking::Configuration {
+  NFELocalDoSConfiguration() { this = "NFELocalDoSConfiguration" }
 
   /** Holds if source is a remote flow source */
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -31,17 +31,17 @@ class NfeLocalDoSConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(Expr e |
       e.getEnclosingCallable().getDeclaringType().(ExportableAndroidComponent).isExported() and
-      throwsNfe(e) and
+      throwsNFE(e) and
       not exists(TryStmt t |
         t.getBlock() = e.getAnEnclosingStmt() and
-        catchesNfe(t)
+        catchesNFE(t)
       ) and
       sink.asExpr() = e
     )
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, NfeLocalDoSConfiguration conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, NFELocalDoSConfiguration conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "Uncaught NumberFormatException in an exported Android component due to $@.", source.getNode(),

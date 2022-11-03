@@ -1,1 +1,1 @@
-shared/PrintAst.ql
+semmle/code/csharp/PrintAst.ql

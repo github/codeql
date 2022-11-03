@@ -4,7 +4,7 @@ import semmle.python.security.SensitiveData
 import semmle.python.dataflow.Files
 import semmle.python.web.Http
 
-deprecated module ClearTextStorage {
+module ClearTextStorage {
   abstract class Sink extends TaintSink {
     override predicate sinks(TaintKind kind) { kind instanceof SensitiveData }
   }
@@ -26,7 +26,7 @@ deprecated module ClearTextStorage {
   }
 }
 
-deprecated module ClearTextLogging {
+module ClearTextLogging {
   abstract class Sink extends TaintSink {
     override predicate sinks(TaintKind kind) { kind instanceof SensitiveData }
   }

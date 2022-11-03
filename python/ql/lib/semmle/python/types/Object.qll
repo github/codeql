@@ -1,11 +1,10 @@
 import python
+private import semmle.python.objects.ObjectAPI
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
-private import semmle.python.internal.CachedStages
 
 cached
 private predicate is_an_object(@py_object obj) {
-  Stages::DataFlow::ref() and
   /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
   obj instanceof ControlFlowNode and
   not obj.(ControlFlowNode).getNode() instanceof IntegerLiteral and
@@ -15,8 +14,6 @@ private predicate is_an_object(@py_object obj) {
 }
 
 /**
- * An object.
- *
  * Instances of this class represent objects in the Python program. However, since
  *  the QL database is static and Python programs are dynamic, there are necessarily a
  *  number of approximations.
@@ -74,11 +71,9 @@ class Object extends @py_object {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  cached
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    Stages::DataFlow::ref() and
     this.hasOrigin() and
     this.getOrigin()
         .getLocation()
@@ -96,9 +91,7 @@ class Object extends @py_object {
   Builtin asBuiltin() { result = this }
 
   /** Gets a textual representation of this element. */
-  cached
   string toString() {
-    Stages::DataFlow::ref() and
     not this = undefinedVariable() and
     not this = unknownValue() and
     exists(ClassObject type | type.asBuiltin() = this.asBuiltin().getClass() |
@@ -137,7 +130,7 @@ class Object extends @py_object {
    * class S, both attributes having the same name, and S is a super class of C.
    */
   predicate overrides(Object o) {
-    exists(string name | this.declaringClass(name).getASuperType() = o.declaringClass(name))
+    exists(string name | declaringClass(name).getASuperType() = o.declaringClass(name))
   }
 
   private boolean booleanFromValue() {
@@ -145,7 +138,7 @@ class Object extends @py_object {
   }
 
   /**
-   * Gets the Boolean value of this object if it always evaluates to true or false.
+   * The Boolean value of this object if it always evaluates to true or false.
    * For example:
    *     false for None, true for 7 and no result for int(x)
    */
@@ -155,8 +148,8 @@ class Object extends @py_object {
   }
 
   final predicate maybe() {
-    this.booleanFromValue() = true and
-    this.booleanFromValue() = false
+    booleanFromValue() = true and
+    booleanFromValue() = false
   }
 
   predicate notClass() { any() }
@@ -224,7 +217,7 @@ private Object findByName3(string longName) {
 }
 
 /**
- * A numeric object (int or float).
+ * Numeric objects (ints and floats).
  * Includes those occurring in the source as a literal
  * or in a builtin module as a value.
  */
@@ -276,7 +269,7 @@ class NumericObject extends Object {
 }
 
 /**
- * A string object (unicode or bytes).
+ * String objects (unicode or bytes).
  * Includes those occurring in the source as a literal
  * or in a builtin module as a value.
  */
@@ -306,7 +299,7 @@ class StringObject extends Object {
 }
 
 /**
- * A sequence object (list or tuple)
+ * Sequence objects (lists and tuples)
  *  Includes those occurring in the source as a literal
  *  or in a builtin module as a value.
  */
@@ -365,43 +358,55 @@ class ListObject extends SequenceObject {
   }
 }
 
-/** Gets the `builtin` module */
+/** The `builtin` module */
 BuiltinModuleObject theBuiltinModuleObject() { result.asBuiltin() = Builtin::builtinModule() }
 
-/** Gets the `sys` module */
+/** The `sys` module */
 BuiltinModuleObject theSysModuleObject() { result.asBuiltin() = Builtin::special("sys") }
 
-/** Gets the built-in object None */
+/** DEPRECATED -- Use `Object::builtin(name)` instead. */
+deprecated Object builtin_object(string name) { result = Object::builtin(name) }
+
+/** The built-in object None */
 Object theNoneObject() { result.asBuiltin() = Builtin::special("None") }
 
-/** Gets the built-in object True */
+/** The built-in object True */
 Object theTrueObject() { result.asBuiltin() = Builtin::special("True") }
 
-/** Gets the built-in object False */
+/** The built-in object False */
 Object theFalseObject() { result.asBuiltin() = Builtin::special("False") }
 
-/** Gets the NameError class */
+/** The NameError class */
 Object theNameErrorType() { result = Object::builtin("NameError") }
 
-/** Gets the StandardError class */
+/** The StandardError class */
 Object theStandardErrorType() { result = Object::builtin("StandardError") }
 
-/** Gets the IndexError class */
+/** The IndexError class */
 Object theIndexErrorType() { result = Object::builtin("IndexError") }
 
-/** Gets the LookupError class */
+/** The LookupError class */
 Object theLookupErrorType() { result = Object::builtin("LookupError") }
+
+/** DEPRECATED -- Use `Object::quitter(name)` instead. */
+deprecated Object quitterObject(string name) { result = Object::quitter(name) }
+
+/** DEPRECATED -- Use `Object::notImplemented()` instead. */
+deprecated Object theNotImplementedObject() { result = Object::builtin("NotImplemented") }
+
+/** DEPRECATED -- Use `TupleObject::empty()` instead. */
+deprecated Object theEmptyTupleObject() { result = TupleObject::empty() }
 
 module Object {
   Object builtin(string name) { result.asBuiltin() = Builtin::builtin(name) }
 
-  /** Gets the named quitter object (quit or exit) in the builtin namespace */
+  /** The named quitter object (quit or exit) in the builtin namespace */
   Object quitter(string name) {
     (name = "quit" or name = "exit") and
     result = builtin(name)
   }
 
-  /** Gets the builtin object `NotImplemented`. Not be confused with `NotImplementedError`. */
+  /** The builtin object `NotImplemented`. Not be confused with `NotImplementedError`. */
   Object notImplemented() { result = builtin("NotImplemented") }
 }
 

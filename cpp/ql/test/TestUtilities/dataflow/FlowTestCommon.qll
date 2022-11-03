@@ -13,7 +13,7 @@
 
 import cpp
 private import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IRDataFlow
-private import semmle.code.cpp.dataflow.DataFlow::DataFlow as AstDataFlow
+private import semmle.code.cpp.dataflow.DataFlow::DataFlow as ASTDataFlow
 import TestUtilities.InlineExpectationsTest
 
 class IRFlowTest extends InlineExpectationsTest {
@@ -42,18 +42,18 @@ class IRFlowTest extends InlineExpectationsTest {
   }
 }
 
-class AstFlowTest extends InlineExpectationsTest {
-  AstFlowTest() { this = "ASTFlowTest" }
+class ASTFlowTest extends InlineExpectationsTest {
+  ASTFlowTest() { this = "ASTFlowTest" }
 
   override string getARelevantTag() { result = "ast" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(
-      AstDataFlow::Node source, AstDataFlow::Node sink, AstDataFlow::Configuration conf, int n
+      ASTDataFlow::Node source, ASTDataFlow::Node sink, ASTDataFlow::Configuration conf, int n
     |
       tag = "ast" and
       conf.hasFlow(source, sink) and
-      n = strictcount(AstDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
+      n = strictcount(ASTDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
       (
         n = 1 and value = ""
         or
@@ -69,6 +69,3 @@ class AstFlowTest extends InlineExpectationsTest {
     )
   }
 }
-
-/** DEPRECATED: Alias for AstFlowTest */
-deprecated class ASTFlowTest = AstFlowTest;

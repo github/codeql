@@ -14,7 +14,7 @@ import semmle.python.security.strings.Untrusted
  * A taint sink that represents an argument to exec or eval that is vulnerable to malicious input.
  * The `vuln` in `exec(vuln)` or similar.
  */
-deprecated class StringEvaluationNode extends TaintSink {
+class StringEvaluationNode extends TaintSink {
   override string toString() { result = "exec or eval" }
 
   StringEvaluationNode() {

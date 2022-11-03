@@ -1,4 +1,0 @@
-name: codeql-java-consistency-queries
-version: 0.0.0
-dependencies:
-  codeql/java-all: '*'

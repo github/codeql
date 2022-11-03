@@ -31,13 +31,13 @@ private class CommandCall extends DataFlow::InvokeNode {
    * Gets the callback (if it exists) for an async `exec`-like call.
    */
   DataFlow::FunctionNode getCallback() {
-    not this.isSync() and result = this.getLastArgument().getALocalSource()
+    not this.isSync() and result = getLastArgument().getALocalSource()
   }
 
   /**
    * Holds if the executed command execution has an argument list as a separate argument.
    */
-  predicate hasArgumentList() { exists(this.getArgumentList()) }
+  predicate hasArgumentList() { exists(getArgumentList()) }
 
   /**
    * Gets the data-flow node (if it exists) for an options argument for an `exec`-like call.
@@ -52,12 +52,12 @@ private class CommandCall extends DataFlow::InvokeNode {
     if this.hasArgumentList()
     then
       result =
-        getConstantStringParts(this.getArgumentList()
+        getConstantStringParts(getArgumentList()
               .getALocalSource()
               .(DataFlow::ArrayCreationNode)
               .getElement(_))
     else
-      exists(string commandString | commandString = getConstantStringParts(this.getArgument(0)) |
+      exists(string commandString | commandString = getConstantStringParts(getArgument(0)) |
         result = commandString.suffix(1 + commandString.indexOf(" ", 0, 0))
       )
   }
@@ -68,9 +68,9 @@ private class CommandCall extends DataFlow::InvokeNode {
   bindingset[name]
   predicate isACallTo(string name) {
     if this.hasArgumentList()
-    then this.getArgument(0).mayHaveStringValue(name)
+    then getArgument(0).mayHaveStringValue(name)
     else
-      exists(string arg | arg = getConstantStringParts(this.getArgument(0)) |
+      exists(string arg | arg = getConstantStringParts(getArgument(0)) |
         arg.prefix(name.length()) = name
       )
   }
@@ -100,39 +100,39 @@ private string getConstantStringParts(DataFlow::Node node) {
 class UselessCat extends CommandCall {
   UselessCat() {
     this = command and
-    this.isACallTo(getACatExecuteable()) and
+    isACallTo(getACatExecuteable()) and
     // There is a file to read, it's not just spawning `cat`.
     not (
-      not exists(this.getArgumentList()) and
-      this.getArgument(0).mayHaveStringValue(getACatExecuteable())
+      not exists(getArgumentList()) and
+      getArgument(0).mayHaveStringValue(getACatExecuteable())
     ) and
     // wildcards, pipes, redirections, other bash features, and multiple files (spaces) are OK.
-    not containsNonTrivialShellChar(this.getNonCommandConstantString()) and
+    not containsNonTrivialShellChar(getNonCommandConstantString()) and
     // Only acceptable option is "encoding", everything else is non-trivial to emulate with fs.readFile.
     (
-      not exists(this.getOptionsArg())
+      not exists(getOptionsArg())
       or
-      forex(string prop | exists(this.getOptionsArg().getALocalSource().getAPropertyWrite(prop)) |
+      forex(string prop | exists(getOptionsArg().getALocalSource().getAPropertyWrite(prop)) |
         prop = "encoding"
       )
     ) and
     // If there is a callback, then it must either have one or two parameters, or if there is a third parameter it must be unused.
     (
-      not exists(this.getCallback())
+      not exists(getCallback())
       or
-      exists(DataFlow::FunctionNode func | func = this.getCallback() |
+      exists(DataFlow::FunctionNode func | func = getCallback() |
         func.getNumParameter() = 1
         or
         func.getNumParameter() = 2
         or
         // `exec` can use 3 parameters, `readFile` can only use two, so it is OK to have a third parameter if it is unused,
         func.getNumParameter() = 3 and
-        not exists(Ssa::definition(func.getParameter(2).getParameter()))
+        not exists(SSA::definition(func.getParameter(2).getParameter()))
       )
     ) and
     // The process returned by an async call is unused.
     (
-      this.isSync()
+      isSync()
       or
       inVoidContext(this.getEnclosingExpr())
       or
@@ -317,7 +317,7 @@ module PrettyPrintCatCall {
    */
   string createFileThatIsReadFromCommandList(CommandCall call) {
     exists(DataFlow::ArrayCreationNode array, DataFlow::Node element |
-      array = call.getArgumentList() and
+      array = call.getArgumentList().(DataFlow::ArrayCreationNode) and
       array.getSize() = 1 and
       element = array.getElement(0)
     |

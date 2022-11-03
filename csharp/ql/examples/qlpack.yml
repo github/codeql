@@ -1,6 +1,4 @@
 name: codeql/csharp-examples
-groups: 
-  - csharp
-  - examples
+version: 0.0.2
 dependencies:
-  codeql/csharp-all: ${workspace}
+  codeql/csharp-all: "*"

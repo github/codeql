@@ -13,9 +13,9 @@ class ThriftElement extends ExternalData {
 
   string getKind() { result = kind }
 
-  string getId() { result = this.getField(0) }
+  string getId() { result = getField(0) }
 
-  int getIndex() { result = this.getFieldAsInt(1) }
+  int getIndex() { result = getFieldAsInt(1) }
 
   ThriftElement getParent() { result.getId() = this.getField(2) }
 
@@ -104,28 +104,28 @@ class ThriftType extends ThriftNamedElement {
 
 /** A thrift typedef */
 class ThriftTypeDef extends ThriftNamedElement {
-  ThriftTypeDef() { kind = "typedef" }
+  ThriftTypeDef() { kind.matches("typedef") }
 
   override ThriftElement getNameElement() { result = this.getChild(2).getChild(0) }
 }
 
 /** A thrift enum declaration */
 class ThriftEnum extends ThriftNamedElement {
-  ThriftEnum() { kind = "enum" }
+  ThriftEnum() { kind.matches("enum") }
 
   override ThriftElement getNameElement() { result = this.getChild(0).getChild(0) }
 }
 
 /** A thrift enum field */
 class ThriftEnumField extends ThriftNamedElement {
-  ThriftEnumField() { kind = "enumfield" }
+  ThriftEnumField() { kind.matches("enumfield") }
 
   override ThriftElement getNameElement() { result = this.getChild(0).getChild(0) }
 }
 
 /** A thrift service declaration */
 class ThriftService extends ThriftNamedElement {
-  ThriftService() { kind = "service" }
+  ThriftService() { kind.matches("service") }
 
   override ThriftElement getNameElement() { result = this.getChild(0).getChild(0) }
 
@@ -139,7 +139,7 @@ class ThriftService extends ThriftNamedElement {
 
 /** A thrift function declaration */
 class ThriftFunction extends ThriftNamedElement {
-  ThriftFunction() { kind = "function" }
+  ThriftFunction() { kind.matches("function") }
 
   override ThriftElement getNameElement() { result = this.getChild(2).getChild(0) }
 
@@ -166,7 +166,7 @@ class ThriftFunction extends ThriftNamedElement {
 }
 
 class ThriftField extends ThriftNamedElement {
-  ThriftField() { kind = "field" }
+  ThriftField() { kind.matches("field") }
 
   override ThriftElement getNameElement() { result = this.getChild(4) }
 
@@ -174,7 +174,7 @@ class ThriftField extends ThriftNamedElement {
 }
 
 class ThriftStruct extends ThriftNamedElement {
-  ThriftStruct() { kind = "struct" }
+  ThriftStruct() { kind.matches("struct") }
 
   override ThriftElement getNameElement() { result = this.getChild(0).getChild(0) }
 
@@ -184,7 +184,7 @@ class ThriftStruct extends ThriftNamedElement {
 }
 
 class ThriftException extends ThriftNamedElement {
-  ThriftException() { kind = "exception" }
+  ThriftException() { kind.matches("exception") }
 
   override ThriftElement getNameElement() { result = this.getChild(0).getChild(0) }
 
@@ -194,7 +194,7 @@ class ThriftException extends ThriftNamedElement {
 }
 
 class ThriftThrows extends ThriftElement {
-  ThriftThrows() { kind = "throws" }
+  ThriftThrows() { kind.matches("throws") }
 
   ThriftField getAThrows() { result = this.getChild(_) }
 }

@@ -11,11 +11,6 @@ private import semmle.javascript.dataflow.TypeTracking
 private import semmle.javascript.internal.CachedStages
 
 /**
- * An alias for `SourceNode`.
- */
-class LocalSourceNode = SourceNode;
-
-/**
  * A source node for local data flow, that is, a node from which local data flow is tracked.
  *
  * This includes function invocations, parameters, object creation, and references to a property or global variable.
@@ -38,7 +33,13 @@ class LocalSourceNode = SourceNode;
  * import("fs")
  * ```
  */
-class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
+class SourceNode extends DataFlow::Node {
+  SourceNode() {
+    this instanceof SourceNode::Range
+    or
+    none() and this instanceof SourceNode::Internal::RecursionGuard
+  }
+
   /**
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
@@ -145,8 +146,7 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    * that is, `o.m(...)` or `o[p](...)`.
    */
   DataFlow::CallNode getAChainedMethodCall(string methodName) {
-    // the direct call to `getAMethodCall` is needed in case the base is not a `DataFlow::CallNode`.
-    result = [getAMethodCall+().getAMethodCall(methodName), getAMethodCall(methodName)]
+    result = getAMethodCall*().getAMethodCall(methodName)
   }
 
   /**
@@ -301,13 +301,13 @@ module SourceNode {
    */
   class DefaultRange extends Range {
     DefaultRange() {
-      exists(AstNode astNode | this = DataFlow::valueNode(astNode) |
+      exists(ASTNode astNode | this = DataFlow::valueNode(astNode) |
         astNode instanceof PropAccess or
         astNode instanceof Function or
         astNode instanceof ClassDefinition or
         astNode instanceof ObjectExpr or
         astNode instanceof ArrayExpr or
-        astNode instanceof JsxNode or
+        astNode instanceof JSXNode or
         astNode instanceof GlobalVarAccess or
         astNode instanceof ExternalModuleReference or
         astNode instanceof RegExpLiteral or
@@ -337,9 +337,13 @@ module SourceNode {
       or
       // Include return nodes because they model the implicit Promise creation in async functions.
       DataFlow::functionReturnNode(this, _)
-      or
-      this instanceof DataFlow::ReflectiveParametersNode
     }
+  }
+
+  /** INTERNAL. DO NOT USE. */
+  module Internal {
+    /** An empty class that some tests are using to enforce that SourceNode is non-recursive. */
+    abstract class RecursionGuard extends DataFlow::Node { }
   }
 }
 
@@ -348,7 +352,7 @@ private class NodeModuleSourcesNodes extends SourceNode::Range {
 
   NodeModuleSourcesNodes() {
     exists(NodeModule m |
-      this = DataFlow::ssaDefinitionNode(Ssa::implicitInit(v)) and
+      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
       v = [m.getModuleVariable(), m.getExportsVariable()]
     )
   }
@@ -391,3 +395,7 @@ SourceNode moduleVarNode(Module m) { result.(ModuleVarNode).getModule() = m }
 
 /** Gets the CommonJS/AMD `exports` variable for module `m`. */
 SourceNode exportsVarNode(Module m) { result.(ExportsVarNode).getModule() = m }
+
+deprecated class DefaultSourceNode extends SourceNode {
+  DefaultSourceNode() { this instanceof SourceNode::DefaultRange }
+}

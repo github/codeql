@@ -10,7 +10,7 @@ import semmle.code.java.frameworks.struts.StrutsActions
  */
 class Struts1ActionEntryPoint extends EntryPoint, Class {
   Struts1ActionEntryPoint() {
-    this.getAnAncestor().hasQualifiedName("org.apache.struts.action", "Action")
+    this.getASupertype*().hasQualifiedName("org.apache.struts.action", "Action")
   }
 
   override Callable getALiveCallable() {
@@ -19,10 +19,10 @@ class Struts1ActionEntryPoint extends EntryPoint, Class {
       exists(Method methodFromAction |
         methodFromAction.getDeclaringType().hasQualifiedName("org.apache.struts.action", "Action")
       |
-        result.(Method).overrides+(methodFromAction)
+        result.(Method).overrides(methodFromAction)
       )
       or
-      this.getAnAncestor().hasQualifiedName("org.apache.struts.actions", "DispatchAction") and
+      this.getASupertype*().hasQualifiedName("org.apache.struts.actions", "DispatchAction") and
       result.(Method).isPublic()
       or
       result.(Constructor).getNumberOfParameters() = 0

@@ -7,8 +7,8 @@ import java
 /**
  * An Objective-C Native Interface (OCNI) comment.
  */
-class OcniComment extends Javadoc {
-  OcniComment() {
+class OCNIComment extends Javadoc {
+  OCNIComment() {
     // The comment must start with `-[` ...
     this.getChild(0).getText().matches("-[%") and
     // ... and it must end with `]-`.
@@ -16,11 +16,8 @@ class OcniComment extends Javadoc {
   }
 }
 
-/** DEPRECATED: Alias for OcniComment */
-deprecated class OCNIComment = OcniComment;
-
 /** Auxiliary predicate: `ocni` is an OCNI comment associated with method `m`. */
-private predicate ocniComment(OcniComment ocni, Method m) {
+private predicate ocniComment(OCNIComment ocni, Method m) {
   // The associated callable must be marked as `native` ...
   m.isNative() and
   // ... and the comment has to be contained in `m`.
@@ -33,27 +30,21 @@ private predicate ocniComment(OcniComment ocni, Method m) {
  * An Objective-C Native Interface (OCNI) comment that contains Objective-C code
  * implementing a native method.
  */
-class OcniMethodComment extends OcniComment {
-  OcniMethodComment() { ocniComment(this, _) }
+class OCNIMethodComment extends OCNIComment {
+  OCNIMethodComment() { ocniComment(this, _) }
 
   /** Gets the method implemented by this comment. */
   Method getImplementedMethod() { ocniComment(this, result) }
 }
 
-/** DEPRECATED: Alias for OcniMethodComment */
-deprecated class OCNIMethodComment = OcniMethodComment;
-
 /**
  * An Objective-C Native Interface (OCNI) native import comment.
  */
-class OcniImport extends OcniComment {
-  OcniImport() {
+class OCNIImport extends OCNIComment {
+  OCNIImport() {
     this.getAChild().getText().regexpMatch(".*#(import|include).*") and
     not exists(RefType rt | rt.getFile() = this.getFile() |
       rt.getLocation().getStartLine() < this.getLocation().getStartLine()
     )
   }
 }
-
-/** DEPRECATED: Alias for OcniImport */
-deprecated class OCNIImport = OcniImport;

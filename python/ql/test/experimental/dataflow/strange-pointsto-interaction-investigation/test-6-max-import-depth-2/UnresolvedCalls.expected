@@ -1,6 +1,0 @@
-| ../src/isfile_no_problem.py:42:7:42:16 | ControlFlowNode for give_src() | Unexpected result: unresolved_call=give_src() |
-| ../src/isfile_no_problem.py:43:1:43:9 | ControlFlowNode for SINK() | Unexpected result: unresolved_call=SINK(..) |
-| ../src/urandom_no_if_no_problem.py:34:31:34:64 | Comment # $ unresolved_call=os.urandom(..) | Missing result:unresolved_call=os.urandom(..) |
-| ../src/urandom_problem.py:34:31:34:64 | Comment # $ unresolved_call=os.urandom(..) | Missing result:unresolved_call=os.urandom(..) |
-| ../src/urandom_problem.py:42:18:42:47 | Comment # $ unresolved_call=give_src() | Missing result:unresolved_call=give_src() |
-| ../src/urandom_problem.py:43:11:43:75 | Comment # $ unresolved_call=SINK(..) MISSING: flow="SOURCE, l:-15 -> foo" | Missing result:unresolved_call=SINK(..) |

@@ -22,7 +22,10 @@ predicate modification_of_locals(ControlFlowNode f) {
     attr = f.(CallNode).getFunction() and
     originIsLocals(attr.getObject(mname))
   |
-    mname in ["pop", "popitem", "update", "clear"]
+    mname = "pop" or
+    mname = "popitem" or
+    mname = "update" or
+    mname = "clear"
   )
 }
 

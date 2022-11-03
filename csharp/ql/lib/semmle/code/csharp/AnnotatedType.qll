@@ -191,7 +191,7 @@ private module Annotations {
     NoNullability() { not nullability_parent(_, _, nullability) }
   }
 
-  /** A type with annotated nullability, `?`. */
+  /** A type with annotated nullablity, `?`. */
   class AnnotatedNullability extends Nullability {
     AnnotatedNullability() { nullability instanceof @annotated }
 

@@ -83,9 +83,9 @@ private predicate isBoundInMethod(MethodDeclaration method) {
  * Gets an event handler attribute (onClick, onTouch, ...).
  */
 private DOM::AttributeDefinition getAnEventHandlerAttribute() {
-  exists(ReactComponent c, JsxNode rendered, string attributeName |
+  exists(ReactComponent c, JSXNode rendered, string attributeName |
     c.getRenderMethod().getAReturnedExpr().flow().getALocalSource().asExpr() = rendered and
-    result = rendered.getABodyElement*().(JsxElement).getAttributeByName(attributeName) and
+    result = rendered.getABodyElement*().(JSXElement).getAttributeByName(attributeName) and
     attributeName.regexpMatch("on[A-Z][a-zA-Z]+") // camelCased with 'on'-prefix
   )
 }
@@ -98,5 +98,5 @@ where
   unbound.getBinder() = callback.getBody() and
   not isBoundInMethod(callback)
 select attribute,
-  "The receiver of this event handler call is unbound, `$@` will be `undefined` in the call to $@.",
+  "The receiver of this event handler call is unbound, `$@` will be `undefined` in the call to $@",
   unbound, "this", callback, callback.getName()

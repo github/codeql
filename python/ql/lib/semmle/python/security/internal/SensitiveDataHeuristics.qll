@@ -50,7 +50,7 @@ module HeuristicNames {
    * Gets a regular expression that identifies strings that may indicate the presence of secret
    * or trusted data.
    */
-  string maybeSecret() { result = "(?is).*((?<!is|is_)secret|(?<!un|un_|is|is_)trusted).*" }
+  string maybeSecret() { result = "(?is).*((?<!is)secret|(?<!un|is)trusted).*" }
 
   /**
    * Gets a regular expression that identifies strings that may indicate the presence of
@@ -58,7 +58,7 @@ module HeuristicNames {
    */
   string maybeAccountInfo() {
     result = "(?is).*acc(ou)?nt.*" or
-    result = "(?is).*(puid|username|userid|session(id|key)).*" or
+    result = "(?is).*(puid|username|userid).*" or
     result = "(?s).*([uU]|^|_|[a-z](?=U))([uU][iI][dD]).*"
   }
 
@@ -96,15 +96,20 @@ module HeuristicNames {
    * Gets a regular expression that identifies strings that may indicate the presence of data
    * that is hashed or encrypted, and hence rendered non-sensitive, or contains special characters
    * suggesting nouns within the string do not represent the meaning of the whole string (e.g. a URL or a SQL query).
-   *
-   * We also filter out common words like `certain` and `concert`, since otherwise these could
-   * be matched by the certificate regular expressions. Same for `accountable` (account), or
-   * `secretarial` (secret).
    */
   string notSensitiveRegexp() {
-    result =
-      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|code)|certain|concert|secretar|accountant|accountab).*"
+    result = "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
   }
+
+  /**
+   * DEPRECATED: Use `maybeSensitiveRegexp` instead.
+   */
+  deprecated predicate maybeSensitive = maybeSensitiveRegexp/1;
+
+  /**
+   * DEPRECATED: Use `notSensitiveRegexp` instead.
+   */
+  deprecated predicate notSensitive = notSensitiveRegexp/0;
 
   /**
    * Holds if `name` may indicate the presence of sensitive data, and

@@ -88,7 +88,7 @@ Function reachableFromAsyncCallback() {
  * The main predicate of this query: used for both result display and path computation.
  */
 predicate main(
-  Http::RouteHandler rh, AsyncSentinelCall async, AsyncCallback cb, LikelyExceptionThrower thrower
+  HTTP::RouteHandler rh, AsyncSentinelCall async, AsyncCallback cb, LikelyExceptionThrower thrower
 ) {
   async.getAsyncCallee() = cb and
   rh.getAstNode() = invokesCallbackThatThrowsUncaughtException(async, thrower)
@@ -130,7 +130,7 @@ class AsyncCallback extends Function {
  *
  * This is the primary extension point for this query.
  */
-abstract class LikelyExceptionThrower extends AstNode { }
+abstract class LikelyExceptionThrower extends ASTNode { }
 
 /**
  * A `throw` statement.
@@ -152,7 +152,7 @@ class CompilerConfusingExceptionThrower extends LikelyExceptionThrower {
  * - step 3. exception follows the call graph backwards until an async callee is encountered
  * - step 4. (at this point, the program crashes)
  */
-query predicate edges(AstNode pred, AstNode succ) {
+query predicate edges(ASTNode pred, ASTNode succ) {
   exists(LikelyExceptionThrower thrower | main(_, _, _, thrower) |
     pred = thrower and
     succ = thrower.getContainer()
@@ -172,20 +172,20 @@ query predicate edges(AstNode pred, AstNode succ) {
 }
 
 /**
- * Holds if `node` is in the `edge/2` relation above.
+ * A node in the `edge/2` relation above.
  */
-query predicate nodes(AstNode node) {
+query predicate nodes(ASTNode node) {
   edges(node, _) or
   edges(_, node)
 }
 
 from
-  Http::RouteHandler rh, AsyncSentinelCall async, DataFlow::Node callbackArg, AsyncCallback cb,
+  HTTP::RouteHandler rh, AsyncSentinelCall async, DataFlow::Node callbackArg, AsyncCallback cb,
   ExprOrStmt crasher
 where
   main(rh, async, cb, crasher) and
   callbackArg.getALocalSource().getAstNode() = cb and
   async.getAnArgument() = callbackArg
 select crasher, crasher, cb,
-  "The server of $@ will terminate when an uncaught exception from this location escapes an $@.",
-  rh, "this route handler", callbackArg, "asynchronous callback"
+  "The server of $@ will terminate when an uncaught exception from here escapes this $@", rh,
+  "this route handler", callbackArg, "asynchronous callback"

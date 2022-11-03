@@ -11,9 +11,8 @@
 import python
 import semmle.python.essa.SsaDefinitions
 private import semmle.python.types.Builtins
-private import semmle.python.internal.CachedStages
 
-deprecated module BasePointsTo {
+module BasePointsTo {
   /** INTERNAL -- Use n.refersTo(value, _, origin) instead */
   pragma[noinline]
   predicate points_to(ControlFlowNode f, Object value, ControlFlowNode origin) {
@@ -26,14 +25,14 @@ deprecated module BasePointsTo {
   }
 }
 
-/** Gets the kwargs parameter (`**kwargs`). In a function definition this is always a dict. */
-deprecated predicate kwargs_points_to(ControlFlowNode f, ClassObject cls) {
+/** The kwargs parameter (**kwargs) in a function definition is always a dict */
+predicate kwargs_points_to(ControlFlowNode f, ClassObject cls) {
   exists(Function func | func.getKwarg() = f.getNode()) and
   cls = theDictType()
 }
 
-/** Gets the varargs parameter (`*varargs`). In a function definition this is always a tuple. */
-deprecated predicate varargs_points_to(ControlFlowNode f, ClassObject cls) {
+/** The varargs (*varargs) in a function definition is always a tuple */
+predicate varargs_points_to(ControlFlowNode f, ClassObject cls) {
   exists(Function func | func.getVararg() = f.getNode()) and
   cls = theTupleType()
 }
@@ -45,7 +44,7 @@ deprecated predicate varargs_points_to(ControlFlowNode f, ClassObject cls) {
  *  This exists primarily for internal use. Use getAnInferredType() instead.
  */
 pragma[noinline]
-deprecated ClassObject simple_types(Object obj) {
+ClassObject simple_types(Object obj) {
   result = comprehension(obj.getOrigin())
   or
   result = collection_literal(obj.getOrigin())
@@ -59,7 +58,7 @@ deprecated ClassObject simple_types(Object obj) {
   obj = unknownValue() and result = theUnknownType()
 }
 
-deprecated private ClassObject comprehension(Expr e) {
+private ClassObject comprehension(Expr e) {
   e instanceof ListComp and result = theListType()
   or
   e instanceof SetComp and result = theSetType()
@@ -69,7 +68,7 @@ deprecated private ClassObject comprehension(Expr e) {
   e instanceof GeneratorExp and result = theGeneratorType()
 }
 
-deprecated private ClassObject collection_literal(Expr e) {
+private ClassObject collection_literal(Expr e) {
   e instanceof List and result = theListType()
   or
   e instanceof Set and result = theSetType()
@@ -79,7 +78,7 @@ deprecated private ClassObject collection_literal(Expr e) {
   e instanceof Tuple and result = theTupleType()
 }
 
-deprecated private int tuple_index_value(Object t, int i) {
+private int tuple_index_value(Object t, int i) {
   result = t.(TupleNode).getElement(i).getNode().(Num).getN().toInt()
   or
   exists(Object item |
@@ -89,7 +88,7 @@ deprecated private int tuple_index_value(Object t, int i) {
 }
 
 pragma[noinline]
-deprecated int version_tuple_value(Object t) {
+int version_tuple_value(Object t) {
   not exists(tuple_index_value(t, 1)) and result = tuple_index_value(t, 0) * 10
   or
   not exists(tuple_index_value(t, 2)) and
@@ -102,7 +101,7 @@ deprecated int version_tuple_value(Object t) {
 }
 
 /** Choose a version numbers that represent the extreme of supported versions. */
-deprecated private int major_minor() {
+private int major_minor() {
   if major_version() = 3
   then (
     result = 33 or result = 37
@@ -113,7 +112,7 @@ deprecated private int major_minor() {
 }
 
 /** Compares the given tuple object to both the maximum and minimum possible sys.version_info values */
-deprecated int version_tuple_compare(Object t) {
+int version_tuple_compare(Object t) {
   version_tuple_value(t) < major_minor() and result = -1
   or
   version_tuple_value(t) = major_minor() and result = 0
@@ -121,11 +120,11 @@ deprecated int version_tuple_compare(Object t) {
   version_tuple_value(t) > major_minor() and result = 1
 }
 
-/** Holds if `cls` is a new-style class if it were to have no explicit base classes */
-deprecated predicate baseless_is_new_style(ClassObject cls) {
+/* Holds if `cls` is a new-style class if it were to have no explicit base classes */
+predicate baseless_is_new_style(ClassObject cls) {
   cls.isBuiltin()
   or
-  major_version() = 3 and exists(cls)
+  major_version() = 3
   or
   exists(cls.declaredMetaClass())
 }
@@ -160,7 +159,7 @@ private predicate class_defines_name(Class cls, string name) {
 }
 
 /** Gets a return value CFG node, provided that is safe to track across returns */
-deprecated ControlFlowNode safe_return_node(PyFunctionObject func) {
+ControlFlowNode safe_return_node(PyFunctionObject func) {
   result = func.getAReturnedNode() and
   // Not a parameter
   not exists(Parameter p, SsaVariable pvar |
@@ -172,7 +171,7 @@ deprecated ControlFlowNode safe_return_node(PyFunctionObject func) {
 }
 
 /** Holds if it can be determined from the control flow graph alone that this function can never return */
-deprecated predicate function_can_never_return(FunctionObject func) {
+predicate function_can_never_return(FunctionObject func) {
   /*
    * A Python function never returns if it has no normal exits that are not dominated by a
    * call to a function which itself never returns.
@@ -186,11 +185,25 @@ deprecated predicate function_can_never_return(FunctionObject func) {
   func = ModuleObject::named("sys").attr("exit")
 }
 
+private newtype TIterationDefinition =
+  TIterationDefinition_(SsaSourceVariable var, ControlFlowNode def, ControlFlowNode sequence) {
+    SsaSource::iteration_defined_variable(var, def, sequence)
+  }
+
+/**
+ * DEPRECATED. For backwards compatibility only.
+ * A definition of a variable in a for loop `for v in ...:`
+ */
+deprecated class IterationDefinition extends TIterationDefinition {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "IterationDefinition" }
+
+  ControlFlowNode getSequence() { this = TIterationDefinition_(_, _, result) }
+}
+
 /** Hold if outer contains inner, both are contained within a test and inner is a use is a plain use or an attribute lookup */
 pragma[noinline]
-deprecated predicate contains_interesting_expression_within_test(
-  ControlFlowNode outer, ControlFlowNode inner
-) {
+predicate contains_interesting_expression_within_test(ControlFlowNode outer, ControlFlowNode inner) {
   inner.isLoad() and
   exists(ControlFlowNode test |
     outer.getAChild*() = inner and
@@ -210,7 +223,7 @@ predicate test_contains(ControlFlowNode expr, ControlFlowNode use) {
 }
 
 /** Holds if `test` is a test (a branch), `use` is within that test and `def` is an edge from that test with `sense` */
-deprecated predicate refinement_test(
+predicate refinement_test(
   ControlFlowNode test, ControlFlowNode use, boolean sense, PyEdgeRefinement def
 ) {
   /*
@@ -226,7 +239,7 @@ deprecated predicate refinement_test(
 
 /** Holds if `f` is an import of the form `from .[...] import name` and the enclosing scope is an __init__ module */
 pragma[noinline]
-deprecated predicate live_import_from_dot_in_init(ImportMemberNode f, EssaVariable var) {
+predicate live_import_from_dot_in_init(ImportMemberNode f, EssaVariable var) {
   exists(string name |
     import_from_dot_in_init(f.getModule(name)) and
     var.getSourceVariable().getName() = name and
@@ -251,13 +264,13 @@ Object undefinedVariable() { py_special_objects(result, "_semmle_undefined_value
 /** Gets the pseudo-object representing an unknown value */
 Object unknownValue() { result.asBuiltin() = Builtin::unknown() }
 
-deprecated BuiltinCallable theTypeNewMethod() {
+BuiltinCallable theTypeNewMethod() {
   result.asBuiltin() = theTypeType().asBuiltin().getMember("__new__")
 }
 
 /** Gets the `value, cls, origin` that `f` would refer to if it has not been assigned some other value */
 pragma[noinline]
-deprecated predicate potential_builtin_points_to(
+predicate potential_builtin_points_to(
   NameNode f, Object value, ClassObject cls, ControlFlowNode origin
 ) {
   f.isGlobal() and
@@ -271,43 +284,8 @@ deprecated predicate potential_builtin_points_to(
 }
 
 pragma[noinline]
-deprecated predicate builtin_name_points_to(string name, Object value, ClassObject cls) {
+predicate builtin_name_points_to(string name, Object value, ClassObject cls) {
   value = Object::builtin(name) and cls.asBuiltin() = value.asBuiltin().getClass()
-}
-
-pragma[nomagic]
-private predicate essa_var_scope(SsaSourceVariable var, Scope pred_scope, EssaVariable pred_var) {
-  BaseFlow::reaches_exit(pred_var) and
-  pred_var.getScope() = pred_scope and
-  var = pred_var.getSourceVariable()
-}
-
-pragma[nomagic]
-private predicate scope_entry_def_scope(
-  SsaSourceVariable var, Scope succ_scope, ScopeEntryDefinition succ_def
-) {
-  var = succ_def.getSourceVariable() and
-  succ_def.getScope() = succ_scope
-}
-
-pragma[nomagic]
-private predicate step_through_init(Scope succ_scope, Scope pred_scope, Scope init) {
-  init.getName() = "__init__" and
-  init.precedes(succ_scope) and
-  pred_scope.precedes(init)
-}
-
-pragma[nomagic]
-private predicate scope_entry_value_transfer_through_init(
-  EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope
-) {
-  exists(SsaSourceVariable var, Scope init |
-    var instanceof GlobalVariable and
-    essa_var_scope(var, pragma[only_bind_into](pred_scope), pred_var) and
-    scope_entry_def_scope(var, succ_scope, succ_def) and
-    step_through_init(succ_scope, pragma[only_bind_into](pred_scope), init) and
-    not var.(Variable).getAStore().getScope() = init
-  )
 }
 
 module BaseFlow {
@@ -318,24 +296,33 @@ module BaseFlow {
   predicate scope_entry_value_transfer_from_earlier(
     EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope
   ) {
-    Stages::DataFlow::ref() and
     exists(SsaSourceVariable var |
-      essa_var_scope(var, pred_scope, pred_var) and
-      scope_entry_def_scope(var, succ_scope, succ_def)
+      reaches_exit(pred_var) and
+      pred_var.getScope() = pred_scope and
+      var = pred_var.getSourceVariable() and
+      var = succ_def.getSourceVariable() and
+      succ_def.getScope() = succ_scope
     |
       pred_scope.precedes(succ_scope)
+      or
+      /*
+       * If an `__init__` method does not modify the global variable, then
+       * we can skip it and take the value directly from the module.
+       */
+
+      exists(Scope init |
+        init.getName() = "__init__" and
+        init.precedes(succ_scope) and
+        pred_scope.precedes(init) and
+        not var.(Variable).getAStore().getScope() = init and
+        var instanceof GlobalVariable
+      )
     )
-    or
-    // If an `__init__` method does not modify the global variable, then
-    // we can skip it and take the value directly from the module.
-    scope_entry_value_transfer_through_init(pred_var, pred_scope, succ_def, succ_scope)
   }
 }
 
 /** Points-to for syntactic elements where context is not relevant */
-deprecated predicate simple_points_to(
-  ControlFlowNode f, Object value, ClassObject cls, ControlFlowNode origin
-) {
+predicate simple_points_to(ControlFlowNode f, Object value, ClassObject cls, ControlFlowNode origin) {
   kwargs_points_to(f, cls) and value = f and origin = f
   or
   varargs_points_to(f, cls) and value = f and origin = f
@@ -351,9 +338,7 @@ deprecated predicate simple_points_to(
  * Holds if `bit` is a binary expression node with a bitwise operator.
  * Helper for `this_binary_expr_points_to`.
  */
-deprecated predicate bitwise_expression_node(
-  BinaryExprNode bit, ControlFlowNode left, ControlFlowNode right
-) {
+predicate bitwise_expression_node(BinaryExprNode bit, ControlFlowNode left, ControlFlowNode right) {
   exists(Operator op | op = bit.getNode().getOp() |
     op instanceof BitAnd or
     op instanceof BitOr or
@@ -363,13 +348,13 @@ deprecated predicate bitwise_expression_node(
   right = bit.getRight()
 }
 
-deprecated private Module theCollectionsAbcModule() {
+private Module theCollectionsAbcModule() {
   result.getName() = "_abcoll"
   or
   result.getName() = "_collections_abc"
 }
 
-deprecated ClassObject collectionsAbcClass(string name) {
+ClassObject collectionsAbcClass(string name) {
   exists(Class cls |
     result.getPyClass() = cls and
     cls.getName() = name and

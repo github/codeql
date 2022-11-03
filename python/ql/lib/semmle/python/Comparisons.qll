@@ -76,22 +76,22 @@ class CompareOp extends int {
   }
 }
 
-/** Gets the `CompareOp` for "equals". */
+/** The `CompareOp` for "equals". */
 CompareOp eq() { result = 1 }
 
-/** Gets the `CompareOp` for "not equals". */
+/** The `CompareOp` for "not equals". */
 CompareOp ne() { result = 2 }
 
-/** Gets the `CompareOp` for "less than". */
+/** The `CompareOp` for "less than". */
 CompareOp lt() { result = 3 }
 
-/** Gets the `CompareOp` for "less than or equal to". */
+/** The `CompareOp` for "less than or equal to". */
 CompareOp le() { result = 4 }
 
-/** Gets the `CompareOp` for "greater than". */
+/** The `CompareOp` for "greater than". */
 CompareOp gt() { result = 5 }
 
-/** Gets the `CompareOp` for "greater than or equal to". */
+/** The `CompareOp` for "greater than or equal to". */
 CompareOp ge() { result = 6 }
 
 /* Workaround precision limits in floating point numbers */
@@ -514,7 +514,7 @@ class ComparisonControlBlock extends ConditionBlock {
 
   Comparison getTest() { this.getLastNode() = result }
 
-  /** Whether this conditional guard implies that, in block `b`, the result of `that` is `thatIsTrue` */
+  /** Whether this conditional guard implies that, in block `b`,  the result of `that` is `thatIsTrue` */
   predicate impliesThat(BasicBlock b, Comparison that, boolean thatIsTrue) {
     exists(boolean controlSense |
       this.controls(b, controlSense) and

@@ -93,7 +93,7 @@
 private import InlineExpectationsTestPrivate
 
 /**
- * The base class for tests with inline expectations. The test extends this class to provide the actual
+ * Base class for tests with inline expectations. The test extends this class to provide the actual
  * results of the query, which are then compared with the expected results in comments to produce a
  * list of failure messages that point out where the actual results differ from the expected
  * results.
@@ -123,21 +123,9 @@ abstract class InlineExpectationsTest extends string {
    */
   abstract predicate hasActualResult(Location location, string element, string tag, string value);
 
-  /**
-   * Holds if there is an optional result on the specified location.
-   *
-   * This is similar to `hasActualResult`, but returns results that do not require a matching annotation.
-   * A failure will still arise if there is an annotation that does not match any results, but not vice versa.
-   * Override this predicate to specify optional results.
-   */
-  predicate hasOptionalResult(Location location, string element, string tag, string value) {
-    none()
-  }
-
   final predicate hasFailureMessage(FailureLocatable element, string message) {
     exists(ActualResult actualResult |
       actualResult.getTest() = this and
-      actualResult.getTag() = this.getARelevantTag() and
       element = actualResult and
       (
         exists(FalseNegativeExpectation falseNegative |
@@ -146,23 +134,13 @@ abstract class InlineExpectationsTest extends string {
         )
         or
         not exists(ValidExpectation expectation | expectation.matchesActualResult(actualResult)) and
-        message = "Unexpected result: " + actualResult.getExpectationText() and
-        not actualResult.isOptional()
+        message = "Unexpected result: " + actualResult.getExpectationText()
       )
-    )
-    or
-    exists(ActualResult actualResult |
-      actualResult.getTest() = this and
-      not actualResult.getTag() = this.getARelevantTag() and
-      element = actualResult and
-      message =
-        "Tag mismatch: Actual result with tag '" + actualResult.getTag() +
-          "' that is not part of getARelevantTag()"
     )
     or
     exists(ValidExpectation expectation |
       not exists(ActualResult actualResult | expectation.matchesActualResult(actualResult)) and
-      expectation.getTag() = this.getARelevantTag() and
+      expectation.getTag() = getARelevantTag() and
       element = expectation and
       (
         expectation instanceof GoodExpectation and
@@ -191,7 +169,7 @@ private string expectationCommentPattern() { result = "\\s*\\$((?:[^/]|/[^/])*)(
 /**
  * The possible columns in an expectation comment. The `TDefaultColumn` branch represents the first
  * column in a comment. This column is not precedeeded by a name. `TNamedColumn(name)` represents a
- * column containing expected results preceded by the string `name:`.
+ * column containing expected results preceeded by the string `name:`.
  */
 private newtype TColumn =
   TDefaultColumn() or
@@ -249,24 +227,12 @@ private string getColumnString(TColumn column) {
 
 /**
  * RegEx pattern to match a single expected result, not including the leading `$`. It consists of one or
- * more comma-separated tags optionally followed by `=` and the expected value.
- *
- * Tags must be only letters, digits, `-` and `_` (note that the first character
- * must not be a digit), but can contain anything enclosed in a single set of
- * square brackets.
- *
- * Examples:
- * - `tag`
- * - `tag=value`
- * - `tag,tag2=value`
- * - `tag[foo bar]=value`
- *
- * Not allowed:
- * - `tag[[[foo bar]`
+ * more comma-separated tags containing only letters, digits, `-` and `_` (note that the first character
+ * must not be a digit), optionally followed by `=` and the expected value.
  */
 private string expectationPattern() {
   exists(string tag, string tags, string value |
-    tag = "[A-Za-z-_](?:[A-Za-z-_0-9]|\\[[^\\]\\]]*\\])*" and
+    tag = "[A-Za-z-_][A-Za-z-_0-9]*" and
     tags = "((?:" + tag + ")(?:\\s*,\\s*" + tag + ")*)" and
     // In Python, we allow both `"` and `'` for strings, as well as the prefixes `bru`.
     // For example, `b"foo"`.
@@ -277,13 +243,9 @@ private string expectationPattern() {
 
 private newtype TFailureLocatable =
   TActualResult(
-    InlineExpectationsTest test, Location location, string element, string tag, string value,
-    boolean optional
+    InlineExpectationsTest test, Location location, string element, string tag, string value
   ) {
-    test.hasActualResult(location, element, tag, value) and
-    optional = false
-    or
-    test.hasOptionalResult(location, element, tag, value) and optional = true
+    test.hasActualResult(location, element, tag, value)
   } or
   TValidExpectation(ExpectationComment comment, string tag, string value, string knownFailure) {
     exists(TColumn column, string tags |
@@ -315,9 +277,8 @@ class ActualResult extends FailureLocatable, TActualResult {
   string element;
   string tag;
   string value;
-  boolean optional;
 
-  ActualResult() { this = TActualResult(test, location, element, tag, value, optional) }
+  ActualResult() { this = TActualResult(test, location, element, tag, value) }
 
   override string toString() { result = element }
 
@@ -328,8 +289,6 @@ class ActualResult extends FailureLocatable, TActualResult {
   override string getTag() { result = tag }
 
   override string getValue() { result = value }
-
-  predicate isOptional() { optional = true }
 }
 
 abstract private class Expectation extends FailureLocatable {
@@ -338,19 +297,6 @@ abstract private class Expectation extends FailureLocatable {
   override string toString() { result = comment.toString() }
 
   override Location getLocation() { result = comment.getLocation() }
-}
-
-private predicate onSameLine(ValidExpectation a, ActualResult b) {
-  exists(string fname, int line, Location la, Location lb |
-    // Join order intent:
-    // Take the locations of ActualResults,
-    // join with locations in the same file / on the same line,
-    // then match those against ValidExpectations.
-    la = a.getLocation() and
-    pragma[only_bind_into](lb) = b.getLocation() and
-    pragma[only_bind_into](la).hasLocationInfo(fname, line, _, _, _) and
-    lb.hasLocationInfo(fname, line, _, _, _)
-  )
 }
 
 private class ValidExpectation extends Expectation, TValidExpectation {
@@ -367,7 +313,8 @@ private class ValidExpectation extends Expectation, TValidExpectation {
   string getKnownFailure() { result = knownFailure }
 
   predicate matchesActualResult(ActualResult actualResult) {
-    onSameLine(pragma[only_bind_into](this), actualResult) and
+    getLocation().getStartLine() = actualResult.getLocation().getStartLine() and
+    getLocation().getFile() = actualResult.getLocation().getFile() and
     getTag() = actualResult.getTag() and
     getValue() = actualResult.getValue()
   }

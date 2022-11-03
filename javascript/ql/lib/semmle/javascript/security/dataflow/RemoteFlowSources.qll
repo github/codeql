@@ -1,5 +1,5 @@
 /**
- * Provides a class for modeling sources of remote user input.
+ * Provides a class for modelling sources of remote user input.
  */
 
 import javascript
@@ -101,11 +101,11 @@ class ClientSideRemoteFlowKind extends string {
  * `name` and `address` of global variable `user` should be considered as remote flow sources with
  * source type "user input".
  */
-private class RemoteFlowSourceAccessPath extends JsonString {
+private class RemoteFlowSourceAccessPath extends JSONString {
   string sourceType;
 
   RemoteFlowSourceAccessPath() {
-    exists(JsonObject specs |
+    exists(JSONObject specs |
       specs.isTopLevel() and
       this.getFile().getBaseName() = "codeql-javascript-remote-flow-sources.json" and
       this = specs.getPropValue(sourceType).getElementValue(_) and
@@ -117,22 +117,18 @@ private class RemoteFlowSourceAccessPath extends JsonString {
   string getSourceType() { result = sourceType }
 
   /** Gets the `i`th component of the access path specifying this remote flow source. */
-  API::Label::ApiLabel getComponent(int i) {
+  string getComponent(int i) {
     exists(string raw | raw = this.getValue().splitAt(".", i + 1) |
       i = 0 and
-      result =
-        API::Label::entryPoint(any(ExternalRemoteFlowSourceSpecEntryPoint e | e.getName() = raw))
+      result = "ExternalRemoteFlowSourceSpec " + raw
       or
       i > 0 and
-      result = API::Label::member(raw)
+      result = API::EdgeLabel::member(raw)
     )
   }
 
-  /** Gets the first part of this access path. E.g. for "window.user.name" the result is "window". */
-  string getRootPath() { result = this.getValue().splitAt(".", 1) }
-
   /** Gets the index of the last component of this access path. */
-  int getMaxComponentIndex() { result = max(int i | exists(this.getComponent(i))) }
+  int getMaxComponentIndex() { result = max(int i | exists(getComponent(i))) }
 
   /**
    * Gets the API node to which the prefix of the access path up to and including `i` resolves.
@@ -143,11 +139,11 @@ private class RemoteFlowSourceAccessPath extends JsonString {
     i = -1 and
     result = API::root()
     or
-    result = this.resolveUpTo(i - 1).getASuccessor(this.getComponent(i))
+    result = resolveUpTo(i - 1).getASuccessor(getComponent(i))
   }
 
   /** Gets the API node to which this access path resolves. */
-  API::Use resolve() { result = this.resolveUpTo(this.getMaxComponentIndex()) }
+  API::Use resolve() { result = resolveUpTo(getMaxComponentIndex()) }
 }
 
 /**
@@ -158,13 +154,13 @@ private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
   string name;
 
   ExternalRemoteFlowSourceSpecEntryPoint() {
-    name = any(RemoteFlowSourceAccessPath s).getRootPath() and
+    this = any(RemoteFlowSourceAccessPath s).getComponent(0) and
     this = "ExternalRemoteFlowSourceSpec " + name
   }
 
-  string getName() { result = name }
+  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef(name) }
 
-  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef(name) }
+  override DataFlow::Node getARhs() { none() }
 }
 
 /**
@@ -173,7 +169,7 @@ private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
   RemoteFlowSourceAccessPath ap;
 
-  ExternalRemoteFlowSource() { Stages::Taint::ref() and this = ap.resolve().asSource() }
+  ExternalRemoteFlowSource() { Stages::Taint::ref() and this = ap.resolve().getAnImmediateUse() }
 
   override string getSourceType() { result = ap.getSourceType() }
 }

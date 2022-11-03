@@ -29,7 +29,7 @@ private class PlainJsonParserCall extends JsonParserCall {
       callee =
         DataFlow::moduleMember(["json3", "json5", "flatted", "teleport-javascript", "json-cycle"],
           "parse") or
-      callee = API::moduleImport("replicator").getInstance().getMember("decode").asSource() or
+      callee = API::moduleImport("replicator").getInstance().getMember("decode").getAnImmediateUse() or
       callee = DataFlow::moduleImport("parse-json") or
       callee = DataFlow::moduleImport("json-parse-better-errors") or
       callee = DataFlow::moduleImport("json-safe-parse") or
@@ -38,7 +38,7 @@ private class PlainJsonParserCall extends JsonParserCall {
     )
   }
 
-  override DataFlow::Node getInput() { result = this.getArgument(0) }
+  override DataFlow::Node getInput() { result = getArgument(0) }
 
   override DataFlow::SourceNode getOutput() { result = this }
 }
@@ -61,7 +61,7 @@ private class JsonParserCallWithWrapper extends JsonParserCall {
     )
   }
 
-  override DataFlow::Node getInput() { result = this.getArgument(0) }
+  override DataFlow::Node getInput() { result = getArgument(0) }
 
   override DataFlow::SourceNode getOutput() { result = this.getAPropertyRead(outputPropName) }
 }
@@ -74,9 +74,9 @@ private class JsonParserCallWithCallback extends JsonParserCall {
     this = DataFlow::moduleImport("safe-json-parse/callback").getACall()
   }
 
-  override DataFlow::Node getInput() { result = this.getArgument(0) }
+  override DataFlow::Node getInput() { result = getArgument(0) }
 
-  override DataFlow::SourceNode getOutput() { result = this.getCallback(1).getParameter(1) }
+  override DataFlow::SourceNode getOutput() { result = getCallback(1).getParameter(1) }
 }
 
 /**

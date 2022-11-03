@@ -75,9 +75,9 @@ class ClassList extends TClassList {
     this = Empty() and result = ""
     or
     exists(ClassObjectInternal head | head = this.getHead() |
-      this.getTail() = Empty() and result = this.className(head)
+      this.getTail() = Empty() and result = className(head)
       or
-      this.getTail() != Empty() and result = this.className(head) + ", " + this.getTail().contents()
+      this.getTail() != Empty() and result = className(head) + ", " + this.getTail().contents()
     )
   }
 
@@ -114,33 +114,49 @@ class ClassList extends TClassList {
     this = Empty() and result = Empty()
   }
 
+  predicate legalMergeHead(ClassObjectInternal cls) {
+    this.getTail().doesNotContain(cls)
+    or
+    this = Empty()
+  }
+
   predicate contains(ClassObjectInternal cls) {
     cls = this.getHead()
     or
     this.getTail().contains(cls)
   }
 
-  pragma[nomagic]
-  ClassObjectInternal findDeclaringClass(string name) {
-    exists(ClassObjectInternal head, ClassList tail, ClassDecl decl |
-      this = Cons(head, tail) and decl = head.getClassDeclaration()
-    |
-      if decl.declaresAttribute(name) then result = head else result = tail.findDeclaringClass(name)
+  /** Use negative formulation to avoid negative recursion */
+  predicate doesNotContain(ClassObjectInternal cls) {
+    this.relevantForContains(cls) and
+    cls != this.getHead() and
+    this.getTail().doesNotContain(cls)
+    or
+    this = Empty()
+  }
+
+  private predicate relevantForContains(ClassObjectInternal cls) {
+    exists(ClassListList list |
+      list.getItem(_).getHead() = cls and
+      list.getItem(_) = this
+    )
+    or
+    exists(ClassList l |
+      l.relevantForContains(cls) and
+      this = l.getTail()
     )
   }
 
-  pragma[noinline]
-  private ClassObjectInternal findDeclaringClassAttribute(string name) {
-    result = this.findDeclaringClass(name) and
-    (
-      exists(any(Builtin b).getMember(name))
-      or
-      declaredAttributeVar(_, name, _)
+  ClassObjectInternal findDeclaringClass(string name) {
+    exists(ClassDecl head | head = this.getHead().getClassDeclaration() |
+      if head.declaresAttribute(name)
+      then result = this.getHead()
+      else result = this.getTail().findDeclaringClass(name)
     )
   }
 
   predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
-    exists(ClassObjectInternal decl | decl = this.findDeclaringClassAttribute(name) |
+    exists(ClassObjectInternal decl | decl = this.findDeclaringClass(name) |
       Types::declaredAttribute(decl, name, value, origin)
     )
   }
@@ -183,16 +199,10 @@ class ClassList extends TClassList {
     or
     this.duplicate(n) and result = this.deduplicate(n + 1)
     or
-    exists(ClassObjectInternal cls, ClassList tail |
-      this.deduplicateCons(n, cls, tail) and
-      result = Cons(cls, tail)
+    exists(ClassObjectInternal cls |
+      n = this.firstIndex(cls) and
+      result = Cons(cls, this.deduplicate(n + 1))
     )
-  }
-
-  pragma[nomagic]
-  private predicate deduplicateCons(int n, ClassObjectInternal cls, ClassList tail) {
-    n = this.firstIndex(cls) and
-    tail = this.deduplicate(n + 1)
   }
 
   predicate isEmpty() { this = Empty() }
@@ -263,24 +273,6 @@ private class ClassListList extends TClassListList {
     result = this.getTail().getItem(n - 1)
   }
 
-  /**
-   * Same as
-   *
-   * ```ql
-   * result = this.getItem(n) and n = this.length() - 1
-   * ```
-   *
-   * but avoids non-linear recursion.
-   */
-  ClassList getLastItem(int n) {
-    n = 0 and this = ConsList(result, EmptyList())
-    or
-    exists(ClassListList tail |
-      this = ConsList(_, tail) and
-      result = tail.getLastItem(n - 1)
-    )
-  }
-
   private ClassObjectInternal getAHead() {
     result = this.getHead().getHead()
     or
@@ -303,24 +295,15 @@ private class ClassListList extends TClassListList {
     ClassObjectInternal cls, ClassList removed_head, ClassListList removed_tail, int n
   ) {
     cls = this.bestMergeCandidate() and
-    removed_head = this.getLastItem(n).removeHead(cls) and
+    n = this.length() - 1 and
+    removed_head = this.getItem(n).removeHead(cls) and
     removed_tail = EmptyList()
     or
-    removed_head = this.removedClassPartsCons1(cls, removed_tail, n).removeHead(cls)
-  }
-
-  pragma[nomagic]
-  predicate removedClassPartsCons0(ClassObjectInternal cls, ClassListList removed_tail, int n) {
     exists(ClassList prev_head, ClassListList prev_tail |
       this.removedClassParts(cls, prev_head, prev_tail, n + 1) and
+      removed_head = this.getItem(n).removeHead(cls) and
       removed_tail = ConsList(prev_head, prev_tail)
     )
-  }
-
-  pragma[nomagic]
-  ClassList removedClassPartsCons1(ClassObjectInternal cls, ClassListList removed_tail, int n) {
-    this.removedClassPartsCons0(cls, removed_tail, n) and
-    result = this.getItem(n)
   }
 
   ClassListList remove(ClassObjectInternal cls) {
@@ -329,48 +312,31 @@ private class ClassListList extends TClassListList {
       result = ConsList(removed_head, removed_tail)
     )
     or
-    this = EmptyList() and result = EmptyList() and exists(cls)
+    this = EmptyList() and result = EmptyList()
   }
 
-  pragma[nomagic]
-  private predicate legalMergeCandidateNonEmpty(
-    ClassObjectInternal cls, ClassListList remainingList, ClassList remaining
-  ) {
-    this.legalMergeCandidate(cls, ConsList(Cons(_, remaining), remainingList))
+  predicate legalMergeCandidate(ClassObjectInternal cls, int n) {
+    cls = this.getAHead() and n = this.length()
     or
-    exists(ClassObjectInternal head |
-      this.legalMergeCandidateNonEmpty(cls, remainingList, Cons(head, remaining)) and
-      cls != head
-    )
+    this.getItem(n).legalMergeHead(cls) and
+    this.legalMergeCandidate(cls, n + 1)
   }
 
-  private predicate legalMergeCandidate(ClassObjectInternal cls, ClassListList remainingList) {
-    cls = this.getAHead() and remainingList = this
-    or
-    this.legalMergeCandidate(cls, ConsList(Empty(), remainingList))
-    or
-    this.legalMergeCandidateNonEmpty(cls, remainingList, Empty())
-  }
+  predicate legalMergeCandidate(ClassObjectInternal cls) { this.legalMergeCandidate(cls, 0) }
 
-  pragma[noinline]
-  predicate legalMergeCandidate(ClassObjectInternal cls) {
-    this.legalMergeCandidate(cls, EmptyList())
-  }
-
-  pragma[noinline]
   predicate illegalMergeCandidate(ClassObjectInternal cls) {
-    this.legalMergeCandidateNonEmpty(cls, _, Cons(cls, _))
+    cls = this.getAHead() and
+    this.getItem(_).getTail().contains(cls)
   }
 
   ClassObjectInternal bestMergeCandidate(int n) {
     exists(ClassObjectInternal head | head = this.getItem(n).getHead() |
-      this.legalMergeCandidate(head) and result = head
+      legalMergeCandidate(head) and result = head
       or
-      this.illegalMergeCandidate(head) and result = this.bestMergeCandidate(n + 1)
+      illegalMergeCandidate(head) and result = this.bestMergeCandidate(n + 1)
     )
   }
 
-  pragma[noinline]
   ClassObjectInternal bestMergeCandidate() { result = this.bestMergeCandidate(0) }
 
   /**
@@ -386,10 +352,10 @@ private class ClassListList extends TClassListList {
 
 private ClassList flatten_list(ClassListList list, int n) {
   need_flattening(list) and
-  exists(ClassList head, ClassListList tail | pragma[only_bind_out](list) = ConsList(head, tail) |
+  exists(ClassList head, ClassListList tail | list = ConsList(head, tail) |
     n = head.length() and result = tail.flatten()
     or
-    result = Cons(head.getItem(n), flatten_list(pragma[only_bind_out](list), n + 1))
+    result = Cons(head.getItem(n), flatten_list(list, n + 1))
   )
 }
 
@@ -419,9 +385,7 @@ private ClassListList list_of_linearization_of_bases_plus_bases(ClassObjectInter
   result = ConsList(bases(cls), EmptyList()) and n = Types::base_count(cls) and n > 1
   or
   exists(ClassListList partial |
-    partial =
-      list_of_linearization_of_bases_plus_bases(pragma[only_bind_into](cls),
-        pragma[only_bind_into](n + 1)) and
+    partial = list_of_linearization_of_bases_plus_bases(cls, n + 1) and
     result = ConsList(Mro::newStyleMro(Types::getBase(cls, n)), partial)
   )
 }
@@ -453,25 +417,14 @@ private predicate merge_step(
   remaining_list = original
   or
   /* Removes the best merge candidate from `remaining_list` and prepends it to `reversed_mro` */
-  exists(ClassObjectInternal head, ClassList prev_reverse_mro |
-    merge_stepCons(head, prev_reverse_mro, remaining_list, original) and
-    reversed_mro = Cons(head, prev_reverse_mro)
+  exists(ClassObjectInternal head, ClassList prev_reverse_mro, ClassListList prev_list |
+    merge_step(prev_reverse_mro, prev_list, original) and
+    head = prev_list.bestMergeCandidate() and
+    reversed_mro = Cons(head, prev_reverse_mro) and
+    remaining_list = prev_list.remove(head)
   )
   or
   merge_step(reversed_mro, ConsList(Empty(), remaining_list), original)
-}
-
-pragma[nomagic]
-private predicate merge_stepCons(
-  ClassObjectInternal head, ClassList prev_reverse_mro, ClassListList remaining_list,
-  ClassListList original
-) {
-  /* Removes the best merge candidate from `remaining_list` and prepends it to `reversed_mro` */
-  exists(ClassListList prev_list |
-    merge_step(prev_reverse_mro, prev_list, original) and
-    head = prev_list.bestMergeCandidate() and
-    remaining_list = prev_list.remove(head)
-  )
 }
 
 /* Helpers for `ClassList.reverse()` */
@@ -486,15 +439,8 @@ private predicate reverse_step(ClassList lst, ClassList remainder, ClassList rev
   or
   exists(ClassObjectInternal head, ClassList tail |
     reversed = Cons(head, tail) and
-    reverse_stepCons(lst, remainder, head, tail)
+    reverse_step(lst, Cons(head, remainder), tail)
   )
-}
-
-pragma[nomagic]
-private predicate reverse_stepCons(
-  ClassList lst, ClassList remainder, ClassObjectInternal head, ClassList tail
-) {
-  reverse_step(lst, Cons(head, remainder), tail)
 }
 
 module Mro {

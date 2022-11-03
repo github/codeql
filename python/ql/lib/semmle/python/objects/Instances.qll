@@ -178,6 +178,7 @@ class SelfInstanceInternal extends TSelfInstance, InstanceObject {
     result = "self instance of " + this.getClass().(ClassObjectInternal).getName()
   }
 
+  /** The boolean value of this object, if it has one */
   override boolean booleanValue() {
     //result = this.getClass().instancesBooleanValue()
     result = maybe()

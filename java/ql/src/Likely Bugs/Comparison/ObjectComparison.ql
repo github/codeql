@@ -19,7 +19,7 @@ class FinalFieldAccess extends VarAccess {
   FinalFieldAccess() { this.getVariable().(Field).isFinal() }
 }
 
-class ReferenceEqualityTestOnObject extends ReferenceEqualityTest {
+class ReferenceEqualityTestOnObject extends EqualityTest {
   ReferenceEqualityTestOnObject() {
     this.getLeftOperand().getType() instanceof TypeObject and
     this.getRightOperand().getType() instanceof TypeObject and

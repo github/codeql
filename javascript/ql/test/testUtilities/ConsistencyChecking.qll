@@ -71,7 +71,7 @@ private DataFlow::Node getASink() { exists(DataFlow::Configuration cfg | cfg.has
  * Gets all the alerts for consistency consistency checking from a configuration `conf`.
  */
 private DataFlow::Node alerts(Conf conf) {
-  result = conf.(ConsistencyConfiguration).getAnAlert()
+  result = any(ConsistencyConfiguration res | res = conf).getAnAlert()
   or
   not exists(ConsistencyConfiguration r) and
   result = getASink() and
@@ -131,7 +131,7 @@ private File getATestFile(string conf) {
   result = any(LineComment comment).getFile() and
   conf = ""
   or
-  result = conf.(ConsistencyConfiguration).getAFile()
+  result = any(ConsistencyConfiguration res | res = conf).getAFile()
 }
 
 /**

@@ -20,11 +20,14 @@ private module Invoke {
   API::Node invoke() { result = API::moduleImport("invoke") }
 
   /** Provides models for the `invoke` module. */
-  module InvokeModule {
+  module invoke {
+    /** Gets a reference to the `invoke.context` module. */
+    API::Node context() { result = invoke().getMember("context") }
+
     /** Provides models for the `invoke.context` module */
-    module Context {
+    module context {
       /** Provides models for the `invoke.context.Context` class */
-      module ContextClass {
+      module Context {
         /** Gets a reference to the `invoke.context.Context` class. */
         API::Node classRef() {
           result = API::moduleImport("invoke").getMember("context").getMember("Context")
@@ -36,11 +39,10 @@ private module Invoke {
         private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
           t.start() and
           (
-            result = InvokeModule::Context::ContextClass::classRef().getACall()
+            result = invoke::context::Context::classRef().getACall()
             or
             exists(Function func |
-              func.getADecorator() =
-                invoke().getMember("task").getAValueReachableFromSource().asExpr() and
+              func.getADecorator() = invoke().getMember("task").getAUse().asExpr() and
               result.(DataFlow::ParameterNode).getParameter() = func.getArg(0)
             )
           )
@@ -54,7 +56,7 @@ private module Invoke {
         /** Gets a reference to the `run` or `sudo` methods on a `invoke.context.Context` instance. */
         private DataFlow::TypeTrackingNode instanceRunMethods(DataFlow::TypeTracker t) {
           t.startInAttr(["run", "sudo"]) and
-          result = InvokeModule::Context::ContextClass::instance()
+          result = invoke::context::Context::instance()
           or
           exists(DataFlow::TypeTracker t2 | result = instanceRunMethods(t2).track(t2, t))
         }
@@ -75,7 +77,7 @@ private module Invoke {
   private class InvokeRunCommandCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     InvokeRunCommandCall() {
       this = invoke().getMember(["run", "sudo"]).getACall() or
-      this.getFunction() = InvokeModule::Context::ContextClass::instanceRunMethods()
+      this.getFunction() = invoke::context::Context::instanceRunMethods()
     }
 
     override DataFlow::Node getCommand() {

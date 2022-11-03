@@ -22,6 +22,13 @@ class Declaration extends NamedElement, @dotnet_declaration {
   Type getDeclaringType() { none() }
 
   /**
+   * DEPRECATED: Use `getUnboundDeclaration()` instaed.
+   *
+   * Gets the unbound version of this declaration.
+   */
+  deprecated final Declaration getSourceDeclaration() { result = this.getUnboundDeclaration() }
+
+  /**
    * Gets the unbound version of this declaration, that is, the declaration where
    * all type arguments have been removed. For example, in
    *

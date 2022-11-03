@@ -59,6 +59,9 @@ where
   w.getName() = n and
   v != w and
   if p.resemblesTypeAnnotation()
-  then message = "The pattern variable '" + n + "' appears to be a type, but is a variable $@."
-  else message = "Repeated binding of pattern variable '" + n + "' $@."
-select w, message, v, "previously bound"
+  then
+    message =
+      "The pattern variable '" + n +
+        "' appears to be a type, but is a variable previously bound $@."
+  else message = "Repeated binding of pattern variable '" + n + "' previously bound $@."
+select w, message, v, "here"

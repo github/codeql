@@ -7,7 +7,7 @@ import javascript
 /**
  * Provides classes implementing data-flow for Immutable.
  *
- * The implementation rely on the flowsteps implemented in `Collections.qll`.
+ * The implemention rely on the flowsteps implemented in `Collections.qll`.
  */
 private module Immutable {
   /**
@@ -16,20 +16,22 @@ private module Immutable {
   private class ImmutableGlobalEntry extends API::EntryPoint {
     ImmutableGlobalEntry() { this = "ImmutableGlobalEntry" }
 
-    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("Immutable") }
+    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("Immutable") }
+
+    override DataFlow::Node getARhs() { none() }
   }
 
   /**
-   * Gets an import of the `Immutable` library.
+   * An import of the `Immutable` library.
    */
   API::Node immutableImport() {
     result = API::moduleImport("immutable")
     or
-    result = any(ImmutableGlobalEntry i).getANode()
+    result = API::root().getASuccessor(any(ImmutableGlobalEntry i))
   }
 
   /**
-   * Gets an instance of any immutable collection.
+   * An instance of any immutable collection.
    *
    * This predicate keeps track of which values in the program are Immutable collections.
    */

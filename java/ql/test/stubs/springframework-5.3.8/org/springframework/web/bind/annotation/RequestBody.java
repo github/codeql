@@ -1,5 +1,3 @@
-// Generated automatically from org.springframework.web.bind.annotation.RequestBody for testing purposes
-
 package org.springframework.web.bind.annotation;
 
 import java.lang.annotation.Documented;
@@ -8,10 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Documented
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
-public @interface RequestBody
-{
-    boolean required() default false;
+@Documented
+public @interface RequestBody {
+
+	boolean required() default true;
 }

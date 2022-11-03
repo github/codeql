@@ -15,7 +15,7 @@ private import VarArgs
 /**
  * Gets the `TranslatedFunction` that represents function `func`.
  */
-TranslatedFunction getTranslatedFunction(Function func) { result.getAst() = func }
+TranslatedFunction getTranslatedFunction(Function func) { result.getAST() = func }
 
 /**
  * Gets the size, in bytes, of the variable used to represent the `...` parameter in a varargs
@@ -58,17 +58,14 @@ predicate hasReturnValue(Function func) { not func.getUnspecifiedType() instance
  * Represents the IR translation of a function. This is the root elements for
  * all other elements associated with this function.
  */
-class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
+class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   Function func;
 
   TranslatedFunction() { this = TTranslatedFunction(func) }
 
   final override string toString() { result = func.toString() }
 
-  final override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  final override Locatable getAST() { result = func }
 
   /**
    * Gets the function being translated.
@@ -347,7 +344,7 @@ TranslatedThisParameter getTranslatedThisParameter(Function func) { result.getFu
 /**
  * Gets the `TranslatedPositionalParameter` that represents parameter `param`.
  */
-TranslatedPositionalParameter getTranslatedParameter(Parameter param) { result.getAst() = param }
+TranslatedPositionalParameter getTranslatedParameter(Parameter param) { result.getAST() = param }
 
 /**
  * Gets the `TranslatedEllipsisParameter` for function `func`, if one exists.
@@ -460,10 +457,7 @@ class TranslatedThisParameter extends TranslatedParameter, TTranslatedThisParame
 
   final override string toString() { result = "this" }
 
-  final override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  final override Locatable getAST() { result = func }
 
   final override Function getFunction() { result = func }
 
@@ -495,10 +489,7 @@ class TranslatedPositionalParameter extends TranslatedParameter, TTranslatedPara
 
   final override string toString() { result = param.toString() }
 
-  final override Locatable getAst() { result = param }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  final override Locatable getAST() { result = param }
 
   final override Function getFunction() {
     result = param.getFunction() or
@@ -535,10 +526,7 @@ class TranslatedEllipsisParameter extends TranslatedParameter, TTranslatedEllips
 
   final override string toString() { result = "..." }
 
-  final override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  final override Locatable getAST() { result = func }
 
   final override Function getFunction() { result = func }
 
@@ -556,7 +544,7 @@ class TranslatedEllipsisParameter extends TranslatedParameter, TTranslatedEllips
 }
 
 private TranslatedConstructorInitList getTranslatedConstructorInitList(Function func) {
-  result.getAst() = func
+  result.getAST() = func
 }
 
 /**
@@ -573,10 +561,7 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
 
   override string toString() { result = "ctor init: " + func.toString() }
 
-  override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  override Locatable getAST() { result = func }
 
   override TranslatedElement getChild(int id) {
     exists(ConstructorFieldInit fieldInit |
@@ -587,11 +572,6 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
     exists(ConstructorBaseInit baseInit |
       baseInit = func.(Constructor).getInitializer(id) and
       result = getTranslatedConstructorBaseInit(baseInit)
-    )
-    or
-    exists(ConstructorInit bareInit |
-      bareInit = func.(Constructor).getInitializer(id) and
-      result = getTranslatedConstructorBareInit(bareInit)
     )
   }
 
@@ -626,7 +606,7 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
 }
 
 private TranslatedDestructorDestructionList getTranslatedDestructorDestructionList(Function func) {
-  result.getAst() = func
+  result.getAST() = func
 }
 
 /**
@@ -644,10 +624,7 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
 
   override string toString() { result = "dtor destruction: " + func.toString() }
 
-  override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  override Locatable getAST() { result = func }
 
   override TranslatedElement getChild(int id) {
     exists(DestructorFieldDestruction fieldDestruction |
@@ -685,17 +662,14 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
   }
 }
 
-TranslatedReadEffects getTranslatedReadEffects(Function func) { result.getAst() = func }
+TranslatedReadEffects getTranslatedReadEffects(Function func) { result.getAST() = func }
 
 class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
   Function func;
 
   TranslatedReadEffects() { this = TTranslatedReadEffects(func) }
 
-  override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  override Locatable getAST() { result = func }
 
   override Function getFunction() { result = func }
 
@@ -739,11 +713,11 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
 }
 
 private TranslatedThisReadEffect getTranslatedThisReadEffect(Function func) {
-  result.getAst() = func
+  result.getAST() = func
 }
 
 private TranslatedParameterReadEffect getTranslatedParameterReadEffect(Parameter param) {
-  result.getAst() = param
+  result.getAST() = param
 }
 
 abstract class TranslatedReadEffect extends TranslatedElement {
@@ -779,10 +753,7 @@ class TranslatedThisReadEffect extends TranslatedReadEffect, TTranslatedThisRead
 
   TranslatedThisReadEffect() { this = TTranslatedThisReadEffect(func) }
 
-  override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  override Locatable getAST() { result = func }
 
   override Function getFunction() { result = func }
 
@@ -805,10 +776,7 @@ class TranslatedParameterReadEffect extends TranslatedReadEffect, TTranslatedPar
 
   TranslatedParameterReadEffect() { this = TTranslatedParameterReadEffect(param) }
 
-  override Locatable getAst() { result = param }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
+  override Locatable getAST() { result = param }
 
   override string toString() { result = "read effect: " + param.toString() }
 

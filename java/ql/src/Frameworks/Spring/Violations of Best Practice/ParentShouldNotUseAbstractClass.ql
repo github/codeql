@@ -26,4 +26,5 @@ class ParentBean extends SpringBean {
 
 from ParentBean parent
 where parent.getDeclaredClass().isAbstract()
-select parent, "This parent bean should not have an abstract class."
+select parent, "Parent bean $@ should not have an abstract class.", parent,
+  parent.getBeanIdentifier()

@@ -4,7 +4,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.DomBasedXssCustomizations
+import semmle.javascript.security.dataflow.Xss
 import UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin
 
 /**
@@ -46,8 +46,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
     super.isSanitizerGuard(node) or
     node instanceof IsElementSanitizer or
-    node instanceof PropertyPresenceSanitizer or
-    node instanceof NumberGuard
+    node instanceof PropertyPresenceSanitizer
   }
 }
 

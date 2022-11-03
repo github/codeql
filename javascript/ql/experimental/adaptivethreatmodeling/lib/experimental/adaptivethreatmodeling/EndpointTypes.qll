@@ -6,7 +6,7 @@
  * representation of each of these classes.
  */
 newtype TEndpointType =
-  TNegativeType() or
+  TNotASinkType() or
   TXssSinkType() or
   TNosqlInjectionSinkType() or
   TSqlInjectionSinkType() or
@@ -21,9 +21,9 @@ abstract class EndpointType extends TEndpointType {
   string toString() { result = getDescription() }
 }
 
-/** The `Negative` class that can be predicted by endpoint scoring models. */
-class NegativeType extends EndpointType, TNegativeType {
-  override string getDescription() { result = "Negative" }
+/** The `NotASink` class that can be predicted by endpoint scoring models. */
+class NotASinkType extends EndpointType, TNotASinkType {
+  override string getDescription() { result = "NotASink" }
 
   override int getEncoding() { result = 0 }
 }

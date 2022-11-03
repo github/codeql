@@ -84,7 +84,7 @@ predicate isConditionBig(SwitchStmt swtmp) {
 }
 
 /** Holds if there are labels inside the block with names similar to `default` or `case`. */
-predicate isWrongLabelName(SwitchStmt swtmp) {
+predicate isWrongLableName(SwitchStmt swtmp) {
   not swtmp.hasDefaultCase() and
   exists(LabelStmt lb |
     (
@@ -147,7 +147,7 @@ where
     isConditionBig(sw) and msg = "The range of condition values is wider than the choices."
   )
   or
-  isWrongLabelName(sw) and msg = "Possibly erroneous label name."
+  isWrongLableName(sw) and msg = "Possibly erroneous label name."
   or
   isCodeBeforeCase(sw) and msg = "Code before case will not be executed."
 select sw, msg

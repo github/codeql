@@ -7,7 +7,6 @@
  */
 
 import java
-import semmle.code.java.regex.RegexTreeView
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
@@ -69,8 +68,7 @@ private predicate isNotNeeded(Element el) {
     el.(ExprOrStmt).getEnclosingCallable() = c
   |
     el.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
-    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
-    not c.getFile().isKotlinSourceFile() // Kotlin constructor bodies have the same location as the constructor
+    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol)
     // simply comparing their getLocation() doesn't work as they have distinct but equivalent locations
   )
   or
@@ -120,7 +118,7 @@ private newtype TPrintAstNode =
     shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
   TAnnotationsNode(Annotatable ann) {
-    shouldPrint(ann, _) and ann.hasDeclaredAnnotation() and not partOfAnnotation(ann)
+    shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
   } or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
@@ -133,9 +131,6 @@ private newtype TPrintAstNode =
   } or
   TImportsNode(CompilationUnit cu) {
     shouldPrint(cu, _) and exists(Import i | i.getCompilationUnit() = cu)
-  } or
-  TRegExpTermNode(RegExpTerm term) {
-    exists(StringLiteral str | term.getRootTerm() = getParsedRegExp(str) and shouldPrint(str, _))
   }
 
 /**
@@ -167,19 +162,6 @@ class PrintAstNode extends TPrintAstNode {
    * Gets the location of this node in the source code.
    */
   Location getLocation() { none() }
-
-  /**
-   * Holds if this node is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 
   /**
    * Gets the value of the property of this node, where the name of the property
@@ -259,21 +241,6 @@ class ExprStmtNode extends ElementNode {
 }
 
 /**
- * A node representing a `KtInitializerAssignExpr`.
- */
-class KtInitializerNode extends ExprStmtNode {
-  KtInitializerNode() { element instanceof KtInitializerAssignExpr }
-
-  override PrintAstNode getChild(int childIndex) {
-    // Remove the RHS of the initializer, because otherwise
-    // it appears as both the initializer's child and the
-    // initialize of the related field, producing a DAG not
-    // a tree and consequently unreadable output.
-    result = super.getChild(childIndex) and childIndex = 0
-  }
-}
-
-/**
  * Holds if the given expression is part of an annotation.
  */
 private predicate partOfAnnotation(Expr e) {
@@ -308,47 +275,6 @@ final class AnnotationPartNode extends ExprStmtNode {
 }
 
 /**
- * A node representing a `StringLiteral`.
- * If it is used as a regular expression, then it has a single child, the root of the parsed regular expression.
- */
-final class StringLiteralNode extends ExprStmtNode {
-  StringLiteralNode() { element instanceof StringLiteral }
-
-  override PrintAstNode getChild(int childIndex) {
-    childIndex = 0 and
-    result.(RegExpTermNode).getTerm() = getParsedRegExp(element)
-  }
-}
-
-/**
- * A node representing a regular expression term.
- */
-class RegExpTermNode extends TRegExpTermNode, PrintAstNode {
-  RegExpTerm term;
-
-  RegExpTermNode() { this = TRegExpTermNode(term) }
-
-  /** Gets the `RegExpTerm` for this node. */
-  RegExpTerm getTerm() { result = term }
-
-  override PrintAstNode getChild(int childIndex) {
-    result.(RegExpTermNode).getTerm() = term.getChild(childIndex)
-  }
-
-  override string toString() {
-    result = "[" + strictconcat(term.getPrimaryQLClass(), " | ") + "] " + term.toString()
-  }
-
-  override Location getLocation() { result = term.getLocation() }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    term.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-}
-
-/**
  * A node representing a `LocalVariableDeclExpr`.
  */
 final class LocalVarDeclExprNode extends ExprStmtNode {
@@ -372,8 +298,7 @@ final class ClassInstanceExprNode extends ExprStmtNode {
     result = super.getChild(childIndex)
     or
     childIndex = -4 and
-    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass() and
-    not result.getElement() instanceof LocalClassOrInterface // Kotlin anonymous classes are extracted as local classes too.
+    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass()
   }
 }
 
@@ -534,17 +459,10 @@ final class ClassInterfaceNode extends ElementNode {
     or
     childIndex >= 0 and
     result.(ElementNode).getElement() =
-      rank[childIndex](Element e, string file, int line, int column, string childStr, int argCount |
-        e = this.getADeclaration() and
-        locationSortKeys(e, file, line, column) and
-        childStr = e.toString() and
-        (
-          if e instanceof Callable
-          then argCount = e.(Callable).getNumberOfParameters()
-          else argCount = 0
-        )
+      rank[childIndex](Element e, string file, int line, int column |
+        e = this.getADeclaration() and locationSortKeys(e, file, line, column)
       |
-        e order by file, line, column, childStr, argCount
+        e order by file, line, column
       )
   }
 }
@@ -747,7 +665,7 @@ final class GenericTypeNode extends PrintAstNode, TGenericTypeNode {
   override Location getLocation() { none() }
 
   override ElementNode getChild(int childIndex) {
-    result.getElement() = ty.getTypeParameter(childIndex)
+    result.getElement().(TypeVariable) = ty.getTypeParameter(childIndex)
   }
 
   /**
@@ -768,7 +686,7 @@ final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
   override string toString() { result = "(Generic Parameters)" }
 
   override ElementNode getChild(int childIndex) {
-    result.getElement() = c.getTypeParameter(childIndex)
+    result.getElement().(TypeVariable) = c.getTypeParameter(childIndex)
   }
 
   /**

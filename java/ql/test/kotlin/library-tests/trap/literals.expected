@@ -1,5 +1,0 @@
-| long_string.kt:14:31:14:1048605 | long_string.kt:14:31:14:1048605 | 1048575 | ABBBB...BBBBC | StringLiteral |
-| long_string.kt:15:31:15:1048606 | long_string.kt:15:31:15:1048606 | 1048576 | ABBBB...BBBCD | StringLiteral |
-| long_string.kt:16:31:16:1048607 | long_string.kt:16:31:16:1048607 | 1048576 | ABBBB...BBBCD | StringLiteral |
-| long_string.kt:17:31:17:1048608 | long_string.kt:17:31:17:1048608 | 1048576 | ABBBB...BBBCD | StringLiteral |
-| long_string.kt:18:31:18:2097181 | long_string.kt:18:31:18:2097181 | 1048576 | A""""..."""CD | StringLiteral |

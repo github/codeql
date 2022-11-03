@@ -3,20 +3,23 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import semmle.python.web.flask.General
 
-deprecated private Value theFlaskRequestObject() { result = Value::named("flask.request") }
+private Value theFlaskRequestObject() { result = Value::named("flask.request") }
 
 /** Holds if `attr` is an access of attribute `name` of the flask request object */
-deprecated private predicate flask_request_attr(AttrNode attr, string name) {
+private predicate flask_request_attr(AttrNode attr, string name) {
   attr.isLoad() and
   attr.getObject(name).pointsTo(theFlaskRequestObject())
 }
 
 /** Source of external data from a flask request */
-deprecated class FlaskRequestData extends HttpRequestTaintSource {
+class FlaskRequestData extends HttpRequestTaintSource {
   FlaskRequestData() {
     not this instanceof FlaskRequestArgs and
     exists(string name | flask_request_attr(this, name) |
-      name in ["path", "full_path", "base_url", "url"]
+      name = "path" or
+      name = "full_path" or
+      name = "base_url" or
+      name = "url"
     )
   }
 
@@ -26,7 +29,7 @@ deprecated class FlaskRequestData extends HttpRequestTaintSource {
 }
 
 /** Source of dictionary whose values are externally controlled */
-deprecated class FlaskRequestArgs extends HttpRequestTaintSource {
+class FlaskRequestArgs extends HttpRequestTaintSource {
   FlaskRequestArgs() {
     exists(string attr | flask_request_attr(this, attr) |
       attr in ["args", "form", "values", "files", "headers", "json"]
@@ -39,7 +42,7 @@ deprecated class FlaskRequestArgs extends HttpRequestTaintSource {
 }
 
 /** Source of dictionary whose values are externally controlled */
-deprecated class FlaskRequestJson extends HttpRequestTaintSource {
+class FlaskRequestJson extends HttpRequestTaintSource {
   FlaskRequestJson() { flask_request_attr(this, "json") }
 
   override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalJsonKind }
@@ -57,7 +60,7 @@ deprecated class FlaskRequestJson extends HttpRequestTaintSource {
  * def hello(name):
  * ```
  */
-deprecated class FlaskRoutedParameter extends HttpRequestTaintSource {
+class FlaskRoutedParameter extends HttpRequestTaintSource {
   FlaskRoutedParameter() {
     exists(string name, Function func, StrConst url_pattern |
       this.(ControlFlowNode).getNode() = func.getArgByName(name) and
@@ -72,7 +75,7 @@ deprecated class FlaskRoutedParameter extends HttpRequestTaintSource {
   override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalStringKind }
 }
 
-deprecated private string werkzeug_rule_re() {
+private string werkzeug_rule_re() {
   // since flask uses werkzeug internally, we are using its routing rules from
   // https://github.com/pallets/werkzeug/blob/4dc8d6ab840d4b78cbd5789cef91b01e3bde01d5/src/werkzeug/routing.py#L138-L151
   result =

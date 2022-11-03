@@ -9,7 +9,9 @@ module Vue {
   private class GlobalVueEntryPoint extends API::EntryPoint {
     GlobalVueEntryPoint() { this = "VueEntryPoint" }
 
-    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("Vue") }
+    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("Vue") }
+
+    override DataFlow::Node getARhs() { none() }
   }
 
   /**
@@ -20,7 +22,9 @@ module Vue {
   private class VueExportEntryPoint extends API::EntryPoint {
     VueExportEntryPoint() { this = "VueExportEntryPoint" }
 
-    override DataFlow::Node getASink() {
+    override DataFlow::SourceNode getAUse() { none() }
+
+    override DataFlow::Node getARhs() {
       result = any(SingleFileComponent c).getModule().getDefaultOrBulkExport()
     }
   }
@@ -31,15 +35,15 @@ module Vue {
   API::Node vueLibrary() {
     result = API::moduleImport("vue")
     or
-    result = any(GlobalVueEntryPoint e).getANode()
+    result = API::root().getASuccessor(any(GlobalVueEntryPoint e))
   }
 
   /**
    * Gets a reference to the 'Vue' object.
    */
-  DataFlow::SourceNode vue() { result = vueLibrary().asSource() }
+  DataFlow::SourceNode vue() { result = vueLibrary().getAnImmediateUse() }
 
-  /** Gets an API node referring to a component or `Vue`. */
+  /** An API node referring to a component or `Vue`. */
   private API::Node component() {
     result = vueLibrary()
     or
@@ -47,7 +51,7 @@ module Vue {
     or
     result = vueLibrary().getMember("component").getReturn()
     or
-    result = any(VueFileImportEntryPoint e).getANode()
+    result = API::root().getASuccessor(any(VueFileImportEntryPoint e))
   }
 
   /**
@@ -172,8 +176,8 @@ module Vue {
 
     /** Gets a component which is extended by this one. */
     Component getABaseComponent() {
-      result.getComponentRef().getAValueReachableFromSource() =
-        getOwnOptions().getMember(["extends", "mixins"]).asSink()
+      result.getComponentRef().getAUse() =
+        getOwnOptions().getMember(["extends", "mixins"]).getARhs()
     }
 
     /**
@@ -191,12 +195,12 @@ module Vue {
     }
 
     /**
-     * DEPRECATED. Use `getOwnOptions().getASink()`.
+     * DEPRECATED. Use `getOwnOptions().getARhs()`.
      *
      * Gets the options passed to the Vue object, such as the object literal `{...}` in `new Vue{{...})`
      * or the default export of a single-file component.
      */
-    deprecated DataFlow::Node getOwnOptionsObject() { result = getOwnOptions().asSink() }
+    deprecated DataFlow::Node getOwnOptionsObject() { result = getOwnOptions().getARhs() }
 
     /**
      * Gets the class implementing this Vue component, if any.
@@ -204,19 +208,19 @@ module Vue {
      * Specifically, this is a class annotated with `@Component` which flows to the options
      * object of this Vue component.
      */
-    ClassComponent getAsClassComponent() { result = getOwnOptions().getAValueReachingSink() }
+    ClassComponent getAsClassComponent() { result = getOwnOptions().getAValueReachingRhs() }
 
     /**
      * Gets the node for option `name` for this component, not including
      * those from extended objects and mixins.
      */
-    DataFlow::Node getOwnOption(string name) { result = getOwnOptions().getMember(name).asSink() }
+    DataFlow::Node getOwnOption(string name) { result = getOwnOptions().getMember(name).getARhs() }
 
     /**
      * Gets the node for option `name` for this component, including those from
      * extended objects and mixins.
      */
-    DataFlow::Node getOption(string name) { result = getOptions().getMember(name).asSink() }
+    DataFlow::Node getOption(string name) { result = getOptions().getMember(name).getARhs() }
 
     /**
      * Gets a source node flowing into the option `name` of this component, including those from
@@ -224,7 +228,7 @@ module Vue {
      */
     pragma[nomagic]
     DataFlow::SourceNode getOptionSource(string name) {
-      result = getOptions().getMember(name).getAValueReachingSink()
+      result = getOptions().getMember(name).getAValueReachingRhs()
     }
 
     /**
@@ -285,7 +289,7 @@ module Vue {
     DataFlow::FunctionNode getWatchHandler(string propName) {
       exists(API::Node propWatch |
         propWatch = getOptions().getMember("watch").getMember(propName) and
-        result = [propWatch, propWatch.getMember("handler")].getAValueReachingSink()
+        result = [propWatch, propWatch.getMember("handler")].getAValueReachingRhs()
       )
     }
 
@@ -318,16 +322,16 @@ module Vue {
      * Gets a node for a function that will be invoked with `this` bound to this component.
      */
     DataFlow::FunctionNode getABoundFunction() {
-      result = getOptions().getAMember+().getAValueReachingSink()
+      result = getOptions().getAMember+().getAValueReachingRhs()
       or
       result = getAsClassComponent().getAnInstanceMember()
     }
 
     /** Gets an API node referring to an instance of this component. */
-    API::Node getInstance() { result.asSource() = getABoundFunction().getReceiver() }
+    API::Node getInstance() { result.getAnImmediateUse() = getABoundFunction().getReceiver() }
 
     /** Gets a data flow node referring to an instance of this component. */
-    DataFlow::SourceNode getAnInstanceRef() { result = getInstance().asSource() }
+    DataFlow::SourceNode getAnInstanceRef() { result = getInstance().getAnImmediateUse() }
 
     pragma[noinline]
     private DataFlow::PropWrite getAPropertyValueWrite(string name) {
@@ -480,12 +484,14 @@ module Vue {
   private class VueFileImportEntryPoint extends API::EntryPoint {
     VueFileImportEntryPoint() { this = "VueFileImportEntryPoint" }
 
-    override DataFlow::SourceNode getASource() {
+    override DataFlow::SourceNode getAUse() {
       exists(Import imprt |
         imprt.getImportedPath().resolve() instanceof VueFile and
         result = imprt.getImportedModuleNode()
       )
     }
+
+    override DataFlow::Node getARhs() { none() }
   }
 
   /**
@@ -527,13 +533,13 @@ module Vue {
       // of the .vue file.
       exists(Import imprt |
         imprt.getImportedPath().resolve() = file and
-        result.asSource() = imprt.getImportedModuleNode()
+        result.getAnImmediateUse() = imprt.getImportedModuleNode()
       )
     }
 
     override API::Node getOwnOptions() {
       // Use the entry point generated by `VueExportEntryPoint`
-      result.asSink() = getModule().getDefaultOrBulkExport()
+      result.getARhs() = getModule().getDefaultOrBulkExport()
     }
 
     override string toString() { result = file.toString() }
@@ -677,7 +683,7 @@ module Vue {
     }
   }
 
-  /** Gets an API node referring to a `RouteConfig` being passed to `vue-router`. */
+  /** An API node referring to a `RouteConfig` being passed to `vue-router`. */
   private API::Node routeConfig() {
     result = API::moduleImport("vue-router").getParameter(0).getMember("routes").getAMember()
     or
@@ -689,7 +695,7 @@ module Vue {
     t.start() and
     (
       exists(API::Node router | router = API::moduleImport("vue-router") |
-        result = router.getInstance().getMember("currentRoute").asSource()
+        result = router.getInstance().getMember("currentRoute").getAnImmediateUse()
         or
         result =
           router
@@ -697,12 +703,17 @@ module Vue {
               .getMember(["beforeEach", "beforeResolve", "afterEach"])
               .getParameter(0)
               .getParameter([0, 1])
-              .asSource()
+              .getAnImmediateUse()
         or
-        result = router.getParameter(0).getMember("scrollBehavior").getParameter([0, 1]).asSource()
+        result =
+          router
+              .getParameter(0)
+              .getMember("scrollBehavior")
+              .getParameter([0, 1])
+              .getAnImmediateUse()
       )
       or
-      result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).asSource()
+      result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).getAnImmediateUse()
       or
       exists(Component c |
         result = c.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")

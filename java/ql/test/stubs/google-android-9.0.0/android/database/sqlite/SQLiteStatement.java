@@ -7,6 +7,7 @@ import android.os.ParcelFileDescriptor;
 
 public class SQLiteStatement extends SQLiteProgram
 {
+    protected SQLiteStatement() {}
     public ParcelFileDescriptor simpleQueryForBlobFileDescriptor(){ return null; }
     public String simpleQueryForString(){ return null; }
     public String toString(){ return null; }

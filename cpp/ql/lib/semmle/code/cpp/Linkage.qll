@@ -1,5 +1,5 @@
 /**
- * Provides the `LinkTarget` class representing linker invocations during the build process.
+ * Proivdes the `LinkTarget` class representing linker invocations during the build process.
  */
 
 import semmle.code.cpp.Class
@@ -41,15 +41,6 @@ class LinkTarget extends @link_target {
    * translation units which contributed to this link target.
    */
   Class getAClass() { link_parent(unresolveElement(result), this) }
-
-  /**
-   * Gets a global or namespace variable which was compiled into this
-   * link target, or had its declaration included by one of the translation
-   * units which contributed to this link target.
-   */
-  GlobalOrNamespaceVariable getAGlobalOrNamespaceVariable() {
-    link_parent(unresolveElement(result), this)
-  }
 }
 
 /**

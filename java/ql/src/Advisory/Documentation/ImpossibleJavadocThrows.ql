@@ -16,14 +16,21 @@ RefType getTaggedType(ThrowsTag tag) {
   exists(ImportType i | i.getFile() = tag.getFile() | i.getImportedType() = result)
 }
 
-// Uses ClassOrInterface as type for thrownType to also cover case where erroneously an interface
-// type is declared as thrown exception
-from ThrowsTag throwsTag, ClassOrInterface thrownType, Callable docMethod
+predicate canThrow(Callable callable, RefType exception) {
+  exists(string uncheckedException |
+    uncheckedException = "RuntimeException" or uncheckedException = "Error"
+  |
+    exception.getASupertype*().hasQualifiedName("java.lang", uncheckedException)
+  )
+  or
+  callable.getAnException().getType().getASubtype*() = exception
+}
+
+from ThrowsTag throwsTag, RefType thrownType, Callable docMethod
 where
   getTaggedType(throwsTag) = thrownType and
   docMethod.getDoc().getJavadoc().getAChild*() = throwsTag and
-  not thrownType instanceof UncheckedThrowableType and
-  not docMethod.getAnException().getType().getADescendant() = thrownType
+  not canThrow(docMethod, thrownType)
 select throwsTag,
   "Javadoc for " + docMethod + " claims to throw " + thrownType.getName() +
     " but this is impossible."

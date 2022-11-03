@@ -24,7 +24,7 @@ predicate incorrectUseOfRC2(Assignment e, string msg) {
   msg = "Key size should be at least 128 bits for RC2 encryption."
 }
 
-predicate incorrectUseOfDsa(ObjectCreation e, string msg) {
+predicate incorrectUseOfDSA(ObjectCreation e, string msg) {
   e.getTarget()
       .getDeclaringType()
       .hasQualifiedName("System.Security.Cryptography", "DSACryptoServiceProvider") and
@@ -32,7 +32,7 @@ predicate incorrectUseOfDsa(ObjectCreation e, string msg) {
   msg = "Key size should be at least 2048 bits for DSA encryption."
 }
 
-predicate incorrectUseOfRsa(ObjectCreation e, string msg) {
+predicate incorrectUseOfRSA(ObjectCreation e, string msg) {
   e.getTarget()
       .getDeclaringType()
       .hasQualifiedName("System.Security.Cryptography", "RSACryptoServiceProvider") and
@@ -43,6 +43,6 @@ predicate incorrectUseOfRsa(ObjectCreation e, string msg) {
 from Expr e, string msg
 where
   incorrectUseOfRC2(e, msg) or
-  incorrectUseOfDsa(e, msg) or
-  incorrectUseOfRsa(e, msg)
+  incorrectUseOfDSA(e, msg) or
+  incorrectUseOfRSA(e, msg)
 select e, msg

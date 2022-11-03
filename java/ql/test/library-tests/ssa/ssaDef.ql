@@ -9,4 +9,4 @@ where
     or
     not exists(ssa.toString()) and s = "error"
   )
-select v, ssa.getCfgNode(), s
+select v, ssa.getCFGNode(), s

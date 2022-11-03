@@ -1,1 +1,1 @@
-module.exports = CustomEntryPoint.foo; /* use=entryPoint("CustomEntryPoint") */
+module.exports = CustomEntryPoint.foo; /* use (member foo (CustomEntryPoint)) */
