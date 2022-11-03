@@ -21,22 +21,22 @@ class SwiftVisitor : private SwiftDispatcher {
   void extract(swift::Token& comment) { emitComment(comment); }
 
  private:
-  void visit(const swift::Decl* decl) override { declTranslator.translateAndEmit(decl); }
-  void visit(const swift::Stmt* stmt) override { stmtTranslator.translateAndEmit(stmt); }
-  void visit(const swift::StmtCondition* cond) override { stmtTranslator.translateAndEmit(*cond); }
-  void visit(const swift::StmtConditionElement* element) override {
-    stmtTranslator.translateAndEmit(*element);
+  void visit(const swift::Decl& decl) override { declTranslator.translateAndEmit(decl); }
+  void visit(const swift::Stmt& stmt) override { stmtTranslator.translateAndEmit(stmt); }
+  void visit(const swift::StmtCondition& cond) override { stmtTranslator.translateAndEmit(cond); }
+  void visit(const swift::StmtConditionElement& element) override {
+    stmtTranslator.translateAndEmit(element);
   }
 
-  void visit(const swift::CaseLabelItem* item) override { stmtTranslator.translateAndEmit(*item); }
-  void visit(const swift::Expr* expr) override { exprTranslator.translateAndEmit(expr); }
-  void visit(const swift::Pattern* pattern) override {
+  void visit(const swift::CaseLabelItem& item) override { stmtTranslator.translateAndEmit(item); }
+  void visit(const swift::Expr& expr) override { exprTranslator.translateAndEmit(expr); }
+  void visit(const swift::Pattern& pattern) override {
     patternTranslator.translateAndEmit(pattern);
   }
 
-  void visit(swift::TypeBase* type) override { typeTranslator.translateAndEmit(type); }
-  void visit(const swift::TypeRepr* typeRepr, swift::Type type) override {
-    typeTranslator.translateAndEmit(*typeRepr, type);
+  void visit(const swift::TypeBase& type) override { typeTranslator.translateAndEmit(type); }
+  void visit(const swift::TypeRepr& typeRepr, swift::Type type) override {
+    typeTranslator.translateAndEmit(typeRepr, type);
   }
 
   DeclTranslator declTranslator{*this};

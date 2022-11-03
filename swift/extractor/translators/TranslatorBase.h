@@ -87,8 +87,8 @@ class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
   // route the visit to translateXXX functions only if they take const references to swift
   // entities (see HasTranslate##CLASS##KIND above)
   template <typename E>
-  void translateAndEmit(const E* entity) {
-    swift::ASTVisitor<CrtpSubclass>::visit(const_cast<E*>(entity));
+  void translateAndEmit(const E& entity) {
+    swift::ASTVisitor<CrtpSubclass>::visit(const_cast<E*>(&entity));
   }
 
  private:
@@ -122,8 +122,8 @@ class TypeTranslatorBase : private swift::TypeVisitor<CrtpSubclass>,
   // swift does not provide const visitors. The following const_cast is safe, as we privately
   // route the visit to translateXXX functions only if they take const references to swift
   // entities (see HasTranslate##CLASS##KIND above)
-  void translateAndEmit(const swift::TypeBase* type) {
-    swift::TypeVisitor<CrtpSubclass>::visit(const_cast<swift::TypeBase*>(type));
+  void translateAndEmit(const swift::TypeBase& type) {
+    swift::TypeVisitor<CrtpSubclass>::visit(const_cast<swift::TypeBase*>(&type));
   }
 
  private:

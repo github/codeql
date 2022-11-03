@@ -105,7 +105,11 @@ class SwiftDispatcher {
       return *l;
     }
     waitingForNewLabel = e;
-    visit(e, std::forward<Args>(args)...);
+    if constexpr (std::is_pointer_v<E>) {
+      visit(*e, std::forward<Args>(args)...);
+    } else {
+      visit(e, std::forward<Args>(args)...);
+    }
     // TODO when everything is moved to structured C++ classes, this should be moved to createEntry
     if (auto l = store.get(e)) {
       if constexpr (IsLocatable<E>) {
@@ -331,15 +335,15 @@ class SwiftDispatcher {
   // TODO: for const correctness these should consistently be `const` (and maybe const references
   // as we don't expect `nullptr` here. However `swift::ASTVisitor` and `swift::TypeVisitor` do not
   // accept const pointers
-  virtual void visit(const swift::Decl* decl) = 0;
-  virtual void visit(const swift::Stmt* stmt) = 0;
-  virtual void visit(const swift::StmtCondition* cond) = 0;
-  virtual void visit(const swift::StmtConditionElement* cond) = 0;
-  virtual void visit(const swift::CaseLabelItem* item) = 0;
-  virtual void visit(const swift::Expr* expr) = 0;
-  virtual void visit(const swift::Pattern* pattern) = 0;
-  virtual void visit(const swift::TypeRepr* typeRepr, swift::Type type) = 0;
-  virtual void visit(swift::TypeBase* type) = 0;
+  virtual void visit(const swift::Decl& decl) = 0;
+  virtual void visit(const swift::Stmt& stmt) = 0;
+  virtual void visit(const swift::StmtCondition& cond) = 0;
+  virtual void visit(const swift::StmtConditionElement& cond) = 0;
+  virtual void visit(const swift::CaseLabelItem& item) = 0;
+  virtual void visit(const swift::Expr& expr) = 0;
+  virtual void visit(const swift::Pattern& pattern) = 0;
+  virtual void visit(const swift::TypeRepr& typeRepr, swift::Type type) = 0;
+  virtual void visit(const swift::TypeBase& type) = 0;
 
   void visit(const std::filesystem::path& file) {
     auto entry = createEntry(file, file.string());
