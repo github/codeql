@@ -177,7 +177,9 @@ private module Cached {
   newtype TContentSet = TSingletonContent(Content c)
 
   cached
-  newtype TContent = TFieldContent(FieldDecl f)
+  newtype TContent =
+    TFieldContent(FieldDecl f) or
+    TTupleContent(int index) { exists(any(TupleExpr tn).getElement(index)) }
 }
 
 /**
@@ -505,6 +507,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
   )
   or
+  exists(TupleExpr tuple, int pos |
+    node1.asExpr() = tuple.getElement(pos) and
+    node2.asExpr() = tuple and
+    c.isSingleton(any(Content::TupleContent ct | ct.getIndex() = pos))
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
@@ -516,6 +524,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = ref.getBase() and
     node2.asExpr() = ref and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+  or
+  exists(TupleElementExpr tuple |
+    node1.asExpr() = tuple.getSubExpr() and
+    node2.asExpr() = tuple and
+    c.isSingleton(any(Content::TupleContent ct | ct.getIndex() = tuple.getIndex()))
   )
 }
 

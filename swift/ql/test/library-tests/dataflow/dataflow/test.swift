@@ -278,19 +278,19 @@ func testTuples() {
 
     sink(arg: t1)
     sink(arg: t1.0)
-    sink(arg: t1.1) // $ MISSING: flow=277
+    sink(arg: t1.1) // $ flow=277
 
     t1.1 = 2
 
     sink(arg: t1)
     sink(arg: t1.0)
-    sink(arg: t1.1)
+    sink(arg: t1.1) // $ SPURIOUS: flow=277
 
     t1.0 = source()
 
     sink(arg: t1)
     sink(arg: t1.0) // $ MISSING: flow=289
-    sink(arg: t1.1)
+    sink(arg: t1.1) // $ SPURIOUS: flow=277
 }
 
 func testTuples2() {
@@ -299,12 +299,12 @@ func testTuples2() {
     let (a, b, c) = t1
 
     sink(arg: t1)
-    sink(arg: t1.x) // $ MISSING: flow=297
-    sink(arg: t1.y) // $ MISSING: flow=297
+    sink(arg: t1.x) // $ flow=297
+    sink(arg: t1.y) // $ flow=297
     sink(arg: t1.z)
     sink(arg: t2)
-    sink(arg: t2.x) // $ MISSING: flow=297
-    sink(arg: t2.y) // $ MISSING: flow=297
+    sink(arg: t2.x) // $ flow=297
+    sink(arg: t2.y) // $ flow=297
     sink(arg: t2.z)
     sink(arg: a) // $ MISSING: flow=297
     sink(arg: b) // $ MISSING: flow=297
