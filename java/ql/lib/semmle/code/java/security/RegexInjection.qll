@@ -3,7 +3,6 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.frameworks.Regex
-//private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.regex.RegexFlowModels
 
 /** A data flow sink for untrusted user input used to construct regular expressions. */
@@ -20,30 +19,6 @@ private class DefaultRegexInjectionSink extends RegexInjectionSink {
           "regex-use[]", "regex-use[f1]", "regex-use[f-1]", "regex-use[-1]", "regex-use[0]"
         ]) and
       sinkNode(this, kind)
-    )
-  }
-}
-
-/** A call to a function whose name suggests that it escapes regular expression meta-characters. */
-private class RegexSanitizationCall extends RegexInjectionSanitizer {
-  RegexSanitizationCall() {
-    // original
-    // exists(string calleeName, string sanitize, string regexp |
-    //   calleeName = this.asExpr().(Call).getCallee().getName() and
-    //   sanitize = "(?:escape|saniti[sz]e)" and
-    //   regexp = "regexp?"
-    // |
-    //   calleeName
-    //       .regexpMatch("(?i)(" + sanitize + ".*" + regexp + ".*)" + "|(" + regexp + ".*" + sanitize +
-    //           ".*)")
-    // )
-    // without regexp
-    exists(string calleeName, string sanitize |
-      calleeName = this.asExpr().(Call).getCallee().getName() and
-      sanitize = "(?:escape|saniti[sz]e)"
-    |
-      calleeName.regexpMatch("(?i)(.*" + sanitize + ".*)")
-      //calleeName.matches("handleEscapes")
     )
   }
 }

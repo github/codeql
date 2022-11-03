@@ -72,67 +72,6 @@ public class RegexInjectionTest extends HttpServlet {
     return str;
   }
 
-  public boolean pattern5(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
-    String input = request.getParameter("input");
-
-    // Safe: User input is sanitized before constructing the regex
-    return input.matches("^" + escapeSpecialRegexChars(pattern) + "=.*$");
-  }
-
-  public boolean pattern6(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
-    String input = request.getParameter("input");
-
-    escapeSpecialRegexChars(pattern);
-
-    // BAD: the pattern is not really sanitized
-    return input.matches("^" + pattern + "=.*$"); // $ hasRegexInjection
-  }
-
-  public boolean pattern7(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
-    String input = request.getParameter("input");
-
-    String escapedPattern = escapeSpecialRegexChars(pattern);
-
-    // Safe: User input is sanitized before constructing the regex
-    return input.matches("^" + escapedPattern + "=.*$");
-  }
-
-  public boolean pattern8(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
-    String input = request.getParameter("input");
-
-    // Safe: User input is sanitized before constructing the regex
-    return input.matches("^" + sanitizeSpecialRegexChars(pattern) + "=.*$");
-  }
-
-  public boolean pattern9(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
-    String input = request.getParameter("input");
-
-    // Safe: User input is sanitized before constructing the regex
-    return input.matches("^" + sanitiseSpecialRegexChars(pattern) + "=.*$");
-  }
-
-  Pattern SPECIAL_REGEX_CHARS = Pattern.compile("[{}()\\[\\]><-=!.+*?^$\\\\|]");
-
-  // test `escape...regex`
-  String escapeSpecialRegexChars(String str) {
-    return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
-  }
-
-  // test `sanitize...regex`
-  String sanitizeSpecialRegexChars(String str) {
-    return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
-  }
-
-  // test `sanitise...regex`
-  String sanitiseSpecialRegexChars(String str) {
-    return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
-  }
-
   public boolean apache1(javax.servlet.http.HttpServletRequest request) {
     String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
