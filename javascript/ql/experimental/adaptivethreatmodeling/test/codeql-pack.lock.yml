@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.2.1-2022-11-02-16h57m32s.quiet-oil-z9vdwpnn.da088b30a6b36d376aef6e800dc6b642c9d5263502e77207ffe11443096f91aa
 compiled: false
 lockVersion: 1.0.0
