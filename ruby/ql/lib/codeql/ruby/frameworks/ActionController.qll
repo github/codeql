@@ -53,7 +53,7 @@ class ActionControllerClass extends DataFlow::ClassNode {
   }
 
   /**
-   * Gets a `ActionControllerActionMethod` defined in this class.
+   * Gets an `ActionControllerActionMethod` defined in this class.
    */
   ActionControllerActionMethod getAnAction() { result = this.getAnInstanceMethod().asMethod() }
 
