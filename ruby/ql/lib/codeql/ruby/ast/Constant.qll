@@ -172,22 +172,22 @@ module ConstantValue {
   class ConstantNilValue extends ConstantValue, TNil { }
 
   /** Gets the integer constant `x`. */
-  ConstantValue getInt(int x) { result.getInt() = x }
+  ConstantValue fromInt(int x) { result.getInt() = x }
 
   /** Gets the float constant `x`. */
-  ConstantValue getFloat(float x) { result.getFloat() = x }
+  ConstantValue fromFloat(float x) { result.getFloat() = x }
 
   /** Gets the string constant `x`. */
-  ConstantValue getString(string x) { result.getString() = x }
+  ConstantValue fromString(string x) { result.getString() = x }
 
   /** Gets the symbol constant `x`. */
-  ConstantValue getSymbol(string x) { result.getSymbol() = x }
+  ConstantValue fromSymbol(string x) { result.getSymbol() = x }
 
   /** Gets the regexp constant `x`. */
-  ConstantValue getRegExp(string x) { result.getRegExp() = x }
+  ConstantValue fromRegExp(string x) { result.getRegExp() = x }
 
   /** Gets the string, symbol, or regexp constant `x`. */
-  ConstantValue getStringlikeValue(string x) { result.getStringlikeValue() = x }
+  ConstantValue fromStringlikeValue(string x) { result.getStringlikeValue() = x }
 }
 
 /** An access to a constant. */
