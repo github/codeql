@@ -17,6 +17,6 @@ runs:
         CHANNEL: ${{ inputs.channel }}
       run: |
         gh extension install github/gh-codeql
-        gh codeql set-channel $CHANNEL
+        gh codeql set-channel "$CHANNEL"
         gh codeql version
         gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
