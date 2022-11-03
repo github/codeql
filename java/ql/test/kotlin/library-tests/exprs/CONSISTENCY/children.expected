@@ -1,6 +1,0 @@
-| exprs.kt:47:16:47:25 | ... \| ... | OrBitwiseExpr | 1 | late | 1 |
-| exprs.kt:48:16:48:26 | ... & ... | AndBitwiseExpr | 1 | late | 1 |
-| exprs.kt:49:16:49:26 | ... ^ ... | XorBitwiseExpr | 1 | late | 1 |
-| exprs.kt:64:15:64:22 | ... \| ... | OrBitwiseExpr | 1 | late | 1 |
-| exprs.kt:65:15:65:23 | ... & ... | AndBitwiseExpr | 1 | late | 1 |
-| exprs.kt:66:15:66:23 | ... ^ ... | XorBitwiseExpr | 1 | late | 1 |

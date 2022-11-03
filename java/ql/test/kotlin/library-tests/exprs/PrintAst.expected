@@ -2109,14 +2109,17 @@ exprs.kt:
 #   47|         35: [LocalVariableDeclStmt] var ...;
 #   47|           1: [LocalVariableDeclExpr] by14
 #   47|             0: [OrBitwiseExpr] ... | ...
+#   47|               0: [VarAccess] byx
 #   47|               1: [VarAccess] byy
 #   48|         36: [LocalVariableDeclStmt] var ...;
 #   48|           1: [LocalVariableDeclExpr] by15
 #   48|             0: [AndBitwiseExpr] ... & ...
+#   48|               0: [VarAccess] byx
 #   48|               1: [VarAccess] byy
 #   49|         37: [LocalVariableDeclStmt] var ...;
 #   49|           1: [LocalVariableDeclExpr] by16
 #   49|             0: [XorBitwiseExpr] ... ^ ...
+#   49|               0: [VarAccess] byx
 #   49|               1: [VarAccess] byy
 #   51|         38: [LocalVariableDeclStmt] var ...;
 #   51|           1: [LocalVariableDeclExpr] s1
@@ -2196,14 +2199,17 @@ exprs.kt:
 #   64|         51: [LocalVariableDeclStmt] var ...;
 #   64|           1: [LocalVariableDeclExpr] s14
 #   64|             0: [OrBitwiseExpr] ... | ...
+#   64|               0: [VarAccess] sx
 #   64|               1: [VarAccess] sy
 #   65|         52: [LocalVariableDeclStmt] var ...;
 #   65|           1: [LocalVariableDeclExpr] s15
 #   65|             0: [AndBitwiseExpr] ... & ...
+#   65|               0: [VarAccess] sx
 #   65|               1: [VarAccess] sy
 #   66|         53: [LocalVariableDeclStmt] var ...;
 #   66|           1: [LocalVariableDeclExpr] s16
 #   66|             0: [XorBitwiseExpr] ... ^ ...
+#   66|               0: [VarAccess] sx
 #   66|               1: [VarAccess] sy
 #   68|         54: [LocalVariableDeclStmt] var ...;
 #   68|           1: [LocalVariableDeclExpr] l1

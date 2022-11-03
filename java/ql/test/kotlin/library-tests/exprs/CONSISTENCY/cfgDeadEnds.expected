@@ -1,8 +1,2 @@
-| exprs.kt:47:5:47:25 | var ...; | LocalVariableDeclStmt | unexpected dead end |
-| exprs.kt:48:5:48:26 | var ...; | LocalVariableDeclStmt | unexpected dead end |
-| exprs.kt:49:5:49:26 | var ...; | LocalVariableDeclStmt | unexpected dead end |
-| exprs.kt:64:5:64:22 | var ...; | LocalVariableDeclStmt | unexpected dead end |
-| exprs.kt:65:5:65:23 | var ...; | LocalVariableDeclStmt | unexpected dead end |
-| exprs.kt:66:5:66:23 | var ...; | LocalVariableDeclStmt | unexpected dead end |
 | exprs.kt:278:52:278:66 | <error expr> | ErrorExpr | unexpected dead end |
 | exprs.kt:278:52:278:66 | { ... } | BlockStmt | unexpected dead end |

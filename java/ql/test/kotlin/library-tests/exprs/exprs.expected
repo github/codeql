@@ -1057,12 +1057,15 @@
 | exprs.kt:46:16:46:26 | ... != ... | exprs.kt:4:1:142:1 | topLevelMethod | NEExpr |
 | exprs.kt:46:24:46:26 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:47:5:47:25 | by14 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
+| exprs.kt:47:16:47:18 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:47:16:47:25 | ... \| ... | exprs.kt:4:1:142:1 | topLevelMethod | OrBitwiseExpr |
 | exprs.kt:47:23:47:25 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:48:5:48:26 | by15 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
+| exprs.kt:48:16:48:18 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:48:16:48:26 | ... & ... | exprs.kt:4:1:142:1 | topLevelMethod | AndBitwiseExpr |
 | exprs.kt:48:24:48:26 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:49:5:49:26 | by16 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
+| exprs.kt:49:16:49:18 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:49:16:49:26 | ... ^ ... | exprs.kt:4:1:142:1 | topLevelMethod | XorBitwiseExpr |
 | exprs.kt:49:24:49:26 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:51:5:51:16 | s1 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
@@ -1128,12 +1131,15 @@
 | exprs.kt:63:15:63:23 | ... != ... | exprs.kt:4:1:142:1 | topLevelMethod | NEExpr |
 | exprs.kt:63:22:63:23 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:64:5:64:22 | s14 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
+| exprs.kt:64:15:64:16 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:64:15:64:22 | ... \| ... | exprs.kt:4:1:142:1 | topLevelMethod | OrBitwiseExpr |
 | exprs.kt:64:21:64:22 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:65:5:65:23 | s15 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
+| exprs.kt:65:15:65:16 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:65:15:65:23 | ... & ... | exprs.kt:4:1:142:1 | topLevelMethod | AndBitwiseExpr |
 | exprs.kt:65:22:65:23 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:66:5:66:23 | s16 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
+| exprs.kt:66:15:66:16 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:66:15:66:23 | ... ^ ... | exprs.kt:4:1:142:1 | topLevelMethod | XorBitwiseExpr |
 | exprs.kt:66:22:66:23 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:68:5:68:16 | l1 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
