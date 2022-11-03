@@ -1,6 +1,6 @@
 /**
  * @name Second order command injection
- * @description Using user controlled data as arguments to some commands, such as git clone,
+ * @description Using user-controlled data as arguments to some commands, such as git clone,
  *              can allow arbitrary commands to be executed.
  * @kind path-problem
  * @problem.severity error
