@@ -6,4 +6,4 @@ extractor: cpp
 library: true
 upgrades: upgrades
 dependencies:
-  codeql/ssa: 0.0.1
+  codeql/ssa: ${workspace}

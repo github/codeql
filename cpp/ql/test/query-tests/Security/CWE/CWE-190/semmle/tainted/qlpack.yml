@@ -2,7 +2,7 @@
 name: codeql/cpp-tests-cwe-190-tainted
 groups: [cpp, test]
 dependencies:
-  codeql/cpp-all: "*"
-  codeql/cpp-queries: "*"
+  codeql/cpp-all: ${workspace}
+  codeql/cpp-queries: ${workspace}
 extractor: cpp
 tests: .
