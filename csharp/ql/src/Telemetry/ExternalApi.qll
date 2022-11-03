@@ -28,7 +28,11 @@ class TestLibrary extends RefType {
  * An external API from either the C# Standard Library or a 3rd party library.
  */
 class ExternalApi extends DotNet::Callable {
-  ExternalApi() { this.isUnboundDeclaration() and this.fromLibrary() }
+  ExternalApi() {
+    this.isUnboundDeclaration() and
+    this.fromLibrary() and
+    this.(Modifiable).isEffectivelyPublic()
+  }
 
   /**
    * Gets the unbound type, name and parameter types of this API.
