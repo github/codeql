@@ -140,5 +140,6 @@ where
   byPassEndPoint = toOtherCase(endpointExample) and
   not Matcher::matches(regexp.getRoot(), byPassEndPoint)
 select arg,
-  "This route uses a case-sensitive path $@, but is guarding a case-insensitive path $@. A path such as '"
-    + byPassEndPoint + "' will bypass the middleware.", regexp, "pattern", endpoint, "here"
+  "This route uses a case-sensitive path $@, but is guarding a $@. A path such as '" +
+    byPassEndPoint + "' will bypass the middleware.", regexp, "pattern", endpoint,
+  "case-insensitive path"

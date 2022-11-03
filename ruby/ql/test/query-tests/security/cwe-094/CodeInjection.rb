@@ -82,5 +82,11 @@ class UsersController < ActionController::Base
     obj().send("prefix_" + code + "_suffix", "foo"); # GOOD
 
     obj().send("prefix_#{code}_suffix", "foo"); # GOOD
+
+    eval("prefix_" + code + "_suffix"); # BAD
+
+    eval("prefix_#{code}_suffix"); # BAD
+
+    eval(code); # BAD
   end
 end

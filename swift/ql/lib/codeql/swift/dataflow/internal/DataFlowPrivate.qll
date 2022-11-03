@@ -269,7 +269,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
-  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(c) }
+  override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
 
   override UnknownLocation getLocationImpl() { any() }
 
@@ -430,6 +430,8 @@ private module OutNodes {
   }
 
   class SummaryOutNode extends OutNode, SummaryNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+
     override DataFlowCall getCall(ReturnKind kind) {
       FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
     }
@@ -572,6 +574,14 @@ private module PostUpdateNodes {
 
     override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
   }
+
+  class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
+    SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, _) }
+
+    override Node getPreUpdateNode() {
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this, result)
+    }
+  }
 }
 
 private import PostUpdateNodes
@@ -592,15 +602,6 @@ int accessPathLimit() { result = 5 }
  * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) { none() }
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.

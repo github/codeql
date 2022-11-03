@@ -1,7 +1,7 @@
 name: codeql/java-tests
 groups: [java, test]
 dependencies:
-    codeql/java-all: "*"
-    codeql/java-queries: "*"
+    codeql/java-all: ${workspace}
+    codeql/java-queries: ${workspace}
 extractor: java
 tests: .

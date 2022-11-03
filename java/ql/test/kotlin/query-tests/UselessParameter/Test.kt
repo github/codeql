@@ -9,3 +9,13 @@ class B : A<B, Int> {
 }
 
 fun fn(a: Int = 10) {}
+
+class C {
+    companion object {}
+}
+
+object O {}
+
+fun C.fn() {}
+fun C.Companion.fn() {}
+fun O.fn() {}

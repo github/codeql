@@ -5,3 +5,4 @@ import codeql.swift.elements.expr.ArithmeticOperation
 import codeql.swift.elements.expr.LogicalOperation
 import codeql.swift.elements.decl.MethodDecl
 import codeql.swift.elements.decl.ClassOrStructDecl
+import codeql.swift.Unit

@@ -70,7 +70,7 @@ module CodeInjection {
     /** Gets a flow state for which this is a sink. */
     override DataFlow::FlowState getAFlowState() {
       if c.runsArbitraryCode()
-      then result = [FlowState::substring(), FlowState::full()] // If it runs immediately, then it's always vulnerable.
+      then result = [FlowState::substring(), FlowState::full()] // If it runs arbitrary code then it's always vulnerable.
       else result = FlowState::full() // If it "just" loads something, then it's only vulnerable if the attacker controls the entire string.
     }
   }

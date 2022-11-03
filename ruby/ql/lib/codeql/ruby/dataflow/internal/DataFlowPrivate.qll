@@ -76,19 +76,29 @@ module LocalFlow {
   private import codeql.ruby.dataflow.internal.SsaImpl
 
   /**
-   * Holds if `nodeFrom` is a last node referencing SSA definition `def`, which
+   * Holds if `nodeFrom` is a node for SSA definition `def`, which can reach `next`.
+   */
+  private predicate localFlowSsaInputFromDef(
+    SsaDefinitionNode nodeFrom, Ssa::Definition def, Ssa::Definition next
+  ) {
+    exists(BasicBlock bb, int i |
+      lastRefBeforeRedef(def, bb, i, next) and
+      def = nodeFrom.getDefinition() and
+      def.definesAt(_, bb, i)
+    )
+  }
+
+  /**
+   * Holds if `exprFrom` is a last read of SSA definition `def`, which
    * can reach `next`.
    */
-  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
-    exists(BasicBlock bb, int i | lastRefBeforeRedef(def, bb, i, next) |
-      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-      def.definesAt(_, bb, i)
-      or
-      exists(CfgNodes::ExprCfgNode e |
-        e = nodeFrom.asExpr() and
-        e = bb.getNode(i) and
-        e.getExpr() instanceof VariableReadAccess
-      )
+  predicate localFlowSsaInputFromExpr(
+    CfgNodes::ExprCfgNode exprFrom, Ssa::Definition def, Ssa::Definition next
+  ) {
+    exists(BasicBlock bb, int i |
+      lastRefBeforeRedef(def, bb, i, next) and
+      exprFrom = bb.getNode(i) and
+      exprFrom.getExpr() instanceof VariableReadAccess
     )
   }
 
@@ -139,9 +149,9 @@ module LocalFlow {
       // Flow from read to next read
       localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
       or
-      // Flow into phi node
+      // Flow into phi node from definition
       exists(Ssa::PhiNode phi |
-        localFlowSsaInput(nodeFrom, def, phi) and
+        localFlowSsaInputFromDef(nodeFrom, def, phi) and
         phi = nodeTo.(SsaDefinitionNode).getDefinition() and
         def = phi.getAnInput()
       )
@@ -308,6 +318,18 @@ private module Cached {
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo) and
     not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
     or
+    // Flow into phi node from read
+    exists(Ssa::Definition def, Ssa::PhiNode phi, CfgNodes::ExprCfgNode exprFrom |
+      LocalFlow::localFlowSsaInputFromExpr(exprFrom, def, phi) and
+      phi = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def = phi.getAnInput()
+    |
+      exprFrom = nodeFrom.asExpr() and
+      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+      or
+      exprFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()
+    )
+    or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
 
@@ -338,6 +360,14 @@ private module Cached {
     )
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
+    or
+    // Flow into phi node from read
+    exists(Ssa::Definition def, Ssa::PhiNode phi, CfgNodes::ExprCfgNode exprFrom |
+      LocalFlow::localFlowSsaInputFromExpr(exprFrom, def, phi) and
+      phi = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def = phi.getAnInput() and
+      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()]
+    )
   }
 
   private predicate entrySsaDefinition(SsaDefinitionNode n) {

@@ -25,6 +25,10 @@ class AstNode extends TAstNode {
   cached
   Location getLocation() { result = this.getFullLocation() } // overridden in some subclasses
 
+  /** Gets the file containing this AST node. */
+  cached
+  File getFile() { result = this.getFullLocation().getFile() }
+
   /** Gets the location that spans the entire AST node. */
   cached
   final Location getFullLocation() {

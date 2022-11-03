@@ -54,7 +54,7 @@ def main(opts):
         codeql_root = this_dir.parents[1]
         cmd = [
             "codeql", "test", "run",
-            f"--search-path={codeql_root}",
+            f"--additional-packs={codeql_root}",
             "--keep-databases",
             "--dataset=db/db-swift",
             f"--threads={opts.threads}",
