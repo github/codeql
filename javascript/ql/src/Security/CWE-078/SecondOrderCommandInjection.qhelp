@@ -5,7 +5,7 @@
 <overview>
 <p>
 Some shell commands, like <code>git ls-remote</code>, can execute 
-arbitrary commands if a user provides a malicious URL that can start with 
+arbitrary commands if a user provides a malicious URL that starts with 
 <code>--upload-pack</code>. This can be used to execute arbitrary code on
 the server.
 </p>
@@ -40,7 +40,7 @@ being passed to the shell command.
 <references>
 <li>Max Justicz: <a href="https://justi.cz/security/2021/04/20/cocoapods-rce.html">Hacking 3,000,000 apps at once through CocoaPods</a>.</li>
 <li>Git: <a href="https://git-scm.com/docs/git-ls-remote/2.22.0#Documentation/git-ls-remote.txt---upload-packltexecgt">Git - git-ls-remote Documentation</a>.</li>
-<li>OWASP:<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.</li>
 
 </references>
 </qhelp>
