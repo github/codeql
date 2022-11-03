@@ -17,7 +17,7 @@ void sink(void*);
 void pointer_without_allocation_2() {
   char *raw;
   argument_source(raw);
-  sink(raw); // $ ast MISSING: ir
+  sink(raw); // $ ast,ir
 }
 
 A* makeA() {

@@ -40,7 +40,7 @@ public:
     cc.insert(nullptr);
     ct.insert(new C());
     sink(&cc); // no flow
-    sink(&ct); // $ ast MISSING: ir
+    sink(&ct); // $ ast ir=41:15
   }
   void f1()
   {
