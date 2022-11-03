@@ -2,7 +2,6 @@
 
 import swift
 private import codeql.swift.dataflow.DataFlow
-private import codeql.swift.dataflow.internal.DataFlowPrivate
 
 /** A data flow sink for XML external entities (XXE) vulnerabilities. */
 abstract class XxeSink extends DataFlow::Node { }
