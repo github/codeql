@@ -109,7 +109,7 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
 codeql::TargetFile invocationTargetFile(codeql::SwiftExtractorConfiguration& configuration) {
   auto hasher = picosha2::hash256_one_by_one();
   for (auto& option : configuration.frontendOptions) {
-    hasher.process(std::begin(option), std::end(option));
+    hasher.process(option.c_str(), option.c_str() + option.size() + 1);
   }
   hasher.finish();
   auto target = "invocation-"s + get_hash_hex_string(hasher);
