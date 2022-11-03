@@ -14,7 +14,7 @@
  */
 
 import java
-import semmle.code.java.security.RegexInjectionQuery
+import semmle.code.java.security.regexp.RegexInjectionQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, RegexInjectionConfiguration c

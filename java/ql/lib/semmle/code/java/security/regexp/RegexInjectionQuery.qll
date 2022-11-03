@@ -3,7 +3,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.RegexInjection
+import semmle.code.java.security.regexp.RegexInjection
 
 /** A taint-tracking configuration for untrusted user input used to construct regular expressions. */
 class RegexInjectionConfiguration extends TaintTracking::Configuration {
