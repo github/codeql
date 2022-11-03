@@ -4,26 +4,28 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.EnumElementDecl
 import codeql.swift.elements.pattern.Pattern
 
-class EnumElementPatternBase extends Synth::TEnumElementPattern, Pattern {
-  override string getAPrimaryQlClass() { result = "EnumElementPattern" }
+module Generated {
+  class EnumElementPattern extends Synth::TEnumElementPattern, Pattern {
+    override string getAPrimaryQlClass() { result = "EnumElementPattern" }
 
-  EnumElementDecl getImmediateElement() {
-    result =
-      Synth::convertEnumElementDeclFromRaw(Synth::convertEnumElementPatternToRaw(this)
-            .(Raw::EnumElementPattern)
-            .getElement())
+    EnumElementDecl getImmediateElement() {
+      result =
+        Synth::convertEnumElementDeclFromRaw(Synth::convertEnumElementPatternToRaw(this)
+              .(Raw::EnumElementPattern)
+              .getElement())
+    }
+
+    final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
+
+    Pattern getImmediateSubPattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertEnumElementPatternToRaw(this)
+              .(Raw::EnumElementPattern)
+              .getSubPattern())
+    }
+
+    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
+
+    final predicate hasSubPattern() { exists(getSubPattern()) }
   }
-
-  final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
-
-  Pattern getImmediateSubPattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertEnumElementPatternToRaw(this)
-            .(Raw::EnumElementPattern)
-            .getSubPattern())
-  }
-
-  final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
-
-  final predicate hasSubPattern() { exists(getSubPattern()) }
 }

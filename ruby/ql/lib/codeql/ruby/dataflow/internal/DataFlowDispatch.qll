@@ -537,9 +537,14 @@ private DataFlow::LocalSourceNode trackModuleAccess(Module m, TypeTracker t) {
   )
 }
 
+/**
+ * We exclude steps into `self` parameters, and instead rely on the type of the
+ * enclosing module.
+ */
 pragma[nomagic]
 private DataFlow::LocalSourceNode trackModuleAccessRec(Module m, TypeTracker t, StepSummary summary) {
-  StepSummary::step(trackModuleAccess(m, t), result, summary)
+  StepSummary::step(trackModuleAccess(m, t), result, summary) and
+  not result instanceof SelfParameterNode
 }
 
 pragma[nomagic]
@@ -603,17 +608,22 @@ private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
   or
   exists(RelevantCall call, DataFlow::LocalSourceNode sourceNode |
     flowsToMethodCallReceiver(call, sourceNode, "new") and
-    exact = true and
     n.asExpr() = call
   |
     // `C.new`
-    sourceNode = trackModuleAccess(tp)
+    sourceNode = trackModuleAccess(tp) and
+    exact = true
     or
     // `self.new` inside a module
-    selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp)
+    selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp) and
+    exact = true
     or
     // `self.new` inside a singleton method
-    selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm), tp)
+    exists(MethodBase target |
+      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), target, tp) and
+      singletonMethod(target, _, _) and
+      exact = false
+    )
   )
   or
   // `self` reference in method or top-level (but not in module or singleton method,

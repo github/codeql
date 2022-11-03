@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
 
-class FileBase extends Synth::TFile, Element {
-  string getName() { result = Synth::convertFileToRaw(this).(Raw::File).getName() }
+module Generated {
+  class File extends Synth::TFile, Element {
+    string getName() { result = Synth::convertFileToRaw(this).(Raw::File).getName() }
+  }
 }

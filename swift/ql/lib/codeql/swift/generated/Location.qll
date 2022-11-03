@@ -4,20 +4,23 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
 import codeql.swift.elements.File
 
-class LocationBase extends Synth::TLocation, Element {
-  File getImmediateFile() {
-    result = Synth::convertFileFromRaw(Synth::convertLocationToRaw(this).(Raw::Location).getFile())
+module Generated {
+  class Location extends Synth::TLocation, Element {
+    File getImmediateFile() {
+      result =
+        Synth::convertFileFromRaw(Synth::convertLocationToRaw(this).(Raw::Location).getFile())
+    }
+
+    final File getFile() { result = getImmediateFile().resolve() }
+
+    int getStartLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getStartLine() }
+
+    int getStartColumn() {
+      result = Synth::convertLocationToRaw(this).(Raw::Location).getStartColumn()
+    }
+
+    int getEndLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndLine() }
+
+    int getEndColumn() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndColumn() }
   }
-
-  final File getFile() { result = getImmediateFile().resolve() }
-
-  int getStartLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getStartLine() }
-
-  int getStartColumn() {
-    result = Synth::convertLocationToRaw(this).(Raw::Location).getStartColumn()
-  }
-
-  int getEndLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndLine() }
-
-  int getEndColumn() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndColumn() }
 }

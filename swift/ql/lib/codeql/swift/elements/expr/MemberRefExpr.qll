@@ -1,5 +1,5 @@
 private import codeql.swift.generated.expr.MemberRefExpr
 
-class MemberRefExpr extends MemberRefExprBase {
+class MemberRefExpr extends Generated::MemberRefExpr {
   override string toString() { result = "." + this.getMember().toString() }
 }

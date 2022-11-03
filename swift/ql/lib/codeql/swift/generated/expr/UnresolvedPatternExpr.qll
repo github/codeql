@@ -5,15 +5,17 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedPatternExprBase extends Synth::TUnresolvedPatternExpr, Expr, UnresolvedElement {
-  override string getAPrimaryQlClass() { result = "UnresolvedPatternExpr" }
+module Generated {
+  class UnresolvedPatternExpr extends Synth::TUnresolvedPatternExpr, Expr, UnresolvedElement {
+    override string getAPrimaryQlClass() { result = "UnresolvedPatternExpr" }
 
-  Pattern getImmediateSubPattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertUnresolvedPatternExprToRaw(this)
-            .(Raw::UnresolvedPatternExpr)
-            .getSubPattern())
+    Pattern getImmediateSubPattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertUnresolvedPatternExprToRaw(this)
+              .(Raw::UnresolvedPatternExpr)
+              .getSubPattern())
+    }
+
+    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
   }
-
-  final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 }

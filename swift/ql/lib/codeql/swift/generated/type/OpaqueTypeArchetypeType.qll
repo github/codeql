@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.ArchetypeType
 
-class OpaqueTypeArchetypeTypeBase extends Synth::TOpaqueTypeArchetypeType, ArchetypeType {
-  override string getAPrimaryQlClass() { result = "OpaqueTypeArchetypeType" }
+module Generated {
+  class OpaqueTypeArchetypeType extends Synth::TOpaqueTypeArchetypeType, ArchetypeType {
+    override string getAPrimaryQlClass() { result = "OpaqueTypeArchetypeType" }
+  }
 }

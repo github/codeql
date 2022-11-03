@@ -3,15 +3,17 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class LazyInitializerExprBase extends Synth::TLazyInitializerExpr, Expr {
-  override string getAPrimaryQlClass() { result = "LazyInitializerExpr" }
+module Generated {
+  class LazyInitializerExpr extends Synth::TLazyInitializerExpr, Expr {
+    override string getAPrimaryQlClass() { result = "LazyInitializerExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertLazyInitializerExprToRaw(this)
-            .(Raw::LazyInitializerExpr)
-            .getSubExpr())
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertLazyInitializerExprToRaw(this)
+              .(Raw::LazyInitializerExpr)
+              .getSubExpr())
+    }
+
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

@@ -2,20 +2,22 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 
-class ElementBase extends Synth::TElement {
-  string toString() { none() } // overridden by subclasses
+module Generated {
+  class Element extends Synth::TElement {
+    string toString() { none() } // overridden by subclasses
 
-  string getAPrimaryQlClass() { none() } // overridden by subclasses
+    string getAPrimaryQlClass() { none() } // overridden by subclasses
 
-  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
+    final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
-  ElementBase getResolveStep() { none() } // overridden by subclasses
+    Element getResolveStep() { none() } // overridden by subclasses
 
-  final ElementBase resolve() {
-    not exists(getResolveStep()) and result = this
-    or
-    result = getResolveStep().resolve()
+    final Element resolve() {
+      not exists(getResolveStep()) and result = this
+      or
+      result = getResolveStep().resolve()
+    }
+
+    predicate isUnknown() { Synth::convertElementToRaw(this).isUnknown() }
   }
-
-  predicate isUnknown() { Synth::convertElementToRaw(this).isUnknown() }
 }

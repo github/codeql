@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ArrayToPointerExprBase extends Synth::TArrayToPointerExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "ArrayToPointerExpr" }
+module Generated {
+  class ArrayToPointerExpr extends Synth::TArrayToPointerExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "ArrayToPointerExpr" }
+  }
 }

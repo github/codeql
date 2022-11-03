@@ -22,8 +22,8 @@ Predicate signatures are defined much like predicates themselves, but they do no
 In detail, a predicate signature definition consists of:
 
 #. The keyword ``signature``.
-#. The keyword ``predicate`` (allows subsitution with a :ref:`predicate without result <predicates-without-result>`),
-   or the type of the result (allows subsitution with a :ref:`predicate with result <predicates-with-result>`).
+#. The keyword ``predicate`` (allows substitution with a :ref:`predicate without result <predicates-without-result>`),
+   or the type of the result (allows substitution with a :ref:`predicate with result <predicates-with-result>`).
 #. The name of the predicate signature. This is an `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_
    starting with a lowercase letter.
 #. The arguments to the predicate signature, if any, separated by commas.

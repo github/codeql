@@ -4,19 +4,21 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.Expr
 
-class ArrayExprBase extends Synth::TArrayExpr, CollectionExpr {
-  override string getAPrimaryQlClass() { result = "ArrayExpr" }
+module Generated {
+  class ArrayExpr extends Synth::TArrayExpr, CollectionExpr {
+    override string getAPrimaryQlClass() { result = "ArrayExpr" }
 
-  Expr getImmediateElement(int index) {
-    result =
-      Synth::convertExprFromRaw(Synth::convertArrayExprToRaw(this)
-            .(Raw::ArrayExpr)
-            .getElement(index))
+    Expr getImmediateElement(int index) {
+      result =
+        Synth::convertExprFromRaw(Synth::convertArrayExprToRaw(this)
+              .(Raw::ArrayExpr)
+              .getElement(index))
+    }
+
+    final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
+
+    final Expr getAnElement() { result = getElement(_) }
+
+    final int getNumberOfElements() { result = count(getAnElement()) }
   }
-
-  final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
-
-  final Expr getAnElement() { result = getElement(_) }
-
-  final int getNumberOfElements() { result = count(getAnElement()) }
 }

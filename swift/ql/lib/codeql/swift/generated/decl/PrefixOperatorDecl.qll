@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.OperatorDecl
 
-class PrefixOperatorDeclBase extends Synth::TPrefixOperatorDecl, OperatorDecl {
-  override string getAPrimaryQlClass() { result = "PrefixOperatorDecl" }
+module Generated {
+  class PrefixOperatorDecl extends Synth::TPrefixOperatorDecl, OperatorDecl {
+    override string getAPrimaryQlClass() { result = "PrefixOperatorDecl" }
+  }
 }

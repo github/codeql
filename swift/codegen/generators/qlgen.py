@@ -157,10 +157,10 @@ def get_types_used_by(cls: ql.Class) -> typing.Iterable[str]:
 
 
 def get_classes_used_by(cls: ql.Class) -> typing.List[str]:
-    return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
+    return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper() and t != cls.name))
 
 
-_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends \w+ \{[ \n]?\}", re.MULTILINE)
+_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends Generated::\w+ \{[ \n]?\}", re.MULTILINE)
 
 
 def _is_generated_stub(file: pathlib.Path) -> bool:
@@ -304,7 +304,10 @@ def generate(opts, renderer):
         total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, data.classes),
                                                 lambda p: p.is_single or p.is_predicate)
         renderer.render(ql.ClassTester(class_name=c.name,
-                                       properties=total_props), test_dir / f"{c.name}.ql")
+                                       properties=total_props,
+                                       # in case of collapsed hierarchies we want to see the actual QL class in results
+                                       show_ql_class="qltest_collapse_hierarchy" in c.pragmas),
+                        test_dir / f"{c.name}.ql")
         for p in partial_props:
             renderer.render(ql.PropertyTester(class_name=c.name,
                                               property=p), test_dir / f"{c.name}_{p.getter}.ql")

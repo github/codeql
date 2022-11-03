@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 
-class MissingMemberDeclBase extends Synth::TMissingMemberDecl, Decl {
-  override string getAPrimaryQlClass() { result = "MissingMemberDecl" }
+module Generated {
+  class MissingMemberDecl extends Synth::TMissingMemberDecl, Decl {
+    override string getAPrimaryQlClass() { result = "MissingMemberDecl" }
+  }
 }

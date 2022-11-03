@@ -6,15 +6,19 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class ExtensionDeclBase extends Synth::TExtensionDecl, GenericContext, IterableDeclContext, Decl {
-  override string getAPrimaryQlClass() { result = "ExtensionDecl" }
+module Generated {
+  class ExtensionDecl extends Synth::TExtensionDecl, GenericContext, IterableDeclContext, Decl {
+    override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 
-  NominalTypeDecl getImmediateExtendedTypeDecl() {
-    result =
-      Synth::convertNominalTypeDeclFromRaw(Synth::convertExtensionDeclToRaw(this)
-            .(Raw::ExtensionDecl)
-            .getExtendedTypeDecl())
+    NominalTypeDecl getImmediateExtendedTypeDecl() {
+      result =
+        Synth::convertNominalTypeDeclFromRaw(Synth::convertExtensionDeclToRaw(this)
+              .(Raw::ExtensionDecl)
+              .getExtendedTypeDecl())
+    }
+
+    final NominalTypeDecl getExtendedTypeDecl() {
+      result = getImmediateExtendedTypeDecl().resolve()
+    }
   }
-
-  final NominalTypeDecl getExtendedTypeDecl() { result = getImmediateExtendedTypeDecl().resolve() }
 }

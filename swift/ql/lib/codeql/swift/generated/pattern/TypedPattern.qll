@@ -4,26 +4,28 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.TypeRepr
 
-class TypedPatternBase extends Synth::TTypedPattern, Pattern {
-  override string getAPrimaryQlClass() { result = "TypedPattern" }
+module Generated {
+  class TypedPattern extends Synth::TTypedPattern, Pattern {
+    override string getAPrimaryQlClass() { result = "TypedPattern" }
 
-  Pattern getImmediateSubPattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertTypedPatternToRaw(this)
-            .(Raw::TypedPattern)
-            .getSubPattern())
+    Pattern getImmediateSubPattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertTypedPatternToRaw(this)
+              .(Raw::TypedPattern)
+              .getSubPattern())
+    }
+
+    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
+
+    TypeRepr getImmediateTypeRepr() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertTypedPatternToRaw(this)
+              .(Raw::TypedPattern)
+              .getTypeRepr())
+    }
+
+    final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
+
+    final predicate hasTypeRepr() { exists(getTypeRepr()) }
   }
-
-  final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
-
-  TypeRepr getImmediateTypeRepr() {
-    result =
-      Synth::convertTypeReprFromRaw(Synth::convertTypedPatternToRaw(this)
-            .(Raw::TypedPattern)
-            .getTypeRepr())
-  }
-
-  final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
-
-  final predicate hasTypeRepr() { exists(getTypeRepr()) }
 }

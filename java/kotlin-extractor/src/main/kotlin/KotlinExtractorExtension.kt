@@ -400,7 +400,7 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
 
     fun getTempWriter(): BufferedWriter {
         if (this::tempFile.isInitialized) {
-            logger.error("Temp writer reinitiailised for $realFile")
+            logger.error("Temp writer reinitialized for $realFile")
         }
         tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
         return getWriter(tempFile)
