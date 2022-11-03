@@ -11,13 +11,13 @@ class TypeRegexPattern extends Class {
 class PatternQuoteMethod extends Method {
   PatternQuoteMethod() {
     this.getDeclaringType() instanceof TypeRegexPattern and
-    this.hasName(["quote"])
+    this.hasName("quote")
   }
 }
 
 /** The `LITERAL` field of the `java.util.regex.Pattern` class. */
-class PatternLiteral extends Field {
-  PatternLiteral() {
+class PatternLiteralField extends Field {
+  PatternLiteralField() {
     this.getDeclaringType() instanceof TypeRegexPattern and
     this.hasName("LITERAL")
   }

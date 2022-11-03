@@ -46,8 +46,3 @@ class TypeApacheSystemUtils extends Class {
     this.hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "SystemUtils")
   }
 }
-
-/** The class `org.apache.commons.lang3.RegExUtils`. */
-class TypeApacheRegExUtils extends Class {
-  TypeApacheRegExUtils() { this.hasQualifiedName("org.apache.commons.lang3", "RegExUtils") }
-}
