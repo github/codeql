@@ -1,13 +1,13 @@
 #pragma once
 
-#include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/pattern/TrapClasses.h"
 
 namespace codeql {
 
-class PatternVisitor : public AstVisitorBase<PatternVisitor> {
+class PatternTranslator : public AstTranslatorBase<PatternTranslator> {
  public:
-  using AstVisitorBase<PatternVisitor>::AstVisitorBase;
+  using AstTranslatorBase<PatternTranslator>::AstTranslatorBase;
 
   codeql::NamedPattern translateNamedPattern(const swift::NamedPattern& pattern);
   codeql::TypedPattern translateTypedPattern(const swift::TypedPattern& pattern);

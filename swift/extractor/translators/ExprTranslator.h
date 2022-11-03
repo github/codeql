@@ -1,13 +1,13 @@
 #pragma once
 
-#include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/expr/TrapClasses.h"
 
 namespace codeql {
 
-class ExprVisitor : public AstVisitorBase<ExprVisitor> {
+class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
  public:
-  using AstVisitorBase<ExprVisitor>::AstVisitorBase;
+  using AstTranslatorBase<ExprTranslator>::AstTranslatorBase;
 
   codeql::IntegerLiteralExpr translateIntegerLiteralExpr(const swift::IntegerLiteralExpr& expr);
   codeql::FloatLiteralExpr translateFloatLiteralExpr(const swift::FloatLiteralExpr& expr);

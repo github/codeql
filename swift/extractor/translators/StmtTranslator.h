@@ -1,13 +1,13 @@
 #pragma once
 
-#include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/stmt/TrapClasses.h"
 
 namespace codeql {
 
-class StmtVisitor : public AstVisitorBase<StmtVisitor> {
+class StmtTranslator : public AstTranslatorBase<StmtTranslator> {
  public:
-  using AstVisitorBase<StmtVisitor>::AstVisitorBase;
+  using AstTranslatorBase<StmtTranslator>::AstTranslatorBase;
 
   codeql::StmtCondition translateStmtCondition(const swift::StmtCondition& cond);
   codeql::ConditionElement translateStmtConditionElement(

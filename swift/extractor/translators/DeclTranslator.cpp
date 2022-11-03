@@ -1,4 +1,4 @@
-#include "swift/extractor/visitors/DeclVisitor.h"
+#include "swift/extractor/translators/DeclTranslator.h"
 
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
@@ -22,7 +22,7 @@ std::string constructName(const swift::DeclName& declName) {
 }
 }  // namespace
 
-std::optional<codeql::ConcreteFuncDecl> DeclVisitor::translateFuncDecl(
+std::optional<codeql::ConcreteFuncDecl> DeclTranslator::translateFuncDecl(
     const swift::FuncDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillAbstractFunctionDecl(decl, *entry);
@@ -31,7 +31,7 @@ std::optional<codeql::ConcreteFuncDecl> DeclVisitor::translateFuncDecl(
   return std::nullopt;
 }
 
-std::optional<codeql::ConstructorDecl> DeclVisitor::translateConstructorDecl(
+std::optional<codeql::ConstructorDecl> DeclTranslator::translateConstructorDecl(
     const swift::ConstructorDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillAbstractFunctionDecl(decl, *entry);
@@ -40,7 +40,7 @@ std::optional<codeql::ConstructorDecl> DeclVisitor::translateConstructorDecl(
   return std::nullopt;
 }
 
-std::optional<codeql::DestructorDecl> DeclVisitor::translateDestructorDecl(
+std::optional<codeql::DestructorDecl> DeclTranslator::translateDestructorDecl(
     const swift::DestructorDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillAbstractFunctionDecl(decl, *entry);
@@ -49,21 +49,21 @@ std::optional<codeql::DestructorDecl> DeclVisitor::translateDestructorDecl(
   return std::nullopt;
 }
 
-codeql::PrefixOperatorDecl DeclVisitor::translatePrefixOperatorDecl(
+codeql::PrefixOperatorDecl DeclTranslator::translatePrefixOperatorDecl(
     const swift::PrefixOperatorDecl& decl) {
   auto entry = createEntry(decl);
   fillOperatorDecl(decl, entry);
   return entry;
 }
 
-codeql::PostfixOperatorDecl DeclVisitor::translatePostfixOperatorDecl(
+codeql::PostfixOperatorDecl DeclTranslator::translatePostfixOperatorDecl(
     const swift::PostfixOperatorDecl& decl) {
   auto entry = createEntry(decl);
   fillOperatorDecl(decl, entry);
   return entry;
 }
 
-codeql::InfixOperatorDecl DeclVisitor::translateInfixOperatorDecl(
+codeql::InfixOperatorDecl DeclTranslator::translateInfixOperatorDecl(
     const swift::InfixOperatorDecl& decl) {
   auto entry = createEntry(decl);
   entry.precedence_group = dispatcher_.fetchOptionalLabel(decl.getPrecedenceGroup());
@@ -71,13 +71,13 @@ codeql::InfixOperatorDecl DeclVisitor::translateInfixOperatorDecl(
   return entry;
 }
 
-codeql::PrecedenceGroupDecl DeclVisitor::translatePrecedenceGroupDecl(
+codeql::PrecedenceGroupDecl DeclTranslator::translatePrecedenceGroupDecl(
     const swift::PrecedenceGroupDecl& decl) {
   auto entry = createEntry(decl);
   return entry;
 }
 
-std::optional<codeql::ParamDecl> DeclVisitor::translateParamDecl(const swift::ParamDecl& decl) {
+std::optional<codeql::ParamDecl> DeclTranslator::translateParamDecl(const swift::ParamDecl& decl) {
   auto entry = createNamedEntry(decl);
   if (!entry) {
     return std::nullopt;
@@ -87,7 +87,7 @@ std::optional<codeql::ParamDecl> DeclVisitor::translateParamDecl(const swift::Pa
   return entry;
 }
 
-codeql::TopLevelCodeDecl DeclVisitor::translateTopLevelCodeDecl(
+codeql::TopLevelCodeDecl DeclTranslator::translateTopLevelCodeDecl(
     const swift::TopLevelCodeDecl& decl) {
   auto entry = createEntry(decl);
   assert(decl.getBody() && "Expect top level code to have body");
@@ -95,7 +95,7 @@ codeql::TopLevelCodeDecl DeclVisitor::translateTopLevelCodeDecl(
   return entry;
 }
 
-codeql::PatternBindingDecl DeclVisitor::translatePatternBindingDecl(
+codeql::PatternBindingDecl DeclTranslator::translatePatternBindingDecl(
     const swift::PatternBindingDecl& decl) {
   auto entry = createEntry(decl);
   for (unsigned i = 0; i < decl.getNumPatternEntries(); ++i) {
@@ -107,7 +107,8 @@ codeql::PatternBindingDecl DeclVisitor::translatePatternBindingDecl(
   return entry;
 }
 
-std::optional<codeql::ConcreteVarDecl> DeclVisitor::translateVarDecl(const swift::VarDecl& decl) {
+std::optional<codeql::ConcreteVarDecl> DeclTranslator::translateVarDecl(
+    const swift::VarDecl& decl) {
   std::optional<codeql::ConcreteVarDecl> entry;
   // We do not deduplicate variables from non-swift (PCM, clang modules) modules as the mangler
   // crashes sometimes
@@ -124,7 +125,8 @@ std::optional<codeql::ConcreteVarDecl> DeclVisitor::translateVarDecl(const swift
   return entry;
 }
 
-std::optional<codeql::StructDecl> DeclVisitor::translateStructDecl(const swift::StructDecl& decl) {
+std::optional<codeql::StructDecl> DeclTranslator::translateStructDecl(
+    const swift::StructDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillNominalTypeDecl(decl, *entry);
     return entry;
@@ -132,7 +134,7 @@ std::optional<codeql::StructDecl> DeclVisitor::translateStructDecl(const swift::
   return std::nullopt;
 }
 
-std::optional<codeql::ClassDecl> DeclVisitor::translateClassDecl(const swift::ClassDecl& decl) {
+std::optional<codeql::ClassDecl> DeclTranslator::translateClassDecl(const swift::ClassDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillNominalTypeDecl(decl, *entry);
     return entry;
@@ -140,7 +142,7 @@ std::optional<codeql::ClassDecl> DeclVisitor::translateClassDecl(const swift::Cl
   return std::nullopt;
 }
 
-std::optional<codeql::EnumDecl> DeclVisitor::translateEnumDecl(const swift::EnumDecl& decl) {
+std::optional<codeql::EnumDecl> DeclTranslator::translateEnumDecl(const swift::EnumDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillNominalTypeDecl(decl, *entry);
     return entry;
@@ -148,7 +150,7 @@ std::optional<codeql::EnumDecl> DeclVisitor::translateEnumDecl(const swift::Enum
   return std::nullopt;
 }
 
-std::optional<codeql::ProtocolDecl> DeclVisitor::translateProtocolDecl(
+std::optional<codeql::ProtocolDecl> DeclTranslator::translateProtocolDecl(
     const swift::ProtocolDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillNominalTypeDecl(decl, *entry);
@@ -157,13 +159,13 @@ std::optional<codeql::ProtocolDecl> DeclVisitor::translateProtocolDecl(
   return std::nullopt;
 }
 
-codeql::EnumCaseDecl DeclVisitor::translateEnumCaseDecl(const swift::EnumCaseDecl& decl) {
+codeql::EnumCaseDecl DeclTranslator::translateEnumCaseDecl(const swift::EnumCaseDecl& decl) {
   auto entry = createEntry(decl);
   entry.elements = dispatcher_.fetchRepeatedLabels(decl.getElements());
   return entry;
 }
 
-std::optional<codeql::EnumElementDecl> DeclVisitor::translateEnumElementDecl(
+std::optional<codeql::EnumElementDecl> DeclTranslator::translateEnumElementDecl(
     const swift::EnumElementDecl& decl) {
   auto entry = createNamedEntry(decl);
   if (!entry) {
@@ -177,7 +179,7 @@ std::optional<codeql::EnumElementDecl> DeclVisitor::translateEnumElementDecl(
   return entry;
 }
 
-codeql::GenericTypeParamDecl DeclVisitor::translateGenericTypeParamDecl(
+codeql::GenericTypeParamDecl DeclTranslator::translateGenericTypeParamDecl(
     const swift::GenericTypeParamDecl& decl) {
   // TODO: deduplicate
   auto entry = createEntry(decl);
@@ -185,7 +187,7 @@ codeql::GenericTypeParamDecl DeclVisitor::translateGenericTypeParamDecl(
   return entry;
 }
 
-std::optional<codeql::AssociatedTypeDecl> DeclVisitor::translateAssociatedTypeDecl(
+std::optional<codeql::AssociatedTypeDecl> DeclTranslator::translateAssociatedTypeDecl(
     const swift::AssociatedTypeDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillTypeDecl(decl, *entry);
@@ -194,7 +196,7 @@ std::optional<codeql::AssociatedTypeDecl> DeclVisitor::translateAssociatedTypeDe
   return std::nullopt;
 }
 
-std::optional<codeql::TypeAliasDecl> DeclVisitor::translateTypeAliasDecl(
+std::optional<codeql::TypeAliasDecl> DeclTranslator::translateTypeAliasDecl(
     const swift::TypeAliasDecl& decl) {
   if (auto entry = createNamedEntry(decl)) {
     fillTypeDecl(decl, *entry);
@@ -203,7 +205,7 @@ std::optional<codeql::TypeAliasDecl> DeclVisitor::translateTypeAliasDecl(
   return std::nullopt;
 }
 
-std::optional<codeql::AccessorDecl> DeclVisitor::translateAccessorDecl(
+std::optional<codeql::AccessorDecl> DeclTranslator::translateAccessorDecl(
     const swift::AccessorDecl& decl) {
   auto entry = createNamedEntry(decl);
   if (!entry) {
@@ -227,7 +229,7 @@ std::optional<codeql::AccessorDecl> DeclVisitor::translateAccessorDecl(
   return entry;
 }
 
-std::optional<codeql::SubscriptDecl> DeclVisitor::translateSubscriptDecl(
+std::optional<codeql::SubscriptDecl> DeclTranslator::translateSubscriptDecl(
     const swift::SubscriptDecl& decl) {
   auto entry = createNamedEntry(decl);
   if (!entry) {
@@ -241,7 +243,7 @@ std::optional<codeql::SubscriptDecl> DeclVisitor::translateSubscriptDecl(
   return entry;
 }
 
-codeql::ExtensionDecl DeclVisitor::translateExtensionDecl(const swift::ExtensionDecl& decl) {
+codeql::ExtensionDecl DeclTranslator::translateExtensionDecl(const swift::ExtensionDecl& decl) {
   auto entry = createEntry(decl);
   entry.extended_type_decl = dispatcher_.fetchLabel(decl.getExtendedNominal());
   fillGenericContext(decl, entry);
@@ -249,7 +251,7 @@ codeql::ExtensionDecl DeclVisitor::translateExtensionDecl(const swift::Extension
   return entry;
 }
 
-codeql::ImportDecl DeclVisitor::translateImportDecl(const swift::ImportDecl& decl) {
+codeql::ImportDecl DeclTranslator::translateImportDecl(const swift::ImportDecl& decl) {
   auto entry = createEntry(decl);
   entry.is_exported = decl.isExported();
   entry.imported_module = dispatcher_.fetchOptionalLabel(decl.getModule());
@@ -257,7 +259,8 @@ codeql::ImportDecl DeclVisitor::translateImportDecl(const swift::ImportDecl& dec
   return entry;
 }
 
-std::optional<codeql::ModuleDecl> DeclVisitor::translateModuleDecl(const swift::ModuleDecl& decl) {
+std::optional<codeql::ModuleDecl> DeclTranslator::translateModuleDecl(
+    const swift::ModuleDecl& decl) {
   auto entry = createNamedEntry(decl);
   if (!entry) {
     return std::nullopt;
@@ -279,7 +282,7 @@ std::optional<codeql::ModuleDecl> DeclVisitor::translateModuleDecl(const swift::
   return entry;
 }
 
-std::string DeclVisitor::mangledName(const swift::ValueDecl& decl) {
+std::string DeclTranslator::mangledName(const swift::ValueDecl& decl) {
   // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
   // TODO find a more unique string working also when different modules are compiled with the same
   // name
@@ -309,8 +312,8 @@ std::string DeclVisitor::mangledName(const swift::ValueDecl& decl) {
   return ret.str();
 }
 
-void DeclVisitor::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
-                                           codeql::AbstractFunctionDecl& entry) {
+void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
+                                              codeql::AbstractFunctionDecl& entry) {
   assert(decl.hasParameterList() && "Expect functions to have a parameter list");
   entry.name = !decl.hasName() ? "(unnamed function decl)" : constructName(decl.getName());
   entry.body = dispatcher_.fetchOptionalLabel(decl.getBody());
@@ -321,11 +324,12 @@ void DeclVisitor::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& de
   fillGenericContext(decl, entry);
 }
 
-void DeclVisitor::fillOperatorDecl(const swift::OperatorDecl& decl, codeql::OperatorDecl& entry) {
+void DeclTranslator::fillOperatorDecl(const swift::OperatorDecl& decl,
+                                      codeql::OperatorDecl& entry) {
   entry.name = decl.getName().str().str();
 }
 
-void DeclVisitor::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry) {
+void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry) {
   entry.name = decl.getNameStr().str();
   for (auto& typeLoc : decl.getInherited()) {
     if (auto type = typeLoc.getType()) {
@@ -335,12 +339,12 @@ void DeclVisitor::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& en
   fillValueDecl(decl, entry);
 }
 
-void DeclVisitor::fillIterableDeclContext(const swift::IterableDeclContext& decl,
-                                          codeql::IterableDeclContext& entry) {
+void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
+                                             codeql::IterableDeclContext& entry) {
   entry.members = dispatcher_.fetchRepeatedLabels(decl.getAllMembers());
 }
 
-void DeclVisitor::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry) {
+void DeclTranslator::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry) {
   entry.name = decl.getNameStr().str();
   entry.type = dispatcher_.fetchLabel(decl.getType());
   entry.parent_pattern = dispatcher_.fetchOptionalLabel(decl.getParentPattern());
@@ -352,33 +356,33 @@ void DeclVisitor::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry
   fillAbstractStorageDecl(decl, entry);
 }
 
-void DeclVisitor::fillNominalTypeDecl(const swift::NominalTypeDecl& decl,
-                                      codeql::NominalTypeDecl& entry) {
+void DeclTranslator::fillNominalTypeDecl(const swift::NominalTypeDecl& decl,
+                                         codeql::NominalTypeDecl& entry) {
   entry.type = dispatcher_.fetchLabel(decl.getDeclaredType());
   fillGenericContext(decl, entry);
   fillIterableDeclContext(decl, entry);
   fillTypeDecl(decl, entry);
 }
 
-void DeclVisitor::fillGenericContext(const swift::GenericContext& decl,
-                                     codeql::GenericContext& entry) {
+void DeclTranslator::fillGenericContext(const swift::GenericContext& decl,
+                                        codeql::GenericContext& entry) {
   if (auto params = decl.getGenericParams()) {
     entry.generic_type_params = dispatcher_.fetchRepeatedLabels(*params);
   }
 }
 
-void DeclVisitor::fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDecl& entry) {
+void DeclTranslator::fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDecl& entry) {
   assert(decl.getInterfaceType() && "Expect ValueDecl to have InterfaceType");
   entry.interface_type = dispatcher_.fetchLabel(decl.getInterfaceType());
 }
 
-void DeclVisitor::fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl,
-                                          codeql::AbstractStorageDecl& entry) {
+void DeclTranslator::fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl,
+                                             codeql::AbstractStorageDecl& entry) {
   entry.accessor_decls = dispatcher_.fetchRepeatedLabels(decl.getAllAccessors());
   fillValueDecl(decl, entry);
 }
 
-codeql::IfConfigDecl DeclVisitor::translateIfConfigDecl(const swift::IfConfigDecl& decl) {
+codeql::IfConfigDecl DeclTranslator::translateIfConfigDecl(const swift::IfConfigDecl& decl) {
   auto entry = createEntry(decl);
   if (auto activeClause = decl.getActiveClause()) {
     entry.active_elements = dispatcher_.fetchRepeatedLabels(activeClause->Elements);

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/type/TrapClasses.h"
 
 namespace codeql {
-class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
+class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
  public:
-  using TypeVisitorBase<TypeVisitor>::TypeVisitorBase;
+  using TypeTranslatorBase<TypeTranslator>::TypeTranslatorBase;
 
   codeql::TypeRepr translateTypeRepr(const swift::TypeRepr& typeRepr, swift::Type type);
 

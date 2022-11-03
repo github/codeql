@@ -8,13 +8,13 @@
 namespace codeql {
 
 namespace detail {
-class VisitorBase {
+class TranslatorBase {
  protected:
   SwiftDispatcher& dispatcher_;
 
  public:
   // SwiftDispatcher should outlive this instance
-  VisitorBase(SwiftDispatcher& dispatcher) : dispatcher_{dispatcher} {}
+  TranslatorBase(SwiftDispatcher& dispatcher) : dispatcher_{dispatcher} {}
 };
 
 // define by macro metaprogramming member checkers
@@ -79,9 +79,9 @@ DEFINE_TRANSLATE_CHECKER(TypeRepr, , )
 // unknown/TBD entities. Like `swift::ASTVisitor`, this uses CRTP (the Curiously Recurring Template
 // Pattern)
 template <typename CrtpSubclass>
-class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail::VisitorBase {
+class AstTranslatorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail::TranslatorBase {
  public:
-  using VisitorBase::VisitorBase;
+  using TranslatorBase::TranslatorBase;
 
   // TODO
   // swift does not provide const visitors, for the moment we const_cast and promise not to
@@ -112,9 +112,10 @@ class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail:
 // unknown/TBD types. Like `swift::TypeVisitor`, this uses CRTP (the Curiously Recurring Template
 // Pattern)
 template <typename CrtpSubclass>
-class TypeVisitorBase : public swift::TypeVisitor<CrtpSubclass>, protected detail::VisitorBase {
+class TypeTranslatorBase : public swift::TypeVisitor<CrtpSubclass>,
+                           protected detail::TranslatorBase {
  public:
-  using VisitorBase::VisitorBase;
+  using TranslatorBase::TranslatorBase;
 
   // TODO
   // swift does not provide const visitors, for the moment we const_cast and promise not to

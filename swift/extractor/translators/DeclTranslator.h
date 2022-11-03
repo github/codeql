@@ -3,7 +3,7 @@
 #include <swift/AST/Decl.h>
 #include <swift/AST/ASTMangler.h>
 
-#include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/decl/TrapClasses.h"
 
 namespace codeql {
@@ -11,10 +11,10 @@ namespace codeql {
 // `swift::Decl` visitor
 // TODO all `std::variant` here should really be `std::optional`, but we need those kinds of
 // "forward declarations" while our extraction is incomplete
-class DeclVisitor : public AstVisitorBase<DeclVisitor> {
+class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
  public:
-  using AstVisitorBase<DeclVisitor>::AstVisitorBase;
-  using AstVisitorBase<DeclVisitor>::visit;
+  using AstTranslatorBase<DeclTranslator>::AstTranslatorBase;
+  using AstTranslatorBase<DeclTranslator>::visit;
 
   std::optional<codeql::ConcreteFuncDecl> translateFuncDecl(const swift::FuncDecl& decl);
   std::optional<codeql::ConstructorDecl> translateConstructorDecl(

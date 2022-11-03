@@ -1,14 +1,14 @@
-#include "swift/extractor/visitors/StmtVisitor.h"
+#include "swift/extractor/translators/StmtTranslator.h"
 
 namespace codeql {
 
-codeql::StmtCondition StmtVisitor::translateStmtCondition(const swift::StmtCondition& cond) {
+codeql::StmtCondition StmtTranslator::translateStmtCondition(const swift::StmtCondition& cond) {
   auto entry = dispatcher_.createEntry(cond);
   entry.elements = dispatcher_.fetchRepeatedLabels(cond);
   return entry;
 }
 
-codeql::ConditionElement StmtVisitor::translateStmtConditionElement(
+codeql::ConditionElement StmtTranslator::translateStmtConditionElement(
     const swift::StmtConditionElement& element) {
   auto entry = dispatcher_.createEntry(element);
   if (auto boolean = element.getBooleanOrNull()) {
@@ -20,20 +20,21 @@ codeql::ConditionElement StmtVisitor::translateStmtConditionElement(
   return entry;
 }
 
-codeql::CaseLabelItem StmtVisitor::translateCaseLabelItem(const swift::CaseLabelItem& labelItem) {
+codeql::CaseLabelItem StmtTranslator::translateCaseLabelItem(
+    const swift::CaseLabelItem& labelItem) {
   auto entry = dispatcher_.createEntry(labelItem);
   entry.pattern = dispatcher_.fetchLabel(labelItem.getPattern());
   entry.guard = dispatcher_.fetchOptionalLabel(labelItem.getGuardExpr());
   return entry;
 }
 
-codeql::BraceStmt StmtVisitor::translateBraceStmt(const swift::BraceStmt& stmt) {
+codeql::BraceStmt StmtTranslator::translateBraceStmt(const swift::BraceStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   entry.elements = dispatcher_.fetchRepeatedLabels(stmt.getElements());
   return entry;
 }
 
-codeql::ReturnStmt StmtVisitor::translateReturnStmt(const swift::ReturnStmt& stmt) {
+codeql::ReturnStmt StmtTranslator::translateReturnStmt(const swift::ReturnStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   if (stmt.hasResult()) {
     entry.result = dispatcher_.fetchLabel(stmt.getResult());
@@ -41,7 +42,7 @@ codeql::ReturnStmt StmtVisitor::translateReturnStmt(const swift::ReturnStmt& stm
   return entry;
 }
 
-codeql::ForEachStmt StmtVisitor::translateForEachStmt(const swift::ForEachStmt& stmt) {
+codeql::ForEachStmt StmtTranslator::translateForEachStmt(const swift::ForEachStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher_.fetchLabel(stmt.getBody());
@@ -51,7 +52,7 @@ codeql::ForEachStmt StmtVisitor::translateForEachStmt(const swift::ForEachStmt& 
   return entry;
 }
 
-codeql::IfStmt StmtVisitor::translateIfStmt(const swift::IfStmt& stmt) {
+codeql::IfStmt StmtTranslator::translateIfStmt(const swift::IfStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   fillLabeledConditionalStmt(stmt, entry);
   entry.then = dispatcher_.fetchLabel(stmt.getThenStmt());
@@ -59,7 +60,7 @@ codeql::IfStmt StmtVisitor::translateIfStmt(const swift::IfStmt& stmt) {
   return entry;
 }
 
-codeql::BreakStmt StmtVisitor::translateBreakStmt(const swift::BreakStmt& stmt) {
+codeql::BreakStmt StmtTranslator::translateBreakStmt(const swift::BreakStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   entry.target = dispatcher_.fetchOptionalLabel(stmt.getTarget());
   if (auto targetName = stmt.getTargetName(); !targetName.empty()) {
@@ -68,7 +69,7 @@ codeql::BreakStmt StmtVisitor::translateBreakStmt(const swift::BreakStmt& stmt) 
   return entry;
 }
 
-codeql::ContinueStmt StmtVisitor::translateContinueStmt(const swift::ContinueStmt& stmt) {
+codeql::ContinueStmt StmtTranslator::translateContinueStmt(const swift::ContinueStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   entry.target = dispatcher_.fetchOptionalLabel(stmt.getTarget());
   if (auto targetName = stmt.getTargetName(); !targetName.empty()) {
@@ -77,14 +78,15 @@ codeql::ContinueStmt StmtVisitor::translateContinueStmt(const swift::ContinueStm
   return entry;
 }
 
-codeql::WhileStmt StmtVisitor::translateWhileStmt(const swift::WhileStmt& stmt) {
+codeql::WhileStmt StmtTranslator::translateWhileStmt(const swift::WhileStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   fillLabeledConditionalStmt(stmt, entry);
   entry.body = dispatcher_.fetchLabel(stmt.getBody());
   return entry;
 }
 
-codeql::RepeatWhileStmt StmtVisitor::translateRepeatWhileStmt(const swift::RepeatWhileStmt& stmt) {
+codeql::RepeatWhileStmt StmtTranslator::translateRepeatWhileStmt(
+    const swift::RepeatWhileStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher_.fetchLabel(stmt.getBody());
@@ -92,7 +94,7 @@ codeql::RepeatWhileStmt StmtVisitor::translateRepeatWhileStmt(const swift::Repea
   return entry;
 }
 
-codeql::DoCatchStmt StmtVisitor::translateDoCatchStmt(const swift::DoCatchStmt& stmt) {
+codeql::DoCatchStmt StmtTranslator::translateDoCatchStmt(const swift::DoCatchStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher_.fetchLabel(stmt.getBody());
@@ -100,7 +102,7 @@ codeql::DoCatchStmt StmtVisitor::translateDoCatchStmt(const swift::DoCatchStmt& 
   return entry;
 }
 
-codeql::CaseStmt StmtVisitor::translateCaseStmt(const swift::CaseStmt& stmt) {
+codeql::CaseStmt StmtTranslator::translateCaseStmt(const swift::CaseStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   entry.body = dispatcher_.fetchLabel(stmt.getBody());
   entry.labels = dispatcher_.fetchRepeatedLabels(stmt.getCaseLabelItems());
@@ -112,33 +114,33 @@ codeql::CaseStmt StmtVisitor::translateCaseStmt(const swift::CaseStmt& stmt) {
   return entry;
 }
 
-codeql::GuardStmt StmtVisitor::translateGuardStmt(const swift::GuardStmt& stmt) {
+codeql::GuardStmt StmtTranslator::translateGuardStmt(const swift::GuardStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   fillLabeledConditionalStmt(stmt, entry);
   entry.body = dispatcher_.fetchLabel(stmt.getBody());
   return entry;
 }
 
-codeql::ThrowStmt StmtVisitor::translateThrowStmt(const swift::ThrowStmt& stmt) {
+codeql::ThrowStmt StmtTranslator::translateThrowStmt(const swift::ThrowStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   entry.sub_expr = dispatcher_.fetchLabel(stmt.getSubExpr());
   return entry;
 }
 
-codeql::DeferStmt StmtVisitor::translateDeferStmt(const swift::DeferStmt& stmt) {
+codeql::DeferStmt StmtTranslator::translateDeferStmt(const swift::DeferStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   entry.body = dispatcher_.fetchLabel(stmt.getBodyAsWritten());
   return entry;
 }
 
-codeql::DoStmt StmtVisitor::translateDoStmt(const swift::DoStmt& stmt) {
+codeql::DoStmt StmtTranslator::translateDoStmt(const swift::DoStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher_.fetchLabel(stmt.getBody());
   return entry;
 }
 
-codeql::SwitchStmt StmtVisitor::translateSwitchStmt(const swift::SwitchStmt& stmt) {
+codeql::SwitchStmt StmtTranslator::translateSwitchStmt(const swift::SwitchStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.expr = dispatcher_.fetchLabel(stmt.getSubjectExpr());
@@ -146,27 +148,28 @@ codeql::SwitchStmt StmtVisitor::translateSwitchStmt(const swift::SwitchStmt& stm
   return entry;
 }
 
-codeql::FallthroughStmt StmtVisitor::translateFallthroughStmt(const swift::FallthroughStmt& stmt) {
+codeql::FallthroughStmt StmtTranslator::translateFallthroughStmt(
+    const swift::FallthroughStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   entry.fallthrough_source = dispatcher_.fetchLabel(stmt.getFallthroughSource());
   entry.fallthrough_dest = dispatcher_.fetchLabel(stmt.getFallthroughDest());
   return entry;
 }
 
-codeql::YieldStmt StmtVisitor::translateYieldStmt(const swift::YieldStmt& stmt) {
+codeql::YieldStmt StmtTranslator::translateYieldStmt(const swift::YieldStmt& stmt) {
   auto entry = dispatcher_.createEntry(stmt);
   entry.results = dispatcher_.fetchRepeatedLabels(stmt.getYields());
   return entry;
 }
 
-void StmtVisitor::fillLabeledStmt(const swift::LabeledStmt& stmt, codeql::LabeledStmt& entry) {
+void StmtTranslator::fillLabeledStmt(const swift::LabeledStmt& stmt, codeql::LabeledStmt& entry) {
   if (auto info = stmt.getLabelInfo()) {
     entry.label = info.Name.str().str();
   }
 }
 
-void StmtVisitor::fillLabeledConditionalStmt(const swift::LabeledConditionalStmt& stmt,
-                                             codeql::LabeledConditionalStmt& entry) {
+void StmtTranslator::fillLabeledConditionalStmt(const swift::LabeledConditionalStmt& stmt,
+                                                codeql::LabeledConditionalStmt& entry) {
   // getCondPointer not provided for const stmt by swift...
   entry.condition =
       dispatcher_.fetchLabel(const_cast<swift::LabeledConditionalStmt&>(stmt).getCondPointer());
