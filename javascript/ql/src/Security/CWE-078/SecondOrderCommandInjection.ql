@@ -1,7 +1,7 @@
 /**
  * @name Second order command injection
- * @description Some shell programs allow arbitrary command execution via their command line arguments.
- *              This is a second order command injection vulnerability.
+ * @description Using user controlled data as arguments to some commands, such as git clone,
+ *              can allow arbitrary commands to be executed.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.0
