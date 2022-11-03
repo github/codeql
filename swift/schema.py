@@ -47,6 +47,10 @@ class UnspecifiedElement(Locatable):
 class Comment(Locatable):
     text: string
 
+class Diagnostics(Locatable):
+    text: string
+    kind: int
+
 class DbFile(File):
     pass
 

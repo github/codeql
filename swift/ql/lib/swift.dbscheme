@@ -66,6 +66,7 @@ files(
   @argument
 | @ast_node
 | @comment
+| @diagnostics
 | @unspecified_element
 ;
 
@@ -123,6 +124,12 @@ db_files(
 
 db_locations(
   unique int id: @db_location
+);
+
+diagnostics(
+  unique int id: @diagnostics,
+  string text: string ref,
+  int kind: int ref
 );
 
 unknown_files(
