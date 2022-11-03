@@ -927,7 +927,7 @@ class ModuleNode instanceof Module {
    *
    * For example, the canonical enclosing module of `A::B` is `A`, and `A` itself has no canonical enclosing module.
    */
-  ModuleNode getCanonicalEnclosingModule() { result = super.getCanonicalEnclosingModule() }
+  ModuleNode getCanonicalEnclosingModule() { result = super.getParentModule() }
 
   /**
    * Gets a module named `name` declared inside this one (not aliased), provided
@@ -939,7 +939,7 @@ class ModuleNode instanceof Module {
    * module whose qualified name is not `A::B::C`, then it will not be found by
    * this predicate.
    */
-  ModuleNode getCanonicalNestedModule(string name) { result = super.getCanonicalNestedModule(name) }
+  ModuleNode getCanonicalNestedModule(string name) { result = super.getNestedModule(name) }
 }
 
 /**
@@ -1152,7 +1152,7 @@ class ConstRef extends LocalSourceNode {
    */
   predicate isPossiblyGlobal() {
     exists(Module mod |
-      not exists(mod.getCanonicalEnclosingModule()) and
+      not exists(mod.getParentModule()) and
       mod.getAnImmediateReference() = access
     )
     or
@@ -1237,7 +1237,7 @@ class ConstRef extends LocalSourceNode {
     name = this.getName()
     or
     exists(Module mod |
-      this.getExactTarget() = mod.getCanonicalNestedModule(name) and
+      this.getExactTarget() = mod.getNestedModule(name) and
       scope = MkExactLookup(mod)
     )
   }
