@@ -56,7 +56,7 @@ class Node extends TNode {
   Node getASuccessor() { localFlowStep(this, result) }
 
   /** Gets the constant value of this expression, if any. */
-  ConstantValue getConstantValue() { result = this.asExpr().getExpr().getConstantValue() }
+  ConstantValue getConstantValue() { result = this.asExpr().getConstantValue() }
 
   /**
    * Gets the callable corresponding to this block, lambda expression, or call to `proc` or `lambda`.
