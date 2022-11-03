@@ -1,12 +1,11 @@
 #include <fstream>
 #include <iomanip>
 #include <stdlib.h>
-#include <unordered_set>
 #include <vector>
-#include <string>
 #include <iostream>
 #include <regex>
 #include <unistd.h>
+#include <picosha2.h>
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
@@ -15,6 +14,8 @@
 #include "swift/extractor/TargetTrapFile.h"
 #include "swift/extractor/remapping/SwiftOutputRewrite.h"
 #include "swift/extractor/remapping/SwiftOpenInterception.h"
+#include "swift/extractor/invocation/CodeQLDiagnosticsConsumer.h"
+#include "swift/extractor/trap/TrapDomain.h"
 
 using namespace std::string_literals;
 
@@ -23,7 +24,13 @@ using namespace std::string_literals;
 // semantic analysis
 class Observer : public swift::FrontendObserver {
  public:
-  explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
+  explicit Observer(const codeql::SwiftExtractorConfiguration& config,
+                    codeql::CodeQLDiagnosticsConsumer& diagConsumer)
+      : config{config}, diagConsumer{diagConsumer} {}
+
+  void configuredCompiler(swift::CompilerInstance& instance) override {
+    instance.addDiagnosticConsumer(&diagConsumer);
+  }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(config, compiler);
@@ -31,6 +38,7 @@ class Observer : public swift::FrontendObserver {
 
  private:
   const codeql::SwiftExtractorConfiguration& config;
+  codeql::CodeQLDiagnosticsConsumer& diagConsumer;
 };
 
 static std::string getenv_or(const char* envvar, const std::string& def) {
@@ -96,6 +104,23 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
   execvp(args[0], args.data());
 }
 
+// Creates a target file that should store per-invocation info, e.g. compilation args,
+// compilations, diagnostics, etc.
+codeql::TargetFile invocationTargetFile(codeql::SwiftExtractorConfiguration& configuration) {
+  auto hasher = picosha2::hash256_one_by_one();
+  for (auto& option : configuration.frontendOptions) {
+    hasher.process(std::begin(option), std::end(option));
+  }
+  hasher.finish();
+  auto target = "invocation-"s + get_hash_hex_string(hasher);
+  auto maybeFile = codeql::createTargetTrapFile(configuration, target);
+  if (!maybeFile) {
+    std::cerr << "Cannot create invocation trap file: " << target << "\n";
+    abort();
+  }
+  return std::move(maybeFile.value());
+}
+
 int main(int argc, char** argv) {
   checkWhetherToRunUnderTool(argc, argv);
 
@@ -131,7 +156,10 @@ int main(int argc, char** argv) {
     args.push_back(arg.c_str());
   }
 
-  Observer observer(configuration);
+  auto invocationTrapFile = invocationTargetFile(configuration);
+  codeql::TrapDomain invocationDomain(invocationTrapFile);
+  codeql::CodeQLDiagnosticsConsumer diagConsumer(invocationDomain);
+  Observer observer(configuration, diagConsumer);
   int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
 
   codeql::finalizeRemapping(remapping);
