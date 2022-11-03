@@ -118,7 +118,7 @@ private class JsExportedSource extends RemoteFlowSource {
       adopter.getEnclosingDecl() instanceof JsExportedType
     |
       this.(DataFlow::ParameterNode).getParameter().getDeclaringFunction() = adopter and
-      adopter.getName() = base.getName()
+      pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
     )
     or
     exists(FieldDecl adopter, FieldDecl base |
