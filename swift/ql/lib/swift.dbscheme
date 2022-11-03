@@ -1901,7 +1901,7 @@ any_generic_type_parents(  //dir=type
 
 dependent_member_types(  //dir=type
   unique int id: @dependent_member_type,
-  int baseType: @type ref,
+  int base_type: @type ref,
   int associated_type_decl: @associated_type_decl ref
 );
 

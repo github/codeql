@@ -1,13 +1,6 @@
 #include "swift/extractor/visitors/TypeVisitor.h"
 
 namespace codeql {
-void TypeVisitor::visit(swift::TypeBase* type) {
-  TypeVisitorBase<TypeVisitor>::visit(type);
-  auto label = dispatcher_.fetchLabel(type);
-  auto canonical = type->getCanonicalType().getPointer();
-  auto canonicalLabel = (canonical == type) ? label : dispatcher_.fetchLabel(canonical);
-  dispatcher_.emit(TypesTrap{label, type->getString(), canonicalLabel});
-}
 
 codeql::TypeRepr TypeVisitor::translateTypeRepr(const swift::TypeRepr& typeRepr, swift::Type type) {
   auto entry = dispatcher_.createEntry(typeRepr);
@@ -15,117 +8,78 @@ codeql::TypeRepr TypeVisitor::translateTypeRepr(const swift::TypeRepr& typeRepr,
   return entry;
 }
 
-void TypeVisitor::visitProtocolType(swift::ProtocolType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(ProtocolTypesTrap{label});
-  emitAnyGenericType(type, label);
+codeql::ProtocolType TypeVisitor::translateProtocolType(const swift::ProtocolType& type) {
+  auto entry = createTypeEntry(type);
+  fillAnyGenericType(type, entry);
+  return entry;
 }
 
-void TypeVisitor::visitEnumType(swift::EnumType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(EnumTypesTrap{label});
-  emitAnyGenericType(type, label);
+codeql::EnumType TypeVisitor::translateEnumType(const swift::EnumType& type) {
+  auto entry = createTypeEntry(type);
+  fillAnyGenericType(type, entry);
+  return entry;
 }
 
-void TypeVisitor::visitStructType(swift::StructType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(StructTypesTrap{label});
-  emitAnyGenericType(type, label);
+codeql::StructType TypeVisitor::translateStructType(const swift::StructType& type) {
+  auto entry = createTypeEntry(type);
+  fillAnyGenericType(type, entry);
+  return entry;
 }
 
-void TypeVisitor::visitClassType(swift::ClassType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(ClassTypesTrap{label});
-  emitAnyGenericType(type, label);
+codeql::ClassType TypeVisitor::translateClassType(const swift::ClassType& type) {
+  auto entry = createTypeEntry(type);
+  fillAnyGenericType(type, entry);
+  return entry;
 }
 
-void TypeVisitor::visitFunctionType(swift::FunctionType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(FunctionTypesTrap{label});
-  emitAnyFunctionType(type, label);
+codeql::FunctionType TypeVisitor::translateFunctionType(const swift::FunctionType& type) {
+  auto entry = createTypeEntry(type);
+  fillAnyFunctionType(type, entry);
+  return entry;
 }
 
-void TypeVisitor::visitTupleType(swift::TupleType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(TupleTypesTrap{label});
-  auto i = 0u;
-  for (const auto& e : type->getElements()) {
-    auto typeTag = dispatcher_.fetchLabel(e.getType());
-    dispatcher_.emit(TupleTypeTypesTrap{label, i, typeTag});
+codeql::TupleType TypeVisitor::translateTupleType(const swift::TupleType& type) {
+  auto entry = createTypeEntry(type);
+  for (const auto& e : type.getElements()) {
+    entry.types.push_back(dispatcher_.fetchLabel(e.getType()));
     if (e.hasName()) {
-      dispatcher_.emit(TupleTypeNamesTrap{label, i, e.getName().str().str()});
+      entry.names.emplace_back(e.getName().str().str());
+    } else {
+      entry.names.emplace_back();
     }
-    ++i;
   }
+  return entry;
 }
 
-void TypeVisitor::visitBoundGenericEnumType(swift::BoundGenericEnumType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(BoundGenericEnumTypesTrap{label});
-  emitBoundGenericType(type, label);
+codeql::MetatypeType TypeVisitor::translateMetatypeType(const swift::MetatypeType& type) {
+  auto entry = createTypeEntry(type);
+  return entry;
 }
 
-void TypeVisitor::visitMetatypeType(swift::MetatypeType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(MetatypeTypesTrap{label});
+codeql::ExistentialMetatypeType TypeVisitor::translateExistentialMetatypeType(
+    const swift::ExistentialMetatypeType& type) {
+  auto entry = createTypeEntry(type);
+  return entry;
 }
 
-void TypeVisitor::visitExistentialMetatypeType(swift::ExistentialMetatypeType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(ExistentialMetatypeTypesTrap{label});
+codeql::TypeAliasType TypeVisitor::translateTypeAliasType(const swift::TypeAliasType& type) {
+  auto entry = createTypeEntry(type);
+  entry.decl = dispatcher_.fetchLabel(type.getDecl());
+  return entry;
 }
 
-void TypeVisitor::visitBoundGenericStructType(swift::BoundGenericStructType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(BoundGenericStructTypesTrap{label});
-  emitBoundGenericType(type, label);
+codeql::DependentMemberType TypeVisitor::translateDependentMemberType(
+    const swift::DependentMemberType& type) {
+  auto entry = createTypeEntry(type);
+  entry.base_type = dispatcher_.fetchLabel(type.getBase());
+  entry.associated_type_decl = dispatcher_.fetchLabel(type.getAssocType());
+  return entry;
 }
 
-void TypeVisitor::visitTypeAliasType(swift::TypeAliasType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  assert(type->getDecl() && "expect TypeAliasType to have Decl");
-  dispatcher_.emit(TypeAliasTypesTrap{label, dispatcher_.fetchLabel(type->getDecl())});
-}
-
-void TypeVisitor::visitBuiltinIntegerLiteralType(swift::BuiltinIntegerLiteralType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(BuiltinIntegerLiteralTypesTrap{label});
-}
-
-void TypeVisitor::visitBuiltinFloatType(swift::BuiltinFloatType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(BuiltinFloatTypesTrap{label});
-}
-
-void TypeVisitor::visitBuiltinIntegerType(swift::BuiltinIntegerType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  auto width = type->getWidth();
-  if (width.isFixedWidth()) {
-    dispatcher_.emit(BuiltinIntegerTypeWidthsTrap{label, width.getFixedWidth()});
-  }
-  dispatcher_.emit(BuiltinIntegerTypesTrap{label});
-}
-
-void TypeVisitor::visitBoundGenericClassType(swift::BoundGenericClassType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(BoundGenericClassTypesTrap{label});
-  emitBoundGenericType(type, label);
-}
-
-void TypeVisitor::visitDependentMemberType(swift::DependentMemberType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  assert(type->getBase() && "expect TypeAliasType to have Base");
-  assert(type->getAssocType() && "expect TypeAliasType to have AssocType");
-  auto baseLabel = dispatcher_.fetchLabel(type->getBase());
-  auto assocTypeDeclLabel = dispatcher_.fetchLabel(type->getAssocType());
-  dispatcher_.emit(DependentMemberTypesTrap{label, baseLabel, assocTypeDeclLabel});
-}
-
-void TypeVisitor::visitParenType(swift::ParenType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  assert(type->getUnderlyingType() && "expect ParenType to have UnderlyingType");
-  auto typeLabel = dispatcher_.fetchLabel(type->getUnderlyingType());
-  dispatcher_.emit(ParenTypesTrap{label, typeLabel});
+codeql::ParenType TypeVisitor::translateParenType(const swift::ParenType& type) {
+  auto entry = createTypeEntry(type);
+  entry.type = dispatcher_.fetchLabel(type.getUnderlyingType());
+  return entry;
 }
 
 codeql::OptionalType TypeVisitor::translateOptionalType(const swift::OptionalType& type) {
@@ -140,32 +94,31 @@ codeql::ArraySliceType TypeVisitor::translateArraySliceType(const swift::ArraySl
   return entry;
 }
 
-void TypeVisitor::visitDictionaryType(swift::DictionaryType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  auto keyLabel = dispatcher_.fetchLabel(type->getKeyType());
-  auto valueLabel = dispatcher_.fetchLabel(type->getValueType());
-  dispatcher_.emit(DictionaryTypesTrap{label, keyLabel, valueLabel});
+codeql::DictionaryType TypeVisitor::translateDictionaryType(const swift::DictionaryType& type) {
+  auto entry = createTypeEntry(type);
+  entry.key_type = dispatcher_.fetchLabel(type.getKeyType());
+  entry.value_type = dispatcher_.fetchLabel(type.getValueType());
+  return entry;
 }
 
-void TypeVisitor::visitGenericFunctionType(swift::GenericFunctionType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(GenericFunctionTypesTrap{label});
-  emitAnyFunctionType(type, label);
-  auto i = 0u;
-  for (auto p : type->getGenericParams()) {
-    dispatcher_.emit(GenericFunctionTypeGenericParamsTrap{label, i++, dispatcher_.fetchLabel(p)});
-  }
+codeql::GenericFunctionType TypeVisitor::translateGenericFunctionType(
+    const swift::GenericFunctionType& type) {
+  auto entry = createTypeEntry(type);
+  fillAnyFunctionType(type, entry);
+  entry.generic_params = dispatcher_.fetchRepeatedLabels(type.getGenericParams());
+  return entry;
 }
 
-void TypeVisitor::visitGenericTypeParamType(swift::GenericTypeParamType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(GenericTypeParamTypesTrap{label});
+codeql::GenericTypeParamType TypeVisitor::translateGenericTypeParamType(
+    const swift::GenericTypeParamType& type) {
+  auto entry = createTypeEntry(type);
+  return entry;
 }
 
-void TypeVisitor::visitLValueType(swift::LValueType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  assert(type->getObjectType() && "expect LValueType to have ObjectType");
-  dispatcher_.emit(LValueTypesTrap{label, dispatcher_.fetchLabel(type->getObjectType())});
+codeql::LValueType TypeVisitor::translateLValueType(const swift::LValueType& type) {
+  auto entry = createTypeEntry(type);
+  entry.object_type = dispatcher_.fetchLabel(type.getObjectType());
+  return entry;
 }
 
 codeql::PrimaryArchetypeType TypeVisitor::translatePrimaryArchetypeType(
@@ -175,63 +128,43 @@ codeql::PrimaryArchetypeType TypeVisitor::translatePrimaryArchetypeType(
   return entry;
 }
 
-void TypeVisitor::visitUnboundGenericType(swift::UnboundGenericType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(UnboundGenericTypesTrap{label});
-  emitAnyGenericType(type, label);
-}
-
-void TypeVisitor::visitBoundGenericType(swift::BoundGenericType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  emitBoundGenericType(type, label);
+codeql::UnboundGenericType TypeVisitor::translateUnboundGenericType(
+    const swift::UnboundGenericType& type) {
+  auto entry = createTypeEntry(type);
+  fillAnyGenericType(type, entry);
+  return entry;
 }
 
 void TypeVisitor::fillUnarySyntaxSugarType(const swift::UnarySyntaxSugarType& type,
                                            codeql::UnarySyntaxSugarType& entry) {
-  assert(type.getBaseType() && "expect UnarySyntaxSugarType to have BaseType");
   entry.base_type = dispatcher_.fetchLabel(type.getBaseType());
 }
 
-void TypeVisitor::emitAnyFunctionType(const swift::AnyFunctionType* type,
-                                      TrapLabel<AnyFunctionTypeTag> label) {
-  assert(type->getResult() && "expect FunctionType to have Result");
-  dispatcher_.emit(AnyFunctionTypesTrap{label, dispatcher_.fetchLabel(type->getResult())});
-  auto i = 0u;
-  for (const auto& p : type->getParams()) {
-    assert(p.getPlainType() && "expect Param to have PlainType");
-    dispatcher_.emit(
-        AnyFunctionTypeParamTypesTrap{label, i, dispatcher_.fetchLabel(p.getPlainType())});
+void TypeVisitor::fillAnyFunctionType(const swift::AnyFunctionType& type,
+                                      codeql::AnyFunctionType& entry) {
+  entry.result = dispatcher_.fetchLabel(type.getResult());
+  for (const auto& p : type.getParams()) {
+    entry.param_types.push_back(dispatcher_.fetchLabel(p.getPlainType()));
     if (p.hasLabel()) {
-      dispatcher_.emit(AnyFunctionTypeParamLabelsTrap{label, i, p.getLabel().str().str()});
+      entry.param_labels.emplace_back(p.getLabel().str().str());
+    } else {
+      entry.param_labels.emplace_back();
     }
-    ++i;
   }
-
-  if (type->isThrowing()) {
-    dispatcher_.emit(AnyFunctionTypeIsThrowingTrap{label});
-  }
-
-  if (type->isAsync()) {
-    dispatcher_.emit(AnyFunctionTypeIsAsyncTrap{label});
-  }
+  entry.is_throwing = type.isThrowing();
+  entry.is_async = type.isAsync();
 }
 
-void TypeVisitor::emitBoundGenericType(swift::BoundGenericType* type,
-                                       TrapLabel<BoundGenericTypeTag> label) {
-  auto i = 0u;
-  for (const auto& t : type->getGenericArgs()) {
-    dispatcher_.emit(BoundGenericTypeArgTypesTrap{label, i++, dispatcher_.fetchLabel(t)});
-  }
-  emitAnyGenericType(type, label);
+void TypeVisitor::fillBoundGenericType(const swift::BoundGenericType& type,
+                                       codeql::BoundGenericType& entry) {
+  entry.arg_types = dispatcher_.fetchRepeatedLabels(type.getGenericArgs());
+  fillAnyGenericType(type, entry);
 }
 
-void TypeVisitor::emitAnyGenericType(swift::AnyGenericType* type,
-                                     TrapLabel<AnyGenericTypeTag> label) {
-  assert(type->getDecl() && "expect AnyGenericType to have Decl");
-  dispatcher_.emit(AnyGenericTypesTrap{label, dispatcher_.fetchLabel(type->getDecl())});
-  if (auto parent = type->getParent()) {
-    dispatcher_.emit(AnyGenericTypeParentsTrap{label, dispatcher_.fetchLabel(parent)});
-  }
+void TypeVisitor::fillAnyGenericType(const swift::AnyGenericType& type,
+                                     codeql::AnyGenericType& entry) {
+  entry.declaration = dispatcher_.fetchLabel(type.getDecl());
+  entry.parent = dispatcher_.fetchOptionalLabel(type.getParent());
 }
 
 void TypeVisitor::fillType(const swift::TypeBase& type, codeql::Type& entry) {
@@ -270,30 +203,9 @@ codeql::InOutType TypeVisitor::translateInOutType(const swift::InOutType& type) 
   return entry;
 }
 
-codeql::UnmanagedStorageType TypeVisitor::translateUnmanagedStorageType(
-    const swift::UnmanagedStorageType& type) {
-  codeql::UnmanagedStorageType entry{dispatcher_.assignNewLabel(type)};
-  fillReferenceStorageType(type, entry);
-  return entry;
-}
-
-codeql::UnownedStorageType TypeVisitor::translateUnownedStorageType(
-    const swift::UnownedStorageType& type) {
-  codeql::UnownedStorageType entry{dispatcher_.assignNewLabel(type)};
-  fillReferenceStorageType(type, entry);
-  return entry;
-}
-
-codeql::WeakStorageType TypeVisitor::translateWeakStorageType(const swift::WeakStorageType& type) {
-  codeql::WeakStorageType entry{dispatcher_.assignNewLabel(type)};
-  fillReferenceStorageType(type, entry);
-  return entry;
-}
-
 void TypeVisitor::fillReferenceStorageType(const swift::ReferenceStorageType& type,
                                            codeql::ReferenceStorageType& entry) {
   entry.referent_type = dispatcher_.fetchLabel(type.getReferentType());
-  fillType(type, entry);
 }
 
 codeql::ProtocolCompositionType TypeVisitor::translateProtocolCompositionType(
@@ -303,11 +215,6 @@ codeql::ProtocolCompositionType TypeVisitor::translateProtocolCompositionType(
   return entry;
 }
 
-codeql::BuiltinIntegerLiteralType TypeVisitor::translateBuiltinIntegerLiteralType(
-    const swift::BuiltinIntegerLiteralType& type) {
-  return createTypeEntry(type);
-}
-
 codeql::BuiltinIntegerType TypeVisitor::translateBuiltinIntegerType(
     const swift::BuiltinIntegerType& type) {
   auto entry = createTypeEntry(type);
@@ -315,55 +222,6 @@ codeql::BuiltinIntegerType TypeVisitor::translateBuiltinIntegerType(
     entry.width = type.getFixedWidth();
   }
   return entry;
-}
-
-codeql::BuiltinBridgeObjectType TypeVisitor::translateBuiltinBridgeObjectType(
-    const swift::BuiltinBridgeObjectType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinDefaultActorStorageType TypeVisitor::translateBuiltinDefaultActorStorageType(
-    const swift::BuiltinDefaultActorStorageType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinExecutorType TypeVisitor::translateBuiltinExecutorType(
-    const swift::BuiltinExecutorType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinFloatType TypeVisitor::translateBuiltinFloatType(
-    const swift::BuiltinFloatType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinJobType TypeVisitor::translateBuiltinJobType(const swift::BuiltinJobType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinNativeObjectType TypeVisitor::translateBuiltinNativeObjectType(
-    const swift::BuiltinNativeObjectType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinRawPointerType TypeVisitor::translateBuiltinRawPointerType(
-    const swift::BuiltinRawPointerType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinRawUnsafeContinuationType TypeVisitor::translateBuiltinRawUnsafeContinuationType(
-    const swift::BuiltinRawUnsafeContinuationType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinUnsafeValueBufferType TypeVisitor::translateBuiltinUnsafeValueBufferType(
-    const swift::BuiltinUnsafeValueBufferType& type) {
-  return createTypeEntry(type);
-}
-
-codeql::BuiltinVectorType TypeVisitor::translateBuiltinVectorType(
-    const swift::BuiltinVectorType& type) {
-  return createTypeEntry(type);
 }
 
 codeql::OpenedArchetypeType TypeVisitor::translateOpenedArchetypeType(
