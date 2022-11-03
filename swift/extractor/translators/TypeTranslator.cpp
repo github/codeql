@@ -217,6 +217,14 @@ codeql::ProtocolCompositionType TypeTranslator::translateProtocolCompositionType
   return entry;
 }
 
+codeql::BuiltinIntegerLiteralType TypeTranslator::translateBuiltinIntegerLiteralType(
+    const swift::BuiltinIntegerLiteralType& type) {
+  // currently the translate dispatching mechanism does not go up more than one step in the
+  // hierarchy so we need to put this explicitly here, as BuiltinIntegerLiteralType derives from
+  // AnyBuiltinIntegerType which then derives from BuiltinType
+  return translateBuiltinType(type);
+}
+
 codeql::BuiltinIntegerType TypeTranslator::translateBuiltinIntegerType(
     const swift::BuiltinIntegerType& type) {
   auto entry = createTypeEntry(type);
