@@ -12,8 +12,12 @@ SDK="$CODEQL_EXTRACTOR_SWIFT_ROOT/qltest/$CODEQL_PLATFORM/sdk"
 for src in *.swift; do
   opts=(-sdk "$SDK" -c -primary-file "$src")
   opts+=($(sed -n '1 s=//codeql-extractor-options:==p' $src))
+  expected_status=$(sed -n 's=//codeql-extractor-expected-status:\s*==p' $src)
+  expected_status=${expected_status:-0}
   echo -e "calling extractor with flags: ${opts[@]}\n" >> $QLTEST_LOG
-  if ! "$EXTRACTOR" "${opts[@]}" >> $QLTEST_LOG 2>&1; then
+  "$EXTRACTOR" "${opts[@]}" >> $QLTEST_LOG 2>&1
+  actual_status=$?
+  if [[ $actual_status != $expected_status ]]; then
     FAILED=1
   fi
 done
