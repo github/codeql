@@ -18,11 +18,17 @@ jobs:
           fetch-depth: 0
       # calculate the merge-base with main, in a way that works both on PRs and pushes to main. 
       - name: Calculate merge-base
-        id: merge-base
+        if: ${{ github.event_name == 'pull_request' }}
         env:
           BASE_BRANCH: ${{ github.base_ref }}
         run: |
           MERGE_BASE=$(git merge-base --fork-point origin/$BASE_BRANCH)
+          echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
+      - name: Calculate merge-base - main
+        if: ${{ github.event_name != 'pull_request' }}
+        # using github.sha instead, since we're on main
+        run: |
+          MERGE_BASE=${{ github.sha }})
           echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
       - name: Cache CodeQL query compilation
         uses: actions/cache@v3
@@ -41,11 +47,11 @@ jobs:
         run: codeql query format */ql/{src,lib,test}/**/*.{qll,ql} --check-only
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
-        if : ${{ github.sha != steps.merge-base.outputs.merge-base }}
+        if : ${{ github.event_name == 'pull_request' }}
         shell: bash
         run: codeql query compile -j0 */ql/src --keep-going --warnings=error --check-only
       - name: compile queries - full
         # do full compile if running on main - this populates the cache
-        if : ${{ github.sha == steps.merge-base.outputs.merge-base }}
+        if : ${{ github.event_name != 'pull_request' }}
         shell: bash
         run: codeql query compile -j0 */ql/src --keep-going --warnings=error
