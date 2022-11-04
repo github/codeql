@@ -15,9 +15,7 @@ abstract class RegexInjectionSanitizer extends DataFlow::ExprNode { }
 private class DefaultRegexInjectionSink extends RegexInjectionSink {
   DefaultRegexInjectionSink() {
     exists(string kind |
-      kind.matches([
-          "regex-use[]", "regex-use[f1]", "regex-use[f-1]", "regex-use[-1]", "regex-use[0]"
-        ]) and
+      kind.matches(["regex-use[]", "regex-use[f1]", "regex-use[f-1]", "regex-use[-1]", "regex-use"]) and
       sinkNode(this, kind)
     )
   }

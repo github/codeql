@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
 import org.apache.commons.lang3.RegExUtils;
+import com.google.common.base.Splitter;
 
 public class RegexInjectionTest extends HttpServlet {
   public boolean string1(javax.servlet.http.HttpServletRequest request) {
@@ -138,10 +139,10 @@ public class RegexInjectionTest extends HttpServlet {
 
   // test `Pattern.quote` sanitizer
   public boolean quoteTest(javax.servlet.http.HttpServletRequest request) {
-    String regex = request.getParameter("regex");
+    String pattern = request.getParameter("pattern");
     String input = request.getParameter("input");
 
-    return input.matches(Pattern.quote(regex));  // Safe
+    return input.matches(Pattern.quote(pattern));  // Safe
   }
 
   // test `Pattern.LITERAL` sanitizer
@@ -150,5 +151,16 @@ public class RegexInjectionTest extends HttpServlet {
     String input = request.getParameter("input");
 
     return Pattern.compile(pattern, Pattern.LITERAL).matcher(input).matches();  // Safe
+  }
+
+  public Splitter guava1(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    return Splitter.onPattern(pattern);  // $ hasRegexInjection
+  }
+
+  public Splitter guava2(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    // sink is `Pattern.compile`
+    return  Splitter.on(Pattern.compile(pattern));  // $ hasRegexInjection
   }
 }
