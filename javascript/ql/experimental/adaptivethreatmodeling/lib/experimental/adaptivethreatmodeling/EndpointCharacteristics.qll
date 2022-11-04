@@ -21,12 +21,6 @@ abstract class EndpointCharacteristic extends string {
   bindingset[this]
   EndpointCharacteristic() { any() }
 
-  /** Indicators with confidence at or above this threshold are considered to be high-confidence indicators. */
-  float getHighConfidenceThreshold() { result = 0.8 }
-
-  /** Indicators with confidence at or above this threshold are considered to be medium-confidence indicators. */
-  float getMediumConfidenceThreshold() { result = 0.5 }
-
   /** The logic to identify which endpoints have this characteristic. */
   abstract predicate getEndpoints(DataFlow::Node n);
 
