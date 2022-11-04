@@ -17,5 +17,3 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`CodeQL library for Ruby <codeql-library-for-ruby>`: When you're analyzing a Ruby program, you can make use of the large collection of classes in the CodeQL library for Ruby.
 
 -  :doc:`Analyzing data flow in Ruby <analyzing-data-flow-in-ruby>`: You can use CodeQL to track the flow of data through a Ruby program to places where the data is used.
-
-.. include:: ../reusables/ruby-beta-note.rst
