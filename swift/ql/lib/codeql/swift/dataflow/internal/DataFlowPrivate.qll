@@ -179,7 +179,7 @@ private module Cached {
   cached
   newtype TContent =
     TFieldContent(FieldDecl f) or
-    TTupleContent(int index) { exists(any(TupleExpr tn).getElement(index)) }
+    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) }
 }
 
 /**
@@ -512,7 +512,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(TupleExpr tuple, int pos |
     node1.asExpr() = tuple.getElement(pos) and
     node2.asExpr() = tuple and
-    c.isSingleton(any(Content::TupleContent ct | ct.getIndex() = pos))
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = pos))
   )
   or
   // assignment to a tuple member `tuple.index = value`
@@ -520,7 +520,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     tuple = assign.getDest() and
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = tuple.getSubExpr() and
-    c.isSingleton(any(Content::TupleContent ct | ct.getIndex() = tuple.getIndex()))
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
@@ -541,7 +541,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(TupleElementExpr tuple |
     node1.asExpr() = tuple.getSubExpr() and
     node2.asExpr() = tuple and
-    c.isSingleton(any(Content::TupleContent ct | ct.getIndex() = tuple.getIndex()))
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
 }
 
