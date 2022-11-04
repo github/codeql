@@ -733,10 +733,10 @@ class ModuleNode instanceof Module {
   final ModuleNode getAnIncludedModule() { result = super.getAnIncludedModule() }
 
   /** Gets the super class or an included or prepended module. */
-  final ModuleNode getADirectAncestor() { result = super.getADirectAncestor() }
+  final ModuleNode getAnImmediateAncestor() { result = super.getAnImmediateAncestor() }
 
   /** Gets a direct subclass or module including or prepending this one. */
-  final ModuleNode getADirectDescendent() { result = super.getADirectDescendent() }
+  final ModuleNode getAnImmediateDescendent() { result = super.getAnImmediateDescendent() }
 
   /** Gets a module that is transitively subclassed, included, or prepended by this module. */
   final ModuleNode getAnAncestor() { result = super.getAnAncestor() }
@@ -1190,7 +1190,7 @@ class ConstRef extends LocalSourceNode {
    */
   pragma[nomagic]
   private TConstLookupScope getATargetScope() {
-    result = MkAncestorLookup(this.getAncestryTarget().getADirectDescendent*())
+    result = MkAncestorLookup(this.getAncestryTarget().getAnImmediateDescendent*())
     or
     access = any(ConstantAccess ac).getScopeExpr() and
     result = MkQualifiedLookup(access)

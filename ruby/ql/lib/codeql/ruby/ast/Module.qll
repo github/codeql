@@ -25,18 +25,18 @@ class Module extends TModule {
   Module getAnIncludedModule() { result = getAnIncludedModule(this) }
 
   /** Gets the super class or an included or prepended module. */
-  Module getADirectAncestor() {
+  Module getAnImmediateAncestor() {
     result = [this.getSuperClass(), this.getAPrependedModule(), this.getAnIncludedModule()]
   }
 
   /** Gets a direct subclass or module including or prepending this one. */
-  Module getADirectDescendent() { this = result.getADirectAncestor() }
+  Module getAnImmediateDescendent() { this = result.getAnImmediateAncestor() }
 
   /** Gets a module that is transitively subclassed, included, or prepended by this module. */
-  Module getAnAncestor() { result = this.getADirectAncestor*() }
+  Module getAnAncestor() { result = this.getAnImmediateAncestor*() }
 
   /** Gets a module that transitively subclasses, includes, or prepends this module. */
-  Module getADescendent() { result = this.getADirectDescendent*() }
+  Module getADescendent() { result = this.getAnImmediateDescendent*() }
 
   /** Holds if this module is a class. */
   pragma[noinline]
