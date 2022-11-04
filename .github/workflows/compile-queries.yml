@@ -1,0 +1,51 @@
+name: "Compile all queries using the latest stable CodeQL CLI"
+
+on:
+  push:
+    branches: [main] # makes sure the cache gets populated
+  pull_request:
+    branches:
+      - main
+      - "rc/*"
+
+jobs:
+  compile-queries:
+    runs-on: ubuntu-latest-xl
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      # calculate the merge-base with main, in a way that works both on PRs and pushes to main. 
+      - name: Calculate merge-base
+        id: merge-base
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: |
+          MERGE_BASE=$(git merge-base --fork-point origin/$BASE_BRANCH)
+          echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
+      - name: Cache CodeQL query compilation
+        uses: actions/cache@v3
+        with:
+          path: '*/ql/src/.cache'
+          # current GH HEAD first, merge-base second, generic third
+          key: codeql-stable-compile-${{ github.sha }}
+          restore-keys: |
+            codeql-stable-compile-${{ env.merge-base }}
+            codeql-stable-compile-
+      - name: Setup CodeQL
+        uses: ./.github/actions/fetch-codeql
+        with:
+          channel: 'release'
+      - name: check formatting
+        run: codeql query format */ql/{src,lib,test}/**/*.{qll,ql} --check-only
+      - name: compile queries - check-only
+        # run with --check-only if running in a PR (github.sha != main)
+        if : ${{ github.sha != steps.merge-base.outputs.merge-base }}
+        shell: bash
+        run: codeql query compile -j0 */ql/src --keep-going --warnings=error --check-only
+      - name: compile queries - full
+        # do full compile if running on main - this populates the cache
+        if : ${{ github.sha == steps.merge-base.outputs.merge-base }}
+        shell: bash
+        run: codeql query compile -j0 */ql/src --keep-going --warnings=error
