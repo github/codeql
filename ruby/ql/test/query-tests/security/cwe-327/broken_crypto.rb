@@ -78,30 +78,30 @@ OpenSSL::Cipher::RC4.new '40'
 # BAD: weak encryption algorithm
 OpenSSL::Cipher::RC4.new 'hmac-md5'
 
-Digest::MD5.hexdigest('foo') # BAD: weak hash algorithm
+Digest::MD5.hexdigest('foo') # OK: don't report hash algorithm even if it is weak
 Digest::SHA256.hexdigest('foo') # GOOD: strong hash algorithm
 
-Digest::MD5.base64digest('foo') # BAD: weak hash algorithm
+Digest::MD5.base64digest('foo') # OK: don't report hash algorithm even if it is weak
 
 md5 = Digest::MD5.new
-md5.digest 'message' # BAD: weak hash algorithm
+md5.digest 'message' # OK: don't report hash algorithm even if it is weak
 
-md5.update 'message1' # BAD: weak hash algorithm
+md5.update 'message1' # # OK: don't report hash algorithm even if it is weak
 md5 << 'message2' # << is an alias for update
 
 sha256 = Digest::SHA256.new
 sha256.digest 'message' # GOOD: strong hash algorithm
 
-Digest::MD5.bubblebabble 'message' # BAD: weak hash algorithm
+Digest::MD5.bubblebabble 'message' # OK: don't report hash algorithm even if it is weak
 
-filemd5 = Digest::MD5.file 'testfile'
+filemd5 = Digest::MD5.file 'testfile' # OK: don't report hash algorithm even if it is weak
 filemd5.hexdigest
 
-Digest("MD5").hexdigest('foo') # BAD: weak hash algorithm
+Digest("MD5").hexdigest('foo') # OK: don't report hash algorithm even if it is weak
 
 sha1 = OpenSSL::Digest.new('SHA1')
-sha1.digest 'message' # BAD: weak hash algorithm
+sha1.digest 'message' # OK: don't report hash algorithm even if it is weak
 sha1 << 'message' # << is an alias for update
 
-OpenSSL::Digest.digest('SHA1', "abc") # BAD: weak hash algorithm
+OpenSSL::Digest.digest('SHA1', "abc") # OK: don't report hash algorithm even if it is weak
 OpenSSL::Digest.digest('SHA3-512', "abc") # GOOD: strong hash algorithm
