@@ -1,7 +1,5 @@
 #include "swift/extractor/invocation/CodeQLDiagnosticsConsumer.h"
-#include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/trap/generated/TrapEntries.h"
-#include "swift/extractor/trap/generated/TrapClasses.h"
 
 #include <swift/AST/DiagnosticEngine.h>
 #include <swift/Basic/SourceManager.h>
@@ -27,43 +25,6 @@ static int diagnosticsKind(const swift::DiagnosticInfo& diagInfo) {
   return 0;
 }
 
-static std::filesystem::path getFilePath(std::string_view path) {
-  // TODO: this needs more testing
-  // TODO: check canonicalization of names on a case insensitive filesystems
-  // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
-  std::error_code ec;
-  auto ret = std::filesystem::canonical(path, ec);
-  if (ec) {
-    std::cerr << "Cannot get real path: " << std::quoted(path) << ": " << ec.message() << "\n";
-    return {};
-  }
-  return ret;
-}
-
-static void attachLocation(TrapDomain& trap,
-                           swift::SourceManager& sourceManager,
-                           const swift::DiagnosticInfo& diagInfo,
-                           DiagnosticsTrap& locatable) {
-  auto loc = diagInfo.Loc;
-  if (!loc.isValid()) {
-    return;
-  }
-  auto filepath = getFilePath(sourceManager.getDisplayNameForLoc(loc));
-  DbFile file({});
-  file.id = trap.createLabel<DbFileTag>();
-  file.name = filepath;
-  trap.emit(file);
-
-  DbLocation location({});
-  location.id = trap.createLabel<DbLocationTag>();
-  location.file = file.id;
-  std::tie(location.start_line, location.start_column) =
-      sourceManager.getLineAndColumnInBuffer(loc);
-  std::tie(location.end_line, location.end_column) = sourceManager.getLineAndColumnInBuffer(loc);
-  trap.emit(location);
-  trap.emit(LocatableLocationsTrap{locatable.id, location.id});
-}
-
 void CodeQLDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceManager,
                                                  const swift::DiagnosticInfo& diagInfo) {
   auto message = getDiagMessage(sourceManager, diagInfo);
@@ -72,7 +33,7 @@ void CodeQLDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceMan
   diag.kind = diagnosticsKind(diagInfo);
   diag.text = message;
   trap.emit(diag);
-  attachLocation(trap, sourceManager, diagInfo, diag);
+  locationExtractor.attachLocation(sourceManager, diagInfo.Loc, diagInfo.Loc, diag.id);
 }
 
 std::string CodeQLDiagnosticsConsumer::getDiagMessage(swift::SourceManager& sourceManager,

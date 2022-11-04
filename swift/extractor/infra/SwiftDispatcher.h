@@ -11,6 +11,7 @@
 #include "swift/extractor/infra/SwiftTagTraits.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/infra/file/PathHash.h"
+#include "swift/extractor/infra/SwiftLocationExtractor.h"
 
 namespace codeql {
 
@@ -29,8 +30,7 @@ class SwiftDispatcher {
                                const swift::Expr*,
                                const swift::Pattern*,
                                const swift::TypeRepr*,
-                               const swift::TypeBase*,
-                               std::filesystem::path>;
+                               const swift::TypeBase*>;
 
   template <typename E>
   static constexpr bool IsStorable = std::is_constructible_v<Store::Handle, const E&>;
@@ -48,10 +48,11 @@ class SwiftDispatcher {
       : sourceManager{sourceManager},
         trap{trap},
         currentModule{currentModule},
-        currentPrimarySourceFile{currentPrimarySourceFile} {
+        currentPrimarySourceFile{currentPrimarySourceFile},
+        locationExtractor(trap) {
     if (currentPrimarySourceFile) {
       // we make sure the file is in the trap output even if the source is empty
-      fetchLabel(getFilePath(currentPrimarySourceFile->getFilename()));
+      locationExtractor.emitFile(currentPrimarySourceFile->getFilename());
     }
   }
 
@@ -325,20 +326,7 @@ class SwiftDispatcher {
   void attachLocation(swift::SourceLoc start,
                       swift::SourceLoc end,
                       TrapLabel<LocatableTag> locatableLabel) {
-    if (!start.isValid() || !end.isValid()) {
-      // invalid locations seem to come from entities synthesized by the compiler
-      return;
-    }
-    auto file = getFilePath(sourceManager.getDisplayNameForLoc(start));
-    DbLocation entry{{}};
-    entry.file = fetchLabel(file);
-    std::tie(entry.start_line, entry.start_column) = sourceManager.getLineAndColumnInBuffer(start);
-    std::tie(entry.end_line, entry.end_column) = sourceManager.getLineAndColumnInBuffer(end);
-    entry.id = trap.createLabel<DbLocationTag>('{', entry.file, "}:", entry.start_line, ':',
-                                               entry.start_column, ':', entry.end_line, ':',
-                                               entry.end_column);
-    emit(entry);
-    emit(LocatableLocationsTrap{locatableLabel, entry.id});
+    locationExtractor.attachLocation(sourceManager, start, end, locatableLabel);
   }
 
   template <typename Tag, typename... Ts>
@@ -391,12 +379,6 @@ class SwiftDispatcher {
   virtual void visit(const swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(const swift::TypeBase* type) = 0;
 
-  void visit(const std::filesystem::path& file) {
-    auto entry = createEntry(file, file.string());
-    entry.name = file.string();
-    emit(entry);
-  }
-
   const swift::SourceManager& sourceManager;
   TrapDomain& trap;
   Store store;
@@ -404,6 +386,7 @@ class SwiftDispatcher {
   swift::ModuleDecl& currentModule;
   swift::SourceFile* currentPrimarySourceFile;
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
+  SwiftLocationExtractor locationExtractor;
 };
 
 }  // namespace codeql
