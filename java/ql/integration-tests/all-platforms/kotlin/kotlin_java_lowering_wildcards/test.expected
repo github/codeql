@@ -8,6 +8,16 @@
 | JavaDefns | takesComparable | invar | Comparable<CharSequence> |
 | JavaDefns | takesNestedComparable | innerContravar | Comparable<Comparable<? super CharSequence>> |
 | JavaDefns | takesNestedComparable | outerContravar | Comparable<? super Comparable<CharSequence>> |
+| JavaDefns2 | JavaDefns2 | p0 | Comparable<CharSequence> |
+| JavaDefns2 | JavaDefns2 | p1 | Comparable<? super CharSequence> |
+| JavaDefns2 | returnsInvariant | return | Comparable<CharSequence> |
+| JavaDefns2 | returnsWildcard | return | Comparable<? super CharSequence> |
+| JavaDefns2 | takesArrayOfComparable | p0 | Comparable<CharSequence>[] |
+| JavaDefns2 | takesArrayOfComparable | p1 | Comparable<? super CharSequence>[] |
+| JavaDefns2 | takesComparable | p0 | Comparable<CharSequence> |
+| JavaDefns2 | takesComparable | p1 | Comparable<? super CharSequence> |
+| JavaDefns2 | takesNestedComparable | p0 | Comparable<Comparable<? super CharSequence>> |
+| JavaDefns2 | takesNestedComparable | p1 | Comparable<? super Comparable<CharSequence>> |
 | KotlinDefns | returnsContravar | return | Comparable<CharSequence> |
 | KotlinDefns | returnsContravarForced | return | Comparable<? super CharSequence> |
 | KotlinDefns | returnsCovar | return | List<CharSequence> |
