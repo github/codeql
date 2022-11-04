@@ -243,12 +243,6 @@ codeql::TypeExpr ExprTranslator::translateTypeExpr(const swift::TypeExpr& expr) 
   return entry;
 }
 
-codeql::ParenExpr ExprTranslator::translateParenExpr(const swift::ParenExpr& expr) {
-  auto entry = createExprEntry(expr);
-  fillIdentityExpr(expr, entry);
-  return entry;
-}
-
 codeql::InOutExpr ExprTranslator::translateInOutExpr(const swift::InOutExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
@@ -460,12 +454,6 @@ codeql::UnresolvedMemberExpr ExprTranslator::translateUnresolvedMemberExpr(
 codeql::SequenceExpr ExprTranslator::translateSequenceExpr(const swift::SequenceExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.elements = dispatcher.fetchRepeatedLabels(expr.getElements());
-  return entry;
-}
-
-codeql::DotSelfExpr ExprTranslator::translateDotSelfExpr(const swift::DotSelfExpr& expr) {
-  auto entry = createExprEntry(expr);
-  fillIdentityExpr(expr, entry);
   return entry;
 }
 
