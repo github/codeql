@@ -28,7 +28,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         # using github.sha instead, since we're directly on a branch, and not in a PR
         run: |
-          MERGE_BASE=${{ github.sha }})
+          MERGE_BASE=${{ github.sha }}
           echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
       - name: Cache CodeQL query compilation
         uses: actions/cache@v3
