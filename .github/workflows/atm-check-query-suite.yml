@@ -1,4 +1,4 @@
-name: ATM Check Queries
+name: "ATM - Check query suite"
 
 env:
   QUERY_PACK: javascript/ql/experimental/adaptivethreatmodeling/src
@@ -7,12 +7,12 @@ env:
 on:
   pull_request:
     paths:
-      - ".github/workflows/atm-check-queries-run.yml"
+      - ".github/workflows/atm-check-query-suite.yml"
       - "javascript/ql/experimental/adaptivethreatmodeling/**"
   workflow_dispatch:
 
 jobs:
-  atm-check-queries:
+  atm-check-query-suite:
     runs-on: ubuntu-latest
 
     steps:
