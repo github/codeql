@@ -2235,6 +2235,9 @@ open class KotlinFileExtractor(
         result
     }
 
+    private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, vararg fNames: String, isNullable: Boolean? = false) =
+        fNames.any { isFunction(target, pkgName, classNameLogged, classNamePredicate, it, isNullable) }
+
     private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, isNullable: Boolean? = false): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
@@ -2291,7 +2294,7 @@ open class KotlinFileExtractor(
                 isFunction(target, "kotlin", "Double", fName)
     }
 
-    private fun isNumericFunction(target: IrFunction, fNames: List<String>) = fNames.any { isNumericFunction(target, it) }
+    private fun isNumericFunction(target: IrFunction, vararg fNames: String) = fNames.any { isNumericFunction(target, it) }
 
     private fun isArrayType(typeName: String) =
         when(typeName) {
@@ -2428,8 +2431,16 @@ open class KotlinFileExtractor(
                 binopReceiver(id, c.dispatchReceiver, "Dispatch receiver")
             }
 
+            fun binopExt(id: Label<out DbExpr>) {
+                binopReceiver(id, c.extensionReceiver, "Extension receiver")
+            }
+
             fun unaryopDisp(id: Label<out DbExpr>) {
                 unaryopReceiver(id, c.dispatchReceiver, "Dispatch receiver")
+            }
+
+            fun unaryopExt(id: Label<out DbExpr>) {
+                unaryopReceiver(id, c.extensionReceiver, "Extension receiver")
             }
 
             val dr = c.dispatchReceiver
@@ -2446,7 +2457,7 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(stringPlusFn, c, c.type, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver, c.getValueArgument(0)), null, null)
                     }
                 }
-                isNumericFunction(target, listOf("plus", "minus", "times", "div", "rem", "and", "or", "xor", "shl", "shr", "ushr")) -> {
+                isNumericFunction(target, "plus", "minus", "times", "div", "rem", "and", "or", "xor", "shl", "shr", "ushr") -> {
                     val type = useType(c.type)
                     val id: Label<out DbExpr> = when (val targetName = target.name.asString()) {
                         "plus" -> {
@@ -2510,7 +2521,10 @@ open class KotlinFileExtractor(
                         }
                     }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    binopDisp(id)
+                    if (isFunction(target, "kotlin", "Byte or Short", { it == "Byte" || it == "Short" }, "and", "or", "xor"))
+                        binopExt(id)
+                    else
+                        binopDisp(id)
                 }
                 // != gets desugared into not and ==. Here we resugar it.
                 c.origin == IrStatementOrigin.EXCLEQ && isFunction(target, "kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQ") -> {
@@ -2541,7 +2555,7 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     unaryopDisp(id)
                 }
-                isNumericFunction(target, listOf("inv", "unaryMinus", "unaryPlus")) -> {
+                isNumericFunction(target, "inv", "unaryMinus", "unaryPlus") -> {
                     val type = useType(c.type)
                     val id: Label<out DbExpr> = when (val targetName = target.name.asString()) {
                         "inv" -> {
@@ -2566,7 +2580,7 @@ open class KotlinFileExtractor(
                     }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     if (isFunction(target, "kotlin", "Byte or Short", { it == "Byte" || it == "Short" }, "inv"))
-                        unaryopReceiver(id, c.extensionReceiver, "Extension receiver")
+                        unaryopExt(id)
                     else
                         unaryopDisp(id)
                 }
