@@ -1322,7 +1322,36 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
  * local (intra-procedural) steps.
  */
 pragma[inline]
-predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
+predicate localExprFlow(Expr e1, Expr e2) { localExprFlowStep*(e1, e2) }
+
+/**
+ * Holds if `n1.asExpr()` doesn't have a result and `n1` flows to `n2` in a single
+ * dataflow step.
+ */
+private predicate localStepFromNonExpr(Node n1, Node n2) {
+  not exists(n1.asExpr()) and
+  localFlowStep(n1, n2)
+}
+
+/**
+ * Holds if `n1.asExpr()` doesn't have a result, `n2.asExpr() = e2` and
+ * `n2` is the first node reachable from `n1` such that `n2.asExpr()` exists.
+ */
+pragma[nomagic]
+private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
+  localStepFromNonExpr*(n1, n2) and
+  e2 = n2.asExpr()
+}
+
+/** Holds if data can flow from `e1` to `e2` in one local (intra-procedural) step. */
+cached
+predicate localExprFlowStep(Expr e1, Expr e2) {
+  exists(Node mid, Node n1, Node n2 |
+    localFlowStep(n1, mid) and
+    localStepsToExpr(mid, n2, e2) and
+    e1 = n1.asExpr()
+  )
+}
 
 cached
 private newtype TContent =

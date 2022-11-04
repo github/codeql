@@ -73,22 +73,6 @@ private int isSource(Expr bufferExpr, Element why) {
   )
 }
 
-private predicate localFlowToExprStep(DataFlow::Node n1, DataFlow::Node n2) {
-  not exists(n2.asExpr()) and
-  DataFlow::localFlowStep(n1, n2)
-}
-
-/** Holds if `n2 + delta` may be equal to `n1`. */
-private predicate localFlowStepToExpr(Expr e1, Expr e2) {
-  getBufferSizeCand0(e1) and
-  exists(DataFlow::Node n1, DataFlow::Node mid, DataFlow::Node n2 |
-    n1.asExpr() = e1 and
-    localFlowToExprStep*(n1, mid) and
-    DataFlow::localFlowStep(mid, n2) and
-    n2.asExpr() = e2
-  )
-}
-
 /**
  * Holds if `e2` is an expression that is derived from `e1` such that if `e1[n]` is a
  * well-defined expression for some number `n`, then `e2[n + delta]` is also a well-defined
@@ -96,24 +80,26 @@ private predicate localFlowStepToExpr(Expr e1, Expr e2) {
  */
 private predicate step(Expr e1, Expr e2, int delta) {
   getBufferSizeCand0(e1) and
-  exists(Variable bufferVar, Class parentClass, VariableAccess parentPtr, int bufferSize |
-    e1 = parentPtr
-  |
-    bufferVar = e2.(VariableAccess).getTarget() and
-    // buffer is the parentPtr->bufferVar of a 'variable size struct'
-    memberMayBeVarSize(parentClass, bufferVar) and
-    parentPtr = e2.(VariableAccess).getQualifier() and
-    parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
-    (
-      if exists(bufferVar.getType().getSize())
-      then bufferSize = bufferVar.getType().getSize()
-      else bufferSize = 0
-    ) and
-    delta = bufferSize - parentClass.getSize()
+  (
+    exists(Variable bufferVar, Class parentClass, VariableAccess parentPtr, int bufferSize |
+      e1 = parentPtr
+    |
+      bufferVar = e2.(VariableAccess).getTarget() and
+      // buffer is the parentPtr->bufferVar of a 'variable size struct'
+      memberMayBeVarSize(parentClass, bufferVar) and
+      parentPtr = e2.(VariableAccess).getQualifier() and
+      parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
+      (
+        if exists(bufferVar.getType().getSize())
+        then bufferSize = bufferVar.getType().getSize()
+        else bufferSize = 0
+      ) and
+      delta = bufferSize - parentClass.getSize()
+    )
+    or
+    DataFlow::localExprFlowStep(e1, e2) and
+    delta = 0
   )
-  or
-  localFlowStepToExpr(e1, e2) and
-  delta = 0
 }
 
 pragma[nomagic]
