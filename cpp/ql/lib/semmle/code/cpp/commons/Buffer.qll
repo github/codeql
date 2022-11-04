@@ -74,39 +74,32 @@ private int isSource(Expr bufferExpr, Element why) {
 }
 
 /**
- * Holds if data flow steps from `e1` to `e2` without stepping through any
- * other intermediate expressions.
- */
-private predicate localFlowStepToExpr(Expr e1, Expr e2) {
-  getBufferSizeCand0(e1) and
-  DataFlow::localExprFlowStep(e1, e2)
-}
-
-/**
  * Holds if `e2` is an expression that is derived from `e1` such that if `e1[n]` is a
  * well-defined expression for some number `n`, then `e2[n + delta]` is also a well-defined
  * expression.
  */
 private predicate step(Expr e1, Expr e2, int delta) {
   getBufferSizeCand0(e1) and
-  exists(Variable bufferVar, Class parentClass, VariableAccess parentPtr, int bufferSize |
-    e1 = parentPtr
-  |
-    bufferVar = e2.(VariableAccess).getTarget() and
-    // buffer is the parentPtr->bufferVar of a 'variable size struct'
-    memberMayBeVarSize(parentClass, bufferVar) and
-    parentPtr = e2.(VariableAccess).getQualifier() and
-    parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
-    (
-      if exists(bufferVar.getType().getSize())
-      then bufferSize = bufferVar.getType().getSize()
-      else bufferSize = 0
-    ) and
-    delta = bufferSize - parentClass.getSize()
+  (
+    exists(Variable bufferVar, Class parentClass, VariableAccess parentPtr, int bufferSize |
+      e1 = parentPtr
+    |
+      bufferVar = e2.(VariableAccess).getTarget() and
+      // buffer is the parentPtr->bufferVar of a 'variable size struct'
+      memberMayBeVarSize(parentClass, bufferVar) and
+      parentPtr = e2.(VariableAccess).getQualifier() and
+      parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
+      (
+        if exists(bufferVar.getType().getSize())
+        then bufferSize = bufferVar.getType().getSize()
+        else bufferSize = 0
+      ) and
+      delta = bufferSize - parentClass.getSize()
+    )
+    or
+    DataFlow::localExprFlowStep(e1, e2) and
+    delta = 0
   )
-  or
-  localFlowStepToExpr(e1, e2) and
-  delta = 0
 }
 
 pragma[nomagic]
