@@ -682,6 +682,7 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
   /** Gets the number of fields declared in this declaration. */
   int getNumField() { result = max(int idx | fieldDeclaredIn(_, this, idx) | idx) + 1 }
 
+  pragma[assume_small_delta]
   override string toString() {
     if this.getNumField() = 1
     then result = this.getTypeAccess() + " " + this.getField(0) + ";"
