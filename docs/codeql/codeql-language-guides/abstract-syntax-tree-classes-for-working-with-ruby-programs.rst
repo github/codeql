@@ -416,6 +416,27 @@ All classes in this subsection are subclasses of VariableAccess_.
 | ``self``                   | SelfVariableReadAccess_      | VariableReadAccess_, SelfVariableAccess_      |                  |
 +----------------------------+------------------------------+-----------------------------------------------+------------------+
 
+Desugaring
+~~~~~~~~~~
+
+Certain Ruby language features are implemented using syntactic sugar. For example, supposing that ``x`` is an object with an attribute ``foo``, the assignment::
+
+   x.foo = y
+
+is desugared to code similar to::
+
+  x.foo=(__synth_0 = y);
+  __synth_0;
+
+In other words, there is effectively a call to the SetterMethodCall_ ``foo=`` on ``x`` with argument ``__synth_0 = y``, followed by a read of the ``__synth_0`` variable.
+
+In CodeQL, this is implemented by syntheisizing AstNode_ instances corresponding to this desugared version of the code.
+
+Note that both the original AssignExpr_ and the desugared SetterMethodCall_ versions are both available to CodeQL queries, and it is usually not necessary to be aware of any desugaring that may take place. However, if a codebase explicitly uses ``x.foo=(y)`` SetterMethodCall_ syntax, then this will not be found by a query for AssignExpr_ instances.
+
+Other synthesized AstNode_ instances exist, see the isSynthesized_ and getDesugared_ predicates for details.
+
+
 .. _BlockArgument: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/ast/Call.qll/type.Call$BlockArgument.html
 .. _Call: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/ast/Call.qll/type.Call$Call.html
 .. _ElementReference: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/ast/Call.qll/type.Call$ElementReference.html
@@ -618,3 +639,5 @@ All classes in this subsection are subclasses of VariableAccess_.
 .. _VariableAccess: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/ast/Variable.qll/type.Variable$VariableAccess.html
 .. _VariableReadAccess: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/ast/Variable.qll/type.Variable$VariableReadAccess.html
 .. _VariableWriteAccess: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/ast/Variable.qll/type.Variable$VariableWriteAccess.html
+.. _isSynthesized: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/AST.qll/predicate.AST$AstNode$isSynthesized.0.html
+.. _getDesugared: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/AST.qll/predicate.AST$AstNode$getDesugared.0.html
