@@ -124,7 +124,7 @@ enters the current code base. A typical example is the return value of a library
 
     import codeql.ruby.ApiGraphs
 
-    select API::getTopLevelMember("File").getMethod("read").getParameter(1).asSource()
+    select API::getTopLevelMember("File").getMethod("read").getReturn().asSource()
 
 
 The ``asSink()`` method is used to select dataflow nodes where a value leaves the
