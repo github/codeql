@@ -49,6 +49,8 @@ This table lists subclasses of Stmt_ that represent Ruby statements.
 Calls
 ~~~~~
 
+This table lists subclasses of Call_ as well as some expressions that appear as call arguments.
+
 +----------------------------+---------------------+----------------+-------------------------------+
 | Expression syntax          | CodeQL class        | Superclasses   | Remarks                       |
 +============================+=====================+================+===============================+
