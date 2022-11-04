@@ -11,9 +11,12 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    basic-query-for-ruby-code
    codeql-library-for-ruby
    analyzing-data-flow-in-ruby
+   using-api-graphs-in-ruby
 
 -  :doc:`Basic query for Ruby code <basic-query-for-ruby-code>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for Ruby <codeql-library-for-ruby>`: When you're analyzing a Ruby program, you can make use of the large collection of classes in the CodeQL library for Ruby.
 
 -  :doc:`Analyzing data flow in Ruby <analyzing-data-flow-in-ruby>`: You can use CodeQL to track the flow of data through a Ruby program to places where the data is used.
+
+-  :doc:`Using API graphs in Ruby <using-api-graphs-in-ruby>`: API graphs are a uniform interface for referring to functions, classes, and methods defined in external libraries.
