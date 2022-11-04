@@ -1,13 +1,56 @@
 name: ATM Check Queries Run
 
-# This check is required, therefore we must run it on all PRs, even if only Markdown has changed.
+env:
+  DB_PATH: test_db
+  ATM_MODEL_PACK: javascript/ql/experimental/adaptivethreatmodeling/src
+  QUERY_SUITE: codeql-suites/javascript-atm-code-scanning.qls
+
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/atm-check-queries-run.yml"
+      - "javascript/ql/experimental/adaptivethreatmodeling/**"
   workflow_dispatch:
 
 jobs:
-  hello-world:
+  run-atm-queries:
     runs-on: ubuntu-latest
 
     steps:
-      - name: foo
-        run: echo "Hello world"
+      - uses: actions/checkout@v3
+
+      - name: Install CodeQL CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh extensions install github/gh-codeql
+          gh codeql download
+
+      - name: Install ATM model pack
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -exu
+          
+          # Install ATM model pack
+          gh codeql pack install ${ATM_MODEL_PACK}
+
+          # Retrieve model checksum
+          model_checksum=$(gh codeql resolve extensions ${ATM_MODEL_PACK}/${QUERY_SUITE} | jq -r '.models[0].checksum')
+
+          # Trust the model so that we can use it in the ATM boosted queries
+          mkdir -p "$HOME/.config/codeql"
+          echo "--insecurely-execute-ml-model-checksums ${model_checksum}" >> "$HOME/.config/codeql/config"
+
+      - name: Create test DB
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh codeql database create ${RUNNER_TEMP}/${DB_PATH} --source-root config/atm/ --language javascript 
+
+      - name: Run ATM query suite
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh codeql database run-queries -vv -- ${RUNNER_TEMP}/${DB_PATH} ${ATM_MODEL_PACK}/${QUERY_SUITE}
+      

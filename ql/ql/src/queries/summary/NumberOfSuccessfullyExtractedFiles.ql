@@ -1,6 +1,6 @@
 /**
  * @id ql/summary/number-of-successfully-extracted-files
- * @name Total number of files that were extracted without error
+ * @name Total number of QL files that were extracted without error
  * @description The total number of QL code files that we extracted without
  *   encountering any extraction errors
  * @kind metric

@@ -395,6 +395,23 @@ test.kt:
 #    1|             2: [NullLiteral] null
 #    1|             3: [IntegerLiteral] 3
 #    1|             4: [NullLiteral] null
+#  232|     11: [Method] varargsConstructorUser
+#  232|       3: [TypeAccess] Unit
+#  232|       5: [BlockStmt] { ... }
+#  233|         0: [ExprStmt] <Expr>;
+#  233|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  233|             0: [TypeAccess] Unit
+#  233|             1: [ClassInstanceExpr] new VarargsConstructorTest(...)
+#  233|               -3: [TypeAccess] VarargsConstructorTest
+#  233|               0: [StringLiteral] varargs constructor test sunk
+#  234|         1: [ExprStmt] <Expr>;
+#  234|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  234|             0: [TypeAccess] Unit
+#  234|             1: [ClassInstanceExpr] new VarargsConstructorTest(...)
+#  234|               -3: [TypeAccess] VarargsConstructorTest
+#  234|               0: [StringLiteral] varargs constructor test sunk 2
+#  234|               1: [StringLiteral] varargs constructor test not sunk 1
+#  234|               2: [StringLiteral] varargs constructor test not sunk 2
 #    3|   2: [Class] TestMember
 #    3|     1: [Constructor] TestMember
 #    3|       5: [BlockStmt] { ... }
@@ -1688,3 +1705,19 @@ test.kt:
 #  180|             -1: [VarAccess] p0
 #  180|             0: [VarAccess] p1
 #  180|             1: [VarAccess] p2
+#  226|   18: [Class] VarargsConstructorTest
+#  226|     1: [Constructor] VarargsConstructorTest
+#-----|       4: (Parameters)
+#  226|         0: [Parameter] x
+#  226|           0: [TypeAccess] String
+#  226|         1: [Parameter] y
+#  226|           0: [TypeAccess] String[]
+#  226|             0: [WildcardTypeAccess] ? ...
+#  226|               0: [TypeAccess] String
+#  226|       5: [BlockStmt] { ... }
+#  226|         0: [SuperConstructorInvocationStmt] super(...)
+#  226|         1: [BlockStmt] { ... }
+#  228|           0: [ExprStmt] <Expr>;
+#  228|             0: [MethodAccess] sink(...)
+#  228|               -1: [TypeAccess] TestKt
+#  228|               0: [VarAccess] x
