@@ -1,7 +1,6 @@
 name: ATM Check Queries Run
 
 env:
-  DB_PATH: test_db
   QUERY_PACK: javascript/ql/experimental/adaptivethreatmodeling/src
   QUERY_SUITE: codeql-suites/javascript-atm-code-scanning.qls
 
@@ -27,12 +26,12 @@ jobs:
       - name: Install ATM model
         run: |
           set -exu
-          
-          # Install dependencies of ATM query pack
-          codeql pack install ${QUERY_PACK}
+
+          # Install dependencies of ATM query pack, i.e. the ATM model
+          codeql pack install "${QUERY_PACK}"
 
           # Retrieve model checksum
-          model_checksum=$(codeql resolve extensions ${QUERY_PACK}/${QUERY_SUITE} | jq -r '.models[0].checksum')
+          model_checksum=$(codeql resolve extensions "${QUERY_PACK}/${QUERY_SUITE}" | jq -r '.models[0].checksum')
 
           # Trust the model so that we can use it in the ATM boosted queries
           mkdir -p "$HOME/.config/codeql"
@@ -40,9 +39,10 @@ jobs:
 
       - name: Create test DB
         run: |
-          codeql database create ${RUNNER_TEMP}/${DB_PATH} --source-root config/atm/ --language javascript 
+          DB_PATH="${RUNNER_TEMP}/db"
+          codeql database create "${DB_PATH}" --source-root config/atm --language javascript 
+          echo "DB_PATH=${DB_PATH}" >> "${GITHUB_ENV}"
 
       - name: Run ATM query suite
         run: |
-          codeql database run-queries -vv -- ${RUNNER_TEMP}/${DB_PATH} ${QUERY_PACK}/${QUERY_SUITE}
-      
+          codeql database run-queries -vv -- "${DB_PATH}" "${QUERY_PACK}/${QUERY_SUITE}"
