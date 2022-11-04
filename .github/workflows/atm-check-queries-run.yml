@@ -45,4 +45,10 @@ jobs:
 
       - name: Run ATM query suite
         run: |
-          codeql database run-queries -vv -- "${DB_PATH}" "${QUERY_PACK}/${QUERY_SUITE}"
+          codeql database analyze \
+            --format sarif-latest \
+            --output "${RUNNER_TEMP}/sarif.json" \
+            -vv \
+            -- \
+            "${DB_PATH}" \
+            "${QUERY_PACK}/${QUERY_SUITE}"
