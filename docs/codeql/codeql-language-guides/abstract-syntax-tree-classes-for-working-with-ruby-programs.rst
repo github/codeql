@@ -7,6 +7,8 @@ CodeQL has a large selection of classes for representing the abstract syntax tre
 
 .. include:: ../reusables/abstract-syntax-tree.rst
 
+The descriptions below use the following conventions and placeholders.
+
 * An ``IDENTIFIER`` denotes an arbitrary identifier.
 * A ``CNAME`` denotes a class or module name.
 * An ``FNAME`` denotes a method name.
@@ -16,7 +18,7 @@ CodeQL has a large selection of classes for representing the abstract syntax tre
 Statement classes
 ~~~~~~~~~~~~~~~~~
 
-This table lists subclasses of Stmt_ representing Ruby statements.
+This table lists subclasses of Stmt_ that represent Ruby statements.
 
 +---------------------------------+--------------+----------------+---------+
 | Statement syntax                | CodeQL class | Superclasses   | Remarks |
@@ -60,7 +62,7 @@ Calls
 +----------------------------+---------------------+----------------+-------------------------------+
 | ``yield`` «Expr_ ``,``»*   | YieldCall_          | Call_          |                               |
 +----------------------------+---------------------+----------------+-------------------------------+
-| ``&IDENTIFIER``            | BlockArgument_      | Expr_          | Used as an argument to a call |
+| ``&``IDENTIFIER            | BlockArgument_      | Expr_          | Used as an argument to a call |
 +----------------------------+---------------------+----------------+-------------------------------+
 | ``...``                    | ForwardedArguments_ | Expr_          | Used as an argument to a call |
 +----------------------------+---------------------+----------------+-------------------------------+
@@ -116,25 +118,25 @@ Unary operations
 
 All classes in this subsection are subclasses of UnaryOperation_.
 
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 | Expression syntax  |  CodeQL class  | Superclasses               | Remarks           |
-+====================+================+============================+===================+
++====================+=================+===========================+===================+
 | ``~`` Expr_        | ComplementExpr_ | UnaryBitwiseOperation_    |                   |
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 | ``defined?`` Expr_ | DefinedExpr_    | UnaryOperation_           |                   |
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 | ``**`` Expr_       | HashSplatExpr_  | UnaryOperation_           |                   |
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 | ``!`` Expr_        | NotExpr_        | UnaryOperation_           |                   |
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 | ``not`` Expr_      | NotExpr_        | UnaryOperation_           |                   |
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 | ``*`` Expr_        | SplatExpr_      | UnaryOperation_           |                   |
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 | ``-`` Expr_        | UnaryMinusExpr_ | UnaryArithmeticOperation_ |                   |
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 | ``+`` Expr_        | UnaryPlusExpr_  | UnaryArithmeticOperation_ |                   |
-+--------------------+----------------+----------------------------+-------------------+
++--------------------+-----------------+---------------------------+-------------------+
 
 Binary operations
 ~~~~~~~~~~~~~~~~~
@@ -336,7 +338,7 @@ All classes in this subsection are subclasses of Parameter_.
 Pattern classes
 ~~~~~~~~~~~~~~~
 
-All classes in this subsection are subclasses of CasePattern_. These expressions typically occur in the context of a ``case`` using pattern matching syntax.
+All classes in this subsection are subclasses of CasePattern_. These expressions typically occur when a ``case`` uses pattern matching syntax.
 
 +--------------------------------------------------------------------------------+-----------------------+--------------+-------------------+
 | Expression syntax                                                              | CodeQL class          | Superclasses | Remarks           |
@@ -392,7 +394,7 @@ All classes in this subsection are subclasses of VariableAccess_.
 
 +----------------------------+------------------------------+-----------------------------------------------+------------------+
 | Example expression syntax  |  CodeQL class                | Superclasses                                  | Remarks          |
-+===========================+==============================+================================================+==================+
++============================+==============================+===============================================+==================+
 | ``@@foo``                  | ClassVariableReadAccess_     | VariableReadAccess_, ClassVariableAccess_     |                  |
 +----------------------------+------------------------------+-----------------------------------------------+------------------+
 | ``@@foo = 'str'``          | ClassVariableWriteAccess_    | VariableWriteAccess_, ClassVariableAccess_    |                  |
