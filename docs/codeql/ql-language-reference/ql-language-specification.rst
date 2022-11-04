@@ -827,7 +827,7 @@ The types specified after the ``extends`` keyword are the *base types* of the cl
 
 The types specified after the ``instanceof`` keyword are the *instanceof types* of the class.
 
-A class type is said to *inherit* from the base types of the associated class type. In addition, inheritance is transitive: If a type ``A`` inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` inherits from ``C``.
+A class type is said to *inherit* from the base types. In addition, inheritance is transitive: If a type ``A`` inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` inherits from ``C``.
 
 A class adds a mapping from the class name to the class declaration to the current module's declared type environment.
 
@@ -1186,11 +1186,11 @@ If the call includes a closure, then all declared predicate arguments, the enclo
 
 A call to a member predicate may  be a *direct* call:
  - If the receiver is not a super expression it is not direct.
- - The receiver is ``A.super`` and ``A`` is an instanceof type and not a base type then it is not direct.
- - The receiver is ``A.super`` and ``A`` is a base type type and not an instanceof type then it is direct.
- - If the receiver is ``A.super`` and ``A`` is a base type and an instanceof type then the call is not valid
- - The receiver is ``super`` and the member predicate is in the exported member predicate environment of an instanceof type and not in the exported member predicate environment of a base type then it isn't direct.
- - The receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and not in the exported member predicate environment of an instanceof type then it is direct.
+ - If the receiver is ``A.super`` and ``A`` is an instanceof type and not a base type then it is not direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type type and not an instanceof type then it is direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type and an instanceof type then the call is not valid.
+ - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of an instanceof type and not in the exported member predicate environment of a base type then it isn't direct.
+ - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and not in the exported member predicate environment of an instanceof type then it is direct.
  - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and in the exported member predicate environment of an instanceof type then the call is not valid.
 
 If the call resolves to a member predicate, then the *receiver values* are as follows. If the call has a receiver, then the receiver values are the values of that receiver. If the call does not have a receiver, then the single receiver value is the value of ``this`` in the contextual named tuple.
