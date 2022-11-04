@@ -1868,13 +1868,12 @@ open class KotlinFileExtractor(
             extractStaticTypeAccessQualifierUnchecked(overriddenCallTarget.parent, id, locId, enclosingCallable, enclosingStmt)
         }
 
-        extractDefaultsCallArguments(id, overriddenCallTarget, locId, enclosingCallable, enclosingStmt, valueArguments, dispatchReceiver, extensionReceiver)
+        extractDefaultsCallArguments(id, overriddenCallTarget, enclosingCallable, enclosingStmt, valueArguments, dispatchReceiver, extensionReceiver)
     }
 
     private fun extractDefaultsCallArguments(
         id: Label<out DbExprparent>,
         callTarget: IrFunction,
-        locId: Label<DbLocation>,
         enclosingCallable: Label<out DbCallable>,
         enclosingStmt: Label<out DbStmt>,
         valueArguments: List<IrExpression?>,
@@ -1901,7 +1900,7 @@ open class KotlinFileExtractor(
             IrConstImpl.defaultValueForType(0, 0, getDefaultsMethodLastArgType(callTarget))
         )
 
-        extractCallValueArguments(id, valueArgsWithDummies + extraArgs, callTarget, locId, enclosingStmt, enclosingCallable, nextIdx, extractVarargAsArray = true)
+        extractCallValueArguments(id, valueArgsWithDummies + extraArgs, enclosingStmt, enclosingCallable, nextIdx, extractVarargAsArray = true)
     }
 
     private fun getFunctionInvokeMethod(typeArgs: List<IrTypeArgument>): IrFunction? {
@@ -2023,7 +2022,7 @@ open class KotlinFileExtractor(
                 childIdx,
                 enclosingStmt,
                 valueArguments.size,
-                { argParent, idxOffset -> extractCallValueArguments(argParent, valueArguments, syntacticCallTarget, locId, enclosingStmt, enclosingCallable, idxOffset) },
+                { argParent, idxOffset -> extractCallValueArguments(argParent, valueArguments, enclosingStmt, enclosingCallable, idxOffset) },
                 dispatchReceiver?.type,
                 dispatchReceiver?.let { { callId -> extractExpressionExpr(dispatchReceiver, enclosingCallable, callId, -1, enclosingStmt) } },
                 extensionReceiver?.let { { argParent -> extractExpressionExpr(extensionReceiver, enclosingCallable, argParent, 0, enclosingStmt) } },
@@ -2117,10 +2116,10 @@ open class KotlinFileExtractor(
                 this is IrEnumEntry
 
 
-    private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, callTarget: IrFunction, fallbackLocation: Label<DbLocation>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
-        extractCallValueArguments(callId, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, callTarget, fallbackLocation, enclosingStmt, enclosingCallable, idxOffset)
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
+        extractCallValueArguments(callId, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, enclosingStmt, enclosingCallable, idxOffset)
 
-    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, callTarget: IrFunction, fallbackLocation: Label<DbLocation>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int, extractVarargAsArray: Boolean = false) {
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int, extractVarargAsArray: Boolean = false) {
         var i = 0
         valueArguments.forEach { arg ->
             if (arg != null) {
@@ -2129,25 +2128,6 @@ open class KotlinFileExtractor(
                     i += arg.elements.size
                 } else {
                     extractExpressionExpr(arg, enclosingCallable, callId, (i++) + idxOffset, enclosingStmt)
-                }
-            } else {
-                val realCallTarget = callTarget.target.realOverrideTarget
-
-                // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
-                if (realCallTarget is IrConstructor &&
-                    realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
-                    realCallTarget.valueParameters.size == 2 &&
-                    i < realCallTarget.valueParameters.size) {
-
-                    if (i == 0 && realCallTarget.valueParameters[i].type == pluginContext.irBuiltIns.stringType) {
-
-                        val id = extractNull(pluginContext.irBuiltIns.stringType, fallbackLocation, callId, (i++) + idxOffset, enclosingCallable, enclosingStmt)
-                        tw.writeCompiler_generated(id, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
-                    } else if (i == 1 && realCallTarget.valueParameters[i].type == pluginContext.irBuiltIns.intType) {
-
-                        val id = extractConstantInteger(0, fallbackLocation, callId, (i++) + idxOffset, enclosingCallable, enclosingStmt)
-                        tw.writeCompiler_generated(id, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
-                    }
                 }
             }
         }
@@ -3083,15 +3063,31 @@ open class KotlinFileExtractor(
         val isAnonymous = eType.isAnonymous
         val locId = tw.getLocation(e)
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
-        // For now, don't try to use default methods for enum constructor calls,
-        // which have null arguments even though the parameters don't give default values.
+
         val id = if (e !is IrEnumConstructorCall && callUsesDefaultArguments(e.symbol.owner, valueArgs)) {
             extractNewExpr(getDefaultsMethodLabel(e.symbol.owner).cast(), type, locId, parent, idx, callable, enclosingStmt).also {
-                extractDefaultsCallArguments(it, e.symbol.owner, locId, callable, enclosingStmt, valueArgs, null, null)
+                extractDefaultsCallArguments(it, e.symbol.owner, callable, enclosingStmt, valueArgs, null, null)
             }
         } else {
             extractNewExpr(e.symbol.owner, eType.arguments, type, locId, parent, idx, callable, enclosingStmt).also {
-                extractCallValueArguments(it, e, e.symbol.owner, locId, enclosingStmt, callable, 0)
+
+                val realCallTarget = e.symbol.owner.realOverrideTarget
+                // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
+                if (e is IrEnumConstructorCall &&
+                    realCallTarget is IrConstructor &&
+                    realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
+                    realCallTarget.valueParameters.size == 2 &&
+                    realCallTarget.valueParameters[0].type == pluginContext.irBuiltIns.stringType &&
+                    realCallTarget.valueParameters[1].type == pluginContext.irBuiltIns.intType) {
+
+                    val id0 = extractNull(pluginContext.irBuiltIns.stringType, locId, it, 0, callable, enclosingStmt)
+                    tw.writeCompiler_generated(id0, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+
+                    val id1 = extractConstantInteger(0, locId, it, 1, callable, enclosingStmt)
+                    tw.writeCompiler_generated(id1, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+                } else {
+                    extractCallValueArguments(it, e, enclosingStmt, callable, 0)
+                }
             }
         }
 
@@ -3464,7 +3460,7 @@ open class KotlinFileExtractor(
 
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableBinding(id.cast<DbCaller>(), methodId)
-                    extractCallValueArguments(id, e, e.symbol.owner, locId, id, callable, 0)
+                    extractCallValueArguments(id, e, id, callable, 0)
                     val dr = e.dispatchReceiver
                     if (dr != null) {
                         extractExpressionExpr(dr, callable, id, -1, id)
