@@ -37,7 +37,7 @@ class XMLDocument {
 func testUrl() {
     let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
     let remoteUrl = URL(string: remoteString)!
-     let _ = XMLDocument(contentsOf: remoteUrl, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=39
+     let _ = XMLDocument(contentsOf: remoteUrl, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=38
 }
 
 func testUrlSafeImplicit() {
@@ -55,7 +55,7 @@ func testUrlSafeExplicit() {
 func testData() {
     let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
     let remoteData = Data(remoteString)
-    let _ = XMLDocument(data: remoteData, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=57
+    let _ = XMLDocument(data: remoteData, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=56
 }
 
 func testDataSafeImplicit() {
@@ -72,7 +72,7 @@ func testDataSafeExplicit() {
 
 func testString() {
     let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
-    let _ = XMLDocument(xmlString: remoteString, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=75
+    let _ = XMLDocument(xmlString: remoteString, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=74
 }
 
 func testStringSafeImplicit() {
