@@ -13,7 +13,7 @@ for src in *.swift; do
   env=()
   opts=(-sdk "$SDK" -c -primary-file "$src")
   opts+=($(sed -n '1 s=//codeql-extractor-options:==p' $src))
-  expected_status=$(sed -n 's=//codeql-extractor-expected-status:\s*==p' $src)
+  expected_status=$(sed -n 's=//codeql-extractor-expected-status:[[:space:]]*==p' $src)
   expected_status=${expected_status:-0}
   env+=($(sed -n '1 s=//codeql-extractor-env:==p' $src))
   echo -e "calling extractor with flags: ${opts[@]}\n" >> $QLTEST_LOG
