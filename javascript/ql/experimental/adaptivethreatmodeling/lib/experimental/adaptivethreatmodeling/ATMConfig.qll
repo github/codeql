@@ -45,7 +45,7 @@ abstract class AtmConfig extends string {
    *
    * Holds if `sink` is a known sink of flow.
    */
-  predicate isKnownSink(JS::DataFlow::Node sink) {
+  final predicate isKnownSink(JS::DataFlow::Node sink) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
     exists(EndpointCharacteristic characteristic |
