@@ -24,9 +24,9 @@ jobs:
         run: |
           MERGE_BASE=$(git merge-base --fork-point origin/$BASE_BRANCH)
           echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
-      - name: Calculate merge-base - main
+      - name: Calculate merge-base - branch
         if: ${{ github.event_name != 'pull_request' }}
-        # using github.sha instead, since we're on main
+        # using github.sha instead, since we're directly on a branch, and not in a PR
         run: |
           MERGE_BASE=${{ github.sha }})
           echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
