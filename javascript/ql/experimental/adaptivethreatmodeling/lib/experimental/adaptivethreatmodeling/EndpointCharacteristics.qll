@@ -9,19 +9,22 @@ private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.TaintedPathCustomizations
 
 /**
- * Defines a set of characteristics that a particular endpoint might have. This set of characteristics is used to make
- * decisions about whether to include the endpoint in the training set and with what label, as well as whether to score
- * the endpoint at inference time.
+ * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
+ * about whether to include the endpoint in the training set and with what label, as well as whether to score the
+ * endpoint at inference time.
  */
 abstract class EndpointCharacteristic extends string {
   /**
-   * The name of the characteristic, which should describe some characteristic of the endpoint that is meaningful for
-   *  determining whether it's a sink and if so of which type
+   * Holds when the string matches the name of the characteristic, which should describe some characteristic of the
+   * endpoint that is meaningful for determining whether it's a sink and if so of which type
    */
   bindingset[this]
   EndpointCharacteristic() { any() }
 
-  /** The logic to identify which endpoints have this characteristic. */
+  /**
+   * Holds for endpoints that have this characteristic. This predicate contains the logic that applies characteristics
+   * to the appropriate set of dataflow nodes.
+   */
   abstract predicate getEndpoints(DataFlow::Node n);
 
   /**
