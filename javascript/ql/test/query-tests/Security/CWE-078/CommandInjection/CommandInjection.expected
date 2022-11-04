@@ -50,8 +50,6 @@ nodes
 | child_process-test.js:83:19:83:36 | req.query.fileName |
 | child_process-test.js:83:19:83:36 | req.query.fileName |
 | child_process-test.js:83:19:83:36 | req.query.fileName |
-| child_process-test.js:85:37:85:54 | req.query.fileName |
-| child_process-test.js:85:37:85:54 | req.query.fileName |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host |
 | child_process-test.js:94:21:94:30 | ctx.params |
@@ -134,16 +132,6 @@ nodes
 | form-parsers.js:59:10:59:33 | "touch  ... ilename |
 | form-parsers.js:59:21:59:24 | part |
 | form-parsers.js:59:21:59:33 | part.filename |
-| lib/subLib4/index.js:6:32:6:35 | name |
-| lib/subLib4/index.js:7:18:7:21 | name |
-| lib/subLib4/subsub.js:3:28:3:31 | name |
-| lib/subLib4/subsub.js:4:10:4:25 | "rm -rf " + name |
-| lib/subLib4/subsub.js:4:10:4:25 | "rm -rf " + name |
-| lib/subLib4/subsub.js:4:22:4:25 | name |
-| lib/subLib/index.js:7:32:7:35 | name |
-| lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
-| lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
-| lib/subLib/index.js:8:22:8:25 | name |
 | other.js:5:9:5:49 | cmd |
 | other.js:5:15:5:38 | url.par ... , true) |
 | other.js:5:15:5:44 | url.par ... ).query |
@@ -238,10 +226,6 @@ edges
 | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:73:15:73:38 | url.par ... , true) |
 | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:73:15:73:38 | url.par ... , true) |
 | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName |
-| child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib4/index.js:6:32:6:35 | name |
-| child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib4/index.js:6:32:6:35 | name |
-| child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:7:32:7:35 | name |
-| child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:7:32:7:35 | name |
 | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:21:94:35 | ctx.params.host |
 | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:21:94:35 | ctx.params.host |
 | child_process-test.js:94:21:94:35 | ctx.params.host | child_process-test.js:94:11:94:35 | "ping " ... ms.host |
@@ -314,14 +298,6 @@ edges
 | form-parsers.js:59:21:59:24 | part | form-parsers.js:59:21:59:33 | part.filename |
 | form-parsers.js:59:21:59:33 | part.filename | form-parsers.js:59:10:59:33 | "touch  ... ilename |
 | form-parsers.js:59:21:59:33 | part.filename | form-parsers.js:59:10:59:33 | "touch  ... ilename |
-| lib/subLib4/index.js:6:32:6:35 | name | lib/subLib4/index.js:7:18:7:21 | name |
-| lib/subLib4/index.js:7:18:7:21 | name | lib/subLib4/subsub.js:3:28:3:31 | name |
-| lib/subLib4/subsub.js:3:28:3:31 | name | lib/subLib4/subsub.js:4:22:4:25 | name |
-| lib/subLib4/subsub.js:4:22:4:25 | name | lib/subLib4/subsub.js:4:10:4:25 | "rm -rf " + name |
-| lib/subLib4/subsub.js:4:22:4:25 | name | lib/subLib4/subsub.js:4:10:4:25 | "rm -rf " + name |
-| lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
-| lib/subLib/index.js:8:22:8:25 | name | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
-| lib/subLib/index.js:8:22:8:25 | name | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
 | other.js:5:9:5:49 | cmd | other.js:7:33:7:35 | cmd |
 | other.js:5:9:5:49 | cmd | other.js:7:33:7:35 | cmd |
 | other.js:5:9:5:49 | cmd | other.js:8:28:8:30 | cmd |
@@ -398,8 +374,6 @@ edges
 | form-parsers.js:41:10:41:31 | "touch  ... ds.name | form-parsers.js:40:26:40:31 | fields | form-parsers.js:41:10:41:31 | "touch  ... ds.name | This command line depends on a $@. | form-parsers.js:40:26:40:31 | fields | user-provided value |
 | form-parsers.js:53:10:53:31 | "touch  ... ds.name | form-parsers.js:52:34:52:39 | fields | form-parsers.js:53:10:53:31 | "touch  ... ds.name | This command line depends on a $@. | form-parsers.js:52:34:52:39 | fields | user-provided value |
 | form-parsers.js:59:10:59:33 | "touch  ... ilename | form-parsers.js:58:30:58:33 | part | form-parsers.js:59:10:59:33 | "touch  ... ilename | This command line depends on a $@. | form-parsers.js:58:30:58:33 | part | user-provided value |
-| lib/subLib4/subsub.js:4:10:4:25 | "rm -rf " + name | child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib4/subsub.js:4:10:4:25 | "rm -rf " + name | This command line depends on a $@. | child_process-test.js:85:37:85:54 | req.query.fileName | user-provided value |
-| lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | This command line depends on a $@. | child_process-test.js:85:37:85:54 | req.query.fileName | user-provided value |
 | other.js:7:33:7:35 | cmd | other.js:5:25:5:31 | req.url | other.js:7:33:7:35 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
 | other.js:8:28:8:30 | cmd | other.js:5:25:5:31 | req.url | other.js:8:28:8:30 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
 | other.js:9:32:9:34 | cmd | other.js:5:25:5:31 | req.url | other.js:9:32:9:34 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
