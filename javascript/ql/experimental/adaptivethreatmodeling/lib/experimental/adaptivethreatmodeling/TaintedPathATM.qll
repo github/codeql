@@ -64,8 +64,6 @@ class TaintedPathAtmConfig extends AtmConfig {
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
 
-  override predicate isKnownSink(DataFlow::Node sink) { sink instanceof TaintedPath::Sink }
-
   override predicate isEffectiveSink(DataFlow::Node sinkCandidate) {
     not exists(SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate))
   }
