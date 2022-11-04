@@ -20,8 +20,8 @@ class XxeAdditionalTaintStep extends Unit {
 }
 
 /** The XML argument of a `XMLParser` vulnerable to XXE. */
-private class DefaultXxeSink extends XxeSink {
-  DefaultXxeSink() {
+private class XmlParserXxeSink extends XxeSink {
+  XmlParserXxeSink() {
     this.asExpr() = any(Argument a | a.getApplyExpr() instanceof VulnerableParser).getExpr()
   }
 }
@@ -66,4 +66,27 @@ private class XmlParserRef extends Expr {
 /** The type `XMLParser`. */
 private class XmlParserType extends NominalType {
   XmlParserType() { this.getFullName() = "XMLParser" }
+}
+
+/** The XML argument of a `XMLDocument` vulnerable to XXE. */
+private class XmlDocumentXxeSink extends XxeSink {
+  XmlDocumentXxeSink() { this.asExpr() = any(VulnerableXmlDocument d).getArgument(0).getExpr() }
+}
+
+/** An `XMLDocument` that sets `nodeLoadExternalEntitiesAlways` in its options. */
+private class VulnerableXmlDocument extends ApplyExpr {
+  VulnerableXmlDocument() {
+    this.getStaticTarget().(ConstructorDecl).getEnclosingDecl().(NominalTypeDecl).getFullName() =
+      "XMLDocument" and
+    this.getArgument(1).getExpr().(ArrayExpr).getAnElement().(MemberRefExpr).getMember() instanceof
+      NodeLoadExternalEntitiesAlways
+  }
+}
+
+/** The option `XMLNode.Options.nodeLoadExternalEntitiesAlways`. */
+private class NodeLoadExternalEntitiesAlways extends VarDecl {
+  NodeLoadExternalEntitiesAlways() {
+    this.getName() = "nodeLoadExternalEntitiesAlways" and
+    this.getEnclosingDecl().(StructDecl).getFullName() = "XMLNode.Options"
+  }
 }
