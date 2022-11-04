@@ -438,6 +438,11 @@ Note that both the original AssignExpr_ and the desugared SetterMethodCall_ vers
 
 Other synthesized AstNode_ instances exist, see the isSynthesized_ and getDesugared_ predicates for details.
 
+Further reading
+---------------
+
+.. include:: ../reusables/ruby-further-reading.rst
+.. include:: ../reusables/codeql-ref-tools-further-reading.rst
 
 .. _BlockArgument: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/ast/Call.qll/type.Call$BlockArgument.html
 .. _Call: https://codeql.github.com/codeql-standard-libraries/ruby/codeql/ruby/ast/Call.qll/type.Call$Call.html
