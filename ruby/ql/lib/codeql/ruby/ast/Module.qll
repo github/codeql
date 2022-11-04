@@ -33,9 +33,11 @@ class Module extends TModule {
   Module getAnImmediateDescendent() { this = result.getAnImmediateAncestor() }
 
   /** Gets a module that is transitively subclassed, included, or prepended by this module. */
+  pragma[inline]
   Module getAnAncestor() { result = this.getAnImmediateAncestor*() }
 
   /** Gets a module that transitively subclasses, includes, or prepends this module. */
+  pragma[inline]
   Module getADescendent() { result = this.getAnImmediateDescendent*() }
 
   /** Holds if this module is a class. */

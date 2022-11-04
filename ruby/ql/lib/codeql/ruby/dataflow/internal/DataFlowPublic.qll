@@ -739,9 +739,11 @@ class ModuleNode instanceof Module {
   final ModuleNode getAnImmediateDescendent() { result = super.getAnImmediateDescendent() }
 
   /** Gets a module that is transitively subclassed, included, or prepended by this module. */
+  pragma[inline]
   final ModuleNode getAnAncestor() { result = super.getAnAncestor() }
 
   /** Gets a module that transitively subclasses, includes, or prepends this module. */
+  pragma[inline]
   final ModuleNode getADescendent() { result = super.getADescendent() }
 
   /**
