@@ -266,8 +266,8 @@ abstract private class ConfigurationRecursionPrevention extends Configuration {
 private newtype TNodeEx =
   TNodeNormal(Node n) or
   TNodeReturn(ReturnPosition pos) or
-  TNodeImplicitRead(Node n, boolean hasRead) {
-    any(Configuration c).allowImplicitRead(n, _) and hasRead = [false, true]
+  TNodeImplicitRead(Node n, boolean hasRead, Configuration c) {
+    c.allowImplicitRead(n, _) and hasRead = [false, true]
   }
 
 private class NodeEx extends TNodeEx {
@@ -276,16 +276,18 @@ private class NodeEx extends TNodeEx {
     or
     exists(ReturnPosition pos | this.isReturnNode(pos) | result = "return via " + pos + " [Ext]")
     or
-    exists(Node n | this.isImplicitReadNode(n, _) | result = n.toString() + " [Ext]")
+    exists(Node n | this.isImplicitReadNode(n, _, _) | result = n.toString() + " [Ext]")
   }
 
   Node asNode() { this = TNodeNormal(result) }
 
-  predicate isImplicitReadNode(Node n, boolean hasRead) { this = TNodeImplicitRead(n, hasRead) }
+  predicate isImplicitReadNode(Node n, boolean hasRead, Configuration config) {
+    this = TNodeImplicitRead(n, hasRead, config)
+  }
 
   predicate isReturnNode(ReturnPosition pos) { this = TNodeReturn(pos) }
 
-  Node projectToNode() { this = TNodeNormal(result) or this = TNodeImplicitRead(result, _) }
+  Node projectToNode() { this = TNodeNormal(result) or this = TNodeImplicitRead(result, _, _) }
 
   pragma[nomagic]
   private DataFlowCallable getEnclosingCallable0() {
@@ -451,9 +453,8 @@ private predicate localFlowStep(NodeEx node1, NodeEx node2, Configuration config
   stepFilter(node1, node2, config)
   or
   exists(Node n |
-    config.allowImplicitRead(n, _) and
     node1.asNode() = n and
-    node2.isImplicitReadNode(n, false) and
+    node2.isImplicitReadNode(n, false, config) and
     not fullBarrier(node1, config)
   )
 }
@@ -471,8 +472,7 @@ private predicate additionalLocalFlowStep(NodeEx node1, NodeEx node2, Configurat
   )
   or
   exists(Node n |
-    config.allowImplicitRead(n, _) and
-    node1.isImplicitReadNode(n, true) and
+    node1.isImplicitReadNode(n, true, config) and
     node2.asNode() = n and
     not fullBarrier(node2, config)
   )
@@ -540,8 +540,8 @@ private predicate readSet(NodeEx node1, ContentSet c, NodeEx node2, Configuratio
   stepFilter(node1, node2, config)
   or
   exists(Node n |
-    node2.isImplicitReadNode(n, true) and
-    node1.isImplicitReadNode(n, _) and
+    node2.isImplicitReadNode(n, true, config) and
+    node1.isImplicitReadNode(n, _, config) and
     config.allowImplicitRead(n, c)
   )
 }
@@ -2952,7 +2952,7 @@ abstract private class PathNodeImpl extends TPathNode {
       or
       this.getNodeEx().isReturnNode(_)
       or
-      this.getNodeEx().isImplicitReadNode(_, _)
+      this.getNodeEx().isImplicitReadNode(_, _, _)
     )
   }
 
