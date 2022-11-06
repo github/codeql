@@ -198,11 +198,10 @@ some_call(x)
 ## `WithElement`
 This component restricts the set of elements that are included in the preceding
 access path to to those at a specific set of indices. The specifiers are the
-same as those for `Element`.
+same as those for `Element`. It is only valid in an input path.
 
-When used in an input path this component has the effect of copying
-all relevant elements from the input to the output. For example, in the
-following summary:
+This component has the effect of copying all relevant elements from the input to
+the output. For example, in the following summary:
 
 ```ql
 input = "Argument[0].WithElement[1, 2]" and
@@ -220,17 +219,13 @@ output = "ReturnValue" and
 preservesValue = true
 ```
 
-TODO: I've not seen this component used in an output path; I don't know if it makes
-sense to do so, or what meaning it would have.
-
 ## `WithoutElement`
 This component is used to exclude certain elements from the set included in the
 preceding access path. It takes the same specifiers as `WithElement` and
-`Element`.
+`Element`. It is only valid in an input path.
 
-When used in an input path this component has the effect of excluding the
-relevant elements when copying from input to output. For example in the
-following summary:
+This component has the effect of excluding the relevant elements when copying
+from input to output. For example in the following summary:
 
 ```ql
 input = "Argument[0].WithoutElement[0]" and
@@ -239,8 +234,5 @@ output = "ReturnValue"
 
 any data in any index of the first argument will be copied to the return value,
 with the exception of data at index 0.
-
-TODO: I've not seen this component used in an output path; I don't know if it makes
-sense to do so, or what meaning it would have.
 
 [^1]: I've chosen this name to avoid overloading the word "argument".
