@@ -225,14 +225,29 @@ preceding access path. It takes the same specifiers as `WithElement` and
 `Element`. It is only valid in an input path.
 
 This component has the effect of excluding the relevant elements when copying
-from input to output. For example in the following summary:
+from input to output. It is useful for modelling methods that remove elements
+from a collection. For example to model a method that removes the first element
+from the receiver, we can do so like this:
 
 ```ql
-input = "Argument[0].WithoutElement[0]" and
-output = "ReturnValue"
+input = "Argument[self].WithoutElement[0]" and
+output = "Argument[self]"
 ```
 
-any data in any index of the first argument will be copied to the return value,
-with the exception of data at index 0.
+Note that both the input and output refer to the receiver. The effect of this
+summary is that use-use flow between the receiver in the method call and a
+subsequent use of the same receiver will be blocked:
+
+```ruby
+a[0] = source 0
+a[1] = source 1
+
+a.remove_first # use-use flow from `a` on this line to `a` below will be blocked.
+               # there will still be flow from `[post-update] a` to `a` below.
+
+sink a[0]
+sink a[1] # $ hasValueFlow=1
+```
+
 
 [^1]: I've chosen this name to avoid overloading the word "argument".
