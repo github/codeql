@@ -104,6 +104,17 @@ module ActiveSupport {
 
         override predicate runsArbitraryCode() { none() }
       }
+
+      /** Flow summary for `Object#to_json`, which serializes the receiver as a JSON string. */
+      private class ToJsonSummary extends SimpleSummarizedCallable {
+        ToJsonSummary() { this = "to_json" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = ["Argument[self]", "Argument[self].Element[any]"] and
+          output = "ReturnValue" and
+          preservesValue = false
+        }
+      }
     }
 
     /**

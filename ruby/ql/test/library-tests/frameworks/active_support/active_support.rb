@@ -324,3 +324,10 @@ def m_json_load
     x = source "a"
     sink ActiveSupport::JSON.load(x) # $hasTaintFlow=a
 end
+
+def m_to_json
+    x = source "a"
+    y = [x]
+    sink x.to_json # $hasTaintFlow=a
+    sink y.to_json # $hasTaintFlow=a
+end

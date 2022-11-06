@@ -197,6 +197,11 @@ edges
 | active_support.rb:320:35:320:35 | x :  | active_support.rb:320:10:320:36 | call to dump |
 | active_support.rb:324:9:324:18 | call to source :  | active_support.rb:325:35:325:35 | x :  |
 | active_support.rb:325:35:325:35 | x :  | active_support.rb:325:10:325:36 | call to load |
+| active_support.rb:329:9:329:18 | call to source :  | active_support.rb:330:10:330:10 | x :  |
+| active_support.rb:329:9:329:18 | call to source :  | active_support.rb:331:10:331:10 | x :  |
+| active_support.rb:330:10:330:10 | x :  | active_support.rb:332:10:332:10 | y [element 0] :  |
+| active_support.rb:331:10:331:10 | x :  | active_support.rb:331:10:331:18 | call to to_json |
+| active_support.rb:332:10:332:10 | y [element 0] :  | active_support.rb:332:10:332:18 | call to to_json |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  |
@@ -559,6 +564,12 @@ nodes
 | active_support.rb:324:9:324:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:325:10:325:36 | call to load | semmle.label | call to load |
 | active_support.rb:325:35:325:35 | x :  | semmle.label | x :  |
+| active_support.rb:329:9:329:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:330:10:330:10 | x :  | semmle.label | x :  |
+| active_support.rb:331:10:331:10 | x :  | semmle.label | x :  |
+| active_support.rb:331:10:331:18 | call to to_json | semmle.label | call to to_json |
+| active_support.rb:332:10:332:10 | y [element 0] :  | semmle.label | y [element 0] :  |
+| active_support.rb:332:10:332:18 | call to to_json | semmle.label | call to to_json |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | semmle.label | h [element :a] :  |
