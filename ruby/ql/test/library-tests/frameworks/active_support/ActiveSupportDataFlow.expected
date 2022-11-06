@@ -189,6 +189,14 @@ edges
 | active_support.rb:303:7:303:16 | call to source :  | active_support.rb:304:19:304:19 | a :  |
 | active_support.rb:304:7:304:19 | call to json_escape :  | active_support.rb:305:8:305:8 | b |
 | active_support.rb:304:19:304:19 | a :  | active_support.rb:304:7:304:19 | call to json_escape :  |
+| active_support.rb:309:9:309:18 | call to source :  | active_support.rb:310:37:310:37 | x :  |
+| active_support.rb:310:37:310:37 | x :  | active_support.rb:310:10:310:38 | call to encode |
+| active_support.rb:314:9:314:18 | call to source :  | active_support.rb:315:37:315:37 | x :  |
+| active_support.rb:315:37:315:37 | x :  | active_support.rb:315:10:315:38 | call to decode |
+| active_support.rb:319:9:319:18 | call to source :  | active_support.rb:320:35:320:35 | x :  |
+| active_support.rb:320:35:320:35 | x :  | active_support.rb:320:10:320:36 | call to dump |
+| active_support.rb:324:9:324:18 | call to source :  | active_support.rb:325:35:325:35 | x :  |
+| active_support.rb:325:35:325:35 | x :  | active_support.rb:325:10:325:36 | call to load |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  |
@@ -539,6 +547,18 @@ nodes
 | active_support.rb:304:7:304:19 | call to json_escape :  | semmle.label | call to json_escape :  |
 | active_support.rb:304:19:304:19 | a :  | semmle.label | a :  |
 | active_support.rb:305:8:305:8 | b | semmle.label | b |
+| active_support.rb:309:9:309:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:310:10:310:38 | call to encode | semmle.label | call to encode |
+| active_support.rb:310:37:310:37 | x :  | semmle.label | x :  |
+| active_support.rb:314:9:314:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:315:10:315:38 | call to decode | semmle.label | call to decode |
+| active_support.rb:315:37:315:37 | x :  | semmle.label | x :  |
+| active_support.rb:319:9:319:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:320:10:320:36 | call to dump | semmle.label | call to dump |
+| active_support.rb:320:35:320:35 | x :  | semmle.label | x :  |
+| active_support.rb:324:9:324:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:325:10:325:36 | call to load | semmle.label | call to load |
+| active_support.rb:325:35:325:35 | x :  | semmle.label | x :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | semmle.label | h [element :a] :  |

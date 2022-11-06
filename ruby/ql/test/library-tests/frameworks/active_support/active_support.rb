@@ -304,3 +304,23 @@ def m_json_escape
   b = json_escape a
   sink b # $hasTaintFlow=a
 end
+
+def m_json_encode
+    x = source "a"
+    sink ActiveSupport::JSON.encode(x) # $hasTaintFlow=a
+end
+
+def m_json_decode
+    x = source "a"
+    sink ActiveSupport::JSON.decode(x) # $hasTaintFlow=a
+end
+
+def m_json_dump
+    x = source "a"
+    sink ActiveSupport::JSON.dump(x) # $hasTaintFlow=a
+end
+
+def m_json_load
+    x = source "a"
+    sink ActiveSupport::JSON.load(x) # $hasTaintFlow=a
+end
