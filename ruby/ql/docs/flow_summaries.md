@@ -100,6 +100,47 @@ Any keyword argument to the call.
 
 #### `hash-splat`
 The special "hash splat" argument/parameter, which is written as `**args`.
+When used in an `Argument` component, this specifier refers to special dataflow
+node which is constructed at the call site, containing any elements in a hash
+splat argument (`**args`) along with any explicit keyword arguments (`foo:
+bar`). The node behaves like a normal dataflow node for a hash, meaning that you
+can access specific elements of it using the `Element` component.
+
+For example, the following flow summary states that values flow from any keyword
+arguments (including those in a hash splat) to the return value:
+
+```ql
+input = "Argument[hash-splat].Element[any]" and
+output = "ReturnValue" and
+preservesValue = true
+```
+
+Assuming this summary is for a global method `foo`, the following test will pass:
+
+```rb
+a = source "a"
+b = source "b"
+
+h = {a: a}
+
+x = foo(b: b, **h)
+
+sink x # $ hasValueFlow=a hasValueFlow=b
+```
+
+If the method returns the hash itself, you will need to use `WithElement` in
+order to preserve taint/value in its elements. For example:
+
+```ql
+input = "Argument[hash-splat].WithElement[any]" and
+output = "ReturnValue" and
+preservesValue = true
+```
+```rb
+a = source "a"
+x = foo(a: a)
+sink x[:a] # $ hasValueFlow=a
+```
 
 ## `ReturnValue`
 `ReturnValue` refers to the return value of the element identified in the
