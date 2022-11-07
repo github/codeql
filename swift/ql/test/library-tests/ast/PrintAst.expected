@@ -3403,7 +3403,6 @@ declarations.swift:
 #  144|     getElement(0): [CallExpr] call to id()
 #  144|       getFunction(): [MethodRefExpr] .id()
 #  144|         getBase(): [IntegerLiteralExpr] 42
-#  144| [Diagnostics] Diagnostics
 #  146| [ClassDecl] GenericClass
 #  146|   getGenericTypeParam(0): [GenericTypeParamDecl] A
 #  146|   getGenericTypeParam(1): [GenericTypeParamDecl] B
@@ -3482,11 +3481,6 @@ declarations.swift:
 #  173|     getElement(5): [IfConfigDecl] #if ...
 #  174|     getElement(6): [IntegerLiteralExpr] 9
 #  175|     getElement(7): [IntegerLiteralExpr] 10
-#  163| [Diagnostics] Diagnostics
-#  164| [Diagnostics] Diagnostics
-#  165| [Diagnostics] Diagnostics
-#  174| [Diagnostics] Diagnostics
-#  175| [Diagnostics] Diagnostics
 expressions.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }
@@ -3652,7 +3646,6 @@ expressions.swift:
 #   31|       getDest(): [DiscardAssignmentExpr] _
 #   31|       getSource(): [IntegerLiteralExpr] 15
 #   31|       getSource().getFullyConverted(): [IsExpr] ... is ...
-#   31| [Diagnostics] Diagnostics
 #   32| [TopLevelCodeDecl] { ... }
 #   32|   getBody(): [BraceStmt] { ... }
 #   32|     getElement(0): [AssignExpr]  ... = ...
@@ -3665,14 +3658,12 @@ expressions.swift:
 #   33|       getDest(): [DiscardAssignmentExpr] _
 #   33|       getSource(): [IntegerLiteralExpr] 15
 #   33|       getSource().getFullyConverted(): [ConditionalCheckedCastExpr] (Double?) ...
-#   33| [Diagnostics] Diagnostics
 #   34| [TopLevelCodeDecl] { ... }
 #   34|   getBody(): [BraceStmt] { ... }
 #   34|     getElement(0): [AssignExpr]  ... = ...
 #   34|       getDest(): [DiscardAssignmentExpr] _
 #   34|       getSource(): [IntegerLiteralExpr] 15
 #   34|       getSource().getFullyConverted(): [ForcedCheckedCastExpr] (Double) ...
-#   34| [Diagnostics] Diagnostics
 #   35| [TopLevelCodeDecl] { ... }
 #   35|   getBody(): [BraceStmt] { ... }
 #   35|     getElement(0): [CallExpr] call to print(_:separator:terminator:)
@@ -3689,10 +3680,6 @@ expressions.swift:
 #   35|         getExpr(): [DefaultArgumentExpr] default separator
 #   35|       getArgument(2): [Argument] terminator: default terminator
 #   35|         getExpr(): [DefaultArgumentExpr] default terminator
-#   35| [Diagnostics] Diagnostics
-#   35| [Diagnostics] Diagnostics
-#   35| [Diagnostics] Diagnostics
-#   35| [Diagnostics] Diagnostics
 #   37| [ConcreteFuncDecl] closured(closure:)
 #   37|     InterfaceType = ((Int, Int) -> Int) -> ()
 #   37|   getParam(0): [ParamDecl] closure
@@ -3704,7 +3691,6 @@ expressions.swift:
 #   38|         getExpr(): [IntegerLiteralExpr] 5
 #   38|       getArgument(1): [Argument] : 7
 #   38|         getExpr(): [IntegerLiteralExpr] 7
-#   38| [Diagnostics] Diagnostics
 #   41| [TopLevelCodeDecl] { ... }
 #   41|   getBody(): [BraceStmt] { ... }
 #   41|     getElement(0): [CallExpr] call to closured(closure:)
@@ -3970,7 +3956,6 @@ expressions.swift:
 #   87|   getBody(): [BraceStmt] { ... }
 #   87|     getElement(0): [ForceValueExpr] ...!
 #   87|       getSubExpr(): [DeclRefExpr] opt
-#   87| [Diagnostics] Diagnostics
 #   88| [TopLevelCodeDecl] { ... }
 #   88|   getBody(): [BraceStmt] { ... }
 #   88|     getElement(0): [ForceValueExpr] ...!
@@ -3978,7 +3963,6 @@ expressions.swift:
 #   88|         getBase(): [DeclRefExpr] d
 #   88|         getArgument(0): [Argument] : a
 #   88|           getExpr(): [StringLiteralExpr] a
-#   88| [Diagnostics] Diagnostics
 #   90| [ClassDecl] ToPtr
 #   90|   getMember(0): [DestructorDecl] deinit()
 #   90|       InterfaceType = (ToPtr) -> () -> ()
@@ -4019,7 +4003,6 @@ expressions.swift:
 #   93|       getArgument(0): [Argument] : opaque
 #   93|         getExpr(): [DeclRefExpr] opaque
 #   93|         getExpr().getFullyConverted(): [PointerToPointerExpr] (UnsafeRawPointer) ...
-#   93| [Diagnostics] Diagnostics
 #   95| [StructDecl] HasProperty
 #   96|   getMember(0): [PatternBindingDecl] var ... = ...
 #   96|     getPattern(0): [TypedPattern] ... as ...
@@ -4208,10 +4191,6 @@ expressions.swift:
 #  138|           getExpr(): [IntegerLiteralExpr] 3
 #  138|         getArgument(1): [Argument] : 4
 #  138|           getExpr(): [IntegerLiteralExpr] 4
-#  132| [Diagnostics] Diagnostics
-#  133| [Diagnostics] Diagnostics
-#  134| [Diagnostics] Diagnostics
-#  136| [Diagnostics] Diagnostics
 #  141| [StructDecl] B
 #  142|   getMember(0): [PatternBindingDecl] var ... = ...
 #  142|     getPattern(0): [TypedPattern] ... as ...
@@ -4420,9 +4399,6 @@ expressions.swift:
 #  163|           getExpr(): [IntegerLiteralExpr] 1
 #  163|         getArgument(1): [Argument] : 0
 #  163|           getExpr(): [IntegerLiteralExpr] 0
-#  152| [Diagnostics] Diagnostics
-#  153| [Diagnostics] Diagnostics
-#  154| [Diagnostics] Diagnostics
 patterns.swift:
 #    1| [ConcreteFuncDecl] basic_patterns()
 #    1|     InterfaceType = () -> ()
@@ -4461,11 +4437,6 @@ patterns.swift:
 #    6|       getInit(0): [StringLiteralExpr] paren
 #    6|       getPattern(0): [AnyPattern] _
 #    6|       getPattern(0).getFullyUnresolved(): [ParenPattern] (...)
-#    2| [Diagnostics] Diagnostics
-#    3| [Diagnostics] Diagnostics
-#    4| [Diagnostics] Diagnostics
-#    4| [Diagnostics] Diagnostics
-#    4| [Diagnostics] Diagnostics
 #    9| [ConcreteFuncDecl] switch_patterns()
 #    9|     InterfaceType = () -> ()
 #    9|   getBody(): [BraceStmt] { ... }
@@ -4604,38 +4575,16 @@ patterns.swift:
 #   50|           getPattern(): [BoolPattern] false
 #   12| [ConcreteVarDecl] xx
 #   12|     Type = Int
-#   12| [Diagnostics] Diagnostics
 #   12| [ConcreteVarDecl] yy
 #   12|     Type = Int
-#   12| [Diagnostics] Diagnostics
-#   12| [Diagnostics] Diagnostics
-#   15| [Diagnostics] Diagnostics
-#   16| [Diagnostics] Diagnostics
-#   17| [Diagnostics] Diagnostics
-#   17| [Diagnostics] Diagnostics
-#   26| [Diagnostics] Diagnostics
-#   27| [Diagnostics] Diagnostics
-#   28| [Diagnostics] Diagnostics
 #   28| [ConcreteVarDecl] i
 #   28|     Type = Int
 #   28| [ConcreteVarDecl] s
 #   28|     Type = String
-#   28| [Diagnostics] Diagnostics
-#   28| [Diagnostics] Diagnostics
-#   33| [Diagnostics] Diagnostics
 #   34| [ConcreteVarDecl] n
 #   34|     Type = Int
-#   34| [Diagnostics] Diagnostics
-#   34| [Diagnostics] Diagnostics
-#   35| [Diagnostics] Diagnostics
-#   41| [Diagnostics] Diagnostics
 #   42| [ConcreteVarDecl] x
 #   42|     Type = String
-#   42| [Diagnostics] Diagnostics
-#   42| [Diagnostics] Diagnostics
-#   43| [Diagnostics] Diagnostics
-#   49| [Diagnostics] Diagnostics
-#   50| [Diagnostics] Diagnostics
 statements.swift:
 #    1| [ConcreteFuncDecl] loop()
 #    1|     InterfaceType = () -> ()
@@ -4928,7 +4877,6 @@ statements.swift:
 #   65|               getSubPattern(): [NamedPattern] xx
 #   65|           getInitializer(): [DeclRefExpr] x
 #   65|       getThen(): [BraceStmt] { ... }
-#   65| [Diagnostics] Diagnostics
 #   67| [TopLevelCodeDecl] { ... }
 #   67|   getBody(): [BraceStmt] { ... }
 #   67|     getElement(0): [IfStmt] if ... then { ... }
