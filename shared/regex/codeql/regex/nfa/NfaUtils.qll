@@ -164,19 +164,20 @@ module Make<RegexTreeViewSig TreeImpl> {
   private predicate isCanonicalTerm(RelevantRegExpTerm term, string str) {
     term =
       min(RelevantRegExpTerm t |
-        str = t.getRawValue() + "|" + getCanonicalizationFlags(t.getRootTerm())
+        str = getCanonicalizationString(t)
       |
         t order by getTermLocationString(t)
       )
   }
 
   /**
-   * Gets a string representation of the flags used with the regular expression.
-   * Only the flags that are relevant for the canonicalization are included.
+   * Gets a string representation of `term` that is used for canonicalization.
    */
-  string getCanonicalizationFlags(RegExpTerm root) {
-    root.isRootTerm() and
-    (if isIgnoreCase(root) then result = "i" else result = "")
+  private string getCanonicalizationString(RelevantRegExpTerm term) {
+    exists(string ignoreCase |
+      (if isIgnoreCase(term.getRootTerm()) then ignoreCase = "i" else ignoreCase = "") and
+      result = term.getRawValue() + "|" + ignoreCase
+    )
   }
 
   /**
@@ -221,10 +222,17 @@ module Make<RegexTreeViewSig TreeImpl> {
     Epsilon()
 
   /**
-   * Gets the canonical CharClass for `term`.
+   * Gets the the CharClass corresponding to the canonical representative `term`.
    */
-  CharClass getCanonicalCharClass(RegExpTerm term) {
+  private CharClass getCharClassForCanonicalTerm(RegExpTerm term) {
     exists(string str | isCanonicalTerm(term, str) | result = CharClass(str))
+  }
+
+  /**
+   * Gets a char class that represents `term`, even when `term` is not the canonical representative.
+   */
+  CharacterClass getCanonicalCharClass(RegExpTerm term) {
+    exists(string str | str = getCanonicalizationString(term) and result = CharClass(str))
   }
 
   /**
@@ -319,7 +327,7 @@ module Make<RegexTreeViewSig TreeImpl> {
      */
     pragma[noinline]
     predicate hasChildThatMatchesIgnoringCasingFlags(RegExpCharacterClass cc, string char) {
-      exists(getCanonicalCharClass(cc)) and
+      exists(getCharClassForCanonicalTerm(cc)) and
       exists(RegExpTerm child | child = cc.getAChild() |
         char = child.(RegexpCharacterConstant).getValue()
         or
@@ -420,7 +428,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     private class PositiveCharacterClass extends CharacterClass {
       RegExpCharacterClass cc;
 
-      PositiveCharacterClass() { this = getCanonicalCharClass(cc) and not cc.isInverted() }
+      PositiveCharacterClass() { this = getCharClassForCanonicalTerm(cc) and not cc.isInverted() }
 
       override string getARelevantChar() { result = caseNormalize(getAMentionedChar(cc), cc) }
 
@@ -433,7 +441,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     private class InvertedCharacterClass extends CharacterClass {
       RegExpCharacterClass cc;
 
-      InvertedCharacterClass() { this = getCanonicalCharClass(cc) and cc.isInverted() }
+      InvertedCharacterClass() { this = getCharClassForCanonicalTerm(cc) and cc.isInverted() }
 
       override string getARelevantChar() {
         result = nextChar(caseNormalize(getAMentionedChar(cc), cc)) or
@@ -468,7 +476,7 @@ module Make<RegexTreeViewSig TreeImpl> {
 
       PositiveCharacterClassEscape() {
         isEscapeClass(cc, charClass) and
-        this = getCanonicalCharClass(cc) and
+        this = getCharClassForCanonicalTerm(cc) and
         charClass = ["d", "s", "w"]
       }
 
@@ -508,7 +516,7 @@ module Make<RegexTreeViewSig TreeImpl> {
       NegativeCharacterClassEscape() {
         exists(RegExpTerm cc |
           isEscapeClass(cc, charClass) and
-          this = getCanonicalCharClass(cc) and
+          this = getCharClassForCanonicalTerm(cc) and
           charClass = ["D", "S", "W"]
         )
       }
@@ -703,17 +711,13 @@ module Make<RegexTreeViewSig TreeImpl> {
       cc.isUniversalClass() and q1 = before(cc) and lbl = Any() and q2 = after(cc)
       or
       q1 = before(cc) and
-      lbl =
-        CharacterClasses::normalize(CharClass(cc.getRawValue() + "|" +
-              getCanonicalizationFlags(cc.getRootTerm()))) and
+      lbl = CharacterClasses::normalize(CharClass(getCanonicalizationString(cc))) and
       q2 = after(cc)
     )
     or
     exists(RegExpTerm cc | isEscapeClass(cc, _) |
       q1 = before(cc) and
-      lbl =
-        CharacterClasses::normalize(CharClass(cc.getRawValue() + "|" +
-              getCanonicalizationFlags(cc.getRootTerm()))) and
+      lbl = CharacterClasses::normalize(CharClass(getCanonicalizationString(cc))) and
       q2 = after(cc)
     )
     or
