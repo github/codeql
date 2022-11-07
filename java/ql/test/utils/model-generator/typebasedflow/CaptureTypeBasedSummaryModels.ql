@@ -10,7 +10,7 @@ private string flows() { exists(TypeBasedFlowTargetApi api | result = captureFlo
 query predicate unexpectedSummary(string msg) {
   exists(string flow |
     flow = flows() and
-    not exists(string e | e = expects() and e = flow) and
+    not flow = expects() and
     msg = "Unexpected summary found: " + flow
   )
 }
@@ -18,7 +18,7 @@ query predicate unexpectedSummary(string msg) {
 query predicate expectedSummary(string msg) {
   exists(string e |
     e = expects() and
-    not exists(string flow | flow = flows() and e = flow) and
+    not e = flows() and
     msg = "Expected summary missing: " + e
   )
 }
