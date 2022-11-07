@@ -159,7 +159,7 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
       )
       or
       not exists(this.getDeclaringType()) and
-      qualifier = this.getNamespace().getQualifiedName() and
+      qualifier = this.getNamespace().getFullName() and
       name0 = this.getUndecoratedName()
     )
   }
@@ -424,7 +424,7 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
       )
       or
       not exists(this.getDeclaringType()) and
-      qualifier = this.getNamespace().getQualifiedName() and
+      qualifier = this.getNamespace().getFullName() and
       name0 = this.getUndecoratedName()
     )
   }
@@ -594,8 +594,8 @@ class ConstructedMethod extends Method, ConstructedGeneric {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
-  override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = this.getDeclaringType().getQualifiedName() and
+  override predicate hasQualifiedName(string qualifier, string type, string name) {
+    this.getDeclaringType().hasQualifiedName(qualifier, type) and
     name = this.getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(this) + ">"
   }
 

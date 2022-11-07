@@ -4,6 +4,7 @@
 
 import CIL
 private import dotnet
+private import semmle.code.csharp.Printing
 
 /**
  * Something that contains other types.
@@ -52,7 +53,9 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
 
   override predicate hasQualifiedName(string qualifier, string name) {
     name = this.getName() and
-    qualifier = this.getParent().getQualifiedName()
+    exists(string pqualifier, string pname | this.getParent().hasQualifiedName(pqualifier, pname) |
+      qualifier = printQualifiedName(pqualifier, pname)
+    )
   }
 
   override Location getALocation() { cil_type_location(this.getUnboundDeclaration(), result) }

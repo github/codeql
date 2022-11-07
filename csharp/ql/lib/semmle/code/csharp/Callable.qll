@@ -459,6 +459,11 @@ class Operator extends Callable, Member, Attributable, @operator {
     super.hasQualifiedName(qualifier, _) and
     name = this.getFunctionName()
   }
+
+  override predicate hasQualifiedName(string namespace, string type, string name) {
+    super.hasQualifiedName(namespace, type, _) and
+    name = this.getFunctionName()
+  }
 }
 
 /** A clone method on a record. */
@@ -996,7 +1001,10 @@ class LocalFunction extends Callable, Modifiable, Attributable, @local_function 
   override Callable getEnclosingCallable() { result = this.getStatement().getEnclosingCallable() }
 
   override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = this.getEnclosingCallable().getQualifiedName() and
+    exists(string cqualifier, string type |
+      this.getEnclosingCallable().hasQualifiedName(cqualifier, type) and
+      qualifier = printQualifiedName(cqualifier, type)
+    ) and
     name = this.getName()
   }
 
