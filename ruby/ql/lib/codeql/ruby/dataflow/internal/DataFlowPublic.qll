@@ -896,7 +896,7 @@ class ModuleNode instanceof Module {
    * Does not take inheritance into account.
    */
   Node getAnOwnInstanceVariableWriteValue(string name) {
-    exists(Assignment assignment |
+    exists(AssignExpr assignment |
       assignment.getLeftOperand() = this.getAnOwnInstanceVariableAccess(name) and
       result.asExpr().getExpr() = assignment.getRightOperand()
     )
