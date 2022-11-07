@@ -305,6 +305,7 @@ class ExplicitCastExpr(Expr):
 class ForceValueExpr(Expr):
     sub_expr: Expr | child
 
+@qltest.collapse_hierarchy
 class IdentityExpr(Expr):
     sub_expr: Expr | child
 
@@ -787,7 +788,7 @@ class TypeRepr(AstNode):
 class AnyFunctionType(Type):
     result: Type
     param_types: list[Type]
-    param_labels: list[string]
+    param_labels: list[optional[string]]
     is_throwing: predicate | doc("this type refers to a throwing function")
     is_async: predicate | doc("this type refers to an `async` function")
 
@@ -803,7 +804,7 @@ class BuiltinType(Type):
     pass
 
 class DependentMemberType(Type):
-    baseType: Type
+    base_type: Type
     associated_type_decl: AssociatedTypeDecl
 
 class DynamicSelfType(Type):
@@ -853,7 +854,7 @@ class SugarType(Type):
 
 class TupleType(Type):
     types: list[Type]
-    names: list[string]
+    names: list[optional[string]]
 
 class TypeVariableType(Type):
     pass

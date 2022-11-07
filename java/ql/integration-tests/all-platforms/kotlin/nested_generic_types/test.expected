@@ -99,41 +99,41 @@ callArgs
 | KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | -2 |
 | KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:69:15:100 | InnerManyParams<Long,Short> | -3 |
 | KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:85:15:86 | 1 | 0 |
-| KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:91:15:99 | shortValue(...) | 1 |
-| KotlinUser.kt:15:91:15:99 | shortValue(...) | KotlinUser.kt:15:89:15:89 | 1 | -1 |
-| KotlinUser.kt:17:21:17:44 | returnsecond(...) | KotlinUser.kt:17:19:17:19 | a | -1 |
-| KotlinUser.kt:17:21:17:44 | returnsecond(...) | KotlinUser.kt:17:34:17:34 | 0 | 0 |
-| KotlinUser.kt:17:21:17:44 | returnsecond(...) | KotlinUser.kt:17:38:17:42 | hello | 1 |
-| KotlinUser.kt:18:22:18:50 | returnsecond(...) | KotlinUser.kt:18:20:18:20 | a | -1 |
-| KotlinUser.kt:18:22:18:50 | returnsecond(...) | KotlinUser.kt:18:22:18:50 | Character | -2 |
-| KotlinUser.kt:18:22:18:50 | returnsecond(...) | KotlinUser.kt:18:35:18:35 | 0 | 0 |
-| KotlinUser.kt:18:22:18:50 | returnsecond(...) | KotlinUser.kt:18:39:18:43 | hello | 1 |
-| KotlinUser.kt:18:22:18:50 | returnsecond(...) | KotlinUser.kt:18:47:18:49 | a | 2 |
-| KotlinUser.kt:19:21:19:31 | identity(...) | KotlinUser.kt:19:19:19:19 | b | -1 |
-| KotlinUser.kt:19:21:19:31 | identity(...) | KotlinUser.kt:19:30:19:30 | 5 | 0 |
-| KotlinUser.kt:20:23:20:39 | identity(...) | KotlinUser.kt:20:20:20:21 | b2 | -1 |
-| KotlinUser.kt:20:23:20:39 | identity(...) | KotlinUser.kt:20:33:20:37 | hello | 0 |
-| KotlinUser.kt:21:21:21:37 | identity(...) | KotlinUser.kt:21:19:21:19 | c | -1 |
-| KotlinUser.kt:21:21:21:37 | identity(...) | KotlinUser.kt:21:31:21:35 | world | 0 |
-| KotlinUser.kt:22:21:22:39 | identity(...) | KotlinUser.kt:22:19:22:19 | d | -1 |
-| KotlinUser.kt:22:21:22:39 | identity(...) | KotlinUser.kt:22:31:22:37 | goodbye | 0 |
-| KotlinUser.kt:23:21:23:71 | returnSixth(...) | KotlinUser.kt:23:19:23:19 | e | -1 |
-| KotlinUser.kt:23:21:23:71 | returnSixth(...) | KotlinUser.kt:23:33:23:33 | 1 | 0 |
-| KotlinUser.kt:23:21:23:71 | returnSixth(...) | KotlinUser.kt:23:37:23:41 | hello | 1 |
-| KotlinUser.kt:23:21:23:71 | returnSixth(...) | KotlinUser.kt:23:45:23:48 | 1.0 | 2 |
-| KotlinUser.kt:23:21:23:71 | returnSixth(...) | KotlinUser.kt:23:51:23:53 | 1.0 | 3 |
-| KotlinUser.kt:23:21:23:71 | returnSixth(...) | KotlinUser.kt:23:56:23:57 | 1 | 4 |
-| KotlinUser.kt:23:21:23:71 | returnSixth(...) | KotlinUser.kt:23:62:23:70 | shortValue(...) | 5 |
-| KotlinUser.kt:23:62:23:70 | shortValue(...) | KotlinUser.kt:23:60:23:60 | 1 | -1 |
+| KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:89:15:99 | shortValue(...) | 1 |
+| KotlinUser.kt:15:89:15:99 | shortValue(...) | KotlinUser.kt:15:89:15:89 | 1 | -1 |
+| KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:19:17:19 | a | -1 |
+| KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:34:17:34 | 0 | 0 |
+| KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:38:17:42 | hello | 1 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:20:18:20 | a | -1 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:20:18:50 | Character | -2 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:35:18:35 | 0 | 0 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:39:18:43 | hello | 1 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:47:18:49 | a | 2 |
+| KotlinUser.kt:19:19:19:31 | identity(...) | KotlinUser.kt:19:19:19:19 | b | -1 |
+| KotlinUser.kt:19:19:19:31 | identity(...) | KotlinUser.kt:19:30:19:30 | 5 | 0 |
+| KotlinUser.kt:20:20:20:39 | identity(...) | KotlinUser.kt:20:20:20:21 | b2 | -1 |
+| KotlinUser.kt:20:20:20:39 | identity(...) | KotlinUser.kt:20:33:20:37 | hello | 0 |
+| KotlinUser.kt:21:19:21:37 | identity(...) | KotlinUser.kt:21:19:21:19 | c | -1 |
+| KotlinUser.kt:21:19:21:37 | identity(...) | KotlinUser.kt:21:31:21:35 | world | 0 |
+| KotlinUser.kt:22:19:22:39 | identity(...) | KotlinUser.kt:22:19:22:19 | d | -1 |
+| KotlinUser.kt:22:19:22:39 | identity(...) | KotlinUser.kt:22:31:22:37 | goodbye | 0 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:19:23:19 | e | -1 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:33:23:33 | 1 | 0 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:37:23:41 | hello | 1 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:45:23:48 | 1.0 | 2 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:51:23:53 | 1.0 | 3 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:56:23:57 | 1 | 4 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:60:23:70 | shortValue(...) | 5 |
+| KotlinUser.kt:23:60:23:70 | shortValue(...) | KotlinUser.kt:23:60:23:60 | 1 | -1 |
 | KotlinUser.kt:25:27:25:48 | new OuterGeneric<String>(...) | KotlinUser.kt:25:27:25:48 | OuterGeneric<String> | -3 |
-| KotlinUser.kt:25:50:25:69 | getInnerNotGeneric(...) | KotlinUser.kt:25:27:25:48 | new OuterGeneric<String>(...) | -1 |
+| KotlinUser.kt:25:27:25:69 | getInnerNotGeneric(...) | KotlinUser.kt:25:27:25:48 | new OuterGeneric<String>(...) | -1 |
 | KotlinUser.kt:26:28:26:44 | new OuterNotGeneric(...) | KotlinUser.kt:26:28:26:44 | OuterNotGeneric | -3 |
-| KotlinUser.kt:26:46:26:62 | getInnerGeneric(...) | KotlinUser.kt:26:28:26:44 | new OuterNotGeneric(...) | -1 |
+| KotlinUser.kt:26:28:26:62 | getInnerGeneric(...) | KotlinUser.kt:26:28:26:44 | new OuterNotGeneric(...) | -1 |
 | KotlinUser.kt:28:15:28:43 | new TypeParamVisibility<String>(...) | KotlinUser.kt:28:15:28:43 | TypeParamVisibility<String> | -3 |
-| KotlinUser.kt:29:35:29:58 | getVisibleBecauseInner(...) | KotlinUser.kt:29:31:29:33 | tpv | -1 |
-| KotlinUser.kt:30:43:30:74 | getVisibleBecauseInnerIndirect(...) | KotlinUser.kt:30:39:30:41 | tpv | -1 |
-| KotlinUser.kt:31:39:31:66 | getNotVisibleBecauseStatic(...) | KotlinUser.kt:31:35:31:37 | tpv | -1 |
-| KotlinUser.kt:32:47:32:82 | getNotVisibleBecauseStaticIndirect(...) | KotlinUser.kt:32:43:32:45 | tpv | -1 |
+| KotlinUser.kt:29:31:29:58 | getVisibleBecauseInner(...) | KotlinUser.kt:29:31:29:33 | tpv | -1 |
+| KotlinUser.kt:30:39:30:74 | getVisibleBecauseInnerIndirect(...) | KotlinUser.kt:30:39:30:41 | tpv | -1 |
+| KotlinUser.kt:31:35:31:66 | getNotVisibleBecauseStatic(...) | KotlinUser.kt:31:35:31:37 | tpv | -1 |
+| KotlinUser.kt:32:43:32:82 | getNotVisibleBecauseStaticIndirect(...) | KotlinUser.kt:32:43:32:45 | tpv | -1 |
 genericTypes
 | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | S |
 | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | S |
@@ -275,19 +275,19 @@ nestedTypes
 | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer<> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<> |
 | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer<> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> |
 javaKotlinCalleeAgreement
-| JavaUser.java:16:22:16:47 | returnsecond(...) | KotlinUser.kt:17:21:17:44 | returnsecond(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond |
-| JavaUser.java:17:23:17:53 | returnsecond(...) | KotlinUser.kt:18:22:18:50 | returnsecond(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond |
-| JavaUser.java:18:23:18:35 | identity(...) | KotlinUser.kt:19:21:19:31 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity |
-| JavaUser.java:19:23:19:42 | identity(...) | KotlinUser.kt:20:23:20:39 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity |
-| JavaUser.java:20:22:20:40 | identity(...) | KotlinUser.kt:21:21:21:37 | identity(...) | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | identity |
-| JavaUser.java:21:22:21:42 | identity(...) | KotlinUser.kt:22:21:22:39 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | identity |
-| JavaUser.java:22:21:22:70 | returnSixth(...) | KotlinUser.kt:23:21:23:71 | returnSixth(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | returnSixth |
-| JavaUser.java:24:60:24:108 | getInnerNotGeneric(...) | KotlinUser.kt:25:50:25:69 | getInnerNotGeneric(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | getInnerNotGeneric |
-| JavaUser.java:25:61:25:101 | getInnerGeneric(...) | KotlinUser.kt:26:46:26:62 | getInnerGeneric(...) | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | getInnerGeneric |
-| JavaUser.java:28:83:28:110 | getVisibleBecauseInner(...) | KotlinUser.kt:29:35:29:58 | getVisibleBecauseInner(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInner |
-| JavaUser.java:29:136:29:171 | getVisibleBecauseInnerIndirect(...) | KotlinUser.kt:30:43:30:74 | getVisibleBecauseInnerIndirect(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInnerIndirect |
-| JavaUser.java:30:83:30:114 | getNotVisibleBecauseStatic(...) | KotlinUser.kt:31:39:31:66 | getNotVisibleBecauseStatic(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStatic |
-| JavaUser.java:31:140:31:179 | getNotVisibleBecauseStaticIndirect(...) | KotlinUser.kt:32:47:32:82 | getNotVisibleBecauseStaticIndirect(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStaticIndirect |
+| JavaUser.java:16:22:16:47 | returnsecond(...) | KotlinUser.kt:17:19:17:44 | returnsecond(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond |
+| JavaUser.java:17:23:17:53 | returnsecond(...) | KotlinUser.kt:18:20:18:50 | returnsecond(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond |
+| JavaUser.java:18:23:18:35 | identity(...) | KotlinUser.kt:19:19:19:31 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity |
+| JavaUser.java:19:23:19:42 | identity(...) | KotlinUser.kt:20:20:20:39 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity |
+| JavaUser.java:20:22:20:40 | identity(...) | KotlinUser.kt:21:19:21:37 | identity(...) | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | identity |
+| JavaUser.java:21:22:21:42 | identity(...) | KotlinUser.kt:22:19:22:39 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | identity |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | KotlinUser.kt:23:19:23:71 | returnSixth(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | returnSixth |
+| JavaUser.java:24:60:24:108 | getInnerNotGeneric(...) | KotlinUser.kt:25:27:25:69 | getInnerNotGeneric(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | getInnerNotGeneric |
+| JavaUser.java:25:61:25:101 | getInnerGeneric(...) | KotlinUser.kt:26:28:26:62 | getInnerGeneric(...) | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | getInnerGeneric |
+| JavaUser.java:28:83:28:110 | getVisibleBecauseInner(...) | KotlinUser.kt:29:31:29:58 | getVisibleBecauseInner(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInner |
+| JavaUser.java:29:136:29:171 | getVisibleBecauseInnerIndirect(...) | KotlinUser.kt:30:39:30:74 | getVisibleBecauseInnerIndirect(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInnerIndirect |
+| JavaUser.java:30:83:30:114 | getNotVisibleBecauseStatic(...) | KotlinUser.kt:31:35:31:66 | getNotVisibleBecauseStatic(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStatic |
+| JavaUser.java:31:140:31:179 | getNotVisibleBecauseStaticIndirect(...) | KotlinUser.kt:32:43:32:82 | getNotVisibleBecauseStaticIndirect(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStaticIndirect |
 javaKotlinConstructorAgreement
 | JavaUser.java:7:52:7:110 | new InnerGeneric<String>(...) | KotlinUser.kt:9:33:9:63 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
 | JavaUser.java:7:53:7:79 | new OuterGeneric<Integer>(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |

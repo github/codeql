@@ -918,6 +918,14 @@ edges
 | J.cs:106:14:106:15 | access to local variable a3 [property X] : Object | J.cs:106:14:106:17 | access to property X |
 | J.cs:107:14:107:15 | access to local variable a3 [property Y] : Object | J.cs:107:14:107:17 | access to property Y |
 | J.cs:107:14:107:15 | access to local variable a3 [property Y] : Object | J.cs:107:14:107:17 | access to property Y |
+| J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 | J.cs:125:14:125:14 | access to local variable a [element] : Int32 |
+| J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 | J.cs:125:14:125:14 | access to local variable a [element] : Int32 |
+| J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 |
+| J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 |
+| J.cs:125:14:125:14 | access to local variable a [element] : Int32 | J.cs:125:14:125:17 | access to array element : Int32 |
+| J.cs:125:14:125:14 | access to local variable a [element] : Int32 | J.cs:125:14:125:17 | access to array element : Int32 |
+| J.cs:125:14:125:17 | access to array element : Int32 | J.cs:125:14:125:17 | (...) ... |
+| J.cs:125:14:125:17 | access to array element : Int32 | J.cs:125:14:125:17 | (...) ... |
 nodes
 | A.cs:5:17:5:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
 | A.cs:5:17:5:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
@@ -1925,6 +1933,16 @@ nodes
 | J.cs:107:14:107:15 | access to local variable a3 [property Y] : Object | semmle.label | access to local variable a3 [property Y] : Object |
 | J.cs:107:14:107:17 | access to property Y | semmle.label | access to property Y |
 | J.cs:107:14:107:17 | access to property Y | semmle.label | access to property Y |
+| J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 | semmle.label | [post] access to local variable a [element] : Int32 |
+| J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 | semmle.label | [post] access to local variable a [element] : Int32 |
+| J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | semmle.label | call to method Source<Int32> : Int32 |
+| J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | semmle.label | call to method Source<Int32> : Int32 |
+| J.cs:125:14:125:14 | access to local variable a [element] : Int32 | semmle.label | access to local variable a [element] : Int32 |
+| J.cs:125:14:125:14 | access to local variable a [element] : Int32 | semmle.label | access to local variable a [element] : Int32 |
+| J.cs:125:14:125:17 | (...) ... | semmle.label | (...) ... |
+| J.cs:125:14:125:17 | (...) ... | semmle.label | (...) ... |
+| J.cs:125:14:125:17 | access to array element : Int32 | semmle.label | access to array element : Int32 |
+| J.cs:125:14:125:17 | access to array element : Int32 | semmle.label | access to array element : Int32 |
 subpaths
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B [field c] : C | A.cs:6:17:6:25 | call to method Make [field c] : C |
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B [field c] : C | A.cs:6:17:6:25 | call to method Make [field c] : C |
@@ -2101,3 +2119,4 @@ subpaths
 | J.cs:102:14:102:17 | access to property X | J.cs:97:17:97:33 | call to method Source<Object> : Object | J.cs:102:14:102:17 | access to property X | $@ | J.cs:97:17:97:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | J.cs:106:14:106:17 | access to property X | J.cs:97:17:97:33 | call to method Source<Object> : Object | J.cs:106:14:106:17 | access to property X | $@ | J.cs:97:17:97:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | J.cs:107:14:107:17 | access to property Y | J.cs:105:32:105:48 | call to method Source<Object> : Object | J.cs:107:14:107:17 | access to property Y | $@ | J.cs:105:32:105:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| J.cs:125:14:125:17 | (...) ... | J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | J.cs:125:14:125:17 | (...) ... | $@ | J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | call to method Source<Int32> : Int32 |

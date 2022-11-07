@@ -17,15 +17,12 @@ nodes
 | test.cpp:16:25:16:42 | call to getenv | semmle.label | call to getenv |
 | test.cpp:20:14:20:20 | address | semmle.label | address |
 | test.cpp:20:14:20:20 | address | semmle.label | address |
-| test.cpp:20:14:20:20 | address | semmle.label | address |
 | test.cpp:27:25:27:30 | call to getenv | semmle.label | call to getenv |
 | test.cpp:27:25:27:42 | call to getenv | semmle.label | call to getenv |
 | test.cpp:31:14:31:20 | address | semmle.label | address |
 | test.cpp:31:14:31:20 | address | semmle.label | address |
-| test.cpp:31:14:31:20 | address | semmle.label | address |
 | test.cpp:38:25:38:30 | call to getenv | semmle.label | call to getenv |
 | test.cpp:38:25:38:42 | call to getenv | semmle.label | call to getenv |
-| test.cpp:42:14:42:20 | address | semmle.label | address |
 | test.cpp:42:14:42:20 | address | semmle.label | address |
 | test.cpp:42:14:42:20 | address | semmle.label | address |
 #select

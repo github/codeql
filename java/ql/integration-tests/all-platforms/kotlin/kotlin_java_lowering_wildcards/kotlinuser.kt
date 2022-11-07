@@ -7,4 +7,6 @@ fun user() {
   JavaDefns.takesArrayOfComparable(acs, acs)
 
   val constructed = JavaDefns(cs, cs)
+
+  JavaDefns2.takesComparable(cs, cs)
 }

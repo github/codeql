@@ -85,7 +85,7 @@ class ParameterPosition = Position;
 /** An argument position represented by an integer. */
 class ArgumentPosition = Position;
 
-class Position extends TPosition {
+abstract class Position extends TPosition {
   abstract string toString();
 }
 
@@ -94,7 +94,13 @@ class DirectPosition extends Position, TDirectPosition {
 
   DirectPosition() { this = TDirectPosition(index) }
 
-  override string toString() { if index = -1 then result = "this" else result = index.toString() }
+  override string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
 
   int getIndex() { result = index }
 }

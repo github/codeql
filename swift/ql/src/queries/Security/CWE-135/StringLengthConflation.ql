@@ -94,9 +94,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
    * that sink. We actually want to report incorrect flow states.
    */
   predicate isSinkImpl(DataFlow::Node node, string flowstate) {
-    exists(
-      AbstractFunctionDecl funcDecl, CallExpr call, string funcName, string paramName, int arg
-    |
+    exists(AbstractFunctionDecl funcDecl, CallExpr call, string funcName, int arg |
       (
         // arguments to method calls...
         exists(string className, ClassOrStructDecl c |
@@ -104,27 +102,27 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
             // `NSRange.init`
             className = "NSRange" and
             funcName = "init(location:length:)" and
-            paramName = ["location", "length"]
+            arg = [0, 1]
             or
             // `NSString.character`
             className = ["NSString", "NSMutableString"] and
             funcName = "character(at:)" and
-            paramName = "at"
+            arg = 0
             or
             // `NSString.character`
             className = ["NSString", "NSMutableString"] and
             funcName = "substring(from:)" and
-            paramName = "from"
+            arg = 0
             or
             // `NSString.character`
             className = ["NSString", "NSMutableString"] and
             funcName = "substring(to:)" and
-            paramName = "to"
+            arg = 0
             or
             // `NSMutableString.insert`
             className = "NSMutableString" and
             funcName = "insert(_:at:)" and
-            paramName = "at"
+            arg = 1
           ) and
           c.getName() = className and
           c.getABaseTypeDecl*().(ClassOrStructDecl).getAMember() = funcDecl and
@@ -135,7 +133,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         // arguments to function calls...
         // `NSMakeRange`
         funcName = "NSMakeRange(_:_:)" and
-        paramName = ["loc", "len"] and
+        arg = [0, 1] and
         call.getStaticTarget() = funcDecl and
         flowstate = "NSString"
         or
@@ -143,31 +141,30 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         (
           // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
           funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
-          paramName = "k"
+          arg = 0
           or
           // `String.prefix`, `String.suffix`
           funcName = ["prefix(_:)", "suffix(_:)"] and
-          paramName = "maxLength"
+          arg = 0
           or
           // `String.Index.init`
           funcName = "init(encodedOffset:)" and
-          paramName = "offset"
+          arg = 0
           or
           // `String.index`
           funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
-          paramName = ["n", "distance"]
+          arg = [0, 1]
           or
           // `String.formIndex`
           funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
-          paramName = "distance"
+          arg = [0, 1]
         ) and
         call.getStaticTarget() = funcDecl and
         flowstate = "String"
       ) and
       // match up `funcName`, `paramName`, `arg`, `node`.
       funcDecl.getName() = funcName and
-      funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr()
+      call.getArgument(arg).getExpr() = node.asExpr()
     )
   }
 

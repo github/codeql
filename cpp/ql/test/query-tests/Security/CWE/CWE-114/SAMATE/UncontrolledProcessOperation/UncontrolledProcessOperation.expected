@@ -18,8 +18,6 @@ nodes
 | test.cpp:43:32:43:35 | data | semmle.label | data |
 | test.cpp:43:32:43:35 | data | semmle.label | data |
 | test.cpp:43:32:43:35 | data | semmle.label | data |
-| test.cpp:43:32:43:35 | data | semmle.label | data |
-| test.cpp:43:32:43:35 | data | semmle.label | data |
 | test.cpp:64:30:64:35 | call to getenv | semmle.label | call to getenv |
 | test.cpp:64:30:64:35 | call to getenv | semmle.label | call to getenv |
 | test.cpp:73:24:73:27 | data | semmle.label | data |

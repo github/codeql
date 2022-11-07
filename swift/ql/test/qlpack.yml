@@ -1,7 +1,7 @@
 name: codeql-swift-tests
 version: 0.0.0
 dependencies:
-    codeql/swift-all: "*"
-    codeql/swift-queries: "*"
+    codeql/swift-all: ${workspace}
+    codeql/swift-queries: ${workspace}
 tests: .
 extractor: swift

@@ -22,20 +22,20 @@ variableInitializerType
 | reflection.kt:116:9:116:44 | KFunction<Unit> x | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<Integer,Unit> | true |
 | reflection.kt:116:9:116:44 | KFunction<Unit> x | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
 invocation
-| reflection.kt:8:21:8:24 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
-| reflection.kt:11:26:11:33 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
-| reflection.kt:12:29:12:32 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
-| reflection.kt:13:48:13:53 | getGetter(...) | file://<external>/KProperty1.class:0:0:0:0 | getGetter |
+| reflection.kt:8:17:8:24 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
+| reflection.kt:11:23:11:33 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
+| reflection.kt:12:26:12:32 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
+| reflection.kt:13:45:13:53 | getGetter(...) | file://<external>/KProperty1.class:0:0:0:0 | getGetter |
 | reflection.kt:14:38:14:44 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
-| reflection.kt:18:27:18:37 | set(...) | file://<external>/KMutableProperty1.class:0:0:0:0 | set |
-| reflection.kt:19:29:19:32 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
-| reflection.kt:20:55:20:60 | getSetter(...) | file://<external>/KMutableProperty1.class:0:0:0:0 | getSetter |
+| reflection.kt:18:24:18:37 | set(...) | file://<external>/KMutableProperty1.class:0:0:0:0 | set |
+| reflection.kt:19:26:19:32 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
+| reflection.kt:20:52:20:60 | getSetter(...) | file://<external>/KMutableProperty1.class:0:0:0:0 | getSetter |
 | reflection.kt:21:44:21:50 | set(...) | file://<external>/KMutableProperty1.class:0:0:0:0 | set |
-| reflection.kt:24:31:24:37 | getMembers(...) | file://<external>/KClass.class:0:0:0:0 | getMembers |
-| reflection.kt:24:51:24:54 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
-| reflection.kt:25:23:25:33 | get(...) | file://<external>/KProperty2.class:0:0:0:0 | get |
-| reflection.kt:50:30:50:39 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
-| reflection.kt:51:30:51:34 | get(...) | file://<external>/KProperty0.class:0:0:0:0 | get |
+| reflection.kt:24:21:24:37 | getMembers(...) | file://<external>/KClass.class:0:0:0:0 | getMembers |
+| reflection.kt:24:48:24:54 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
+| reflection.kt:25:18:25:33 | get(...) | file://<external>/KProperty2.class:0:0:0:0 | get |
+| reflection.kt:50:13:50:39 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
+| reflection.kt:51:13:51:34 | get(...) | file://<external>/KProperty0.class:0:0:0:0 | get |
 functionReferences
 | reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | invoke | reflection.kt:29:9:29:33 | m |
 | reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | invoke | file://<external>/KProperty1.class:0:0:0:0 | get |

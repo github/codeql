@@ -600,6 +600,10 @@
     "swift/ql/test/extractor-tests/patterns/patterns.swift",
     "swift/ql/test/library-tests/ast/patterns.swift"
   ],
+  "Swift control flow test file": [
+    "swift/ql/test/library-tests/controlflow/graph/cfg.swift",
+    "swift/ql/test/library-tests/ast/cfg.swift"
+  ],
   "IncompleteMultiCharacterSanitization JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitizationQuery.qll",
     "ruby/ql/lib/codeql/ruby/security/IncompleteMultiCharacterSanitizationQuery.qll"
