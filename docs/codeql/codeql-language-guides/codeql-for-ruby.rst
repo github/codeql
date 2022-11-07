@@ -10,6 +10,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
    basic-query-for-ruby-code
    codeql-library-for-ruby
+   abstract-syntax-tree-classes-for-working-with-ruby-programs
    analyzing-data-flow-in-ruby
    using-api-graphs-in-ruby
 
