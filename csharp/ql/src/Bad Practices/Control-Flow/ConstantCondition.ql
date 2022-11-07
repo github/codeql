@@ -15,7 +15,6 @@
 import csharp
 import semmle.code.csharp.commons.Assertions
 import semmle.code.csharp.commons.Constants
-private import semmle.code.csharp.frameworks.System
 
 /** A constant condition. */
 abstract class ConstantCondition extends Expr {
