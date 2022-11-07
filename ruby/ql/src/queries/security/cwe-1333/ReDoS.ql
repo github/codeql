@@ -14,11 +14,10 @@
  *       external/cwe/cwe-400
  */
 
-import codeql.ruby.security.regexp.ExponentialBackTracking
-import codeql.ruby.security.regexp.NfaUtils
-import codeql.ruby.Regexp
+private import codeql.ruby.regexp.RegExpTreeView::RegexTreeView as TreeView
+import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
 
-from RegExpTerm t, string pump, State s, string prefixMsg
+from TreeView::RegExpTerm t, string pump, State s, string prefixMsg
 where hasReDoSResult(t, pump, s, prefixMsg)
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " + prefixMsg +
