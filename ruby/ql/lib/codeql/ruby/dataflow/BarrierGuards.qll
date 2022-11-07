@@ -187,5 +187,14 @@ private predicate stringConstCaseCompare(
         )
       )
     )
+    or
+    // in "foo"
+    exists(
+      CfgNodes::ExprNodes::InClauseCfgNode branchNode, ExprNodes::StringLiteralCfgNode pattern
+    |
+      branchNode = case.getBranch(_) and
+      pattern = branchNode.getPattern() and
+      guard = pattern
+    )
   )
 }

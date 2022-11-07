@@ -199,4 +199,13 @@ end
 
 case
 when foo == "foo" then foo
+when bar == "bar" then foo
+when foo == x then foo
+end
+
+case foo
+in "foo"
+    foo
+in x
+    foo
 end
