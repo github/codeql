@@ -1,3 +1,5 @@
+/** Definitiona for the Android Missing Certificate Pinning query. */
+
 import java
 import semmle.code.xml.AndroidManifest
 import semmle.code.java.dataflow.TaintTracking
@@ -8,7 +10,7 @@ class AndroidNetworkSecurityConfigFile extends XmlFile {
     exists(AndroidApplicationXmlElement app, AndroidXmlAttribute confAttr, string confName |
       confAttr.getElement() = app and
       confAttr.getValue() = "@xml/" + confName and
-      this.getRelativePath() = "res/xml/" + confName + ".xml" and
+      this.getRelativePath().matches("%res/xml/" + confName + ".xml") and
       this.getARootElement().getName() = "network-security-config"
     )
   }
