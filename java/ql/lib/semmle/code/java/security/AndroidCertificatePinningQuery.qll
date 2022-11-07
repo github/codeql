@@ -1,10 +1,11 @@
-/** Definitiona for the Android Missing Certificate Pinning query. */
+/** Definitions for the Android Missing Certificate Pinning query. */
 
 import java
 import semmle.code.xml.AndroidManifest
 import semmle.code.java.dataflow.TaintTracking
 import HttpsUrls
 
+/** An Android Network Security Configuration XML file. */
 class AndroidNetworkSecurityConfigFile extends XmlFile {
   AndroidNetworkSecurityConfigFile() {
     exists(AndroidApplicationXmlElement app, AndroidXmlAttribute confAttr, string confName |
@@ -16,8 +17,10 @@ class AndroidNetworkSecurityConfigFile extends XmlFile {
   }
 }
 
+/** Holds if this database is of an Android application. */
 predicate isAndroid() { exists(AndroidManifestXmlFile m) }
 
+/** Holds if the given domain name is trusted by the Network Security Configuration XML file. */
 predicate trustedDomain(string domainName) {
   exists(
     AndroidNetworkSecurityConfigFile confFile, XmlElement domConf, XmlElement domain,
@@ -33,6 +36,7 @@ predicate trustedDomain(string domainName) {
   )
 }
 
+/** Configuration for finding uses of non trusted URLs. */
 private class UntrustedUrlConfig extends TaintTracking::Configuration {
   UntrustedUrlConfig() { this = "UntrustedUrlConfig" }
 
@@ -47,6 +51,7 @@ private class UntrustedUrlConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node node) { node instanceof UrlOpenSink }
 }
 
+/** Holds if `node` is a network communication call for which certificate pinning is not implemented. */
 predicate missingPinning(DataFlow::Node node) {
   isAndroid() and
   node instanceof UrlOpenSink and
