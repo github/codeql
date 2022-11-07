@@ -1,0 +1,4 @@
+| Test$BoundedGeneric.class:0:0:0:0 | getter | Test$BoundedGeneric.class:0:0:0:0 | BoundedGeneric<? super String> | CharSequence | int |
+| Test$BoundedGeneric.class:0:0:0:0 | getter | Test$BoundedGeneric.class:0:0:0:0 | BoundedGeneric<?> | CharSequence | int |
+| Test$BoundedGeneric.class:0:0:0:0 | setter | Test$BoundedGeneric.class:0:0:0:0 | BoundedGeneric<? super String> | void | String |
+| Test$BoundedGeneric.class:0:0:0:0 | setter | Test$BoundedGeneric.class:0:0:0:0 | BoundedGeneric<?> | void | <nulltype> |
