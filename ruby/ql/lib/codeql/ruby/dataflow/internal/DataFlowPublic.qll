@@ -822,7 +822,9 @@ class ModuleNode instanceof Module {
    *
    * Does not take inheritance into account.
    */
-  MethodNode getAnOwnSingletonMethod() { result.asMethod() = super.getAnOwnSingletonMethod() }
+  MethodNode getAnOwnSingletonMethod() {
+    result.asCallableAstNode() = super.getAnOwnSingletonMethod()
+  }
 
   /**
    * Gets the singleton method named `name` declared in this module (or in a singleton class
@@ -841,7 +843,7 @@ class ModuleNode instanceof Module {
    * Does not take inheritance into account.
    */
   MethodNode getAnOwnInstanceMethod() {
-    result.asMethod() = this.getADeclaration().getAMethod().(Method)
+    result.asCallableAstNode() = this.getADeclaration().getAMethod().(Method)
   }
 
   /**
@@ -860,7 +862,7 @@ class ModuleNode instanceof Module {
    * Does not take inheritance into account.
    */
   ParameterNode getAnOwnInstanceSelf() {
-    result = TSelfParameterNode(this.getAnOwnInstanceMethod().asMethod())
+    result = TSelfParameterNode(this.getAnOwnInstanceMethod().asCallableAstNode())
   }
 
   /**
@@ -1015,10 +1017,10 @@ class MethodNode extends CallableNode {
   MethodNode() { super.asCallableAstNode() instanceof MethodBase }
 
   /** Gets the underlying AST node for this method. */
-  MethodBase asMethod() { result = this.asCallableAstNode() }
+  override MethodBase asCallableAstNode() { result = super.asCallableAstNode() }
 
   /** Gets the name of this method. */
-  string getMethodName() { result = this.asMethod().getName() }
+  string getMethodName() { result = this.asCallableAstNode().getName() }
 }
 
 /**
@@ -1028,7 +1030,7 @@ class BlockNode extends CallableNode {
   BlockNode() { super.asCallableAstNode() instanceof Block }
 
   /** Gets the underlying AST node for this block. */
-  Block asBlock() { result = this.asCallableAstNode() }
+  override Block asCallableAstNode() { result = super.asCallableAstNode() }
 }
 
 /**

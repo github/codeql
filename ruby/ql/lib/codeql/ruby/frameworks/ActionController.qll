@@ -55,7 +55,9 @@ class ActionControllerClass extends DataFlow::ClassNode {
   /**
    * Gets an `ActionControllerActionMethod` defined in this class.
    */
-  ActionControllerActionMethod getAnAction() { result = this.getAnInstanceMethod().asMethod() }
+  ActionControllerActionMethod getAnAction() {
+    result = this.getAnInstanceMethod().asCallableAstNode()
+  }
 
   /**
    * Gets a `self` that possibly refers to an instance of this class.
@@ -99,7 +101,7 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
   private ActionControllerClass controllerClass;
 
   ActionControllerActionMethod() {
-    this = controllerClass.getAnInstanceMethod().asMethod() and not this.isPrivate()
+    this = controllerClass.getAnInstanceMethod().asCallableAstNode() and not this.isPrivate()
   }
 
   /**
@@ -140,7 +142,7 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
     exists(string name, DataFlow::MethodNode m |
       isRoute(result, name, controllerClass) and
       m = controllerClass.getInstanceMethod(name) and
-      this = m.asMethod()
+      this = m.asCallableAstNode()
     )
   }
 }
@@ -379,7 +381,7 @@ class RedirectToCall extends MethodCall {
   ActionControllerActionMethod getRedirectActionMethod() {
     exists(string name |
       this.getKeywordArgument("action").getConstantValue().isStringlikeValue(name) and
-      result = controller.getInstanceMethod(name).asMethod()
+      result = controller.getInstanceMethod(name).asCallableAstNode()
     )
   }
 
@@ -441,7 +443,7 @@ class ActionControllerHelperMethod extends Method {
     exists(DataFlow::MethodNode m, string name |
       m = controllerClass.getInstanceMethod(name) and
       actionControllerHasHelperMethodCall(controllerClass, name) and
-      this = m.asMethod()
+      this = m.asCallableAstNode()
     )
   }
 
