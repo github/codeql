@@ -162,7 +162,7 @@ private class Function extends ParameterizedType {
 
   /**
    * Gets the parameter type of `this` function at position `position`.
-   * Note that functions are contravariant in their parameter types.
+   * Note that functions are often contravariant in their parameter types.
    */
   Type getParameterType(int position) {
     exists(Type t |
@@ -173,7 +173,7 @@ private class Function extends ParameterizedType {
 
   /**
    * Gets the return type of `this` function.
-   * Note that functions are covariant in their return type.
+   * Note that functions are often covariant in their return type.
    */
   Type getReturnType() {
     exists(Type t |
