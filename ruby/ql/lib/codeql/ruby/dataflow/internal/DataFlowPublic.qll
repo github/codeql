@@ -73,11 +73,9 @@ class Node extends TNode {
   CallableNode asCallable() {
     result = this
     or
-    exists(CallNode call |
-      call.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
-      call.getMethodName() = ["proc", "lambda"] and
-      call.getBlock() = result and
-      this = call
+    exists(DataFlowCallable c |
+      lambdaCreation(this, _, c) and
+      result.asCallableAstNode() = c.asCallable()
     )
   }
 }
