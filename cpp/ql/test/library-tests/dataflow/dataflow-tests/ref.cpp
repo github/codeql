@@ -53,16 +53,16 @@ namespace withoutFields {
     int x1, x2, x3, x4;
 
     assignWrapper(x1, source());
-    sink(x1); // $ ast=55:23 ir SPURIOUS: ast=53:9
+    sink(x1); // $ ast,ir=55:23 SPURIOUS: ast,ir=53:9
 
     notAssign(x2, source());
-    sink(x2); // $ SPURIOUS: ast,ir
+    sink(x2); // $ SPURIOUS: ast ir=53:13 ir=58:19
 
     sourceToParamWrapper(x3);
-    sink(x3); // $ ast=29:11 ir SPURIOUS: ast=53:17
+    sink(x3); // $ ast,ir=29:11 SPURIOUS: ast,ir=53:17
 
     notSource(x4);
-    sink(x4); // $ SPURIOUS: ast,ir
+    sink(x4); // $ SPURIOUS: ast ir=44:11 ir=53:21
   }
 }
 

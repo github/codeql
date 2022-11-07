@@ -71,9 +71,9 @@ void identityOperations(int* source1) {
   sink(x4);  // $ ast,ir
 }
 
-void trackUninitialized() { // NOTE: uninitialized tracking for IR dataflow is deprecated
+void trackUninitialized() {
   int u1;
-  sink(u1); // $ ast
+  sink(u1); // $ ast,ir
   u1 = 2;
   sink(u1); // clean
 
@@ -81,9 +81,9 @@ void trackUninitialized() { // NOTE: uninitialized tracking for IR dataflow is d
   sink(i1); // clean
 
   int u2;
-  sink(i1 ? u2 : 1); // $ ast
+  sink(i1 ? u2 : 1); // $ ast,ir
   i1 = u2;
-  sink(i1); // $ ast
+  sink(i1); // $ ast,ir
 }
 
 void local_references(int &source1, int clean1) {
@@ -346,7 +346,7 @@ namespace FlowThroughGlobals {
   void taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast ir=333:17 ir=347:17
+    sink(globalVar); // $ ast ir ir=333:17 ir=347:17
   }
 }
 
@@ -398,14 +398,14 @@ void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
 void cleanedByMemcpy_ssa(int clean1) { // currently modeled with BlockVar, not SSA
   int tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // $ SPURIOUS: ast
+  sink(tmp); // $ SPURIOUS: ast,ir
 }
 
 void cleanedByMemcpy_blockvar(int clean1) {
   int tmp;
   int *capture = &tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // $ SPURIOUS: ast
+  sink(tmp); // $ SPURIOUS: ast,ir
 }
 
 void intRefSource(int &ref_source);
@@ -415,33 +415,33 @@ void intArraySource(int ref_source[], size_t len);
 void intRefSourceCaller() {
   int local;
   intRefSource(local);
-  sink(local); // $ ast=416:7 ast=417:16 MISSING: ir
+  sink(local); // $ ast,ir=416:7 ast,ir=417:16
 }
 
 void intPointerSourceCaller() {
   int local;
   intPointerSource(&local);
-  sink(local); // $ ast=422:7 ast=423:20 MISSING: ir
+  sink(local); // $ ast,ir=422:7 ast,ir=423:20
 }
 
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // $ ast=428:7 ast=429:20 MISSING: ir
-  sink(*local); // $ ast=428:7 ast=429:20 MISSING: ir
+  sink(local); // $ ast,ir=428:7 ast,ir=429:20
+  sink(*local); // $ ast,ir=428:7 ast,ir=429:20
 }
 
 void intArraySourceCaller() {
   int local;
   intArraySource(&local, 1);
-  sink(local); // $ ast=435:7 ast=436:18 MISSING: ir
+  sink(local); // $ ast,ir=435:7 ast,ir=436:18
 }
 
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // $ ast=441:7 ast=442:18 MISSING: ir
-  sink(*local); // $ ast=441:7 ast=442:18 MISSING: ir
+  sink(local); // $ ast,ir=441:7 ast,ir=442:18
+  sink(*local); // $ ast,ir=441:7 ast,ir=442:18
 }
 
 ///////////////////////////////////////////////////////////////////////////////
