@@ -1,8 +1,8 @@
-/** Provides modelling for the `json` gem. */
+/** Provides modeling for the `json` gem. */
 
 private import codeql.ruby.frameworks.data.ModelsAsData
 
-/** Provides modelling for the `json` gem. */
+/** Provides modeling for the `json` gem. */
 module Json {
   /**
    * Flow summaries for common `JSON` methods.
