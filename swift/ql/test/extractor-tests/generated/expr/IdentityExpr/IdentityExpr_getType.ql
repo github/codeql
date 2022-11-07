@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from DotSelfExpr x
+from IdentityExpr x
 where toBeTested(x) and not x.isUnknown()
 select x, x.getType()

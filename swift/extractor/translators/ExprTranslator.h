@@ -53,7 +53,14 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   }
 
   codeql::TypeExpr translateTypeExpr(const swift::TypeExpr& expr);
-  codeql::ParenExpr translateParenExpr(const swift::ParenExpr& expr);
+
+  template <typename E>
+  TrapClassOf<E> translateIdentityExpr(const E& expr) {
+    auto entry = createExprEntry(expr);
+    fillIdentityExpr(expr, entry);
+    return entry;
+  }
+
   codeql::InOutExpr translateInOutExpr(const swift::InOutExpr& expr);
   codeql::OpaqueValueExpr translateOpaqueValueExpr(const swift::OpaqueValueExpr& expr);
   codeql::TapExpr translateTapExpr(const swift::TapExpr& expr);
@@ -91,7 +98,6 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::UnresolvedMemberExpr translateUnresolvedMemberExpr(
       const swift::UnresolvedMemberExpr& expr);
   codeql::SequenceExpr translateSequenceExpr(const swift::SequenceExpr& expr);
-  codeql::DotSelfExpr translateDotSelfExpr(const swift::DotSelfExpr& expr);
   codeql::ErrorExpr translateErrorExpr(const swift::ErrorExpr& expr);
   codeql::UnresolvedPatternExpr translateUnresolvedPatternExpr(
       const swift::UnresolvedPatternExpr& expr);

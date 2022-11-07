@@ -305,6 +305,7 @@ class ExplicitCastExpr(Expr):
 class ForceValueExpr(Expr):
     sub_expr: Expr | child
 
+@qltest.collapse_hierarchy
 class IdentityExpr(Expr):
     sub_expr: Expr | child
 

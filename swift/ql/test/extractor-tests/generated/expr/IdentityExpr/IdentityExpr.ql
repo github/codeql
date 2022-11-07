@@ -2,9 +2,9 @@
 import codeql.swift.elements
 import TestUtils
 
-from DotSelfExpr x, Expr getSubExpr
+from IdentityExpr x, Expr getSubExpr
 where
   toBeTested(x) and
   not x.isUnknown() and
   getSubExpr = x.getSubExpr()
-select x, "getSubExpr:", getSubExpr
+select x, x.getPrimaryQlClasses(), "getSubExpr:", getSubExpr
