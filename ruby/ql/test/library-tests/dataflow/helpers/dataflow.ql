@@ -61,7 +61,7 @@ query DataFlow::ModuleNode getXYClasses() {
 query DataFlow::HashLiteralNode hashLiteralNode() { any() }
 
 query DataFlow::Node hashLiteralKey(DataFlow::HashLiteralNode node, string key) {
-  result = node.getElementFromKey(Ast::ConstantValue::getStringlikeValue(key))
+  result = node.getElementFromKey(Ast::ConstantValue::fromStringlikeValue(key))
 }
 
 query DataFlow::ArrayLiteralNode arrayLiteralNode() { any() }
