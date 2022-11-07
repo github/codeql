@@ -274,3 +274,70 @@ reference. For more information, see ":ref:`name-resolution`."
 
 For information about how import statements are looked up, see "`Module resolution <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#module-resolution>`__"
 in the QL language specification. 
+
+Built-in modules
+****************
+
+QL defines a ``QlBuiltins`` module that is always in scope.
+Currently, it defines a single parameterized sub-module
+``EquivalenceRelation``, that provides an efficient abstraction for working with
+(partial) equivalence relations in QL.
+
+Equivalence relations
+=====================
+
+The built-in ``EquivalenceRelation`` module is parameterized by a type ``T`` and a
+binary base relation ``base`` on ``T``. The symmetric and transitive closure of ``base``
+induces a partial equivalence relation on ``T``. If every value of ``T`` appears in
+``base``, then the induced relation is an equivalence relation on ``T``.
+
+The ``EquivalenceRelation`` module exports a ``getEquivalenceClass`` predicate that
+gets the equivalence class, if any, associated with a given ``T`` element by the
+(partial) equivalence relation induced by ``base``.
+
+The following example illustrates an application of the ``EquivalenceRelation``
+module to generate a custom equivalence relation:
+
+.. code-block:: ql
+
+  class Node extends int {
+    Node() { this in [1 .. 6] }
+  }
+
+  predicate base(Node x, Node y) {
+    x = 1 and y = 2
+    or
+    x = 3 and y = 4
+  }
+
+  module Equiv = QlBuiltins::EquivalenceRelation<Node, base/2>;
+
+  from int x, int y
+  where Equiv::getEquivalenceClass(x) = Equiv::getEquivalenceClass(y)
+  select x, y
+
+Since ``base`` does not relate ``5`` or ``6`` to any nodes, the induced
+relation is a partial equivalence relation on ``Node`` and does not relate ``5``
+or ``6`` to any nodes either.
+
+The above select clause returns the following partial equivalence relation:
+
++---+---+
+| x | y |
++===+===+
+| 1 | 1 |
++---+---+
+| 1 | 2 |
++---+---+
+| 2 | 1 |
++---+---+
+| 2 | 2 |
++---+---+
+| 3 | 3 |
++---+---+
+| 3 | 4 |
++---+---+
+| 4 | 3 |
++---+---+
+| 4 | 4 |
++---+---+

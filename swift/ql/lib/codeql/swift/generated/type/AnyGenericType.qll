@@ -4,24 +4,47 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.type.Type
 
-class AnyGenericTypeBase extends Synth::TAnyGenericType, Type {
-  Type getImmediateParent() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertAnyGenericTypeToRaw(this)
-            .(Raw::AnyGenericType)
-            .getParent())
+module Generated {
+  class AnyGenericType extends Synth::TAnyGenericType, Type {
+    /**
+     * Gets the parent of this any generic type, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateParent() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertAnyGenericTypeToRaw(this)
+              .(Raw::AnyGenericType)
+              .getParent())
+    }
+
+    /**
+     * Gets the parent of this any generic type, if it exists.
+     */
+    final Type getParent() { result = getImmediateParent().resolve() }
+
+    /**
+     * Holds if `getParent()` exists.
+     */
+    final predicate hasParent() { exists(getParent()) }
+
+    /**
+     * Gets the declaration of this any generic type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Decl getImmediateDeclaration() {
+      result =
+        Synth::convertDeclFromRaw(Synth::convertAnyGenericTypeToRaw(this)
+              .(Raw::AnyGenericType)
+              .getDeclaration())
+    }
+
+    /**
+     * Gets the declaration of this any generic type.
+     */
+    final Decl getDeclaration() { result = getImmediateDeclaration().resolve() }
   }
-
-  final Type getParent() { result = getImmediateParent().resolve() }
-
-  final predicate hasParent() { exists(getParent()) }
-
-  Decl getImmediateDeclaration() {
-    result =
-      Synth::convertDeclFromRaw(Synth::convertAnyGenericTypeToRaw(this)
-            .(Raw::AnyGenericType)
-            .getDeclaration())
-  }
-
-  final Decl getDeclaration() { result = getImmediateDeclaration().resolve() }
 }

@@ -24,5 +24,5 @@ from AngularJS::InjectableFunction f, DataFlow::Node node, string name
 where
   isRepeatedDependency(f, name, node) and
   not count(f.asFunction().getParameterByName(name)) > 1 // avoid duplicating reports from js/duplicate-parameter-name
-select f.asFunction().getFunction().(FirstLineOf), "This function has a duplicate dependency '$@'.",
+select f.asFunction().getFunction().(FirstLineOf), "This function has a duplicate dependency $@.",
   node, name

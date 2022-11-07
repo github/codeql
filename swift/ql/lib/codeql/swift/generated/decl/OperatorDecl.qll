@@ -3,6 +3,13 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 
-class OperatorDeclBase extends Synth::TOperatorDecl, Decl {
-  string getName() { result = Synth::convertOperatorDeclToRaw(this).(Raw::OperatorDecl).getName() }
+module Generated {
+  class OperatorDecl extends Synth::TOperatorDecl, Decl {
+    /**
+     * Gets the name of this operator declaration.
+     */
+    string getName() {
+      result = Synth::convertOperatorDeclToRaw(this).(Raw::OperatorDecl).getName()
+    }
+  }
 }

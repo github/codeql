@@ -23,6 +23,7 @@ private AstNode getSelectPart(Select sel, int index) {
       (
         n = getASubExpression(sel) and loc = n.getLocation()
         or
+        // TODO: Use dataflow instead.
         // the strings are behind a predicate call.
         exists(Call c, Predicate target | c = getASubExpression(sel) and loc = c.getLocation() |
           c.getTarget() = target and
@@ -102,11 +103,11 @@ String shouldStartCapital(Select sel) {
  * select foo(), "XSS from using a unsafe value." // <- good
  * ```
  */
-String avoidHere(string part) {
+String avoidHere(Select sel, string part) {
   part = ["here", "this location"] and
   (
     result.getValue().regexpMatch(".*\\b" + part + "\\b.*") and
-    result = getSelectPart(_, _)
+    result = getSelectPart(sel, _)
   )
 }
 
@@ -125,7 +126,7 @@ String avoidHere(string part) {
 String avoidArticleInLinkText(Select sel) {
   result = sel.getExpr((any(int i | i > 1))) and
   result = getSelectPart(sel, _) and
-  result.getValue().regexpMatch("a|an .*")
+  result.getValue().regexpMatch("(a|an) .*")
 }
 
 /**
@@ -184,17 +185,36 @@ String doubleWhitespace(Select sel) {
   result.getValue().regexpMatch(".*\\s\\s.*")
 }
 
-from AstNode node, string msg
+import codeql.GlobalValueNumbering as GVN
+
+/**
+ * Gets an expression that repeats the alert-loc as a link.
+ */
+AstNode getAlertLocLink(Select sel) {
+  exists(GVN::ValueNumber vn |
+    result = vn.getAnExpr() and
+    sel.getExpr(0) = vn.getAnExpr()
+  ) and
+  exists(int msgIndex | sel.getExpr(msgIndex) = sel.getMessage() |
+    result = sel.getExpr(any(int i | i > msgIndex))
+  )
+}
+
+from AstNode node, string msg, Select sel
 where
   not node.getLocation().getFile().getAbsolutePath().matches("%/test/%") and
+  not node.getLocation().getFile().getAbsolutePath().matches("%/examples/%") and
+  not node.getLocation().getFile().getAbsolutePath().matches("%/experimental/%") and
+  not node.getLocation().getFile().getAbsolutePath().matches("%/meta/%") and
+  sel.getQueryDoc().getQueryKind() = ["problem", "path-problem"] and
   (
-    node = shouldHaveFullStop(_) and
+    node = shouldHaveFullStop(sel) and
     msg = "Alert message should end with a full stop."
     or
-    node = shouldStartCapital(_) and
+    node = shouldStartCapital(sel) and
     msg = "Alert message should start with a capital letter."
     or
-    exists(string part | node = avoidHere(part) |
+    exists(string part | node = avoidHere(sel, part) |
       part = "here" and
       msg =
         "Try to use a descriptive phrase instead of \"here\". Use \"this location\" if you can't get around mentioning the current location."
@@ -203,19 +223,22 @@ where
       msg = "Try to more descriptive phrase instead of \"this location\" if possible."
     )
     or
-    node = avoidArticleInLinkText(_) and
+    node = avoidArticleInLinkText(sel) and
     msg = "Avoid starting a link text with an indefinite article."
     or
-    node = dontQuoteSubstitutions(_) and
+    node = dontQuoteSubstitutions(sel) and
     msg = "Don't quote substitutions in alert messages."
     or
-    node = wrongFlowsPhrase(_, "data") and
+    node = wrongFlowsPhrase(sel, "data") and
     msg = "Use \"flows to\" instead of \"depends on\" in data flow queries."
     or
-    node = wrongFlowsPhrase(_, "taint") and
+    node = wrongFlowsPhrase(sel, "taint") and
     msg = "Use \"depends on\" instead of \"flows to\" in taint tracking queries."
     or
-    node = doubleWhitespace(_) and
+    node = doubleWhitespace(sel) and
     msg = "Avoid using double whitespace in alert messages."
+    or
+    node = getAlertLocLink(sel) and
+    msg = "Don't repeat the alert location as a link."
   )
 select node, msg

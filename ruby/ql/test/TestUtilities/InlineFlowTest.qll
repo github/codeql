@@ -37,14 +37,7 @@ import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import TestUtilities.InlineExpectationsTest
-
-private predicate defaultSource(DataFlow::Node src) {
-  src.asExpr().getExpr().(MethodCall).getMethodName() = ["source", "taint"]
-}
-
-private predicate defaultSink(DataFlow::Node sink) {
-  exists(MethodCall mc | mc.getMethodName() = "sink" | sink.asExpr().getExpr() = mc.getAnArgument())
-}
+import TestUtilities.InlineFlowTestUtil
 
 class DefaultValueFlowConf extends DataFlow::Configuration {
   DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }
@@ -64,11 +57,6 @@ class DefaultTaintFlowConf extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node n) { defaultSink(n) }
 
   override int fieldFlowBranchLimit() { result = 1000 }
-}
-
-private string getSourceArgString(DataFlow::Node src) {
-  defaultSource(src) and
-  src.asExpr().getExpr().(MethodCall).getAnArgument().getConstantValue().toString() = result
 }
 
 class InlineFlowTest extends InlineExpectationsTest {

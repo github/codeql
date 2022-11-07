@@ -85,7 +85,10 @@ private module Cached {
       op.getAnOperand() = nodeFrom.asExpr() and
       not op.getExpr() =
         any(Expr e |
+          // included in normal data-flow
           e instanceof AssignExpr or
+          e instanceof BinaryLogicalOperation or
+          // has flow summary
           e instanceof SplatExpr
         )
     )
@@ -112,8 +115,8 @@ private module Cached {
    */
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    defaultAdditionalTaintStep(nodeFrom, nodeTo)
-    or
+    DataFlow::localFlowStep(nodeFrom, nodeTo) or
+    defaultAdditionalTaintStep(nodeFrom, nodeTo) or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
     FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)

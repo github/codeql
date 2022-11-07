@@ -27,38 +27,34 @@ class Sink extends DataFlow::Node {
 
   Sink() {
     exists(
-      AbstractFunctionDecl funcDecl, CallExpr call, string funcName, string paramName, int arg,
-      int baseUrlArg
+      MethodDecl funcDecl, CallExpr call, string className, string funcName, int arg, int baseArg
     |
       // arguments to method calls...
-      exists(string className, ClassDecl c |
-        (
-          // `loadHTMLString`
-          className = ["UIWebView", "WKWebView"] and
-          funcName = "loadHTMLString(_:baseURL:)" and
-          paramName = "string"
-          or
-          // `UIWebView.load`
-          className = "UIWebView" and
-          funcName = "load(_:mimeType:textEncodingName:baseURL:)" and
-          paramName = "data"
-          or
-          // `WKWebView.load`
-          className = "WKWebView" and
-          funcName = "load(_:mimeType:characterEncodingName:baseURL:)" and
-          paramName = "data"
-        ) and
-        c.getName() = className and
-        c.getAMember() = funcDecl and
-        call.getStaticTarget() = funcDecl
+      (
+        // `loadHTMLString`
+        className = ["UIWebView", "WKWebView"] and
+        funcName = "loadHTMLString(_:baseURL:)" and
+        arg = 0 and
+        baseArg = 1
+        or
+        // `UIWebView.load`
+        className = "UIWebView" and
+        funcName = "load(_:mimeType:textEncodingName:baseURL:)" and
+        arg = 0 and
+        baseArg = 3
+        or
+        // `WKWebView.load`
+        className = "WKWebView" and
+        funcName = "load(_:mimeType:characterEncodingName:baseURL:)" and
+        arg = 0 and
+        baseArg = 3
       ) and
+      call.getStaticTarget() = funcDecl and
       // match up `funcName`, `paramName`, `arg`, `node`.
-      funcDecl.getName() = funcName and
-      funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this.asExpr() and
+      funcDecl.hasQualifiedName(className, funcName) and
+      call.getArgument(arg).getExpr() = this.asExpr() and
       // match up `baseURLArg`
-      funcDecl.getParam(pragma[only_bind_into](baseUrlArg)).getName() = "baseURL" and
-      call.getArgument(pragma[only_bind_into](baseUrlArg)).getExpr() = baseUrl
+      call.getArgument(baseArg).getExpr() = baseUrl
     )
   }
 

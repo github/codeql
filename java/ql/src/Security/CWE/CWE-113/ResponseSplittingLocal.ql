@@ -31,5 +31,6 @@ class ResponseSplittingLocalConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ResponseSplittingLocalConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Response-splitting vulnerability due to this $@.",
+select sink.getNode(), source, sink,
+  "This header depends on a $@, which may cause a response-splitting vulnerability.",
   source.getNode(), "user-provided value"

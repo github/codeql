@@ -42,7 +42,8 @@ newtype SynthKind =
   StmtSequenceKind() or
   SelfKind(SelfVariable v) or
   SubExprKind() or
-  ConstantReadAccessKind(string value) { any(Synthesis s).constantReadAccess(value) }
+  ConstantReadAccessKind(string value) { any(Synthesis s).constantReadAccess(value) } or
+  ConstantWriteAccessKind(string value) { any(Synthesis s).constantWriteAccess(value) }
 
 /**
  * An AST child.
@@ -108,6 +109,11 @@ class Synthesis extends TSynthesis {
   predicate constantReadAccess(string name) { none() }
 
   /**
+   * Holds if a constant write access of `name` is needed.
+   */
+  predicate constantWriteAccess(string name) { none() }
+
+  /**
    * Holds if `n` should be excluded from `ControlFlowTree` in the CFG construction.
    */
   predicate excludeFromControlFlowTree(AstNode n) { none() }
@@ -118,7 +124,11 @@ class Synthesis extends TSynthesis {
 private class Desugared extends AstNode {
   Desugared() { this = any(AstNode sugar).getDesugared() }
 
-  AstNode getADescendant() { result = this.getAChild*() }
+  AstNode getADescendant() {
+    result = this
+    or
+    result = this.getADescendant().getAChild()
+  }
 }
 
 /**
@@ -132,7 +142,10 @@ int desugarLevel(AstNode n) { result = count(Desugared desugared | n = desugared
  * Holds if `n` appears in a context that is desugared. That is, a
  * transitive, reflexive parent of `n` is a desugared node.
  */
-predicate isInDesugaredContext(AstNode n) { n = any(AstNode sugar).getDesugared().getAChild*() }
+predicate isInDesugaredContext(AstNode n) {
+  n = any(AstNode sugar).getDesugared() or
+  n = any(AstNode mid | isInDesugaredContext(mid)).getAChild()
+}
 
 /**
  * Holds if `n` is a node that only exists as a result of desugaring some
@@ -255,8 +268,11 @@ private module SetterDesugar {
     MethodCall getMethodCall() { result = mc }
 
     pragma[nomagic]
-    MethodCallKind getCallKind(boolean setter, int arity) {
-      result = MethodCallKind(mc.getMethodName(), setter, arity)
+    private string getMethodName() { result = mc.getMethodName() }
+
+    pragma[nomagic]
+    MethodCallKind getCallKind(int arity) {
+      result = MethodCallKind(this.getMethodName(), true, arity)
     }
 
     pragma[nomagic]
@@ -282,7 +298,7 @@ private module SetterDesugar {
       exists(AstNode seq | seq = TStmtSequenceSynth(sae, -1) |
         parent = seq and
         i = 0 and
-        child = SynthChild(sae.getCallKind(true, sae.getNumberOfArguments() + 1))
+        child = SynthChild(sae.getCallKind(sae.getNumberOfArguments() + 1))
         or
         exists(AstNode call | call = TMethodCallSynth(seq, 0, _, _, _) |
           parent = call and
@@ -483,6 +499,231 @@ private module AssignOperationDesugar {
     }
   }
 
+  /**
+   * An assignment operation where the left-hand side is a constant
+   * without scope expression, such as`FOO` or `::Foo`.
+   */
+  private class ConstantAssignOperation extends AssignOperation {
+    string name;
+
+    pragma[nomagic]
+    ConstantAssignOperation() {
+      name =
+        any(Ruby::Constant constant | TTokenConstantAccess(constant) = this.getLeftOperand())
+            .getValue()
+      or
+      name =
+        "::" +
+          any(Ruby::Constant constant |
+            TScopeResolutionConstantAccess(any(Ruby::ScopeResolution g | not exists(g.getScope())),
+              constant) = this.getLeftOperand()
+          ).getValue()
+    }
+
+    final string getName() { result = name }
+  }
+
+  pragma[nomagic]
+  private predicate constantAssignOperationSynthesis(AstNode parent, int i, Child child) {
+    exists(ConstantAssignOperation cao |
+      parent = cao and
+      i = -1 and
+      child = SynthChild(AssignExprKind())
+      or
+      exists(AstNode assign | assign = TAssignExprSynth(cao, -1) |
+        parent = assign and
+        i = 0 and
+        child = childRef(cao.getLeftOperand())
+        or
+        parent = assign and
+        i = 1 and
+        child = SynthChild(getKind(cao))
+        or
+        parent = getSynthChild(assign, 1) and
+        (
+          i = 0 and
+          child = SynthChild(ConstantReadAccessKind(cao.getName()))
+          or
+          i = 1 and
+          child = childRef(cao.getRightOperand())
+        )
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * FOO += y
+   * ```
+   *
+   * desugars to
+   *
+   * ```rb
+   * FOO = FOO + y
+   * ```
+   */
+  private class ConstantAssignOperationSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      constantAssignOperationSynthesis(parent, i, child)
+    }
+
+    final override predicate constantReadAccess(string name) {
+      name = any(ConstantAssignOperation o).getName()
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(ConstantAssignOperation cao, BinaryOperation bo |
+        bo = cao.getDesugared().(AssignExpr).getRightOperand()
+      |
+        n = bo and
+        l = getAssignOperationLocation(cao)
+        or
+        n = bo.getLeftOperand() and
+        hasLocation(cao.getLeftOperand(), l)
+      )
+    }
+  }
+
+  /**
+   * An assignment operation where the left-hand side is a constant
+   * with scope expression, such as `expr::FOO`.
+   */
+  private class ScopeResolutionAssignOperation extends AssignOperation {
+    string name;
+    Expr scope;
+
+    pragma[nomagic]
+    ScopeResolutionAssignOperation() {
+      exists(Ruby::Constant constant, Ruby::ScopeResolution g |
+        TScopeResolutionConstantAccess(g, constant) = this.getLeftOperand() and
+        name = constant.getValue() and
+        toGenerated(scope) = g.getScope()
+      )
+    }
+
+    final string getName() { result = name }
+
+    final Expr getScopeExpr() { result = scope }
+  }
+
+  pragma[nomagic]
+  private predicate scopeResolutionAssignOperationSynthesis(AstNode parent, int i, Child child) {
+    exists(ScopeResolutionAssignOperation cao |
+      parent = cao and
+      i = -1 and
+      child = SynthChild(StmtSequenceKind())
+      or
+      exists(AstNode stmts | stmts = TStmtSequenceSynth(cao, -1) |
+        parent = stmts and
+        i = 0 and
+        child = SynthChild(AssignExprKind())
+        or
+        exists(AstNode assign | assign = TAssignExprSynth(stmts, 0) |
+          parent = assign and
+          i = 0 and
+          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(cao, 0)))
+          or
+          parent = assign and
+          i = 1 and
+          child = childRef(cao.getScopeExpr())
+        )
+        or
+        parent = stmts and
+        i = 1 and
+        child = SynthChild(AssignExprKind())
+        or
+        exists(AstNode assign | assign = TAssignExprSynth(stmts, 1) |
+          parent = assign and
+          i = 0 and
+          child = SynthChild(ConstantWriteAccessKind(cao.getName()))
+          or
+          exists(AstNode cwa | cwa = TConstantWriteAccessSynth(assign, 0, cao.getName()) |
+            parent = cwa and
+            i = 0 and
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(cao, 0)))
+          )
+          or
+          parent = assign and
+          i = 1 and
+          child = SynthChild(getKind(cao))
+          or
+          exists(AstNode op | op = getSynthChild(assign, 1) |
+            parent = op and
+            i = 0 and
+            child = SynthChild(ConstantReadAccessKind(cao.getName()))
+            or
+            exists(AstNode cra | cra = TConstantReadAccessSynth(op, 0, cao.getName()) |
+              parent = cra and
+              i = 0 and
+              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(cao, 0)))
+            )
+            or
+            parent = op and
+            i = 1 and
+            child = childRef(cao.getRightOperand())
+          )
+        )
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * expr::FOO += y
+   * ```
+   *
+   * desugars to
+   *
+   * ```rb
+   * __synth__0 = expr
+   * __synth__0::FOO = _synth__0::FOO + y
+   * ```
+   */
+  private class ScopeResolutionAssignOperationSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      scopeResolutionAssignOperationSynthesis(parent, i, child)
+    }
+
+    final override predicate constantReadAccess(string name) {
+      name = any(ScopeResolutionAssignOperation o).getName()
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n instanceof ScopeResolutionAssignOperation and
+      i = 0
+    }
+
+    final override predicate constantWriteAccess(string name) { this.constantReadAccess(name) }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(ScopeResolutionAssignOperation cao, StmtSequence stmts | stmts = cao.getDesugared() |
+        n = stmts.getStmt(0) and
+        hasLocation(cao.getScopeExpr(), l)
+        or
+        exists(AssignExpr assign | assign = stmts.getStmt(1) |
+          n = assign and hasLocation(cao, l)
+          or
+          n = assign.getLeftOperand() and
+          hasLocation(cao.getLeftOperand(), l)
+          or
+          n = assign.getLeftOperand().(ConstantAccess).getScopeExpr() and
+          hasLocation(cao.getScopeExpr(), l)
+          or
+          exists(BinaryOperation bo | bo = assign.getRightOperand() |
+            n = bo and
+            l = getAssignOperationLocation(cao)
+            or
+            n = bo.getLeftOperand() and
+            hasLocation(cao.getLeftOperand(), l)
+            or
+            n = bo.getLeftOperand().(ConstantAccess).getScopeExpr() and
+            hasLocation(cao.getScopeExpr(), l)
+          )
+        )
+      )
+    }
+  }
+
   /** An assignment operation where the left-hand side is a method call. */
   private class SetterAssignOperation extends AssignOperation {
     private MethodCall mc;
@@ -493,8 +734,11 @@ private module AssignOperationDesugar {
     MethodCall getMethodCall() { result = mc }
 
     pragma[nomagic]
+    private string getMethodName() { result = mc.getMethodName() }
+
+    pragma[nomagic]
     MethodCallKind getCallKind(boolean setter, int arity) {
-      result = MethodCallKind(mc.getMethodName(), setter, arity)
+      result = MethodCallKind(this.getMethodName(), setter, arity)
     }
 
     pragma[nomagic]

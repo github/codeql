@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
         bool IExpressionParentEntity.IsTopLevelParent => false;
 
         /// <summary>
-        /// Gets a string represention of a constant value.
+        /// Gets a string representation of a constant value.
         /// </summary>
         /// <param name="obj">The value.</param>
         /// <returns>The string representation.</returns>

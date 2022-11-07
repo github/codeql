@@ -3,15 +3,26 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class ForceValueExprBase extends Synth::TForceValueExpr, Expr {
-  override string getAPrimaryQlClass() { result = "ForceValueExpr" }
+module Generated {
+  class ForceValueExpr extends Synth::TForceValueExpr, Expr {
+    override string getAPrimaryQlClass() { result = "ForceValueExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertForceValueExprToRaw(this)
-            .(Raw::ForceValueExpr)
-            .getSubExpr())
+    /**
+     * Gets the sub expression of this force value expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertForceValueExprToRaw(this)
+              .(Raw::ForceValueExpr)
+              .getSubExpr())
+    }
+
+    /**
+     * Gets the sub expression of this force value expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

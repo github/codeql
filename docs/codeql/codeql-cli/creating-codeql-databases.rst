@@ -132,7 +132,8 @@ Python
 
 When creating databases for Python you must ensure:
 
-- You have the all of the required versions of Python installed.
+- You have Python 3 installed and available to the CodeQL extractor.
+- You have the version of Python used by your code installed.
 - You have access to the `pip <https://pypi.org/project/pip/>`__
   packaging management system and can install any
   packages that the codebase depends on.

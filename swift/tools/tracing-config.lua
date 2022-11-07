@@ -12,7 +12,7 @@ function RegisterExtractorPack(id)
       return nil
     end
 
-    -- removes upsupported CLI arg including the following how_many args
+    -- removes unsupported CLI arg including the following how_many args
     function strip_unsupported_arg(args, arg, how_many)
       local index = indexOf(args, arg)
       if index then
@@ -29,6 +29,7 @@ function RegisterExtractorPack(id)
       strip_unsupported_arg(args, '-emit-localized-strings', 0)
       strip_unsupported_arg(args, '-emit-localized-strings-path', 1)
       strip_unsupported_arg(args, '-stack-check', 0)
+      strip_unsupported_arg(args, '-experimental-skip-non-inlinable-function-bodies-without-types', 0)
     end
 
     -- xcodebuild does not always specify the -resource-dir in which case the compiler falls back

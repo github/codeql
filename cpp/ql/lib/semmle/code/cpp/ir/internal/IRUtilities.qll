@@ -12,7 +12,7 @@ private Type getDecayedType(Type type) {
 }
 
 /**
- * Holds if the sepcified variable is a structured binding with a non-reference
+ * Holds if the specified variable is a structured binding with a non-reference
  * type.
  */
 predicate isNonReferenceStructuredBinding(Variable v) {

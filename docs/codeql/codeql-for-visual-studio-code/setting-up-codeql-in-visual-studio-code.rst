@@ -21,7 +21,7 @@ You can install the CodeQL extension using any of the normal methods for install
 
 * Go to the `Visual Studio Code Marketplace <https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql>`__ in your browser and click **Install**.
 * In the Extensions view (**Ctrl+Shift+X** or **Cmd+Shift+X**), search for ``CodeQL``, then select **Install**.
-* Download the `CodeQL VSIX file <https://github.com/github/vscode-codeql/releases>`__. Then, in the Extensions view, click **More actions** > **Install from VSIX**, and select the CodeQL VSIX file.
+* Download the `CodeQL VSIX file <https://github.com/github/vscode-codeql/releases>`__. Then, in the Extensions view, click the ellipsis representing the **Views and More Actions...** menu, select **Install from VSIX**, then select the CodeQL VSIX file.
 
 Configuring access to the CodeQL CLI
 ------------------------------------

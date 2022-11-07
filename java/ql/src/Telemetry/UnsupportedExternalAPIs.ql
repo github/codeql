@@ -11,17 +11,12 @@ import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import semmle.code.java.dataflow.internal.NegativeSummary
 import ExternalApi
 
-private predicate getRelevantUsages(ExternalApi api, int usages) {
+private predicate relevant(ExternalApi api) {
   not api.isUninteresting() and
   not api.isSupported() and
-  not api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable and
-  usages =
-    strictcount(Call c |
-      c.getCallee().getSourceDeclaration() = api and
-      not c.getFile() instanceof GeneratedFile
-    )
+  not api = any(FlowSummaryImpl::Public::NegativeSummarizedCallable nsc).asCallable()
 }
 
-from ExternalApi api, int usages
-where Results<getRelevantUsages/2>::restrict(api, usages)
-select api.getApiName() as apiname, usages order by usages desc
+from string apiName, int usages
+where Results<relevant/1>::restrict(apiName, usages)
+select apiName, usages order by usages desc

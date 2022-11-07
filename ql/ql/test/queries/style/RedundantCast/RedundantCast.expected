@@ -1,3 +1,3 @@
-| Foo.qll:5:25:5:31 | InlineCast | Redundant cast to $@ | Foo.qll:5:28:5:30 | TypeExpr | Foo |
-| Foo.qll:7:33:7:39 | InlineCast | Redundant cast to $@ | Foo.qll:7:36:7:38 | TypeExpr | Foo |
-| Foo.qll:11:36:11:42 | InlineCast | Redundant cast to $@ | Foo.qll:11:39:11:41 | TypeExpr | Foo |
+| Foo.qll:5:25:5:31 | InlineCast | Redundant cast to $@. | Foo.qll:5:28:5:30 | TypeExpr | Foo |
+| Foo.qll:7:33:7:39 | InlineCast | Redundant cast to $@. | Foo.qll:7:36:7:38 | TypeExpr | Foo |
+| Foo.qll:11:36:11:42 | InlineCast | Redundant cast to $@. | Foo.qll:11:39:11:41 | TypeExpr | Foo |

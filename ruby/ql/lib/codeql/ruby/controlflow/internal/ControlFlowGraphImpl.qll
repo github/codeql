@@ -139,10 +139,16 @@ module Trees {
   abstract private class NonDefaultValueParameterTree extends ControlFlowTree, NamedParameter {
     final override predicate first(AstNode first) {
       this.getDefiningAccess().(ControlFlowTree).first(first)
+      or
+      not exists(this.getDefiningAccess()) and first = this
     }
 
     final override predicate last(AstNode last, Completion c) {
       this.getDefiningAccess().(ControlFlowTree).last(last, c)
+      or
+      not exists(this.getDefiningAccess()) and
+      last = this and
+      c.isValidFor(this)
     }
 
     override predicate propagatesAbnormal(AstNode child) {
@@ -884,7 +890,12 @@ module Trees {
   private class ConstantAccessTree extends PostOrderTree, ConstantAccess {
     ConstantAccessTree() {
       not this instanceof ClassDeclaration and
-      not this instanceof ModuleDeclaration
+      not this instanceof ModuleDeclaration and
+      // constant accesses with scope expression in compound assignments are desugared
+      not (
+        this = any(AssignOperation op).getLeftOperand() and
+        exists(this.getScopeExpr())
+      )
     }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getScopeExpr() }

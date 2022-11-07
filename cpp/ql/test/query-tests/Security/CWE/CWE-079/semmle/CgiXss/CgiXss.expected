@@ -29,18 +29,13 @@ nodes
 | search.c:14:24:14:28 | *query | semmle.label | *query |
 | search.c:14:24:14:28 | query | semmle.label | query |
 | search.c:17:8:17:12 | (const char *)... | semmle.label | (const char *)... |
-| search.c:17:8:17:12 | (const char *)... | semmle.label | (const char *)... |
 | search.c:17:8:17:12 | query | semmle.label | query |
 | search.c:17:8:17:12 | query | semmle.label | query |
-| search.c:17:8:17:12 | query | semmle.label | query |
-| search.c:17:8:17:12 | query indirection | semmle.label | query indirection |
 | search.c:17:8:17:12 | query indirection | semmle.label | query indirection |
 | search.c:22:24:22:28 | *query | semmle.label | *query |
 | search.c:22:24:22:28 | query | semmle.label | query |
 | search.c:23:39:23:43 | query | semmle.label | query |
 | search.c:23:39:23:43 | query | semmle.label | query |
-| search.c:23:39:23:43 | query | semmle.label | query |
-| search.c:23:39:23:43 | query indirection | semmle.label | query indirection |
 | search.c:23:39:23:43 | query indirection | semmle.label | query indirection |
 | search.c:51:21:51:26 | call to getenv | semmle.label | call to getenv |
 | search.c:51:21:51:26 | call to getenv | semmle.label | call to getenv |

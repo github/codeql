@@ -53,17 +53,19 @@ class ParamReturnKind extends ReturnKind, TParamReturnKind {
  * defined in library code.
  */
 class DataFlowCallable extends TDataFlowCallable {
-  CfgScope scope;
-
-  DataFlowCallable() { this = TDataFlowFunc(scope) }
+  /** Gets the location of this callable. */
+  Location getLocation() { none() } // overridden in subclasses
 
   /** Gets a textual representation of this callable. */
-  string toString() { result = scope.toString() }
+  string toString() { none() } // overridden in subclasses
 
-  /** Gets the location of this callable. */
-  Location getLocation() { result = scope.getLocation() }
+  CfgScope asSourceCallable() { this = TDataFlowFunc(result) }
 
-  Callable::TypeRange getUnderlyingCallable() { result = scope }
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
+
+  Callable::TypeRange getUnderlyingCallable() {
+    result = this.asSummarizedCallable() or result = this.asSourceCallable()
+  }
 }
 
 cached
@@ -71,7 +73,7 @@ newtype TDataFlowCall =
   TNormalCall(ApplyExprCfgNode call) or
   TPropertyGetterCall(PropertyGetterCfgNode getter) or
   TPropertySetterCall(PropertySetterCfgNode setter) or
-  TPropertyObserverCall(PropertyObserverCfgNode obserer) or
+  TPropertyObserverCall(PropertyObserverCfgNode observer) or
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
@@ -191,7 +193,7 @@ class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
     result = observer.getBase()
     or
     // TODO: This is correct for `willSet` (which takes a `newValue` parameter),
-    // but for `didSet` (which takes an `oldValue` paramter) we need an rvalue
+    // but for `didSet` (which takes an `oldValue` parameter) we need an rvalue
     // for `getBase()`.
     i = 0 and
     result = observer.getSource()
@@ -229,7 +231,9 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 cached
 private module Cached {
   cached
-  newtype TDataFlowCallable = TDataFlowFunc(CfgScope scope)
+  newtype TDataFlowCallable =
+    TDataFlowFunc(CfgScope scope) { not scope instanceof FlowSummary::SummarizedCallable } or
+    TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
   /** Gets a viable run-time target for the call `call`. */
   cached
@@ -241,6 +245,28 @@ private module Cached {
     result = TDataFlowFunc(call.(PropertySetterCall).getAccessorDecl())
     or
     result = TDataFlowFunc(call.(PropertyObserverCall).getAccessorDecl())
+    or
+    result = TSummarizedCallable(call.asCall().getStaticTarget())
+  }
+
+  private class SourceCallable extends DataFlowCallable, TDataFlowFunc {
+    CfgScope scope;
+
+    SourceCallable() { this = TDataFlowFunc(scope) }
+
+    override string toString() { result = scope.toString() }
+
+    override Location getLocation() { result = scope.getLocation() }
+  }
+
+  private class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
+    FlowSummary::SummarizedCallable sc;
+
+    SummarizedCallable() { this = TSummarizedCallable(sc) }
+
+    override string toString() { result = sc.toString() }
+
+    override Location getLocation() { result = sc.getLocation() }
   }
 
   cached

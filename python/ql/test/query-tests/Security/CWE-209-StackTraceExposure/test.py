@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 app = Flask(__name__)
 
 
@@ -56,3 +56,15 @@ def format_error(msg):
 @app.route('/maybe_xss')
 def maybe_xss():
     return make_response(request.args.get('name', ''))
+
+# BAD
+@app.route('/bad/jsonify')
+def bad_jsonify():
+    try:
+        do_computation()
+    except Exception as e: # $ exceptionInfo
+        return jsonify({"error": str(e)})
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

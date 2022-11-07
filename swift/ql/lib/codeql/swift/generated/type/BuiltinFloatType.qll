@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinFloatTypeBase extends Synth::TBuiltinFloatType, BuiltinType {
-  override string getAPrimaryQlClass() { result = "BuiltinFloatType" }
+module Generated {
+  class BuiltinFloatType extends Synth::TBuiltinFloatType, BuiltinType {
+    override string getAPrimaryQlClass() { result = "BuiltinFloatType" }
+  }
 }

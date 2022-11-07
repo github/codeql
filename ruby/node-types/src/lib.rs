@@ -43,7 +43,7 @@ pub enum FieldTypeInfo {
     },
 
     /// The field can be one of several tokens, so the db type will be an `int`
-    /// with a `case @foo.kind` for each possiblity.
+    /// with a `case @foo.kind` for each possibility.
     ReservedWordInt(BTreeMap<String, (usize, String)>),
 }
 

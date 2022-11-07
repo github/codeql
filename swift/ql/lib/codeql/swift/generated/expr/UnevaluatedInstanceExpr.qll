@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class UnevaluatedInstanceExprBase extends Synth::TUnevaluatedInstanceExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "UnevaluatedInstanceExpr" }
+module Generated {
+  class UnevaluatedInstanceExpr extends Synth::TUnevaluatedInstanceExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "UnevaluatedInstanceExpr" }
+  }
 }

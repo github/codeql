@@ -1,4 +1,4 @@
 name: codeql/javascript-experimental-atm-tests
 extractor: javascript
 dependencies:
-    codeql/javascript-experimental-atm-model-building: "*"
+    codeql/javascript-experimental-atm-model-building: ${workspace}

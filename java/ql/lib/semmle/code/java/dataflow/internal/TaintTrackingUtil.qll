@@ -33,6 +33,57 @@ predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
 
+/** Holds if `node` is an endpoint for local taint flow. */
+signature predicate nodeSig(DataFlow::Node node);
+
+/** Provides local taint flow restricted to a given set of sources and sinks. */
+module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
+  private predicate reachRev(DataFlow::Node n) {
+    sink(n)
+    or
+    exists(DataFlow::Node mid |
+      localTaintStep(n, mid) and
+      reachRev(mid)
+    )
+  }
+
+  private predicate reachFwd(DataFlow::Node n) {
+    reachRev(n) and
+    (
+      source(n)
+      or
+      exists(DataFlow::Node mid |
+        localTaintStep(mid, n) and
+        reachFwd(mid)
+      )
+    )
+  }
+
+  private predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    localTaintStep(n1, n2) and
+    reachFwd(n1) and
+    reachFwd(n2)
+  }
+
+  /**
+   * Holds if taint can flow from `n1` to `n2` in zero or more local
+   * (intra-procedural) steps that are restricted to be part of a path between
+   * `source` and `sink`.
+   */
+  pragma[inline]
+  predicate hasFlow(DataFlow::Node n1, DataFlow::Node n2) { step*(n1, n2) }
+
+  /**
+   * Holds if taint can flow from `n1` to `n2` in zero or more local
+   * (intra-procedural) steps that are restricted to be part of a path between
+   * `source` and `sink`.
+   */
+  pragma[inline]
+  predicate hasExprFlow(Expr n1, Expr n2) {
+    hasFlow(DataFlow::exprNode(n1), DataFlow::exprNode(n2))
+  }
+}
+
 cached
 private module Cached {
   private import DataFlowImplCommon as DataFlowImplCommon
@@ -231,13 +282,8 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
  * Converts an argument index to a formal parameter index.
  * This is relevant for varadic methods.
  */
-private int argToParam(Call call, int arg) {
-  exists(call.getArgument(arg)) and
-  exists(Callable c | c = call.getCallee() |
-    if c.isVarargs() and arg >= c.getNumberOfParameters()
-    then result = c.getNumberOfParameters() - 1
-    else result = arg
-  )
+private int argToParam(Call call, int argIdx) {
+  result = call.getArgument(argIdx).(Argument).getParameterPos()
 }
 
 /** Access to a method that passes taint from qualifier to argument. */
@@ -569,6 +615,7 @@ private MethodAccess callReturningSameType(Expr ref) {
   result.getMethod().getReturnType() = ref.getType()
 }
 
+pragma[assume_small_delta]
 private SrcRefType entrypointType() {
   exists(RemoteFlowSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and

@@ -1,0 +1,51 @@
+| test.c:20:9:20:12 | %c | 0 |  | c |  | file://:0:0:0:0 | char |
+| test.c:21:9:21:16 | %c%c%c | 0 |  | c |  | file://:0:0:0:0 | char |
+| test.c:21:9:21:16 | %c%c%c | 1 |  | c |  | file://:0:0:0:0 | char |
+| test.c:21:9:21:16 | %c%c%c | 2 |  | c |  | file://:0:0:0:0 | char |
+| test.c:25:9:25:12 | %s | 0 |  | s |  | file://:0:0:0:0 | char * |
+| test.c:26:9:26:14 | %.4s | 0 |  | s |  | file://:0:0:0:0 | char * |
+| test.c:27:9:27:16 | %s, %s | 0 |  | s |  | file://:0:0:0:0 | char * |
+| test.c:27:9:27:16 | %s, %s | 1 |  | s |  | file://:0:0:0:0 | char * |
+| test.c:30:9:30:12 | %i | 0 |  | i |  | file://:0:0:0:0 | int |
+| test.c:31:9:31:14 | %lli | 0 |  | i | ll | file://:0:0:0:0 | long long |
+| test.c:32:9:32:12 | %i | 0 |  | i |  | file://:0:0:0:0 | int |
+| test.c:33:9:33:14 | %lli | 0 |  | i | ll | file://:0:0:0:0 | long long |
+| test.c:34:9:34:12 | %d | 0 |  | d |  | file://:0:0:0:0 | int |
+| test.c:35:9:35:12 | %u | 0 |  | u |  | file://:0:0:0:0 | unsigned int |
+| test.c:36:9:36:12 | %x | 0 |  | x |  | file://:0:0:0:0 | unsigned int |
+| test.c:37:9:37:12 | %X | 0 |  | X |  | file://:0:0:0:0 | unsigned int |
+| test.c:38:9:38:13 | %#x | 0 |  | x |  | file://:0:0:0:0 | unsigned int |
+| test.c:39:9:39:12 | %o | 0 |  | o |  | file://:0:0:0:0 | unsigned int |
+| test.c:40:9:40:13 | %#o | 0 |  | o |  | file://:0:0:0:0 | unsigned int |
+| test.c:43:9:43:12 | %f | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:44:9:44:14 | %.2f | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:45:9:45:12 | %e | 0 |  | e |  | file://:0:0:0:0 | double |
+| test.c:59:10:59:14 | %Ii | 0 |  | i |  | file://:0:0:0:0 | int |
+| test.c:66:10:66:14 | %zu | 0 |  | u | z | test.c:50:27:50:32 | size_t |
+| test.c:67:10:67:14 | %Zu | 0 |  | u | Z | test.c:50:27:50:32 | size_t |
+| test.c:74:10:74:14 | %lc | 0 |  | c | l | file://:0:0:0:0 | wchar_t |
+| test.c:78:9:78:20 | %2$i, %1$i | 0 | 2$ | i |  | file://:0:0:0:0 | int |
+| test.c:78:9:78:20 | %2$i, %1$i | 1 | 1$ | i |  | file://:0:0:0:0 | int |
+| test.c:79:9:79:20 | %2$i, %1$i | 0 | 2$ | i |  | file://:0:0:0:0 | int |
+| test.c:79:9:79:20 | %2$i, %1$i | 1 | 1$ | i |  | file://:0:0:0:0 | int |
+| test.c:81:9:81:24 | %2$02i %1$4.2f | 0 | 2$ | i |  | file://:0:0:0:0 | int |
+| test.c:81:9:81:24 | %2$02i %1$4.2f | 1 | 1$ | f |  | file://:0:0:0:0 | double |
+| test.c:85:10:85:18 | %2$*1$d | 0 | 2$ | d |  | file://:0:0:0:0 | int |
+| test.c:86:10:86:19 | %2$0*1$d | 0 | 2$ | d |  | file://:0:0:0:0 | int |
+| test.c:92:10:92:19 | %2$.*1$f | 0 | 2$ | f |  | file://:0:0:0:0 | double |
+| test.c:102:10:102:15 | %%%f | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:103:10:103:17 | %%%%%f | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:104:10:104:18 | %4.2f%% | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:105:10:105:17 | %%%f%% | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:112:10:112:13 | %f | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:113:10:113:15 | %.1f | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:114:10:114:14 | %1f | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:115:10:115:16 | %1.1f | 0 |  | f |  | file://:0:0:0:0 | double |
+| test.c:116:10:116:13 | %e | 0 |  | e |  | file://:0:0:0:0 | double |
+| test.c:117:10:117:15 | %.2e | 0 |  | e |  | file://:0:0:0:0 | double |
+| test.c:118:10:118:14 | %3e | 0 |  | e |  | file://:0:0:0:0 | double |
+| test.c:119:10:119:16 | %3.2e | 0 |  | e |  | file://:0:0:0:0 | double |
+| test.c:120:10:120:13 | %g | 0 |  | g |  | file://:0:0:0:0 | double |
+| test.c:121:10:121:15 | %.1g | 0 |  | g |  | file://:0:0:0:0 | double |
+| test.c:122:10:122:14 | %4g | 0 |  | g |  | file://:0:0:0:0 | double |
+| test.c:123:10:123:16 | %4.1g | 0 |  | g |  | file://:0:0:0:0 | double |

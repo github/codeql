@@ -7,6 +7,6 @@ swift_cc_library(
     visibility = ["//swift:__subpackages__"],
     deps = [
         "//swift/extractor/infra",
-        "//swift/tools/prebuilt:swift-llvm-support",
+        "//swift/third_party/swift-llvm-support",
     ],
 )

@@ -64,7 +64,7 @@ predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
   i = -1
 }
 
-/** Holds if `bb` contains a caputured read of variable `v`. */
+/** Holds if `bb` contains a captured read of variable `v`. */
 pragma[noinline]
 private predicate hasCapturedVariableRead(Cfg::BasicBlock bb, LocalVariable v) {
   exists(LocalVariableReadAccess read |
@@ -74,7 +74,7 @@ private predicate hasCapturedVariableRead(Cfg::BasicBlock bb, LocalVariable v) {
   )
 }
 
-/** Holds if `bb` contains a caputured write to variable `v`. */
+/** Holds if `bb` contains a captured write to variable `v`. */
 pragma[noinline]
 private predicate writesCapturedVariable(Cfg::BasicBlock bb, LocalVariable v) {
   exists(LocalVariableWriteAccess write |
@@ -177,6 +177,59 @@ private predicate hasVariableReadWithCapturedWrite(
 ) {
   hasCapturedWrite(v, scope) and
   variableReadActualInOuterScope(bb, v, scope)
+}
+
+pragma[noinline]
+private predicate adjacentDefRead(
+  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
+  SsaInput::SourceVariable v
+) {
+  adjacentDefRead(def, bb1, i1, bb2, i2) and
+  v = def.getSourceVariable()
+}
+
+private predicate adjacentDefReachesRead(
+  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+) {
+  exists(SsaInput::SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
+    def.definesAt(v, bb1, i1)
+    or
+    SsaInput::variableRead(bb1, i1, v, true)
+  )
+  or
+  exists(SsaInput::BasicBlock bb3, int i3 |
+    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
+    SsaInput::variableRead(bb3, i3, _, false) and
+    adjacentDefRead(def, bb3, i3, bb2, i2)
+  )
+}
+
+/** Same as `adjacentDefRead`, but skips uncertain reads. */
+pragma[nomagic]
+private predicate adjacentDefSkipUncertainReads(
+  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+) {
+  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
+  SsaInput::variableRead(bb2, i2, _, true)
+}
+
+private predicate adjacentDefReachesUncertainRead(
+  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+) {
+  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
+  SsaInput::variableRead(bb2, i2, _, false)
+}
+
+/** Same as `lastRefRedef`, but skips uncertain reads. */
+pragma[nomagic]
+private predicate lastRefSkipUncertainReads(Definition def, SsaInput::BasicBlock bb, int i) {
+  lastRef(def, bb, i) and
+  not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
+  or
+  exists(SsaInput::BasicBlock bb0, int i0 |
+    lastRef(def, bb0, i0) and
+    adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
+  )
 }
 
 cached
@@ -341,7 +394,7 @@ private module Cached {
   predicate firstRead(Definition def, VariableReadAccessCfgNode read) {
     exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
       def.definesAt(_, bb1, i1) and
-      adjacentDefNoUncertainReads(def, bb1, i1, bb2, i2) and
+      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read = bb2.getNode(i2)
     )
   }
@@ -358,7 +411,7 @@ private module Cached {
     exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
       read1 = bb1.getNode(i1) and
       variableReadActual(bb1, i1, _) and
-      adjacentDefNoUncertainReads(def, bb1, i1, bb2, i2) and
+      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
     )
   }
@@ -371,7 +424,7 @@ private module Cached {
   cached
   predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
     exists(Cfg::BasicBlock bb, int i |
-      lastRefNoUncertainReads(def, bb, i) and
+      lastRefSkipUncertainReads(def, bb, i) and
       variableReadActual(bb, i, _) and
       read = bb.getNode(i)
     )
@@ -386,7 +439,13 @@ private module Cached {
    */
   cached
   predicate lastRefBeforeRedef(Definition def, Cfg::BasicBlock bb, int i, Definition next) {
-    lastRefRedefNoUncertainReads(def, bb, i, next)
+    lastRefRedef(def, bb, i, next) and
+    not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
+    or
+    exists(SsaInput::BasicBlock bb0, int i0 |
+      lastRefRedef(def, bb0, i0, next) and
+      adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
+    )
   }
 
   cached

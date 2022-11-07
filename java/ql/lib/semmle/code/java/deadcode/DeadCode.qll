@@ -3,6 +3,7 @@ import semmle.code.java.deadcode.DeadEnumConstant
 import semmle.code.java.deadcode.DeadCodeCustomizations
 import semmle.code.java.deadcode.DeadField
 import semmle.code.java.deadcode.EntryPoints
+private import semmle.code.java.frameworks.kotlin.Serialization
 
 /**
  * Holds if the given callable has any liveness causes.
@@ -280,7 +281,12 @@ class RootdefCallable extends Callable {
   Parameter unusedParameter() {
     exists(int i | result = this.getParameter(i) |
       not exists(result.getAnAccess()) and
-      not overrideAccess(this, i)
+      not overrideAccess(this, i) and
+      // Do not report unused parameters on extension parameters that are (companion) objects.
+      not (
+        result.isExtensionParameter() and
+        (result.getType() instanceof CompanionObject or result.getType() instanceof ClassObject)
+      )
     )
   }
 
@@ -304,6 +310,12 @@ class RootdefCallable extends Callable {
     this.getAnAnnotation() instanceof OverrideAnnotation
     or
     this.hasModifier("override")
+    or
+    // Exclude generated callables, such as `...$default` ones extracted from Kotlin code.
+    this.isCompilerGenerated()
+    or
+    // Exclude Kotlin serialization constructors.
+    this instanceof SerializationConstructor
   }
 }
 

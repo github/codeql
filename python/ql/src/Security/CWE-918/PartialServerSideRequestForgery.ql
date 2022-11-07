@@ -21,5 +21,5 @@ where
   request = sink.getNode().(Sink).getRequest() and
   partialConfig.hasFlowPath(source, sink) and
   not fullyControlledRequest(request)
-select request, source, sink, "Part of the URL of this request depends on $@.", source.getNode(),
-  "a user-provided value"
+select request, source, sink, "Part of the URL of this request depends on a $@.", source.getNode(),
+  "user-provided value"

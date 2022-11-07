@@ -28,7 +28,7 @@ module M
 
     instance_m # NoMethodError
     self.instance_m # NoMethodError
-    
+
     singleton_m
     self.singleton_m
 end
@@ -44,18 +44,18 @@ class C
     include M
     instance_m # NoMethodError
     self.instance_m # NoMethodError
-    
+
     singleton_m # NoMethodError
     self.singleton_m # NoMethodError
 
     def baz
-        instance_m 
-        self.instance_m 
-        
+        instance_m
+        self.instance_m
+
         singleton_m # NoMethodError
         self.singleton_m # NoMethodError
     end
-end 
+end
 
 c = C.new
 c.baz
@@ -103,8 +103,11 @@ module Kernel
 end
 
 class Module
+    alias :old_include :include
     def module_eval; end
-    def include; end
+    def include x
+        old_include x
+    end
     def prepend; end
     def private; end
 end
@@ -189,16 +192,16 @@ class Singletons
         puts "singleton_a"
         self.singleton_b
     end
-    
+
     def self.singleton_b
         puts "singleton_b"
         self.singleton_c
     end
-    
+
     def self.singleton_c
         puts "singleton_c"
     end
-    
+
     def self.singleton_d
         puts "singleton_d"
         self.singleton_a
@@ -221,7 +224,7 @@ class Singletons
         self.singleton_g
     end
 end
-  
+
 Singletons.singleton_a
 Singletons.singleton_f
 
@@ -380,6 +383,10 @@ class SingletonOverride1
         def call_singleton1
             singleton1
         end
+
+        def factory
+            self.new.instance1
+        end
     end
 
     def self.singleton2
@@ -391,8 +398,14 @@ class SingletonOverride1
     end
 
     singleton2
+
+    def instance1
+        puts "SingletonOverride1#instance1"
+    end
 end
 
+SingletonOverride1.singleton1
+SingletonOverride1.singleton2
 SingletonOverride1.call_singleton1
 SingletonOverride1.call_singleton2
 
@@ -406,7 +419,198 @@ class SingletonOverride2 < SingletonOverride1
     def self.singleton2
         puts "SingletonOverride2#singleton2"
     end
+
+    def instance1
+        puts "SingletonOverride2#instance1"
+    end
 end
 
+SingletonOverride2.singleton1
+SingletonOverride2.singleton2
 SingletonOverride2.call_singleton1
 SingletonOverride2.call_singleton2
+
+class ConditionalInstanceMethods
+    if rand() > 0 then
+        def m1
+            puts "ConditionalInstanceMethods#m1"
+        end
+    end
+
+    def m2
+        puts "ConditionalInstanceMethods#m2"
+
+        def m3
+            puts "ConditionalInstanceMethods#m3"
+
+            def m4
+                puts "ConditionalInstanceMethods#m4"
+            end
+        end
+
+        m3
+    end
+
+    if rand() > 0 then
+        Class.new do
+            def m5
+                puts "AnonymousClass#m5"
+            end
+        end.new.m5
+    end
+end
+
+ConditionalInstanceMethods.new.m1
+ConditionalInstanceMethods.new.m3 # NoMethodError
+ConditionalInstanceMethods.new.m2
+ConditionalInstanceMethods.new.m3 # currently unable to resolve
+ConditionalInstanceMethods.new.m4 # currently unable to resolve
+ConditionalInstanceMethods.new.m5 # NoMethodError
+
+EsotericInstanceMethods = Class.new do
+    [0,1,2].each do
+        def foo
+            puts "foo"
+        end
+    end
+
+    Class.new do
+        def bar
+            puts "bar"
+        end
+    end.new.bar
+
+    [0,1,2].each do |i|
+        define_method("baz_#{i}") do
+            puts "baz_#{i}"
+        end
+    end
+end
+
+EsotericInstanceMethods.new.foo # currently unable to resolve
+EsotericInstanceMethods.new.bar # NoMethodError
+EsotericInstanceMethods.new.baz_0 # currently unable to resolve
+EsotericInstanceMethods.new.baz_1 # currently unable to resolve
+EsotericInstanceMethods.new.baz_2 # currently unable to resolve
+
+module ExtendSingletonMethod
+    def singleton
+        puts "ExtendSingletonMethod#singleton"
+    end
+
+    extend self
+end
+
+ExtendSingletonMethod.singleton
+
+module ExtendSingletonMethod2
+    extend ExtendSingletonMethod
+end
+
+ExtendSingletonMethod2.singleton
+
+module ExtendSingletonMethod3
+end
+
+ExtendSingletonMethod3.extend ExtendSingletonMethod
+
+ExtendSingletonMethod3.singleton
+
+foo = "hello"
+foo.singleton # NoMethodError
+foo.extend ExtendSingletonMethod
+
+foo.singleton
+
+module ProtectedMethodInModule
+    protected def foo
+        puts "ProtectedMethodInModule#foo"
+    end
+end
+
+class ProtectedMethods
+    include ProtectedMethodInModule
+
+    protected def bar
+        puts "ProtectedMethods#bar"
+    end
+
+    def baz
+        foo
+        bar
+        ProtectedMethods.new.foo
+        ProtectedMethods.new.bar
+    end
+end
+
+ProtectedMethods.new.foo # NoMethodError
+ProtectedMethods.new.bar # NoMethodError
+ProtectedMethods.new.baz
+
+class ProtectedMethodsSub < ProtectedMethods
+    def baz
+        foo
+        ProtectedMethodsSub.new.foo
+    end
+end
+
+ProtectedMethodsSub.new.foo # NoMethodError
+ProtectedMethodsSub.new.bar # NoMethodError
+ProtectedMethodsSub.new.baz
+
+[C.new].each { |c| c.baz }
+["a","b","c"].each { |s| s.capitalize }
+
+class SingletonUpCall_Base
+    def self.singleton
+    end
+end
+class SingletonUpCall_Sub < SingletonUpCall_Base
+    singleton
+    singleton2 # should not resolve
+    def self.mid_method
+        singleton
+        singleton2 # should resolve
+    end
+end
+class SingletonUpCall_SubSub < SingletonUpCall_Sub
+    def self.singleton2
+    end
+
+    mid_method
+end
+
+class SingletonA
+    def self.singleton1
+    end
+
+    def self.call_singleton1
+        singleton1
+    end
+
+    def self.call_call_singleton1
+        call_singleton1
+    end
+end
+
+class SingletonB < SingletonA
+    def self.singleton1
+    end
+
+    def self.call_singleton1
+        singleton1 # should not be able to target `SingletonA:::singleton1` and `SingletonC:::singleton1`
+    end
+end
+
+class SingletonC < SingletonA
+    def self.singleton1
+    end
+
+    def self.call_singleton1
+        singleton1 # should not be able to target `SingletonA:::singleton1` and `SingletonB:::singleton1`
+    end
+end
+
+SingletonA.call_call_singleton1
+SingletonB.call_call_singleton1
+SingletonC.call_call_singleton1

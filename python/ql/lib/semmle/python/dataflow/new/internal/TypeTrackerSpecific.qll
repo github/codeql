@@ -11,12 +11,45 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::TypeTrackingNode;
 
+/** A content name for use by type trackers, or the empty string. */
+class OptionalTypeTrackerContent extends string {
+  OptionalTypeTrackerContent() {
+    this = ""
+    or
+    this = getPossibleContentName()
+  }
+}
+
+/** A content name for use by type trackers. */
+class TypeTrackerContent extends OptionalTypeTrackerContent {
+  TypeTrackerContent() { this != "" }
+}
+
+/** Gets the content string representing no value. */
+OptionalTypeTrackerContent noContent() { result = "" }
+
+/**
+ * A label to use for `WithContent` and `WithoutContent` steps, restricting
+ * which `ContentSet` may pass through. Not currently used in Python.
+ */
+class ContentFilter extends Unit {
+  TypeTrackerContent getAMatchingContent() { none() }
+}
+
+pragma[inline]
+predicate compatibleContents(TypeTrackerContent storeContent, TypeTrackerContent loadContent) {
+  storeContent = loadContent
+}
+
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStepForTypetracking/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
 
-/** Holds if there is a level step from `pred` to `succ`. */
-predicate levelStep(Node pred, Node succ) { none() }
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
+predicate levelStepCall(Node nodeFrom, Node nodeTo) { none() }
+
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
+predicate levelStepNoCall(Node nodeFrom, Node nodeTo) { none() }
 
 /**
  * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
@@ -87,6 +120,23 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
     nodeTo = a
   )
 }
+
+/**
+ * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
+ */
+predicate basicLoadStoreStep(Node nodeFrom, Node nodeTo, string loadContent, string storeContent) {
+  none()
+}
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` but block flow of contents matched by `filter` through here.
+ */
+predicate basicWithoutContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) { none() }
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` if inside a content matched by `filter`.
+ */
+predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) { none() }
 
 /**
  * A utility class that is equivalent to `boolean` but does not require type joining.

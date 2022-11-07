@@ -27,12 +27,12 @@ abstract class Stored extends DataFlow::Node { }
  */
 class CoreDataStore extends Stored {
   CoreDataStore() {
-    // `content` arg to `NWConnection.send` is a sink
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "NSManagedObject" and
-      c.getAMember() = f and
-      f.getName() = ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"] and
-      call.getStaticTarget() = f and
+    // values written into Core Data objects are a sink
+    exists(CallExpr call |
+      call.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName("NSManagedObject",
+            ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
     )
   }
@@ -47,7 +47,7 @@ class RealmStore extends Stored instanceof DataFlow::PostUpdateNode {
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
-    exists(ClassDecl cd, Expr e |
+    exists(ClassOrStructDecl cd, Expr e |
       cd.getABaseTypeDecl*().getName() = "RealmSwiftObject" and
       this.getPreUpdateNode().asExpr() = e and
       e.getFullyConverted().getType() = cd.getType() and
@@ -81,7 +81,7 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     // flow out from fields of a `RealmSwiftObject` at the sink, for example in
     // `realmObj.data = sensitive`.
     isSink(node) and
-    exists(ClassDecl cd |
+    exists(ClassOrStructDecl cd |
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
       cd.getABaseTypeDecl*().getName() = "RealmSwiftObject"
     )
@@ -105,5 +105,5 @@ from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::Pat
 where config.hasFlowPath(sourceNode, sinkNode)
 select cleanupNode(sinkNode.getNode()), sourceNode, sinkNode,
   "This operation stores '" + sinkNode.getNode().toString() +
-    "' in a database. It may contain unencrypted sensitive data from $@", sourceNode,
+    "' in a database. It may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()

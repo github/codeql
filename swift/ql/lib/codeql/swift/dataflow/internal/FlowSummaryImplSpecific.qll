@@ -15,7 +15,7 @@ private import codeql.swift.controlflow.CfgNodes
 
 class SummarizedCallableBase = AbstractFunctionDecl;
 
-DataFlowCallable inject(SummarizedCallable c) { result = TDataFlowFunc(c) }
+DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition instanceParameterPosition() { result instanceof ThisArgumentPosition }
@@ -50,6 +50,9 @@ DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   any() // TODO once we have type pruning
 }
+
+/** Gets the type of synthetic global `sg`. */
+DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
 
 /**
  * Holds if an external flow summary exists for `c` with input specification
@@ -105,12 +108,19 @@ predicate sinkElement(Element e, string input, string kind, boolean generated) {
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
-  none() // TODO once we have field flow
+  exists(ContentSet cs, Content content |
+    cs.isSingleton(content) and
+    parseContent(c, content) and
+    result = SummaryComponent::content(cs)
+  )
 }
 
 /** Gets the textual representation of the content in the format used for flow summaries. */
-private string getContentSpecificCsv(ContentSet c) {
-  none() // TODO once we have field flow
+private string getContentSpecificCsv(ContentSet cs) {
+  exists(Content::FieldContent c |
+    cs.isSingleton(c) and
+    result = "Field[" + c.getField().getName() + "]"
+  )
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
@@ -182,10 +192,17 @@ class InterpretNode extends TInterpretNode {
   }
 }
 
-/** Provides additional sink specification logic required for attributes. */
-predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode node) { none() }
+predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  // Allow fields to be picked as output nodes.
+  exists(Node n, AstNode ast |
+    n = node.asNode() and
+    ast = mid.asElement()
+  |
+    c = "" and
+    n.asExpr().(MemberRefExpr).getMember() = ast
+  )
+}
 
-/** Provides additional sink specification logic required for attributes. */
 predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) { none() }
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */

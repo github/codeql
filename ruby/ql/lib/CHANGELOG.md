@@ -1,3 +1,67 @@
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* There was a bug in `TaintTracking::localTaint` and `TaintTracking::localTaintStep` such that they only tracked non-value-preserving flow steps. They have been fixed and now also include value-preserving steps.
+* Instantiations using `Faraday::Connection.new` are now recognized as part of `FaradayHttpRequest`s, meaning they will be considered as sinks for queries such as `rb/request-forgery`.
+* Taint flow is now tracked through extension methods on `Hash`, `String` and
+  `Object` provided by `ActiveSupport`.
+
+## 0.4.2
+
+### Minor Analysis Improvements
+
+* The hashing algorithms from `Digest` and `OpenSSL::Digest` are now recognized and can be flagged by the `rb/weak-cryptographic-algorithm` query.
+* More sources of remote input arising from methods on `ActionDispatch::Request` are now recognized.
+* The response value returned by the `Faraday#run_request` method is now also considered a source of remote input.
+* `ActiveJob::Serializers.deserialize` is considered to be a code execution sink.
+* Calls to `params` in `ActionMailer` classes are now treated as sources of remote user input.
+* Taint flow through `ActionController::Parameters` is tracked more accurately.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The following classes have been moved from `codeql.ruby.frameworks.ActionController` to `codeql.ruby.frameworks.Rails`:
+    * `ParamsCall`, now accessed as `Rails::ParamsCall`.
+    * `CookieCall`, now accessed as `Rails::CookieCall`.
+* The following classes have been moved from `codeql.ruby.frameworks.ActionView` to `codeql.ruby.frameworks.Rails`:
+    * `HtmlSafeCall`, now accessed as `Rails::HtmlSafeCall`.
+    * `HtmlEscapeCall`, now accessed as `Rails::HtmlEscapeCall`.
+    * `RenderCall`, now accessed as `Rails::RenderCall`.
+    * `RenderToCall`, now accessed as `Rails::RenderToCall`.
+* Subclasses of `ActionController::Metal` are now recognised as controllers.
+* `ActionController::DataStreaming::send_file` is now recognized as a
+  `FileSystemAccess`.
+* Various XSS sinks in the ActionView library are now recognized.
+* Calls to `ActiveRecord::Base.create` are now recognized as model
+  instantiations.
+* Various code executions, command executions and HTTP requests in the
+  ActiveStorage library are now recognized.
+* `MethodBase` now has two new predicates related to visibility: `isPublic` and
+  `isProtected`. These hold, respectively, if the method is public or protected.
+
+## 0.4.0
+
+### Breaking Changes
+
+* `import ruby` no longer brings the standard Ruby AST library into scope; it instead brings a module `Ast` into scope, which must be imported. Alternatively, it is also possible to import `codeql.ruby.AST`.
+* Changed the `HTTP::Client::Request` concept from using `MethodCall` as base class, to using `DataFlow::Node` as base class. Any class that extends `HTTP::Client::Request::Range` must be changed, but if you only use the member predicates of `HTTP::Client::Request`, no changes are required.
+
+### Deprecated APIs
+
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### Minor Analysis Improvements
+
+* Uses of `ActionView::FileSystemResolver` are now recognized as filesystem accesses.
+* Accesses of ActiveResource models are now recognized as HTTP requests.
+
+### Bug Fixes
+
+* Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
+
 ## 0.3.5
 
 ## 0.3.4

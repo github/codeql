@@ -116,6 +116,10 @@ class ImproperArrayIndexValidationConfig extends TaintTracking::Configuration {
   }
 }
 
+/** Gets `str` where the first letter has been lowercased. */
+bindingset[str]
+string lowerFirst(string str) { result = str.prefix(1).toLowerCase() + str.suffix(1) }
+
 from
   ImproperArrayIndexValidationConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink,
   string sourceType
@@ -123,5 +127,5 @@ where
   conf.hasFlowPath(source, sink) and
   isFlowSource(source.getNode(), sourceType)
 select sink.getNode(), source, sink,
-  "$@ flows to here and is used in an array indexing expression, potentially causing an invalid access.",
-  source.getNode(), sourceType
+  "An array indexing expression depends on $@ that might be outside the bounds of the array.",
+  source.getNode(), lowerFirst(sourceType)

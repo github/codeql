@@ -67,4 +67,4 @@ where
   def.defines(g) and
   not assigned_pytest_fixture(g) and
   not g.getId() = "_"
-select d, "Local variable '" + g.getId() + "' shadows a global variable defined $@.", def, "here"
+select d, "Local variable '" + g.getId() + "' shadows a $@.", def, "global variable"

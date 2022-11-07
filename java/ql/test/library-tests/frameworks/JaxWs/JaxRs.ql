@@ -14,7 +14,7 @@ class JaxRsTest extends InlineExpectationsTest {
         "InjectionAnnotation", "ResponseDeclaration", "ResponseBuilderDeclaration",
         "ClientDeclaration", "BeanParamConstructor", "MessageBodyReaderDeclaration",
         "MessageBodyReaderReadFromCall", "MessageBodyReaderReadCall", "ProducesAnnotation",
-        "ConsumesAnnotation"
+        "ConsumesAnnotation", "XssSink"
       ]
   }
 

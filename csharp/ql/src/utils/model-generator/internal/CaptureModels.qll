@@ -247,7 +247,7 @@ string captureSource(DataFlowTargetApi api) {
  * A TaintTracking Configuration used for tracking flow through APIs.
  * The sources are the parameters of the API and the fields of the enclosing type.
  *
- * This can be used to generate Sink summaries for APIs, if the API propgates a parameter (or enclosing type field)
+ * This can be used to generate Sink summaries for APIs, if the API propagates a parameter (or enclosing type field)
  * into an existing known sink (then the API itself becomes a sink).
  */
 private class PropagateToSinkConfiguration extends PropagateToSinkConfigurationSpecific {

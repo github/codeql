@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class OverloadSetRefExprBase extends Synth::TOverloadSetRefExpr, Expr { }
+module Generated {
+  class OverloadSetRefExpr extends Synth::TOverloadSetRefExpr, Expr { }
+}

@@ -57,7 +57,7 @@ class InitBlock {
     init { }
 }
 
-class X {
+open class X {
     /**
      * A prop comment
      */
@@ -82,3 +82,14 @@ class X {
         fun localFn() {}
     }
 }
+
+class XX {
+    fun f() = object :
+         /**
+         * An anonymous object comment
+         */
+         X() {
+    }
+}
+
+// Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0%

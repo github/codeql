@@ -67,6 +67,12 @@ abstract class Modifiable extends Element {
   /** Holds if this element has an `inline` modifier. */
   predicate isInline() { this.hasModifier("inline") }
 
+  /** Holds if this element has a `noinline` modifier. */
+  predicate isNoinline() { this.hasModifier("noinline") }
+
+  /** Holds if this element has a `crossinline` modifier. */
+  predicate isCrossinline() { this.hasModifier("crossinline") }
+
   /** Holds if this element has a `suspend` modifier. */
   predicate isSuspend() { this.hasModifier("suspend") }
 
@@ -87,4 +93,16 @@ abstract class Modifiable extends Element {
 
   /** Holds if this element has a `strictfp` modifier. */
   predicate isStrictfp() { this.hasModifier("strictfp") }
+
+  /** Holds if this element has a `lateinit` modifier. */
+  predicate isLateinit() { this.hasModifier("lateinit") }
+
+  /** Holds if this element has a `reified` modifier. */
+  predicate isReified() { this.hasModifier("reified") }
+
+  /** Holds if this element has an `in` modifier. */
+  predicate isIn() { this.hasModifier("in") }
+
+  /** Holds if this element has an `out` modifier. */
+  predicate isOut() { this.hasModifier("out") }
 }
