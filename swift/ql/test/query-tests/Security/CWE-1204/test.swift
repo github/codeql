@@ -104,7 +104,6 @@ func test() {
 	let randomIv = getRandomArray()
 	let randomIvString = String(cString: getRandomArray())
 
-	let blockMode = CBC(iv: randomIv)
 	let padding = Padding.noPadding
 	let key = getRandomArray()
 	let keyString = String(cString: key)
