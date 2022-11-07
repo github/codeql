@@ -55,7 +55,7 @@
 
 	<p>
 		To avoid such potentially catastrophic behaviors, provide the
-		inputs from exported functions as an argument that does not
+		input from exported functions as an argument that does not
 		get interpreted by a shell:
 	</p>
 
