@@ -329,21 +329,21 @@ namespace NestedTests {
 namespace FlowThroughGlobals {
   int globalVar;
 
-  int taintGlobal() {
+  void taintGlobal() {
     globalVar = source();
   }
 
-  int f() {
+  void f() {
     sink(globalVar); // $ ir=333:17 ir=347:17 // tainted or clean? Not sure.
     taintGlobal();
     sink(globalVar); // $ ir=333:17 ir=347:17 MISSING: ast
   }
 
-  int calledAfterTaint() {
+  void calledAfterTaint() {
     sink(globalVar); // $ ir=333:17 ir=347:17 MISSING: ast
   }
 
-  int taintAndCall() {
+  void taintAndCall() {
     globalVar = source();
     calledAfterTaint();
     sink(globalVar); // $ ast ir=333:17 ir=347:17
