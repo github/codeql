@@ -54,14 +54,14 @@ func testStrings() {
 
 		let url = URL(string: "http://example.com/")
 		let string3 = try String(contentsOf: url!) // SOURCE
-		let string4 = try String(contentsOf: url!, encoding: String.Encoding.ascii) // SOURCE [NOT DETECTED]
+		let string4 = try String(contentsOf: url!, encoding: String.Encoding.ascii) // SOURCE
 		var encoding = String.Encoding.ascii
-		let string5 = try String(contentsOf: url!, usedEncoding: &encoding) // SOURCE [NOT DETECTED]
+		let string5 = try String(contentsOf: url!, usedEncoding: &encoding) // SOURCE
 
 		let path = "file.txt"
-		let string6 = try String(contentsOfFile: path) // SOURCE [NOT DETECTED]
-		let string7 = try String(contentsOfFile: path, encoding: String.Encoding.ascii) // SOURCE [NOT DETECTED]
-		let string8 = try String(contentsOfFile: path, usedEncoding: &encoding) // SOURCE [NOT DETECTED]
+		let string6 = try String(contentsOfFile: path) // SOURCE
+		let string7 = try String(contentsOfFile: path, encoding: String.Encoding.ascii) // SOURCE
+		let string8 = try String(contentsOfFile: path, usedEncoding: &encoding) // SOURCE
 	} catch {
 		// ...
 	}
