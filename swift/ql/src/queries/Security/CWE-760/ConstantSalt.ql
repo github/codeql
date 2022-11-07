@@ -1,6 +1,6 @@
 /**
- * @name Constant salt
- * @description Using constant salts for password hashing is not secure, because potential attackers can pre-compute the hash value via dictionary attacks.
+ * @name Use of constant salts
+ * @description Using constant salts for password hashing is not secure because potential attackers can precompute the hash value via dictionary attacks.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
