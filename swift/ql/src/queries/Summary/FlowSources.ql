@@ -12,5 +12,11 @@
 import swift
 import codeql.swift.dataflow.FlowSources
 
-from RemoteFlowSource s
-select s, "Flow source: " + s.getSourceType()
+string sourceType(FlowSource s) {
+  s instanceof LocalFlowSource and result = "LocalFlowSource"
+  or
+  s instanceof RemoteFlowSource and result = "RemoteFlowSource"
+}
+
+from FlowSource s
+select s, sourceType(s) + ": " + s.getSourceType()
