@@ -1099,7 +1099,7 @@ class ArrayLiteralNode extends LocalSourceNode, ExprNode {
 }
 
 /**
- * A place in which a named constant can be found up during constant lookup.
+ * A place in which a named constant can be looked up during constant lookup.
  */
 private newtype TConstLookupScope =
   /** Look up in a qualified constant name `base::`. */
