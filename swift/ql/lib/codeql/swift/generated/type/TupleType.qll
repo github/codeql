@@ -34,20 +34,20 @@ module Generated {
     final int getNumberOfTypes() { result = count(getAType()) }
 
     /**
-     * Gets the `index`th name of this tuple type (0-based).
+     * Gets the `index`th name of this tuple type (0-based), if it exists.
      */
     string getName(int index) {
       result = Synth::convertTupleTypeToRaw(this).(Raw::TupleType).getName(index)
     }
 
     /**
+     * Holds if `getName(index)` exists.
+     */
+    final predicate hasName(int index) { exists(getName(index)) }
+
+    /**
      * Gets any of the names of this tuple type.
      */
     final string getAName() { result = getName(_) }
-
-    /**
-     * Gets the number of names of this tuple type.
-     */
-    final int getNumberOfNames() { result = count(getAName()) }
   }
 }

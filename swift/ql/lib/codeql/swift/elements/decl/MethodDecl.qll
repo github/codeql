@@ -9,6 +9,9 @@ private Decl getAMember(IterableDeclContext ctx) {
   )
 }
 
+/**
+ * A function that is a member of a class, struct, enum or protocol.
+ */
 class MethodDecl extends AbstractFunctionDecl {
   MethodDecl() {
     this = getAMember(any(ClassDecl c))

@@ -8,3 +8,10 @@
 | url.swift:53:15:53:19 | .resourceBytes | external |
 | url.swift:60:15:60:19 | .lines | external |
 | url.swift:67:16:67:22 | .lines | external |
+| webview.swift:20:82:20:102 | message | external |
+| webview.swift:25:5:25:13 | .globalObject | external |
+| webview.swift:26:5:26:39 | call to objectForKeyedSubscript(_:) | external |
+| webview.swift:39:9:39:9 | .tainted | Member of a type exposed through JSExport |
+| webview.swift:43:10:43:10 | self | Member of a type exposed through JSExport |
+| webview.swift:43:18:43:24 | arg1 | Member of a type exposed through JSExport |
+| webview.swift:43:29:43:35 | arg2 | Member of a type exposed through JSExport |

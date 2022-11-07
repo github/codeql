@@ -51,3 +51,6 @@ documentation:
   - "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll"
   - "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll"
+
+"ATM":
+  - javascript/ql/experimental/adaptivethreatmodeling/**/*

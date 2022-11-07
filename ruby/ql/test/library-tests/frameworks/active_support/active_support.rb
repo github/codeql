@@ -1,9 +1,15 @@
 "Foo::Bar".constantize
 
 a.constantize
+a.safe_constantize
 
 ActiveSupport::Logger.new(STDOUT)
 ActiveSupport::TaggedLogging.new(STDOUT)
+
+def m_at
+    x = source "a"
+    sink x.at(1..3) # $hasTaintFlow=a
+end
 
 def m_camelize
     x = source "a"
@@ -35,9 +41,24 @@ def m_demodulize
     sink x.demodulize # $hasTaintFlow=a
 end
 
+def first
+    x = source "a"
+    sink x.first(3) # $hasTaintFlow=a
+end
+
 def m_foreign_key
     x = source "a"
     sink x.foreign_key # $hasTaintFlow=a
+end
+
+def m_from
+    x = source "a"
+    sink x.from(3) # $hasTaintFlow=a
+end
+
+def m_html_safe
+    x = source "a"
+    sink x.html_safe # $hasTaintFlow=a
 end
 
 def m_humanize
@@ -50,6 +71,26 @@ def m_indent
     sink x.indent(1) # $hasTaintFlow=a
 end
 
+def m_indent!
+    x = source "a"
+    sink x.indent!(1) # $hasTaintFlow=a
+end
+
+def m_inquiry
+    x = source "a"
+    sink x.inquiry # $hasTaintFlow=a
+end
+
+def m_last
+    x = source "a"
+    sink x.last(1) # $hasTaintFlow=a
+end
+
+def m_mb_chars
+    x = source "a"
+    sink x.mb_chars # $hasTaintFlow=a
+end
+
 def m_parameterize
     x = source "a"
     sink x.parameterize # $hasTaintFlow=a
@@ -60,6 +101,16 @@ def m_pluralize
     sink x.pluralize # $hasTaintFlow=a
 end
 
+def m_remove
+    x = source "a"
+    sink x.remove("foo") # $hasTaintFlow=a
+end
+
+def m_remove!
+    x = source "a"
+    sink x.remove!("foo") # $hasTaintFlow=a
+end
+
 def m_singularize
     x = source "a"
     sink x.singularize # $hasTaintFlow=a
@@ -68,6 +119,11 @@ end
 def m_squish
     x = source "a"
     sink x.squish # $hasTaintFlow=a
+end
+
+def m_squish!
+    x = source "a"
+    sink x.squish! # $hasTaintFlow=a
 end
 
 def m_strip_heredoc
@@ -88,6 +144,26 @@ end
 def m_titleize
     x = source "a"
     sink x.titleize # $hasTaintFlow=a
+end
+
+def m_to
+    x = source "a"
+    sink x.to(3) # $hasTaintFlow=a
+end
+
+def m_truncate
+    x = source "a"
+    sink x.truncate(3) # $hasTaintFlow=a
+end
+
+def m_truncate_bytes
+    x = source "a"
+    sink x.truncate_bytes(3) # $hasTaintFlow=a
+end
+
+def m_truncate_words
+    x = source "a"
+    sink x.truncate_words(3) # $hasTaintFlow=a
 end
 
 def m_underscore
@@ -200,4 +276,17 @@ def m_pathname_existence
   sink y # $hasTaintFlow=a
   z = y.existence
   sink z # $hasTaintFlow=a
+end
+
+def m_presence
+  x = source "a"
+  sink x.presence # $hasValueFlow=a
+
+  y = source 123
+  sink y.presence # $hasValueFlow=123
+end
+
+def m_deep_dup
+  x = source "a"
+  sink x.deep_dup # $hasValueFlow=a
 end
