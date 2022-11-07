@@ -94,13 +94,13 @@ module ActiveSupport {
        * `Object#try!` behaves similarly but raises `NoMethodError` if the
        * receiver is not `nil` and does not respond to the method.
        */
-      class TryCallCodeExecution extends CodeExecution::Range, DataFlow::CallNode {
+      class TryCallCodeExecution extends CodeExecution::Range instanceof DataFlow::CallNode {
         TryCallCodeExecution() {
           this.asExpr().getExpr() instanceof UnknownMethodCall and
           this.getMethodName() = ["try", "try!"]
         }
 
-        override DataFlow::Node getCode() { result = this.getArgument(0) }
+        override DataFlow::Node getCode() { result = super.getArgument(0) }
 
         override predicate runsArbitraryCode() { none() }
       }
