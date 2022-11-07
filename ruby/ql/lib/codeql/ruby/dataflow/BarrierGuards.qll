@@ -168,13 +168,12 @@ private predicate stringConstCaseCompare(
         // when "foo", "bar"
         pattern instanceof ExprNodes::StringLiteralCfgNode
         or
-        // array literals behave weirdly in the CFG so we need to drop down to the AST level for this bit
-        // specifically: `SplatExprCfgNode.getOperand()` does not return results for array literals
         exists(CfgNodes::ExprNodes::SplatExprCfgNode splat | splat = pattern |
           // when *["foo", "bar"]
-          exists(ArrayLiteral arr |
-            splat.getExpr().getOperand() = arr and
-            forall(Expr elem | elem = arr.getAnElement() | elem instanceof StringLiteral)
+          forex(ExprCfgNode elem |
+            elem = splat.getOperand().(ExprNodes::ArrayLiteralCfgNode).getAnArgument()
+          |
+            elem instanceof ExprNodes::StringLiteralCfgNode
           )
           or
           // when *some_var
