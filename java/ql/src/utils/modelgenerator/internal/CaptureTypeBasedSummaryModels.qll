@@ -12,9 +12,9 @@ private class IterableType extends Class {
   private Type elementType;
 
   IterableType() {
-    exists(Method m, Type return, GenericType t, Type et, int position | m.getDeclaringType() = t |
+    exists(Method m, RefType return, GenericType t, Type et, int position | m.getDeclaringType() = t |
       return = m.getReturnType() and
-      return.getName().matches("Iterator%") and
+      return.getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
       et = return.(ParameterizedType).getTypeArgument(0) and
       t.getTypeParameter(position) = et and
       instantiates(this, t, position, elementType)
