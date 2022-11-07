@@ -348,6 +348,38 @@ private module Cached {
       yield.asExpr().getExpr() = call
     )
   }
+
+  /**
+   * A place in which a named constant can be looked up during constant lookup.
+   */
+  cached
+  newtype TConstLookupScope =
+    /** Look up in a qualified constant name `base::`. */
+    MkQualifiedLookup(ConstantAccess base) or
+    /** Look up in the ancestors of `mod`. */
+    MkAncestorLookup(Module mod) or
+    /** Look up in a module syntactically nested in a declaration of `mod`. */
+    MkNestedLookup(Module mod) or
+    /** Pseudo-scope for accesses that are known to resolve to `mod`. */
+    MkExactLookup(Module mod)
+
+  /**
+   * Gets a `LocalSourceNode` to represent the constant read or written by `access`.
+   */
+  cached
+  LocalSourceNode getConstantAccessNode(ConstantAccess access) {
+    // Namespaces don't evaluate to the constant being accessed, they return the value of their last statement.
+    // Use the definition of 'self' in the namespace as the representative in this case.
+    if access instanceof Namespace
+    then result = getNamespaceSelf(access)
+    else result.asExpr().getExpr() = access
+  }
+
+  cached
+  predicate forceCachingInSameStage() { any() }
+
+  cached
+  predicate forceCachingBackref() { exists(any(ConstRef const).getConst(_)) }
 }
 
 private import Cached
@@ -1099,30 +1131,6 @@ class ArrayLiteralNode extends LocalSourceNode, ExprNode {
 }
 
 /**
- * A place in which a named constant can be looked up during constant lookup.
- */
-private newtype TConstLookupScope =
-  /** Look up in a qualified constant name `base::`. */
-  MkQualifiedLookup(ConstantAccess base) or
-  /** Look up in the ancestors of `mod`. */
-  MkAncestorLookup(Module mod) or
-  /** Look up in a module syntactically nested in a declaration of `mod`. */
-  MkNestedLookup(Module mod) or
-  /** Pseudo-scope for accesses that are known to resolve to `mod`. */
-  MkExactLookup(Module mod)
-
-/**
- * Gets a `LocalSourceNode` to represent the constant read or written by `access`.
- */
-private LocalSourceNode getConstantAccessNode(ConstantAccess access) {
-  // Namespaces don't evaluate to the constant being accessed, they return the value of their last statement.
-  // Use the definition of 'self' in the namespace as the representative in this case.
-  if access instanceof Namespace
-  then result = getNamespaceSelf(access)
-  else result.asExpr().getExpr() = access
-}
-
-/**
  * An access to a constant, such as `C`, `C::D`, or a class or module declaration.
  *
  * See `DataFlow::getConst` for usage example.
@@ -1188,8 +1196,9 @@ class ConstRef extends LocalSourceNode {
   /**
    * Gets a scope in which a constant lookup may access the contents of the module referenced by this constant.
    */
-  pragma[nomagic]
+  cached
   private TConstLookupScope getATargetScope() {
+    forceCachingInSameStage() and
     result = MkAncestorLookup(this.getAncestryTarget().getAnImmediateDescendent*())
     or
     access = any(ConstantAccess ac).getScopeExpr() and
@@ -1222,8 +1231,9 @@ class ConstRef extends LocalSourceNode {
   /**
    * Holds if this can reference a constant named `name` from `scope` using a lookup of `kind`.
    */
-  pragma[nomagic]
+  cached
   private predicate accesses(TConstLookupScope scope, string name) {
+    forceCachingInSameStage() and
     scope = this.getLookupScope() and
     name = this.getName()
     or
