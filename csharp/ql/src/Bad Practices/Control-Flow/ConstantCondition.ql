@@ -15,6 +15,7 @@
 import csharp
 import semmle.code.csharp.commons.Assertions
 import semmle.code.csharp.commons.Constants
+private import semmle.code.csharp.frameworks.System
 
 /** A constant condition. */
 abstract class ConstantCondition extends Expr {
@@ -69,6 +70,30 @@ class ConstantIfCondition extends ConstantBooleanCondition {
     // whether code parts must be executed or not
     this instanceof AssignableRead and
     not this instanceof ParameterRead
+  }
+}
+
+/** A constant return value from a function with constant input expression. */
+class ConstantReturnValueCondition extends ConstantCondition {
+  boolean b;
+
+  ConstantReturnValueCondition() {
+    exists(Method m, Call c, Expr expr |
+      m = any(SystemStringClass s).getIsNullOrEmptyMethod() and
+      c.getTarget() = m and
+      this = c and
+      expr = c.getArgument(0) and
+      expr.hasValue() and
+      if expr.getValue().length() > 0 and not expr instanceof NullLiteral
+      then b = false
+      else b = true
+    )
+  }
+
+  override string getMessage() {
+    if b = true
+    then result = "Expression is always 'true'."
+    else result = "Expression is always 'false'."
   }
 }
 
