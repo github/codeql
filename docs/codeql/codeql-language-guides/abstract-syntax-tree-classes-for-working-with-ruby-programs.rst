@@ -421,10 +421,9 @@ All classes in this subsection are subclasses of VariableAccess_.
 Desugaring
 ~~~~~~~~~~
 
-Certain Ruby language features are shorthands for a common operations that could also be expressed in an alternate, more verbose, forms.
+Certain Ruby language features are shorthands for common operations that could also be expressed in other, more verbose, forms.
 Such language features are typically referred to as "syntactic sugar", and make it easier for programmers to write and read code. This is
-great for programmers. Source code analyzers on the other hand, this lead to additional work as they need to understand the short 
-hand notation as well as the long form. To make analysis easier, CodeQL automatically "desugars" Ruby code, effectively rewriting
+great for programmers. For source code analyzers, however, this leads to additional work as they need to understand the short-hand notation as well as the long form. To make analysis easier, CodeQL automatically "desugars" Ruby code, effectively rewriting
 rich syntactic constructs into equivalent code that uses simpler syntactic contructs.
 
 For example, supposing that ``x`` is an object with an attribute ``foo``, the assignment::
