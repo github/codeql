@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
+import org.jetbrains.kotlin.ir.expressions.impl.IrGetValueImpl
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
@@ -1051,8 +1052,8 @@ open class KotlinFileExtractor(
         if (!f.hasAnnotation(jvmOverloadsFqName))
             return
 
-        fun extractGeneratedOverload(paramList: List<IrElement>) {
-            val overloadParameters = paramList.filterIsInstance<IrValueParameter>()
+        fun extractGeneratedOverload(paramList: List<IrValueParameter?>) {
+            val overloadParameters = paramList.filterNotNull()
             // Note `overloadParameters` have incorrect parents and indices, since there is no actual IrFunction describing the required synthetic overload.
             // We have to use the `overriddenAttributes` element of `DeclarationStackAdjuster` to fix up references to these parameters while we're extracting
             // these synthetic overloads.
@@ -1072,67 +1073,33 @@ open class KotlinFileExtractor(
 
                 DeclarationStackAdjuster(f, overriddenAttributes).use {
 
-                    fun extractNormalArgs(argParentId: Label<out DbExprparent>, idxOffset: Int, enclosingStmtId: Label<out DbStmt>) {
-                        paramList.forEachIndexed { idx, param ->
-                            when(param) {
-                                is IrValueParameter -> {
-                                    // Forward a parameter:
-                                    val syntheticParamId = useValueParameter(param, overloadId)
-                                    extractVariableAccess(syntheticParamId, param.type, realFunctionLocId, argParentId, idxOffset + idx, overloadId, enclosingStmtId)
-                                }
-                                is IrExpression -> {
-                                    // Supply a default argument:
-                                    extractExpressionExpr(param, overloadId, argParentId, idxOffset + idx, enclosingStmtId)
-                                }
-                                else -> {
-                                    logger.errorElement("Unexpected parameter list entry", param)
-                                }
-                            }
-                        }
-                    }
+                    // Create a synthetic function body that calls the corresponding $default function:
+                    val regularArgs = paramList.map { it?.let { p -> IrGetValueImpl(-1, -1, p.symbol) } }
 
-                    // Create a synthetic function body that calls the real function supplying default arguments where required:
                     if (f is IrConstructor) {
                         val blockId = extractBlockBody(overloadId, realFunctionLocId)
                         val constructorCallId = tw.getFreshIdLabel<DbConstructorinvocationstmt>()
                         tw.writeStmts_constructorinvocationstmt(constructorCallId, blockId, 0, overloadId)
                         tw.writeHasLocation(constructorCallId, realFunctionLocId)
-                        tw.writeCallableBinding(constructorCallId, useFunction(f))
+                        tw.writeCallableBinding(constructorCallId, getDefaultsMethodLabel(f))
 
-                        extractNormalArgs(constructorCallId, 0, constructorCallId)
+                        extractDefaultsCallArguments(constructorCallId, f, overloadId, constructorCallId, regularArgs, null, null)
                     } else {
+                        val dispatchReceiver = f.dispatchReceiverParameter?.let { IrGetValueImpl(-1, -1, it.symbol) }
+                        val extensionReceiver = f.extensionReceiverParameter?.let { IrGetValueImpl(-1, -1, it.symbol) }
+
                         extractExpressionBody(overloadId, realFunctionLocId).also { returnId ->
-                            extractRawMethodAccess(
-                                f,
-                                realFunctionLocId,
-                                f.returnType,
-                                overloadId,
-                                returnId,
-                                0,
-                                returnId,
-                                f.valueParameters.size,
-                                { argParentId, idxOffset ->
-                                    extractNormalArgs(argParentId, idxOffset, returnId)
-                                },
-                                f.dispatchReceiverParameter?.type,
-                                f.dispatchReceiverParameter?.let { { callId ->
-                                    extractThisAccess(it.type, overloadId, callId, -1, returnId, realFunctionLocId)
-                                } },
-                                f.extensionReceiverParameter?.let { { argParentId ->
-                                    val syntheticParamId = useValueParameter(it, overloadId)
-                                    extractVariableAccess(syntheticParamId, it.type, realFunctionLocId, argParentId, 0, overloadId, returnId)
-                                } }
-                            )
+                            extractsDefaultsCall(f, realFunctionLocId, f.returnType, overloadId, returnId, 0, returnId, regularArgs, dispatchReceiver, extensionReceiver)
                         }
                     }
                 }
             }
         }
 
-        val paramList: MutableList<IrElement> = f.valueParameters.toMutableList()
-        for (n in (paramList.size - 1) downTo 0) {
-            (paramList[n] as? IrValueParameter)?.defaultValue?.expression?.let {
-                paramList[n] = it // Replace the last parameter that has a default with that default value.
+        val paramList: MutableList<IrValueParameter?> = f.valueParameters.toMutableList()
+        for (n in (f.valueParameters.size - 1) downTo 0) {
+            if (f.valueParameters[n].defaultValue != null) {
+                paramList[n] = null // Remove this parameter, to be replaced by a default value
                 extractGeneratedOverload(paramList)
             }
         }
