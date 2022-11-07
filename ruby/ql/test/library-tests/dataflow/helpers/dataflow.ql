@@ -42,12 +42,12 @@ query DataFlow::Node getAnOwnInstanceVariableWriteValue(DataFlow::ModuleNode mod
   result = mod.getAnOwnInstanceVariableWriteValue(name)
 }
 
-query DataFlow::ModuleNode getCanonicalEnclosingModule(DataFlow::ModuleNode mod) {
-  result = mod.getCanonicalEnclosingModule()
+query DataFlow::ModuleNode getParentModule(DataFlow::ModuleNode mod) {
+  result = mod.getParentModule()
 }
 
-query DataFlow::ModuleNode getCanonicalNestedModule(DataFlow::ModuleNode mod, string name) {
-  result = mod.getCanonicalNestedModule(name)
+query DataFlow::ModuleNode getNestedModule(DataFlow::ModuleNode mod, string name) {
+  result = mod.getNestedModule(name)
 }
 
 query DataFlow::Node getTopLevelConst(string name) { result = DataFlow::getConst(name) }

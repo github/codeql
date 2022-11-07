@@ -166,12 +166,12 @@ getAnOwnInstanceVariableRead
 | tst.rb:1:1:6:3 | C1 | @field | tst.rb:4:9:4:14 | @field |
 getAnOwnInstanceVariableWriteValue
 | tst.rb:1:1:6:3 | C1 | @field | tst.rb:3:18:3:18 | 1 |
-getCanonicalEnclosingModule
+getParentModule
 | tst.rb:41:5:42:7 | N1::XY1 | tst.rb:40:1:47:3 | N1 |
 | tst.rb:43:5:46:7 | N1::N2 | tst.rb:40:1:47:3 | N1 |
 | tst.rb:44:9:45:11 | N1::N2::XY2 | tst.rb:43:5:46:7 | N1::N2 |
 | tst.rb:53:5:54:7 | N2::XY3 | tst.rb:49:1:51:3 | N2 |
-getCanonicalNestedModule
+getNestedModule
 | tst.rb:40:1:47:3 | N1 | N2 | tst.rb:43:5:46:7 | N1::N2 |
 | tst.rb:40:1:47:3 | N1 | XY1 | tst.rb:41:5:42:7 | N1::XY1 |
 | tst.rb:43:5:46:7 | N1::N2 | XY2 | tst.rb:44:9:45:11 | N1::N2::XY2 |
