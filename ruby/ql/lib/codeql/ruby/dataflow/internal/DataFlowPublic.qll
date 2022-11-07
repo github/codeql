@@ -272,18 +272,17 @@ class LocalSourceNode extends Node {
     key = result.getArgument(0).getConstantValue()
   }
 
+  private CallNode getAnElementWriteCall() {
+    result = this.getAMethodCall("[]=") and
+    result.getNumberOfArguments() = 2
+  }
+
   /**
    * Gets a value stored as an element on this node, such as the `x` in `obj[key] = x`.
    *
    * Concretely, this gets the second argument from any call to `[]=` where this node flows to the receiver.
    */
-  Node getAnElementWriteValue() {
-    exists(CallNode call |
-      call = this.getAMethodCall("[]=") and
-      call.getNumberOfArguments() = 2 and
-      result = call.getArgument(1)
-    )
-  }
+  Node getAnElementWriteValue() { result = this.getAnElementWriteCall().getArgument(1) }
 
   /**
    * Gets the `x` in `obj[key] = x`, where this node flows to `obj`.
@@ -293,8 +292,7 @@ class LocalSourceNode extends Node {
    */
   Node getAnElementWriteValue(ConstantValue key) {
     exists(CallNode call |
-      call = this.getAMethodCall("[]=") and
-      call.getNumberOfArguments() = 2 and
+      call = this.getAnElementWriteCall() and
       call.getArgument(0).getConstantValue() = key and
       result = call.getArgument(1)
     )
