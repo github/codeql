@@ -421,7 +421,13 @@ All classes in this subsection are subclasses of VariableAccess_.
 Desugaring
 ~~~~~~~~~~
 
-Certain Ruby language features are implemented using syntactic sugar. For example, supposing that ``x`` is an object with an attribute ``foo``, the assignment::
+Certain Ruby language features are shorthands for a common operations that could also be expressed in an alternate, more verbose, forms.
+Such language features are typically referred to as "syntactic sugar", and make it easier for programmers to write and read code. This is
+great for programmers. Source code analyzers on the other hand, this lead to additional work as they need to understand the short 
+hand notation as well as the long form. To make analysis easier, CodeQL automatically "desugars" Ruby code, effectively rewriting
+rich syntactic constructs into equivalent code that uses simpler syntactic contructs.
+
+For example, supposing that ``x`` is an object with an attribute ``foo``, the assignment::
 
    x.foo = y
 
@@ -432,7 +438,7 @@ is desugared to code similar to::
 
 In other words, there is effectively a call to the SetterMethodCall_ ``foo=`` on ``x`` with argument ``__synth_0 = y``, followed by a read of the ``__synth_0`` variable.
 
-In CodeQL, this is implemented by syntheisizing AstNode_ instances corresponding to this desugared version of the code.
+In CodeQL, this is implemented by synthesizing AstNode_ instances corresponding to this desugared version of the code.
 
 Note that both the original AssignExpr_ and the desugared SetterMethodCall_ versions are both available to CodeQL queries, and it is usually not necessary to be aware of any desugaring that may take place. However, if a codebase explicitly uses ``x.foo=(y)`` SetterMethodCall_ syntax, then this will not be found by a query for AssignExpr_ instances.
 
