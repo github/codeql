@@ -19,7 +19,7 @@ void following_pointers(
 
   sink(sourceArray1[0]); // no flow
   sink(*sourceArray1); // no flow
-  sink(&sourceArray1); // $ ast // [should probably be taint only]
+  sink(&sourceArray1); // $ ast,ir // [should probably be taint only]
 
   sink(sourceStruct1.m1); // no flow
   sink(sourceStruct1_ptr->m1); // no flow
@@ -48,5 +48,5 @@ void following_pointers(
 
   int stackArray[2] = { source(), source() };
   stackArray[0] = source();
-  sink(stackArray); // $ ast MISSING: ir
+  sink(stackArray); // $ ast,ir
 }

@@ -24,17 +24,24 @@ module IRTest {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asParameter().getName().matches("source%")
+      or
+      source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
+      or
+      exists(source.asUninitialized())
     }
 
     override predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
-        sink.asExpr() = call.getAnArgument()
+        call.getAnArgument() in [sink.asExpr(), sink.asIndirectExpr()]
       )
     }
 
     override predicate isBarrier(DataFlow::Node barrier) {
-      barrier.asExpr().(VariableAccess).getTarget().hasName("barrier") or
+      exists(Expr barrierExpr | barrierExpr in [barrier.asExpr(), barrier.asIndirectExpr()] |
+        barrierExpr.(VariableAccess).getTarget().hasName("barrier")
+      )
+      or
       barrier = DataFlow::InstructionBarrierGuard<testBarrierGuard/3>::getABarrierNode()
     }
   }
