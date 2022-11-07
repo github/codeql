@@ -985,7 +985,7 @@ class CallableNode extends ExprNode {
   ParameterNode getBlockParameter() { this.getParameterPosition(result).isBlock() }
 
   /**
-   * Gets a `yield` in this method call or `.call` on the block parameter.
+   * Gets a `yield` in this method or `.call` on the block parameter.
    */
   CallNode getABlockCall() {
     hasYieldCall(this.getBlockParameter(), result)
