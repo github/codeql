@@ -1229,7 +1229,7 @@ class ConstRef extends LocalSourceNode {
   }
 
   /**
-   * Holds if this can reference a constant named `name` from `scope` using a lookup of `kind`.
+   * Holds if this can reference a constant named `name` from `scope`.
    */
   cached
   private predicate accesses(TConstLookupScope scope, string name) {
