@@ -20,3 +20,14 @@ void testMacros(int a, int b, int c)
 	BADPRINTF("%i %i %i\n", a, b, c); // GOOD
 	BADPRINTF("%i %i %i %i\n", a, b, c); // BAD: too few format arguments
 }
+
+#define DOTHING(x) \
+	printf("doing thing: " #x); x
+
+void testMacros2()
+{
+	int x;
+
+	DOTHING(x++); // GOOD
+	DOTHING(printf("%i", x)); // BAD: the printf inside the macro has too few format arguments
+}
