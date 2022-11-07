@@ -3,7 +3,7 @@
 #include <swift/AST/Decl.h>
 #include <swift/AST/ASTMangler.h>
 
-#include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/decl/TrapClasses.h"
 
 namespace codeql {
@@ -11,10 +11,9 @@ namespace codeql {
 // `swift::Decl` visitor
 // TODO all `std::variant` here should really be `std::optional`, but we need those kinds of
 // "forward declarations" while our extraction is incomplete
-class DeclVisitor : public AstVisitorBase<DeclVisitor> {
+class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
  public:
-  using AstVisitorBase<DeclVisitor>::AstVisitorBase;
-  using AstVisitorBase<DeclVisitor>::visit;
+  using AstTranslatorBase<DeclTranslator>::AstTranslatorBase;
 
   std::optional<codeql::ConcreteFuncDecl> translateFuncDecl(const swift::FuncDecl& decl);
   std::optional<codeql::ConstructorDecl> translateConstructorDecl(
@@ -64,9 +63,9 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
 
   template <typename D>
   std::optional<TrapClassOf<D>> createNamedEntry(const D& decl) {
-    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    auto id = dispatcher.assignNewLabel(decl, mangledName(decl));
     std::optional<TrapClassOf<D>> entry;
-    if (dispatcher_.shouldEmitDeclBody(decl)) {
+    if (dispatcher.shouldEmitDeclBody(decl)) {
       entry.emplace(id);
       fillDecl(decl, *entry);
     }
@@ -75,13 +74,13 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
 
   template <typename D>
   TrapClassOf<D> createEntry(const D& decl) {
-    TrapClassOf<D> entry{dispatcher_.template assignNewLabel(decl)};
+    TrapClassOf<D> entry{dispatcher.template assignNewLabel(decl)};
     fillDecl(decl, entry);
     return entry;
   }
 
   void fillDecl(const swift::Decl& decl, codeql::Decl& entry) {
-    entry.module = dispatcher_.fetchLabel(decl.getModuleContext());
+    entry.module = dispatcher.fetchLabel(decl.getModuleContext());
   }
 
   swift::Mangle::ASTMangler mangler;

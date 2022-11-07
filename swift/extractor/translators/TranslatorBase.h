@@ -8,13 +8,13 @@
 namespace codeql {
 
 namespace detail {
-class VisitorBase {
+class TranslatorBase {
  protected:
-  SwiftDispatcher& dispatcher_;
+  SwiftDispatcher& dispatcher;
 
  public:
   // SwiftDispatcher should outlive this instance
-  VisitorBase(SwiftDispatcher& dispatcher) : dispatcher_{dispatcher} {}
+  TranslatorBase(SwiftDispatcher& dispatcher) : dispatcher{dispatcher} {}
 };
 
 // define by macro metaprogramming member checkers
@@ -25,7 +25,7 @@ class VisitorBase {
                                                                                                \
   template <typename T>                                                                        \
   struct HasTranslate##CLASS##KIND<T, decltype((void)std::declval<T>().translate##CLASS##KIND( \
-                                                   std::declval<swift::CLASS##KIND&>()),       \
+                                                   std::declval<const swift::CLASS##KIND&>()), \
                                                void())> : std::true_type {};
 
 DEFINE_TRANSLATE_CHECKER(Decl, , )
@@ -63,25 +63,36 @@ DEFINE_TRANSLATE_CHECKER(TypeRepr, , )
 // Moreover, if the implementation class has translate##CLASS##KIND (that uses generated C++
 // classes), for the class of for a parent thereof, we want to use that. We detect that by using the
 // type traits HasTranslate##CLASS##KIND defined above
-#define DEFINE_VISIT(KIND, CLASS, PARENT)                                             \
- public:                                                                              \
-  void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                    \
-    if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {           \
-      dispatcher_.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
-    } else if constexpr (detail::HasTranslate##PARENT<CrtpSubclass>::value) {         \
-      dispatcher_.emit(static_cast<CrtpSubclass*>(this)->translate##PARENT(*e));      \
-    } else {                                                                          \
-      dispatcher_.emitUnknown(e);                                                     \
-    }                                                                                 \
+#define DEFINE_VISIT(KIND, CLASS, PARENT)                                            \
+  void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                   \
+    if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {          \
+      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
+    } else if constexpr (detail::HasTranslate##PARENT<CrtpSubclass>::value) {        \
+      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##PARENT(*e));      \
+    } else {                                                                         \
+      dispatcher.emitUnknown(e);                                                     \
+    }                                                                                \
   }
 
 // base class for our AST visitors, getting a SwiftDispatcher member and define_visit emission for
 // unknown/TBD entities. Like `swift::ASTVisitor`, this uses CRTP (the Curiously Recurring Template
 // Pattern)
 template <typename CrtpSubclass>
-class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail::VisitorBase {
+class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
+                          protected detail::TranslatorBase {
  public:
-  using VisitorBase::VisitorBase;
+  using TranslatorBase::TranslatorBase;
+
+  // swift does not provide const visitors. The following const_cast is safe, as we privately
+  // route the visit to translateXXX functions only if they take const references to swift
+  // entities (see HasTranslate##CLASS##KIND above)
+  template <typename E>
+  void translateAndEmit(const E& entity) {
+    swift::ASTVisitor<CrtpSubclass>::visit(const_cast<E*>(&entity));
+  }
+
+ private:
+  friend class swift::ASTVisitor<CrtpSubclass>;
 
 #define DECL(CLASS, PARENT) DEFINE_VISIT(Decl, CLASS, PARENT)
 #include "swift/AST/DeclNodes.def"
@@ -103,9 +114,20 @@ class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail:
 // unknown/TBD types. Like `swift::TypeVisitor`, this uses CRTP (the Curiously Recurring Template
 // Pattern)
 template <typename CrtpSubclass>
-class TypeVisitorBase : public swift::TypeVisitor<CrtpSubclass>, protected detail::VisitorBase {
+class TypeTranslatorBase : private swift::TypeVisitor<CrtpSubclass>,
+                           protected detail::TranslatorBase {
  public:
-  using VisitorBase::VisitorBase;
+  using TranslatorBase::TranslatorBase;
+
+  // swift does not provide const visitors. The following const_cast is safe, as we privately
+  // route the visit to translateXXX functions only if they take const references to swift
+  // entities (see HasTranslate##CLASS##KIND above)
+  void translateAndEmit(const swift::TypeBase& type) {
+    swift::TypeVisitor<CrtpSubclass>::visit(const_cast<swift::TypeBase*>(&type));
+  }
+
+ private:
+  friend class swift::TypeVisitor<CrtpSubclass>;
 
 #define TYPE(CLASS, PARENT) DEFINE_VISIT(Type, CLASS, PARENT)
 #include "swift/AST/TypeNodes.def"
