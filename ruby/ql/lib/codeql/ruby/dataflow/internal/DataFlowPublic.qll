@@ -944,7 +944,7 @@ class ModuleNode instanceof Module {
  * A representation of a run-time class.
  */
 class ClassNode extends ModuleNode {
-  ClassNode() { isClass() }
+  ClassNode() { this.isClass() }
 }
 
 /**
