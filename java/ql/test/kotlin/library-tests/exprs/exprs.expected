@@ -1470,9 +1470,11 @@
 | exprs.kt:170:9:170:17 | r2.height | exprs.kt:165:1:172:1 | foo | VarAccess |
 | exprs.kt:170:9:170:21 | ...=... | exprs.kt:165:1:172:1 | foo | AssignExpr |
 | exprs.kt:170:21:170:21 | 3 | exprs.kt:165:1:172:1 | foo | IntegerLiteral |
+| exprs.kt:174:1:176:1 | 0 | exprs.kt:174:6:176:1 | Direction | IntegerLiteral |
 | exprs.kt:174:1:176:1 | Direction | exprs.kt:174:6:176:1 | Direction | TypeAccess |
 | exprs.kt:174:1:176:1 | Enum<Direction> | exprs.kt:174:6:176:1 | Direction | TypeAccess |
 | exprs.kt:174:1:176:1 | new Enum(...) | exprs.kt:174:6:176:1 | Direction | ClassInstanceExpr |
+| exprs.kt:174:1:176:1 | null | exprs.kt:174:6:176:1 | Direction | NullLiteral |
 | exprs.kt:175:5:175:10 | ...=... | exprs.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
 | exprs.kt:175:5:175:10 | Direction | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
 | exprs.kt:175:5:175:10 | Direction | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
@@ -1497,9 +1499,11 @@
 | exprs.kt:175:25:175:28 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:175:25:175:28 | Direction.EAST | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
 | exprs.kt:175:25:175:28 | new Direction(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
+| exprs.kt:178:1:182:1 | 0 | exprs.kt:178:6:182:1 | Color | IntegerLiteral |
 | exprs.kt:178:1:182:1 | Color | exprs.kt:178:6:182:1 | Color | TypeAccess |
 | exprs.kt:178:1:182:1 | Enum<Color> | exprs.kt:178:6:182:1 | Color | TypeAccess |
 | exprs.kt:178:1:182:1 | new Enum(...) | exprs.kt:178:6:182:1 | Color | ClassInstanceExpr |
+| exprs.kt:178:1:182:1 | null | exprs.kt:178:6:182:1 | Color | NullLiteral |
 | exprs.kt:178:18:178:29 | ...=... | exprs.kt:178:6:182:1 | Color | KtInitializerAssignExpr |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |

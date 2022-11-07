@@ -2089,7 +2089,7 @@ open class KotlinFileExtractor(
     private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int, extractVarargAsArray: Boolean = false) {
         var i = 0
         valueArguments.forEach { arg ->
-            if(arg != null) {
+            if (arg != null) {
                 if (arg is IrVararg && !extractVarargAsArray) {
                     arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, callId, i + idxOffset + varargNo, enclosingStmt) }
                     i += arg.elements.size
@@ -3030,15 +3030,31 @@ open class KotlinFileExtractor(
         val isAnonymous = eType.isAnonymous
         val locId = tw.getLocation(e)
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
-        // For now, don't try to use default methods for enum constructor calls,
-        // which have null arguments even though the parameters don't give default values.
+
         val id = if (e !is IrEnumConstructorCall && callUsesDefaultArguments(e.symbol.owner, valueArgs)) {
             extractNewExpr(getDefaultsMethodLabel(e.symbol.owner).cast(), type, locId, parent, idx, callable, enclosingStmt).also {
                 extractDefaultsCallArguments(it, e.symbol.owner, callable, enclosingStmt, valueArgs, null, null)
             }
         } else {
             extractNewExpr(e.symbol.owner, eType.arguments, type, locId, parent, idx, callable, enclosingStmt).also {
-                extractCallValueArguments(it, e, enclosingStmt, callable, 0)
+
+                val realCallTarget = e.symbol.owner.realOverrideTarget
+                // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
+                if (e is IrEnumConstructorCall &&
+                    realCallTarget is IrConstructor &&
+                    realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
+                    realCallTarget.valueParameters.size == 2 &&
+                    realCallTarget.valueParameters[0].type == pluginContext.irBuiltIns.stringType &&
+                    realCallTarget.valueParameters[1].type == pluginContext.irBuiltIns.intType) {
+
+                    val id0 = extractNull(pluginContext.irBuiltIns.stringType, locId, it, 0, callable, enclosingStmt)
+                    tw.writeCompiler_generated(id0, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+
+                    val id1 = extractConstantInteger(0, locId, it, 1, callable, enclosingStmt)
+                    tw.writeCompiler_generated(id1, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+                } else {
+                    extractCallValueArguments(it, e, enclosingStmt, callable, 0)
+                }
             }
         }
 
@@ -3363,6 +3379,14 @@ open class KotlinFileExtractor(
             extractExprContext(it, locId, callable, enclosingStmt)
         }
 
+    private fun extractNull(t: IrType, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
+        tw.getFreshIdLabel<DbNullliteral>().also {
+            val type = useType(t)
+            tw.writeExprs_nullliteral(it, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(it, type.kotlinResult.id)
+            extractExprContext(it, locId, callable, enclosingStmt)
+        }
+
     private fun extractAssignExpr(type: IrType, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
         tw.getFreshIdLabel<DbAssignexpr>().also {
             val typeResults = useType(type)
@@ -3581,12 +3605,7 @@ open class KotlinFileExtractor(
                             tw.writeNamestrings(v.toString(), v.toString(), id)
                         }
                         v == null -> {
-                            val id = tw.getFreshIdLabel<DbNullliteral>()
-                            val type = useType(e.type) // class;kotlin.Nothing
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_nullliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                            extractNull(e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                         }
                         else -> {
                             logger.errorElement("Unrecognised IrConst: " + v.javaClass, e)
@@ -5483,5 +5502,6 @@ open class KotlinFileExtractor(
         JVMOVERLOADS_METHOD(9),
         DEFAULT_ARGUMENTS_METHOD(10),
         INTERFACE_FORWARDER(11),
+        ENUM_CONSTRUCTOR_ARGUMENT(12),
     }
 }
