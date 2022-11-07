@@ -1,0 +1,14 @@
+| BadTagTest.java:5:26:5:48 | <script.*?>.*?</script> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:6:26:6:48 | <script.*?>.*?</script> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:10:26:10:36 | <!--.*--!?> | This regular expression does not match comments containing newlines. |
+| BadTagTest.java:11:26:11:59 | <script.*?>(.\|\\s)*?</script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:12:26:12:56 | <script[^>]*?>.*?</script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:13:26:13:66 | <script(\\s\|\\w\|=\|")*?>.*?</script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:14:26:14:65 | <script(\\s\|\\w\|=\|')*?>.*?</script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:15:26:15:70 | <script( \|\\n\|\\w\|=\|'\|")*?>.*?</script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:16:26:16:53 | <script.*?>.*?</script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:17:26:17:71 | <(script\|SCRIPT).*?>.*?</(script\|SCRIPT)[^>]*> | This regular expression does not match mixed case <sCrIpT> tags. |
+| BadTagTest.java:18:26:18:60 | <script[^>]*?>[\\s\\S]*?</script.*> | This regular expression does not match upper case <SCRIPT> tags. |
+| BadTagTest.java:20:26:20:71 | <(?:!--([\\w\\W]*?)-->)\|([^\\s/>]+)[\\S\\s]*?> | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 1 and comments ending with --!> are matched with capture group 2. |
+| BadTagTest.java:22:26:22:84 | (<[a-z/!$]("[^"]*"\|'[^']*'\|[^'">])*>\|<!(--.*?--\\s*)+>) | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 3 and comments ending with --!> are matched with capture group 1. |
+| BadTagTest.java:23:26:23:55 | <!--([\\w\\W]*?)-->\|<([^>]*?)> | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 1 and comments ending with --!> are matched with capture group 2. |
