@@ -418,10 +418,15 @@ All classes in this subsection are subclasses of VariableAccess_.
 | ``self``                   | SelfVariableReadAccess_      | VariableReadAccess_, SelfVariableAccess_      |                  |
 +----------------------------+------------------------------+-----------------------------------------------+------------------+
 
-Desugaring
-~~~~~~~~~~
+Syntactic sugar and desugaring
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Certain Ruby language features are implemented using syntactic sugar. For example, supposing that ``x`` is an object with an attribute ``foo``, the assignment::
+Certain Ruby language features are shorthands for common operations that could also be expressed in other, more verbose, forms.
+Such language features are typically referred to as "syntactic sugar", and make it easier for programmers to write and read code. This is
+great for programmers. For source code analyzers, however, this leads to additional work as they need to understand the shorthand notation as well as the long form. To make analysis easier, CodeQL automatically "desugars" Ruby code, effectively rewriting
+rich syntactic constructs into equivalent code that uses simpler syntactic constructs.
+
+For example, supposing that ``x`` is an object with an attribute ``foo``, the assignment::
 
    x.foo = y
 
@@ -432,9 +437,9 @@ is desugared to code similar to::
 
 In other words, there is effectively a call to the SetterMethodCall_ ``foo=`` on ``x`` with argument ``__synth_0 = y``, followed by a read of the ``__synth_0`` variable.
 
-In CodeQL, this is implemented by syntheisizing AstNode_ instances corresponding to this desugared version of the code.
+In CodeQL, this is implemented by synthesizing AstNode_ instances corresponding to this desugared version of the code.
 
-Note that both the original AssignExpr_ and the desugared SetterMethodCall_ versions are both available to CodeQL queries, and it is usually not necessary to be aware of any desugaring that may take place. However, if a codebase explicitly uses ``x.foo=(y)`` SetterMethodCall_ syntax, then this will not be found by a query for AssignExpr_ instances.
+Note that the original AssignExpr_ and the desugared SetterMethodCall_ versions are both available to use in CodeQL queries, and you do not usually need to be aware of any desugaring that may take place. However, if a codebase explicitly uses ``x.foo=(y)`` SetterMethodCall_ syntax, you cannot find this syntax by searching for instances of AssignExpr_ .
 
 Other synthesized AstNode_ instances exist, see the isSynthesized_ and getDesugared_ predicates for details.
 
