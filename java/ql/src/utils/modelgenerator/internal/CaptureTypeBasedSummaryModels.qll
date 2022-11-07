@@ -187,11 +187,7 @@ private class Function extends ParameterizedType {
  * Holds if `callable` has a function parameter `f` at parameter position `position`.
  */
 private predicate functional(Callable callable, Function f, int position) {
-  exists(Parameter p |
-    p = callable.getAParameter() and
-    f = p.getType() and
-    position = p.getPosition()
-  )
+  callable.getParameterType(position) = f
 }
 
 /**
