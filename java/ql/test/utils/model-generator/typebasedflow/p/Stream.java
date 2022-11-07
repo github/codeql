@@ -67,10 +67,11 @@ public class Stream<T> {
         return null;
     }
 
-    // public <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends
-    // R>> mapper) {
-    // return null;
-    // }
+    // MaD=p;Stream;true;flatMap;(Function);;Argument[0].ReturnValue.Element;ReturnValue.Element;value;generated
+    // MaD=p;Stream;true;flatMap;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value;generated
+    public <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
+        return null;
+    }
 
     // MaD=p;Stream;true;flatMapToDouble;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value;generated
     public DoubleStream flatMapToDouble(Function<? super T, ? extends DoubleStream> mapper) {
@@ -100,8 +101,6 @@ public class Stream<T> {
         return null;
     }
 
-    // Model generator adds a couple of extra models, which can't be
-    // dismissed based on the type information.
     // MaD=p;Stream;true;iterate;(Object,UnaryOperator);;Argument[0];Argument[1].Parameter[0];value;generated
     // MaD=p;Stream;true;iterate;(Object,UnaryOperator);;Argument[0];ReturnValue.Element;value;generated
     // MaD=p;Stream;true;iterate;(Object,UnaryOperator);;Argument[1].ReturnValue;Argument[1].Parameter[0];value;generated
@@ -155,10 +154,10 @@ public class Stream<T> {
         return false;
     }
 
-    // Issue with model generator. ... is not supported.
-    // public static <T> Stream<T> of(T... t) {
-    // return null;
-    // }
+    // MaD=p;Stream;true;of;(Object[]);;Argument[0].ArrayElement;ReturnValue.Element;value;generated
+    public static <T> Stream<T> of(T... t) {
+        return null;
+    }
 
     // MaD=p;Stream;true;of;(Object);;Argument[0];ReturnValue.Element;value;generated
     public static <T> Stream<T> of(T t) {
@@ -171,32 +170,30 @@ public class Stream<T> {
         return null;
     }
 
-    // Model generator yields a couple of extra results as models are generated for
-    // writing to the stream.
+    // The generated models are only partially correct.
     // MaD=p;Stream;true;reduce;(BinaryOperator);;Argument[-1].Element;Argument[0].Parameter[0];value;generated
     // MaD=p;Stream;true;reduce;(BinaryOperator);;Argument[-1].Element;Argument[0].Parameter[1];value;generated
     // MaD=p;Stream;true;reduce;(BinaryOperator);;Argument[-1].Element;ReturnValue.SyntheticField[ArgType0];value;generated
-    // MaD=p;Stream;true;reduce;(BinaryOperator);;Argument[0].ReturnValue;Argument[-1].Element;value;generated
     // MaD=p;Stream;true;reduce;(BinaryOperator);;Argument[0].ReturnValue;Argument[0].Parameter[0];value;generated
     // MaD=p;Stream;true;reduce;(BinaryOperator);;Argument[0].ReturnValue;Argument[0].Parameter[1];value;generated
     // MaD=p;Stream;true;reduce;(BinaryOperator);;Argument[0].ReturnValue;ReturnValue.SyntheticField[ArgType0];value;generated
+    // SPURIOUS-MaD=p;Stream;true;reduce;(BinaryOperator);;Argument[0].ReturnValue;Argument[-1].Element;value;generated
     public Optional<T> reduce(BinaryOperator<T> accumulator) {
         return null;
     }
 
-    // Model generator yields a couple of extra results as models are generated for
-    // writing to the stream.
+    // The generated models are only partially correct.
     // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[-1].Element;Argument[1].Parameter[0];value;generated
     // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[-1].Element;Argument[1].Parameter[1];value;generated
-    // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[-1].Element;ReturnValue;value;generated
-    // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[0];Argument[-1].Element;value;generated
     // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[0];Argument[1].Parameter[0];value;generated
     // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[0];Argument[1].Parameter[1];value;generated
     // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[0];ReturnValue;value;generated
-    // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[1].ReturnValue;Argument[-1].Element;value;generated
     // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[1].ReturnValue;Argument[1].Parameter[0];value;generated
     // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[1].ReturnValue;Argument[1].Parameter[1];value;generated
     // MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[1].ReturnValue;ReturnValue;value;generated
+    // SPURIOUS-MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[-1].Element;ReturnValue;value;generated
+    // SPURIOUS-MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[0];Argument[-1].Element;value;generated
+    // SPURIOUS-MaD=p;Stream;true;reduce;(Object,BinaryOperator);;Argument[1].ReturnValue;Argument[-1].Element;value;generated
     public T reduce(T identity, BinaryOperator<T> accumulator) {
         return null;
     }
@@ -241,7 +238,8 @@ public class Stream<T> {
         return null;
     }
 
-    // Models will only be partial correct as there is no mentioning of the type T.
+    // The generated result is only partially correct as there is no mentioning of
+    // the type T in the method definition.
     // MaD=p;Stream;true;toArray;(IntFunction);;Argument[0].ReturnValue.ArrayElement;ReturnValue.ArrayElement;value;generated
     public <A> A[] toArray(IntFunction<A[]> generator) {
         return null;

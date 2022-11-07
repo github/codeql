@@ -2,7 +2,9 @@ import java
 import utils.modelgenerator.internal.CaptureTypeBasedSummaryModels
 
 private string expects() {
-  exists(Javadoc doc | doc.getChild(0).toString().regexpCapture(" *MaD=(.*)", 1) = result)
+  exists(Javadoc doc |
+    doc.getChild(0).toString().regexpCapture(" *(SPURIOUS-)?MaD=(.*)", 2) = result
+  )
 }
 
 private string flows() { exists(TypeBasedFlowTargetApi api | result = captureFlow(api)) }
