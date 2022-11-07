@@ -1,5 +1,5 @@
 track
-| type_tracker.rb:1:1:10:3 | Container | type tracker without call steps | type_tracker.rb:1:1:10:3 | Container |
+| type_tracker.rb:1:1:10:3 | self (Container) | type tracker without call steps | type_tracker.rb:1:1:10:3 | self (Container) |
 | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type tracker with call steps | type_tracker.rb:18:1:21:3 | self (positional) |
 | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type tracker with call steps | type_tracker.rb:18:1:21:3 | self in positional |
 | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type tracker with call steps | type_tracker.rb:25:1:28:3 | self (keyword) |
@@ -357,7 +357,7 @@ track
 | type_tracker.rb:52:5:52:13 | ...[...] | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:52:5:52:13 | ...[...] | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
 trackEnd
-| type_tracker.rb:1:1:10:3 | Container | type_tracker.rb:1:1:10:3 | Container |
+| type_tracker.rb:1:1:10:3 | self (Container) | type_tracker.rb:1:1:10:3 | self (Container) |
 | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) |
 | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type_tracker.rb:18:1:21:3 | self (positional) |
 | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type_tracker.rb:18:1:21:3 | self in positional |
