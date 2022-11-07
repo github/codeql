@@ -8,11 +8,13 @@ private import CaptureModels
  * A type representing instantiations of class types
  * that has a method which returns an iterator.
  */
-private class IterableType extends Class {
+private class IterableClass extends Class {
   private Type elementType;
 
-  IterableType() {
-    exists(Method m, RefType return, GenericType t, Type et, int position | m.getDeclaringType() = t |
+  IterableClass() {
+    exists(Method m, RefType return, GenericType t, Type et, int position |
+      m.getDeclaringType() = t
+    |
       return = m.getReturnType() and
       return.getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
       et = return.(ParameterizedType).getTypeArgument(0) and
@@ -51,7 +53,7 @@ private predicate genericContainerType(RefType t, TypeVariable tv) {
   exists(Type et |
     et =
       [
-        t.(ContainerType).getElementType(), t.(IterableType).getElementType(),
+        t.(ContainerType).getElementType(), t.(IterableClass).getElementType(),
         t.(Array).getElementType()
       ]
   |
@@ -83,7 +85,7 @@ private string getAccessPath(Type t) {
     not Specific::isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
   then result = ".ArrayElement"
   else
-    if t instanceof ContainerType or t instanceof IterableType
+    if t instanceof ContainerType or t instanceof IterableClass
     then result = ".Element"
     else result = ""
 }
