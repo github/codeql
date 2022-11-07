@@ -191,3 +191,12 @@ end
 if foo == "foo" or foo == "bar" # not recognised
     foo
 end
+
+case
+when foo == "foo"
+    foo
+end
+
+case
+when foo == "foo" then foo
+end
