@@ -158,7 +158,7 @@ class CallNode extends LocalSourceNode, ExprNode {
  * ```
  */
 class SetterCallNode extends CallNode {
-  SetterCallNode() { this.asExpr().getExpr() instanceof SetterMethodCall }
+  SetterCallNode() { this.getExprNode().getExpr() instanceof SetterMethodCall }
 
   /**
    * Gets the name of the method being called without the trailing `=`. For example, in the following
@@ -169,7 +169,7 @@ class SetterCallNode extends CallNode {
    * ```
    */
   final string getTargetName() {
-    result = this.asExpr().getExpr().(SetterMethodCall).getTargetName()
+    result = this.getExprNode().getExpr().(SetterMethodCall).getTargetName()
   }
 }
 
