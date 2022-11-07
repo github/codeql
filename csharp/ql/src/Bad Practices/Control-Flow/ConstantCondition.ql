@@ -73,30 +73,6 @@ class ConstantIfCondition extends ConstantBooleanCondition {
   }
 }
 
-/** A constant return value from a function with constant input expression. */
-class ConstantReturnValueCondition extends ConstantCondition {
-  boolean b;
-
-  ConstantReturnValueCondition() {
-    exists(Method m, Call c, Expr expr |
-      m = any(SystemStringClass s).getIsNullOrEmptyMethod() and
-      c.getTarget() = m and
-      this = c and
-      expr = c.getArgument(0) and
-      expr.hasValue() and
-      if expr.getValue().length() > 0 and not expr instanceof NullLiteral
-      then b = false
-      else b = true
-    )
-  }
-
-  override string getMessage() {
-    if b = true
-    then result = "Expression is always 'true'."
-    else result = "Expression is always 'false'."
-  }
-}
-
 /** A constant loop condition. */
 class ConstantLoopCondition extends ConstantBooleanCondition {
   ConstantLoopCondition() { this = any(LoopStmt ls).getCondition() }
