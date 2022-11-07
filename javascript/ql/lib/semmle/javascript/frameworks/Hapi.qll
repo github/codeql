@@ -9,10 +9,21 @@ module Hapi {
   /**
    * An expression that creates a new Hapi server.
    */
-  class ServerDefinition extends Http::Servers::StandardServerDefinition, DataFlow::NewNode {
+  class ServerDefinition extends Http::Servers::StandardServerDefinition, DataFlow::Node {
     ServerDefinition() {
       // `server = new Hapi.Server()`
       this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation()
+      or
+      // server = Glue.compose(manifest, composeOptions)
+      this = DataFlow::moduleMember("@hapi/glue", "compose").getAnInvocation()
+      or
+      // server inside a plugin
+      // TODO match `function (server, options)`
+      exists(Function f |
+        this.(DataFlow::ParameterNode).getParameter() = f.getParameter(0) and
+        f.getParameter(0).getName() = "server" and
+        f.getParameter(1).getName() = "options"
+      )
     }
   }
 
@@ -209,6 +220,16 @@ module Hapi {
         // server.ext('/', fun)
         this.getMethodName() = "ext" and
         handler = this.getArgument(1)
+        or
+        // server.route([{ handler(request){}])
+        this.getMethodName() = "route" and
+        handler =
+          this.getArgument(0)
+              .(DataFlow::ArrayLiteralNode)
+              .getAnElement()
+              .(DataFlow::ObjectLiteralNode)
+              .getAPropertySource("handler")
+              .getAFunctionValue()
       )
     }
 
