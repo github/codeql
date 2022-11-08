@@ -95,6 +95,22 @@ class NCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
  }
 }
 
+
+/**
+ * Argument at index 1 of call to NCryptEncrypt:
+ *     _Inout_ NCRYPT_KEY_HANDLE  hKey,
+ */
+class SslEncryptPacketArgumentSink extends BCryptOpenAlgorithmProviderSink {
+ int index;
+ string funcName;
+
+ SslEncryptPacketArgumentSink() {
+   index = 1 and
+   funcName = "SslEncryptPacket" and
+   isCallArgument(funcName, this.asExpr(), index)
+ }
+}
+
 // ----------------- Default SOURCES -----------------------
 /**
  * A string identifier of known PQC vulnerable algorithms.
