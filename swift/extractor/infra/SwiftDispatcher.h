@@ -60,20 +60,29 @@ class SwiftDispatcher {
   }
 
   template <typename Entry>
-  void emit(const Entry& entry) {
+  void emit(Entry&& entry) {
+    entry.forEachLabel([&entry](const char* field, int index, auto& label) {
+      if (!label.valid()) {
+        std::cerr << entry.NAME << " has undefined " << field;
+        if (index >= 0) {
+          std::cerr << '[' << index << ']';
+        }
+        std::cerr << '\n';
+      }
+    });
     trap.emit(entry);
   }
 
   template <typename Entry>
-  void emit(const std::optional<Entry>& entry) {
+  void emit(std::optional<Entry>&& entry) {
     if (entry) {
-      emit(*entry);
+      emit(std::move(*entry));
     }
   }
 
   template <typename... Cases>
-  void emit(const std::variant<Cases...>& entry) {
-    std::visit([this](const auto& e) { this->emit(e); }, entry);
+  void emit(std::variant<Cases...>&& entry) {
+    std::visit([this](auto&& e) { this->emit(std::move(e)); }, std::move(entry));
   }
 
   // This is a helper method to emit TRAP entries for AST nodes that we don't fully support yet.
