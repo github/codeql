@@ -7,6 +7,7 @@
 import os
 import subprocess
 import sys
+import tempfile
 
 # Add Models as Data script directory to sys.path.
 gitroot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
@@ -21,9 +22,13 @@ print('Making a dummy database.')
 
 # Configuration
 language = "csharp"
-dbDir = "db"
+workDir = tempfile.mkdtemp()
+projectDir = os.path.join(workDir, "project")
+dbDir = os.path.join(workDir, "db")
 
-helpers.run_cmd(['codeql', 'database', 'create', f'--language={language}', '-c', 'dotnet clean project/', '-c', 'dotnet build project/', dbDir])
+# Make dummy project
+helpers.run_cmd(['dotnet', 'new', 'console', '-o', projectDir], "Failed to create dummy project.")
+helpers.run_cmd(['codeql', 'database', 'create', f'--language={language}', '-c', f'dotnet build {projectDir}', dbDir], "Failed to create dummy database.")
 
 print('Converting data extensions for C#.')
 extensions.Converter(language, dbDir).run()
