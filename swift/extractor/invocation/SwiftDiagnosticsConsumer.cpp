@@ -1,5 +1,6 @@
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/trap/generated/TrapEntries.h"
+#include "swift/extractor/trap/TrapDomain.h"
 
 #include <swift/AST/DiagnosticEngine.h>
 #include <swift/Basic/SourceManager.h>
