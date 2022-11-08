@@ -7,13 +7,11 @@ import subprocess
 summaryModelPredicate = "extSummaryModel"
 sinkModelPredicate = "extSinkModel"
 sourceModelPredicate = "extSourceModel"
-addsToTemplate = """
-  - addsTo:
+addsToTemplate = """  - addsTo:
       pack: {0}
       extensible: {1}
     data:
-{2}
-    """
+{2}"""
 
 def remove_dir(dirName):
     if os.path.isdir(dirName):

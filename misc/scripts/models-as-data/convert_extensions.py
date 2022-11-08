@@ -82,10 +82,8 @@ class Converter:
         os.makedirs(self.extDir, exist_ok=True)
 
         # Create a file for each namespace and save models.
-        extensionTemplate = """
-extensions:
-{0}
-    """
+        extensionTemplate = """extensions:
+{0}"""
         for entry in extensions:
             with open(self.extDir + "/" + entry + self.modelFileExtension, "w") as f:
                 f.write(extensionTemplate.format(extensions[entry]))
