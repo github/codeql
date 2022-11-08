@@ -109,6 +109,15 @@ class UnsafeJsEvalConfig extends TaintTracking::Configuration {
         ).getArgument(0)
       or
       arg =
+        any(CallExpr ce | ce.getStaticTarget().(MethodDecl).hasQualifiedName("Data", "init(_:)"))
+            .getArgument(0)
+      or
+      arg =
+        any(CallExpr ce |
+          ce.getStaticTarget().(MethodDecl).hasQualifiedName("String", "init(decoding:as:)")
+        ).getArgument(0)
+      or
+      arg =
         any(CallExpr ce |
           ce.getStaticTarget()
               .(FreeFunctionDecl)
@@ -135,10 +144,10 @@ class UnsafeJsEvalConfig extends TaintTracking::Configuration {
     or
     exists(MemberRefExpr e, Expr self, VarDecl member |
       self.getType().getName() = "String" and
-      member.getName() = ["utf16", "utf8CString"]
+      member.getName() = ["utf8", "utf16", "utf8CString"]
       or
       self.getType().getName().matches(["Unsafe%Buffer%", "Unsafe%Pointer%"]) and
-      member.getName() = ["baseAddress"]
+      member.getName() = "baseAddress"
     |
       e.getBase() = self and
       e.getMember() = member and

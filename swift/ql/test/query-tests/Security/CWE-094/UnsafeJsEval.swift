@@ -184,7 +184,7 @@ func testAsync(_ sink: @escaping (String) async throws -> ()) {
 		let remoteData = Data(remoteString.utf8)
 
 		try! await sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
-		try! await sink(String(decoding: remoteData, as: UTF8.self)) // BAD [NOT DETECTED]: the data is remote (TODO: model Data taint sources)
+		try! await sink(String(decoding: remoteData, as: UTF8.self)) // BAD: the data is remote
 
 		try! await sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
 		try! await sink("console.log(" + String(Int(remoteString) ?? 0) + ")") // GOOD: Primitive conversion
@@ -210,7 +210,7 @@ func testSync(_ sink: @escaping (String) -> ()) {
 	let remoteData = Data(remoteString.utf8)
 
 	sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
-	sink(String(decoding: remoteData, as: UTF8.self)) // BAD [NOT DETECTED]: the data is remote (TODO: model Data taint sources)
+	sink(String(decoding: remoteData, as: UTF8.self)) // BAD: the data is remote
 
 	sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
 	sink("console.log(" + String(Int(remoteString) ?? 0) + ")") // GOOD: Primitive conversion
