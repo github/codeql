@@ -61,6 +61,12 @@ class Fields
   end
 
   def foo1()
-    IO.popen("cat #{@foo}", "w") # NOT OK - but not currently flagged
+    IO.popen("cat #{@foo}", "w") # NOT OK
+  end
+
+  attr_reader :foo
+
+  def foo2() 
+    IO.popen("cat #{foo}", "w") # NOT OK
   end
 end

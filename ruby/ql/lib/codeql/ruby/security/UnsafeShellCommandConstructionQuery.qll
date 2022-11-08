@@ -41,8 +41,19 @@ class Configuration extends TaintTracking::Configuration {
       clz.getAnOwnInstanceVariableWriteValue(field) = pred and
       constructor = pred.asExpr().getExpr().getEnclosingCallable() and
       constructor.getName() = "initialize" and
-      clz.getAnOwnInstanceVariableRead(field) = succ and
-      not succ.asExpr().getExpr().getEnclosingCallable() = constructor
+      not succ.asExpr().getExpr().getEnclosingCallable() = constructor and
+      (
+        clz.getAnOwnInstanceVariableRead(field) = succ
+        or
+        // TODO: have getAnOwnInstanceVariableRead return this when `attr_reader` is used
+        exists(DataFlow::MethodNode instMeth | instMeth = clz.getAnInstanceMethod() |
+          // the parent thing is to recognize reads in blocks. It's ugly, so do something else. TODO:
+          // TODO: Also add a test for reads inside blocks.
+          succ.asExpr().getExpr().getParent*().(Ast::Expr).getEnclosingCallable() =
+            instMeth.asExpr().getExpr() and
+          succ.(DataFlow::CallNode).getMethodName() = field.suffix(1)
+        )
+      )
     )
   }
 }
