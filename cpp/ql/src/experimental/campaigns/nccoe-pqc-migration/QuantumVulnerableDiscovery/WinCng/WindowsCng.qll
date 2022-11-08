@@ -21,7 +21,7 @@ class BCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
 }
 
 // ----------------- SOURCES -----------------------
-predicate providerString(StringLiteral lit) {
+predicate vulnProviderLiteral(StringLiteral lit) {
   exists(string s | s = lit.getValue() |
     s in ["DH", "DSA", "ECDSA", "ECDH"] or
     s.matches("ECDH%") or
@@ -30,5 +30,5 @@ predicate providerString(StringLiteral lit) {
 }
 
 class BCryptOpenAlgorithmProviderPqcVulnerableAlgorithmsSource extends BCryptOpenAlgorithmProviderSource {
-  BCryptOpenAlgorithmProviderPqcVulnerableAlgorithmsSource() { providerString(this.asExpr()) }
+  BCryptOpenAlgorithmProviderPqcVulnerableAlgorithmsSource() { vulnProviderLiteral(this.asExpr()) }
 }
