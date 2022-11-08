@@ -16,10 +16,8 @@ static int diagnosticsKind(const swift::DiagnosticInfo& diagInfo) {
       return 1;
     case swift::DiagnosticKind::Warning:
       return 2;
-
     case swift::DiagnosticKind::Note:
       return 3;
-
     case swift::DiagnosticKind::Remark:
       return 4;
   }
@@ -39,22 +37,8 @@ void SwiftDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceMana
 
 std::string SwiftDiagnosticsConsumer::getDiagMessage(swift::SourceManager& sourceManager,
                                                      const swift::DiagnosticInfo& diagInfo) {
-  // Translate ranges.
-  llvm::SmallVector<llvm::SMRange, 2> ranges;
-  for (auto R : diagInfo.Ranges)
-    ranges.push_back(getRawRange(sourceManager, R));
-
-  // Translate fix-its.
-  llvm::SmallVector<llvm::SMFixIt, 2> fixIts;
-  for (const swift::DiagnosticInfo::FixIt& F : diagInfo.FixIts)
-    fixIts.push_back(getRawFixIt(sourceManager, F));
-
-  // Actually substitute the diagnostic arguments into the diagnostic text.
-  llvm::SmallString<256> Text;
-  {
-    llvm::raw_svector_ostream Out(Text);
-    swift::DiagnosticEngine::formatDiagnosticText(Out, diagInfo.FormatString, diagInfo.FormatArgs);
-  }
-
-  return Text.str().str();
+  llvm::SmallString<256> text;
+  llvm::raw_svector_ostream out(text);
+  swift::DiagnosticEngine::formatDiagnosticText(out, diagInfo.FormatString, diagInfo.FormatArgs);
+  return text.str().str();
 }
