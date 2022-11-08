@@ -1,6 +1,6 @@
 actionControllerControllerClasses
 | action_controller/input_access.rb:1:1:50:3 | UsersController |
-| action_controller/params_flow.rb:1:1:151:3 | MyController |
+| action_controller/params_flow.rb:1:1:160:3 | MyController |
 | active_record/ActiveRecord.rb:23:1:39:3 | FooController |
 | active_record/ActiveRecord.rb:41:1:64:3 | BarController |
 | active_record/ActiveRecord.rb:66:1:98:3 | BazController |
@@ -47,6 +47,7 @@ actionControllerActionMethods
 | action_controller/params_flow.rb:125:3:132:5 | m30 |
 | action_controller/params_flow.rb:134:3:141:5 | m31 |
 | action_controller/params_flow.rb:143:3:150:5 | m32 |
+| action_controller/params_flow.rb:152:3:159:5 | m33 |
 | active_record/ActiveRecord.rb:27:3:38:5 | some_request_handler |
 | active_record/ActiveRecord.rb:42:3:47:5 | some_other_request_handler |
 | active_record/ActiveRecord.rb:49:3:63:5 | safe_paths |
@@ -117,6 +118,9 @@ paramsCalls
 | action_controller/params_flow.rb:144:10:144:15 | call to params |
 | action_controller/params_flow.rb:145:32:145:37 | call to params |
 | action_controller/params_flow.rb:148:22:148:27 | call to params |
+| action_controller/params_flow.rb:153:10:153:15 | call to params |
+| action_controller/params_flow.rb:154:32:154:37 | call to params |
+| action_controller/params_flow.rb:157:22:157:27 | call to params |
 | action_mailer/mailer.rb:3:10:3:15 | call to params |
 | active_record/ActiveRecord.rb:28:30:28:35 | call to params |
 | active_record/ActiveRecord.rb:29:29:29:34 | call to params |
@@ -192,6 +196,9 @@ paramsSources
 | action_controller/params_flow.rb:144:10:144:15 | call to params |
 | action_controller/params_flow.rb:145:32:145:37 | call to params |
 | action_controller/params_flow.rb:148:22:148:27 | call to params |
+| action_controller/params_flow.rb:153:10:153:15 | call to params |
+| action_controller/params_flow.rb:154:32:154:37 | call to params |
+| action_controller/params_flow.rb:157:22:157:27 | call to params |
 | action_mailer/mailer.rb:3:10:3:15 | call to params |
 | active_record/ActiveRecord.rb:28:30:28:35 | call to params |
 | active_record/ActiveRecord.rb:29:29:29:34 | call to params |
@@ -306,6 +313,9 @@ httpInputAccesses
 | action_controller/params_flow.rb:144:10:144:15 | call to params | ActionController::Metal#params |
 | action_controller/params_flow.rb:145:32:145:37 | call to params | ActionController::Metal#params |
 | action_controller/params_flow.rb:148:22:148:27 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:153:10:153:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:154:32:154:37 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:157:22:157:27 | call to params | ActionController::Metal#params |
 | action_mailer/mailer.rb:3:10:3:15 | call to params | ActionController::Metal#params |
 | active_record/ActiveRecord.rb:28:30:28:35 | call to params | ActionController::Metal#params |
 | active_record/ActiveRecord.rb:29:29:29:34 | call to params | ActionController::Metal#params |
