@@ -1,4 +1,4 @@
-#include "swift/extractor/invocation/CodeQLDiagnosticsConsumer.h"
+#include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/trap/generated/TrapEntries.h"
 
 #include <swift/AST/DiagnosticEngine.h>
@@ -25,8 +25,8 @@ static int diagnosticsKind(const swift::DiagnosticInfo& diagInfo) {
   return 0;
 }
 
-void CodeQLDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceManager,
-                                                 const swift::DiagnosticInfo& diagInfo) {
+void SwiftDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceManager,
+                                                const swift::DiagnosticInfo& diagInfo) {
   auto message = getDiagMessage(sourceManager, diagInfo);
   DiagnosticsTrap diag{};
   diag.id = trap.createLabel<DiagnosticsTag>();
@@ -36,8 +36,8 @@ void CodeQLDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceMan
   locationExtractor.attachLocation(sourceManager, diagInfo.Loc, diagInfo.Loc, diag.id);
 }
 
-std::string CodeQLDiagnosticsConsumer::getDiagMessage(swift::SourceManager& sourceManager,
-                                                      const swift::DiagnosticInfo& diagInfo) {
+std::string SwiftDiagnosticsConsumer::getDiagMessage(swift::SourceManager& sourceManager,
+                                                     const swift::DiagnosticInfo& diagInfo) {
   // Translate ranges.
   llvm::SmallVector<llvm::SMRange, 2> ranges;
   for (auto R : diagInfo.Ranges)

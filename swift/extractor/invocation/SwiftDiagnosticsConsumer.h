@@ -7,9 +7,9 @@ namespace codeql {
 
 class TrapDomain;
 
-class CodeQLDiagnosticsConsumer : public swift::DiagnosticConsumer {
+class SwiftDiagnosticsConsumer : public swift::DiagnosticConsumer {
  public:
-  explicit CodeQLDiagnosticsConsumer(TrapDomain& targetFile)
+  explicit SwiftDiagnosticsConsumer(TrapDomain& targetFile)
       : trap(targetFile), locationExtractor(targetFile) {}
   void handleDiagnostic(swift::SourceManager& sourceManager,
                         const swift::DiagnosticInfo& diagInfo) override;

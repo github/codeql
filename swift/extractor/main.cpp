@@ -14,7 +14,7 @@
 #include "swift/extractor/TargetTrapFile.h"
 #include "swift/extractor/remapping/SwiftOutputRewrite.h"
 #include "swift/extractor/remapping/SwiftOpenInterception.h"
-#include "swift/extractor/invocation/CodeQLDiagnosticsConsumer.h"
+#include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/trap/TrapDomain.h"
 
 using namespace std::string_literals;
@@ -25,7 +25,7 @@ using namespace std::string_literals;
 class Observer : public swift::FrontendObserver {
  public:
   explicit Observer(const codeql::SwiftExtractorConfiguration& config,
-                    codeql::CodeQLDiagnosticsConsumer& diagConsumer)
+                    codeql::SwiftDiagnosticsConsumer& diagConsumer)
       : config{config}, diagConsumer{diagConsumer} {}
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
@@ -38,7 +38,7 @@ class Observer : public swift::FrontendObserver {
 
  private:
   const codeql::SwiftExtractorConfiguration& config;
-  codeql::CodeQLDiagnosticsConsumer& diagConsumer;
+  codeql::SwiftDiagnosticsConsumer& diagConsumer;
 };
 
 static std::string getenv_or(const char* envvar, const std::string& def) {
@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
 
   auto invocationTrapFile = invocationTargetFile(configuration);
   codeql::TrapDomain invocationDomain(invocationTrapFile);
-  codeql::CodeQLDiagnosticsConsumer diagConsumer(invocationDomain);
+  codeql::SwiftDiagnosticsConsumer diagConsumer(invocationDomain);
   Observer observer(configuration, diagConsumer);
   int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
 
