@@ -108,7 +108,8 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
 // compilations, diagnostics, etc.
 codeql::TargetFile invocationTargetFile(codeql::SwiftExtractorConfiguration& configuration) {
   auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
-  auto target = "invocation-"s + std::to_string(timestamp) + '-' + std::to_string(getpid());
+  auto filename = std::to_string(timestamp) + '-' + std::to_string(getpid());
+  auto target = std::filesystem::path("invocations") / std::filesystem::path(filename);
   auto maybeFile = codeql::createTargetTrapFile(configuration, target);
   if (!maybeFile) {
     std::cerr << "Cannot create invocation trap file: " << target << "\n";
