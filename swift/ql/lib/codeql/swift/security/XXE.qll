@@ -133,7 +133,9 @@ private class VulnerableAexmlDocument extends AexmlDocument {
  */
 private class VulnerableAexmlOptions extends AexmlOptions {
   VulnerableAexmlOptions() {
-    exists(ParserSettings parserSettings, AexmlShouldResolveExternalEntities sree, AssignExpr a |
+    exists(
+      AexmlParserSettings parserSettings, AexmlShouldResolveExternalEntities sree, AssignExpr a
+    |
       a.getSource() = any(BooleanLiteralExpr b | b.getValue() = true) and
       a.getDest() = sree and
       sree.(MemberRefExpr).getBase() = parserSettings and
@@ -143,9 +145,9 @@ private class VulnerableAexmlOptions extends AexmlOptions {
 }
 
 /** An expression of type `AEXMLOptions.ParserSettings`. */
-class ParserSettings extends Expr {
+private class AexmlParserSettings extends Expr {
   pragma[inline]
-  ParserSettings() {
+  AexmlParserSettings() {
     this.getType() instanceof AexmlOptionsParserSettingsType or
     this.getType() = any(OptionalType t | t.getBaseType() instanceof AexmlOptionsParserSettingsType) or
     this.getType() = any(LValueType t | t.getObjectType() instanceof AexmlOptionsParserSettingsType)
@@ -153,7 +155,7 @@ class ParserSettings extends Expr {
 }
 
 /** An expression of type `AEXMLOptions`. */
-class AexmlOptions extends Expr {
+private class AexmlOptions extends Expr {
   pragma[inline]
   AexmlOptions() {
     this.getType() instanceof AexmlOptionsType or
