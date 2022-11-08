@@ -30,12 +30,15 @@ abstract class EndpointCharacteristic extends string {
   /**
    * This predicate describes what the characteristic tells us about an endpoint.
    *
-   *  Params:
-   *  endpointClass: Class 0 is the negative class. Each positive int corresponds to a single sink type.
-   *  isPositiveIndicator: Does this characteristic indicate this endpoint _is_ a member of the class, or that it
-   *  _isn't_ a member of the class?
-   *  confidence: A number in [0, 1], which tells us how strong an indicator this characteristic is for the endpoint
-   *  belonging / not belonging to the given class.
+   * Params:
+   * endpointClass: Class 0 is the negative class, containing non-sink endpoints. Each positive int corresponds to a
+   * single sink type.
+   * isPositiveIndicator: If true, this characteristic indicates that this endpoint _is_ a member of the class; if
+   * false, it indicates that it _isn't_ a member of the class.
+   * confidence: A float in [0, 1], which tells us how strong an indicator this characteristic is for the endpoint
+   * belonging / not belonging to the given class. A confidence near zero means this characterestic is a very weak
+   * indicator of whether or not the endpoint belongs to the class. A confidence of 1 means that all endpoints with
+   * this characteristic difinitively do/don't belong to the class.
    */
   abstract predicate getImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
