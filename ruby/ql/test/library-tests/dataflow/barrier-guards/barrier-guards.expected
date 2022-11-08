@@ -49,8 +49,21 @@ controls
 | barrier-guards.rb:100:4:100:21 | call to include? | barrier-guards.rb:103:5:103:7 | foo | false |
 | barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:106:4:106:9 | [false] ... or ... | false |
 | barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:106:9:106:9 | self | false |
-| barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:109:5:109:7 | foo | false |
-| barrier-guards.rb:106:4:106:9 | [false] ... or ... | barrier-guards.rb:109:5:109:7 | foo | false |
+| barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:109:5:109:8 | bars | false |
+| barrier-guards.rb:106:4:106:9 | [false] ... or ... | barrier-guards.rb:109:5:109:8 | bars | false |
 | barrier-guards.rb:106:4:106:9 | [true] ... or ... | barrier-guards.rb:107:5:107:7 | foo | true |
 | barrier-guards.rb:106:9:106:9 | call to y | barrier-guards.rb:106:4:106:9 | [false] ... or ... | false |
-| barrier-guards.rb:106:9:106:9 | call to y | barrier-guards.rb:109:5:109:7 | foo | false |
+| barrier-guards.rb:106:9:106:9 | call to y | barrier-guards.rb:109:5:109:8 | bars | false |
+| barrier-guards.rb:112:4:112:4 | call to x | barrier-guards.rb:112:4:112:10 | [true] ... and ... | true |
+| barrier-guards.rb:112:4:112:4 | call to x | barrier-guards.rb:112:10:112:10 | self | true |
+| barrier-guards.rb:112:4:112:4 | call to x | barrier-guards.rb:113:5:113:7 | foo | true |
+| barrier-guards.rb:112:4:112:10 | [false] ... and ... | barrier-guards.rb:115:5:115:8 | bars | false |
+| barrier-guards.rb:112:4:112:10 | [true] ... and ... | barrier-guards.rb:113:5:113:7 | foo | true |
+| barrier-guards.rb:112:10:112:10 | call to y | barrier-guards.rb:112:4:112:10 | [true] ... and ... | true |
+| barrier-guards.rb:112:10:112:10 | call to y | barrier-guards.rb:113:5:113:7 | foo | true |
+| barrier-guards.rb:118:4:118:8 | [false] not ... | barrier-guards.rb:121:5:121:8 | bars | false |
+| barrier-guards.rb:118:4:118:8 | [true] not ... | barrier-guards.rb:119:5:119:7 | foo | true |
+| barrier-guards.rb:118:8:118:8 | call to x | barrier-guards.rb:118:4:118:8 | [false] not ... | true |
+| barrier-guards.rb:118:8:118:8 | call to x | barrier-guards.rb:118:4:118:8 | [true] not ... | false |
+| barrier-guards.rb:118:8:118:8 | call to x | barrier-guards.rb:119:5:119:7 | foo | false |
+| barrier-guards.rb:118:8:118:8 | call to x | barrier-guards.rb:121:5:121:8 | bars | true |
