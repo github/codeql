@@ -94,8 +94,57 @@ class UnsafeJsEvalConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node node) { node instanceof Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    none() // TODO: A conversion to a primitive type or an enum
+  // TODO: convert to new taint flow models
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(Argument arg |
+      arg =
+        any(CallExpr ce |
+          ce.getStaticTarget()
+              .(MethodDecl)
+              .hasQualifiedName("WKUserScript",
+                [
+                  "init(source:injectionTime:forMainFrameOnly:)",
+                  "init(source:injectionTime:forMainFrameOnly:in:)"
+                ])
+        ).getArgument(0)
+      or
+      arg =
+        any(CallExpr ce |
+          ce.getStaticTarget()
+              .(FreeFunctionDecl)
+              .hasName([
+                  "JSStringCreateWithUTF8CString(_:)", "JSStringCreateWithCharacters(_:_:)",
+                  "JSStringRetain(_:)"
+                ])
+        ).getArgument(0)
+    |
+      nodeFrom.asExpr() = arg.getExpr() and
+      nodeTo.asExpr() = arg.getApplyExpr()
+    )
+    or
+    exists(CallExpr ce, Expr self, AbstractClosureExpr closure |
+      ce.getStaticTarget()
+          .getName()
+          .matches(["withContiguousStorageIfAvailable(%)", "withUnsafeBufferPointer(%)"]) and
+      self = ce.getQualifier() and
+      ce.getArgument(0).getExpr() = closure
+    |
+      nodeFrom.asExpr() = self and
+      nodeTo.(DataFlow::ParameterNode).getParameter() = closure.getParam(0)
+    )
+    or
+    exists(MemberRefExpr e, Expr self, VarDecl member |
+      self.getType().getName() = "String" and
+      member.getName() = ["utf16", "utf8CString"]
+      or
+      self.getType().getName().matches(["Unsafe%Buffer%", "Unsafe%Pointer%"]) and
+      member.getName() = ["baseAddress"]
+    |
+      e.getBase() = self and
+      e.getMember() = member and
+      nodeFrom.asExpr() = self and
+      nodeTo.asExpr() = e
+    )
   }
 }
 
