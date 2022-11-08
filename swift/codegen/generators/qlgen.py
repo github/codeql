@@ -147,7 +147,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
     return ql.Property(**args)
 
 
-def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+def get_ql_class(cls: schema.Class):
     pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
     prev_child = ""
     properties = []
@@ -314,7 +314,7 @@ def generate(opts, renderer):
 
     data = schema.load_file(input)
 
-    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
+    classes = {name: get_ql_class(cls) for name, cls in data.classes.items()}
     if not classes:
         raise NoClasses
     root = next(iter(classes.values()))

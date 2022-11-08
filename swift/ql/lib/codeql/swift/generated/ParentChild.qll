@@ -165,6 +165,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnspecifiedElement(
+    UnspecifiedElement e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfDecl(Decl e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n |
       b = 0 and
@@ -4870,6 +4885,8 @@ private module Impl {
     result = getImmediateChildOfUnknownFile(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnumCaseDecl(e, index, partialAccessor)
     or

@@ -29,4 +29,6 @@ predicate toBeTested(Element e) {
       )
     )
   )
+  or
+  toBeTested(e.(UnspecifiedElement).getParent())
 }

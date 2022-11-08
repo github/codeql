@@ -51,6 +51,18 @@ module Raw {
     override string toString() { result = "DbLocation" }
   }
 
+  class UnspecifiedElement extends @unspecified_element, Locatable {
+    override string toString() { result = "UnspecifiedElement" }
+
+    Element getParent() { unspecified_element_parents(this, result) }
+
+    string getProperty() { unspecified_elements(this, result, _) }
+
+    int getIndex() { unspecified_element_indices(this, result) }
+
+    string getError() { unspecified_elements(this, _, result) }
+  }
+
   class Decl extends @decl, AstNode {
     ModuleDecl getModule() { decls(this, result) }
   }
