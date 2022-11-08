@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -15,6 +13,3 @@ extensions:
       - ["System.Xml.Schema", "XmlSchemaObjectCollection", False, "Insert", "(System.Int32,System.Xml.Schema.XmlSchemaObject)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
       - ["System.Xml.Schema", "XmlSchemaObjectCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Xml.Schema", "XmlSchemaObjectCollection", False, "set_Item", "(System.Int32,System.Xml.Schema.XmlSchemaObject)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
-
-    
-    

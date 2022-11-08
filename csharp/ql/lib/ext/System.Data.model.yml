@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -75,6 +73,3 @@ extensions:
       - ["System.Data", "TypedTableBaseExtensions", False, "Select<,>", "(System.Data.TypedTableBase<TRow>,System.Func<TRow,S>)", "", "Argument[1].ReturnValue", "ReturnValue.Element", "value", "manual"]
       - ["System.Data", "TypedTableBaseExtensions", False, "Where<>", "(System.Data.TypedTableBase<TRow>,System.Func<TRow,System.Boolean>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
       - ["System.Data", "TypedTableBaseExtensions", False, "Where<>", "(System.Data.TypedTableBase<TRow>,System.Func<TRow,System.Boolean>)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
-
-    
-    

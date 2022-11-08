@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -22,6 +20,3 @@ extensions:
       - ["System.Collections.Concurrent", "ConcurrentQueue<>", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["System.Collections.Concurrent", "ConcurrentStack<>", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["System.Collections.Concurrent", "IProducerConsumerCollection<>", True, "CopyTo", "(T[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
-
-    
-    

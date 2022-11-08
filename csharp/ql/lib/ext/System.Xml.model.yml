@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -51,6 +49,3 @@ extensions:
       - ["System.Xml", "XmlReader", False, "Create", "(System.String,System.Xml.XmlReaderSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Xml", "XmlReader", False, "Create", "(System.String,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Xml", "XmlReader", False, "Create", "(System.Xml.XmlReader,System.Xml.XmlReaderSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-
-    
-    

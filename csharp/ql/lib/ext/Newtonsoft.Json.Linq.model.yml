@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -30,6 +28,3 @@ extensions:
       - ["Newtonsoft.Json.Linq", "JToken", False, "SelectToken", "(System.String,System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json.Linq", "JToken", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json.Linq", "JToken", False, "ToString", "(Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[])", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-
-    
-    

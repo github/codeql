@@ -1,13 +1,9 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSourceModel
     data:
       - ["System.IO", "FileStream", False, "FileStream", "", "", "Argument[this]", "file", "manual"]
-
-    
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -76,6 +72,3 @@ extensions:
       - ["System.IO", "TextReader", True, "ReadLineAsync", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["System.IO", "TextReader", True, "ReadToEnd", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["System.IO", "TextReader", True, "ReadToEndAsync", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-
-    
-    

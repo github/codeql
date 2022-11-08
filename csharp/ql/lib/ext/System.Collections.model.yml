@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -58,6 +56,3 @@ extensions:
       - ["System.Collections", "Stack", False, "Clone", "()", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections", "Stack", False, "Peek", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Collections", "Stack", False, "Pop", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
-
-    
-    

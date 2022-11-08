@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSinkModel
@@ -33,6 +31,3 @@ extensions:
       - ["Microsoft.ApplicationBlocks.Data", "SqlHelper", False, "ExecuteXmlReader", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql", "manual"]
       - ["Microsoft.ApplicationBlocks.Data", "SqlHelper", False, "ExecuteXmlReader", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)", "", "Argument[2]", "sql", "manual"]
       - ["Microsoft.ApplicationBlocks.Data", "SqlHelper", False, "ExecuteXmlReader", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql", "manual"]
-
-    
-    

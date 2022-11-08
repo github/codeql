@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -179,6 +177,3 @@ extensions:
       - ["System.Threading.Tasks", "TaskFactory<>", False, "StartNew", "(System.Func<TResult>,System.Threading.CancellationToken)", "", "Argument[0].ReturnValue", "ReturnValue.Property[System.Threading.Tasks.Task<>.Result]", "value", "manual"]
       - ["System.Threading.Tasks", "TaskFactory<>", False, "StartNew", "(System.Func<TResult>,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)", "", "Argument[0].ReturnValue", "ReturnValue.Property[System.Threading.Tasks.Task<>.Result]", "value", "manual"]
       - ["System.Threading.Tasks", "TaskFactory<>", False, "StartNew", "(System.Func<TResult>,System.Threading.Tasks.TaskCreationOptions)", "", "Argument[0].ReturnValue", "ReturnValue.Property[System.Threading.Tasks.Task<>.Result]", "value", "manual"]
-
-    
-    

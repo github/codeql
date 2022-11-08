@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -105,6 +103,3 @@ extensions:
       - ["System.Text", "StringBuilder", False, "StringBuilder", "(System.String,System.Int32,System.Int32,System.Int32)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Text", "StringBuilder", False, "ToString", "()", "", "Argument[this].Element", "ReturnValue", "taint", "manual"]
       - ["System.Text", "StringBuilder", False, "ToString", "(System.Int32,System.Int32)", "", "Argument[this].Element", "ReturnValue", "taint", "manual"]
-
-    
-    

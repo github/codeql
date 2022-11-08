@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSinkModel
@@ -53,6 +51,3 @@ extensions:
       - ["MySql.Data.MySqlClient", "MySqlHelper", False, "UpdateDataset", "(System.String,System.String,System.Data.DataSet,System.String)", "", "Argument[1]", "sql", "manual"]
       - ["MySql.Data.MySqlClient", "MySqlHelper", False, "UpdateDatasetAsync", "(System.String,System.String,System.Data.DataSet,System.String)", "", "Argument[1]", "sql", "manual"]
       - ["MySql.Data.MySqlClient", "MySqlHelper", False, "UpdateDatasetAsync", "(System.String,System.String,System.Data.DataSet,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql", "manual"]
-
-    
-    

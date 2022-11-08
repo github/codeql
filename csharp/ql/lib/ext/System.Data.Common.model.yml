@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -34,6 +32,3 @@ extensions:
       - ["System.Data.Common", "DbParameterCollection", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Data.Common", "DbParameterCollection", False, "set_Item", "(System.Int32,System.Data.Common.DbParameter)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
       - ["System.Data.Common", "DbParameterCollection", False, "set_Item", "(System.String,System.Data.Common.DbParameter)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
-
-    
-    

@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSinkModel
@@ -60,6 +58,3 @@ extensions:
       - ["Dapper", "SqlMapper", False, "QuerySingleOrDefaultAsync", "(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>)", "", "Argument[1]", "sql", "manual"]
       - ["Dapper", "SqlMapper", False, "QuerySingleOrDefaultAsync", "(System.Data.IDbConnection,System.Type,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>)", "", "Argument[2]", "sql", "manual"]
       - ["Dapper", "SqlMapper", False, "QuerySingleOrDefaultAsync<>", "(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>)", "", "Argument[1]", "sql", "manual"]
-
-    
-    

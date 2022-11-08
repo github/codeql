@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -26,6 +24,3 @@ extensions:
       - ["System.Security.Cryptography.X509Certificates", "X509ExtensionCollection", False, "Add", "(System.Security.Cryptography.X509Certificates.X509Extension)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Security.Cryptography.X509Certificates", "X509ExtensionCollection", False, "CopyTo", "(System.Security.Cryptography.X509Certificates.X509Extension[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
       - ["System.Security.Cryptography.X509Certificates", "X509ExtensionCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509ExtensionEnumerator.Current]", "value", "manual"]
-
-    
-    

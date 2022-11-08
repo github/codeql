@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -14,6 +12,3 @@ extensions:
       - ["System.Net", "WebUtility", False, "HtmlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Net", "WebUtility", False, "HtmlEncode", "(System.String,System.IO.TextWriter)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Net", "WebUtility", False, "UrlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-
-    
-    

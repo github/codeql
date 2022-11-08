@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -10,6 +8,3 @@ extensions:
       - ["Microsoft.VisualBasic", "Collection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["Microsoft.VisualBasic", "Collection", False, "get_Item", "(System.Object)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["Microsoft.VisualBasic", "Collection", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
-
-    
-    

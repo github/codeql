@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -14,6 +12,3 @@ extensions:
       - ["System.Collections.ObjectModel", "ReadOnlyDictionary<,>", False, "get_Item", "(TKey)", "", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "ReturnValue", "value", "manual"]
       - ["System.Collections.ObjectModel", "ReadOnlyDictionary<,>", False, "get_Keys", "()", "", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections.ObjectModel", "ReadOnlyDictionary<,>", False, "get_Values", "()", "", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "ReturnValue.Element", "value", "manual"]
-
-    
-    

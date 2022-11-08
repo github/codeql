@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSinkModel
@@ -32,6 +30,3 @@ extensions:
       - ["ServiceStack.Redis", "IRedisClientAsync", True, "ExecLuaAsync", "(System.String,System.String[],System.String[],System.Threading.CancellationToken)", "", "Argument[0]", "code", "manual"]
       - ["ServiceStack.Redis", "IRedisClientAsync", True, "ExecLuaAsync", "(System.String,System.String[],System.Threading.CancellationToken)", "", "Argument[0]", "code", "manual"]
       - ["ServiceStack.Redis", "IRedisClientAsync", True, "LoadLuaScriptAsync", "(System.String,System.Threading.CancellationToken)", "", "Argument[0]", "code", "manual"]
-
-    
-    

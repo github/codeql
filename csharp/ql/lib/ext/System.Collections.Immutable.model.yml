@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -92,6 +90,3 @@ extensions:
       - ["System.Collections.Immutable", "ImmutableSortedSet<>+Builder", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Collections.Immutable.ImmutableSortedSet<>+Enumerator.Current]", "value", "manual"]
       - ["System.Collections.Immutable", "ImmutableSortedSet<>+Builder", False, "Reverse", "()", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections.Immutable", "ImmutableStack<>", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Collections.Immutable.ImmutableStack<>+Enumerator.Current]", "value", "manual"]
-
-    
-    

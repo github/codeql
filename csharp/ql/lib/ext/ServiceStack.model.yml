@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSinkModel
@@ -80,8 +78,6 @@ extensions:
       - ["ServiceStack", "ServiceClientBase", True, "Publish<>", "(ServiceStack.Messaging.IMessage<T>)", "", "Argument[0]", "remote", "manual"]
       - ["ServiceStack", "ServiceClientBase", True, "Publish<>", "(T)", "", "Argument[0]", "remote", "manual"]
       - ["ServiceStack", "ServiceClientBase", True, "Put", "(System.Object)", "", "Argument[0]", "remote", "manual"]
-
-    
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -93,6 +89,3 @@ extensions:
       - ["ServiceStack", "HttpResult", False, "HttpResult", "(System.Object,System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["ServiceStack", "HttpResult", False, "HttpResult", "(System.Object,System.String,System.Net.HttpStatusCode)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["ServiceStack", "HttpResult", False, "HttpResult", "(System.String,System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-
-    
-    

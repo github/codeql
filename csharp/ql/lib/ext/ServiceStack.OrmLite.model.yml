@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSinkModel
@@ -97,6 +95,3 @@ extensions:
       - ["ServiceStack.OrmLite", "SqlExpression<>", True, "UnsafeSelect", "(System.String)", "", "Argument[0]", "sql", "manual"]
       - ["ServiceStack.OrmLite", "SqlExpression<>", True, "UnsafeSelect", "(System.String,System.Boolean)", "", "Argument[0]", "sql", "manual"]
       - ["ServiceStack.OrmLite", "SqlExpression<>", True, "UnsafeWhere", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
-
-    
-    

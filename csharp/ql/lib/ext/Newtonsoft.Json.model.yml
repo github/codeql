@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -71,6 +69,3 @@ extensions:
       - ["Newtonsoft.Json", "JsonSerializer", False, "Serialize", "(Newtonsoft.Json.JsonWriter,System.Object,System.Type)", "", "Argument[1]", "Argument[0]", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonSerializer", False, "Serialize", "(System.IO.TextWriter,System.Object)", "", "Argument[1]", "Argument[0]", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonSerializer", False, "Serialize", "(System.IO.TextWriter,System.Object,System.Type)", "", "Argument[1]", "Argument[0]", "taint", "manual"]
-
-    
-    

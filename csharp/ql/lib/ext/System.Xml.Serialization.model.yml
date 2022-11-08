@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -28,6 +26,3 @@ extensions:
       - ["System.Xml.Serialization", "XmlSchemas", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Xml.Serialization", "XmlSchemas", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Xml.Serialization", "XmlSchemas", False, "set_Item", "(System.Int32,System.Xml.Schema.XmlSchema)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
-
-    
-    

@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -59,6 +57,3 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "StringValues", False, "set_Item", "(System.Int32,System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Microsoft.Extensions.Primitives", "StringValues", False, "set_Item", "(System.Int32,System.String)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["Microsoft.Extensions.Primitives", "StringValues", False, "set_Item", "(System.Int32,System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-
-    
-    

@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSinkModel
@@ -9,8 +7,6 @@ extensions:
       - ["System.Web", "HttpResponse", False, "TransmitFile", "", "", "Argument[0]", "html", "manual"]
       - ["System.Web", "HttpResponse", False, "Write", "", "", "Argument[0]", "html", "manual"]
       - ["System.Web", "HttpResponse", False, "WriteFile", "", "", "Argument[0]", "html", "manual"]
-
-    
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -30,6 +26,3 @@ extensions:
       - ["System.Web", "HttpUtility", False, "UrlEncode", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Web", "HttpUtility", False, "UrlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Web", "HttpUtility", False, "UrlEncode", "(System.String,System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-
-    
-    

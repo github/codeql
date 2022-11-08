@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -20,6 +18,3 @@ extensions:
       - ["System.Collections.Specialized", "StringCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Collections.Specialized", "StringCollection", False, "set_Item", "(System.Int32,System.String)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Specialized", "StringDictionary", True, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
-
-    
-    

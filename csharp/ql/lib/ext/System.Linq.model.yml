@@ -1,6 +1,4 @@
-
 extensions:
-
   - addsTo:
       pack: codeql/csharp-all
       extensible: extSummaryModel
@@ -639,6 +637,3 @@ extensions:
       - ["System.Linq", "Queryable", False, "Zip<,,>", "(System.Linq.IQueryable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Linq.Expressions.Expression<System.Func<TFirst,TSecond,TResult>>)", "", "Argument[0].Element", "Argument[2].Parameter[0]", "value", "manual"]
       - ["System.Linq", "Queryable", False, "Zip<,,>", "(System.Linq.IQueryable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Linq.Expressions.Expression<System.Func<TFirst,TSecond,TResult>>)", "", "Argument[1].Element", "Argument[2].Parameter[1]", "value", "manual"]
       - ["System.Linq", "Queryable", False, "Zip<,,>", "(System.Linq.IQueryable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Linq.Expressions.Expression<System.Func<TFirst,TSecond,TResult>>)", "", "Argument[2].ReturnValue", "ReturnValue.Element", "value", "manual"]
-
-    
-    
