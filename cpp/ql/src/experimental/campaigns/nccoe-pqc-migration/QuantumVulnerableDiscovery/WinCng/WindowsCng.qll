@@ -33,14 +33,28 @@ predicate vulnProviderLiteral(StringLiteral lit) {
  * Argument at index 0 of call to BCryptSignHash
  */
 class BCryptSignHashArgumentSink extends BCryptOpenAlgorithmProviderSink {
-  BCryptSignHashArgumentSink() { isCallArgument("BCryptSignHash", this.asExpr(), 0) }
+  int index;
+  string funcName;
+
+  BCryptSignHashArgumentSink() {
+    index = 0 and
+    funcName = "BCryptSignHash" and
+    isCallArgument(funcName, this.asExpr(), index)
+  }
 }
 
 /**
  * Argument at index 0 of call to BCryptEncrypt
  */
 class BCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
-  BCryptEncryptArgumentSink() { isCallArgument("BCryptEncrypt", this.asExpr(), 0) }
+  int index;
+  string funcName;
+
+  BCryptEncryptArgumentSink() {
+    index = 0 and
+    funcName = "BCryptEncrypt" and
+    isCallArgument(funcName, this.asExpr(), index)
+  }
 }
 
 // ----------------- Default SOURCES -----------------------
