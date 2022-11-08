@@ -5,7 +5,7 @@
 #include <iostream>
 #include <regex>
 #include <unistd.h>
-#include <picosha2.h>
+#include <chrono>
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
@@ -107,12 +107,8 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
 // Creates a target file that should store per-invocation info, e.g. compilation args,
 // compilations, diagnostics, etc.
 codeql::TargetFile invocationTargetFile(codeql::SwiftExtractorConfiguration& configuration) {
-  auto hasher = picosha2::hash256_one_by_one();
-  for (auto& option : configuration.frontendOptions) {
-    hasher.process(option.c_str(), option.c_str() + option.size() + 1);
-  }
-  hasher.finish();
-  auto target = "invocation-"s + get_hash_hex_string(hasher);
+  auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
+  auto target = "invocation-"s + std::to_string(timestamp) + '-' + std::to_string(getpid());
   auto maybeFile = codeql::createTargetTrapFile(configuration, target);
   if (!maybeFile) {
     std::cerr << "Cannot create invocation trap file: " << target << "\n";
