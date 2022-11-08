@@ -24,7 +24,7 @@ predicate potentiallyUsedFromXaml(RefType t) {
 
 class ExportAttribute extends Attribute {
   ExportAttribute() {
-    getType().hasQualifiedName("System.ComponentModel.Composition.ExportAttribute")
+    getType().hasQualifiedName("System.ComponentModel.Composition", "ExportAttribute")
   }
 }
 

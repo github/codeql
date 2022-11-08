@@ -20,7 +20,7 @@ module DataAnnotations {
   class NotMappedAttribute extends Attribute {
     NotMappedAttribute() {
       this.getType()
-          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema.NotMappedAttribute")
+          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema", "NotMappedAttribute")
     }
   }
 }

@@ -47,7 +47,7 @@ abstract class InsecureXmlProcessing extends Call {
  */
 private predicate isSafeXmlResolver(Expr e) {
   e instanceof NullLiteral or
-  e.getType().(RefType).hasQualifiedName("System.Xml.XmlSecureResolver")
+  e.getType().(RefType).hasQualifiedName("System.Xml", "XmlSecureResolver")
 }
 
 /**
@@ -145,14 +145,16 @@ module XmlReader {
   private import semmle.code.csharp.dataflow.DataFlow2
 
   private class InsecureXmlReaderCreate extends InsecureXmlProcessing, MethodCall {
-    InsecureXmlReaderCreate() { this.getTarget().hasQualifiedName("System.Xml.XmlReader.Create") }
+    InsecureXmlReaderCreate() {
+      this.getTarget().hasQualifiedName("System.Xml.XmlReader", "Create")
+    }
 
     /**
      * Gets the `XmlReaderSettings` argument to to this call, if any.
      */
     Expr getSettings() {
       result = this.getAnArgument() and
-      result.getType().(RefType).getABaseType*().hasQualifiedName("System.Xml.XmlReaderSettings")
+      result.getType().(RefType).getABaseType*().hasQualifiedName("System.Xml", "XmlReaderSettings")
     }
 
     override predicate isUnsafe(string reason) {
@@ -197,7 +199,7 @@ module XmlReader {
           .getType()
           .(RefType)
           .getABaseType*()
-          .hasQualifiedName("System.Xml.XmlReaderSettings")
+          .hasQualifiedName("System.Xml", "XmlReaderSettings")
     }
 
     override predicate isSink(DataFlow::Node sink) {
@@ -209,7 +211,7 @@ module XmlReader {
 /** Provides predicates related to `System.Xml.XmlTextReader`. */
 module XmlTextReader {
   private class InsecureXmlTextReader extends InsecureXmlProcessing, ObjectCreation {
-    InsecureXmlTextReader() { this.getObjectType().hasQualifiedName("System.Xml.XmlTextReader") }
+    InsecureXmlTextReader() { this.getObjectType().hasQualifiedName("System.Xml", "XmlTextReader") }
 
     override predicate isUnsafe(string reason) {
       not exists(Expr xmlResolverVal |
@@ -244,8 +246,8 @@ module XmlDocument {
    */
   class InsecureXmlDocument extends InsecureXmlProcessing, MethodCall {
     InsecureXmlDocument() {
-      this.getTarget().hasQualifiedName("System.Xml.XmlDocument.Load") or
-      this.getTarget().hasQualifiedName("System.Xml.XmlDocument.LoadXml")
+      this.getTarget().hasQualifiedName("System.Xml", "XmlDocument", "Load") or
+      this.getTarget().hasQualifiedName("System.Xml", "XmlDocument", "LoadXml")
     }
 
     override predicate isUnsafe(string reason) {

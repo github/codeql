@@ -8,7 +8,7 @@ import csharp
 module JsonNET {
   /** The namespace `Newtonsoft.Json`. */
   class JsonNETNamespace extends Namespace {
-    JsonNETNamespace() { this.hasQualifiedName("Newtonsoft.Json") }
+    JsonNETNamespace() { this.hasQualifiedName("Newtonsoft", "Json") }
   }
 
   /** A class in `Newtonsoft.Json`. */
