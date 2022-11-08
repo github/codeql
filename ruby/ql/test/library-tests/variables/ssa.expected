@@ -4,6 +4,8 @@ definition
 | class_variables.rb:9:1:16:3 | self (X) | class_variables.rb:9:1:16:3 | self |
 | class_variables.rb:10:3:12:5 | self (b) | class_variables.rb:10:3:12:5 | self |
 | class_variables.rb:13:3:15:5 | self (s) | class_variables.rb:13:3:15:5 | self |
+| class_variables.rb:18:1:20:3 | self (Y) | class_variables.rb:18:1:20:3 | self |
+| class_variables.rb:22:1:24:3 | self (M) | class_variables.rb:22:1:24:3 | self |
 | class_variables.rb:26:1:29:3 | self (N) | class_variables.rb:26:1:29:3 | self |
 | instance_variables.rb:1:1:1:4 | self (instance_variables.rb) | instance_variables.rb:1:1:44:4 | self |
 | instance_variables.rb:1:1:44:4 | self (instance_variables.rb) | instance_variables.rb:1:1:44:4 | self |
@@ -98,9 +100,12 @@ definition
 | scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c |
 | scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d |
 | scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 |
+| scopes.rb:26:1:26:12 | self (A) | scopes.rb:26:1:26:12 | self |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x |
+| scopes.rb:28:1:30:3 | self (B) | scopes.rb:28:1:30:3 | self |
 | scopes.rb:29:3:29:7 | ... = ... | scopes.rb:29:3:29:3 | x |
 | scopes.rb:32:3:32:7 | ... = ... | scopes.rb:32:3:32:3 | x |
+| scopes.rb:34:1:36:3 | self (C) | scopes.rb:34:1:36:3 | self |
 | scopes.rb:35:3:35:7 | ... = ... | scopes.rb:35:3:35:3 | x |
 | scopes.rb:41:1:49:3 | self (M) | scopes.rb:41:1:49:3 | self |
 | scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var |
