@@ -260,6 +260,96 @@ module ActiveSupport {
       }
       // TODO: index_by, index_with, pick, pluck (they require Hash dataflow)
     }
+
+    /** Extensions to the `Module` object. */
+    module Module {
+      private import codeql.ruby.dataflow.internal.DataFlowDispatch
+
+      /**
+       * Provides flow summaries for calls to setter methods that are defined using
+       * `alias_attribute`.
+       *
+       * ```rb
+       * class C
+       *   alias_attribute :foo, :bar
+       * end
+       * x = C.new
+       * x.foo = 123 # sets `bar`
+       * ```
+       */
+      private class AliasAttributeSetterSummary extends SummarizedCallable {
+        ClassDeclaration klass;
+        string aliasName;
+        string targetName;
+
+        AliasAttributeSetterSummary() {
+          exists(MethodCall aa | aa.getMethodName() = "alias_attribute" |
+            klass = aa.getEnclosingModule() and
+            aliasName = aa.getArgument(0).getConstantValue().getSymbol() and
+            targetName = aa.getArgument(1).getConstantValue().getSymbol() and
+            this = klass.getName() + "#" + aliasName + "="
+          )
+        }
+
+        override MethodCall getACall() {
+          // We're looking for a setter call using the alias name where the receiver
+          // is an instance of `klass`.
+          exists(Module m |
+            klass = m.getADeclaration() and
+            result.getReceiver() = trackInstance(m, true).asExpr().getExpr() and
+            result.(SetterMethodCall).getTargetName() = [aliasName, targetName]
+          )
+        }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[0].WithoutField[@" + [aliasName, targetName] + "]" and
+          output = "Argument[self].Field[@" + [aliasName, targetName] + "]" and
+          preservesValue = true
+        }
+      }
+
+      /**
+       * Provides flow summaries for calls to getter methods that are defined using
+       * `alias_attribute`.
+       *
+       * ```rb
+       * class C
+       *   alias_attribute :foo, :bar
+       * end
+       * x = C.new
+       * x.foo # gets `bar`
+       * ```
+       */
+      private class AliasAttributeGetterSummary extends SummarizedCallable {
+        ClassDeclaration klass;
+        string aliasName;
+        string targetName;
+
+        AliasAttributeGetterSummary() {
+          exists(MethodCall aa | aa.getMethodName() = "alias_attribute" |
+            klass = aa.getEnclosingModule() and
+            aliasName = aa.getArgument(0).getConstantValue().getSymbol() and
+            targetName = aa.getArgument(1).getConstantValue().getSymbol() and
+            this = klass.getName() + "#" + aliasName
+          )
+        }
+
+        override MethodCall getACall() {
+          exists(Module m |
+            klass = m.getADeclaration() and
+            result.getReceiver() = trackInstance(m, true).asExpr().getExpr() and
+            result.getNumberOfArguments() = 0 and
+            result.getMethodName() = [aliasName, targetName]
+          )
+        }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Field[@" + [aliasName, targetName] + "]" and
+          output = "ReturnValue" and
+          preservesValue = true
+        }
+      }
+    }
   }
 
   /**

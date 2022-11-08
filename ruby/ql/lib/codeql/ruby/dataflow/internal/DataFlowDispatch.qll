@@ -699,7 +699,7 @@ private DataFlow::Node trackInstanceRec(Module tp, TypeTracker t, boolean exact,
 }
 
 pragma[nomagic]
-private DataFlow::Node trackInstance(Module tp, boolean exact) {
+DataFlow::Node trackInstance(Module tp, boolean exact) {
   result = trackInstance(tp, exact, TypeTracker::end())
 }
 

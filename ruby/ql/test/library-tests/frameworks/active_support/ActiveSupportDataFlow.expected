@@ -1,4 +1,6 @@
 failures
+| active_support.rb:316:8:316:15 | call to name | Unexpected result: hasValueFlow=a |
+| active_support.rb:317:8:317:19 | call to username | Unexpected result: hasValueFlow=a |
 edges
 | active_support.rb:10:9:10:18 | call to source :  | active_support.rb:11:10:11:10 | x :  |
 | active_support.rb:11:10:11:10 | x :  | active_support.rb:11:10:11:19 | call to at |
@@ -186,6 +188,54 @@ edges
 | active_support.rb:290:7:290:16 | call to source :  | active_support.rb:291:8:291:8 | x :  |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | active_support.rb:311:8:311:10 | foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | active_support.rb:311:8:311:10 | foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | active_support.rb:312:8:312:10 | foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | active_support.rb:312:8:312:10 | foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | active_support.rb:316:8:316:10 | foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | active_support.rb:316:8:316:10 | foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | active_support.rb:317:8:317:10 | foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | active_support.rb:317:8:317:10 | foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | active_support.rb:311:8:311:10 | foo [@username] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | active_support.rb:311:8:311:10 | foo [@username] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | active_support.rb:312:8:312:10 | foo [@username] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | active_support.rb:312:8:312:10 | foo [@username] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | active_support.rb:316:8:316:10 | foo [@username] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | active_support.rb:316:8:316:10 | foo [@username] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | active_support.rb:317:8:317:10 | foo [@username] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | active_support.rb:317:8:317:10 | foo [@username] :  |
+| active_support.rb:309:14:309:23 | call to source :  | active_support.rb:309:3:309:5 | [post] foo [@name] :  |
+| active_support.rb:309:14:309:23 | call to source :  | active_support.rb:309:3:309:5 | [post] foo [@name] :  |
+| active_support.rb:309:14:309:23 | call to source :  | active_support.rb:309:3:309:5 | [post] foo [@username] :  |
+| active_support.rb:309:14:309:23 | call to source :  | active_support.rb:309:3:309:5 | [post] foo [@username] :  |
+| active_support.rb:311:8:311:10 | foo [@name] :  | active_support.rb:311:8:311:15 | call to name |
+| active_support.rb:311:8:311:10 | foo [@name] :  | active_support.rb:311:8:311:15 | call to name |
+| active_support.rb:311:8:311:10 | foo [@username] :  | active_support.rb:311:8:311:15 | call to name |
+| active_support.rb:311:8:311:10 | foo [@username] :  | active_support.rb:311:8:311:15 | call to name |
+| active_support.rb:312:8:312:10 | foo [@name] :  | active_support.rb:312:8:312:19 | call to username |
+| active_support.rb:312:8:312:10 | foo [@name] :  | active_support.rb:312:8:312:19 | call to username |
+| active_support.rb:312:8:312:10 | foo [@username] :  | active_support.rb:312:8:312:19 | call to username |
+| active_support.rb:312:8:312:10 | foo [@username] :  | active_support.rb:312:8:312:19 | call to username |
+| active_support.rb:314:3:314:5 | [post] foo [@name] :  | active_support.rb:316:8:316:10 | foo [@name] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@name] :  | active_support.rb:316:8:316:10 | foo [@name] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@name] :  | active_support.rb:317:8:317:10 | foo [@name] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@name] :  | active_support.rb:317:8:317:10 | foo [@name] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@username] :  | active_support.rb:316:8:316:10 | foo [@username] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@username] :  | active_support.rb:316:8:316:10 | foo [@username] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@username] :  | active_support.rb:317:8:317:10 | foo [@username] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@username] :  | active_support.rb:317:8:317:10 | foo [@username] :  |
+| active_support.rb:314:18:314:27 | call to source :  | active_support.rb:314:3:314:5 | [post] foo [@name] :  |
+| active_support.rb:314:18:314:27 | call to source :  | active_support.rb:314:3:314:5 | [post] foo [@name] :  |
+| active_support.rb:314:18:314:27 | call to source :  | active_support.rb:314:3:314:5 | [post] foo [@username] :  |
+| active_support.rb:314:18:314:27 | call to source :  | active_support.rb:314:3:314:5 | [post] foo [@username] :  |
+| active_support.rb:316:8:316:10 | foo [@name] :  | active_support.rb:316:8:316:15 | call to name |
+| active_support.rb:316:8:316:10 | foo [@name] :  | active_support.rb:316:8:316:15 | call to name |
+| active_support.rb:316:8:316:10 | foo [@username] :  | active_support.rb:316:8:316:15 | call to name |
+| active_support.rb:316:8:316:10 | foo [@username] :  | active_support.rb:316:8:316:15 | call to name |
+| active_support.rb:317:8:317:10 | foo [@name] :  | active_support.rb:317:8:317:19 | call to username |
+| active_support.rb:317:8:317:10 | foo [@name] :  | active_support.rb:317:8:317:19 | call to username |
+| active_support.rb:317:8:317:10 | foo [@username] :  | active_support.rb:317:8:317:19 | call to username |
+| active_support.rb:317:8:317:10 | foo [@username] :  | active_support.rb:317:8:317:19 | call to username |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  |
@@ -504,6 +554,42 @@ nodes
 | active_support.rb:291:8:291:8 | x :  | semmle.label | x :  |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | semmle.label | [post] foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@name] :  | semmle.label | [post] foo [@name] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | semmle.label | [post] foo [@username] :  |
+| active_support.rb:309:3:309:5 | [post] foo [@username] :  | semmle.label | [post] foo [@username] :  |
+| active_support.rb:309:14:309:23 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:309:14:309:23 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:311:8:311:10 | foo [@name] :  | semmle.label | foo [@name] :  |
+| active_support.rb:311:8:311:10 | foo [@name] :  | semmle.label | foo [@name] :  |
+| active_support.rb:311:8:311:10 | foo [@username] :  | semmle.label | foo [@username] :  |
+| active_support.rb:311:8:311:10 | foo [@username] :  | semmle.label | foo [@username] :  |
+| active_support.rb:311:8:311:15 | call to name | semmle.label | call to name |
+| active_support.rb:311:8:311:15 | call to name | semmle.label | call to name |
+| active_support.rb:312:8:312:10 | foo [@name] :  | semmle.label | foo [@name] :  |
+| active_support.rb:312:8:312:10 | foo [@name] :  | semmle.label | foo [@name] :  |
+| active_support.rb:312:8:312:10 | foo [@username] :  | semmle.label | foo [@username] :  |
+| active_support.rb:312:8:312:10 | foo [@username] :  | semmle.label | foo [@username] :  |
+| active_support.rb:312:8:312:19 | call to username | semmle.label | call to username |
+| active_support.rb:312:8:312:19 | call to username | semmle.label | call to username |
+| active_support.rb:314:3:314:5 | [post] foo [@name] :  | semmle.label | [post] foo [@name] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@name] :  | semmle.label | [post] foo [@name] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@username] :  | semmle.label | [post] foo [@username] :  |
+| active_support.rb:314:3:314:5 | [post] foo [@username] :  | semmle.label | [post] foo [@username] :  |
+| active_support.rb:314:18:314:27 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:314:18:314:27 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:316:8:316:10 | foo [@name] :  | semmle.label | foo [@name] :  |
+| active_support.rb:316:8:316:10 | foo [@name] :  | semmle.label | foo [@name] :  |
+| active_support.rb:316:8:316:10 | foo [@username] :  | semmle.label | foo [@username] :  |
+| active_support.rb:316:8:316:10 | foo [@username] :  | semmle.label | foo [@username] :  |
+| active_support.rb:316:8:316:15 | call to name | semmle.label | call to name |
+| active_support.rb:316:8:316:15 | call to name | semmle.label | call to name |
+| active_support.rb:317:8:317:10 | foo [@name] :  | semmle.label | foo [@name] :  |
+| active_support.rb:317:8:317:10 | foo [@name] :  | semmle.label | foo [@name] :  |
+| active_support.rb:317:8:317:10 | foo [@username] :  | semmle.label | foo [@username] :  |
+| active_support.rb:317:8:317:10 | foo [@username] :  | semmle.label | foo [@username] :  |
+| active_support.rb:317:8:317:19 | call to username | semmle.label | call to username |
+| active_support.rb:317:8:317:19 | call to username | semmle.label | call to username |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | semmle.label | h [element :a] :  |
@@ -613,6 +699,12 @@ subpaths
 | active_support.rb:283:8:283:17 | call to presence | active_support.rb:282:7:282:16 | call to source :  | active_support.rb:283:8:283:17 | call to presence | $@ | active_support.rb:282:7:282:16 | call to source :  | call to source :  |
 | active_support.rb:286:8:286:17 | call to presence | active_support.rb:285:7:285:16 | call to source :  | active_support.rb:286:8:286:17 | call to presence | $@ | active_support.rb:285:7:285:16 | call to source :  | call to source :  |
 | active_support.rb:291:8:291:17 | call to deep_dup | active_support.rb:290:7:290:16 | call to source :  | active_support.rb:291:8:291:17 | call to deep_dup | $@ | active_support.rb:290:7:290:16 | call to source :  | call to source :  |
+| active_support.rb:311:8:311:15 | call to name | active_support.rb:309:14:309:23 | call to source :  | active_support.rb:311:8:311:15 | call to name | $@ | active_support.rb:309:14:309:23 | call to source :  | call to source :  |
+| active_support.rb:312:8:312:19 | call to username | active_support.rb:309:14:309:23 | call to source :  | active_support.rb:312:8:312:19 | call to username | $@ | active_support.rb:309:14:309:23 | call to source :  | call to source :  |
+| active_support.rb:316:8:316:15 | call to name | active_support.rb:309:14:309:23 | call to source :  | active_support.rb:316:8:316:15 | call to name | $@ | active_support.rb:309:14:309:23 | call to source :  | call to source :  |
+| active_support.rb:316:8:316:15 | call to name | active_support.rb:314:18:314:27 | call to source :  | active_support.rb:316:8:316:15 | call to name | $@ | active_support.rb:314:18:314:27 | call to source :  | call to source :  |
+| active_support.rb:317:8:317:19 | call to username | active_support.rb:309:14:309:23 | call to source :  | active_support.rb:317:8:317:19 | call to username | $@ | active_support.rb:309:14:309:23 | call to source :  | call to source :  |
+| active_support.rb:317:8:317:19 | call to username | active_support.rb:314:18:314:27 | call to source :  | active_support.rb:317:8:317:19 | call to username | $@ | active_support.rb:314:18:314:27 | call to source :  | call to source :  |
 | hash_extensions.rb:4:10:4:14 | ...[...] | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:4:10:4:14 | ...[...] | $@ | hash_extensions.rb:2:14:2:24 | call to source :  | call to source :  |
 | hash_extensions.rb:12:10:12:14 | ...[...] | hash_extensions.rb:10:14:10:24 | call to source :  | hash_extensions.rb:12:10:12:14 | ...[...] | $@ | hash_extensions.rb:10:14:10:24 | call to source :  | call to source :  |
 | hash_extensions.rb:20:10:20:14 | ...[...] | hash_extensions.rb:18:14:18:24 | call to source :  | hash_extensions.rb:20:10:20:14 | ...[...] | $@ | hash_extensions.rb:18:14:18:24 | call to source :  | call to source :  |

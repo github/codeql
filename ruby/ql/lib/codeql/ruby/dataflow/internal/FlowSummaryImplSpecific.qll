@@ -128,6 +128,12 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   result =
     FlowSummary::SummaryComponent::content(TSingletonContent(TFieldContent(c.getAnArgument("Field"))))
   or
+  result =
+    FlowSummary::SummaryComponent::withContent(TSingletonContent(TFieldContent(c.getAnArgument("WithField"))))
+  or
+  result =
+    FlowSummary::SummaryComponent::withoutContent(TSingletonContent(TFieldContent(c.getAnArgument("WithoutField"))))
+  or
   exists(ContentSet cs |
     FlowSummary::SummaryComponent::content(cs) = interpretElementArg(c.getAnArgument("WithElement")) and
     result = FlowSummary::SummaryComponent::withContent(cs)

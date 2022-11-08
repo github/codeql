@@ -298,3 +298,21 @@ def m_try(method)
     x.try!(:upcase).try!(:downcase)
     x.try!(method)
 end
+
+def m_alias_attribute
+  class ClassWithAlias
+    alias_attribute :username, :name
+  end
+
+  foo = ClassWithAlias.new
+      
+  foo.name = source "a"
+  
+  sink foo.name # $ hasValueFlow=a
+  sink foo.username # $ hasValueFlow=a
+  
+  foo.username = source "b"
+  
+  sink foo.name # $ hasValueFlow=b
+  sink foo.username # $ hasValueFlow=b
+end
