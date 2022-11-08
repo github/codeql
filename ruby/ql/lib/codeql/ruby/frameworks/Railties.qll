@@ -13,7 +13,7 @@ private import codeql.ruby.DataFlow
  */
 module Railties {
   private DataFlow::ConstRef generatorsActionsConst() {
-    result = DataFlow::getConst("Rails").getConst("Generators").getConst("Actions")
+    result = DataFlow::getConstant("Rails").getConstant("Generators").getConstant("Actions")
   }
 
   /**

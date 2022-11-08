@@ -94,14 +94,14 @@ module Rails {
 /**
  * Gets a reference to the `Rails` constant.
  */
-private DataFlow::ConstRef rails() { result = DataFlow::getConst("Rails") }
+private DataFlow::ConstRef rails() { result = DataFlow::getConstant("Rails") }
 
 /**
  * Gets a reference to either `Rails::Railtie`, `Rails::Engine`, or `Rails::Application`.
  * `Engine` and `Application` extend `Railtie`, but may not have definitions present in the database.
  */
 private DataFlow::ConstRef railtie() {
-  result = rails().getConst(["Railtie", "Engine", "Application"])
+  result = rails().getConstant(["Railtie", "Engine", "Application"])
 }
 
 /** Gets a class that transitively extends `Rails::Railtie` */
@@ -113,7 +113,7 @@ private DataFlow::ClassNode railtieClass() { result = railtie().getADescendentMo
 private DataFlow::LocalSourceNode railsApp() {
   result = rails().getAMethodCall("application")
   or
-  result = rails().getConst("Application")
+  result = rails().getConstant("Application")
 }
 
 /**

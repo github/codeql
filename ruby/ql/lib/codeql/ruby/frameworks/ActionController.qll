@@ -40,15 +40,15 @@ class ActionControllerClass extends DataFlow::ClassNode {
   ActionControllerClass() {
     this =
       [
-        DataFlow::getConst("ActionController").getConst("Base"),
+        DataFlow::getConstant("ActionController").getConstant("Base"),
         // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
         // treat it separately in case the `ApplicationController` definition is not in the database.
-        DataFlow::getConst("ApplicationController"),
+        DataFlow::getConstant("ApplicationController"),
         // ActionController::Metal technically doesn't contain all of the
         // methods available in Base, such as those for rendering views.
         // However we prefer to be over-sensitive in this case in order to find
         // more results.
-        DataFlow::getConst("ActionController").getConst("Metal")
+        DataFlow::getConstant("ActionController").getConstant("Metal")
       ].getADescendentModule()
   }
 

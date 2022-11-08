@@ -210,7 +210,7 @@ getTopLevelConst
 | XY2 | tst.rb:44:9:45:11 | self (XY2) |
 | XY3 | tst.rb:53:5:54:7 | self (XY3) |
 | Y | tst.rb:53:17:53:17 | Y |
-getConst
+getConstant
 | tst.rb:41:17:41:17 | X | Y | tst.rb:41:17:41:20 | Y |
 | tst.rb:44:21:44:21 | X | Y | tst.rb:44:21:44:24 | Y |
 | tst.rb:50:13:50:13 | X | X | tst.rb:50:13:50:13 | X |

@@ -381,7 +381,7 @@ private module Cached {
   predicate forceCachingInSameStage() { any() }
 
   cached
-  predicate forceCachingBackref() { exists(any(ConstRef const).getConst(_)) }
+  predicate forceCachingBackref() { exists(any(ConstRef const).getConstant(_)) }
 }
 
 private import Cached
@@ -1135,7 +1135,7 @@ class ArrayLiteralNode extends LocalSourceNode, ExprNode {
 /**
  * An access to a constant, such as `C`, `C::D`, or a class or module declaration.
  *
- * See `DataFlow::getConst` for usage example.
+ * See `DataFlow::getConstant` for usage example.
  */
 class ConstRef extends LocalSourceNode {
   private ConstantAccess access;
@@ -1215,7 +1215,7 @@ class ConstRef extends LocalSourceNode {
    * Gets the scope expression, or the immediately enclosing `Namespace` (skipping over singleton classes).
    *
    * Top-levels are not included, since this is only needed for nested constant lookup, and unqualified constants
-   * at the top-level are handled by `DataFlow::getConst`, never `ConstRef.getConst`.
+   * at the top-level are handled by `DataFlow::getConstant`, never `ConstRef.getConstant`.
    */
   private TConstLookupScope getLookupScope() {
     result = MkQualifiedLookup(access.getScopeExpr())
@@ -1248,7 +1248,7 @@ class ConstRef extends LocalSourceNode {
   /**
    * Gets a constant reference that may resolve to a member of this node.
    *
-   * For example `DataFlow::getConst("A").getConst("B")` finds the following:
+   * For example `DataFlow::getConstant("A").getConstant("B")` finds the following:
    * ```rb
    * A::B # simple reference
    *
@@ -1270,7 +1270,7 @@ class ConstRef extends LocalSourceNode {
    * ```
    */
   pragma[inline]
-  ConstRef getConst(string name) {
+  ConstRef getConstant(string name) {
     exists(TConstLookupScope scope |
       pragma[only_bind_into](scope) = pragma[only_bind_out](this).getATargetScope() and
       result.accesses(pragma[only_bind_out](scope), name)
@@ -1281,7 +1281,7 @@ class ConstRef extends LocalSourceNode {
    * Gets a module that transitively subclasses, includes, or prepends the module referred to by
    * this constant.
    *
-   * For example, `DataFlow::getConst("A").getADescendentModule()` finds `B`, `C`, and `E`:
+   * For example, `DataFlow::getConstant("A").getADescendentModule()` finds `B`, `C`, and `E`:
    * ```rb
    * class B < A
    * end
@@ -1300,9 +1300,9 @@ class ConstRef extends LocalSourceNode {
 /**
  * Gets a constant reference that may resolve to the top-level constant `name`.
  *
- * To get nested constants, call `getConst()` one or more times on the result.
+ * To get nested constants, call `getConstant()` one or more times on the result.
  *
- * For example `DataFlow::getConst("A").getConst("B")` finds the following:
+ * For example `DataFlow::getConstant("A").getConstant("B")` finds the following:
  * ```rb
  * A::B # simple reference
  *
@@ -1324,7 +1324,7 @@ class ConstRef extends LocalSourceNode {
  * ```
  */
 pragma[nomagic]
-ConstRef getConst(string name) {
+ConstRef getConstant(string name) {
   result.getName() = name and
   result.isPossiblyGlobal()
 }

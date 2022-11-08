@@ -50,12 +50,14 @@ query DataFlow::ModuleNode getNestedModule(DataFlow::ModuleNode mod, string name
   result = mod.getNestedModule(name)
 }
 
-query DataFlow::Node getTopLevelConst(string name) { result = DataFlow::getConst(name) }
+query DataFlow::Node getTopLevelConst(string name) { result = DataFlow::getConstant(name) }
 
-query DataFlow::Node getConst(DataFlow::ConstRef base, string name) { result = base.getConst(name) }
+query DataFlow::Node getConstant(DataFlow::ConstRef base, string name) {
+  result = base.getConstant(name)
+}
 
 query DataFlow::ModuleNode getXYClasses() {
-  result = DataFlow::getConst("X").getConst("Y").getADescendentModule()
+  result = DataFlow::getConstant("X").getConstant("Y").getADescendentModule()
 }
 
 query DataFlow::HashLiteralNode hashLiteralNode() { any() }
