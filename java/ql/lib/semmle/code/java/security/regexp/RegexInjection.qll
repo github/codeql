@@ -40,11 +40,10 @@ private class PatternQuoteCall extends RegexInjectionSanitizer {
  */
 private class PatternLiteralFlag extends RegexInjectionSanitizer {
   PatternLiteralFlag() {
-    exists(MethodAccess ma, Method m, Field field | m = ma.getMethod() |
+    exists(MethodAccess ma, Method m, PatternLiteralField field | m = ma.getMethod() |
       ma.getArgument(0) = this.asExpr() and
       m.getDeclaringType() instanceof TypeRegexPattern and
       m.hasName("compile") and
-      field instanceof PatternLiteralField and
       ma.getArgument(1) = field.getAnAccess()
     )
   }
