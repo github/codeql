@@ -1,29 +1,27 @@
 import cpp
 import WindowsCng
 
-predicate vulnerableCngFunctionName(string name) { name in ["BCryptSignHash", "BCryptEncrypt"] }
-
 predicate keyGenAndImportFunctionName(string name) { name in ["BCryptImportKeyPair", "BCryptGenerateKeyPair"] }
-
-predicate vulnerableCngFunction(Function f) {
-  exists(string name | f.hasGlobalName(name) and vulnerableCngFunctionName(name))
-}
 
 predicate keyGenAndImportFunction(Function f){
     exists(string name | f.hasGlobalName(name) and keyGenAndImportFunctionName(name))
 }
 
 //TODO: Verify NCrypt calls (parameters) & find all other APIs that should be included (i.e. decrypt, etc.)
-predicate isExprKeyHandleForBCryptSignHash(Expr e) {
-  exists(FunctionCall call |
-    e = call.getArgument(0) and
-    vulnerableCngFunction(call.getTarget())
-  )
+
+
+predicate isCallArgument(string funcGlobalName, Expr arg, int index){
+    exists(Call c | c.getArgument(index) = arg and c.getTarget().hasGlobalName(funcGlobalName))
 }
 
 class BCryptSignHashArgumentSink extends BCryptOpenAlgorithmProviderSink {
-  BCryptSignHashArgumentSink() { isExprKeyHandleForBCryptSignHash(this.asExpr()) }
+  BCryptSignHashArgumentSink() { isCallArgument("BCryptSignHash", this.asExpr(), 0) }
 }
+
+class BCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
+    BCryptEncryptArgumentSink() { isCallArgument("BCryptEncrypt", this.asExpr(), 0) }
+  }
+  
 
 class BCryptOpenAlgorithmProviderPqcVulnerableAlgorithmsSource extends BCryptOpenAlgorithmProviderSource {
   BCryptOpenAlgorithmProviderPqcVulnerableAlgorithmsSource() {
