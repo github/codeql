@@ -36,10 +36,7 @@ class AndroidLayoutXmlElement extends XmlElement {
 /** An XML element that represents an editable text field. */
 class AndroidEditableXmlElement extends AndroidLayoutXmlElement {
   AndroidEditableXmlElement() {
-    exists(Class editText |
-      editText.hasQualifiedName("android.widget", "EditText") and
-      editText = this.getClass().getASourceSupertype*()
-    )
+    this.getClass().getASourceSupertype*().hasQualifiedName("android.widget", "EditText")
   }
 
   /** Gets the input type of this field, if any. */
@@ -59,25 +56,24 @@ private class FindViewMethod extends Method {
 }
 
 /** Gets a use of the view that has the given id. */
-private Expr getAUseOfId(string id) {
-  exists(string name, MethodAccess findView, NestedClass r_id, Field id_field |
+private MethodAccess getAUseOfViewWithId(string id) {
+  exists(string name, NestedClass r_id, Field id_field |
     id = "@+id/" + name and
-    findView.getMethod() instanceof FindViewMethod and
+    result.getMethod() instanceof FindViewMethod and
     r_id.getEnclosingType().hasName("R") and
     r_id.hasName("id") and
     id_field.getDeclaringType() = r_id and
     id_field.hasName(name)
   |
-    DataFlow::localExprFlow(id_field.getAnAccess(), findView.getArgument(0)) and
-    result = findView
+    DataFlow::localExprFlow(id_field.getAnAccess(), result.getArgument(0))
   )
 }
 
 /** Gets the argument of a use of `setInputType` called on the view with the given id. */
-private Expr setInputTypeForId(string id) {
+private Argument setInputTypeForId(string id) {
   exists(MethodAccess setInputType |
     setInputType.getMethod().hasQualifiedName("android.widget", "TextView", "setInputType") and
-    DataFlow::localExprFlow(getAUseOfId(id), setInputType.getQualifier()) and
+    DataFlow::localExprFlow(getAUseOfViewWithId(id), setInputType.getQualifier()) and
     result = setInputType.getArgument(0)
   )
 }
@@ -90,11 +86,11 @@ private predicate inputTypeFieldNotCached(Field f) {
     or
     f.getName().matches("%PASSWORD%")
     or
-    f.getName() = "TYPE_TEXT_FLAG_NO_SUGGESTIONS"
+    f.hasName("TYPE_TEXT_FLAG_NO_SUGGESTIONS")
   )
 }
 
-/** Configuration that finds uses of `setInputType` that for non cached fields. */
+/** Configuration that finds uses of `setInputType` for non cached fields. */
 private class GoodInputTypeConf extends DataFlow::Configuration {
   GoodInputTypeConf() { this = "GoodInputTypeConf" }
 
