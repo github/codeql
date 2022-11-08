@@ -10,7 +10,6 @@
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/SwiftTagTraits.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
-#include "swift/extractor/infra/file/PathHash.h"
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 
 namespace codeql {
