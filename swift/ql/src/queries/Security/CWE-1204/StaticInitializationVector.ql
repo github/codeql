@@ -41,7 +41,8 @@ class EncryptionInitializationSink extends Expr {
             ], fName) and
       fName.matches("%init(%iv:%") and
       arg = [0, 1] and
-      call.getArgument(arg).getExpr() = this
+      call.getStaticTarget().(MethodDecl).getParam(pragma[only_bind_into](arg)).getName() = "iv" and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this
     )
   }
 }
