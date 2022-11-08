@@ -1,3 +1,4 @@
+| file://:0:0:0:0 | [summary] read: argument position 0.any element in Hash[] | file://:0:0:0:0 | [summary] read: argument position 0.any element.element 1 or unknown in Hash[] |
 | file://:0:0:0:0 | parameter any of ;Pathname;Method[join] | file://:0:0:0:0 | [summary] to write: return (return) in ;Pathname;Method[join] |
 | file://:0:0:0:0 | parameter position 0 of & | file://:0:0:0:0 | [summary] read: argument position 0.any element in & |
 | file://:0:0:0:0 | parameter position 0 of + | file://:0:0:0:0 | [summary] read: argument position 0.any element in + |
