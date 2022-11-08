@@ -20,6 +20,7 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::NilLiteralExpr translateNilLiteralExpr(const swift::NilLiteralExpr& expr);
   codeql::CallExpr translateCallExpr(const swift::CallExpr& expr);
   codeql::PrefixUnaryExpr translatePrefixUnaryExpr(const swift::PrefixUnaryExpr& expr);
+  codeql::PostfixUnaryExpr translatePostfixUnaryExpr(const swift::PostfixUnaryExpr& expr);
   codeql::DeclRefExpr translateDeclRefExpr(const swift::DeclRefExpr& expr);
   codeql::AssignExpr translateAssignExpr(const swift::AssignExpr& expr);
   codeql::BindOptionalExpr translateBindOptionalExpr(const swift::BindOptionalExpr& expr);
