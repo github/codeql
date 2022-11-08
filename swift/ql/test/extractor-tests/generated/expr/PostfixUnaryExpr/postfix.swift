@@ -1,7 +1,7 @@
 _ = 3...
 
-postfix operator ❗
+postfix operator **
 
-postfix func ❗(_ n: Int) {}
+postfix func **(_ n: Int) {}
 
-3❗
+3**
