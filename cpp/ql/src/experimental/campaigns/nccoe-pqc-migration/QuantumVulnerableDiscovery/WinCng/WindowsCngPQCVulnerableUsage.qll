@@ -1,12 +1,6 @@
 import cpp
 import WindowsCng
 
-predicate keyGenAndImportFunctionName(string name) { name in ["BCryptImportKeyPair", "BCryptGenerateKeyPair"] }
-
-predicate keyGenAndImportFunction(Function f){
-    exists(string name | f.hasGlobalName(name) and keyGenAndImportFunctionName(name))
-}
-
 //TODO: Verify NCrypt calls (parameters) & find all other APIs that should be included (i.e. decrypt, etc.)
 
 
@@ -46,7 +40,7 @@ predicate stepOpenAlgorithmProvider(DataFlow::Node node1, DataFlow::Node node2) 
 predicate stepImportGenerateKeyPair(DataFlow::Node node1, DataFlow::Node node2) {
   exists(FunctionCall call |
     node1.asExpr() = call.getArgument(0) and
-    keyGenAndImportFunction(call.getTarget()) and
+    exists(string name | name in ["BCryptImportKeyPair", "BCryptGenerateKeyPair"] and call.getTarget().hasGlobalName(name)) and
     node2.asDefiningArgument() = call.getArgument(1)
   )
 }
