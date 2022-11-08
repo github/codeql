@@ -117,20 +117,19 @@ private string getInputSensitiveInfoRegex() {
     ]
 }
 
-/** Holds if input using the given input type (as written in XML) may be stored in the keyboard cache. */
+/** Holds if input using the given input type (as written in XML) is not stored in the keyboard cache. */
 bindingset[ty]
-private predicate inputTypeCached(string ty) {
-  ty.matches("%text%") and
-  not ty.regexpMatch("(?i).*(nosuggestions|password).*")
+private predicate inputTypeNotCached(string ty) {
+  not ty.matches("%text%")
+  or
+  ty.regexpMatch("(?i).*(nosuggestions|password).*")
 }
 
 /** Gets an input field whose contents may be sensitive and may be stored in the keyboard cache. */
 AndroidEditableXmlElement getASensitiveCachedInput() {
   result.getId().regexpMatch(getInputSensitiveInfoRegex()) and
   (
-    inputTypeCached(result.getInputType())
-    or
-    not exists(result.getInputType()) and
+    not inputTypeNotCached(result.getInputType()) and
     not exists(GoodInputTypeConf conf, DataFlow::Node src, DataFlow::Node sink |
       conf.hasFlow(src, sink) and
       sink.asExpr() = setInputTypeForId(result.getId())
