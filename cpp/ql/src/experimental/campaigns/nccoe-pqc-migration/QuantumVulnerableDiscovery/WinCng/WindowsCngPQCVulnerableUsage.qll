@@ -3,8 +3,14 @@ import WindowsCng
 
 predicate vulnerableCngFunctionName(string name) { name in ["BCryptSignHash", "BCryptEncrypt"] }
 
+predicate keyGenAndImportFunctionName(string name) { name in ["BCryptImportKeyPair", "BCryptGenerateKeyPair"] }
+
 predicate vulnerableCngFunction(Function f) {
   exists(string name | f.hasGlobalName(name) and vulnerableCngFunctionName(name))
+}
+
+predicate keyGenAndImportFunction(Function f){
+    exists(string name | f.hasGlobalName(name) and keyGenAndImportFunctionName(name))
 }
 
 //TODO: Verify NCrypt calls (parameters) & find all other APIs that should be included (i.e. decrypt, etc.)
@@ -42,15 +48,12 @@ predicate stepOpenAlgorithmProvider(DataFlow::Node node1, DataFlow::Node node2) 
 predicate stepImportGenerateKeyPair(DataFlow::Node node1, DataFlow::Node node2) {
   exists(FunctionCall call |
     node1.asExpr() = call.getArgument(0) and
-    (
-      call.getTarget().hasGlobalName("BCryptImportKeyPair") or
-      call.getTarget().hasGlobalName("BCryptGenerateKeyPair")
-    ) and
+    keyGenAndImportFunction(call.getTarget()) and
     node2.asDefiningArgument() = call.getArgument(1)
   )
 }
 
-predicate isWindowsCngAsymmetricKeyAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+predicate isWindowsCngAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   stepOpenAlgorithmProvider(node1, node2)
   or
   stepImportGenerateKeyPair(node1, node2)

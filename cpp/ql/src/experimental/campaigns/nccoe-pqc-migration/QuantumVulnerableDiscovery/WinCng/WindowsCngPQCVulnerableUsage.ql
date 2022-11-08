@@ -14,7 +14,7 @@
 import cpp
 import DataFlow::PathGraph
 import WindowsCng
-import WindowsCngPQCVAsymmetricKeyUsage
+import WindowsCngPQCVulnerableUsage
 
 // CNG-specific DataFlow configuration
 class BCryptConfiguration extends DataFlow::Configuration {
@@ -30,7 +30,7 @@ class BCryptConfiguration extends DataFlow::Configuration {
     }
 
     override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-        isWindowsCngAsymmetricKeyAdditionalTaintStep( node1, node2)
+        isWindowsCngAdditionalTaintStep( node1, node2)
     }
 }
 
