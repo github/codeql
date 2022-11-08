@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id ql/override-any
- * @precision very-high
+ * @precision high
  */
 
 import ql
