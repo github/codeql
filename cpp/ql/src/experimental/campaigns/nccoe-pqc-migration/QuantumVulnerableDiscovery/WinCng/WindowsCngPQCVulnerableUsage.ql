@@ -16,25 +16,8 @@ import DataFlow::PathGraph
 import WindowsCng
 import WindowsCngPQCVulnerableUsage
 
-// CNG-specific DataFlow configuration
-class BCryptConfiguration extends DataFlow::Configuration {
-	BCryptConfiguration() {
-		this = "BCryptConfiguration"
-	}
-	override predicate isSource(DataFlow::Node source) {
-        source instanceof BCryptOpenAlgorithmProviderSource
-	}
- 
-	override predicate isSink(DataFlow::Node sink) { 
-        sink instanceof BCryptOpenAlgorithmProviderSink 
-    }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-        isWindowsCngAdditionalTaintStep( node1, node2)
-    }
-}
 
 from BCryptConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "PQC vulnerable algorithm $@ in use has been detected.",
-    source.getNode().asExpr(), source.getNode().asExpr().toString()
+  source.getNode().asExpr(), source.getNode().asExpr().toString()
