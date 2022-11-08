@@ -49,4 +49,8 @@ controls
 | barrier-guards.rb:100:4:100:21 | call to include? | barrier-guards.rb:103:5:103:7 | foo | false |
 | barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:106:4:106:9 | [false] ... or ... | false |
 | barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:106:9:106:9 | self | false |
+| barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:109:5:109:7 | foo | false |
+| barrier-guards.rb:106:4:106:9 | [false] ... or ... | barrier-guards.rb:109:5:109:7 | foo | false |
+| barrier-guards.rb:106:4:106:9 | [true] ... or ... | barrier-guards.rb:107:5:107:7 | foo | true |
 | barrier-guards.rb:106:9:106:9 | call to y | barrier-guards.rb:106:4:106:9 | [false] ... or ... | false |
+| barrier-guards.rb:106:9:106:9 | call to y | barrier-guards.rb:109:5:109:7 | foo | false |
