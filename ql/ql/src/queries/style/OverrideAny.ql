@@ -37,4 +37,5 @@ where
   exists(pred.getBody()) and
   not isSmallType(pred.getParent().(Class).getType()) and
   not isSmallType(paramType)
-select pred, "Override predicate doesn't mention $@.", param, name
+select pred, "Override predicate doesn't mention $@. Maybe mention it in a 'exists(" + name + ")'?",
+  param, name
