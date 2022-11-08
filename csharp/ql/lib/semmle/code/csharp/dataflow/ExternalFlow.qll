@@ -223,26 +223,6 @@ predicate sourceModel(
   extSourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)
 }
 
-/** Holds if `row` is a source model. */
-predicate sourceModel(string row) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance
-  |
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
-    row =
-      namespace + ";" //
-        + type + ";" //
-        + subtypes.toString() + ";" //
-        + name + ";" //
-        + signature + ";" //
-        + ext + ";" //
-        + output + ";" //
-        + kind + ";" //
-        + provenance
-  )
-}
-
 /** Holds if a sink model exists for the given parameters. */
 extensible predicate extSinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
@@ -269,26 +249,6 @@ predicate sinkModel(
   )
   or
   extSinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)
-}
-
-/** Holds if `row` is a sink model. */
-predicate sinkModel(string row) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance
-  |
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
-    row =
-      namespace + ";" //
-        + type + ";" //
-        + subtypes.toString() + ";" //
-        + name + ";" //
-        + signature + ";" //
-        + ext + ";" //
-        + input + ";" //
-        + kind + ";" //
-        + provenance
-  )
 }
 
 /** Holds if a summary model exists for the given parameters. */
@@ -320,27 +280,6 @@ predicate summaryModel(
   extSummaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
 
-/** Holds if `row` is a summary model. */
-predicate summaryModel(string row) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance
-  |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
-    row =
-      namespace + ";" //
-        + type + ";" //
-        + subtypes.toString() + ";" //
-        + name + ";" //
-        + signature + ";" //
-        + ext + ";" //
-        + input + ";" //
-        + output + ";" //
-        + kind + ";" //
-        + provenance
-  )
-}
-
 /** Holds if a summary model exists indicating there is no flow for the given parameters. */
 extensible predicate extNegativeSummaryModel(
   string namespace, string type, string name, string signature, string provenance
@@ -360,19 +299,6 @@ predicate negativeSummaryModel(
   )
   or
   extNegativeSummaryModel(namespace, type, name, signature, provenance)
-}
-
-/** Holds if `row` is a negative summary model. */
-predicate negativeSummaryModel(string row) {
-  exists(string namespace, string type, string name, string signature, string provenance |
-    negativeSummaryModel(namespace, type, name, signature, provenance) and
-    row =
-      namespace + ";" //
-        + type + ";" //
-        + name + ";" //
-        + signature + ";" //
-        + provenance
-  )
 }
 
 private predicate relevantNamespace(string namespace) {
