@@ -6,6 +6,7 @@
  * otherwise `UnsafeShellCommandConstructionCustomizations` should be imported instead.
  */
 
+import codeql.ruby.AST as Ast
 import codeql.ruby.DataFlow
 import UnsafeShellCommandConstructionCustomizations::UnsafeShellCommandConstruction
 private import codeql.ruby.TaintTracking
@@ -31,5 +32,17 @@ class Configuration extends TaintTracking::Configuration {
   // override to require the path doesn't have unmatched return steps
   override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureHasSourceCallContext
+  }
+
+  // A direct step from a write to an instance field in a constructor to a read of that same field.
+  // Corresponds to `DataFlow::localFieldStep` in the JS analysis.
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::ModuleNode clz, string field, Ast::Method constructor |
+      clz.getAnOwnInstanceVariableWriteValue(field) = pred and
+      constructor = pred.asExpr().getExpr().getEnclosingCallable() and
+      constructor.getName() = "initialize" and
+      clz.getAnOwnInstanceVariableRead(field) = succ and
+      not succ.asExpr().getExpr().getEnclosingCallable() = constructor
+    )
   }
 }
