@@ -14,7 +14,7 @@
 import cpp
 import DataFlow::PathGraph
 import WindowsCng
-import WindowsCngPQCVAsymmetricKeyUsage
+import WindowsCngPQCVulnerableUsage
 
 // CNG-specific DataFlow configuration
 class BCryptConfiguration extends TaintTracking::Configuration {

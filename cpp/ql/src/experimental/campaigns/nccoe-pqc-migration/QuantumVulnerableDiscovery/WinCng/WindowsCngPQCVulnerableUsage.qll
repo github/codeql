@@ -1,11 +1,21 @@
 import cpp
 import WindowsCng
+
+predicate vulnerableCngFunctionName(string name) {
+    name in ["BCryptSignHash", "BCryptEncrypt"]
+}
+
+predicate vulnerableCngFunction(Function f)
+{
+    exists(string name | f.hasGlobalName(name) and vulnerableCngFunctionName(name))
+}
+
 //TODO: Verify NCrypt calls (parameters) & find all other APIs that should be included (i.e. decrypt, etc.)
 predicate isExprKeyHandleForBCryptSignHash(Expr e){
     exists( FunctionCall call |
         e = call.getArgument(0)
-         and
-         call.getTarget().hasGlobalName("BCryptSignHash")
+        and
+        vulnerableCngFunction(call.getTarget())
     )
 }
 
