@@ -36,9 +36,10 @@ predicate nonOverridingMethod(Method m, Method vm) {
   m.getName().toLowerCase() = vm.getName().toLowerCase()
 }
 
-from Method m, Method vm
+from Method m, Method vm, string qualifier, string type, string name
 where
   m.fromSource() and
-  nonOverridingMethod(m, vm)
+  nonOverridingMethod(m, vm) and
+  vm.hasQualifiedName(qualifier, type, name)
 select m, "Method '" + m.getName() + "' looks like it should override $@ but does not do so.",
-  vm.getUnboundDeclaration(), vm.getQualifiedName()
+  vm.getUnboundDeclaration(), printQualifiedName(qualifier, type, name)

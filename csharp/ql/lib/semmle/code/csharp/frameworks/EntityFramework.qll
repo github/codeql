@@ -38,9 +38,9 @@ module EntityFramework {
   /** An EF6 or EFCore namespace. */
   class EFNamespace extends Namespace {
     EFNamespace() {
-      this.getQualifiedName() = "Microsoft.EntityFrameworkCore"
+      this.hasQualifiedName("Microsoft", "EntityFrameworkCore")
       or
-      this.getQualifiedName() = "System.Data.Entity"
+      this.hasQualifiedName("System.Data", "Entity")
     }
   }
 
@@ -162,7 +162,7 @@ module EntityFramework {
 
   /** The struct `Microsoft.EntityFrameworkCore.RawSqlString`. */
   private class RawSqlStringStruct extends Struct {
-    RawSqlStringStruct() { this.getQualifiedName() = "Microsoft.EntityFrameworkCore.RawSqlString" }
+    RawSqlStringStruct() { this.hasQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString") }
 
     /** Gets a conversion operator from `string` to `RawSqlString`. */
     ConversionOperator getAConversionTo() {

@@ -1,10 +1,16 @@
 import csharp
 
-from TrivialProperty prop
+from TrivialProperty prop, string qualifier, string name
 where
-  prop.getDeclaringType().hasQualifiedName("System.Reflection", "AssemblyName")
-  or
-  prop.getDeclaringType().hasQualifiedName("System.Collections", "DictionaryEntry")
-  or
-  prop.getDeclaringType().hasQualifiedName("Dataflow", "Properties")
-select prop.getQualifiedName()
+  exists(string dqualifier, string dname |
+    prop.getDeclaringType().hasQualifiedName(dqualifier, dname) and
+    (
+      dqualifier = "System.Reflection" and dname = "AssemblyName"
+      or
+      dqualifier = "System.Collections" and dname = "DictionaryEntry"
+      or
+      dqualifier = "Dataflow" and dname = "Properties"
+    )
+  ) and
+  prop.hasQualifiedName(qualifier, name)
+select printQualifiedName(qualifier, name)

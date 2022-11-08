@@ -259,18 +259,24 @@ query predicate test32(ConstructedGeneric cg, string s1, string s2) {
 
 query predicate test33(ConstructedMethod cm, string s1, string s2) {
   cm.fromSource() and
-  cm.getQualifiedName() = s1 and
+  exists(string qualifier, string type, string name |
+    cm.hasQualifiedName(qualifier, type, name) and s1 = printQualifiedName(qualifier, type, name)
+  ) and
   cm.getQualifiedNameWithTypes() = s2
 }
 
 query predicate test34(UnboundGeneric ug, string s1, string s2) {
   ug.fromSource() and
-  ug.getQualifiedName() = s1 and
+  exists(string qualifier, string name |
+    ug.hasQualifiedName(qualifier, name) and s1 = printQualifiedName(qualifier, name)
+  ) and
   ug.getQualifiedNameWithTypes() = s2
 }
 
 query predicate test35(UnboundGenericMethod gm, string s1, string s2) {
   gm.fromSource() and
-  gm.getQualifiedName() = s1 and
+  exists(string qualifier, string type, string name |
+    gm.hasQualifiedName(qualifier, type, name) and s1 = printQualifiedName(qualifier, type, name)
+  ) and
   gm.getQualifiedNameWithTypes() = s2
 }

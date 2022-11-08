@@ -94,7 +94,7 @@ module XmlSettings {
    * Holds if the given object creation constructs `XmlReaderSettings` with an insecure resolver.
    */
   predicate insecureResolverSettings(ObjectCreation creation, Expr evidence, string reason) {
-    creation.getObjectType().getQualifiedName() = "System.Xml.XmlReaderSettings" and
+    creation.getObjectType().hasQualifiedName("System.Xml", "XmlReaderSettings") and
     (
       // one unsafe assignment to XmlResolver
       exists(Expr xmlResolverVal | xmlResolverVal = getAValueForProp(creation, "XmlResolver") |
@@ -114,7 +114,7 @@ module XmlSettings {
    * Holds if the given object creation constructs `XmlReaderSettings` with DTD processing enabled.
    */
   predicate dtdEnabledSettings(ObjectCreation creation, Expr evidence, string reason) {
-    creation.getObjectType().getQualifiedName() = "System.Xml.XmlReaderSettings" and
+    creation.getObjectType().hasQualifiedName("System.Xml", "XmlReaderSettings") and
     (
       exists(Expr dtdVal | dtdVal = getAValueForProp(creation, "DtdProcessing") |
         not isSafeDtdSetting(dtdVal) and evidence = dtdVal

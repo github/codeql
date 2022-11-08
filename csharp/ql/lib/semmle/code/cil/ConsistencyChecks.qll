@@ -484,9 +484,13 @@ class InvalidOverride extends MethodViolation {
   }
 
   override string getMessage() {
-    result =
-      "Overridden method from " + base.getDeclaringType().getQualifiedName() +
-        " is not in a base type"
+    exists(string qualifier, string name |
+      base.getDeclaringType().hasQualifiedName(qualifier, name)
+    |
+      result =
+        "Overridden method from " + CS::printQualifiedName(qualifier, name) +
+          " is not in a base type"
+    )
   }
 }
 

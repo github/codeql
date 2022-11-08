@@ -34,7 +34,7 @@ class Namespace extends Declaration, @namespace {
   }
 
   /** Gets a textual representation of this namespace. */
-  override string toString() { result = this.getQualifiedName() }
+  override string toString() { result = this.getFullName() }
 
   /** Holds if this is the global namespace. */
   final predicate isGlobalNamespace() { this.getName() = "" }

@@ -23,7 +23,10 @@ predicate isEnumerableType(ValueOrRefType t) { t.hasQualifiedName("System.Linq",
 
 /** Holds if the type's qualified name starts with "System.Collections.Generic.IEnumerable" */
 predicate isIEnumerableType(ValueOrRefType t) {
-  t.getQualifiedName().matches("System.Collections.Generic.IEnumerable%")
+  exists(string type |
+    t.hasQualifiedName("System.Collections.Generic", type) and
+    type.matches("IEnumerable%")
+  )
 }
 
 /**

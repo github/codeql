@@ -69,7 +69,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     )
     or
     not exists(this.getDeclaringType()) and
-    qualifier = this.getNamespace().getQualifiedName() and
+    qualifier = this.getNamespace().getFullName() and
     name = this.getUndecoratedName()
   }
 

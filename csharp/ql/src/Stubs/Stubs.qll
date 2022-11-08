@@ -114,15 +114,18 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   }
 
   private string stubAttributes() {
-    if this.(ValueOrRefType).getAnAttribute().getType().getQualifiedName() = "System.FlagsAttribute"
+    if this.(ValueOrRefType).getAnAttribute().getType().hasQualifiedName("System", "FlagsAttribute")
     then result = "[System.Flags]\n"
     else result = ""
   }
 
   private string stubComment() {
-    result =
-      "// Generated from `" + this.getQualifiedName() + "` in `" +
-        concat(this.getALocation().toString(), "; ") + "`\n"
+    exists(string qualifier, string name |
+      this.hasQualifiedName(qualifier, name) and
+      result =
+        "// Generated from `" + printQualifiedName(qualifier, name) + "` in `" +
+          concat(this.getALocation().toString(), "; ") + "`\n"
+    )
   }
 
   /** Gets the entire C# stub code for this type. */
@@ -154,7 +157,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   private ValueOrRefType getAnInterestingBaseType() {
     result = this.(ValueOrRefType).getABaseType() and
     not result instanceof ObjectType and
-    not result.getQualifiedName() = "System.ValueType" and
+    not result.hasQualifiedName("System", "ValueType") and
     (not result instanceof Interface or result.(Interface).isEffectivelyPublic())
   }
 
@@ -461,7 +464,7 @@ private string stubQualifiedNamePrefix(ValueOrRefType t) {
   then result = ""
   else
     if t.getParent() instanceof Namespace
-    then result = t.getDeclaringNamespace().getQualifiedName() + "."
+    then result = t.getDeclaringNamespace().getFullName() + "."
     else result = stubClassName(t.getDeclaringType()) + "."
 }
 

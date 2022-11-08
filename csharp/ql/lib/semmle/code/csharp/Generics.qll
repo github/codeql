@@ -97,11 +97,18 @@ private string getTypeArgumentsNames(ConstructedGeneric cg) {
   result = strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.getName(), "," order by i)
 }
 
-/** Gets the concatenation of the `getQualifiedName()` of type arguments. */
+bindingset[t]
+private string getFullName(Type t) {
+  exists(string qualifier, string name |
+    t.hasQualifiedName(qualifier, name) and
+    result = printQualifiedName(qualifier, name)
+  )
+}
+
+/** Gets the concatenation of the `getFullName` of type arguments. */
 language[monotonicAggregates]
 private string getTypeArgumentsQualifiedNames(ConstructedGeneric cg) {
-  result =
-    strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.getQualifiedName(), "," order by i)
+  result = strictconcat(Type t, int i | t = cg.getTypeArgument(i) | getFullName(t), "," order by i)
 }
 
 /**

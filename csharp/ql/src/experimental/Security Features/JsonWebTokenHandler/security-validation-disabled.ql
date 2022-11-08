@@ -16,9 +16,10 @@ import JsonWebTokenHandlerLib
 from
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation config,
   DataFlow::Node source, DataFlow::Node sink,
-  TokenValidationParametersPropertySensitiveValidation pw
+  TokenValidationParametersPropertySensitiveValidation pw, string qualifier, string name
 where
   config.hasFlow(source, sink) and
-  sink.asExpr() = pw.getAnAssignedValue()
+  sink.asExpr() = pw.getAnAssignedValue() and
+  pw.hasQualifiedName(qualifier, name)
 select sink, "The security sensitive property $@ is being disabled by the following value: $@.", pw,
-  pw.getQualifiedName().toString(), source, "false"
+  printQualifiedName(qualifier, name), source, "false"

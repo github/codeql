@@ -1,5 +1,8 @@
+import semmle.code.csharp.Printing
 import semmle.code.cil.Types
 
-from Enum e
-where e.getQualifiedName() != "Interop.Sys.LockType" // doesn't exist on osx
-select e.getQualifiedName(), e.getUnderlyingType().toStringWithTypes()
+from Enum e, string qualifier, string name
+where
+  e.hasQualifiedName(qualifier, name) and
+  printQualifiedName(qualifier, name) != "Interop.Sys.LockType" // doesn't exist on osx
+select printQualifiedName(qualifier, name), e.getUnderlyingType().toStringWithTypes()
