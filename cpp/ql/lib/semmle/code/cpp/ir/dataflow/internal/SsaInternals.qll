@@ -107,14 +107,39 @@ predicate hasIndirectInstruction(Instruction instr, int indirectionIndex) {
 cached
 private newtype TDefOrUseImpl =
   TDefImpl(Operand address, int indirectionIndex) {
-    isDef(_, _, address, _, _, indirectionIndex) and
-    // We only include the definition if the SSA pruning stage
-    // concluded that the definition is live after the write.
-    any(SsaInternals0::Def def).getAddressOperand() = address
+    exists(Instruction base | isDef(_, _, address, base, _, indirectionIndex) |
+      // We only include the definition if the SSA pruning stage
+      // concluded that the definition is live after the write.
+      any(SsaInternals0::Def def).getAddressOperand() = address
+      or
+      // Since the pruning stage doesn't know about global variables we can't use the above check to
+      // rule out dead assignments to globals.
+      base.(VariableAddressInstruction).getAstVariable() instanceof Cpp::GlobalOrNamespaceVariable
+    )
   } or
   TUseImpl(Operand operand, int indirectionIndex) {
     isUse(_, operand, _, _, indirectionIndex) and
     not isDef(_, _, operand, _, _, _)
+  } or
+  TGlobalUse(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+    // Represents a final "use" of a global variable to ensure that
+    // the assignment to a global variable isn't ruled out as dead.
+    exists(VariableAddressInstruction vai, int defIndex |
+      vai.getEnclosingIRFunction() = f and
+      vai.getAstVariable() = v and
+      isDef(_, _, _, vai, _, defIndex) and
+      indirectionIndex = [0 .. defIndex] + 1
+    )
+  } or
+  TGlobalDef(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+    // Represents the initial "definition" of a global variable when entering
+    // a function body.
+    exists(VariableAddressInstruction vai |
+      vai.getEnclosingIRFunction() = f and
+      vai.getAstVariable() = v and
+      isUse(_, _, vai, _, indirectionIndex) and
+      not isDef(_, _, vai.getAUse(), _, _, _)
+    )
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -254,6 +279,70 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   predicate isCertain() { isUse(true, operand, _, _, ind) }
 }
 
+class GlobalUse extends TGlobalUse {
+  Cpp::GlobalOrNamespaceVariable global;
+  IRFunction f;
+  int indirectionIndex;
+
+  GlobalUse() { this = TGlobalUse(global, f, indirectionIndex) }
+
+  Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
+
+  IRFunction getIRFunction() { result = f }
+
+  final predicate hasIndexInBlock(IRBlock block, int index) {
+    exists(ExitFunctionInstruction exit |
+      exit = f.getExitFunctionInstruction() and
+      block.getInstruction(index) = exit
+    )
+  }
+
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  SourceVariable getSourceVariable() { sourceVariableIsGlobal(result, global, f, indirectionIndex) }
+
+  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+    this.hasIndexInBlock(block, index) and
+    sv = this.getSourceVariable()
+  }
+
+  final Cpp::Location getLocation() { result = f.getLocation() }
+
+  string toString() { result = global.toString() + " [final value from " + f.toString() + "]" }
+}
+
+class GlobalDef extends TGlobalDef {
+  Cpp::GlobalOrNamespaceVariable global;
+  IRFunction f;
+  int indirectionIndex;
+
+  GlobalDef() { this = TGlobalDef(global, f, indirectionIndex) }
+
+  Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
+
+  IRFunction getIRFunction() { result = f }
+
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  final predicate hasIndexInBlock(IRBlock block, int index) {
+    exists(EnterFunctionInstruction enter |
+      enter = f.getEnterFunctionInstruction() and
+      block.getInstruction(index) = enter
+    )
+  }
+
+  SourceVariable getSourceVariable() { sourceVariableIsGlobal(result, global, f, indirectionIndex) }
+
+  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+    this.hasIndexInBlock(block, index) and
+    sv = this.getSourceVariable()
+  }
+
+  final Cpp::Location getLocation() { result = f.getLocation() }
+
+  string toString() { result = global.toString() + " [initial value in " + f.toString() + "]" }
+}
+
 /**
  * Holds if `defOrUse1` is a definition which is first read by `use`,
  * or if `defOrUse1` is a use and `use` is a next subsequent use.
@@ -277,6 +366,32 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
       use.asPhi() = phi and
       phi.getSourceVariable() = pragma[only_bind_into](v)
     )
+  )
+}
+
+/**
+ * Holds if `defOrUse` should flow to the final use of the
+ * global variable use represetned by `globalUse`.
+ */
+private predicate defOrUseToGlobalUse(DefOrUse defOrUse, GlobalUse globalUse) {
+  exists(IRBlock bb1, int i1, IRBlock bb2, int i2, SourceVariable v |
+    defOrUse.asDefOrUse().hasIndexInBlock(bb1, i1, v) and
+    globalUse.hasIndexInBlock(bb2, i2, v) and
+    adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
+      pragma[only_bind_into](bb2), pragma[only_bind_into](i2))
+  )
+}
+
+/**
+ * Holds if `globalDef` represents the initial definition of a global variable that
+ * flows to `useOrPhi`.
+ */
+private predicate globalDefToUse(GlobalDef globalDef, UseOrPhi useOrPhi) {
+  exists(IRBlock bb1, int i1, IRBlock bb2, int i2, SourceVariable v |
+    globalDef.hasIndexInBlock(bb1, i1, v) and
+    adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
+      pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
+    useOrPhi.asDefOrUse().hasIndexInBlock(bb2, i2, v)
   )
 }
 
@@ -369,6 +484,20 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
     adjacentDefRead(defOrUse1, use) and
     useToNode(use, nodeTo)
   )
+  or
+  // Def/use to final value of global vairable
+  exists(DefOrUse defOrUse, GlobalUse globalUse |
+    nodeToDefOrUse(nodeFrom, defOrUse) and
+    defOrUseToGlobalUse(defOrUse, globalUse) and
+    nodeTo.(FinalGlobalValue).getGlobalUse() = globalUse
+  )
+  or
+  // Initial global variable value to a first use
+  exists(GlobalDef globalDef, UseOrPhi use |
+    nodeFrom.(InitialGlobalValue).getGlobalDef() = globalDef and
+    globalDefToUse(globalDef, use) and
+    useToNode(use, nodeTo)
+  )
 }
 
 /**
@@ -421,6 +550,17 @@ private predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
   )
 }
 
+private predicate sourceVariableIsGlobal(
+  SourceVariable sv, Cpp::GlobalOrNamespaceVariable global, IRFunction func, int indirectionIndex
+) {
+  exists(IRVariable irVar, BaseIRVariable base |
+    sourceVariableHasBaseAndIndex(sv, base, indirectionIndex) and
+    irVar = base.getIRVariable() and
+    irVar.getEnclosingIRFunction() = func and
+    global = irVar.getAst()
+  )
+}
+
 private module SsaInput implements SsaImplCommon::InputSig {
   import InputSigCommon
   import SourceVariables
@@ -431,9 +571,17 @@ private module SsaInput implements SsaImplCommon::InputSig {
    */
   predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
-    variableWriteCand(bb, i, v) and
+    (
+      variableWriteCand(bb, i, v) or
+      sourceVariableIsGlobal(v, _, _, _)
+    ) and
     exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
       if def.isCertain() then certain = true else certain = false
+    )
+    or
+    exists(GlobalDef global |
+      global.hasIndexInBlock(bb, i, v) and
+      certain = true
     )
   }
 
@@ -444,6 +592,11 @@ private module SsaInput implements SsaImplCommon::InputSig {
   predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
     exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
       if use.isCertain() then certain = true else certain = false
+    )
+    or
+    exists(GlobalUse global |
+      global.hasIndexInBlock(bb, i, v) and
+      certain = true
     )
   }
 }

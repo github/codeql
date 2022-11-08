@@ -345,21 +345,17 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) {
   exists(Cpp::GlobalOrNamespaceVariable v |
-    v =
-      n1.asInstruction()
-          .(StoreInstruction)
-          .getResultAddress()
-          .(VariableAddressInstruction)
-          .getAstVariable() and
-    v = n2.asVariable()
+    exists(Ssa::GlobalUse globalUse |
+      v = globalUse.getVariable() and
+      n1.(FinalGlobalValue).getGlobalUse() = globalUse and
+      v = n2.asVariable(globalUse.getIndirectionIndex())
+    )
     or
-    v =
-      n2.asInstruction()
-          .(LoadInstruction)
-          .getSourceAddress()
-          .(VariableAddressInstruction)
-          .getAstVariable() and
-    v = n1.asVariable()
+    exists(Ssa::GlobalDef globalDef |
+      v = globalDef.getVariable() and
+      v = n1.asVariable(globalDef.getIndirectionIndex()) and
+      n2.(InitialGlobalValue).getGlobalDef() = globalDef
+    )
   )
 }
 
@@ -535,7 +531,13 @@ class Unit extends TUnit {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof OperandNode and not n instanceof ArgumentNode
+  or
+  n instanceof FinalGlobalValue
+  or
+  n instanceof InitialGlobalValue
+}
 
 class LambdaCallKind = Unit;
 
