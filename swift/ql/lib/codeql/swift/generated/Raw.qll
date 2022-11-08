@@ -1116,6 +1116,10 @@ module Raw {
 
   class PoundAssertStmt extends @pound_assert_stmt, Stmt {
     override string toString() { result = "PoundAssertStmt" }
+
+    Expr getCondition() { pound_assert_stmts(this, result, _) }
+
+    string getMessage() { pound_assert_stmts(this, _, result) }
   }
 
   class ReturnStmt extends @return_stmt, Stmt {

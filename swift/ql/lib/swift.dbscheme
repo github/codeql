@@ -1696,7 +1696,9 @@ labeled_stmt_labels(  //dir=stmt
 );
 
 pound_assert_stmts(  //dir=stmt
-  unique int id: @pound_assert_stmt
+  unique int id: @pound_assert_stmt,
+  int condition: @expr_or_none ref,
+  string message: string ref
 );
 
 return_stmts(  //dir=stmt
