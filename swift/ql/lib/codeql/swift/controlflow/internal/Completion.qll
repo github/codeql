@@ -70,7 +70,8 @@ abstract class Completion extends TCompletion {
   predicate isValidFor(ControlFlowElement n) {
     this.isValidForSpecific(n)
     or
-    mayHaveThrowCompletion(n, this)
+    this instanceof ThrowCompletion and
+    mayHaveThrowCompletion(n)
     or
     not any(Completion c).isValidForSpecific(n) and
     this = TSimpleCompletion()
@@ -320,7 +321,7 @@ private predicate mustHaveThrowCompletion(ThrowStmt throw, ThrowCompletion c) { 
 
 private predicate isThrowingType(AnyFunctionType type) { type.isThrowing() }
 
-private predicate mayHaveThrowCompletion(ControlFlowElement n, ThrowCompletion c) {
+private predicate mayHaveThrowCompletion(ControlFlowElement n) {
   // An AST expression that may throw.
   isThrowingType(n.asAstNode().(ApplyExpr).getFunction().getType())
   or

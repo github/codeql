@@ -6,6 +6,7 @@
 
 private import javascript as JS
 import EndpointTypes
+import EndpointCharacteristics
 
 /**
  * EXPERIMENTAL. This API may change in the future.
@@ -44,7 +45,14 @@ abstract class AtmConfig extends string {
    *
    * Holds if `sink` is a known sink of flow.
    */
-  predicate isKnownSink(JS::DataFlow::Node sink) { none() }
+  final predicate isKnownSink(JS::DataFlow::Node sink) {
+    // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
+    // known sink for the class.
+    exists(EndpointCharacteristic characteristic |
+      characteristic.getEndpoints(sink) and
+      characteristic.getImplications(this.getASinkEndpointType(), true, 1.0)
+    )
+  }
 
   /**
    * EXPERIMENTAL. This API may change in the future.

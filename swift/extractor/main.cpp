@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <regex>
+#include <unistd.h>
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
@@ -51,7 +53,52 @@ static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration
   }
 }
 
+static bool checkRunUnderFilter(int argc, char* const* argv) {
+  auto runUnderFilter = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER");
+  if (runUnderFilter == nullptr) {
+    return true;
+  }
+  std::string call = argv[0];
+  for (auto i = 1; i < argc; ++i) {
+    call += ' ';
+    call += argv[i];
+  }
+  std::regex filter{runUnderFilter, std::regex_constants::basic | std::regex_constants::nosubs};
+  return std::regex_search(call, filter);
+}
+
+// if `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER` env variable is set, and either
+// * `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER` is not set, or
+// * it is set to a regexp matching any substring of the extractor call
+// then the running process is substituted with the command (and possibly
+// options) stated in `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER`, followed by `argv`.
+// Before calling `exec`, `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER` is unset to avoid
+// unpleasant loops.
+// An example usage is to run the extractor under `gdbserver :1234` when the
+// arguments match a given source file.
+static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
+  assert(argc > 0);
+
+  auto runUnder = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
+  if (runUnder == nullptr || !checkRunUnderFilter(argc, argv)) {
+    return;
+  }
+  std::vector<char*> args;
+  // split RUN_UNDER value by spaces to get args vector
+  for (auto word = std::strtok(runUnder, " "); word != nullptr; word = std::strtok(nullptr, " ")) {
+    args.push_back(word);
+  }
+  // append process args, including extractor executable path
+  args.insert(args.end(), argv, argv + argc);
+  args.push_back(nullptr);
+  // avoid looping on this function
+  unsetenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
+  execvp(args[0], args.data());
+}
+
 int main(int argc, char** argv) {
+  checkWhetherToRunUnderTool(argc, argv);
+
   if (argc == 1) {
     // TODO: print usage
     return 1;

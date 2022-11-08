@@ -1,3 +1,9 @@
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* Fixed a bug in `cpp/jsf/av-rule-76` that caused the query to miss results when an implicitly-defined copy constructor or copy assignment operator was generated.
+
 ## 0.4.2
 
 ### New Queries

@@ -21,7 +21,8 @@ namespace System.Diagnostics
     }
 }
 
-class External {
+class External
+{
     [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool InitiateSystemShutdownExW([In] string lpMachineName, [In] string lpMessage, [In] uint dwTimeout, [MarshalAs(UnmanagedType.Bool)][In] bool bForceAppsClosed, [MarshalAs(UnmanagedType.Bool)][In] bool bRebootAfterShutdown, [In] uint dwReason);
@@ -46,28 +47,28 @@ class External {
         {
         }
         // regular FVN
-        return num; 
+        return num;
     }
 
-    void IndirectTestProcessNameToHashTaintFlow( string s)
+    void IndirectTestProcessNameToHashTaintFlow(string s)
     {
         GetFvnHash(s); // BUG : ProcessNameToHashTaintFlow
     }
 
     void TestProcessNameToHashTaintFlow()
     {
-        GetFvnHash( System.Diagnostics.Process.GetCurrentProcess() ); // BUG : ProcessNameToHashTaintFlow
+        GetFvnHash(System.Diagnostics.Process.GetCurrentProcess()); // BUG : ProcessNameToHashTaintFlow
 
         string proc = System.Diagnostics.Process.GetCurrentProcess();
 
-        IndirectTestProcessNameToHashTaintFlow( proc );
+        IndirectTestProcessNameToHashTaintFlow(proc);
     }
 
-    void TestTimeBomb() 
+    void TestTimeBomb()
     {
         DateTime lastWriteTime = System.IO.File.GetLastWriteTime("someFile");
         int num = new Random().Next(288, 336);
-        if (DateTime.Now.CompareTo(lastWriteTime.AddHours((double)num)) >= 0) // BUG : Potential time bomb
+        if (DateTime.Now.CompareTo(lastWriteTime.AddHours((double)num)) >= 0) // BUG : Potential time bomb, currently not detected
         {
             // Some code here
         }

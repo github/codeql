@@ -1,7 +1,10 @@
 import java
+private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.internal.BaseSSA as BaseSsa
 
 /** The class `android.content.Intent`. */
 class TypeIntent extends Class {
@@ -242,17 +245,50 @@ private class StartComponentMethodAccess extends MethodAccess {
 
   /** Gets the intent argument of this call. */
   Argument getIntentArg() {
-    result.getType() instanceof TypeIntent and
+    (
+      result.getType() instanceof TypeIntent or
+      result.getType().(Array).getElementType() instanceof TypeIntent
+    ) and
     result = this.getAnArgument()
   }
 
   /** Holds if this targets a component of type `targetType`. */
-  predicate targetsComponentType(RefType targetType) {
+  predicate targetsComponentType(AndroidComponent targetType) {
     exists(NewIntent newIntent |
-      DataFlow::localExprFlow(newIntent, this.getIntentArg()) and
+      reaches(newIntent, this.getIntentArg()) and
       newIntent.getClassArg().getType().(ParameterizedType).getATypeArgument() = targetType
     )
   }
+}
+
+/**
+ * Holds if `src` reaches the intent argument `arg` of `StartComponentMethodAccess`
+ * through intra-procedural steps.
+ */
+private predicate reaches(Expr src, Argument arg) {
+  any(StartComponentMethodAccess ma).getIntentArg() = arg and
+  src = arg
+  or
+  exists(Expr mid, BaseSsa::BaseSsaVariable ssa, BaseSsa::BaseSsaUpdate upd |
+    reaches(mid, arg) and
+    mid = ssa.getAUse() and
+    upd = ssa.getAnUltimateLocalDefinition() and
+    src = upd.getDefiningExpr().(VariableAssign).getSource()
+  )
+  or
+  exists(CastingExpr e | e.getExpr() = src | reaches(e, arg))
+  or
+  exists(ChooseExpr e | e.getAResultExpr() = src | reaches(e, arg))
+  or
+  exists(AssignExpr e | e.getSource() = src | reaches(e, arg))
+  or
+  exists(ArrayCreationExpr e | e.getInit().getAnInit() = src | reaches(e, arg))
+  or
+  exists(StmtExpr e | e.getResultExpr() = src | reaches(e, arg))
+  or
+  exists(NotNullExpr e | e.getExpr() = src | reaches(e, arg))
+  or
+  exists(WhenExpr e | e.getBranch(_).getAResult() = src | reaches(e, arg))
 }
 
 /**
@@ -268,6 +304,87 @@ private class StartActivityIntentStep extends AdditionalValueStep {
       n1.asExpr() = startActivity.getIntentArg() and
       n2.asExpr() = getIntent
     )
+  }
+}
+
+/**
+ * Holds if `targetType` is targeted by an existing `StartComponentMethodAccess` call
+ * and it's identified by `id`.
+ */
+private predicate isTargetableType(AndroidComponent targetType, string id) {
+  exists(StartComponentMethodAccess ma | ma.targetsComponentType(targetType)) and
+  targetType.getQualifiedName() = id
+}
+
+private class StartActivitiesSyntheticCallable extends SyntheticCallable {
+  AndroidComponent targetType;
+
+  StartActivitiesSyntheticCallable() {
+    exists(string id |
+      this = "android.content.Activity.startActivities()+" + id and
+      isTargetableType(targetType, id)
+    )
+  }
+
+  override StartComponentMethodAccess getACall() {
+    result.getMethod().hasName("startActivities") and
+    result.targetsComponentType(targetType)
+  }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    exists(ActivityIntentSyntheticGlobal glob | glob.getTargetType() = targetType |
+      input = SummaryComponentStack::arrayElementOf(SummaryComponentStack::argument(0)) and
+      output = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(glob)) and
+      preservesValue = true
+    )
+  }
+}
+
+private class GetIntentSyntheticCallable extends SyntheticCallable {
+  AndroidComponent targetType;
+
+  GetIntentSyntheticCallable() {
+    exists(string id |
+      this = "android.content.Activity.getIntent()+" + id and
+      isTargetableType(targetType, id)
+    )
+  }
+
+  override Call getACall() {
+    result.getCallee() instanceof AndroidGetIntentMethod and
+    result.getEnclosingCallable().getDeclaringType() = targetType
+  }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    exists(ActivityIntentSyntheticGlobal glob | glob.getTargetType() = targetType |
+      input = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(glob)) and
+      output = SummaryComponentStack::return() and
+      preservesValue = true
+    )
+  }
+}
+
+private class ActivityIntentSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+  AndroidComponent targetType;
+
+  ActivityIntentSyntheticGlobal() {
+    exists(string id |
+      this = "ActivityIntentSyntheticGlobal+" + id and
+      isTargetableType(targetType, id)
+    )
+  }
+
+  AndroidComponent getTargetType() { result = targetType }
+}
+
+private class RequiredComponentStackForStartActivities extends RequiredSummaryComponentStack {
+  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+    head = SummaryComponent::arrayElement() and
+    tail = SummaryComponentStack::argument(0)
   }
 }
 

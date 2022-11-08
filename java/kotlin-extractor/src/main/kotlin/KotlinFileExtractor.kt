@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
+import org.jetbrains.kotlin.ir.expressions.impl.IrGetValueImpl
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
@@ -1051,8 +1052,8 @@ open class KotlinFileExtractor(
         if (!f.hasAnnotation(jvmOverloadsFqName))
             return
 
-        fun extractGeneratedOverload(paramList: List<IrElement>) {
-            val overloadParameters = paramList.filterIsInstance<IrValueParameter>()
+        fun extractGeneratedOverload(paramList: List<IrValueParameter?>) {
+            val overloadParameters = paramList.filterNotNull()
             // Note `overloadParameters` have incorrect parents and indices, since there is no actual IrFunction describing the required synthetic overload.
             // We have to use the `overriddenAttributes` element of `DeclarationStackAdjuster` to fix up references to these parameters while we're extracting
             // these synthetic overloads.
@@ -1072,67 +1073,33 @@ open class KotlinFileExtractor(
 
                 DeclarationStackAdjuster(f, overriddenAttributes).use {
 
-                    fun extractNormalArgs(argParentId: Label<out DbExprparent>, idxOffset: Int, enclosingStmtId: Label<out DbStmt>) {
-                        paramList.forEachIndexed { idx, param ->
-                            when(param) {
-                                is IrValueParameter -> {
-                                    // Forward a parameter:
-                                    val syntheticParamId = useValueParameter(param, overloadId)
-                                    extractVariableAccess(syntheticParamId, param.type, realFunctionLocId, argParentId, idxOffset + idx, overloadId, enclosingStmtId)
-                                }
-                                is IrExpression -> {
-                                    // Supply a default argument:
-                                    extractExpressionExpr(param, overloadId, argParentId, idxOffset + idx, enclosingStmtId)
-                                }
-                                else -> {
-                                    logger.errorElement("Unexpected parameter list entry", param)
-                                }
-                            }
-                        }
-                    }
+                    // Create a synthetic function body that calls the corresponding $default function:
+                    val regularArgs = paramList.map { it?.let { p -> IrGetValueImpl(-1, -1, p.symbol) } }
 
-                    // Create a synthetic function body that calls the real function supplying default arguments where required:
                     if (f is IrConstructor) {
                         val blockId = extractBlockBody(overloadId, realFunctionLocId)
                         val constructorCallId = tw.getFreshIdLabel<DbConstructorinvocationstmt>()
                         tw.writeStmts_constructorinvocationstmt(constructorCallId, blockId, 0, overloadId)
                         tw.writeHasLocation(constructorCallId, realFunctionLocId)
-                        tw.writeCallableBinding(constructorCallId, useFunction(f))
+                        tw.writeCallableBinding(constructorCallId, getDefaultsMethodLabel(f))
 
-                        extractNormalArgs(constructorCallId, 0, constructorCallId)
+                        extractDefaultsCallArguments(constructorCallId, f, overloadId, constructorCallId, regularArgs, null, null)
                     } else {
+                        val dispatchReceiver = f.dispatchReceiverParameter?.let { IrGetValueImpl(-1, -1, it.symbol) }
+                        val extensionReceiver = f.extensionReceiverParameter?.let { IrGetValueImpl(-1, -1, it.symbol) }
+
                         extractExpressionBody(overloadId, realFunctionLocId).also { returnId ->
-                            extractRawMethodAccess(
-                                f,
-                                realFunctionLocId,
-                                f.returnType,
-                                overloadId,
-                                returnId,
-                                0,
-                                returnId,
-                                f.valueParameters.size,
-                                { argParentId, idxOffset ->
-                                    extractNormalArgs(argParentId, idxOffset, returnId)
-                                },
-                                f.dispatchReceiverParameter?.type,
-                                f.dispatchReceiverParameter?.let { { callId ->
-                                    extractThisAccess(it.type, overloadId, callId, -1, returnId, realFunctionLocId)
-                                } },
-                                f.extensionReceiverParameter?.let { { argParentId ->
-                                    val syntheticParamId = useValueParameter(it, overloadId)
-                                    extractVariableAccess(syntheticParamId, it.type, realFunctionLocId, argParentId, 0, overloadId, returnId)
-                                } }
-                            )
+                            extractsDefaultsCall(f, realFunctionLocId, f.returnType, overloadId, returnId, 0, returnId, regularArgs, dispatchReceiver, extensionReceiver)
                         }
                     }
                 }
             }
         }
 
-        val paramList: MutableList<IrElement> = f.valueParameters.toMutableList()
-        for (n in (paramList.size - 1) downTo 0) {
-            (paramList[n] as? IrValueParameter)?.defaultValue?.expression?.let {
-                paramList[n] = it // Replace the last parameter that has a default with that default value.
+        val paramList: MutableList<IrValueParameter?> = f.valueParameters.toMutableList()
+        for (n in (f.valueParameters.size - 1) downTo 0) {
+            if (f.valueParameters[n].defaultValue != null) {
+                paramList[n] = null // Remove this parameter, to be replaced by a default value
                 extractGeneratedOverload(paramList)
             }
         }
@@ -2122,7 +2089,7 @@ open class KotlinFileExtractor(
     private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int, extractVarargAsArray: Boolean = false) {
         var i = 0
         valueArguments.forEach { arg ->
-            if(arg != null) {
+            if (arg != null) {
                 if (arg is IrVararg && !extractVarargAsArray) {
                     arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, callId, i + idxOffset + varargNo, enclosingStmt) }
                     i += arg.elements.size
@@ -2235,6 +2202,9 @@ open class KotlinFileExtractor(
         result
     }
 
+    private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, vararg fNames: String, isNullable: Boolean? = false) =
+        fNames.any { isFunction(target, pkgName, classNameLogged, classNamePredicate, it, isNullable) }
+
     private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, isNullable: Boolean? = false): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
@@ -2291,7 +2261,7 @@ open class KotlinFileExtractor(
                 isFunction(target, "kotlin", "Double", fName)
     }
 
-    private fun isNumericFunction(target: IrFunction, fNames: List<String>) = fNames.any { isNumericFunction(target, it) }
+    private fun isNumericFunction(target: IrFunction, vararg fNames: String) = fNames.any { isNumericFunction(target, it) }
 
     private fun isArrayType(typeName: String) =
         when(typeName) {
@@ -2428,8 +2398,16 @@ open class KotlinFileExtractor(
                 binopReceiver(id, c.dispatchReceiver, "Dispatch receiver")
             }
 
+            fun binopExt(id: Label<out DbExpr>) {
+                binopReceiver(id, c.extensionReceiver, "Extension receiver")
+            }
+
             fun unaryopDisp(id: Label<out DbExpr>) {
                 unaryopReceiver(id, c.dispatchReceiver, "Dispatch receiver")
+            }
+
+            fun unaryopExt(id: Label<out DbExpr>) {
+                unaryopReceiver(id, c.extensionReceiver, "Extension receiver")
             }
 
             val dr = c.dispatchReceiver
@@ -2446,7 +2424,7 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(stringPlusFn, c, c.type, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver, c.getValueArgument(0)), null, null)
                     }
                 }
-                isNumericFunction(target, listOf("plus", "minus", "times", "div", "rem", "and", "or", "xor", "shl", "shr", "ushr")) -> {
+                isNumericFunction(target, "plus", "minus", "times", "div", "rem", "and", "or", "xor", "shl", "shr", "ushr") -> {
                     val type = useType(c.type)
                     val id: Label<out DbExpr> = when (val targetName = target.name.asString()) {
                         "plus" -> {
@@ -2510,7 +2488,10 @@ open class KotlinFileExtractor(
                         }
                     }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    binopDisp(id)
+                    if (isFunction(target, "kotlin", "Byte or Short", { it == "Byte" || it == "Short" }, "and", "or", "xor"))
+                        binopExt(id)
+                    else
+                        binopDisp(id)
                 }
                 // != gets desugared into not and ==. Here we resugar it.
                 c.origin == IrStatementOrigin.EXCLEQ && isFunction(target, "kotlin", "Boolean", "not") && c.valueArgumentsCount == 0 && dr != null && dr is IrCall && isBuiltinCallInternal(dr, "EQEQ") -> {
@@ -2541,7 +2522,7 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     unaryopDisp(id)
                 }
-                isNumericFunction(target, listOf("inv", "unaryMinus", "unaryPlus")) -> {
+                isNumericFunction(target, "inv", "unaryMinus", "unaryPlus") -> {
                     val type = useType(c.type)
                     val id: Label<out DbExpr> = when (val targetName = target.name.asString()) {
                         "inv" -> {
@@ -2566,7 +2547,7 @@ open class KotlinFileExtractor(
                     }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     if (isFunction(target, "kotlin", "Byte or Short", { it == "Byte" || it == "Short" }, "inv"))
-                        unaryopReceiver(id, c.extensionReceiver, "Extension receiver")
+                        unaryopExt(id)
                     else
                         unaryopDisp(id)
                 }
@@ -3049,15 +3030,31 @@ open class KotlinFileExtractor(
         val isAnonymous = eType.isAnonymous
         val locId = tw.getLocation(e)
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
-        // For now, don't try to use default methods for enum constructor calls,
-        // which have null arguments even though the parameters don't give default values.
+
         val id = if (e !is IrEnumConstructorCall && callUsesDefaultArguments(e.symbol.owner, valueArgs)) {
             extractNewExpr(getDefaultsMethodLabel(e.symbol.owner).cast(), type, locId, parent, idx, callable, enclosingStmt).also {
                 extractDefaultsCallArguments(it, e.symbol.owner, callable, enclosingStmt, valueArgs, null, null)
             }
         } else {
             extractNewExpr(e.symbol.owner, eType.arguments, type, locId, parent, idx, callable, enclosingStmt).also {
-                extractCallValueArguments(it, e, enclosingStmt, callable, 0)
+
+                val realCallTarget = e.symbol.owner.realOverrideTarget
+                // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
+                if (e is IrEnumConstructorCall &&
+                    realCallTarget is IrConstructor &&
+                    realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
+                    realCallTarget.valueParameters.size == 2 &&
+                    realCallTarget.valueParameters[0].type == pluginContext.irBuiltIns.stringType &&
+                    realCallTarget.valueParameters[1].type == pluginContext.irBuiltIns.intType) {
+
+                    val id0 = extractNull(pluginContext.irBuiltIns.stringType, locId, it, 0, callable, enclosingStmt)
+                    tw.writeCompiler_generated(id0, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+
+                    val id1 = extractConstantInteger(0, locId, it, 1, callable, enclosingStmt)
+                    tw.writeCompiler_generated(id1, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+                } else {
+                    extractCallValueArguments(it, e, enclosingStmt, callable, 0)
+                }
             }
         }
 
@@ -3382,6 +3379,14 @@ open class KotlinFileExtractor(
             extractExprContext(it, locId, callable, enclosingStmt)
         }
 
+    private fun extractNull(t: IrType, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
+        tw.getFreshIdLabel<DbNullliteral>().also {
+            val type = useType(t)
+            tw.writeExprs_nullliteral(it, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(it, type.kotlinResult.id)
+            extractExprContext(it, locId, callable, enclosingStmt)
+        }
+
     private fun extractAssignExpr(type: IrType, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
         tw.getFreshIdLabel<DbAssignexpr>().also {
             val typeResults = useType(type)
@@ -3600,12 +3605,7 @@ open class KotlinFileExtractor(
                             tw.writeNamestrings(v.toString(), v.toString(), id)
                         }
                         v == null -> {
-                            val id = tw.getFreshIdLabel<DbNullliteral>()
-                            val type = useType(e.type) // class;kotlin.Nothing
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_nullliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                            extractNull(e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                         }
                         else -> {
                             logger.errorElement("Unrecognised IrConst: " + v.javaClass, e)
@@ -5502,5 +5502,6 @@ open class KotlinFileExtractor(
         JVMOVERLOADS_METHOD(9),
         DEFAULT_ARGUMENTS_METHOD(10),
         INTERFACE_FORWARDER(11),
+        ENUM_CONSTRUCTOR_ARGUMENT(12),
     }
 }

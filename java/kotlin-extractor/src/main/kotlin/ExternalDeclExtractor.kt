@@ -80,7 +80,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
                                     }
                                     // Now elevate to a SourceFileTrapWriter, and populate the
                                     // file information if needed:
-                                    val ftw = tw.makeFileTrapWriter(binaryPath, irDecl is IrClass)
+                                    val ftw = tw.makeFileTrapWriter(binaryPath, true)
 
                                     val fileExtractor = KotlinFileExtractor(logger, ftw, null, binaryPath, manager, this, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
 

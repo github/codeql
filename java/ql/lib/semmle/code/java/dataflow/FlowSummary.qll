@@ -26,6 +26,9 @@ module SummaryComponent {
   /** Gets a summary component for `Element`. */
   SummaryComponent element() { result = content(any(CollectionContent c)) }
 
+  /** Gets a summary component for `ArrayElement`. */
+  SummaryComponent arrayElement() { result = content(any(ArrayContent c)) }
+
   /** Gets a summary component for `MapValue`. */
   SummaryComponent mapValue() { result = content(any(MapValueContent c)) }
 
@@ -50,6 +53,11 @@ module SummaryComponentStack {
   /** Gets a stack representing `Element` of `object`. */
   SummaryComponentStack elementOf(SummaryComponentStack object) {
     result = push(SummaryComponent::element(), object)
+  }
+
+  /** Gets a stack representing `ArrayElement` of `object`. */
+  SummaryComponentStack arrayElementOf(SummaryComponentStack object) {
+    result = push(SummaryComponent::arrayElement(), object)
   }
 
   /** Gets a stack representing `MapValue` of `object`. */
