@@ -6,21 +6,19 @@ abstract class BCryptOpenAlgorithmProviderSink extends DataFlow::Node { }
 
 abstract class BCryptOpenAlgorithmProviderSource extends DataFlow::Node { }
 
+// ------------------ Helper Predicates ----------------------
+/**
+ * Holds if there is a call with global name`funcGlobalName` with argument `arg` of that call
+ * at argument index `index`.
+ */
 predicate isCallArgument(string funcGlobalName, Expr arg, int index) {
   exists(Call c | c.getArgument(index) = arg and c.getTarget().hasGlobalName(funcGlobalName))
 }
 
-//TODO: Verify NCrypt calls (parameters) & find all other APIs that should be included (i.e. decrypt, etc.)
-// ------------------ SINKS ----------------------
-class BCryptSignHashArgumentSink extends BCryptOpenAlgorithmProviderSink {
-  BCryptSignHashArgumentSink() { isCallArgument("BCryptSignHash", this.asExpr(), 0) }
-}
-
-class BCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
-  BCryptEncryptArgumentSink() { isCallArgument("BCryptEncrypt", this.asExpr(), 0) }
-}
-
-// ----------------- SOURCES -----------------------
+/**
+ * Holdes if StringLiteral `lit` has a string value indicative of a post quantum crypto
+ * vulnerable algorithm identifier.
+ */
 predicate vulnProviderLiteral(StringLiteral lit) {
   exists(string s | s = lit.getValue() |
     s in ["DH", "DSA", "ECDSA", "ECDH"] or
@@ -29,6 +27,26 @@ predicate vulnProviderLiteral(StringLiteral lit) {
   )
 }
 
+//TODO: Verify NCrypt calls (parameters) & find all other APIs that should be included (i.e. decrypt, etc.)
+// ------------------ Default SINKS ----------------------
+/**
+ * Argument at index 0 of call to BCryptSignHash
+ */
+class BCryptSignHashArgumentSink extends BCryptOpenAlgorithmProviderSink {
+  BCryptSignHashArgumentSink() { isCallArgument("BCryptSignHash", this.asExpr(), 0) }
+}
+
+/**
+ * Argument at index 0 of call to BCryptEncrypt
+ */
+class BCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
+  BCryptEncryptArgumentSink() { isCallArgument("BCryptEncrypt", this.asExpr(), 0) }
+}
+
+// ----------------- Default SOURCES -----------------------
+/**
+ * A string identifier of known PQC vulnerable algorithms.
+ */
 class BCryptOpenAlgorithmProviderPqcVulnerableAlgorithmsSource extends BCryptOpenAlgorithmProviderSource {
   BCryptOpenAlgorithmProviderPqcVulnerableAlgorithmsSource() { vulnProviderLiteral(this.asExpr()) }
 }

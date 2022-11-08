@@ -16,7 +16,6 @@ import DataFlow::PathGraph
 import WindowsCng
 import WindowsCngPQCVulnerableUsage
 
-
 from BCryptConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "PQC vulnerable algorithm $@ in use has been detected.",

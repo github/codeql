@@ -1,6 +1,12 @@
 import cpp
 import WindowsCng
 
+/**
+ * Steps from input variable (argument 1) to output variable (argument 0)
+ * for CNG API BCryptOpenAlgorithmProvider.
+ * Argument 1 represents LPCWSTR (a string algorithm ID)
+ * Argument 0 represents BCRYPT_ALG_HANDLE
+ */
 predicate stepOpenAlgorithmProvider(DataFlow::Node node1, DataFlow::Node node2) {
   exists(FunctionCall call |
     // BCryptOpenAlgorithmProvider 2nd argument specifies the algorithm to be used
@@ -10,6 +16,12 @@ predicate stepOpenAlgorithmProvider(DataFlow::Node node1, DataFlow::Node node2) 
   )
 }
 
+/**
+ * Steps from input variable (argument 0) to output variable (argument 1)
+ * for CNG APIs BCryptImportKeyPair and BCryptGenerateKeyPair.
+ * Argument 0 represents a BCRYPT_ALG_HANDLE.
+ * Argument 1 represents a BCRYPT_KEY_HANDLE.
+ */
 predicate stepImportGenerateKeyPair(DataFlow::Node node1, DataFlow::Node node2) {
   exists(FunctionCall call |
     node1.asExpr() = call.getArgument(0) and
@@ -21,14 +33,18 @@ predicate stepImportGenerateKeyPair(DataFlow::Node node1, DataFlow::Node node2) 
   )
 }
 
+/**
+ * Additional DataFlow steps from input variables to output handle variables on CNG apis.
+ */
 predicate isWindowsCngAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   stepOpenAlgorithmProvider(node1, node2)
   or
   stepImportGenerateKeyPair(node1, node2)
 }
 
-
-// CNG-specific DataFlow configuration
+/**
+ * CNG-specific DataFlow configuration
+ */
 class BCryptConfiguration extends DataFlow::Configuration {
   BCryptConfiguration() { this = "BCryptConfiguration" }
 
