@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class ParameterizedProtocolTypeBase extends Synth::TParameterizedProtocolType, Type {
-  override string getAPrimaryQlClass() { result = "ParameterizedProtocolType" }
+module Generated {
+  class ParameterizedProtocolType extends Synth::TParameterizedProtocolType, Type {
+    override string getAPrimaryQlClass() { result = "ParameterizedProtocolType" }
+  }
 }

@@ -23,7 +23,7 @@ private module Cached {
   }
 }
 
-class AstNode extends AstNodeBase {
+class AstNode extends Generated::AstNode {
   final AbstractFunctionDecl getEnclosingFunction() { result = Cached::getEnclosingFunction(this) }
 
   final Decl getEnclosingDecl() { result = Cached::getEnclosingDecl(this) }

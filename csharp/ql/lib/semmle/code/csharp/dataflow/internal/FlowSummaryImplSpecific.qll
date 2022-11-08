@@ -91,6 +91,12 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   )
 }
 
+/** Gets the type of synthetic global `sg`. */
+DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) {
+  exists(sg) and
+  result = Gvn::getGlobalValueNumber(any(ObjectType t))
+}
+
 bindingset[provenance]
 private boolean isGenerated(string provenance) {
   provenance = "generated" and result = true

@@ -310,12 +310,27 @@ module LocalFlow {
    * Holds if `nodeFrom` is a last node referencing SSA definition `def`, which
    * can reach `next`.
    */
-  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
-    exists(ControlFlow::BasicBlock bb, int i | SsaImpl::lastRefBeforeRedef(def, bb, i, next) |
+  private predicate localFlowSsaInputFromDef(
+    Node nodeFrom, Ssa::Definition def, Ssa::Definition next
+  ) {
+    exists(ControlFlow::BasicBlock bb, int i |
+      SsaImpl::lastRefBeforeRedef(def, bb, i, next) and
       def.definesAt(_, bb, i) and
       def = getSsaDefinition(nodeFrom)
-      or
-      nodeFrom.asExprAtNode(bb.getNode(i)) instanceof AssignableRead
+    )
+  }
+
+  /**
+   * Holds if `read` is a last node reading SSA definition `def`, which
+   * can reach `next`.
+   */
+  predicate localFlowSsaInputFromExpr(
+    ControlFlow::Node read, Ssa::Definition def, Ssa::Definition next
+  ) {
+    exists(ControlFlow::BasicBlock bb, int i |
+      SsaImpl::lastRefBeforeRedef(def, bb, i, next) and
+      read = bb.getNode(i) and
+      read.getElement() instanceof AssignableRead
     )
   }
 
@@ -351,18 +366,14 @@ module LocalFlow {
     // Flow from read to next read
     localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
-    // Flow into phi node
-    exists(Ssa::PhiNode phi |
-      localFlowSsaInput(nodeFrom, def, phi) and
-      phi = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = phi.getAnInput()
-    )
-    or
-    // Flow into uncertain SSA definition
-    exists(LocalFlow::UncertainExplicitSsaDefinition uncertain |
-      localFlowSsaInput(nodeFrom, def, uncertain) and
-      uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = uncertain.getPriorDefinition()
+    // Flow into phi/uncertain SSA definition node from def
+    exists(Ssa::Definition next |
+      localFlowSsaInputFromDef(nodeFrom, def, next) and
+      next = nodeTo.(SsaDefinitionNode).getDefinition()
+    |
+      def = next.(Ssa::PhiNode).getAnInput()
+      or
+      def = next.(LocalFlow::UncertainExplicitSsaDefinition).getPriorDefinition()
     )
   }
 
@@ -519,9 +530,24 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   exists(Ssa::Definition def |
     LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom,
-      any(DataFlowSummarizedCallable sc)) and
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _) and
     not LocalFlow::usesInstanceField(def)
+  )
+  or
+  // Flow into phi/uncertain SSA definition node from read
+  exists(Ssa::Definition def, ControlFlow::Node read, Ssa::Definition next |
+    LocalFlow::localFlowSsaInputFromExpr(read, def, next) and
+    next = nodeTo.(SsaDefinitionNode).getDefinition() and
+    def =
+      [
+        next.(Ssa::PhiNode).getAnInput(),
+        next.(LocalFlow::UncertainExplicitSsaDefinition).getPriorDefinition()
+      ]
+  |
+    exists(nodeFrom.asExprAtNode(read)) and
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+    or
+    exists(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExprAtNode(read))
   )
   or
   LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo)
@@ -702,7 +728,7 @@ private predicate arrayStore(Expr e, Expr src, Expr a, boolean postUpdate) {
   e = a and
   postUpdate = false
   or
-  // Member initalizer, `new C { Array = { [i] = src } }`
+  // Member initializer, `new C { Array = { [i] = src } }`
   exists(MemberInitializer mi |
     mi = a.(ObjectInitializer).getAMemberInitializer() and
     mi.getLValue() instanceof ArrayAccess and
@@ -857,6 +883,21 @@ private module Cached {
     exists(Ssa::Definition def |
       LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
       LocalFlow::usesInstanceField(def)
+    )
+    or
+    // Flow into phi/uncertain SSA definition node from read
+    exists(Ssa::Definition def, ControlFlow::Node read, Ssa::Definition next |
+      LocalFlow::localFlowSsaInputFromExpr(read, def, next) and
+      next = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def =
+        [
+          next.(Ssa::PhiNode).getAnInput(),
+          next.(LocalFlow::UncertainExplicitSsaDefinition).getPriorDefinition()
+        ]
+    |
+      exists(nodeFrom.asExprAtNode(read))
+      or
+      exists(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExprAtNode(read))
     )
     or
     // Simple flow through library code is included in the exposed local
@@ -1672,6 +1713,8 @@ predicate jumpStep(Node pred, Node succ) {
     jrk.getTarget() = call.getATarget(_) and
     succ = getAnOutNode(call, jrk.getTargetReturnKind())
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
 }
 
 private class StoreStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2036,8 +2079,8 @@ private module PostUpdateNodes {
     ExprPostUpdateNode() { this = TExprPostUpdateNode(cfn) }
 
     override ExprNode getPreUpdateNode() {
-      // For compund arguments, such as `m(b ? x : y)`, we want the leaf nodes
-      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compund argument,
+      // For compound arguments, such as `m(b ? x : y)`, we want the leaf nodes
+      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compound argument,
       // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
       // respectively.
       //

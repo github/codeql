@@ -31,7 +31,7 @@ predicate bounded(Expr e) {
   ) and
   not convertedExprMightOverflow(e)
   or
-  // Optimitically assume that a remainder expression always yields a much smaller value.
+  // Optimistically assume that a remainder expression always yields a much smaller value.
   e = any(RemExpr rem).getLeftOperand()
   or
   e = any(AssignRemExpr rem).getLValue()
@@ -44,7 +44,7 @@ predicate bounded(Expr e) {
     boundedBitwiseAnd(e, andExpr, andExpr.getAnOperand(), andExpr.getAnOperand())
   )
   or
-  // Optimitically assume that a division always yields a much smaller value.
+  // Optimistically assume that a division always yields a much smaller value.
   e = any(DivExpr div).getLeftOperand()
   or
   e = any(AssignDivExpr div).getLValue()

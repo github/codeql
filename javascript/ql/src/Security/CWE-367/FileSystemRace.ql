@@ -106,7 +106,7 @@ predicate useAfterCheck(FileCheck check, FileUse use) {
     )
   )
   or
-  check.getBasicBlock().getASuccessor+() = use.getBasicBlock()
+  check.getBasicBlock().(ReachableBasicBlock).strictlyDominates(use.getBasicBlock())
 }
 
 from FileCheck check, FileUse use

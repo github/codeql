@@ -4,26 +4,46 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.AssociatedTypeDecl
 import codeql.swift.elements.type.Type
 
-class DependentMemberTypeBase extends Synth::TDependentMemberType, Type {
-  override string getAPrimaryQlClass() { result = "DependentMemberType" }
+module Generated {
+  class DependentMemberType extends Synth::TDependentMemberType, Type {
+    override string getAPrimaryQlClass() { result = "DependentMemberType" }
 
-  Type getImmediateBaseType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertDependentMemberTypeToRaw(this)
-            .(Raw::DependentMemberType)
-            .getBaseType())
-  }
+    /**
+     * Gets the base type of this dependent member type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateBaseType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertDependentMemberTypeToRaw(this)
+              .(Raw::DependentMemberType)
+              .getBaseType())
+    }
 
-  final Type getBaseType() { result = getImmediateBaseType().resolve() }
+    /**
+     * Gets the base type of this dependent member type.
+     */
+    final Type getBaseType() { result = getImmediateBaseType().resolve() }
 
-  AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
-    result =
-      Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
-            .(Raw::DependentMemberType)
-            .getAssociatedTypeDecl())
-  }
+    /**
+     * Gets the associated type declaration of this dependent member type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
+      result =
+        Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
+              .(Raw::DependentMemberType)
+              .getAssociatedTypeDecl())
+    }
 
-  final AssociatedTypeDecl getAssociatedTypeDecl() {
-    result = getImmediateAssociatedTypeDecl().resolve()
+    /**
+     * Gets the associated type declaration of this dependent member type.
+     */
+    final AssociatedTypeDecl getAssociatedTypeDecl() {
+      result = getImmediateAssociatedTypeDecl().resolve()
+    }
   }
 }

@@ -72,3 +72,21 @@ class Bar
     true
   end
 end
+
+class UsersController < ActionController::Base
+  def create
+    code = params[:code]
+
+    obj().send(code, "foo"); # BAD
+
+    obj().send("prefix_" + code + "_suffix", "foo"); # GOOD
+
+    obj().send("prefix_#{code}_suffix", "foo"); # GOOD
+
+    eval("prefix_" + code + "_suffix"); # BAD
+
+    eval("prefix_#{code}_suffix"); # BAD
+
+    eval(code); # BAD
+  end
+end

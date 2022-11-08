@@ -20,7 +20,7 @@ class CustomEntryPointUse extends API::EntryPoint {
 class ApiUseTest extends InlineExpectationsTest {
   ApiUseTest() { this = "ApiUseTest" }
 
-  override string getARelevantTag() { result = ["use", "def"] }
+  override string getARelevantTag() { result = ["use", "def", "call"] }
 
   private predicate relevantNode(API::Node a, DataFlow::Node n, Location l, string tag) {
     l = n.getLocation() and

@@ -26,5 +26,10 @@ where
   not exists(getARead(v)) and
   // Discarded exceptions are covered by another query.
   not exists(CatchClause cc | cc.getVariable().getVariable() = v) and
+  // Exclude common Kotlin pattern to do something n times: `for(i in 1..n) { doSomething() }
+  not exists(EnhancedForStmt f |
+    f.getVariable().getVariable() = v and
+    f.getExpr().getType().(RefType).hasQualifiedName("kotlin.ranges", ["IntRange", "LongRange"])
+  ) and
   not readImplicitly(v)
 select v, "Variable '" + v + "' is never read."

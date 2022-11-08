@@ -65,8 +65,6 @@ class DomBasedXssAtmConfig extends AtmConfig {
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof DomBasedXss::Source }
 
-  override predicate isKnownSink(DataFlow::Node sink) { sink instanceof DomBasedXss::Sink }
-
   override predicate isEffectiveSink(DataFlow::Node sinkCandidate) {
     not exists(SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate))
   }

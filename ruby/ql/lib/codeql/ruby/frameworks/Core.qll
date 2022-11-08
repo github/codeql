@@ -14,6 +14,7 @@ import core.Hash
 import core.String
 import core.Regexp
 import core.IO
+import core.Digest
 
 /**
  * A system command executed via subshell literal syntax.

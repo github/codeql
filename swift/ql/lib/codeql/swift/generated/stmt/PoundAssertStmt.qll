@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.Stmt
 
-class PoundAssertStmtBase extends Synth::TPoundAssertStmt, Stmt {
-  override string getAPrimaryQlClass() { result = "PoundAssertStmt" }
+module Generated {
+  class PoundAssertStmt extends Synth::TPoundAssertStmt, Stmt {
+    override string getAPrimaryQlClass() { result = "PoundAssertStmt" }
+  }
 }

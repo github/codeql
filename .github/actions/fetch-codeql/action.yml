@@ -1,14 +1,22 @@
 name: Fetch CodeQL
 description: Fetches the latest version of CodeQL
+
+inputs:
+  channel:
+    description: 'The CodeQL channel to use'
+    required: false
+    default: 'nightly'
+
 runs:
   using: composite
   steps:
     - name: Fetch CodeQL
       shell: bash
-      run: |
-        gh extension install github/gh-codeql
-        gh codeql set-channel nightly
-        gh codeql version
-        gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        CHANNEL: ${{ inputs.channel }}
+      run: |
+        gh extension install github/gh-codeql
+        gh codeql set-channel "$CHANNEL"
+        gh codeql version
+        gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"

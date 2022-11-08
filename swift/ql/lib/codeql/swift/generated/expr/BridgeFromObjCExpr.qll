@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class BridgeFromObjCExprBase extends Synth::TBridgeFromObjCExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "BridgeFromObjCExpr" }
+module Generated {
+  class BridgeFromObjCExpr extends Synth::TBridgeFromObjCExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "BridgeFromObjCExpr" }
+  }
 }

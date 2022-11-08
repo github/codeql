@@ -78,5 +78,5 @@ from ResourceUrlWhitelistEntry entry, DataFlow::MethodCallNode setupCall, string
 where
   entry.isInsecure(explanation) and
   setupCall = entry.getSetupCall()
-select setupCall, "'$@' is not a secure whitelist entry, because " + explanation + ".", entry,
+select setupCall, "$@ is not a secure whitelist entry, because " + explanation + ".", entry,
   entry.toString()

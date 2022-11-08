@@ -289,10 +289,41 @@ predicate resolveTypeExpr(TypeExpr te, Type t) {
   else
     if primTypeName(te.getClassName())
     then t = TPrimitive(te.getClassName())
-    else
-      exists(FileOrModule m, boolean public, string clName | qualifier(te, m, public, clName) |
-        defines(m, clName, t, public)
+    else resolveTypeExpr2(te, t)
+}
+
+pragma[noopt]
+predicate resolveTypeExpr2(TypeExpr te, Type t) {
+  exists(FileOrModule m, boolean public, string clName |
+    qualifier(te, m, public, clName) and
+    defines(m, clName, t, public) and
+    // there can be some cross-talk between modules due to collapsing parameterized modules. This should remove the worst.
+    // require that the Type is contained in the same pack or a dependency.
+    (
+      exists(YAML::QLPack base, YAML::QLPack sup |
+        te.getFile() = base.getAFileInPack() and
+        exists(AstNode decl, File f |
+          decl = t.getDeclaration() and
+          f = decl.getFile() and
+          f = sup.getAFileInPack()
+        ) and
+        (
+          base.getADependency*() = sup
+          or
+          // only interested in blocking language -> language flow, so we include if one of the packs is shared (has no dbscheme).
+          not exists(YAML::QLPack dep | dep = base.getADependency*() | exists(dep.getDBScheme()))
+          or
+          not exists(YAML::QLPack dep | dep = sup.getADependency*() | exists(dep.getDBScheme()))
+        )
       )
+      or
+      // for tests, and other cases where no qlpack exists.
+      not exists(YAML::QLPack base | te.getFile() = base.getAFileInPack())
+      or
+      // e.g. alias for primitives.
+      not exists(t.getDeclaration())
+    )
+  )
 }
 
 pragma[noinline]

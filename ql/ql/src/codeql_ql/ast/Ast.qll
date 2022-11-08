@@ -25,6 +25,10 @@ class AstNode extends TAstNode {
   cached
   Location getLocation() { result = this.getFullLocation() } // overridden in some subclasses
 
+  /** Gets the file containing this AST node. */
+  cached
+  File getFile() { result = this.getFullLocation().getFile() }
+
   /** Gets the location that spans the entire AST node. */
   cached
   final Location getFullLocation() {
@@ -853,7 +857,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   override string getName() { result = cls.getName().getValue() }
 
   /**
-   * Gets the charateristic predicate for this class.
+   * Gets the characteristic predicate for this class.
    */
   CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
 
@@ -1009,7 +1013,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
-    none() // overridden in sublcasses.
+    none() // overridden in subclasses.
   }
 
   /** Gets an argument of this call, if any. */
@@ -2507,10 +2511,10 @@ module YAML {
   deprecated class YAMLNode = YamlNode;
 
   /** A YAML comment. */
-  class YamlComment extends TYamlCommemt, YamlNode {
+  class YamlComment extends TYamlComment, YamlNode {
     Yaml::Comment yamlcomment;
 
-    YamlComment() { this = TYamlCommemt(yamlcomment) }
+    YamlComment() { this = TYamlComment(yamlcomment) }
 
     override string getAPrimaryQlClass() { result = "YamlComment" }
   }

@@ -282,13 +282,8 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
  * Converts an argument index to a formal parameter index.
  * This is relevant for varadic methods.
  */
-private int argToParam(Call call, int arg) {
-  exists(call.getArgument(arg)) and
-  exists(Callable c | c = call.getCallee() |
-    if c.isVarargs() and arg >= c.getNumberOfParameters()
-    then result = c.getNumberOfParameters() - 1
-    else result = arg
-  )
+private int argToParam(Call call, int argIdx) {
+  result = call.getArgument(argIdx).(Argument).getParameterPos()
 }
 
 /** Access to a method that passes taint from qualifier to argument. */
@@ -620,6 +615,7 @@ private MethodAccess callReturningSameType(Expr ref) {
   result.getMethod().getReturnType() = ref.getType()
 }
 
+pragma[assume_small_delta]
 private SrcRefType entrypointType() {
   exists(RemoteFlowSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and

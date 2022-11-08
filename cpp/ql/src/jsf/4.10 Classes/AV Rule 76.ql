@@ -38,9 +38,9 @@ predicate hasNontrivialDestructor(Class c) {
 from Class c
 where
   (hasPointerMember(c) or hasNontrivialDestructor(c)) and
-  not (
-    c.getAMemberFunction() instanceof CopyConstructor and
-    c.getAMemberFunction() instanceof CopyAssignmentOperator
+  (
+    c.hasImplicitCopyAssignmentOperator() or
+    c.hasImplicitCopyConstructor()
   ) and
   not c instanceof Struct
 select c,

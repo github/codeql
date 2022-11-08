@@ -4,28 +4,54 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.TypeRepr
 
-class KeyPathExprBase extends Synth::TKeyPathExpr, Expr {
-  override string getAPrimaryQlClass() { result = "KeyPathExpr" }
+module Generated {
+  class KeyPathExpr extends Synth::TKeyPathExpr, Expr {
+    override string getAPrimaryQlClass() { result = "KeyPathExpr" }
 
-  TypeRepr getImmediateRoot() {
-    result =
-      Synth::convertTypeReprFromRaw(Synth::convertKeyPathExprToRaw(this)
-            .(Raw::KeyPathExpr)
-            .getRoot())
+    /**
+     * Gets the root of this key path expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    TypeRepr getImmediateRoot() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertKeyPathExprToRaw(this)
+              .(Raw::KeyPathExpr)
+              .getRoot())
+    }
+
+    /**
+     * Gets the root of this key path expression, if it exists.
+     */
+    final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
+
+    /**
+     * Holds if `getRoot()` exists.
+     */
+    final predicate hasRoot() { exists(getRoot()) }
+
+    /**
+     * Gets the parsed path of this key path expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateParsedPath() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertKeyPathExprToRaw(this)
+              .(Raw::KeyPathExpr)
+              .getParsedPath())
+    }
+
+    /**
+     * Gets the parsed path of this key path expression, if it exists.
+     */
+    final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }
+
+    /**
+     * Holds if `getParsedPath()` exists.
+     */
+    final predicate hasParsedPath() { exists(getParsedPath()) }
   }
-
-  final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
-
-  final predicate hasRoot() { exists(getRoot()) }
-
-  Expr getImmediateParsedPath() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertKeyPathExprToRaw(this)
-            .(Raw::KeyPathExpr)
-            .getParsedPath())
-  }
-
-  final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }
-
-  final predicate hasParsedPath() { exists(getParsedPath()) }
 }

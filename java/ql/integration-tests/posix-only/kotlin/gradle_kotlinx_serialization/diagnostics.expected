@@ -1,1 +1,0 @@
-| CodeQL Kotlin extractor | 5 |  | Unbound symbol found, skipping extraction of expression | app/src/main/kotlin/testProject/App.kt:7:1:8:55 | app/src/main/kotlin/testProject/App.kt:7:1:8:55 |

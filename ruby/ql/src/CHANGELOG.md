@@ -1,3 +1,23 @@
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* The `rb/weak-cryptographic-algorithm` has been updated to no longer report uses of hash functions such as `MD5` and `SHA1` even if they are known to be weak. These hash algorithms are used very often in non-sensitive contexts, making the query too imprecise in practice.
+
+## 0.4.2
+
+### New Queries
+
+* Added a new query, `rb/non-constant-kernel-open`, to detect uses of Kernel.open and related methods with non-constant values.
+* Added a new query, `rb/sensitive-get-query`, to detect cases where sensitive data is read from the query parameters of an HTTP `GET` request.
+
+### Minor Analysis Improvements
+
+* HTTP response header and body writes via `ActionDispatch::Response` are now
+  recognized.
+* The `rb/path-injection` query now treats the `file:` argument of the Rails `render` method as a sink.
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
+
 ## 0.4.1
 
 ### Minor Analysis Improvements

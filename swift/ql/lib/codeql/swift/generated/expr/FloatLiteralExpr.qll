@@ -3,10 +3,15 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.NumberLiteralExpr
 
-class FloatLiteralExprBase extends Synth::TFloatLiteralExpr, NumberLiteralExpr {
-  override string getAPrimaryQlClass() { result = "FloatLiteralExpr" }
+module Generated {
+  class FloatLiteralExpr extends Synth::TFloatLiteralExpr, NumberLiteralExpr {
+    override string getAPrimaryQlClass() { result = "FloatLiteralExpr" }
 
-  string getStringValue() {
-    result = Synth::convertFloatLiteralExprToRaw(this).(Raw::FloatLiteralExpr).getStringValue()
+    /**
+     * Gets the string value of this float literal expression.
+     */
+    string getStringValue() {
+      result = Synth::convertFloatLiteralExprToRaw(this).(Raw::FloatLiteralExpr).getStringValue()
+    }
   }
 }

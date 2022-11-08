@@ -28,3 +28,5 @@ fun special(n: Number, m: Map<String, String>, s: String, l: MutableList<Int>) {
     m.entries.first().key
     m.entries.first().value
 }
+
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Number.toChar in java.lang.Number %

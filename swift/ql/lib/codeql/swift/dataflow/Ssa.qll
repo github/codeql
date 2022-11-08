@@ -101,7 +101,7 @@ module Ssa {
     ControlFlowNode getAFirstRead() {
       exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
         this.definesAt(_, bb1, i1) and
-        SsaImpl::adjacentDefNoUncertainReads(this, bb1, i1, bb2, i2) and
+        SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
         result = bb2.getNode(i2)
       )
     }
@@ -111,7 +111,7 @@ module Ssa {
       exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
         read1 = bb1.getNode(i1) and
         SsaInput::variableRead(bb1, i1, _, true) and
-        SsaImpl::adjacentDefNoUncertainReads(this, bb1, i1, bb2, i2) and
+        SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
         read2 = bb2.getNode(i2)
       )
     }

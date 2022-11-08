@@ -86,4 +86,25 @@ query predicate modifiers(ClassInstanceExpr e, Method m, string modifier) {
   m.hasModifier(modifier)
 }
 
-query predicate compGenerated(Element e, int i) { compiler_generated(e, i) }
+query predicate compGenerated(Element e, string reason) { reason = e.compilerGeneratedReason() }
+
+query predicate propertyReferenceOverrides(PropertyRefExpr e, Method m, string overridden) {
+  e.getAnonymousClass().getAMember() = m and
+  exists(Method n |
+    m.overrides(n) and
+    overridden = n.getDeclaringType().getQualifiedName() + "." + n.getSignature()
+  )
+}
+
+query predicate notImplementedInterfaceMembers(PropertyRefExpr e, string interfaceMember) {
+  exists(Interface i, Method interfaceMethod |
+    e.getAnonymousClass().extendsOrImplements+(i) and
+    i.getAMethod() = interfaceMethod and
+    interfaceMember = i.getQualifiedName() + "." + interfaceMethod.getSignature() and
+    not exists(Class c, Method classMethod |
+      e.getAnonymousClass().extendsOrImplements*(c) and
+      c.getAMethod() = classMethod and
+      classMethod.overrides(interfaceMethod)
+    )
+  )
+}

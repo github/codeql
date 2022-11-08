@@ -180,3 +180,56 @@ class TestOverloadsWithDefaults {
   fun f(z: String, w: Int = 0) { }
 
 }
+
+fun varargsTest(x: String = "before-vararg-default sunk", vararg y: String = arrayOf("first-vararg-default sunk", "second-vararg-default sunk"), z: String = "after-vararg-default sunk") {
+  sink(x)
+  sink(y[0])
+  sink(z)
+}
+
+fun varargsUser() {
+  varargsTest()
+  varargsTest(x = "no-varargs-before, no-z-parameter sunk")
+  varargsTest(x = "no-varargs-before sunk", z = "no-varargs-after sunk")
+  varargsTest(x = "one-vararg-before sunk", "one-vararg sunk", z = "one-vararg-after sunk")
+  varargsTest(x = "two-varargs-before sunk", "two-vararg-first sunk", "two-vararg-second sunk", z = "two-varargs-after sunk")
+  varargsTest("no-z-parmeter sunk", "no-z-parameter first vararg sunk", "no-z-parameter second vararg sunk")
+}
+
+fun varargsTestOnlySinkVarargs(x: String = "before-vararg-default not sunk 2", vararg y: String = arrayOf("first-vararg-default sunk 2", "second-vararg-default sunk 2"), z: String = "after-vararg-default not sunk 2") {
+  sink(y[0])
+}
+
+fun varargsUserOnlySinkVarargs() {
+  varargsTestOnlySinkVarargs()
+  varargsTestOnlySinkVarargs(x = "no-varargs-before, no-z-parameter not sunk 2")
+  varargsTestOnlySinkVarargs(x = "no-varargs-before not sunk 2", z = "no-varargs-after not sunk 2")
+  varargsTestOnlySinkVarargs(x = "one-vararg-before not sunk 2", "one-vararg sunk 2", z = "one-vararg-after not sunk 2")
+  varargsTestOnlySinkVarargs(x = "two-varargs-before not sunk 2", "two-vararg-first sunk 2", "two-vararg-second sunk 2", z = "two-varargs-after not sunk 2")
+  varargsTestOnlySinkVarargs("no-z-parmeter not sunk 2", "no-z-parameter first vararg sunk 2", "no-z-parameter second vararg sunk 2")
+}
+
+fun varargsTestOnlySinkRegularArgs(x: String = "before-vararg-default sunk 3", vararg y: String = arrayOf("first-vararg-default not sunk 3", "second-vararg-default not sunk 3"), z: String = "after-vararg-default sunk 3") {
+  sink(x)
+  sink(z)
+}
+
+fun varargsUserOnlySinkRegularArgs() {
+  varargsTestOnlySinkRegularArgs()
+  varargsTestOnlySinkRegularArgs(x = "no-varargs-before, no-z-parameter sunk 3")
+  varargsTestOnlySinkRegularArgs(x = "no-varargs-before sunk 3", z = "no-varargs-after sunk 3")
+  varargsTestOnlySinkRegularArgs(x = "one-vararg-before sunk 3", "one-vararg not sunk 3", z = "one-vararg-after sunk 3")
+  varargsTestOnlySinkRegularArgs(x = "two-varargs-before sunk 3", "two-vararg-first not sunk 3", "two-vararg-second not sunk 3", z = "two-varargs-after sunk 3")
+  varargsTestOnlySinkRegularArgs("no-z-parmeter sunk 3", "no-z-parameter first vararg not sunk 3", "no-z-parameter second vararg not sunk 3")
+}
+
+class VarargsConstructorTest(x: String, vararg y: String) {
+  init {
+    sink(x)
+  }
+}
+
+fun varargsConstructorUser() {
+  VarargsConstructorTest("varargs constructor test sunk")
+  VarargsConstructorTest("varargs constructor test sunk 2", "varargs constructor test not sunk 1", "varargs constructor test not sunk 2")
+}

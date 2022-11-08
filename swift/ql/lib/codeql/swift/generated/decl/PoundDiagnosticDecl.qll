@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 
-class PoundDiagnosticDeclBase extends Synth::TPoundDiagnosticDecl, Decl {
-  override string getAPrimaryQlClass() { result = "PoundDiagnosticDecl" }
+module Generated {
+  class PoundDiagnosticDecl extends Synth::TPoundDiagnosticDecl, Decl {
+    override string getAPrimaryQlClass() { result = "PoundDiagnosticDecl" }
+  }
 }

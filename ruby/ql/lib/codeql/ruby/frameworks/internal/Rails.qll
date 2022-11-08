@@ -1,7 +1,5 @@
 private import codeql.ruby.AST
 
-abstract class HtmlSafeCallImpl extends MethodCall { }
-
 abstract class HtmlEscapeCallImpl extends MethodCall { }
 
 abstract class RenderCallImpl extends MethodCall { }

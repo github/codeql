@@ -1,6 +1,16 @@
 constantizeCalls
 | active_support.rb:1:1:1:22 | call to constantize | active_support.rb:1:1:1:10 | "Foo::Bar" |
 | active_support.rb:3:1:3:13 | call to constantize | active_support.rb:3:1:3:1 | call to a |
+| active_support.rb:4:1:4:18 | call to safe_constantize | active_support.rb:4:1:4:1 | call to a |
 loggerInstantiations
-| active_support.rb:5:1:5:33 | call to new |
-| active_support.rb:6:1:6:40 | call to new |
+| active_support.rb:6:1:6:33 | call to new |
+| active_support.rb:7:1:7:40 | call to new |
+codeExecutions
+| active_support.rb:1:1:1:22 | call to constantize |
+| active_support.rb:3:1:3:13 | call to constantize |
+| active_support.rb:4:1:4:18 | call to safe_constantize |
+| active_support.rb:296:5:296:18 | call to try |
+| active_support.rb:297:5:297:17 | call to try |
+| active_support.rb:298:5:298:19 | call to try! |
+| active_support.rb:298:5:298:35 | call to try! |
+| active_support.rb:299:5:299:18 | call to try! |

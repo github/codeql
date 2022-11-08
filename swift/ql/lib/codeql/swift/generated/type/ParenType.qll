@@ -4,13 +4,24 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.SugarType
 import codeql.swift.elements.type.Type
 
-class ParenTypeBase extends Synth::TParenType, SugarType {
-  override string getAPrimaryQlClass() { result = "ParenType" }
+module Generated {
+  class ParenType extends Synth::TParenType, SugarType {
+    override string getAPrimaryQlClass() { result = "ParenType" }
 
-  Type getImmediateType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertParenTypeToRaw(this).(Raw::ParenType).getType())
+    /**
+     * Gets the type of this paren type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertParenTypeToRaw(this).(Raw::ParenType).getType())
+    }
+
+    /**
+     * Gets the type of this paren type.
+     */
+    final Type getType() { result = getImmediateType().resolve() }
   }
-
-  final Type getType() { result = getImmediateType().resolve() }
 }

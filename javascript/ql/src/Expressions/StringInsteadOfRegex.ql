@@ -56,5 +56,5 @@ where
   s = raw.substring(1, raw.length() - 1) and
   s.regexpMatch(getALikelyRegExpPattern())
 select mce,
-  "String argument '$@' looks like a regular expression, but it will be interpreted as a string.",
+  "String argument $@ looks like a regular expression, but it will be interpreted as a string.",
   arg, s
