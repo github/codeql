@@ -7,3 +7,26 @@ private module Mixed {
 }
 
 predicate usesAlive() { Mixed::alive1() }
+
+cached
+private module Cached {
+  cached
+  predicate isUsed() { any() }
+
+  cached
+  predicate isNotUsed() { any() }
+}
+
+module UseCache {
+  private import Cached
+
+  predicate usesCached() { isUsed() }
+}
+
+private module Foo {
+  signature predicate bar();
+}
+
+module ValidationMethod<Foo::bar/0 sig> {
+  predicate impl() { sig() }
+}
