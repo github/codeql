@@ -4379,6 +4379,26 @@ expressions.swift:
 #  161|           getExpr(): [IntegerLiteralExpr] 1
 #  161|         getArgument(1): [Argument] : 2
 #  161|           getExpr(): [IntegerLiteralExpr] 2
+#  162|     getElement(4): [AssignExpr]  ... = ...
+#  162|       getDest(): [DiscardAssignmentExpr] _
+#  162|       getSource(): [BinaryExpr] ... .<<(_:_:) ...
+#  162|         getFunction(): [MethodRefExpr] .<<(_:_:)
+#  162|           getBase(): [TypeExpr] Int.Type
+#  162|             getTypeRepr(): [TypeRepr] Int
+#  162|         getArgument(0): [Argument] : 1
+#  162|           getExpr(): [IntegerLiteralExpr] 1
+#  162|         getArgument(1): [Argument] : 0
+#  162|           getExpr(): [IntegerLiteralExpr] 0
+#  163|     getElement(5): [AssignExpr]  ... = ...
+#  163|       getDest(): [DiscardAssignmentExpr] _
+#  163|       getSource(): [BinaryExpr] ... .>>(_:_:) ...
+#  163|         getFunction(): [MethodRefExpr] .>>(_:_:)
+#  163|           getBase(): [TypeExpr] Int.Type
+#  163|             getTypeRepr(): [TypeRepr] Int
+#  163|         getArgument(0): [Argument] : 1
+#  163|           getExpr(): [IntegerLiteralExpr] 1
+#  163|         getArgument(1): [Argument] : 0
+#  163|           getExpr(): [IntegerLiteralExpr] 0
 patterns.swift:
 #    1| [ConcreteFuncDecl] basic_patterns()
 #    1|     InterfaceType = () -> ()
