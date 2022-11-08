@@ -248,7 +248,9 @@ edges
 | lib.js:55:15:55:21 | path[0] | lib.js:55:11:55:22 | obj[path[0]] |
 | lib.js:59:18:59:18 | s | lib.js:61:17:61:17 | s |
 | lib.js:59:18:59:18 | s | lib.js:61:17:61:17 | s |
+| lib.js:61:17:61:17 | s | lib.js:68:11:68:26 | path |
 | lib.js:61:17:61:17 | s | lib.js:68:18:68:26 | this.path |
+| lib.js:61:17:61:17 | s | lib.js:70:17:70:20 | path |
 | lib.js:68:11:68:26 | path | lib.js:70:17:70:20 | path |
 | lib.js:68:18:68:26 | this.path | lib.js:68:11:68:26 | path |
 | lib.js:70:17:70:20 | path | lib.js:70:17:70:23 | path[0] |
