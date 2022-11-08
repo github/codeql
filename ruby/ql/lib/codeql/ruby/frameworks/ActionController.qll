@@ -592,15 +592,12 @@ private module ParamsSummaries {
   /**
    * `#merge`
    * Returns a new ActionController::Parameters with all keys from other_hash merged into current hash.
-   * `#reverse_merge`
-   * `#with_defaults`
-   * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
    */
   private class MergeSummary extends SummarizedCallable {
     MergeSummary() { this = "ActionController::Parameters#merge" }
 
     override MethodCall getACall() {
-      result.getMethodName() = ["merge", "reverse_merge", "with_defaults"] and
+      result.getMethodName() = "merge" and
       exists(ParamsInstance i |
         i.asExpr().getExpr() = [result.getReceiver(), result.getArgument(0)]
       )
@@ -616,15 +613,12 @@ private module ParamsSummaries {
   /**
    * `#merge!`
    * Returns current ActionController::Parameters instance with current hash merged into other_hash.
-   * `#reverse_merge!`
-   * `#with_defaults!`
-   * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
    */
   private class MergeBangSummary extends SummarizedCallable {
     MergeBangSummary() { this = "ActionController::Parameters#merge!" }
 
     override MethodCall getACall() {
-      result.getMethodName() = ["merge!", "reverse_merge!", "with_defaults!"] and
+      result.getMethodName() = "merge!" and
       exists(ParamsInstance i |
         i.asExpr().getExpr() = [result.getReceiver(), result.getArgument(0)]
       )

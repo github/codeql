@@ -120,6 +120,32 @@ module ActiveSupport {
         }
       }
 
+      /**
+       * Flow summary for `reverse_merge`, and its alias `with_defaults`.
+       */
+      private class ReverseMergeSummary extends SimpleSummarizedCallable {
+        ReverseMergeSummary() { this = ["reverse_merge", "with_defaults"] }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = ["Argument[self]", "Argument[0]"] and
+          output = "ReturnValue" and
+          preservesValue = false
+        }
+      }
+
+      /**
+       * Flow summary for `reverse_merge!`, and its aliases `with_defaults!` and `reverse_update`.
+       */
+      private class ReverseMergeBangSummary extends SimpleSummarizedCallable {
+        ReverseMergeBangSummary() { this = ["reverse_merge!", "with_defaults!", "reverse_update"] }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = ["Argument[self]", "Argument[0]"] and
+          output = ["ReturnValue", "Argument[self]"] and
+          preservesValue = false
+        }
+      }
+
       private class TransformSummary extends SimpleSummarizedCallable {
         TransformSummary() {
           this =

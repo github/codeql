@@ -148,4 +148,13 @@ class MyController < ActionController::Base
     p.with_defaults!(params)
     sink p # $hasTaintFlow
   end
+
+  def m33
+    sink params.reverse_update({a: 1, b: 2}) # $hasTaintFlow
+    sink {a: 1}.reverse_update(params) # $hasTaintFlow
+
+    p = {a: 1}
+    p.reverse_update(params)
+    sink p # $hasTaintFlow
+  end
 end
