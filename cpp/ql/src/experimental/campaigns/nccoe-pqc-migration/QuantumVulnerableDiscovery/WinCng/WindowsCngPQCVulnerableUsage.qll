@@ -25,11 +25,11 @@ predicate stepOpenAlgorithmProvider(DataFlow::Node node1, DataFlow::Node node2) 
 predicate stepImportGenerateKeyPair(DataFlow::Node node1, DataFlow::Node node2) {
   exists(FunctionCall call |
     node1.asExpr() = call.getArgument(0) and
-    exists(string name |
-      name in ["BCryptImportKeyPair", "BCryptGenerateKeyPair"] and
-      call.getTarget().hasGlobalName(name)
-    ) and
-    node2.asDefiningArgument() = call.getArgument(1)
+    exists(string name | call.getTarget().hasGlobalName(name) |
+      name = "BCryptImportKeyPair" and node2.asDefiningArgument() = call.getArgument(3)
+      or
+      name = "BCryptGenerateKeyPair" and node2.asDefiningArgument() = call.getArgument(1)
+    )
   )
 }
 

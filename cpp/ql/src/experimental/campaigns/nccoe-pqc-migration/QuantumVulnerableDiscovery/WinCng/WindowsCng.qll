@@ -33,8 +33,22 @@ predicate vulnProviderLiteral(StringLiteral lit) {
   )
 }
 
-//TODO: Verify NCrypt calls (parameters) & find all other APIs that should be included (i.e. decrypt, etc.)
 // ------------------ Default SINKS ----------------------
+/**
+ * Argument at index 0 of call to NCryptSignHash:
+ *     [in]           NCRYPT_KEY_HANDLE hKey
+ */
+class NCryptSignHashArgumentSink extends BCryptOpenAlgorithmProviderSink {
+  int index;
+  string funcName;
+
+  NCryptSignHashArgumentSink() {
+    index = 0 and
+    funcName = "NCryptSignHash " and
+    isCallArgument(funcName, this.asExpr(), index)
+  }
+}
+
 /**
  * Argument at index 0 of call to BCryptSignHash:
  *     [in]           BCRYPT_KEY_HANDLE hKey,
@@ -85,30 +99,14 @@ class BCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
  *     [in]           NCRYPT_KEY_HANDLE hKey,
  */
 class NCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
- int index;
- string funcName;
+  int index;
+  string funcName;
 
- NCryptEncryptArgumentSink() {
-   index = 0 and
-   funcName = "NCryptEncrypt" and
-   isCallArgument(funcName, this.asExpr(), index)
- }
-}
-
-
-/**
- * Argument at index 1 of call to NCryptEncrypt:
- *     _Inout_ NCRYPT_KEY_HANDLE  hKey,
- */
-class SslEncryptPacketArgumentSink extends BCryptOpenAlgorithmProviderSink {
- int index;
- string funcName;
-
- SslEncryptPacketArgumentSink() {
-   index = 1 and
-   funcName = "SslEncryptPacket" and
-   isCallArgument(funcName, this.asExpr(), index)
- }
+  NCryptEncryptArgumentSink() {
+    index = 0 and
+    funcName = "NCryptEncrypt" and
+    isCallArgument(funcName, this.asExpr(), index)
+  }
 }
 
 // ----------------- Default SOURCES -----------------------
