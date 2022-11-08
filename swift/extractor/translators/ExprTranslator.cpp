@@ -84,6 +84,13 @@ codeql::PrefixUnaryExpr ExprTranslator::translatePrefixUnaryExpr(
   return entry;
 }
 
+codeql::PostfixUnaryExpr ExprTranslator::translatePostfixUnaryExpr(
+    const swift::PostfixUnaryExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillApplyExpr(expr, entry);
+  return entry;
+}
+
 codeql::DeclRefExpr ExprTranslator::translateDeclRefExpr(const swift::DeclRefExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.decl = dispatcher.fetchLabel(expr.getDecl());
@@ -518,4 +525,5 @@ codeql::UnresolvedPatternExpr ExprTranslator::translateUnresolvedPatternExpr(
   entry.sub_pattern = dispatcher.fetchLabel(expr.getSubPattern());
   return entry;
 }
+
 }  // namespace codeql

@@ -24,21 +24,21 @@ jobs:
         run: |
           MERGE_BASE=$(git merge-base --fork-point origin/$BASE_BRANCH)
           echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
-      - name: Calculate merge-base - branch
-        if: ${{ github.event_name != 'pull_request' }}
-        # using github.sha instead, since we're directly on a branch, and not in a PR
-        run: |
-          MERGE_BASE=${{ github.sha }}
-          echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
-      - name: Cache CodeQL query compilation
+      - name: Read CodeQL query compilation - PR
+        if: ${{ github.event_name == 'pull_request' }}
         uses: actions/cache@v3
         with:
           path: '*/ql/src/.cache'
-          # current GH HEAD first, merge-base second, generic third
-          key: codeql-stable-compile-${{ github.sha }}
+          key: codeql-compile-pr-${{ github.sha }} # deliberately not using the `compile-compile-main` keys here.
           restore-keys: |
-            codeql-stable-compile-${{ env.merge-base }}
-            codeql-stable-compile-
+            codeql-compile-main-${{ env.merge-base }}
+            codeql-compile-main-
+      - name: Fill CodeQL query compilation cache - main
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/cache@v3
+        with:
+          path: '*/ql/src/.cache'
+          key: codeql-compile-main-${{ github.sha }} # just fill on main
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
         with:

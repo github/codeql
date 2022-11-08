@@ -51,6 +51,18 @@ module Raw {
     override string toString() { result = "DbLocation" }
   }
 
+  class UnspecifiedElement extends @unspecified_element, Locatable {
+    override string toString() { result = "UnspecifiedElement" }
+
+    Element getParent() { unspecified_element_parents(this, result) }
+
+    string getProperty() { unspecified_elements(this, result, _) }
+
+    int getIndex() { unspecified_element_indices(this, result) }
+
+    string getError() { unspecified_elements(this, _, result) }
+  }
+
   class Decl extends @decl, AstNode {
     ModuleDecl getModule() { decls(this, result) }
   }
@@ -1104,6 +1116,10 @@ module Raw {
 
   class PoundAssertStmt extends @pound_assert_stmt, Stmt {
     override string toString() { result = "PoundAssertStmt" }
+
+    Expr getCondition() { pound_assert_stmts(this, result, _) }
+
+    string getMessage() { pound_assert_stmts(this, _, result) }
   }
 
   class ReturnStmt extends @return_stmt, Stmt {

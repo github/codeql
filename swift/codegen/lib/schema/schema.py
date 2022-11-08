@@ -55,6 +55,14 @@ class Property:
     def is_predicate(self) -> bool:
         return self.kind == self.Kind.PREDICATE
 
+    @property
+    def has_class_type(self) -> bool:
+        return bool(self.type) and self.type[0].isupper()
+
+    @property
+    def has_builtin_type(self) -> bool:
+        return bool(self.type) and self.type[0].islower()
+
 
 SingleProperty = functools.partial(Property, Property.Kind.SINGLE)
 OptionalProperty = functools.partial(Property, Property.Kind.OPTIONAL)
@@ -104,6 +112,16 @@ class Class:
 class Schema:
     classes: Dict[str, Class] = field(default_factory=dict)
     includes: Set[str] = field(default_factory=set)
+    null: Optional[str] = None
+
+    @property
+    def root_class(self):
+        # always the first in the dictionary
+        return next(iter(self.classes.values()))
+
+    @property
+    def null_class(self):
+        return self.classes[self.null] if self.null else None
 
 
 predicate_marker = object()
@@ -195,6 +213,8 @@ def _get_class(cls: type) -> Class:
         raise Error(f"Class name must be capitalized, found {cls.__name__}")
     if len({b._group for b in cls.__bases__ if hasattr(b, "_group")}) > 1:
         raise Error(f"Bases with mixed groups for {cls.__name__}")
+    if any(getattr(b, "_null", False) for b in cls.__bases__):
+        raise Error(f"Null class cannot be derived")
     return Class(name=cls.__name__,
                  bases=[b.__name__ for b in cls.__bases__ if b is not object],
                  derived={d.__name__ for d in cls.__subclasses__()},
@@ -233,6 +253,7 @@ def load(m: types.ModuleType) -> Schema:
     known = {"int", "string", "boolean"}
     known.update(n for n in m.__dict__ if not n.startswith("__"))
     import swift.codegen.lib.schema.defs as defs
+    null = None
     for name, data in m.__dict__.items():
         if hasattr(defs, name):
             continue
@@ -247,8 +268,13 @@ def load(m: types.ModuleType) -> Schema:
                 f"Only one root class allowed, found second root {name}")
         cls.check_types(known)
         classes[name] = cls
+        if getattr(data, "_null", False):
+            if null is not None:
+                raise Error(f"Null class {null} already defined, second null class {name} not allowed")
+            null = name
+            cls.is_null_class = True
 
-    return Schema(includes=includes, classes=_toposort_classes_by_group(classes))
+    return Schema(includes=includes, classes=_toposort_classes_by_group(classes), null=null)
 
 
 def load_file(path: pathlib.Path) -> Schema:
