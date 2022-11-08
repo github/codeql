@@ -54,3 +54,13 @@ class Foobar2
     IO.popen(["foo", "bar", x].join(' '), "w") # NOT OK
   end
 end
+
+class Fields 
+  def initialize(source)
+    @foo = source
+  end
+
+  def foo1()
+    IO.popen("cat #{@foo}", "w") # NOT OK - but not currently flagged
+  end
+end
