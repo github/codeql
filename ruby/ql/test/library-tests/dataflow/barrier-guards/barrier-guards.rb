@@ -102,3 +102,9 @@ if bars.include?(foo)
 else
     foo
 end
+
+if x or y then
+    foo
+else
+    foo
+end
