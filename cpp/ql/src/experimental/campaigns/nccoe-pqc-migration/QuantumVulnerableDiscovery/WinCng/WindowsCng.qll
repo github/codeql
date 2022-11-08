@@ -2,8 +2,14 @@ import cpp
 import DataFlow::PathGraph
 import semmle.code.cpp.dataflow.TaintTracking
 
+/**
+ * Base abstract class to be extended to allow indirect extensions of vulnerable sinks.
+ */
 abstract class BCryptOpenAlgorithmProviderSink extends DataFlow::Node { }
 
+/**
+ * Base abstract class to be extended to allow indirect extensions of vulnerable sources.
+ */
 abstract class BCryptOpenAlgorithmProviderSource extends DataFlow::Node { }
 
 // ------------------ Helper Predicates ----------------------
@@ -30,7 +36,8 @@ predicate vulnProviderLiteral(StringLiteral lit) {
 //TODO: Verify NCrypt calls (parameters) & find all other APIs that should be included (i.e. decrypt, etc.)
 // ------------------ Default SINKS ----------------------
 /**
- * Argument at index 0 of call to BCryptSignHash
+ * Argument at index 0 of call to BCryptSignHash:
+ *     [in]           BCRYPT_KEY_HANDLE hKey,
  */
 class BCryptSignHashArgumentSink extends BCryptOpenAlgorithmProviderSink {
   int index;
@@ -44,7 +51,23 @@ class BCryptSignHashArgumentSink extends BCryptOpenAlgorithmProviderSink {
 }
 
 /**
- * Argument at index 0 of call to BCryptEncrypt
+ * Argument at index 0 of call to BCryptGenerateKeyPair:
+ *    [in, out] BCRYPT_ALG_HANDLE hAlgorithm,
+ */
+class BCryptGenerateKeyPair extends BCryptOpenAlgorithmProviderSink {
+  int index;
+  string funcName;
+
+  BCryptGenerateKeyPair() {
+    index = 0 and
+    funcName = "BCryptGenerateKeyPair" and
+    isCallArgument(funcName, this.asExpr(), index)
+  }
+}
+
+/**
+ * Argument at index 0 of call to BCryptEncrypt:
+ *     [in, out]           BCRYPT_KEY_HANDLE hKey,
  */
 class BCryptEncryptArgumentSink extends BCryptOpenAlgorithmProviderSink {
   int index;

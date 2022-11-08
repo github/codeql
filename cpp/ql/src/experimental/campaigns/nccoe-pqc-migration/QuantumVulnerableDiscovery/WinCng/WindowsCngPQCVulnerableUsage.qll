@@ -48,10 +48,16 @@ predicate isWindowsCngAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node n
 class BCryptConfiguration extends DataFlow::Configuration {
   BCryptConfiguration() { this = "BCryptConfiguration" }
 
+  /**
+   * Uses indirect extensions of BCryptOpenAlgorithmProviderSource
+   */
   override predicate isSource(DataFlow::Node source) {
     source instanceof BCryptOpenAlgorithmProviderSource
   }
 
+  /**
+   * Uses indirect extensions of BCryptOpenAlgorithmProviderSink
+   */
   override predicate isSink(DataFlow::Node sink) { sink instanceof BCryptOpenAlgorithmProviderSink }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
