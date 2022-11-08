@@ -4338,6 +4338,47 @@ expressions.swift:
 #  154|       getPattern(0): [NamedPattern] nested_apply
 #  154|     getElement(5): [ConcreteVarDecl] nested_apply
 #  154|         Type = Int
+#  157| [ConcreteFuncDecl] bitwise()
+#  157|     InterfaceType = () -> ()
+#  157|   getBody(): [BraceStmt] { ... }
+#  158|     getElement(0): [AssignExpr]  ... = ...
+#  158|       getDest(): [DiscardAssignmentExpr] _
+#  158|       getSource(): [PrefixUnaryExpr] call to ~(_:)
+#  158|         getFunction(): [MethodRefExpr] .~(_:)
+#  158|           getBase(): [TypeExpr] Int.Type
+#  158|             getTypeRepr(): [TypeRepr] Int
+#  158|         getArgument(0): [Argument] : 1
+#  158|           getExpr(): [IntegerLiteralExpr] 1
+#  159|     getElement(1): [AssignExpr]  ... = ...
+#  159|       getDest(): [DiscardAssignmentExpr] _
+#  159|       getSource(): [BinaryExpr] ... .&(_:_:) ...
+#  159|         getFunction(): [MethodRefExpr] .&(_:_:)
+#  159|           getBase(): [TypeExpr] Int.Type
+#  159|             getTypeRepr(): [TypeRepr] Int
+#  159|         getArgument(0): [Argument] : 1
+#  159|           getExpr(): [IntegerLiteralExpr] 1
+#  159|         getArgument(1): [Argument] : 2
+#  159|           getExpr(): [IntegerLiteralExpr] 2
+#  160|     getElement(2): [AssignExpr]  ... = ...
+#  160|       getDest(): [DiscardAssignmentExpr] _
+#  160|       getSource(): [BinaryExpr] ... .|(_:_:) ...
+#  160|         getFunction(): [MethodRefExpr] .|(_:_:)
+#  160|           getBase(): [TypeExpr] Int.Type
+#  160|             getTypeRepr(): [TypeRepr] Int
+#  160|         getArgument(0): [Argument] : 1
+#  160|           getExpr(): [IntegerLiteralExpr] 1
+#  160|         getArgument(1): [Argument] : 2
+#  160|           getExpr(): [IntegerLiteralExpr] 2
+#  161|     getElement(3): [AssignExpr]  ... = ...
+#  161|       getDest(): [DiscardAssignmentExpr] _
+#  161|       getSource(): [BinaryExpr] ... .^(_:_:) ...
+#  161|         getFunction(): [MethodRefExpr] .^(_:_:)
+#  161|           getBase(): [TypeExpr] Int.Type
+#  161|             getTypeRepr(): [TypeRepr] Int
+#  161|         getArgument(0): [Argument] : 1
+#  161|           getExpr(): [IntegerLiteralExpr] 1
+#  161|         getArgument(1): [Argument] : 2
+#  161|           getExpr(): [IntegerLiteralExpr] 2
 patterns.swift:
 #    1| [ConcreteFuncDecl] basic_patterns()
 #    1|     InterfaceType = () -> ()
