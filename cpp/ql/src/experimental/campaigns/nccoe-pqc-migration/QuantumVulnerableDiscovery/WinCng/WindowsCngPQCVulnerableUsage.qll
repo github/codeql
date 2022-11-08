@@ -19,8 +19,12 @@ predicate stepOpenAlgorithmProvider(DataFlow::Node node1, DataFlow::Node node2) 
 /**
  * Steps from input variable (argument 0) to output variable (argument 1)
  * for CNG APIs BCryptImportKeyPair and BCryptGenerateKeyPair.
- * Argument 0 represents a BCRYPT_ALG_HANDLE.
- * Argument 1 represents a BCRYPT_KEY_HANDLE.
+ * BCryptGenerateKeyPair:
+ *      Argument 0 represents a BCRYPT_ALG_HANDLE.
+ *      Argument 1 represents a BCRYPT_KEY_HANDLE.
+ * BCryptImportKeyPair:
+ *      Argument 0 represents a BCRYPT_ALG_HANDLE.
+ *      Argument 3 represents a BCRYPT_KEY_HANDLE.
  */
 predicate stepImportGenerateKeyPair(DataFlow::Node node1, DataFlow::Node node2) {
   exists(FunctionCall call |
