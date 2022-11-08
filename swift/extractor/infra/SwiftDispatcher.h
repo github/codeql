@@ -61,16 +61,26 @@ class SwiftDispatcher {
 
   template <typename Entry>
   void emit(Entry&& entry) {
-    entry.forEachLabel([&entry](const char* field, int index, auto& label) {
+    bool valid = true;
+    entry.forEachLabel([&valid, &entry, this](const char* field, int index, auto& label) {
+      using Label = std::remove_reference_t<decltype(label)>;
       if (!label.valid()) {
         std::cerr << entry.NAME << " has undefined " << field;
         if (index >= 0) {
           std::cerr << '[' << index << ']';
         }
-        std::cerr << '\n';
+        if constexpr (std::is_base_of_v<typename Label::Tag, UnspecifiedElementTag>) {
+          std::cerr << ", replacing with unspecified element\n";
+          label = emitUnspecified(idOf(entry), field, index);
+        } else {
+          std::cerr << ", skipping emission\n";
+          valid = false;
+        }
       }
     });
-    trap.emit(entry);
+    if (valid) {
+      trap.emit(entry);
+    }
   }
 
   template <typename Entry>
@@ -97,13 +107,39 @@ class SwiftDispatcher {
     emit(ElementIsUnknownTrap{label});
   }
 
+  TrapLabel<UnspecifiedElementTag> emitUnspecified(std::optional<TrapLabel<ElementTag>>&& parent,
+                                                   const char* property,
+                                                   int index) {
+    UnspecifiedElement entry{trap.createLabel<UnspecifiedElementTag>()};
+    entry.error = "element was unspecified by the extractor";
+    entry.parent = std::move(parent);
+    entry.property = property;
+    if (index >= 0) {
+      entry.index = index;
+    }
+    trap.emit(entry);
+    return entry.id;
+  }
+
+  template <typename E>
+  std::optional<TrapLabel<ElementTag>> idOf(const E& entry) {
+    if constexpr (HasId<E>::value) {
+      return entry.id;
+    } else {
+      return std::nullopt;
+    }
+  }
+
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
   template <typename E, typename... Args, std::enable_if_t<IsStorable<E>>* = nullptr>
   TrapLabelOf<E> fetchLabel(const E& e, Args&&... args) {
     if constexpr (std::is_constructible_v<bool, const E&>) {
-      assert(e && "fetching a label on a null entity, maybe fetchOptionalLabel is to be used?");
+      if (!e) {
+        // this will be treated on emission
+        return undefined_label;
+      }
     }
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
@@ -214,17 +250,18 @@ class SwiftDispatcher {
     return std::nullopt;
   }
 
-  // map `fetchLabel` on the iterable `arg`, returning a vector of all labels
+  // map `fetchLabel` on the iterable `arg`
   // universal reference `Arg&&` is used to catch both temporary and non-const references, not
   // for perfect forwarding
   template <typename Iterable>
   auto fetchRepeatedLabels(Iterable&& arg) {
-    std::vector<decltype(fetchLabel(*arg.begin()))> ret;
+    using Label = decltype(fetchLabel(*arg.begin()));
+    TrapLabelVectorWrapper<typename Label::Tag> ret;
     if constexpr (HasSize<Iterable>::value) {
-      ret.reserve(arg.size());
+      ret.data.reserve(arg.size());
     }
     for (auto&& e : arg) {
-      ret.push_back(fetchLabel(e));
+      ret.data.push_back(fetchLabel(e));
     }
     return ret;
   }
@@ -279,6 +316,12 @@ class SwiftDispatcher {
   template <typename T>
   struct HasSize<T, decltype(std::declval<T>().size(), void())> : std::true_type {};
 
+  template <typename T, typename = void>
+  struct HasId : std::false_type {};
+
+  template <typename T>
+  struct HasId<T, decltype(std::declval<T>().id, void())> : std::true_type {};
+
   void attachLocation(swift::SourceLoc start,
                       swift::SourceLoc end,
                       TrapLabel<LocatableTag> locatableLabel) {
@@ -302,19 +345,20 @@ class SwiftDispatcher {
   TrapLabel<Tag> fetchLabelFromUnion(const llvm::PointerUnion<Ts...> u) {
     TrapLabel<Tag> ret{};
     // with logical op short-circuiting, this will stop trying on the first successful fetch
-    // don't feel tempted to replace the variable with the expression inside the `assert`, or
-    // building with `NDEBUG` will not trigger the fetching
     bool unionCaseFound = (... || fetchLabelFromUnionCase<Tag, Ts>(u, ret));
-    assert(unionCaseFound && "llvm::PointerUnion not set to a known case");
+    if (!unionCaseFound) {
+      // TODO emit error/warning here
+      return undefined_label;
+    }
     return ret;
   }
 
   template <typename Tag, typename T, typename... Ts>
   bool fetchLabelFromUnionCase(const llvm::PointerUnion<Ts...> u, TrapLabel<Tag>& output) {
     // we rely on the fact that when we extract `ASTNode` instances (which only happens
-    // on `BraceStmt` elements), we cannot encounter a standalone `TypeRepr` there, so we skip
-    // this case; extracting `TypeRepr`s here would be problematic as we would not be able to
-    // provide the corresponding type
+    // on `BraceStmt`/`IfConfigDecl` elements), we cannot encounter a standalone `TypeRepr` there,
+    // so we skip this case; extracting `TypeRepr`s here would be problematic as we would not be
+    // able to provide the corresponding type
     if constexpr (!std::is_same_v<T, swift::TypeRepr*>) {
       if (auto e = u.template dyn_cast<T>()) {
         output = fetchLabel(e);
