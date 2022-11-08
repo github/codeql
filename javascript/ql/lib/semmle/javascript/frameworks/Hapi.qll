@@ -142,7 +142,7 @@ module Hapi {
           // `request.url.path`
           kind = "url" and
           url.accesses(request, "url") and
-          this.(DataFlow::PropRead).accesses(url, "path")
+          this.(DataFlow::PropRead).accesses(url, ["path", "origin"])
         )
         or
         exists(DataFlow::PropRead state |
