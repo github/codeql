@@ -742,7 +742,8 @@ class LabeledStmt(Stmt):
     label: optional[string]
 
 class PoundAssertStmt(Stmt):
-    pass
+    condition: Expr
+    message: string
 
 class ReturnStmt(Stmt):
     result: optional[Expr] | child
