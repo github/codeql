@@ -31,8 +31,8 @@ jobs:
           path: '*/ql/src/.cache'
           key: codeql-compile-pr-${{ github.sha }} # deliberately not using the `compile-compile-main` keys here.
           restore-keys: |
-            codeql-compile-${{ github.base_ref }}-${{ env.merge-base }}
-            codeql-compile-${{ github.base_ref }}-
+            codeql-compile-refs/heads/${{ github.base_ref }}-${{ env.merge-base }}
+            codeql-compile-refs/heads/${{ github.base_ref }}-
       - name: Fill CodeQL query compilation cache - main
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/cache@v3
