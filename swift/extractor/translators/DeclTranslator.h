@@ -46,6 +46,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   std::optional<codeql::ModuleDecl> translateModuleDecl(const swift::ModuleDecl& decl);
   codeql::IfConfigDecl translateIfConfigDecl(const swift::IfConfigDecl& decl);
   std::optional<codeql::OpaqueTypeDecl> translateOpaqueTypeDecl(const swift::OpaqueTypeDecl& decl);
+  codeql::PoundDiagnosticDecl translatePoundDiagnosticDecl(const swift::PoundDiagnosticDecl& decl);
 
  private:
   std::string mangledName(const swift::ValueDecl& decl);

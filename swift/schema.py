@@ -119,7 +119,9 @@ class PatternBindingDecl(Decl):
     patterns: list[Pattern] | child
 
 class PoundDiagnosticDecl(Decl):
-    pass
+    """ A diagnostic directive, which is either `#error` or `#warning`."""
+    kind: int | doc("""This is 1 for `#error` and 2 for `#warning`""")
+    message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
     pass

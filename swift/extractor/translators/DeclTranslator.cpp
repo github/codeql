@@ -401,4 +401,23 @@ std::optional<codeql::OpaqueTypeDecl> DeclTranslator::translateOpaqueTypeDecl(
   return std::nullopt;
 }
 
+static int translateDiagnosticsKind(swift::DiagnosticKind kind) {
+  switch (kind) {
+    case swift::DiagnosticKind::Error:
+      return 1;
+    case swift::DiagnosticKind::Warning:
+      return 2;
+    default:
+      return 0;
+  }
+}
+
+codeql::PoundDiagnosticDecl DeclTranslator::translatePoundDiagnosticDecl(
+    const swift::PoundDiagnosticDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.kind = translateDiagnosticsKind(decl.getKind());
+  entry.message = dispatcher.fetchLabel(decl.getMessage());
+  return entry;
+}
+
 }  // namespace codeql
