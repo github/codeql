@@ -547,7 +547,13 @@ module Raw {
     ConstructorDecl getConstructorDecl() { other_constructor_decl_ref_exprs(this, result) }
   }
 
-  class OverloadSetRefExpr extends @overload_set_ref_expr, Expr { }
+  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, Expr {
+    override string toString() { result = "OverloadedDeclRefExpr" }
+
+    ValueDecl getPossibleDeclaration(int index) {
+      overloaded_decl_ref_expr_possible_declarations(this, index, result)
+    }
+  }
 
   class PackExpr extends @pack_expr, Expr {
     override string toString() { result = "PackExpr" }
@@ -847,10 +853,6 @@ module Raw {
 
   class OptionalTryExpr extends @optional_try_expr, AnyTryExpr {
     override string toString() { result = "OptionalTryExpr" }
-  }
-
-  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, OverloadSetRefExpr {
-    override string toString() { result = "OverloadedDeclRefExpr" }
   }
 
   class ParenExpr extends @paren_expr, IdentityExpr {

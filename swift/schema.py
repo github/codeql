@@ -397,9 +397,6 @@ class OptionalEvaluationExpr(Expr):
 class OtherConstructorDeclRefExpr(Expr):
     constructor_decl: ConstructorDecl
 
-class OverloadSetRefExpr(Expr):
-    pass
-
 class PropertyWrapperValuePlaceholderExpr(Expr):
     pass
 
@@ -591,8 +588,12 @@ class ObjectLiteralExpr(LiteralExpr):
 class OptionalTryExpr(AnyTryExpr):
     pass
 
-class OverloadedDeclRefExpr(OverloadSetRefExpr):
-    pass
+class OverloadedDeclRefExpr(Expr):
+    """
+    An ambiguous expression that might refer to multiple declarations. This will be present only
+    for failing compilations.
+    """
+    possible_declarations: list[ValueDecl]
 
 class ParenExpr(IdentityExpr):
     pass

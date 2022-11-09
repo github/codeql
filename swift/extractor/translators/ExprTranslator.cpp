@@ -537,5 +537,11 @@ codeql::ObjectLiteralExpr ExprTranslator::translateObjectLiteralExpr(
   }
   return entry;
 }
+codeql::OverloadedDeclRefExpr ExprTranslator::translateOverloadedDeclRefExpr(
+    const swift::OverloadedDeclRefExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.possible_declarations = dispatcher.fetchRepeatedLabels(expr.getDecls());
+  return entry;
+}
 
 }  // namespace codeql

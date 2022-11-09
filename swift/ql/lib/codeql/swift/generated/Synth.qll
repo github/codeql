@@ -390,7 +390,7 @@ module Synth {
         TKeyPathDotExpr or TKeyPathExpr or TLazyInitializerExpr or TLiteralExpr or TLookupExpr or
         TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or
         TOpenExistentialExpr or TOptionalEvaluationExpr or TOtherConstructorDeclRefExpr or
-        TOverloadSetRefExpr or TPackExpr or TPropertyWrapperValuePlaceholderExpr or
+        TOverloadedDeclRefExpr or TPackExpr or TPropertyWrapperValuePlaceholderExpr or
         TRebindSelfInConstructorExpr or TSequenceExpr or TSuperRefExpr or TTapExpr or
         TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
         TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
@@ -421,8 +421,6 @@ module Synth {
   class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodRefExpr or TSubscriptExpr;
 
   class TNumberLiteralExpr = TFloatLiteralExpr or TIntegerLiteralExpr;
-
-  class TOverloadSetRefExpr = TOverloadedDeclRefExpr;
 
   class TSelfApplyExpr = TConstructorRefCallExpr or TDotSyntaxCallExpr;
 
@@ -1781,7 +1779,7 @@ module Synth {
     or
     result = convertOtherConstructorDeclRefExprFromRaw(e)
     or
-    result = convertOverloadSetRefExprFromRaw(e)
+    result = convertOverloadedDeclRefExprFromRaw(e)
     or
     result = convertPackExprFromRaw(e)
     or
@@ -1921,11 +1919,6 @@ module Synth {
     result = convertFloatLiteralExprFromRaw(e)
     or
     result = convertIntegerLiteralExprFromRaw(e)
-  }
-
-  cached
-  TOverloadSetRefExpr convertOverloadSetRefExprFromRaw(Raw::Element e) {
-    result = convertOverloadedDeclRefExprFromRaw(e)
   }
 
   cached
@@ -3491,7 +3484,7 @@ module Synth {
     or
     result = convertOtherConstructorDeclRefExprToRaw(e)
     or
-    result = convertOverloadSetRefExprToRaw(e)
+    result = convertOverloadedDeclRefExprToRaw(e)
     or
     result = convertPackExprToRaw(e)
     or
@@ -3631,11 +3624,6 @@ module Synth {
     result = convertFloatLiteralExprToRaw(e)
     or
     result = convertIntegerLiteralExprToRaw(e)
-  }
-
-  cached
-  Raw::Element convertOverloadSetRefExprToRaw(TOverloadSetRefExpr e) {
-    result = convertOverloadedDeclRefExprToRaw(e)
   }
 
   cached

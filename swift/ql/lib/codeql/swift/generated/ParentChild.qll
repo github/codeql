@@ -1592,8 +1592,8 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfOverloadSetRefExpr(
-    OverloadSetRefExpr e, int index, string partialPredicateCall
+  private Element getImmediateChildOfOverloadedDeclRefExpr(
+    OverloadedDeclRefExpr e, int index, string partialPredicateCall
   ) {
     exists(int b, int bExpr, int n |
       b = 0 and
@@ -2617,22 +2617,6 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfAnyTryExpr(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfOverloadedDeclRefExpr(
-    OverloadedDeclRefExpr e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bOverloadSetRefExpr, int n |
-      b = 0 and
-      bOverloadSetRefExpr =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfOverloadSetRefExpr(e, i, _)) | i) and
-      n = bOverloadSetRefExpr and
-      (
-        none()
-        or
-        result = getImmediateChildOfOverloadSetRefExpr(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -5028,6 +5012,8 @@ private module Impl {
     or
     result = getImmediateChildOfOtherConstructorDeclRefExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfOverloadedDeclRefExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfPackExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfPropertyWrapperValuePlaceholderExpr(e, index, partialAccessor)
@@ -5139,8 +5125,6 @@ private module Impl {
     result = getImmediateChildOfObjectLiteralExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfOptionalTryExpr(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfOverloadedDeclRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfParenExpr(e, index, partialAccessor)
     or

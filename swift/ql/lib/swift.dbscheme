@@ -622,7 +622,7 @@ arguments(  //dir=expr
 | @open_existential_expr
 | @optional_evaluation_expr
 | @other_constructor_decl_ref_expr
-| @overload_set_ref_expr
+| @overloaded_decl_ref_expr
 | @pack_expr
 | @property_wrapper_value_placeholder_expr
 | @rebind_self_in_constructor_expr
@@ -971,9 +971,16 @@ other_constructor_decl_ref_exprs(  //dir=expr
   int constructor_decl: @constructor_decl_or_none ref
 );
 
-@overload_set_ref_expr =
-  @overloaded_decl_ref_expr
-;
+overloaded_decl_ref_exprs(  //dir=expr
+  unique int id: @overloaded_decl_ref_expr
+);
+
+#keyset[id, index]
+overloaded_decl_ref_expr_possible_declarations(  //dir=expr
+  int id: @overloaded_decl_ref_expr ref,
+  int index: int ref,
+  int possible_declaration: @value_decl_or_none ref
+);
 
 pack_exprs(  //dir=expr
   unique int id: @pack_expr
@@ -1320,10 +1327,6 @@ object_literal_expr_arguments(  //dir=expr
 
 optional_try_exprs(  //dir=expr
   unique int id: @optional_try_expr
-);
-
-overloaded_decl_ref_exprs(  //dir=expr
-  unique int id: @overloaded_decl_ref_expr
 );
 
 paren_exprs(  //dir=expr
