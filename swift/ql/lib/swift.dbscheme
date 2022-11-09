@@ -19,7 +19,6 @@ sourceLocationPrefix(
 | @locatable
 | @location
 | @type
-| @unresolved_element
 ;
 
 #keyset[id]
@@ -67,6 +66,7 @@ files(
 | @ast_node
 | @comment
 | @diagnostics
+| @unresolved_element
 | @unspecified_element
 ;
 
@@ -90,17 +90,6 @@ locations(
   int end_line: int ref,
   int end_column: int ref
 );
-
-@unresolved_element =
-  @unresolved_decl_ref_expr
-| @unresolved_dot_expr
-| @unresolved_member_chain_result_expr
-| @unresolved_member_expr
-| @unresolved_pattern_expr
-| @unresolved_specialize_expr
-| @unresolved_type
-| @unresolved_type_conversion_expr
-;
 
 @ast_node =
   @case_label_item
@@ -139,6 +128,17 @@ unknown_files(
 unknown_locations(
   unique int id: @unknown_location
 );
+
+@unresolved_element =
+  @unresolved_decl_ref_expr
+| @unresolved_dot_expr
+| @unresolved_member_chain_result_expr
+| @unresolved_member_expr
+| @unresolved_pattern_expr
+| @unresolved_specialize_expr
+| @unresolved_type
+| @unresolved_type_conversion_expr
+;
 
 unspecified_elements(
   unique int id: @unspecified_element,
@@ -1078,7 +1078,8 @@ unresolved_pattern_exprs(  //dir=expr
 );
 
 unresolved_specialize_exprs(  //dir=expr
-  unique int id: @unresolved_specialize_expr
+  unique int id: @unresolved_specialize_expr,
+  int sub_expr: @expr_or_none ref
 );
 
 vararg_expansion_exprs(  //dir=expr

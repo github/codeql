@@ -68,21 +68,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfUnresolvedElement(
-    UnresolvedElement e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bElement, int n |
-      b = 0 and
-      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
-      n = bElement and
-      (
-        none()
-        or
-        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfAstNode(AstNode e, int index, string partialPredicateCall) {
     exists(int b, int bLocatable, int n |
       b = 0 and
@@ -176,6 +161,21 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfUnresolvedElement(
+    UnresolvedElement e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -1842,18 +1842,21 @@ private module Impl {
   private Element getImmediateChildOfUnresolvedSpecializeExpr(
     UnresolvedSpecializeExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int bUnresolvedElement, int n |
+    exists(int b, int bExpr, int bUnresolvedElement, int n, int nSubExpr |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       bUnresolvedElement =
         bExpr + 1 + max(int i | i = -1 or exists(getImmediateChildOfUnresolvedElement(e, i, _)) | i) and
       n = bUnresolvedElement and
+      nSubExpr = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
         result = getImmediateChildOfUnresolvedElement(e, index - bExpr, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
   }

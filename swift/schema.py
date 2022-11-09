@@ -15,11 +15,6 @@ include("prefix.dbscheme")
 class Element:
     is_unknown: predicate | cpp.skip
 
-@qltest.skip
-@qltest.collapse_hierarchy
-class UnresolvedElement(Element):
-    pass
-
 @qltest.collapse_hierarchy
 class File(Element):
     name: string
@@ -36,6 +31,10 @@ class Location(Element):
 @qltest.skip
 class Locatable(Element):
     location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
+
+@qltest.collapse_hierarchy
+class UnresolvedElement(Locatable):
+    pass
 
 @use_for_null
 class UnspecifiedElement(Locatable):
@@ -440,7 +439,7 @@ class UnresolvedPatternExpr(Expr, UnresolvedElement):
     sub_pattern: Pattern | child
 
 class UnresolvedSpecializeExpr(Expr, UnresolvedElement):
-    pass
+    sub_expr: Expr | child
 
 class VarargExpansionExpr(Expr):
     sub_expr: Expr | child

@@ -557,5 +557,11 @@ codeql::DynamicSubscriptExpr ExprTranslator::translateDynamicSubscriptExpr(
   fillLookupExpr(expr, entry);
   return entry;
 }
+codeql::UnresolvedSpecializeExpr ExprTranslator::translateUnresolvedSpecializeExpr(
+    const swift::UnresolvedSpecializeExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
+  return entry;
+}
 
 }  // namespace codeql

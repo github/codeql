@@ -33,8 +33,6 @@ module Raw {
     int getEndColumn() { locations(this, _, _, _, _, result) }
   }
 
-  class UnresolvedElement extends @unresolved_element, Element { }
-
   class AstNode extends @ast_node, Locatable { }
 
   class Comment extends @comment, Locatable {
@@ -58,6 +56,8 @@ module Raw {
 
     int getKind() { diagnostics(this, _, result) }
   }
+
+  class UnresolvedElement extends @unresolved_element, Locatable { }
 
   class UnspecifiedElement extends @unspecified_element, Locatable {
     override string toString() { result = "UnspecifiedElement" }
@@ -641,6 +641,8 @@ module Raw {
 
   class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
+
+    Expr getSubExpr() { unresolved_specialize_exprs(this, result) }
   }
 
   class VarargExpansionExpr extends @vararg_expansion_expr, Expr {

@@ -323,7 +323,8 @@ module Synth {
 
   class TFile = TDbFile or TUnknownFile;
 
-  class TLocatable = TArgument or TAstNode or TComment or TDiagnostics or TUnspecifiedElement;
+  class TLocatable =
+    TArgument or TAstNode or TComment or TDiagnostics or TUnresolvedElement or TUnspecifiedElement;
 
   class TLocation = TDbLocation or TUnknownLocation;
 
@@ -1454,8 +1455,6 @@ module Synth {
     result = convertLocationFromRaw(e)
     or
     result = convertTypeFromRaw(e)
-    or
-    result = convertUnresolvedElementFromRaw(e)
   }
 
   cached
@@ -1474,6 +1473,8 @@ module Synth {
     result = convertCommentFromRaw(e)
     or
     result = convertDiagnosticsFromRaw(e)
+    or
+    result = convertUnresolvedElementFromRaw(e)
     or
     result = convertUnspecifiedElementFromRaw(e)
   }
@@ -3159,8 +3160,6 @@ module Synth {
     result = convertLocationToRaw(e)
     or
     result = convertTypeToRaw(e)
-    or
-    result = convertUnresolvedElementToRaw(e)
   }
 
   cached
@@ -3179,6 +3178,8 @@ module Synth {
     result = convertCommentToRaw(e)
     or
     result = convertDiagnosticsToRaw(e)
+    or
+    result = convertUnresolvedElementToRaw(e)
     or
     result = convertUnspecifiedElementToRaw(e)
   }
