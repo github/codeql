@@ -81,7 +81,7 @@ private DataFlow::Node getAValueExportedByPackage() {
   // `module.exports.bar = function () { ... };`
   exists(DataFlow::PropRead read, Import imp |
     read = getAValueExportedByPackage() and
-    read.getBase().getALocalSource().getEnclosingExpr() = imp and
+    read.getBase().getALocalSource() = imp.getImportedModuleNode() and
     result = imp.getImportedModule().getAnExportedValue(read.getPropertyName())
   )
   or
