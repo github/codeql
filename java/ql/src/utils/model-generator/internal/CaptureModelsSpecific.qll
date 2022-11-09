@@ -7,6 +7,7 @@ private import semmle.code.java.dataflow.internal.DataFlowNodes
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
 private import semmle.code.java.dataflow.DataFlow as Df
+private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.dataflow.TaintTracking as Tt
 import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.java.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -222,6 +223,14 @@ J::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
  */
 predicate isOwnInstanceAccessNode(ReturnNode node) {
   node.asExpr().(J::ThisAccess).isOwnInstanceAccess()
+}
+
+predicate sinkModelSanitizer(DataFlow::Node node) {
+  // exclude variable capture jump steps
+  exists(Ssa::SsaImplicitInit closure |
+    closure.captures(_) and
+    node.asExpr() = closure.getAFirstUse()
+  )
 }
 
 /**
