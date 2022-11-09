@@ -113,11 +113,14 @@ func taintThroughData() {
 }
 
 func sink(arg: String.UTF8View) {}
+func sink(arg: ContiguousArray<CChar>) {}
 
 func taintThroughStringFields() {
   let clean = ""
   let tainted = source2().utf8
+  let taintedCString = source2().utf8CString
 
   sink(arg: clean)
-  sink(arg: tainted) // $ tainted=95
+  sink(arg: tainted) // $ tainted=120
+  sink(arg: taintedCString) // $ tainted=121
 }
