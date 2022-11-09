@@ -162,13 +162,13 @@ class MyController < ActionController::Base
 end
 
 module Mixin
-  def m33
+  def m34
     sink params[:x] # $hasTaintFlow
   end
 end
 
 class Subclass < MyController
-  def m34
+  def m35
     sink params[:x] # $hasTaintFlow
   end
 
