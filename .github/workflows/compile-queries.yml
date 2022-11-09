@@ -6,6 +6,7 @@ on:
       - main
       - "rc/*"
       - "codeql-cli-*"
+  pull_request:
 
 jobs:
   compile-queries:
