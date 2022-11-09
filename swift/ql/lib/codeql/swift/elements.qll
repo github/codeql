@@ -4,6 +4,7 @@ import codeql.swift.elements.Callable
 import codeql.swift.elements.Comment
 import codeql.swift.elements.DbFile
 import codeql.swift.elements.DbLocation
+import codeql.swift.elements.Diagnostics
 import codeql.swift.elements.Element
 import codeql.swift.elements.File
 import codeql.swift.elements.Locatable

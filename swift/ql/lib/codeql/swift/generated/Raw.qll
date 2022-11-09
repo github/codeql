@@ -51,6 +51,14 @@ module Raw {
     override string toString() { result = "DbLocation" }
   }
 
+  class Diagnostics extends @diagnostics, Locatable {
+    override string toString() { result = "Diagnostics" }
+
+    string getText() { diagnostics(this, result, _) }
+
+    int getKind() { diagnostics(this, _, result) }
+  }
+
   class UnspecifiedElement extends @unspecified_element, Locatable {
     override string toString() { result = "UnspecifiedElement" }
 
