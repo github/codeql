@@ -1,16 +1,16 @@
 private import codeql.swift.generated.Diagnostics
 
 class Diagnostics extends Generated::Diagnostics {
-  override string toString() { result = getSeverity() + ": " + getText() }
+  override string toString() { result = this.getSeverity() + ": " + this.getText() }
 
   string getSeverity() {
-    getKind() = 1 and result = "error"
+    this.getKind() = 1 and result = "error"
     or
-    getKind() = 2 and result = "warning"
+    this.getKind() = 2 and result = "warning"
     or
-    getKind() = 3 and result = "note"
+    this.getKind() = 3 and result = "note"
     or
-    getKind() = 4 and result = "remark"
+    this.getKind() = 4 and result = "remark"
   }
 }
 
