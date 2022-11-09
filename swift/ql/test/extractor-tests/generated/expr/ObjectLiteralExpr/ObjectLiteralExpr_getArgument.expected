@@ -1,0 +1,6 @@
+| object_literals.swift:3:5:3:42 | #fileLiteral(...) | 0 | object_literals.swift:3:18:3:32 | resourceName: file.txt |
+| object_literals.swift:4:5:4:61 | #colorLiteral(...) | 0 | object_literals.swift:4:19:4:24 | red: 255 |
+| object_literals.swift:4:5:4:61 | #colorLiteral(...) | 1 | object_literals.swift:4:29:4:36 | green: 255 |
+| object_literals.swift:4:5:4:61 | #colorLiteral(...) | 2 | object_literals.swift:4:41:4:47 | blue: 255 |
+| object_literals.swift:4:5:4:61 | #colorLiteral(...) | 3 | object_literals.swift:4:52:4:59 | alpha: 50 |
+| object_literals.swift:5:5:5:44 | #imageLiteral(...) | 0 | object_literals.swift:5:19:5:33 | resourceName: image.gif |

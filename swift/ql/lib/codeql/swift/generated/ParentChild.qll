@@ -2588,15 +2588,19 @@ private module Impl {
   private Element getImmediateChildOfObjectLiteralExpr(
     ObjectLiteralExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLiteralExpr, int n |
+    exists(int b, int bLiteralExpr, int n, int nArgument |
       b = 0 and
       bLiteralExpr =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
       n = bLiteralExpr and
+      nArgument = n + 1 + max(int i | i = -1 or exists(e.getImmediateArgument(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateArgument(index - n) and
+        partialPredicateCall = "Argument(" + (index - n).toString() + ")"
       )
     )
   }

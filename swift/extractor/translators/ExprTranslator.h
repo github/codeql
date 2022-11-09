@@ -102,6 +102,7 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::ErrorExpr translateErrorExpr(const swift::ErrorExpr& expr);
   codeql::UnresolvedPatternExpr translateUnresolvedPatternExpr(
       const swift::UnresolvedPatternExpr& expr);
+  codeql::ObjectLiteralExpr translateObjectLiteralExpr(const swift::ObjectLiteralExpr& expr);
 
  private:
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,

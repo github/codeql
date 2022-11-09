@@ -526,4 +526,16 @@ codeql::UnresolvedPatternExpr ExprTranslator::translateUnresolvedPatternExpr(
   return entry;
 }
 
+codeql::ObjectLiteralExpr ExprTranslator::translateObjectLiteralExpr(
+    const swift::ObjectLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.kind = static_cast<int>(expr.getLiteralKind());
+  if (auto args = expr.getArgs()) {
+    for (const auto& arg : *args) {
+      entry.arguments.push_back(emitArgument(arg));
+    }
+  }
+  return entry;
+}
+
 }  // namespace codeql

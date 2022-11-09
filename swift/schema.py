@@ -580,7 +580,13 @@ class NilLiteralExpr(LiteralExpr):
     pass
 
 class ObjectLiteralExpr(LiteralExpr):
-    pass
+    """
+    `#fileLiteral`, `#imageLiteral` and `#colorLiteral` expressions, which are used in playgrounds.
+    """
+    kind: int | doc("""
+    This is 0 for `#fileLiteral`, 1 for `#imageLiteral` and 2 for `#colorLiteral`.
+    """)
+    arguments: list[Argument] | child
 
 class OptionalTryExpr(AnyTryExpr):
     pass

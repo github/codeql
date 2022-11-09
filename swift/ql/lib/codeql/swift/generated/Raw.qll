@@ -839,6 +839,10 @@ module Raw {
 
   class ObjectLiteralExpr extends @object_literal_expr, LiteralExpr {
     override string toString() { result = "ObjectLiteralExpr" }
+
+    int getKind() { object_literal_exprs(this, result) }
+
+    Argument getArgument(int index) { object_literal_expr_arguments(this, index, result) }
   }
 
   class OptionalTryExpr extends @optional_try_expr, AnyTryExpr {

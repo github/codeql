@@ -1307,7 +1307,15 @@ nil_literal_exprs(  //dir=expr
 );
 
 object_literal_exprs(  //dir=expr
-  unique int id: @object_literal_expr
+  unique int id: @object_literal_expr,
+  int kind: int ref
+);
+
+#keyset[id, index]
+object_literal_expr_arguments(  //dir=expr
+  int id: @object_literal_expr ref,
+  int index: int ref,
+  int argument: @argument_or_none ref
 );
 
 optional_try_exprs(  //dir=expr
