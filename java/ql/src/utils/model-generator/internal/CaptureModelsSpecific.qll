@@ -18,6 +18,8 @@ module TaintTracking = Tt::TaintTracking;
 
 class Type = J::Type;
 
+class Unit = J::Unit;
+
 private J::Method superImpl(J::Method m) {
   result = m.getAnOverride() and
   not exists(result.getAnOverride()) and
@@ -223,24 +225,21 @@ predicate isOwnInstanceAccessNode(ReturnNode node) {
 }
 
 /**
- * Language specific parts of the `PropagateToSinkConfiguration`.
+ * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
-class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration {
-  PropagateToSinkConfigurationSpecific() { this = "parameters or fields flowing into sinks" }
-
-  override predicate isSource(DataFlow::Node source) {
-    (
-      source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
-      source instanceof DataFlow::ParameterNode
-    ) and
-    source.getEnclosingCallable().isPublic() and
-    exists(J::RefType t |
-      t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
-      not t instanceof J::TypeObject and
-      t.isPublic()
-    ) and
-    isRelevantForModels(source.getEnclosingCallable())
-  }
+predicate apiSource(DataFlow::Node source) {
+  (
+    source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
+    source instanceof DataFlow::ParameterNode
+  ) and
+  source.getEnclosingCallable().isPublic() and
+  exists(J::RefType t |
+    t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
+    not t instanceof J::TypeObject and
+    t.isPublic()
+  ) and
+  isRelevantForModels(source.getEnclosingCallable()) and
+  exists(asPartialModel(source.getEnclosingCallable()))
 }
 
 /**
