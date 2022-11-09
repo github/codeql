@@ -135,6 +135,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfDiagnostics(
+    Diagnostics e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnknownFile(
     UnknownFile e, int index, string partialPredicateCall
   ) {
@@ -4881,6 +4896,8 @@ private module Impl {
     result = getImmediateChildOfDbFile(e, index, partialAccessor)
     or
     result = getImmediateChildOfDbLocation(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDiagnostics(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnknownFile(e, index, partialAccessor)
     or

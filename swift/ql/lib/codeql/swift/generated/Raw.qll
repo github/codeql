@@ -51,6 +51,14 @@ module Raw {
     override string toString() { result = "DbLocation" }
   }
 
+  class Diagnostics extends @diagnostics, Locatable {
+    override string toString() { result = "Diagnostics" }
+
+    string getText() { diagnostics(this, result, _) }
+
+    int getKind() { diagnostics(this, _, result) }
+  }
+
   class UnspecifiedElement extends @unspecified_element, Locatable {
     override string toString() { result = "UnspecifiedElement" }
 
@@ -259,6 +267,12 @@ module Raw {
 
   class OpaqueTypeDecl extends @opaque_type_decl, GenericTypeDecl {
     override string toString() { result = "OpaqueTypeDecl" }
+
+    ValueDecl getNamingDeclaration() { opaque_type_decls(this, result) }
+
+    GenericTypeParamType getOpaqueGenericParam(int index) {
+      opaque_type_decl_opaque_generic_params(this, index, result)
+    }
   }
 
   class ParamDecl extends @param_decl, VarDecl {
@@ -1116,6 +1130,10 @@ module Raw {
 
   class PoundAssertStmt extends @pound_assert_stmt, Stmt {
     override string toString() { result = "PoundAssertStmt" }
+
+    Expr getCondition() { pound_assert_stmts(this, result, _) }
+
+    string getMessage() { pound_assert_stmts(this, _, result) }
   }
 
   class ReturnStmt extends @return_stmt, Stmt {
@@ -1473,6 +1491,8 @@ module Raw {
 
   class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {
     override string toString() { result = "OpaqueTypeArchetypeType" }
+
+    OpaqueTypeDecl getDeclaration() { opaque_type_archetype_types(this, result) }
   }
 
   class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {

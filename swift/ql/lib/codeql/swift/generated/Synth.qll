@@ -8,6 +8,7 @@ module Synth {
     TComment(Raw::Comment id) { constructComment(id) } or
     TDbFile(Raw::DbFile id) { constructDbFile(id) } or
     TDbLocation(Raw::DbLocation id) { constructDbLocation(id) } or
+    TDiagnostics(Raw::Diagnostics id) { constructDiagnostics(id) } or
     TUnknownFile() or
     TUnknownLocation() or
     TUnspecifiedElement(Raw::UnspecifiedElement id) { constructUnspecifiedElement(id) } or
@@ -322,7 +323,7 @@ module Synth {
 
   class TFile = TDbFile or TUnknownFile;
 
-  class TLocatable = TArgument or TAstNode or TComment or TUnspecifiedElement;
+  class TLocatable = TArgument or TAstNode or TComment or TDiagnostics or TUnspecifiedElement;
 
   class TLocation = TDbLocation or TUnknownLocation;
 
@@ -493,6 +494,9 @@ module Synth {
 
   cached
   TDbLocation convertDbLocationFromRaw(Raw::Element e) { result = TDbLocation(e) }
+
+  cached
+  TDiagnostics convertDiagnosticsFromRaw(Raw::Element e) { result = TDiagnostics(e) }
 
   cached
   TUnknownFile convertUnknownFileFromRaw(Raw::Element e) { none() }
@@ -1471,6 +1475,8 @@ module Synth {
     or
     result = convertCommentFromRaw(e)
     or
+    result = convertDiagnosticsFromRaw(e)
+    or
     result = convertUnspecifiedElementFromRaw(e)
   }
 
@@ -2200,6 +2206,9 @@ module Synth {
 
   cached
   Raw::Element convertDbLocationToRaw(TDbLocation e) { e = TDbLocation(result) }
+
+  cached
+  Raw::Element convertDiagnosticsToRaw(TDiagnostics e) { e = TDiagnostics(result) }
 
   cached
   Raw::Element convertUnknownFileToRaw(TUnknownFile e) { none() }
@@ -3175,6 +3184,8 @@ module Synth {
     result = convertAstNodeToRaw(e)
     or
     result = convertCommentToRaw(e)
+    or
+    result = convertDiagnosticsToRaw(e)
     or
     result = convertUnspecifiedElementToRaw(e)
   }

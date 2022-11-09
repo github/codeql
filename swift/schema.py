@@ -47,6 +47,10 @@ class UnspecifiedElement(Locatable):
 class Comment(Locatable):
     text: string
 
+class Diagnostics(Locatable):
+    text: string
+    kind: int
+
 class DbFile(File):
     pass
 
@@ -218,7 +222,20 @@ class NominalTypeDecl(GenericTypeDecl, IterableDeclContext):
     type: Type
 
 class OpaqueTypeDecl(GenericTypeDecl):
-    pass
+    """
+    A declaration of an opaque type, that is formally equivalent to a given type but abstracts it
+    away.
+
+    Such a declaration is implicitly given when a declaration is written with an opaque result type,
+    for example
+    ```
+    func opaque() -> some SignedInteger { return 1 }
+    ```
+    See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html.
+    """
+    naming_declaration: ValueDecl
+    opaque_generic_params: list["GenericTypeParamType"]
+    opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
     pass
@@ -742,7 +759,8 @@ class LabeledStmt(Stmt):
     label: optional[string]
 
 class PoundAssertStmt(Stmt):
-    pass
+    condition: Expr
+    message: string
 
 class ReturnStmt(Stmt):
     result: optional[Expr] | child
@@ -965,7 +983,10 @@ class NominalType(NominalOrBoundGenericNominalType):
     pass
 
 class OpaqueTypeArchetypeType(ArchetypeType):
-    pass
+    """An opaque type, that is a type formally equivalent to an underlying type but abstracting it away.
+
+    See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html."""
+    declaration: OpaqueTypeDecl
 
 class OpenedArchetypeType(ArchetypeType):
     pass
