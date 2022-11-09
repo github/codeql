@@ -19,6 +19,8 @@ module TaintTracking = CS::TaintTracking;
 
 class Type = CS::Type;
 
+class Unit = DataFlowPrivate::Unit;
+
 /**
  * Holds if any of the parameters of `api` are `System.Func<>`.
  */
@@ -174,15 +176,11 @@ private predicate isRelevantMemberAccess(DataFlow::Node node) {
 }
 
 /**
- * Language specific parts of the `PropagateToSinkConfiguration`.
+ * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
-class PropagateToSinkConfigurationSpecific extends CS::TaintTracking::Configuration {
-  PropagateToSinkConfigurationSpecific() { this = "parameters or fields flowing into sinks" }
-
-  override predicate isSource(DataFlow::Node source) {
-    (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
-    isRelevantForModels(source.getEnclosingCallable())
-  }
+predicate apiSource(DataFlow::Node source) {
+  (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
+  isRelevantForModels(source.getEnclosingCallable())
 }
 
 /**

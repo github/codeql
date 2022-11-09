@@ -5,6 +5,14 @@
 
 private import CaptureModelsSpecific
 
+class ActiveConfiguration extends Unit {
+  predicate activateThroughFlowConfig() { none() }
+
+  predicate activateFromSourceConfig() { none() }
+
+  predicate activateToSinkConfig() { none() }
+}
+
 class DataFlowTargetApi extends TargetApiSpecific {
   DataFlowTargetApi() { isRelevantForDataFlowModels(this) }
 }
@@ -140,7 +148,9 @@ private class TaintStore extends DataFlow::FlowState {
  * This can be used to generate Flow summaries for APIs from parameter to return.
  */
 private class ThroughFlowConfig extends TaintTracking::Configuration {
-  ThroughFlowConfig() { this = "ThroughFlowConfig" }
+  ThroughFlowConfig() {
+    this = "ThroughFlowConfig" and any(ActiveConfiguration ac).activateThroughFlowConfig()
+  }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     source instanceof DataFlow::ParameterNode and
@@ -210,7 +220,9 @@ string captureThroughFlow(DataFlowTargetApi api) {
  * via its return (then the API itself becomes a source).
  */
 private class FromSourceConfiguration extends TaintTracking::Configuration {
-  FromSourceConfiguration() { this = "FromSourceConfiguration" }
+  FromSourceConfiguration() {
+    this = "FromSourceConfiguration" and any(ActiveConfiguration ac).activateFromSourceConfig()
+  }
 
   override predicate isSource(DataFlow::Node source) { ExternalFlow::sourceNode(source, _) }
 
@@ -250,8 +262,13 @@ string captureSource(DataFlowTargetApi api) {
  * This can be used to generate Sink summaries for APIs, if the API propagates a parameter (or enclosing type field)
  * into an existing known sink (then the API itself becomes a sink).
  */
-private class PropagateToSinkConfiguration extends PropagateToSinkConfigurationSpecific {
-  PropagateToSinkConfiguration() { this = "parameters or fields flowing into sinks" }
+private class PropagateToSinkConfiguration extends TaintTracking::Configuration {
+  PropagateToSinkConfiguration() {
+    this = "parameters or fields flowing into sinks" and
+    any(ActiveConfiguration ac).activateToSinkConfig()
+  }
+
+  override predicate isSource(DataFlow::Node source) { apiSource(source) }
 
   override predicate isSink(DataFlow::Node sink) { ExternalFlow::sinkNode(sink, _) }
 
