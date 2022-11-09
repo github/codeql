@@ -2,7 +2,7 @@
  * @name Compiler errors
  * @description List all compiler errors for files in the source code directory.
  * @kind diagnostic
- * @id swift/diagnostics/compiler-errors
+ * @id swift/diagnostics/extraction-errors
  */
 
 import swift
