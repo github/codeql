@@ -470,7 +470,8 @@ open class KotlinFileExtractor(
         idx: Int,
         contextLabel: String? = null
     ): Label<out DbExpr> {
-        val t = useType(constructorCall.type)
+        // Erase the type here because the JVM lowering erases the annotation type, and so the Java extractor will see it in erased form.
+        val t = useType(erase(constructorCall.type))
         val annotationContextLabel = contextLabel ?: "{${t.javaResult.id}}"
         val id = tw.getLabelFor<DbDeclannotation>("@\"annotation;{$parent};$annotationContextLabel\"")
         tw.writeExprs_declannotation(id, t.javaResult.id, parent, idx)
@@ -485,8 +486,9 @@ open class KotlinFileExtractor(
                 .filterIsInstance<IrProperty>()
                 .first { it.name == param.name }
             val v = constructorCall.getValueArgument(i) ?: param.defaultValue?.expression
-            val getterId = useFunction<DbMethod>(prop.getter!!)
-            val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}")
+            val getter = prop.getter!!
+            val getterId = useFunction<DbMethod>(getter)
+            val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}", getter.returnType)
             if (exprId != null) {
                 tw.writeAnnotValue(id, getterId, exprId)
             }
@@ -498,7 +500,8 @@ open class KotlinFileExtractor(
         v: IrExpression?,
         parent: Label<out DbExprparent>,
         idx: Int,
-        contextLabel: String): Label<out DbExpr>? {
+        contextLabel: String,
+        contextType: IrType?): Label<out DbExpr>? {
 
         fun exprId() = tw.getLabelFor<DbExpr>("@\"annotationExpr;{$parent};$idx\"")
 
@@ -519,7 +522,10 @@ open class KotlinFileExtractor(
             }
             is IrVararg -> {
                 tw.getLabelFor<DbArrayinit>("@\"annotationarray;{${parent}};$contextLabel\"").also { arrayId ->
-                    val type = useType(kClassToJavaClass(v.type))
+                    // Use the context type (i.e., the type the annotation expects, not the actual type of the array)
+                    // because the Java extractor fills in array types using the same technique. These should only
+                    // differ for generic annotations.
+                    val type = useType(kClassToJavaClass(contextType!!))
                     tw.writeExprs_arrayinit(arrayId, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(arrayId, type.kotlinResult.id)
                     tw.writeHasLocation(arrayId, tw.getLocation(v))
@@ -533,7 +539,7 @@ open class KotlinFileExtractor(
                                 null
                             }
                         }
-                        extractAnnotationValueExpression(argExpr, arrayId, index, "child;$index")
+                        extractAnnotationValueExpression(argExpr, arrayId, index, "child;$index", null)
                     } }
                 }
             }

@@ -31,9 +31,14 @@ test.kt:
 #    5|     5: [Method] t
 #    7|   3: [Interface] Ann3
 #    7|     1: [Method] a
-#    9|   4: [Class] Annotated
+#    9|   4: [GenericType,Interface,ParameterizedType] GenericAnnotation
+#-----|     -2: (Generic Parameters)
+#    9|       0: [TypeVariable] T
+#    9|     1: [Method] x
+#    9|     2: [Method] y
+#   11|   6: [Class] Annotated
 #-----|     -3: (Annotations)
-#    9|       2: [Annotation] Ann1
+#   11|       2: [Annotation] Ann1
 #    0|         1: [IntegerLiteral] 1
 #    0|         1: [Annotation] Ann2
 #    0|           1: [StringLiteral] "Hello"
@@ -53,7 +58,15 @@ test.kt:
 #    0|               0: [TypeAccess] String
 #    0|             1: [TypeLiteral] int.class
 #    0|               0: [TypeAccess] int
-#   10|     1: [Constructor] Annotated
-#    9|       5: [BlockStmt] { ... }
-#    9|         0: [SuperConstructorInvocationStmt] super(...)
-#   10|         1: [BlockStmt] { ... }
+#   12|       3: [Annotation] GenericAnnotation<>
+#   13|     1: [Constructor] Annotated
+#   11|       5: [BlockStmt] { ... }
+#   11|         0: [SuperConstructorInvocationStmt] super(...)
+#   13|         1: [BlockStmt] { ... }
+#    0| [TypeLiteral] String.class
+#    0|   0: [TypeAccess] String
+#    0| [ArrayInit] {...}
+#    0|   1: [TypeLiteral] String.class
+#    0|     0: [TypeAccess] String
+#    0|   1: [TypeLiteral] String.class
+#    0|     0: [TypeAccess] String
