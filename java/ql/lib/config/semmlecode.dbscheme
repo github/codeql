@@ -31,6 +31,12 @@ compilation_started(
     int id : @compilation ref
 )
 
+compilation_info(
+    int id : @compilation ref,
+    string info_key: string ref,
+    string info_value: string ref
+)
+
 /**
  * The arguments that were passed to the extractor for a compiler
  * invocation. If `id` is for the compiler invocation
