@@ -528,7 +528,15 @@ nominal_type_decls(  //dir=decl
 );
 
 opaque_type_decls(  //dir=decl
-  unique int id: @opaque_type_decl
+  unique int id: @opaque_type_decl,
+  int naming_declaration: @value_decl_or_none ref
+);
+
+#keyset[id, index]
+opaque_type_decl_opaque_generic_params(  //dir=decl
+  int id: @opaque_type_decl ref,
+  int index: int ref,
+  int opaque_generic_param: @generic_type_param_type_or_none ref
 );
 
 param_decls(  //dir=decl
@@ -2222,7 +2230,8 @@ dictionary_types(  //dir=type
 ;
 
 opaque_type_archetype_types(  //dir=type
-  unique int id: @opaque_type_archetype_type
+  unique int id: @opaque_type_archetype_type,
+  int declaration: @opaque_type_decl_or_none ref
 );
 
 opened_archetype_types(  //dir=type
@@ -2386,6 +2395,11 @@ variadic_sequence_types(  //dir=type
 
 @nominal_type_decl_or_none =
   @nominal_type_decl
+| @unspecified_element
+;
+
+@opaque_type_decl_or_none =
+  @opaque_type_decl
 | @unspecified_element
 ;
 

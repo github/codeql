@@ -390,4 +390,15 @@ codeql::IfConfigDecl DeclTranslator::translateIfConfigDecl(const swift::IfConfig
   return entry;
 }
 
+std::optional<codeql::OpaqueTypeDecl> DeclTranslator::translateOpaqueTypeDecl(
+    const swift::OpaqueTypeDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillTypeDecl(decl, *entry);
+    entry->naming_declaration = dispatcher.fetchLabel(decl.getNamingDecl());
+    entry->opaque_generic_params = dispatcher.fetchRepeatedLabels(decl.getOpaqueGenericParams());
+    return entry;
+  }
+  return std::nullopt;
+}
+
 }  // namespace codeql
