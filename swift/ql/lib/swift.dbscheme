@@ -254,7 +254,8 @@ import_decl_declarations(  //dir=decl
 );
 
 missing_member_decls(  //dir=decl
-  unique int id: @missing_member_decl
+  unique int id: @missing_member_decl,
+  string name: string ref
 );
 
 @operator_decl =

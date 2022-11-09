@@ -112,8 +112,10 @@ class ImportDecl(Decl):
     imported_module: optional["ModuleDecl"]
     declarations: list["ValueDecl"]
 
+@qltest.skip
 class MissingMemberDecl(Decl):
-    pass
+    """A placeholder for missing declarations that can arise on object deserialization."""
+    name: string
 
 class OperatorDecl(Decl):
     name: string

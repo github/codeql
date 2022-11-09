@@ -115,6 +115,8 @@ module Raw {
 
   class MissingMemberDecl extends @missing_member_decl, Decl {
     override string toString() { result = "MissingMemberDecl" }
+
+    string getName() { missing_member_decls(this, result) }
   }
 
   class OperatorDecl extends @operator_decl, Decl {

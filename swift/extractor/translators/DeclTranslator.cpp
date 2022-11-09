@@ -409,4 +409,11 @@ codeql::PoundDiagnosticDecl DeclTranslator::translatePoundDiagnosticDecl(
   entry.message = dispatcher.fetchLabel(decl.getMessage());
   return entry;
 }
+
+codeql::MissingMemberDecl DeclTranslator::translateMissingMemberDecl(
+    const swift::MissingMemberDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.name = decl.getName().getBaseName().userFacingName().str();
+  return entry;
+}
 }  // namespace codeql
