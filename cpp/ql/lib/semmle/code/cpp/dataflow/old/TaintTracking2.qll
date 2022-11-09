@@ -10,6 +10,11 @@
  *
  * See `semmle.code.cpp.dataflow.old.TaintTracking` for the full documentation.
  */
+
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) taint-tracking analyses.
+ */
 module TaintTracking2 {
   import semmle.code.cpp.dataflow.old.internal.tainttracking2.TaintTrackingImpl
 }
