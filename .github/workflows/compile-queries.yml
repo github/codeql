@@ -14,15 +14,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       # calculate the merge-base with main, in a way that works both on PRs and pushes to main. 
       - name: Calculate merge-base
         if: ${{ github.event_name == 'pull_request' }}
         env:
           BASE_BRANCH: ${{ github.base_ref }}
         run: |
-          MERGE_BASE=$(git merge-base --fork-point origin/$BASE_BRANCH)
+          MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
           echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
       - name: Read CodeQL query compilation - PR
         if: ${{ github.event_name == 'pull_request' }}
