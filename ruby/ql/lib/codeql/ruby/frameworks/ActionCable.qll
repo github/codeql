@@ -43,8 +43,17 @@ module ActionCable {
               .getConstant("Channel")
               .getConstant("Base")
               .getADescendentModule()
-              .getAnOwnInstanceMethod() and
-        // as long as it's public
+              .getAnInstanceMethod() and
+        // as long as it's not an instance method of
+        // `ActionCable::Channel::Base` itself, which might exist in the
+        // database
+        not m =
+          DataFlow::getConstant("ActionCable")
+              .getConstant("Channel")
+              .getConstant("Base")
+              .asModule()
+              .getAnInstanceMethod() and
+        // and as long as it's public
         m.asCallableAstNode().isPublic() and
         // and is not called `subscribed` or `unsubscribed`.
         not m.getMethodName() = ["subscribed", "unsubscribed"]
