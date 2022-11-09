@@ -12,6 +12,7 @@ class NSView : NSResponder {}
 class WKFrameInfo : NSObject {}
 class WKContentWorld : NSObject {
 	class var defaultClient: WKContentWorld { WKContentWorld() }
+	class var page: WKContentWorld { WKContentWorld() }
 }
 
 class WKWebView : UIView {
@@ -174,17 +175,17 @@ func testAsync(_ sink: @escaping (String) async throws -> ()) {
 		let remoteString = getRemoteData()
 
 		try! await sink(localString) // GOOD: the HTML data is local
-		try! await sink(getRemoteData()) // BAD: HTML contains remote input, may access local secrets
-		try! await sink(remoteString) // BAD
+		try! await sink(getRemoteData()) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]: HTML contains remote input, may access local secrets
+		try! await sink(remoteString) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
 
 		try! await sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
-		try! await sink("console.log(" + remoteString + ")") // BAD
+		try! await sink("console.log(" + remoteString + ")") // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
 
 		let localData = Data(localString.utf8)
 		let remoteData = Data(remoteString.utf8)
 
 		try! await sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
-		try! await sink(String(decoding: remoteData, as: UTF8.self)) // BAD: the data is remote
+		try! await sink(String(decoding: remoteData, as: UTF8.self)) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]: the data is remote
 
 		try! await sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
 		try! await sink("console.log(" + String(Int(remoteString) ?? 0) + ")") // GOOD: Primitive conversion
@@ -312,7 +313,18 @@ func testJSEvaluateScript() {
 }
 
 func testQHelpExamples() {
+	Task {
+		let webview = WKWebView()
+		let remoteData = try String(contentsOf: URL(string: "http://example.com/evil.json")!)
 
+		_ = try await webview.evaluateJavaScript("alert(" + remoteData + ")") // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
+
+		_ = try await webview.callAsyncJavaScript(
+			"alert(JSON.parse(data))",
+			arguments: ["data": remoteData], // GOOD
+			contentWorld: .page
+		)
+	}
 }
 
 testUIWebView()
