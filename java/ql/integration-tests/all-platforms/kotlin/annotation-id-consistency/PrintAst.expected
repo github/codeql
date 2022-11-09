@@ -1,0 +1,53 @@
+User.java:
+#    0| [CompilationUnit] User
+#    1|   1: [Class] User
+#    3|     2: [Method] user
+#    3|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    3|         0: [Parameter] a1
+#    3|           0: [TypeAccess] Ann1
+#    3|         1: [Parameter] a2
+#    3|           0: [TypeAccess] Ann2
+#    3|       5: [BlockStmt] { ... }
+#    4|         0: [ExprStmt] <Expr>;
+#    4|           0: [MethodAccess] x(...)
+#    4|             -1: [VarAccess] a1
+#    4|         1: [ExprStmt] <Expr>;
+#    4|           0: [MethodAccess] z(...)
+#    4|             -1: [VarAccess] a2
+#    4|         2: [ExprStmt] <Expr>;
+#    4|           0: [ClassInstanceExpr] new Annotated(...)
+#    4|             -3: [TypeAccess] Annotated
+test.kt:
+#    0| [CompilationUnit] test
+#    3|   1: [Interface] Ann1
+#    3|     1: [Method] x
+#    3|     2: [Method] y
+#    5|   2: [Interface] Ann2
+#    5|     1: [Method] z
+#    5|     2: [Method] w
+#    5|     3: [Method] v
+#    5|     4: [Method] u
+#    7|   3: [Interface] Ann3
+#    7|     1: [Method] a
+#    9|   4: [Class] Annotated
+#-----|     -3: (Annotations)
+#    9|       2: [Annotation] Ann1
+#    0|         1: [IntegerLiteral] 1
+#    0|         1: [Annotation] Ann2
+#    0|           1: [StringLiteral] "Hello"
+#    0|           1: [TypeLiteral] String.class
+#    0|             0: [TypeAccess] String
+#    0|           1: [ArrayInit] {...}
+#    0|             1: [IntegerLiteral] 1
+#    0|             1: [IntegerLiteral] 2
+#    0|             1: [IntegerLiteral] 3
+#    0|           1: [ArrayInit] {...}
+#    0|             1: [Annotation] Ann3
+#    0|               1: [IntegerLiteral] 1
+#    0|             1: [Annotation] Ann3
+#    0|               1: [IntegerLiteral] 2
+#   10|     1: [Constructor] Annotated
+#    9|       5: [BlockStmt] { ... }
+#    9|         0: [SuperConstructorInvocationStmt] super(...)
+#   10|         1: [BlockStmt] { ... }
