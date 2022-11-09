@@ -459,19 +459,20 @@ open class KotlinFileExtractor(
     }
 
     private fun extractAnnotations(c: IrAnnotationContainer, parent: Label<out DbExprparent>) {
-        for ((idx, constructorCall: IrConstructorCall) in c.annotations.withIndex()) {
-            extractAnnotation(constructorCall, parent, -1 - idx)
+        for ((idx, constructorCall: IrConstructorCall) in c.annotations.sortedBy { v -> v.type.classFqName?.asString() }.withIndex()) {
+            extractAnnotation(constructorCall, parent, idx)
         }
     }
 
     private fun extractAnnotation(
         constructorCall: IrConstructorCall,
         parent: Label<out DbExprparent>,
-        idx: Int
+        idx: Int,
+        contextLabel: String? = null
     ): Label<out DbExpr> {
         val t = useType(constructorCall.type)
-
-        val id = tw.getLabelFor<DbDeclannotation>("@\"annotation_kotlin;{$parent};{${t.javaResult.id}}\"")
+        val annotationContextLabel = contextLabel ?: "{${t.javaResult.id}}"
+        val id = tw.getLabelFor<DbDeclannotation>("@\"annotation;{$parent};$annotationContextLabel\"")
         tw.writeExprs_declannotation(id, t.javaResult.id, parent, idx)
         tw.writeExprsKotlinType(id, t.kotlinResult.id)
 
@@ -484,9 +485,10 @@ open class KotlinFileExtractor(
                 .filterIsInstance<IrProperty>()
                 .first { it.name == param.name }
             val v = constructorCall.getValueArgument(i) ?: param.defaultValue?.expression
-            val exprId = extractAnnotationValueExpression(v, id, i)
+            val getterId = useFunction<DbMethod>(prop.getter!!)
+            val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}")
             if (exprId != null) {
-                tw.writeAnnotValue(id, useFunction(prop.getter!!), exprId)
+                tw.writeAnnotValue(id, getterId, exprId)
             }
         }
         return id
@@ -495,41 +497,45 @@ open class KotlinFileExtractor(
     private fun extractAnnotationValueExpression(
         v: IrExpression?,
         parent: Label<out DbExprparent>,
-        idx: Int): Label<out DbExpr>? {
+        idx: Int,
+        contextLabel: String): Label<out DbExpr>? {
+
+        fun exprId() = tw.getLabelFor<DbExpr>("@\"annotationExpr;{$parent};$idx\"")
 
         return when (v) {
             is IrConst<*> -> {
-                extractConstant(v, parent, idx, null, null)
+                extractConstant(v, parent, idx, null, null, overrideId = exprId())
             }
             is IrGetEnumValue -> {
-                extractEnumValue(v, parent, idx, null, null)
+                extractEnumValue(v, parent, idx, null, null, overrideId = exprId())
             }
             is IrClassReference -> {
-                extractClassReference(v, parent, idx, null, null)
+                val classRefId = exprId()
+                val typeAccessId = tw.getLabelFor<DbUnannotatedtypeaccess>("@\"annotationExpr;{$classRefId};0\"")
+                extractClassReference(v, parent, idx, null, null, overrideId = classRefId, typeAccessOverrideId = typeAccessId, useUnboundType = true)
             }
             is IrConstructorCall -> {
-                extractAnnotation(v, parent, idx)
+                extractAnnotation(v, parent, idx, contextLabel)
             }
             is IrVararg -> {
-                val eId = tw.getFreshIdLabel<DbArrayinit>()
-                val type = useType(v.type)
-                tw.writeExprs_arrayinit(eId, type.javaResult.id, parent, idx)
-                tw.writeExprsKotlinType(eId, type.kotlinResult.id)
-                tw.writeHasLocation(eId, tw.getLocation(v))
+                tw.getLabelFor<DbArrayinit>("@\"annotationarray;{${parent}};$contextLabel\"").also { arrayId ->
+                    val type = useType(v.type)
+                    tw.writeExprs_arrayinit(arrayId, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(arrayId, type.kotlinResult.id)
+                    tw.writeHasLocation(arrayId, tw.getLocation(v))
 
-                v.elements.forEachIndexed { index, irVarargElement -> run {
-                    val argExpr = when(irVarargElement) {
-                        is IrExpression -> irVarargElement
-                        is IrSpreadElement -> irVarargElement.expression
-                        else -> {
-                            logger.errorElement("Unrecognised IrVarargElement: " + irVarargElement.javaClass, irVarargElement)
-                            null
+                    v.elements.forEachIndexed { index, irVarargElement -> run {
+                        val argExpr = when (irVarargElement) {
+                            is IrExpression -> irVarargElement
+                            is IrSpreadElement -> irVarargElement.expression
+                            else -> {
+                                logger.errorElement("Unrecognised IrVarargElement: " + irVarargElement.javaClass, irVarargElement)
+                                null
+                            }
                         }
-                    }
-                    extractAnnotationValueExpression(argExpr, eId, index)
-                } }
-
-                eId
+                        extractAnnotationValueExpression(argExpr, arrayId, index, "child;$index")
+                    } }
+                }
             }
             // is IrErrorExpression
             // null
@@ -3525,8 +3531,8 @@ open class KotlinFileExtractor(
             extractExprContext(it, locId, callable, enclosingStmt)
         }
 
-    private fun extractConstantInteger(v: Number, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) =
-        tw.getFreshIdLabel<DbIntegerliteral>().also {
+    private fun extractConstantInteger(v: Number, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, overrideId: Label<out DbExpr>? = null) =
+        exprIdOrFresh<DbIntegerliteral>(overrideId).also {
             val type = useType(pluginContext.irBuiltIns.intType)
             tw.writeExprs_integerliteral(it, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(it, type.kotlinResult.id)
@@ -3534,8 +3540,8 @@ open class KotlinFileExtractor(
             extractExprContext(it, locId, callable, enclosingStmt)
         }
 
-    private fun extractNull(t: IrType, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) =
-        tw.getFreshIdLabel<DbNullliteral>().also {
+    private fun extractNull(t: IrType, locId: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, overrideId: Label<out DbExpr>? = null) =
+        exprIdOrFresh<DbNullliteral>(overrideId).also {
             val type = useType(t)
             tw.writeExprs_nullliteral(it, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(it, type.kotlinResult.id)
@@ -3548,16 +3554,6 @@ open class KotlinFileExtractor(
             tw.writeExprs_assignexpr(it, typeResults.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(it, typeResults.kotlinResult.id)
             extractExprContext(it, locId, callable, enclosingStmt)
-        }
-
-    private fun escapeCharForQuotedLiteral(c: Char) =
-        when (c) {
-            '\r' -> "\\r"
-            '\n' -> "\\n"
-            '\t' -> "\\t"
-            '\\' -> "\\\\"
-            '"' -> "\\\""
-            else -> c.toString()
         }
 
     private fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: StmtExprParent) {
@@ -4182,21 +4178,33 @@ open class KotlinFileExtractor(
         extractExpressionExpr(loop.condition, callable, id, 0, id)
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun <T : DbExpr> exprIdOrFresh(id: Label<out DbExpr>?) = id as? Label<T> ?: tw.getFreshIdLabel()
+
+    private fun toUnbound(t: IrType) =
+        when(t) {
+            is IrSimpleType -> t.classifier.typeWith()
+            else -> t
+        }
+
     private fun extractClassReference(
         e: IrClassReference,
         parent: Label<out DbExprparent>,
         idx: Int,
         enclosingCallable: Label<out DbCallable>?,
-        enclosingStmt: Label<out DbStmt>?
+        enclosingStmt: Label<out DbStmt>?,
+        overrideId: Label<out DbExpr>? = null,
+        typeAccessOverrideId: Label<out DbExpr>? = null,
+        useUnboundType: Boolean = false
     ) =
-        tw.getFreshIdLabel<DbTypeliteral>().also { id ->
+        exprIdOrFresh<DbTypeliteral>(overrideId).also { id ->
             val locId = tw.getLocation(e)
-            val type = useType(e.type)
+            val type = useType(if (useUnboundType) toUnbound(e.type) else e.type)
             tw.writeExprs_typeliteral(id, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(id, type.kotlinResult.id)
             extractExprContext(id, locId, enclosingCallable, enclosingStmt)
 
-            extractTypeAccessRecursive(e.classType, locId, id, 0, enclosingCallable, enclosingStmt)
+            extractTypeAccessRecursive(e.classType, locId, id, 0, enclosingCallable, enclosingStmt, overrideId = typeAccessOverrideId)
         }
 
     private fun extractEnumValue(
@@ -4204,9 +4212,10 @@ open class KotlinFileExtractor(
         parent: Label<out DbExprparent>,
         idx: Int,
         enclosingCallable: Label<out DbCallable>?,
-        enclosingStmt: Label<out DbStmt>?
+        enclosingStmt: Label<out DbStmt>?,
+        overrideId: Label<out DbExpr>? = null
     ) =
-        tw.getFreshIdLabel<DbVaraccess>().also { id ->
+        exprIdOrFresh<DbVaraccess>(overrideId).also { id ->
             val type = useType(e.type)
             val locId = tw.getLocation(e)
             tw.writeExprs_varaccess(id, type.javaResult.id, parent, idx)
@@ -4223,6 +4232,16 @@ open class KotlinFileExtractor(
             }
         }
 
+    private fun escapeCharForQuotedLiteral(c: Char) =
+        when(c) {
+            '\r' -> "\\r"
+            '\n' -> "\\n"
+            '\t' -> "\\t"
+            '\\' -> "\\\\"
+            '"' -> "\\\""
+            else -> c.toString()
+        }
+
     // Render a string literal as it might occur in Kotlin source. Note this is a reasonable guess; the real source
     // could use other escape sequences to describe the same String. Importantly, this is the same guess the Java
     // extractor makes regarding string literals occurring within annotations, which we need to coincide with to ensure
@@ -4235,15 +4254,17 @@ open class KotlinFileExtractor(
         parent: Label<out DbExprparent>,
         idx: Int,
         enclosingCallable: Label<out DbCallable>?,
-        enclosingStmt: Label<out DbStmt>?
+        enclosingStmt: Label<out DbStmt>?,
+        overrideId: Label<out DbExpr>? = null
     ): Label<out DbExpr>? {
+
         val v = e.value
         return when {
             v is Number && (v is Int || v is Short || v is Byte) -> {
-                extractConstantInteger(v, tw.getLocation(e), parent, idx, enclosingCallable, enclosingStmt)
+                extractConstantInteger(v, tw.getLocation(e), parent, idx, enclosingCallable, enclosingStmt, overrideId = overrideId)
             }
             v is Long -> {
-                tw.getFreshIdLabel<DbLongliteral>().also { id ->
+                exprIdOrFresh<DbLongliteral>(overrideId).also { id ->
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
                     tw.writeExprs_longliteral(id, type.javaResult.id, parent, idx)
@@ -4253,7 +4274,7 @@ open class KotlinFileExtractor(
                 }
             }
             v is Float -> {
-                tw.getFreshIdLabel<DbFloatingpointliteral>().also { id ->
+                exprIdOrFresh<DbFloatingpointliteral>(overrideId).also { id ->
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
                     tw.writeExprs_floatingpointliteral(id, type.javaResult.id, parent, idx)
@@ -4263,7 +4284,7 @@ open class KotlinFileExtractor(
                 }
             }
             v is Double -> {
-                tw.getFreshIdLabel<DbDoubleliteral>().also { id ->
+                exprIdOrFresh<DbDoubleliteral>(overrideId).also { id ->
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
                     tw.writeExprs_doubleliteral(id, type.javaResult.id, parent, idx)
@@ -4273,7 +4294,7 @@ open class KotlinFileExtractor(
                 }
             }
             v is Boolean -> {
-                tw.getFreshIdLabel<DbBooleanliteral>().also { id ->
+                exprIdOrFresh<DbBooleanliteral>(overrideId).also { id ->
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
                     tw.writeExprs_booleanliteral(id, type.javaResult.id, parent, idx)
@@ -4283,7 +4304,7 @@ open class KotlinFileExtractor(
                 }
             }
             v is Char -> {
-                tw.getFreshIdLabel<DbCharacterliteral>().also { id ->
+                exprIdOrFresh<DbCharacterliteral>(overrideId).also { id ->
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
                     tw.writeExprs_characterliteral(id, type.javaResult.id, parent, idx)
@@ -4293,7 +4314,7 @@ open class KotlinFileExtractor(
                 }
             }
             v is String -> {
-                tw.getFreshIdLabel<DbStringliteral>().also { id ->
+                exprIdOrFresh<DbStringliteral>(overrideId).also { id ->
                     val type = useType(e.type)
                     val locId = tw.getLocation(e)
                     tw.writeExprs_stringliteral(id, type.javaResult.id, parent, idx)
@@ -4303,7 +4324,7 @@ open class KotlinFileExtractor(
                 }
             }
             v == null -> {
-                extractNull(e.type, tw.getLocation(e), parent, idx, enclosingCallable, enclosingStmt)
+                extractNull(e.type, tw.getLocation(e), parent, idx, enclosingCallable, enclosingStmt, overrideId = overrideId)
             }
             else -> {
                 null.also {
@@ -5157,11 +5178,11 @@ open class KotlinFileExtractor(
     /**
      * Extracts a single type access expression with no enclosing callable and statement.
      */
-    private fun extractTypeAccess(type: TypeResults, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
+    private fun extractTypeAccess(type: TypeResults, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, overrideId: Label<out DbExpr>? = null): Label<out DbExpr> {
         // TODO: elementForLocation allows us to give some sort of
         //   location, but a proper location for the type access will
         //   require upstream changes
-        val id = tw.getFreshIdLabel<DbUnannotatedtypeaccess>()
+        val id = exprIdOrFresh<DbUnannotatedtypeaccess>(overrideId)
         tw.writeExprs_unannotatedtypeaccess(id, type.javaResult.id, parent, idx)
         tw.writeExprsKotlinType(id, type.kotlinResult.id)
         tw.writeHasLocation(id, location)
@@ -5171,8 +5192,8 @@ open class KotlinFileExtractor(
     /**
      * Extracts a single type access expression with enclosing callable and statement.
      */
-    private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?): Label<out DbExpr> {
-        val id = extractTypeAccess(type, location, parent, idx)
+    private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, overrideId: Label<out DbExpr>? = null): Label<out DbExpr> {
+        val id = extractTypeAccess(type, location, parent, idx, overrideId = overrideId)
         if (enclosingCallable != null) {
             tw.writeCallableEnclosingExpr(id, enclosingCallable)
         }
@@ -5220,11 +5241,14 @@ open class KotlinFileExtractor(
     /**
      * Extracts a type access expression and its child type access expressions in case of a generic type. Nested generics are also handled.
      */
-    private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
+    private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, typeContext: TypeContext = TypeContext.OTHER, overrideId: Label<out DbExpr>? = null): Label<out DbExpr> {
         // TODO: `useType` substitutes types to their java equivalent, and sometimes that also means changing the number of type arguments. The below logic doesn't take this into account.
         // For example `KFunction2<Int,Double,String>` becomes `KFunction<String>` with three child type access expressions: `Int`, `Double`, `String`.
-        val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx, enclosingCallable, enclosingStmt)
+        val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx, enclosingCallable, enclosingStmt, overrideId = overrideId)
         if (t is IrSimpleType) {
+            if (t.arguments.isNotEmpty() && overrideId != null) {
+                logger.error("Unexpected parameterized type with an overridden expression ID; children will be assigned fresh IDs")
+            }
             extractTypeArguments(t.arguments.filterIsInstance<IrType>(), location, typeAccessId, enclosingCallable, enclosingStmt)
         }
         return typeAccessId
