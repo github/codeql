@@ -115,6 +115,8 @@ module Raw {
 
   class MissingMemberDecl extends @missing_member_decl, Decl {
     override string toString() { result = "MissingMemberDecl" }
+
+    string getName() { missing_member_decls(this, result) }
   }
 
   class OperatorDecl extends @operator_decl, Decl {
@@ -131,6 +133,10 @@ module Raw {
 
   class PoundDiagnosticDecl extends @pound_diagnostic_decl, Decl {
     override string toString() { result = "PoundDiagnosticDecl" }
+
+    int getKind() { pound_diagnostic_decls(this, result, _) }
+
+    StringLiteralExpr getMessage() { pound_diagnostic_decls(this, _, result) }
   }
 
   class PrecedenceGroupDecl extends @precedence_group_decl, Decl {

@@ -373,14 +373,17 @@ private module Impl {
   private Element getImmediateChildOfPoundDiagnosticDecl(
     PoundDiagnosticDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bDecl, int n |
+    exists(int b, int bDecl, int n, int nMessage |
       b = 0 and
       bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
       n = bDecl and
+      nMessage = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateMessage() and partialPredicateCall = "Message()"
       )
     )
   }
