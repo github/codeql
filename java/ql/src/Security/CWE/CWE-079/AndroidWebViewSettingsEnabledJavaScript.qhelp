@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+<p>
+  Enabling JavaScript in an Android WebView allows for the running of JavaScript
+code in the context of the running application. This opens the possibility for a
+man-in-the-middle attack, where the attacker can inject arbitrary JavaScript.
+</p>
+
+<p>
+  You can enable or disbale Javascript execution using
+  the <code>setJavaScriptEnabled</code> method of the settings of a webview.
+</p>
+  </overview>
+
+  <recommendation>
+    <p>If Javascript does not need to be enabled, call <code>setJavaScriptEnabled(false)</code> on the settings of the webview.</p>
+
+    <p>If JavaScript is necessary, only load content from trusted servers using encrypted channels, such as https with certificate verification.</p>
+  </recommendation>
+
+  <example>
+    <p>In the following (bad) example, a webview has JavaScript enabled in its settings.</p>
+
+    <sample src="WebSettingsEnableJavascript.java"/>
+
+    <p>In the following (good) example, a webview explicitly disallows JavaScript execution.</p>
+
+    <sample src="WebSettingsDisableJavascript.java"/>
+
+  </example>
+
+  <references>
+    <li>
+      Oversecured Android Vulnerabilities Guide: <a href="https://oversecured.com/vulnerabilities#Android/Enabled_JavaScript">Enabled JavaScript</a>
+    </li>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setJavaScriptEnabled(boolean)">setJavaScriptEnabled</a>
+    </li>
+
+  </references>
+
+</qhelp>
