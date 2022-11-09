@@ -15,4 +15,9 @@
  * `TaintTracking::localTaintStep` with arguments of type `DataFlow::Node`.
  */
 
-import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.dataflow.old.DataFlow
+import semmle.code.cpp.dataflow.old.DataFlow2
+
+module TaintTracking {
+  import semmle.code.cpp.dataflow.old.internal.tainttracking1.TaintTrackingImpl
+}
