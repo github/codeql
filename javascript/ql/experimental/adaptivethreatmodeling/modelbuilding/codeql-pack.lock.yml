@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-11-08-10h04m48s.yellow-plastic-myq90f89.eb9f9ff2a746172f763da7c650d337f66adfa78281277a033629fc62f7ac5882
 compiled: false
 lockVersion: 1.0.0
