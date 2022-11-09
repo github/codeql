@@ -271,10 +271,7 @@ module Http {
 
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
-          exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
-            this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getStringlikeValue()
-          )
+          result = this.getUrlPatternArg().getALocalSource().getConstantValue().getStringlikeValue()
         }
 
         /**
@@ -538,10 +535,12 @@ module Http {
 
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
-          exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
-            this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getStringlikeValue().splitAt(";", 0)
-          )
+          result =
+            this.getMimetypeOrContentTypeArg()
+                .getALocalSource()
+                .getConstantValue()
+                .getStringlikeValue()
+                .splitAt(";", 0)
           or
           not exists(this.getMimetypeOrContentTypeArg()) and
           result = this.getMimetypeDefault()

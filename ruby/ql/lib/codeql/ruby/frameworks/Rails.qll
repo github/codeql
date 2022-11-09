@@ -92,102 +92,63 @@ module Rails {
 }
 
 /**
- * A reference to either `Rails::Railtie`, `Rails::Engine`, or `Rails::Application`.
+ * Gets a reference to the `Rails` constant.
+ */
+private DataFlow::ConstRef rails() { result = DataFlow::getConstant("Rails") }
+
+/**
+ * Gets a reference to either `Rails::Railtie`, `Rails::Engine`, or `Rails::Application`.
  * `Engine` and `Application` extend `Railtie`, but may not have definitions present in the database.
  */
-private class RailtieClassAccess extends ConstantReadAccess {
-  RailtieClassAccess() {
-    this.getScopeExpr().(ConstantAccess).getName() = "Rails" and
-    this.getName() = ["Railtie", "Engine", "Application"]
-  }
+private DataFlow::ConstRef railtie() {
+  result = rails().getConstant(["Railtie", "Engine", "Application"])
 }
 
-// A `ClassDeclaration` that (transitively) extends `Rails::Railtie`
-private class RailtieClass extends ClassDeclaration {
-  RailtieClass() {
-    this.getSuperclassExpr() instanceof RailtieClassAccess or
-    exists(RailtieClass other |
-      other.getModule() = this.getSuperclassExpr().(ConstantReadAccess).getModule()
-    )
-  }
-}
+/** Gets a class that transitively extends `Rails::Railtie` */
+private DataFlow::ClassNode railtieClass() { result = railtie().getADescendentModule() }
 
-private DataFlow::CallNode getAConfigureCallNode() {
-  // `Rails.application.configure`
-  result = API::getTopLevelMember("Rails").getReturn("application").getAMethodCall("configure")
+/**
+ * Gets a reference to `Rails::Application` or `Rails.application`.
+ */
+private DataFlow::LocalSourceNode railsApp() {
+  result = rails().getAMethodCall("application")
   or
-  // `Rails::Application.configure`
-  exists(ConstantReadAccess read, RailtieClass cls |
-    read = result.getReceiver().asExpr().getExpr() and
-    read.getModule() = cls.getModule() and
-    result.asExpr().getExpr().(MethodCall).getMethodName() = "configure"
-  )
+  result = rails().getConstant("Application")
 }
 
 /**
  * Classes representing accesses to the Rails config object.
  */
 private module Config {
-  /**
-   * An access to a Rails config object.
-   */
-  private class SourceNode extends DataFlow::LocalSourceNode {
-    SourceNode() {
-      // `Foo < Rails::Application ... config ...`
-      exists(MethodCall configCall | this.asExpr().getExpr() = configCall |
-        configCall.getMethodName() = "config" and
-        configCall.getEnclosingModule() instanceof RailtieClass
-      )
-      or
-      // `Rails.application.config`
-      this = API::getTopLevelMember("Rails").getReturn("application").getReturn("config").asSource()
-      or
-      // `Rails.application.configure { ... config ... }`
-      // `Rails::Application.configure { ... config ... }`
-      exists(DataFlow::CallNode configureCallNode, Block block, MethodCall configCall |
-        configCall = this.asExpr().getExpr()
-      |
-        configureCallNode = getAConfigureCallNode() and
-        block = configureCallNode.asExpr().getExpr().(MethodCall).getBlock() and
-        configCall.getParent+() = block and
-        configCall.getMethodName() = "config"
-      )
-    }
+  DataFlow::LocalSourceNode configSource() {
+    // `Foo < Rails::Application ... config ...`
+    result = railtieClass().getAnOwnModuleSelf().getAMethodCall("config")
+    or
+    // `Rails.application.config`
+    result = railsApp().getAMethodCall("config")
+    or
+    // TODO: move away from getParent+() when have better infrastructure for overridden 'self' in blocks
+    // `Rails.application.configure { ... config ... }`
+    // `Rails::Application.configure { ... config ... }`
+    exists(Block block, MethodCall configCall | configCall = result.asExpr().getExpr() |
+      block = railsApp().getAMethodCall("configure").getBlock().asExpr().getExpr() and
+      configCall.getParent+() = block and
+      configCall.getMethodName() = "config"
+    )
   }
 
   /**
-   * A reference to the Rails config object.
+   * Gets a reference to the ActionController config object.
    */
-  class Node extends DataFlow::Node {
-    Node() { exists(SourceNode src | src.flowsTo(this)) }
+  DataFlow::LocalSourceNode actionController() {
+    result = configSource().getAMethodCall("action_controller")
   }
 
   /**
-   * A reference to the ActionController config object.
+   * Gets a reference to the ActionDispatch config object.
    */
-  class ActionControllerNode extends DataFlow::Node {
-    ActionControllerNode() {
-      exists(DataFlow::CallNode source |
-        source.getReceiver() instanceof Node and
-        source.getMethodName() = "action_controller"
-      |
-        source.flowsTo(this)
-      )
-    }
-  }
-
-  /**
-   * A reference to the ActionDispatch config object.
-   */
-  class ActionDispatchNode extends DataFlow::Node {
-    ActionDispatchNode() {
-      exists(DataFlow::CallNode source |
-        source.getReceiver() instanceof Node and
-        source.getMethodName() = "action_dispatch"
-      |
-        source.flowsTo(this)
-      )
-    }
+  DataFlow::LocalSourceNode actionDispatch() {
+    result = configSource().getAMethodCall("action_dispatch")
   }
 }
 
@@ -200,24 +161,18 @@ private module Settings {
     loc.getFile().getStem() = "test"
   }
 
-  private class Setting extends DataFlow::CallNode {
+  private class Setting extends DataFlow::SetterCallNode {
     Setting() {
       // exclude some test configuration
       not isInTestConfiguration(this.getLocation()) and
-      this.getReceiver+() instanceof Config::Node and
-      this.asExpr().getExpr() instanceof SetterMethodCall
+      this = Config::configSource().getAMethodCall+()
     }
   }
 
   private class LiteralSetting extends Setting {
     ConstantValue value;
 
-    LiteralSetting() {
-      exists(DataFlow::LocalSourceNode lsn |
-        lsn.asExpr().getConstantValue() = value and
-        lsn.flowsTo(this.getArgument(0))
-      )
-    }
+    LiteralSetting() { value = this.getArgument(0).getALocalSource().getConstantValue() }
 
     string getValueText() { result = value.toString() }
 
@@ -262,8 +217,7 @@ private module Settings {
 private class AllowForgeryProtectionSetting extends Settings::BooleanSetting,
   CsrfProtectionSetting::Range {
   AllowForgeryProtectionSetting() {
-    this.getReceiver() instanceof Config::ActionControllerNode and
-    this.getMethodName() = "allow_forgery_protection="
+    this = Config::actionController().getAMethodCall("allow_forgery_protection=")
   }
 
   override boolean getVerificationSetting() { result = this.getValue() }
@@ -277,8 +231,7 @@ private class AllowForgeryProtectionSetting extends Settings::BooleanSetting,
 private class EncryptedCookieCipherSetting extends Settings::StringlikeSetting,
   CookieSecurityConfigurationSetting::Range {
   EncryptedCookieCipherSetting() {
-    this.getReceiver() instanceof Config::ActionDispatchNode and
-    this.getMethodName() = "encrypted_cookie_cipher="
+    this = Config::actionDispatch().getAMethodCall("encrypted_cookie_cipher=")
   }
 
   OpenSslCipher getCipher() { this.getValueText() = result.getName() }
@@ -298,8 +251,7 @@ private class EncryptedCookieCipherSetting extends Settings::StringlikeSetting,
 private class UseAuthenticatedCookieEncryptionSetting extends Settings::BooleanSetting,
   CookieSecurityConfigurationSetting::Range {
   UseAuthenticatedCookieEncryptionSetting() {
-    this.getReceiver() instanceof Config::ActionDispatchNode and
-    this.getMethodName() = "use_authenticated_cookie_encryption="
+    this = Config::actionDispatch().getAMethodCall("use_authenticated_cookie_encryption=")
   }
 
   boolean getDefaultValue() { result = true }
@@ -321,8 +273,7 @@ private class UseAuthenticatedCookieEncryptionSetting extends Settings::BooleanS
 private class CookiesSameSiteProtectionSetting extends Settings::NillableStringlikeSetting,
   CookieSecurityConfigurationSetting::Range {
   CookiesSameSiteProtectionSetting() {
-    this.getReceiver() instanceof Config::ActionDispatchNode and
-    this.getMethodName() = "cookies_same_site_protection="
+    this = Config::actionDispatch().getAMethodCall("cookies_same_site_protection=")
   }
 
   string getDefaultValue() { result = "lax" }

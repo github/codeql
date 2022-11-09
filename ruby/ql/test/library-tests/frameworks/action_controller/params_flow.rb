@@ -157,4 +157,22 @@ class MyController < ActionController::Base
     p.reverse_update(params)
     sink p # $hasTaintFlow
   end
+  
+  include Mixin
+end
+
+module Mixin
+  def m33
+    sink params[:x] # $hasTaintFlow
+  end
+end
+
+class Subclass < MyController
+  def m34
+    sink params[:x] # $hasTaintFlow
+  end
+
+  rescue_from 'Foo::Bar' do |err|
+    sink params[:x] # $hasTaintFlow
+  end
 end

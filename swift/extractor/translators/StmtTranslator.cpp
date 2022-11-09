@@ -174,4 +174,16 @@ void StmtTranslator::fillLabeledConditionalStmt(const swift::LabeledConditionalS
   fillLabeledStmt(stmt, entry);
 }
 
+codeql::FailStmt StmtTranslator::translateFailStmt(const swift::FailStmt& stmt) {
+  return dispatcher.createEntry(stmt);
+}
+
+codeql::PoundAssertStmt StmtTranslator::translatePoundAssertStmt(
+    const swift::PoundAssertStmt& stmt) {
+  auto entry = dispatcher.createEntry(stmt);
+  entry.condition = dispatcher.fetchLabel(stmt.getCondition());
+  entry.message = stmt.getMessage();
+  return entry;
+}
+
 }  // namespace codeql

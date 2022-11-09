@@ -66,6 +66,7 @@ files(
   @argument
 | @ast_node
 | @comment
+| @diagnostics
 | @unspecified_element
 ;
 
@@ -123,6 +124,12 @@ db_files(
 
 db_locations(
   unique int id: @db_location
+);
+
+diagnostics(
+  unique int id: @diagnostics,
+  string text: string ref,
+  int kind: int ref
 );
 
 unknown_files(
@@ -247,7 +254,8 @@ import_decl_declarations(  //dir=decl
 );
 
 missing_member_decls(  //dir=decl
-  unique int id: @missing_member_decl
+  unique int id: @missing_member_decl,
+  string name: string ref
 );
 
 @operator_decl =
@@ -281,7 +289,9 @@ pattern_binding_decl_patterns(  //dir=decl
 );
 
 pound_diagnostic_decls(  //dir=decl
-  unique int id: @pound_diagnostic_decl
+  unique int id: @pound_diagnostic_decl,
+  int kind: int ref,
+  int message: @string_literal_expr_or_none ref
 );
 
 precedence_group_decls(  //dir=decl
@@ -528,7 +538,15 @@ nominal_type_decls(  //dir=decl
 );
 
 opaque_type_decls(  //dir=decl
-  unique int id: @opaque_type_decl
+  unique int id: @opaque_type_decl,
+  int naming_declaration: @value_decl_or_none ref
+);
+
+#keyset[id, index]
+opaque_type_decl_opaque_generic_params(  //dir=decl
+  int id: @opaque_type_decl ref,
+  int index: int ref,
+  int opaque_generic_param: @generic_type_param_type_or_none ref
 );
 
 param_decls(  //dir=decl
@@ -1696,7 +1714,9 @@ labeled_stmt_labels(  //dir=stmt
 );
 
 pound_assert_stmts(  //dir=stmt
-  unique int id: @pound_assert_stmt
+  unique int id: @pound_assert_stmt,
+  int condition: @expr_or_none ref,
+  string message: string ref
 );
 
 return_stmts(  //dir=stmt
@@ -2220,7 +2240,8 @@ dictionary_types(  //dir=type
 ;
 
 opaque_type_archetype_types(  //dir=type
-  unique int id: @opaque_type_archetype_type
+  unique int id: @opaque_type_archetype_type,
+  int declaration: @opaque_type_decl_or_none ref
 );
 
 opened_archetype_types(  //dir=type
@@ -2387,6 +2408,11 @@ variadic_sequence_types(  //dir=type
 | @unspecified_element
 ;
 
+@opaque_type_decl_or_none =
+  @opaque_type_decl
+| @unspecified_element
+;
+
 @opaque_value_expr_or_none =
   @opaque_value_expr
 | @unspecified_element
@@ -2424,6 +2450,11 @@ variadic_sequence_types(  //dir=type
 
 @stmt_condition_or_none =
   @stmt_condition
+| @unspecified_element
+;
+
+@string_literal_expr_or_none =
+  @string_literal_expr
 | @unspecified_element
 ;
 
