@@ -8,7 +8,13 @@
  * `TaintTracking::Configuration` class extends `DataFlow::Configuration`, and
  * `TaintTracking2::Configuration` extends `DataFlow2::Configuration`.
  *
- * See `semmle.code.cpp.ir.dataflow.TaintTracking` for the full documentation.
+ * See `semmle.code.cpp.dataflow.old.TaintTracking` for the full documentation.
  */
 
-import semmle.code.cpp.ir.dataflow.TaintTracking2
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) taint-tracking analyses.
+ */
+module TaintTracking2 {
+  import semmle.code.cpp.dataflow.old.internal.tainttracking2.TaintTrackingImpl
+}
