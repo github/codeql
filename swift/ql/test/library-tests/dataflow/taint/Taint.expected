@@ -301,6 +301,11 @@ edges
 | string.swift:28:17:28:25 | call to source2() :  | string.swift:35:13:35:23 | ... .+(_:_:) ... |
 | string.swift:28:17:28:25 | call to source2() :  | string.swift:36:13:36:23 | ... .+(_:_:) ... |
 | string.swift:28:17:28:25 | call to source2() :  | string.swift:39:13:39:29 | ... .+(_:_:) ... |
+| string.swift:74:17:74:25 | call to source2() :  | string.swift:85:13:85:21 | .description |
+| string.swift:74:17:74:25 | call to source2() :  | string.swift:88:13:88:21 | .debugDescription |
+| string.swift:97:17:97:25 | call to source2() :  | string.swift:102:13:102:13 | tainted |
+| string.swift:98:24:98:32 | call to source2() :  | string.swift:103:13:103:13 | taintedCString |
+| string.swift:99:31:99:39 | call to source2() :  | string.swift:104:13:104:13 | taintedUnicodeScalars |
 | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] |
 | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... |
@@ -940,6 +945,15 @@ nodes
 | string.swift:35:13:35:23 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | string.swift:36:13:36:23 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | string.swift:39:13:39:29 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| string.swift:74:17:74:25 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:85:13:85:21 | .description | semmle.label | .description |
+| string.swift:88:13:88:21 | .debugDescription | semmle.label | .debugDescription |
+| string.swift:97:17:97:25 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:98:24:98:32 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:99:31:99:39 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:102:13:102:13 | tainted | semmle.label | tainted |
+| string.swift:103:13:103:13 | taintedCString | semmle.label | taintedCString |
+| string.swift:104:13:104:13 | taintedUnicodeScalars | semmle.label | taintedUnicodeScalars |
 | subscript.swift:13:15:13:22 | call to source() :  | semmle.label | call to source() :  |
 | subscript.swift:13:15:13:25 | ...[...] | semmle.label | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() :  | semmle.label | call to source2() :  |
@@ -1340,6 +1354,11 @@ subpaths
 | string.swift:35:13:35:23 | ... .+(_:_:) ... | string.swift:28:17:28:25 | call to source2() :  | string.swift:35:13:35:23 | ... .+(_:_:) ... | result |
 | string.swift:36:13:36:23 | ... .+(_:_:) ... | string.swift:28:17:28:25 | call to source2() :  | string.swift:36:13:36:23 | ... .+(_:_:) ... | result |
 | string.swift:39:13:39:29 | ... .+(_:_:) ... | string.swift:28:17:28:25 | call to source2() :  | string.swift:39:13:39:29 | ... .+(_:_:) ... | result |
+| string.swift:85:13:85:21 | .description | string.swift:74:17:74:25 | call to source2() :  | string.swift:85:13:85:21 | .description | result |
+| string.swift:88:13:88:21 | .debugDescription | string.swift:74:17:74:25 | call to source2() :  | string.swift:88:13:88:21 | .debugDescription | result |
+| string.swift:102:13:102:13 | tainted | string.swift:97:17:97:25 | call to source2() :  | string.swift:102:13:102:13 | tainted | result |
+| string.swift:103:13:103:13 | taintedCString | string.swift:98:24:98:32 | call to source2() :  | string.swift:103:13:103:13 | taintedCString | result |
+| string.swift:104:13:104:13 | taintedUnicodeScalars | string.swift:99:31:99:39 | call to source2() :  | string.swift:104:13:104:13 | taintedUnicodeScalars | result |
 | subscript.swift:13:15:13:25 | ...[...] | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] | result |
 | subscript.swift:14:15:14:26 | ...[...] | subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] | result |
 | try.swift:9:13:9:24 | try ... | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... | result |
