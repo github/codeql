@@ -600,6 +600,8 @@
 | nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
 | string.swift:5:7:5:7 | SSA def(x) | string.swift:7:16:7:16 | x |
 | string.swift:5:11:5:18 | call to source() | string.swift:5:7:5:7 | SSA def(x) |
+| data.swift:20:23:20:23 | 123456 | data.swift:20:23:20:32 | .utf8 |
+| data.swift:21:25:21:32 | call to source() | data.swift:21:25:21:34 | .utf8 |
 | string.swift:7:13:7:13 |  | string.swift:7:13:7:13 | [post]  |
 | string.swift:7:13:7:13 |  | string.swift:7:14:7:14 | [post] &... |
 | string.swift:7:13:7:13 | SSA def($interpolation) | string.swift:7:14:7:14 | SSA phi($interpolation) |
@@ -932,6 +934,13 @@
 | subscript.swift:3:9:3:9 | self | subscript.swift:3:9:3:9 | SSA def(self) |
 | subscript.swift:4:9:4:9 | SSA def(self) | subscript.swift:4:9:4:24 | self[return] |
 | subscript.swift:4:9:4:9 | self | subscript.swift:4:9:4:9 | SSA def(self) |
+| string.swift:84:13:84:13 | clean | string.swift:84:13:84:19 | .description |
+| string.swift:85:13:85:13 | tainted | string.swift:85:13:85:21 | .description |
+| string.swift:87:13:87:13 | clean | string.swift:87:13:87:19 | .debugDescription |
+| string.swift:88:13:88:13 | tainted | string.swift:88:13:88:21 | .debugDescription |
+| string.swift:97:17:97:25 | call to source2() | string.swift:97:17:97:27 | .utf8 |
+| string.swift:98:24:98:32 | call to source2() | string.swift:98:24:98:34 | .utf8CString |
+| string.swift:99:31:99:39 | call to source2() | string.swift:99:31:99:41 | .unicodeScalars |
 | subscript.swift:13:15:13:22 | call to source() | subscript.swift:13:15:13:25 | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() | subscript.swift:14:15:14:26 | ...[...] |
 | try.swift:8:17:8:23 | call to clean() | try.swift:8:13:8:23 | try ... |
