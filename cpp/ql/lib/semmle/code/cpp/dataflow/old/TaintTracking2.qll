@@ -10,7 +10,6 @@
  *
  * See `semmle.code.cpp.dataflow.old.TaintTracking` for the full documentation.
  */
-
 module TaintTracking2 {
-    import semmle.code.cpp.dataflow.old.internal.tainttracking2.TaintTrackingImpl
+  import semmle.code.cpp.dataflow.old.internal.tainttracking2.TaintTrackingImpl
 }
