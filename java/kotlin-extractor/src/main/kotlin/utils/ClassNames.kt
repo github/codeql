@@ -120,10 +120,4 @@ fun getContainingClassOrSelf(decl: IrDeclaration): IrClass? {
 }
 
 fun getJavaEquivalentClassId(c: IrClass) =
-    c.fqNameWhenAvailable?.toUnsafe()?.let {
-        if (it.asString() == "kotlin.reflect.KClass") {
-            ClassId.fromString("java.lang.Class")
-        } else {
-            JavaToKotlinClassMap.mapKotlinToJava(it)
-        }
-    }
+    c.fqNameWhenAvailable?.toUnsafe()?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }

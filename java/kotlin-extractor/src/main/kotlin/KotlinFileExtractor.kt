@@ -512,14 +512,14 @@ open class KotlinFileExtractor(
             is IrClassReference -> {
                 val classRefId = exprId()
                 val typeAccessId = tw.getLabelFor<DbUnannotatedtypeaccess>("@\"annotationExpr;{$classRefId};0\"")
-                extractClassReference(v, parent, idx, null, null, overrideId = classRefId, typeAccessOverrideId = typeAccessId, useUnboundType = true)
+                extractClassReference(v, parent, idx, null, null, overrideId = classRefId, typeAccessOverrideId = typeAccessId, useJavaLangClassType = true)
             }
             is IrConstructorCall -> {
                 extractAnnotation(v, parent, idx, contextLabel)
             }
             is IrVararg -> {
                 tw.getLabelFor<DbArrayinit>("@\"annotationarray;{${parent}};$contextLabel\"").also { arrayId ->
-                    val type = useType(v.type)
+                    val type = useType(kClassToJavaClass(v.type))
                     tw.writeExprs_arrayinit(arrayId, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(arrayId, type.kotlinResult.id)
                     tw.writeHasLocation(arrayId, tw.getLocation(v))
@@ -4195,11 +4195,12 @@ open class KotlinFileExtractor(
         enclosingStmt: Label<out DbStmt>?,
         overrideId: Label<out DbExpr>? = null,
         typeAccessOverrideId: Label<out DbExpr>? = null,
-        useUnboundType: Boolean = false
+        useJavaLangClassType: Boolean = false
     ) =
         exprIdOrFresh<DbTypeliteral>(overrideId).also { id ->
             val locId = tw.getLocation(e)
-            val type = useType(if (useUnboundType) toUnbound(e.type) else e.type)
+            val jlcType = if (useJavaLangClassType) this.javaLangClass?.let { it.typeWith() } else null
+            val type = useType(jlcType ?: e.type)
             tw.writeExprs_typeliteral(id, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(id, type.kotlinResult.id)
             extractExprContext(id, locId, enclosingCallable, enclosingStmt)
