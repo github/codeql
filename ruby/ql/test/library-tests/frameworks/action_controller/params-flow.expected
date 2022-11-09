@@ -44,6 +44,9 @@ edges
 | params_flow.rb:145:32:145:37 | call to params :  | params_flow.rb:145:10:145:38 | call to with_defaults! |
 | params_flow.rb:148:5:148:5 | [post] p :  | params_flow.rb:149:10:149:10 | p |
 | params_flow.rb:148:22:148:27 | call to params :  | params_flow.rb:148:5:148:5 | [post] p :  |
+| params_flow.rb:157:10:157:15 | call to params :  | params_flow.rb:157:10:157:19 | ...[...] |
+| params_flow.rb:163:10:163:15 | call to params :  | params_flow.rb:163:10:163:19 | ...[...] |
+| params_flow.rb:167:10:167:15 | call to params :  | params_flow.rb:167:10:167:19 | ...[...] |
 nodes
 | params_flow.rb:3:10:3:15 | call to params :  | semmle.label | call to params :  |
 | params_flow.rb:3:10:3:19 | ...[...] | semmle.label | ...[...] |
@@ -130,6 +133,12 @@ nodes
 | params_flow.rb:148:5:148:5 | [post] p :  | semmle.label | [post] p :  |
 | params_flow.rb:148:22:148:27 | call to params :  | semmle.label | call to params :  |
 | params_flow.rb:149:10:149:10 | p | semmle.label | p |
+| params_flow.rb:157:10:157:15 | call to params :  | semmle.label | call to params :  |
+| params_flow.rb:157:10:157:19 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:163:10:163:15 | call to params :  | semmle.label | call to params :  |
+| params_flow.rb:163:10:163:19 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:167:10:167:15 | call to params :  | semmle.label | call to params :  |
+| params_flow.rb:167:10:167:19 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
 | params_flow.rb:3:10:3:19 | ...[...] | params_flow.rb:3:10:3:15 | call to params :  | params_flow.rb:3:10:3:19 | ...[...] | $@ | params_flow.rb:3:10:3:15 | call to params :  | call to params :  |
@@ -173,3 +182,6 @@ subpaths
 | params_flow.rb:144:10:144:44 | call to with_defaults! | params_flow.rb:144:10:144:15 | call to params :  | params_flow.rb:144:10:144:44 | call to with_defaults! | $@ | params_flow.rb:144:10:144:15 | call to params :  | call to params :  |
 | params_flow.rb:145:10:145:38 | call to with_defaults! | params_flow.rb:145:32:145:37 | call to params :  | params_flow.rb:145:10:145:38 | call to with_defaults! | $@ | params_flow.rb:145:32:145:37 | call to params :  | call to params :  |
 | params_flow.rb:149:10:149:10 | p | params_flow.rb:148:22:148:27 | call to params :  | params_flow.rb:149:10:149:10 | p | $@ | params_flow.rb:148:22:148:27 | call to params :  | call to params :  |
+| params_flow.rb:157:10:157:19 | ...[...] | params_flow.rb:157:10:157:15 | call to params :  | params_flow.rb:157:10:157:19 | ...[...] | $@ | params_flow.rb:157:10:157:15 | call to params :  | call to params :  |
+| params_flow.rb:163:10:163:19 | ...[...] | params_flow.rb:163:10:163:15 | call to params :  | params_flow.rb:163:10:163:19 | ...[...] | $@ | params_flow.rb:163:10:163:15 | call to params :  | call to params :  |
+| params_flow.rb:167:10:167:19 | ...[...] | params_flow.rb:167:10:167:15 | call to params :  | params_flow.rb:167:10:167:19 | ...[...] | $@ | params_flow.rb:167:10:167:15 | call to params :  | call to params :  |
