@@ -78,11 +78,9 @@ private DataFlow::LocalSourceNode actionControllerInstance() {
 }
 
 /**
- * DEPRECATED. Use `ActionControllerClass` instead.
- *
  * A `ClassDeclaration` corresponding to an `ActionControllerClass`.
  */
-deprecated class ActionControllerControllerClass extends ClassDeclaration {
+class ActionControllerControllerClass extends ClassDeclaration {
   ActionControllerControllerClass() { this = any(ActionControllerClass cls).getADeclaration() }
 
   /**
