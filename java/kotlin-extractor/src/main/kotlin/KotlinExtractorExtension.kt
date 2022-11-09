@@ -131,6 +131,8 @@ class KotlinExtractorExtension(
             // The interceptor has already defined #compilation = *
             val compilation: Label<DbCompilation> = StringLabel("compilation")
             tw.writeCompilation_started(compilation)
+            tw.writeCompilation_info(compilation, "Kotlin Compiler Version", KotlinCompilerVersion.getVersion() ?: "<unknown>")
+            tw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
             if (compilationStartTime != null) {
                 tw.writeCompilation_compiler_times(compilation, -1.0, (System.currentTimeMillis()-compilationStartTime)/1000.0)
             }

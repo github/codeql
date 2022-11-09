@@ -185,6 +185,10 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
     include_version_folder = tmp_src_dir + '/main/kotlin/utils/versions/to_include'
     os.makedirs(include_version_folder)
 
+    with open(tmp_src_dir + '/main/kotlin/utils/ExtractorName.kt', 'w') as f:
+        f.write('package com.github.codeql\n')
+        f.write('val extractor_name: String = "' + output + '"\n')
+
     parsed_current_version = kotlin_plugin_versions.version_string_to_tuple(
         current_version)
 
