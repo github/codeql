@@ -44,6 +44,14 @@ abstract class EndpointCharacteristic extends string {
   abstract predicate getImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   );
+
+  // The following are some confidence values that are used in practice by the subclasses. They are defined as named
+  // constants here to make it easier to change them in the future.
+  final float maximalConfidence() { result = 1.0 }
+
+  final float highConfidence() { result = 0.9 }
+
+  final float mediumConfidence() { result = 0.6 }
 }
 
 /*
@@ -63,7 +71,9 @@ private class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
   override predicate getImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   ) {
-    endpointClass instanceof XssSinkType and isPositiveIndicator = true and confidence = 1.0
+    endpointClass instanceof XssSinkType and
+    isPositiveIndicator = true and
+    confidence = maximalConfidence()
   }
 }
 
@@ -79,7 +89,9 @@ private class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
   override predicate getImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   ) {
-    endpointClass instanceof TaintedPathSinkType and isPositiveIndicator = true and confidence = 1.0
+    endpointClass instanceof TaintedPathSinkType and
+    isPositiveIndicator = true and
+    confidence = maximalConfidence()
   }
 }
 
@@ -97,7 +109,7 @@ private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof SqlInjectionSinkType and
     isPositiveIndicator = true and
-    confidence = 1.0
+    confidence = maximalConfidence()
   }
 }
 
@@ -115,7 +127,7 @@ private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof NosqlInjectionSinkType and
     isPositiveIndicator = true and
-    confidence = 1.0
+    confidence = maximalConfidence()
   }
 }
 
@@ -151,7 +163,9 @@ abstract private class NotASinkCharacteristic extends OtherModeledArgumentCharac
   override predicate getImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   ) {
-    endpointClass instanceof NegativeType and isPositiveIndicator = true and confidence = 0.9
+    endpointClass instanceof NegativeType and
+    isPositiveIndicator = true and
+    confidence = highConfidence()
   }
 }
 
@@ -168,7 +182,9 @@ abstract class LikelyNotASinkCharacteristic extends OtherModeledArgumentCharacte
   override predicate getImplications(
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   ) {
-    endpointClass instanceof NegativeType and isPositiveIndicator = true and confidence = 0.6
+    endpointClass instanceof NegativeType and
+    isPositiveIndicator = true and
+    confidence = mediumConfidence()
   }
 }
 
