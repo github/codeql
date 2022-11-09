@@ -2,6 +2,7 @@
 
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.security.EncryptionKeySizes
 
 /** A source for an insufficient key size. */
 abstract class InsufficientKeySizeSource extends DataFlow::Node {
@@ -42,7 +43,7 @@ private module Asymmetric {
     }
 
     /** Returns the minimum recommended key size for RSA, DSA, and DH algorithms. */
-    private int getMinKeySize() { result = 2048 }
+    private int getMinKeySize() { result = minSecureKeySizeAsymmetricNonEc() }
 
     /** An instance of an RSA, DSA, or DH algorithm specification. */
     private class Spec extends ClassInstanceExpr {
@@ -87,7 +88,7 @@ private module Asymmetric {
     }
 
     /** Returns the minimum recommended key size for elliptic curve (EC) algorithms. */
-    private int getMinKeySize() { result = 256 }
+    private int getMinKeySize() { result = minSecureKeySizeAsymmetricEc() }
 
     /** Returns the key size from an EC algorithm's curve name string */
     bindingset[algorithm]
@@ -168,7 +169,7 @@ private module Symmetric {
   }
 
   /** Returns the minimum recommended key size for AES algorithms. */
-  private int getMinKeySize() { result = 128 }
+  private int getMinKeySize() { result = minSecureKeySizeSymmetric() }
 
   /** A call to the `init` method declared in `javax.crypto.KeyGenerator`. */
   private class KeyGenInit extends MethodAccess {
