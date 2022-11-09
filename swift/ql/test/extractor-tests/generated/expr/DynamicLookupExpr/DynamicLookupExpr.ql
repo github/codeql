@@ -2,9 +2,9 @@
 import codeql.swift.elements
 import TestUtils
 
-from DynamicMemberRefExpr x, Expr getBase
+from DynamicLookupExpr x, Expr getBase
 where
   toBeTested(x) and
   not x.isUnknown() and
   getBase = x.getBase()
-select x, "getBase:", getBase
+select x, x.getPrimaryQlClasses(), "getBase:", getBase

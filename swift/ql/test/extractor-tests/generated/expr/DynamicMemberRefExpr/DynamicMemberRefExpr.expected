@@ -1,1 +1,0 @@
-| dynamic_member_ref.swift:12:1:12:3 | .foo(_:) | getBase: | dynamic_member_ref.swift:12:1:12:1 | OpaqueValueExpr |

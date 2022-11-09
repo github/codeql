@@ -1,1 +1,0 @@
-| dynamic_member_ref.swift:12:1:12:3 | .foo(_:) | dynamic_member_ref.swift:6:9:6:28 | foo(_:) |

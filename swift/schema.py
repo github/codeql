@@ -523,6 +523,7 @@ class DifferentiableFunctionExtractOriginalExpr(ImplicitConversionExpr):
 class DotSelfExpr(IdentityExpr):
     pass
 
+@qltest.collapse_hierarchy
 class DynamicLookupExpr(LookupExpr):
     pass
 

@@ -543,8 +543,16 @@ codeql::OverloadedDeclRefExpr ExprTranslator::translateOverloadedDeclRefExpr(
   entry.possible_declarations = dispatcher.fetchRepeatedLabels(expr.getDecls());
   return entry;
 }
+
 codeql::DynamicMemberRefExpr ExprTranslator::translateDynamicMemberRefExpr(
     const swift::DynamicMemberRefExpr& expr) {
+  auto entry = createExprEntry(expr);
+  fillLookupExpr(expr, entry);
+  return entry;
+}
+
+codeql::DynamicSubscriptExpr ExprTranslator::translateDynamicSubscriptExpr(
+    const swift::DynamicSubscriptExpr& expr) {
   auto entry = createExprEntry(expr);
   fillLookupExpr(expr, entry);
   return entry;

@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from DynamicMemberRefExpr x
+from DynamicLookupExpr x
 where toBeTested(x) and not x.isUnknown()
 select x, x.getType()
