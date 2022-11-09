@@ -127,9 +127,9 @@ module ActiveSupport {
         ReverseMergeSummary() { this = ["reverse_merge", "with_defaults"] }
 
         override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-          input = ["Argument[self]", "Argument[0]"] and
+          input = "Argument[self,0].WithElement[any]" and
           output = "ReturnValue" and
-          preservesValue = false
+          preservesValue = true
         }
       }
 
@@ -140,9 +140,9 @@ module ActiveSupport {
         ReverseMergeBangSummary() { this = ["reverse_merge!", "with_defaults!", "reverse_update"] }
 
         override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-          input = ["Argument[self]", "Argument[0]"] and
+          input = "Argument[self,0].WithElement[any]" and
           output = ["ReturnValue", "Argument[self]"] and
-          preservesValue = false
+          preservesValue = true
         }
       }
 
