@@ -2,7 +2,7 @@
 
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.security.EncryptionKeySizes
+private import semmle.code.java.security.internal.EncryptionKeySizes
 
 /** A source for an insufficient key size. */
 abstract class InsufficientKeySizeSource extends DataFlow::Node {
