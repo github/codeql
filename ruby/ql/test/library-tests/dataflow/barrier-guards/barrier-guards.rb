@@ -209,3 +209,8 @@ in "foo"
 in x
     foo
 end
+
+case bar
+in "foo"
+    foo
+end

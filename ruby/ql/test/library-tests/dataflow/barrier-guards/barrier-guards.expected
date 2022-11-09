@@ -123,3 +123,4 @@ controls
 | barrier-guards.rb:207:4:207:8 | "foo" | barrier-guards.rb:209:1:210:7 | in ... then ... | no-match |
 | barrier-guards.rb:207:4:207:8 | "foo" | barrier-guards.rb:210:5:210:7 | foo | no-match |
 | barrier-guards.rb:209:4:209:4 | x | barrier-guards.rb:210:5:210:7 | foo | match |
+| barrier-guards.rb:214:4:214:8 | "foo" | barrier-guards.rb:215:5:215:7 | foo | match |

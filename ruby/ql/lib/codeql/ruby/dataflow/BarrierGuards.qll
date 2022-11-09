@@ -159,42 +159,44 @@ private predicate stringConstCaseCompare(
   branch = true and
   exists(CfgNodes::ExprNodes::CaseExprCfgNode case |
     case.getValue() = testedNode and
-    exists(CfgNodes::ExprNodes::WhenClauseCfgNode branchNode |
-      branchNode = case.getBranch(_) and
-      guard = branchNode.getPattern(_) and
-      // For simplicity, consider patterns that contain only string literals or arrays of string literals
-      forall(ExprCfgNode pattern | pattern = branchNode.getPattern(_) |
-        // when "foo"
-        // when "foo", "bar"
-        pattern instanceof ExprNodes::StringLiteralCfgNode
-        or
-        exists(CfgNodes::ExprNodes::SplatExprCfgNode splat | splat = pattern |
-          // when *["foo", "bar"]
-          forex(ExprCfgNode elem |
-            elem = splat.getOperand().(ExprNodes::ArrayLiteralCfgNode).getAnArgument()
-          |
-            elem instanceof ExprNodes::StringLiteralCfgNode
-          )
+    (
+      exists(CfgNodes::ExprNodes::WhenClauseCfgNode branchNode |
+        branchNode = case.getBranch(_) and
+        guard = branchNode.getPattern(_) and
+        // For simplicity, consider patterns that contain only string literals or arrays of string literals
+        forall(ExprCfgNode pattern | pattern = branchNode.getPattern(_) |
+          // when "foo"
+          // when "foo", "bar"
+          pattern instanceof ExprNodes::StringLiteralCfgNode
           or
-          // when *some_var
-          // when *SOME_CONST
-          exists(ExprNodes::ArrayLiteralCfgNode arr |
-            isArrayConstant(splat.getOperand(), arr) and
-            forall(ExprCfgNode elem | elem = arr.getAnArgument() |
+          exists(CfgNodes::ExprNodes::SplatExprCfgNode splat | splat = pattern |
+            // when *["foo", "bar"]
+            forex(ExprCfgNode elem |
+              elem = splat.getOperand().(ExprNodes::ArrayLiteralCfgNode).getAnArgument()
+            |
               elem instanceof ExprNodes::StringLiteralCfgNode
+            )
+            or
+            // when *some_var
+            // when *SOME_CONST
+            exists(ExprNodes::ArrayLiteralCfgNode arr |
+              isArrayConstant(splat.getOperand(), arr) and
+              forall(ExprCfgNode elem | elem = arr.getAnArgument() |
+                elem instanceof ExprNodes::StringLiteralCfgNode
+              )
             )
           )
         )
       )
-    )
-    or
-    // in "foo"
-    exists(
-      CfgNodes::ExprNodes::InClauseCfgNode branchNode, ExprNodes::StringLiteralCfgNode pattern
-    |
-      branchNode = case.getBranch(_) and
-      pattern = branchNode.getPattern() and
-      guard = pattern
+      or
+      // in "foo"
+      exists(
+        CfgNodes::ExprNodes::InClauseCfgNode branchNode, ExprNodes::StringLiteralCfgNode pattern
+      |
+        branchNode = case.getBranch(_) and
+        pattern = branchNode.getPattern() and
+        guard = pattern
+      )
     )
   )
 }
