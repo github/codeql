@@ -259,6 +259,12 @@ module Raw {
 
   class OpaqueTypeDecl extends @opaque_type_decl, GenericTypeDecl {
     override string toString() { result = "OpaqueTypeDecl" }
+
+    ValueDecl getNamingDeclaration() { opaque_type_decls(this, result) }
+
+    GenericTypeParamType getOpaqueGenericParam(int index) {
+      opaque_type_decl_opaque_generic_params(this, index, result)
+    }
   }
 
   class ParamDecl extends @param_decl, VarDecl {
@@ -1477,6 +1483,8 @@ module Raw {
 
   class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {
     override string toString() { result = "OpaqueTypeArchetypeType" }
+
+    OpaqueTypeDecl getDeclaration() { opaque_type_archetype_types(this, result) }
   }
 
   class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {
