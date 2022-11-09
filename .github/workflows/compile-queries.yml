@@ -2,11 +2,10 @@ name: "Compile all queries using the latest stable CodeQL CLI"
 
 on:
   push:
-    branches: [main] # makes sure the cache gets populated
-  pull_request:
-    branches:
+    branches:  # makes sure the cache gets populated - running on the branches people tend to merge into.
       - main
       - "rc/*"
+      - "codeql-cli-*"
 
 jobs:
   compile-queries:
