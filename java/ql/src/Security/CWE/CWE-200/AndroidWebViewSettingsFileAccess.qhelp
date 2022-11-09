@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      File access in an Android WebView can expose the device's file system to
+      the JavaScript running in the WebView. If there are vulnerabilities in the
+      JavaScript, file access may allow an attacker to access or steal the
+      user's data.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>When possible, you should disallow file access by setting the following settings to <code>false</code>:</p>
+
+    <ul>
+      <li><code>setAllowFileAccess</code></li>
+      <li><code>setAllowFileAccessFromFileURLs</code></li>
+      <li><code>setAllowUniversalAccessFromFileURLs</code></li>
+    </ul>
+  </recommendation>
+
+  <example>
+    <p>In the following (bad) example, the WebView is configured with the settings
+    which would allow local file access.</p>
+
+    <sample src="WebViewFileAccessUnsafe.java"/>
+
+    <p>In the following (good) example, the WebView is configured to disallow file access.</p>
+
+    <sample src="WebViewFileAccessSafe.java"/>
+
+  </example>
+
+  <references>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccess(boolean)"><code>WebSettings.setAllowFileAccess</code></a>.
+    </li>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccessFromFileURLs(boolean)"><code>WebSettings.setAllowFileAccessFromFileURLs</code></a>.
+    </li>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowUniversalAccessFromFileURLs(boolean)"><code>WebSettings.setAllowUniversalAccessFromFileURLs</code></a>.
+    </li>
+    <li>
+      File access from URLs is enabled for WebView: <a href="https://oversecured.com/vulnerabilities#Android/File_access_from_file_URLs_is_enabled_for_WebView">File access for URLs is enabled for WebView</a>.
+    </li>
+    <li>
+      File access is enabled for WebView: <a href="https://oversecured.com/vulnerabilities#Android/File_access_is_enabled_for_WebView">File access is enabled for WebView</a>.
+    </li>
+    <li>
+      Universal file access from file URLs is enabled for WebView: <a href="https://oversecured.com/vulnerabilities#Android/Universal_file_access_from_file_URLs_is_enabled_for_WebView">Universal file access from file URLs is enabled for WebView</a>.
+    </li>
+  </references>
+
+</qhelp>
