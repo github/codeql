@@ -1,13 +1,13 @@
 foo = "foo"
 
 if foo == "foo"
-    foo
+    foo # $ guarded
 else
     foo
 end
 
 if ["foo"].include?(foo)
-    foo
+    foo # $ guarded
 else
     foo
 end
@@ -15,17 +15,17 @@ end
 if foo != "foo"
     foo
 else
-    foo
+    foo # $ guarded
 end
 
 unless foo == "foo"
     foo
 else
-    foo
+    foo # $ guarded
 end
 
 unless foo != "foo"
-    foo
+    foo # $ guarded
 else
     foo
 end
@@ -35,14 +35,14 @@ foo
 FOO = ["foo"]
 
 if FOO.include?(foo)
-    foo
+    foo # $ guarded
 else
     foo
 end
 
 if foo == "foo"
     capture {
-        foo # guarded
+        foo # $ guarded
     }
 end
 
@@ -68,7 +68,7 @@ foos = ["foo"]
 bars = NotAnArray.new
 
 if foos.include?(foo)
-    foo
+    foo # $ guarded
 else
     foo
 end
@@ -80,7 +80,7 @@ else
 end
 
 if foos.index(foo) != nil
-    foo
+    foo # $ guarded
 else
     foo
 end
@@ -88,7 +88,7 @@ end
 if foos.index(foo) == nil
     foo
 else
-    foo
+    foo # $ guarded
 end
 
 bars = ["bar"]
@@ -123,22 +123,22 @@ end
 
 case foo
 when "foo"
-    foo
+    foo # $ guarded
 else
     foo
 end
 
 case foo
 when "foo"
-    foo
+    foo # $ guarded
 when "bar"
-    foo
+    foo # $ guarded
 end
 
 case foo
-when "foo", "bar" # not recognised
+when "foo", "bar" # $ MISSING: guarded
     foo
-when "baz", "quux" # not recognised
+when "baz", "quux" # $ MISSING: guarded
     foo
 else
     foo
@@ -146,22 +146,22 @@ end
 
 case foo
 when *["foo", "bar"]
-    foo
+    foo # $ guarded
 end
 
 case foo
 when *%w[foo bar]
-    foo
+    foo # $ guarded
 end
 
 case foo
 when *FOO
-    foo
+    foo # $ guarded
 end
 
 case foo
 when *foos
-    foo
+    foo # $ guarded
 end
 
 case foo
@@ -188,24 +188,24 @@ when *FOO_AND_X # not a guard - includes non-constant element `x`
     foo
 end
 
-if foo == "foo" or foo == "bar" # not recognised
-    foo
+if foo == "foo" or foo == "bar"
+    foo # $ MISSING: guarded
 end
 
 case
 when foo == "foo"
-    foo
+    foo # $ guarded
 end
 
 case
-when foo == "foo" then foo
+when foo == "foo" then foo # $ guarded
 when bar == "bar" then foo
 when foo == x then foo
 end
 
 case foo
 in "foo"
-    foo
+    foo # $ guarded
 in x
     foo
 end
