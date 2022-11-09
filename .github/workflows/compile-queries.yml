@@ -38,9 +38,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: '*/ql/src/.cache'
-          key: codeql-compile-main-${{ github.sha }} # just fill on main
+          key: codeql-compile-${{ github.ref }}-${{ github.sha }} # just fill on main
           restore-keys: | # restore from another random commit, to speed up compilation.
-            codeql-compile-main- 
+            codeql-compile-${{ github.ref }}- 
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
         with:
