@@ -67,6 +67,8 @@ private predicate isRelevantForModels(J::Callable api) {
  */
 predicate isRelevantForDataFlowModels = isRelevantForModels/1;
 
+predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
+
 /**
  * A class of Callables that are relevant for generating summary, source and sinks models for.
  *
@@ -141,7 +143,7 @@ string asPartialNegativeModel(TargetApiSpecific api) {
   )
 }
 
-private predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
+predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
   t.hasName(["byte", "char", "Byte", "Character"])
 }
 
