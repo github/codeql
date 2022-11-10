@@ -341,10 +341,6 @@ module Raw {
     Argument getArgument(int index) { apply_expr_arguments(this, index, result) }
   }
 
-  class ArrowExpr extends @arrow_expr, Expr {
-    override string toString() { result = "ArrowExpr" }
-  }
-
   class AssignExpr extends @assign_expr, Expr {
     override string toString() { result = "AssignExpr" }
 
@@ -367,10 +363,6 @@ module Raw {
     }
 
     ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
-  }
-
-  class CodeCompletionExpr extends @code_completion_expr, Expr {
-    override string toString() { result = "CodeCompletionExpr" }
   }
 
   class CollectionExpr extends @collection_expr, Expr { }
@@ -417,10 +409,6 @@ module Raw {
     override string toString() { result = "DynamicTypeExpr" }
 
     Expr getBase() { dynamic_type_exprs(this, result) }
-  }
-
-  class EditorPlaceholderExpr extends @editor_placeholder_expr, Expr {
-    override string toString() { result = "EditorPlaceholderExpr" }
   }
 
   class EnumIsCaseExpr extends @enum_is_case_expr, Expr {
@@ -559,10 +547,6 @@ module Raw {
     ValueDecl getPossibleDeclaration(int index) {
       overloaded_decl_ref_expr_possible_declarations(this, index, result)
     }
-  }
-
-  class PackExpr extends @pack_expr, Expr {
-    override string toString() { result = "PackExpr" }
   }
 
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
@@ -890,10 +874,6 @@ module Raw {
 
   class RegexLiteralExpr extends @regex_literal_expr, LiteralExpr {
     override string toString() { result = "RegexLiteralExpr" }
-  }
-
-  class ReifyPackExpr extends @reify_pack_expr, ImplicitConversionExpr {
-    override string toString() { result = "ReifyPackExpr" }
   }
 
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
@@ -1320,20 +1300,8 @@ module Raw {
     ModuleDecl getModule() { module_types(this, result) }
   }
 
-  class PackExpansionType extends @pack_expansion_type, Type {
-    override string toString() { result = "PackExpansionType" }
-  }
-
-  class PackType extends @pack_type, Type {
-    override string toString() { result = "PackType" }
-  }
-
   class ParameterizedProtocolType extends @parameterized_protocol_type, Type {
     override string toString() { result = "ParameterizedProtocolType" }
-  }
-
-  class PlaceholderType extends @placeholder_type, Type {
-    override string toString() { result = "PlaceholderType" }
   }
 
   class ProtocolCompositionType extends @protocol_composition_type, Type {
@@ -1344,22 +1312,6 @@ module Raw {
 
   class ReferenceStorageType extends @reference_storage_type, Type {
     Type getReferentType() { reference_storage_types(this, result) }
-  }
-
-  class SilBlockStorageType extends @sil_block_storage_type, Type {
-    override string toString() { result = "SilBlockStorageType" }
-  }
-
-  class SilBoxType extends @sil_box_type, Type {
-    override string toString() { result = "SilBoxType" }
-  }
-
-  class SilFunctionType extends @sil_function_type, Type {
-    override string toString() { result = "SilFunctionType" }
-  }
-
-  class SilTokenType extends @sil_token_type, Type {
-    override string toString() { result = "SilTokenType" }
   }
 
   class SubstitutableType extends @substitutable_type, Type { }

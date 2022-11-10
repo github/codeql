@@ -62,10 +62,15 @@ DEFINE_TRANSLATE_CHECKER(TypeRepr, , )
 // superclasses by default and instead provide our own TBD default (using the exact type).
 // Moreover, if the implementation class has translate##CLASS##KIND (that uses generated C++
 // classes), for the class of for a parent thereof, we want to use that. We detect that by using the
-// type traits HasTranslate##CLASS##KIND defined above
+// type traits HasTranslate##CLASS##KIND defined above.
+// A special case is for explicitly ignored classes marked with void, which we should never
+// encounter.
 #define DEFINE_VISIT(KIND, CLASS, PARENT)                                            \
   void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                   \
-    if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {          \
+    if constexpr (std::is_same_v<CLASS##KIND##Tag, void>) {                          \
+      std::cerr << "Unexpected " #CLASS #KIND "\n";                                  \
+      return;                                                                        \
+    } else if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {   \
       dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
     } else if constexpr (detail::HasTranslate##PARENT<CrtpSubclass>::value) {        \
       dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##PARENT(*e));      \
@@ -105,9 +110,6 @@ class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
 
 #define PATTERN(CLASS, PARENT) DEFINE_VISIT(Pattern, CLASS, PARENT)
 #include "swift/AST/PatternNodes.def"
-
-#define TYPEREPR(CLASS, PARENT) DEFINE_VISIT(TypeRepr, CLASS, PARENT)
-#include "swift/AST/TypeReprNodes.def"
 };
 
 // base class for our type visitor, getting a SwiftDispatcher member and define_visit emission for
