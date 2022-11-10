@@ -47,7 +47,6 @@ private predicate isEffectivelyLowerBound(Type t, Type bound) {
 
 /**
  * Holds if `t` is a container like type of `tv` (eg. `List<T>`).
- * Note that collections are covariant in their element type.
  */
 private predicate genericContainerType(RefType t, TypeVariable tv) {
   exists(Type et |
