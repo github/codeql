@@ -13,10 +13,13 @@ private import codeql.ruby.dataflow.RemoteFlowSources
  * vulnerabilities, as well as extension points for adding your own.
  */
 module SqlInjection {
+  /** A data flow source for SQL injection vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
 
+  /** A data flow sink for SQL injection vulnerabilities. */
   abstract class Sink extends DataFlow::Node { }
 
+  /** A sanitizer for SQL injection vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**

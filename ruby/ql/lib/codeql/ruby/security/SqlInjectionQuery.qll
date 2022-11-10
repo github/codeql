@@ -7,6 +7,9 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
 import SqlInjectionCustomizations::SqlInjection
 
+/**
+ * A taint-tracking configuration for detecting SQL injection vulnerabilities.
+ */
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "SqlInjectionConfiguration" }
 
