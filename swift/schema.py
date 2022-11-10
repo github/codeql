@@ -578,11 +578,9 @@ class NilLiteralExpr(LiteralExpr):
 
 class ObjectLiteralExpr(LiteralExpr):
     """
-    `#fileLiteral`, `#imageLiteral` and `#colorLiteral` expressions, which are used in playgrounds.
+    An instance of `#fileLiteral`, `#imageLiteral` or `#colorLiteral` expressions, which are used in playgrounds.
     """
-    kind: int | doc("""
-    This is 0 for `#fileLiteral`, 1 for `#imageLiteral` and 2 for `#colorLiteral`.
-    """)
+    kind: int | desc("""This is 0 for `#fileLiteral`, 1 for `#imageLiteral` and 2 for `#colorLiteral`.""")
     arguments: list[Argument] | child
 
 class OptionalTryExpr(AnyTryExpr):

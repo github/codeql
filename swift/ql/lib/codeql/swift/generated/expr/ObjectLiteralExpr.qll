@@ -6,15 +6,15 @@ import codeql.swift.elements.expr.LiteralExpr
 
 module Generated {
   /**
-   * `#fileLiteral`, `#imageLiteral` and `#colorLiteral` expressions, which are used in playgrounds.
+   * An instance of `#fileLiteral`, `#imageLiteral` or `#colorLiteral` expressions, which are used in playgrounds.
    */
   class ObjectLiteralExpr extends Synth::TObjectLiteralExpr, LiteralExpr {
     override string getAPrimaryQlClass() { result = "ObjectLiteralExpr" }
 
     /**
-     * Gets the
-     *    This is 0 for `#fileLiteral`, 1 for `#imageLiteral` and 2 for `#colorLiteral`.
-     *    .
+     * Gets the kind of this object literal expression.
+     *
+     * This is 0 for `#fileLiteral`, 1 for `#imageLiteral` and 2 for `#colorLiteral`.
      */
     int getKind() {
       result = Synth::convertObjectLiteralExprToRaw(this).(Raw::ObjectLiteralExpr).getKind()
