@@ -392,6 +392,12 @@ class Try extends Try_ {
   /** Gets an exception handler of this try statement. */
   override Stmt getAHandler() { result = Try_.super.getAHandler() }
 
+  /** Gets a normal exception handler, `except`, of this try statement. */
+  ExceptStmt getANormalHandler() { result = this.getAHandler() }
+
+  /** Gets a group exception handler, `except*`, of this try statement. */
+  ExceptGroupStmt getAGroupHandler() { result = this.getAHandler() }
+
   override Stmt getLastStatement() {
     result = this.getFinalbody().getLastItem().getLastStatement()
     or
