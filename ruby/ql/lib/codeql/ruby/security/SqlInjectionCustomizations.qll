@@ -25,10 +25,17 @@ module SqlInjection {
   private class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 
   /**
-   * A SQL statement of a SQL execution, considered as a flow sink.
+   * An SQL statement of a SQL execution, considered as a flow sink.
    */
   private class SqlExecutionAsSink extends Sink {
     SqlExecutionAsSink() { this = any(SqlExecution e).getSql() }
+  }
+
+  /**
+   * An SQL statement of a SQL construction, considered as a flow sink.
+   */
+  private class SqlConstructionAsSink extends Sink {
+    SqlConstructionAsSink() { this = any(SqlConstruction e).getSql() }
   }
 
   /**
