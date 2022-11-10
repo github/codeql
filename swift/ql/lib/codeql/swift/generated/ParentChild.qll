@@ -135,6 +135,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfDiagnostics(
+    Diagnostics e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnknownFile(
     UnknownFile e, int index, string partialPredicateCall
   ) {
@@ -161,6 +176,21 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfUnspecifiedElement(
+    UnspecifiedElement e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -343,14 +373,17 @@ private module Impl {
   private Element getImmediateChildOfPoundDiagnosticDecl(
     PoundDiagnosticDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bDecl, int n |
+    exists(int b, int bDecl, int n, int nMessage |
       b = 0 and
       bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
       n = bDecl and
+      nMessage = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateMessage() and partialPredicateCall = "Message()"
       )
     )
   }
@@ -4867,9 +4900,13 @@ private module Impl {
     or
     result = getImmediateChildOfDbLocation(e, index, partialAccessor)
     or
+    result = getImmediateChildOfDiagnostics(e, index, partialAccessor)
+    or
     result = getImmediateChildOfUnknownFile(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnumCaseDecl(e, index, partialAccessor)
     or

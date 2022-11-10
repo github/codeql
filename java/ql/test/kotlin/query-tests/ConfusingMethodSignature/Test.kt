@@ -7,3 +7,8 @@ class C {
         prop(this)
     }
 }
+
+class A {
+    fun <T : Any> fn(value: T, i: Int = 1) {}
+    fun fn(value: String, i: Int = 1) {}
+}

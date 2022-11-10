@@ -7,8 +7,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForRegExp
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
-private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import codeql.ruby.dataflow.FlowSummary as FlowSummary
+private import codeql.ruby.TaintTracking
 private import codeql.ruby.frameworks.core.String
 
 class RegExpConfiguration extends Configuration {
@@ -38,8 +37,8 @@ class RegExpConfiguration extends Configuration {
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // include taint flow through `String` summaries,
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false) and
+    // include taint flow through `String` summaries
+    TaintTracking::localTaintStep(nodeFrom, nodeTo) and
     nodeFrom.(DataFlowPrivate::SummaryNode).getSummarizedCallable() instanceof
       String::SummarizedCallable
     or

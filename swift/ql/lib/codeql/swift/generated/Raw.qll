@@ -51,6 +51,26 @@ module Raw {
     override string toString() { result = "DbLocation" }
   }
 
+  class Diagnostics extends @diagnostics, Locatable {
+    override string toString() { result = "Diagnostics" }
+
+    string getText() { diagnostics(this, result, _) }
+
+    int getKind() { diagnostics(this, _, result) }
+  }
+
+  class UnspecifiedElement extends @unspecified_element, Locatable {
+    override string toString() { result = "UnspecifiedElement" }
+
+    Element getParent() { unspecified_element_parents(this, result) }
+
+    string getProperty() { unspecified_elements(this, result, _) }
+
+    int getIndex() { unspecified_element_indices(this, result) }
+
+    string getError() { unspecified_elements(this, _, result) }
+  }
+
   class Decl extends @decl, AstNode {
     ModuleDecl getModule() { decls(this, result) }
   }
@@ -95,6 +115,8 @@ module Raw {
 
   class MissingMemberDecl extends @missing_member_decl, Decl {
     override string toString() { result = "MissingMemberDecl" }
+
+    string getName() { missing_member_decls(this, result) }
   }
 
   class OperatorDecl extends @operator_decl, Decl {
@@ -111,6 +133,10 @@ module Raw {
 
   class PoundDiagnosticDecl extends @pound_diagnostic_decl, Decl {
     override string toString() { result = "PoundDiagnosticDecl" }
+
+    int getKind() { pound_diagnostic_decls(this, result, _) }
+
+    StringLiteralExpr getMessage() { pound_diagnostic_decls(this, _, result) }
   }
 
   class PrecedenceGroupDecl extends @precedence_group_decl, Decl {
@@ -247,6 +273,12 @@ module Raw {
 
   class OpaqueTypeDecl extends @opaque_type_decl, GenericTypeDecl {
     override string toString() { result = "OpaqueTypeDecl" }
+
+    ValueDecl getNamingDeclaration() { opaque_type_decls(this, result) }
+
+    GenericTypeParamType getOpaqueGenericParam(int index) {
+      opaque_type_decl_opaque_generic_params(this, index, result)
+    }
   }
 
   class ParamDecl extends @param_decl, VarDecl {
@@ -1104,6 +1136,10 @@ module Raw {
 
   class PoundAssertStmt extends @pound_assert_stmt, Stmt {
     override string toString() { result = "PoundAssertStmt" }
+
+    Expr getCondition() { pound_assert_stmts(this, result, _) }
+
+    string getMessage() { pound_assert_stmts(this, _, result) }
   }
 
   class ReturnStmt extends @return_stmt, Stmt {
@@ -1461,6 +1497,8 @@ module Raw {
 
   class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {
     override string toString() { result = "OpaqueTypeArchetypeType" }
+
+    OpaqueTypeDecl getDeclaration() { opaque_type_archetype_types(this, result) }
   }
 
   class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {

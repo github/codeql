@@ -37,8 +37,19 @@ class Location(Element):
 class Locatable(Element):
     location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
 
+@use_for_null
+class UnspecifiedElement(Locatable):
+    parent: optional[Element]
+    property: string
+    index: optional[int]
+    error: string
+
 class Comment(Locatable):
     text: string
+
+class Diagnostics(Locatable):
+    text: string
+    kind: int
 
 class DbFile(File):
     pass
@@ -101,8 +112,10 @@ class ImportDecl(Decl):
     imported_module: optional["ModuleDecl"]
     declarations: list["ValueDecl"]
 
+@qltest.skip
 class MissingMemberDecl(Decl):
-    pass
+    """A placeholder for missing declarations that can arise on object deserialization."""
+    name: string
 
 class OperatorDecl(Decl):
     name: string
@@ -112,7 +125,9 @@ class PatternBindingDecl(Decl):
     patterns: list[Pattern] | child
 
 class PoundDiagnosticDecl(Decl):
-    pass
+    """ A diagnostic directive, which is either `#error` or `#warning`."""
+    kind: int | doc("""This is 1 for `#error` and 2 for `#warning`""")
+    message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
     pass
@@ -211,7 +226,20 @@ class NominalTypeDecl(GenericTypeDecl, IterableDeclContext):
     type: Type
 
 class OpaqueTypeDecl(GenericTypeDecl):
-    pass
+    """
+    A declaration of an opaque type, that is formally equivalent to a given type but abstracts it
+    away.
+
+    Such a declaration is implicitly given when a declaration is written with an opaque result type,
+    for example
+    ```
+    func opaque() -> some SignedInteger { return 1 }
+    ```
+    See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html.
+    """
+    naming_declaration: ValueDecl
+    opaque_generic_params: list["GenericTypeParamType"]
+    opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
     pass
@@ -735,7 +763,8 @@ class LabeledStmt(Stmt):
     label: optional[string]
 
 class PoundAssertStmt(Stmt):
-    pass
+    condition: Expr
+    message: string
 
 class ReturnStmt(Stmt):
     result: optional[Expr] | child
@@ -958,7 +987,10 @@ class NominalType(NominalOrBoundGenericNominalType):
     pass
 
 class OpaqueTypeArchetypeType(ArchetypeType):
-    pass
+    """An opaque type, that is a type formally equivalent to an underlying type but abstracting it away.
+
+    See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html."""
+    declaration: OpaqueTypeDecl
 
 class OpenedArchetypeType(ArchetypeType):
     pass

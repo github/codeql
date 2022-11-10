@@ -88,3 +88,13 @@ module Types
     end
   end
 end
+
+class Foo < ActionController::Base
+    def create
+        file = params[:file]
+        system("cat #{file}")
+        # .shellescape
+        system("cat #{file.shellescape}") # OK, because file is shell escaped
+        
+    end
+end

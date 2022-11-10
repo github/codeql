@@ -250,4 +250,12 @@ codeql::ModuleType TypeTranslator::translateModuleType(const swift::ModuleType& 
   entry.module = dispatcher.fetchLabel(type.getModule());
   return entry;
 }
+
+codeql::OpaqueTypeArchetypeType TypeTranslator::translateOpaqueTypeArchetypeType(
+    const swift::OpaqueTypeArchetypeType& type) {
+  auto entry = createTypeEntry(type);
+  fillArchetypeType(type, entry);
+  entry.declaration = dispatcher.fetchLabel(type.getDecl());
+  return entry;
+}
 }  // namespace codeql

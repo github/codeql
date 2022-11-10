@@ -8,8 +8,10 @@ module Synth {
     TComment(Raw::Comment id) { constructComment(id) } or
     TDbFile(Raw::DbFile id) { constructDbFile(id) } or
     TDbLocation(Raw::DbLocation id) { constructDbLocation(id) } or
+    TDiagnostics(Raw::Diagnostics id) { constructDiagnostics(id) } or
     TUnknownFile() or
     TUnknownLocation() or
+    TUnspecifiedElement(Raw::UnspecifiedElement id) { constructUnspecifiedElement(id) } or
     TAccessorDecl(Raw::AccessorDecl id) { constructAccessorDecl(id) } or
     TAssociatedTypeDecl(Raw::AssociatedTypeDecl id) { constructAssociatedTypeDecl(id) } or
     TClassDecl(Raw::ClassDecl id) { constructClassDecl(id) } or
@@ -321,7 +323,7 @@ module Synth {
 
   class TFile = TDbFile or TUnknownFile;
 
-  class TLocatable = TArgument or TAstNode or TComment;
+  class TLocatable = TArgument or TAstNode or TComment or TDiagnostics or TUnspecifiedElement;
 
   class TLocation = TDbLocation or TUnknownLocation;
 
@@ -494,10 +496,18 @@ module Synth {
   TDbLocation convertDbLocationFromRaw(Raw::Element e) { result = TDbLocation(e) }
 
   cached
+  TDiagnostics convertDiagnosticsFromRaw(Raw::Element e) { result = TDiagnostics(e) }
+
+  cached
   TUnknownFile convertUnknownFileFromRaw(Raw::Element e) { none() }
 
   cached
   TUnknownLocation convertUnknownLocationFromRaw(Raw::Element e) { none() }
+
+  cached
+  TUnspecifiedElement convertUnspecifiedElementFromRaw(Raw::Element e) {
+    result = TUnspecifiedElement(e)
+  }
 
   cached
   TAccessorDecl convertAccessorDeclFromRaw(Raw::Element e) { result = TAccessorDecl(e) }
@@ -1464,6 +1474,10 @@ module Synth {
     result = convertAstNodeFromRaw(e)
     or
     result = convertCommentFromRaw(e)
+    or
+    result = convertDiagnosticsFromRaw(e)
+    or
+    result = convertUnspecifiedElementFromRaw(e)
   }
 
   cached
@@ -2194,10 +2208,18 @@ module Synth {
   Raw::Element convertDbLocationToRaw(TDbLocation e) { e = TDbLocation(result) }
 
   cached
+  Raw::Element convertDiagnosticsToRaw(TDiagnostics e) { e = TDiagnostics(result) }
+
+  cached
   Raw::Element convertUnknownFileToRaw(TUnknownFile e) { none() }
 
   cached
   Raw::Element convertUnknownLocationToRaw(TUnknownLocation e) { none() }
+
+  cached
+  Raw::Element convertUnspecifiedElementToRaw(TUnspecifiedElement e) {
+    e = TUnspecifiedElement(result)
+  }
 
   cached
   Raw::Element convertAccessorDeclToRaw(TAccessorDecl e) { e = TAccessorDecl(result) }
@@ -3162,6 +3184,10 @@ module Synth {
     result = convertAstNodeToRaw(e)
     or
     result = convertCommentToRaw(e)
+    or
+    result = convertDiagnosticsToRaw(e)
+    or
+    result = convertUnspecifiedElementToRaw(e)
   }
 
   cached
