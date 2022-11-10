@@ -41,9 +41,9 @@ void test_movableclass()
 		MyMovableClass s3;
 		s3 = source();
 
-		sink(s1); // $ ir
-		sink(s2); // $ ir
-		sink(s3); // $ ir
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
+		sink(s3); // $ ast,ir
 	}
 
 	{
@@ -51,8 +51,8 @@ void test_movableclass()
 		MyMovableClass s2;
 		s2 = MyMovableClass(source());
 
-		sink(s1); // $ ir
-		sink(s2); // $ ir
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
 	}
 
 	{
@@ -61,7 +61,7 @@ void test_movableclass()
 		MyMovableClass s3;
 
 		sink(s1);
-		sink(s2); // $ ir
-		sink(s3 = source()); // $ ir
+		sink(s2); // $ ast,ir
+		sink(s3 = source()); // $ ast,ir
 	}
 }
