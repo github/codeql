@@ -180,11 +180,10 @@ private module Shared {
   private predicate isFlowFromLocals0(
     CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, string hashKey, ErbFile erb
   ) {
-    exists(DataFlow::Node argNode, CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
+    exists(DataFlow::Node argNode |
       argNode.asExpr() = refNode.getArgument(0) and
       refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
-      argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-      strNode.getExpr().getConstantValue().isStringlikeValue(hashKey) and
+      argNode.getALocalSource().getConstantValue().isStringlikeValue(hashKey) and
       erb = refNode.getFile()
     )
   }
