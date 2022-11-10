@@ -173,5 +173,5 @@ const debug = require('debug')('test');
     console.log(myPassword); // NOT OK
 
     const myPasscode = foo();
-    console.log(myPasscode); // NOT OK - but not flagged
+    console.log(myPasscode); // NOT OK
 });
