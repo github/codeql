@@ -175,6 +175,8 @@ private predicate isRelevantMemberAccess(DataFlow::Node node) {
   )
 }
 
+predicate sinkModelSanitizer(DataFlow::Node node) { none() }
+
 /**
  * Holds if `source` is an api entrypoint relevant for creating sink models.
  */

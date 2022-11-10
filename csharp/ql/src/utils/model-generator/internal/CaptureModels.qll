@@ -272,6 +272,8 @@ private class PropagateToSinkConfiguration extends TaintTracking::Configuration 
 
   override predicate isSink(DataFlow::Node sink) { ExternalFlow::sinkNode(sink, _) }
 
+  override predicate isSanitizer(DataFlow::Node node) { sinkModelSanitizer(node) }
+
   override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureHasSourceCallContext
   }
