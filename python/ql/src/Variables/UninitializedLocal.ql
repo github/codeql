@@ -27,7 +27,7 @@ predicate uninitialized_local(NameNode use) {
 predicate explicitly_guarded(NameNode u) {
   exists(Try t |
     t.getBody().contains(u.getNode()) and
-    t.getAHandler().getType().pointsTo(ClassValue::nameError())
+    t.getANormalHandler().getType().pointsTo(ClassValue::nameError())
   )
 }
 
