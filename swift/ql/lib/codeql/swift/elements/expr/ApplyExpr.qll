@@ -23,7 +23,7 @@ class ApplyExpr extends Generated::ApplyExpr {
    * Gets the argument of this `ApplyExpr` called `label` (if any).
    */
   final Argument getArgumentWithLabel(string label) {
-    result = getAnArgument() and
+    result = this.getAnArgument() and
     result.getLabel() = label
   }
 
