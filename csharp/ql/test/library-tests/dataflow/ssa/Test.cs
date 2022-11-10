@@ -95,7 +95,7 @@ class Test
         {
             use(x);
         }
-        // no phi_use for `x`, because actual use exists in the block
+        // phi_use for `x`, even though there is an actual use in the block
         use(x);
 
 
