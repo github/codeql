@@ -31,3 +31,9 @@
 | hash_flow.rb:782:10:782:17 | ...[...] | Unexpected result: hasValueFlow=46.3 |
 | hash_flow.rb:839:22:839:42 | # $ hasValueFlow=48.3 | Missing result:hasValueFlow=48.3 |
 | hash_flow.rb:841:22:841:42 | # $ hasValueFlow=48.4 | Missing result:hasValueFlow=48.4 |
+| hash_flow.rb:901:22:901:42 | # $ hasValueFlow=50.3 | Missing result:hasValueFlow=50.3 |
+| hash_flow.rb:903:22:903:42 | # $ hasValueFlow=50.4 | Missing result:hasValueFlow=50.4 |
+| hash_flow.rb:931:22:931:42 | # $ hasValueFlow=51.3 | Missing result:hasValueFlow=51.3 |
+| hash_flow.rb:933:22:933:42 | # $ hasValueFlow=51.4 | Missing result:hasValueFlow=51.4 |
+| hash_flow.rb:961:22:961:42 | # $ hasValueFlow=52.3 | Missing result:hasValueFlow=52.3 |
+| hash_flow.rb:963:22:963:42 | # $ hasValueFlow=52.4 | Missing result:hasValueFlow=52.4 |
