@@ -134,7 +134,7 @@ module Hapi {
         kind = "parameter" and
         exists(DataFlow::PropRead query |
           // `request.query.name`
-          query.accesses(request, "query") and
+          query.accesses(request, ["query", "params"]) and
           this.(DataFlow::PropRead).accesses(query, _)
         )
         or
