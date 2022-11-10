@@ -1,3 +1,9 @@
+| alamofire.swift:387:28:387:28 | call to init(contentsOfFile:) | external |
+| alamofire.swift:387:28:387:55 | call to init(contentsOfFile:) | external |
+| alamofire.swift:402:28:402:28 | call to init(contentsOf:) | external |
+| alamofire.swift:402:28:402:50 | call to init(contentsOf:) | external |
+| alamofire.swift:446:20:446:20 | call to init(contentsOfFile:) | external |
+| alamofire.swift:446:20:446:49 | call to init(contentsOfFile:) | external |
 | customurlschemes.swift:30:44:30:54 | url | external |
 | customurlschemes.swift:34:52:34:68 | url | external |
 | customurlschemes.swift:38:52:38:62 | url | external |
