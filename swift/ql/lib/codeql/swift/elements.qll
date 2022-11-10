@@ -150,7 +150,6 @@ import codeql.swift.elements.expr.OpenExistentialExpr
 import codeql.swift.elements.expr.OptionalEvaluationExpr
 import codeql.swift.elements.expr.OptionalTryExpr
 import codeql.swift.elements.expr.OtherConstructorDeclRefExpr
-import codeql.swift.elements.expr.OverloadSetRefExpr
 import codeql.swift.elements.expr.OverloadedDeclRefExpr
 import codeql.swift.elements.expr.PackExpr
 import codeql.swift.elements.expr.ParenExpr

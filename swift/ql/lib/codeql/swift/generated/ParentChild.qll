@@ -68,21 +68,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfUnresolvedElement(
-    UnresolvedElement e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bElement, int n |
-      b = 0 and
-      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
-      n = bElement and
-      (
-        none()
-        or
-        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfAstNode(AstNode e, int index, string partialPredicateCall) {
     exists(int b, int bLocatable, int n |
       b = 0 and
@@ -176,6 +161,21 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfUnresolvedElement(
+    UnresolvedElement e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -962,14 +962,17 @@ private module Impl {
   private Element getImmediateChildOfAppliedPropertyWrapperExpr(
     AppliedPropertyWrapperExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n |
+    exists(int b, int bExpr, int n, int nValue |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
+      nValue = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateValue() and partialPredicateCall = "Value()"
       )
     )
   }
@@ -1592,8 +1595,8 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfOverloadSetRefExpr(
-    OverloadSetRefExpr e, int index, string partialPredicateCall
+  private Element getImmediateChildOfOverloadedDeclRefExpr(
+    OverloadedDeclRefExpr e, int index, string partialPredicateCall
   ) {
     exists(int b, int bExpr, int n |
       b = 0 and
@@ -1842,18 +1845,21 @@ private module Impl {
   private Element getImmediateChildOfUnresolvedSpecializeExpr(
     UnresolvedSpecializeExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int bUnresolvedElement, int n |
+    exists(int b, int bExpr, int bUnresolvedElement, int n, int nSubExpr |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       bUnresolvedElement =
         bExpr + 1 + max(int i | i = -1 or exists(getImmediateChildOfUnresolvedElement(e, i, _)) | i) and
       n = bUnresolvedElement and
+      nSubExpr = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
         result = getImmediateChildOfUnresolvedElement(e, index - bExpr, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
   }
@@ -2588,15 +2594,19 @@ private module Impl {
   private Element getImmediateChildOfObjectLiteralExpr(
     ObjectLiteralExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLiteralExpr, int n |
+    exists(int b, int bLiteralExpr, int n, int nArgument |
       b = 0 and
       bLiteralExpr =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
       n = bLiteralExpr and
+      nArgument = n + 1 + max(int i | i = -1 or exists(e.getImmediateArgument(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateArgument(index - n) and
+        partialPredicateCall = "Argument(" + (index - n).toString() + ")"
       )
     )
   }
@@ -2613,22 +2623,6 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfAnyTryExpr(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfOverloadedDeclRefExpr(
-    OverloadedDeclRefExpr e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bOverloadSetRefExpr, int n |
-      b = 0 and
-      bOverloadSetRefExpr =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfOverloadSetRefExpr(e, i, _)) | i) and
-      n = bOverloadSetRefExpr and
-      (
-        none()
-        or
-        result = getImmediateChildOfOverloadSetRefExpr(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -5024,6 +5018,8 @@ private module Impl {
     or
     result = getImmediateChildOfOtherConstructorDeclRefExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfOverloadedDeclRefExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfPackExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfPropertyWrapperValuePlaceholderExpr(e, index, partialAccessor)
@@ -5135,8 +5131,6 @@ private module Impl {
     result = getImmediateChildOfObjectLiteralExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfOptionalTryExpr(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfOverloadedDeclRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfParenExpr(e, index, partialAccessor)
     or

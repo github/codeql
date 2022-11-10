@@ -19,7 +19,6 @@ sourceLocationPrefix(
 | @locatable
 | @location
 | @type
-| @unresolved_element
 ;
 
 #keyset[id]
@@ -67,6 +66,7 @@ files(
 | @ast_node
 | @comment
 | @diagnostics
+| @unresolved_element
 | @unspecified_element
 ;
 
@@ -90,17 +90,6 @@ locations(
   int end_line: int ref,
   int end_column: int ref
 );
-
-@unresolved_element =
-  @unresolved_decl_ref_expr
-| @unresolved_dot_expr
-| @unresolved_member_chain_result_expr
-| @unresolved_member_expr
-| @unresolved_pattern_expr
-| @unresolved_specialize_expr
-| @unresolved_type
-| @unresolved_type_conversion_expr
-;
 
 @ast_node =
   @case_label_item
@@ -139,6 +128,17 @@ unknown_files(
 unknown_locations(
   unique int id: @unknown_location
 );
+
+@unresolved_element =
+  @unresolved_decl_ref_expr
+| @unresolved_dot_expr
+| @unresolved_member_chain_result_expr
+| @unresolved_member_expr
+| @unresolved_pattern_expr
+| @unresolved_specialize_expr
+| @unresolved_type
+| @unresolved_type_conversion_expr
+;
 
 unspecified_elements(
   unique int id: @unspecified_element,
@@ -622,7 +622,7 @@ arguments(  //dir=expr
 | @open_existential_expr
 | @optional_evaluation_expr
 | @other_constructor_decl_ref_expr
-| @overload_set_ref_expr
+| @overloaded_decl_ref_expr
 | @pack_expr
 | @property_wrapper_value_placeholder_expr
 | @rebind_self_in_constructor_expr
@@ -664,7 +664,10 @@ any_try_exprs(  //dir=expr
 );
 
 applied_property_wrapper_exprs(  //dir=expr
-  unique int id: @applied_property_wrapper_expr
+  unique int id: @applied_property_wrapper_expr,
+  int kind: int ref,
+  int value: @expr_or_none ref,
+  int param: @param_decl_or_none ref
 );
 
 @apply_expr =
@@ -971,16 +974,30 @@ other_constructor_decl_ref_exprs(  //dir=expr
   int constructor_decl: @constructor_decl_or_none ref
 );
 
-@overload_set_ref_expr =
-  @overloaded_decl_ref_expr
-;
+overloaded_decl_ref_exprs(  //dir=expr
+  unique int id: @overloaded_decl_ref_expr
+);
+
+#keyset[id, index]
+overloaded_decl_ref_expr_possible_declarations(  //dir=expr
+  int id: @overloaded_decl_ref_expr ref,
+  int index: int ref,
+  int possible_declaration: @value_decl_or_none ref
+);
 
 pack_exprs(  //dir=expr
   unique int id: @pack_expr
 );
 
 property_wrapper_value_placeholder_exprs(  //dir=expr
-  unique int id: @property_wrapper_value_placeholder_expr
+  unique int id: @property_wrapper_value_placeholder_expr,
+  int placeholder: @opaque_value_expr_or_none ref
+);
+
+#keyset[id]
+property_wrapper_value_placeholder_expr_wrapped_values(  //dir=expr
+  int id: @property_wrapper_value_placeholder_expr ref,
+  int wrapped_value: @expr_or_none ref
 );
 
 rebind_self_in_constructor_exprs(  //dir=expr
@@ -1071,7 +1088,8 @@ unresolved_pattern_exprs(  //dir=expr
 );
 
 unresolved_specialize_exprs(  //dir=expr
-  unique int id: @unresolved_specialize_expr
+  unique int id: @unresolved_specialize_expr,
+  int sub_expr: @expr_or_none ref
 );
 
 vararg_expansion_exprs(  //dir=expr
@@ -1307,15 +1325,19 @@ nil_literal_exprs(  //dir=expr
 );
 
 object_literal_exprs(  //dir=expr
-  unique int id: @object_literal_expr
+  unique int id: @object_literal_expr,
+  int kind: int ref
+);
+
+#keyset[id, index]
+object_literal_expr_arguments(  //dir=expr
+  int id: @object_literal_expr ref,
+  int index: int ref,
+  int argument: @argument_or_none ref
 );
 
 optional_try_exprs(  //dir=expr
   unique int id: @optional_try_expr
-);
-
-overloaded_decl_ref_exprs(  //dir=expr
-  unique int id: @overloaded_decl_ref_expr
 );
 
 paren_exprs(  //dir=expr
