@@ -12,15 +12,15 @@ private class IterableClass extends Class {
   private Type elementType;
 
   IterableClass() {
-    exists(Method m, RefType return, GenericType t, Type et, int position |
-      m.getDeclaringType() = t
-    |
-      return = m.getReturnType() and
-      return.getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
-      et = return.(ParameterizedType).getTypeArgument(0) and
-      t.getTypeParameter(position) = et and
-      instantiates(this, t, position, elementType)
-    )
+    elementType =
+      unique(Type et |
+        exists(Method m, RefType return, GenericType t, int position | m.getDeclaringType() = t |
+          return = m.getReturnType() and
+          return.getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
+          t.getTypeParameter(position) = return.(ParameterizedType).getTypeArgument(0) and
+          instantiates(this, t, position, et)
+        )
+      )
   }
 
   /**
