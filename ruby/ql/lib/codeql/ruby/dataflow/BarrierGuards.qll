@@ -25,6 +25,31 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
   )
   or
   stringConstCaseCompare(guard, testedNode, branch)
+  or
+  stringConstCompareOr(guard, testedNode, branch)
+  or
+  stringConstCompareAnd(guard, testedNode, branch)
+}
+
+private predicate stringConstCompareOr(
+  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, CfgNode testedNode, boolean branch
+) {
+  guard.getExpr() instanceof LogicalOrExpr and
+  branch = true and
+  exists(Ssa::Definition def |
+    forall(CfgNode innerGuard | innerGuard = guard.getAnOperand() |
+      stringConstCompare(innerGuard, def.getARead(), branch)
+    ) and
+    testedNode = any(CfgNode node | stringConstCompare(guard.getAnOperand(), node, _))
+  )
+}
+
+private predicate stringConstCompareAnd(
+  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, CfgNode testedNode, boolean branch
+) {
+  guard.getExpr() instanceof LogicalAndExpr and
+  branch = true and
+  stringConstCompare(guard.getAnOperand(), testedNode, branch)
 }
 
 /**

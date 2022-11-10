@@ -136,10 +136,10 @@ when "bar"
 end
 
 case foo
-when "foo", "bar" # $ MISSING: guarded
-    foo
-when "baz", "quux" # $ MISSING: guarded
-    foo
+when "foo", "bar"
+    foo # $ MISSING: guarded
+when "baz", "quux"
+    foo # $ MISSING: guarded
 else
     foo
 end
@@ -189,7 +189,43 @@ when *FOO_AND_X # not a guard - includes non-constant element `x`
 end
 
 if foo == "foo" or foo == "bar"
-    foo # $ MISSING: guarded
+    foo # $ guarded
+end
+
+if foo == "foo" or foo == "bar" or foo == "baz"
+    foo # $ guarded
+end
+
+if foo == "foo" or foo == "bar" or foo == x
+    foo
+end
+
+if foo == "foo" or bar == "bar" or foo == "baz"
+    foo
+end
+
+if foo == "foo" and x
+    foo # $ guarded
+end
+
+if x and foo == "foo"
+    foo # $ guarded
+end
+
+if x and y and foo == "foo"
+    foo # $ guarded
+end
+
+if foo == "foo" and foo == "bar" # $ guarded (second `foo` is guarded by the first comparison)
+    foo # $ guarded
+end
+
+if x and y
+    foo
+end
+
+if foo == "foo" and y
+    bar
 end
 
 case
