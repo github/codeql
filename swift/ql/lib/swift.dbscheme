@@ -987,7 +987,14 @@ pack_exprs(  //dir=expr
 );
 
 property_wrapper_value_placeholder_exprs(  //dir=expr
-  unique int id: @property_wrapper_value_placeholder_expr
+  unique int id: @property_wrapper_value_placeholder_expr,
+  int placeholder: @opaque_value_expr_or_none ref
+);
+
+#keyset[id]
+property_wrapper_value_placeholder_expr_wrapped_values(  //dir=expr
+  int id: @property_wrapper_value_placeholder_expr ref,
+  int wrapped_value: @expr_or_none ref
 );
 
 rebind_self_in_constructor_exprs(  //dir=expr

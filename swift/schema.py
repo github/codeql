@@ -397,7 +397,12 @@ class OtherConstructorDeclRefExpr(Expr):
     constructor_decl: ConstructorDecl
 
 class PropertyWrapperValuePlaceholderExpr(Expr):
-    pass
+    """
+    A placeholder substituting property initializations with `=` when the property has a property
+    wrapper with an initializer.
+    """
+    wrapped_value: optional[Expr]
+    placeholder: OpaqueValueExpr
 
 class RebindSelfInConstructorExpr(Expr):
     sub_expr: Expr | child

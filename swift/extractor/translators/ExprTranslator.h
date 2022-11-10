@@ -111,6 +111,8 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
       const swift::DynamicSubscriptExpr& expr);
   codeql::UnresolvedSpecializeExpr translateUnresolvedSpecializeExpr(
       const swift::UnresolvedSpecializeExpr& expr);
+  codeql::PropertyWrapperValuePlaceholderExpr translatePropertyWrapperValuePlaceholderExpr(
+      const swift::PropertyWrapperValuePlaceholderExpr& expr);
 
  private:
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,

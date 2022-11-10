@@ -561,6 +561,10 @@ module Raw {
 
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
     override string toString() { result = "PropertyWrapperValuePlaceholderExpr" }
+
+    Expr getWrappedValue() { property_wrapper_value_placeholder_expr_wrapped_values(this, result) }
+
+    OpaqueValueExpr getPlaceholder() { property_wrapper_value_placeholder_exprs(this, result) }
   }
 
   class RebindSelfInConstructorExpr extends @rebind_self_in_constructor_expr, Expr {

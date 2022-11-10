@@ -564,4 +564,13 @@ codeql::UnresolvedSpecializeExpr ExprTranslator::translateUnresolvedSpecializeEx
   return entry;
 }
 
+codeql::PropertyWrapperValuePlaceholderExpr
+ExprTranslator::translatePropertyWrapperValuePlaceholderExpr(
+    const swift::PropertyWrapperValuePlaceholderExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.wrapped_value = dispatcher.fetchOptionalLabel(expr.getOriginalWrappedValue());
+  entry.placeholder = dispatcher.fetchLabel(expr.getOpaqueValuePlaceholder());
+  return entry;
+}
+
 }  // namespace codeql
