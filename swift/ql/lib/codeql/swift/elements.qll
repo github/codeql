@@ -6,12 +6,12 @@ import codeql.swift.elements.DbFile
 import codeql.swift.elements.DbLocation
 import codeql.swift.elements.Diagnostics
 import codeql.swift.elements.Element
+import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.File
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
 import codeql.swift.elements.UnknownFile
 import codeql.swift.elements.UnknownLocation
-import codeql.swift.elements.UnresolvedElement
 import codeql.swift.elements.UnspecifiedElement
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.decl.AbstractStorageDecl

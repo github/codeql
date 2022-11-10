@@ -33,11 +33,14 @@ class Locatable(Element):
     location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
 
 @qltest.collapse_hierarchy
-class UnresolvedElement(Locatable):
+@qltest.skip
+class ErrorElement(Locatable):
+    """The superclass of all elements indicating some kind of error."""
     pass
 
+
 @use_for_null
-class UnspecifiedElement(Locatable):
+class UnspecifiedElement(ErrorElement):
     parent: optional[Element]
     property: string
     index: optional[int]
@@ -326,7 +329,7 @@ class EnumIsCaseExpr(Expr):
     element: EnumElementDecl
 
 @qltest.skip
-class ErrorExpr(Expr):
+class ErrorExpr(Expr, ErrorElement):
     pass
 
 class ExplicitCastExpr(Expr):
@@ -433,20 +436,20 @@ class TupleExpr(Expr):
 class TypeExpr(Expr):
     type_repr: optional["TypeRepr"] | child
 
-class UnresolvedDeclRefExpr(Expr, UnresolvedElement):
+class UnresolvedDeclRefExpr(Expr, ErrorElement):
     name: optional[string]
 
-class UnresolvedDotExpr(Expr, UnresolvedElement):
+class UnresolvedDotExpr(Expr, ErrorElement):
     base: Expr | child
     name: string
 
-class UnresolvedMemberExpr(Expr, UnresolvedElement):
+class UnresolvedMemberExpr(Expr, ErrorElement):
     name: string
 
-class UnresolvedPatternExpr(Expr, UnresolvedElement):
+class UnresolvedPatternExpr(Expr, ErrorElement):
     sub_pattern: Pattern | child
 
-class UnresolvedSpecializeExpr(Expr, UnresolvedElement):
+class UnresolvedSpecializeExpr(Expr, ErrorElement):
     sub_expr: Expr | child
 
 class VarargExpansionExpr(Expr):
@@ -594,7 +597,7 @@ class ObjectLiteralExpr(LiteralExpr):
 class OptionalTryExpr(AnyTryExpr):
     pass
 
-class OverloadedDeclRefExpr(Expr):
+class OverloadedDeclRefExpr(Expr, ErrorElement):
     """
     An ambiguous expression that might refer to multiple declarations. This will be present only
     for failing compilations.
@@ -640,10 +643,10 @@ class UnderlyingToOpaqueExpr(ImplicitConversionExpr):
 class UnevaluatedInstanceExpr(ImplicitConversionExpr):
     pass
 
-class UnresolvedMemberChainResultExpr(IdentityExpr, UnresolvedElement):
+class UnresolvedMemberChainResultExpr(IdentityExpr, ErrorElement):
     pass
 
-class UnresolvedTypeConversionExpr(ImplicitConversionExpr, UnresolvedElement):
+class UnresolvedTypeConversionExpr(ImplicitConversionExpr, ErrorElement):
     pass
 
 class BooleanLiteralExpr(BuiltinLiteralExpr):
@@ -852,7 +855,7 @@ class DependentMemberType(Type):
 class DynamicSelfType(Type):
     static_self_type: Type
 
-class ErrorType(Type):
+class ErrorType(Type, ErrorElement):
     pass
 
 class ExistentialType(Type):
@@ -901,7 +904,7 @@ class TupleType(Type):
 class TypeVariableType(Type):
     pass
 
-class UnresolvedType(Type, UnresolvedElement):
+class UnresolvedType(Type, ErrorElement):
     pass
 
 class AnyBuiltinIntegerType(BuiltinType):

@@ -66,8 +66,7 @@ files(
 | @ast_node
 | @comment
 | @diagnostics
-| @unresolved_element
-| @unspecified_element
+| @error_element
 ;
 
 #keyset[id]
@@ -121,16 +120,11 @@ diagnostics(
   int kind: int ref
 );
 
-unknown_files(
-  unique int id: @unknown_file
-);
-
-unknown_locations(
-  unique int id: @unknown_location
-);
-
-@unresolved_element =
-  @unresolved_decl_ref_expr
+@error_element =
+  @error_expr
+| @error_type
+| @overloaded_decl_ref_expr
+| @unresolved_decl_ref_expr
 | @unresolved_dot_expr
 | @unresolved_member_chain_result_expr
 | @unresolved_member_expr
@@ -138,7 +132,16 @@ unknown_locations(
 | @unresolved_specialize_expr
 | @unresolved_type
 | @unresolved_type_conversion_expr
+| @unspecified_element
 ;
+
+unknown_files(
+  unique int id: @unknown_file
+);
+
+unknown_locations(
+  unique int id: @unknown_location
+);
 
 unspecified_elements(
   unique int id: @unspecified_element,
