@@ -3,7 +3,7 @@
 
 <overview>
   <p>When a cipher is used in certain modes (such as CBC or GCM), it requires an initialization vector (IV). Under the same secret key, IVs should be unique and ideally unpredictable. If the same IV is used with the same secret key, then the same plaintext results in the same ciphertext. This behavior may enable an attacker to learn if the same data pieces are transferred or stored, or help the attacker run a dictionary attack.</p>
-  <p>In particular, if the IV is hardcoded or constant, an attacker may just lookup potential keys in a dictionary, then concatenate those with the hardcoded or constant IV rather than trying to discover the entire encryption key.</p>
+  <p>In particular, if the IV is hardcoded or constant, an attacker may just look up potential keys in a dictionary, then concatenate those with the hardcoded or constant IV rather than trying to discover the entire encryption key.</p>
 </overview>
 
 <recommendation>

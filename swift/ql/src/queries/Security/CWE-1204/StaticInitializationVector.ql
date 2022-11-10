@@ -1,6 +1,6 @@
 /**
  * @name Static initialization vector for encryption
- * @description Using a static initialization vector (IV) for encryption is not secure. To maximize encryption and prevent dictionary attacks, IVs should rather be unique and unpredictable.
+ * @description Using a static initialization vector (IV) for encryption is not secure. To maximize encryption and prevent dictionary attacks, IVs should be unique and unpredictable.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
