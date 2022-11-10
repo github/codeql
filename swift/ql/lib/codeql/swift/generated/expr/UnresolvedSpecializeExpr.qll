@@ -7,5 +7,23 @@ import codeql.swift.elements.UnresolvedElement
 module Generated {
   class UnresolvedSpecializeExpr extends Synth::TUnresolvedSpecializeExpr, Expr, UnresolvedElement {
     override string getAPrimaryQlClass() { result = "UnresolvedSpecializeExpr" }
+
+    /**
+     * Gets the sub expression of this unresolved specialize expression.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertUnresolvedSpecializeExprToRaw(this)
+              .(Raw::UnresolvedSpecializeExpr)
+              .getSubExpr())
+    }
+
+    /**
+     * Gets the sub expression of this unresolved specialize expression.
+     */
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

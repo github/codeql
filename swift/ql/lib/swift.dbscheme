@@ -19,7 +19,6 @@ sourceLocationPrefix(
 | @locatable
 | @location
 | @type
-| @unresolved_element
 ;
 
 #keyset[id]
@@ -66,6 +65,8 @@ files(
   @argument
 | @ast_node
 | @comment
+| @diagnostics
+| @unresolved_element
 | @unspecified_element
 ;
 
@@ -89,17 +90,6 @@ locations(
   int end_line: int ref,
   int end_column: int ref
 );
-
-@unresolved_element =
-  @unresolved_decl_ref_expr
-| @unresolved_dot_expr
-| @unresolved_member_chain_result_expr
-| @unresolved_member_expr
-| @unresolved_pattern_expr
-| @unresolved_specialize_expr
-| @unresolved_type
-| @unresolved_type_conversion_expr
-;
 
 @ast_node =
   @case_label_item
@@ -125,6 +115,12 @@ db_locations(
   unique int id: @db_location
 );
 
+diagnostics(
+  unique int id: @diagnostics,
+  string text: string ref,
+  int kind: int ref
+);
+
 unknown_files(
   unique int id: @unknown_file
 );
@@ -132,6 +128,17 @@ unknown_files(
 unknown_locations(
   unique int id: @unknown_location
 );
+
+@unresolved_element =
+  @unresolved_decl_ref_expr
+| @unresolved_dot_expr
+| @unresolved_member_chain_result_expr
+| @unresolved_member_expr
+| @unresolved_pattern_expr
+| @unresolved_specialize_expr
+| @unresolved_type
+| @unresolved_type_conversion_expr
+;
 
 unspecified_elements(
   unique int id: @unspecified_element,
@@ -247,7 +254,8 @@ import_decl_declarations(  //dir=decl
 );
 
 missing_member_decls(  //dir=decl
-  unique int id: @missing_member_decl
+  unique int id: @missing_member_decl,
+  string name: string ref
 );
 
 @operator_decl =
@@ -281,7 +289,9 @@ pattern_binding_decl_patterns(  //dir=decl
 );
 
 pound_diagnostic_decls(  //dir=decl
-  unique int id: @pound_diagnostic_decl
+  unique int id: @pound_diagnostic_decl,
+  int kind: int ref,
+  int message: @string_literal_expr_or_none ref
 );
 
 precedence_group_decls(  //dir=decl
@@ -528,7 +538,15 @@ nominal_type_decls(  //dir=decl
 );
 
 opaque_type_decls(  //dir=decl
-  unique int id: @opaque_type_decl
+  unique int id: @opaque_type_decl,
+  int naming_declaration: @value_decl_or_none ref
+);
+
+#keyset[id, index]
+opaque_type_decl_opaque_generic_params(  //dir=decl
+  int id: @opaque_type_decl ref,
+  int index: int ref,
+  int opaque_generic_param: @generic_type_param_type_or_none ref
 );
 
 param_decls(  //dir=decl
@@ -604,7 +622,7 @@ arguments(  //dir=expr
 | @open_existential_expr
 | @optional_evaluation_expr
 | @other_constructor_decl_ref_expr
-| @overload_set_ref_expr
+| @overloaded_decl_ref_expr
 | @pack_expr
 | @property_wrapper_value_placeholder_expr
 | @rebind_self_in_constructor_expr
@@ -646,7 +664,10 @@ any_try_exprs(  //dir=expr
 );
 
 applied_property_wrapper_exprs(  //dir=expr
-  unique int id: @applied_property_wrapper_expr
+  unique int id: @applied_property_wrapper_expr,
+  int kind: int ref,
+  int value: @expr_or_none ref,
+  int param: @param_decl_or_none ref
 );
 
 @apply_expr =
@@ -953,16 +974,30 @@ other_constructor_decl_ref_exprs(  //dir=expr
   int constructor_decl: @constructor_decl_or_none ref
 );
 
-@overload_set_ref_expr =
-  @overloaded_decl_ref_expr
-;
+overloaded_decl_ref_exprs(  //dir=expr
+  unique int id: @overloaded_decl_ref_expr
+);
+
+#keyset[id, index]
+overloaded_decl_ref_expr_possible_declarations(  //dir=expr
+  int id: @overloaded_decl_ref_expr ref,
+  int index: int ref,
+  int possible_declaration: @value_decl_or_none ref
+);
 
 pack_exprs(  //dir=expr
   unique int id: @pack_expr
 );
 
 property_wrapper_value_placeholder_exprs(  //dir=expr
-  unique int id: @property_wrapper_value_placeholder_expr
+  unique int id: @property_wrapper_value_placeholder_expr,
+  int placeholder: @opaque_value_expr_or_none ref
+);
+
+#keyset[id]
+property_wrapper_value_placeholder_expr_wrapped_values(  //dir=expr
+  int id: @property_wrapper_value_placeholder_expr ref,
+  int wrapped_value: @expr_or_none ref
 );
 
 rebind_self_in_constructor_exprs(  //dir=expr
@@ -1053,7 +1088,8 @@ unresolved_pattern_exprs(  //dir=expr
 );
 
 unresolved_specialize_exprs(  //dir=expr
-  unique int id: @unresolved_specialize_expr
+  unique int id: @unresolved_specialize_expr,
+  int sub_expr: @expr_or_none ref
 );
 
 vararg_expansion_exprs(  //dir=expr
@@ -1289,15 +1325,19 @@ nil_literal_exprs(  //dir=expr
 );
 
 object_literal_exprs(  //dir=expr
-  unique int id: @object_literal_expr
+  unique int id: @object_literal_expr,
+  int kind: int ref
+);
+
+#keyset[id, index]
+object_literal_expr_arguments(  //dir=expr
+  int id: @object_literal_expr ref,
+  int index: int ref,
+  int argument: @argument_or_none ref
 );
 
 optional_try_exprs(  //dir=expr
   unique int id: @optional_try_expr
-);
-
-overloaded_decl_ref_exprs(  //dir=expr
-  unique int id: @overloaded_decl_ref_expr
 );
 
 paren_exprs(  //dir=expr
@@ -1696,7 +1736,9 @@ labeled_stmt_labels(  //dir=stmt
 );
 
 pound_assert_stmts(  //dir=stmt
-  unique int id: @pound_assert_stmt
+  unique int id: @pound_assert_stmt,
+  int condition: @expr_or_none ref,
+  string message: string ref
 );
 
 return_stmts(  //dir=stmt
@@ -2220,7 +2262,8 @@ dictionary_types(  //dir=type
 ;
 
 opaque_type_archetype_types(  //dir=type
-  unique int id: @opaque_type_archetype_type
+  unique int id: @opaque_type_archetype_type,
+  int declaration: @opaque_type_decl_or_none ref
 );
 
 opened_archetype_types(  //dir=type
@@ -2387,6 +2430,11 @@ variadic_sequence_types(  //dir=type
 | @unspecified_element
 ;
 
+@opaque_type_decl_or_none =
+  @opaque_type_decl
+| @unspecified_element
+;
+
 @opaque_value_expr_or_none =
   @opaque_value_expr
 | @unspecified_element
@@ -2424,6 +2472,11 @@ variadic_sequence_types(  //dir=type
 
 @stmt_condition_or_none =
   @stmt_condition
+| @unspecified_element
+;
+
+@string_literal_expr_or_none =
+  @string_literal_expr
 | @unspecified_element
 ;
 

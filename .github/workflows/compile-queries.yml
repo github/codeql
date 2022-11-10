@@ -2,11 +2,11 @@ name: "Compile all queries using the latest stable CodeQL CLI"
 
 on:
   push:
-    branches: [main] # makes sure the cache gets populated
-  pull_request:
-    branches:
+    branches:  # makes sure the cache gets populated - running on the branches people tend to merge into.
       - main
       - "rc/*"
+      - "codeql-cli-*"
+  pull_request:
 
 jobs:
   compile-queries:
@@ -14,31 +14,33 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       # calculate the merge-base with main, in a way that works both on PRs and pushes to main. 
       - name: Calculate merge-base
         if: ${{ github.event_name == 'pull_request' }}
         env:
           BASE_BRANCH: ${{ github.base_ref }}
         run: |
-          MERGE_BASE=$(git merge-base --fork-point origin/$BASE_BRANCH)
+          MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
           echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
-      - name: Calculate merge-base - branch
-        if: ${{ github.event_name != 'pull_request' }}
-        # using github.sha instead, since we're directly on a branch, and not in a PR
-        run: |
-          MERGE_BASE=${{ github.sha }}
-          echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
-      - name: Cache CodeQL query compilation
+      - name: Read CodeQL query compilation - PR
+        if: ${{ github.event_name == 'pull_request' }}
         uses: actions/cache@v3
         with:
           path: '*/ql/src/.cache'
-          # current GH HEAD first, merge-base second, generic third
-          key: codeql-stable-compile-${{ github.sha }}
+          key: codeql-compile-pr-${{ github.sha }} # deliberately not using the `compile-compile-main` keys here.
           restore-keys: |
-            codeql-stable-compile-${{ env.merge-base }}
-            codeql-stable-compile-
+            codeql-compile-${{ github.base_ref }}-${{ env.merge-base }}
+            codeql-compile-${{ github.base_ref }}-
+            codeql-compile-main-
+      - name: Fill CodeQL query compilation cache - main
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/cache@v3
+        with:
+          path: '*/ql/src/.cache'
+          key: codeql-compile-${{ github.ref_name }}-${{ github.sha }} # just fill on main
+          restore-keys: | # restore from another random commit, to speed up compilation.
+            codeql-compile-${{ github.ref_name }}- 
+            codeql-compile-main-
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
         with:

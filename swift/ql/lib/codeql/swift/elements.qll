@@ -4,6 +4,7 @@ import codeql.swift.elements.Callable
 import codeql.swift.elements.Comment
 import codeql.swift.elements.DbFile
 import codeql.swift.elements.DbLocation
+import codeql.swift.elements.Diagnostics
 import codeql.swift.elements.Element
 import codeql.swift.elements.File
 import codeql.swift.elements.Locatable
@@ -149,7 +150,6 @@ import codeql.swift.elements.expr.OpenExistentialExpr
 import codeql.swift.elements.expr.OptionalEvaluationExpr
 import codeql.swift.elements.expr.OptionalTryExpr
 import codeql.swift.elements.expr.OtherConstructorDeclRefExpr
-import codeql.swift.elements.expr.OverloadSetRefExpr
 import codeql.swift.elements.expr.OverloadedDeclRefExpr
 import codeql.swift.elements.expr.PackExpr
 import codeql.swift.elements.expr.ParenExpr

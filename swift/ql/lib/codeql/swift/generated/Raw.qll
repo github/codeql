@@ -33,8 +33,6 @@ module Raw {
     int getEndColumn() { locations(this, _, _, _, _, result) }
   }
 
-  class UnresolvedElement extends @unresolved_element, Element { }
-
   class AstNode extends @ast_node, Locatable { }
 
   class Comment extends @comment, Locatable {
@@ -50,6 +48,16 @@ module Raw {
   class DbLocation extends @db_location, Location {
     override string toString() { result = "DbLocation" }
   }
+
+  class Diagnostics extends @diagnostics, Locatable {
+    override string toString() { result = "Diagnostics" }
+
+    string getText() { diagnostics(this, result, _) }
+
+    int getKind() { diagnostics(this, _, result) }
+  }
+
+  class UnresolvedElement extends @unresolved_element, Locatable { }
 
   class UnspecifiedElement extends @unspecified_element, Locatable {
     override string toString() { result = "UnspecifiedElement" }
@@ -107,6 +115,8 @@ module Raw {
 
   class MissingMemberDecl extends @missing_member_decl, Decl {
     override string toString() { result = "MissingMemberDecl" }
+
+    string getName() { missing_member_decls(this, result) }
   }
 
   class OperatorDecl extends @operator_decl, Decl {
@@ -123,6 +133,10 @@ module Raw {
 
   class PoundDiagnosticDecl extends @pound_diagnostic_decl, Decl {
     override string toString() { result = "PoundDiagnosticDecl" }
+
+    int getKind() { pound_diagnostic_decls(this, result, _) }
+
+    StringLiteralExpr getMessage() { pound_diagnostic_decls(this, _, result) }
   }
 
   class PrecedenceGroupDecl extends @precedence_group_decl, Decl {
@@ -259,6 +273,12 @@ module Raw {
 
   class OpaqueTypeDecl extends @opaque_type_decl, GenericTypeDecl {
     override string toString() { result = "OpaqueTypeDecl" }
+
+    ValueDecl getNamingDeclaration() { opaque_type_decls(this, result) }
+
+    GenericTypeParamType getOpaqueGenericParam(int index) {
+      opaque_type_decl_opaque_generic_params(this, index, result)
+    }
   }
 
   class ParamDecl extends @param_decl, VarDecl {
@@ -307,6 +327,12 @@ module Raw {
 
   class AppliedPropertyWrapperExpr extends @applied_property_wrapper_expr, Expr {
     override string toString() { result = "AppliedPropertyWrapperExpr" }
+
+    int getKind() { applied_property_wrapper_exprs(this, result, _, _) }
+
+    Expr getValue() { applied_property_wrapper_exprs(this, _, result, _) }
+
+    ParamDecl getParam() { applied_property_wrapper_exprs(this, _, _, result) }
   }
 
   class ApplyExpr extends @apply_expr, Expr {
@@ -527,7 +553,13 @@ module Raw {
     ConstructorDecl getConstructorDecl() { other_constructor_decl_ref_exprs(this, result) }
   }
 
-  class OverloadSetRefExpr extends @overload_set_ref_expr, Expr { }
+  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, Expr {
+    override string toString() { result = "OverloadedDeclRefExpr" }
+
+    ValueDecl getPossibleDeclaration(int index) {
+      overloaded_decl_ref_expr_possible_declarations(this, index, result)
+    }
+  }
 
   class PackExpr extends @pack_expr, Expr {
     override string toString() { result = "PackExpr" }
@@ -535,6 +567,10 @@ module Raw {
 
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
     override string toString() { result = "PropertyWrapperValuePlaceholderExpr" }
+
+    Expr getWrappedValue() { property_wrapper_value_placeholder_expr_wrapped_values(this, result) }
+
+    OpaqueValueExpr getPlaceholder() { property_wrapper_value_placeholder_exprs(this, result) }
   }
 
   class RebindSelfInConstructorExpr extends @rebind_self_in_constructor_expr, Expr {
@@ -615,6 +651,8 @@ module Raw {
 
   class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
+
+    Expr getSubExpr() { unresolved_specialize_exprs(this, result) }
   }
 
   class VarargExpansionExpr extends @vararg_expansion_expr, Expr {
@@ -819,14 +857,14 @@ module Raw {
 
   class ObjectLiteralExpr extends @object_literal_expr, LiteralExpr {
     override string toString() { result = "ObjectLiteralExpr" }
+
+    int getKind() { object_literal_exprs(this, result) }
+
+    Argument getArgument(int index) { object_literal_expr_arguments(this, index, result) }
   }
 
   class OptionalTryExpr extends @optional_try_expr, AnyTryExpr {
     override string toString() { result = "OptionalTryExpr" }
-  }
-
-  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, OverloadSetRefExpr {
-    override string toString() { result = "OverloadedDeclRefExpr" }
   }
 
   class ParenExpr extends @paren_expr, IdentityExpr {
@@ -1116,6 +1154,10 @@ module Raw {
 
   class PoundAssertStmt extends @pound_assert_stmt, Stmt {
     override string toString() { result = "PoundAssertStmt" }
+
+    Expr getCondition() { pound_assert_stmts(this, result, _) }
+
+    string getMessage() { pound_assert_stmts(this, _, result) }
   }
 
   class ReturnStmt extends @return_stmt, Stmt {
@@ -1473,6 +1515,8 @@ module Raw {
 
   class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {
     override string toString() { result = "OpaqueTypeArchetypeType" }
+
+    OpaqueTypeDecl getDeclaration() { opaque_type_archetype_types(this, result) }
   }
 
   class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {
