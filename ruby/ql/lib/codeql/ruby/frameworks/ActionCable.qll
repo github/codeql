@@ -29,6 +29,10 @@ module ActionCable {
     }
   }
 
+  private DataFlow::ConstRef getActionCableChannelBase() {
+    result = DataFlow::getConstant("ActionCable").getConstant("Channel").getConstant("Base")
+  }
+
   /**
    * The data argument in an RPC endpoint method on a subclass of
    * `ActionCable::Channel::Base`, considered as a remote flow source.
@@ -38,21 +42,11 @@ module ActionCable {
       exists(DataFlow::MethodNode m |
         // Any method on a subclass of `ActionCable::Channel::Base`
         // automatically becomes an RPC endpoint
-        m =
-          DataFlow::getConstant("ActionCable")
-              .getConstant("Channel")
-              .getConstant("Base")
-              .getADescendentModule()
-              .getAnInstanceMethod() and
+        m = getActionCableChannelBase().getADescendentModule().getAnInstanceMethod() and
         // as long as it's not an instance method of
         // `ActionCable::Channel::Base` itself, which might exist in the
         // database
-        not m =
-          DataFlow::getConstant("ActionCable")
-              .getConstant("Channel")
-              .getConstant("Base")
-              .asModule()
-              .getAnInstanceMethod() and
+        not m = getActionCableChannelBase().asModule().getAnInstanceMethod() and
         // and as long as it's public
         m.asCallableAstNode().isPublic() and
         // and is not called `subscribed` or `unsubscribed`.
