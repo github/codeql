@@ -439,6 +439,21 @@ class ExceptFlowNode extends ControlFlowNode {
   }
 }
 
+/** The ControlFlowNode for an 'except*' statement. */
+class ExceptGroupFlowNode extends ControlFlowNode {
+  ExceptGroupFlowNode() { this.getNode() instanceof ExceptGroupStmt }
+
+  ControlFlowNode getType() {
+    this.getBasicBlock().dominates(result.getBasicBlock()) and
+    result = this.getNode().(ExceptGroupStmt).getType().getAFlowNode()
+  }
+
+  ControlFlowNode getName() {
+    this.getBasicBlock().dominates(result.getBasicBlock()) and
+    result = this.getNode().(ExceptGroupStmt).getName().getAFlowNode()
+  }
+}
+
 private ControlFlowNode element_from_tuple_objectapi(Object tuple) {
   exists(Tuple t | t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode())
 }
