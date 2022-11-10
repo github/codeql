@@ -95,16 +95,7 @@ module IRTest {
     override predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
-        sink.asConvertedExpr() = call.getAnArgument()
-        or
-        call.getTarget().getName() = "sink" and
-        sink.asExpr() = call.getAnArgument() and
-        sink.asConvertedExpr() instanceof ReferenceDereferenceExpr
-      )
-      or
-      exists(ReadSideEffectInstruction read |
-        read.getSideEffectOperand() = sink.asOperand() and
-        read.getPrimaryInstruction().(CallInstruction).getStaticCallTarget().hasName("sink")
+        sink.asExpr() = call.getAnArgument()
       )
     }
 
