@@ -7,6 +7,7 @@ private import semmle.code.java.dataflow.internal.DataFlowNodes
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
 private import semmle.code.java.dataflow.DataFlow as Df
+private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.dataflow.TaintTracking as Tt
 import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.java.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -17,6 +18,8 @@ module DataFlow = Df::DataFlow;
 module TaintTracking = Tt::TaintTracking;
 
 class Type = J::Type;
+
+class Unit = J::Unit;
 
 private J::Method superImpl(J::Method m) {
   result = m.getAnOverride() and
@@ -222,25 +225,30 @@ predicate isOwnInstanceAccessNode(ReturnNode node) {
   node.asExpr().(J::ThisAccess).isOwnInstanceAccess()
 }
 
-/**
- * Language specific parts of the `PropagateToSinkConfiguration`.
- */
-class PropagateToSinkConfigurationSpecific extends TaintTracking::Configuration {
-  PropagateToSinkConfigurationSpecific() { this = "parameters or fields flowing into sinks" }
+predicate sinkModelSanitizer(DataFlow::Node node) {
+  // exclude variable capture jump steps
+  exists(Ssa::SsaImplicitInit closure |
+    closure.captures(_) and
+    node.asExpr() = closure.getAFirstUse()
+  )
+}
 
-  override predicate isSource(DataFlow::Node source) {
-    (
-      source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
-      source instanceof DataFlow::ParameterNode
-    ) and
-    source.getEnclosingCallable().isPublic() and
-    exists(J::RefType t |
-      t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
-      not t instanceof J::TypeObject and
-      t.isPublic()
-    ) and
-    isRelevantForModels(source.getEnclosingCallable())
-  }
+/**
+ * Holds if `source` is an api entrypoint relevant for creating sink models.
+ */
+predicate apiSource(DataFlow::Node source) {
+  (
+    source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
+    source instanceof DataFlow::ParameterNode
+  ) and
+  source.getEnclosingCallable().isPublic() and
+  exists(J::RefType t |
+    t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
+    not t instanceof J::TypeObject and
+    t.isPublic()
+  ) and
+  isRelevantForModels(source.getEnclosingCallable()) and
+  exists(asPartialModel(source.getEnclosingCallable()))
 }
 
 /**

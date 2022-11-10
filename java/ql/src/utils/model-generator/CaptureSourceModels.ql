@@ -8,6 +8,10 @@
 
 import internal.CaptureModels
 
+class Activate extends ActiveConfiguration {
+  override predicate activateFromSourceConfig() { any() }
+}
+
 from DataFlowTargetApi api, string source
 where source = captureSource(api)
 select source order by source

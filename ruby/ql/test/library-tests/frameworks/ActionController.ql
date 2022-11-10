@@ -5,7 +5,7 @@ private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 
-query predicate actionControllerControllerClasses(ActionControllerControllerClass cls) { any() }
+query predicate actionControllerControllerClasses(ActionControllerClass cls) { any() }
 
 query predicate actionControllerActionMethods(ActionControllerActionMethod m) { any() }
 
@@ -25,11 +25,11 @@ query predicate redirectToCalls(RedirectToCall c) { any() }
 
 query predicate actionControllerHelperMethods(ActionControllerHelperMethod m) { any() }
 
-query predicate getAssociatedControllerClasses(ActionControllerControllerClass cls, ErbFile f) {
+query predicate getAssociatedControllerClasses(ActionControllerClass cls, ErbFile f) {
   cls = getAssociatedControllerClass(f)
 }
 
-query predicate controllerTemplateFiles(ActionControllerControllerClass cls, ErbFile templateFile) {
+query predicate controllerTemplateFiles(ActionControllerClass cls, ErbFile templateFile) {
   controllerTemplateFile(cls, templateFile)
 }
 

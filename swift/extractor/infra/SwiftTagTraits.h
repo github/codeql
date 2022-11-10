@@ -16,6 +16,9 @@ using SILBoxTypeTag = SilBoxTypeTag;
 using SILFunctionTypeTag = SilFunctionTypeTag;
 using SILTokenTypeTag = SilTokenTypeTag;
 
+// OverloadSetRefExpr is collapsed with its only derived class OverloadedDeclRefExpr
+using OverloadSetRefExprTag = OverloadedDeclRefExprTag;
+
 #define MAP_TYPE_TO_TAG(TYPE, TAG)    \
   template <>                         \
   struct detail::ToTagFunctor<TYPE> { \

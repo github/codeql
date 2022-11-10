@@ -559,6 +559,22 @@ def test_property_doc_override():
     }
 
 
+def test_property_doc_override_no_newlines():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: int | defs.doc("no multiple\nlines")
+
+
+def test_property_doc_override_no_trailing_dot():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: int | defs.doc("no dots please.")
+
+
 def test_class_default_doc_name():
     @schema.load
     class data:
