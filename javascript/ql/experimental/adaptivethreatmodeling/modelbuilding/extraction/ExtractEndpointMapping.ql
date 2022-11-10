@@ -8,6 +8,7 @@ import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 import experimental.adaptivethreatmodeling.XssATM as XssAtm
+import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
 import experimental.adaptivethreatmodeling.AdaptiveThreatModeling
 
 from string queryName, AtmConfig c, EndpointType e
@@ -23,6 +24,8 @@ where
     c instanceof TaintedPathAtm::Configuration
     or
     queryName = "Xss" and c instanceof XssAtm::Configuration
+    or
+    queryName = "XssThroughDOM" and c instanceof XssThroughDomAtm::Configuration
   ) and
   e = c.getASinkEndpointType()
 select queryName, e.getEncoding() as label
