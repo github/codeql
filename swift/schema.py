@@ -112,8 +112,10 @@ class ImportDecl(Decl):
     imported_module: optional["ModuleDecl"]
     declarations: list["ValueDecl"]
 
+@qltest.skip
 class MissingMemberDecl(Decl):
-    pass
+    """A placeholder for missing declarations that can arise on object deserialization."""
+    name: string
 
 class OperatorDecl(Decl):
     name: string
@@ -123,7 +125,9 @@ class PatternBindingDecl(Decl):
     patterns: list[Pattern] | child
 
 class PoundDiagnosticDecl(Decl):
-    pass
+    """ A diagnostic directive, which is either `#error` or `#warning`."""
+    kind: int | doc("""This is 1 for `#error` and 2 for `#warning`""")
+    message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
     pass

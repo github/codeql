@@ -170,7 +170,7 @@ namespace strings
 		strcpy(buffer, "Hello, ");
 		sink(buffer);
 		strcat(buffer, tainted);
-		sink(buffer); // $ ast MISSING: ir
+		sink(buffer); // $ ast,ir
 	}
 }
 
@@ -550,7 +550,7 @@ void *memccpy(void *dest, const void *src, int c, size_t n);
 void test_memccpy(int *source) {
 	int dest[16];
 	memccpy(dest, source, 42, sizeof(dest));
-	sink(dest); // $ ast=550:24  MISSING: ir SPURIOUS: ast=551:6
+	sink(dest); // $ ast=550:24 ir SPURIOUS: ast=551:6
 }
 
 // --- strcat and related functions ---

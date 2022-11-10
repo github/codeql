@@ -254,7 +254,8 @@ import_decl_declarations(  //dir=decl
 );
 
 missing_member_decls(  //dir=decl
-  unique int id: @missing_member_decl
+  unique int id: @missing_member_decl,
+  string name: string ref
 );
 
 @operator_decl =
@@ -288,7 +289,9 @@ pattern_binding_decl_patterns(  //dir=decl
 );
 
 pound_diagnostic_decls(  //dir=decl
-  unique int id: @pound_diagnostic_decl
+  unique int id: @pound_diagnostic_decl,
+  int kind: int ref,
+  int message: @string_literal_expr_or_none ref
 );
 
 precedence_group_decls(  //dir=decl
@@ -2447,6 +2450,11 @@ variadic_sequence_types(  //dir=type
 
 @stmt_condition_or_none =
   @stmt_condition
+| @unspecified_element
+;
+
+@string_literal_expr_or_none =
+  @string_literal_expr
 | @unspecified_element
 ;
 

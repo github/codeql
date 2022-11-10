@@ -35,10 +35,10 @@ void test_stringstream_string(int amount)
 	sink(ss5 << t); // $ ast,ir
 
 	sink(ss1);
-	sink(ss2); // $ ast MISSING: ir
-	sink(ss3); // $ ast MISSING: ir
-	sink(ss4); // $ ast MISSING: ir
-	sink(ss5); // $ ast MISSING: ir
+	sink(ss2); // $ ast,ir
+	sink(ss3); // $ ast,ir
+	sink(ss4); // $ ast,ir
+	sink(ss5); // $ ast,ir
 	sink(ss1.str());
 	sink(ss2.str()); // $ ast,ir
 	sink(ss3.str()); // $ ast,ir
@@ -49,22 +49,22 @@ void test_stringstream_string(int amount)
 	ss6.str(source()); // (overwrites)
 	ss7.str(source());
 	ss7.str("abc"); // (overwrites)
-	sink(ss6); // $ ast MISSING: ir
-	sink(ss7); // $ SPURIOUS: ast
+	sink(ss6); // $ ast,ir
+	sink(ss7); // $ SPURIOUS: ast,ir
 
 	sink(ss8.put('a'));
-	sink(ss9.put(ns_char::source())); // $ ast MISSING: ir
+	sink(ss9.put(ns_char::source())); // $ ast,ir
 	sink(ss10.put('a').put(ns_char::source()).put('z')); // $ ast,ir
 	sink(ss8);
-	sink(ss9); // $ ast MISSING: ir
-	sink(ss10); // $ ast MISSING: ir
+	sink(ss9); // $ ast,ir
+	sink(ss10); // $ ast,ir
 
 	sink(ss11.write("begin", 5));
-	sink(ss12.write(source(), 5)); // $ ast MISSING: ir
+	sink(ss12.write(source(), 5)); // $ ast,ir
 	sink(ss13.write("begin", 5).write(source(), amount).write("end", 3)); // $ ast,ir
 	sink(ss11);
-	sink(ss12); // $ ast MISSING: ir
-	sink(ss13); // $ ast MISSING: ir
+	sink(ss12); // $ ast,ir
+	sink(ss13); // $ ast,ir
 }
 
 void test_stringstream_int(int source)
@@ -73,12 +73,12 @@ void test_stringstream_int(int source)
 	int v1 = 0, v2 = 0;
 
 	sink(ss1 << 1234);
-	sink(ss2 << source); // $ ast MISSING: ir
+	sink(ss2 << source); // $ ast,ir
 	sink(ss1 >> v1);
 	sink(ss2 >> v2); // $ ast,ir
 
 	sink(ss1);
-	sink(ss2); // $ ast MISSING: ir
+	sink(ss2); // $ ast,ir
 	sink(ss1.str());
 	sink(ss2.str()); // $ ast,ir
 	sink(v1);
@@ -97,14 +97,14 @@ void test_stringstream_constructors()
 	std::stringstream ss6;
 
 	sink(ss5 = std::stringstream("abc"));
-	sink(ss6 = std::stringstream(source())); // $ ast MISSING: ir
+	sink(ss6 = std::stringstream(source())); // $ ast,ir
 
 	sink(ss1);
-	sink(ss2); // $ ast MISSING: ir
+	sink(ss2); // $ ast,ir
 	sink(ss3);
-	sink(ss4); // $ ast MISSING: ir
+	sink(ss4); // $ ast,ir
 	sink(ss5);
-	sink(ss6); // $ ast MISSING: ir
+	sink(ss6); // $ ast,ir
 }
 
 void test_stringstream_swap()
@@ -117,10 +117,10 @@ void test_stringstream_swap()
 	ss1.swap(ss2);
 	ss4.swap(ss3);
 
-	sink(ss1); // $ ast MISSING: ir
-	sink(ss2); // $ SPURIOUS: ast
-	sink(ss3); // $ ast MISSING: ir
-	sink(ss4); // $ SPURIOUS: ast
+	sink(ss1); // $ ast,ir
+	sink(ss2); // $ SPURIOUS: ast,ir
+	sink(ss3); // $ ast,ir
+	sink(ss4); // $ SPURIOUS: ast,ir
 }
 
 void test_stringstream_in()
@@ -146,9 +146,9 @@ void test_stringstream_in()
 	sink(ss2 >> s2); // $ ast,ir
 	sink(ss2 >> s3 >> s4); // $ ast,ir
 	sink(s1);
-	sink(s2); // $ ast MISSING: ir
-	sink(s3); // $ ast MISSING: ir
-	sink(s4); // $ ast MISSING: ir
+	sink(s2); // $ ast,ir
+	sink(s3); // $ ast,ir
+	sink(s4); // $ ast,ir
 
 	sink(ss1 >> b1);
 	sink(ss2 >> b2); // $ ast,ir
@@ -193,7 +193,7 @@ void test_stringstream_putback()
 	sink(ss.get());
 	sink(ss.putback('b'));
 	sink(ss.get());
-	sink(ss.putback(ns_char::source())); // $ ast MISSING: ir
+	sink(ss.putback(ns_char::source())); // $ ast,ir
 	sink(ss.get()); // $ ast,ir
 }
 
@@ -236,20 +236,20 @@ void test_getline()
 	sink(getline(ss2, s3)); // $ ast,ir
 	sink(getline(ss1, s3));
 	sink(s1);
-	sink(s2); // $ ast MISSING: ir
-	sink(s3); // $ SPURIOUS: ast
+	sink(s2); // $ ast,ir
+	sink(s3); // $ SPURIOUS: ast,ir
 
 	sink(getline(ss1, s4, ' '));
 	sink(getline(ss2, s5, ' ')); // $ ast,ir
 	sink(getline(ss2, s6, ' ')); // $ ast,ir
 	sink(getline(ss1, s6, ' '));
 	sink(s4);
-	sink(s5); // $ ast MISSING: ir
-	sink(s6); // $ SPURIOUS: ast
+	sink(s5); // $ ast,ir
+	sink(s6); // $ SPURIOUS: ast,ir
 
 	sink(getline(getline(ss2, s7), s8)); // $ ast,ir
-	sink(s7); // $ ast MISSING: ir
-	sink(s8); // $ ast MISSING: ir
+	sink(s7); // $ ast,ir
+	sink(s8); // $ ast,ir
 }
 
 void test_chaining()
@@ -264,5 +264,5 @@ void test_chaining()
 	sink(b2); // $ ast,ir
 
 	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // $ ast,ir
-	sink(ss2); // $ ast MISSING: ir
+	sink(ss2); // $ ast,ir
 }
