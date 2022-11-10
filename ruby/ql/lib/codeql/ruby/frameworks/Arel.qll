@@ -6,6 +6,8 @@
 
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.FlowSummary
+private import codeql.ruby.Concepts
+private import codeql.ruby.DataFlow
 
 /**
  * Provides modeling for Arel, a low level SQL library that powers ActiveRecord.
@@ -27,5 +29,15 @@ module Arel {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
+  }
+
+  /** A call to `Arel.sql`, considered as a SQL construction. */
+  private class ArelSqlConstruction extends SqlConstruction::Range, DataFlow::CallNode {
+    ArelSqlConstruction() {
+      this = DataFlow::getConstant("Arel").getAMethodCall() and
+      this.getMethodName() = "sql"
+    }
+
+    override DataFlow::Node getSql() { result = this.getArgument(0) }
   }
 }
