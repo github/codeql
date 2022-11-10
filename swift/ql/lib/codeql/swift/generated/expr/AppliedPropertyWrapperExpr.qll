@@ -6,7 +6,7 @@ import codeql.swift.elements.decl.ParamDecl
 
 module Generated {
   /**
-   * An implicit application of a property wrapper.
+   * An implicit application of a property wrapper on the argument of a call.
    */
   class AppliedPropertyWrapperExpr extends Synth::TAppliedPropertyWrapperExpr, Expr {
     override string getAPrimaryQlClass() { result = "AppliedPropertyWrapperExpr" }
@@ -14,7 +14,7 @@ module Generated {
     /**
      * Gets the kind of this applied property wrapper expression.
      *
-     * This is 1 for the wrapped value and 2 for the projected one.
+     * This is 1 for a wrapped value and 2 for a projected one.
      */
     int getKind() {
       result =
