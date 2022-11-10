@@ -584,6 +584,7 @@ static int translatePropertyWrapperValueKind(swift::AppliedPropertyWrapperExpr::
       return 0;
   }
 }
+
 codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapperExpr(
     const swift::AppliedPropertyWrapperExpr& expr) {
   auto entry = createExprEntry(expr);

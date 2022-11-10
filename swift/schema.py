@@ -276,9 +276,6 @@ class ApplyExpr(Expr):
     function: Expr | child | doc("function being applied")
     arguments: list[Argument] | child | doc("arguments passed to the applied function")
 
-class ArrowExpr(Expr):
-    pass
-
 class AssignExpr(Expr):
     dest: Expr | child
     source: Expr | child
@@ -289,9 +286,6 @@ class BindOptionalExpr(Expr):
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
     closure_body: "ClosureExpr" | child
-
-class CodeCompletionExpr(Expr):
-    pass
 
 class CollectionExpr(Expr):
     pass
@@ -317,9 +311,6 @@ class DotSyntaxBaseIgnoredExpr(Expr):
 
 class DynamicTypeExpr(Expr):
     base: Expr | child
-
-class EditorPlaceholderExpr(Expr):
-    pass
 
 class EnumIsCaseExpr(Expr):
     sub_expr: Expr | child
@@ -689,12 +680,6 @@ class FloatLiteralExpr(NumberLiteralExpr):
 class IntegerLiteralExpr(NumberLiteralExpr):
     string_value: string
 
-class PackExpr(Expr):
-    pass
-
-class ReifyPackExpr(ImplicitConversionExpr):
-    pass
-
 class AnyPattern(Pattern):
     pass
 
@@ -867,26 +852,11 @@ class LValueType(Type):
 class ModuleType(Type):
     module: ModuleDecl
 
-class PlaceholderType(Type):
-    pass
-
 class ProtocolCompositionType(Type):
     members: list[Type]
 
 class ReferenceStorageType(Type):
     referent_type: Type
-
-class SilBlockStorageType(Type):
-    pass
-
-class SilBoxType(Type):
-    pass
-
-class SilFunctionType(Type):
-    pass
-
-class SilTokenType(Type):
-    pass
 
 class SubstitutableType(Type):
     pass
@@ -1045,12 +1015,6 @@ class StructType(NominalType):
     pass
 
 class VariadicSequenceType(UnarySyntaxSugarType):
-    pass
-
-class PackType(Type):
-    pass
-
-class PackExpansionType(Type):
     pass
 
 class ParameterizedProtocolType(Type):
