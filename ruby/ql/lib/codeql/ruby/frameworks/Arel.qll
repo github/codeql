@@ -7,7 +7,6 @@
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.Concepts
-private import codeql.ruby.DataFlow
 
 /**
  * Provides modeling for Arel, a low level SQL library that powers ActiveRecord.
