@@ -48,7 +48,7 @@ module ActionCable {
         // database
         not m = getActionCableChannelBase().asModule().getAnInstanceMethod() and
         // and as long as it's public
-        m.asCallableAstNode().isPublic() and
+        m.isPublic() and
         // and is not called `subscribed` or `unsubscribed`.
         not m.getMethodName() = ["subscribed", "unsubscribed"]
       |
