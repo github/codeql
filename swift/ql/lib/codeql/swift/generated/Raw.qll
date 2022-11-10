@@ -327,6 +327,12 @@ module Raw {
 
   class AppliedPropertyWrapperExpr extends @applied_property_wrapper_expr, Expr {
     override string toString() { result = "AppliedPropertyWrapperExpr" }
+
+    int getKind() { applied_property_wrapper_exprs(this, result, _, _) }
+
+    Expr getValue() { applied_property_wrapper_exprs(this, _, result, _) }
+
+    ParamDecl getParam() { applied_property_wrapper_exprs(this, _, _, result) }
   }
 
   class ApplyExpr extends @apply_expr, Expr {

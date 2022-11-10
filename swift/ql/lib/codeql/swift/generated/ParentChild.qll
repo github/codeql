@@ -962,14 +962,17 @@ private module Impl {
   private Element getImmediateChildOfAppliedPropertyWrapperExpr(
     AppliedPropertyWrapperExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n |
+    exists(int b, int bExpr, int n, int nValue |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
+      nValue = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateValue() and partialPredicateCall = "Value()"
       )
     )
   }

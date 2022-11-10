@@ -573,4 +573,25 @@ ExprTranslator::translatePropertyWrapperValuePlaceholderExpr(
   return entry;
 }
 
+static int translatePropertyWrapperValueKind(swift::AppliedPropertyWrapperExpr::ValueKind kind) {
+  using K = swift::AppliedPropertyWrapperExpr::ValueKind;
+  switch (kind) {
+    case K::WrappedValue:
+      return 1;
+    case K::ProjectedValue:
+      return 2;
+    default:
+      return 0;
+  }
+}
+codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapperExpr(
+    const swift::AppliedPropertyWrapperExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.kind = translatePropertyWrapperValueKind(expr.getValueKind());
+  entry.value =
+      dispatcher.fetchLabel(const_cast<swift::AppliedPropertyWrapperExpr&>(expr).getValue());
+  entry.param = dispatcher.fetchLabel(expr.getParamDecl());
+  return entry;
+}
+
 }  // namespace codeql

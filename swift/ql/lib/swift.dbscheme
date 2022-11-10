@@ -664,7 +664,10 @@ any_try_exprs(  //dir=expr
 );
 
 applied_property_wrapper_exprs(  //dir=expr
-  unique int id: @applied_property_wrapper_expr
+  unique int id: @applied_property_wrapper_expr,
+  int kind: int ref,
+  int value: @expr_or_none ref,
+  int param: @param_decl_or_none ref
 );
 
 @apply_expr =

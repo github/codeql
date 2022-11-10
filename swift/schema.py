@@ -267,7 +267,10 @@ class AnyTryExpr(Expr):
     sub_expr: Expr | child
 
 class AppliedPropertyWrapperExpr(Expr):
-    pass
+    """An implicit application of a property wrapper on the argument of a call."""
+    kind: int | desc("This is 1 for a wrapped value and 2 for a projected one.")
+    value: Expr | child | desc("The value on which the wrapper is applied.")
+    param: ParamDecl | doc("parameter declaration owning this wrapper application")
 
 class ApplyExpr(Expr):
     function: Expr | child | doc("function being applied")
