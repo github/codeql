@@ -868,9 +868,6 @@ class TupleType(Type):
     types: list[Type]
     names: list[optional[string]]
 
-class TypeVariableType(Type):
-    pass
-
 class UnresolvedType(Type, UnresolvedElement):
     pass
 
@@ -981,9 +978,6 @@ class OpenedArchetypeType(ArchetypeType):
 class PrimaryArchetypeType(ArchetypeType):
     pass
 
-class SequenceArchetypeType(ArchetypeType):
-    pass
-
 class UnarySyntaxSugarType(SyntaxSugarType):
     base_type: Type
 
@@ -1018,4 +1012,10 @@ class VariadicSequenceType(UnarySyntaxSugarType):
     pass
 
 class ParameterizedProtocolType(Type):
-    pass
+    """
+    A sugar type of the form `P<X>` with `P` a protocol.
+
+    If `P` has primary associated type `A`, then `T: P<X>` is a shortcut for `T: P where T.A == X`.
+    """
+    base: ProtocolType
+    args: list[Type]

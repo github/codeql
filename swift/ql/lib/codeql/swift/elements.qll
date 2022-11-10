@@ -263,7 +263,6 @@ import codeql.swift.elements.type.PrimaryArchetypeType
 import codeql.swift.elements.type.ProtocolCompositionType
 import codeql.swift.elements.type.ProtocolType
 import codeql.swift.elements.type.ReferenceStorageType
-import codeql.swift.elements.type.SequenceArchetypeType
 import codeql.swift.elements.type.StructType
 import codeql.swift.elements.type.SubstitutableType
 import codeql.swift.elements.type.SugarType
@@ -272,7 +271,6 @@ import codeql.swift.elements.type.TupleType
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.type.TypeAliasType
 import codeql.swift.elements.type.TypeRepr
-import codeql.swift.elements.type.TypeVariableType
 import codeql.swift.elements.type.UnarySyntaxSugarType
 import codeql.swift.elements.type.UnboundGenericType
 import codeql.swift.elements.type.UnmanagedStorageType

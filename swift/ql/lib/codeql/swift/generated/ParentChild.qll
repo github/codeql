@@ -3953,21 +3953,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfTypeVariableType(
-    TypeVariableType e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bType, int n |
-      b = 0 and
-      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
-      n = bType and
-      (
-        none()
-        or
-        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfUnresolvedType(
     UnresolvedType e, int index, string partialPredicateCall
   ) {
@@ -4508,22 +4493,6 @@ private module Impl {
 
   private Element getImmediateChildOfPrimaryArchetypeType(
     PrimaryArchetypeType e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bArchetypeType, int n |
-      b = 0 and
-      bArchetypeType =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArchetypeType(e, i, _)) | i) and
-      n = bArchetypeType and
-      (
-        none()
-        or
-        result = getImmediateChildOfArchetypeType(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfSequenceArchetypeType(
-    SequenceArchetypeType e, int index, string partialPredicateCall
   ) {
     exists(int b, int bArchetypeType, int n |
       b = 0 and
@@ -5088,8 +5057,6 @@ private module Impl {
     or
     result = getImmediateChildOfTupleType(e, index, partialAccessor)
     or
-    result = getImmediateChildOfTypeVariableType(e, index, partialAccessor)
-    or
     result = getImmediateChildOfUnresolvedType(e, index, partialAccessor)
     or
     result = getImmediateChildOfBuiltinBridgeObjectType(e, index, partialAccessor)
@@ -5145,8 +5112,6 @@ private module Impl {
     result = getImmediateChildOfOpenedArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfPrimaryArchetypeType(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfSequenceArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfArraySliceType(e, index, partialAccessor)
     or

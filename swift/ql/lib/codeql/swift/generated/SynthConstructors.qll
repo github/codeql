@@ -212,12 +212,10 @@ import codeql.swift.elements.type.ParenTypeConstructor
 import codeql.swift.elements.type.PrimaryArchetypeTypeConstructor
 import codeql.swift.elements.type.ProtocolCompositionTypeConstructor
 import codeql.swift.elements.type.ProtocolTypeConstructor
-import codeql.swift.elements.type.SequenceArchetypeTypeConstructor
 import codeql.swift.elements.type.StructTypeConstructor
 import codeql.swift.elements.type.TupleTypeConstructor
 import codeql.swift.elements.type.TypeAliasTypeConstructor
 import codeql.swift.elements.type.TypeReprConstructor
-import codeql.swift.elements.type.TypeVariableTypeConstructor
 import codeql.swift.elements.type.UnboundGenericTypeConstructor
 import codeql.swift.elements.type.UnmanagedStorageTypeConstructor
 import codeql.swift.elements.type.UnownedStorageTypeConstructor

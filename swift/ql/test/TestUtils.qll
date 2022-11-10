@@ -6,6 +6,8 @@ predicate toBeTested(Element e) {
   or
   e instanceof AppliedPropertyWrapperExpr
   or
+  e instanceof ParameterizedProtocolType
+  or
   exists(ModuleDecl m |
     m = e and
     not m.isBuiltinModule() and
