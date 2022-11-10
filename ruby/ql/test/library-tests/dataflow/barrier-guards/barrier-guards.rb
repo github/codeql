@@ -137,9 +137,9 @@ end
 
 case foo
 when "foo", "bar"
-    foo # $ MISSING: guarded
+    foo # $ guarded
 when "baz", "quux"
-    foo # $ MISSING: guarded
+    foo # $ guarded
 else
     foo
 end

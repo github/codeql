@@ -400,7 +400,7 @@ module Trees {
       c instanceof SimpleCompletion
       or
       exists(int i, WhenTree branch | branch = this.getBranch(i) |
-        last(branch.getLastPattern(), pred, c) and
+        pred = branch and
         first(this.getBranch(i + 1), succ) and
         c.(ConditionalCompletion).getValue() = false
       )
@@ -1397,7 +1397,7 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getMethodName(i) }
   }
 
-  private class WhenTree extends PreOrderTree, WhenClause {
+  private class WhenTree extends ControlFlowTree, WhenClause {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAPattern() }
 
     final Expr getLastPattern() {
@@ -1407,17 +1407,21 @@ module Trees {
       )
     }
 
+    final override predicate first(AstNode first) { first(this.getPattern(0), first) }
+
     final override predicate last(AstNode last, Completion c) {
-      last(this.getLastPattern(), last, c) and
+      last = this and
       c.(ConditionalCompletion).getValue() = false
       or
-      last(this.getBody(), last, c)
+      last(this.getBody(), last, c) and
+      c instanceof NormalCompletion
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       pred = this and
-      first(this.getPattern(0), succ) and
-      c instanceof SimpleCompletion
+      c.isValidFor(this) and
+      c.(ConditionalCompletion).getValue() = true and
+      first(this.getBody(), succ)
       or
       exists(int i, Expr p, boolean b |
         p = this.getPattern(i) and
@@ -1425,10 +1429,13 @@ module Trees {
         b = c.(ConditionalCompletion).getValue()
       |
         b = true and
-        first(this.getBody(), succ)
+        succ = this
         or
         b = false and
         first(this.getPattern(i + 1), succ)
+        or
+        not exists(this.getPattern(i + 1)) and
+        succ = this
       )
     }
   }

@@ -446,7 +446,7 @@ module ExprNodes {
     final ExprCfgNode getBody() { e.hasCfgChild(e.getBody(), this, result) }
 
     /** Gets the `i`th pattern this `when`-clause. */
-    final ExprCfgNode getPattern(int i) { e.hasCfgChild(e.getPattern(i), this, result) }
+    final ExprCfgNode getPattern(int i) { result.getExpr() = e.getPattern(i) }
   }
 
   /** A control-flow node that wraps a `CasePattern`. */

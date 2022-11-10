@@ -233,8 +233,12 @@ private predicate inMatchingContext(AstNode n) {
   or
   exists(CaseExpr c, WhenClause w |
     exists(c.getValue()) and
-    c.getABranch() = w and
-    w.getPattern(_) = n
+    (
+      c.getABranch() = w and
+      w.getPattern(_) = n
+      or
+      w = n
+    )
   )
   or
   n instanceof CasePattern

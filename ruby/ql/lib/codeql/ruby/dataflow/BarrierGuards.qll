@@ -186,8 +186,8 @@ private predicate stringConstCaseCompare(
     case.getValue() = testedNode and
     (
       exists(CfgNodes::ExprNodes::WhenClauseCfgNode branchNode |
+        guard = branchNode and
         branchNode = case.getBranch(_) and
-        guard = branchNode.getPattern(_) and
         // For simplicity, consider patterns that contain only string literals or arrays of string literals
         forall(ExprCfgNode pattern | pattern = branchNode.getPattern(_) |
           // when "foo"
