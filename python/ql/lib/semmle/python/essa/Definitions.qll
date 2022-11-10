@@ -69,6 +69,8 @@ abstract class SsaSourceVariable extends @py_variable {
     or
     SsaSource::exception_capture(this, def)
     or
+    SsaSource::exception_group_capture(this, def)
+    or
     SsaSource::with_definition(this, def)
     or
     SsaSource::pattern_capture_definition(this, def)

@@ -30,6 +30,13 @@ module SsaSource {
     exists(ExceptFlowNode ex | ex.getName() = defn)
   }
 
+  /** Holds if `v` is defined by assignment of the captured exception group. */
+  cached
+  predicate exception_group_capture(Variable v, NameNode defn) {
+    defn.defines(v) and
+    exists(ExceptGroupFlowNode ex | ex.getName() = defn)
+  }
+
   /** Holds if `v` is defined by a with statement. */
   cached
   predicate with_definition(Variable v, ControlFlowNode defn) {
