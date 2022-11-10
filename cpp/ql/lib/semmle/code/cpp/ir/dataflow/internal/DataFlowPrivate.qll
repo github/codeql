@@ -178,15 +178,21 @@ private predicate hasNonInitializeParameterDef(IRVariable v) {
 
 class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   override ReturnKind getKind() {
-    exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
-      returnInd.hasIndex(argumentIndex) and
-      this.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      result = TIndirectReturnKind(argumentIndex, this.getIndirectionIndex()) and
-      hasNonInitializeParameterDef(returnInd.getIRVariable())
+    exists(Operand op, int i |
+      hasOperandAndIndex(this, pragma[only_bind_into](op), pragma[only_bind_into](i))
+    |
+      exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
+        op = returnInd.getSourceAddressOperand() and
+        returnInd.hasIndex(argumentIndex) and
+        hasNonInitializeParameterDef(returnInd.getIRVariable()) and
+        result = TIndirectReturnKind(argumentIndex, pragma[only_bind_into](i))
+      )
+      or
+      exists(ReturnValueInstruction return |
+        op = return.getReturnAddressOperand() and
+        result = TNormalReturnKind(i - 1)
+      )
     )
-    or
-    this.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
-    result = TNormalReturnKind(this.getIndirectionIndex() - 1)
   }
 }
 
