@@ -1,7 +1,7 @@
 import java
 
 predicate isInterestingClass(Class c) {
-  [c, c.(NestedType).getEnclosingType()].getName().matches(["KotlinDefns%", "JavaDefns"])
+  [c, c.(NestedType).getEnclosingType()].getName().matches(["KotlinDefns%", "JavaDefns%"])
 }
 
 from Callable c, string paramOrReturnName, Type paramOrReturnType

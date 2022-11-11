@@ -1,4 +1,4 @@
-WARNING: Type BarrierGuard has been deprecated and may be removed in future (barrier-guards.ql:8,3-15)
+WARNING: Type BarrierGuard has been deprecated and may be removed in future (barrier-guards.ql:9,3-15)
 oldStyleBarrierGuards
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | barrier-guards.rb:3:4:3:6 | foo | true |
 | barrier-guards.rb:9:4:9:24 | call to include? | barrier-guards.rb:10:5:10:7 | foo | barrier-guards.rb:9:21:9:23 | foo | true |
@@ -20,3 +20,50 @@ newStyleBarrierGuards
 | barrier-guards.rb:71:5:71:7 | foo |
 | barrier-guards.rb:83:5:83:7 | foo |
 | barrier-guards.rb:91:5:91:7 | foo |
+controls
+| barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | true |
+| barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:6:5:6:7 | foo | false |
+| barrier-guards.rb:9:4:9:24 | call to include? | barrier-guards.rb:10:5:10:7 | foo | true |
+| barrier-guards.rb:9:4:9:24 | call to include? | barrier-guards.rb:12:5:12:7 | foo | false |
+| barrier-guards.rb:15:4:15:15 | ... != ... | barrier-guards.rb:16:5:16:7 | foo | true |
+| barrier-guards.rb:15:4:15:15 | ... != ... | barrier-guards.rb:18:5:18:7 | foo | false |
+| barrier-guards.rb:21:8:21:19 | ... == ... | barrier-guards.rb:22:5:22:7 | foo | false |
+| barrier-guards.rb:21:8:21:19 | ... == ... | barrier-guards.rb:24:5:24:7 | foo | true |
+| barrier-guards.rb:27:8:27:19 | ... != ... | barrier-guards.rb:28:5:28:7 | foo | false |
+| barrier-guards.rb:27:8:27:19 | ... != ... | barrier-guards.rb:30:5:30:7 | foo | true |
+| barrier-guards.rb:37:4:37:20 | call to include? | barrier-guards.rb:38:5:38:7 | foo | true |
+| barrier-guards.rb:37:4:37:20 | call to include? | barrier-guards.rb:40:5:40:7 | foo | false |
+| barrier-guards.rb:43:4:43:15 | ... == ... | barrier-guards.rb:44:5:46:5 | self | true |
+| barrier-guards.rb:49:4:49:15 | ... == ... | barrier-guards.rb:50:5:53:5 | self | true |
+| barrier-guards.rb:56:4:56:15 | ... == ... | barrier-guards.rb:57:5:57:13 | my_lambda | true |
+| barrier-guards.rb:70:4:70:21 | call to include? | barrier-guards.rb:71:5:71:7 | foo | true |
+| barrier-guards.rb:70:4:70:21 | call to include? | barrier-guards.rb:73:5:73:7 | foo | false |
+| barrier-guards.rb:76:4:76:21 | call to include? | barrier-guards.rb:77:5:77:7 | foo | true |
+| barrier-guards.rb:76:4:76:21 | call to include? | barrier-guards.rb:79:5:79:7 | foo | false |
+| barrier-guards.rb:82:4:82:25 | ... != ... | barrier-guards.rb:83:5:83:7 | foo | true |
+| barrier-guards.rb:82:4:82:25 | ... != ... | barrier-guards.rb:85:5:85:7 | foo | false |
+| barrier-guards.rb:88:4:88:25 | ... == ... | barrier-guards.rb:89:5:89:7 | foo | true |
+| barrier-guards.rb:88:4:88:25 | ... == ... | barrier-guards.rb:91:5:91:7 | foo | false |
+| barrier-guards.rb:96:4:96:12 | call to condition | barrier-guards.rb:97:5:97:8 | bars | true |
+| barrier-guards.rb:100:4:100:21 | call to include? | barrier-guards.rb:101:5:101:7 | foo | true |
+| barrier-guards.rb:100:4:100:21 | call to include? | barrier-guards.rb:103:5:103:7 | foo | false |
+| barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:106:4:106:9 | [false] ... or ... | false |
+| barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:106:9:106:9 | self | false |
+| barrier-guards.rb:106:4:106:4 | call to x | barrier-guards.rb:109:5:109:8 | bars | false |
+| barrier-guards.rb:106:4:106:9 | [false] ... or ... | barrier-guards.rb:109:5:109:8 | bars | false |
+| barrier-guards.rb:106:4:106:9 | [true] ... or ... | barrier-guards.rb:107:5:107:7 | foo | true |
+| barrier-guards.rb:106:9:106:9 | call to y | barrier-guards.rb:106:4:106:9 | [false] ... or ... | false |
+| barrier-guards.rb:106:9:106:9 | call to y | barrier-guards.rb:109:5:109:8 | bars | false |
+| barrier-guards.rb:112:4:112:4 | call to x | barrier-guards.rb:112:4:112:10 | [true] ... and ... | true |
+| barrier-guards.rb:112:4:112:4 | call to x | barrier-guards.rb:112:10:112:10 | self | true |
+| barrier-guards.rb:112:4:112:4 | call to x | barrier-guards.rb:113:5:113:7 | foo | true |
+| barrier-guards.rb:112:4:112:10 | [false] ... and ... | barrier-guards.rb:115:5:115:8 | bars | false |
+| barrier-guards.rb:112:4:112:10 | [true] ... and ... | barrier-guards.rb:113:5:113:7 | foo | true |
+| barrier-guards.rb:112:10:112:10 | call to y | barrier-guards.rb:112:4:112:10 | [true] ... and ... | true |
+| barrier-guards.rb:112:10:112:10 | call to y | barrier-guards.rb:113:5:113:7 | foo | true |
+| barrier-guards.rb:118:4:118:8 | [false] not ... | barrier-guards.rb:121:5:121:8 | bars | false |
+| barrier-guards.rb:118:4:118:8 | [true] not ... | barrier-guards.rb:119:5:119:7 | foo | true |
+| barrier-guards.rb:118:8:118:8 | call to x | barrier-guards.rb:118:4:118:8 | [false] not ... | true |
+| barrier-guards.rb:118:8:118:8 | call to x | barrier-guards.rb:118:4:118:8 | [true] not ... | false |
+| barrier-guards.rb:118:8:118:8 | call to x | barrier-guards.rb:119:5:119:7 | foo | false |
+| barrier-guards.rb:118:8:118:8 | call to x | barrier-guards.rb:121:5:121:8 | bars | true |

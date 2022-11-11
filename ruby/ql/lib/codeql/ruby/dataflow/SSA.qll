@@ -289,7 +289,7 @@ module Ssa {
       )
     }
 
-    final override string toString() { result = "<captured>" }
+    final override string toString() { result = "<captured> " + this.getSourceVariable() }
 
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }

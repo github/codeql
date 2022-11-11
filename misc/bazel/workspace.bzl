@@ -22,6 +22,10 @@ def codeql_workspace(repository_name = "codeql"):
                 _swift_prebuilt_version,
                 repo_arch,
             ),
+            patches = [
+                "@%s//swift/third_party/swift-llvm-support:patches/remove_getFallthrougDest_assert.patch" % repository_name,
+            ],
+            patch_args = ["-p1"],
             build_file = "@%s//swift/third_party/swift-llvm-support:BUILD.swift-prebuilt.bazel" % repository_name,
             sha256 = sha256,
         )

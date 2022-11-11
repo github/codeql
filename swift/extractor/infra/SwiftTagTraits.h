@@ -9,12 +9,29 @@
 
 namespace codeql {
 
-// codegen goes with QL acronym convention (Sil instead of SIL), we need to remap it to Swift's
-// convention
-using SILBlockStorageTypeTag = SilBlockStorageTypeTag;
-using SILBoxTypeTag = SilBoxTypeTag;
-using SILFunctionTypeTag = SilFunctionTypeTag;
-using SILTokenTypeTag = SilTokenTypeTag;
+// OverloadSetRefExpr is collapsed with its only derived class OverloadedDeclRefExpr
+using OverloadSetRefExprTag = OverloadedDeclRefExprTag;
+
+// We don't really expect to see the following in extraction. Mapping these tags to void effectively
+// ignores all elements of that class (with a message).
+
+// only generated for code editing
+using CodeCompletionExprTag = void;
+using EditorPlaceholderExprTag = void;
+// not present after the Sema phase
+using ArrowExprTag = void;
+// experimental variadic generics, implemented only in the frontend for now, thus not compilable
+using PackExprTag = void;
+using PackTypeTag = void;
+using ReifyPackExprTag = void;
+using PackExpansionTypeTag = void;
+// Placeholder types appear in ambiguous types but are anyway transformed to UnresolvedType
+using PlaceholderTypeTag = void;
+// SIL types that cannot really appear in the frontend run
+using SILBlockStorageTypeTag = void;
+using SILBoxTypeTag = void;
+using SILFunctionTypeTag = void;
+using SILTokenTypeTag = void;
 
 #define MAP_TYPE_TO_TAG(TYPE, TAG)    \
   template <>                         \
@@ -22,9 +39,9 @@ using SILTokenTypeTag = SilTokenTypeTag;
     using type = TAG;                 \
   }
 #define MAP_TAG(TYPE) MAP_TYPE_TO_TAG(swift::TYPE, TYPE##Tag)
-#define MAP_SUBTAG(TYPE, PARENT)                           \
-  MAP_TAG(TYPE);                                           \
-  static_assert(std::is_base_of_v<PARENT##Tag, TYPE##Tag>, \
+#define MAP_SUBTAG(TYPE, PARENT)                                                              \
+  MAP_TAG(TYPE);                                                                              \
+  static_assert(std::is_same_v<TYPE##Tag, void> || std::is_base_of_v<PARENT##Tag, TYPE##Tag>, \
                 #PARENT "Tag must be a base of " #TYPE "Tag");
 
 #define OVERRIDE_TAG(TYPE, TAG)               \

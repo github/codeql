@@ -65,8 +65,6 @@ class SqlInjectionAtmConfig extends AtmConfig {
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof SqlInjection::Source }
 
-  override predicate isKnownSink(DataFlow::Node sink) { sink instanceof SqlInjection::Sink }
-
   override predicate isEffectiveSink(DataFlow::Node sinkCandidate) {
     not exists(SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate))
   }

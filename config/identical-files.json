@@ -94,8 +94,8 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
   ],
   "Model as Data Generation Java/C# - CaptureModels": [
-    "java/ql/src/utils/model-generator/internal/CaptureModels.qll",
-    "csharp/ql/src/utils/model-generator/internal/CaptureModels.qll"
+    "java/ql/src/utils/modelgenerator/internal/CaptureModels.qll",
+    "csharp/ql/src/utils/modelgenerator/internal/CaptureModels.qll"
   ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
@@ -599,6 +599,10 @@
   "Swift patterns test file": [
     "swift/ql/test/extractor-tests/patterns/patterns.swift",
     "swift/ql/test/library-tests/ast/patterns.swift"
+  ],
+  "Swift control flow test file": [
+    "swift/ql/test/library-tests/controlflow/graph/cfg.swift",
+    "swift/ql/test/library-tests/ast/cfg.swift"
   ],
   "IncompleteMultiCharacterSanitization JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitizationQuery.qll",

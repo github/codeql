@@ -963,9 +963,9 @@ open class KotlinUsesExtractor(
     private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean, javaVariance: Variance?) =
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
-            !addByDefault -> false
             // If a Java declaration specifies a variance, introduce it even if it's pointless (e.g. ? extends FinalClass, or ? super Object)
             javaVariance == v -> true
+            !addByDefault -> false
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
             v == Variance.OUT_VARIANCE -> extendsAdditionAllowed(t)
             else -> false
@@ -1006,8 +1006,9 @@ open class KotlinUsesExtractor(
                 null
         } ?: t
 
-    private fun getJavaTypeArgument(jt: JavaType, idx: Int) =
+    private fun getJavaTypeArgument(jt: JavaType, idx: Int): JavaType? =
         when(jt) {
+            is JavaWildcardType -> jt.bound?.let { getJavaTypeArgument(it, idx) }
             is JavaClassifierType -> jt.typeArguments.getOrNull(idx)
             is JavaArrayType -> if (idx == 0) jt.componentType else null
             else -> null

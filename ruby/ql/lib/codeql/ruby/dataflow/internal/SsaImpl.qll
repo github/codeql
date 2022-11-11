@@ -1,6 +1,7 @@
 private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
+private import codeql.ruby.controlflow.internal.ControlFlowGraphImplShared as ControlFlowGraphImplShared
 private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
 
@@ -29,7 +30,8 @@ private module SsaInput implements SsaImplCommon::InputSig {
         i = 0
         or
         // ...or a class or module block.
-        bb.getNode(i).getNode() = scope.(ModuleBase).getAControlFlowEntryNode()
+        bb.getNode(i).getNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
+        not scope instanceof Toplevel // handled by case above
       )
       or
       uninitializedWrite(bb, i, v)
@@ -52,6 +54,9 @@ private module SsaInput implements SsaImplCommon::InputSig {
     certain = false
     or
     capturedExitRead(bb, i, v) and
+    certain = false
+    or
+    namespaceSelfExitRead(bb, i, v) and
     certain = false
   }
 }
@@ -92,6 +97,21 @@ private predicate capturedExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, Local
   bb.isNormal() and
   writesCapturedVariable(bb.getAPredecessor*(), v) and
   i = bb.length()
+}
+
+/**
+ * Holds if a pseudo read of namespace self-variable `v` should be inserted
+ * at index `i` in basic block `bb`. We do this to ensure that namespace
+ * self-variables always get an SSA definition.
+ */
+private predicate namespaceSelfExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, SelfVariable v) {
+  exists(Namespace ns, AstNode last |
+    v.getDeclaringScope() = ns and
+    last = ControlFlowGraphImplShared::getAControlFlowExitNode(ns) and
+    if last = ns
+    then bb.getNode(i).getAPredecessor().getNode() = last
+    else bb.getNode(i).getNode() = last
+  )
 }
 
 /**
