@@ -1880,7 +1880,6 @@ while_stmts(  //dir=stmt
 | @substitutable_type
 | @sugar_type
 | @tuple_type
-| @type_variable_type
 | @unresolved_type
 ;
 
@@ -2003,7 +2002,15 @@ module_types(  //dir=type
 );
 
 parameterized_protocol_types(  //dir=type
-  unique int id: @parameterized_protocol_type
+  unique int id: @parameterized_protocol_type,
+  int base: @protocol_type_or_none ref
+);
+
+#keyset[id, index]
+parameterized_protocol_type_args(  //dir=type
+  int id: @parameterized_protocol_type ref,
+  int index: int ref,
+  int arg: @type_or_none ref
 );
 
 protocol_composition_types(  //dir=type
@@ -2058,10 +2065,6 @@ tuple_type_names(  //dir=type
   string name: string ref
 );
 
-type_variable_types(  //dir=type
-  unique int id: @type_variable_type
-);
-
 unresolved_types(  //dir=type
   unique int id: @unresolved_type
 );
@@ -2075,7 +2078,6 @@ unresolved_types(  //dir=type
   @opaque_type_archetype_type
 | @opened_archetype_type
 | @primary_archetype_type
-| @sequence_archetype_type
 ;
 
 #keyset[id]
@@ -2251,10 +2253,6 @@ opened_archetype_types(  //dir=type
 
 primary_archetype_types(  //dir=type
   unique int id: @primary_archetype_type
-);
-
-sequence_archetype_types(  //dir=type
-  unique int id: @sequence_archetype_type
 );
 
 @unary_syntax_sugar_type =
@@ -2441,6 +2439,11 @@ variadic_sequence_types(  //dir=type
 
 @protocol_decl_or_none =
   @protocol_decl
+| @unspecified_element
+;
+
+@protocol_type_or_none =
+  @protocol_type
 | @unspecified_element
 ;
 

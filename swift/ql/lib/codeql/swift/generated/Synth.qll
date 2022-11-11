@@ -290,12 +290,10 @@ module Synth {
       constructProtocolCompositionType(id)
     } or
     TProtocolType(Raw::ProtocolType id) { constructProtocolType(id) } or
-    TSequenceArchetypeType(Raw::SequenceArchetypeType id) { constructSequenceArchetypeType(id) } or
     TStructType(Raw::StructType id) { constructStructType(id) } or
     TTupleType(Raw::TupleType id) { constructTupleType(id) } or
     TTypeAliasType(Raw::TypeAliasType id) { constructTypeAliasType(id) } or
     TTypeRepr(Raw::TypeRepr id) { constructTypeRepr(id) } or
-    TTypeVariableType(Raw::TypeVariableType id) { constructTypeVariableType(id) } or
     TUnboundGenericType(Raw::UnboundGenericType id) { constructUnboundGenericType(id) } or
     TUnmanagedStorageType(Raw::UnmanagedStorageType id) { constructUnmanagedStorageType(id) } or
     TUnownedStorageType(Raw::UnownedStorageType id) { constructUnownedStorageType(id) } or
@@ -435,9 +433,7 @@ module Synth {
 
   class TAnyMetatypeType = TExistentialMetatypeType or TMetatypeType;
 
-  class TArchetypeType =
-    TOpaqueTypeArchetypeType or TOpenedArchetypeType or TPrimaryArchetypeType or
-        TSequenceArchetypeType;
+  class TArchetypeType = TOpaqueTypeArchetypeType or TOpenedArchetypeType or TPrimaryArchetypeType;
 
   class TBoundGenericType =
     TBoundGenericClassType or TBoundGenericEnumType or TBoundGenericStructType;
@@ -464,8 +460,7 @@ module Synth {
     TAnyFunctionType or TAnyGenericType or TAnyMetatypeType or TBuiltinType or
         TDependentMemberType or TDynamicSelfType or TErrorType or TExistentialType or TInOutType or
         TLValueType or TModuleType or TParameterizedProtocolType or TProtocolCompositionType or
-        TReferenceStorageType or TSubstitutableType or TSugarType or TTupleType or
-        TTypeVariableType or TUnresolvedType;
+        TReferenceStorageType or TSubstitutableType or TSugarType or TTupleType or TUnresolvedType;
 
   class TUnarySyntaxSugarType = TArraySliceType or TOptionalType or TVariadicSequenceType;
 
@@ -1309,11 +1304,6 @@ module Synth {
   TProtocolType convertProtocolTypeFromRaw(Raw::Element e) { result = TProtocolType(e) }
 
   cached
-  TSequenceArchetypeType convertSequenceArchetypeTypeFromRaw(Raw::Element e) {
-    result = TSequenceArchetypeType(e)
-  }
-
-  cached
   TStructType convertStructTypeFromRaw(Raw::Element e) { result = TStructType(e) }
 
   cached
@@ -1324,9 +1314,6 @@ module Synth {
 
   cached
   TTypeRepr convertTypeReprFromRaw(Raw::Element e) { result = TTypeRepr(e) }
-
-  cached
-  TTypeVariableType convertTypeVariableTypeFromRaw(Raw::Element e) { result = TTypeVariableType(e) }
 
   cached
   TUnboundGenericType convertUnboundGenericTypeFromRaw(Raw::Element e) {
@@ -1976,8 +1963,6 @@ module Synth {
     result = convertOpenedArchetypeTypeFromRaw(e)
     or
     result = convertPrimaryArchetypeTypeFromRaw(e)
-    or
-    result = convertSequenceArchetypeTypeFromRaw(e)
   }
 
   cached
@@ -2099,8 +2084,6 @@ module Synth {
     result = convertSugarTypeFromRaw(e)
     or
     result = convertTupleTypeFromRaw(e)
-    or
-    result = convertTypeVariableTypeFromRaw(e)
     or
     result = convertUnresolvedTypeFromRaw(e)
   }
@@ -2952,11 +2935,6 @@ module Synth {
   Raw::Element convertProtocolTypeToRaw(TProtocolType e) { e = TProtocolType(result) }
 
   cached
-  Raw::Element convertSequenceArchetypeTypeToRaw(TSequenceArchetypeType e) {
-    e = TSequenceArchetypeType(result)
-  }
-
-  cached
   Raw::Element convertStructTypeToRaw(TStructType e) { e = TStructType(result) }
 
   cached
@@ -2967,9 +2945,6 @@ module Synth {
 
   cached
   Raw::Element convertTypeReprToRaw(TTypeRepr e) { e = TTypeRepr(result) }
-
-  cached
-  Raw::Element convertTypeVariableTypeToRaw(TTypeVariableType e) { e = TTypeVariableType(result) }
 
   cached
   Raw::Element convertUnboundGenericTypeToRaw(TUnboundGenericType e) {
@@ -3619,8 +3594,6 @@ module Synth {
     result = convertOpenedArchetypeTypeToRaw(e)
     or
     result = convertPrimaryArchetypeTypeToRaw(e)
-    or
-    result = convertSequenceArchetypeTypeToRaw(e)
   }
 
   cached
@@ -3742,8 +3715,6 @@ module Synth {
     result = convertSugarTypeToRaw(e)
     or
     result = convertTupleTypeToRaw(e)
-    or
-    result = convertTypeVariableTypeToRaw(e)
     or
     result = convertUnresolvedTypeToRaw(e)
   }

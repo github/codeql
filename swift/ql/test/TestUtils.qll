@@ -5,6 +5,8 @@ cached
 predicate toBeTested(Element e) {
   e instanceof File
   or
+  e instanceof ParameterizedProtocolType
+  or
   exists(ModuleDecl m |
     m = e and
     not m.isBuiltinModule() and

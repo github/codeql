@@ -1324,6 +1324,10 @@ module Raw {
 
   class ParameterizedProtocolType extends @parameterized_protocol_type, Type {
     override string toString() { result = "ParameterizedProtocolType" }
+
+    ProtocolType getBase() { parameterized_protocol_types(this, result) }
+
+    Type getArg(int index) { parameterized_protocol_type_args(this, index, result) }
   }
 
   class ProtocolCompositionType extends @protocol_composition_type, Type {
@@ -1346,10 +1350,6 @@ module Raw {
     Type getType(int index) { tuple_type_types(this, index, result) }
 
     string getName(int index) { tuple_type_names(this, index, result) }
-  }
-
-  class TypeVariableType extends @type_variable_type, Type {
-    override string toString() { result = "TypeVariableType" }
   }
 
   class UnresolvedType extends @unresolved_type, Type, ErrorElement {
@@ -1499,10 +1499,6 @@ module Raw {
 
   class PrimaryArchetypeType extends @primary_archetype_type, ArchetypeType {
     override string toString() { result = "PrimaryArchetypeType" }
-  }
-
-  class SequenceArchetypeType extends @sequence_archetype_type, ArchetypeType {
-    override string toString() { result = "SequenceArchetypeType" }
   }
 
   class UnarySyntaxSugarType extends @unary_syntax_sugar_type, SyntaxSugarType {
