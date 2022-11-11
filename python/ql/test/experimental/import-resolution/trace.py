@@ -24,6 +24,7 @@ def status():
     return _status
 
 def check(attr_path, actual_value, expected_value, bindings):
+    global _status
     parts = attr_path.split(".")
     base, parts = parts[0], parts[1:]
     if base not in bindings:
@@ -40,6 +41,8 @@ def check(attr_path, actual_value, expected_value, bindings):
     if val != actual_value:
         print("Error: Value at path {} and actual value are out of sync! {} != {}".format(attr_path, val, actual_value))
         _status = 1
+    if str(val).startswith("<module"):
+        val = "<module " + val.__name__ + ">"
     if val != expected_value:
         print("Error: Expected {} to be {}, got {}".format(attr_path, expected_value, val))
         _status = 1
