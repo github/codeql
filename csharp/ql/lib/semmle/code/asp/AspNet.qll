@@ -215,7 +215,7 @@ class PageDirective extends AspDirective {
  */
 class CodeBehindFile extends File {
   CodeBehindFile() {
-    getExtension() = "aspx" and
+    this.getExtension() = "aspx" and
     exists(PageDirective pageDir | pageDir.getLocation().getFile() = this)
   }
 
@@ -227,5 +227,5 @@ class CodeBehindFile extends File {
   /**
    * Gets the 'CodeBehind' class from which this page inherits.
    */
-  ValueOrRefType getInheritedType() { result = getPageDirective().getInheritedType() }
+  ValueOrRefType getInheritedType() { result = this.getPageDirective().getInheritedType() }
 }
