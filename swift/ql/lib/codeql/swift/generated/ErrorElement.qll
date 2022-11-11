@@ -4,5 +4,8 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Locatable
 
 module Generated {
-  class UnresolvedElement extends Synth::TUnresolvedElement, Locatable { }
+  /**
+   * The superclass of all elements indicating some kind of error.
+   */
+  class ErrorElement extends Synth::TErrorElement, Locatable { }
 }
