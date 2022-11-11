@@ -14,7 +14,7 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
     c = guard and
     exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
       // Only consider strings without any interpolations
-      not exists(StringInterpolationComponent comp | comp = strLitNode.getExpr().getComponent(_)) and
+      not strLitNode.getExpr().getComponent(_) instanceof StringInterpolationComponent and
       c.getExpr() instanceof EqExpr and
       branch = true
       or
@@ -40,8 +40,7 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
 }
 
 /**
- * Holds if `guard` is an `or` expression whose operands are string comparison guards that test the same SSA variable.
- * `testedNode` is an arbitrary node that is tested by one of the guards.
+ * Holds if `guard` is an `or` expression whose operands are string comparison guards that test `def`.
  * For example:
  *
  * ```rb
@@ -59,7 +58,7 @@ private predicate stringConstCompareOr(
 }
 
 /**
- * Holds if guard is an `and` expression containing a string comparison guard in either operand.
+ * Holds if `guard` is an `and` expression containing a string comparison guard in either operand.
  * For example:
  *
  * ```rb

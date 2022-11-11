@@ -878,6 +878,7 @@ module ExprNodes {
 
     final override SplatExpr getExpr() { result = super.getExpr() }
 
+    /** Gets the operand of this splat expression. */
     final ExprCfgNode getOperand() { e.hasCfgChild(e.getOperand(), this, result) }
   }
 
