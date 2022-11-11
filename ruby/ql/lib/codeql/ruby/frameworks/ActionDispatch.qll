@@ -21,23 +21,21 @@ module ActionDispatch {
    */
   private class MimeTypeTypeSummary extends ModelInput::TypeModelCsv {
     override predicate row(string row) {
-      // package1;type1;package2;type2;path
+      // type1;type2;path
       row =
         [
           // Mime[type] : Mime::Type (omitted)
           // Method names with brackets like [] cannot be represented in MaD.
           // Mime.fetch(type) : Mime::Type
-          "actiondispatch;Mime::Type;;;Member[Mime].Method[fetch].ReturnValue",
-          // Mime::Type.new(str) : Mime::Type
-          "actiondispatch;Mime::Type;;;Member[Mime].Member[Type].Instance",
+          "Mime::Type;Mime!;Method[fetch].ReturnValue",
           // Mime::Type.lookup(str) : Mime::Type
-          "actiondispatch;Mime::Type;;;Member[Mime].Member[Type].Method[lookup].ReturnValue",
+          "Mime::Type;Mime::Type!;Method[lookup].ReturnValue",
           // Mime::Type.lookup_by_extension(str) : Mime::Type
-          "actiondispatch;Mime::Type;;;Member[Mime].Member[Type].Method[lookup_by_extension].ReturnValue",
+          "Mime::Type;Mime::Type!;Method[lookup_by_extension].ReturnValue",
           // Mime::Type.register(str) : Mime::Type
-          "actiondispatch;Mime::Type;;;Member[Mime].Member[Type].Method[register].ReturnValue",
+          "Mime::Type;Mime::Type!;Method[register].ReturnValue",
           // Mime::Type.register_alias(str) : Mime::Type
-          "actiondispatch;Mime::Type;;;Member[Mime].Member[Type].Method[register_alias].ReturnValue",
+          "Mime::Type;Mime::Type!;Method[register_alias].ReturnValue",
         ]
     }
   }
@@ -48,10 +46,7 @@ module ActionDispatch {
    */
   class MimeTypeMatchRegExpInterpretation extends RE::RegExpInterpretation::Range {
     MimeTypeMatchRegExpInterpretation() {
-      this =
-        ModelOutput::getATypeNode("actiondispatch", "Mime::Type")
-            .getAMethodCall(["match?", "=~"])
-            .getArgument(0)
+      this = ModelOutput::getATypeNode("Mime::Type").getAMethodCall(["match?", "=~"]).getArgument(0)
     }
   }
 

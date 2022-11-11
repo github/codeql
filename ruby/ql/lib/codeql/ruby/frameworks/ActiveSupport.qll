@@ -317,9 +317,9 @@ module ActiveSupport {
    */
   private class PathnameTypeSummary extends ModelInput::TypeModelCsv {
     override predicate row(string row) {
-      // package1;type1;package2;type2;path
+      // type1;type2;path
       // Pathname#existence : Pathname
-      row = ";Pathname;;Pathname;Method[existence].ReturnValue"
+      row = "Pathname;Pathname;Method[existence].ReturnValue"
     }
   }
 
@@ -327,7 +327,7 @@ module ActiveSupport {
   private class PathnameTaintSummary extends ModelInput::SummaryModelCsv {
     override predicate row(string row) {
       // Pathname#existence
-      row = ";Pathname;Method[existence];Argument[self];ReturnValue;taint"
+      row = "Pathname;Method[existence];Argument[self];ReturnValue;taint"
     }
   }
 
@@ -345,12 +345,12 @@ module ActiveSupport {
       row =
         [
           // SafeBuffer.new(x) does not sanitize x
-          "activesupport;;Member[ActionView].Member[SafeBuffer].Method[new];Argument[0];ReturnValue;taint",
+          "ActionView::SafeBuffer!;Method[new];Argument[0];ReturnValue;taint",
           // SafeBuffer#safe_concat(x) does not sanitize x
-          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat];Argument[0];ReturnValue;taint",
-          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat];Argument[0];Argument[self];taint",
+          "ActionView::SafeBuffer;Method[safe_concat];Argument[0];ReturnValue;taint",
+          "ActionView::SafeBuffer;Method[safe_concat];Argument[0];Argument[self];taint",
           // These methods preserve taint in self
-          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[concat,insert,prepend,to_s,to_param];Argument[self];ReturnValue;taint",
+          "ActionView::SafeBuffer;Method[concat,insert,prepend,to_s,to_param];Argument[self];ReturnValue;taint",
         ]
     }
   }

@@ -59,12 +59,12 @@ pathnameInstances
 | Pathname.rb:42:1:42:3 | p01 |
 | file://:0:0:0:0 | parameter position 0 of + |
 | file://:0:0:0:0 | parameter self of + |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[cleanpath] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[expand_path] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[realpath] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[relative_path_from] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[sub_ext] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[to_path] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[cleanpath] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[expand_path] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[realpath] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[relative_path_from] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[sub_ext] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[to_path] |
 | file://:0:0:0:0 | parameter self of sub |
 | file://:0:0:0:0 | parameter self of to_s |
 fileSystemAccesses
@@ -135,12 +135,12 @@ fileNameSources
 | Pathname.rb:42:1:42:3 | p01 |
 | file://:0:0:0:0 | parameter position 0 of + |
 | file://:0:0:0:0 | parameter self of + |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[cleanpath] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[expand_path] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[realpath] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[relative_path_from] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[sub_ext] |
-| file://:0:0:0:0 | parameter self of ;Pathname;Method[to_path] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[cleanpath] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[expand_path] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[realpath] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[relative_path_from] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[sub_ext] |
+| file://:0:0:0:0 | parameter self of Pathname;Method[to_path] |
 | file://:0:0:0:0 | parameter self of sub |
 | file://:0:0:0:0 | parameter self of to_s |
 fileSystemReadAccesses
