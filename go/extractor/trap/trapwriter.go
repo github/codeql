@@ -95,6 +95,7 @@ func (tw *Writer) Close() error {
 	if err != nil {
 		// throw away file close error
 		tw.file.Close()
+		return err
 	}
 	err = tw.zip.Close()
 	if err != nil {
