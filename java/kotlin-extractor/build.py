@@ -114,7 +114,8 @@ def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, outp
 
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',
-                 '-C', tmp_src_dir + '/main/resources', '.'])
+                 '-C', tmp_src_dir + '/main/resources', 'META-INF',
+                 '-C', tmp_src_dir + '/main/resources', 'com/github/codeql/extractor.name'])
     shutil.rmtree(class_dir)
 
 
