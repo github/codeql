@@ -10,6 +10,7 @@
 import swift
 import codeql.swift.printast.PrintAst
 import IDEContextual
+import codeql.swift.generated.ParentChild
 
 /**
  * Gets the source file to generate an AST from.
@@ -23,6 +24,10 @@ class PrintAstConfigurationOverride extends PrintAstConfiguration {
    */
   override predicate shouldPrint(Locatable e) {
     super.shouldPrint(e) and
-    e.getFile() = getFileBySourceArchiveName(selectedSourceFile())
+    (
+      e.getFile() = getFileBySourceArchiveName(selectedSourceFile())
+      or
+      exists(Locatable parent | this.shouldPrint(parent) and parent = getImmediateParent(e))
+    )
   }
 }
