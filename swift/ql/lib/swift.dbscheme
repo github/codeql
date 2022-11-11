@@ -483,6 +483,30 @@ var_decl_parent_initializers(  //dir=decl
   int parent_initializer: @expr_or_none ref
 );
 
+#keyset[id]
+var_decl_property_wrapper_backing_var_bindings(  //dir=decl
+  int id: @var_decl ref,
+  int property_wrapper_backing_var_binding: @pattern_binding_decl_or_none ref
+);
+
+#keyset[id]
+var_decl_property_wrapper_backing_vars(  //dir=decl
+  int id: @var_decl ref,
+  int property_wrapper_backing_var: @var_decl_or_none ref
+);
+
+#keyset[id]
+var_decl_property_wrapper_projection_var_bindings(  //dir=decl
+  int id: @var_decl ref,
+  int property_wrapper_projection_var_binding: @pattern_binding_decl_or_none ref
+);
+
+#keyset[id]
+var_decl_property_wrapper_projection_vars(  //dir=decl
+  int id: @var_decl ref,
+  int property_wrapper_projection_var: @var_decl_or_none ref
+);
+
 accessor_decls(  //dir=decl
   unique int id: @accessor_decl
 );
@@ -556,6 +580,18 @@ param_decls(  //dir=decl
 #keyset[id]
 param_decl_is_inout(  //dir=decl
   int id: @param_decl ref
+);
+
+#keyset[id]
+param_decl_property_wrapper_local_wrapped_var_bindings(  //dir=decl
+  int id: @param_decl ref,
+  int property_wrapper_local_wrapped_var_binding: @pattern_binding_decl_or_none ref
+);
+
+#keyset[id]
+param_decl_property_wrapper_local_wrapped_vars(  //dir=decl
+  int id: @param_decl ref,
+  int property_wrapper_local_wrapped_var: @var_decl_or_none ref
 );
 
 type_alias_decls(  //dir=decl

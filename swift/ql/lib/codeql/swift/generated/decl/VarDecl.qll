@@ -4,6 +4,7 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
+import codeql.swift.elements.decl.PatternBindingDecl
 import codeql.swift.elements.type.Type
 
 module Generated {
@@ -98,5 +99,121 @@ module Generated {
      * Holds if `getParentInitializer()` exists.
      */
     final predicate hasParentInitializer() { exists(getParentInitializer()) }
+
+    /**
+     * Gets the property wrapper backing var binding of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    PatternBindingDecl getImmediatePropertyWrapperBackingVarBinding() {
+      result =
+        Synth::convertPatternBindingDeclFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getPropertyWrapperBackingVarBinding())
+    }
+
+    /**
+     * Gets the property wrapper backing var binding of this var declaration, if it exists.
+     *
+     * This is the synthesized binding introducing the property wrapper backing variable for this
+     * variable, if any.
+     */
+    final PatternBindingDecl getPropertyWrapperBackingVarBinding() {
+      result = getImmediatePropertyWrapperBackingVarBinding().resolve()
+    }
+
+    /**
+     * Holds if `getPropertyWrapperBackingVarBinding()` exists.
+     */
+    final predicate hasPropertyWrapperBackingVarBinding() {
+      exists(getPropertyWrapperBackingVarBinding())
+    }
+
+    /**
+     * Gets the property wrapper backing var of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    VarDecl getImmediatePropertyWrapperBackingVar() {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getPropertyWrapperBackingVar())
+    }
+
+    /**
+     * Gets the property wrapper backing var of this var declaration, if it exists.
+     *
+     * This is the synthesized variable holding the property wrapper for this variable, if any.
+     */
+    final VarDecl getPropertyWrapperBackingVar() {
+      result = getImmediatePropertyWrapperBackingVar().resolve()
+    }
+
+    /**
+     * Holds if `getPropertyWrapperBackingVar()` exists.
+     */
+    final predicate hasPropertyWrapperBackingVar() { exists(getPropertyWrapperBackingVar()) }
+
+    /**
+     * Gets the property wrapper projection var binding of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    PatternBindingDecl getImmediatePropertyWrapperProjectionVarBinding() {
+      result =
+        Synth::convertPatternBindingDeclFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getPropertyWrapperProjectionVarBinding())
+    }
+
+    /**
+     * Gets the property wrapper projection var binding of this var declaration, if it exists.
+     *
+     * This is the synthesized binding introducing the property wrapper projection variable for this
+     * variable, if any.
+     */
+    final PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
+      result = getImmediatePropertyWrapperProjectionVarBinding().resolve()
+    }
+
+    /**
+     * Holds if `getPropertyWrapperProjectionVarBinding()` exists.
+     */
+    final predicate hasPropertyWrapperProjectionVarBinding() {
+      exists(getPropertyWrapperProjectionVarBinding())
+    }
+
+    /**
+     * Gets the property wrapper projection var of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    VarDecl getImmediatePropertyWrapperProjectionVar() {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getPropertyWrapperProjectionVar())
+    }
+
+    /**
+     * Gets the property wrapper projection var of this var declaration, if it exists.
+     *
+     * If this variable has a property wrapper with a projected value, this is the corresponding
+     * synthesized variable holding that projected value, accessible with this variable's name
+     * prefixed with `$`.
+     */
+    final VarDecl getPropertyWrapperProjectionVar() {
+      result = getImmediatePropertyWrapperProjectionVar().resolve()
+    }
+
+    /**
+     * Holds if `getPropertyWrapperProjectionVar()` exists.
+     */
+    final predicate hasPropertyWrapperProjectionVar() { exists(getPropertyWrapperProjectionVar()) }
   }
 }
