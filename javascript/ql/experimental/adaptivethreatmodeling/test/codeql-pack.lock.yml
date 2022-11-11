@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-11-11-13h13m17s.silver-gas-6h26v6ss.13db43bb6229f92ee087d492288bc3f6aba96ff26c8c42cee2761a7eba9ec83d
 compiled: false
 lockVersion: 1.0.0
