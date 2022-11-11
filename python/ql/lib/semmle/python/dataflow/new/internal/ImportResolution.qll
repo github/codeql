@@ -78,7 +78,7 @@ module ImportResolution {
     )
     or
     exists(Alias a |
-      defn.asExpr() = [a.getValue(), a.getValue().(ImportMember).getModule()] and
+      defn.asExpr() = [a.getValue().(ImportExpr), a.getValue().(ImportMember).getModule()] and
       a.getAsname().(Name).getId() = name and
       defn.getScope() = m
     )

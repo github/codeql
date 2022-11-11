@@ -1,4 +1,22 @@
 #! /usr/bin/env python3
+"""
+A slightly complicated test setup. I wanted to both make sure I captured
+the semantics of Python and also the fact that the kinds of global flow
+we expect to see are indeed present.
+
+The code is executable, and prints out both when the execution reaches
+certain files, and also what values are assigned to the various
+attributes that are referenced throughout the program. These values are
+validated in the test as well.
+
+My original version used introspection to avoid referencing attributes
+directly (thus enabling better error diagnostics), but unfortunately
+that made it so that the model couldn't follow what was going on.
+
+The current setup is a bit clunky (and Python's scoping rules makes it
+especially so -- cf. the explicit calls to `globals` and `locals`), but
+I think it does the job okay.
+"""
 
 from __future__ import print_function
 import sys

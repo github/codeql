@@ -27,7 +27,7 @@ private class ImportConfiguration extends DataFlow::Configuration {
 class ResolutionTest extends InlineExpectationsTest {
   ResolutionTest() { this = "ResolutionTest" }
 
-  override string getARelevantTag() { result = "import" }
+  override string getARelevantTag() { result = "prints" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::PathNode source, DataFlow::PathNode sink, ImportConfiguration config |
