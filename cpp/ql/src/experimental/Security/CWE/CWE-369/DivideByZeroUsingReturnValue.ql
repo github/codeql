@@ -205,20 +205,20 @@ class MyDiv extends Expr {
   }
 }
 
-from Expr exp, string msg, Function fn, Expr findVal, float changeInt, MyDiv div
+from Expr exp, string msg, Function fn, GVN findVal, float changeInt, MyDiv div
 where
-  findVal = globalValueNumber(fn.getACallToThisFunction()).getAnExpr() and
+  findVal = globalValueNumber(fn.getACallToThisFunction()) and
   (
     // Look for divide-by-zero operations possible due to the return value of the function `fn`.
     checkConditions1(div, fn, changeInt) and
     (
       // Function return value can be zero.
       mayBeReturnZero(fn) and
-      getMulDivOperand(globalValueNumber(div.getRV()).getAnExpr()) = findVal and
+      getMulDivOperand(globalValueNumber(div.getRV()).getAnExpr()) = findVal.getAnExpr() and
       changeInt = 0
       or
       // Denominator can be sum or difference.
-      changeInt = getValueOperand(div.getRV(), findVal, _) and
+      changeInt = getValueOperand(div.getRV(), findVal.getAnExpr(), _) and
       mayBeReturnValue(fn, changeInt)
     ) and
     exp = div and
@@ -231,6 +231,7 @@ where
       // Division is associated with the function argument.
       exists(Function divFn |
         divFn.getParameter(posArg).getAnAccess() = divVal and
+        divVal.getEnclosingStmt() = div.getEnclosingStmt() and
         divFc = divFn.getACallToThisFunction()
       ) and
       (
@@ -238,12 +239,13 @@ where
         (
           // Function return value can be zero.
           mayBeReturnZero(fn) and
-          getMulDivOperand(globalValueNumber(divFc.getArgument(posArg)).getAnExpr()) = findVal and
+          getMulDivOperand(globalValueNumber(divFc.getArgument(posArg)).getAnExpr()) =
+            findVal.getAnExpr() and
           changeInt = 0 and
           changeInt2 = 0
           or
           // Denominator can be sum or difference.
-          changeInt = getValueOperand(divFc.getArgument(posArg), findVal, _) and
+          changeInt = getValueOperand(divFc.getArgument(posArg), findVal.getAnExpr(), _) and
           mayBeReturnValue(fn, changeInt) and
           changeInt2 = 0
         )
@@ -252,7 +254,7 @@ where
         changeInt = getValueOperand(div.getRV(), divVal, _) and
         changeInt2 = changeInt and
         mayBeReturnValue(fn, changeInt) and
-        divFc.getArgument(posArg) = findVal
+        divFc.getArgument(posArg) = findVal.getAnExpr()
       ) and
       checkConditions2(div, divVal, changeInt2) and
       checkConditions1(divFc, fn, changeInt) and
