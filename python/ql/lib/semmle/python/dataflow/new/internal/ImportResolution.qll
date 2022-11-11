@@ -34,9 +34,11 @@ private import semmle.python.dataflow.new.TypeTracker
  *
  * 1. If `foo` is a module, and `bar` is an attribute of `foo`, then `from foo import bar` imports
  *    the attribute `bar` into the current module (binding it to the name `bar`).
- * 2. If `foo` is a package, and `bar` is a submodule of `foo`, then `from foo import bar` first imports
- *    `foo.bar`, and then reads the `bar` attribute on `foo`. In most cases, that attribute
- *    will then point to the `bar` submodule.
+ * 2. If `foo` is a package, and `bar` is already defined in `foo/__init__.py`,
+ *    that value will be imported. If it is not defined, and `bar` is a submodule of `foo`, then
+ *    `bar` is imported to `foo`, and the `bar` submodule imported.
+ *    Note: We don't currently model if the attribute is already defined in `__init__.py`
+ *    and always assume that the submodule will be used.
  *
  * Now, when it comes to how these imports are represented in the AST, things get a bit complicated.
  * First of all, both of the above forms of imports get mapped to the same kind of AST node:
@@ -58,7 +60,7 @@ private import semmle.python.dataflow.new.TypeTracker
  *   package, or the `bar` subpackage of the `foo` package. The practical difference here is the name of
  *   the module that is imported, as the package `foo.bar` will have the "name" `foo.bar.__init__`,
  *   corresponding to the fact that the code that is executed is in the `__init__.py` file of the
- *   `bar` package.
+ *   `bar` subpackage.
  */
 module ImportResolution {
   /**
@@ -168,8 +170,17 @@ module ImportResolution {
     isPreferredModuleForName(result.getFile(), i.getImportedModuleName())
   }
 
-  /** Gets a data-flow node that may be a reference to a module with the name `module_name`. */
-  DataFlow::Node getReferenceToModuleName(string module_name) {
+  /**
+   * Gets a data-flow node that may be a reference to a module with the name `module_name`.
+   *
+   * This is a helper predicate for `getImmediateModuleReference`. It captures the fact that in an
+   * import such as `import foo`,
+   * - `foo` may simply be the name of a module, or
+   * - `foo` may be the name of a package (in which case its name is actually `foo.__init__`), or
+   * - `foo` may be a module name that has been added to `sys.modules` (in which case its actual name can
+   *   be anything, for instance `os.path` is either `posixpath` or `ntpath`).
+   */
+  private DataFlow::Node getReferenceToModuleName(string module_name) {
     // Regular import statements, e.g.
     // import foo    # implicitly `import foo as foo`
     // import foo as foo_alias
@@ -188,7 +199,6 @@ module ImportResolution {
     // from foo.bar import baz    # imports foo.bar.baz as baz
     // from foo.bar import baz as baz_alias    # imports foo.bar.baz as baz_alias
     exists(Import i, Alias a, ImportMember im | a = i.getAName() and im = a.getValue() |
-      i.isFromImport() and
       result.asExpr() = a.getAsname() and
       module_name = im.getModule().(ImportExpr).getImportedModuleName() + "." + im.getName()
     )
@@ -201,12 +211,15 @@ module ImportResolution {
       any(ImportMember i |
         i.getModule().(ImportExpr).getImportedModuleName() = module_name
         or
-        i.getModule().(ImportExpr).getImportedModuleName() + "." + i.getName() = module_name and
-        none()
+        i.getModule().(ImportExpr).getImportedModuleName() + "." + i.getName() = module_name
       )
   }
 
-  /** Gets a dataflow node that is an immediate reference to the module `m`. */
+  /**
+   * Gets a dataflow node that is an immediate reference to the module `m`.
+   *
+   * Because of attribute lookups, this is mutually recursive with `getModuleReference`.
+   */
   DataFlow::Node getImmediateModuleReference(Module m) {
     exists(string module_name | result = getReferenceToModuleName(module_name) |
       // Depending on whether the referenced module is a package or not, we may need to add a
@@ -219,9 +232,8 @@ module ImportResolution {
     or
     // Reading an attribute on a module may return a submodule (or subpackage).
     exists(DataFlow::AttrRead ar, Module p, string attr_name |
-      ar.getObject() = getModuleReference(p) and
+      ar.accesses(getModuleReference(p), attr_name) and
       attr_name = any(Module m0).getFile().getStem() and
-      ar.getAttributeName() = attr_name and
       result = ar
     |
       isPreferredModuleForName(m.getFile(), p.getPackageName() + "." + attr_name + ["", ".__init__"])
@@ -242,7 +254,7 @@ module ImportResolution {
 
   /** Join-order helper for `getModuleReference`. */
   pragma[nomagic]
-  private predicate module_name_in_scope(DataFlow::Node node, Scope s, string name, Module m) {
+  private predicate module_reference_in_scope(DataFlow::Node node, Scope s, string name, Module m) {
     node.getScope() = s and
     node.asExpr().(Name).getId() = name and
     pragma[only_bind_into](node) = getImmediateModuleReference(pragma[only_bind_into](m))
@@ -250,7 +262,7 @@ module ImportResolution {
 
   /** Join-order helper for `getModuleReference`. */
   pragma[nomagic]
-  private predicate module_reference_in_scope(DataFlow::Node node, Scope s, string name) {
+  private predicate module_name_in_scope(DataFlow::Node node, Scope s, string name) {
     node.getScope() = s and
     exists(Name n | n = node.asExpr() |
       n.getId() = name and
@@ -277,9 +289,9 @@ module ImportResolution {
     or
     // A reference to a name that is bound to a module in an enclosing scope.
     exists(DataFlow::Node def, Scope def_scope, Scope use_scope, string name |
-      module_name_in_scope(pragma[only_bind_into](def), pragma[only_bind_into](def_scope),
+      module_reference_in_scope(pragma[only_bind_into](def), pragma[only_bind_into](def_scope),
         pragma[only_bind_into](name), pragma[only_bind_into](m)) and
-      module_reference_in_scope(result, use_scope, name) and
+      module_name_in_scope(result, use_scope, name) and
       use_scope.getEnclosingScope*() = def_scope
     )
   }
