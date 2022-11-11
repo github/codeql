@@ -2,6 +2,7 @@
 
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
+#include "swift/extractor/infra/SwiftDiagnosticKind.h"
 
 namespace codeql {
 namespace {
@@ -390,4 +391,29 @@ codeql::IfConfigDecl DeclTranslator::translateIfConfigDecl(const swift::IfConfig
   return entry;
 }
 
+std::optional<codeql::OpaqueTypeDecl> DeclTranslator::translateOpaqueTypeDecl(
+    const swift::OpaqueTypeDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillTypeDecl(decl, *entry);
+    entry->naming_declaration = dispatcher.fetchLabel(decl.getNamingDecl());
+    entry->opaque_generic_params = dispatcher.fetchRepeatedLabels(decl.getOpaqueGenericParams());
+    return entry;
+  }
+  return std::nullopt;
+}
+
+codeql::PoundDiagnosticDecl DeclTranslator::translatePoundDiagnosticDecl(
+    const swift::PoundDiagnosticDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.kind = translateDiagnosticsKind(decl.getKind());
+  entry.message = dispatcher.fetchLabel(decl.getMessage());
+  return entry;
+}
+
+codeql::MissingMemberDecl DeclTranslator::translateMissingMemberDecl(
+    const swift::MissingMemberDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.name = decl.getName().getBaseName().userFacingName().str();
+  return entry;
+}
 }  // namespace codeql

@@ -33,8 +33,6 @@ module Raw {
     int getEndColumn() { locations(this, _, _, _, _, result) }
   }
 
-  class UnresolvedElement extends @unresolved_element, Element { }
-
   class AstNode extends @ast_node, Locatable { }
 
   class Comment extends @comment, Locatable {
@@ -49,6 +47,28 @@ module Raw {
 
   class DbLocation extends @db_location, Location {
     override string toString() { result = "DbLocation" }
+  }
+
+  class Diagnostics extends @diagnostics, Locatable {
+    override string toString() { result = "Diagnostics" }
+
+    string getText() { diagnostics(this, result, _) }
+
+    int getKind() { diagnostics(this, _, result) }
+  }
+
+  class UnresolvedElement extends @unresolved_element, Locatable { }
+
+  class UnspecifiedElement extends @unspecified_element, Locatable {
+    override string toString() { result = "UnspecifiedElement" }
+
+    Element getParent() { unspecified_element_parents(this, result) }
+
+    string getProperty() { unspecified_elements(this, result, _) }
+
+    int getIndex() { unspecified_element_indices(this, result) }
+
+    string getError() { unspecified_elements(this, _, result) }
   }
 
   class Decl extends @decl, AstNode {
@@ -95,6 +115,8 @@ module Raw {
 
   class MissingMemberDecl extends @missing_member_decl, Decl {
     override string toString() { result = "MissingMemberDecl" }
+
+    string getName() { missing_member_decls(this, result) }
   }
 
   class OperatorDecl extends @operator_decl, Decl {
@@ -111,6 +133,10 @@ module Raw {
 
   class PoundDiagnosticDecl extends @pound_diagnostic_decl, Decl {
     override string toString() { result = "PoundDiagnosticDecl" }
+
+    int getKind() { pound_diagnostic_decls(this, result, _) }
+
+    StringLiteralExpr getMessage() { pound_diagnostic_decls(this, _, result) }
   }
 
   class PrecedenceGroupDecl extends @precedence_group_decl, Decl {
@@ -247,6 +273,12 @@ module Raw {
 
   class OpaqueTypeDecl extends @opaque_type_decl, GenericTypeDecl {
     override string toString() { result = "OpaqueTypeDecl" }
+
+    ValueDecl getNamingDeclaration() { opaque_type_decls(this, result) }
+
+    GenericTypeParamType getOpaqueGenericParam(int index) {
+      opaque_type_decl_opaque_generic_params(this, index, result)
+    }
   }
 
   class ParamDecl extends @param_decl, VarDecl {
@@ -295,16 +327,18 @@ module Raw {
 
   class AppliedPropertyWrapperExpr extends @applied_property_wrapper_expr, Expr {
     override string toString() { result = "AppliedPropertyWrapperExpr" }
+
+    int getKind() { applied_property_wrapper_exprs(this, result, _, _) }
+
+    Expr getValue() { applied_property_wrapper_exprs(this, _, result, _) }
+
+    ParamDecl getParam() { applied_property_wrapper_exprs(this, _, _, result) }
   }
 
   class ApplyExpr extends @apply_expr, Expr {
     Expr getFunction() { apply_exprs(this, result) }
 
     Argument getArgument(int index) { apply_expr_arguments(this, index, result) }
-  }
-
-  class ArrowExpr extends @arrow_expr, Expr {
-    override string toString() { result = "ArrowExpr" }
   }
 
   class AssignExpr extends @assign_expr, Expr {
@@ -329,10 +363,6 @@ module Raw {
     }
 
     ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
-  }
-
-  class CodeCompletionExpr extends @code_completion_expr, Expr {
-    override string toString() { result = "CodeCompletionExpr" }
   }
 
   class CollectionExpr extends @collection_expr, Expr { }
@@ -379,10 +409,6 @@ module Raw {
     override string toString() { result = "DynamicTypeExpr" }
 
     Expr getBase() { dynamic_type_exprs(this, result) }
-  }
-
-  class EditorPlaceholderExpr extends @editor_placeholder_expr, Expr {
-    override string toString() { result = "EditorPlaceholderExpr" }
   }
 
   class EnumIsCaseExpr extends @enum_is_case_expr, Expr {
@@ -515,14 +541,20 @@ module Raw {
     ConstructorDecl getConstructorDecl() { other_constructor_decl_ref_exprs(this, result) }
   }
 
-  class OverloadSetRefExpr extends @overload_set_ref_expr, Expr { }
+  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, Expr {
+    override string toString() { result = "OverloadedDeclRefExpr" }
 
-  class PackExpr extends @pack_expr, Expr {
-    override string toString() { result = "PackExpr" }
+    ValueDecl getPossibleDeclaration(int index) {
+      overloaded_decl_ref_expr_possible_declarations(this, index, result)
+    }
   }
 
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
     override string toString() { result = "PropertyWrapperValuePlaceholderExpr" }
+
+    Expr getWrappedValue() { property_wrapper_value_placeholder_expr_wrapped_values(this, result) }
+
+    OpaqueValueExpr getPlaceholder() { property_wrapper_value_placeholder_exprs(this, result) }
   }
 
   class RebindSelfInConstructorExpr extends @rebind_self_in_constructor_expr, Expr {
@@ -603,6 +635,8 @@ module Raw {
 
   class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
+
+    Expr getSubExpr() { unresolved_specialize_exprs(this, result) }
   }
 
   class VarargExpansionExpr extends @vararg_expansion_expr, Expr {
@@ -807,14 +841,14 @@ module Raw {
 
   class ObjectLiteralExpr extends @object_literal_expr, LiteralExpr {
     override string toString() { result = "ObjectLiteralExpr" }
+
+    int getKind() { object_literal_exprs(this, result) }
+
+    Argument getArgument(int index) { object_literal_expr_arguments(this, index, result) }
   }
 
   class OptionalTryExpr extends @optional_try_expr, AnyTryExpr {
     override string toString() { result = "OptionalTryExpr" }
-  }
-
-  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, OverloadSetRefExpr {
-    override string toString() { result = "OverloadedDeclRefExpr" }
   }
 
   class ParenExpr extends @paren_expr, IdentityExpr {
@@ -840,10 +874,6 @@ module Raw {
 
   class RegexLiteralExpr extends @regex_literal_expr, LiteralExpr {
     override string toString() { result = "RegexLiteralExpr" }
-  }
-
-  class ReifyPackExpr extends @reify_pack_expr, ImplicitConversionExpr {
-    override string toString() { result = "ReifyPackExpr" }
   }
 
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
@@ -1104,6 +1134,10 @@ module Raw {
 
   class PoundAssertStmt extends @pound_assert_stmt, Stmt {
     override string toString() { result = "PoundAssertStmt" }
+
+    Expr getCondition() { pound_assert_stmts(this, result, _) }
+
+    string getMessage() { pound_assert_stmts(this, _, result) }
   }
 
   class ReturnStmt extends @return_stmt, Stmt {
@@ -1266,20 +1300,8 @@ module Raw {
     ModuleDecl getModule() { module_types(this, result) }
   }
 
-  class PackExpansionType extends @pack_expansion_type, Type {
-    override string toString() { result = "PackExpansionType" }
-  }
-
-  class PackType extends @pack_type, Type {
-    override string toString() { result = "PackType" }
-  }
-
   class ParameterizedProtocolType extends @parameterized_protocol_type, Type {
     override string toString() { result = "ParameterizedProtocolType" }
-  }
-
-  class PlaceholderType extends @placeholder_type, Type {
-    override string toString() { result = "PlaceholderType" }
   }
 
   class ProtocolCompositionType extends @protocol_composition_type, Type {
@@ -1290,22 +1312,6 @@ module Raw {
 
   class ReferenceStorageType extends @reference_storage_type, Type {
     Type getReferentType() { reference_storage_types(this, result) }
-  }
-
-  class SilBlockStorageType extends @sil_block_storage_type, Type {
-    override string toString() { result = "SilBlockStorageType" }
-  }
-
-  class SilBoxType extends @sil_box_type, Type {
-    override string toString() { result = "SilBoxType" }
-  }
-
-  class SilFunctionType extends @sil_function_type, Type {
-    override string toString() { result = "SilFunctionType" }
-  }
-
-  class SilTokenType extends @sil_token_type, Type {
-    override string toString() { result = "SilTokenType" }
   }
 
   class SubstitutableType extends @substitutable_type, Type { }
@@ -1461,6 +1467,8 @@ module Raw {
 
   class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {
     override string toString() { result = "OpaqueTypeArchetypeType" }
+
+    OpaqueTypeDecl getDeclaration() { opaque_type_archetype_types(this, result) }
   }
 
   class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {

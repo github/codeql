@@ -15,11 +15,6 @@ include("prefix.dbscheme")
 class Element:
     is_unknown: predicate | cpp.skip
 
-@qltest.skip
-@qltest.collapse_hierarchy
-class UnresolvedElement(Element):
-    pass
-
 @qltest.collapse_hierarchy
 class File(Element):
     name: string
@@ -37,8 +32,23 @@ class Location(Element):
 class Locatable(Element):
     location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
 
+@qltest.collapse_hierarchy
+class UnresolvedElement(Locatable):
+    pass
+
+@use_for_null
+class UnspecifiedElement(Locatable):
+    parent: optional[Element]
+    property: string
+    index: optional[int]
+    error: string
+
 class Comment(Locatable):
     text: string
+
+class Diagnostics(Locatable):
+    text: string
+    kind: int
 
 class DbFile(File):
     pass
@@ -101,8 +111,10 @@ class ImportDecl(Decl):
     imported_module: optional["ModuleDecl"]
     declarations: list["ValueDecl"]
 
+@qltest.skip
 class MissingMemberDecl(Decl):
-    pass
+    """A placeholder for missing declarations that can arise on object deserialization."""
+    name: string
 
 class OperatorDecl(Decl):
     name: string
@@ -112,7 +124,9 @@ class PatternBindingDecl(Decl):
     patterns: list[Pattern] | child
 
 class PoundDiagnosticDecl(Decl):
-    pass
+    """ A diagnostic directive, which is either `#error` or `#warning`."""
+    kind: int | doc("""This is 1 for `#error` and 2 for `#warning`""")
+    message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
     pass
@@ -211,7 +225,20 @@ class NominalTypeDecl(GenericTypeDecl, IterableDeclContext):
     type: Type
 
 class OpaqueTypeDecl(GenericTypeDecl):
-    pass
+    """
+    A declaration of an opaque type, that is formally equivalent to a given type but abstracts it
+    away.
+
+    Such a declaration is implicitly given when a declaration is written with an opaque result type,
+    for example
+    ```
+    func opaque() -> some SignedInteger { return 1 }
+    ```
+    See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html.
+    """
+    naming_declaration: ValueDecl
+    opaque_generic_params: list["GenericTypeParamType"]
+    opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
     pass
@@ -240,14 +267,14 @@ class AnyTryExpr(Expr):
     sub_expr: Expr | child
 
 class AppliedPropertyWrapperExpr(Expr):
-    pass
+    """An implicit application of a property wrapper on the argument of a call."""
+    kind: int | desc("This is 1 for a wrapped value and 2 for a projected one.")
+    value: Expr | child | desc("The value on which the wrapper is applied.")
+    param: ParamDecl | doc("parameter declaration owning this wrapper application")
 
 class ApplyExpr(Expr):
     function: Expr | child | doc("function being applied")
     arguments: list[Argument] | child | doc("arguments passed to the applied function")
-
-class ArrowExpr(Expr):
-    pass
 
 class AssignExpr(Expr):
     dest: Expr | child
@@ -259,9 +286,6 @@ class BindOptionalExpr(Expr):
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
     closure_body: "ClosureExpr" | child
-
-class CodeCompletionExpr(Expr):
-    pass
 
 class CollectionExpr(Expr):
     pass
@@ -287,9 +311,6 @@ class DotSyntaxBaseIgnoredExpr(Expr):
 
 class DynamicTypeExpr(Expr):
     base: Expr | child
-
-class EditorPlaceholderExpr(Expr):
-    pass
 
 class EnumIsCaseExpr(Expr):
     sub_expr: Expr | child
@@ -369,11 +390,13 @@ class OptionalEvaluationExpr(Expr):
 class OtherConstructorDeclRefExpr(Expr):
     constructor_decl: ConstructorDecl
 
-class OverloadSetRefExpr(Expr):
-    pass
-
 class PropertyWrapperValuePlaceholderExpr(Expr):
-    pass
+    """
+    A placeholder substituting property initializations with `=` when the property has a property
+    wrapper with an initializer.
+    """
+    wrapped_value: optional[Expr]
+    placeholder: OpaqueValueExpr
 
 class RebindSelfInConstructorExpr(Expr):
     sub_expr: Expr | child
@@ -415,7 +438,7 @@ class UnresolvedPatternExpr(Expr, UnresolvedElement):
     sub_pattern: Pattern | child
 
 class UnresolvedSpecializeExpr(Expr, UnresolvedElement):
-    pass
+    sub_expr: Expr | child
 
 class VarargExpansionExpr(Expr):
     sub_expr: Expr | child
@@ -498,6 +521,7 @@ class DifferentiableFunctionExtractOriginalExpr(ImplicitConversionExpr):
 class DotSelfExpr(IdentityExpr):
     pass
 
+@qltest.collapse_hierarchy
 class DynamicLookupExpr(LookupExpr):
     pass
 
@@ -552,13 +576,21 @@ class NilLiteralExpr(LiteralExpr):
     pass
 
 class ObjectLiteralExpr(LiteralExpr):
-    pass
+    """
+    An instance of `#fileLiteral`, `#imageLiteral` or `#colorLiteral` expressions, which are used in playgrounds.
+    """
+    kind: int | desc("""This is 0 for `#fileLiteral`, 1 for `#imageLiteral` and 2 for `#colorLiteral`.""")
+    arguments: list[Argument] | child
 
 class OptionalTryExpr(AnyTryExpr):
     pass
 
-class OverloadedDeclRefExpr(OverloadSetRefExpr):
-    pass
+class OverloadedDeclRefExpr(Expr):
+    """
+    An ambiguous expression that might refer to multiple declarations. This will be present only
+    for failing compilations.
+    """
+    possible_declarations: list[ValueDecl]
 
 class ParenExpr(IdentityExpr):
     pass
@@ -648,12 +680,6 @@ class FloatLiteralExpr(NumberLiteralExpr):
 class IntegerLiteralExpr(NumberLiteralExpr):
     string_value: string
 
-class PackExpr(Expr):
-    pass
-
-class ReifyPackExpr(ImplicitConversionExpr):
-    pass
-
 class AnyPattern(Pattern):
     pass
 
@@ -735,7 +761,8 @@ class LabeledStmt(Stmt):
     label: optional[string]
 
 class PoundAssertStmt(Stmt):
-    pass
+    condition: Expr
+    message: string
 
 class ReturnStmt(Stmt):
     result: optional[Expr] | child
@@ -825,26 +852,11 @@ class LValueType(Type):
 class ModuleType(Type):
     module: ModuleDecl
 
-class PlaceholderType(Type):
-    pass
-
 class ProtocolCompositionType(Type):
     members: list[Type]
 
 class ReferenceStorageType(Type):
     referent_type: Type
-
-class SilBlockStorageType(Type):
-    pass
-
-class SilBoxType(Type):
-    pass
-
-class SilFunctionType(Type):
-    pass
-
-class SilTokenType(Type):
-    pass
 
 class SubstitutableType(Type):
     pass
@@ -958,7 +970,10 @@ class NominalType(NominalOrBoundGenericNominalType):
     pass
 
 class OpaqueTypeArchetypeType(ArchetypeType):
-    pass
+    """An opaque type, that is a type formally equivalent to an underlying type but abstracting it away.
+
+    See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html."""
+    declaration: OpaqueTypeDecl
 
 class OpenedArchetypeType(ArchetypeType):
     pass
@@ -1000,12 +1015,6 @@ class StructType(NominalType):
     pass
 
 class VariadicSequenceType(UnarySyntaxSugarType):
-    pass
-
-class PackType(Type):
-    pass
-
-class PackExpansionType(Type):
     pass
 
 class ParameterizedProtocolType(Type):
