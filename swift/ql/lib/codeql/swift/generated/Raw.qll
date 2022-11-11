@@ -235,6 +235,20 @@ module Raw {
     Pattern getParentPattern() { var_decl_parent_patterns(this, result) }
 
     Expr getParentInitializer() { var_decl_parent_initializers(this, result) }
+
+    PatternBindingDecl getPropertyWrapperBackingVarBinding() {
+      var_decl_property_wrapper_backing_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperBackingVar() { var_decl_property_wrapper_backing_vars(this, result) }
+
+    PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
+      var_decl_property_wrapper_projection_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperProjectionVar() {
+      var_decl_property_wrapper_projection_vars(this, result)
+    }
   }
 
   class AccessorDecl extends @accessor_decl, FuncDecl {
@@ -285,6 +299,14 @@ module Raw {
     override string toString() { result = "ParamDecl" }
 
     predicate isInout() { param_decl_is_inout(this) }
+
+    PatternBindingDecl getPropertyWrapperLocalWrappedVarBinding() {
+      param_decl_property_wrapper_local_wrapped_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperLocalWrappedVar() {
+      param_decl_property_wrapper_local_wrapped_vars(this, result)
+    }
   }
 
   class TypeAliasDecl extends @type_alias_decl, GenericTypeDecl {
