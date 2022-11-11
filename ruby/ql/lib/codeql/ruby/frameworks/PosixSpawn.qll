@@ -33,6 +33,8 @@ module PosixSpawn {
       result = super.getArgument(_) and not result.asExpr() instanceof ExprNodes::PairCfgNode
     }
 
+    override DataFlow::Node getACommandArgument() { result = super.getArgument(0) }
+
     override predicate isShellInterpreted(DataFlow::Node arg) { none() }
   }
 
@@ -47,6 +49,10 @@ module PosixSpawn {
     }
 
     override DataFlow::Node getAnArgument() { this.argument(result) }
+
+    override DataFlow::Node getACommandArgument() {
+      result = super.getArgument(0) and this.argument(result)
+    }
 
     // From the docs:
     // When only command is given and includes a space character, the command

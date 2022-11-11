@@ -7,6 +7,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.frameworks.Files as Files
+private import codeql.ruby.frameworks.core.Kernel
 private import internal.IOOrFile
 
 /** Provides modeling for the `IO` class. */
@@ -120,6 +121,10 @@ module IO {
     override DataFlow::Node getAnArgument() { this.argument(result, _) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { this.argument(arg, true) }
+
+    override DataFlow::Node getACommandArgument() {
+      result = Kernel::getACommandArgumentFromShellCall(this)
+    }
 
     /**
      * Holds if `arg` is an argument to this call. `shell` is true if the argument is passed to a subshell.

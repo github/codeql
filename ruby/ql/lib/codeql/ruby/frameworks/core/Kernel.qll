@@ -35,6 +35,25 @@ module Kernel {
   }
 
   /**
+   * Gets an argument to `call` that specifies the command to execute,
+   * assuming that `call` has the same API as `Kernel.system`.
+   */
+  bindingset[call]
+  DataFlow::Node getACommandArgumentFromShellCall(DataFlow::CallNode call) {
+    (
+      // Kernel.system invokes a subprocess if you provide a command and one or more arguments
+      call.getNumberOfArguments() > 1 and
+      result = call.getArgument([0, 1])
+      or
+      // Kernel.system invokes a subprocess if you provide an array containing the command name and argv[0]
+      call.getNumberOfArguments() > 1 and
+      result.asExpr() =
+        call.getArgument([0, 1]).asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getArgument(0)
+    ) and
+    not result.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode // not the environment hash
+  }
+
+  /**
    * Public methods in the `Kernel` module. These can be invoked on any object via the usual dot syntax.
    * ```ruby
    * arr = []
@@ -104,6 +123,10 @@ module Kernel {
       // Kernel.system invokes a subshell if you provide a single string as argument
       super.getNumberOfArguments() = 1 and arg = this.getAnArgument()
     }
+
+    override DataFlow::Node getACommandArgument() {
+      result = getACommandArgumentFromShellCall(this)
+    }
   }
 
   /**
@@ -119,6 +142,10 @@ module Kernel {
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.exec invokes a subshell if you provide a single string as argument
       super.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+    }
+
+    override DataFlow::Node getACommandArgument() {
+      result = getACommandArgumentFromShellCall(this)
     }
   }
 
@@ -140,6 +167,10 @@ module Kernel {
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.spawn invokes a subshell if you provide a single string as argument
       super.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+    }
+
+    override DataFlow::Node getACommandArgument() {
+      result = getACommandArgumentFromShellCall(this)
     }
   }
 
