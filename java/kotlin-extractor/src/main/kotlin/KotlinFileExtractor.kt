@@ -247,7 +247,8 @@ open class KotlinFileExtractor(
                 addModifiers(id, "out")
             }
 
-            extractAnnotations(tp, id)
+            // extractAnnotations(tp, id)
+            // TODO: introduce annotations once they can be disambiguated from bounds, which are also child expressions.
             return id
         }
     }
