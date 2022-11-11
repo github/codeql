@@ -60,3 +60,6 @@ fun @receiver:Annot0k String.myExtension() { }
 
 @Annot0k
 typealias AAA = Z
+
+// Diagnostic Matches: Incomplete annotation: @kotlin.annotation.Target(%)
+// Diagnostic Matches: Incomplete annotation: @kotlin.jvm.JvmName(%)

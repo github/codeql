@@ -677,10 +677,10 @@ final class AnnotationsNode extends PrintAstNode, TAnnotationsNode {
 
   override ElementNode getChild(int childIndex) {
     result.getElement() =
-      rank[childIndex](Element e, string file, int line, int column |
-        e = ann.getAnAnnotation() and locationSortKeys(e, file, line, column)
+      rank[childIndex](Element e, string file, int line, int column, string s |
+        e = ann.getAnAnnotation() and locationSortKeys(e, file, line, column) and s = e.toString()
       |
-        e order by file, line, column
+        e order by file, line, column, s
       )
   }
 

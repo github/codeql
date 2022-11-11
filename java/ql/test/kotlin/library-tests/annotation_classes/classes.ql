@@ -16,5 +16,5 @@ query predicate annotations(Annotation a, Element e, AnnotationType at) {
 }
 
 query predicate annotationValues(Annotation a, Expr v) {
-  a.getAValue() = v and v.getFile().isSourceFile()
+  a.getValue(_) = v and v.getFile().isSourceFile()
 }
