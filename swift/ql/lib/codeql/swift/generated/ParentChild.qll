@@ -680,15 +680,39 @@ private module Impl {
   }
 
   private Element getImmediateChildOfVarDecl(VarDecl e, int index, string partialPredicateCall) {
-    exists(int b, int bAbstractStorageDecl, int n |
+    exists(
+      int b, int bAbstractStorageDecl, int n, int nPropertyWrapperBackingVarBinding,
+      int nPropertyWrapperBackingVar, int nPropertyWrapperProjectionVarBinding,
+      int nPropertyWrapperProjectionVar
+    |
       b = 0 and
       bAbstractStorageDecl =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractStorageDecl(e, i, _)) | i) and
       n = bAbstractStorageDecl and
+      nPropertyWrapperBackingVarBinding = n + 1 and
+      nPropertyWrapperBackingVar = nPropertyWrapperBackingVarBinding + 1 and
+      nPropertyWrapperProjectionVarBinding = nPropertyWrapperBackingVar + 1 and
+      nPropertyWrapperProjectionVar = nPropertyWrapperProjectionVarBinding + 1 and
       (
         none()
         or
         result = getImmediateChildOfAbstractStorageDecl(e, index - b, partialPredicateCall)
+        or
+        index = n and
+        result = e.getImmediatePropertyWrapperBackingVarBinding() and
+        partialPredicateCall = "PropertyWrapperBackingVarBinding()"
+        or
+        index = nPropertyWrapperBackingVarBinding and
+        result = e.getImmediatePropertyWrapperBackingVar() and
+        partialPredicateCall = "PropertyWrapperBackingVar()"
+        or
+        index = nPropertyWrapperBackingVar and
+        result = e.getImmediatePropertyWrapperProjectionVarBinding() and
+        partialPredicateCall = "PropertyWrapperProjectionVarBinding()"
+        or
+        index = nPropertyWrapperProjectionVarBinding and
+        result = e.getImmediatePropertyWrapperProjectionVar() and
+        partialPredicateCall = "PropertyWrapperProjectionVar()"
       )
     )
   }
@@ -809,14 +833,27 @@ private module Impl {
   }
 
   private Element getImmediateChildOfParamDecl(ParamDecl e, int index, string partialPredicateCall) {
-    exists(int b, int bVarDecl, int n |
+    exists(
+      int b, int bVarDecl, int n, int nPropertyWrapperLocalWrappedVarBinding,
+      int nPropertyWrapperLocalWrappedVar
+    |
       b = 0 and
       bVarDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfVarDecl(e, i, _)) | i) and
       n = bVarDecl and
+      nPropertyWrapperLocalWrappedVarBinding = n + 1 and
+      nPropertyWrapperLocalWrappedVar = nPropertyWrapperLocalWrappedVarBinding + 1 and
       (
         none()
         or
         result = getImmediateChildOfVarDecl(e, index - b, partialPredicateCall)
+        or
+        index = n and
+        result = e.getImmediatePropertyWrapperLocalWrappedVarBinding() and
+        partialPredicateCall = "PropertyWrapperLocalWrappedVarBinding()"
+        or
+        index = nPropertyWrapperLocalWrappedVarBinding and
+        result = e.getImmediatePropertyWrapperLocalWrappedVar() and
+        partialPredicateCall = "PropertyWrapperLocalWrappedVar()"
       )
     )
   }
