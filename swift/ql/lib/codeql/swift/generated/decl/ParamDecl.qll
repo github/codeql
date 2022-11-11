@@ -14,7 +14,7 @@ module Generated {
     predicate isInout() { Synth::convertParamDeclToRaw(this).(Raw::ParamDecl).isInout() }
 
     /**
-     * Gets the property wrapper local wrapped var binding of this parameter declaration, if it exists.
+     * Gets the property wrapper local wrapped variable binding of this parameter declaration, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -27,7 +27,7 @@ module Generated {
     }
 
     /**
-     * Gets the property wrapper local wrapped var binding of this parameter declaration, if it exists.
+     * Gets the property wrapper local wrapped variable binding of this parameter declaration, if it exists.
      *
      * This is the synthesized binding introducing the property wrapper local wrapped projection
      * variable for this variable, if any.
@@ -44,7 +44,7 @@ module Generated {
     }
 
     /**
-     * Gets the property wrapper local wrapped var of this parameter declaration, if it exists.
+     * Gets the property wrapper local wrapped variable of this parameter declaration, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -57,7 +57,7 @@ module Generated {
     }
 
     /**
-     * Gets the property wrapper local wrapped var of this parameter declaration, if it exists.
+     * Gets the property wrapper local wrapped variable of this parameter declaration, if it exists.
      *
      * This is the synthesized local wrapped value, shadowing this parameter declaration in case it
      * has a property wrapper.
