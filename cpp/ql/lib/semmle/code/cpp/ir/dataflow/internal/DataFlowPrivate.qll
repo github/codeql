@@ -47,24 +47,6 @@ private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
   }
-
-  override string toStringImpl() { result = argumentOperandToString(op) }
-}
-
-private string argumentOperandToString(ArgumentOperand op) {
-  exists(Expr unconverted |
-    unconverted = op.getDef().getUnconvertedResultExpression() and
-    result = unconverted.toString()
-  )
-  or
-  // Certain instructions don't map to an unconverted result expression. For these cases
-  // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
-  not exists(op.getDef().getUnconvertedResultExpression()) and
-  (
-    result = "Argument " + op.(PositionalArgumentOperand).getIndex()
-    or
-    op instanceof ThisArgumentOperand and result = "Argument this"
-  )
 }
 
 private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode {
@@ -72,10 +54,6 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
     this.getCallInstruction() = dfCall and
     pos.(IndirectionPosition).getArgumentIndex() = this.getArgumentIndex() and
     pos.(IndirectionPosition).getIndirectionIndex() = super.getIndirectionIndex()
-  }
-
-  override string toStringImpl() {
-    result = argumentOperandToString(this.getAddressOperand()) + " indirection"
   }
 }
 
