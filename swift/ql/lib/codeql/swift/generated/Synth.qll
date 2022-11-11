@@ -49,7 +49,6 @@ module Synth {
     TArgument(Raw::Argument id) { constructArgument(id) } or
     TArrayExpr(Raw::ArrayExpr id) { constructArrayExpr(id) } or
     TArrayToPointerExpr(Raw::ArrayToPointerExpr id) { constructArrayToPointerExpr(id) } or
-    TArrowExpr(Raw::ArrowExpr id) { constructArrowExpr(id) } or
     TAssignExpr(Raw::AssignExpr id) { constructAssignExpr(id) } or
     TAutoClosureExpr(Raw::AutoClosureExpr id) { constructAutoClosureExpr(id) } or
     TAwaitExpr(Raw::AwaitExpr id) { constructAwaitExpr(id) } or
@@ -64,7 +63,6 @@ module Synth {
       constructClassMetatypeToObjectExpr(id)
     } or
     TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
-    TCodeCompletionExpr(Raw::CodeCompletionExpr id) { constructCodeCompletionExpr(id) } or
     TCoerceExpr(Raw::CoerceExpr id) { constructCoerceExpr(id) } or
     TCollectionUpcastConversionExpr(Raw::CollectionUpcastConversionExpr id) {
       constructCollectionUpcastConversionExpr(id)
@@ -102,7 +100,6 @@ module Synth {
     TDynamicMemberRefExpr(Raw::DynamicMemberRefExpr id) { constructDynamicMemberRefExpr(id) } or
     TDynamicSubscriptExpr(Raw::DynamicSubscriptExpr id) { constructDynamicSubscriptExpr(id) } or
     TDynamicTypeExpr(Raw::DynamicTypeExpr id) { constructDynamicTypeExpr(id) } or
-    TEditorPlaceholderExpr(Raw::EditorPlaceholderExpr id) { constructEditorPlaceholderExpr(id) } or
     TEnumIsCaseExpr(Raw::EnumIsCaseExpr id) { constructEnumIsCaseExpr(id) } or
     TErasureExpr(Raw::ErasureExpr id) { constructErasureExpr(id) } or
     TErrorExpr(Raw::ErrorExpr id) { constructErrorExpr(id) } or
@@ -159,7 +156,6 @@ module Synth {
       constructOtherConstructorDeclRefExpr(id)
     } or
     TOverloadedDeclRefExpr(Raw::OverloadedDeclRefExpr id) { constructOverloadedDeclRefExpr(id) } or
-    TPackExpr(Raw::PackExpr id) { constructPackExpr(id) } or
     TParenExpr(Raw::ParenExpr id) { constructParenExpr(id) } or
     TPointerToPointerExpr(Raw::PointerToPointerExpr id) { constructPointerToPointerExpr(id) } or
     TPostfixUnaryExpr(Raw::PostfixUnaryExpr id) { constructPostfixUnaryExpr(id) } or
@@ -174,7 +170,6 @@ module Synth {
       constructRebindSelfInConstructorExpr(id)
     } or
     TRegexLiteralExpr(Raw::RegexLiteralExpr id) { constructRegexLiteralExpr(id) } or
-    TReifyPackExpr(Raw::ReifyPackExpr id) { constructReifyPackExpr(id) } or
     TSequenceExpr(Raw::SequenceExpr id) { constructSequenceExpr(id) } or
     TStringLiteralExpr(Raw::StringLiteralExpr id) { constructStringLiteralExpr(id) } or
     TStringToPointerExpr(Raw::StringToPointerExpr id) { constructStringToPointerExpr(id) } or
@@ -286,23 +281,16 @@ module Synth {
     } or
     TOpenedArchetypeType(Raw::OpenedArchetypeType id) { constructOpenedArchetypeType(id) } or
     TOptionalType(Raw::OptionalType id) { constructOptionalType(id) } or
-    TPackExpansionType(Raw::PackExpansionType id) { constructPackExpansionType(id) } or
-    TPackType(Raw::PackType id) { constructPackType(id) } or
     TParameterizedProtocolType(Raw::ParameterizedProtocolType id) {
       constructParameterizedProtocolType(id)
     } or
     TParenType(Raw::ParenType id) { constructParenType(id) } or
-    TPlaceholderType(Raw::PlaceholderType id) { constructPlaceholderType(id) } or
     TPrimaryArchetypeType(Raw::PrimaryArchetypeType id) { constructPrimaryArchetypeType(id) } or
     TProtocolCompositionType(Raw::ProtocolCompositionType id) {
       constructProtocolCompositionType(id)
     } or
     TProtocolType(Raw::ProtocolType id) { constructProtocolType(id) } or
     TSequenceArchetypeType(Raw::SequenceArchetypeType id) { constructSequenceArchetypeType(id) } or
-    TSilBlockStorageType(Raw::SilBlockStorageType id) { constructSilBlockStorageType(id) } or
-    TSilBoxType(Raw::SilBoxType id) { constructSilBoxType(id) } or
-    TSilFunctionType(Raw::SilFunctionType id) { constructSilFunctionType(id) } or
-    TSilTokenType(Raw::SilTokenType id) { constructSilTokenType(id) } or
     TStructType(Raw::StructType id) { constructStructType(id) } or
     TTupleType(Raw::TupleType id) { constructTupleType(id) } or
     TTypeAliasType(Raw::TypeAliasType id) { constructTypeAliasType(id) } or
@@ -383,19 +371,18 @@ module Synth {
 
   class TExpr =
     TAbstractClosureExpr or TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or
-        TArrowExpr or TAssignExpr or TBindOptionalExpr or TCaptureListExpr or TCodeCompletionExpr or
-        TCollectionExpr or TDeclRefExpr or TDefaultArgumentExpr or TDiscardAssignmentExpr or
-        TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or TEditorPlaceholderExpr or
-        TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TForceValueExpr or TIdentityExpr or
-        TIfExpr or TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or
-        TKeyPathDotExpr or TKeyPathExpr or TLazyInitializerExpr or TLiteralExpr or TLookupExpr or
-        TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or
-        TOpenExistentialExpr or TOptionalEvaluationExpr or TOtherConstructorDeclRefExpr or
-        TOverloadedDeclRefExpr or TPackExpr or TPropertyWrapperValuePlaceholderExpr or
-        TRebindSelfInConstructorExpr or TSequenceExpr or TSuperRefExpr or TTapExpr or
-        TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
-        TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
-        TUnresolvedSpecializeExpr or TVarargExpansionExpr;
+        TAssignExpr or TBindOptionalExpr or TCaptureListExpr or TCollectionExpr or TDeclRefExpr or
+        TDefaultArgumentExpr or TDiscardAssignmentExpr or TDotSyntaxBaseIgnoredExpr or
+        TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TForceValueExpr or
+        TIdentityExpr or TIfExpr or TImplicitConversionExpr or TInOutExpr or
+        TKeyPathApplicationExpr or TKeyPathDotExpr or TKeyPathExpr or TLazyInitializerExpr or
+        TLiteralExpr or TLookupExpr or TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or
+        TOneWayExpr or TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
+        TOtherConstructorDeclRefExpr or TOverloadedDeclRefExpr or
+        TPropertyWrapperValuePlaceholderExpr or TRebindSelfInConstructorExpr or TSequenceExpr or
+        TSuperRefExpr or TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or
+        TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
+        TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
 
   class TIdentityExpr =
     TAwaitExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
@@ -411,9 +398,8 @@ module Synth {
         TFunctionConversionExpr or TInOutToPointerExpr or TInjectIntoOptionalExpr or
         TLinearFunctionExpr or TLinearFunctionExtractOriginalExpr or
         TLinearToDifferentiableFunctionExpr or TLoadExpr or TMetatypeConversionExpr or
-        TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TReifyPackExpr or
-        TStringToPointerExpr or TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or
-        TUnresolvedTypeConversionExpr;
+        TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TStringToPointerExpr or
+        TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or TUnresolvedTypeConversionExpr;
 
   class TLiteralExpr =
     TBuiltinLiteralExpr or TInterpolatedStringLiteralExpr or TNilLiteralExpr or
@@ -477,11 +463,9 @@ module Synth {
   class TType =
     TAnyFunctionType or TAnyGenericType or TAnyMetatypeType or TBuiltinType or
         TDependentMemberType or TDynamicSelfType or TErrorType or TExistentialType or TInOutType or
-        TLValueType or TModuleType or TPackExpansionType or TPackType or
-        TParameterizedProtocolType or TPlaceholderType or TProtocolCompositionType or
-        TReferenceStorageType or TSilBlockStorageType or TSilBoxType or TSilFunctionType or
-        TSilTokenType or TSubstitutableType or TSugarType or TTupleType or TTypeVariableType or
-        TUnresolvedType;
+        TLValueType or TModuleType or TParameterizedProtocolType or TProtocolCompositionType or
+        TReferenceStorageType or TSubstitutableType or TSugarType or TTupleType or
+        TTypeVariableType or TUnresolvedType;
 
   class TUnarySyntaxSugarType = TArraySliceType or TOptionalType or TVariadicSequenceType;
 
@@ -640,9 +624,6 @@ module Synth {
   }
 
   cached
-  TArrowExpr convertArrowExprFromRaw(Raw::Element e) { result = TArrowExpr(e) }
-
-  cached
   TAssignExpr convertAssignExprFromRaw(Raw::Element e) { result = TAssignExpr(e) }
 
   cached
@@ -683,11 +664,6 @@ module Synth {
 
   cached
   TClosureExpr convertClosureExprFromRaw(Raw::Element e) { result = TClosureExpr(e) }
-
-  cached
-  TCodeCompletionExpr convertCodeCompletionExprFromRaw(Raw::Element e) {
-    result = TCodeCompletionExpr(e)
-  }
 
   cached
   TCoerceExpr convertCoerceExprFromRaw(Raw::Element e) { result = TCoerceExpr(e) }
@@ -785,11 +761,6 @@ module Synth {
 
   cached
   TDynamicTypeExpr convertDynamicTypeExprFromRaw(Raw::Element e) { result = TDynamicTypeExpr(e) }
-
-  cached
-  TEditorPlaceholderExpr convertEditorPlaceholderExprFromRaw(Raw::Element e) {
-    result = TEditorPlaceholderExpr(e)
-  }
 
   cached
   TEnumIsCaseExpr convertEnumIsCaseExprFromRaw(Raw::Element e) { result = TEnumIsCaseExpr(e) }
@@ -956,9 +927,6 @@ module Synth {
   }
 
   cached
-  TPackExpr convertPackExprFromRaw(Raw::Element e) { result = TPackExpr(e) }
-
-  cached
   TParenExpr convertParenExprFromRaw(Raw::Element e) { result = TParenExpr(e) }
 
   cached
@@ -991,9 +959,6 @@ module Synth {
 
   cached
   TRegexLiteralExpr convertRegexLiteralExprFromRaw(Raw::Element e) { result = TRegexLiteralExpr(e) }
-
-  cached
-  TReifyPackExpr convertReifyPackExprFromRaw(Raw::Element e) { result = TReifyPackExpr(e) }
 
   cached
   TSequenceExpr convertSequenceExprFromRaw(Raw::Element e) { result = TSequenceExpr(e) }
@@ -1323,23 +1288,12 @@ module Synth {
   TOptionalType convertOptionalTypeFromRaw(Raw::Element e) { result = TOptionalType(e) }
 
   cached
-  TPackExpansionType convertPackExpansionTypeFromRaw(Raw::Element e) {
-    result = TPackExpansionType(e)
-  }
-
-  cached
-  TPackType convertPackTypeFromRaw(Raw::Element e) { result = TPackType(e) }
-
-  cached
   TParameterizedProtocolType convertParameterizedProtocolTypeFromRaw(Raw::Element e) {
     result = TParameterizedProtocolType(e)
   }
 
   cached
   TParenType convertParenTypeFromRaw(Raw::Element e) { result = TParenType(e) }
-
-  cached
-  TPlaceholderType convertPlaceholderTypeFromRaw(Raw::Element e) { result = TPlaceholderType(e) }
 
   cached
   TPrimaryArchetypeType convertPrimaryArchetypeTypeFromRaw(Raw::Element e) {
@@ -1358,20 +1312,6 @@ module Synth {
   TSequenceArchetypeType convertSequenceArchetypeTypeFromRaw(Raw::Element e) {
     result = TSequenceArchetypeType(e)
   }
-
-  cached
-  TSilBlockStorageType convertSilBlockStorageTypeFromRaw(Raw::Element e) {
-    result = TSilBlockStorageType(e)
-  }
-
-  cached
-  TSilBoxType convertSilBoxTypeFromRaw(Raw::Element e) { result = TSilBoxType(e) }
-
-  cached
-  TSilFunctionType convertSilFunctionTypeFromRaw(Raw::Element e) { result = TSilFunctionType(e) }
-
-  cached
-  TSilTokenType convertSilTokenTypeFromRaw(Raw::Element e) { result = TSilTokenType(e) }
 
   cached
   TStructType convertStructTypeFromRaw(Raw::Element e) { result = TStructType(e) }
@@ -1720,15 +1660,11 @@ module Synth {
     or
     result = convertApplyExprFromRaw(e)
     or
-    result = convertArrowExprFromRaw(e)
-    or
     result = convertAssignExprFromRaw(e)
     or
     result = convertBindOptionalExprFromRaw(e)
     or
     result = convertCaptureListExprFromRaw(e)
-    or
-    result = convertCodeCompletionExprFromRaw(e)
     or
     result = convertCollectionExprFromRaw(e)
     or
@@ -1741,8 +1677,6 @@ module Synth {
     result = convertDotSyntaxBaseIgnoredExprFromRaw(e)
     or
     result = convertDynamicTypeExprFromRaw(e)
-    or
-    result = convertEditorPlaceholderExprFromRaw(e)
     or
     result = convertEnumIsCaseExprFromRaw(e)
     or
@@ -1787,8 +1721,6 @@ module Synth {
     result = convertOtherConstructorDeclRefExprFromRaw(e)
     or
     result = convertOverloadedDeclRefExprFromRaw(e)
-    or
-    result = convertPackExprFromRaw(e)
     or
     result = convertPropertyWrapperValuePlaceholderExprFromRaw(e)
     or
@@ -1885,8 +1817,6 @@ module Synth {
     result = convertPointerToPointerExprFromRaw(e)
     or
     result = convertProtocolMetatypeToObjectExprFromRaw(e)
-    or
-    result = convertReifyPackExprFromRaw(e)
     or
     result = convertStringToPointerExprFromRaw(e)
     or
@@ -2158,25 +2088,11 @@ module Synth {
     or
     result = convertModuleTypeFromRaw(e)
     or
-    result = convertPackExpansionTypeFromRaw(e)
-    or
-    result = convertPackTypeFromRaw(e)
-    or
     result = convertParameterizedProtocolTypeFromRaw(e)
-    or
-    result = convertPlaceholderTypeFromRaw(e)
     or
     result = convertProtocolCompositionTypeFromRaw(e)
     or
     result = convertReferenceStorageTypeFromRaw(e)
-    or
-    result = convertSilBlockStorageTypeFromRaw(e)
-    or
-    result = convertSilBoxTypeFromRaw(e)
-    or
-    result = convertSilFunctionTypeFromRaw(e)
-    or
-    result = convertSilTokenTypeFromRaw(e)
     or
     result = convertSubstitutableTypeFromRaw(e)
     or
@@ -2353,9 +2269,6 @@ module Synth {
   }
 
   cached
-  Raw::Element convertArrowExprToRaw(TArrowExpr e) { e = TArrowExpr(result) }
-
-  cached
   Raw::Element convertAssignExprToRaw(TAssignExpr e) { e = TAssignExpr(result) }
 
   cached
@@ -2396,11 +2309,6 @@ module Synth {
 
   cached
   Raw::Element convertClosureExprToRaw(TClosureExpr e) { e = TClosureExpr(result) }
-
-  cached
-  Raw::Element convertCodeCompletionExprToRaw(TCodeCompletionExpr e) {
-    e = TCodeCompletionExpr(result)
-  }
 
   cached
   Raw::Element convertCoerceExprToRaw(TCoerceExpr e) { e = TCoerceExpr(result) }
@@ -2498,11 +2406,6 @@ module Synth {
 
   cached
   Raw::Element convertDynamicTypeExprToRaw(TDynamicTypeExpr e) { e = TDynamicTypeExpr(result) }
-
-  cached
-  Raw::Element convertEditorPlaceholderExprToRaw(TEditorPlaceholderExpr e) {
-    e = TEditorPlaceholderExpr(result)
-  }
 
   cached
   Raw::Element convertEnumIsCaseExprToRaw(TEnumIsCaseExpr e) { e = TEnumIsCaseExpr(result) }
@@ -2667,9 +2570,6 @@ module Synth {
   }
 
   cached
-  Raw::Element convertPackExprToRaw(TPackExpr e) { e = TPackExpr(result) }
-
-  cached
   Raw::Element convertParenExprToRaw(TParenExpr e) { e = TParenExpr(result) }
 
   cached
@@ -2702,9 +2602,6 @@ module Synth {
 
   cached
   Raw::Element convertRegexLiteralExprToRaw(TRegexLiteralExpr e) { e = TRegexLiteralExpr(result) }
-
-  cached
-  Raw::Element convertReifyPackExprToRaw(TReifyPackExpr e) { e = TReifyPackExpr(result) }
 
   cached
   Raw::Element convertSequenceExprToRaw(TSequenceExpr e) { e = TSequenceExpr(result) }
@@ -3034,23 +2931,12 @@ module Synth {
   Raw::Element convertOptionalTypeToRaw(TOptionalType e) { e = TOptionalType(result) }
 
   cached
-  Raw::Element convertPackExpansionTypeToRaw(TPackExpansionType e) {
-    e = TPackExpansionType(result)
-  }
-
-  cached
-  Raw::Element convertPackTypeToRaw(TPackType e) { e = TPackType(result) }
-
-  cached
   Raw::Element convertParameterizedProtocolTypeToRaw(TParameterizedProtocolType e) {
     e = TParameterizedProtocolType(result)
   }
 
   cached
   Raw::Element convertParenTypeToRaw(TParenType e) { e = TParenType(result) }
-
-  cached
-  Raw::Element convertPlaceholderTypeToRaw(TPlaceholderType e) { e = TPlaceholderType(result) }
 
   cached
   Raw::Element convertPrimaryArchetypeTypeToRaw(TPrimaryArchetypeType e) {
@@ -3069,20 +2955,6 @@ module Synth {
   Raw::Element convertSequenceArchetypeTypeToRaw(TSequenceArchetypeType e) {
     e = TSequenceArchetypeType(result)
   }
-
-  cached
-  Raw::Element convertSilBlockStorageTypeToRaw(TSilBlockStorageType e) {
-    e = TSilBlockStorageType(result)
-  }
-
-  cached
-  Raw::Element convertSilBoxTypeToRaw(TSilBoxType e) { e = TSilBoxType(result) }
-
-  cached
-  Raw::Element convertSilFunctionTypeToRaw(TSilFunctionType e) { e = TSilFunctionType(result) }
-
-  cached
-  Raw::Element convertSilTokenTypeToRaw(TSilTokenType e) { e = TSilTokenType(result) }
 
   cached
   Raw::Element convertStructTypeToRaw(TStructType e) { e = TStructType(result) }
@@ -3431,15 +3303,11 @@ module Synth {
     or
     result = convertApplyExprToRaw(e)
     or
-    result = convertArrowExprToRaw(e)
-    or
     result = convertAssignExprToRaw(e)
     or
     result = convertBindOptionalExprToRaw(e)
     or
     result = convertCaptureListExprToRaw(e)
-    or
-    result = convertCodeCompletionExprToRaw(e)
     or
     result = convertCollectionExprToRaw(e)
     or
@@ -3452,8 +3320,6 @@ module Synth {
     result = convertDotSyntaxBaseIgnoredExprToRaw(e)
     or
     result = convertDynamicTypeExprToRaw(e)
-    or
-    result = convertEditorPlaceholderExprToRaw(e)
     or
     result = convertEnumIsCaseExprToRaw(e)
     or
@@ -3498,8 +3364,6 @@ module Synth {
     result = convertOtherConstructorDeclRefExprToRaw(e)
     or
     result = convertOverloadedDeclRefExprToRaw(e)
-    or
-    result = convertPackExprToRaw(e)
     or
     result = convertPropertyWrapperValuePlaceholderExprToRaw(e)
     or
@@ -3596,8 +3460,6 @@ module Synth {
     result = convertPointerToPointerExprToRaw(e)
     or
     result = convertProtocolMetatypeToObjectExprToRaw(e)
-    or
-    result = convertReifyPackExprToRaw(e)
     or
     result = convertStringToPointerExprToRaw(e)
     or
@@ -3869,25 +3731,11 @@ module Synth {
     or
     result = convertModuleTypeToRaw(e)
     or
-    result = convertPackExpansionTypeToRaw(e)
-    or
-    result = convertPackTypeToRaw(e)
-    or
     result = convertParameterizedProtocolTypeToRaw(e)
-    or
-    result = convertPlaceholderTypeToRaw(e)
     or
     result = convertProtocolCompositionTypeToRaw(e)
     or
     result = convertReferenceStorageTypeToRaw(e)
-    or
-    result = convertSilBlockStorageTypeToRaw(e)
-    or
-    result = convertSilBoxTypeToRaw(e)
-    or
-    result = convertSilFunctionTypeToRaw(e)
-    or
-    result = convertSilTokenTypeToRaw(e)
     or
     result = convertSubstitutableTypeToRaw(e)
     or

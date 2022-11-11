@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <map>
 
 #include "swift/extractor/translators/DeclTranslator.h"
 #include "swift/extractor/translators/ExprTranslator.h"
@@ -8,37 +10,35 @@
 
 using namespace codeql;
 
-#define CHECK_CLASS(KIND, CLASS, PARENT)                             \
-  if (!detail::HasTranslate##CLASS##KIND<KIND##Translator>::value && \
-      !detail::HasTranslate##PARENT<KIND##Translator>::value) {      \
-    std::cout << "  " #CLASS #KIND "\n";                             \
-  }
-
 int main() {
-  std::cout << "Unextracted Decls:\n";
+  std::map<const char*, std::vector<const char*>> unextracted;
+
+#define CHECK_CLASS(KIND, CLASS, PARENT)                                                \
+  if (KIND##Translator::getPolicyFor##CLASS##KIND() == TranslatorPolicy::emitUnknown) { \
+    unextracted[#KIND].push_back(#CLASS #KIND);                                         \
+  }
 
 #define DECL(CLASS, PARENT) CHECK_CLASS(Decl, CLASS, PARENT)
 #include "swift/AST/DeclNodes.def"
 
-  std::cout << "\nUnextracted Stmts:\n";
-
 #define STMT(CLASS, PARENT) CHECK_CLASS(Stmt, CLASS, PARENT)
 #include "swift/AST/StmtNodes.def"
-
-  std::cout << "\nUnextracted Exprs:\n";
 
 #define EXPR(CLASS, PARENT) CHECK_CLASS(Expr, CLASS, PARENT)
 #include "swift/AST/ExprNodes.def"
 
-  std::cout << "\nUnextracted Patterns:\n";
-
 #define PATTERN(CLASS, PARENT) CHECK_CLASS(Pattern, CLASS, PARENT)
 #include "swift/AST/PatternNodes.def"
-
-  std::cout << "\nUnextracted Types:\n";
 
 #define TYPE(CLASS, PARENT) CHECK_CLASS(Type, CLASS, PARENT)
 #include "swift/AST/TypeNodes.def"
 
+  for (const auto& [kind, classes] : unextracted) {
+    std::cout << "Unextracted " << kind << " subclasses:\n";
+    for (auto cls : classes) {
+      std::cout << "  " << cls << '\n';
+    }
+    std::cout << '\n';
+  }
   return 0;
 }

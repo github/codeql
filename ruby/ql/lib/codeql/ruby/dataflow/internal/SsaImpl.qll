@@ -30,7 +30,8 @@ private module SsaInput implements SsaImplCommon::InputSig {
         i = 0
         or
         // ...or a class or module block.
-        bb.getNode(i).getNode() = scope.(ModuleBase).getAControlFlowEntryNode()
+        bb.getNode(i).getNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
+        not scope instanceof Toplevel // handled by case above
       )
       or
       uninitializedWrite(bb, i, v)

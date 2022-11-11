@@ -28,13 +28,6 @@ defaults:
     working-directory: ruby
 
 jobs:
-  qlformat:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/fetch-codeql
-      - name: Check QL formatting
-        run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql query format --check-only
   qlcompile:
     runs-on: ubuntu-latest
     steps:
