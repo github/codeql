@@ -142,9 +142,14 @@
 | bsd.cpp:19:14:19:29 | sizeof(sockaddr) | bsd.cpp:20:29:20:32 | size |  |
 | bsd.cpp:20:11:20:16 | call to accept | bsd.cpp:22:8:22:8 | a |  |
 | bsd.cpp:20:18:20:18 | s | bsd.cpp:20:11:20:16 | call to accept | TAINT |
+| bsd.cpp:20:18:20:18 | s | bsd.cpp:20:21:20:25 | ref arg & ... | TAINT |
 | bsd.cpp:20:21:20:25 | & ... | bsd.cpp:20:11:20:16 | call to accept | TAINT |
+| bsd.cpp:20:21:20:25 | & ... | bsd.cpp:20:21:20:25 | ref arg & ... | TAINT |
+| bsd.cpp:20:21:20:25 | ref arg & ... | bsd.cpp:20:22:20:25 | addr [inner post update] |  |
+| bsd.cpp:20:21:20:25 | ref arg & ... | bsd.cpp:23:8:23:11 | addr |  |
 | bsd.cpp:20:22:20:25 | addr | bsd.cpp:20:11:20:16 | call to accept | TAINT |
 | bsd.cpp:20:22:20:25 | addr | bsd.cpp:20:21:20:25 | & ... |  |
+| bsd.cpp:20:22:20:25 | addr | bsd.cpp:20:21:20:25 | ref arg & ... | TAINT |
 | bsd.cpp:20:28:20:32 | ref arg & ... | bsd.cpp:20:29:20:32 | size [inner post update] |  |
 | bsd.cpp:20:29:20:32 | size | bsd.cpp:20:28:20:32 | & ... |  |
 | constructor_delegation.cpp:8:2:8:8 | this | constructor_delegation.cpp:8:20:8:24 | constructor init of field x [pre-this] |  |
