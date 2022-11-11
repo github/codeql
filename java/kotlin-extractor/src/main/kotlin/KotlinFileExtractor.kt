@@ -1903,11 +1903,7 @@ open class KotlinFileExtractor(
             tw.writeCallableBinding(id, methodLabel)
     }
 
-    private val defaultConstructorMarkerClass by lazy {
-        val result = pluginContext.referenceClass(FqName("kotlin.jvm.internal.DefaultConstructorMarker"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    private val defaultConstructorMarkerClass by lazy { referenceExternalClass("kotlin.jvm.internal.DefaultConstructorMarker") }
 
     private val defaultConstructorMarkerType by lazy {
         defaultConstructorMarkerClass?.typeWith()
@@ -2269,11 +2265,7 @@ open class KotlinFileExtractor(
 
     private fun findFunction(cls: IrClass, name: String): IrFunction? = cls.declarations.findSubType<IrFunction> { it.name.asString() == name }
 
-    val jvmIntrinsicsClass by lazy {
-        val result = pluginContext.referenceClass(FqName("kotlin.jvm.internal.Intrinsics"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    val jvmIntrinsicsClass by lazy { referenceExternalClass("kotlin.jvm.internal.Intrinsics") }
 
     private fun findJdkIntrinsicOrWarn(name: String, warnAgainstElement: IrElement): IrFunction? {
         val result = jvmIntrinsicsClass?.let { findFunction(it, name) }
@@ -2319,11 +2311,7 @@ open class KotlinFileExtractor(
         return prop
     }
 
-    val javaLangString by lazy {
-        val result = pluginContext.referenceClass(FqName("java.lang.String"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    val javaLangString by lazy { referenceExternalClass("java.lang.String") }
 
     val stringValueOfObjectMethod by lazy {
         val result = javaLangString?.declarations?.findSubType<IrFunction> {
@@ -2347,11 +2335,7 @@ open class KotlinFileExtractor(
         result
     }
 
-    val kotlinNoWhenBranchMatchedExn by lazy {
-        val result = pluginContext.referenceClass(FqName("kotlin.NoWhenBranchMatchedException"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    val kotlinNoWhenBranchMatchedExn by lazy {referenceExternalClass("kotlin.NoWhenBranchMatchedException") }
 
     val kotlinNoWhenBranchMatchedConstructor by lazy {
         val result = kotlinNoWhenBranchMatchedExn?.declarations?.findSubType<IrConstructor> {
@@ -2363,11 +2347,7 @@ open class KotlinFileExtractor(
         result
     }
 
-    val javaUtilArrays by lazy {
-        val result = pluginContext.referenceClass(FqName("java.util.Arrays"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    val javaUtilArrays by lazy { referenceExternalClass("java.util.Arrays") }
 
     private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, vararg fNames: String, isNullable: Boolean? = false) =
         fNames.any { isFunction(target, pkgName, classNameLogged, classNamePredicate, it, isNullable) }
@@ -4633,6 +4613,8 @@ open class KotlinFileExtractor(
         }
     }
 
+    private val propertyRefType by lazy { referenceExternalClass("kotlin.jvm.internal.PropertyReference")?.typeWith() }
+
     private fun extractPropertyReference(
         exprKind: String,
         propertyReferenceExpr: IrCallableReference<out IrSymbol>,
@@ -4696,8 +4678,7 @@ open class KotlinFileExtractor(
 
             val declarationParent = peekDeclStackAsDeclarationParent(propertyReferenceExpr) ?: return
             // The base class could be `Any`. `PropertyReference` is used to keep symmetry with function references.
-            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.PropertyReference"))?.owner?.typeWith()
-                ?: pluginContext.irBuiltIns.anyType
+            val baseClass = propertyRefType ?: pluginContext.irBuiltIns.anyType
 
             val classId = extractGeneratedClass(ids, listOf(baseClass, kPropertyType), locId, propertyReferenceExpr, declarationParent)
 
@@ -4790,6 +4771,8 @@ open class KotlinFileExtractor(
             tw.writeIsAnonymClass(classId, idPropertyRef)
         }
     }
+
+    private val functionRefType by lazy { referenceExternalClass("kotlin.jvm.internal.FunctionReference")?.typeWith() }
 
     private fun extractFunctionReference(
         functionReferenceExpr: IrFunctionReference,
@@ -4905,8 +4888,7 @@ open class KotlinFileExtractor(
             } else {
                 val declarationParent = peekDeclStackAsDeclarationParent(functionReferenceExpr) ?: return
                 // `FunctionReference` base class is required, because that's implementing `KFunction`.
-                val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
-                    ?: pluginContext.irBuiltIns.anyType
+                val baseClass = functionRefType ?: pluginContext.irBuiltIns.anyType
 
                 val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, functionReferenceExpr, declarationParent, null, { it.valueParameters.size == 1 }) {
                     // The argument to FunctionReference's constructor is the function arity.
@@ -4952,34 +4934,14 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun getFunctionalInterfaceType(functionNTypeArguments: List<IrType>): IrSimpleType? {
-        if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
-            val funName = "kotlin.jvm.functions.FunctionN"
-            val theFun = pluginContext.referenceClass(FqName(funName))
-            if (theFun == null) {
-                logger.warn("Cannot find $funName for getFunctionalInterfaceType")
-                return null
-            } else {
-                return theFun.typeWith(functionNTypeArguments.last())
-            }
-        } else {
-            return functionN(pluginContext)(functionNTypeArguments.size - 1).typeWith(functionNTypeArguments)
-        }
-    }
+    private fun getFunctionalInterfaceType(functionNTypeArguments: List<IrType>) =
+        getFunctionalInterfaceTypeWithTypeArgs(functionNTypeArguments.map { makeTypeProjection(it, Variance.INVARIANT) })
 
-    private fun getFunctionalInterfaceTypeWithTypeArgs(functionNTypeArguments: List<IrTypeArgument>): IrSimpleType? =
-        if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
-            val funName = "kotlin.jvm.functions.FunctionN"
-            val theFun = pluginContext.referenceClass(FqName(funName))
-            if (theFun == null) {
-                logger.warn("Cannot find $funName for getFunctionalInterfaceTypeWithTypeArgs")
-                null
-            } else {
-                theFun.typeWithArguments(listOf(functionNTypeArguments.last()))
-            }
-        } else {
+    private fun getFunctionalInterfaceTypeWithTypeArgs(functionNTypeArguments: List<IrTypeArgument>) =
+        if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY)
+            referenceExternalClass("kotlin.jvm.functions.FunctionN")?.symbol?.typeWithArguments(listOf(functionNTypeArguments.last()))
+        else
             functionN(pluginContext)(functionNTypeArguments.size - 1).symbol.typeWithArguments(functionNTypeArguments)
-        }
 
     private data class FunctionLabels(
         val methodId: Label<DbMethod>,
