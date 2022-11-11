@@ -147,3 +147,4 @@ syntaxErrors
 | Member[foo]Member[bar] |
 | Member[foo]] |
 | Member[foo]].Member[bar] |
+warning
