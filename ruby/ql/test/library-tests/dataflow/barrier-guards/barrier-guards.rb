@@ -250,3 +250,20 @@ case bar
 in "foo"
     foo
 end
+
+if foo == "#{some_method()}"
+    foo
+end
+
+F = "foo"
+if foo == "#{F}"
+    foo # $ MISSING: guarded
+end
+
+f = "foo"
+if foo == "#{f}"
+    foo # $ MISSING: guarded
+end
+
+foo == "foo" && foo # $ guarded
+foo && foo == "foo"

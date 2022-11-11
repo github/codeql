@@ -7,12 +7,16 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.InclusionTests
+private import codeql.ruby.ast.internal.Literal
 
 private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
     c = guard and
     exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
-      c.getExpr() instanceof EqExpr and branch = true
+      // Only consider strings without any interpolations
+      not exists(StringInterpolationComponent comp | comp = strLitNode.getExpr().getComponent(_)) and
+      c.getExpr() instanceof EqExpr and
+      branch = true
       or
       c.getExpr() instanceof CaseEqExpr and branch = true
       or
@@ -26,24 +30,43 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
   or
   stringConstCaseCompare(guard, testedNode, branch)
   or
-  stringConstCompareOr(guard, testedNode, branch)
+  exists(Ssa::Definition def, CfgNodes::ExprNodes::BinaryOperationCfgNode g |
+    g = guard and
+    stringConstCompareOr(guard, def, branch) and
+    stringConstCompare(g.getLeftOperand(), testedNode, _)
+  )
   or
   stringConstCompareAnd(guard, testedNode, branch)
 }
 
+/**
+ * Holds if `guard` is an `or` expression whose operands are string comparison guards that test the same SSA variable.
+ * `testedNode` is an arbitrary node that is tested by one of the guards.
+ * For example:
+ *
+ * ```rb
+ * x == "foo" or x == "bar"
+ * ```
+ */
 private predicate stringConstCompareOr(
-  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, CfgNode testedNode, boolean branch
+  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, Ssa::Definition def, boolean branch
 ) {
   guard.getExpr() instanceof LogicalOrExpr and
   branch = true and
-  exists(Ssa::Definition def |
-    forall(CfgNode innerGuard | innerGuard = guard.getAnOperand() |
-      stringConstCompare(innerGuard, def.getARead(), branch)
-    ) and
-    testedNode = any(CfgNode node | stringConstCompare(guard.getAnOperand(), node, _))
+  forall(CfgNode innerGuard | innerGuard = guard.getAnOperand() |
+    stringConstCompare(innerGuard, def.getARead(), branch)
   )
 }
 
+/**
+ * Holds if guard is an `and` expression containing a string comparison guard in either operand.
+ * For example:
+ *
+ * ```rb
+ * x == "foo" and other_condition()
+ * other_condition() and x == "foo"
+ * ```
+ */
 private predicate stringConstCompareAnd(
   CfgNodes::ExprNodes::BinaryOperationCfgNode guard, CfgNode testedNode, boolean branch
 ) {
