@@ -9,22 +9,29 @@ import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
+import org.jetbrains.kotlin.backend.jvm.ir.getAnnotationRetention
+import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
 import org.jetbrains.kotlin.config.JvmAnalysisFlags
 import org.jetbrains.kotlin.descriptors.*
+import org.jetbrains.kotlin.descriptors.annotations.KotlinRetention
+import org.jetbrains.kotlin.descriptors.annotations.KotlinTarget
 import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
+import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
-import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrGetValueImpl
+import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.load.java.JvmAbi
+import org.jetbrains.kotlin.load.java.JvmAnnotationNames
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.JavaClass
 import org.jetbrains.kotlin.load.java.structure.JavaMethod
@@ -34,7 +41,9 @@ import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
+import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import java.io.Closeable
+import java.lang.annotation.ElementType
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -458,10 +467,14 @@ open class KotlinFileExtractor(
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
 
-    private fun extractAnnotations(c: IrAnnotationContainer, parent: Label<out DbExprparent>) {
-        for ((idx, constructorCall: IrConstructorCall) in c.annotations.sortedBy { v -> v.type.classFqName?.asString() }.withIndex()) {
+    private fun extractAnnotations(annotations: List<IrConstructorCall>, parent: Label<out DbExprparent>) {
+        for ((idx, constructorCall: IrConstructorCall) in annotations.sortedBy { v -> v.type.classFqName?.asString() }.withIndex()) {
             extractAnnotation(constructorCall, parent, idx)
         }
+    }
+
+    private fun extractAnnotations(c: IrAnnotationContainer, parent: Label<out DbExprparent>) {
+        extractAnnotations(c.annotations, parent)
     }
 
     private fun extractAnnotation(
@@ -559,6 +572,175 @@ open class KotlinFileExtractor(
         }
     }
 
+    private val javaAnnotationTargetElementType by lazy { referenceExternalClass("java.lang.annotation.ElementType") }
+
+    private val javaAnnotationTarget by lazy { referenceExternalClass("java.lang.annotation.Target") }
+
+    // Taken from AdditionalClassAnnotationLowering.kt
+    private fun getApplicableTargetSet(c: IrClass): Set<KotlinTarget>? {
+        val targetEntry = c.getAnnotation(StandardNames.FqNames.target) ?: return null
+        return loadAnnotationTargets(targetEntry)
+    }
+
+    // Taken from AdditionalClassAnnotationLowering.kt
+    private fun loadAnnotationTargets(targetEntry: IrConstructorCall): Set<KotlinTarget>? {
+        val valueArgument = targetEntry.getValueArgument(0) as? IrVararg ?: return null
+        return valueArgument.elements.filterIsInstance<IrGetEnumValue>().mapNotNull {
+            KotlinTarget.valueOrNull(it.symbol.owner.name.asString())
+        }.toSet()
+    }
+
+
+    private fun findEnumEntry(c: IrClass, name: String) =
+        c.declarations.filterIsInstance<IrEnumEntry>().find { it.name.asString() == name }
+
+    // Adapted from JvmSymbols.kt
+    private val jvm6TargetMap by lazy {
+        javaAnnotationTargetElementType?.let {
+            val etMethod = findEnumEntry(it, "METHOD")
+            mapOf(
+                KotlinTarget.CLASS to findEnumEntry(it, "TYPE"),
+                KotlinTarget.ANNOTATION_CLASS to findEnumEntry(it, "ANNOTATION_TYPE"),
+                KotlinTarget.CONSTRUCTOR to findEnumEntry(it, "CONSTRUCTOR"),
+                KotlinTarget.LOCAL_VARIABLE to findEnumEntry(it, "LOCAL_VARIABLE"),
+                KotlinTarget.FUNCTION to etMethod,
+                KotlinTarget.PROPERTY_GETTER to etMethod,
+                KotlinTarget.PROPERTY_SETTER to etMethod,
+                KotlinTarget.FIELD to findEnumEntry(it, "FIELD"),
+                KotlinTarget.VALUE_PARAMETER to findEnumEntry(it, "PARAMETER")
+            )
+        }
+    }
+
+    // Adapted from JvmSymbols.kt
+    private val jvm8TargetMap by lazy {
+        javaAnnotationTargetElementType?.let {
+            jvm6TargetMap?.let { j6Map ->
+                j6Map + mapOf(
+                    KotlinTarget.TYPE_PARAMETER to findEnumEntry(it, "TYPE_PARAMETER"),
+                    KotlinTarget.TYPE to findEnumEntry(it, "TYPE_USE")
+                )
+            }
+        }
+    }
+
+    // TODO: find out if we can spot when we're building for JVM <= 7 and omit the Java 8-only targets in that case.
+    private fun getAnnotationTargetMap() = jvm8TargetMap
+
+    // Adapted from AdditionalClassAnnotationLowering.kt
+    private fun generateTargetAnnotation(c: IrClass): IrConstructorCall? {
+        if (c.hasAnnotation(JvmAnnotationNames.TARGET_ANNOTATION))
+            return null
+        val elementType = javaAnnotationTargetElementType ?: return null
+        val targetType = javaAnnotationTarget ?: return null
+        val targetConstructor = targetType.declarations.firstIsInstanceOrNull<IrConstructor>() ?: return null
+        val targets = getApplicableTargetSet(c) ?: return null
+        val annotationTargetMap = getAnnotationTargetMap() ?: return null
+
+        val javaTargets = targets.mapNotNullTo(HashSet()) { annotationTargetMap[it] }.sortedBy {
+            ElementType.valueOf(it.symbol.owner.name.asString())
+        }
+        val vararg = IrVarargImpl(
+            UNDEFINED_OFFSET, UNDEFINED_OFFSET,
+            type = pluginContext.irBuiltIns.arrayClass.typeWith(elementType.defaultType),
+            varargElementType = elementType.defaultType
+        )
+        for (target in javaTargets) {
+            vararg.elements.add(
+                IrGetEnumValueImpl(
+                    UNDEFINED_OFFSET, UNDEFINED_OFFSET, elementType.defaultType, target.symbol
+                )
+            )
+        }
+
+        return IrConstructorCallImpl.fromSymbolOwner(
+            UNDEFINED_OFFSET, UNDEFINED_OFFSET, targetConstructor.returnType, targetConstructor.symbol, 0
+        ).apply {
+            putValueArgument(0, vararg)
+        }
+    }
+
+    private val javaAnnotationRetention by lazy { referenceExternalClass("java.lang.annotation.Retention") }
+    private val javaAnnotationRetentionPolicy by lazy { referenceExternalClass("java.lang.annotation.RetentionPolicy") }
+    private val javaAnnotationRetentionPolicyRuntime by lazy { javaAnnotationRetentionPolicy?.let { findEnumEntry(it, "RUNTIME") } }
+
+    private val annotationRetentionMap by lazy {
+        javaAnnotationRetentionPolicy?.let {
+            mapOf(
+                KotlinRetention.SOURCE to findEnumEntry(it, "SOURCE"),
+                KotlinRetention.BINARY to findEnumEntry(it, "CLASS"),
+                KotlinRetention.RUNTIME to javaAnnotationRetentionPolicyRuntime
+            )
+        }
+    }
+
+    // Taken from AdditionalClassAnnotationLowering.kt
+    private fun generateRetentionAnnotation(irClass: IrClass): IrConstructorCall? {
+        if (irClass.hasAnnotation(JvmAnnotationNames.RETENTION_ANNOTATION))
+            return null
+        val retentionMap = annotationRetentionMap ?: return null
+        val kotlinRetentionPolicy = irClass.getAnnotationRetention()
+        val javaRetentionPolicy = kotlinRetentionPolicy?.let { retentionMap[it] } ?: javaAnnotationRetentionPolicyRuntime ?: return null
+        val retentionPolicyType = javaAnnotationRetentionPolicy ?: return null
+        val retentionType = javaAnnotationRetention ?: return null
+        val targetConstructor = retentionType.declarations.firstIsInstanceOrNull<IrConstructor>() ?: return null
+
+        return IrConstructorCallImpl.fromSymbolOwner(
+            UNDEFINED_OFFSET, UNDEFINED_OFFSET, targetConstructor.returnType, targetConstructor.symbol, 0
+        ).apply {
+            putValueArgument(
+                0,
+                IrGetEnumValueImpl(
+                    UNDEFINED_OFFSET, UNDEFINED_OFFSET, retentionPolicyType.defaultType, javaRetentionPolicy.symbol
+                )
+            )
+        }
+    }
+
+    private val javaAnnotationRepeatable by lazy { referenceExternalClass("java.lang.annotation.Repeatable") }
+
+    // Taken from AdditionalClassAnnotationLowering.kt
+    private fun generateRepeatableAnnotation(irClass: IrClass): IrConstructorCall? {
+        if (!irClass.hasAnnotation(StandardNames.FqNames.repeatable) ||
+            irClass.hasAnnotation(JvmAnnotationNames.REPEATABLE_ANNOTATION)
+        ) return null
+
+        val repeatableConstructor = javaAnnotationRepeatable?.declarations?.firstIsInstanceOrNull<IrConstructor>() ?: return null
+
+        val containerClass =
+            irClass.declarations.singleOrNull {
+                it is IrClass && it.name.asString() == JvmAbi.REPEATABLE_ANNOTATION_CONTAINER_NAME
+            } as IrClass? ?: return null
+        val containerReference = IrClassReferenceImpl(
+            UNDEFINED_OFFSET, UNDEFINED_OFFSET, pluginContext.irBuiltIns.kClassClass.typeWith(containerClass.defaultType),
+            containerClass.symbol, containerClass.defaultType
+        )
+        return IrConstructorCallImpl.fromSymbolOwner(
+            UNDEFINED_OFFSET, UNDEFINED_OFFSET, repeatableConstructor.returnType, repeatableConstructor.symbol, 0
+        ).apply {
+            putValueArgument(0, containerReference)
+        }
+    }
+
+    private val javaAnnotationDocumented by lazy { referenceExternalClass("java.lang.annotation.Documented") }
+
+    // Taken from AdditionalClassAnnotationLowering.kt
+    private fun generateDocumentedAnnotation(irClass: IrClass): IrConstructorCall? {
+        if (!irClass.hasAnnotation(StandardNames.FqNames.mustBeDocumented) ||
+            irClass.hasAnnotation(JvmAnnotationNames.DOCUMENTED_ANNOTATION)
+        ) return null
+
+        val documentedConstructor = javaAnnotationDocumented?.declarations?.firstIsInstanceOrNull<IrConstructor>() ?: return null
+
+        return IrConstructorCallImpl.fromSymbolOwner(
+            UNDEFINED_OFFSET, UNDEFINED_OFFSET, documentedConstructor.returnType, documentedConstructor.symbol, 0
+        )
+    }
+
+    private fun generateJavaMetaAnnotations(c: IrClass) =
+        // This is essentially AdditionalClassAnnotationLowering adapted to run outside the backend.
+        listOfNotNull(generateTargetAnnotation(c), generateRetentionAnnotation(c), generateRepeatableAnnotation(c), generateDocumentedAnnotation(c))
+
     fun extractClassSource(c: IrClass, extractDeclarations: Boolean, extractStaticInitializer: Boolean, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean): Label<out DbClassorinterface> {
         with("class source", c) {
             DeclarationStackAdjuster(c).use {
@@ -640,7 +822,13 @@ open class KotlinFileExtractor(
 
                 linesOfCode?.linesOfCodeInDeclaration(c, id)
 
-                extractAnnotations(c, id)
+                val additionalAnnotations =
+                    if (c.kind == ClassKind.ANNOTATION_CLASS && c.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB)
+                        generateJavaMetaAnnotations(c)
+                    else
+                        listOf()
+
+                extractAnnotations(c.annotations + additionalAnnotations, id)
 
                 if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
                     externalClassExtractor.writeStubTrapFile(c)
