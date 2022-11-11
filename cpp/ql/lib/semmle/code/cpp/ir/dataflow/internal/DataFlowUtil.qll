@@ -769,7 +769,11 @@ class IndirectInstruction extends Node {
 }
 
 private predicate isFullyConvertedArgument(Expr e) {
-  e = any(Call call).getAnArgument().getFullyConverted()
+  exists(Call call |
+    e = call.getAnArgument().getFullyConverted()
+    or
+    e = call.getQualifier().getFullyConverted()
+  )
 }
 
 private predicate isFullyConvertedCall(Expr e) { e = any(Call call).getFullyConverted() }
