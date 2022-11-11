@@ -19,7 +19,6 @@ sourceLocationPrefix(
 | @locatable
 | @location
 | @type
-| @unresolved_element
 ;
 
 #keyset[id]
@@ -67,6 +66,7 @@ files(
 | @ast_node
 | @comment
 | @diagnostics
+| @unresolved_element
 | @unspecified_element
 ;
 
@@ -90,17 +90,6 @@ locations(
   int end_line: int ref,
   int end_column: int ref
 );
-
-@unresolved_element =
-  @unresolved_decl_ref_expr
-| @unresolved_dot_expr
-| @unresolved_member_chain_result_expr
-| @unresolved_member_expr
-| @unresolved_pattern_expr
-| @unresolved_specialize_expr
-| @unresolved_type
-| @unresolved_type_conversion_expr
-;
 
 @ast_node =
   @case_label_item
@@ -139,6 +128,17 @@ unknown_files(
 unknown_locations(
   unique int id: @unknown_location
 );
+
+@unresolved_element =
+  @unresolved_decl_ref_expr
+| @unresolved_dot_expr
+| @unresolved_member_chain_result_expr
+| @unresolved_member_expr
+| @unresolved_pattern_expr
+| @unresolved_specialize_expr
+| @unresolved_type
+| @unresolved_type_conversion_expr
+;
 
 unspecified_elements(
   unique int id: @unspecified_element,
@@ -589,18 +589,15 @@ arguments(  //dir=expr
 | @any_try_expr
 | @applied_property_wrapper_expr
 | @apply_expr
-| @arrow_expr
 | @assign_expr
 | @bind_optional_expr
 | @capture_list_expr
-| @code_completion_expr
 | @collection_expr
 | @decl_ref_expr
 | @default_argument_expr
 | @discard_assignment_expr
 | @dot_syntax_base_ignored_expr
 | @dynamic_type_expr
-| @editor_placeholder_expr
 | @enum_is_case_expr
 | @error_expr
 | @explicit_cast_expr
@@ -622,8 +619,7 @@ arguments(  //dir=expr
 | @open_existential_expr
 | @optional_evaluation_expr
 | @other_constructor_decl_ref_expr
-| @overload_set_ref_expr
-| @pack_expr
+| @overloaded_decl_ref_expr
 | @property_wrapper_value_placeholder_expr
 | @rebind_self_in_constructor_expr
 | @sequence_expr
@@ -664,7 +660,10 @@ any_try_exprs(  //dir=expr
 );
 
 applied_property_wrapper_exprs(  //dir=expr
-  unique int id: @applied_property_wrapper_expr
+  unique int id: @applied_property_wrapper_expr,
+  int kind: int ref,
+  int value: @expr_or_none ref,
+  int param: @param_decl_or_none ref
 );
 
 @apply_expr =
@@ -688,10 +687,6 @@ apply_expr_arguments(  //dir=expr
   int argument: @argument_or_none ref
 );
 
-arrow_exprs(  //dir=expr
-  unique int id: @arrow_expr
-);
-
 assign_exprs(  //dir=expr
   unique int id: @assign_expr,
   int dest: @expr_or_none ref,
@@ -713,10 +708,6 @@ capture_list_expr_binding_decls(  //dir=expr
   int id: @capture_list_expr ref,
   int index: int ref,
   int binding_decl: @pattern_binding_decl_or_none ref
-);
-
-code_completion_exprs(  //dir=expr
-  unique int id: @code_completion_expr
 );
 
 @collection_expr =
@@ -776,10 +767,6 @@ dot_syntax_base_ignored_exprs(  //dir=expr
 dynamic_type_exprs(  //dir=expr
   unique int id: @dynamic_type_expr,
   int base: @expr_or_none ref
-);
-
-editor_placeholder_exprs(  //dir=expr
-  unique int id: @editor_placeholder_expr
 );
 
 enum_is_case_exprs(  //dir=expr
@@ -856,7 +843,6 @@ if_exprs(  //dir=expr
 | @metatype_conversion_expr
 | @pointer_to_pointer_expr
 | @protocol_metatype_to_object_expr
-| @reify_pack_expr
 | @string_to_pointer_expr
 | @underlying_to_opaque_expr
 | @unevaluated_instance_expr
@@ -971,16 +957,26 @@ other_constructor_decl_ref_exprs(  //dir=expr
   int constructor_decl: @constructor_decl_or_none ref
 );
 
-@overload_set_ref_expr =
-  @overloaded_decl_ref_expr
-;
+overloaded_decl_ref_exprs(  //dir=expr
+  unique int id: @overloaded_decl_ref_expr
+);
 
-pack_exprs(  //dir=expr
-  unique int id: @pack_expr
+#keyset[id, index]
+overloaded_decl_ref_expr_possible_declarations(  //dir=expr
+  int id: @overloaded_decl_ref_expr ref,
+  int index: int ref,
+  int possible_declaration: @value_decl_or_none ref
 );
 
 property_wrapper_value_placeholder_exprs(  //dir=expr
-  unique int id: @property_wrapper_value_placeholder_expr
+  unique int id: @property_wrapper_value_placeholder_expr,
+  int placeholder: @opaque_value_expr_or_none ref
+);
+
+#keyset[id]
+property_wrapper_value_placeholder_expr_wrapped_values(  //dir=expr
+  int id: @property_wrapper_value_placeholder_expr ref,
+  int wrapped_value: @expr_or_none ref
 );
 
 rebind_self_in_constructor_exprs(  //dir=expr
@@ -1071,7 +1067,8 @@ unresolved_pattern_exprs(  //dir=expr
 );
 
 unresolved_specialize_exprs(  //dir=expr
-  unique int id: @unresolved_specialize_expr
+  unique int id: @unresolved_specialize_expr,
+  int sub_expr: @expr_or_none ref
 );
 
 vararg_expansion_exprs(  //dir=expr
@@ -1307,15 +1304,19 @@ nil_literal_exprs(  //dir=expr
 );
 
 object_literal_exprs(  //dir=expr
-  unique int id: @object_literal_expr
+  unique int id: @object_literal_expr,
+  int kind: int ref
+);
+
+#keyset[id, index]
+object_literal_expr_arguments(  //dir=expr
+  int id: @object_literal_expr ref,
+  int index: int ref,
+  int argument: @argument_or_none ref
 );
 
 optional_try_exprs(  //dir=expr
   unique int id: @optional_try_expr
-);
-
-overloaded_decl_ref_exprs(  //dir=expr
-  unique int id: @overloaded_decl_ref_expr
 );
 
 paren_exprs(  //dir=expr
@@ -1340,10 +1341,6 @@ protocol_metatype_to_object_exprs(  //dir=expr
 
 regex_literal_exprs(  //dir=expr
   unique int id: @regex_literal_expr
-);
-
-reify_pack_exprs(  //dir=expr
-  unique int id: @reify_pack_expr
 );
 
 @self_apply_expr =
@@ -1838,16 +1835,9 @@ while_stmts(  //dir=stmt
 | @in_out_type
 | @l_value_type
 | @module_type
-| @pack_expansion_type
-| @pack_type
 | @parameterized_protocol_type
-| @placeholder_type
 | @protocol_composition_type
 | @reference_storage_type
-| @sil_block_storage_type
-| @sil_box_type
-| @sil_function_type
-| @sil_token_type
 | @substitutable_type
 | @sugar_type
 | @tuple_type
@@ -1973,20 +1963,8 @@ module_types(  //dir=type
   int module: @module_decl_or_none ref
 );
 
-pack_expansion_types(  //dir=type
-  unique int id: @pack_expansion_type
-);
-
-pack_types(  //dir=type
-  unique int id: @pack_type
-);
-
 parameterized_protocol_types(  //dir=type
   unique int id: @parameterized_protocol_type
-);
-
-placeholder_types(  //dir=type
-  unique int id: @placeholder_type
 );
 
 protocol_composition_types(  //dir=type
@@ -2010,22 +1988,6 @@ protocol_composition_type_members(  //dir=type
 reference_storage_types(  //dir=type
   int id: @reference_storage_type ref,
   int referent_type: @type_or_none ref
-);
-
-sil_block_storage_types(  //dir=type
-  unique int id: @sil_block_storage_type
-);
-
-sil_box_types(  //dir=type
-  unique int id: @sil_box_type
-);
-
-sil_function_types(  //dir=type
-  unique int id: @sil_function_type
-);
-
-sil_token_types(  //dir=type
-  unique int id: @sil_token_type
 );
 
 @substitutable_type =
