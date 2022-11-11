@@ -3,6 +3,7 @@ package com.semmle.js.extractor;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.UserError;
+import com.semmle.util.locations.LineTable;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 import com.semmle.util.trap.TrapWriter.Table;
@@ -76,8 +77,10 @@ public class YAMLExtractor implements IExtractor {
 
   private final boolean tolerateParseErrors;
 
+  private TextualExtractor textualExtractor;
   private LocationManager locationManager;
   private TrapWriter trapWriter;
+  private LineTable lineTable;
 
   /**
    * The underlying SnakeYAML parser; we use the relatively low-level {@linkplain Parser} instead of
@@ -93,8 +96,16 @@ public class YAMLExtractor implements IExtractor {
     this.tolerateParseErrors = config.isTolerateParseErrors();
   }
 
+  private LineTable getLineTable() {
+    if (lineTable == null) {
+      lineTable = new LineTable(this.textualExtractor.getSource());
+    }
+    return lineTable;
+  }
+
   @Override
   public LoCInfo extract(TextualExtractor textualExtractor) {
+    this.textualExtractor = textualExtractor;
     locationManager = textualExtractor.getLocationManager();
     trapWriter = textualExtractor.getTrapwriter();
 
@@ -252,6 +263,18 @@ public class YAMLExtractor implements IExtractor {
     // SnakeYAML's end positions are exclusive, so only need to +1 for the line
     endLine = endMark.getLine() + 1;
     endColumn = endMark.getColumn();
+
+    // Avoid emitting column zero for non-empty locations
+    if (endColumn == 0 && !(startLine == endLine && startColumn == endColumn)) {
+      String source = textualExtractor.getSource();
+      int offset = getLineTable().getOffsetFromPoint(endMark.getLine(), endMark.getColumn()) - 1;
+      while (offset > 0 && isNewLine((int)source.charAt(offset))) {
+        --offset;
+      }
+      com.semmle.util.locations.Position adjustedEndPos = getLineTable().getEndPositionFromOffset(offset);
+      endLine = adjustedEndPos.getLine();
+      endColumn = adjustedEndPos.getColumn();
+    }
 
     locationManager.emitSnippetLocation(label, startLine, startColumn, endLine, endColumn);
   }

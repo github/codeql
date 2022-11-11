@@ -229,3 +229,44 @@
 | expressions.swift:154:22:154:56 | \\...[...] | KeyPathApplicationExpr |
 | expressions.swift:154:33:154:33 | keyPathB | DeclRefExpr |
 | expressions.swift:154:52:154:55 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:158:3:158:3 | _ | DiscardAssignmentExpr |
+| expressions.swift:158:3:158:8 |  ... = ... | AssignExpr |
+| expressions.swift:158:7:158:7 | .~(_:) | MethodRefExpr |
+| expressions.swift:158:7:158:7 | Int.Type | TypeExpr |
+| expressions.swift:158:7:158:8 | call to ~(_:) | PrefixUnaryExpr |
+| expressions.swift:158:8:158:8 | 1 | IntegerLiteralExpr |
+| expressions.swift:159:3:159:3 | _ | DiscardAssignmentExpr |
+| expressions.swift:159:3:159:11 |  ... = ... | AssignExpr |
+| expressions.swift:159:7:159:7 | 1 | IntegerLiteralExpr |
+| expressions.swift:159:7:159:11 | ... .&(_:_:) ... | BinaryExpr |
+| expressions.swift:159:9:159:9 | .&(_:_:) | MethodRefExpr |
+| expressions.swift:159:9:159:9 | Int.Type | TypeExpr |
+| expressions.swift:159:11:159:11 | 2 | IntegerLiteralExpr |
+| expressions.swift:160:3:160:3 | _ | DiscardAssignmentExpr |
+| expressions.swift:160:3:160:11 |  ... = ... | AssignExpr |
+| expressions.swift:160:7:160:7 | 1 | IntegerLiteralExpr |
+| expressions.swift:160:7:160:11 | ... .\|(_:_:) ... | BinaryExpr |
+| expressions.swift:160:9:160:9 | .\|(_:_:) | MethodRefExpr |
+| expressions.swift:160:9:160:9 | Int.Type | TypeExpr |
+| expressions.swift:160:11:160:11 | 2 | IntegerLiteralExpr |
+| expressions.swift:161:3:161:3 | _ | DiscardAssignmentExpr |
+| expressions.swift:161:3:161:11 |  ... = ... | AssignExpr |
+| expressions.swift:161:7:161:7 | 1 | IntegerLiteralExpr |
+| expressions.swift:161:7:161:11 | ... .^(_:_:) ... | BinaryExpr |
+| expressions.swift:161:9:161:9 | .^(_:_:) | MethodRefExpr |
+| expressions.swift:161:9:161:9 | Int.Type | TypeExpr |
+| expressions.swift:161:11:161:11 | 2 | IntegerLiteralExpr |
+| expressions.swift:162:3:162:3 | _ | DiscardAssignmentExpr |
+| expressions.swift:162:3:162:12 |  ... = ... | AssignExpr |
+| expressions.swift:162:7:162:7 | 1 | IntegerLiteralExpr |
+| expressions.swift:162:7:162:12 | ... .<<(_:_:) ... | BinaryExpr |
+| expressions.swift:162:9:162:9 | .<<(_:_:) | MethodRefExpr |
+| expressions.swift:162:9:162:9 | Int.Type | TypeExpr |
+| expressions.swift:162:12:162:12 | 0 | IntegerLiteralExpr |
+| expressions.swift:163:3:163:3 | _ | DiscardAssignmentExpr |
+| expressions.swift:163:3:163:12 |  ... = ... | AssignExpr |
+| expressions.swift:163:7:163:7 | 1 | IntegerLiteralExpr |
+| expressions.swift:163:7:163:12 | ... .>>(_:_:) ... | BinaryExpr |
+| expressions.swift:163:9:163:9 | .>>(_:_:) | MethodRefExpr |
+| expressions.swift:163:9:163:9 | Int.Type | TypeExpr |
+| expressions.swift:163:12:163:12 | 0 | IntegerLiteralExpr |

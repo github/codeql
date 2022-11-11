@@ -34,7 +34,7 @@ Which models are generated is controlled by the flags:
     --with-sources
     --with-summaries
     --with-negative-summaries
-    --with-typebased-summaries (Experimental - only for C#)
+    --with-typebased-summaries
 If none of these flags are specified, all models are generated.
 
     --dry-run: Only run the queries, but don't write to file.

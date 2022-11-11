@@ -63,8 +63,8 @@ yaml(#20018,0,#20011,-2,"tag:yaml.org,2002:str","Gale")
 locations_default(#20019,#10000,6,14,6,17)
 yaml_locations(#20018,#20019)
 yaml(#20011,1,#20000,-3,"tag:yaml.org,2002:map","given:   Dorothy")
-#20020=@"loc,{#10000},5,5,8,0"
-locations_default(#20020,#10000,5,5,8,0)
+#20020=@"loc,{#10000},5,5,6,18"
+locations_default(#20020,#10000,5,5,6,18)
 yaml_locations(#20011,#20020)
 #20021=*
 yaml_scalars(#20021,0,"items")
@@ -188,12 +188,12 @@ yaml(#20061,0,#20042,-5,"tag:yaml.org,2002:int","1")
 locations_default(#20062,#10000,18,18,18,18)
 yaml_locations(#20061,#20062)
 yaml(#20042,1,#20023,1,"tag:yaml.org,2002:map","part_no:   E1628")
-#20063=@"loc,{#10000},14,7,20,0"
-locations_default(#20063,#10000,14,7,20,0)
+#20063=@"loc,{#10000},14,7,18,19"
+locations_default(#20063,#10000,14,7,18,19)
 yaml_locations(#20042,#20063)
 yaml(#20023,2,#20000,-4,"tag:yaml.org,2002:seq","- part_no:   A4786")
-#20064=@"loc,{#10000},9,5,20,0"
-locations_default(#20064,#10000,9,5,20,0)
+#20064=@"loc,{#10000},9,5,18,19"
+locations_default(#20064,#10000,9,5,18,19)
 yaml_locations(#20023,#20064)
 #20065=*
 yaml_scalars(#20065,0,"bill-to")
@@ -214,8 +214,8 @@ yaml_scalars(#20070,124,"123 Tornado Alley
 Suite 16
 ")
 yaml(#20070,0,#20067,-1,"tag:yaml.org,2002:str","|")
-#20071=@"loc,{#10000},21,13,24,0"
-locations_default(#20071,#10000,21,13,24,0)
+#20071=@"loc,{#10000},21,13,23,21"
+locations_default(#20071,#10000,21,13,23,21)
 yaml_locations(#20070,#20071)
 #20072=*
 yaml_scalars(#20072,0,"city")
@@ -242,8 +242,8 @@ yaml(#20078,0,#20067,-3,"tag:yaml.org,2002:str","KS")
 locations_default(#20079,#10000,25,13,25,14)
 yaml_locations(#20078,#20079)
 yaml(#20067,1,#20000,-5,"tag:yaml.org,2002:map","&id001")
-#20080=@"loc,{#10000},20,11,27,0"
-locations_default(#20080,#10000,20,11,27,0)
+#20080=@"loc,{#10000},20,11,25,15"
+locations_default(#20080,#10000,20,11,25,15)
 yaml_locations(#20067,#20080)
 #20081=*
 yaml_scalars(#20081,0,"ship-to")

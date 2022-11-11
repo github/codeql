@@ -20,7 +20,7 @@ import codeql.ruby.ast.Literal
 from AmbiguousPathCall call
 where
   // there is not a constant string argument
-  not exists(call.getPathArgument().asExpr().getExpr().getConstantValue()) and
+  not exists(call.getPathArgument().getConstantValue()) and
   // if it's a format string, then the first argument is not a constant string
   not call.getPathArgument().getALocalSource().asExpr().getExpr().(StringLiteral).getComponent(0)
     instanceof StringTextComponent

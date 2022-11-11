@@ -81,6 +81,29 @@ module ActiveSupport {
           preservesValue = true
         }
       }
+
+      /**
+       * A call to `Object#try`, which may execute its first argument as a Ruby
+       * method call.
+       * ```rb
+       * x = "abc"
+       * x.try(:upcase) # => "ABC"
+       * y = nil
+       * y.try(:upcase) # => nil
+       * ```
+       * `Object#try!` behaves similarly but raises `NoMethodError` if the
+       * receiver is not `nil` and does not respond to the method.
+       */
+      class TryCallCodeExecution extends CodeExecution::Range instanceof DataFlow::CallNode {
+        TryCallCodeExecution() {
+          this.asExpr().getExpr() instanceof UnknownMethodCall and
+          this.getMethodName() = ["try", "try!"]
+        }
+
+        override DataFlow::Node getCode() { result = super.getArgument(0) }
+
+        override predicate runsArbitraryCode() { none() }
+      }
     }
 
     /**
@@ -93,6 +116,32 @@ module ActiveSupport {
         override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any]" and
           output = "ReturnValue.Element[any]" and
+          preservesValue = true
+        }
+      }
+
+      /**
+       * Flow summary for `reverse_merge`, and its alias `with_defaults`.
+       */
+      private class ReverseMergeSummary extends SimpleSummarizedCallable {
+        ReverseMergeSummary() { this = ["reverse_merge", "with_defaults"] }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self,0].WithElement[any]" and
+          output = "ReturnValue" and
+          preservesValue = true
+        }
+      }
+
+      /**
+       * Flow summary for `reverse_merge!`, and its aliases `with_defaults!` and `reverse_update`.
+       */
+      private class ReverseMergeBangSummary extends SimpleSummarizedCallable {
+        ReverseMergeBangSummary() { this = ["reverse_merge!", "with_defaults!", "reverse_update"] }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self,0].WithElement[any]" and
+          output = ["ReturnValue", "Argument[self]"] and
           preservesValue = true
         }
       }

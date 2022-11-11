@@ -16,6 +16,8 @@ class _DocModifier(_schema.PropertyModifier):
     doc: str
 
     def modify(self, prop: _schema.Property):
+        if "\n" in self.doc or self.doc[-1] == ".":
+            raise _schema.Error("No newlines or trailing dots are allowed in doc, did you intend to use desc?")
         prop.doc = self.doc
 
 
@@ -114,6 +116,8 @@ list = _TypeModifier(_Listifier())
 child = _ChildModifier()
 doc = _DocModifier
 desc = _DescModifier
+
+use_for_null = _annotate(null=True)
 
 qltest = _Namespace(
     skip=_Pragma("qltest_skip"),

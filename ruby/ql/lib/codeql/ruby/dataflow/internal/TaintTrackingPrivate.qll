@@ -105,6 +105,8 @@ private module Cached {
     exists(DataFlow::ContentSet c | readStep(nodeFrom, c, nodeTo) |
       c.isSingleton(any(DataFlow::Content::ElementContent ec))
       or
+      c.isKnownOrUnknownElement(_)
+      or
       c.isAnyElement()
     )
   }

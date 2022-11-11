@@ -144,4 +144,12 @@
   content = content.replace(/<(script|iframe|video)[\s\S]*?<\/(script|iframe|video)>/g, '') // NOT OK
   content = content.replace(/<(script|iframe|video)(.|\s)*?\/(script|iframe|video)>/g, '') // NOT OK
   content = content.replace(/<[^<]*>/g, ""); // OK
+
+  n.cloneNode(false).outerHTML.replace(/<\/?[\w:\-]+ ?|=[\"][^\"]+\"|=\'[^\']+\'|=[\w\-]+|>/gi, '').replace(/[\w:\-]+/gi, function(a) { // NOT OK
+    o.push({specified : 1, nodeName : a});
+  });
+
+  n.cloneNode(false).outerHTML.replace(/<\/?[\w:\-]+ ?|=[\"][^\"]+\"|=\'[^\']+\'|=[\w\-]+|>/gi, '').replace(/[\w:\-]+/gi, function(a) { // NOT OK
+    o.push({specified : 1, nodeName : a});
+  });  
 });
