@@ -91,7 +91,7 @@ open class KotlinFileExtractor(
             }
 
             file.declarations.forEach {
-                extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true)
+                extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true, extractAnnotations = true)
                 if (it is IrProperty || it is IrField || it is IrFunction) {
                     externalClassExtractor.writeStubTrapFile(it, getTrapFileSignature(it))
                 }
@@ -148,7 +148,7 @@ open class KotlinFileExtractor(
     private fun shouldExtractDecl(declaration: IrDeclaration, extractPrivateMembers: Boolean) =
         extractPrivateMembers || !isPrivate(declaration)
 
-    fun extractDeclaration(declaration: IrDeclaration, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean) {
+    fun extractDeclaration(declaration: IrDeclaration, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean, extractAnnotations: Boolean) {
         with("declaration", declaration) {
             if (!shouldExtractDecl(declaration, extractPrivateMembers))
                 return
@@ -163,7 +163,7 @@ open class KotlinFileExtractor(
                 is IrFunction -> {
                     val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractFunction(declaration, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, null, listOf())
+                        extractFunction(declaration, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, extractAnnotations = extractAnnotations, null, listOf())
                     }
                     Unit
                 }
@@ -173,7 +173,7 @@ open class KotlinFileExtractor(
                 is IrProperty -> {
                     val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractProperty(declaration, parentId, extractBackingField = true, extractFunctionBodies = extractFunctionBodies, extractPrivateMembers = extractPrivateMembers, null, listOf())
+                        extractProperty(declaration, parentId, extractBackingField = true, extractFunctionBodies = extractFunctionBodies, extractPrivateMembers = extractPrivateMembers, extractAnnotations = extractAnnotations, null, listOf())
                     }
                     Unit
                 }
@@ -406,8 +406,8 @@ open class KotlinFileExtractor(
                 }
             }
         when (d) {
-            is IrFunction -> extractFunction(d, parentId, extractBody = false, extractMethodAndParameterTypeAccesses = false, typeParamSubstitution, argsIncludingOuterClasses)
-            is IrProperty -> extractProperty(d, parentId, extractBackingField = false, extractFunctionBodies = false, extractPrivateMembers = false, typeParamSubstitution, argsIncludingOuterClasses)
+            is IrFunction -> extractFunction(d, parentId, extractBody = false, extractMethodAndParameterTypeAccesses = false, extractAnnotations = false, typeParamSubstitution, argsIncludingOuterClasses)
+            is IrProperty -> extractProperty(d, parentId, extractBackingField = false, extractFunctionBodies = false, extractPrivateMembers = false, extractAnnotations = false, typeParamSubstitution, argsIncludingOuterClasses)
             else -> {}
         }
     }
@@ -604,11 +604,11 @@ open class KotlinFileExtractor(
                             .filterIsInstance<IrProperty>()
                             .map {
                                 val getter = it.getter!!
-                                val label = extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = false, null, listOf())
+                                val label = extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = false, extractAnnotations = true, null, listOf())
                                 tw.writeIsAnnotElem(label!!.cast<DbMethod>())
                             }
                     } else {
-                        c.declarations.forEach { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
+                        c.declarations.forEach { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies, extractAnnotations = true) }
                         if (extractStaticInitializer)
                             extractStaticInitializer(c, { id })
                         extractJvmStaticProxyMethods(c, id, extractPrivateMembers, extractFunctionBodies)
@@ -665,7 +665,7 @@ open class KotlinFileExtractor(
             val proxyFunctionId = tw.getLabelFor<DbMethod>(getFunctionLabel(f, classId, listOf()))
             // We extract the function prototype with its ID overridden to belong to `c` not the companion object,
             // but suppress outputting the body, which we will replace with a delegating call below.
-            forceExtractFunction(f, classId, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf(), extractOrigin = false, OverriddenFunctionAttributes(id = proxyFunctionId))
+            forceExtractFunction(f, classId, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, extractAnnotations = false, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf(), extractOrigin = false, OverriddenFunctionAttributes(id = proxyFunctionId))
             addModifiers(proxyFunctionId, "static")
             tw.writeCompiler_generated(proxyFunctionId, CompilerGeneratedKinds.JVMSTATIC_PROXY_METHOD.kind)
             if (extractFunctionBodies) {
@@ -1010,7 +1010,7 @@ open class KotlinFileExtractor(
                 f.realOverrideTarget.let { it != f && (it as? IrSimpleFunction)?.modality != Modality.ABSTRACT && isKotlinDefinedInterface(it.parentClassOrNull) }
 
     private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC, modality = Modality.OPEN)).also { functionId ->
+        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, extractAnnotations = false, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC, modality = Modality.OPEN)).also { functionId ->
             tw.writeCompiler_generated(functionId, CompilerGeneratedKinds.INTERFACE_FORWARDER.kind)
             if (extractBody) {
                 val realFunctionLocId = tw.getLocation(f)
@@ -1051,7 +1051,7 @@ open class KotlinFileExtractor(
             }
         }
 
-    private fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+    private fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, extractAnnotations: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         if (isFake(f)) {
             if (needsInterfaceForwarder(f))
                 makeInterfaceForwarder(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses)
@@ -1060,7 +1060,7 @@ open class KotlinFileExtractor(
         } else {
             // Work around an apparent bug causing redeclarations of `fun toString(): String` specifically in interfaces loaded from Java classes show up like fake overrides.
             val overriddenVisibility = if (f.isFakeOverride && isJavaBinaryObjectMethodRedeclaration(f)) OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC) else null
-            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenVisibility).also {
+            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, extractAnnotations, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenVisibility).also {
                 // The defaults-forwarder function is a static utility, not a member, so we only need to extract this for the unspecialised instance of this class.
                 if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
                     extractDefaultsFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses)
@@ -1196,7 +1196,7 @@ open class KotlinFileExtractor(
                         parentId
             val sourceDeclId = tw.getLabelFor<DbCallable>(getFunctionLabel(f, sourceParentId, listOf(), overloadParameters))
             val overriddenAttributes = OverriddenFunctionAttributes(id = overloadId, sourceDeclarationId = sourceDeclId, valueParameters = overloadParameters)
-            forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenAttributes)
+            forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, extractAnnotations = false, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenAttributes)
             tw.writeCompiler_generated(overloadId, CompilerGeneratedKinds.JVMOVERLOADS_METHOD.kind)
             val realFunctionLocId = tw.getLocation(f)
             if (extractBody) {
@@ -1282,7 +1282,7 @@ open class KotlinFileExtractor(
                 logger.warn("Needed a signature for a type that doesn't have one")
         }
 
-    private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractOrigin: Boolean = true, overriddenAttributes: OverriddenFunctionAttributes? = null): Label<out DbCallable>  {
+    private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, extractAnnotations: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractOrigin: Boolean = true, overriddenAttributes: OverriddenFunctionAttributes? = null): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f, overriddenAttributes).use {
 
@@ -1424,7 +1424,7 @@ open class KotlinFileExtractor(
         return id
     }
 
-    private fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, extractPrivateMembers: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
+    private fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, extractPrivateMembers: Boolean, extractAnnotations: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("property", p) {
             fun needsInterfaceForwarderQ(f: IrFunction?) = f?.let { needsInterfaceForwarder(f) } ?: false
 
@@ -1446,7 +1446,7 @@ open class KotlinFileExtractor(
                         logger.warnElement("IrProperty without a getter", p)
                     }
                 } else if (shouldExtractDecl(getter, extractPrivateMembers)) {
-                    val getterId = extractFunction(getter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
+                    val getterId = extractFunction(getter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, extractAnnotations = extractAnnotations, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (getterId != null) {
                         tw.writeKtPropertyGetters(id, getterId)
                         if (getter.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) {
@@ -1463,7 +1463,7 @@ open class KotlinFileExtractor(
                     if (!p.isVar) {
                         logger.warnElement("!isVar property with a setter", p)
                     }
-                    val setterId = extractFunction(setter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
+                    val setterId = extractFunction(setter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, extractAnnotations = extractAnnotations, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (setterId != null) {
                         tw.writeKtPropertySetters(id, setterId)
                         if (setter.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) {
@@ -1528,7 +1528,7 @@ open class KotlinFileExtractor(
                 }
 
                 ee.correspondingClass?.let {
-                    extractDeclaration(it, extractPrivateMembers, extractFunctionBodies)
+                    extractDeclaration(it, extractPrivateMembers, extractFunctionBodies, extractAnnotations = true)
                 }
 
                 extractAnnotations(ee, id)
@@ -5503,7 +5503,7 @@ open class KotlinFileExtractor(
                     // we would need to compose generic type substitutions -- for example, if we're implementing
                     // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so we can implement
                     // the real underlying R Function<T, R>.apply(T t).
-                    forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, overriddenAttributes = OverriddenFunctionAttributes(id = ids.function, sourceLoc = tw.getLocation(e), modality = Modality.FINAL))
+                    forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, extractAnnotations = false, typeSub, classTypeArgs, overriddenAttributes = OverriddenFunctionAttributes(id = ids.function, sourceLoc = tw.getLocation(e), modality = Modality.FINAL))
 
                     addModifiers(ids.function, "override")
                     if (st.isSuspendFunctionOrKFunction()) {
@@ -5685,7 +5685,7 @@ open class KotlinFileExtractor(
             val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction, localFunction.parent, compilerGeneratedKindOverride = compilerGeneratedKindOverride)
 
             // Extract local function as a member
-            extractFunction(localFunction, id, extractBody = true, extractMethodAndParameterTypeAccesses = true, null, listOf())
+            extractFunction(localFunction, id, extractBody = true, extractMethodAndParameterTypeAccesses = true, extractAnnotations = false, null, listOf())
 
             return id
         }
