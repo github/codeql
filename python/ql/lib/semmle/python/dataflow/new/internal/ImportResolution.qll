@@ -242,7 +242,7 @@ module ImportResolution {
       module_reexport(p, attr_name, m)
     )
     or
-    // Submodules that are implicitly defined whith relative imports of the form `from .foo import ...`.
+    // Submodules that are implicitly defined with relative imports of the form `from .foo import ...`.
     // In practice, we create a definition for each module in a package, even if it is not imported.
     exists(string submodule, Module package |
       SsaSource::init_module_submodule_defn(result.asVar().getSourceVariable(),
