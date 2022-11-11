@@ -3469,18 +3469,19 @@ declarations.swift:
 #-----|           getElement(0): [ReturnStmt] return ...
 #-----|             getResult(): [MemberRefExpr] .wrappedValue
 #-----|               getBase(): [DeclRefExpr] _x
+#-----|       getPropertyWrapperBackingVarBinding(): [PatternBindingDecl] var ... = ...
+#   77|         getInit(0): [CallExpr] call to init()
+#   77|           getFunction(): [ConstructorRefCallExpr] call to init()
+#   77|             getFunction(): [DeclRefExpr] init()
+#   77|             getArgument(0): [Argument] : ZeroWrapper.Type
+#   77|               getExpr(): [TypeExpr] ZeroWrapper.Type
+#   77|                 getTypeRepr(): [TypeRepr] ZeroWrapper
+#   77|         getPattern(0): [TypedPattern] ... as ...
+#   77|           getSubPattern(): [NamedPattern] _x
+#   77|       getPropertyWrapperBackingVar(): [ConcreteVarDecl] _x
+#   77|           Type = ZeroWrapper
 #   78|     getElement(2): [ReturnStmt] return ...
 #   78|       getResult(): [DeclRefExpr] x
-#   77| [CallExpr] call to init()
-#   77|   getFunction(): [ConstructorRefCallExpr] call to init()
-#   77|     getFunction(): [DeclRefExpr] init()
-#   77|     getArgument(0): [Argument] : ZeroWrapper.Type
-#   77|       getExpr(): [TypeExpr] ZeroWrapper.Type
-#   77|         getTypeRepr(): [TypeRepr] ZeroWrapper
-#   77| [TypedPattern] ... as ...
-#   77|   getSubPattern(): [NamedPattern] _x
-#   77| [ConcreteVarDecl] _x
-#   77|     Type = ZeroWrapper
 #   81| [StructDecl] HasPropertyAndObserver
 #   82|   getMember(0): [PatternBindingDecl] var ... = ...
 #   82|     getPattern(0): [TypedPattern] ... as ...
