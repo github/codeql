@@ -35,10 +35,10 @@ private import semmle.python.dataflow.new.TypeTracker
  * 1. If `foo` is a module, and `bar` is an attribute of `foo`, then `from foo import bar` imports
  *    the attribute `bar` into the current module (binding it to the name `bar`).
  * 2. If `foo` is a package, and `bar` is a submodule of `foo`, then `from foo import bar` first imports
- *    `foo.bar`, and then attempts to locate the `bar` attribute again. In most cases, that attribute
+ *    `foo.bar`, and then reads the `bar` attribute on `foo`. In most cases, that attribute
  *    will then point to the `bar` submodule.
  *
- * Now, when in comes to how these imports are represented in the AST, things get a bit complicated.
+ * Now, when it comes to how these imports are represented in the AST, things get a bit complicated.
  * First of all, both of the above forms of imports get mapped to the same kind of AST node:
  * `Import`. An `Import` node has a sequence of names, each of which is an `Alias` node. This `Alias`
  * node represents the `x as y` bit of each imported module.
@@ -230,7 +230,7 @@ module ImportResolution {
       module_reexport(p, attr_name, m)
     )
     or
-    // Submodules that are implicitly defined when importing via `from ... import ...` statements.
+    // Submodules that are implicitly defined whith relative imports of the form `from .foo import ...`.
     // In practice, we create a definition for each module in a package, even if it is not imported.
     exists(string submodule, Module package |
       SsaSource::init_module_submodule_defn(result.asVar().getSourceVariable(),
