@@ -238,7 +238,7 @@ open class KotlinFileExtractor(
                 addModifiers(id, "out")
             }
 
-            //extractAnnotations(tp, id)
+            extractAnnotations(tp, id)
             return id
         }
     }
@@ -832,7 +832,7 @@ open class KotlinFileExtractor(
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
             val syntheticParameterNames = isUnderscoreParameter(vp) || ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
-            //extractAnnotations(vp, id)
+            extractAnnotations(vp, id)
             return extractValueParameter(id, substitutedType, vp.name.asString(), location, parent, idx, useValueParameter(vp, parentSourceDeclaration), syntheticParameterNames, vp.isVararg, vp.isNoinline, vp.isCrossinline)
         }
     }
@@ -1372,7 +1372,8 @@ open class KotlinFileExtractor(
 
                 linesOfCode?.linesOfCodeInDeclaration(f, id)
 
-                //extractAnnotations(f, id)
+                if (extractAnnotations)
+                    extractAnnotations(f, id)
 
                 return id
             }
