@@ -13,9 +13,9 @@ private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import Telemetry.ExternalApi
 
-from DispatchCall c, ExternalApi api
+from Call c, ExternalApi api
 where
-  c = api.getACall() and
+  c.getTarget().getUnboundDeclaration() = api and
   not api.isUninteresting() and
   not api.isSupported() and
   not api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
