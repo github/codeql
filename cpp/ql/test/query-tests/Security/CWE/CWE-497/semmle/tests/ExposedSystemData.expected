@@ -15,9 +15,9 @@ edges
 | tests2.cpp:109:6:109:8 | c1 indirection [post update] [ptr] | tests2.cpp:111:14:111:15 | c1 indirection [ptr] |
 | tests2.cpp:109:12:109:17 | call to getenv | tests2.cpp:109:3:109:36 | Store |
 | tests2.cpp:111:14:111:15 | c1 indirection [ptr] | tests2.cpp:111:14:111:19 | ptr |
-| tests2.cpp:111:14:111:15 | c1 indirection [ptr] | tests2.cpp:111:17:111:19 | ptr |
-| tests2.cpp:111:14:111:15 | c1 indirection [ptr] | tests2.cpp:111:17:111:19 | ptr |
-| tests2.cpp:111:17:111:19 | ptr | tests2.cpp:111:14:111:19 | ptr |
+| tests2.cpp:111:14:111:15 | c1 indirection [ptr] | tests2.cpp:111:17:111:19 | FieldAddress indirection |
+| tests2.cpp:111:17:111:19 | FieldAddress indirection | tests2.cpp:111:14:111:19 | ptr |
+| tests2.cpp:111:17:111:19 | FieldAddress indirection | tests2.cpp:111:17:111:19 | ptr |
 | tests_sockets.cpp:26:15:26:20 | call to getenv | tests_sockets.cpp:39:19:39:22 | path |
 | tests_sockets.cpp:26:15:26:20 | call to getenv | tests_sockets.cpp:39:19:39:22 | path |
 | tests_sockets.cpp:26:15:26:20 | call to getenv | tests_sockets.cpp:43:20:43:23 | path |
@@ -59,7 +59,7 @@ nodes
 | tests2.cpp:109:12:109:17 | call to getenv | semmle.label | call to getenv |
 | tests2.cpp:111:14:111:15 | c1 indirection [ptr] | semmle.label | c1 indirection [ptr] |
 | tests2.cpp:111:14:111:19 | ptr | semmle.label | ptr |
-| tests2.cpp:111:17:111:19 | ptr | semmle.label | ptr |
+| tests2.cpp:111:17:111:19 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | tests2.cpp:111:17:111:19 | ptr | semmle.label | ptr |
 | tests_sockets.cpp:26:15:26:20 | call to getenv | semmle.label | call to getenv |
 | tests_sockets.cpp:39:19:39:22 | path | semmle.label | path |

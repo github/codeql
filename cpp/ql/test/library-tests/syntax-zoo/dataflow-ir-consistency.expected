@@ -117,7 +117,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | VariableAddress indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress indirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress indirection | Node should have one location but has 0. |
-| file://:0:0:0:0 | VariableAddress indirection | Node should have one location but has 0. |
 | forstmt.cpp:1:6:1:7 | AliasedDefinition | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | InitializeNonLocal | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | AliasedDefinition | Node should have one location but has 2. |
@@ -268,23 +267,21 @@ uniqueNodeLocation
 | whilestmt.c:39:6:39:11 | AliasedDefinition | Node should have one location but has 4. |
 | whilestmt.c:39:6:39:11 | InitializeNonLocal | Node should have one location but has 4. |
 missingLocation
-| Nodes without location: 38 |
+| Nodes without location: 37 |
 uniqueNodeToString
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
-| break_labels.c:4:9:4:9 | i indirection | Node should have one toString but has 2. |
 | break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
-| break_labels.c:4:9:4:9 | x indirection | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
-| break_labels.c:6:16:6:16 | i indirection | Node should have one toString but has 2. |
 | break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
-| break_labels.c:6:16:6:16 | x indirection | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | i | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | i indirection | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | i indirection | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | x | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | x indirection | Node should have one toString but has 2. |
 | break_labels.c:7:17:7:17 | x indirection | Node should have one toString but has 2. |
 | constructorinitializer.cpp:3:9:3:9 | i | Node should have one toString but has 2. |
 | constructorinitializer.cpp:3:9:3:9 | x | Node should have one toString but has 2. |
@@ -295,13 +292,9 @@ uniqueNodeToString
 | duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
-| duff.c:3:14:3:14 | i indirection | Node should have one toString but has 2. |
 | duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
-| duff.c:3:14:3:14 | x indirection | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
-| duff.c:4:13:4:13 | i indirection | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
-| duff.c:4:13:4:13 | x indirection | Node should have one toString but has 2. |
 | newexpr.cpp:3:9:3:9 | i | Node should have one toString but has 2. |
 | newexpr.cpp:3:9:3:9 | x | Node should have one toString but has 2. |
 | newexpr.cpp:3:16:3:16 | j | Node should have one toString but has 2. |
@@ -311,17 +304,13 @@ uniqueNodeToString
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:2:14:2:14 | i indirection | Node should have one toString but has 2. |
 | nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
-| nodefaultswitchstmt.c:2:14:2:14 | x indirection | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
-| switchstmt.c:2:14:2:14 | i indirection | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
-| switchstmt.c:2:14:2:14 | x indirection | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal
@@ -360,13 +349,13 @@ reverseRead
 | ir.cpp:658:5:658:5 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:658:5:658:5 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:745:8:745:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:745:8:745:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| ir.cpp:745:8:745:8 | this | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:748:3:748:6 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:750:3:750:7 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:754:8:754:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| ir.cpp:754:8:754:8 | this | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:757:3:757:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:759:3:759:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
-| ir.cpp:763:8:763:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| ir.cpp:763:8:763:8 | this | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:766:3:766:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:768:3:768:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | ir.cpp:775:3:775:11 | Unary | Origin of readStep is missing a PostUpdateNode. |

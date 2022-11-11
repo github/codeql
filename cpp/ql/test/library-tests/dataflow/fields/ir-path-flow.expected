@@ -5,8 +5,8 @@ edges
 | A.cpp:27:22:27:32 | Store | A.cpp:27:28:27:28 | this indirection [post update] [c] |
 | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:23:28:26 | this indirection [c] |
 | A.cpp:28:23:28:26 | this indirection [c] | A.cpp:28:8:28:10 | VariableAddress indirection |
-| A.cpp:28:23:28:26 | this indirection [c] | A.cpp:28:29:28:29 | c |
-| A.cpp:28:29:28:29 | c | A.cpp:28:8:28:10 | VariableAddress indirection |
+| A.cpp:28:23:28:26 | this indirection [c] | A.cpp:28:29:28:29 | FieldAddress indirection |
+| A.cpp:28:29:28:29 | FieldAddress indirection | A.cpp:28:8:28:10 | VariableAddress indirection |
 | A.cpp:29:23:29:23 | c | A.cpp:31:20:31:20 | c |
 | A.cpp:31:14:31:21 | call to B [c] | A.cpp:29:15:29:18 | VariableAddress indirection [c] |
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c |
@@ -20,9 +20,9 @@ edges
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c |
 | A.cpp:48:20:48:20 | c | A.cpp:48:12:48:18 | call to make indirection [c] |
 | A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:10:49:13 | c |
-| A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:13:49:13 | c |
-| A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:13:49:13 | c |
-| A.cpp:49:13:49:13 | c | A.cpp:49:10:49:13 | c |
+| A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:13:49:13 | FieldAddress indirection |
+| A.cpp:49:13:49:13 | FieldAddress indirection | A.cpp:49:10:49:13 | c |
+| A.cpp:49:13:49:13 | FieldAddress indirection | A.cpp:49:13:49:13 | c |
 | A.cpp:55:5:55:5 | set output argument [c] | A.cpp:56:10:56:10 | b indirection [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c |
 | A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | set output argument [c] |
@@ -41,17 +41,17 @@ edges
 | A.cpp:64:21:64:28 | new | A.cpp:64:21:64:28 | new |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c |
 | A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:10:66:14 | c |
-| A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:14:66:14 | c |
-| A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:14:66:14 | c |
-| A.cpp:66:14:66:14 | c | A.cpp:66:10:66:14 | c |
+| A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:14:66:14 | FieldAddress indirection |
+| A.cpp:66:14:66:14 | FieldAddress indirection | A.cpp:66:10:66:14 | c |
+| A.cpp:66:14:66:14 | FieldAddress indirection | A.cpp:66:14:66:14 | c |
 | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] | A.cpp:75:10:75:11 | b2 indirection [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:73:25:73:32 | new |
 | A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c |
 | A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:10:75:14 | c |
-| A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:14:75:14 | c |
-| A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:14:75:14 | c |
-| A.cpp:75:14:75:14 | c | A.cpp:75:10:75:14 | c |
+| A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:14:75:14 | FieldAddress indirection |
+| A.cpp:75:14:75:14 | FieldAddress indirection | A.cpp:75:10:75:14 | c |
+| A.cpp:75:14:75:14 | FieldAddress indirection | A.cpp:75:14:75:14 | c |
 | A.cpp:78:27:78:27 | c | A.cpp:81:21:81:21 | c |
 | A.cpp:81:10:81:15 | call to setOnB indirection [c] | A.cpp:78:6:78:15 | VariableAddress indirection [c] |
 | A.cpp:81:21:81:21 | c | A.cpp:81:10:81:15 | call to setOnB indirection [c] |
@@ -67,22 +67,22 @@ edges
 | A.cpp:103:14:103:14 | c indirection [a] | A.cpp:107:12:107:13 | c1 indirection [a] |
 | A.cpp:103:14:103:14 | c indirection [a] | A.cpp:120:12:120:13 | c1 indirection [a] |
 | A.cpp:107:12:107:13 | c1 indirection [a] | A.cpp:107:12:107:16 | a |
-| A.cpp:107:12:107:13 | c1 indirection [a] | A.cpp:107:16:107:16 | a |
-| A.cpp:107:12:107:13 | c1 indirection [a] | A.cpp:107:16:107:16 | a |
-| A.cpp:107:16:107:16 | a | A.cpp:107:12:107:16 | a |
+| A.cpp:107:12:107:13 | c1 indirection [a] | A.cpp:107:16:107:16 | FieldAddress indirection |
+| A.cpp:107:16:107:16 | FieldAddress indirection | A.cpp:107:12:107:16 | a |
+| A.cpp:107:16:107:16 | FieldAddress indirection | A.cpp:107:16:107:16 | a |
 | A.cpp:120:12:120:13 | c1 indirection [a] | A.cpp:120:12:120:16 | a |
-| A.cpp:120:12:120:13 | c1 indirection [a] | A.cpp:120:16:120:16 | a |
-| A.cpp:120:12:120:13 | c1 indirection [a] | A.cpp:120:16:120:16 | a |
-| A.cpp:120:16:120:16 | a | A.cpp:120:12:120:16 | a |
+| A.cpp:120:12:120:13 | c1 indirection [a] | A.cpp:120:16:120:16 | FieldAddress indirection |
+| A.cpp:120:16:120:16 | FieldAddress indirection | A.cpp:120:12:120:16 | a |
+| A.cpp:120:16:120:16 | FieldAddress indirection | A.cpp:120:16:120:16 | a |
 | A.cpp:126:5:126:5 | set output argument [c] | A.cpp:131:8:131:8 | f7 output argument [c] |
 | A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c |
 | A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | set output argument [c] |
 | A.cpp:126:12:126:18 | new | A.cpp:126:12:126:18 | new |
 | A.cpp:131:8:131:8 | f7 output argument [c] | A.cpp:132:10:132:10 | b indirection [c] |
 | A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:10:132:13 | c |
-| A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:13:132:13 | c |
-| A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:13:132:13 | c |
-| A.cpp:132:13:132:13 | c | A.cpp:132:10:132:13 | c |
+| A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:13:132:13 | FieldAddress indirection |
+| A.cpp:132:13:132:13 | FieldAddress indirection | A.cpp:132:10:132:13 | c |
+| A.cpp:132:13:132:13 | FieldAddress indirection | A.cpp:132:13:132:13 | c |
 | A.cpp:140:13:140:13 | b | A.cpp:143:7:143:31 | Store |
 | A.cpp:142:7:142:20 | Store | A.cpp:142:10:142:10 | b indirection [post update] [c] |
 | A.cpp:142:10:142:10 | b indirection [post update] [c] | A.cpp:143:7:143:31 | Store indirection [c] |
@@ -101,20 +101,20 @@ edges
 | A.cpp:151:18:151:18 | b | A.cpp:140:13:140:13 | b |
 | A.cpp:151:18:151:18 | b | A.cpp:151:12:151:24 | call to D [b] |
 | A.cpp:152:10:152:10 | d indirection [b] | A.cpp:152:10:152:13 | b |
-| A.cpp:152:10:152:10 | d indirection [b] | A.cpp:152:13:152:13 | b |
-| A.cpp:152:10:152:10 | d indirection [b] | A.cpp:152:13:152:13 | b |
-| A.cpp:152:13:152:13 | b | A.cpp:152:10:152:13 | b |
+| A.cpp:152:10:152:10 | d indirection [b] | A.cpp:152:13:152:13 | FieldAddress indirection |
+| A.cpp:152:13:152:13 | FieldAddress indirection | A.cpp:152:10:152:13 | b |
+| A.cpp:152:13:152:13 | FieldAddress indirection | A.cpp:152:13:152:13 | b |
 | A.cpp:153:10:153:10 | d indirection [b indirection, c] | A.cpp:153:13:153:13 | FieldAddress indirection [c] |
 | A.cpp:153:10:153:10 | d indirection [b indirection, c] | A.cpp:153:13:153:13 | b indirection [c] |
 | A.cpp:153:13:153:13 | FieldAddress indirection [c] | A.cpp:153:13:153:13 | b indirection [c] |
 | A.cpp:153:13:153:13 | b indirection [c] | A.cpp:153:10:153:16 | c |
-| A.cpp:153:13:153:13 | b indirection [c] | A.cpp:153:16:153:16 | c |
-| A.cpp:153:13:153:13 | b indirection [c] | A.cpp:153:16:153:16 | c |
-| A.cpp:153:16:153:16 | c | A.cpp:153:10:153:16 | c |
+| A.cpp:153:13:153:13 | b indirection [c] | A.cpp:153:16:153:16 | FieldAddress indirection |
+| A.cpp:153:16:153:16 | FieldAddress indirection | A.cpp:153:10:153:16 | c |
+| A.cpp:153:16:153:16 | FieldAddress indirection | A.cpp:153:16:153:16 | c |
 | A.cpp:154:10:154:10 | b indirection [c] | A.cpp:154:10:154:13 | c |
-| A.cpp:154:10:154:10 | b indirection [c] | A.cpp:154:13:154:13 | c |
-| A.cpp:154:10:154:10 | b indirection [c] | A.cpp:154:13:154:13 | c |
-| A.cpp:154:13:154:13 | c | A.cpp:154:10:154:13 | c |
+| A.cpp:154:10:154:10 | b indirection [c] | A.cpp:154:13:154:13 | FieldAddress indirection |
+| A.cpp:154:13:154:13 | FieldAddress indirection | A.cpp:154:10:154:13 | c |
+| A.cpp:154:13:154:13 | FieldAddress indirection | A.cpp:154:13:154:13 | c |
 | A.cpp:159:12:159:18 | new | A.cpp:160:29:160:29 | b |
 | A.cpp:160:18:160:60 | call to MyList [head] | A.cpp:161:38:161:39 | l1 indirection [head] |
 | A.cpp:160:29:160:29 | b | A.cpp:160:18:160:60 | call to MyList [head] |
@@ -133,9 +133,9 @@ edges
 | A.cpp:165:14:165:17 | next indirection [next indirection, head] | A.cpp:165:20:165:23 | next indirection [head] |
 | A.cpp:165:20:165:23 | FieldAddress indirection [head] | A.cpp:165:20:165:23 | next indirection [head] |
 | A.cpp:165:20:165:23 | next indirection [head] | A.cpp:165:10:165:29 | head |
-| A.cpp:165:20:165:23 | next indirection [head] | A.cpp:165:26:165:29 | head |
-| A.cpp:165:20:165:23 | next indirection [head] | A.cpp:165:26:165:29 | head |
-| A.cpp:165:26:165:29 | head | A.cpp:165:10:165:29 | head |
+| A.cpp:165:20:165:23 | next indirection [head] | A.cpp:165:26:165:29 | FieldAddress indirection |
+| A.cpp:165:26:165:29 | FieldAddress indirection | A.cpp:165:10:165:29 | head |
+| A.cpp:165:26:165:29 | FieldAddress indirection | A.cpp:165:26:165:29 | head |
 | A.cpp:167:44:167:44 | l indirection [next indirection, head] | A.cpp:167:47:167:50 | FieldAddress indirection [head] |
 | A.cpp:167:44:167:44 | l indirection [next indirection, head] | A.cpp:167:47:167:50 | next indirection [head] |
 | A.cpp:167:44:167:44 | l indirection [next indirection, next indirection, head] | A.cpp:167:47:167:50 | FieldAddress indirection [next indirection, head] |
@@ -145,9 +145,9 @@ edges
 | A.cpp:167:47:167:50 | next indirection [head] | A.cpp:169:12:169:12 | l indirection [head] |
 | A.cpp:167:47:167:50 | next indirection [next indirection, head] | A.cpp:167:44:167:44 | l indirection [next indirection, head] |
 | A.cpp:169:12:169:12 | l indirection [head] | A.cpp:169:12:169:18 | head |
-| A.cpp:169:12:169:12 | l indirection [head] | A.cpp:169:15:169:18 | head |
-| A.cpp:169:12:169:12 | l indirection [head] | A.cpp:169:15:169:18 | head |
-| A.cpp:169:15:169:18 | head | A.cpp:169:12:169:18 | head |
+| A.cpp:169:12:169:12 | l indirection [head] | A.cpp:169:15:169:18 | FieldAddress indirection |
+| A.cpp:169:15:169:18 | FieldAddress indirection | A.cpp:169:12:169:18 | head |
+| A.cpp:169:15:169:18 | FieldAddress indirection | A.cpp:169:15:169:18 | head |
 | A.cpp:181:15:181:21 | newHead | A.cpp:183:7:183:20 | Store |
 | A.cpp:181:32:181:35 | next indirection [head] | A.cpp:184:7:184:23 | Store indirection [head] |
 | A.cpp:181:32:181:35 | next indirection [next indirection, head] | A.cpp:184:7:184:23 | Store indirection [next indirection, head] |
@@ -165,9 +165,9 @@ edges
 | B.cpp:9:10:9:11 | b2 indirection [box1 indirection, elem1] | B.cpp:9:14:9:17 | box1 indirection [elem1] |
 | B.cpp:9:14:9:17 | FieldAddress indirection [elem1] | B.cpp:9:14:9:17 | box1 indirection [elem1] |
 | B.cpp:9:14:9:17 | box1 indirection [elem1] | B.cpp:9:10:9:24 | elem1 |
-| B.cpp:9:14:9:17 | box1 indirection [elem1] | B.cpp:9:20:9:24 | elem1 |
-| B.cpp:9:14:9:17 | box1 indirection [elem1] | B.cpp:9:20:9:24 | elem1 |
-| B.cpp:9:20:9:24 | elem1 | B.cpp:9:10:9:24 | elem1 |
+| B.cpp:9:14:9:17 | box1 indirection [elem1] | B.cpp:9:20:9:24 | FieldAddress indirection |
+| B.cpp:9:20:9:24 | FieldAddress indirection | B.cpp:9:10:9:24 | elem1 |
+| B.cpp:9:20:9:24 | FieldAddress indirection | B.cpp:9:20:9:24 | elem1 |
 | B.cpp:15:15:15:27 | new | B.cpp:16:37:16:37 | e |
 | B.cpp:16:16:16:38 | call to Box1 [elem2] | B.cpp:17:25:17:26 | b1 indirection [elem2] |
 | B.cpp:16:37:16:37 | e | B.cpp:16:16:16:38 | call to Box1 [elem2] |
@@ -179,9 +179,9 @@ edges
 | B.cpp:19:10:19:11 | b2 indirection [box1 indirection, elem2] | B.cpp:19:14:19:17 | box1 indirection [elem2] |
 | B.cpp:19:14:19:17 | FieldAddress indirection [elem2] | B.cpp:19:14:19:17 | box1 indirection [elem2] |
 | B.cpp:19:14:19:17 | box1 indirection [elem2] | B.cpp:19:10:19:24 | elem2 |
-| B.cpp:19:14:19:17 | box1 indirection [elem2] | B.cpp:19:20:19:24 | elem2 |
-| B.cpp:19:14:19:17 | box1 indirection [elem2] | B.cpp:19:20:19:24 | elem2 |
-| B.cpp:19:20:19:24 | elem2 | B.cpp:19:10:19:24 | elem2 |
+| B.cpp:19:14:19:17 | box1 indirection [elem2] | B.cpp:19:20:19:24 | FieldAddress indirection |
+| B.cpp:19:20:19:24 | FieldAddress indirection | B.cpp:19:10:19:24 | elem2 |
+| B.cpp:19:20:19:24 | FieldAddress indirection | B.cpp:19:20:19:24 | elem2 |
 | B.cpp:33:16:33:17 | e1 | B.cpp:35:7:35:22 | Store |
 | B.cpp:33:26:33:27 | e2 | B.cpp:36:7:36:22 | Store |
 | B.cpp:35:7:35:22 | Store | B.cpp:35:13:35:17 | this indirection [post update] [elem1] |
@@ -209,9 +209,9 @@ edges
 | C.cpp:31:10:31:11 | this indirection [s3] | C.cpp:31:10:31:11 | FieldAddress indirection |
 | C.cpp:31:10:31:11 | this indirection [s3] | C.cpp:31:10:31:11 | s3 |
 | D.cpp:10:11:10:17 | this indirection [elem] | D.cpp:10:30:10:33 | this indirection [elem] |
-| D.cpp:10:30:10:33 | elem | D.cpp:10:11:10:17 | VariableAddress indirection |
+| D.cpp:10:30:10:33 | FieldAddress indirection | D.cpp:10:11:10:17 | VariableAddress indirection |
 | D.cpp:10:30:10:33 | this indirection [elem] | D.cpp:10:11:10:17 | VariableAddress indirection |
-| D.cpp:10:30:10:33 | this indirection [elem] | D.cpp:10:30:10:33 | elem |
+| D.cpp:10:30:10:33 | this indirection [elem] | D.cpp:10:30:10:33 | FieldAddress indirection |
 | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:36 | Store |
 | D.cpp:11:29:11:36 | Store | D.cpp:11:29:11:32 | this indirection [post update] [elem] |
 | D.cpp:17:11:17:17 | this indirection [box indirection, elem] | D.cpp:17:30:17:32 | this indirection [box indirection, elem] |
@@ -260,9 +260,9 @@ edges
 | D.cpp:64:10:64:17 | this indirection [boxfield indirection, box indirection, elem] | D.cpp:64:10:64:17 | boxfield indirection [box indirection, elem] |
 | D.cpp:64:20:64:22 | FieldAddress indirection [elem] | D.cpp:64:20:64:22 | box indirection [elem] |
 | D.cpp:64:20:64:22 | box indirection [elem] | D.cpp:64:10:64:28 | elem |
-| D.cpp:64:20:64:22 | box indirection [elem] | D.cpp:64:25:64:28 | elem |
-| D.cpp:64:20:64:22 | box indirection [elem] | D.cpp:64:25:64:28 | elem |
-| D.cpp:64:25:64:28 | elem | D.cpp:64:10:64:28 | elem |
+| D.cpp:64:20:64:22 | box indirection [elem] | D.cpp:64:25:64:28 | FieldAddress indirection |
+| D.cpp:64:25:64:28 | FieldAddress indirection | D.cpp:64:10:64:28 | elem |
+| D.cpp:64:25:64:28 | FieldAddress indirection | D.cpp:64:25:64:28 | elem |
 | E.cpp:19:27:19:27 | p indirection [data, buffer indirection] | E.cpp:21:10:21:10 | p indirection [data, buffer indirection] |
 | E.cpp:21:10:21:10 | p indirection [data, buffer indirection] | E.cpp:21:13:21:16 | data indirection [buffer indirection] |
 | E.cpp:21:13:21:16 | data indirection [buffer indirection] | E.cpp:21:18:21:23 | FieldAddress indirection |
@@ -443,12 +443,12 @@ edges
 | by_reference.cpp:24:25:24:29 | value | by_reference.cpp:24:19:24:22 | nonMemberSetA output argument [a] |
 | by_reference.cpp:31:46:31:46 | s indirection [a] | by_reference.cpp:32:12:32:12 | s indirection [a] |
 | by_reference.cpp:32:12:32:12 | s indirection [a] | by_reference.cpp:31:16:31:28 | VariableAddress indirection |
-| by_reference.cpp:32:12:32:12 | s indirection [a] | by_reference.cpp:32:15:32:15 | a |
-| by_reference.cpp:32:15:32:15 | a | by_reference.cpp:31:16:31:28 | VariableAddress indirection |
+| by_reference.cpp:32:12:32:12 | s indirection [a] | by_reference.cpp:32:15:32:15 | FieldAddress indirection |
+| by_reference.cpp:32:15:32:15 | FieldAddress indirection | by_reference.cpp:31:16:31:28 | VariableAddress indirection |
 | by_reference.cpp:35:9:35:19 | this indirection [a] | by_reference.cpp:36:12:36:15 | this indirection [a] |
 | by_reference.cpp:36:12:36:15 | this indirection [a] | by_reference.cpp:35:9:35:19 | VariableAddress indirection |
-| by_reference.cpp:36:12:36:15 | this indirection [a] | by_reference.cpp:36:18:36:18 | a |
-| by_reference.cpp:36:18:36:18 | a | by_reference.cpp:35:9:35:19 | VariableAddress indirection |
+| by_reference.cpp:36:12:36:15 | this indirection [a] | by_reference.cpp:36:18:36:18 | FieldAddress indirection |
+| by_reference.cpp:36:18:36:18 | FieldAddress indirection | by_reference.cpp:35:9:35:19 | VariableAddress indirection |
 | by_reference.cpp:39:9:39:21 | this indirection [a] | by_reference.cpp:40:12:40:15 | this indirection [a] |
 | by_reference.cpp:40:12:40:15 | this indirection [a] | by_reference.cpp:35:9:35:19 | this indirection [a] |
 | by_reference.cpp:40:12:40:15 | this indirection [a] | by_reference.cpp:39:9:39:21 | VariableAddress indirection |
@@ -570,13 +570,13 @@ edges
 | by_reference.cpp:136:8:136:13 | pouter indirection [a] | by_reference.cpp:136:16:136:16 | a |
 | by_reference.cpp:136:16:136:16 | FieldAddress indirection | by_reference.cpp:136:16:136:16 | a |
 | complex.cpp:9:7:9:7 | this indirection [a_] | complex.cpp:9:20:9:21 | this indirection [a_] |
-| complex.cpp:9:20:9:21 | a_ | complex.cpp:9:7:9:7 | VariableAddress indirection |
+| complex.cpp:9:20:9:21 | FieldAddress indirection | complex.cpp:9:7:9:7 | VariableAddress indirection |
 | complex.cpp:9:20:9:21 | this indirection [a_] | complex.cpp:9:7:9:7 | VariableAddress indirection |
-| complex.cpp:9:20:9:21 | this indirection [a_] | complex.cpp:9:20:9:21 | a_ |
+| complex.cpp:9:20:9:21 | this indirection [a_] | complex.cpp:9:20:9:21 | FieldAddress indirection |
 | complex.cpp:10:7:10:7 | this indirection [b_] | complex.cpp:10:20:10:21 | this indirection [b_] |
-| complex.cpp:10:20:10:21 | b_ | complex.cpp:10:7:10:7 | VariableAddress indirection |
+| complex.cpp:10:20:10:21 | FieldAddress indirection | complex.cpp:10:7:10:7 | VariableAddress indirection |
 | complex.cpp:10:20:10:21 | this indirection [b_] | complex.cpp:10:7:10:7 | VariableAddress indirection |
-| complex.cpp:10:20:10:21 | this indirection [b_] | complex.cpp:10:20:10:21 | b_ |
+| complex.cpp:10:20:10:21 | this indirection [b_] | complex.cpp:10:20:10:21 | FieldAddress indirection |
 | complex.cpp:11:17:11:17 | a | complex.cpp:11:22:11:27 | Store |
 | complex.cpp:11:22:11:27 | Store | complex.cpp:11:22:11:23 | this indirection [post update] [a_] |
 | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:27 | Store |
@@ -675,13 +675,13 @@ edges
 | conflated.cpp:61:12:61:15 | next indirection [y] | conflated.cpp:61:18:61:18 | y |
 | conflated.cpp:61:18:61:18 | FieldAddress indirection | conflated.cpp:61:18:61:18 | y |
 | constructors.cpp:18:9:18:9 | this indirection [a_] | constructors.cpp:18:22:18:23 | this indirection [a_] |
-| constructors.cpp:18:22:18:23 | a_ | constructors.cpp:18:9:18:9 | VariableAddress indirection |
+| constructors.cpp:18:22:18:23 | FieldAddress indirection | constructors.cpp:18:9:18:9 | VariableAddress indirection |
 | constructors.cpp:18:22:18:23 | this indirection [a_] | constructors.cpp:18:9:18:9 | VariableAddress indirection |
-| constructors.cpp:18:22:18:23 | this indirection [a_] | constructors.cpp:18:22:18:23 | a_ |
+| constructors.cpp:18:22:18:23 | this indirection [a_] | constructors.cpp:18:22:18:23 | FieldAddress indirection |
 | constructors.cpp:19:9:19:9 | this indirection [b_] | constructors.cpp:19:22:19:23 | this indirection [b_] |
-| constructors.cpp:19:22:19:23 | b_ | constructors.cpp:19:9:19:9 | VariableAddress indirection |
+| constructors.cpp:19:22:19:23 | FieldAddress indirection | constructors.cpp:19:9:19:9 | VariableAddress indirection |
 | constructors.cpp:19:22:19:23 | this indirection [b_] | constructors.cpp:19:9:19:9 | VariableAddress indirection |
-| constructors.cpp:19:22:19:23 | this indirection [b_] | constructors.cpp:19:22:19:23 | b_ |
+| constructors.cpp:19:22:19:23 | this indirection [b_] | constructors.cpp:19:22:19:23 | FieldAddress indirection |
 | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:28:23:28 | Store |
 | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:35:23:35 | Store |
 | constructors.cpp:23:28:23:28 | Store | constructors.cpp:23:25:23:29 | this indirection [post update] [a_] |
@@ -787,17 +787,17 @@ edges
 | realistic.cpp:61:32:61:34 | FieldAddress indirection [userInput, bufferLen] | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] |
 | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] | realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] |
 | realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] | realistic.cpp:61:14:61:55 | bufferLen |
-| realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] | realistic.cpp:61:47:61:55 | bufferLen |
-| realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] | realistic.cpp:61:47:61:55 | bufferLen |
-| realistic.cpp:61:47:61:55 | bufferLen | realistic.cpp:61:14:61:55 | bufferLen |
+| realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] | realistic.cpp:61:47:61:55 | FieldAddress indirection |
+| realistic.cpp:61:47:61:55 | FieldAddress indirection | realistic.cpp:61:14:61:55 | bufferLen |
+| realistic.cpp:61:47:61:55 | FieldAddress indirection | realistic.cpp:61:47:61:55 | bufferLen |
 | simple.cpp:18:9:18:9 | this indirection [a_] | simple.cpp:18:22:18:23 | this indirection [a_] |
-| simple.cpp:18:22:18:23 | a_ | simple.cpp:18:9:18:9 | VariableAddress indirection |
+| simple.cpp:18:22:18:23 | FieldAddress indirection | simple.cpp:18:9:18:9 | VariableAddress indirection |
 | simple.cpp:18:22:18:23 | this indirection [a_] | simple.cpp:18:9:18:9 | VariableAddress indirection |
-| simple.cpp:18:22:18:23 | this indirection [a_] | simple.cpp:18:22:18:23 | a_ |
+| simple.cpp:18:22:18:23 | this indirection [a_] | simple.cpp:18:22:18:23 | FieldAddress indirection |
 | simple.cpp:19:9:19:9 | this indirection [b_] | simple.cpp:19:22:19:23 | this indirection [b_] |
-| simple.cpp:19:22:19:23 | b_ | simple.cpp:19:9:19:9 | VariableAddress indirection |
+| simple.cpp:19:22:19:23 | FieldAddress indirection | simple.cpp:19:9:19:9 | VariableAddress indirection |
 | simple.cpp:19:22:19:23 | this indirection [b_] | simple.cpp:19:9:19:9 | VariableAddress indirection |
-| simple.cpp:19:22:19:23 | this indirection [b_] | simple.cpp:19:22:19:23 | b_ |
+| simple.cpp:19:22:19:23 | this indirection [b_] | simple.cpp:19:22:19:23 | FieldAddress indirection |
 | simple.cpp:20:19:20:19 | a | simple.cpp:20:24:20:29 | Store |
 | simple.cpp:20:24:20:29 | Store | simple.cpp:20:24:20:25 | this indirection [post update] [a_] |
 | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:29 | Store |
@@ -832,9 +832,9 @@ edges
 | simple.cpp:67:13:67:13 | FieldAddress indirection | simple.cpp:67:13:67:13 | i |
 | simple.cpp:78:9:78:15 | this indirection [f2, f1] | simple.cpp:79:16:79:17 | this indirection [f2, f1] |
 | simple.cpp:79:16:79:17 | f2 indirection [f1] | simple.cpp:78:9:78:15 | VariableAddress indirection |
-| simple.cpp:79:16:79:17 | f2 indirection [f1] | simple.cpp:79:19:79:20 | f1 |
+| simple.cpp:79:16:79:17 | f2 indirection [f1] | simple.cpp:79:19:79:20 | FieldAddress indirection |
 | simple.cpp:79:16:79:17 | this indirection [f2, f1] | simple.cpp:79:16:79:17 | f2 indirection [f1] |
-| simple.cpp:79:19:79:20 | f1 | simple.cpp:78:9:78:15 | VariableAddress indirection |
+| simple.cpp:79:19:79:20 | FieldAddress indirection | simple.cpp:78:9:78:15 | VariableAddress indirection |
 | simple.cpp:83:9:83:10 | this indirection [post update] [f2, f1] | simple.cpp:84:14:84:20 | this indirection [f2, f1] |
 | simple.cpp:83:9:83:28 | Store | simple.cpp:83:12:83:13 | f2 indirection [post update] [f1] |
 | simple.cpp:83:12:83:13 | f2 indirection [post update] [f1] | simple.cpp:83:9:83:10 | this indirection [post update] [f2, f1] |
@@ -901,7 +901,7 @@ nodes
 | A.cpp:28:8:28:10 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | A.cpp:28:8:28:10 | this indirection [c] | semmle.label | this indirection [c] |
 | A.cpp:28:23:28:26 | this indirection [c] | semmle.label | this indirection [c] |
-| A.cpp:28:29:28:29 | c | semmle.label | c |
+| A.cpp:28:29:28:29 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:29:15:29:18 | VariableAddress indirection [c] | semmle.label | VariableAddress indirection [c] |
 | A.cpp:29:23:29:23 | c | semmle.label | c |
 | A.cpp:31:14:31:21 | call to B [c] | semmle.label | call to B [c] |
@@ -915,7 +915,7 @@ nodes
 | A.cpp:48:20:48:20 | c | semmle.label | c |
 | A.cpp:49:10:49:10 | b indirection [c] | semmle.label | b indirection [c] |
 | A.cpp:49:10:49:13 | c | semmle.label | c |
-| A.cpp:49:13:49:13 | c | semmle.label | c |
+| A.cpp:49:13:49:13 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:49:13:49:13 | c | semmle.label | c |
 | A.cpp:55:5:55:5 | set output argument [c] | semmle.label | set output argument [c] |
 | A.cpp:55:12:55:19 | new | semmle.label | new |
@@ -932,14 +932,14 @@ nodes
 | A.cpp:64:21:64:28 | new | semmle.label | new |
 | A.cpp:66:10:66:11 | b2 indirection [c] | semmle.label | b2 indirection [c] |
 | A.cpp:66:10:66:14 | c | semmle.label | c |
-| A.cpp:66:14:66:14 | c | semmle.label | c |
+| A.cpp:66:14:66:14 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:66:14:66:14 | c | semmle.label | c |
 | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] | semmle.label | call to setOnBWrap indirection [c] |
 | A.cpp:73:25:73:32 | new | semmle.label | new |
 | A.cpp:73:25:73:32 | new | semmle.label | new |
 | A.cpp:75:10:75:11 | b2 indirection [c] | semmle.label | b2 indirection [c] |
 | A.cpp:75:10:75:14 | c | semmle.label | c |
-| A.cpp:75:14:75:14 | c | semmle.label | c |
+| A.cpp:75:14:75:14 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:75:14:75:14 | c | semmle.label | c |
 | A.cpp:78:6:78:15 | VariableAddress indirection [c] | semmle.label | VariableAddress indirection [c] |
 | A.cpp:78:27:78:27 | c | semmle.label | c |
@@ -956,11 +956,11 @@ nodes
 | A.cpp:103:14:103:14 | c indirection [a] | semmle.label | c indirection [a] |
 | A.cpp:107:12:107:13 | c1 indirection [a] | semmle.label | c1 indirection [a] |
 | A.cpp:107:12:107:16 | a | semmle.label | a |
-| A.cpp:107:16:107:16 | a | semmle.label | a |
+| A.cpp:107:16:107:16 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:107:16:107:16 | a | semmle.label | a |
 | A.cpp:120:12:120:13 | c1 indirection [a] | semmle.label | c1 indirection [a] |
 | A.cpp:120:12:120:16 | a | semmle.label | a |
-| A.cpp:120:16:120:16 | a | semmle.label | a |
+| A.cpp:120:16:120:16 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:120:16:120:16 | a | semmle.label | a |
 | A.cpp:126:5:126:5 | set output argument [c] | semmle.label | set output argument [c] |
 | A.cpp:126:12:126:18 | new | semmle.label | new |
@@ -968,7 +968,7 @@ nodes
 | A.cpp:131:8:131:8 | f7 output argument [c] | semmle.label | f7 output argument [c] |
 | A.cpp:132:10:132:10 | b indirection [c] | semmle.label | b indirection [c] |
 | A.cpp:132:10:132:13 | c | semmle.label | c |
-| A.cpp:132:13:132:13 | c | semmle.label | c |
+| A.cpp:132:13:132:13 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:132:13:132:13 | c | semmle.label | c |
 | A.cpp:140:13:140:13 | b | semmle.label | b |
 | A.cpp:142:7:142:20 | Store | semmle.label | Store |
@@ -988,17 +988,17 @@ nodes
 | A.cpp:151:18:151:18 | b | semmle.label | b |
 | A.cpp:152:10:152:10 | d indirection [b] | semmle.label | d indirection [b] |
 | A.cpp:152:10:152:13 | b | semmle.label | b |
-| A.cpp:152:13:152:13 | b | semmle.label | b |
+| A.cpp:152:13:152:13 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:152:13:152:13 | b | semmle.label | b |
 | A.cpp:153:10:153:10 | d indirection [b indirection, c] | semmle.label | d indirection [b indirection, c] |
 | A.cpp:153:10:153:16 | c | semmle.label | c |
 | A.cpp:153:13:153:13 | FieldAddress indirection [c] | semmle.label | FieldAddress indirection [c] |
 | A.cpp:153:13:153:13 | b indirection [c] | semmle.label | b indirection [c] |
-| A.cpp:153:16:153:16 | c | semmle.label | c |
+| A.cpp:153:16:153:16 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:153:16:153:16 | c | semmle.label | c |
 | A.cpp:154:10:154:10 | b indirection [c] | semmle.label | b indirection [c] |
 | A.cpp:154:10:154:13 | c | semmle.label | c |
-| A.cpp:154:13:154:13 | c | semmle.label | c |
+| A.cpp:154:13:154:13 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:154:13:154:13 | c | semmle.label | c |
 | A.cpp:159:12:159:18 | new | semmle.label | new |
 | A.cpp:160:18:160:60 | call to MyList [head] | semmle.label | call to MyList [head] |
@@ -1013,7 +1013,7 @@ nodes
 | A.cpp:165:14:165:17 | next indirection [next indirection, head] | semmle.label | next indirection [next indirection, head] |
 | A.cpp:165:20:165:23 | FieldAddress indirection [head] | semmle.label | FieldAddress indirection [head] |
 | A.cpp:165:20:165:23 | next indirection [head] | semmle.label | next indirection [head] |
-| A.cpp:165:26:165:29 | head | semmle.label | head |
+| A.cpp:165:26:165:29 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:165:26:165:29 | head | semmle.label | head |
 | A.cpp:167:44:167:44 | l indirection [next indirection, head] | semmle.label | l indirection [next indirection, head] |
 | A.cpp:167:44:167:44 | l indirection [next indirection, next indirection, head] | semmle.label | l indirection [next indirection, next indirection, head] |
@@ -1023,7 +1023,7 @@ nodes
 | A.cpp:167:47:167:50 | next indirection [next indirection, head] | semmle.label | next indirection [next indirection, head] |
 | A.cpp:169:12:169:12 | l indirection [head] | semmle.label | l indirection [head] |
 | A.cpp:169:12:169:18 | head | semmle.label | head |
-| A.cpp:169:15:169:18 | head | semmle.label | head |
+| A.cpp:169:15:169:18 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | A.cpp:169:15:169:18 | head | semmle.label | head |
 | A.cpp:181:15:181:21 | newHead | semmle.label | newHead |
 | A.cpp:181:32:181:35 | next indirection [head] | semmle.label | next indirection [head] |
@@ -1043,7 +1043,7 @@ nodes
 | B.cpp:9:10:9:24 | elem1 | semmle.label | elem1 |
 | B.cpp:9:14:9:17 | FieldAddress indirection [elem1] | semmle.label | FieldAddress indirection [elem1] |
 | B.cpp:9:14:9:17 | box1 indirection [elem1] | semmle.label | box1 indirection [elem1] |
-| B.cpp:9:20:9:24 | elem1 | semmle.label | elem1 |
+| B.cpp:9:20:9:24 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | B.cpp:9:20:9:24 | elem1 | semmle.label | elem1 |
 | B.cpp:15:15:15:27 | new | semmle.label | new |
 | B.cpp:16:16:16:38 | call to Box1 [elem2] | semmle.label | call to Box1 [elem2] |
@@ -1054,7 +1054,7 @@ nodes
 | B.cpp:19:10:19:24 | elem2 | semmle.label | elem2 |
 | B.cpp:19:14:19:17 | FieldAddress indirection [elem2] | semmle.label | FieldAddress indirection [elem2] |
 | B.cpp:19:14:19:17 | box1 indirection [elem2] | semmle.label | box1 indirection [elem2] |
-| B.cpp:19:20:19:24 | elem2 | semmle.label | elem2 |
+| B.cpp:19:20:19:24 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | B.cpp:19:20:19:24 | elem2 | semmle.label | elem2 |
 | B.cpp:33:16:33:17 | e1 | semmle.label | e1 |
 | B.cpp:33:26:33:27 | e2 | semmle.label | e2 |
@@ -1088,7 +1088,7 @@ nodes
 | C.cpp:31:10:31:11 | this indirection [s3] | semmle.label | this indirection [s3] |
 | D.cpp:10:11:10:17 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | D.cpp:10:11:10:17 | this indirection [elem] | semmle.label | this indirection [elem] |
-| D.cpp:10:30:10:33 | elem | semmle.label | elem |
+| D.cpp:10:30:10:33 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | D.cpp:10:30:10:33 | this indirection [elem] | semmle.label | this indirection [elem] |
 | D.cpp:11:24:11:24 | e | semmle.label | e |
 | D.cpp:11:29:11:32 | this indirection [post update] [elem] | semmle.label | this indirection [post update] [elem] |
@@ -1135,7 +1135,7 @@ nodes
 | D.cpp:64:10:64:28 | elem | semmle.label | elem |
 | D.cpp:64:20:64:22 | FieldAddress indirection [elem] | semmle.label | FieldAddress indirection [elem] |
 | D.cpp:64:20:64:22 | box indirection [elem] | semmle.label | box indirection [elem] |
-| D.cpp:64:25:64:28 | elem | semmle.label | elem |
+| D.cpp:64:25:64:28 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | D.cpp:64:25:64:28 | elem | semmle.label | elem |
 | E.cpp:19:27:19:27 | p indirection [data, buffer indirection] | semmle.label | p indirection [data, buffer indirection] |
 | E.cpp:21:10:21:10 | p indirection [data, buffer indirection] | semmle.label | p indirection [data, buffer indirection] |
@@ -1309,11 +1309,11 @@ nodes
 | by_reference.cpp:31:16:31:28 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | by_reference.cpp:31:46:31:46 | s indirection [a] | semmle.label | s indirection [a] |
 | by_reference.cpp:32:12:32:12 | s indirection [a] | semmle.label | s indirection [a] |
-| by_reference.cpp:32:15:32:15 | a | semmle.label | a |
+| by_reference.cpp:32:15:32:15 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | by_reference.cpp:35:9:35:19 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | by_reference.cpp:35:9:35:19 | this indirection [a] | semmle.label | this indirection [a] |
 | by_reference.cpp:36:12:36:15 | this indirection [a] | semmle.label | this indirection [a] |
-| by_reference.cpp:36:18:36:18 | a | semmle.label | a |
+| by_reference.cpp:36:18:36:18 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | by_reference.cpp:39:9:39:21 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | by_reference.cpp:39:9:39:21 | this indirection [a] | semmle.label | this indirection [a] |
 | by_reference.cpp:40:12:40:15 | this indirection [a] | semmle.label | this indirection [a] |
@@ -1420,11 +1420,11 @@ nodes
 | by_reference.cpp:136:16:136:16 | a | semmle.label | a |
 | complex.cpp:9:7:9:7 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | complex.cpp:9:7:9:7 | this indirection [a_] | semmle.label | this indirection [a_] |
-| complex.cpp:9:20:9:21 | a_ | semmle.label | a_ |
+| complex.cpp:9:20:9:21 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | complex.cpp:9:20:9:21 | this indirection [a_] | semmle.label | this indirection [a_] |
 | complex.cpp:10:7:10:7 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | complex.cpp:10:7:10:7 | this indirection [b_] | semmle.label | this indirection [b_] |
-| complex.cpp:10:20:10:21 | b_ | semmle.label | b_ |
+| complex.cpp:10:20:10:21 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | complex.cpp:10:20:10:21 | this indirection [b_] | semmle.label | this indirection [b_] |
 | complex.cpp:11:17:11:17 | a | semmle.label | a |
 | complex.cpp:11:22:11:23 | this indirection [post update] [a_] | semmle.label | this indirection [post update] [a_] |
@@ -1513,11 +1513,11 @@ nodes
 | conflated.cpp:61:18:61:18 | y | semmle.label | y |
 | constructors.cpp:18:9:18:9 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | constructors.cpp:18:9:18:9 | this indirection [a_] | semmle.label | this indirection [a_] |
-| constructors.cpp:18:22:18:23 | a_ | semmle.label | a_ |
+| constructors.cpp:18:22:18:23 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | constructors.cpp:18:22:18:23 | this indirection [a_] | semmle.label | this indirection [a_] |
 | constructors.cpp:19:9:19:9 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | constructors.cpp:19:9:19:9 | this indirection [b_] | semmle.label | this indirection [b_] |
-| constructors.cpp:19:22:19:23 | b_ | semmle.label | b_ |
+| constructors.cpp:19:22:19:23 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | constructors.cpp:19:22:19:23 | this indirection [b_] | semmle.label | this indirection [b_] |
 | constructors.cpp:23:13:23:13 | a | semmle.label | a |
 | constructors.cpp:23:20:23:20 | b | semmle.label | b |
@@ -1616,15 +1616,15 @@ nodes
 | realistic.cpp:61:32:61:34 | FieldAddress indirection [userInput, bufferLen] | semmle.label | FieldAddress indirection [userInput, bufferLen] |
 | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] | semmle.label | baz indirection [userInput, bufferLen] |
 | realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] | semmle.label | userInput indirection [bufferLen] |
-| realistic.cpp:61:47:61:55 | bufferLen | semmle.label | bufferLen |
+| realistic.cpp:61:47:61:55 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | realistic.cpp:61:47:61:55 | bufferLen | semmle.label | bufferLen |
 | simple.cpp:18:9:18:9 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | simple.cpp:18:9:18:9 | this indirection [a_] | semmle.label | this indirection [a_] |
-| simple.cpp:18:22:18:23 | a_ | semmle.label | a_ |
+| simple.cpp:18:22:18:23 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | simple.cpp:18:22:18:23 | this indirection [a_] | semmle.label | this indirection [a_] |
 | simple.cpp:19:9:19:9 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | simple.cpp:19:9:19:9 | this indirection [b_] | semmle.label | this indirection [b_] |
-| simple.cpp:19:22:19:23 | b_ | semmle.label | b_ |
+| simple.cpp:19:22:19:23 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | simple.cpp:19:22:19:23 | this indirection [b_] | semmle.label | this indirection [b_] |
 | simple.cpp:20:19:20:19 | a | semmle.label | a |
 | simple.cpp:20:24:20:25 | this indirection [post update] [a_] | semmle.label | this indirection [post update] [a_] |
@@ -1660,7 +1660,7 @@ nodes
 | simple.cpp:78:9:78:15 | this indirection [f2, f1] | semmle.label | this indirection [f2, f1] |
 | simple.cpp:79:16:79:17 | f2 indirection [f1] | semmle.label | f2 indirection [f1] |
 | simple.cpp:79:16:79:17 | this indirection [f2, f1] | semmle.label | this indirection [f2, f1] |
-| simple.cpp:79:19:79:20 | f1 | semmle.label | f1 |
+| simple.cpp:79:19:79:20 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | simple.cpp:83:9:83:10 | this indirection [post update] [f2, f1] | semmle.label | this indirection [post update] [f2, f1] |
 | simple.cpp:83:9:83:28 | Store | semmle.label | Store |
 | simple.cpp:83:12:83:13 | f2 indirection [post update] [f1] | semmle.label | f2 indirection [post update] [f1] |
