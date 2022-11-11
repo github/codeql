@@ -142,13 +142,13 @@ private class StdStringPlus extends TaintFunction {
 }
 
 /**
- * The `std::string` functions `operator+=`, `append`, `insert` and
- * `replace`. All of these functions combine the existing string
- * with a new string (or character) from one of the arguments.
+ * The `std::string` functions `operator+=`, `append` and `replace`.
+ * All of these functions combine the existing string with a new
+ * string (or character) from one of the arguments.
  */
 private class StdStringAppend extends TaintFunction {
   StdStringAppend() {
-    this.getClassAndName(["operator+=", "append", "insert", "replace"]) instanceof StdBasicString
+    this.getClassAndName(["operator+=", "append", "replace"]) instanceof StdBasicString
   }
 
   /**
@@ -181,6 +181,56 @@ private class StdStringAppend extends TaintFunction {
     or
     // reverse flow from returned reference to the qualifier (for writes to
     // the result)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::string` function `insert`.
+ */
+private class StdStringInsert extends TaintFunction {
+  StdStringInsert() {
+    this.getClassAndName("insert") instanceof StdBasicString
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a string (or
+   * character).
+   */
+  int getAStringParameterIndex() {
+    this.getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    this.getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
+    this.getParameter(result).getUnspecifiedType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
+
+  /**
+   * Holds if the return type is an iterator.
+   */
+  predicate hasIteratorReturnValue() { this.getType() instanceof Iterator }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from string and parameter to string (qualifier) and return value
+    (
+      input.isQualifierObject() or
+      input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getAnIteratorParameterIndex())
+    ) and
+    (
+      output.isQualifierObject()
+      or
+      if this.hasIteratorReturnValue() then output.isReturnValue() else output.isReturnValueDeref()
+    )
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // the result)
+    not this.hasIteratorReturnValue() and
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
