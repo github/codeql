@@ -1,7 +1,7 @@
 /**
  * @name Android WebView JavaScript settings
  * @kind problem
- * @id java/android-websettings-javascript
+ * @id java/android-websettings-javascript-enabled
  * @problem.severity warning
  * @security-severity 6.1
  * @precision high
