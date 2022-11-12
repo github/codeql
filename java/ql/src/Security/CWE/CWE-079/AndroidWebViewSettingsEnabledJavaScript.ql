@@ -1,5 +1,6 @@
 /**
  * @name Android WebView JavaScript settings
+ * @description Enabling JavaScript execution in a WebView can result in man-in-the-middle attacks.
  * @kind problem
  * @id java/android-websettings-javascript-enabled
  * @problem.severity warning
