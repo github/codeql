@@ -35,13 +35,13 @@
 
   <references>
     <li>
-      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccess(boolean)"><code>WebSettings.setAllowFileAccess</code></a>.
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccess(boolean)">WebSettings.setAllowFileAccess</a>.
     </li>
     <li>
-      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccessFromFileURLs(boolean)"><code>WebSettings.setAllowFileAccessFromFileURLs</code></a>.
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccessFromFileURLs(boolean)">WebSettings.setAllowFileAccessFromFileURLs</a>.
     </li>
     <li>
-      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowUniversalAccessFromFileURLs(boolean)"><code>WebSettings.setAllowUniversalAccessFromFileURLs</code></a>.
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowUniversalAccessFromFileURLs(boolean)">WebSettings.setAllowUniversalAccessFromFileURLs</a>.
     </li>
     <li>
       File access from URLs is enabled for WebView: <a href="https://oversecured.com/vulnerabilities#Android/File_access_from_file_URLs_is_enabled_for_WebView">File access for URLs is enabled for WebView</a>.
