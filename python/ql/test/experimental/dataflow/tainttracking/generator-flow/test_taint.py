@@ -31,7 +31,7 @@ def test_non_source():
     ensure_not_tainted(x)
 
     x = generator_helper(NONSOURCE)
-    ensure_not_tainted(x) # $ SPURIOUS: tainted
+    ensure_not_tainted(x)
 
     x = generator_helper_wo_source_use(NONSOURCE)
     ensure_not_tainted(x)

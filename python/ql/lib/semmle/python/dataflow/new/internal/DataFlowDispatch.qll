@@ -254,7 +254,14 @@ abstract class LibraryCallable extends string {
 }
 
 newtype TDataFlowCallable =
-  TFunction(Function func) or
+  TFunction(Function func) {
+    // For generators/list-comprehensions we create a synthetic function. In the
+    // points-to call-graph these were not considered callable, and instead we added
+    // data-flow steps (read/write) for these. As an easy solution for now, we do the
+    // same to keep things easy to reason about (and therefore exclude things that do
+    // not have a definition)
+    exists(func.getDefinition())
+  } or
   /** see QLDoc for `DataFlowModuleScope` for why we need this. */
   TModule(Module m) or
   TLibraryCallable(LibraryCallable callable)
