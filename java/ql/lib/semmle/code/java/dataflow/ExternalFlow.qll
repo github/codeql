@@ -1,22 +1,23 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with flow models specified in CSV format.
+ * Provides classes and predicates for dealing with flow models specified
+ * in data extensions and CSV format.
  *
  * The CSV specification has the following columns:
  * - Sources:
- *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
+ *   `package; type; subtypes; name; signature; ext; output; kind; provenance`
  * - Sinks:
- *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
+ *   `package; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
- *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
+ *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Negative Summaries:
- *   `namespace; type; name; signature; provenance`
+ *   `package; type; name; signature; provenance`
  *   A negative summary is used to indicate that there is no flow via a callable.
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
- * 1. The `namespace` column selects a package.
+ * 1. The `package` column selects a package.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type.
@@ -433,12 +434,12 @@ predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string package, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind, string provenance
 ) {
   exists(string row |
     sourceModel(row) and
-    row.splitAt(";", 0) = namespace and
+    row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = subtypes.toString() and
     subtypes = [true, false] and
@@ -453,12 +454,12 @@ predicate sourceModel(
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind, string provenance
 ) {
   exists(string row |
     sinkModel(row) and
-    row.splitAt(";", 0) = namespace and
+    row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = subtypes.toString() and
     subtypes = [true, false] and
@@ -473,19 +474,19 @@ predicate sinkModel(
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance
 ) {
-  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
+  summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
 predicate summaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance, string row
 ) {
   summaryModel(row) and
-  row.splitAt(";", 0) = namespace and
+  row.splitAt(";", 0) = package and
   row.splitAt(";", 1) = type and
   row.splitAt(";", 2) = subtypes.toString() and
   subtypes = [true, false] and
@@ -500,11 +501,11 @@ predicate summaryModel(
 
 /** Holds if a summary model exists indicating there is no flow for the given parameters. */
 predicate negativeSummaryModel(
-  string namespace, string type, string name, string signature, string provenance
+  string package, string type, string name, string signature, string provenance
 ) {
   exists(string row |
     negativeSummaryModel(row) and
-    row.splitAt(";", 0) = namespace and
+    row.splitAt(";", 0) = package and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = name and
     row.splitAt(";", 3) = signature and
@@ -534,7 +535,7 @@ private predicate canonicalPkgLink(string package, string subpkg) {
 }
 
 /**
- * Holds if CSV framework coverage of `package` is `n` api endpoints of the
+ * Holds if MaD framework coverage of `package` is `n` api endpoints of the
  * kind `(kind, part)`.
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
@@ -566,8 +567,8 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
   )
 }
 
-/** Provides a query predicate to check the CSV data for validation errors. */
-module CsvValidation {
+/** Provides a query predicate to check the MaD models for validation errors. */
+module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, string input, string part |
       sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
@@ -668,22 +669,22 @@ module CsvValidation {
 
   private string getInvalidModelSignature() {
     exists(
-      string pred, string namespace, string type, string name, string signature, string ext,
+      string pred, string package, string type, string name, string signature, string ext,
       string provenance
     |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "source"
+      sourceModel(package, type, _, name, signature, ext, _, _, provenance) and pred = "source"
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
+      sinkModel(package, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
+      summaryModel(package, type, _, name, signature, ext, _, _, _, provenance) and
       pred = "summary"
       or
-      negativeSummaryModel(namespace, type, name, signature, provenance) and
+      negativeSummaryModel(package, type, name, signature, provenance) and
       ext = "" and
       pred = "negative summary"
     |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
-      result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
+      not package.regexpMatch("[a-zA-Z0-9_\\.]+") and
+      result = "Dubious package \"" + package + "\" in " + pred + " model."
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
@@ -702,7 +703,7 @@ module CsvValidation {
     )
   }
 
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
+  /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
@@ -714,15 +715,15 @@ module CsvValidation {
 
 pragma[nomagic]
 private predicate elementSpec(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext
+  string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  sourceModel(package, type, subtypes, name, signature, ext, _, _, _)
   or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  sinkModel(package, type, subtypes, name, signature, ext, _, _, _)
   or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
+  summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  negativeSummaryModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
+  negativeSummaryModel(package, type, name, signature, _) and ext = "" and subtypes = false
 }
 
 private string paramsStringPart(Callable c, int i) {
@@ -747,10 +748,10 @@ cached
 string paramsString(Callable c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 private Element interpretElement0(
-  string namespace, string type, boolean subtypes, string name, string signature
+  string package, string type, boolean subtypes, string name, string signature
 ) {
-  elementSpec(namespace, type, subtypes, name, signature, _) and
-  exists(RefType t | t.hasQualifiedName(namespace, type) |
+  elementSpec(package, type, subtypes, name, signature, _) and
+  exists(RefType t | t.hasQualifiedName(package, type) |
     exists(Member m |
       (
         result = m
@@ -773,10 +774,10 @@ private Element interpretElement0(
 
 /** Gets the source/sink/summary/negativesummary element corresponding to the supplied parameters. */
 Element interpretElement(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext
+  string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  elementSpec(namespace, type, subtypes, name, signature, ext) and
-  exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
+  elementSpec(package, type, subtypes, name, signature, ext) and
+  exists(Element e | e = interpretElement0(package, type, subtypes, name, signature) |
     ext = "" and result = e
     or
     ext = "Annotated" and result.(Annotatable).getAnAnnotation().getType() = e
@@ -831,7 +832,7 @@ predicate parseContent(AccessPathToken component, Content content) {
 cached
 private module Cached {
   /**
-   * Holds if `node` is specified as a source with the given kind in a CSV flow
+   * Holds if `node` is specified as a source with the given kind in a MaD flow
    * model.
    */
   cached
@@ -840,7 +841,7 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` is specified as a sink with the given kind in a CSV flow
+   * Holds if `node` is specified as a sink with the given kind in a MaD flow
    * model.
    */
   cached

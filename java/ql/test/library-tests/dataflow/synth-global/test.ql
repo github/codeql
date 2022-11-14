@@ -1,6 +1,6 @@
 import java
 import TestUtilities.InlineFlowTest
-import CsvValidation
+import ModelValidation
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {

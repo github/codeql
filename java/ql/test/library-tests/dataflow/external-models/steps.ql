@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 class SummaryModelTest extends SummaryModelCsv {

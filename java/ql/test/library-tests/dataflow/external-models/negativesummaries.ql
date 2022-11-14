@@ -4,5 +4,5 @@
 
 import java
 import semmle.code.java.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 import semmle.code.java.dataflow.internal.NegativeSummary

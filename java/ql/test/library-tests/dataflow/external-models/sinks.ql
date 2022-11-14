@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 
 class SinkModelTest extends SinkModelCsv {
   override predicate row(string row) {
