@@ -9,6 +9,13 @@
 import java
 import semmle.code.java.Diagnostics
 
+predicate compilationInfo(string key, int value) {
+  exists(Compilation c, string infoKey |
+    key = infoKey + ": " + c.getInfo(infoKey) and
+    value = 1
+  )
+}
+
 predicate fileCount(string key, int value) {
   key = "Number of files" and
   value = strictcount(File f)
@@ -55,6 +62,7 @@ predicate extractorDiagnostics(string key, int value) {
 
 from string key, int value
 where
+  compilationInfo(key, value) or
   fileCount(key, value) or
   fileCountByExtension(key, value) or
   totalNumberOfLines(key, value) or
