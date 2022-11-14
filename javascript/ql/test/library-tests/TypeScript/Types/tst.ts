@@ -400,4 +400,18 @@ module TS49 {
 
   // Both of these methods are still accessible!
   const redComponent = palette.red.at(0);
+
+  interface RGBObj {
+    red: number;
+  }
+
+  interface HSVObj {
+    hue: number;
+  }
+
+  function setColor(color: RGBObj | HSVObj) {
+    if ("hue" in color) {
+      let h = color; // <- HSVObj
+    }
+  }
 }

@@ -135,6 +135,7 @@ nodes
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
@@ -1425,8 +1426,8 @@ nodes
 | tst.ts:385:56:385:56 | [Literal] 0 | semmle.label | [Literal] 0 |
 | tst.ts:385:59:385:63 | [Literal] false | semmle.label | [Literal] false |
 | tst.ts:385:66:385:71 | [Literal] "bye!" | semmle.label | [Literal] "bye!" |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | semmle.label | [NamespaceDeclaration] module ... t(0); } |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | semmle.order | 85 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | semmle.label | [NamespaceDeclaration] module ... } } } |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | semmle.order | 85 |
 | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.label | [VarDecl] TS49 |
 | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; |
 | tst.ts:391:8:391:13 | [Identifier] Colors | semmle.label | [Identifier] Colors |
@@ -1479,6 +1480,32 @@ nodes
 | tst.ts:402:32:402:34 | [Label] red | semmle.label | [Label] red |
 | tst.ts:402:36:402:37 | [Label] at | semmle.label | [Label] at |
 | tst.ts:402:39:402:39 | [Literal] 0 | semmle.label | [Literal] 0 |
+| tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... er; } |
+| tst.ts:404:13:404:18 | [Identifier] RGBObj | semmle.label | [Identifier] RGBObj |
+| tst.ts:405:5:405:7 | [Label] red | semmle.label | [Label] red |
+| tst.ts:405:5:405:16 | [FieldDeclaration] red: number; | semmle.label | [FieldDeclaration] red: number; |
+| tst.ts:405:10:405:15 | [KeywordTypeExpr] number | semmle.label | [KeywordTypeExpr] number |
+| tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... er; } |
+| tst.ts:408:13:408:18 | [Identifier] HSVObj | semmle.label | [Identifier] HSVObj |
+| tst.ts:409:5:409:7 | [Label] hue | semmle.label | [Label] hue |
+| tst.ts:409:5:409:16 | [FieldDeclaration] hue: number; | semmle.label | [FieldDeclaration] hue: number; |
+| tst.ts:409:10:409:15 | [KeywordTypeExpr] number | semmle.label | [KeywordTypeExpr] number |
+| tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | semmle.label | [FunctionDeclStmt] functio ... } } |
+| tst.ts:412:12:412:19 | [VarDecl] setColor | semmle.label | [VarDecl] setColor |
+| tst.ts:412:21:412:25 | [SimpleParameter] color | semmle.label | [SimpleParameter] color |
+| tst.ts:412:28:412:33 | [LocalTypeAccess] RGBObj | semmle.label | [LocalTypeAccess] RGBObj |
+| tst.ts:412:28:412:42 | [UnionTypeExpr] RGBObj \| HSVObj | semmle.label | [UnionTypeExpr] RGBObj \| HSVObj |
+| tst.ts:412:37:412:42 | [LocalTypeAccess] HSVObj | semmle.label | [LocalTypeAccess] HSVObj |
+| tst.ts:412:45:416:3 | [BlockStmt] { i ... } } | semmle.label | [BlockStmt] { i ... } } |
+| tst.ts:413:5:415:5 | [IfStmt] if ("hu ... j } | semmle.label | [IfStmt] if ("hu ... j } |
+| tst.ts:413:9:413:13 | [Literal] "hue" | semmle.label | [Literal] "hue" |
+| tst.ts:413:9:413:22 | [BinaryExpr] "hue" in color | semmle.label | [BinaryExpr] "hue" in color |
+| tst.ts:413:18:413:22 | [VarRef] color | semmle.label | [VarRef] color |
+| tst.ts:413:25:415:5 | [BlockStmt] { ... j } | semmle.label | [BlockStmt] { ... j } |
+| tst.ts:414:7:414:20 | [DeclStmt] let h = ... | semmle.label | [DeclStmt] let h = ... |
+| tst.ts:414:11:414:11 | [VarDecl] h | semmle.label | [VarDecl] h |
+| tst.ts:414:11:414:19 | [VariableDeclarator] h = color | semmle.label | [VariableDeclarator] h = color |
+| tst.ts:414:15:414:19 | [VarRef] color | semmle.label | [VarRef] color |
 | tstModuleCJS.cts:1:1:3:1 | [ExportDeclaration] export ... 'b'; } | semmle.label | [ExportDeclaration] export ... 'b'; } |
 | tstModuleCJS.cts:1:1:3:1 | [ExportDeclaration] export ... 'b'; } | semmle.order | 86 |
 | tstModuleCJS.cts:1:8:3:1 | [FunctionDeclStmt] functio ... 'b'; } | semmle.label | [FunctionDeclStmt] functio ... 'b'; } |
@@ -1974,6 +2001,8 @@ edges
 | file://:0:0:0:0 | (Parameters) | tst.ts:383:40:383:40 | [SimpleParameter] x | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.ts:383:46:383:46 | [SimpleParameter] y | semmle.label | 1 |
 | file://:0:0:0:0 | (Parameters) | tst.ts:383:46:383:46 | [SimpleParameter] y | semmle.order | 1 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:412:21:412:25 | [SimpleParameter] color | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:412:21:412:25 | [SimpleParameter] color | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:14:10:14:17 | [SimpleParameter] property | semmle.label | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:14:10:14:17 | [SimpleParameter] property | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:21:19:21:21 | [SimpleParameter] key | semmle.label | 0 |
@@ -4260,16 +4289,22 @@ edges
 | tst.ts:385:55:385:72 | [ArrayExpr] [0, false, "bye!"] | tst.ts:385:59:385:63 | [Literal] false | semmle.order | 2 |
 | tst.ts:385:55:385:72 | [ArrayExpr] [0, false, "bye!"] | tst.ts:385:66:385:71 | [Literal] "bye!" | semmle.label | 3 |
 | tst.ts:385:55:385:72 | [ArrayExpr] [0, false, "bye!"] | tst.ts:385:66:385:71 | [Literal] "bye!" | semmle.order | 3 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.label | 1 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.order | 1 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.label | 2 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.order | 2 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:393:3:393:56 | [TypeAliasDeclaration,TypeDefinition] type RG ... umber]; | semmle.label | 3 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:393:3:393:56 | [TypeAliasDeclaration,TypeDefinition] type RG ... umber]; | semmle.order | 3 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:395:3:399:43 | [DeclStmt] const palette = ... | semmle.label | 4 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:395:3:399:43 | [DeclStmt] const palette = ... | semmle.order | 4 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:402:3:402:41 | [DeclStmt] const redComponent = ... | semmle.label | 5 |
-| tst.ts:390:1:403:1 | [NamespaceDeclaration] module ... t(0); } | tst.ts:402:3:402:41 | [DeclStmt] const redComponent = ... | semmle.order | 5 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.label | 1 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.order | 1 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.label | 2 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.order | 2 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:393:3:393:56 | [TypeAliasDeclaration,TypeDefinition] type RG ... umber]; | semmle.label | 3 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:393:3:393:56 | [TypeAliasDeclaration,TypeDefinition] type RG ... umber]; | semmle.order | 3 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:395:3:399:43 | [DeclStmt] const palette = ... | semmle.label | 4 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:395:3:399:43 | [DeclStmt] const palette = ... | semmle.order | 4 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:402:3:402:41 | [DeclStmt] const redComponent = ... | semmle.label | 5 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:402:3:402:41 | [DeclStmt] const redComponent = ... | semmle.order | 5 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.label | 6 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.order | 6 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.label | 7 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.order | 7 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | semmle.label | 8 |
+| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | semmle.order | 8 |
 | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | tst.ts:391:8:391:13 | [Identifier] Colors | semmle.label | 1 |
 | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | tst.ts:391:8:391:13 | [Identifier] Colors | semmle.order | 1 |
 | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | tst.ts:391:17:391:40 | [UnionTypeExpr] "red" \| ... "blue" | semmle.label | 2 |
@@ -4364,6 +4399,52 @@ edges
 | tst.ts:402:24:402:40 | [MethodCallExpr] palette.red.at(0) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
 | tst.ts:402:24:402:40 | [MethodCallExpr] palette.red.at(0) | tst.ts:402:24:402:37 | [DotExpr] palette.red.at | semmle.label | 0 |
 | tst.ts:402:24:402:40 | [MethodCallExpr] palette.red.at(0) | tst.ts:402:24:402:37 | [DotExpr] palette.red.at | semmle.order | 0 |
+| tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | tst.ts:404:13:404:18 | [Identifier] RGBObj | semmle.label | 1 |
+| tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | tst.ts:404:13:404:18 | [Identifier] RGBObj | semmle.order | 1 |
+| tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | tst.ts:405:5:405:16 | [FieldDeclaration] red: number; | semmle.label | 2 |
+| tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | tst.ts:405:5:405:16 | [FieldDeclaration] red: number; | semmle.order | 2 |
+| tst.ts:405:5:405:16 | [FieldDeclaration] red: number; | tst.ts:405:5:405:7 | [Label] red | semmle.label | 1 |
+| tst.ts:405:5:405:16 | [FieldDeclaration] red: number; | tst.ts:405:5:405:7 | [Label] red | semmle.order | 1 |
+| tst.ts:405:5:405:16 | [FieldDeclaration] red: number; | tst.ts:405:10:405:15 | [KeywordTypeExpr] number | semmle.label | 2 |
+| tst.ts:405:5:405:16 | [FieldDeclaration] red: number; | tst.ts:405:10:405:15 | [KeywordTypeExpr] number | semmle.order | 2 |
+| tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | tst.ts:408:13:408:18 | [Identifier] HSVObj | semmle.label | 1 |
+| tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | tst.ts:408:13:408:18 | [Identifier] HSVObj | semmle.order | 1 |
+| tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | tst.ts:409:5:409:16 | [FieldDeclaration] hue: number; | semmle.label | 2 |
+| tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | tst.ts:409:5:409:16 | [FieldDeclaration] hue: number; | semmle.order | 2 |
+| tst.ts:409:5:409:16 | [FieldDeclaration] hue: number; | tst.ts:409:5:409:7 | [Label] hue | semmle.label | 1 |
+| tst.ts:409:5:409:16 | [FieldDeclaration] hue: number; | tst.ts:409:5:409:7 | [Label] hue | semmle.order | 1 |
+| tst.ts:409:5:409:16 | [FieldDeclaration] hue: number; | tst.ts:409:10:409:15 | [KeywordTypeExpr] number | semmle.label | 2 |
+| tst.ts:409:5:409:16 | [FieldDeclaration] hue: number; | tst.ts:409:10:409:15 | [KeywordTypeExpr] number | semmle.order | 2 |
+| tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | tst.ts:412:12:412:19 | [VarDecl] setColor | semmle.label | 0 |
+| tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | tst.ts:412:12:412:19 | [VarDecl] setColor | semmle.order | 0 |
+| tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | tst.ts:412:45:416:3 | [BlockStmt] { i ... } } | semmle.label | 5 |
+| tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | tst.ts:412:45:416:3 | [BlockStmt] { i ... } } | semmle.order | 5 |
+| tst.ts:412:21:412:25 | [SimpleParameter] color | tst.ts:412:28:412:42 | [UnionTypeExpr] RGBObj \| HSVObj | semmle.label | 0 |
+| tst.ts:412:21:412:25 | [SimpleParameter] color | tst.ts:412:28:412:42 | [UnionTypeExpr] RGBObj \| HSVObj | semmle.order | 0 |
+| tst.ts:412:28:412:42 | [UnionTypeExpr] RGBObj \| HSVObj | tst.ts:412:28:412:33 | [LocalTypeAccess] RGBObj | semmle.label | 1 |
+| tst.ts:412:28:412:42 | [UnionTypeExpr] RGBObj \| HSVObj | tst.ts:412:28:412:33 | [LocalTypeAccess] RGBObj | semmle.order | 1 |
+| tst.ts:412:28:412:42 | [UnionTypeExpr] RGBObj \| HSVObj | tst.ts:412:37:412:42 | [LocalTypeAccess] HSVObj | semmle.label | 2 |
+| tst.ts:412:28:412:42 | [UnionTypeExpr] RGBObj \| HSVObj | tst.ts:412:37:412:42 | [LocalTypeAccess] HSVObj | semmle.order | 2 |
+| tst.ts:412:45:416:3 | [BlockStmt] { i ... } } | tst.ts:413:5:415:5 | [IfStmt] if ("hu ... j } | semmle.label | 1 |
+| tst.ts:412:45:416:3 | [BlockStmt] { i ... } } | tst.ts:413:5:415:5 | [IfStmt] if ("hu ... j } | semmle.order | 1 |
+| tst.ts:413:5:415:5 | [IfStmt] if ("hu ... j } | tst.ts:413:9:413:22 | [BinaryExpr] "hue" in color | semmle.label | 1 |
+| tst.ts:413:5:415:5 | [IfStmt] if ("hu ... j } | tst.ts:413:9:413:22 | [BinaryExpr] "hue" in color | semmle.order | 1 |
+| tst.ts:413:5:415:5 | [IfStmt] if ("hu ... j } | tst.ts:413:25:415:5 | [BlockStmt] { ... j } | semmle.label | 2 |
+| tst.ts:413:5:415:5 | [IfStmt] if ("hu ... j } | tst.ts:413:25:415:5 | [BlockStmt] { ... j } | semmle.order | 2 |
+| tst.ts:413:9:413:22 | [BinaryExpr] "hue" in color | tst.ts:413:9:413:13 | [Literal] "hue" | semmle.label | 1 |
+| tst.ts:413:9:413:22 | [BinaryExpr] "hue" in color | tst.ts:413:9:413:13 | [Literal] "hue" | semmle.order | 1 |
+| tst.ts:413:9:413:22 | [BinaryExpr] "hue" in color | tst.ts:413:18:413:22 | [VarRef] color | semmle.label | 2 |
+| tst.ts:413:9:413:22 | [BinaryExpr] "hue" in color | tst.ts:413:18:413:22 | [VarRef] color | semmle.order | 2 |
+| tst.ts:413:25:415:5 | [BlockStmt] { ... j } | tst.ts:414:7:414:20 | [DeclStmt] let h = ... | semmle.label | 1 |
+| tst.ts:413:25:415:5 | [BlockStmt] { ... j } | tst.ts:414:7:414:20 | [DeclStmt] let h = ... | semmle.order | 1 |
+| tst.ts:414:7:414:20 | [DeclStmt] let h = ... | tst.ts:414:11:414:19 | [VariableDeclarator] h = color | semmle.label | 1 |
+| tst.ts:414:7:414:20 | [DeclStmt] let h = ... | tst.ts:414:11:414:19 | [VariableDeclarator] h = color | semmle.order | 1 |
+| tst.ts:414:11:414:19 | [VariableDeclarator] h = color | tst.ts:414:11:414:11 | [VarDecl] h | semmle.label | 1 |
+| tst.ts:414:11:414:19 | [VariableDeclarator] h = color | tst.ts:414:11:414:11 | [VarDecl] h | semmle.order | 1 |
+| tst.ts:414:11:414:19 | [VariableDeclarator] h = color | tst.ts:414:15:414:19 | [VarRef] color | semmle.label | 2 |
+| tst.ts:414:11:414:19 | [VariableDeclarator] h = color | tst.ts:414:15:414:19 | [VarRef] color | semmle.order | 2 |
 | tstModuleCJS.cts:1:1:3:1 | [ExportDeclaration] export ... 'b'; } | tstModuleCJS.cts:1:8:3:1 | [FunctionDeclStmt] functio ... 'b'; } | semmle.label | 1 |
 | tstModuleCJS.cts:1:1:3:1 | [ExportDeclaration] export ... 'b'; } | tstModuleCJS.cts:1:8:3:1 | [FunctionDeclStmt] functio ... 'b'; } | semmle.order | 1 |
 | tstModuleCJS.cts:1:8:3:1 | [FunctionDeclStmt] functio ... 'b'; } | tstModuleCJS.cts:1:17:1:28 | [VarDecl] tstModuleCJS | semmle.label | 0 |

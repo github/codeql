@@ -543,6 +543,15 @@ getExprType
 | tst.ts:402:32:402:34 | red | [red: number, green: number, blue: number] |
 | tst.ts:402:36:402:37 | at | (index: number) => number |
 | tst.ts:402:39:402:39 | 0 | 0 |
+| tst.ts:405:5:405:7 | red | number |
+| tst.ts:409:5:409:7 | hue | number |
+| tst.ts:412:12:412:19 | setColor | (color: RGBObj \| HSVObj) => void |
+| tst.ts:412:21:412:25 | color | RGBObj \| HSVObj |
+| tst.ts:413:9:413:13 | "hue" | "hue" |
+| tst.ts:413:9:413:22 | "hue" in color | boolean |
+| tst.ts:413:18:413:22 | color | RGBObj \| HSVObj |
+| tst.ts:414:11:414:11 | h | HSVObj |
+| tst.ts:414:15:414:19 | color | HSVObj |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -650,6 +659,8 @@ getTypeDefinitionType
 | tst.ts:381:5:381:73 | type So ...  never; | 100 |
 | tst.ts:391:3:391:41 | type Co ... "blue"; | Colors |
 | tst.ts:393:3:393:56 | type RG ... umber]; | RGB |
+| tst.ts:404:3:406:3 | interfa ... er;\\n  } | RGBObj |
+| tst.ts:408:3:410:3 | interfa ... er;\\n  } | HSVObj |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -966,6 +977,13 @@ getTypeExprType
 | tst.ts:399:30:399:35 | string | string |
 | tst.ts:399:30:399:41 | string \| RGB | string \| RGB |
 | tst.ts:399:39:399:41 | RGB | RGB |
+| tst.ts:404:13:404:18 | RGBObj | RGBObj |
+| tst.ts:405:10:405:15 | number | number |
+| tst.ts:408:13:408:18 | HSVObj | HSVObj |
+| tst.ts:409:10:409:15 | number | number |
+| tst.ts:412:28:412:33 | RGBObj | RGBObj |
+| tst.ts:412:28:412:42 | RGBObj \| HSVObj | RGBObj \| HSVObj |
+| tst.ts:412:37:412:42 | HSVObj | HSVObj |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1061,6 +1079,7 @@ referenceDefinition
 | Foo | tst.ts:165:5:167:5 | interfa ... ;\\n    } |
 | Foo | tst.ts:179:3:192:3 | class F ...    \\n  } |
 | Func | tst.ts:289:3:289:63 | type Fu ... > void; |
+| HSVObj | tst.ts:408:3:410:3 | interfa ... er;\\n  } |
 | HasArea | tst.ts:58:1:60:1 | interfa ... mber;\\n} |
 | I<S> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
 | I<number> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
@@ -1070,6 +1089,7 @@ referenceDefinition
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
 | Person | tst.ts:222:3:234:3 | class P ...   }\\n  } |
 | RGB | tst.ts:393:3:393:56 | type RG ... umber]; |
+| RGBObj | tst.ts:404:3:406:3 | interfa ... er;\\n  } |
 | Shape | tst.ts:140:3:142:47 | type Sh ... mber }; |
 | State<T> | tst.ts:342:1:345:1 | interfa ... void;\\n} |
 | State<number> | tst.ts:342:1:345:1 | interfa ... void;\\n} |
@@ -1174,11 +1194,13 @@ unionIndex
 | "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | Error | 1 | Success \| Error |
 | Error | 1 | string \| Error |
+| HSVObj | 1 | RGBObj \| HSVObj |
 | Json[] | 5 | string \| number \| boolean \| { [property: string... |
 | Promise<number> | 2 | boolean \| Promise<number> |
 | PromiseLike<TResult1> | 1 | TResult1 \| PromiseLike<TResult1> |
 | PromiseLike<TResult2> | 1 | TResult2 \| PromiseLike<TResult2> |
 | RGB | 1 | string \| RGB |
+| RGBObj | 0 | RGBObj \| HSVObj |
 | Success | 0 | Success \| Error |
 | T | 0 | T \| ValueOrArray<T>[] |
 | TResult1 | 0 | TResult1 \| PromiseLike<TResult1> |
