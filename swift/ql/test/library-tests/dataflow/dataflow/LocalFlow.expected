@@ -184,52 +184,86 @@
 | test.swift:247:9:247:9 | [post] self | test.swift:246:5:248:5 | self[return] |
 | test.swift:247:9:247:9 | self | test.swift:246:5:248:5 | self[return] |
 | test.swift:252:23:252:23 | value | test.swift:252:23:252:23 | WriteDef |
-| test.swift:263:9:263:9 | WriteDef | test.swift:264:15:264:15 | x |
+| test.swift:262:21:262:27 | WriteDef | test.swift:266:15:266:15 | y |
+| test.swift:262:21:262:27 | y | test.swift:262:21:262:27 | WriteDef |
+| test.swift:263:9:263:9 | WriteDef | test.swift:265:15:265:15 | x |
 | test.swift:263:13:263:28 | call to optionalSource() | test.swift:263:9:263:9 | WriteDef |
-| test.swift:264:15:264:15 | x | test.swift:264:15:264:16 | ...! |
-| test.swift:264:15:264:15 | x | test.swift:266:15:266:15 | x |
-| test.swift:266:15:266:15 | x | test.swift:266:15:266:16 | ...? |
-| test.swift:266:15:266:15 | x | test.swift:267:15:267:15 | x |
-| test.swift:266:15:266:25 | call to signum() | test.swift:266:15:266:25 | OptionalEvaluationExpr |
-| test.swift:267:15:267:15 | x | test.swift:268:16:268:16 | x |
-| test.swift:277:9:277:9 | WriteDef | test.swift:279:15:279:15 | t1 |
-| test.swift:277:14:277:26 | (...) | test.swift:277:9:277:9 | WriteDef |
-| test.swift:279:15:279:15 | t1 | test.swift:280:15:280:15 | t1 |
-| test.swift:280:15:280:15 | [post] t1 | test.swift:281:15:281:15 | t1 |
-| test.swift:280:15:280:15 | t1 | test.swift:281:15:281:15 | t1 |
-| test.swift:281:15:281:15 | [post] t1 | test.swift:283:5:283:5 | t1 |
-| test.swift:281:15:281:15 | t1 | test.swift:283:5:283:5 | t1 |
-| test.swift:283:5:283:5 | [post] t1 | test.swift:285:15:285:15 | t1 |
-| test.swift:283:5:283:5 | t1 | test.swift:285:15:285:15 | t1 |
-| test.swift:285:15:285:15 | t1 | test.swift:286:15:286:15 | t1 |
-| test.swift:286:15:286:15 | [post] t1 | test.swift:287:15:287:15 | t1 |
-| test.swift:286:15:286:15 | t1 | test.swift:287:15:287:15 | t1 |
-| test.swift:287:15:287:15 | [post] t1 | test.swift:289:5:289:5 | t1 |
-| test.swift:287:15:287:15 | t1 | test.swift:289:5:289:5 | t1 |
-| test.swift:289:5:289:5 | [post] t1 | test.swift:291:15:291:15 | t1 |
-| test.swift:289:5:289:5 | t1 | test.swift:291:15:291:15 | t1 |
-| test.swift:291:15:291:15 | t1 | test.swift:292:15:292:15 | t1 |
-| test.swift:292:15:292:15 | [post] t1 | test.swift:293:15:293:15 | t1 |
-| test.swift:292:15:292:15 | t1 | test.swift:293:15:293:15 | t1 |
-| test.swift:297:9:297:9 | WriteDef | test.swift:298:14:298:14 | t1 |
-| test.swift:297:14:297:45 | (...) | test.swift:297:9:297:9 | WriteDef |
-| test.swift:298:9:298:9 | WriteDef | test.swift:305:15:305:15 | t2 |
-| test.swift:298:14:298:14 | t1 | test.swift:298:9:298:9 | WriteDef |
-| test.swift:298:14:298:14 | t1 | test.swift:299:21:299:21 | t1 |
-| test.swift:299:9:299:17 | WriteDef | test.swift:309:15:309:15 | a |
-| test.swift:299:9:299:17 | WriteDef | test.swift:310:15:310:15 | b |
-| test.swift:299:9:299:17 | WriteDef | test.swift:311:15:311:15 | c |
-| test.swift:299:21:299:21 | t1 | test.swift:299:9:299:17 | WriteDef |
-| test.swift:299:21:299:21 | t1 | test.swift:299:9:299:17 | WriteDef |
-| test.swift:299:21:299:21 | t1 | test.swift:299:9:299:17 | WriteDef |
-| test.swift:299:21:299:21 | t1 | test.swift:301:15:301:15 | t1 |
-| test.swift:301:15:301:15 | t1 | test.swift:302:15:302:15 | t1 |
-| test.swift:302:15:302:15 | [post] t1 | test.swift:303:15:303:15 | t1 |
-| test.swift:302:15:302:15 | t1 | test.swift:303:15:303:15 | t1 |
-| test.swift:303:15:303:15 | [post] t1 | test.swift:304:15:304:15 | t1 |
-| test.swift:303:15:303:15 | t1 | test.swift:304:15:304:15 | t1 |
-| test.swift:305:15:305:15 | t2 | test.swift:306:15:306:15 | t2 |
-| test.swift:306:15:306:15 | [post] t2 | test.swift:307:15:307:15 | t2 |
-| test.swift:306:15:306:15 | t2 | test.swift:307:15:307:15 | t2 |
-| test.swift:307:15:307:15 | [post] t2 | test.swift:308:15:308:15 | t2 |
-| test.swift:307:15:307:15 | t2 | test.swift:308:15:308:15 | t2 |
+| test.swift:265:15:265:15 | x | test.swift:267:15:267:15 | x |
+| test.swift:266:15:266:15 | y | test.swift:268:15:268:15 | y |
+| test.swift:267:15:267:15 | x | test.swift:267:15:267:16 | ...! |
+| test.swift:267:15:267:15 | x | test.swift:271:15:271:15 | x |
+| test.swift:268:15:268:15 | y | test.swift:268:15:268:16 | ...! |
+| test.swift:268:15:268:15 | y | test.swift:272:15:272:15 | y |
+| test.swift:271:15:271:15 | x | test.swift:271:15:271:16 | ...? |
+| test.swift:271:15:271:15 | x | test.swift:274:15:274:15 | x |
+| test.swift:271:15:271:25 | call to signum() | test.swift:271:15:271:25 | OptionalEvaluationExpr |
+| test.swift:272:15:272:15 | y | test.swift:272:15:272:16 | ...? |
+| test.swift:272:15:272:15 | y | test.swift:276:15:276:15 | y |
+| test.swift:272:15:272:25 | call to signum() | test.swift:272:15:272:25 | OptionalEvaluationExpr |
+| test.swift:274:15:274:15 | x | test.swift:275:15:275:15 | x |
+| test.swift:275:15:275:15 | x | test.swift:279:15:279:15 | x |
+| test.swift:276:15:276:15 | y | test.swift:277:15:277:15 | y |
+| test.swift:277:15:277:15 | y | test.swift:281:15:281:15 | y |
+| test.swift:279:15:279:15 | x | test.swift:279:26:279:26 | x |
+| test.swift:279:15:279:15 | x | test.swift:280:15:280:15 | x |
+| test.swift:279:26:279:26 | x | test.swift:279:26:279:27 | ...! |
+| test.swift:279:26:279:26 | x | test.swift:280:15:280:15 | x |
+| test.swift:280:15:280:15 | x | test.swift:280:26:280:26 | x |
+| test.swift:280:15:280:15 | x | test.swift:284:16:284:16 | x |
+| test.swift:280:26:280:26 | x | test.swift:280:26:280:27 | ...! |
+| test.swift:280:26:280:26 | x | test.swift:284:16:284:16 | x |
+| test.swift:281:15:281:15 | y | test.swift:281:26:281:26 | y |
+| test.swift:281:15:281:15 | y | test.swift:282:15:282:15 | y |
+| test.swift:281:26:281:26 | y | test.swift:281:26:281:27 | ...! |
+| test.swift:281:26:281:26 | y | test.swift:282:15:282:15 | y |
+| test.swift:282:15:282:15 | y | test.swift:282:26:282:26 | y |
+| test.swift:282:15:282:15 | y | test.swift:287:16:287:16 | y |
+| test.swift:282:26:282:26 | y | test.swift:282:26:282:27 | ...! |
+| test.swift:282:26:282:26 | y | test.swift:287:16:287:16 | y |
+| test.swift:284:16:284:16 | x | test.swift:290:16:290:16 | x |
+| test.swift:287:16:287:16 | y | test.swift:293:16:293:16 | y |
+| test.swift:290:16:290:16 | x | test.swift:290:16:290:17 | ...? |
+| test.swift:290:16:290:26 | call to signum() | test.swift:290:16:290:26 | OptionalEvaluationExpr |
+| test.swift:293:16:293:16 | y | test.swift:293:16:293:17 | ...? |
+| test.swift:293:16:293:26 | call to signum() | test.swift:293:16:293:26 | OptionalEvaluationExpr |
+| test.swift:304:9:304:9 | WriteDef | test.swift:306:15:306:15 | t1 |
+| test.swift:304:14:304:26 | (...) | test.swift:304:9:304:9 | WriteDef |
+| test.swift:306:15:306:15 | t1 | test.swift:307:15:307:15 | t1 |
+| test.swift:307:15:307:15 | [post] t1 | test.swift:308:15:308:15 | t1 |
+| test.swift:307:15:307:15 | t1 | test.swift:308:15:308:15 | t1 |
+| test.swift:308:15:308:15 | [post] t1 | test.swift:310:5:310:5 | t1 |
+| test.swift:308:15:308:15 | t1 | test.swift:310:5:310:5 | t1 |
+| test.swift:310:5:310:5 | [post] t1 | test.swift:312:15:312:15 | t1 |
+| test.swift:310:5:310:5 | t1 | test.swift:312:15:312:15 | t1 |
+| test.swift:312:15:312:15 | t1 | test.swift:313:15:313:15 | t1 |
+| test.swift:313:15:313:15 | [post] t1 | test.swift:314:15:314:15 | t1 |
+| test.swift:313:15:313:15 | t1 | test.swift:314:15:314:15 | t1 |
+| test.swift:314:15:314:15 | [post] t1 | test.swift:316:5:316:5 | t1 |
+| test.swift:314:15:314:15 | t1 | test.swift:316:5:316:5 | t1 |
+| test.swift:316:5:316:5 | [post] t1 | test.swift:318:15:318:15 | t1 |
+| test.swift:316:5:316:5 | t1 | test.swift:318:15:318:15 | t1 |
+| test.swift:318:15:318:15 | t1 | test.swift:319:15:319:15 | t1 |
+| test.swift:319:15:319:15 | [post] t1 | test.swift:320:15:320:15 | t1 |
+| test.swift:319:15:319:15 | t1 | test.swift:320:15:320:15 | t1 |
+| test.swift:324:9:324:9 | WriteDef | test.swift:325:14:325:14 | t1 |
+| test.swift:324:14:324:45 | (...) | test.swift:324:9:324:9 | WriteDef |
+| test.swift:325:9:325:9 | WriteDef | test.swift:332:15:332:15 | t2 |
+| test.swift:325:14:325:14 | t1 | test.swift:325:9:325:9 | WriteDef |
+| test.swift:325:14:325:14 | t1 | test.swift:326:21:326:21 | t1 |
+| test.swift:326:9:326:17 | WriteDef | test.swift:336:15:336:15 | a |
+| test.swift:326:9:326:17 | WriteDef | test.swift:337:15:337:15 | b |
+| test.swift:326:9:326:17 | WriteDef | test.swift:338:15:338:15 | c |
+| test.swift:326:21:326:21 | t1 | test.swift:326:9:326:17 | WriteDef |
+| test.swift:326:21:326:21 | t1 | test.swift:326:9:326:17 | WriteDef |
+| test.swift:326:21:326:21 | t1 | test.swift:326:9:326:17 | WriteDef |
+| test.swift:326:21:326:21 | t1 | test.swift:328:15:328:15 | t1 |
+| test.swift:328:15:328:15 | t1 | test.swift:329:15:329:15 | t1 |
+| test.swift:329:15:329:15 | [post] t1 | test.swift:330:15:330:15 | t1 |
+| test.swift:329:15:329:15 | t1 | test.swift:330:15:330:15 | t1 |
+| test.swift:330:15:330:15 | [post] t1 | test.swift:331:15:331:15 | t1 |
+| test.swift:330:15:330:15 | t1 | test.swift:331:15:331:15 | t1 |
+| test.swift:332:15:332:15 | t2 | test.swift:333:15:333:15 | t2 |
+| test.swift:333:15:333:15 | [post] t2 | test.swift:334:15:334:15 | t2 |
+| test.swift:333:15:333:15 | t2 | test.swift:334:15:334:15 | t2 |
+| test.swift:334:15:334:15 | [post] t2 | test.swift:335:15:335:15 | t2 |
+| test.swift:334:15:334:15 | t2 | test.swift:335:15:335:15 | t2 |
