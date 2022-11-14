@@ -136,6 +136,7 @@ nodes
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
 | file://:0:0:0:0 | (TypeParameters) | semmle.label | (TypeParameters) |
@@ -1426,8 +1427,8 @@ nodes
 | tst.ts:385:56:385:56 | [Literal] 0 | semmle.label | [Literal] 0 |
 | tst.ts:385:59:385:63 | [Literal] false | semmle.label | [Literal] false |
 | tst.ts:385:66:385:71 | [Literal] "bye!" | semmle.label | [Literal] "bye!" |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | semmle.label | [NamespaceDeclaration] module ... } } } |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | semmle.order | 85 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | semmle.label | [NamespaceDeclaration] module ... } } } |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | semmle.order | 85 |
 | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.label | [VarDecl] TS49 |
 | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; |
 | tst.ts:391:8:391:13 | [Identifier] Colors | semmle.label | [Identifier] Colors |
@@ -1506,6 +1507,23 @@ nodes
 | tst.ts:414:11:414:11 | [VarDecl] h | semmle.label | [VarDecl] h |
 | tst.ts:414:11:414:19 | [VariableDeclarator] h = color | semmle.label | [VariableDeclarator] h = color |
 | tst.ts:414:15:414:19 | [VarRef] color | semmle.label | [VarRef] color |
+| tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | semmle.label | [ClassDefinition,TypeDefinition] class P ... } } |
+| tst.ts:419:9:419:14 | [VarDecl] Person | semmle.label | [VarDecl] Person |
+| tst.ts:420:5:420:26 | [FieldDeclaration] accesso ... string; | semmle.label | [FieldDeclaration] accesso ... string; |
+| tst.ts:420:14:420:17 | [Label] name | semmle.label | [Label] name |
+| tst.ts:420:20:420:25 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:422:5:424:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | semmle.label | [ClassInitializedMember,ConstructorDefinition] constru ... ; } |
+| tst.ts:422:5:424:5 | [FunctionExpr] constru ... ; } | semmle.label | [FunctionExpr] constru ... ; } |
+| tst.ts:422:5:424:5 | [Label] constructor | semmle.label | [Label] constructor |
+| tst.ts:422:17:422:20 | [SimpleParameter] name | semmle.label | [SimpleParameter] name |
+| tst.ts:422:23:422:28 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
+| tst.ts:422:31:424:5 | [BlockStmt] { ... ; } | semmle.label | [BlockStmt] { ... ; } |
+| tst.ts:423:7:423:10 | [ThisExpr] this | semmle.label | [ThisExpr] this |
+| tst.ts:423:7:423:15 | [DotExpr] this.name | semmle.label | [DotExpr] this.name |
+| tst.ts:423:7:423:22 | [AssignExpr] this.name = name | semmle.label | [AssignExpr] this.name = name |
+| tst.ts:423:7:423:23 | [ExprStmt] this.name = name; | semmle.label | [ExprStmt] this.name = name; |
+| tst.ts:423:12:423:15 | [Label] name | semmle.label | [Label] name |
+| tst.ts:423:19:423:22 | [VarRef] name | semmle.label | [VarRef] name |
 | tstModuleCJS.cts:1:1:3:1 | [ExportDeclaration] export ... 'b'; } | semmle.label | [ExportDeclaration] export ... 'b'; } |
 | tstModuleCJS.cts:1:1:3:1 | [ExportDeclaration] export ... 'b'; } | semmle.order | 86 |
 | tstModuleCJS.cts:1:8:3:1 | [FunctionDeclStmt] functio ... 'b'; } | semmle.label | [FunctionDeclStmt] functio ... 'b'; } |
@@ -2003,6 +2021,8 @@ edges
 | file://:0:0:0:0 | (Parameters) | tst.ts:383:46:383:46 | [SimpleParameter] y | semmle.order | 1 |
 | file://:0:0:0:0 | (Parameters) | tst.ts:412:21:412:25 | [SimpleParameter] color | semmle.label | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.ts:412:21:412:25 | [SimpleParameter] color | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:422:17:422:20 | [SimpleParameter] name | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:422:17:422:20 | [SimpleParameter] name | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:14:10:14:17 | [SimpleParameter] property | semmle.label | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:14:10:14:17 | [SimpleParameter] property | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | type_alias.ts:21:19:21:21 | [SimpleParameter] key | semmle.label | 0 |
@@ -4289,22 +4309,24 @@ edges
 | tst.ts:385:55:385:72 | [ArrayExpr] [0, false, "bye!"] | tst.ts:385:59:385:63 | [Literal] false | semmle.order | 2 |
 | tst.ts:385:55:385:72 | [ArrayExpr] [0, false, "bye!"] | tst.ts:385:66:385:71 | [Literal] "bye!" | semmle.label | 3 |
 | tst.ts:385:55:385:72 | [ArrayExpr] [0, false, "bye!"] | tst.ts:385:66:385:71 | [Literal] "bye!" | semmle.order | 3 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.label | 1 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.order | 1 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.label | 2 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.order | 2 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:393:3:393:56 | [TypeAliasDeclaration,TypeDefinition] type RG ... umber]; | semmle.label | 3 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:393:3:393:56 | [TypeAliasDeclaration,TypeDefinition] type RG ... umber]; | semmle.order | 3 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:395:3:399:43 | [DeclStmt] const palette = ... | semmle.label | 4 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:395:3:399:43 | [DeclStmt] const palette = ... | semmle.order | 4 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:402:3:402:41 | [DeclStmt] const redComponent = ... | semmle.label | 5 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:402:3:402:41 | [DeclStmt] const redComponent = ... | semmle.order | 5 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.label | 6 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.order | 6 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.label | 7 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.order | 7 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | semmle.label | 8 |
-| tst.ts:390:1:417:1 | [NamespaceDeclaration] module ... } } } | tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | semmle.order | 8 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.label | 1 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:390:8:390:11 | [VarDecl] TS49 | semmle.order | 1 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.label | 2 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | semmle.order | 2 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:393:3:393:56 | [TypeAliasDeclaration,TypeDefinition] type RG ... umber]; | semmle.label | 3 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:393:3:393:56 | [TypeAliasDeclaration,TypeDefinition] type RG ... umber]; | semmle.order | 3 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:395:3:399:43 | [DeclStmt] const palette = ... | semmle.label | 4 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:395:3:399:43 | [DeclStmt] const palette = ... | semmle.order | 4 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:402:3:402:41 | [DeclStmt] const redComponent = ... | semmle.label | 5 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:402:3:402:41 | [DeclStmt] const redComponent = ... | semmle.order | 5 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.label | 6 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:404:3:406:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.order | 6 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.label | 7 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:408:3:410:3 | [InterfaceDeclaration,TypeDefinition] interfa ... er; } | semmle.order | 7 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | semmle.label | 8 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:412:3:416:3 | [FunctionDeclStmt] functio ... } } | semmle.order | 8 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | semmle.label | 9 |
+| tst.ts:390:1:426:1 | [NamespaceDeclaration] module ... } } } | tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | semmle.order | 9 |
 | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | tst.ts:391:8:391:13 | [Identifier] Colors | semmle.label | 1 |
 | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | tst.ts:391:8:391:13 | [Identifier] Colors | semmle.order | 1 |
 | tst.ts:391:3:391:41 | [TypeAliasDeclaration,TypeDefinition] type Co ... "blue"; | tst.ts:391:17:391:40 | [UnionTypeExpr] "red" \| ... "blue" | semmle.label | 2 |
@@ -4445,6 +4467,38 @@ edges
 | tst.ts:414:11:414:19 | [VariableDeclarator] h = color | tst.ts:414:11:414:11 | [VarDecl] h | semmle.order | 1 |
 | tst.ts:414:11:414:19 | [VariableDeclarator] h = color | tst.ts:414:15:414:19 | [VarRef] color | semmle.label | 2 |
 | tst.ts:414:11:414:19 | [VariableDeclarator] h = color | tst.ts:414:15:414:19 | [VarRef] color | semmle.order | 2 |
+| tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:419:9:419:14 | [VarDecl] Person | semmle.label | 1 |
+| tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:419:9:419:14 | [VarDecl] Person | semmle.order | 1 |
+| tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:420:5:420:26 | [FieldDeclaration] accesso ... string; | semmle.label | 2 |
+| tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:420:5:420:26 | [FieldDeclaration] accesso ... string; | semmle.order | 2 |
+| tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:422:5:424:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | semmle.label | 3 |
+| tst.ts:419:3:425:3 | [ClassDefinition,TypeDefinition] class P ... } } | tst.ts:422:5:424:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | semmle.order | 3 |
+| tst.ts:420:5:420:26 | [FieldDeclaration] accesso ... string; | tst.ts:420:14:420:17 | [Label] name | semmle.label | 1 |
+| tst.ts:420:5:420:26 | [FieldDeclaration] accesso ... string; | tst.ts:420:14:420:17 | [Label] name | semmle.order | 1 |
+| tst.ts:420:5:420:26 | [FieldDeclaration] accesso ... string; | tst.ts:420:20:420:25 | [KeywordTypeExpr] string | semmle.label | 2 |
+| tst.ts:420:5:420:26 | [FieldDeclaration] accesso ... string; | tst.ts:420:20:420:25 | [KeywordTypeExpr] string | semmle.order | 2 |
+| tst.ts:422:5:424:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | tst.ts:422:5:424:5 | [FunctionExpr] constru ... ; } | semmle.label | 2 |
+| tst.ts:422:5:424:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | tst.ts:422:5:424:5 | [FunctionExpr] constru ... ; } | semmle.order | 2 |
+| tst.ts:422:5:424:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | tst.ts:422:5:424:5 | [Label] constructor | semmle.label | 1 |
+| tst.ts:422:5:424:5 | [ClassInitializedMember,ConstructorDefinition] constru ... ; } | tst.ts:422:5:424:5 | [Label] constructor | semmle.order | 1 |
+| tst.ts:422:5:424:5 | [FunctionExpr] constru ... ; } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| tst.ts:422:5:424:5 | [FunctionExpr] constru ... ; } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| tst.ts:422:5:424:5 | [FunctionExpr] constru ... ; } | tst.ts:422:31:424:5 | [BlockStmt] { ... ; } | semmle.label | 5 |
+| tst.ts:422:5:424:5 | [FunctionExpr] constru ... ; } | tst.ts:422:31:424:5 | [BlockStmt] { ... ; } | semmle.order | 5 |
+| tst.ts:422:17:422:20 | [SimpleParameter] name | tst.ts:422:23:422:28 | [KeywordTypeExpr] string | semmle.label | 0 |
+| tst.ts:422:17:422:20 | [SimpleParameter] name | tst.ts:422:23:422:28 | [KeywordTypeExpr] string | semmle.order | 0 |
+| tst.ts:422:31:424:5 | [BlockStmt] { ... ; } | tst.ts:423:7:423:23 | [ExprStmt] this.name = name; | semmle.label | 1 |
+| tst.ts:422:31:424:5 | [BlockStmt] { ... ; } | tst.ts:423:7:423:23 | [ExprStmt] this.name = name; | semmle.order | 1 |
+| tst.ts:423:7:423:15 | [DotExpr] this.name | tst.ts:423:7:423:10 | [ThisExpr] this | semmle.label | 1 |
+| tst.ts:423:7:423:15 | [DotExpr] this.name | tst.ts:423:7:423:10 | [ThisExpr] this | semmle.order | 1 |
+| tst.ts:423:7:423:15 | [DotExpr] this.name | tst.ts:423:12:423:15 | [Label] name | semmle.label | 2 |
+| tst.ts:423:7:423:15 | [DotExpr] this.name | tst.ts:423:12:423:15 | [Label] name | semmle.order | 2 |
+| tst.ts:423:7:423:22 | [AssignExpr] this.name = name | tst.ts:423:7:423:15 | [DotExpr] this.name | semmle.label | 1 |
+| tst.ts:423:7:423:22 | [AssignExpr] this.name = name | tst.ts:423:7:423:15 | [DotExpr] this.name | semmle.order | 1 |
+| tst.ts:423:7:423:22 | [AssignExpr] this.name = name | tst.ts:423:19:423:22 | [VarRef] name | semmle.label | 2 |
+| tst.ts:423:7:423:22 | [AssignExpr] this.name = name | tst.ts:423:19:423:22 | [VarRef] name | semmle.order | 2 |
+| tst.ts:423:7:423:23 | [ExprStmt] this.name = name; | tst.ts:423:7:423:22 | [AssignExpr] this.name = name | semmle.label | 1 |
+| tst.ts:423:7:423:23 | [ExprStmt] this.name = name; | tst.ts:423:7:423:22 | [AssignExpr] this.name = name | semmle.order | 1 |
 | tstModuleCJS.cts:1:1:3:1 | [ExportDeclaration] export ... 'b'; } | tstModuleCJS.cts:1:8:3:1 | [FunctionDeclStmt] functio ... 'b'; } | semmle.label | 1 |
 | tstModuleCJS.cts:1:1:3:1 | [ExportDeclaration] export ... 'b'; } | tstModuleCJS.cts:1:8:3:1 | [FunctionDeclStmt] functio ... 'b'; } | semmle.order | 1 |
 | tstModuleCJS.cts:1:8:3:1 | [FunctionDeclStmt] functio ... 'b'; } | tstModuleCJS.cts:1:17:1:28 | [VarDecl] tstModuleCJS | semmle.label | 0 |

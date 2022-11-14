@@ -552,6 +552,14 @@ getExprType
 | tst.ts:413:18:413:22 | color | RGBObj \| HSVObj |
 | tst.ts:414:11:414:11 | h | HSVObj |
 | tst.ts:414:15:414:19 | color | HSVObj |
+| tst.ts:419:9:419:14 | Person | Person |
+| tst.ts:420:14:420:17 | name | string |
+| tst.ts:422:5:424:5 | constru ... ;\\n    } | any |
+| tst.ts:422:17:422:20 | name | string |
+| tst.ts:423:7:423:15 | this.name | string |
+| tst.ts:423:7:423:22 | this.name = name | string |
+| tst.ts:423:12:423:15 | name | string |
+| tst.ts:423:19:423:22 | name | string |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -661,6 +669,7 @@ getTypeDefinitionType
 | tst.ts:393:3:393:56 | type RG ... umber]; | RGB |
 | tst.ts:404:3:406:3 | interfa ... er;\\n  } | RGBObj |
 | tst.ts:408:3:410:3 | interfa ... er;\\n  } | HSVObj |
+| tst.ts:419:3:425:3 | class P ...   }\\n  } | Person |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -984,6 +993,8 @@ getTypeExprType
 | tst.ts:412:28:412:33 | RGBObj | RGBObj |
 | tst.ts:412:28:412:42 | RGBObj \| HSVObj | RGBObj \| HSVObj |
 | tst.ts:412:37:412:42 | HSVObj | HSVObj |
+| tst.ts:420:20:420:25 | string | string |
+| tst.ts:422:23:422:28 | string | string |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1088,6 +1099,7 @@ referenceDefinition
 | MyUnion2 | tst.ts:68:1:68:49 | type My ...  true}; |
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
 | Person | tst.ts:222:3:234:3 | class P ...   }\\n  } |
+| Person | tst.ts:419:3:425:3 | class P ...   }\\n  } |
 | RGB | tst.ts:393:3:393:56 | type RG ... umber]; |
 | RGBObj | tst.ts:404:3:406:3 | interfa ... er;\\n  } |
 | Shape | tst.ts:140:3:142:47 | type Sh ... mber }; |

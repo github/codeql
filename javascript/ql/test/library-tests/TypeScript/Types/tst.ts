@@ -414,4 +414,13 @@ module TS49 {
       let h = color; // <- HSVObj
     }
   }
+
+  // auto-accessors
+  class Person {
+    accessor name: string; // behaves as a normal field for our purposes
+
+    constructor(name: string) {
+      this.name = name;
+    }
+  }
 }
