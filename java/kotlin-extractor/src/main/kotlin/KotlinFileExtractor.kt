@@ -512,18 +512,24 @@ open class KotlinFileExtractor(
         annotationClass: IrClass,
         containerClass: IrClass,
         entries: List<IrConstructorCall>,
-    ): IrConstructorCall {
+    ): IrConstructorCall? {
         val annotationType = annotationClass.typeWith()
-        return IrConstructorCallImpl.fromSymbolOwner(containerClass.defaultType, containerClass.primaryConstructor!!.symbol).apply {
-            putValueArgument(
-                0,
-                IrVarargImpl(
-                    UNDEFINED_OFFSET, UNDEFINED_OFFSET,
-                    pluginContext.irBuiltIns.arrayClass.typeWith(annotationType),
-                    annotationType,
-                    entries
+        val containerConstructor = containerClass.primaryConstructor
+        if (containerConstructor == null) {
+            logger.warnElement("Expected container class to have a primary constructor", containerClass)
+            return null
+        } else {
+            return IrConstructorCallImpl.fromSymbolOwner(containerClass.defaultType, containerConstructor.symbol).apply {
+                putValueArgument(
+                    0,
+                    IrVarargImpl(
+                        UNDEFINED_OFFSET, UNDEFINED_OFFSET,
+                        pluginContext.irBuiltIns.arrayClass.typeWith(annotationType),
+                        annotationType,
+                        entries
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -560,11 +566,15 @@ open class KotlinFileExtractor(
                 .filterIsInstance<IrProperty>()
                 .first { it.name == param.name }
             val v = constructorCall.getValueArgument(i) ?: param.defaultValue?.expression
-            val getter = prop.getter!!
-            val getterId = useFunction<DbMethod>(getter)
-            val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}", getter.returnType)
-            if (exprId != null) {
-                tw.writeAnnotValue(id, getterId, exprId)
+            val getter = prop.getter
+            if (getter == null) {
+                logger.warnElement("Expected annotation property to define a getter", prop)
+            } else {
+                val getterId = useFunction<DbMethod>(getter)
+                val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}", getter.returnType)
+                if (exprId != null) {
+                    tw.writeAnnotValue(id, getterId, exprId)
+                }
             }
         }
         return id
@@ -599,22 +609,26 @@ open class KotlinFileExtractor(
                     // Use the context type (i.e., the type the annotation expects, not the actual type of the array)
                     // because the Java extractor fills in array types using the same technique. These should only
                     // differ for generic annotations.
-                    val type = useType(kClassToJavaClass(contextType!!))
-                    tw.writeExprs_arrayinit(arrayId, type.javaResult.id, parent, idx)
-                    tw.writeExprsKotlinType(arrayId, type.kotlinResult.id)
-                    tw.writeHasLocation(arrayId, tw.getLocation(v))
+                    if (contextType == null) {
+                        logger.warnElement("Expected an annotation array to have an enclosing context", v)
+                    } else {
+                        val type = useType(kClassToJavaClass(contextType))
+                        tw.writeExprs_arrayinit(arrayId, type.javaResult.id, parent, idx)
+                        tw.writeExprsKotlinType(arrayId, type.kotlinResult.id)
+                        tw.writeHasLocation(arrayId, tw.getLocation(v))
 
-                    v.elements.forEachIndexed { index, irVarargElement -> run {
-                        val argExpr = when (irVarargElement) {
-                            is IrExpression -> irVarargElement
-                            is IrSpreadElement -> irVarargElement.expression
-                            else -> {
-                                logger.errorElement("Unrecognised IrVarargElement: " + irVarargElement.javaClass, irVarargElement)
-                                null
+                        v.elements.forEachIndexed { index, irVarargElement -> run {
+                            val argExpr = when (irVarargElement) {
+                                is IrExpression -> irVarargElement
+                                is IrSpreadElement -> irVarargElement.expression
+                                else -> {
+                                    logger.errorElement("Unrecognised IrVarargElement: " + irVarargElement.javaClass, irVarargElement)
+                                    null
+                                }
                             }
-                        }
-                        extractAnnotationValueExpression(argExpr, arrayId, index, "child;$index", null)
-                    } }
+                            extractAnnotationValueExpression(argExpr, arrayId, index, "child;$index", null)
+                        } }
+                    }
                 }
             }
             // is IrErrorExpression
@@ -900,9 +914,14 @@ open class KotlinFileExtractor(
                         c.declarations
                             .filterIsInstance<IrProperty>()
                             .map {
-                                val getter = it.getter!!
-                                val label = extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = true, extractAnnotations = true, null, listOf())
-                                tw.writeIsAnnotElem(label!!.cast<DbMethod>())
+                                val getter = it.getter
+                                if (getter == null) {
+                                    logger.warnElement("Expected an annotation property to have a getter", it)
+                                } else {
+                                    extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = true, extractAnnotations = true, null, listOf())?.also { functionLabel ->
+                                        tw.writeIsAnnotElem(functionLabel.cast())
+                                    }
+                                }
                             }
                     } else {
                         c.declarations.forEach { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies, extractAnnotations = true) }
