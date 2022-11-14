@@ -7,7 +7,7 @@ class Test{
     CertificatePinner certificatePinner = new CertificatePinner.Builder()
          .add("good.example.com", "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
          .build();
-     OkHttpClient client = OkHttpClient.Builder()
+     OkHttpClient client = new OkHttpClient.Builder()
          .certificatePinner(certificatePinner)
          .build();
 
