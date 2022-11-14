@@ -432,6 +432,14 @@ predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 /** Holds if `row` is negative summary model. */
 predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
 
+/**
+ * Holds if a source model exists for the given parameters.
+ */
+extensible predicate extSourceModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance
+);
+
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
@@ -453,6 +461,12 @@ predicate sourceModel(
 }
 
 /** Holds if a sink model exists for the given parameters. */
+extensible predicate extSinkModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string kind, string provenance
+);
+
+/** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind, string provenance
@@ -471,6 +485,12 @@ predicate sinkModel(
     row.splitAt(";", 8) = provenance
   )
 }
+
+/** Holds if a summary model exists for the given parameters. */
+extensible predicate extSummaryModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance
+);
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
@@ -498,6 +518,11 @@ predicate summaryModel(
   row.splitAt(";", 8) = kind and
   row.splitAt(";", 9) = provenance
 }
+
+/** Holds if a summary model exists indicating there is no flow for the given parameters. */
+extensible predicate extNegativeSummaryModel(
+  string package, string type, string name, string signature, string provenance
+);
 
 /** Holds if a summary model exists indicating there is no flow for the given parameters. */
 predicate negativeSummaryModel(
