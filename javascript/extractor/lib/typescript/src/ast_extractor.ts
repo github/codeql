@@ -317,6 +317,7 @@ function isTypedNode(node: ts.Node): boolean {
         case ts.SyntaxKind.ArrayLiteralExpression:
         case ts.SyntaxKind.ArrowFunction:
         case ts.SyntaxKind.AsExpression:
+        case ts.SyntaxKind.SatisfiesExpression:
         case ts.SyntaxKind.AwaitExpression:
         case ts.SyntaxKind.BinaryExpression:
         case ts.SyntaxKind.CallExpression:
