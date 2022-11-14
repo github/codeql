@@ -119,9 +119,25 @@ module LocalFlow {
    * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
    */
   predicate localFlowSsaParamInput(Node nodeFrom, Node nodeTo) {
-    nodeTo = getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    nodeTo = getParameterDefNode(nodeFrom.(ParameterNodeImpl).getParameter())
     or
     nodeTo = getSelfParameterDefNode(nodeFrom.(SelfParameterNode).getMethod())
+  }
+
+  /**
+   * Holds if `nodeFrom -> nodeTo` is a step from a parameter to a capture entry node for
+   * that parameter.
+   *
+   * This is intended to recover from flow not currently recognised by ordinary capture flow.
+   */
+  predicate localFlowSsaParamCaptureInput(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::CapturedEntryDefinition def |
+      nodeFrom.asParameter().(NamedParameter).getVariable() = def.getSourceVariable()
+      or
+      nodeFrom.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
+    |
+      nodeTo.(SsaDefinitionNode).getDefinition() = def
+    )
   }
 
   /**
@@ -309,7 +325,7 @@ private module Cached {
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
+    defaultValueFlow(nodeTo.(ParameterNodeImpl).getParameter(), nodeFrom)
     or
     LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
     or
@@ -338,7 +354,7 @@ private module Cached {
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
+    defaultValueFlow(nodeTo.(ParameterNodeImpl).getParameter(), nodeFrom)
     or
     LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
     or
@@ -349,7 +365,12 @@ private module Cached {
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
-  /** This is the local flow predicate that is used in type tracking. */
+  /**
+   * This is the local flow predicate that is used in type tracking.
+   *
+   * This needs to exclude `localFlowSsaParamInput` due to a performance trick
+   * in type tracking, where such steps are treated as call steps.
+   */
   cached
   predicate localFlowStepTypeTracker(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
@@ -396,7 +417,7 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    n instanceof ParameterNode
+    n instanceof TParameterNode
     or
     // Expressions that can't be reached from another entry definition or expression
     n instanceof ExprNode and
@@ -1272,7 +1293,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
     creation.asExpr() =
       any(CfgNodes::ExprNodes::MethodCallCfgNode mc |
         c.asCallable() = mc.getBlock().getExpr() and
-        mc.getExpr().getMethodName() = "lambda"
+        mc.getExpr().getMethodName() = ["lambda", "proc"]
       )
   )
 }

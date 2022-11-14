@@ -2253,6 +2253,15 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
 
+/**
+ * A module importing the modules that provide synthetic field declarations,
+ * ensuring that they are visible to the taint tracking / data flow library.
+ */
+private module SyntheticFields {
+  private import semmle.code.csharp.frameworks.system.threading.Tasks
+  private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
+}
+
 /** A synthetic field. */
 abstract class SyntheticField extends string {
   bindingset[this]
@@ -2278,7 +2287,7 @@ string parameterQualifiedTypeNamesToString(DotNet::Callable c) {
 }
 
 /**
- * A module containing predicates related to generating models as data.
+ * A module containing predicates related to generating MaD models.
  */
 module Csv {
   /** Holds if the summary should apply for all overrides of `c`. */

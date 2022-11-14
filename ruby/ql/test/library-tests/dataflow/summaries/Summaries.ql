@@ -112,7 +112,7 @@ private class TypeFromCodeQL extends ModelInput::TypeModel {
   override DataFlow::Node getASource(string package, string type) {
     package = "test" and
     type = "FooOrBar" and
-    result.asExpr().getExpr().getConstantValue().getString() = "magic_string"
+    result.getConstantValue().getString() = "magic_string"
   }
 
   override API::Node getAnApiNode(string package, string type) {

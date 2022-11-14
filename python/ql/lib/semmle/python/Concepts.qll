@@ -311,7 +311,7 @@ module CodeExecution {
  * Often, it is worthy of an alert if an SQL statement is constructed such that
  * executing it would be a security risk.
  *
- * If it is important that the SQL statement is indeed executed, then use `SQLExecution`.
+ * If it is important that the SQL statement is indeed executed, then use `SqlExecution`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlConstruction::Range` instead.
@@ -329,7 +329,7 @@ module SqlConstruction {
    * Often, it is worthy of an alert if an SQL statement is constructed such that
    * executing it would be a security risk.
    *
-   * If it is important that the SQL statement is indeed executed, then use `SQLExecution`.
+   * If it is important that the SQL statement is indeed executed, then use `SqlExecution`.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `SqlConstruction` instead.

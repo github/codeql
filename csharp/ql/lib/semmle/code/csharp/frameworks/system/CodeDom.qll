@@ -11,11 +11,3 @@ class SystemCodeDomNamespace extends Namespace {
     this.hasName("CodeDom")
   }
 }
-
-/** Data flow for `System.CodeDom.CodeNamespaceImportCollection`. */
-private class SystemCodeDomCodeNamespaceImportCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.CodeDom;CodeNamespaceImportCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
-  }
-}
