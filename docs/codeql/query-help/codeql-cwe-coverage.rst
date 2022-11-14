@@ -35,4 +35,3 @@ Note that the CWE coverage includes both "`supported queries <https://github.com
    python-cwe
    ruby-cwe
 
-.. include:: ../reusables/ruby-beta-note.rst

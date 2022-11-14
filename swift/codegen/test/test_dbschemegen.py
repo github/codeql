@@ -18,8 +18,9 @@ def dir_param(request):
 
 @pytest.fixture
 def generate(opts, input, renderer):
-    def func(classes):
+    def func(classes, null=None):
         input.classes = {cls.name: cls for cls in classes}
+        input.null = null
         (out, data), = run_generation(dbschemegen.generate, opts, renderer).items()
         assert out is opts.dbscheme
         return data
@@ -355,6 +356,115 @@ def test_class_with_derived_and_repeated_property(generate, dir_param):
                 ],
                 dir=dir_param.expected,
             )
+        ],
+    )
+
+
+def test_null_class(generate):
+    assert generate([
+        schema.Class(
+            name="Base",
+            derived={"W", "X", "Y", "Z", "Null"},
+        ),
+        schema.Class(
+            name="W",
+            bases=["Base"],
+            properties=[
+                schema.SingleProperty("w", "W"),
+                schema.SingleProperty("x", "X"),
+                schema.OptionalProperty("y", "Y"),
+                schema.RepeatedProperty("z", "Z"),
+            ]
+        ),
+        schema.Class(
+            name="X",
+            bases=["Base"],
+        ),
+        schema.Class(
+            name="Y",
+            bases=["Base"],
+        ),
+        schema.Class(
+            name="Z",
+            bases=["Base"],
+        ),
+        schema.Class(
+            name="Null",
+            bases=["Base"],
+        ),
+    ], null="Null") == dbscheme.Scheme(
+        src=schema_file,
+        includes=[],
+        declarations=[
+            dbscheme.Union(
+                lhs="@base",
+                rhs=["@null", "@w", "@x", "@y", "@z"],
+            ),
+            dbscheme.Table(
+                name="ws",
+                columns=[
+                    dbscheme.Column('id', '@w', binding=True),
+                    dbscheme.Column('w', '@w_or_none'),
+                    dbscheme.Column('x', '@x_or_none'),
+                ],
+            ),
+            dbscheme.Table(
+                name="w_ies",
+                keyset=dbscheme.KeySet(["id"]),
+                columns=[
+                    dbscheme.Column('id', '@w'),
+                    dbscheme.Column('y', '@y_or_none'),
+                ],
+            ),
+            dbscheme.Table(
+                name="w_zs",
+                keyset=dbscheme.KeySet(["id", "index"]),
+                columns=[
+                    dbscheme.Column('id', '@w'),
+                    dbscheme.Column('index', 'int'),
+                    dbscheme.Column('z', '@z_or_none'),
+                ],
+            ),
+            dbscheme.Table(
+                name="xes",
+                columns=[
+                    dbscheme.Column('id', '@x', binding=True),
+                ],
+            ),
+            dbscheme.Table(
+                name="ys",
+                columns=[
+                    dbscheme.Column('id', '@y', binding=True),
+                ],
+            ),
+            dbscheme.Table(
+                name="zs",
+                columns=[
+                    dbscheme.Column('id', '@z', binding=True),
+                ],
+            ),
+            dbscheme.Table(
+                name="nulls",
+                columns=[
+                    dbscheme.Column('id', '@null', binding=True),
+                ],
+            ),
+            dbscheme.Union(
+                lhs="@w_or_none",
+                rhs=["@w", "@null"],
+            ),
+            dbscheme.Union(
+                lhs="@x_or_none",
+                rhs=["@x", "@null"],
+            ),
+            dbscheme.Union(
+                lhs="@y_or_none",
+                rhs=["@y", "@null"],
+            ),
+            dbscheme.Union(
+                lhs="@z_or_none",
+                rhs=["@z", "@null"],
+            ),
         ],
     )
 
