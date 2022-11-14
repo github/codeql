@@ -21,7 +21,7 @@ class AndroidNetworkSecurityConfigFile extends XmlFile {
 predicate isAndroid() { exists(AndroidManifestXmlFile m) }
 
 /** Holds if the given domain name is trusted by the Network Security Configuration XML file. */
-predicate trustedDomain(string domainName) {
+private predicate trustedDomainViaXml(string domainName) {
   exists(
     AndroidNetworkSecurityConfigFile confFile, XmlElement domConf, XmlElement domain,
     XmlElement trust
@@ -34,6 +34,22 @@ predicate trustedDomain(string domainName) {
     trust.getParent() = domConf and
     trust.getName() = ["trust-anchors", "pin-set"]
   )
+}
+
+/** Holds if the given domain name is trusted by an OkHttp `CertificatePinner`. */
+private predicate trustedDomainViaOkHttp(string domainName) {
+  exists(CompileTimeConstantExpr domainExpr, MethodAccess certPinnerAdd |
+    domainExpr.getStringValue().replaceAll("*.", "") = domainName and // strip wildcard patterns like *.example.com
+    certPinnerAdd.getMethod().hasQualifiedName("okhttp3", "CertificatePinner$Builder", "add") and
+    DataFlow::localExprFlow(domainExpr, certPinnerAdd.getArgument(0))
+  )
+}
+
+/** Holds if the given domain name is trusted by some certifiacte pinning implementation. */
+predicate trustedDomain(string domainName) {
+  trustedDomainViaXml(domainName)
+  or
+  trustedDomainViaOkHttp(domainName)
 }
 
 /** Configuration for finding uses of non trusted URLs. */
