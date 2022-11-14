@@ -153,6 +153,13 @@ private module Cached {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
     or
+    // flow through nil-coalescing operator `??`
+    exists(BinaryExpr nco |
+      nco.getFunction().(DeclRefExpr).getDecl().(FreeFunctionDecl).getName() = "??(_:_:)" and
+      nodeFrom.asExpr() = nco.getAnOperand() and
+      nodeTo.asExpr() = nco
+    )
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }

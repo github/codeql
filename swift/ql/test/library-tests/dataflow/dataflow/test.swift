@@ -271,8 +271,8 @@ func test_optionals(y: Int?) {
     sink(opt: x?.signum()) // $ flow=259
     sink(opt: y?.signum())
 
-    sink(arg: x ?? 0) // $ MISSING: flow=259
-    sink(arg: x ?? source()) // $ MISSING: flow=259, 276
+    sink(arg: x ?? 0) // $ flow=259
+    sink(arg: x ?? source()) // $ flow=259 MISSING: flow=276
     sink(arg: y ?? 0)
     sink(arg: y ?? source()) // $ MISSING: flow=278
 
