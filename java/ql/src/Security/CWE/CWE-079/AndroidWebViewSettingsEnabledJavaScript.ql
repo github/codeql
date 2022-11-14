@@ -15,8 +15,6 @@ import semmle.code.java.frameworks.android.WebView
 
 from MethodAccess ma
 where
-  (
-    ma.getMethod() instanceof AllowJavaScriptMethod and
-    ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true
-  )
+  ma.getMethod() instanceof AllowJavaScriptMethod and
+  ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true
 select ma, "JavaScript execution enabled in WebView."
