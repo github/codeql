@@ -82,7 +82,7 @@ private RegExpTerm seqChild(Regex re, int start, int end, int i) {
   )
 }
 
-/** An implementation that statisfies the RegexTreeView signature. */
+/** An implementation that satisfies the RegexTreeView signature. */
 module Impl implements RegexTreeViewSig {
   /**
    * An element containing a regular expression term, that is, either
