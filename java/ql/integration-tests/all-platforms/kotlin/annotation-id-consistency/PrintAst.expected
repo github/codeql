@@ -69,9 +69,50 @@ test.kt:
 #    9|       3: [TypeAccess] Class<T>[]
 #    9|         0: [TypeAccess] Class<T>
 #    9|           0: [TypeAccess] T
-#   11|   6: [Class] Annotated
+#   11|   6: [Interface] VarargAnnotation
 #-----|     -3: (Annotations)
-#   11|       1: [Annotation] Ann1
+#    0|       1: [Annotation] Repeatable
+#    0|         1: [TypeLiteral] Container.class
+#    0|           0: [TypeAccess] Container
+#    0|       2: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
+#   11|       3: [Annotation] Repeatable
+#    0|     1: [Interface] Container
+#-----|       -3: (Annotations)
+#    0|         1: [Annotation] RepeatableContainer
+#    0|         2: [Annotation] Retention
+#    0|           1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|             -1: [TypeAccess] RetentionPolicy
+#    0|       1: [Method] value
+#    0|         3: [TypeAccess] VarargAnnotation[]
+#    0|           0: [TypeAccess] VarargAnnotation
+#   12|     2: [Method] x
+#   12|       3: [TypeAccess] int[]
+#   14|   7: [Class] Annotated
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Container
+#    0|         1: [ArrayInit] {...}
+#   16|           1: [Annotation] VarargAnnotation
+#    0|             1: [ArrayInit] {...}
+#   17|           2: [Annotation] VarargAnnotation
+#    0|             1: [ArrayInit] {...}
+#    0|               1: [IntegerLiteral] 1
+#   18|           3: [Annotation] VarargAnnotation
+#    0|             1: [ArrayInit] {...}
+#    0|               1: [IntegerLiteral] 1
+#    0|               1: [IntegerLiteral] 2
+#   19|           4: [Annotation] VarargAnnotation
+#    0|             1: [ArrayInit] {...}
+#    0|               1: [IntegerLiteral] 1
+#    0|               1: [IntegerLiteral] 2
+#    0|               1: [IntegerLiteral] 3
+#   20|           5: [Annotation] VarargAnnotation
+#    0|             1: [ArrayInit] {...}
+#    0|               1: [IntegerLiteral] 1
+#    0|               1: [IntegerLiteral] 2
+#    0|               1: [IntegerLiteral] 3
+#   14|       2: [Annotation] Ann1
 #    0|         1: [IntegerLiteral] 1
 #    0|         1: [Annotation] Ann2
 #    0|           1: [StringLiteral] "Hello"
@@ -91,11 +132,11 @@ test.kt:
 #    0|               0: [TypeAccess] String
 #    0|             1: [TypeLiteral] int.class
 #    0|               0: [TypeAccess] int
-#   12|       2: [Annotation] GenericAnnotation<>
-#   13|     1: [Constructor] Annotated
-#   11|       5: [BlockStmt] { ... }
-#   11|         0: [SuperConstructorInvocationStmt] super(...)
-#   13|         1: [BlockStmt] { ... }
+#   15|       3: [Annotation] GenericAnnotation<>
+#   21|     1: [Constructor] Annotated
+#   14|       5: [BlockStmt] { ... }
+#   14|         0: [SuperConstructorInvocationStmt] super(...)
+#   21|         1: [BlockStmt] { ... }
 #    0| [TypeLiteral] String.class
 #    0|   0: [TypeAccess] String
 #    0| [ArrayInit] {...}
