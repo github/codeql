@@ -50,7 +50,8 @@ abstract class AtmConfig extends string {
     // known sink for the class.
     exists(EndpointCharacteristic characteristic |
       characteristic.getEndpoints(sink) and
-      characteristic.getImplications(this.getASinkEndpointType(), true, 1.0)
+      characteristic
+          .getImplications(this.getASinkEndpointType(), true, characteristic.maximalConfidence())
     )
   }
 

@@ -2,10 +2,10 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
-import codeql.swift.elements.Locatable
+import codeql.swift.elements.ErrorElement
 
 module Generated {
-  class UnspecifiedElement extends Synth::TUnspecifiedElement, Locatable {
+  class UnspecifiedElement extends Synth::TUnspecifiedElement, ErrorElement {
     override string getAPrimaryQlClass() { result = "UnspecifiedElement" }
 
     /**

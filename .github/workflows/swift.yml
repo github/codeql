@@ -112,3 +112,9 @@ jobs:
         with:
           name: swift-generated-cpp-files
           path: swift/generated-cpp-files/**
+  database-upgrade-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/fetch-codeql
+      - uses: ./swift/actions/database-upgrade-scripts

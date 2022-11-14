@@ -1,0 +1,14 @@
+| file://:0:0:0:0 | ... .combine(_:) | UnresolvedDotExpr |
+| file://:0:0:0:0 | <<error type>> | ErrorType |
+| overloaded.swift:6:5:6:5 | OverloadedDeclRefExpr | OverloadedDeclRefExpr |
+| unresolved.swift:5:1:5:14 | UnresolvedSpecializeExpr | UnresolvedSpecializeExpr |
+| unspecified.swift:3:1:3:23 | missing extended_type_decl from ExtensionDecl | UnspecifiedElement |
+| unspecified.swift:9:9:9:9 | missing fallthrough_dest from FallthroughStmt | UnspecifiedElement |
+| unspecified.swift:9:9:9:9 | missing fallthrough_source from FallthroughStmt | UnspecifiedElement |
+| unspecified.swift:12:18:12:21 | missing element from EnumElementPattern | UnspecifiedElement |
+| unspecified.swift:14:18:14:26 | missing element from EnumElementPattern | UnspecifiedElement |
+| unspecified.swift:19:18:19:19 | missing element from EnumElementPattern | UnspecifiedElement |
+| unspecified.swift:22:13:22:13 | missing fallthrough_dest from FallthroughStmt | UnspecifiedElement |
+| unspecified.swift:22:13:22:13 | missing fallthrough_source from FallthroughStmt | UnspecifiedElement |
+| unspecified.swift:25:16:25:16 | ErrorExpr | ErrorExpr |
+| unspecified.swift:26:18:26:19 | missing element from EnumElementPattern | UnspecifiedElement |
