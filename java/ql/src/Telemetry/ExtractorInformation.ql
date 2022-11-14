@@ -62,21 +62,16 @@ predicate extractorDiagnostics(string key, int value) {
  */
 
 predicate extractorTotalDiagnostics(string key, int value) {
-  exists(string extractor |
+  exists(string extractor, string limitRegex |
+    limitRegex = "Total of ([0-9]+) diagnostics \\(reached limit of ([0-9]+)\\).*" and
     key = "Total number of diagnostics from " + extractor and
     value =
       strictcount(Diagnostic d | d.getGeneratedBy() = extractor) +
         sum(Diagnostic d |
           d.getGeneratedBy() = extractor
         |
-          d.getMessage()
-                  .regexpCapture("Total of ([0-9]+) diagnostics \\(reached limit of ([0-9]+)\\).*",
-                    1)
-                  .toInt() -
-              d.getMessage()
-                  .regexpCapture("Total of ([0-9]+) diagnostics \\(reached limit of ([0-9]+)\\).*",
-                    2)
-                  .toInt() - 1
+          d.getMessage().regexpCapture(limitRegex, 1).toInt() -
+              d.getMessage().regexpCapture(limitRegex, 2).toInt() - 1
         )
   )
 }
