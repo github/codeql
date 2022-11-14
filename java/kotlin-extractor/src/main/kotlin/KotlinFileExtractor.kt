@@ -901,7 +901,7 @@ open class KotlinFileExtractor(
                             .filterIsInstance<IrProperty>()
                             .map {
                                 val getter = it.getter!!
-                                val label = extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = false, extractAnnotations = true, null, listOf())
+                                val label = extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = true, extractAnnotations = true, null, listOf())
                                 tw.writeIsAnnotElem(label!!.cast<DbMethod>())
                             }
                     } else {
