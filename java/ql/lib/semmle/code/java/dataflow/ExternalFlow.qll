@@ -135,6 +135,7 @@ private module Frameworks {
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.Files
+  private import semmle.code.java.security.FragmentInjection
   private import semmle.code.java.security.GroovyInjection
   private import semmle.code.java.security.ImplicitPendingIntents
   private import semmle.code.java.security.JexlInjectionSinkModels
@@ -613,7 +614,8 @@ module CsvValidation {
           "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
           "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
           "url-open-stream", "url-redirect", "create-file", "write-file", "set-hostname-verifier",
-          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation", "ssti"
+          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation", "ssti",
+          "fragment-injection"
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and
