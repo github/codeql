@@ -1,3 +1,5 @@
+@LocalRepeatable
+@LocalRepeatable
 @LibRepeatable
 @LibRepeatable
 @ExplicitContainerRepeatable
