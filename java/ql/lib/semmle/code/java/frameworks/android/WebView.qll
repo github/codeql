@@ -45,7 +45,10 @@ class WebViewGetUrlMethod extends Method {
 class CrossOriginAccessMethod extends Method {
   CrossOriginAccessMethod() {
     this.getDeclaringType() instanceof TypeWebSettings and
-    this.hasName(["setAllowUniversalAccessFromFileURLs", "setAllowFileAccessFromFileURLs"])
+    this.hasName([
+        "setAllowFileAccess", "setAllowUniversalAccessFromFileURLs",
+        "setAllowFileAccessFromFileURLs"
+      ])
   }
 }
 
