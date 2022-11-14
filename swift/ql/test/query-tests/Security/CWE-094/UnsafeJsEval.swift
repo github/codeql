@@ -317,10 +317,10 @@ func testQHelpExamples() {
 		let webview = WKWebView()
 		let remoteData = try String(contentsOf: URL(string: "http://example.com/evil.json")!)
 
-		_ = try await webview.evaluateJavaScript("alert(" + remoteData + ")") // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
+		_ = try await webview.evaluateJavaScript("console.log(" + remoteData + ")") // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
 
 		_ = try await webview.callAsyncJavaScript(
-			"alert(JSON.parse(data))",
+			"console.log(data)",
 			arguments: ["data": remoteData], // GOOD
 			contentWorld: .page
 		)

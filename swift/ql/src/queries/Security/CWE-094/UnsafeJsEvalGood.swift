@@ -4,7 +4,7 @@ let remoteData = try String(contentsOf: URL(string: "http://example.com/evil.jso
 ...
 
 _ = try await webview.callAsyncJavaScript(
-    "alert(JSON.parse(data))",
+    "console.log(data)",
     arguments: ["data": remoteData], // GOOD
     contentWorld: .page
 )

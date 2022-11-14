@@ -3,4 +3,4 @@ let remoteData = try String(contentsOf: URL(string: "http://example.com/evil.jso
 
 ...
 
-_ = try await webview.evaluateJavaScript("alert(" + remoteData + ")") // BAD
+_ = try await webview.evaluateJavaScript("console.log(" + remoteData + ")") // BAD
