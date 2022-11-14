@@ -35,7 +35,6 @@ edges
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:57:11:57:24 | new indirection [c] |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c |
 | A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | call to B [c] |
-| A.cpp:57:17:57:23 | new | A.cpp:57:17:57:23 | new |
 | A.cpp:64:10:64:15 | call to setOnB indirection [c] | A.cpp:66:10:66:11 | b2 indirection [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | call to setOnB indirection [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:21:64:28 | new |
@@ -77,7 +76,6 @@ edges
 | A.cpp:126:5:126:5 | set output argument [c] | A.cpp:131:8:131:8 | f7 output argument [c] |
 | A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c |
 | A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | set output argument [c] |
-| A.cpp:126:12:126:18 | new | A.cpp:126:12:126:18 | new |
 | A.cpp:131:8:131:8 | f7 output argument [c] | A.cpp:132:10:132:10 | b indirection [c] |
 | A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:10:132:13 | c |
 | A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:13:132:13 | c |
@@ -926,7 +924,6 @@ nodes
 | A.cpp:57:11:57:24 | call to B [c] | semmle.label | call to B [c] |
 | A.cpp:57:11:57:24 | new indirection [c] | semmle.label | new indirection [c] |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
-| A.cpp:57:17:57:23 | new | semmle.label | new |
 | A.cpp:64:10:64:15 | call to setOnB indirection [c] | semmle.label | call to setOnB indirection [c] |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
@@ -963,7 +960,6 @@ nodes
 | A.cpp:120:16:120:16 | a | semmle.label | a |
 | A.cpp:120:16:120:16 | a | semmle.label | a |
 | A.cpp:126:5:126:5 | set output argument [c] | semmle.label | set output argument [c] |
-| A.cpp:126:12:126:18 | new | semmle.label | new |
 | A.cpp:126:12:126:18 | new | semmle.label | new |
 | A.cpp:131:8:131:8 | f7 output argument [c] | semmle.label | f7 output argument [c] |
 | A.cpp:132:10:132:10 | b indirection [c] | semmle.label | b indirection [c] |
@@ -1776,7 +1772,6 @@ subpaths
 | A.cpp:56:10:56:17 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:10:56:17 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
 | A.cpp:56:10:56:17 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:10:56:17 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
 | A.cpp:57:10:57:32 | call to get | A.cpp:57:17:57:23 | new | A.cpp:57:10:57:32 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new | new |
-| A.cpp:57:10:57:32 | call to get | A.cpp:57:17:57:23 | new | A.cpp:57:10:57:32 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new | new |
 | A.cpp:66:10:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:10:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
 | A.cpp:66:10:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:10:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
 | A.cpp:66:14:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:14:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
@@ -1790,8 +1785,6 @@ subpaths
 | A.cpp:120:12:120:16 | a | A.cpp:98:12:98:18 | new | A.cpp:120:12:120:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
 | A.cpp:120:16:120:16 | a | A.cpp:98:12:98:18 | new | A.cpp:120:16:120:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
 | A.cpp:132:10:132:13 | c | A.cpp:126:12:126:18 | new | A.cpp:132:10:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new | new |
-| A.cpp:132:10:132:13 | c | A.cpp:126:12:126:18 | new | A.cpp:132:10:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new | new |
-| A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new | new |
 | A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new | new |
 | A.cpp:152:10:152:13 | b | A.cpp:143:25:143:31 | new | A.cpp:152:10:152:13 | b | b flows from $@ | A.cpp:143:25:143:31 | new | new |
 | A.cpp:152:10:152:13 | b | A.cpp:150:12:150:18 | new | A.cpp:152:10:152:13 | b | b flows from $@ | A.cpp:150:12:150:18 | new | new |
