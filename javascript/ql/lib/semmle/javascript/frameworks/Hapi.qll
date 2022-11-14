@@ -14,15 +14,23 @@ module Hapi {
       // `server = new Hapi.Server()`
       this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation()
       or
-      // server = Glue.compose(manifest, composeOptions)
+      // `server = Glue.compose(manifest, composeOptions)`
       this = DataFlow::moduleMember("@hapi/glue", "compose").getAnInvocation()
       or
-      // server inside a plugin
-      // TODO match `function (server, options)`
+      // `register (server, options)`
       exists(Function f |
         this.(DataFlow::ParameterNode).getParameter() = f.getParameter(0) and
+        f.getName() = "register" and
         f.getParameter(0).getName() = "server" and
         f.getParameter(1).getName() = "options"
+      )
+      or
+      // `const after = function (server) {...};`
+      // `server.dependency('name', after);`
+      exists(ServerDefinition server, DataFlow::MethodCallNode call |
+        call = server.ref().getAMethodCall() and
+        call.getMethodName() = "dependency" and
+        this = call.getArgument(1).(DataFlow::FunctionNode).getParameter(0)
       )
     }
   }
@@ -261,7 +269,7 @@ module Hapi {
     RouteHandlerCandidate() {
       exists(string request, string responseToolkit |
         (request = "request" or request = "req") and
-        responseToolkit = "h" and
+        responseToolkit = ["h", "hapi"] and
         // heuristic: parameter names match the Hapi documentation
         astNode.getNumParameter() = 2 and
         astNode.getParameter(0).getName() = request and
