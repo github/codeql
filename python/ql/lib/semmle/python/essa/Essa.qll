@@ -517,6 +517,10 @@ class ExceptionCapture extends EssaNodeDefinition {
     SsaSource::exception_capture(this.getSourceVariable(), this.getDefiningNode())
   }
 
+  /**
+   * Gets the type handled by this exception handler
+   * `ExceptionType` in `except ExceptionType as ex:`.
+   */
   ControlFlowNode getType() {
     exists(ExceptGroupFlowNode ex |
       ex.getName() = this.getDefiningNode() and
@@ -535,6 +539,10 @@ class ExceptionGroupCapture extends EssaNodeDefinition {
     SsaSource::exception_group_capture(this.getSourceVariable(), this.getDefiningNode())
   }
 
+  /**
+   * Gets the type handled by this exception handler
+   * `ExceptionType` in `except* ExceptionType as ex:`.
+   */
   ControlFlowNode getType() {
     exists(ExceptGroupFlowNode ex |
       ex.getName() = this.getDefiningNode() and

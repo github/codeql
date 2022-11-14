@@ -367,6 +367,10 @@ predicate scope_raises_unknown(Scope s) {
 class ExceptFlowNode extends ControlFlowNode {
   ExceptFlowNode() { this.getNode() instanceof ExceptStmt }
 
+  /**
+   * Gets the type handled by this exception handler.
+   * `ExceptionType` in `except ExceptionType as e:`
+   */
   ControlFlowNode getType() {
     exists(ExceptStmt ex |
       this.getBasicBlock().dominates(result.getBasicBlock()) and
@@ -375,6 +379,10 @@ class ExceptFlowNode extends ControlFlowNode {
     )
   }
 
+  /**
+   * Gets the name assigned to the handled exception, if any.
+   * `e` in `except ExceptionType as e:`
+   */
   ControlFlowNode getName() {
     exists(ExceptStmt ex |
       this.getBasicBlock().dominates(result.getBasicBlock()) and
@@ -443,11 +451,19 @@ class ExceptFlowNode extends ControlFlowNode {
 class ExceptGroupFlowNode extends ControlFlowNode {
   ExceptGroupFlowNode() { this.getNode() instanceof ExceptGroupStmt }
 
+  /**
+   * Gets the type handled by this exception handler.
+   * `eg` in `except* eg as e:`
+   */
   ControlFlowNode getType() {
     this.getBasicBlock().dominates(result.getBasicBlock()) and
     result = this.getNode().(ExceptGroupStmt).getType().getAFlowNode()
   }
 
+  /**
+   * Gets the name assigned to the handled exception, if any.
+   * `e` in `except* eg as e:`
+   */
   ControlFlowNode getName() {
     this.getBasicBlock().dominates(result.getBasicBlock()) and
     result = this.getNode().(ExceptGroupStmt).getName().getAFlowNode()
