@@ -489,7 +489,9 @@ open class KotlinFileExtractor(
 
             val containerClass = getOrCreateContainerClass(annotationClass)
             if (containerClass != null)
-                result.add(wrapAnnotationEntriesInContainer(annotationClass, containerClass, grouped))
+                wrapAnnotationEntriesInContainer(annotationClass, containerClass, grouped)?.let {
+                    result.add(it)
+                }
             else
                 logger.warnElement("Failed to find an annotation container class", annotationClass)
         }
