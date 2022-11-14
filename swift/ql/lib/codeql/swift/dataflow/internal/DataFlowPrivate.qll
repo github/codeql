@@ -156,7 +156,14 @@ private module Cached {
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
       nco.getFunction().(DeclRefExpr).getDecl().(FreeFunctionDecl).getName() = "??(_:_:)" and
-      nodeFrom.asExpr() = nco.getAnOperand() and
+      (
+        // value argument
+        nodeFrom.asExpr() = nco.getAnOperand()
+        or
+        // unpack closure (the second argument is typically an `AutoClosureExpr` argument)
+        nodeFrom.asExpr() =
+          nco.getAnOperand().(AbstractClosureExpr).getBody().getAnElement().(ReturnStmt).getResult()
+      ) and
       nodeTo.asExpr() = nco
     )
     or
