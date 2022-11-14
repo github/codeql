@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
-import org.jetbrains.kotlin.name.ClassId
 
 // Adapted from Kotlin's interpreter/Utils.kt function 'internalName'
 // Translates class names into their JLS section 13.1 binary name,
