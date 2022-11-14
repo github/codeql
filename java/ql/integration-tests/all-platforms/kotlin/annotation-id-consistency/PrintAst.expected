@@ -21,24 +21,57 @@ User.java:
 test.kt:
 #    0| [CompilationUnit] test
 #    3|   1: [Interface] Ann1
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
 #    3|     1: [Method] x
+#    3|       3: [TypeAccess] int
 #    3|     2: [Method] y
+#    3|       3: [TypeAccess] Ann2
 #    5|   2: [Interface] Ann2
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
 #    5|     1: [Method] z
+#    5|       3: [TypeAccess] String
 #    5|     2: [Method] w
+#    5|       3: [TypeAccess] Class<?>
+#    5|         0: [WildcardTypeAccess] ? ...
 #    5|     3: [Method] v
+#    5|       3: [TypeAccess] int[]
 #    5|     4: [Method] u
+#    5|       3: [TypeAccess] Ann3[]
+#    5|         0: [TypeAccess] Ann3
 #    5|     5: [Method] t
+#    5|       3: [TypeAccess] Class<?>[]
+#    5|         0: [TypeAccess] Class<?>
+#    5|           0: [WildcardTypeAccess] ? ...
 #    7|   3: [Interface] Ann3
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
 #    7|     1: [Method] a
+#    7|       3: [TypeAccess] int
 #    9|   4: [GenericType,Interface,ParameterizedType] GenericAnnotation
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
 #-----|     -2: (Generic Parameters)
 #    9|       0: [TypeVariable] T
 #    9|     1: [Method] x
+#    9|       3: [TypeAccess] Class<T>
+#    9|         0: [TypeAccess] T
 #    9|     2: [Method] y
+#    9|       3: [TypeAccess] Class<T>[]
+#    9|         0: [TypeAccess] Class<T>
+#    9|           0: [TypeAccess] T
 #   11|   6: [Class] Annotated
 #-----|     -3: (Annotations)
-#   11|       2: [Annotation] Ann1
+#   11|       1: [Annotation] Ann1
 #    0|         1: [IntegerLiteral] 1
 #    0|         1: [Annotation] Ann2
 #    0|           1: [StringLiteral] "Hello"
@@ -58,7 +91,7 @@ test.kt:
 #    0|               0: [TypeAccess] String
 #    0|             1: [TypeLiteral] int.class
 #    0|               0: [TypeAccess] int
-#   12|       3: [Annotation] GenericAnnotation<>
+#   12|       2: [Annotation] GenericAnnotation<>
 #   13|     1: [Constructor] Annotated
 #   11|       5: [BlockStmt] { ... }
 #   11|         0: [SuperConstructorInvocationStmt] super(...)

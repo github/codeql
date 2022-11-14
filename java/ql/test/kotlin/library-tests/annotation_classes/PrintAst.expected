@@ -141,6 +141,7 @@ def.kt:
 #-----|       1: (Annotations)
 #   21|         1: [Annotation] JvmName
 #    0|           1: [StringLiteral] "a"
+#   21|       3: [TypeAccess] int
 #   23|   3: [Interface] Annot1k
 #-----|     -3: (Annotations)
 #    0|       1: [Annotation] Retention
@@ -149,11 +150,19 @@ def.kt:
 #   23|       2: [Annotation] Annot0k
 #    0|         1: [IntegerLiteral] 0
 #   25|     1: [Method] a
+#   25|       3: [TypeAccess] int
 #   26|     2: [Method] b
+#   26|       3: [TypeAccess] String
 #   27|     3: [Method] c
+#   27|       3: [TypeAccess] Class<?>
+#   27|         0: [WildcardTypeAccess] ? ...
 #   28|     4: [Method] d
+#   28|       3: [TypeAccess] Y
 #   29|     5: [Method] e
+#   29|       3: [TypeAccess] Y[]
+#   29|         0: [TypeAccess] Y
 #   30|     6: [Method] f
+#   30|       3: [TypeAccess] Annot0k
 #   33|   4: [Class] X
 #   33|     1: [Constructor] X
 #   33|       5: [BlockStmt] { ... }
