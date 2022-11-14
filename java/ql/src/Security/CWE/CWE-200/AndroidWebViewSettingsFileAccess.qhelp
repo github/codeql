@@ -6,8 +6,8 @@
     <p>
       File access in an Android WebView can expose the device's file system to
       the JavaScript running in the WebView. If there are vulnerabilities in the
-      JavaScript, file access may allow an attacker to access or steal the
-      user's data.
+      JavaScript or untrusted content is loaded in the WebView, file access may
+      allow an attacker to access or steal the user's data.
     </p>
   </overview>
 
@@ -39,18 +39,6 @@
     </li>
     <li>
       Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccessFromFileURLs(boolean)">WebSettings.setAllowFileAccessFromFileURLs</a>.
-    </li>
-    <li>
-      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowUniversalAccessFromFileURLs(boolean)">WebSettings.setAllowUniversalAccessFromFileURLs</a>.
-    </li>
-    <li>
-      File access from URLs is enabled for WebView: <a href="https://oversecured.com/vulnerabilities#Android/File_access_from_file_URLs_is_enabled_for_WebView">File access for URLs is enabled for WebView</a>.
-    </li>
-    <li>
-      File access is enabled for WebView: <a href="https://oversecured.com/vulnerabilities#Android/File_access_is_enabled_for_WebView">File access is enabled for WebView</a>.
-    </li>
-    <li>
-      Universal file access from file URLs is enabled for WebView: <a href="https://oversecured.com/vulnerabilities#Android/Universal_file_access_from_file_URLs_is_enabled_for_WebView">Universal file access from file URLs is enabled for WebView</a>.
     </li>
   </references>
 
