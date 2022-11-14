@@ -7,3 +7,6 @@ library: true
 upgrades: upgrades
 dependencies:
   codeql/regex: ${workspace}
+dataExtensions:
+  - ext/*.model.yml
+  - ext/generated/*.model.yml
