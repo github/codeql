@@ -8,4 +8,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: "*"
-    codeql/javascript-experimental-atm-model: "0.2.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-11-13-16h23m43s.upbeat-camera-1c5s3m6g.08647db078db95df9c066c985b03e8788c743f884caaeb9d9ce46f987409ac20
