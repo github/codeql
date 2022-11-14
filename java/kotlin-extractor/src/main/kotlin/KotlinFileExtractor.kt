@@ -7,6 +7,7 @@ import com.github.codeql.utils.versions.functionN
 import com.github.codeql.utils.versions.isUnderscoreParameter
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.jvm.ir.getAnnotationRetention
@@ -22,6 +23,7 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
+import org.jetbrains.kotlin.ir.builders.declarations.*
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
@@ -39,6 +41,7 @@ import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
@@ -468,8 +471,65 @@ open class KotlinFileExtractor(
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
 
+    // Adapted from RepeatedAnnotationLowering.kt
+    private fun groupRepeatableAnnotations(annotations: List<IrConstructorCall>): List<IrConstructorCall> {
+        if (annotations.size < 2) return annotations
+
+        val annotationsByClass = annotations.groupByTo(mutableMapOf()) { it.symbol.owner.constructedClass }
+        if (annotationsByClass.values.none { it.size > 1 }) return annotations
+
+        val result = mutableListOf<IrConstructorCall>()
+        for (annotation in annotations) {
+            val annotationClass = annotation.symbol.owner.constructedClass
+            val grouped = annotationsByClass.remove(annotationClass) ?: continue
+            if (grouped.size < 2) {
+                result.add(grouped.single())
+                continue
+            }
+
+            val containerClass = getOrCreateContainerClass(annotationClass)
+            if (containerClass != null)
+                result.add(wrapAnnotationEntriesInContainer(annotationClass, containerClass, grouped))
+            else
+                logger.warnElement("Failed to find an annotation container class", annotationClass)
+        }
+        return result
+    }
+
+    // Adapted from RepeatedAnnotationLowering.kt
+    private fun getOrCreateContainerClass(annotationClass: IrClass): IrClass? {
+        val metaAnnotations = annotationClass.annotations
+        val jvmRepeatable = metaAnnotations.find { it.isAnnotation(JvmAnnotationNames.REPEATABLE_ANNOTATION) }
+        return if (jvmRepeatable != null) {
+            ((jvmRepeatable.getValueArgument(0) as? IrClassReference)?.symbol as? IrClassSymbol)?.owner
+        } else {
+            getOrCreateSyntheticRepeatableAnnotationContainer(annotationClass)
+        }
+    }
+
+    // Adapted from RepeatedAnnotationLowering.kt
+    private fun wrapAnnotationEntriesInContainer(
+        annotationClass: IrClass,
+        containerClass: IrClass,
+        entries: List<IrConstructorCall>,
+    ): IrConstructorCall {
+        val annotationType = annotationClass.typeWith()
+        return IrConstructorCallImpl.fromSymbolOwner(containerClass.defaultType, containerClass.primaryConstructor!!.symbol).apply {
+            putValueArgument(
+                0,
+                IrVarargImpl(
+                    UNDEFINED_OFFSET, UNDEFINED_OFFSET,
+                    pluginContext.irBuiltIns.arrayClass.typeWith(annotationType),
+                    annotationType,
+                    entries
+                )
+            )
+        }
+    }
+
     private fun extractAnnotations(annotations: List<IrConstructorCall>, parent: Label<out DbExprparent>) {
-        for ((idx, constructorCall: IrConstructorCall) in annotations.sortedBy { v -> v.type.classFqName?.asString() }.withIndex()) {
+        val groupedAnnotations = groupRepeatableAnnotations(annotations)
+        for ((idx, constructorCall: IrConstructorCall) in groupedAnnotations.sortedBy { v -> v.type.classFqName?.asString() }.withIndex()) {
             extractAnnotation(constructorCall, parent, idx)
         }
     }
@@ -699,8 +759,62 @@ open class KotlinFileExtractor(
     }
 
     private val javaAnnotationRepeatable by lazy { referenceExternalClass("java.lang.annotation.Repeatable") }
+    private val kotlinAnnotationRepeatableContainer by lazy { referenceExternalClass("kotlin.jvm.internal.RepeatableContainer") }
 
-    // Taken from AdditionalClassAnnotationLowering.kt
+    // Taken from JvmCachedDeclarations.kt
+    private fun getOrCreateSyntheticRepeatableAnnotationContainer(annotationClass: IrClass) =
+        globalExtensionState.syntheticRepeatableAnnotationContainers.getOrPut(annotationClass) {
+            val containerClass = pluginContext.irFactory.buildClass {
+                kind = ClassKind.ANNOTATION_CLASS
+                name = Name.identifier(JvmAbi.REPEATABLE_ANNOTATION_CONTAINER_NAME)
+            }.apply {
+                createImplicitParameterDeclarationWithWrappedDescriptor()
+                parent = annotationClass
+                superTypes = listOf(pluginContext.irBuiltIns.annotationType)
+            }
+
+            val propertyName = Name.identifier("value")
+            val propertyType = pluginContext.irBuiltIns.arrayClass.typeWith(annotationClass.typeWith())
+
+            containerClass.addConstructor {
+                isPrimary = true
+            }.apply {
+                addValueParameter(propertyName, propertyType)
+            }
+
+            containerClass.addProperty {
+                name = propertyName
+            }.apply property@{
+                backingField = pluginContext.irFactory.buildField {
+                    name = propertyName
+                    type = propertyType
+                }.apply {
+                    parent = containerClass
+                    correspondingPropertySymbol = this@property.symbol
+                }
+                addDefaultGetter(containerClass, pluginContext.irBuiltIns)
+            }
+
+            val repeatableContainerAnnotation = kotlinAnnotationRepeatableContainer?.let { it.constructors.single() }
+
+            containerClass.annotations = annotationClass.annotations
+                .filter {
+                    it.isAnnotationWithEqualFqName(StandardNames.FqNames.retention) ||
+                            it.isAnnotationWithEqualFqName(StandardNames.FqNames.target)
+                }
+                .map { it.deepCopyWithSymbols(containerClass) } +
+                    listOfNotNull(
+                        repeatableContainerAnnotation?.let {
+                            IrConstructorCallImpl.fromSymbolOwner(
+                                UNDEFINED_OFFSET, UNDEFINED_OFFSET, it.returnType, it.symbol, 0
+                            )
+                        }
+                    )
+
+            containerClass
+        }
+
+    // Adapted from AdditionalClassAnnotationLowering.kt
     private fun generateRepeatableAnnotation(irClass: IrClass): IrConstructorCall? {
         if (!irClass.hasAnnotation(StandardNames.FqNames.repeatable) ||
             irClass.hasAnnotation(JvmAnnotationNames.REPEATABLE_ANNOTATION)
@@ -708,10 +822,10 @@ open class KotlinFileExtractor(
 
         val repeatableConstructor = javaAnnotationRepeatable?.declarations?.firstIsInstanceOrNull<IrConstructor>() ?: return null
 
-        val containerClass =
-            irClass.declarations.singleOrNull {
-                it is IrClass && it.name.asString() == JvmAbi.REPEATABLE_ANNOTATION_CONTAINER_NAME
-            } as IrClass? ?: return null
+        val containerClass = getOrCreateSyntheticRepeatableAnnotationContainer(irClass)
+        // Whenever a repeatable annotation with a Kotlin-synthesised container is extracted, extract the synthetic container to the same trap file.
+        extractClassSource(containerClass, extractDeclarations = true, extractStaticInitializer = true, extractPrivateMembers = true, extractFunctionBodies = true)
+
         val containerReference = IrClassReferenceImpl(
             UNDEFINED_OFFSET, UNDEFINED_OFFSET, pluginContext.irBuiltIns.kClassClass.typeWith(containerClass.defaultType),
             containerClass.symbol, containerClass.defaultType
