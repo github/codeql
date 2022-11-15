@@ -80,10 +80,17 @@ class Processor:
             trap_name=trap_name,
         )
 
+    @functools.lru_cache(maxsize=None)
+    def _is_ipa(self, name: str) -> bool:
+        cls = self._classmap[name]
+        return cls.ipa is not None or (
+            cls.derived and all(self._is_ipa(d) for d in cls.derived))
+
     def get_classes(self):
         ret = {'': []}
         for k, cls in self._classmap.items():
-            ret.setdefault(cls.group, []).append(self._get_class(cls.name))
+            if not self._is_ipa(k):
+                ret.setdefault(cls.group, []).append(self._get_class(cls.name))
         return ret
 
 
