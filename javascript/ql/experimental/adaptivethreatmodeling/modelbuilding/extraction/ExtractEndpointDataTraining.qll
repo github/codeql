@@ -99,7 +99,7 @@ query predicate trainingEndpoints(
     or
     // If the list of characteristics includes negative indicators with high confidence for all classes other than 0,
     // select this as a training sample of class 0 (this means we had query-specific characteristics to decide this
-    // endpoint isn’t a sink for each of our sink types).
+    // endpoint isn't a sink for each of our sink types).
     endpointClass instanceof NegativeType and
     forall(EndpointType otherClass | not otherClass instanceof NegativeType |
       exists(EndpointCharacteristic characteristic2, float confidence |
