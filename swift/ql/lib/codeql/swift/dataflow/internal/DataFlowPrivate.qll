@@ -170,10 +170,7 @@ private module Cached {
     // flow through ternary operator `? :`
     exists(IfExpr ie |
       nodeTo.asExpr() = ie and
-      (
-        nodeFrom.asExpr() = ie.getThenExpr() or
-        nodeFrom.asExpr() = ie.getElseExpr()
-      )
+      nodeFrom.asExpr() = ie.getBranch(_)
     )
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
