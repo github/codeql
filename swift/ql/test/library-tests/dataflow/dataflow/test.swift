@@ -276,10 +276,10 @@ func test_optionals(y: Int?) {
     sink(arg: y ?? 0)
     sink(arg: y ?? source()) // $ MISSING: flow=278
 
-    sink(arg: x != nil ? x! : 0) // $ MISSING: flow=259
-    sink(arg: x != nil ? x! : source()) // $ MISSING: flow=259, 281
+    sink(arg: x != nil ? x! : 0) // $ flow=259
+    sink(arg: x != nil ? x! : source()) // $ flow=259 flow=280
     sink(arg: y != nil ? y! : 0)
-    sink(arg: y != nil ? y! : source()) // $ MISSING: flow=283
+    sink(arg: y != nil ? y! : source()) // $ flow=282
 
     if let z = x {
         sink(arg: z) // $ MISSING: flow=259

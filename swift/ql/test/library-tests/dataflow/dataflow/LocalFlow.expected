@@ -216,18 +216,26 @@
 | test.swift:279:15:279:15 | x | test.swift:280:15:280:15 | x |
 | test.swift:279:26:279:26 | x | test.swift:279:26:279:27 | ...! |
 | test.swift:279:26:279:26 | x | test.swift:280:15:280:15 | x |
+| test.swift:279:26:279:27 | ...! | test.swift:279:15:279:31 | ... ? ... : ... |
+| test.swift:279:31:279:31 | 0 | test.swift:279:15:279:31 | ... ? ... : ... |
 | test.swift:280:15:280:15 | x | test.swift:280:26:280:26 | x |
 | test.swift:280:15:280:15 | x | test.swift:284:16:284:16 | x |
 | test.swift:280:26:280:26 | x | test.swift:280:26:280:27 | ...! |
 | test.swift:280:26:280:26 | x | test.swift:284:16:284:16 | x |
+| test.swift:280:26:280:27 | ...! | test.swift:280:15:280:38 | ... ? ... : ... |
+| test.swift:280:31:280:38 | call to source() | test.swift:280:15:280:38 | ... ? ... : ... |
 | test.swift:281:15:281:15 | y | test.swift:281:26:281:26 | y |
 | test.swift:281:15:281:15 | y | test.swift:282:15:282:15 | y |
 | test.swift:281:26:281:26 | y | test.swift:281:26:281:27 | ...! |
 | test.swift:281:26:281:26 | y | test.swift:282:15:282:15 | y |
+| test.swift:281:26:281:27 | ...! | test.swift:281:15:281:31 | ... ? ... : ... |
+| test.swift:281:31:281:31 | 0 | test.swift:281:15:281:31 | ... ? ... : ... |
 | test.swift:282:15:282:15 | y | test.swift:282:26:282:26 | y |
 | test.swift:282:15:282:15 | y | test.swift:287:16:287:16 | y |
 | test.swift:282:26:282:26 | y | test.swift:282:26:282:27 | ...! |
 | test.swift:282:26:282:26 | y | test.swift:287:16:287:16 | y |
+| test.swift:282:26:282:27 | ...! | test.swift:282:15:282:38 | ... ? ... : ... |
+| test.swift:282:31:282:38 | call to source() | test.swift:282:15:282:38 | ... ? ... : ... |
 | test.swift:284:16:284:16 | x | test.swift:290:16:290:16 | x |
 | test.swift:287:16:287:16 | y | test.swift:293:16:293:16 | y |
 | test.swift:290:16:290:16 | x | test.swift:290:16:290:17 | ...? |

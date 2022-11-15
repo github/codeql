@@ -167,6 +167,15 @@ private module Cached {
       nodeTo.asExpr() = nco
     )
     or
+    // flow through ternary operator `? :`
+    exists(IfExpr ie |
+      nodeTo.asExpr() = ie and
+      (
+        nodeFrom.asExpr() = ie.getThenExpr() or
+        nodeFrom.asExpr() = ie.getElseExpr()
+      )
+    )
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
