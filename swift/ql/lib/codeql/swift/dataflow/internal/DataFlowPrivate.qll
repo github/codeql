@@ -161,7 +161,7 @@ private module Cached {
       // value argument
       nodeFrom.asExpr() = nco.getAnOperand()
       or
-      // unpack closure (the second argument is typically an `AutoClosureExpr` argument)
+      // unpack closure (the second argument is an `AutoClosureExpr` argument)
       nodeFrom.asExpr() = nco.getAnOperand().(AutoClosureExpr).getExpr()
     )
     or
