@@ -18,12 +18,14 @@ module Hapi {
       this = DataFlow::moduleMember("@hapi/glue", "compose").getAnInvocation()
       or
       // `register (server, options)`
-      exists(Function f |
-        this.(DataFlow::ParameterNode).getParameter() = f.getParameter(0) and
-        f.getName() = "register" and
-        f.getParameter(0).getName() = "server" and
-        f.getParameter(1).getName() = "options"
-      )
+      // `module.exports.plugin = {register, pkg};`
+      this =
+        any(NodeModule m)
+            .getAnExportedValue("plugin")
+            .(DataFlow::ObjectLiteralNode)
+            .getAPropertySource("register")
+            .(DataFlow::FunctionNode)
+            .getParameter(0)
       or
       // `const after = function (server) {...};`
       // `server.dependency('name', after);`
