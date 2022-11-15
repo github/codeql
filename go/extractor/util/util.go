@@ -54,6 +54,21 @@ func runGoListWithEnv(format string, pkgpath string, additionalEnv []string, fla
 	return strings.TrimSpace(string(out)), nil
 }
 
+// PkgInfo holds package directory and module directory (if any) for a package
+type PkgInfo struct {
+	PkgDir string // the directory directly containing source code of this package
+	ModDir string // the module directory containing this package, empty if not a module
+}
+
+// GetPkgInfo fills the package info structure for the specified package path.
+// It passes the `go list` the flags specified by `flags`.
+func GetPkgInfo(pkgpath string, flags ...string) PkgInfo {
+	return PkgInfo{
+		PkgDir: GetModDir(pkgpath, flags...),
+		ModDir: GetPkgDir(pkgpath, flags...),
+	}
+}
+
 // GetModDir gets the absolute directory of the module containing the package with path
 // `pkgpath`. It passes the `go list` the flags specified by `flags`.
 func GetModDir(pkgpath string, flags ...string) string {

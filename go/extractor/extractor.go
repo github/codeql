@@ -103,10 +103,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	extractUniverseScope()
 	log.Println("Done extracting universe scope.")
 
-	// a map of package path to package root directory (currently the module root or the source directory)
-	pkgRoots := make(map[string]string)
-	// a map of package path to source code directory
-	pkgDirs := make(map[string]string)
+	// a map of package path to source directory and module root directory
+	pkgInfos := make(map[string]util.PkgInfo)
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
 
@@ -116,16 +114,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	}, func(pkg *packages.Package) {
 		log.Printf("Processing package %s.", pkg.PkgPath)
 
-		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
-			mdir := util.GetModDir(pkg.PkgPath, modFlags...)
-			pdir := util.GetPkgDir(pkg.PkgPath, modFlags...)
-			// GetModDir returns the empty string if the module directory cannot be determined, e.g. if the package
-			// is not using modules. If this is the case, fall back to the package directory
-			if mdir == "" {
-				mdir = pdir
-			}
-			pkgRoots[pkg.PkgPath] = mdir
-			pkgDirs[pkg.PkgPath] = pdir
+		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
+			pkgInfos[pkg.PkgPath] = util.GetPkgInfo(pkg.PkgPath, modFlags...)
 		}
 
 		log.Printf("Extracting types for package %s.", pkg.PkgPath)
@@ -152,11 +142,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	})
 
 	for _, pkg := range pkgs {
-		if pkgRoots[pkg.PkgPath] == "" {
+		pkgInfo, ok := pkgInfos[pkg.PkgPath]
+		if !ok || pkgInfo.PkgDir == "" {
 			log.Fatalf("Unable to get a source directory for input package %s.", pkg.PkgPath)
 		}
-		wantedRoots[pkgRoots[pkg.PkgPath]] = true
-		wantedRoots[pkgDirs[pkg.PkgPath]] = true
+		wantedRoots[pkgInfo.PkgDir] = true
+		if pkgInfo.ModDir != "" {
+			wantedRoots[pkgInfo.ModDir] = true
+		}
 	}
 
 	log.Println("Done processing dependencies.")
@@ -174,7 +167,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		return true
 	}, func(pkg *packages.Package) {
 		for root, _ := range wantedRoots {
-			relDir, err := filepath.Rel(root, pkgDirs[pkg.PkgPath])
+			pkgInfo := pkgInfos[pkg.PkgPath]
+			relDir, err := filepath.Rel(root, pkgInfo.PkgDir)
 			if err != nil || noExtractRe.MatchString(relDir) {
 				// if the path can't be made relative or matches the noExtract regexp skip it
 				continue
@@ -182,8 +176,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 			extraction.extractPackage(pkg)
 
-			if pkgRoots[pkg.PkgPath] != "" {
-				modPath := filepath.Join(pkgRoots[pkg.PkgPath], "go.mod")
+			if pkgInfo.ModDir != "" {
+				modPath := filepath.Join(pkgInfo.ModDir, "go.mod")
 				if util.FileExists(modPath) {
 					log.Printf("Extracting %s", modPath)
 					start := time.Now()
