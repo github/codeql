@@ -17,7 +17,7 @@
 
 <sample src="UnsafeJsEvalBad.swift" />
 
-<p>To fix the problem, we sanitize the remote data by passing it using the <code>arguments</code> dictionary of <code>WKWebView.callAsyncJavaScript</code>. This ensures that untrusted data cannot be evaluated as JavaScript source code.</p>
+<p>In the following (good) example, we sanitize the remote data by passing it using the <code>arguments</code> dictionary of <code>WKWebView.callAsyncJavaScript</code>. This ensures that untrusted data cannot be evaluated as JavaScript source code.</p>
 
 <sample src="UnsafeJsEvalGood.swift" />
 
