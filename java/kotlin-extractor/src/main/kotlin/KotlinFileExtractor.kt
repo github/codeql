@@ -4566,12 +4566,6 @@ open class KotlinFileExtractor(
 
     private fun <T : DbExpr> exprIdOrFresh(id: Label<out DbExpr>?) = id?.cast<T>() ?: tw.getFreshIdLabel()
 
-    private fun toUnbound(t: IrType) =
-        when(t) {
-            is IrSimpleType -> t.classifier.typeWith()
-            else -> t
-        }
-
     private fun extractClassReference(
         e: IrClassReference,
         parent: Label<out DbExprparent>,
