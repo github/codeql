@@ -40,6 +40,9 @@
     <li>
       Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccessFromFileURLs(boolean)">WebSettings.setAllowFileAccessFromFileURLs</a>.
     </li>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowUniversalAccessFromFileURLs(boolean)">WebSettings.setAllowUniversalAccessFromFileURLs</a>.
+    </li>
   </references>
 
 </qhelp>
