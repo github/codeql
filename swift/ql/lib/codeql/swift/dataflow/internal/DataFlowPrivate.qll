@@ -155,7 +155,7 @@ private module Cached {
     or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
-      nco.getStaticTarget().(FreeFunctionDecl).getName() = "??(_:_:)" and
+      nco.getOperator().(FreeFunctionDecl).getName() = "??(_:_:)" and
       nodeTo.asExpr() = nco
     |
       // value argument
