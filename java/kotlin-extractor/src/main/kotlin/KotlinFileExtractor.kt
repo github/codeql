@@ -4564,8 +4564,7 @@ open class KotlinFileExtractor(
         extractExpressionExpr(loop.condition, callable, id, 0, id)
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun <T : DbExpr> exprIdOrFresh(id: Label<out DbExpr>?) = id as? Label<T> ?: tw.getFreshIdLabel()
+    private fun <T : DbExpr> exprIdOrFresh(id: Label<out DbExpr>?) = id?.cast<T>() ?: tw.getFreshIdLabel()
 
     private fun toUnbound(t: IrType) =
         when(t) {
