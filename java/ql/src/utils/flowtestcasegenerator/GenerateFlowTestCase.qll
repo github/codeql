@@ -21,25 +21,25 @@ query string getAParseFailure(string reason) {
   any(TargetSummaryModelCsv target).row(result) and
   any(SummaryModelCsv model).row(result) and
   (
-    not summaryModel(_, _, _, _, _, _, _, _, _, _, result) and
+    not summaryModelRow(_, _, _, _, _, _, _, _, _, _, result) and
     reason = "row could not be parsed"
     or
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, result) and
+      summaryModelRow(namespace, type, subtypes, name, signature, ext, _, _, _, _, result) and
       not interpretElement(namespace, type, subtypes, name, signature, ext) instanceof Callable and
       reason = "callable could not be resolved"
     )
     or
     exists(string inputSpec |
-      summaryModel(_, _, _, _, _, _, inputSpec, _, _, _, result) and
+      summaryModelRow(_, _, _, _, _, _, inputSpec, _, _, _, result) and
       not Private::External::interpretSpec(inputSpec, _) and
       reason = "input spec could not be parsed"
     )
     or
     exists(string outputSpec |
-      summaryModel(_, _, _, _, _, _, _, outputSpec, _, _, result) and
+      summaryModelRow(_, _, _, _, _, _, _, outputSpec, _, _, result) and
       not Private::External::interpretSpec(outputSpec, _) and
       reason = "output spec could not be parsed"
     )

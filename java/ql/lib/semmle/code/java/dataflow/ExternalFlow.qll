@@ -533,26 +533,6 @@ predicate summaryModel(
   extSummaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
 
-/** Holds if a summary model `row` exists for the given parameters. */
-bindingset[row]
-predicate summaryModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, string row
-) {
-  summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance) and
-  row =
-    package + ";" //
-      + type + ";" //
-      + subtypes.toString() + ";" //
-      + name + ";" //
-      + signature + ";" //
-      + ext + ";" //
-      + input + ";" //
-      + output + ";" //
-      + kind + ";" //
-      + provenance
-}
-
 /** Holds if a summary model exists indicating there is no flow for the given parameters. */
 extensible predicate extNegativeSummaryModel(
   string package, string type, string name, string signature, string provenance
