@@ -820,12 +820,16 @@ open class KotlinFileExtractor(
 
     // Taken from declarationBuilders.kt (not available in Kotlin < 1.6):
     private fun addDefaultGetter(p: IrProperty, parentClass: IrClass) {
-        val field = p.backingField!!
+        val field = p.backingField ?:
+            run { logger.warnElement("Expected property to have a backing field", p); return }
         p.addGetter {
             origin = IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR
             returnType = field.type
         }.apply {
-            dispatchReceiverParameter = copyParameterToFunction(parentClass.thisReceiver!!, this)
+            val thisReceiever = parentClass.thisReceiver ?:
+                run { logger.warnElement("Expected property's parent class to have a receiver parameter", parentClass); return }
+            val newParam = copyParameterToFunction(thisReceiever, this)
+            dispatchReceiverParameter = newParam
             body = factory.createBlockBody(
                 UNDEFINED_OFFSET, UNDEFINED_OFFSET, listOf(
                     IrReturnImpl(
@@ -838,8 +842,8 @@ open class KotlinFileExtractor(
                             field.type,
                             IrGetValueImpl(
                                 UNDEFINED_OFFSET, UNDEFINED_OFFSET,
-                                dispatchReceiverParameter!!.type,
-                                dispatchReceiverParameter!!.symbol
+                                newParam.type,
+                                newParam.symbol
                             )
                         )
                     )
