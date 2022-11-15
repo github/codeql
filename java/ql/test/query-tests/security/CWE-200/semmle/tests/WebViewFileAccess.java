@@ -11,4 +11,14 @@ class WebViewFileAccess {
 
         settings.setAllowUniversalAccessFromFileURLs(true);
     }
+
+    void configureSafe(WebView view) {
+        WebSettings settings = view.getSettings();
+
+        settings.setAllowFileAccess(false);
+
+        settings.setAllowFileAccessFromFileURLs(false);
+
+        settings.setAllowUniversalAccessFromFileURLs(false);
+    }
 }
