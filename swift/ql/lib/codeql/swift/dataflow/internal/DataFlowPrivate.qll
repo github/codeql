@@ -148,7 +148,7 @@ private module Cached {
     // flow through `!`
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
-    // flow through `?`
+    // flow through `?` and `?.`
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
