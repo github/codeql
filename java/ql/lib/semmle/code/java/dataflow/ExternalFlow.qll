@@ -156,6 +156,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.RabbitMQ
   private import semmle.code.java.regex.RegexFlowModels
   private import semmle.code.java.frameworks.kotlin.StdLib
+  private import semmle.code.java.frameworks.jdk.SinksGenerated
 }
 
 /**
