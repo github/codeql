@@ -42,9 +42,8 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
  *
  * Params:
  * endpoint: The endpoint to include / exclude.
- * endpointClass: The sink type. Each EndpointType has a predicate getEncoding, which specifies the classifier class
- * for this sink type. Class 0 is the negative class (non-sink). Each positive int corresponds to a single sink type.
- * This gives us the label for the endpoint in the training data.
+ * endpointClass: The sink type. See the documentation of EndpointType.getEncoding for details about the relationship
+ * between an EndpointType and a class in the classifier.
  * characteristic: Provides the list of characteristics that apply to the endpoint, which the modeling code currently
  * uses for type balancing.
  *
