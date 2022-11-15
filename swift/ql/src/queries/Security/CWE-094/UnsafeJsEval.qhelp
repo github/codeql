@@ -13,7 +13,7 @@
 </recommendation>
 <example>
 
-<p>In the following example, a call to <code>WKWebView.evaluateJavaScript</code> evaluates JavaScript source code that is tainted with remote data, potentially introducing a code injection vulnerability.</p>
+<p>In the following (bad) example, a call to <code>WKWebView.evaluateJavaScript</code> evaluates JavaScript source code that is tainted with remote data, potentially introducing a code injection vulnerability.</p>
 
 <sample src="UnsafeJsEvalBad.swift" />
 
