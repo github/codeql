@@ -32,7 +32,7 @@ module Hapi {
       exists(ServerDefinition server, DataFlow::MethodCallNode call |
         call = server.ref().getAMethodCall() and
         call.getMethodName() = "dependency" and
-        this = call.getArgument(1).(DataFlow::FunctionNode).getParameter(0)
+        this = call.getABoundCallbackParameter(1, 0)
       )
     }
   }
