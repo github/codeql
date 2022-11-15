@@ -8,7 +8,7 @@
 </overview>
 <recommendation>
 
-<p>When loading JavaScript into a web view, evaluate only known, locally-defined source code. If a part of the input does come from a remote source, instead of injecting it into the JavaScript code to be evaluated, prefer sending it as data to the web view using an API such as <code>WKWebView.callAsyncJavaScript</code> with the <code>arguments</code> dictionary to pass remote data objects.</p>
+<p>When loading JavaScript into a web view, evaluate only known, locally-defined source code. If part of the input comes from a remote source, do not inject it into the JavaScript code to be evaluated. Instead, send it to the web view as data using an API such as <code>WKWebView.callAsyncJavaScript</code> with the <code>arguments</code> dictionary to pass remote data objects.</p>
 
 </recommendation>
 <example>
