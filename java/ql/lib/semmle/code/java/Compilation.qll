@@ -143,4 +143,9 @@ class Compilation extends @compilation {
    * Holds if the extractor encountered non-recoverable errors.
    */
   predicate nonRecoverableErrors() { compilation_finished(this, _, _, 2) }
+
+  /**
+   * Gets the piece of compilation information with the given key, if any.
+   */
+  string getInfo(string key) { compilation_info(this, key, result) }
 }

@@ -258,4 +258,20 @@ codeql::OpaqueTypeArchetypeType TypeTranslator::translateOpaqueTypeArchetypeType
   entry.declaration = dispatcher.fetchLabel(type.getDecl());
   return entry;
 }
+
+codeql::ErrorType TypeTranslator::translateErrorType(const swift::ErrorType& type) {
+  return createTypeEntry(type);
+}
+
+codeql::UnresolvedType TypeTranslator::translateUnresolvedType(const swift::UnresolvedType& type) {
+  return createTypeEntry(type);
+}
+
+codeql::ParameterizedProtocolType TypeTranslator::translateParameterizedProtocolType(
+    const swift::ParameterizedProtocolType& type) {
+  auto entry = createTypeEntry(type);
+  entry.base = dispatcher.fetchLabel(type.getBaseType());
+  entry.args = dispatcher.fetchRepeatedLabels(type.getArgs());
+  return entry;
+}
 }  // namespace codeql

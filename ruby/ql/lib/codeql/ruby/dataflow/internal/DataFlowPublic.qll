@@ -1058,6 +1058,15 @@ class MethodNode extends CallableNode {
 
   /** Gets the name of this method. */
   string getMethodName() { result = this.asCallableAstNode().getName() }
+
+  /** Holds if this method is public. */
+  predicate isPublic() { this.asCallableAstNode().isPublic() }
+
+  /** Holds if this method is private. */
+  predicate isPrivate() { this.asCallableAstNode().isPrivate() }
+
+  /** Holds if this method is protected. */
+  predicate isProtected() { this.asCallableAstNode().isProtected() }
 }
 
 /**

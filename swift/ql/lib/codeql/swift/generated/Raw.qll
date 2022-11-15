@@ -57,9 +57,9 @@ module Raw {
     int getKind() { diagnostics(this, _, result) }
   }
 
-  class UnresolvedElement extends @unresolved_element, Locatable { }
+  class ErrorElement extends @error_element, Locatable { }
 
-  class UnspecifiedElement extends @unspecified_element, Locatable {
+  class UnspecifiedElement extends @unspecified_element, ErrorElement {
     override string toString() { result = "UnspecifiedElement" }
 
     Element getParent() { unspecified_element_parents(this, result) }
@@ -235,6 +235,20 @@ module Raw {
     Pattern getParentPattern() { var_decl_parent_patterns(this, result) }
 
     Expr getParentInitializer() { var_decl_parent_initializers(this, result) }
+
+    PatternBindingDecl getPropertyWrapperBackingVarBinding() {
+      var_decl_property_wrapper_backing_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperBackingVar() { var_decl_property_wrapper_backing_vars(this, result) }
+
+    PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
+      var_decl_property_wrapper_projection_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperProjectionVar() {
+      var_decl_property_wrapper_projection_vars(this, result)
+    }
   }
 
   class AccessorDecl extends @accessor_decl, FuncDecl {
@@ -285,6 +299,14 @@ module Raw {
     override string toString() { result = "ParamDecl" }
 
     predicate isInout() { param_decl_is_inout(this) }
+
+    PatternBindingDecl getPropertyWrapperLocalWrappedVarBinding() {
+      param_decl_property_wrapper_local_wrapped_var_bindings(this, result)
+    }
+
+    VarDecl getPropertyWrapperLocalWrappedVar() {
+      param_decl_property_wrapper_local_wrapped_vars(this, result)
+    }
   }
 
   class TypeAliasDecl extends @type_alias_decl, GenericTypeDecl {
@@ -341,10 +363,6 @@ module Raw {
     Argument getArgument(int index) { apply_expr_arguments(this, index, result) }
   }
 
-  class ArrowExpr extends @arrow_expr, Expr {
-    override string toString() { result = "ArrowExpr" }
-  }
-
   class AssignExpr extends @assign_expr, Expr {
     override string toString() { result = "AssignExpr" }
 
@@ -367,10 +385,6 @@ module Raw {
     }
 
     ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
-  }
-
-  class CodeCompletionExpr extends @code_completion_expr, Expr {
-    override string toString() { result = "CodeCompletionExpr" }
   }
 
   class CollectionExpr extends @collection_expr, Expr { }
@@ -419,10 +433,6 @@ module Raw {
     Expr getBase() { dynamic_type_exprs(this, result) }
   }
 
-  class EditorPlaceholderExpr extends @editor_placeholder_expr, Expr {
-    override string toString() { result = "EditorPlaceholderExpr" }
-  }
-
   class EnumIsCaseExpr extends @enum_is_case_expr, Expr {
     override string toString() { result = "EnumIsCaseExpr" }
 
@@ -431,7 +441,7 @@ module Raw {
     EnumElementDecl getElement() { enum_is_case_exprs(this, _, result) }
   }
 
-  class ErrorExpr extends @error_expr, Expr {
+  class ErrorExpr extends @error_expr, Expr, ErrorElement {
     override string toString() { result = "ErrorExpr" }
   }
 
@@ -553,16 +563,12 @@ module Raw {
     ConstructorDecl getConstructorDecl() { other_constructor_decl_ref_exprs(this, result) }
   }
 
-  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, Expr {
+  class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, Expr, ErrorElement {
     override string toString() { result = "OverloadedDeclRefExpr" }
 
     ValueDecl getPossibleDeclaration(int index) {
       overloaded_decl_ref_expr_possible_declarations(this, index, result)
     }
-  }
-
-  class PackExpr extends @pack_expr, Expr {
-    override string toString() { result = "PackExpr" }
   }
 
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
@@ -623,13 +629,13 @@ module Raw {
     TypeRepr getTypeRepr() { type_expr_type_reprs(this, result) }
   }
 
-  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, UnresolvedElement {
+  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedDeclRefExpr" }
 
     string getName() { unresolved_decl_ref_expr_names(this, result) }
   }
 
-  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr, UnresolvedElement {
+  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedDotExpr" }
 
     Expr getBase() { unresolved_dot_exprs(this, result, _) }
@@ -637,19 +643,19 @@ module Raw {
     string getName() { unresolved_dot_exprs(this, _, result) }
   }
 
-  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr, UnresolvedElement {
+  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedMemberExpr" }
 
     string getName() { unresolved_member_exprs(this, result) }
   }
 
-  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr, UnresolvedElement {
+  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedPatternExpr" }
 
     Pattern getSubPattern() { unresolved_pattern_exprs(this, result) }
   }
 
-  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, UnresolvedElement {
+  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
 
     Expr getSubExpr() { unresolved_specialize_exprs(this, result) }
@@ -892,10 +898,6 @@ module Raw {
     override string toString() { result = "RegexLiteralExpr" }
   }
 
-  class ReifyPackExpr extends @reify_pack_expr, ImplicitConversionExpr {
-    override string toString() { result = "ReifyPackExpr" }
-  }
-
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
     Expr getBase() { self_apply_exprs(this, result) }
   }
@@ -931,12 +933,12 @@ module Raw {
   }
 
   class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr,
-    UnresolvedElement {
+    ErrorElement {
     override string toString() { result = "UnresolvedMemberChainResultExpr" }
   }
 
   class UnresolvedTypeConversionExpr extends @unresolved_type_conversion_expr,
-    ImplicitConversionExpr, UnresolvedElement {
+    ImplicitConversionExpr, ErrorElement {
     override string toString() { result = "UnresolvedTypeConversionExpr" }
   }
 
@@ -1292,7 +1294,7 @@ module Raw {
     Type getStaticSelfType() { dynamic_self_types(this, result) }
   }
 
-  class ErrorType extends @error_type, Type {
+  class ErrorType extends @error_type, Type, ErrorElement {
     override string toString() { result = "ErrorType" }
   }
 
@@ -1320,20 +1322,12 @@ module Raw {
     ModuleDecl getModule() { module_types(this, result) }
   }
 
-  class PackExpansionType extends @pack_expansion_type, Type {
-    override string toString() { result = "PackExpansionType" }
-  }
-
-  class PackType extends @pack_type, Type {
-    override string toString() { result = "PackType" }
-  }
-
   class ParameterizedProtocolType extends @parameterized_protocol_type, Type {
     override string toString() { result = "ParameterizedProtocolType" }
-  }
 
-  class PlaceholderType extends @placeholder_type, Type {
-    override string toString() { result = "PlaceholderType" }
+    ProtocolType getBase() { parameterized_protocol_types(this, result) }
+
+    Type getArg(int index) { parameterized_protocol_type_args(this, index, result) }
   }
 
   class ProtocolCompositionType extends @protocol_composition_type, Type {
@@ -1344,22 +1338,6 @@ module Raw {
 
   class ReferenceStorageType extends @reference_storage_type, Type {
     Type getReferentType() { reference_storage_types(this, result) }
-  }
-
-  class SilBlockStorageType extends @sil_block_storage_type, Type {
-    override string toString() { result = "SilBlockStorageType" }
-  }
-
-  class SilBoxType extends @sil_box_type, Type {
-    override string toString() { result = "SilBoxType" }
-  }
-
-  class SilFunctionType extends @sil_function_type, Type {
-    override string toString() { result = "SilFunctionType" }
-  }
-
-  class SilTokenType extends @sil_token_type, Type {
-    override string toString() { result = "SilTokenType" }
   }
 
   class SubstitutableType extends @substitutable_type, Type { }
@@ -1374,11 +1352,7 @@ module Raw {
     string getName(int index) { tuple_type_names(this, index, result) }
   }
 
-  class TypeVariableType extends @type_variable_type, Type {
-    override string toString() { result = "TypeVariableType" }
-  }
-
-  class UnresolvedType extends @unresolved_type, Type, UnresolvedElement {
+  class UnresolvedType extends @unresolved_type, Type, ErrorElement {
     override string toString() { result = "UnresolvedType" }
   }
 
@@ -1525,10 +1499,6 @@ module Raw {
 
   class PrimaryArchetypeType extends @primary_archetype_type, ArchetypeType {
     override string toString() { result = "PrimaryArchetypeType" }
-  }
-
-  class SequenceArchetypeType extends @sequence_archetype_type, ArchetypeType {
-    override string toString() { result = "SequenceArchetypeType" }
   }
 
   class UnarySyntaxSugarType extends @unary_syntax_sugar_type, SyntaxSugarType {
