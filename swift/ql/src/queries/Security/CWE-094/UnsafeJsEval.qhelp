@@ -25,7 +25,7 @@
 <references>
 
 <li>
-  <a href="https://developer.apple.com/documentation/webkit/wkwebview/3824703-callasyncjavascript">Apple Developer Documentation - WKWebView.callAsyncJavaScript(_:arguments:in:contentWorld:)</a>
+  Apple Developer Documentation: <a href="https://developer.apple.com/documentation/webkit/wkwebview/3824703-callasyncjavascript">WKWebView.callAsyncJavaScript(_:arguments:in:contentWorld:)</a>
 </li>
 
 </references>
