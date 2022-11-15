@@ -108,6 +108,16 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
 
+	if os.Getenv("CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO") != "" {
+		log.Printf("Running go list to resolve package and module directories.")
+		// get all packages information
+		pkgInfos, err = util.GetPkgsInfo(patterns, true, modFlags...)
+		if err != nil {
+			log.Fatalf("Error getting dependency package or module directories: %v.", err)
+		}
+		log.Printf("Done running go list deps: resolved %d packages.", len(pkgInfos))
+	}
+
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
