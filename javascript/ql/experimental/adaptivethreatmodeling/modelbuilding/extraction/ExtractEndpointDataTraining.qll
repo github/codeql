@@ -22,7 +22,7 @@ import experimental.adaptivethreatmodeling.XssATM as XssAtm
  * `endpoint`. To preserve compatibility with the data pipeline, this relation will instead set
  * `featureValue` to the empty string in this case.
  */
-query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
+predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
   trainingEndpoints(endpoint, _, _) and
   (
     EndpointFeatures::tokenFeatures(endpoint, featureName, featureValue)
@@ -209,7 +209,7 @@ DataFlow::Configuration getDataFlowCfg(Query query) {
 }
 
 // TODO: Delete this once we are no longer surfacing `hasFlowFromSource`.
-module FlowFromSource {
+private module FlowFromSource {
   predicate hasFlowFromSource(DataFlow::Node endpoint, Query q) {
     exists(Configuration cfg | cfg.getQuery() = q | cfg.hasFlow(_, endpoint))
   }
