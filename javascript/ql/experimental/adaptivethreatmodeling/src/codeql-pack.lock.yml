@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-11-15-06h10m20s.dreamy-tangelo-cn0fgcd3.f19c80b1fdd21c5dd0354695b7e949437aa738b62ead76321259122f21f947b4
 compiled: false
 lockVersion: 1.0.0
