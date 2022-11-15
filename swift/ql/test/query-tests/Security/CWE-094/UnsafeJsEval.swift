@@ -175,7 +175,7 @@ func testAsync(_ sink: @escaping (String) async throws -> ()) {
 		let remoteString = getRemoteData()
 
 		try! await sink(localString) // GOOD: the HTML data is local
-		try! await sink(getRemoteData()) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]: HTML contains remote input, may access local secrets
+		try! await sink(try String(contentsOf: URL(string: "http://example.com/")!)) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]: HTML contains remote input, may access local secrets
 		try! await sink(remoteString) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
 
 		try! await sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
@@ -201,7 +201,7 @@ func testSync(_ sink: @escaping (String) -> ()) {
 	let remoteString = getRemoteData()
 
 	sink(localString) // GOOD: the HTML data is local
-	sink(getRemoteData()) // BAD: HTML contains remote input, may access local secrets
+	sink(try! String(contentsOf: URL(string: "http://example.com/")!)) // BAD: HTML contains remote input, may access local secrets
 	sink(remoteString) // BAD
 
 	sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
