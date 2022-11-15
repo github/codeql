@@ -39,33 +39,55 @@ class MyObj(object):
         self.foo = foo
 
 def setFoo(obj, x):
-    SINK_F(obj.foo)
     obj.foo = x
 
-@expects(2) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+
+@expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
 def test_indirect_assign():
-    myobj = MyObj("OK")
+    myobj = MyObj(NONSOURCE)
+    SINK_F(myobj.foo)
 
     setFoo(myobj, SOURCE)
     SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 
+    setFoo(myobj, NONSOURCE)
+    SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-4 -> myobj.foo"
 
+
+@expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
 def test_indirect_assign_method():
-    myobj = MyObj("OK")
+    myobj = MyObj(NONSOURCE)
+    SINK_F(myobj.foo)
 
     myobj.setFoo(SOURCE)
     SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 
+    myobj.setFoo(NONSOURCE)
+    SINK_F(myobj.foo) # $ SPURIOUS: flow="SOURCE, l:-4 -> myobj.foo"
 
+
+@expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_indirect_assign_bound_method():
+    myobj = MyObj(NONSOURCE)
+    SINK_F(myobj.foo)
+
+    sf = myobj.setFoo
+
+    sf(SOURCE)
+    SINK(myobj.foo) # $ MISSING: flow="SOURCE, l:-1 -> myobj.foo"
+
+    sf(NONSOURCE)
+    SINK_F(myobj.foo)
+
+
+@expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
 def test_direct_assign():
     myobj = MyObj(NONSOURCE)
+    SINK_F(myobj.foo)
+
     myobj.foo = SOURCE
     SINK(myobj.foo) # $ flow="SOURCE, l:-1 -> myobj.foo"
 
-
-def test_direct_assign_overwrite():
-    myobj = MyObj(NONSOURCE)
-    myobj.foo = SOURCE
     myobj.foo = NONSOURCE
     SINK_F(myobj.foo)
 
@@ -159,40 +181,6 @@ def test_nested_obj_method():
     a = NestedObj()
     a.getObj().foo = x
     SINK(a.obj.foo) # $ flow="SOURCE, l:-3 -> a.obj.foo"
-
-# ------------------------------------------------------------------------------
-# Bound Method calls
-# ------------------------------------------------------------------------------
-
-class Foo:
-    def __init__(self, x):
-        self.x = x
-
-    def update_x(self, x):
-        self.x = x
-
-@expects(7) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
-def test_bound_method_call():
-    # direct assignment
-    foo = Foo(None)
-    SINK_F(foo.x)
-    foo.x = SOURCE
-    SINK(foo.x) # $ flow="SOURCE, l:-1 -> foo.x"
-    foo.x = None
-    SINK_F(foo.x)
-
-    # assignment through function
-    foo = Foo(SOURCE)
-    SINK(foo.x) # $ flow="SOURCE, l:-1 -> foo.x"
-    foo.update_x(None)
-    SINK_F(foo.x) # $ flow="SOURCE, l:-3 -> foo.x"
-
-    # assignment through bound-method calls
-    foo = Foo(SOURCE)
-    ux = foo.update_x
-    SINK(foo.x) # $ flow="SOURCE, l:-2 -> foo.x"
-    ux(None)
-    SINK_F(foo.x) # $ SPURIOUS: flow="SOURCE, l:-4 -> foo.x"
 
 
 # ------------------------------------------------------------------------------
