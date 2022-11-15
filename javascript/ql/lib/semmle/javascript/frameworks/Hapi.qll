@@ -20,11 +20,11 @@ module Hapi {
       // `register (server, options)`
       // `module.exports.plugin = {register, pkg};`
       this =
-        any(NodeModule m)
+        any(Module m)
             .getAnExportedValue("plugin")
-            .(DataFlow::ObjectLiteralNode)
+            .getALocalSource()
             .getAPropertySource("register")
-            .(DataFlow::FunctionNode)
+            .getAFunctionValue()
             .getParameter(0)
       or
       // `const after = function (server) {...};`
