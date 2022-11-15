@@ -136,19 +136,10 @@ private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
  */
 
 /**
- * A characteristic that is an indicator of not being a sink of any type, because it's an argument that has a manual
- * model.
- */
-abstract private class OtherModeledArgumentCharacteristic extends EndpointCharacteristic {
-  bindingset[this]
-  OtherModeledArgumentCharacteristic() { any() }
-}
-
-/**
  * A characteristic that is an indicator of not being a sink of any type, because it's an argument to a function of a
  * builtin object.
  */
-abstract private class ArgumentToBuiltinFunctionCharacteristic extends OtherModeledArgumentCharacteristic {
+abstract private class ArgumentToBuiltinFunctionCharacteristic extends EndpointCharacteristic {
   bindingset[this]
   ArgumentToBuiltinFunctionCharacteristic() { any() }
 }
@@ -156,7 +147,7 @@ abstract private class ArgumentToBuiltinFunctionCharacteristic extends OtherMode
 /**
  * A high-confidence characteristic that indicates that an endpoint is not a sink of any type.
  */
-abstract private class NotASinkCharacteristic extends OtherModeledArgumentCharacteristic {
+abstract private class NotASinkCharacteristic extends EndpointCharacteristic {
   bindingset[this]
   NotASinkCharacteristic() { any() }
 
@@ -175,7 +166,7 @@ abstract private class NotASinkCharacteristic extends OtherModeledArgumentCharac
  * TODO: This class is currently not private, because the current extraction logic explicitly avoids including these
  * endpoints in the training data. We might want to change this in the future.
  */
-abstract class LikelyNotASinkCharacteristic extends OtherModeledArgumentCharacteristic {
+abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
   bindingset[this]
   LikelyNotASinkCharacteristic() { any() }
 
