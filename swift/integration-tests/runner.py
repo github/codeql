@@ -21,7 +21,7 @@ this_dir = pathlib.Path(__file__).parent.resolve()
 def options():
     p = argparse.ArgumentParser()
     p.add_argument("--test-dir", "-d", type=pathlib.Path, action="append")
-    #FIXME: the following should be the default
+    # FIXME: the following should be the default
     p.add_argument("--check-databases", action="store_true")
     p.add_argument("--learn", action="store_true")
     p.add_argument("--threads", "-j", type=int, default=0)
