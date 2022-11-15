@@ -15,4 +15,6 @@ import semmle.code.java.frameworks.android.WebView
 
 from MethodAccess ma
 where ma.getMethod() instanceof CrossOriginAccessMethod
-select ma, "WebView setting " + ma.getMethod().getName() + " may allow for unauthorized access of sensitive information."
+select ma,
+  "WebView setting " + ma.getMethod().getName() +
+    " may allow for unauthorized access of sensitive information."
