@@ -3,6 +3,13 @@ extensions:
       pack: codeql/java-all
       extensible: extSummaryModel
     data:
+      # Note that when lambdas are supported we should model things relating to Closure, Factory, Transformer, FluentIterable.forEach, FluentIterable.transform
+      # Note that when lambdas are supported we should model the package `org.apache.commons.collections4.functors`,
+      # and when more general callable flow is supported we should model the package
+      # `org.apache.commons.collections4.sequence`.
+      # Note that when lambdas are supported we should have more models for populateMap
+      # Note that when lambdas are supported we should have a model for collect, forAllButLastDo, forAllDo, transform
+      # Note that when lambdas are supported we should have a model for forEach, forEachButLast, transformedIterator
       - ["org.apache.commons.collections4", "ArrayStack", True, "peek", "", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
       - ["org.apache.commons.collections4", "ArrayStack", True, "pop", "", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
       - ["org.apache.commons.collections4", "ArrayStack", True, "push", "", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
@@ -60,6 +67,7 @@ extensions:
       - ["org.apache.commons.collections4", "CollectionUtils", True, "selectRejected", "(Iterable,Predicate,Collection)", "", "Argument[2]", "ReturnValue", "value", "manual"]
       - ["org.apache.commons.collections4", "CollectionUtils", True, "subtract", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "CollectionUtils", True, "synchronizedCollection", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      # Note that `CollectionUtils.transformingCollection` does not transform existing list elements
       - ["org.apache.commons.collections4", "CollectionUtils", True, "transformingCollection", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "CollectionUtils", True, "union", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "CollectionUtils", True, "union", "", "", "Argument[1].Element", "ReturnValue.Element", "value", "manual"]
@@ -191,6 +199,7 @@ extensions:
       - ["org.apache.commons.collections4", "ListUtils", True, "fixedSizeList", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "intersection", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "intersection", "", "", "Argument[1].Element", "ReturnValue.Element", "value", "manual"]
+      # Note that `ListUtils.lazyList` does not transform existing list elements
       - ["org.apache.commons.collections4", "ListUtils", True, "lazyList", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "longestCommonSubsequence", "(CharSequence,CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "longestCommonSubsequence", "(CharSequence,CharSequence)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
@@ -208,10 +217,13 @@ extensions:
       - ["org.apache.commons.collections4", "ListUtils", True, "sum", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "sum", "", "", "Argument[1].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "synchronizedList", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      # Note that `ListUtils.transformedList` does not transform existing list elements
       - ["org.apache.commons.collections4", "ListUtils", True, "transformedList", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "union", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "union", "", "", "Argument[1].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4", "ListUtils", True, "unmodifiableList", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      # Note that MapIterator<K, V> implements Iterator<K>, so it iterates over the keys of the map.
+      # In order for the models of Iterator to work we have to use Element instead of MapKey for key data.
       - ["org.apache.commons.collections4", "MapIterator", True, "getKey", "", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
       - ["org.apache.commons.collections4", "MapIterator", True, "getValue", "", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]
       - ["org.apache.commons.collections4", "MapIterator", True, "setValue", "", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]

@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: extSummaryModel
     data:
+      # Note that when lambdas are supported we should have more models for TransformedList
       - ["org.apache.commons.collections.list", "AbstractLinkedList", True, "AbstractLinkedList", "", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]
       - ["org.apache.commons.collections.list", "AbstractLinkedList", True, "addFirst", "", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
       - ["org.apache.commons.collections.list", "AbstractLinkedList", True, "addLast", "", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]

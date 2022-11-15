@@ -56,19 +56,3 @@ class StoreSharedPreferenceMethod extends Method {
     this.hasName(["commit", "apply"])
   }
 }
-
-private class SharedPreferencesSummaries extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "android.content;SharedPreferences$Editor;true;clear;;;Argument[-1];ReturnValue;value;manual",
-        "android.content;SharedPreferences$Editor;true;putBoolean;;;Argument[-1];ReturnValue;value;manual",
-        "android.content;SharedPreferences$Editor;true;putFloat;;;Argument[-1];ReturnValue;value;manual",
-        "android.content;SharedPreferences$Editor;true;putInt;;;Argument[-1];ReturnValue;value;manual",
-        "android.content;SharedPreferences$Editor;true;putLong;;;Argument[-1];ReturnValue;value;manual",
-        "android.content;SharedPreferences$Editor;true;putString;;;Argument[-1];ReturnValue;value;manual",
-        "android.content;SharedPreferences$Editor;true;putStringSet;;;Argument[-1];ReturnValue;value;manual",
-        "android.content;SharedPreferences$Editor;true;remove;;;Argument[-1];ReturnValue;value;manual"
-      ]
-  }
-}

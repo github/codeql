@@ -3,6 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: extSummaryModel
     data:
+      # Note that when lambdas are supported we should model the package `org.apache.commons.collections4.functors`,
+      # and when more general callable flow is supported we should model the package
+      # `org.apache.commons.collections4.sequence`.
       - ["org.apache.commons.collections4.keyvalue", "AbstractKeyValue", True, "AbstractKeyValue", "", "", "Argument[0]", "Argument[-1].MapKey", "value", "manual"]
       - ["org.apache.commons.collections4.keyvalue", "AbstractKeyValue", True, "AbstractKeyValue", "", "", "Argument[1]", "Argument[-1].MapValue", "value", "manual"]
       - ["org.apache.commons.collections4.keyvalue", "AbstractKeyValue", True, "setKey", "", "", "Argument[-1].MapKey", "ReturnValue", "value", "manual"]

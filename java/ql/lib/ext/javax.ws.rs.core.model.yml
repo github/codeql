@@ -28,6 +28,9 @@ extensions:
       - ["javax.ws.rs.core", "Form", True, "param", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
       - ["javax.ws.rs.core", "GenericEntity", False, "GenericEntity", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["javax.ws.rs.core", "GenericEntity", True, "getEntity", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      # Methods that Date have to be syntax-checked, but those returning MediaType
+      # or Locale are assumed potentially dangerous, as these types do not generally check that the
+      # input data is recognised, only that it conforms to the expected syntax.
       - ["javax.ws.rs.core", "HttpHeaders", True, "getAcceptableLanguages", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["javax.ws.rs.core", "HttpHeaders", True, "getAcceptableMediaTypes", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["javax.ws.rs.core", "HttpHeaders", True, "getCookies", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
@@ -64,9 +67,13 @@ extensions:
       - ["javax.ws.rs.core", "NewCookie", False, "valueOf", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["javax.ws.rs.core", "PathSegment", True, "getMatrixParameters", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["javax.ws.rs.core", "PathSegment", True, "getPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      # The returned ResponseBuilder gains taint from a tainted entity or existing Response
       - ["javax.ws.rs.core", "Response", False, "accepted", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["javax.ws.rs.core", "Response", False, "fromResponse", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["javax.ws.rs.core", "Response", False, "ok", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      # Becomes tainted by a tainted entity, but not by metadata, headers etc
+      # Build() method returns taint
+      # Almost all methods are fluent, and so preserve value
       - ["javax.ws.rs.core", "Response$ResponseBuilder", True, "allow", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
       - ["javax.ws.rs.core", "Response$ResponseBuilder", True, "build", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["javax.ws.rs.core", "Response$ResponseBuilder", True, "cacheControl", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]

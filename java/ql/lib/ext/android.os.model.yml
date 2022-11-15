@@ -35,6 +35,7 @@ extensions:
       - ["android.os", "Bundle", False, "Bundle", "(PersistableBundle)", "", "Argument[0].MapValue", "Argument[-1].MapValue", "value", "manual"]
       - ["android.os", "Bundle", True, "clone", "()", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["android.os", "Bundle", True, "clone", "()", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      #  Model for Bundle.deepCopy is not fully precise, as some map values aren't copied by value
       - ["android.os", "Bundle", True, "deepCopy", "()", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["android.os", "Bundle", True, "deepCopy", "()", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
       - ["android.os", "Bundle", True, "getBinder", "(String)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]

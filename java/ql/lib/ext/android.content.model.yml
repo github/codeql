@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: extSourceModel
     data:
+      # ContentInterface models are here for backwards compatibility (it was removed in API 28)
       - ["android.content", "ContentInterface", True, "call", "(String,String,String,Bundle)", "", "Parameter[0..3]", "contentprovider", "manual"]
       - ["android.content", "ContentInterface", True, "delete", "(Uri,Bundle)", "", "Parameter[0..1]", "contentprovider", "manual"]
       - ["android.content", "ContentInterface", True, "getType", "(Uri)", "", "Parameter[0]", "contentprovider", "manual"]
@@ -80,6 +81,7 @@ extensions:
       - ["android.content", "ComponentName", False, "unflattenFromString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["android.content", "ContentProvider", True, "query", "(Uri,String[],String,String[],String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["android.content", "ContentProvider", True, "query", "(Uri,String[],String,String[],String,CancellationSignal)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      # ContentProviderClient is tainted at its creation, not by its arguments
       - ["android.content", "ContentProviderClient", True, "applyBatch", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["android.content", "ContentProviderClient", True, "call", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["android.content", "ContentProviderClient", True, "canonicalize", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
@@ -132,6 +134,7 @@ extensions:
       - ["android.content", "ContentValues", False, "put", "", "", "Argument[1]", "Argument[-1].MapValue", "value", "manual"]
       - ["android.content", "ContentValues", False, "putAll", "", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
       - ["android.content", "ContentValues", False, "putAll", "", "", "Argument[0].MapValue", "Argument[-1].MapValue", "value", "manual"]
+      # Currently only the Extras part of the intent and the data field are fully modeled
       - ["android.content", "Intent", True, "Intent", "(Context,Class)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
       - ["android.content", "Intent", True, "Intent", "(Intent)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["android.content", "Intent", False, "Intent", "(Intent)", "", "Argument[0].SyntheticField[android.content.Intent.extras].MapKey", "Argument[-1].SyntheticField[android.content.Intent.extras].MapKey", "value", "manual"]

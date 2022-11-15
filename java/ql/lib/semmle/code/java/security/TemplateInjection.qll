@@ -76,33 +76,3 @@ private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitiz
     this.getType() instanceof NumericType
   }
 }
-
-private class TemplateInjectionSinkModels extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "freemarker.template;Template;true;Template;(String,Reader);;Argument[1];ssti;manual",
-        "freemarker.template;Template;true;Template;(String,Reader,Configuration);;Argument[1];ssti;manual",
-        "freemarker.template;Template;true;Template;(String,Reader,Configuration,String);;Argument[1];ssti;manual",
-        "freemarker.template;Template;true;Template;(String,String,Reader,Configuration);;Argument[2];ssti;manual",
-        "freemarker.template;Template;true;Template;(String,String,Reader,Configuration,String);;Argument[2];ssti;manual",
-        "freemarker.template;Template;true;Template;(String,String,Reader,Configuration,ParserConfiguration,String);;Argument[2];ssti;manual",
-        "freemarker.template;Template;true;Template;(String,String,Configuration);;Argument[1];ssti;manual",
-        "freemarker.cache;StringTemplateLoader;true;putTemplate;;;Argument[1];ssti;manual",
-        "com.mitchellbosecke.pebble;PebbleEngine;true;getTemplate;;;Argument[0];ssti;manual",
-        "com.mitchellbosecke.pebble;PebbleEngine;true;getLiteralTemplate;;;Argument[0];ssti;manual",
-        "com.hubspot.jinjava;Jinjava;true;renderForResult;;;Argument[0];ssti;manual",
-        "com.hubspot.jinjava;Jinjava;true;render;;;Argument[0];ssti;manual",
-        "org.thymeleaf;ITemplateEngine;true;process;;;Argument[0];ssti;manual",
-        "org.thymeleaf;ITemplateEngine;true;processThrottled;;;Argument[0];ssti;manual",
-        "org.apache.velocity.app;Velocity;true;evaluate;;;Argument[3];ssti;manual",
-        "org.apache.velocity.app;Velocity;true;mergeTemplate;;;Argument[2];ssti;manual",
-        "org.apache.velocity.app;VelocityEngine;true;evaluate;;;Argument[3];ssti;manual",
-        "org.apache.velocity.app;VelocityEngine;true;mergeTemplate;;;Argument[2];ssti;manual",
-        "org.apache.velocity.runtime.resource.util;StringResourceRepository;true;putStringResource;;;Argument[1];ssti;manual",
-        "org.apache.velocity.runtime;RuntimeServices;true;evaluate;;;Argument[3];ssti;manual",
-        "org.apache.velocity.runtime;RuntimeServices;true;parse;;;Argument[0];ssti;manual",
-        "org.apache.velocity.runtime;RuntimeSingleton;true;parse;;;Argument[0];ssti;manual"
-      ]
-  }
-}

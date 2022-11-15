@@ -9,6 +9,7 @@ extensions:
       pack: codeql/java-all
       extensible: extSinkModel
     data:
+      # Models representing methods susceptible to XSS attacks.
       - ["android.webkit", "WebView", False, "evaluateJavascript", "", "", "Argument[0]", "xss", "manual"]
       - ["android.webkit", "WebView", False, "loadData", "", "", "Argument[0]", "xss", "manual"]
       - ["android.webkit", "WebView", False, "loadDataWithBaseURL", "", "", "Argument[1]", "xss", "manual"]

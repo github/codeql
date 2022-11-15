@@ -6,6 +6,7 @@ extensions:
       - ["org.springframework.web.util", "AbstractUriTemplateHandler", True, "getBaseUrl", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "AbstractUriTemplateHandler", True, "setBaseUrl", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["org.springframework.web.util", "AbstractUriTemplateHandler", True, "setDefaultUriVariables", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      # Writing to a `Request` or `Response` currently doesn't propagate taint to the object itself.
       - ["org.springframework.web.util", "ContentCachingRequestWrapper", False, "ContentCachingRequestWrapper", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["org.springframework.web.util", "ContentCachingRequestWrapper", False, "getContentAsByteArray", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "ContentCachingResponseWrapper", False, "ContentCachingResponseWrapper", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

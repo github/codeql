@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: extSummaryModel
     data:
+      # Note that when lambdas are supported we should have more models for TransformedCollection
       - ["org.apache.commons.collections.collection", "AbstractCollectionDecorator", True, "AbstractCollectionDecorator", "", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]
       - ["org.apache.commons.collections.collection", "AbstractCollectionDecorator", True, "decorated", "", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections.collection", "AbstractCollectionDecorator", True, "setCollection", "", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]

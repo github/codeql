@@ -10,38 +10,6 @@ private import semmle.code.java.dataflow.ExternalFlow
  */
 abstract class XPathInjectionSink extends DataFlow::Node { }
 
-/** CSV sink models representing methods susceptible to XPath Injection attacks. */
-private class DefaultXPathInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.xml.xpath;XPath;true;evaluate;;;Argument[0];xpath;manual",
-        "javax.xml.xpath;XPath;true;evaluateExpression;;;Argument[0];xpath;manual",
-        "javax.xml.xpath;XPath;true;compile;;;Argument[0];xpath;manual",
-        "org.dom4j;Node;true;selectObject;;;Argument[0];xpath;manual",
-        "org.dom4j;Node;true;selectNodes;;;Argument[0..1];xpath;manual",
-        "org.dom4j;Node;true;selectSingleNode;;;Argument[0];xpath;manual",
-        "org.dom4j;Node;true;numberValueOf;;;Argument[0];xpath;manual",
-        "org.dom4j;Node;true;valueOf;;;Argument[0];xpath;manual",
-        "org.dom4j;Node;true;matches;;;Argument[0];xpath;manual",
-        "org.dom4j;Node;true;createXPath;;;Argument[0];xpath;manual",
-        "org.dom4j;DocumentFactory;true;createPattern;;;Argument[0];xpath;manual",
-        "org.dom4j;DocumentFactory;true;createXPath;;;Argument[0];xpath;manual",
-        "org.dom4j;DocumentFactory;true;createXPathFilter;;;Argument[0];xpath;manual",
-        "org.dom4j;DocumentHelper;false;createPattern;;;Argument[0];xpath;manual",
-        "org.dom4j;DocumentHelper;false;createXPath;;;Argument[0];xpath;manual",
-        "org.dom4j;DocumentHelper;false;createXPathFilter;;;Argument[0];xpath;manual",
-        "org.dom4j;DocumentHelper;false;selectNodes;;;Argument[0];xpath;manual",
-        "org.dom4j;DocumentHelper;false;sort;;;Argument[1];xpath;manual",
-        "org.dom4j.tree;AbstractNode;true;createXPathFilter;;;Argument[0];xpath;manual",
-        "org.dom4j.tree;AbstractNode;true;createPattern;;;Argument[0];xpath;manual",
-        "org.dom4j.util;ProxyDocumentFactory;true;createPattern;;;Argument[0];xpath;manual",
-        "org.dom4j.util;ProxyDocumentFactory;true;createXPath;;;Argument[0];xpath;manual",
-        "org.dom4j.util;ProxyDocumentFactory;true;createXPathFilter;;;Argument[0];xpath;manual"
-      ]
-  }
-}
-
 /** A default sink representing methods susceptible to XPath Injection attacks. */
 private class DefaultXPathInjectionSink extends XPathInjectionSink {
   DefaultXPathInjectionSink() {

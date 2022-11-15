@@ -1,6 +1,16 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: extSinkModel
+    data:
+      - ["org.apache.commons.lang3", "RegExUtils", False, "removeAll", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
+      - ["org.apache.commons.lang3", "RegExUtils", False, "removeFirst", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
+      - ["org.apache.commons.lang3", "RegExUtils", False, "removePattern", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
+      - ["org.apache.commons.lang3", "RegExUtils", False, "replaceAll", "(String,String,String)", "", "Argument[1]", "regex-use", "manual"]
+      - ["org.apache.commons.lang3", "RegExUtils", False, "replaceFirst", "(String,String,String)", "", "Argument[1]", "regex-use", "manual"]
+      - ["org.apache.commons.lang3", "RegExUtils", False, "replacePattern", "(String,String,String)", "", "Argument[1]", "regex-use", "manual"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: extSummaryModel
     data:
       - ["org.apache.commons.lang3", "ArrayUtils", False, "add", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]

@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: extSummaryModel
     data:
+      # Note that when lambdas are supported we should have more models for TransformIterator
       - ["org.apache.commons.collections4.iterators", "AbstractIteratorDecorator", True, "AbstractIteratorDecorator", "", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]
       - ["org.apache.commons.collections4.iterators", "AbstractListIteratorDecorator", True, "AbstractListIteratorDecorator", "", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]
       - ["org.apache.commons.collections4.iterators", "AbstractListIteratorDecorator", True, "getListIterator", "", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]

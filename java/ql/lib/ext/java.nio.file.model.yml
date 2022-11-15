@@ -24,10 +24,12 @@ extensions:
     data:
       - ["java.nio.file", "FileSystem", True, "getPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "FileSystem", True, "getRootDirectories", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", True, "getParent", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "normalize", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[-1..0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "toAbsolutePath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", False, "toFile", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "toUri", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["java.nio.file", "Paths", True, "get", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Paths", True, "get", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Paths", True, "get", "", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]

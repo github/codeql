@@ -1,3 +1,9 @@
+ # A partial model of jodd.json.JsonParser noting fluent methods.
+ #
+ # This means that DataFlow::localFlow and similar methods are aware
+ # that the result of (e.g.) JsonParser.allowClass is an alias of the
+ # qualifier.
+ #
 extensions:
   - addsTo:
       pack: codeql/java-all

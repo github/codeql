@@ -5,7 +5,9 @@ extensions:
     data:
       - ["com.google.common.cache", "Cache", True, "asMap", "()", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["com.google.common.cache", "Cache", True, "asMap", "()", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      # Lambda flow from Argument[1] not implemented
       - ["com.google.common.cache", "Cache", True, "get", "(Object,Callable)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]
+      # The true flow to MapKey of ReturnValue for getAllPresent is the intersection of the these inputs, but intersections cannot be modeled fully accurately.
       - ["com.google.common.cache", "Cache", True, "getAllPresent", "(Iterable)", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["com.google.common.cache", "Cache", True, "getAllPresent", "(Iterable)", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
       - ["com.google.common.cache", "Cache", True, "getAllPresent", "(Iterable)", "", "Argument[0].Element", "ReturnValue.MapKey", "value", "manual"]

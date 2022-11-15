@@ -25,29 +25,6 @@ class OgnlInjectionAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
-private class DefaultOgnlInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.apache.commons.ognl;Ognl;false;getValue;;;Argument[0];ognl-injection;manual",
-        "org.apache.commons.ognl;Ognl;false;setValue;;;Argument[0];ognl-injection;manual",
-        "org.apache.commons.ognl;Node;true;getValue;;;Argument[-1];ognl-injection;manual",
-        "org.apache.commons.ognl;Node;true;setValue;;;Argument[-1];ognl-injection;manual",
-        "org.apache.commons.ognl.enhance;ExpressionAccessor;true;get;;;Argument[-1];ognl-injection;manual",
-        "org.apache.commons.ognl.enhance;ExpressionAccessor;true;set;;;Argument[-1];ognl-injection;manual",
-        "ognl;Ognl;false;getValue;;;Argument[0];ognl-injection;manual",
-        "ognl;Ognl;false;setValue;;;Argument[0];ognl-injection;manual",
-        "ognl;Node;false;getValue;;;Argument[-1];ognl-injection;manual",
-        "ognl;Node;false;setValue;;;Argument[-1];ognl-injection;manual",
-        "ognl.enhance;ExpressionAccessor;true;get;;;Argument[-1];ognl-injection;manual",
-        "ognl.enhance;ExpressionAccessor;true;set;;;Argument[-1];ognl-injection;manual",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;getValue;;;Argument[0];ognl-injection;manual",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;setValue;;;Argument[0];ognl-injection;manual",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;callMethod;;;Argument[0];ognl-injection;manual"
-      ]
-  }
-}
-
 private class DefaultOgnlInjectionSink extends OgnlInjectionSink {
   DefaultOgnlInjectionSink() { sinkNode(this, "ognl-injection") }
 }

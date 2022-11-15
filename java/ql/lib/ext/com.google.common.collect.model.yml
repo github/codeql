@@ -3,6 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: extSummaryModel
     data:
+      # Methods depending on lambda flow are not currently modeled
+      # Methods depending on stronger aliasing properties than we support are also not modeled.
       - ["com.google.common.collect", "ArrayListMultimap", True, "create", "(Multimap)", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["com.google.common.collect", "ArrayListMultimap", True, "create", "(Multimap)", "", "Argument[0].MapValue", "ReturnValue.MapValue", "value", "manual"]
       - ["com.google.common.collect", "ArrayTable", True, "create", "(Iterable,Iterable)", "", "Argument[0].Element", "ReturnValue.SyntheticField[com.google.common.collect.Table.rowKey]", "value", "manual"]
