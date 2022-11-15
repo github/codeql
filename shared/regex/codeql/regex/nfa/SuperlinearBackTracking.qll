@@ -1,4 +1,4 @@
-/*
+/**
  * This module implements the analysis described in the paper:
  *   Valentin Wustholz, Oswaldo Olivo, Marijn J. H. Heule, and Isil Dillig:
  *     Static Detection of DoS Vulnerabilities in
