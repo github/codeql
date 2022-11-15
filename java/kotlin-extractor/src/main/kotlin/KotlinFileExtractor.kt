@@ -2,18 +2,15 @@ package com.github.codeql
 
 import com.github.codeql.comments.CommentExtractor
 import com.github.codeql.utils.*
-import com.github.codeql.utils.versions.allOverriddenIncludingSelf
-import com.github.codeql.utils.versions.functionN
-import com.github.codeql.utils.versions.isUnderscoreParameter
+import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
-import org.jetbrains.kotlin.backend.jvm.ir.getAnnotationRetention
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
 import org.jetbrains.kotlin.config.JvmAnalysisFlags
+import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.KotlinRetention
 import org.jetbrains.kotlin.descriptors.annotations.KotlinTarget
@@ -31,8 +28,32 @@ import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
-import org.jetbrains.kotlin.ir.util.*
-import org.jetbrains.kotlin.load.java.JvmAbi
+import org.jetbrains.kotlin.ir.util.companionObject
+import org.jetbrains.kotlin.ir.util.constructedClass
+import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.deepCopyWithSymbols
+import org.jetbrains.kotlin.ir.util.defaultType
+import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
+import org.jetbrains.kotlin.ir.util.getAnnotation
+import org.jetbrains.kotlin.ir.util.hasAnnotation
+import org.jetbrains.kotlin.ir.util.hasEqualFqName
+import org.jetbrains.kotlin.ir.util.hasInterfaceParent
+import org.jetbrains.kotlin.ir.util.isAnonymousObject
+import org.jetbrains.kotlin.ir.util.isFakeOverride
+import org.jetbrains.kotlin.ir.util.isFunctionOrKFunction
+import org.jetbrains.kotlin.ir.util.isInterface
+import org.jetbrains.kotlin.ir.util.isLocal
+import org.jetbrains.kotlin.ir.util.isNonCompanionObject
+import org.jetbrains.kotlin.ir.util.isSuspend
+import org.jetbrains.kotlin.ir.util.isSuspendFunctionOrKFunction
+import org.jetbrains.kotlin.ir.util.isVararg
+import org.jetbrains.kotlin.ir.util.kotlinFqName
+import org.jetbrains.kotlin.ir.util.packageFqName
+import org.jetbrains.kotlin.ir.util.parentAsClass
+import org.jetbrains.kotlin.ir.util.parentClassOrNull
+import org.jetbrains.kotlin.ir.util.primaryConstructor
+import org.jetbrains.kotlin.ir.util.render
+import org.jetbrains.kotlin.ir.util.target
 import org.jetbrains.kotlin.load.java.JvmAnnotationNames
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.JavaClass
@@ -471,16 +492,24 @@ open class KotlinFileExtractor(
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
 
+    // Taken from AdditionalIrUtils.kt (not available in Kotlin < 1.6)
+    private val IrConstructorCall.annotationClass
+        get() = this.symbol.owner.constructedClass
+
+    // Taken from AdditionalIrUtils.kt (not available in Kotlin < 1.6)
+    private fun IrConstructorCall.isAnnotationWithEqualFqName(fqName: FqName): Boolean =
+        annotationClass.hasEqualFqName(fqName)
+
     // Adapted from RepeatedAnnotationLowering.kt
     private fun groupRepeatableAnnotations(annotations: List<IrConstructorCall>): List<IrConstructorCall> {
         if (annotations.size < 2) return annotations
 
-        val annotationsByClass = annotations.groupByTo(mutableMapOf()) { it.symbol.owner.constructedClass }
+        val annotationsByClass = annotations.groupByTo(mutableMapOf()) { it.annotationClass }
         if (annotationsByClass.values.none { it.size > 1 }) return annotations
 
         val result = mutableListOf<IrConstructorCall>()
         for (annotation in annotations) {
-            val annotationClass = annotation.symbol.owner.constructedClass
+            val annotationClass = annotation.annotationClass
             val grouped = annotationsByClass.remove(annotationClass) ?: continue
             if (grouped.size < 2) {
                 result.add(grouped.single())
@@ -501,7 +530,7 @@ open class KotlinFileExtractor(
     // Adapted from RepeatedAnnotationLowering.kt
     private fun getOrCreateContainerClass(annotationClass: IrClass): IrClass? {
         val metaAnnotations = annotationClass.annotations
-        val jvmRepeatable = metaAnnotations.find { it.isAnnotation(JvmAnnotationNames.REPEATABLE_ANNOTATION) }
+        val jvmRepeatable = metaAnnotations.find { it.symbol.owner.parentAsClass.fqNameWhenAvailable == JvmAnnotationNames.REPEATABLE_ANNOTATION }
         return if (jvmRepeatable != null) {
             ((jvmRepeatable.getValueArgument(0) as? IrClassReference)?.symbol as? IrClassSymbol)?.owner
         } else {
@@ -701,8 +730,11 @@ open class KotlinFileExtractor(
         }
     }
 
-    // TODO: find out if we can spot when we're building for JVM <= 7 and omit the Java 8-only targets in that case.
-    private fun getAnnotationTargetMap() = jvm8TargetMap
+    private fun getAnnotationTargetMap() =
+        if (pluginContext.platform?.any { it.targetPlatformVersion == JvmTarget.JVM_1_6 } == true)
+            jvm6TargetMap
+        else
+            jvm8TargetMap
 
     // Adapted from AdditionalClassAnnotationLowering.kt
     private fun generateTargetAnnotation(c: IrClass): IrConstructorCall? {
@@ -751,6 +783,15 @@ open class KotlinFileExtractor(
         }
     }
 
+    // Taken from AnnotationCodegen.kt (not available in Kotlin < 1.6.20)
+    private fun IrClass.getAnnotationRetention(): KotlinRetention? {
+        val retentionArgument =
+            getAnnotation(StandardNames.FqNames.retention)?.getValueArgument(0)
+                    as? IrGetEnumValue ?: return null
+        val retentionArgumentValue = retentionArgument.symbol.owner
+        return KotlinRetention.valueOf(retentionArgumentValue.name.asString())
+    }
+
     // Taken from AdditionalClassAnnotationLowering.kt
     private fun generateRetentionAnnotation(irClass: IrClass): IrConstructorCall? {
         if (irClass.hasAnnotation(JvmAnnotationNames.RETENTION_ANNOTATION))
@@ -777,16 +818,46 @@ open class KotlinFileExtractor(
     private val javaAnnotationRepeatable by lazy { referenceExternalClass("java.lang.annotation.Repeatable") }
     private val kotlinAnnotationRepeatableContainer by lazy { referenceExternalClass("kotlin.jvm.internal.RepeatableContainer") }
 
+    // Taken from declarationBuilders.kt (not available in Kotlin < 1.6):
+    private fun addDefaultGetter(p: IrProperty, parentClass: IrClass) {
+        val field = p.backingField!!
+        p.addGetter {
+            origin = IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR
+            returnType = field.type
+        }.apply {
+            dispatchReceiverParameter = copyParameterToFunction(parentClass.thisReceiver!!, this)
+            body = factory.createBlockBody(
+                UNDEFINED_OFFSET, UNDEFINED_OFFSET, listOf(
+                    IrReturnImpl(
+                        UNDEFINED_OFFSET, UNDEFINED_OFFSET,
+                        pluginContext.irBuiltIns.nothingType,
+                        symbol,
+                        IrGetFieldImpl(
+                            UNDEFINED_OFFSET, UNDEFINED_OFFSET,
+                            field.symbol,
+                            field.type,
+                            IrGetValueImpl(
+                                UNDEFINED_OFFSET, UNDEFINED_OFFSET,
+                                dispatchReceiverParameter!!.type,
+                                dispatchReceiverParameter!!.symbol
+                            )
+                        )
+                    )
+                )
+            )
+        }
+    }
+
     // Taken from JvmCachedDeclarations.kt
     private fun getOrCreateSyntheticRepeatableAnnotationContainer(annotationClass: IrClass) =
         globalExtensionState.syntheticRepeatableAnnotationContainers.getOrPut(annotationClass) {
             val containerClass = pluginContext.irFactory.buildClass {
                 kind = ClassKind.ANNOTATION_CLASS
-                name = Name.identifier(JvmAbi.REPEATABLE_ANNOTATION_CONTAINER_NAME)
+                name = Name.identifier("Container")
             }.apply {
                 createImplicitParameterDeclarationWithWrappedDescriptor()
                 parent = annotationClass
-                superTypes = listOf(pluginContext.irBuiltIns.annotationType)
+                superTypes = listOf(getAnnotationType(pluginContext))
             }
 
             val propertyName = Name.identifier("value")
@@ -795,7 +866,7 @@ open class KotlinFileExtractor(
             containerClass.addConstructor {
                 isPrimary = true
             }.apply {
-                addValueParameter(propertyName, propertyType)
+                addValueParameter(propertyName.identifier, propertyType)
             }
 
             containerClass.addProperty {
@@ -808,7 +879,7 @@ open class KotlinFileExtractor(
                     parent = containerClass
                     correspondingPropertySymbol = this@property.symbol
                 }
-                addDefaultGetter(containerClass, pluginContext.irBuiltIns)
+                addDefaultGetter(this, containerClass)
             }
 
             val repeatableContainerAnnotation = kotlinAnnotationRepeatableContainer?.let { it.constructors.single() }
