@@ -829,12 +829,22 @@ predicate exprNodeShouldBeOperand(OperandNode node, Expr e) {
   )
 }
 
+private predicate indirectExprNodeShouldBeIndirectOperand0(
+  VariableAddressInstruction instr, RawIndirectOperand node, Expr e
+) {
+  instr = node.getOperand().getDef() and
+  e = instr.getAst().(Expr).getUnconverted()
+}
+
 /** Holds if `node` should be an `IndirectOperand` that maps `node.asIndirectExpr()` to `e`. */
 private predicate indirectExprNodeShouldBeIndirectOperand(RawIndirectOperand node, Expr e) {
   exists(Instruction instr | instr = node.getOperand().getDef() |
-    e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
+    exists(Expr e0 |
+      indirectExprNodeShouldBeIndirectOperand0(instr, node, e0) and
+      e = e0.getFullyConverted()
+    )
     or
-    not instr instanceof VariableAddressInstruction and
+    not indirectExprNodeShouldBeIndirectOperand0(_, _, e.getUnconverted()) and
     e = instr.getConvertedResultExpression()
   )
 }

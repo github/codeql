@@ -23,8 +23,6 @@ View the query help for the queries included in the ``code-scanning``, ``securit
 
 For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE coverage <codeql-cwe-coverage>`." 
 
-.. include:: ../reusables/ruby-beta-note.rst
-
 .. toctree::
    :hidden:
    :titlesonly:

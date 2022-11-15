@@ -37,15 +37,15 @@ public:
 };
 
 void test_typedefs(int_iterator_by_typedefs source1) {
-    sink(*source1); // $ ir
-    sink(*(source1++)); // $ ir
-    sink(*(++source1)); // $ ir
+    sink(*source1); // $ ast,ir
+    sink(*(source1++)); // $ ast,ir
+    sink(*(++source1)); // $ ast,ir
 }
 
 void test_trait(int_iterator_by_trait source1) {
-    sink(*source1); // $ ir
-    sink(*(source1++)); // $ ir
-    sink(*(++source1)); // $ ir
+    sink(*source1); // $ ast,ir
+    sink(*(source1++)); // $ ast,ir
+    sink(*(++source1)); // $ ast,ir
 }
 
 void test_non_iterator(non_iterator source1) {
@@ -84,7 +84,7 @@ void test_insert_iterator() {
 
     insert_iterator_by_trait i1 = c1.begin();
     *i1-- = source();
-    sink(c1); // $ MISSING: ir
+    sink(c1); // $ ast MISSING: ir
 
     insert_iterator_by_trait i2 = c2.begin();
     *i2-- = 0;
@@ -101,12 +101,12 @@ void test_assign_through_iterator() {
 	a = c1.begin();
 	b = c1.begin();
 	*a = source();
-	sink(a); // $ MISSING: ir
+	sink(a); // $ ast MISSING: ir
 
 	c = c1.begin();
-	sink(b); // MISSING: ir
-	sink(c); // $ MISSING: ir
-	sink(c1); // $ MISSING: ir
+	sink(b); // MISSING: ast,ir
+	sink(c); // $ ast MISSING: ir
+	sink(c1); // $ ast MISSING: ir
 }
 
 void test_nonmember_iterator() {
@@ -118,6 +118,6 @@ void test_nonmember_iterator() {
 	it += 1;
 	sink(it);
 	it += source();
-	sink(it); // $ ir
+	sink(it); // $ ast,ir
 	sink(c1);
 }

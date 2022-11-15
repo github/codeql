@@ -27,11 +27,3 @@ class SystemNetMailMailMessageClass extends SystemNetMailClass {
   /** Gets the `Subject` property. */
   Property getSubjectProperty() { result = this.getProperty("Subject") }
 }
-
-/** Data flow for `System.Net.Mail.MailAddressCollection`. */
-private class SystemNetMailMailAddressCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Net.Mail;MailAddressCollection;false;Add;(System.String);;Argument[0];Argument[this].Element;value;manual"
-  }
-}

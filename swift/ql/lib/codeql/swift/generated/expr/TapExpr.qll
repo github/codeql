@@ -47,7 +47,7 @@ module Generated {
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
 
     /**
-     * Gets the var of this tap expression.
+     * Gets the variable of this tap expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -58,7 +58,7 @@ module Generated {
     }
 
     /**
-     * Gets the var of this tap expression.
+     * Gets the variable of this tap expression.
      */
     final VarDecl getVar() { result = getImmediateVar().resolve() }
   }
