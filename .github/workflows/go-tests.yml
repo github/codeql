@@ -51,7 +51,7 @@ jobs:
       - name: Test
         run: |
           cd go
-          make test
+          env CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO=1 make test
 
   test-mac:
     name: Test MacOS
