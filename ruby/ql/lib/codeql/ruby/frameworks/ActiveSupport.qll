@@ -284,7 +284,17 @@ module ActiveSupport {
           preservesValue = true
         }
       }
-      // TODO: index_by, index_with, pick, pluck (they require Hash dataflow)
+
+      private class IndexBySummary extends SimpleSummarizedCallable {
+        IndexBySummary() { this = "index_by" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[any]" and
+          output = ["Argument[block].Parameter[0]", "ReturnValue.Element[?]"] and
+          preservesValue = true
+        }
+      }
+      // TODO: index_with, pick, pluck (they require Hash dataflow)
     }
   }
 

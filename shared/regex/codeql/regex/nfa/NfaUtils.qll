@@ -166,7 +166,7 @@ module Make<RegexTreeViewSig TreeImpl> {
       min(RelevantRegExpTerm t |
         str = getCanonicalizationString(t)
       |
-        t order by getTermLocationString(t)
+        t order by getTermLocationString(t), t.toString()
       )
   }
 
@@ -949,7 +949,7 @@ module Make<RegexTreeViewSig TreeImpl> {
             isStartState(s) and
             getRoot(s.getRepr()) = root
           |
-            s order by getTermLocationString(s.getRepr())
+            s order by getTermLocationString(s.getRepr()), s.getRepr().toString()
           )
       )
     }
@@ -1047,7 +1047,7 @@ module Make<RegexTreeViewSig TreeImpl> {
             isCandidate(s, _) and
             s.getRepr() instanceof InfiniteRepetitionQuantifier
           |
-            s order by getTermLocationString(s.getRepr())
+            s order by getTermLocationString(s.getRepr()), s.getRepr().toString()
           )
       )
     }
