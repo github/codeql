@@ -4,21 +4,18 @@
 <qhelp>
 
 <overview>
-<p>When a user enters information to a text input field on an Android application, then by default their input is saved to a keyboard cache, 
-which provides autocomplete suggestions and predictions. If the input field is expected to contain sensitive information, such as a password or banking details, 
-this sensitive data may be leaked to other applications via the keyboard cache.</p>
+<p>When a user enters information in a text input field on an Android application, their input is saved to a keyboard cache which provides autocomplete suggestions and predictions. There is a risk that sensitive user data, such as passwords or banking information, may be leaked to other applications via the keyboard cache.</p>
 
 </overview>
 <recommendation>
 
-<p>For input fields expected to accept sensitive information, an input type such as <code>"textNoSuggestions"</code> (or <code>"textPassword"</code> for a password) 
-should be used to ensure that the input does not get stored in the keyboard cache.</p>
+<p>For input fields expected to accept sensitive information, use input types such as <code>"textNoSuggestions"</code> (or <code>"textPassword"</code> for a password) to ensure the input does not get stored in the keyboard cache.</p>
 <p>The input type can also be set in code through <code>TextView.setInputType()</code> rather than declared through XML.</p>
 </recommendation>
 <example>
 
-<p>In the following example, the field labeled BAD could allow the password to be saved to the keyboard cache;
- whereas the field labeled GOOD uses the <code>"textPassword"</code> input type, which ensures that it is not.</p>
+<p>In the following example, the field labeled BAD allows the password to be saved to the keyboard cache,
+ whereas the field labeled GOOD uses the <code>"textPassword"</code> input type to ensure the password is not cached.</p>
 
 <sample src="Example.xml" />
 

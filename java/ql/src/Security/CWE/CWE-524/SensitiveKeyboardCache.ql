@@ -1,6 +1,6 @@
 /**
  * @name Android sensitive keyboard cache
- * @description Sensitive information should not be saved to the keyboard cache.
+ * @description Allowing the keyboard to cache sensitive information may result in information leaks to other applications.
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.1
