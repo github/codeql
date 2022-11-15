@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Evaluating JavaScript that contains a substring from a remote origin may lead to remote code execution. Code under control of an attacker can execute arbitrary unauthorized actions, including exfiltration of local data by sending it to a third party web service.</p>
+<p>Evaluating JavaScript that contains a substring from a remote origin may lead to remote code execution. Code written by an attacker can execute unauthorized actions, including exfiltration of local data through a third party web service.</p>
 
 </overview>
 <recommendation>
