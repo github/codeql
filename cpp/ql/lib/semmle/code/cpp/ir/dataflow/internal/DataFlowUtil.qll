@@ -637,7 +637,7 @@ private Type getTypeImpl(Type t, int indirectionIndex) {
  * A node that represents the indirect value of an operand in the IR
  * after `index` number of loads.
  */
-private class RawIndirectOperand extends Node, TRawIndirectOperand {
+class RawIndirectOperand extends Node, TRawIndirectOperand {
   Operand operand;
   int indirectionIndex;
 
@@ -667,46 +667,6 @@ private class RawIndirectOperand extends Node, TRawIndirectOperand {
 }
 
 /**
- * INTERNAL: Do not use.
- *
- * A node that represents the indirect value of an operand in the IR
- * after `index` number of loads.
- *
- * Note: Unlike `RawIndirectOperand`, a value of type `IndirectOperand` may
- * be an `OperandNode`.
- */
-class IndirectOperand extends Node {
-  Operand operand;
-  int indirectionIndex;
-
-  IndirectOperand() {
-    this.(RawIndirectOperand).getOperand() = operand and
-    this.(RawIndirectOperand).getIndirectionIndex() = indirectionIndex
-    or
-    this.(OperandNode).getOperand() =
-      Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex)
-  }
-
-  /** Gets the underlying operand. */
-  Operand getOperand() { result = operand }
-
-  /** Gets the underlying indirection index. */
-  int getIndirectionIndex() { result = indirectionIndex }
-
-  /**
-   * Holds if this `IndirectOperand` is represented directly in the IR instead of
-   * a `RawIndirectionOperand` with operand `op` and indirection index `index`.
-   */
-  predicate isIRRepresentationOf(Operand op, int index) {
-    this instanceof OperandNode and
-    (
-      op = operand and
-      index = indirectionIndex
-    )
-  }
-}
-
-/**
  * The value of an uninitialized local variable, viewed as a node in a data
  * flow graph.
  */
@@ -731,7 +691,7 @@ class UninitializedNode extends Node {
  * A node that represents the indirect value of an instruction in the IR
  * after `index` number of loads.
  */
-private class RawIndirectInstruction extends Node, TRawIndirectInstruction {
+class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   Instruction instr;
   int indirectionIndex;
 
@@ -757,46 +717,6 @@ private class RawIndirectInstruction extends Node, TRawIndirectInstruction {
 
   override string toStringImpl() {
     result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
-  }
-}
-
-/**
- * INTERNAL: Do not use.
- *
- * A node that represents the indirect value of an instruction in the IR
- * after `index` number of loads.
- *
- * Note: Unlike `RawIndirectInstruction`, a value of type `IndirectInstruction` may
- * be an `InstructionNode`.
- */
-class IndirectInstruction extends Node {
-  Instruction instr;
-  int indirectionIndex;
-
-  IndirectInstruction() {
-    this.(RawIndirectInstruction).getInstruction() = instr and
-    this.(RawIndirectInstruction).getIndirectionIndex() = indirectionIndex
-    or
-    this.(InstructionNode).getInstruction() =
-      Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex)
-  }
-
-  /** Gets the underlying instruction. */
-  Instruction getInstruction() { result = instr }
-
-  /** Gets the underlying indirection index. */
-  int getIndirectionIndex() { result = indirectionIndex }
-
-  /**
-   * Holds if this `IndirectInstruction` is represented directly in the IR instead of
-   * a `RawIndirectionInstruction` with instruction `i` and indirection index `index`.
-   */
-  predicate isIRRepresentationOf(Instruction i, int index) {
-    this instanceof InstructionNode and
-    (
-      i = instr and
-      index = indirectionIndex
-    )
   }
 }
 

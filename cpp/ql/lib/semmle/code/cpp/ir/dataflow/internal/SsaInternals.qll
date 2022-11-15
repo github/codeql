@@ -88,7 +88,7 @@ import SourceVariables
 
 /**
  * Holds if the `(operand, indirectionIndex)` columns should be
- * assigned an `RawIndirectOperand` value.
+ * assigned a `RawIndirectOperand` value.
  */
 predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
   exists(CppType type, int m |
@@ -102,7 +102,7 @@ predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
 
 /**
  * Holds if the `(instr, indirectionIndex)` columns should be
- * assigned an `RawIndirectInstruction` value.
+ * assigned a `RawIndirectInstruction` value.
  */
 predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
   exists(CppType type, int m |

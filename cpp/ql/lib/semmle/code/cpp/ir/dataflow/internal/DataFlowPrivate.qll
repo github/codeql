@@ -6,6 +6,86 @@ private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that represents the indirect value of an operand in the IR
+ * after `index` number of loads.
+ *
+ * Note: Unlike `RawIndirectOperand`, a value of type `IndirectOperand` may
+ * be an `OperandNode`.
+ */
+class IndirectOperand extends Node {
+  Operand operand;
+  int indirectionIndex;
+
+  IndirectOperand() {
+    this.(RawIndirectOperand).getOperand() = operand and
+    this.(RawIndirectOperand).getIndirectionIndex() = indirectionIndex
+    or
+    this.(OperandNode).getOperand() =
+      Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex)
+  }
+
+  /** Gets the underlying operand. */
+  Operand getOperand() { result = operand }
+
+  /** Gets the underlying indirection index. */
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  /**
+   * Holds if this `IndirectOperand` is represented directly in the IR instead of
+   * a `RawIndirectionOperand` with operand `op` and indirection index `index`.
+   */
+  predicate isIRRepresentationOf(Operand op, int index) {
+    this instanceof OperandNode and
+    (
+      op = operand and
+      index = indirectionIndex
+    )
+  }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that represents the indirect value of an instruction in the IR
+ * after `index` number of loads.
+ *
+ * Note: Unlike `RawIndirectInstruction`, a value of type `IndirectInstruction` may
+ * be an `InstructionNode`.
+ */
+class IndirectInstruction extends Node {
+  Instruction instr;
+  int indirectionIndex;
+
+  IndirectInstruction() {
+    this.(RawIndirectInstruction).getInstruction() = instr and
+    this.(RawIndirectInstruction).getIndirectionIndex() = indirectionIndex
+    or
+    this.(InstructionNode).getInstruction() =
+      Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex)
+  }
+
+  /** Gets the underlying instruction. */
+  Instruction getInstruction() { result = instr }
+
+  /** Gets the underlying indirection index. */
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  /**
+   * Holds if this `IndirectInstruction` is represented directly in the IR instead of
+   * a `RawIndirectionInstruction` with instruction `i` and indirection index `index`.
+   */
+  predicate isIRRepresentationOf(Instruction i, int index) {
+    this instanceof InstructionNode and
+    (
+      i = instr and
+      index = indirectionIndex
+    )
+  }
+}
+
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
