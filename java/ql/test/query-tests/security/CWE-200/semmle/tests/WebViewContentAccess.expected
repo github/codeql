@@ -1,0 +1,1 @@
+| WebViewContentAccess.java:10:9:10:44 | setAllowContentAccess(...) | Sensitive information may be exposed via a malicious link due to access of content:// links being permitted. |
