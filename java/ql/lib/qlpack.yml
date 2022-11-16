@@ -5,3 +5,5 @@ dbscheme: config/semmlecode.dbscheme
 extractor: java
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/regex: ${workspace}

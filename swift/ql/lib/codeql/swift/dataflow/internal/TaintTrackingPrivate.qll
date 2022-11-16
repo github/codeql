@@ -64,6 +64,8 @@ private module Cached {
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
   }
 
   /**
