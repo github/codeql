@@ -162,7 +162,9 @@ included by default.
 ### Specifiers
 
 #### `?`
-An element at an unknown index.
+If used in an input path: an element at an unknown index. If used in an output
+path: an element at any known or unkown index. In other words, `?` in an output
+path means the same as `any`.
 
 #### `any`
 An element at any known or unknown index.
