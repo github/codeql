@@ -209,8 +209,6 @@ module ImportResolution {
     or
     result.asExpr() =
       any(ImportMember i |
-        i.getModule().(ImportExpr).getImportedModuleName() = module_name
-        or
         i.getModule().(ImportExpr).getImportedModuleName() + "." + i.getName() = module_name
       )
   }

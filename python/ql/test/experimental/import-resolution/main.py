@@ -39,15 +39,15 @@ check("foo.bar_reexported.bar_attr", foo.bar_reexported.bar_attr, "bar_attr", gl
 
 # A simple "import from" statement.
 from bar import bar_attr
-check("bar_attr", bar_attr, "bar_attr", globals()) #$ prints=bar_attr SPURIOUS: prints="<module bar>"
+check("bar_attr", bar_attr, "bar_attr", globals()) #$ prints=bar_attr
 
 # Importing an attribute from a subpackage of a package.
 from package.subpackage import subpackage_attr
-check("subpackage_attr", subpackage_attr, "subpackage_attr", globals()) #$ prints=subpackage_attr SPURIOUS: prints="<module package.subpackage.__init__>"
+check("subpackage_attr", subpackage_attr, "subpackage_attr", globals()) #$ prints=subpackage_attr
 
 # Importing a package attribute under an alias.
 from package import package_attr as package_attr_alias
-check("package_attr_alias", package_attr_alias,  "package_attr", globals()) #$ prints=package_attr SPURIOUS: prints="<module package.__init__>"
+check("package_attr_alias", package_attr_alias,  "package_attr", globals()) #$ prints=package_attr
 
 # Importing a subpackage under an alias.
 from package import subpackage as aliased_subpackage #$ imports=package.subpackage.__init__ as=aliased_subpackage
@@ -71,12 +71,12 @@ check("package.package_attr", package.package_attr, "package_attr", globals()) #
 if sys.version_info[0] == 3:
     # Importing from a namespace module.
     from namespace_package.namespace_module import namespace_module_attr
-    check("namespace_module_attr", namespace_module_attr, "namespace_module_attr", globals()) #$ prints=namespace_module_attr SPURIOUS: prints="<module namespace_package.namespace_module>"
+    check("namespace_module_attr", namespace_module_attr, "namespace_module_attr", globals()) #$ prints=namespace_module_attr
 
 
 from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_clash.clashing_attr as=clashing_attr imports=attr_clash.non_clashing_submodule as=non_clashing_submodule
-check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>" SPURIOUS: prints="<module attr_clash.__init__>"
-check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_clashing_submodule>", globals()) #$ prints="<module attr_clash.non_clashing_submodule>" SPURIOUS: prints="<module attr_clash.__init__>"
+check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>"
+check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_clashing_submodule>", globals()) #$ prints="<module attr_clash.non_clashing_submodule>"
 
 exit(__file__)
 
