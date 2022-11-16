@@ -340,7 +340,7 @@ def test_ipa_from_class():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, ipa=schema.IpaInfo()),
+        'A': schema.Class('A', derived={'B'}, ipa=True),
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(from_class="A")),
     }
 
@@ -381,7 +381,7 @@ def test_ipa_class_on():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, ipa=schema.IpaInfo()),
+        'A': schema.Class('A', derived={'B'}, ipa=True),
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(on_arguments={'a': 'A', 'i': 'int'})),
     }
 
@@ -439,8 +439,8 @@ def test_ipa_class_hierarchy():
 
     assert data.classes == {
         'Root': schema.Class('Root', derived={'Base', 'C'}),
-        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, ipa=schema.IpaInfo()),
-        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, ipa=schema.IpaInfo()),
+        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, ipa=True),
+        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, ipa=True),
         'A': schema.Class('A', bases=['Intermediate'], ipa=schema.IpaInfo(on_arguments={'a': 'Base', 'i': 'int'})),
         'B': schema.Class('B', bases=['Base'], ipa=schema.IpaInfo(from_class='Base')),
         'C': schema.Class('C', bases=['Root']),

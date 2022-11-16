@@ -86,7 +86,8 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     group: str = ""
     pragmas: List[str] = field(default_factory=list)
-    ipa: Optional[IpaInfo] = None
+    ipa: Optional[Union[IpaInfo, bool]] = None
+    """^^^ filled with `True` for non-final classes with only synthesized final descendants """
     doc: List[str] = field(default_factory=list)
     default_doc_name: Optional[str] = None
 
@@ -248,6 +249,10 @@ def _toposort_classes_by_group(classes: typing.Dict[str, Class]) -> typing.Dict[
 
 
 def _fill_ipa_information(classes: typing.Dict[str, Class]):
+    """ Take a dictionary where the `ipa` field is filled for all explicitly synthesized classes
+    and updated it so that all non-final classes that have only synthesized final descendants
+    get `True` as` value for the `ipa` field
+    """
     if not classes:
         return
 
@@ -270,7 +275,7 @@ def _fill_ipa_information(classes: typing.Dict[str, Class]):
 
     for name, cls in classes.items():
         if cls.ipa is None and is_ipa[name]:
-            cls.ipa = IpaInfo()
+            cls.ipa = True
 
 
 def load(m: types.ModuleType) -> Schema:
