@@ -156,13 +156,22 @@ class TopLevel extends TTopLevel, AstNode {
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
-    exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
+    exists(int i | result = this.getMember(i) and m = this.getMember(i + 1)) and
+    (
+      m instanceof ClasslessPredicate
+      or
+      m instanceof Class
+      or
+      m instanceof Module
+    )
   }
 
   override string getAPrimaryQlClass() { result = "TopLevel" }
 
   override QLDoc getQLDoc() {
     result = this.getMember(0) and
+    // it's not the QLDoc for a module member
+    not this.getQLDocFor(_) = result and
     result.getLocation().getStartLine() = 1 // this might not hold if there is a block comment above, and that's the point.
   }
 }
