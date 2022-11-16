@@ -8,7 +8,6 @@ private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 import AdaptiveThreatModeling
 import CoreKnowledge as CoreKnowledge
-import StandardEndpointFilters as StandardEndpointFilters
 
 class DomBasedXssAtmConfig extends AtmConfig {
   DomBasedXssAtmConfig() { this = "DomBasedXssATMConfig" }
