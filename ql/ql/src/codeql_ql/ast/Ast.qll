@@ -156,12 +156,15 @@ class TopLevel extends TTopLevel, AstNode {
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
-    exists(int i | i > 0 and result = this.getMember(i) and m = this.getMember(i + 1))
+    exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
   }
 
   override string getAPrimaryQlClass() { result = "TopLevel" }
 
-  override QLDoc getQLDoc() { result = this.getMember(0) }
+  override QLDoc getQLDoc() {
+    result = this.getMember(0) and
+    result.getLocation().getStartLine() = 1 // this might not hold if there is a block comment above, and that's the point.
+  }
 }
 
 abstract class Comment extends AstNode, TComment {
@@ -536,6 +539,12 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
 
   /** Holds if this classless predicate is a signature predicate with no body. */
   predicate isSignature() { not exists(this.getBody()) }
+
+  override QLDoc getQLDoc() {
+    result = any(TopLevel m).getQLDocFor(this)
+    or
+    result = any(Module m).getQLDocFor(this)
+  }
 }
 
 /**
