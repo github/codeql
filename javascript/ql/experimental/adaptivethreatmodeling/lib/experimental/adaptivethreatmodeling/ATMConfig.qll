@@ -69,7 +69,7 @@ abstract class AtmConfig extends string {
    * Holds if the candidate sink `candidateSink` predicted by the machine learning model should be
    * an effective sink, i.e. one considered as a possible sink of flow in the boosted query.
    */
-  final predicate isEffectiveSink(JS::DataFlow::Node candidateSink) {
+  predicate isEffectiveSink(JS::DataFlow::Node candidateSink) {
     not exists(this.getAReasonSinkExcluded(candidateSink))
   }
 
