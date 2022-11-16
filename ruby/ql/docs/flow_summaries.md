@@ -45,6 +45,10 @@ to a call to this fake definition.
 They use a custom string-based syntax which is similar but not identical to
 Models as Data. These strings are often referred to as access paths.
 
+Note: The behaviour documented below is tested in
+`dataflow/flow-summaries/behaviour.ql`. Where specific quirks exist, we may
+reference a particular test case in this file which demonstrates the quirk.
+
 # Syntax
 
 Access paths consist of zero or more components separated by dots (`.`). The
