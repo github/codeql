@@ -708,8 +708,8 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeT
   or
   // see https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
   exists(MethodCallNode call |
-    call.calls(nodeTo.(PostUpdateNode).getPreUpdateNode(), ["setdefault"]) and
-    call.getArg(0).asExpr().(StrConst).getText() = c.(DictionaryElementContent).getKey() and
+    call.calls(nodeTo.(PostUpdateNode).getPreUpdateNode(), "setdefault") and
+    call.getArg(0).asExpr().(StrConst).getText() = c.getKey() and
     nodeFrom = call.getArg(1)
   )
 }
