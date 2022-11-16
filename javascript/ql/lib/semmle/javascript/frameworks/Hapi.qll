@@ -238,7 +238,7 @@ module Hapi {
               .getALocalSource()
               .(DataFlow::ArrayCreationNode)
               .getAnElement()
-              .(DataFlow::ObjectLiteralNode)
+              .getALocalSource()
               .getAPropertySource("handler")
               .getAFunctionValue()
       )
