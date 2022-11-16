@@ -72,12 +72,16 @@ predicate rebox(Assignment e, Variable v) {
 
 from Expr e, string conv
 where
-  boxed(e) and conv = "This expression is implicitly boxed."
-  or
-  unboxed(e) and conv = "This expression is implicitly unboxed."
-  or
-  exists(Variable v | rebox(e, v) |
-    conv =
-      "This expression implicitly unboxes, updates, and reboxes the value of '" + v.getName() + "'."
+  e.getFile().isJavaSourceFile() and
+  (
+    boxed(e) and conv = "This expression is implicitly boxed."
+    or
+    unboxed(e) and conv = "This expression is implicitly unboxed."
+    or
+    exists(Variable v | rebox(e, v) |
+      conv =
+        "This expression implicitly unboxes, updates, and reboxes the value of '" + v.getName() +
+          "'."
+    )
   )
 select e, conv
