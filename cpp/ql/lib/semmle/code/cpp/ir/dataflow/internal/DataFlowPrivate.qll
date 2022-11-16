@@ -6,6 +6,86 @@ private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that represents the indirect value of an operand in the IR
+ * after `index` number of loads.
+ *
+ * Note: Unlike `RawIndirectOperand`, a value of type `IndirectOperand` may
+ * be an `OperandNode`.
+ */
+class IndirectOperand extends Node {
+  Operand operand;
+  int indirectionIndex;
+
+  IndirectOperand() {
+    this.(RawIndirectOperand).getOperand() = operand and
+    this.(RawIndirectOperand).getIndirectionIndex() = indirectionIndex
+    or
+    this.(OperandNode).getOperand() =
+      Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex)
+  }
+
+  /** Gets the underlying operand. */
+  Operand getOperand() { result = operand }
+
+  /** Gets the underlying indirection index. */
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  /**
+   * Holds if this `IndirectOperand` is represented directly in the IR instead of
+   * a `RawIndirectionOperand` with operand `op` and indirection index `index`.
+   */
+  predicate isIRRepresentationOf(Operand op, int index) {
+    this instanceof OperandNode and
+    (
+      op = operand and
+      index = indirectionIndex
+    )
+  }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that represents the indirect value of an instruction in the IR
+ * after `index` number of loads.
+ *
+ * Note: Unlike `RawIndirectInstruction`, a value of type `IndirectInstruction` may
+ * be an `InstructionNode`.
+ */
+class IndirectInstruction extends Node {
+  Instruction instr;
+  int indirectionIndex;
+
+  IndirectInstruction() {
+    this.(RawIndirectInstruction).getInstruction() = instr and
+    this.(RawIndirectInstruction).getIndirectionIndex() = indirectionIndex
+    or
+    this.(InstructionNode).getInstruction() =
+      Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex)
+  }
+
+  /** Gets the underlying instruction. */
+  Instruction getInstruction() { result = instr }
+
+  /** Gets the underlying indirection index. */
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  /**
+   * Holds if this `IndirectInstruction` is represented directly in the IR instead of
+   * a `RawIndirectionInstruction` with instruction `i` and indirection index `index`.
+   */
+  predicate isIRRepresentationOf(Instruction i, int index) {
+    this instanceof InstructionNode and
+    (
+      i = instr and
+      index = indirectionIndex
+    )
+  }
+}
+
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
@@ -47,24 +127,6 @@ private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
   }
-
-  override string toStringImpl() { result = argumentOperandToString(op) }
-}
-
-private string argumentOperandToString(ArgumentOperand op) {
-  exists(Expr unconverted |
-    unconverted = op.getDef().getUnconvertedResultExpression() and
-    result = unconverted.toString()
-  )
-  or
-  // Certain instructions don't map to an unconverted result expression. For these cases
-  // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
-  not exists(op.getDef().getUnconvertedResultExpression()) and
-  (
-    result = "Argument " + op.(PositionalArgumentOperand).getIndex()
-    or
-    op instanceof ThisArgumentOperand and result = "Argument this"
-  )
 }
 
 private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode {
@@ -72,10 +134,6 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
     this.getCallInstruction() = dfCall and
     pos.(IndirectionPosition).getArgumentIndex() = this.getArgumentIndex() and
     pos.(IndirectionPosition).getIndirectionIndex() = super.getIndirectionIndex()
-  }
-
-  override string toStringImpl() {
-    result = argumentOperandToString(this.getAddressOperand()) + " indirection"
   }
 }
 
@@ -200,15 +258,21 @@ private predicate hasNonInitializeParameterDef(IRVariable v) {
 
 class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   override ReturnKind getKind() {
-    exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
-      returnInd.hasIndex(argumentIndex) and
-      this.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      result = TIndirectReturnKind(argumentIndex, this.getIndirectionIndex()) and
-      hasNonInitializeParameterDef(returnInd.getIRVariable())
+    exists(Operand op, int i |
+      hasOperandAndIndex(this, pragma[only_bind_into](op), pragma[only_bind_into](i))
+    |
+      exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
+        op = returnInd.getSourceAddressOperand() and
+        returnInd.hasIndex(argumentIndex) and
+        hasNonInitializeParameterDef(returnInd.getIRVariable()) and
+        result = TIndirectReturnKind(argumentIndex, pragma[only_bind_into](i))
+      )
+      or
+      exists(ReturnValueInstruction return |
+        op = return.getReturnAddressOperand() and
+        result = TNormalReturnKind(i - 1)
+      )
     )
-    or
-    this.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
-    result = TNormalReturnKind(this.getIndirectionIndex() - 1)
   }
 }
 

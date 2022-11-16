@@ -86,21 +86,31 @@ private module SourceVariables {
 
 import SourceVariables
 
-predicate hasIndirectOperand(Operand op, int indirectionIndex) {
+/**
+ * Holds if the `(operand, indirectionIndex)` columns should be
+ * assigned a `RawIndirectOperand` value.
+ */
+predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
   exists(CppType type, int m |
     not ignoreOperand(op) and
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
-    indirectionIndex = [1 .. m]
+    indirectionIndex = [1 .. m] and
+    not exists(getIRRepresentationOfIndirectOperand(op, indirectionIndex))
   )
 }
 
-predicate hasIndirectInstruction(Instruction instr, int indirectionIndex) {
+/**
+ * Holds if the `(instr, indirectionIndex)` columns should be
+ * assigned a `RawIndirectInstruction` value.
+ */
+predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
   exists(CppType type, int m |
     not ignoreInstruction(instr) and
     type = getResultLanguageType(instr) and
     m = countIndirectionsForCppType(type) and
-    indirectionIndex = [1 .. m]
+    indirectionIndex = [1 .. m] and
+    not exists(getIRRepresentationOfIndirectInstruction(instr, indirectionIndex))
   )
 }
 
