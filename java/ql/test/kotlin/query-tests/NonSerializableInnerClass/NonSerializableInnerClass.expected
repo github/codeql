@@ -1,0 +1,2 @@
+| NonSerializableInnerClassTest.kt:4:3:5:3 | X | Serializable inner class of non-serializable class $@. Consider making the class static or implementing readObject() and writeObject(). | NonSerializableInnerClassTest.kt:3:1:6:1 | A | A |
+| NonSerializableInnerClassTest.kt:9:3:10:3 | X | Serializable inner class of non-serializable class $@. Consider making the class static or implementing readObject() and writeObject(). | NonSerializableInnerClassTest.kt:8:1:11:1 | B | B |
