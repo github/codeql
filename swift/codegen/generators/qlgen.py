@@ -148,7 +148,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
     return ql.Property(**args)
 
 
-def get_ql_class(cls: schema.Class):
+def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
     pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
     prev_child = ""
     properties = []
@@ -163,7 +163,7 @@ def get_ql_class(cls: schema.Class):
         final=not cls.derived,
         properties=properties,
         dir=pathlib.Path(cls.group or ""),
-        ipa=bool(cls.ipa),
+        ipa=_is_ipa(cls, lookup),
         doc=cls.doc,
         **pragmas,
     )
@@ -276,6 +276,14 @@ def _get_all_properties_to_be_tested(cls: schema.Class, lookup: typing.Dict[str,
             yield ql.PropertyForTest(p.getter, p.type, p.is_single, p.is_predicate, p.is_repeated)
 
 
+def _is_ipa(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> bool:
+    if cls.ipa is not None:
+        return True
+    if not cls.derived:
+        return False
+    return all(_is_ipa(lookup[d], lookup) for d in cls.derived)
+
+
 def _partition_iter(x, pred):
     x1, x2 = itertools.tee(x)
     return filter(pred, x1), itertools.filterfalse(pred, x2)
@@ -315,7 +323,7 @@ def generate(opts, renderer):
 
     data = schema.load_file(input)
 
-    classes = {name: get_ql_class(cls) for name, cls in data.classes.items()}
+    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
     if not classes:
         raise NoClasses
     root = next(iter(classes.values()))
@@ -324,8 +332,7 @@ def generate(opts, renderer):
 
     imports = {}
 
-    db_classes = [cls for cls in classes.values() if not cls.ipa]
-    renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
+    renderer.render(ql.DbClasses(classes.values()), out / "Raw.qll")
 
     classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
     for c in classes_by_dir_and_name:

@@ -1,5 +1,6 @@
 module Raw {
   {{#classes}}
+  {{^ipa}}
   class {{name}} extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
     {{#root}}string toString() { none() }{{/root}}
     {{#final}}override string toString() { result = "{{name}}" }{{/final}}
@@ -10,6 +11,6 @@ module Raw {
     }
     {{/properties}}
   }
-
+  {{/ipa}}
   {{/classes}}
 }
