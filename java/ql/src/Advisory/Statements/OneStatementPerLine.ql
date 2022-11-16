@@ -37,6 +37,7 @@ predicate oneLineStatement(Stmt s, File f, int line, int col) {
 from Stmt s, Stmt s2
 where
   exists(File f, int line, int col, int col2 |
+    f.isJavaSourceFile() and
     oneLineStatement(s, f, line, col) and
     oneLineStatement(s2, f, line, col2) and
     col < col2 and
