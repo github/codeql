@@ -423,25 +423,32 @@ void intPointerSourceCaller() {
   intPointerSource(&local);
   sink(local); // $ ast,ir=422:7 ast,ir=423:20
 }
-
+// The IR results for this test _is_ equivalent to the AST ones.
+// The IR annotation is just "ir" because the sink of the unitialized source at
+// 428:7 is value of `local`, but the sink of the source from `intPointerSource`
+// value of `*local` (i.e., the indirection node of `local`). So unlike AST dataflow,
+// each of these two sinks correspond to a unique source, and thus we don't need to
+// attach a location annotation to it.
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // $ ast,ir=428:7 ast,ir=429:20
-  sink(*local); // $ ast,ir=428:7 ast,ir=429:20
+  sink(local); // $ ast=433:7 ast=434:20 ir
+  sink(*local); // $ ast=433:7 ast=434:20 ir
 }
 
 void intArraySourceCaller() {
   int local;
   intArraySource(&local, 1);
-  sink(local); // $ ast,ir=435:7 ast,ir=436:18
+  sink(local); // $ ast,ir=440:7 ast,ir=441:18
 }
 
+// The IR results for this test _is_ equivalent to the AST ones.
+// See the comment on `intPointerSourceCaller2` for an explanation.
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // $ ast,ir=441:7 ast,ir=442:18
-  sink(*local); // $ ast,ir=441:7 ast,ir=442:18
+  sink(local); // $ ast=448:7 ast=449:18 ir
+  sink(*local); // $ ast=448:7 ast=449:18 ir
 }
 
 ///////////////////////////////////////////////////////////////////////////////

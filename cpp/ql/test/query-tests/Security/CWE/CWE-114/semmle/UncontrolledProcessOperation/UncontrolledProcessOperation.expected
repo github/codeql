@@ -10,6 +10,12 @@ edges
 | test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer |
 | test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer |
 | test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer |
+| test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer |
+| test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer |
+| test.cpp:56:12:56:17 | buffer | test.cpp:62:10:62:15 | buffer |
+| test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data |
+| test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data |
+| test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data |
 | test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data |
 | test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data |
 | test.cpp:56:12:56:17 | buffer | test.cpp:63:10:63:13 | data |
@@ -17,6 +23,13 @@ edges
 | test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
 | test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
 | test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | buffer | test.cpp:64:10:64:16 | dataref |
+| test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 |
+| test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 |
+| test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 |
 | test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 |
 | test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 |
 | test.cpp:56:12:56:17 | buffer | test.cpp:65:10:65:14 | data2 |
@@ -36,15 +49,24 @@ edges
 | test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer |
 | test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer |
 | test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer |
+| test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer |
+| test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer |
+| test.cpp:76:12:76:17 | buffer | test.cpp:78:10:78:15 | buffer |
 | test.cpp:76:12:76:17 | fgets output argument | test.cpp:78:10:78:15 | buffer |
 | test.cpp:76:12:76:17 | fgets output argument | test.cpp:78:10:78:15 | buffer |
 | test.cpp:76:12:76:17 | fgets output argument | test.cpp:78:10:78:15 | buffer |
 | test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer |
 | test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer |
 | test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer |
+| test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer |
+| test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer |
+| test.cpp:98:17:98:22 | buffer | test.cpp:99:15:99:20 | buffer |
 | test.cpp:98:17:98:22 | recv output argument | test.cpp:99:15:99:20 | buffer |
 | test.cpp:98:17:98:22 | recv output argument | test.cpp:99:15:99:20 | buffer |
 | test.cpp:98:17:98:22 | recv output argument | test.cpp:99:15:99:20 | buffer |
+| test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer |
+| test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer |
+| test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer |
 | test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer |
 | test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer |
 | test.cpp:106:17:106:22 | buffer | test.cpp:107:15:107:20 | buffer |
@@ -64,6 +86,7 @@ nodes
 | test.cpp:43:18:43:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:43:18:43:34 | call to getenv | semmle.label | call to getenv |
 | test.cpp:56:12:56:17 | buffer | semmle.label | buffer |
+| test.cpp:56:12:56:17 | buffer | semmle.label | buffer |
 | test.cpp:56:12:56:17 | fgets output argument | semmle.label | fgets output argument |
 | test.cpp:62:10:62:15 | buffer | semmle.label | buffer |
 | test.cpp:62:10:62:15 | buffer | semmle.label | buffer |
@@ -79,15 +102,18 @@ nodes
 | test.cpp:65:10:65:14 | data2 | semmle.label | data2 |
 | test.cpp:65:10:65:14 | data2 | semmle.label | data2 |
 | test.cpp:76:12:76:17 | buffer | semmle.label | buffer |
+| test.cpp:76:12:76:17 | buffer | semmle.label | buffer |
 | test.cpp:76:12:76:17 | fgets output argument | semmle.label | fgets output argument |
 | test.cpp:78:10:78:15 | buffer | semmle.label | buffer |
 | test.cpp:78:10:78:15 | buffer | semmle.label | buffer |
 | test.cpp:78:10:78:15 | buffer | semmle.label | buffer |
 | test.cpp:98:17:98:22 | buffer | semmle.label | buffer |
+| test.cpp:98:17:98:22 | buffer | semmle.label | buffer |
 | test.cpp:98:17:98:22 | recv output argument | semmle.label | recv output argument |
 | test.cpp:99:15:99:20 | buffer | semmle.label | buffer |
 | test.cpp:99:15:99:20 | buffer | semmle.label | buffer |
 | test.cpp:99:15:99:20 | buffer | semmle.label | buffer |
+| test.cpp:106:17:106:22 | buffer | semmle.label | buffer |
 | test.cpp:106:17:106:22 | buffer | semmle.label | buffer |
 | test.cpp:106:17:106:22 | recv output argument | semmle.label | recv output argument |
 | test.cpp:107:15:107:20 | buffer | semmle.label | buffer |
