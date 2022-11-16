@@ -52,6 +52,7 @@ callable_bodies(
 
 @file =
   @db_file
+| @unknown_file
 ;
 
 #keyset[id]
@@ -76,6 +77,7 @@ locatable_locations(
 
 @location =
   @db_location
+| @unknown_location
 ;
 
 #keyset[id]
@@ -132,6 +134,14 @@ diagnostics(
 | @unresolved_type_conversion_expr
 | @unspecified_element
 ;
+
+unknown_files(
+  unique int id: @unknown_file
+);
+
+unknown_locations(
+  unique int id: @unknown_location
+);
 
 unspecified_elements(
   unique int id: @unspecified_element,
@@ -931,6 +941,7 @@ lazy_initializer_exprs(  //dir=expr
 @lookup_expr =
   @dynamic_lookup_expr
 | @member_ref_expr
+| @method_ref_expr
 | @subscript_expr
 ;
 
@@ -1321,6 +1332,10 @@ member_ref_expr_has_ordinary_semantics(  //dir=expr
 
 metatype_conversion_exprs(  //dir=expr
   unique int id: @metatype_conversion_expr
+);
+
+method_ref_exprs(  //dir=expr
+  unique int id: @method_ref_expr
 );
 
 nil_literal_exprs(  //dir=expr
