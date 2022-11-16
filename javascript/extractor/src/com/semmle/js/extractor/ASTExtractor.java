@@ -154,6 +154,7 @@ import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeExpression;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
@@ -2105,6 +2106,14 @@ public class ASTExtractor {
 
     @Override
     public Label visit(TypeAssertion nd, Context c) {
+      Label key = super.visit(nd, c);
+      visit(nd.getExpression(), key, 0);
+      visit(nd.getTypeAnnotation(), key, 1, IdContext.TYPE_BIND);
+      return key;
+    }
+
+    @Override
+    public Label visit(SatisfiesExpr nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getExpression(), key, 0);
       visit(nd.getTypeAnnotation(), key, 1, IdContext.TYPE_BIND);

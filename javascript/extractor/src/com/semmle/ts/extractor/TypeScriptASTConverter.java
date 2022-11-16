@@ -149,6 +149,7 @@ import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
@@ -341,6 +342,8 @@ public class TypeScriptASTConverter {
         return convertArrowFunction(node, loc);
       case "AsExpression":
         return convertTypeAssertionExpression(node, loc);
+      case "SatisfiesExpression": 
+        return convertSatisfiesExpression(node, loc);
       case "AwaitExpression":
         return convertAwaitExpression(node, loc);
       case "BigIntKeyword":
@@ -2271,6 +2274,11 @@ public class TypeScriptASTConverter {
       type = new KeywordTypeExpr(type.getLoc(), "const");
     }
     return new TypeAssertion(loc, convertChild(node, "expression"), type, false);
+  }
+
+  private Node convertSatisfiesExpression(JsonObject node, SourceLocation loc) throws ParseError {
+    ITypeExpression type = convertChildAsType(node, "type");
+    return new SatisfiesExpr(loc, convertChild(node, "expression"), type);
   }
 
   private Node convertTypeLiteral(JsonObject obj, SourceLocation loc) throws ParseError {
