@@ -10,25 +10,13 @@ private import javascript
 private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 private import semmle.javascript.heuristics.SyntacticHeuristics
 private import CoreKnowledge as CoreKnowledge
+import EndpointCharacteristics as EndpointCharacteristics
 
 /** Provides a set of reasons why a given data flow node should be excluded as a sink candidate. */
 string getAReasonSinkExcluded(DataFlow::Node n) {
-  isArgumentToModeledFunction(n) and result = "argument to modeled function"
-  or
-  isArgumentToSinklessLibrary(n) and result = "argument to sinkless library"
-  or
-  isSanitizer(n) and result = "sanitizer"
-  or
-  isPredicate(n) and result = "predicate"
-  or
-  isHash(n) and result = "hash"
-  or
-  isNumeric(n) and result = "numeric"
-  or
-  // Ignore candidate sinks within externs, generated, library, and test code
-  exists(string category | category = ["externs", "generated", "library", "test"] |
-    ClassifyFiles::classify(n.getFile(), category) and
-    result = "in " + category + " file"
+  exists(EndpointCharacteristics::StandardEndpointFilterCharacteristic characteristic |
+    characteristic.getEndpoints(n) and
+    result = characteristic
   )
 }
 
