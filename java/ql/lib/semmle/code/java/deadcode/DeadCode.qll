@@ -274,7 +274,7 @@ class DeadMethod extends Callable {
 
 class RootdefCallable extends Callable {
   RootdefCallable() {
-    this.fromSource() and
+    this.getFile().isJavaSourceFile() and
     not this.(Method).overridesOrInstantiates(_)
   }
 
