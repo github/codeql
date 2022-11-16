@@ -235,7 +235,8 @@ module Hapi {
         this.getMethodName() = "route" and
         handler =
           this.getArgument(0)
-              .(DataFlow::ArrayLiteralNode)
+              .getALocalSource()
+              .(DataFlow::ArrayCreationNode)
               .getAnElement()
               .(DataFlow::ObjectLiteralNode)
               .getAPropertySource("handler")
