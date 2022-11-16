@@ -167,6 +167,38 @@ private module Cached {
   }
 
   /**
+   * Holds if the underlying IR has a suitable operand to represent a value
+   * that would otherwise need to be represented by a dedicated `RawIndirectOperand` value.
+   *
+   * Such operands do not create new `RawIndirectOperand` values, but are
+   * instead associated with the operand returned by this predicate.
+   */
+  cached
+  Operand getIRRepresentationOfIndirectOperand(Operand operand, int indirectionIndex) {
+    exists(LoadInstruction load |
+      operand = load.getSourceAddressOperand() and
+      result = unique( | | load.getAUse()) and
+      isUseImpl(operand, _, indirectionIndex - 1)
+    )
+  }
+
+  /**
+   * Holds if the underlying IR has a suitable instruction to represent a value
+   * that would otherwise need to be represented by a dedicated `RawIndirectInstruction` value.
+   *
+   * Such instruction do not create new `RawIndirectOperand` values, but are
+   * instead associated with the instruction returned by this predicate.
+   */
+  cached
+  Instruction getIRRepresentationOfIndirectInstruction(Instruction instr, int indirectionIndex) {
+    exists(LoadInstruction load |
+      load.getSourceAddress() = instr and
+      isUseImpl(load.getSourceAddressOperand(), _, indirectionIndex - 1) and
+      result = instr
+    )
+  }
+
+  /**
    * Holds if `operand` is a use of an SSA variable rooted at `base`, and the
    * path from `base` to `operand` passes through `ind` load-like instructions.
    */

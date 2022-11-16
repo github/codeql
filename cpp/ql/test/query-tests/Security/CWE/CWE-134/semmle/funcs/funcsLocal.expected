@@ -63,23 +63,23 @@ edges
 | funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
-| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:10:47:11 | * ... |
-| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:10:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... |
-| funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:10:47:11 | * ... |
+| funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
-| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:10:53:11 | * ... |
-| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:10:53:11 | * ... |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
+| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:13:52:15 | gets output argument | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:13:52:15 | gets output argument | funcsLocal.c:53:9:53:11 | * ... |
-| funcsLocal.c:52:13:52:15 | gets output argument | funcsLocal.c:53:10:53:11 | * ... |
+| funcsLocal.c:52:13:52:15 | gets output argument | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:13:52:15 | i81 | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:13:52:15 | i81 | funcsLocal.c:53:9:53:11 | * ... |
-| funcsLocal.c:52:13:52:15 | i81 | funcsLocal.c:53:10:53:11 | * ... |
+| funcsLocal.c:52:13:52:15 | i81 | funcsLocal.c:53:9:53:11 | * ... |
 subpaths
 nodes
 | funcsLocal.c:16:8:16:9 | fread output argument | semmle.label | fread output argument |
@@ -119,14 +119,14 @@ nodes
 | funcsLocal.c:46:7:46:9 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
-| funcsLocal.c:47:10:47:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | semmle.label | call to gets |
 | funcsLocal.c:52:8:52:11 | call to gets | semmle.label | call to gets |
 | funcsLocal.c:52:13:52:15 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:52:13:52:15 | i81 | semmle.label | i81 |
 | funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
-| funcsLocal.c:53:10:53:11 | * ... | semmle.label | * ... |
+| funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
 | funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
 | funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |

@@ -346,7 +346,7 @@ namespace FlowThroughGlobals {
   void taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast ir ir=333:17 ir=347:17
+    sink(globalVar); // $ ast ir=333:17 ir=347:17
   }
 }
 
