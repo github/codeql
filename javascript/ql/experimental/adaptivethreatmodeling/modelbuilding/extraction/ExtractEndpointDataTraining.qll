@@ -10,10 +10,10 @@ import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import NoFeaturizationRestrictionsConfig
 private import Exclusions as Exclusions
 import Queries
-import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
-import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
-import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
-import experimental.adaptivethreatmodeling.XssATM as XssAtm
+private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
+private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
+private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+private import experimental.adaptivethreatmodeling.XssATM as XssAtm
 
 /**
  * Gets the set of featureName-featureValue pairs for each endpoint in the training set.

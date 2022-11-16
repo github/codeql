@@ -12,14 +12,6 @@ private import semmle.javascript.heuristics.SyntacticHeuristics
 private import CoreKnowledge as CoreKnowledge
 import EndpointCharacteristics as EndpointCharacteristics
 
-/** Provides a set of reasons why a given data flow node should be excluded as a sink candidate. */
-string getAReasonSinkExcluded(DataFlow::Node n) {
-  exists(EndpointCharacteristics::StandardEndpointFilterCharacteristic characteristic |
-    characteristic.getEndpoints(n) and
-    result = characteristic
-  )
-}
-
 /**
  * Holds if the node `n` is an argument to a function that has a manual model.
  */
@@ -77,7 +69,7 @@ private DataFlow::SourceNode getACallback(DataFlow::ParameterNode p, DataFlow::T
  * Get calls for which we do not have the callee (i.e. the definition of the called function). This
  * acts as a heuristic for identifying calls to external library functions.
  */
-private DataFlow::CallNode getACallWithoutCallee() {
+DataFlow::CallNode getACallWithoutCallee() {
   forall(Function callee | callee = result.getACallee() | callee.getTopLevel().isExterns()) and
   not exists(DataFlow::ParameterNode param, DataFlow::FunctionNode callback |
     param.flowsTo(result.getCalleeNode()) and

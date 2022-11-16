@@ -17,10 +17,10 @@ import extraction.NoFeaturizationRestrictionsConfig
 
 query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
   (
-    not exists(NosqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
-    not exists(SqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
-    not exists(TaintedPathAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
-    not exists(XssAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
+    not exists(any(NosqlInjectionAtm::NosqlInjectionAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
+    not exists(any(SqlInjectionAtm::SqlInjectionAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
+    not exists(any(TaintedPathAtm::TaintedPathAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
+    not exists(any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
     StandardEndpointFilters::isArgumentToModeledFunction(endpoint)
   ) and
   EndpointFeatures::tokenFeatures(endpoint, featureName, featureValue)

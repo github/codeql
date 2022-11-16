@@ -6,7 +6,7 @@
 
 private import javascript as JS
 import EndpointTypes
-import EndpointCharacteristics
+import EndpointCharacteristics as EndpointCharacteristics
 
 /**
  * EXPERIMENTAL. This API may change in the future.
@@ -48,7 +48,7 @@ abstract class AtmConfig extends string {
   final predicate isKnownSink(JS::DataFlow::Node sink) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
-    exists(EndpointCharacteristic characteristic |
+    exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
       characteristic.getEndpoints(sink) and
       characteristic
           .getImplications(this.getASinkEndpointType(), true, characteristic.maximalConfidence())
@@ -69,7 +69,26 @@ abstract class AtmConfig extends string {
    * Holds if the candidate sink `candidateSink` predicted by the machine learning model should be
    * an effective sink, i.e. one considered as a possible sink of flow in the boosted query.
    */
-  predicate isEffectiveSink(JS::DataFlow::Node candidateSink) { none() }
+  final predicate isEffectiveSink(JS::DataFlow::Node candidateSink) {
+    not exists(getAReasonSinkExcluded(candidateSink))
+  }
+
+  final EndpointCharacteristics::EndpointCharacteristic getAReasonSinkExcluded(
+    JS::DataFlow::Node candidateSink
+  ) {
+    // An endpoint is an effective sink if it has neither standard endpoint filter characteristics nor endpoint filter
+    // characteristics that are specific to this sink type.
+    exists(EndpointCharacteristics::StandardEndpointFilterCharacteristic standardFilter |
+      standardFilter.getEndpoints(candidateSink) and
+      result = standardFilter
+    )
+    or
+    exists(EndpointCharacteristics::EndpointFilterCharacteristic specificFilter |
+      specificFilter.getEndpoints(candidateSink) and
+      specificFilter.getImplications(getASinkEndpointType(), false, _) and
+      result = specificFilter
+    )
+  }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
