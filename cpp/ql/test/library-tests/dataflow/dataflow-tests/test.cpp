@@ -89,7 +89,7 @@ void trackUninitialized() {
 void local_references(int &source1, int clean1) {
   sink(source1); // $ ast,ir
   source1 = clean1;
-  sink(source1); // $ SPURIOUS: ir
+  sink(source1); // clean
 
   // The next two test cases show that the analysis does not understand the "&"
   // on the type at all. It does not understand that the initialization creates
