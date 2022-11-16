@@ -29,16 +29,31 @@ int getLineAboveNodeThatCouldHaveDoc(File file) {
 
 pragma[noinline]
 BlockComment getACommentThatCouldBeQLDoc(File file) {
-  file = result.getLocation().getFile() and
-  result.getLocation().getFile().getExtension() = "qll" and
-  not result.getContents().matches("/**%") and
-  (
-    // above something that can be commented.
-    result.getLocation().getEndLine() = getLineAboveNodeThatCouldHaveDoc(file)
-    or
-    // toplevel in file.
-    result.getLocation().getStartLine() = 1 and
-    result.getLocation().getStartColumn() = 1
+  exists(Location loc | loc = result.getLocation() |
+    file = loc.getFile() and
+    loc.getFile().getExtension() = "qll" and
+    not result.getContents().matches("/**%") and
+    not [loc.getStartLine(), loc.getEndLine()] = getLinesWithNonComment(file) and
+    (
+      // above something that can be commented.
+      loc.getEndLine() = getLineAboveNodeThatCouldHaveDoc(file)
+      or
+      // toplevel in file.
+      loc.getStartLine() = 1 and
+      loc.getStartColumn() = 1
+    )
+  )
+}
+
+pragma[noinline]
+int getLinesWithNonComment(File f) {
+  exists(AstNode n, Location loc |
+    not n instanceof Comment and
+    not n instanceof TopLevel and
+    loc = n.getLocation() and
+    loc.getFile() = f
+  |
+    result = [loc.getEndLine(), loc.getStartLine()]
   )
 }
 
