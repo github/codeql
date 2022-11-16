@@ -446,7 +446,7 @@ void test_string_iterator_methods()
 		sink(a.insert(a.begin(), 10, 'x'));
 		sink(a);
 
-		sink(b.insert(b.begin(), 10, ns_char::source())); // $ ast MISSING: ir
+		sink(b.insert(b.begin(), 10, ns_char::source())); // $ ast,ir
 		sink(b); // $ ast,ir
 	}
 
@@ -459,10 +459,10 @@ void test_string_iterator_methods()
 		sink(c.insert(c.end(), s1.begin(), s1.end()));
 		sink(c);
 
-		sink(d.insert(d.end(), s2.begin(), s2.end())); // $ ast MISSING: ir
+		sink(d.insert(d.end(), s2.begin(), s2.end())); // $ ast,ir
 		sink(d); // $ ast,ir
 
-		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // $ ast MISSING: ir
+		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // $ ast,ir
 		sink(s2); // $ ast,ir
 	}
 

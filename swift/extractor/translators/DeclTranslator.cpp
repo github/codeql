@@ -3,6 +3,7 @@
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
 #include "swift/extractor/infra/SwiftDiagnosticKind.h"
+#include "swift/AST/PropertyWrappers.h"
 
 namespace codeql {
 namespace {
@@ -85,6 +86,11 @@ std::optional<codeql::ParamDecl> DeclTranslator::translateParamDecl(const swift:
   }
   fillVarDecl(decl, *entry);
   entry->is_inout = decl.isInOut();
+  if (auto wrapped = decl.getPropertyWrapperWrappedValueVar()) {
+    entry->property_wrapper_local_wrapped_var = dispatcher.fetchLabel(wrapped);
+    entry->property_wrapper_local_wrapped_var_binding =
+        dispatcher.fetchLabel(wrapped->getParentPatternBinding());
+  }
   return entry;
 }
 
@@ -355,6 +361,16 @@ void DeclTranslator::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& en
         dispatcher.fetchOptionalLabel(decl.getPropertyWrapperBackingPropertyType());
   }
   fillAbstractStorageDecl(decl, entry);
+  if (auto backing = decl.getPropertyWrapperBackingProperty()) {
+    entry.property_wrapper_backing_var = dispatcher.fetchLabel(backing);
+    entry.property_wrapper_backing_var_binding =
+        dispatcher.fetchLabel(backing->getParentPatternBinding());
+  }
+  if (auto projection = decl.getPropertyWrapperProjectionVar()) {
+    entry.property_wrapper_projection_var = dispatcher.fetchLabel(projection);
+    entry.property_wrapper_projection_var_binding =
+        dispatcher.fetchLabel(projection->getParentPatternBinding());
+  }
 }
 
 void DeclTranslator::fillNominalTypeDecl(const swift::NominalTypeDecl& decl,

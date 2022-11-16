@@ -23,19 +23,6 @@ defaults:
     working-directory: javascript/ql/experimental/adaptivethreatmodeling
 
 jobs:
-  qlformat:
-    name: Check QL formatting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: ./.github/actions/fetch-codeql
-
-      - name: Check QL formatting
-        run: |
-          find . "(" -name "*.ql" -or -name "*.qll" ")" -print0 | \
-            xargs -0 codeql query format --check-only
-
   qlcompile:
     name: Check QL compilation
     runs-on: ubuntu-latest

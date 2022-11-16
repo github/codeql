@@ -46,7 +46,7 @@ jobs:
         with:
           channel: 'release'
       - name: check formatting
-        run: codeql query format */ql/{src,lib,test}/**/*.{qll,ql} --check-only
+        run: find */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 codeql query format --check-only
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.event_name == 'pull_request' }}
