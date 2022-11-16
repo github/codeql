@@ -1,4 +1,5 @@
 failures
+| hash_extensions.rb:126:10:126:19 | call to sole | Unexpected result: hasValueFlow=b |
 edges
 | active_support.rb:10:9:10:18 | call to source :  | active_support.rb:11:10:11:10 | x :  |
 | active_support.rb:11:10:11:10 | x :  | active_support.rb:11:10:11:19 | call to at |
@@ -410,6 +411,14 @@ edges
 | hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  |
 | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | hash_extensions.rb:115:10:115:39 | ...[...] |
 | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | hash_extensions.rb:115:10:115:39 | ...[...] |
+| hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:125:10:125:15 | single [element 0] :  |
+| hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:125:10:125:15 | single [element 0] :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:126:10:126:14 | multi [element 0] :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:126:10:126:14 | multi [element 0] :  |
+| hash_extensions.rb:125:10:125:15 | single [element 0] :  | hash_extensions.rb:125:10:125:20 | call to sole |
+| hash_extensions.rb:125:10:125:15 | single [element 0] :  | hash_extensions.rb:125:10:125:20 | call to sole |
+| hash_extensions.rb:126:10:126:14 | multi [element 0] :  | hash_extensions.rb:126:10:126:19 | call to sole |
+| hash_extensions.rb:126:10:126:14 | multi [element 0] :  | hash_extensions.rb:126:10:126:19 | call to sole |
 nodes
 | active_support.rb:10:9:10:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:11:10:11:10 | x :  | semmle.label | x :  |
@@ -904,6 +913,18 @@ nodes
 | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | semmle.label | ...[...] [element 1] :  |
 | hash_extensions.rb:115:10:115:39 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:115:10:115:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:122:15:122:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:122:15:122:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:125:10:125:15 | single [element 0] :  | semmle.label | single [element 0] :  |
+| hash_extensions.rb:125:10:125:15 | single [element 0] :  | semmle.label | single [element 0] :  |
+| hash_extensions.rb:125:10:125:20 | call to sole | semmle.label | call to sole |
+| hash_extensions.rb:125:10:125:20 | call to sole | semmle.label | call to sole |
+| hash_extensions.rb:126:10:126:14 | multi [element 0] :  | semmle.label | multi [element 0] :  |
+| hash_extensions.rb:126:10:126:14 | multi [element 0] :  | semmle.label | multi [element 0] :  |
+| hash_extensions.rb:126:10:126:19 | call to sole | semmle.label | call to sole |
+| hash_extensions.rb:126:10:126:19 | call to sole | semmle.label | call to sole |
 subpaths
 #select
 | active_support.rb:182:10:182:13 | ...[...] | active_support.rb:180:10:180:17 | call to source :  | active_support.rb:182:10:182:13 | ...[...] | $@ | active_support.rb:180:10:180:17 | call to source :  | call to source :  |
@@ -964,3 +985,5 @@ subpaths
 | hash_extensions.rb:114:10:114:39 | ...[...] | hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:114:10:114:39 | ...[...] | $@ | hash_extensions.rb:110:84:110:99 | call to source :  | call to source :  |
 | hash_extensions.rb:115:10:115:39 | ...[...] | hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:115:10:115:39 | ...[...] | $@ | hash_extensions.rb:110:21:110:31 | call to source :  | call to source :  |
 | hash_extensions.rb:115:10:115:39 | ...[...] | hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:115:10:115:39 | ...[...] | $@ | hash_extensions.rb:110:65:110:75 | call to source :  | call to source :  |
+| hash_extensions.rb:125:10:125:20 | call to sole | hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:125:10:125:20 | call to sole | $@ | hash_extensions.rb:122:15:122:25 | call to source :  | call to source :  |
+| hash_extensions.rb:126:10:126:19 | call to sole | hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:126:10:126:19 | call to sole | $@ | hash_extensions.rb:123:14:123:24 | call to source :  | call to source :  |

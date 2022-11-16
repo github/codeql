@@ -116,3 +116,14 @@ def m_pluck(i)
 end
 
 m_pluck(0)
+
+def m_sole
+    empty = []
+    single = [source("a")]
+    multi = [source("b"), source("c")]
+    sink(empty.sole)
+    sink(single.sole) # $ hasValueFlow=a
+    sink(multi.sole) # TODO: model that 'sole' does not return if the receiver has multiple elements
+end
+
+m_sole()

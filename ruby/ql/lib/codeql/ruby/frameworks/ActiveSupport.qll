@@ -421,6 +421,16 @@ module ActiveSupport {
           preservesValue = true
         }
       }
+
+      private class SoleSummary extends SimpleSummarizedCallable {
+        SoleSummary() { this = "sole" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[0]" and
+          output = "ReturnValue" and
+          preservesValue = true
+        }
+      }
     }
   }
 
