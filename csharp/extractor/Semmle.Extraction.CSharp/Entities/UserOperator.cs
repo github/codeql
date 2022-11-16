@@ -162,10 +162,14 @@ namespace Semmle.Extraction.CSharp.Entities
                 case "op_False":
                     operatorName = "false";
                     break;
-                case var @checked when Regex.IsMatch(@checked, "^op_Checked.*"):
-                    operatorName = @checked;
-                    break;
                 default:
+                    var match = Regex.Match(methodName, "^op_Checked(.*)$");
+                    if (match.Success)
+                    {
+                        OperatorSymbol("op_" + match.Groups[1], out var uncheckedName);
+                        operatorName = "checked " + uncheckedName;
+                        break;
+                    }
                     operatorName = methodName;
                     success = false;
                     break;
