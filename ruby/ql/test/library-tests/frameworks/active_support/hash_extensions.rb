@@ -75,3 +75,21 @@ def m_index_by
 end
 
 m_index_by()
+
+def m_index_with
+    values = [source("a"), source("b"), source("c")]
+    h = values.index_with do |key|
+        sink key # $ hasValueFlow=a $ hasValueFlow=b $ hasValueFlow=c
+        source("x")
+    end
+
+    sink h[:foo] # $ hasValueFlow=x
+    sink h[:bar] # $ hasValueFlow=x
+
+    j = values.index_with(source("y"))
+
+    sink j[:foo] # $ hasValueFlow=y
+    sink j[:bar] # $ hasValueFlow=y
+end
+
+m_index_with()
