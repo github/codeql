@@ -96,7 +96,7 @@ class ResolutionTest extends InlineExpectationsTest {
 class ResolutionTest3 extends InlineExpectationsTest {
   ResolutionTest3() { this = "ResolutionTest3" }
 
-  override string getARelevantTag() { result = "prints3" }
+  override string getARelevantTag() { result = "prints3" and major_version() = 3 }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     (
