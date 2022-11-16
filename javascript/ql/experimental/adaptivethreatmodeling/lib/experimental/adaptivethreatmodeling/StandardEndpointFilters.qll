@@ -39,42 +39,6 @@ predicate isSomeModeledArgument(DataFlow::Node n) {
 }
 
 /**
- * Holds if `n` appears to be a numeric value.
- */
-predicate isNumeric(DataFlow::Node n) { isReadFrom(n, ".*index.*") }
-
-/**
- * Holds if `n` is an argument to a library without sinks.
- */
-predicate isArgumentToSinklessLibrary(DataFlow::Node n) {
-  exists(DataFlow::InvokeNode invk, DataFlow::SourceNode commonSafeLibrary, string libraryName |
-    libraryName = ["slugify", "striptags", "marked"]
-  |
-    commonSafeLibrary = DataFlow::moduleImport(libraryName) and
-    invk = [commonSafeLibrary, commonSafeLibrary.getAPropertyRead()].getAnInvocation() and
-    n = invk.getAnArgument()
-  )
-}
-
-predicate isSanitizer(DataFlow::Node n) {
-  exists(DataFlow::CallNode call | n = call.getAnArgument() |
-    call.getCalleeName().regexpMatch("(?i).*(escape|valid(ate)?|sanitize|purify).*")
-  )
-}
-
-predicate isPredicate(DataFlow::Node n) {
-  exists(DataFlow::CallNode call | n = call.getAnArgument() |
-    call.getCalleeName().regexpMatch("(equals|(|is|has|can)(_|[A-Z])).*")
-  )
-}
-
-predicate isHash(DataFlow::Node n) {
-  exists(DataFlow::CallNode call | n = call.getAnArgument() |
-    call.getCalleeName().regexpMatch("(?i)^(sha\\d*|md5|hash)$")
-  )
-}
-
-/**
  * Holds if the data flow node is a (possibly indirect) argument of a likely external library call.
  *
  * This includes direct arguments of likely external library calls as well as nested object
