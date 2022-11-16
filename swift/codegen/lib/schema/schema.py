@@ -250,7 +250,7 @@ def _toposort_classes_by_group(classes: typing.Dict[str, Class]) -> typing.Dict[
 
 def _fill_ipa_information(classes: typing.Dict[str, Class]):
     """ Take a dictionary where the `ipa` field is filled for all explicitly synthesized classes
-    and updated it so that all non-final classes that have only synthesized final descendants
+    and update it so that all non-final classes that have only synthesized final descendants
     get `True` as` value for the `ipa` field
     """
     if not classes:
