@@ -1,4 +1,4 @@
-/*
+/**
  * Support for tracking tainted data through the program. This is an alias for
  * `semmle.code.cpp.ir.dataflow.DefaultTaintTracking` provided for backwards
  * compatibility.
