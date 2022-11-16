@@ -78,6 +78,8 @@ abstract class AtmConfig extends string {
   ) {
     // An endpoint is an effective sink if it has neither standard endpoint filter characteristics nor endpoint filter
     // characteristics that are specific to this sink type.
+    // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that implies
+    // they're not sinks for this sink type (or not sinks for any sink type), not just the EndpointFilterCharacteristics.
     exists(EndpointCharacteristics::StandardEndpointFilterCharacteristic standardFilter |
       standardFilter.getEndpoints(candidateSink) and
       result = standardFilter
