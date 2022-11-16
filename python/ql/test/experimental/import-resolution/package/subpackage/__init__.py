@@ -5,7 +5,7 @@ subpackage_attr = "subpackage_attr"
 
 # Importing an attribute from the parent package.
 from .. import attr_used_in_subpackage as imported_attr
-check("imported_attr", imported_attr,  "attr_used_in_subpackage", globals()) #$ prints=attr_used_in_subpackage
+check("imported_attr", imported_attr,  "attr_used_in_subpackage", globals()) #$ prints=attr_used_in_subpackage SPURIOUS: prints="<module package.__init__>"
 
 # Importing an irrelevant attribute from a sibling module binds the name to the module.
 from .submodule import irrelevant_attr
