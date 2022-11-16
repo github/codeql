@@ -10,6 +10,7 @@ private import semmle.javascript.security.dataflow.TaintedPathCustomizations
 private import CoreKnowledge as CoreKnowledge
 private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
+private import StandardEndpointFilters as StandardEndpointFilters
 
 /**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
@@ -553,5 +554,313 @@ private class InIrrelevantFileCharacteristic extends StandardEndpointFilterChara
     // Ignore candidate sinks within externs, generated, library, and test code
     ClassifyFiles::classify(n.getFile(), category) and
     this = "in " + category + " file"
+  }
+}
+
+/** An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be a NoSQL injection sink. */
+abstract private class NosqlInjectionSinkEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
+  bindingset[this]
+  NosqlInjectionSinkEndpointFilterCharacteristic() { any() }
+
+  override predicate getImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof NosqlInjectionSinkType and
+    isPositiveIndicator = false and
+    confidence = mediumConfidence()
+  }
+}
+
+private class DatabaseAccessCallHeuristicCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  DatabaseAccessCallHeuristicCharacteristic() { this = "matches database access call heuristic" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      // additional databases accesses that aren't modeled yet
+      call.(DataFlow::MethodCallNode).getMethodName() =
+        ["create", "createCollection", "createIndexes"]
+    )
+  }
+}
+
+private class ModeledSinkCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  ModeledSinkCharacteristic() { this = "modeled sink" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      // Remove modeled sinks
+      CoreKnowledge::isArgumentToKnownLibrarySinkFunction(n)
+    )
+  }
+}
+
+private class PredecessorInModeledFlowStepCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  PredecessorInModeledFlowStepCharacteristic() { this = "predecessor in a modeled flow step" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      // Remove common kinds of unlikely sinks
+      CoreKnowledge::isKnownStepSrc(n)
+    )
+  }
+}
+
+private class ModeledDatabaseAccessCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  ModeledDatabaseAccessCharacteristic() { this = "modeled database access" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      // Remove modeled database calls. Arguments to modeled calls are very likely to be modeled
+      // as sinks if they are true positives. Therefore arguments that are not modeled as sinks
+      // are unlikely to be true positives.
+      call instanceof DatabaseAccess
+    )
+  }
+}
+
+private class ReceiverIsHTTPRequestExpressionCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  ReceiverIsHTTPRequestExpressionCharacteristic() { this = "receiver is a HTTP request expression" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      // Remove calls to APIs that aren't relevant to NoSQL injection
+      call.getReceiver() instanceof Http::RequestNode
+    )
+  }
+}
+
+private class ReceiverIsHTTPResponseExpressionCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  ReceiverIsHTTPResponseExpressionCharacteristic() {
+    this = "receiver is a HTTP response expression"
+  }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      // Remove calls to APIs that aren't relevant to NoSQL injection
+      call.getReceiver() instanceof Http::ResponseNode
+    )
+  }
+}
+
+private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkNosqlCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkNosqlCharacteristic() {
+    this = "not a direct argument to a likely external library call or a heuristic sink (nosql)"
+  }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    // Require NoSQL injection sink candidates to be (a) direct arguments to external library calls
+    // or (b) heuristic sinks for NoSQL injection.
+    //
+    // ## Direct arguments to external library calls
+    //
+    // The `StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall` endpoint filter
+    // allows sink candidates which are within object literals or array literals, for example
+    // `req.sendFile(_, { path: ENDPOINT })`.
+    //
+    // However, the NoSQL injection query deals differently with these types of sinks compared to
+    // other security queries. Other security queries such as SQL injection tend to treat
+    // `ENDPOINT` as the ground truth sink, but the NoSQL injection query instead treats
+    // `{ path: ENDPOINT }` as the ground truth sink and defines an additional flow step to ensure
+    // data flows from `ENDPOINT` to the ground truth sink `{ path: ENDPOINT }`.
+    //
+    // Therefore for the NoSQL injection boosted query, we must ignore sink candidates within object
+    // literals or array literals, to avoid having multiple alerts for the same security
+    // vulnerability (one FP where the sink is `ENDPOINT` and one TP where the sink is
+    // `{ path: ENDPOINT }`). We accomplish this by directly testing that the sink candidate is an
+    // argument of a likely external library call.
+    //
+    // ## Heuristic sinks
+    //
+    // We also allow heuristic sinks in addition to direct arguments to external library calls.
+    // These are copied from the `HeuristicNosqlInjectionSink` class defined within
+    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+    // We can't reuse the class because importing that file would cause us to treat these
+    // heuristic sinks as known sinks.
+    not n = StandardEndpointFilters::getALikelyExternalLibraryCall().getAnArgument() and
+    not (
+      isAssignedToOrConcatenatedWith(n, "(?i)(nosql|query)") or
+      isArgTo(n, "(?i)(query)")
+    )
+  }
+}
+
+/** An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be a SQL injection sink. */
+abstract private class SqlInjectionSinkEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
+  bindingset[this]
+  SqlInjectionSinkEndpointFilterCharacteristic() { any() }
+
+  override predicate getImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof SqlInjectionSinkType and
+    isPositiveIndicator = false and
+    confidence = mediumConfidence()
+  }
+}
+
+private class PreparedSQLStatementCharacteristic extends SqlInjectionSinkEndpointFilterCharacteristic {
+  PreparedSQLStatementCharacteristic() { this = "prepared SQL statement" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      // prepared statements for SQL
+      any(DataFlow::CallNode cn | cn.getCalleeName() = "prepare")
+          .getAMethodCall("run")
+          .getAnArgument() = n
+    )
+  }
+}
+
+private class ArrayCreationCharacteristic extends SqlInjectionSinkEndpointFilterCharacteristic {
+  ArrayCreationCharacteristic() { this = "array creation" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      n instanceof DataFlow::ArrayCreationNode
+    )
+  }
+}
+
+private class HTMLOrRenderingCharacteristic extends SqlInjectionSinkEndpointFilterCharacteristic {
+  HTMLOrRenderingCharacteristic() { this = "HTML / rendering" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      // UI is unrelated to SQL
+      call.getCalleeName().regexpMatch("(?i).*(render|html).*")
+    )
+  }
+}
+
+private class NotAnArgumentToLikelyExternalLibraryCallOrHeuristicSinkCharacteristic extends SqlInjectionSinkEndpointFilterCharacteristic {
+  NotAnArgumentToLikelyExternalLibraryCallOrHeuristicSinkCharacteristic() {
+    this = "not an argument to a likely external library call or a heuristic sink"
+  }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    // Require SQL injection sink candidates to be (a) arguments to external library calls
+    // (possibly indirectly), or (b) heuristic sinks.
+    //
+    // Heuristic sinks are copied from the `HeuristicSqlInjectionSink` class defined within
+    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+    // We can't reuse the class because importing that file would cause us to treat these
+    // heuristic sinks as known sinks.
+    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not (
+      isAssignedToOrConcatenatedWith(n, "(?i)(sql|query)") or
+      isArgTo(n, "(?i)(query)") or
+      isConcatenatedWithString(n,
+        "(?s).*(ALTER|COUNT|CREATE|DATABASE|DELETE|DISTINCT|DROP|FROM|GROUP|INSERT|INTO|LIMIT|ORDER|SELECT|TABLE|UPDATE|WHERE).*")
+    )
+  }
+}
+
+/** An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be a tainted path injection sink. */
+abstract private class TaintedPathSinkEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
+  bindingset[this]
+  TaintedPathSinkEndpointFilterCharacteristic() { any() }
+
+  override predicate getImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof TaintedPathSinkType and
+    isPositiveIndicator = false and
+    confidence = mediumConfidence()
+  }
+}
+
+private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkTaintedPathCharacteristic extends TaintedPathSinkEndpointFilterCharacteristic {
+  NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkTaintedPathCharacteristic() {
+    this =
+      "not a direct argument to a likely external library call or a heuristic sink (tainted path)"
+  }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    // Require path injection sink candidates to be (a) arguments to external library calls
+    // (possibly indirectly), or (b) heuristic sinks.
+    //
+    // Heuristic sinks are mostly copied from the `HeuristicTaintedPathSink` class defined within
+    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+    // We can't reuse the class because importing that file would cause us to treat these
+    // heuristic sinks as known sinks.
+    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not (
+      isAssignedToOrConcatenatedWith(n, "(?i)(file|folder|dir|absolute)")
+      or
+      isArgTo(n, "(?i)(get|read)file")
+      or
+      exists(string pathPattern |
+        // paths with at least two parts, and either a trailing or leading slash
+        pathPattern = "(?i)([a-z0-9_.-]+/){2,}" or
+        pathPattern = "(?i)(/[a-z0-9_.-]+){2,}"
+      |
+        isConcatenatedWithString(n, pathPattern)
+      )
+      or
+      isConcatenatedWithStrings(".*/", n, "/.*")
+      or
+      // In addition to the names from `HeuristicTaintedPathSink` in the
+      // `isAssignedToOrConcatenatedWith` predicate call above, we also allow the noisier "path"
+      // name.
+      isAssignedToOrConcatenatedWith(n, "(?i)path")
+    )
+  }
+}
+
+/** An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be an XSS sink. */
+abstract private class XssSinkEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
+  bindingset[this]
+  XssSinkEndpointFilterCharacteristic() { any() }
+
+  override predicate getImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof XssSinkType and
+    isPositiveIndicator = false and
+    confidence = mediumConfidence()
+  }
+}
+
+private class SetStateCallsInReactApplicationsCharacteristic extends XssSinkEndpointFilterCharacteristic {
+  SetStateCallsInReactApplicationsCharacteristic() {
+    this = "setState calls ought to be safe in react applications"
+  }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() | call.getCalleeName() = "setState")
+  }
+}
+
+private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkXssCharacteristic extends XssSinkEndpointFilterCharacteristic {
+  NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkXssCharacteristic() {
+    this = "not a direct argument to a likely external library call or a heuristic sink (XSS)"
+  }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    // Require XSS sink candidates to be (a) arguments to external library calls (possibly
+    // indirectly), or (b) heuristic sinks.
+    //
+    // Heuristic sinks are copied from the `HeuristicDomBasedXssSink` class defined within
+    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+    // We can't reuse the class because importing that file would cause us to treat these
+    // heuristic sinks as known sinks.
+    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not (
+      isAssignedToOrConcatenatedWith(n, "(?i)(html|innerhtml)")
+      or
+      isArgTo(n, "(?i)(html|render)")
+      or
+      n instanceof StringOps::HtmlConcatenationLeaf
+      or
+      isConcatenatedWithStrings("(?is).*<[a-z ]+.*", n, "(?s).*>.*")
+      or
+      // In addition to the heuristic sinks from `HeuristicDomBasedXssSink`, explicitly allow
+      // property writes like `elem.innerHTML = <TAINT>` that may not be picked up as HTML
+      // concatenation leaves.
+      exists(DataFlow::PropWrite pw |
+        pw.getPropertyName().regexpMatch("(?i).*html*") and
+        pw.getRhs() = n
+      )
+    )
   }
 }
