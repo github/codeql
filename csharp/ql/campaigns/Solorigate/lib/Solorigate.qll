@@ -1,4 +1,4 @@
-/*
+/**
  * Provides reusable predicates related to Solorigate
  */
 
