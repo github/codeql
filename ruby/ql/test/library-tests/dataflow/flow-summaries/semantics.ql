@@ -1,6 +1,6 @@
 /**
  * @kind path-problem
- * This file tests the expected behaviour of flow summaries.
+ * This file tests that flow summaries behave as described in `ql/docs/flow-summaries.md`.
  */
 
 import codeql.ruby.AST

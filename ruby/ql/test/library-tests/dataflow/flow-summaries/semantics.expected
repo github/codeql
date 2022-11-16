@@ -1,0 +1,319 @@
+failures
+edges
+| semantics.rb:2:9:2:18 | call to source :  | semantics.rb:3:9:3:9 | a :  |
+| semantics.rb:2:9:2:18 | call to source :  | semantics.rb:3:9:3:9 | a :  |
+| semantics.rb:3:9:3:9 | a :  | semantics.rb:3:9:3:14 | call to s1 :  |
+| semantics.rb:3:9:3:9 | a :  | semantics.rb:3:9:3:14 | call to s1 :  |
+| semantics.rb:3:9:3:14 | call to s1 :  | semantics.rb:4:10:4:10 | x |
+| semantics.rb:3:9:3:14 | call to s1 :  | semantics.rb:4:10:4:10 | x |
+| semantics.rb:8:9:8:18 | call to source :  | semantics.rb:9:10:9:10 | a :  |
+| semantics.rb:8:9:8:18 | call to source :  | semantics.rb:9:10:9:10 | a :  |
+| semantics.rb:9:5:9:5 | [post] x :  | semantics.rb:10:10:10:10 | x |
+| semantics.rb:9:5:9:5 | [post] x :  | semantics.rb:10:10:10:10 | x |
+| semantics.rb:9:10:9:10 | a :  | semantics.rb:9:5:9:5 | [post] x :  |
+| semantics.rb:9:10:9:10 | a :  | semantics.rb:9:5:9:5 | [post] x :  |
+| semantics.rb:14:9:14:18 | call to source :  | semantics.rb:15:8:15:8 | a :  |
+| semantics.rb:14:9:14:18 | call to source :  | semantics.rb:15:8:15:8 | a :  |
+| semantics.rb:15:8:15:8 | a :  | semantics.rb:15:11:15:11 | [post] x :  |
+| semantics.rb:15:8:15:8 | a :  | semantics.rb:15:11:15:11 | [post] x :  |
+| semantics.rb:15:11:15:11 | [post] x :  | semantics.rb:16:10:16:10 | x |
+| semantics.rb:15:11:15:11 | [post] x :  | semantics.rb:16:10:16:10 | x |
+| semantics.rb:22:18:22:32 | call to source :  | semantics.rb:22:10:22:33 | call to s4 |
+| semantics.rb:22:18:22:32 | call to source :  | semantics.rb:22:10:22:33 | call to s4 |
+| semantics.rb:23:23:23:32 | call to source :  | semantics.rb:23:10:23:33 | call to s4 |
+| semantics.rb:23:23:23:32 | call to source :  | semantics.rb:23:10:23:33 | call to s4 |
+| semantics.rb:28:9:28:18 | call to source :  | semantics.rb:29:8:29:8 | a :  |
+| semantics.rb:28:9:28:18 | call to source :  | semantics.rb:29:8:29:8 | a :  |
+| semantics.rb:29:8:29:8 | a :  | semantics.rb:29:14:29:14 | [post] y :  |
+| semantics.rb:29:8:29:8 | a :  | semantics.rb:29:14:29:14 | [post] y :  |
+| semantics.rb:29:8:29:8 | a :  | semantics.rb:29:17:29:17 | [post] z :  |
+| semantics.rb:29:8:29:8 | a :  | semantics.rb:29:17:29:17 | [post] z :  |
+| semantics.rb:29:14:29:14 | [post] y :  | semantics.rb:31:10:31:10 | y |
+| semantics.rb:29:14:29:14 | [post] y :  | semantics.rb:31:10:31:10 | y |
+| semantics.rb:29:17:29:17 | [post] z :  | semantics.rb:32:10:32:10 | z |
+| semantics.rb:29:17:29:17 | [post] z :  | semantics.rb:32:10:32:10 | z |
+| semantics.rb:40:9:40:18 | call to source :  | semantics.rb:41:8:41:8 | a :  |
+| semantics.rb:40:9:40:18 | call to source :  | semantics.rb:41:8:41:8 | a :  |
+| semantics.rb:41:8:41:8 | a :  | semantics.rb:41:16:41:16 | [post] x :  |
+| semantics.rb:41:8:41:8 | a :  | semantics.rb:41:16:41:16 | [post] x :  |
+| semantics.rb:41:16:41:16 | [post] x :  | semantics.rb:42:10:42:10 | x |
+| semantics.rb:41:16:41:16 | [post] x :  | semantics.rb:42:10:42:10 | x |
+| semantics.rb:46:15:46:24 | call to source :  | semantics.rb:46:10:46:26 | call to s8 |
+| semantics.rb:46:15:46:24 | call to source :  | semantics.rb:46:10:46:26 | call to s8 |
+| semantics.rb:48:9:48:18 | call to source :  | semantics.rb:47:10:49:7 | call to s8 |
+| semantics.rb:48:9:48:18 | call to source :  | semantics.rb:47:10:49:7 | call to s8 |
+| semantics.rb:53:8:53:17 | call to source :  | semantics.rb:53:23:53:23 | x :  |
+| semantics.rb:53:8:53:17 | call to source :  | semantics.rb:53:23:53:23 | x :  |
+| semantics.rb:53:23:53:23 | x :  | semantics.rb:53:31:53:31 | x |
+| semantics.rb:53:23:53:23 | x :  | semantics.rb:53:31:53:31 | x |
+| semantics.rb:54:8:54:17 | call to source :  | semantics.rb:54:24:54:24 | x :  |
+| semantics.rb:54:8:54:17 | call to source :  | semantics.rb:54:24:54:24 | x :  |
+| semantics.rb:54:24:54:24 | x :  | semantics.rb:55:14:55:14 | x |
+| semantics.rb:54:24:54:24 | x :  | semantics.rb:55:14:55:14 | x |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:61:14:61:14 | a :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:61:14:61:14 | a :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:62:17:62:17 | a :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:62:17:62:17 | a :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:63:19:63:19 | a :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:63:19:63:19 | a :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:64:27:64:27 | a :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:64:27:64:27 | a :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:66:14:66:15 | &... :  |
+| semantics.rb:60:9:60:18 | call to source :  | semantics.rb:66:14:66:15 | &... :  |
+| semantics.rb:61:14:61:14 | a :  | semantics.rb:61:10:61:15 | call to s10 |
+| semantics.rb:61:14:61:14 | a :  | semantics.rb:61:10:61:15 | call to s10 |
+| semantics.rb:62:17:62:17 | a :  | semantics.rb:62:10:62:18 | call to s10 |
+| semantics.rb:62:17:62:17 | a :  | semantics.rb:62:10:62:18 | call to s10 |
+| semantics.rb:63:19:63:19 | a :  | semantics.rb:63:10:63:20 | call to s10 |
+| semantics.rb:63:19:63:19 | a :  | semantics.rb:63:10:63:20 | call to s10 |
+| semantics.rb:64:27:64:27 | a :  | semantics.rb:64:10:64:28 | call to s10 |
+| semantics.rb:64:27:64:27 | a :  | semantics.rb:64:10:64:28 | call to s10 |
+| semantics.rb:66:14:66:15 | &... :  | semantics.rb:66:10:66:16 | call to s10 |
+| semantics.rb:66:14:66:15 | &... :  | semantics.rb:66:10:66:16 | call to s10 |
+| semantics.rb:80:9:80:18 | call to source :  | semantics.rb:81:5:81:5 | a :  |
+| semantics.rb:80:9:80:18 | call to source :  | semantics.rb:81:5:81:5 | a :  |
+| semantics.rb:81:5:81:5 | a :  | semantics.rb:81:11:81:11 | [post] x :  |
+| semantics.rb:81:5:81:5 | a :  | semantics.rb:81:11:81:11 | [post] x :  |
+| semantics.rb:81:5:81:5 | a :  | semantics.rb:81:14:81:14 | [post] y :  |
+| semantics.rb:81:5:81:5 | a :  | semantics.rb:81:14:81:14 | [post] y :  |
+| semantics.rb:81:5:81:5 | a :  | semantics.rb:81:22:81:22 | [post] z :  |
+| semantics.rb:81:5:81:5 | a :  | semantics.rb:81:22:81:22 | [post] z :  |
+| semantics.rb:81:11:81:11 | [post] x :  | semantics.rb:82:10:82:10 | x |
+| semantics.rb:81:11:81:11 | [post] x :  | semantics.rb:82:10:82:10 | x |
+| semantics.rb:81:14:81:14 | [post] y :  | semantics.rb:83:10:83:10 | y |
+| semantics.rb:81:14:81:14 | [post] y :  | semantics.rb:83:10:83:10 | y |
+| semantics.rb:81:22:81:22 | [post] z :  | semantics.rb:84:10:84:10 | z |
+| semantics.rb:81:22:81:22 | [post] z :  | semantics.rb:84:10:84:10 | z |
+| semantics.rb:89:9:89:18 | call to source :  | semantics.rb:91:19:91:19 | a :  |
+| semantics.rb:89:9:89:18 | call to source :  | semantics.rb:91:19:91:19 | a :  |
+| semantics.rb:89:9:89:18 | call to source :  | semantics.rb:92:27:92:27 | a :  |
+| semantics.rb:89:9:89:18 | call to source :  | semantics.rb:92:27:92:27 | a :  |
+| semantics.rb:91:19:91:19 | a :  | semantics.rb:91:10:91:20 | call to s13 |
+| semantics.rb:91:19:91:19 | a :  | semantics.rb:91:10:91:20 | call to s13 |
+| semantics.rb:92:27:92:27 | a :  | semantics.rb:92:10:92:28 | call to s13 |
+| semantics.rb:92:27:92:27 | a :  | semantics.rb:92:10:92:28 | call to s13 |
+| semantics.rb:97:9:97:18 | call to source :  | semantics.rb:98:5:98:5 | a :  |
+| semantics.rb:97:9:97:18 | call to source :  | semantics.rb:98:5:98:5 | a :  |
+| semantics.rb:97:9:97:18 | call to source :  | semantics.rb:99:5:99:5 | a :  |
+| semantics.rb:97:9:97:18 | call to source :  | semantics.rb:99:5:99:5 | a :  |
+| semantics.rb:98:5:98:5 | a :  | semantics.rb:98:19:98:19 | [post] x :  |
+| semantics.rb:98:5:98:5 | a :  | semantics.rb:98:19:98:19 | [post] x :  |
+| semantics.rb:98:19:98:19 | [post] x :  | semantics.rb:101:10:101:10 | x |
+| semantics.rb:98:19:98:19 | [post] x :  | semantics.rb:101:10:101:10 | x |
+| semantics.rb:99:5:99:5 | a :  | semantics.rb:99:16:99:16 | [post] y :  |
+| semantics.rb:99:5:99:5 | a :  | semantics.rb:99:16:99:16 | [post] y :  |
+| semantics.rb:99:5:99:5 | a :  | semantics.rb:99:24:99:24 | [post] z :  |
+| semantics.rb:99:5:99:5 | a :  | semantics.rb:99:24:99:24 | [post] z :  |
+| semantics.rb:99:16:99:16 | [post] y :  | semantics.rb:102:10:102:10 | y |
+| semantics.rb:99:16:99:16 | [post] y :  | semantics.rb:102:10:102:10 | y |
+| semantics.rb:99:24:99:24 | [post] z :  | semantics.rb:103:10:103:10 | z |
+| semantics.rb:99:24:99:24 | [post] z :  | semantics.rb:103:10:103:10 | z |
+| semantics.rb:107:9:107:18 | call to source :  | semantics.rb:109:14:109:16 | ** ... :  |
+| semantics.rb:107:9:107:18 | call to source :  | semantics.rb:110:28:110:30 | ** ... :  |
+| semantics.rb:109:14:109:16 | ** ... :  | semantics.rb:109:10:109:17 | call to s15 |
+| semantics.rb:110:28:110:30 | ** ... :  | semantics.rb:110:10:110:31 | call to s15 |
+| semantics.rb:114:9:114:18 | call to source :  | semantics.rb:116:14:116:14 | a :  |
+| semantics.rb:114:9:114:18 | call to source :  | semantics.rb:116:14:116:14 | a :  |
+| semantics.rb:114:9:114:18 | call to source :  | semantics.rb:119:17:119:17 | a :  |
+| semantics.rb:114:9:114:18 | call to source :  | semantics.rb:119:17:119:17 | a :  |
+| semantics.rb:115:9:115:18 | call to source :  | semantics.rb:121:17:121:17 | b :  |
+| semantics.rb:115:9:115:18 | call to source :  | semantics.rb:121:17:121:17 | b :  |
+| semantics.rb:116:14:116:14 | a :  | semantics.rb:117:16:117:16 | h [element :a] :  |
+| semantics.rb:116:14:116:14 | a :  | semantics.rb:117:16:117:16 | h [element :a] :  |
+| semantics.rb:116:14:116:14 | a :  | semantics.rb:121:22:121:22 | h [element :a] :  |
+| semantics.rb:116:14:116:14 | a :  | semantics.rb:121:22:121:22 | h [element :a] :  |
+| semantics.rb:117:14:117:16 | ** ... [element :a] :  | semantics.rb:117:10:117:17 | call to s16 |
+| semantics.rb:117:14:117:16 | ** ... [element :a] :  | semantics.rb:117:10:117:17 | call to s16 |
+| semantics.rb:117:16:117:16 | h [element :a] :  | semantics.rb:117:14:117:16 | ** ... [element :a] :  |
+| semantics.rb:117:16:117:16 | h [element :a] :  | semantics.rb:117:14:117:16 | ** ... [element :a] :  |
+| semantics.rb:119:17:119:17 | a :  | semantics.rb:119:10:119:18 | call to s16 |
+| semantics.rb:119:17:119:17 | a :  | semantics.rb:119:10:119:18 | call to s16 |
+| semantics.rb:121:17:121:17 | b :  | semantics.rb:121:10:121:23 | call to s16 |
+| semantics.rb:121:17:121:17 | b :  | semantics.rb:121:10:121:23 | call to s16 |
+| semantics.rb:121:20:121:22 | ** ... [element :a] :  | semantics.rb:121:10:121:23 | call to s16 |
+| semantics.rb:121:20:121:22 | ** ... [element :a] :  | semantics.rb:121:10:121:23 | call to s16 |
+| semantics.rb:121:22:121:22 | h [element :a] :  | semantics.rb:121:20:121:22 | ** ... [element :a] :  |
+| semantics.rb:121:22:121:22 | h [element :a] :  | semantics.rb:121:20:121:22 | ** ... [element :a] :  |
+| semantics.rb:125:9:125:18 | call to source :  | semantics.rb:126:9:126:9 | a :  |
+| semantics.rb:125:9:125:18 | call to source :  | semantics.rb:126:9:126:9 | a :  |
+| semantics.rb:126:9:126:9 | a :  | semantics.rb:126:12:126:14 | [post] ** ... :  |
+| semantics.rb:126:9:126:9 | a :  | semantics.rb:126:12:126:14 | [post] ** ... :  |
+| semantics.rb:126:12:126:14 | [post] ** ... :  | semantics.rb:127:10:127:10 | h |
+| semantics.rb:126:12:126:14 | [post] ** ... :  | semantics.rb:127:10:127:10 | h |
+nodes
+| semantics.rb:2:9:2:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:2:9:2:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:3:9:3:9 | a :  | semmle.label | a :  |
+| semantics.rb:3:9:3:9 | a :  | semmle.label | a :  |
+| semantics.rb:3:9:3:14 | call to s1 :  | semmle.label | call to s1 :  |
+| semantics.rb:3:9:3:14 | call to s1 :  | semmle.label | call to s1 :  |
+| semantics.rb:4:10:4:10 | x | semmle.label | x |
+| semantics.rb:4:10:4:10 | x | semmle.label | x |
+| semantics.rb:8:9:8:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:8:9:8:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:9:5:9:5 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:9:5:9:5 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:9:10:9:10 | a :  | semmle.label | a :  |
+| semantics.rb:9:10:9:10 | a :  | semmle.label | a :  |
+| semantics.rb:10:10:10:10 | x | semmle.label | x |
+| semantics.rb:10:10:10:10 | x | semmle.label | x |
+| semantics.rb:14:9:14:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:14:9:14:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:15:8:15:8 | a :  | semmle.label | a :  |
+| semantics.rb:15:8:15:8 | a :  | semmle.label | a :  |
+| semantics.rb:15:11:15:11 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:15:11:15:11 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:16:10:16:10 | x | semmle.label | x |
+| semantics.rb:16:10:16:10 | x | semmle.label | x |
+| semantics.rb:22:10:22:33 | call to s4 | semmle.label | call to s4 |
+| semantics.rb:22:10:22:33 | call to s4 | semmle.label | call to s4 |
+| semantics.rb:22:18:22:32 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:22:18:22:32 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:23:10:23:33 | call to s4 | semmle.label | call to s4 |
+| semantics.rb:23:10:23:33 | call to s4 | semmle.label | call to s4 |
+| semantics.rb:23:23:23:32 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:23:23:23:32 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:28:9:28:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:28:9:28:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:29:8:29:8 | a :  | semmle.label | a :  |
+| semantics.rb:29:8:29:8 | a :  | semmle.label | a :  |
+| semantics.rb:29:14:29:14 | [post] y :  | semmle.label | [post] y :  |
+| semantics.rb:29:14:29:14 | [post] y :  | semmle.label | [post] y :  |
+| semantics.rb:29:17:29:17 | [post] z :  | semmle.label | [post] z :  |
+| semantics.rb:29:17:29:17 | [post] z :  | semmle.label | [post] z :  |
+| semantics.rb:31:10:31:10 | y | semmle.label | y |
+| semantics.rb:31:10:31:10 | y | semmle.label | y |
+| semantics.rb:32:10:32:10 | z | semmle.label | z |
+| semantics.rb:32:10:32:10 | z | semmle.label | z |
+| semantics.rb:40:9:40:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:40:9:40:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:41:8:41:8 | a :  | semmle.label | a :  |
+| semantics.rb:41:8:41:8 | a :  | semmle.label | a :  |
+| semantics.rb:41:16:41:16 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:41:16:41:16 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:42:10:42:10 | x | semmle.label | x |
+| semantics.rb:42:10:42:10 | x | semmle.label | x |
+| semantics.rb:46:10:46:26 | call to s8 | semmle.label | call to s8 |
+| semantics.rb:46:10:46:26 | call to s8 | semmle.label | call to s8 |
+| semantics.rb:46:15:46:24 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:46:15:46:24 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:47:10:49:7 | call to s8 | semmle.label | call to s8 |
+| semantics.rb:47:10:49:7 | call to s8 | semmle.label | call to s8 |
+| semantics.rb:48:9:48:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:48:9:48:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:53:8:53:17 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:53:8:53:17 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:53:23:53:23 | x :  | semmle.label | x :  |
+| semantics.rb:53:23:53:23 | x :  | semmle.label | x :  |
+| semantics.rb:53:31:53:31 | x | semmle.label | x |
+| semantics.rb:53:31:53:31 | x | semmle.label | x |
+| semantics.rb:54:8:54:17 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:54:8:54:17 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:54:24:54:24 | x :  | semmle.label | x :  |
+| semantics.rb:54:24:54:24 | x :  | semmle.label | x :  |
+| semantics.rb:55:14:55:14 | x | semmle.label | x |
+| semantics.rb:55:14:55:14 | x | semmle.label | x |
+| semantics.rb:60:9:60:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:60:9:60:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:61:10:61:15 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:61:10:61:15 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:61:14:61:14 | a :  | semmle.label | a :  |
+| semantics.rb:61:14:61:14 | a :  | semmle.label | a :  |
+| semantics.rb:62:10:62:18 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:62:10:62:18 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:62:17:62:17 | a :  | semmle.label | a :  |
+| semantics.rb:62:17:62:17 | a :  | semmle.label | a :  |
+| semantics.rb:63:10:63:20 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:63:10:63:20 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:63:19:63:19 | a :  | semmle.label | a :  |
+| semantics.rb:63:19:63:19 | a :  | semmle.label | a :  |
+| semantics.rb:64:10:64:28 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:64:10:64:28 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:64:27:64:27 | a :  | semmle.label | a :  |
+| semantics.rb:64:27:64:27 | a :  | semmle.label | a :  |
+| semantics.rb:66:10:66:16 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:66:10:66:16 | call to s10 | semmle.label | call to s10 |
+| semantics.rb:66:14:66:15 | &... :  | semmle.label | &... :  |
+| semantics.rb:66:14:66:15 | &... :  | semmle.label | &... :  |
+| semantics.rb:80:9:80:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:80:9:80:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:81:5:81:5 | a :  | semmle.label | a :  |
+| semantics.rb:81:5:81:5 | a :  | semmle.label | a :  |
+| semantics.rb:81:11:81:11 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:81:11:81:11 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:81:14:81:14 | [post] y :  | semmle.label | [post] y :  |
+| semantics.rb:81:14:81:14 | [post] y :  | semmle.label | [post] y :  |
+| semantics.rb:81:22:81:22 | [post] z :  | semmle.label | [post] z :  |
+| semantics.rb:81:22:81:22 | [post] z :  | semmle.label | [post] z :  |
+| semantics.rb:82:10:82:10 | x | semmle.label | x |
+| semantics.rb:82:10:82:10 | x | semmle.label | x |
+| semantics.rb:83:10:83:10 | y | semmle.label | y |
+| semantics.rb:83:10:83:10 | y | semmle.label | y |
+| semantics.rb:84:10:84:10 | z | semmle.label | z |
+| semantics.rb:84:10:84:10 | z | semmle.label | z |
+| semantics.rb:89:9:89:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:89:9:89:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:91:10:91:20 | call to s13 | semmle.label | call to s13 |
+| semantics.rb:91:10:91:20 | call to s13 | semmle.label | call to s13 |
+| semantics.rb:91:19:91:19 | a :  | semmle.label | a :  |
+| semantics.rb:91:19:91:19 | a :  | semmle.label | a :  |
+| semantics.rb:92:10:92:28 | call to s13 | semmle.label | call to s13 |
+| semantics.rb:92:10:92:28 | call to s13 | semmle.label | call to s13 |
+| semantics.rb:92:27:92:27 | a :  | semmle.label | a :  |
+| semantics.rb:92:27:92:27 | a :  | semmle.label | a :  |
+| semantics.rb:97:9:97:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:97:9:97:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:98:5:98:5 | a :  | semmle.label | a :  |
+| semantics.rb:98:5:98:5 | a :  | semmle.label | a :  |
+| semantics.rb:98:19:98:19 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:98:19:98:19 | [post] x :  | semmle.label | [post] x :  |
+| semantics.rb:99:5:99:5 | a :  | semmle.label | a :  |
+| semantics.rb:99:5:99:5 | a :  | semmle.label | a :  |
+| semantics.rb:99:16:99:16 | [post] y :  | semmle.label | [post] y :  |
+| semantics.rb:99:16:99:16 | [post] y :  | semmle.label | [post] y :  |
+| semantics.rb:99:24:99:24 | [post] z :  | semmle.label | [post] z :  |
+| semantics.rb:99:24:99:24 | [post] z :  | semmle.label | [post] z :  |
+| semantics.rb:101:10:101:10 | x | semmle.label | x |
+| semantics.rb:101:10:101:10 | x | semmle.label | x |
+| semantics.rb:102:10:102:10 | y | semmle.label | y |
+| semantics.rb:102:10:102:10 | y | semmle.label | y |
+| semantics.rb:103:10:103:10 | z | semmle.label | z |
+| semantics.rb:103:10:103:10 | z | semmle.label | z |
+| semantics.rb:107:9:107:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:109:10:109:17 | call to s15 | semmle.label | call to s15 |
+| semantics.rb:109:14:109:16 | ** ... :  | semmle.label | ** ... :  |
+| semantics.rb:110:10:110:31 | call to s15 | semmle.label | call to s15 |
+| semantics.rb:110:28:110:30 | ** ... :  | semmle.label | ** ... :  |
+| semantics.rb:114:9:114:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:114:9:114:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:115:9:115:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:115:9:115:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:116:14:116:14 | a :  | semmle.label | a :  |
+| semantics.rb:116:14:116:14 | a :  | semmle.label | a :  |
+| semantics.rb:117:10:117:17 | call to s16 | semmle.label | call to s16 |
+| semantics.rb:117:10:117:17 | call to s16 | semmle.label | call to s16 |
+| semantics.rb:117:14:117:16 | ** ... [element :a] :  | semmle.label | ** ... [element :a] :  |
+| semantics.rb:117:14:117:16 | ** ... [element :a] :  | semmle.label | ** ... [element :a] :  |
+| semantics.rb:117:16:117:16 | h [element :a] :  | semmle.label | h [element :a] :  |
+| semantics.rb:117:16:117:16 | h [element :a] :  | semmle.label | h [element :a] :  |
+| semantics.rb:119:10:119:18 | call to s16 | semmle.label | call to s16 |
+| semantics.rb:119:10:119:18 | call to s16 | semmle.label | call to s16 |
+| semantics.rb:119:17:119:17 | a :  | semmle.label | a :  |
+| semantics.rb:119:17:119:17 | a :  | semmle.label | a :  |
+| semantics.rb:121:10:121:23 | call to s16 | semmle.label | call to s16 |
+| semantics.rb:121:10:121:23 | call to s16 | semmle.label | call to s16 |
+| semantics.rb:121:17:121:17 | b :  | semmle.label | b :  |
+| semantics.rb:121:17:121:17 | b :  | semmle.label | b :  |
+| semantics.rb:121:20:121:22 | ** ... [element :a] :  | semmle.label | ** ... [element :a] :  |
+| semantics.rb:121:20:121:22 | ** ... [element :a] :  | semmle.label | ** ... [element :a] :  |
+| semantics.rb:121:22:121:22 | h [element :a] :  | semmle.label | h [element :a] :  |
+| semantics.rb:121:22:121:22 | h [element :a] :  | semmle.label | h [element :a] :  |
+| semantics.rb:125:9:125:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:125:9:125:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:126:9:126:9 | a :  | semmle.label | a :  |
+| semantics.rb:126:9:126:9 | a :  | semmle.label | a :  |
+| semantics.rb:126:12:126:14 | [post] ** ... :  | semmle.label | [post] ** ... :  |
+| semantics.rb:126:12:126:14 | [post] ** ... :  | semmle.label | [post] ** ... :  |
+| semantics.rb:127:10:127:10 | h | semmle.label | h |
+| semantics.rb:127:10:127:10 | h | semmle.label | h |
+subpaths
