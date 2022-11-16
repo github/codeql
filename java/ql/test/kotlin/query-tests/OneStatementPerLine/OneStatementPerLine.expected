@@ -1,0 +1,1 @@
+| Test.kt:5:9:5:23 | return ... | This statement is followed by another on the same line. |
