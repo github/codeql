@@ -3395,6 +3395,23 @@ open class KotlinFileExtractor(
             extractExprContext(it, locId, callable, enclosingStmt)
         }
 
+    private fun escapeCharForQuotedLiteral(c: Char) =
+        when (c) {
+            '\r' -> "\\r"
+            '\n' -> "\\n"
+            '\t' -> "\\t"
+            '\\' -> "\\\\"
+            '"' -> "\\\""
+            else -> c.toString()
+        }
+
+    // Render a string literal as it might occur in Kotlin source. Note this is a reasonable guess; the real source
+    // could use other escape sequences to describe the same String. Importantly, this is the same guess the Java
+    // extractor makes regarding string literals occurring within annotations, which we need to coincide with to ensure
+    // database consistency.
+    private fun toQuotedLiteral(s: String) =
+        s.toCharArray().joinToString(separator = "", prefix = "\"", postfix = "\"") { c -> escapeCharForQuotedLiteral(c) }
+
     private fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: StmtExprParent) {
         with("expression", e) {
             when(e) {
@@ -3602,7 +3619,7 @@ open class KotlinFileExtractor(
                             tw.writeExprs_stringliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
                             tw.writeExprsKotlinType(id, type.kotlinResult.id)
                             extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                            tw.writeNamestrings(toQuotedLiteral(v.toString()), v.toString(), id)
                         }
                         v == null -> {
                             extractNull(e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
