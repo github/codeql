@@ -1,8 +1,0 @@
-| Test.kt:0:0:0:0 | component1 | The method component1 is entirely unused. | Test.kt:0:0:0:0 | component1 | component1 |
-| Test.kt:0:0:0:0 | component2 | The method component2 is entirely unused. | Test.kt:0:0:0:0 | component2 | component2 |
-| Test.kt:0:0:0:0 | copy | The method copy is only used from dead code originating at $@. | Test.kt:0:0:0:0 | copy$default | copy$default |
-| Test.kt:0:0:0:0 | copy$default | The method copy$default is entirely unused. | Test.kt:0:0:0:0 | copy$default | copy$default |
-| Test.kt:20:10:20:41 | DC | The method DC is only used from dead code originating at $@. | Test.kt:0:0:0:0 | copy$default | copy$default |
-| Test.kt:20:10:20:41 | DC | The method DC is only used from dead code originating at $@. | Test.kt:29:1:31:1 | main2 | main2 |
-| Test.kt:20:19:20:28 | getX | The method getX is only used from dead code originating at $@. | Test.kt:29:1:31:1 | main2 | main2 |
-| Test.kt:20:31:20:40 | getY | The method getY is only used from dead code originating at $@. | Test.kt:29:1:31:1 | main2 | main2 |
