@@ -7,6 +7,9 @@ private import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.TaintedPathCustomizations
+private import CoreKnowledge as CoreKnowledge
+private import semmle.javascript.heuristics.SyntacticHeuristics
+private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 
 /**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
@@ -135,7 +138,8 @@ private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
 }
 
 /*
- * Characteristics that are indicative of not being a sink of any type.
+ * Characteristics that are indicative of not being a sink of any type, and have historically been used to select
+ * negative samples for training.
  */
 
 /**
@@ -440,5 +444,114 @@ private class BuiltinCallNameCharacteristic extends ArgumentToBuiltinFunctionCha
           "shift", "values", "forEach", "toString", "slice", "splice", "push", "isArray", "sort"
         ]
     )
+  }
+}
+
+/*
+ * Characteristics that have historically acted as endpoint filters to exclude endpoints from scoring at inference time.
+ */
+
+/** A characteristic that has historically acted as an endpoint filter for inference-time scoring. */
+abstract class EndpointFilterCharacteristic extends EndpointCharacteristic {
+  bindingset[this]
+  EndpointFilterCharacteristic() { any() }
+}
+
+/**
+ * An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be a sink of any type.
+ * Replaces https://github.com/github/codeql/blob/387e57546bf7352f7c1cfe781daa1a3799b7063e/javascript/ql/experimental/adaptivethreatmodeling/lib/experimental/adaptivethreatmodeling/StandardEndpointFilters.qll#LL15C24-L15C24
+ */
+abstract class StandardEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
+  bindingset[this]
+  StandardEndpointFilterCharacteristic() { any() }
+
+  override predicate getImplications(
+    EndpointType endpointClass, boolean isPositiveIndicator, float confidence
+  ) {
+    endpointClass instanceof NegativeType and
+    isPositiveIndicator = true and
+    confidence = mediumConfidence()
+  }
+}
+
+private class IsArgumentToModeledFunctionCharacteristic extends StandardEndpointFilterCharacteristic {
+  IsArgumentToModeledFunctionCharacteristic() { this = "argument to modeled function" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::InvokeNode invk, DataFlow::Node known |
+      invk.getAnArgument() = n and
+      invk.getAnArgument() = known and
+      (
+        CoreKnowledge::isKnownLibrarySink(known)
+        or
+        CoreKnowledge::isKnownStepSrc(known)
+        or
+        CoreKnowledge::isOtherModeledArgument(known, _)
+      )
+    )
+  }
+}
+
+private class IsArgumentToSinklessLibraryCharacteristic extends StandardEndpointFilterCharacteristic {
+  IsArgumentToSinklessLibraryCharacteristic() { this = "argument to sinkless library" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::InvokeNode invk, DataFlow::SourceNode commonSafeLibrary, string libraryName |
+      libraryName = ["slugify", "striptags", "marked"]
+    |
+      commonSafeLibrary = DataFlow::moduleImport(libraryName) and
+      invk = [commonSafeLibrary, commonSafeLibrary.getAPropertyRead()].getAnInvocation() and
+      n = invk.getAnArgument()
+    )
+  }
+}
+
+private class IsSanitizerCharacteristic extends StandardEndpointFilterCharacteristic {
+  IsSanitizerCharacteristic() { this = "sanitizer" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      call.getCalleeName().regexpMatch("(?i).*(escape|valid(ate)?|sanitize|purify).*")
+    )
+  }
+}
+
+private class IsPredicateCharacteristic extends StandardEndpointFilterCharacteristic {
+  IsPredicateCharacteristic() { this = "predicate" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      call.getCalleeName().regexpMatch("(equals|(|is|has|can)(_|[A-Z])).*")
+    )
+  }
+}
+
+private class IsHashCharacteristic extends StandardEndpointFilterCharacteristic {
+  IsHashCharacteristic() { this = "hash" }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+      call.getCalleeName().regexpMatch("(?i)^(sha\\d*|md5|hash)$")
+    )
+  }
+}
+
+private class IsNumericCharacteristic extends StandardEndpointFilterCharacteristic {
+  IsNumericCharacteristic() { this = "numeric" }
+
+  override predicate getEndpoints(DataFlow::Node n) { isReadFrom(n, ".*index.*") }
+}
+
+private class InIrrelevantFileCharacteristic extends StandardEndpointFilterCharacteristic {
+  private string category;
+
+  InIrrelevantFileCharacteristic() {
+    this = "in " + category + " file" and category = ["externs", "generated", "library", "test"]
+  }
+
+  override predicate getEndpoints(DataFlow::Node n) {
+    // Ignore candidate sinks within externs, generated, library, and test code
+    ClassifyFiles::classify(n.getFile(), category) and
+    this = "in " + category + " file"
   }
 }

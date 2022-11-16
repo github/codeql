@@ -73,6 +73,10 @@ query predicate trainingEndpoints(
       c instanceof LikelyNotASinkCharacteristic
     )
   ) and
+  // Don't surface endpoint filters as characteristics, because they were previously not surfaced.
+  // TODO: Experiment with surfacing these to the modeling code by removing the following line (and then make
+  // EndpointFilterCharacteristic private).
+  not characteristic instanceof EndpointFilterCharacteristic and
   (
     // If the list of characteristics includes positive indicators with high confidence for this class, select this as a
     // training sample belonging to the class.
@@ -188,6 +192,10 @@ query predicate reformattedTrainingEndpoints(
         confidence3 >= characteristic3.getHighConfidenceThreshold() and
         not posClass instanceof NegativeType
       ) and
+      // Don't surface endpoint filters as notASinkReasons, because they were previously not surfaced.
+      // TODO: Experiment with surfacing these to the modeling code by removing the following line (and then make
+      // EndpointFilterCharacteristic private).
+      not exists(EndpointFilterCharacteristic filterCharacteristic | value = filterCharacteristic) and
       valueType = "string"
     )
   )
