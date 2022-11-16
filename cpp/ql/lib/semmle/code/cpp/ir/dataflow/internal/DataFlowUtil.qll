@@ -235,7 +235,13 @@ class Node extends TIRDataFlowNode {
   Expr asIndirectArgument() { result = this.asIndirectArgument(_) }
 
   /** Gets the positional parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.asParameter(0) }
+  Parameter asParameter() {
+    exists(int indirectionIndex | result = this.asParameter(indirectionIndex) |
+      if result.getUnspecifiedType() instanceof ReferenceType
+      then indirectionIndex = 1
+      else indirectionIndex = 0
+    )
+  }
 
   /**
    * Gets the uninitialized local variable corresponding to this node, if
