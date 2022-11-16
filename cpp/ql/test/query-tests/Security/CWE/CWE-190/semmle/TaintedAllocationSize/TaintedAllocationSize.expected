@@ -5,17 +5,11 @@ edges
 | test.cpp:40:21:40:24 | argv | test.cpp:49:32:49:35 | size |
 | test.cpp:40:21:40:24 | argv | test.cpp:50:26:50:29 | size |
 | test.cpp:40:21:40:24 | argv | test.cpp:53:35:53:60 | ... * ... |
-| test.cpp:76:25:76:29 | start | test.cpp:80:18:80:28 | ... - ... |
 | test.cpp:76:25:76:29 | start indirection | test.cpp:80:18:80:28 | ... - ... |
-| test.cpp:76:38:76:40 | end | test.cpp:80:18:80:28 | ... - ... |
 | test.cpp:76:38:76:40 | end indirection | test.cpp:80:18:80:28 | ... - ... |
-| test.cpp:98:18:98:23 | fread output argument | test.cpp:102:17:102:22 | buffer |
 | test.cpp:98:18:98:23 | fread output argument | test.cpp:102:17:102:22 | buffer indirection |
-| test.cpp:98:18:98:23 | fread output argument | test.cpp:102:25:102:39 | ... + ... |
 | test.cpp:98:18:98:23 | fread output argument | test.cpp:102:25:102:39 | ... + ... indirection |
-| test.cpp:102:17:102:22 | buffer | test.cpp:76:25:76:29 | start |
 | test.cpp:102:17:102:22 | buffer indirection | test.cpp:76:25:76:29 | start indirection |
-| test.cpp:102:25:102:39 | ... + ... | test.cpp:76:38:76:40 | end |
 | test.cpp:102:25:102:39 | ... + ... indirection | test.cpp:76:38:76:40 | end indirection |
 | test.cpp:124:18:124:23 | call to getenv | test.cpp:125:29:125:32 | size |
 | test.cpp:124:18:124:23 | call to getenv | test.cpp:128:24:128:41 | ... * ... |
@@ -64,15 +58,11 @@ nodes
 | test.cpp:49:32:49:35 | size | semmle.label | size |
 | test.cpp:50:26:50:29 | size | semmle.label | size |
 | test.cpp:53:35:53:60 | ... * ... | semmle.label | ... * ... |
-| test.cpp:76:25:76:29 | start | semmle.label | start |
 | test.cpp:76:25:76:29 | start indirection | semmle.label | start indirection |
-| test.cpp:76:38:76:40 | end | semmle.label | end |
 | test.cpp:76:38:76:40 | end indirection | semmle.label | end indirection |
 | test.cpp:80:18:80:28 | ... - ... | semmle.label | ... - ... |
 | test.cpp:98:18:98:23 | fread output argument | semmle.label | fread output argument |
-| test.cpp:102:17:102:22 | buffer | semmle.label | buffer |
 | test.cpp:102:17:102:22 | buffer indirection | semmle.label | buffer indirection |
-| test.cpp:102:25:102:39 | ... + ... | semmle.label | ... + ... |
 | test.cpp:102:25:102:39 | ... + ... indirection | semmle.label | ... + ... indirection |
 | test.cpp:124:18:124:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:124:18:124:31 | call to getenv indirection | semmle.label | call to getenv indirection |
