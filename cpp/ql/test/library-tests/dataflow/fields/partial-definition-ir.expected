@@ -332,14 +332,18 @@
 | by_reference.cpp:24:25:24:29 | value |
 | by_reference.cpp:32:12:32:12 | s |
 | by_reference.cpp:36:12:36:15 | this |
+| by_reference.cpp:40:12:40:15 | this |
 | by_reference.cpp:50:3:50:3 | s |
 | by_reference.cpp:50:17:50:26 | call to user_input |
+| by_reference.cpp:51:8:51:8 | s |
 | by_reference.cpp:51:10:51:20 | call to getDirectly |
 | by_reference.cpp:56:3:56:3 | s |
 | by_reference.cpp:56:19:56:28 | call to user_input |
+| by_reference.cpp:57:8:57:8 | s |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly |
 | by_reference.cpp:62:3:62:3 | s |
 | by_reference.cpp:62:25:62:34 | call to user_input |
+| by_reference.cpp:63:8:63:8 | s |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
 | by_reference.cpp:68:17:68:18 | & ... |
 | by_reference.cpp:68:21:68:30 | call to user_input |
