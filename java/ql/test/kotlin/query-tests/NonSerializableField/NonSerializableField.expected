@@ -1,1 +1,0 @@
-| NonSerializableFieldTest.kt:3:22:3:28 | <dispatchReceiver> | This field is in a serializable class, but is not serializable itself because Foo is not serializable. |
