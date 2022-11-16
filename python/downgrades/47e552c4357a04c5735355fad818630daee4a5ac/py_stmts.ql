@@ -14,6 +14,7 @@ class StmtList_ extends @py_stmt_list {
  */
 bindingset[new_index]
 int old_index(int new_index) {
+  not new_index = 7 and
   if new_index < 7 then result = new_index else result + (8 - 7) = new_index
 }
 

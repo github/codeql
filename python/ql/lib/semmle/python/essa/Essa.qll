@@ -522,7 +522,7 @@ class ExceptionCapture extends EssaNodeDefinition {
    * `ExceptionType` in `except ExceptionType as ex:`.
    */
   ControlFlowNode getType() {
-    exists(ExceptGroupFlowNode ex |
+    exists(ExceptFlowNode ex |
       ex.getName() = this.getDefiningNode() and
       result = ex.getType()
     )

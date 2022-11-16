@@ -453,7 +453,7 @@ class ExceptGroupFlowNode extends ControlFlowNode {
 
   /**
    * Gets the type handled by this exception handler.
-   * `eg` in `except* eg as e:`
+   * `ExceptionType` in `except* ExceptionType as e:`
    */
   ControlFlowNode getType() {
     this.getBasicBlock().dominates(result.getBasicBlock()) and
@@ -462,7 +462,7 @@ class ExceptGroupFlowNode extends ControlFlowNode {
 
   /**
    * Gets the name assigned to the handled exception, if any.
-   * `e` in `except* eg as e:`
+   * `e` in `except* ExceptionType as e:`
    */
   ControlFlowNode getName() {
     this.getBasicBlock().dominates(result.getBasicBlock()) and

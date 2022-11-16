@@ -145,7 +145,6 @@ class Exec extends Exec_ {
 
 /** An except group statement (part of a `try` statement), such as `except* IOError as err:` */
 class ExceptGroupStmt extends ExceptGroupStmt_ {
-  /* syntax: except Expr [ as Expr ]: */
   /** Gets the immediately enclosing try statement */
   Try getTry() { result.getAHandler() = this }
 
