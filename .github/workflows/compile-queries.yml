@@ -60,14 +60,10 @@ jobs:
           # Move all the existing cache into another folder, so we only preserve the cache for the current queries.
           mkdir -p ${COMBINED_CACHE_DIR}
           rm */ql/src/.cache/{lock,size}
-          # replicate the folder structure from the .cache folders into the combined cache folder. (because cp doesn't have a "create missing folders" option)
-          find */ql/src/.cache -type d | cut -d "/" -f 6,7 | sort | uniq > folders.txt
-          cat folders.txt | xargs -I {} mkdir -p ${COMBINED_CACHE_DIR}/{}
           # copy the contents of the .cache folders into the combined cache folder.
           cp -r */ql/src/.cache/* ${COMBINED_CACHE_DIR}/
           # clean up the .cache folders
           rm -rf */ql/src/.cache/*
-          rm folders.txt
 
           # compile the queries
           codeql query compile -j0 */ql/src --keep-going --warnings=error --compilation-cache ${COMBINED_CACHE_DIR}
