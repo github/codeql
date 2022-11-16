@@ -559,11 +559,7 @@ private class SendFile extends FileSystemAccess::Range, Http::Server::HttpRespon
  */
 class SendDataCall extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
   SendDataCall() {
-    this.getMethodName() = "send_data" and
-    (
-      this.asExpr().getExpr() instanceof ActionControllerContextCall or
-      this.getReceiver().asExpr().getExpr() instanceof Response::ResponseCall
-    )
+    this = [actionControllerInstance(), Response::response()].getAMethodCall("send_data")
   }
 
   override DataFlow::Node getBody() { result = this.getArgument(0) }
@@ -763,8 +759,7 @@ private module Response {
 
 private class ActionControllerLoggerInstance extends DataFlow::Node {
   ActionControllerLoggerInstance() {
-    this.asExpr().getExpr() instanceof ActionControllerContextCall and
-    this.(DataFlow::CallNode).getMethodName() = "logger"
+    this = actionControllerInstance().getAMethodCall("logger")
     or
     any(ActionControllerLoggerInstance i).(DataFlow::LocalSourceNode).flowsTo(this)
   }
