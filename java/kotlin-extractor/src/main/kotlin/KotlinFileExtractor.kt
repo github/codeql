@@ -637,7 +637,7 @@ open class KotlinFileExtractor(
                     if (c.kind == ClassKind.ANNOTATION_CLASS) {
                         c.declarations
                             .filterIsInstance<IrProperty>()
-                            .map {
+                            .forEach {
                                 val getter = it.getter
                                 if (getter == null) {
                                     logger.warnElement("Expected an annotation property to have a getter", it)
