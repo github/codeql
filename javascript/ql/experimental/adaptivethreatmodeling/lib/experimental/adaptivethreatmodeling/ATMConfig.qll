@@ -104,7 +104,7 @@ abstract class AtmConfig extends string {
    * Get an endpoint type for the sinks of this query. A query may have multiple applicable
    * endpoint types for its sinks.
    */
-  EndpointType getASinkEndpointType() { none() }
+  abstract EndpointType getASinkEndpointType();
 
   /**
    * EXPERIMENTAL. This API may change in the future.
