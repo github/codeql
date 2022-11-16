@@ -27,7 +27,7 @@ jobs:
         with:
           filters: |
             codegen:
-              - 'github/workflows/swift.yml'
+              - '.github/workflows/swift.yml'
               - "misc/bazel/**"
               - "*.bazel*"
               - 'swift/actions/setup-env/**'
@@ -111,7 +111,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: swift-generated-cpp-files
-          path: swift/generated-cpp-files/**
+          path: generated-cpp-files/**
   database-upgrade-scripts:
     runs-on: ubuntu-latest
     steps:
