@@ -70,7 +70,7 @@ abstract class AtmConfig extends string {
    * an effective sink, i.e. one considered as a possible sink of flow in the boosted query.
    */
   final predicate isEffectiveSink(JS::DataFlow::Node candidateSink) {
-    not exists(getAReasonSinkExcluded(candidateSink))
+    not exists(this.getAReasonSinkExcluded(candidateSink))
   }
 
   final EndpointCharacteristics::EndpointCharacteristic getAReasonSinkExcluded(
@@ -85,7 +85,7 @@ abstract class AtmConfig extends string {
     or
     exists(EndpointCharacteristics::EndpointFilterCharacteristic specificFilter |
       specificFilter.getEndpoints(candidateSink) and
-      specificFilter.getImplications(getASinkEndpointType(), false, _) and
+      specificFilter.getImplications(this.getASinkEndpointType(), false, _) and
       result = specificFilter
     )
   }

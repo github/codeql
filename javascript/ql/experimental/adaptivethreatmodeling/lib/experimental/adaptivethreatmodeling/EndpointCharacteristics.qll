@@ -618,8 +618,8 @@ private class ModeledDatabaseAccessCharacteristic extends NosqlInjectionSinkEndp
   }
 }
 
-private class ReceiverIsHTTPRequestExpressionCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
-  ReceiverIsHTTPRequestExpressionCharacteristic() { this = "receiver is a HTTP request expression" }
+private class ReceiverIsHttpRequestExpressionCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  ReceiverIsHttpRequestExpressionCharacteristic() { this = "receiver is a HTTP request expression" }
 
   override predicate getEndpoints(DataFlow::Node n) {
     exists(DataFlow::CallNode call | n = call.getAnArgument() |
@@ -629,8 +629,8 @@ private class ReceiverIsHTTPRequestExpressionCharacteristic extends NosqlInjecti
   }
 }
 
-private class ReceiverIsHTTPResponseExpressionCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
-  ReceiverIsHTTPResponseExpressionCharacteristic() {
+private class ReceiverIsHttpResponseExpressionCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
+  ReceiverIsHttpResponseExpressionCharacteristic() {
     this = "receiver is a HTTP response expression"
   }
 
@@ -698,8 +698,8 @@ abstract private class SqlInjectionSinkEndpointFilterCharacteristic extends Endp
   }
 }
 
-private class PreparedSQLStatementCharacteristic extends SqlInjectionSinkEndpointFilterCharacteristic {
-  PreparedSQLStatementCharacteristic() { this = "prepared SQL statement" }
+private class PreparedSqlStatementCharacteristic extends SqlInjectionSinkEndpointFilterCharacteristic {
+  PreparedSqlStatementCharacteristic() { this = "prepared SQL statement" }
 
   override predicate getEndpoints(DataFlow::Node n) {
     exists(DataFlow::CallNode call | n = call.getAnArgument() |
@@ -721,8 +721,8 @@ private class ArrayCreationCharacteristic extends SqlInjectionSinkEndpointFilter
   }
 }
 
-private class HTMLOrRenderingCharacteristic extends SqlInjectionSinkEndpointFilterCharacteristic {
-  HTMLOrRenderingCharacteristic() { this = "HTML / rendering" }
+private class HtmlOrRenderingCharacteristic extends SqlInjectionSinkEndpointFilterCharacteristic {
+  HtmlOrRenderingCharacteristic() { this = "HTML / rendering" }
 
   override predicate getEndpoints(DataFlow::Node n) {
     exists(DataFlow::CallNode call | n = call.getAnArgument() |
