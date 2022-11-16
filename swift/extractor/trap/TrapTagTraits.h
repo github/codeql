@@ -4,6 +4,7 @@
 // label tags
 
 #include <type_traits>
+#include "swift/extractor/trap/TrapLabel.h"
 
 namespace codeql {
 
