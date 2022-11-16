@@ -180,5 +180,84 @@ def test_cpp_skip_pragma(generate):
     ]
 
 
+def test_ipa_classes_ignored(generate):
+    assert generate([
+        schema.Class(
+            name="X",
+            ipa=schema.IpaInfo(from_class="A"),
+        ),
+        schema.Class(
+            name="Y",
+            ipa=schema.IpaInfo(on_arguments={"a": "A", "b": "int"}),
+        ),
+        schema.Class(
+            name="Z",
+        ),
+    ]) == [
+        cpp.Class(name="Z", final=True, trap_name="Zs"),
+    ]
+
+
+def test_ipa_hierarchy_ignored(generate):
+    assert generate([
+        schema.Class(
+            name="Root",
+            derived={"Base", "Z"},
+        ),
+        schema.Class(
+            name="Base",
+            bases=["Root"],
+            derived={"X", "Y"}
+        ),
+        schema.Class(
+            name="X",
+            bases=["Base"],
+            ipa=schema.IpaInfo(from_class="A"),
+        ),
+        schema.Class(
+            name="Y",
+            bases=["Base"],
+            ipa=schema.IpaInfo(on_arguments={"a": "A", "b": "int"}),
+        ),
+        schema.Class(
+            name="Z",
+            ipa=schema.IpaInfo(from_class="A"),
+        ),
+    ]) == []
+
+
+def test_ipa_hierarchy_not_ignored_with_non_ipa_descendant(generate):
+    root = cpp.Class(name="Root")
+    base = cpp.Class(name="Base", bases=[root])
+    assert generate([
+        schema.Class(
+            name="Root",
+            derived={"Base", "Z"},
+        ),
+        schema.Class(
+            name="Base",
+            bases=["Root"],
+            derived={"X", "Y"}
+        ),
+        schema.Class(
+            name="X",
+            bases=["Base"],
+        ),
+        schema.Class(
+            name="Y",
+            bases=["Base"],
+            ipa=schema.IpaInfo(on_arguments={"a": "A", "b": "int"}),
+        ),
+        schema.Class(
+            name="Z",
+            ipa=schema.IpaInfo(from_class="A"),
+        ),
+    ]) == [
+        root,
+        base,
+        cpp.Class(name="X", bases=[base], final=True, trap_name="Xes"),
+    ]
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

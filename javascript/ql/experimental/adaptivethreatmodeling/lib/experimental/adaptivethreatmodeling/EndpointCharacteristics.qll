@@ -45,6 +45,9 @@ abstract class EndpointCharacteristic extends string {
     EndpointType endpointClass, boolean isPositiveIndicator, float confidence
   );
 
+  /** Indicators with confidence at or above this threshold are considered to be high-confidence indicators. */
+  final float getHighConfidenceThreshold() { result = 0.8 }
+
   // The following are some confidence values that are used in practice by the subclasses. They are defined as named
   // constants here to make it easier to change them in the future.
   final float maximalConfidence() { result = 1.0 }
