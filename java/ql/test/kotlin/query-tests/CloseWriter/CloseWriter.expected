@@ -1,8 +1,0 @@
-| CloseWriter.kt:4:29:4:54 | new FileWriter(...) | This FileWriter is not always closed on method exit. |
-| CloseWriter.kt:9:20:9:45 | new FileWriter(...) | This FileWriter is not always closed on method exit. |
-| CloseWriter.kt:15:14:15:57 | new FileOutputStream(...) | This FileOutputStream is not always closed on method exit. |
-| CloseWriter.kt:20:5:20:48 | new FileOutputStream(...) | This FileOutputStream is not always closed on method exit. |
-| CloseWriter.kt:26:33:26:76 | new FileOutputStream(...) | This FileOutputStream is not always closed on method exit. |
-| CloseWriter.kt:31:24:31:67 | new FileOutputStream(...) | This FileOutputStream is not always closed on method exit. |
-| CloseWriter.kt:37:33:37:76 | new FileOutputStream(...) | This FileOutputStream is not always closed on method exit. |
-| CloseWriter.kt:42:24:42:67 | new FileOutputStream(...) | This FileOutputStream is not always closed on method exit. |
