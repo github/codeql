@@ -235,9 +235,12 @@ module ImportResolution {
       result = ar
     |
       isPreferredModuleForName(m.getFile(), p.getPackageName() + "." + attr_name + ["", ".__init__"])
-      or
-      // This is also true for attributes that come from reexports.
-      module_reexport(p, attr_name, m)
+    )
+    or
+    // This is also true for attributes that come from reexports.
+    exists(Module reexporter, string attr_name |
+      result.(DataFlow::AttrRead).accesses(getModuleReference(reexporter), attr_name) and
+      module_reexport(reexporter, attr_name, m)
     )
     or
     // Submodules that are implicitly defined with relative imports of the form `from .foo import ...`.

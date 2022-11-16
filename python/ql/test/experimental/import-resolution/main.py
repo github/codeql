@@ -35,7 +35,8 @@ import foo as foo_alias #$ imports=foo as=foo_alias
 check("foo_alias.foo_attr", foo_alias.foo_attr, "foo_attr", globals()) #$ prints=foo_attr
 
 # A reference to a reexported module
-check("foo.bar_reexported.bar_attr", foo.bar_reexported.bar_attr, "bar_attr", globals()) #$ MISSING: prints=bar_attr
+check("foo.bar_reexported", foo.bar_reexported, "<module bar>", globals()) #$ prints="<module bar>"
+check("foo.bar_reexported.bar_attr", foo.bar_reexported.bar_attr, "bar_attr", globals()) #$ prints=bar_attr
 
 # A simple "import from" statement.
 from bar import bar_attr
@@ -71,7 +72,7 @@ check("package.package_attr", package.package_attr, "package_attr", globals()) #
 if sys.version_info[0] == 3:
     # Importing from a namespace module.
     from namespace_package.namespace_module import namespace_module_attr
-    check("namespace_module_attr", namespace_module_attr, "namespace_module_attr", globals()) #$ prints=namespace_module_attr
+    check("namespace_module_attr", namespace_module_attr, "namespace_module_attr", globals()) #$ prints3=namespace_module_attr
 
 
 from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_clash.clashing_attr as=clashing_attr imports=attr_clash.non_clashing_submodule as=non_clashing_submodule
