@@ -833,7 +833,7 @@ private class SetStateCallsInReactApplicationsCharacteristic extends XssSinkEndp
 
 private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkXssCharacteristic extends XssSinkEndpointFilterCharacteristic {
   NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkXssCharacteristic() {
-    this = "not a direct argument to a likely external library call or a heuristic sink (XSS)"
+    this = "not a direct argument to a likely external library call or a heuristic sink (xss)"
   }
 
   override predicate getEndpoints(DataFlow::Node n) {
