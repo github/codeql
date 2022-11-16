@@ -195,7 +195,7 @@ query predicate reformattedTrainingEndpoints(
       // Don't surface endpoint filters as notASinkReasons, because they were previously not surfaced.
       // TODO: Experiment with surfacing these to the modeling code by removing the following line (and then make
       // EndpointFilterCharacteristic private).
-      not exists(EndpointFilterCharacteristic filterCharacteristic | value = filterCharacteristic) and
+      not value instanceof EndpointFilterCharacteristic and
       valueType = "string"
     )
   )
