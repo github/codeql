@@ -1,0 +1,1 @@
+| SimplifyBoolExpr.kt:8:8:8:16 | ... (value equals) ... | Expressions of the form "A == true" can be simplified to "A". |
