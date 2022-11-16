@@ -29,11 +29,8 @@ module Hapi {
       or
       // `const after = function (server) {...};`
       // `server.dependency('name', after);`
-      exists(ServerDefinition server, DataFlow::MethodCallNode call |
-        call = server.ref().getAMethodCall() and
-        call.getMethodName() = "dependency" and
-        this = call.getABoundCallbackParameter(1, 0)
-      )
+      this =
+        any(ServerDefinition s).ref().getAMethodCall("dependency").getABoundCallbackParameter(1, 0)
     }
   }
 
