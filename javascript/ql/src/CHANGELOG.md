@@ -2,7 +2,7 @@
 
 ### Minor Analysis Improvements
 
-* Added support for @hapi/glue and Hapi plugins to the frameworks/Hapi.qll library.
+* Added support for `@hapi/glue` and Hapi plugins to the `frameworks/Hapi.qll` library.
 
 ### Bug Fixes
 
