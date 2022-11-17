@@ -129,15 +129,6 @@ module PEP249 {
       or
       exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
     }
-
-    /**
-     * DEPRECATED: Use `Cursor::instance()` to get references to database cursors instead.
-     *
-     * Gets a reference to a result of calling the `cursor` method on a database connection.
-     */
-    deprecated DataFlow::Node methodResult() {
-      methodResult(DataFlow::TypeTracker::end()).flowsTo(result)
-    }
   }
 
   /**
