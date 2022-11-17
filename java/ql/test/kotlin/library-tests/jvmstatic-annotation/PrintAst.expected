@@ -141,13 +141,11 @@ test.kt:
 #   65|             0: [MethodAccess] getPropWithStaticGetter(...)
 #   65|               -1: [TypeAccess] NonCompanion
 #    9|   2: [Class] HasCompanion
-#-----|     -3: (Annotations)
 #    9|     2: [Constructor] HasCompanion
 #    9|       5: [BlockStmt] { ... }
 #    9|         0: [SuperConstructorInvocationStmt] super(...)
 #    9|         1: [BlockStmt] { ... }
 #   11|     3: [Class] Companion
-#-----|       -3: (Annotations)
 #   11|       1: [Constructor] Companion
 #   11|         5: [BlockStmt] { ... }
 #   11|           0: [SuperConstructorInvocationStmt] super(...)
@@ -318,7 +316,6 @@ test.kt:
 #   25|               -1: [TypeAccess] HasCompanion
 #   25|             0: [VarAccess] s
 #   31|   3: [Class] NonCompanion
-#-----|     -3: (Annotations)
 #   31|     2: [Constructor] NonCompanion
 #   31|       5: [BlockStmt] { ... }
 #   31|         0: [SuperConstructorInvocationStmt] super(...)
