@@ -13,11 +13,6 @@ edges
 | new-tests.go:62:31:62:38 | selection of Body : ReadCloser | new-tests.go:69:11:69:57 | call to Sprintf |
 | new-tests.go:62:31:62:38 | selection of Body : ReadCloser | new-tests.go:74:12:74:58 | call to Sprintf |
 | new-tests.go:78:18:78:24 | selection of URL : pointer type | new-tests.go:79:11:79:46 | ...+... |
-| new-tests.go:81:37:81:43 | implicit dereference : URL | new-tests.go:81:37:81:43 | implicit dereference : URL |
-| new-tests.go:81:37:81:43 | implicit dereference : URL | new-tests.go:81:37:81:43 | selection of URL : pointer type |
-| new-tests.go:81:37:81:43 | implicit dereference : URL | new-tests.go:82:11:82:46 | ...+... |
-| new-tests.go:81:37:81:43 | selection of URL : pointer type | new-tests.go:81:37:81:43 | implicit dereference : URL |
-| new-tests.go:81:37:81:43 | selection of URL : pointer type | new-tests.go:81:37:81:43 | selection of URL : pointer type |
 | new-tests.go:81:37:81:43 | selection of URL : pointer type | new-tests.go:82:11:82:46 | ...+... |
 | new-tests.go:86:10:86:20 | call to Vars : map type | new-tests.go:88:11:88:46 | ...+... |
 | new-tests.go:95:18:95:45 | call to URLParam : string | new-tests.go:96:11:96:46 | ...+... |
@@ -46,7 +41,6 @@ nodes
 | new-tests.go:74:12:74:58 | call to Sprintf | semmle.label | call to Sprintf |
 | new-tests.go:78:18:78:24 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | new-tests.go:79:11:79:46 | ...+... | semmle.label | ...+... |
-| new-tests.go:81:37:81:43 | implicit dereference : URL | semmle.label | implicit dereference : URL |
 | new-tests.go:81:37:81:43 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | new-tests.go:82:11:82:46 | ...+... | semmle.label | ...+... |
 | new-tests.go:86:10:86:20 | call to Vars : map type | semmle.label | call to Vars : map type |

@@ -42,8 +42,8 @@ nodes
 | main.go:87:9:87:14 | selection of Path : string | semmle.label | selection of Path : string |
 | main.go:91:25:91:39 | call to getTarget2 | semmle.label | call to getTarget2 |
 subpaths
-| main.go:11:37:11:44 | redirect : string | BadRedirectCheck.go:3:18:3:22 | definition of redir : string | BadRedirectCheck.go:5:10:5:14 | redir : string | main.go:11:25:11:45 | call to sanitizeUrl : string |
-| main.go:77:36:77:38 | url : string | main.go:68:17:68:24 | definition of redirect : string | main.go:73:9:73:28 | call to Clean : string | main.go:77:25:77:39 | call to getTarget1 : string |
+| main.go:11:37:11:44 | redirect : string | BadRedirectCheck.go:3:18:3:22 | definition of redir : string | BadRedirectCheck.go:5:10:5:14 | redir : string | main.go:11:25:11:45 | call to sanitizeUrl |
+| main.go:77:36:77:38 | url : string | main.go:68:17:68:24 | definition of redirect : string | main.go:73:9:73:28 | call to Clean : string | main.go:77:25:77:39 | call to getTarget1 |
 #select
 | BadRedirectCheck.go:4:23:4:37 | ...==... | BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir : string | main.go:11:25:11:45 | call to sanitizeUrl | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | this value | main.go:11:25:11:45 | call to sanitizeUrl | redirect |
 | BadRedirectCheck.go:4:23:4:37 | ...==... | main.go:10:18:10:25 | argument corresponding to redirect : string | main.go:11:25:11:45 | call to sanitizeUrl | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:10:18:10:25 | argument corresponding to redirect | this value | main.go:11:25:11:45 | call to sanitizeUrl | redirect |
