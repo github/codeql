@@ -1,0 +1,5 @@
+name: integrationtest-kotlin-java-static-fields
+dependencies:
+  codeql/java-all: '*'
+  codeql/java-tests: '*'
+  codeql/java-queries: '*'

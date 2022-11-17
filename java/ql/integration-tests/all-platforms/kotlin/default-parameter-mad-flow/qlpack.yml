@@ -1,0 +1,5 @@
+name: integrationtest-default-parameter-mad-flow
+dependencies:
+  codeql/java-all: '*'
+  codeql/java-tests: '*'
+  codeql/java-queries: '*'
