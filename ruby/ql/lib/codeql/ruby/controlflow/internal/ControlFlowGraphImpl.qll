@@ -402,6 +402,7 @@ module Trees {
       exists(int i, WhenTree branch | branch = this.getBranch(i) |
         pred = branch and
         first(this.getBranch(i + 1), succ) and
+        c.isValidFor(branch) and
         c.(ConditionalCompletion).getValue() = false
       )
       or
@@ -1411,6 +1412,7 @@ module Trees {
 
     final override predicate last(AstNode last, Completion c) {
       last = this and
+      c.isValidFor(this) and
       c.(ConditionalCompletion).getValue() = false
       or
       last(this.getBody(), last, c) and

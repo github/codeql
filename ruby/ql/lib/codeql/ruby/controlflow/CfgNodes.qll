@@ -432,8 +432,36 @@ module ExprNodes {
     final ExprCfgNode getBody() { e.hasCfgChild(e.getBody(), this, result) }
   }
 
-  private class WhenClauseChildMapping extends NonExprChildMapping, WhenClause {
-    override predicate relevantChild(AstNode e) { e = [this.getBody(), this.getAPattern()] }
+  // `when` clauses need special treatment, since they are neither pre-order
+  // nor post-order
+  private class WhenClauseChildMapping extends WhenClause {
+    predicate patternReachesBasicBlock(int i, CfgNode cfnPattern, BasicBlock bb) {
+      exists(Expr pattern |
+        pattern = this.getPattern(i) and
+        cfnPattern.getNode() = pattern and
+        bb.getANode() = cfnPattern
+      )
+      or
+      exists(BasicBlock mid |
+        this.patternReachesBasicBlock(i, cfnPattern, mid) and
+        bb = mid.getASuccessor() and
+        not mid.getANode().getNode() = this
+      )
+    }
+
+    predicate bodyReachesBasicBlock(CfgNode cfnBody, BasicBlock bb) {
+      exists(Stmt body |
+        body = this.getBody() and
+        cfnBody.getNode() = body and
+        bb.getANode() = cfnBody
+      )
+      or
+      exists(BasicBlock mid |
+        this.bodyReachesBasicBlock(cfnBody, mid) and
+        bb = mid.getAPredecessor() and
+        not mid.getANode().getNode() = this
+      )
+    }
   }
 
   /** A control-flow node that wraps a `WhenClause` AST expression. */
@@ -443,10 +471,16 @@ module ExprNodes {
     override WhenClauseChildMapping e;
 
     /** Gets the body of this `when`-clause. */
-    final ExprCfgNode getBody() { e.hasCfgChild(e.getBody(), this, result) }
+    final ExprCfgNode getBody() {
+      result.getNode() = desugar(e.getBody()) and
+      e.bodyReachesBasicBlock(result, this.getBasicBlock())
+    }
 
     /** Gets the `i`th pattern this `when`-clause. */
-    final ExprCfgNode getPattern(int i) { result.getExpr() = e.getPattern(i) }
+    final ExprCfgNode getPattern(int i) {
+      result.getNode() = desugar(e.getPattern(i)) and
+      e.patternReachesBasicBlock(i, result, this.getBasicBlock())
+    }
   }
 
   /** A control-flow node that wraps a `CasePattern`. */
