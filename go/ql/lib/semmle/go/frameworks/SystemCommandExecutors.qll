@@ -20,7 +20,9 @@ private class ShellOrSudoExecution extends SystemCommandExecution::Range, DataFl
 
   override DataFlow::Node getCommandName() { result = this.getAnArgument() }
 
-  override predicate doubleDashIsSanitizing() { shellCommand.getStringValue().matches("%git") }
+  override predicate doubleDashIsSanitizing() {
+    shellCommand.getStringValue().matches("%" + ["git", "rsync"])
+  }
 }
 
 private class SystemCommandExecutors extends SystemCommandExecution::Range, DataFlow::CallNode {
@@ -126,7 +128,7 @@ private string getASudoCommand() {
       "fakeroot", "fakeroot-sysv", "su", "fakeroot-tcp", "fstab-decode", "jrunscript", "nohup",
       "parallel", "find", "pkexec", "sg", "sem", "runcon", "sudoedit", "runuser", "stdbuf",
       "system", "timeout", "xargs", "time", "awk", "gawk", "mawk", "nawk", "doas", "git", "access",
-      "vsys", "userv", "sus", "super"
+      "vsys", "userv", "sus", "super", "rsync"
     ]
 }
 
