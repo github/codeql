@@ -7,7 +7,7 @@
 
 ### Minor Analysis Improvements
 
- * The ReDoS libraries in `semmle.code.java.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+* The ReDoS libraries in `semmle.code.java.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
 * Added data flow summaries for tainted Android intents sent to activities via `Activity.startActivities`.
 
 ## 0.4.3
