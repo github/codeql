@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-11-17-05h57m47s.elated-leather-876cj415.12638aa487ef0b6975504d7d3b4d28600b32b5351aaf5d494f78985d25fa0c8b
 compiled: false
 lockVersion: 1.0.0
