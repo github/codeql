@@ -170,6 +170,24 @@ module ConstantValue {
 
   /** A constant `nil` value. */
   class ConstantNilValue extends ConstantValue, TNil { }
+
+  /** Gets the integer constant `x`. */
+  ConstantValue fromInt(int x) { result.getInt() = x }
+
+  /** Gets the float constant `x`. */
+  ConstantValue fromFloat(float x) { result.getFloat() = x }
+
+  /** Gets the string constant `x`. */
+  ConstantValue fromString(string x) { result.getString() = x }
+
+  /** Gets the symbol constant `x`. */
+  ConstantValue fromSymbol(string x) { result.getSymbol() = x }
+
+  /** Gets the regexp constant `x`. */
+  ConstantValue fromRegExp(string x) { result.getRegExp() = x }
+
+  /** Gets the string, symbol, or regexp constant `x`. */
+  ConstantValue fromStringlikeValue(string x) { result.getStringlikeValue() = x }
 }
 
 /** An access to a constant. */
@@ -252,6 +270,20 @@ private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAcces
   final override predicate hasGlobalScope() { value.matches("::%") }
 }
 
+private class ConstantWriteAccessSynth extends ConstantAccess, TConstantWriteAccessSynth {
+  private string value;
+
+  ConstantWriteAccessSynth() { this = TConstantWriteAccessSynth(_, _, value) }
+
+  final override string getName() {
+    if this.hasGlobalScope() then result = value.suffix(2) else result = value
+  }
+
+  final override Expr getScopeExpr() { synthChild(this, 0, result) }
+
+  final override predicate hasGlobalScope() { value.matches("::%") }
+}
+
 /**
  * A use (read) of a constant.
  *
@@ -323,7 +355,9 @@ class ConstantReadAccess extends ConstantAccess {
  */
 class ConstantWriteAccess extends ConstantAccess {
   ConstantWriteAccess() {
-    explicitAssignmentNode(toGenerated(this), _) or this instanceof TNamespace
+    explicitAssignmentNode(toGenerated(this), _) or
+    this instanceof TNamespace or
+    this instanceof TConstantWriteAccessSynth
   }
 
   override string getAPrimaryQlClass() { result = "ConstantWriteAccess" }

@@ -1,5 +1,7 @@
 | test.kt:5:3:7:3 | f | test.kt:5:3:7:3 | f$default |
+| test.kt:19:3:22:3 | f | test.kt:19:3:22:3 | f$default |
 | test.kt:34:14:36:3 | f | test.kt:34:14:36:3 | f$default |
+| test.kt:56:3:58:3 | test | test.kt:56:3:58:3 | test$default |
 | test.kt:68:1:80:1 | TestConstructor | test.kt:68:1:80:1 | TestConstructor |
 | test.kt:86:5:88:5 | f | test.kt:86:5:88:5 | f$default |
 | test.kt:106:7:108:7 | f | test.kt:106:7:108:7 | f$default |
@@ -13,3 +15,6 @@
 | test.kt:171:3:171:97 | f | test.kt:171:3:171:97 | f$default |
 | test.kt:179:3:179:46 | f | test.kt:179:3:179:46 | f$default |
 | test.kt:180:3:180:34 | f | test.kt:180:3:180:34 | f$default |
+| test.kt:184:1:188:1 | varargsTest | test.kt:184:1:188:1 | varargsTest$default |
+| test.kt:199:1:201:1 | varargsTestOnlySinkVarargs | test.kt:199:1:201:1 | varargsTestOnlySinkVarargs$default |
+| test.kt:212:1:215:1 | varargsTestOnlySinkRegularArgs | test.kt:212:1:215:1 | varargsTestOnlySinkRegularArgs$default |

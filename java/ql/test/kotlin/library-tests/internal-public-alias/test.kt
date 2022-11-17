@@ -10,3 +10,4 @@ public class Test {
   internal fun internalFun() = 3
 
 }
+

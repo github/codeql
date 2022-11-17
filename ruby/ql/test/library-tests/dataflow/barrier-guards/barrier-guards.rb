@@ -85,7 +85,7 @@ else
     foo
 end
 
-if foos.index(foo)r == nil
+if foos.index(foo) == nil
     foo
 else
     foo
@@ -101,4 +101,22 @@ if bars.include?(foo)
     foo
 else
     foo
+end
+
+if x or y then
+    foo
+else
+    bars
+end
+
+if x and y then
+    foo
+else
+    bars
+end
+
+if not x then
+    foo
+else
+    bars
 end

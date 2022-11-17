@@ -1,6 +1,6 @@
 import java.awt.Polygon
 import java.awt.Rectangle
-import kotlin.experimental.inv
+import kotlin.experimental.*
 fun topLevelMethod(x: Int, y: Int,
                    byx: Byte, byy: Byte,
                    sx: Short, sy: Short,
@@ -44,6 +44,9 @@ fun topLevelMethod(x: Int, y: Int,
     val by11 = byx >= byy
     val by12 = byx === byy
     val by13 = byx !== byy
+    val by14 = byx or byy
+    val by15 = byx and byy
+    val by16 = byx xor byy
 
     val s1 = 1.0
     val s2 = sx + sy
@@ -58,6 +61,9 @@ fun topLevelMethod(x: Int, y: Int,
     val s11 = sx >= sy
     val s12 = sx === sy
     val s13 = sx !== sy
+    val s14 = sx or sy
+    val s15 = sx and sy
+    val s16 = sx xor sy
 
     val l1 = 1.0
     val l2 = lx + ly
@@ -338,3 +344,15 @@ fun unaryExprs(i: Int, d: Double, b: Byte, s: Short, l: Long, f: Float) {
     +f
     -f
 }
+
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Byte.dec in java.lang.Byte %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Byte.inc in java.lang.Byte %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Byte.toInt in java.lang.Byte %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Int.dec in java.lang.Integer %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Int.inc in java.lang.Integer %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Int.rangeTo in java.lang.Integer %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Short.inc in java.lang.Short %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Short.dec in java.lang.Short %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Short.toInt in java.lang.Short %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Long.dec in java.lang.Long %
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Long.inc in java.lang.Long %

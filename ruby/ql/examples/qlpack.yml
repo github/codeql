@@ -3,4 +3,4 @@ groups:
   - ruby
   - examples
 dependencies:
-  codeql/ruby-all: "*"
+  codeql/ruby-all: ${workspace}

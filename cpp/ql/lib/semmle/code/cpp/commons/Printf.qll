@@ -1125,12 +1125,12 @@ class FormatLiteral extends Literal {
         exists(int dot, int afterdot |
           (if this.getPrecision(n) = 0 then dot = 0 else dot = 1) and
           (
-            (
-              if this.hasExplicitPrecision(n)
-              then afterdot = this.getPrecision(n)
-              else not this.hasImplicitPrecision(n)
-            ) and
-            afterdot = 6
+            if this.hasExplicitPrecision(n)
+            then afterdot = this.getPrecision(n)
+            else (
+              not this.hasImplicitPrecision(n) and
+              afterdot = 6
+            )
           ) and
           len = 1 + 309 + dot + afterdot
         ) and
@@ -1140,12 +1140,12 @@ class FormatLiteral extends Literal {
         exists(int dot, int afterdot |
           (if this.getPrecision(n) = 0 then dot = 0 else dot = 1) and
           (
-            (
-              if this.hasExplicitPrecision(n)
-              then afterdot = this.getPrecision(n)
-              else not this.hasImplicitPrecision(n)
-            ) and
-            afterdot = 6
+            if this.hasExplicitPrecision(n)
+            then afterdot = this.getPrecision(n)
+            else (
+              not this.hasImplicitPrecision(n) and
+              afterdot = 6
+            )
           ) and
           len = 1 + 1 + dot + afterdot + 1 + 1 + 3
         ) and
@@ -1155,12 +1155,12 @@ class FormatLiteral extends Literal {
         exists(int dot, int afterdot |
           (if this.getPrecision(n) = 0 then dot = 0 else dot = 1) and
           (
-            (
-              if this.hasExplicitPrecision(n)
-              then afterdot = this.getPrecision(n)
-              else not this.hasImplicitPrecision(n)
-            ) and
-            afterdot = 6
+            if this.hasExplicitPrecision(n)
+            then afterdot = this.getPrecision(n)
+            else (
+              not this.hasImplicitPrecision(n) and
+              afterdot = 6
+            )
           ) and
           // note: this could be displayed in the style %e or %f;
           //       however %f is only used when 'P > X >= -4'

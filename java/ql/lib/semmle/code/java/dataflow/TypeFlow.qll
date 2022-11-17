@@ -313,6 +313,7 @@ private module ForAll<RankedEdge Edge, TypePropagation T> {
    * Holds if `t` is a candidate bound for `n` that is also valid for data coming
    * through the edges into `n` ranked from `1` to `r`.
    */
+  pragma[assume_small_delta]
   private predicate flowJoin(int r, TypeFlowNode n, T::Typ t) {
     (
       r = 1 and candJoinType(n, t)

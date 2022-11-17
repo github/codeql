@@ -18,5 +18,6 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "$@ depends on $@ which may contain '..'", sink.getNode(),
-  "File system operation", source.getNode(), "unsanitized archive entry"
+select source.getNode(), source, sink,
+  "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
+  "file system operation"

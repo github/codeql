@@ -85,3 +85,12 @@ public class TestDefaultParameterReference {
   }
 
 }
+
+// Diagnostic Matches: Completion failure for type: org.jetbrains.annotations.NotNull
+// Diagnostic Matches: Unknown location for org.jetbrains.annotations.NotNull
+// Diagnostic Matches: Completion failure for type: kotlin.jvm.JvmOverloads
+// Diagnostic Matches: Completion failure for type: kotlin.jvm.JvmStatic
+// Diagnostic Matches: Completion failure for type: org.jetbrains.annotations.Nullable
+// Diagnostic Matches: Unknown location for kotlin.jvm.JvmOverloads
+// Diagnostic Matches: Unknown location for kotlin.jvm.JvmStatic
+// Diagnostic Matches: Unknown location for org.jetbrains.annotations.Nullable

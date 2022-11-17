@@ -7,7 +7,7 @@
  */
 
 import semmle.code.csharp.dataflow.ExternalFlow
-import internal.CaptureTypeBasedSummaryModels
+import utils.modelgenerator.internal.CaptureTypeBasedSummaryModels
 
 from TypeBasedFlowTargetApi api, string flow
 where flow = captureFlow(api)

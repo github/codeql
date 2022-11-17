@@ -116,7 +116,7 @@ ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(DataFlowParameter p) { none() }
+ParameterNode parameterNode(DataFlowParameter p) { result.getParameter() = p }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -158,6 +158,18 @@ module Content {
     FieldDecl getField() { result = f }
 
     override string toString() { result = f.toString() }
+  }
+
+  /** An element of a tuple at a specific index. */
+  class TupleContent extends Content, TTupleContent {
+    private int index;
+
+    TupleContent() { this = TTupleContent(index) }
+
+    /** Gets the index for this tuple element. */
+    int getIndex() { result = index }
+
+    override string toString() { result = "Tuple element at index " + index.toString() }
   }
 }
 

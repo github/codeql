@@ -2,6 +2,7 @@ package com.github.codeql
 
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.IrElement
@@ -130,6 +131,9 @@ class KotlinExtractorExtension(
             // The interceptor has already defined #compilation = *
             val compilation: Label<DbCompilation> = StringLabel("compilation")
             tw.writeCompilation_started(compilation)
+            tw.writeCompilation_info(compilation, "Kotlin Compiler Version", KotlinCompilerVersion.getVersion() ?: "<unknown>")
+            val extractor_name = this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
+            tw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
             if (compilationStartTime != null) {
                 tw.writeCompilation_compiler_times(compilation, -1.0, (System.currentTimeMillis()-compilationStartTime)/1000.0)
             }
@@ -138,6 +142,8 @@ class KotlinExtractorExtension(
             logger.info("Extraction started")
             logger.flush()
             logger.info("Extraction for invocation TRAP file $invocationTrapFile")
+            logger.flush()
+            logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
             logger.flush()
             logPeakMemoryUsage(logger, "before extractor")
             if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
@@ -400,7 +406,7 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
 
     fun getTempWriter(): BufferedWriter {
         if (this::tempFile.isInitialized) {
-            logger.error("Temp writer reinitiailised for $realFile")
+            logger.error("Temp writer reinitialized for $realFile")
         }
         tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
         return getWriter(tempFile)

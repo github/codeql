@@ -14,3 +14,6 @@ project(codeql)
 include(../misc/bazel/cmake/setup.cmake)
 
 include_generated(//swift/extractor:cmake)
+if (APPLE)
+    include_generated(//swift/xcode-autobuilder:cmake)
+endif ()

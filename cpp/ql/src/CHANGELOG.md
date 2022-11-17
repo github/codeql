@@ -1,3 +1,20 @@
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* Fixed a bug in `cpp/jsf/av-rule-76` that caused the query to miss results when an implicitly-defined copy constructor or copy assignment operator was generated.
+
+## 0.4.2
+
+### New Queries
+
+* Added a new medium-precision query, `cpp/comma-before-misleading-indentation`, which detects instances of whitespace that have readability issues.
+
+### Minor Analysis Improvements
+
+* The "Unterminated variadic call" (`cpp/unterminated-variadic-call`) query has been tuned to produce fewer false positive results.
+* Fixed false positives from the "Unused static function" (`cpp/unused-static-function`) query in files that had errors during compilation.
+
 ## 0.4.1
 
 ### Minor Analysis Improvements

@@ -4,13 +4,24 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.Stmt
 
-class DeferStmtBase extends Synth::TDeferStmt, Stmt {
-  override string getAPrimaryQlClass() { result = "DeferStmt" }
+module Generated {
+  class DeferStmt extends Synth::TDeferStmt, Stmt {
+    override string getAPrimaryQlClass() { result = "DeferStmt" }
 
-  BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromRaw(Synth::convertDeferStmtToRaw(this).(Raw::DeferStmt).getBody())
+    /**
+     * Gets the body of this defer statement.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    BraceStmt getImmediateBody() {
+      result =
+        Synth::convertBraceStmtFromRaw(Synth::convertDeferStmtToRaw(this).(Raw::DeferStmt).getBody())
+    }
+
+    /**
+     * Gets the body of this defer statement.
+     */
+    final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
-
-  final BraceStmt getBody() { result = getImmediateBody().resolve() }
 }

@@ -111,6 +111,35 @@ public class J
         Sink(a4.Y); // no flow
     }
 
+    private void M6(bool b)
+    {
+        var a = new int[1];
+        if (b)
+        {
+            a[0] = Source<int>(10);
+        }
+        else
+        {
+            a = new int[1];
+        }
+        Sink(a[0]); // $ hasValueFlow=10
+    }
+
+    private void M7(bool b)
+    {
+        var a = new System.Collections.Generic.List<int>();
+        if (b)
+        {
+            a.Add(Source<int>(11));
+            a.Clear();
+        }
+        else
+        {
+            a = new System.Collections.Generic.List<int>();
+        }
+        Sink(a[0]);
+    }
+
     public static void Sink(object o) { }
 
     static T Source<T>(object source) => throw null;

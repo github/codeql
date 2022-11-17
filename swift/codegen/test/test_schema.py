@@ -13,6 +13,8 @@ def test_empty_schema():
 
     assert data.classes == {}
     assert data.includes == set()
+    assert data.null is None
+    assert data.null_class is None
 
 
 def test_one_empty_class():
@@ -24,6 +26,7 @@ def test_one_empty_class():
     assert data.classes == {
         'MyClass': schema.Class('MyClass'),
     }
+    assert data.root_class is data.classes['MyClass']
 
 
 def test_two_empty_classes():
@@ -39,6 +42,7 @@ def test_two_empty_classes():
         'MyClass1': schema.Class('MyClass1', derived={'MyClass2'}),
         'MyClass2': schema.Class('MyClass2', bases=['MyClass1']),
     }
+    assert data.root_class is data.classes['MyClass1']
 
 
 def test_no_external_bases():
@@ -140,6 +144,7 @@ def test_no_mixed_groups_in_bases():
 
             class D(B, C):
                 pass
+
 
 #
 
@@ -335,7 +340,7 @@ def test_ipa_from_class():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}),
+        'A': schema.Class('A', derived={'B'}, ipa=True),
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(from_class="A")),
     }
 
@@ -376,7 +381,7 @@ def test_ipa_class_on():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}),
+        'A': schema.Class('A', derived={'B'}, ipa=True),
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(on_arguments={'a': 'A', 'i': 'int'})),
     }
 
@@ -406,6 +411,261 @@ def test_ipa_class_on_dangling():
         class data:
             @defs.synth.on_arguments(s=defs.string, a="A", i=defs.int)
             class B:
+                pass
+
+
+def test_ipa_class_hierarchy():
+    @schema.load
+    class data:
+        class Root:
+            pass
+
+        class Base(Root):
+            pass
+
+        class Intermediate(Base):
+            pass
+
+        @defs.synth.on_arguments(a=Base, i=defs.int)
+        class A(Intermediate):
+            pass
+
+        @defs.synth.from_class(Base)
+        class B(Base):
+            pass
+
+        class C(Root):
+            pass
+
+    assert data.classes == {
+        'Root': schema.Class('Root', derived={'Base', 'C'}),
+        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, ipa=True),
+        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, ipa=True),
+        'A': schema.Class('A', bases=['Intermediate'], ipa=schema.IpaInfo(on_arguments={'a': 'Base', 'i': 'int'})),
+        'B': schema.Class('B', bases=['Base'], ipa=schema.IpaInfo(from_class='Base')),
+        'C': schema.Class('C', bases=['Root']),
+    }
+
+
+def test_class_docstring():
+    @schema.load
+    class data:
+        class A:
+            """Very important class."""
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important class."])
+    }
+
+
+def test_property_docstring():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("very important property.")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important property."])])
+    }
+
+
+def test_class_docstring_newline():
+    @schema.load
+    class data:
+        class A:
+            """Very important
+            class."""
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important", "class."])
+    }
+
+
+def test_property_docstring_newline():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("""very important 
+            property.""")
+
+    assert data.classes == {
+        'A': schema.Class('A',
+                          properties=[schema.SingleProperty('x', 'int', description=["very important", "property."])])
+    }
+
+
+def test_class_docstring_stripped():
+    @schema.load
+    class data:
+        class A:
+            """
+
+            Very important class.
+
+            """
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important class."])
+    }
+
+
+def test_property_docstring_stripped():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("""
+            
+            very important property.
+            
+            """)
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[schema.SingleProperty('x', 'int', description=["very important property."])])
+    }
+
+
+def test_class_docstring_split():
+    @schema.load
+    class data:
+        class A:
+            """Very important class.
+
+            As said, very important."""
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important class.", "", "As said, very important."])
+    }
+
+
+def test_property_docstring_split():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("""very important property.
+            
+            Very very important.""")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[
+            schema.SingleProperty('x', 'int', description=["very important property.", "", "Very very important."])])
+    }
+
+
+def test_class_docstring_indent():
+    @schema.load
+    class data:
+        class A:
+            """
+            Very important class.
+              As said, very important.
+            """
+
+    assert data.classes == {
+        'A': schema.Class('A', doc=["Very important class.", "  As said, very important."])
+    }
+
+
+def test_property_docstring_indent():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.desc("""
+            very important property.
+              Very very important.
+            """)
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[
+            schema.SingleProperty('x', 'int', description=["very important property.", "  Very very important."])])
+    }
+
+
+def test_property_doc_override():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.doc("y")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[
+            schema.SingleProperty('x', 'int', doc="y")]),
+    }
+
+
+def test_property_doc_override_no_newlines():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: int | defs.doc("no multiple\nlines")
+
+
+def test_property_doc_override_no_trailing_dot():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: int | defs.doc("no dots please.")
+
+
+def test_class_default_doc_name():
+    @schema.load
+    class data:
+        @defs.ql.default_doc_name("b")
+        class A:
+            pass
+
+    assert data.classes == {
+        'A': schema.Class('A', default_doc_name="b"),
+    }
+
+
+def test_null_class():
+    @schema.load
+    class data:
+        class Root:
+            pass
+
+        @defs.use_for_null
+        class Null(Root):
+            pass
+
+    assert data.classes == {
+        'Root': schema.Class('Root', derived={'Null'}),
+        'Null': schema.Class('Null', bases=['Root']),
+    }
+    assert data.null == 'Null'
+    assert data.null_class is data.classes[data.null]
+
+
+def test_null_class_cannot_be_derived():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class Root:
+                pass
+
+            @defs.use_for_null
+            class Null(Root):
+                pass
+
+            class Impossible(Null):
+                pass
+
+
+def test_null_class_cannot_be_defined_multiple_times():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class Root:
+                pass
+
+            @defs.use_for_null
+            class Null1(Root):
+                pass
+
+            @defs.use_for_null
+            class Null2(Root):
                 pass
 
 

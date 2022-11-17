@@ -3,15 +3,26 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.pattern.Pattern
 
-class OptionalSomePatternBase extends Synth::TOptionalSomePattern, Pattern {
-  override string getAPrimaryQlClass() { result = "OptionalSomePattern" }
+module Generated {
+  class OptionalSomePattern extends Synth::TOptionalSomePattern, Pattern {
+    override string getAPrimaryQlClass() { result = "OptionalSomePattern" }
 
-  Pattern getImmediateSubPattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertOptionalSomePatternToRaw(this)
-            .(Raw::OptionalSomePattern)
-            .getSubPattern())
+    /**
+     * Gets the sub pattern of this optional some pattern.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Pattern getImmediateSubPattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertOptionalSomePatternToRaw(this)
+              .(Raw::OptionalSomePattern)
+              .getSubPattern())
+    }
+
+    /**
+     * Gets the sub pattern of this optional some pattern.
+     */
+    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
   }
-
-  final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 }

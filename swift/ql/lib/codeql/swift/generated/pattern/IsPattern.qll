@@ -4,28 +4,54 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.TypeRepr
 
-class IsPatternBase extends Synth::TIsPattern, Pattern {
-  override string getAPrimaryQlClass() { result = "IsPattern" }
+module Generated {
+  class IsPattern extends Synth::TIsPattern, Pattern {
+    override string getAPrimaryQlClass() { result = "IsPattern" }
 
-  TypeRepr getImmediateCastTypeRepr() {
-    result =
-      Synth::convertTypeReprFromRaw(Synth::convertIsPatternToRaw(this)
-            .(Raw::IsPattern)
-            .getCastTypeRepr())
+    /**
+     * Gets the cast type representation of this is pattern, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    TypeRepr getImmediateCastTypeRepr() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertIsPatternToRaw(this)
+              .(Raw::IsPattern)
+              .getCastTypeRepr())
+    }
+
+    /**
+     * Gets the cast type representation of this is pattern, if it exists.
+     */
+    final TypeRepr getCastTypeRepr() { result = getImmediateCastTypeRepr().resolve() }
+
+    /**
+     * Holds if `getCastTypeRepr()` exists.
+     */
+    final predicate hasCastTypeRepr() { exists(getCastTypeRepr()) }
+
+    /**
+     * Gets the sub pattern of this is pattern, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Pattern getImmediateSubPattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertIsPatternToRaw(this)
+              .(Raw::IsPattern)
+              .getSubPattern())
+    }
+
+    /**
+     * Gets the sub pattern of this is pattern, if it exists.
+     */
+    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
+
+    /**
+     * Holds if `getSubPattern()` exists.
+     */
+    final predicate hasSubPattern() { exists(getSubPattern()) }
   }
-
-  final TypeRepr getCastTypeRepr() { result = getImmediateCastTypeRepr().resolve() }
-
-  final predicate hasCastTypeRepr() { exists(getCastTypeRepr()) }
-
-  Pattern getImmediateSubPattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertIsPatternToRaw(this)
-            .(Raw::IsPattern)
-            .getSubPattern())
-  }
-
-  final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
-
-  final predicate hasSubPattern() { exists(getSubPattern()) }
 }

@@ -94,8 +94,8 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
   ],
   "Model as Data Generation Java/C# - CaptureModels": [
-    "java/ql/src/utils/model-generator/internal/CaptureModels.qll",
-    "csharp/ql/src/utils/model-generator/internal/CaptureModels.qll"
+    "java/ql/src/utils/modelgenerator/internal/CaptureModels.qll",
+    "csharp/ql/src/utils/modelgenerator/internal/CaptureModels.qll"
   ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
@@ -486,40 +486,6 @@
     "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll",
     "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll"
   ],
-  "ReDoS Util Python/JS/Ruby/Java": [
-    "javascript/ql/lib/semmle/javascript/security/regexp/NfaUtils.qll",
-    "python/ql/lib/semmle/python/security/regexp/NfaUtils.qll",
-    "ruby/ql/lib/codeql/ruby/security/regexp/NfaUtils.qll",
-    "java/ql/lib/semmle/code/java/security/regexp/NfaUtils.qll"
-  ],
-  "ReDoS Exponential Python/JS/Ruby/Java": [
-    "javascript/ql/lib/semmle/javascript/security/regexp/ExponentialBackTracking.qll",
-    "python/ql/lib/semmle/python/security/regexp/ExponentialBackTracking.qll",
-    "ruby/ql/lib/codeql/ruby/security/regexp/ExponentialBackTracking.qll",
-    "java/ql/lib/semmle/code/java/security/regexp/ExponentialBackTracking.qll"
-  ],
-  "ReDoS Polynomial Python/JS/Ruby/Java": [
-    "javascript/ql/lib/semmle/javascript/security/regexp/SuperlinearBackTracking.qll",
-    "python/ql/lib/semmle/python/security/regexp/SuperlinearBackTracking.qll",
-    "ruby/ql/lib/codeql/ruby/security/regexp/SuperlinearBackTracking.qll",
-    "java/ql/lib/semmle/code/java/security/regexp/SuperlinearBackTracking.qll"
-  ],
-  "RegexpMatching Python/JS/Ruby": [
-    "javascript/ql/lib/semmle/javascript/security/regexp/RegexpMatching.qll",
-    "python/ql/lib/semmle/python/security/regexp/RegexpMatching.qll",
-    "ruby/ql/lib/codeql/ruby/security/regexp/RegexpMatching.qll"
-  ],
-  "BadTagFilterQuery Python/JS/Ruby": [
-    "javascript/ql/lib/semmle/javascript/security/BadTagFilterQuery.qll",
-    "python/ql/lib/semmle/python/security/BadTagFilterQuery.qll",
-    "ruby/ql/lib/codeql/ruby/security/BadTagFilterQuery.qll"
-  ],
-  "OverlyLargeRange Python/JS/Ruby/Java": [
-    "javascript/ql/lib/semmle/javascript/security/OverlyLargeRangeQuery.qll",
-    "python/ql/lib/semmle/python/security/OverlyLargeRangeQuery.qll",
-    "ruby/ql/lib/codeql/ruby/security/OverlyLargeRangeQuery.qll",
-    "java/ql/lib/semmle/code/java/security/OverlyLargeRangeQuery.qll"
-  ],
   "CFG": [
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
     "ruby/ql/lib/codeql/ruby/controlflow/internal/ControlFlowGraphImplShared.qll",
@@ -599,6 +565,10 @@
   "Swift patterns test file": [
     "swift/ql/test/extractor-tests/patterns/patterns.swift",
     "swift/ql/test/library-tests/ast/patterns.swift"
+  ],
+  "Swift control flow test file": [
+    "swift/ql/test/library-tests/controlflow/graph/cfg.swift",
+    "swift/ql/test/library-tests/ast/cfg.swift"
   ],
   "IncompleteMultiCharacterSanitization JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitizationQuery.qll",

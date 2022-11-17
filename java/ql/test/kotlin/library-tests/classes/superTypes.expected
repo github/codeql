@@ -68,7 +68,9 @@ extendsOrImplements
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> | file://<external>/Object.class:0:0:0:0 | Object | extends |
 | file://<external>/SuperChain2.class:0:0:0:0 | SuperChain2<T5,String> | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> | extends |
 | generic_anonymous.kt:1:1:9:1 | Generic | file://<external>/Object.class:0:0:0:0 | Object | extends |
+| generic_anonymous.kt:1:1:9:1 | Generic<> | file://<external>/Object.class:0:0:0:0 | Object | extends |
 | generic_anonymous.kt:3:19:5:3 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object | extends |
+| generic_anonymous.kt:3:19:5:3 | new Object(...) { ... }<> | file://<external>/Object.class:0:0:0:0 | Object | extends |
 | generic_anonymous.kt:15:1:33:1 | Outer | file://<external>/Object.class:0:0:0:0 | Object | extends |
 | generic_anonymous.kt:16:5:18:5 | C0 | file://<external>/Object.class:0:0:0:0 | Object | extends |
 | generic_anonymous.kt:20:5:22:5 | C1 | file://<external>/Object.class:0:0:0:0 | Object | extends |
@@ -154,12 +156,17 @@ extendsOrImplements
 | file://<external>/C1$Local1.class:0:0:0:0 | Local1<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$Local2.class:0:0:0:0 | Local2<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/Generic.class:0:0:0:0 | Generic<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
+| file://<external>/Generic.class:0:0:0:0 | Generic<Integer> | generic_anonymous.kt:1:1:9:1 | Generic<> |
 | file://<external>/Generic.class:0:0:0:0 | Generic<String> | file://<external>/Object.class:0:0:0:0 | Object |
+| file://<external>/Generic.class:0:0:0:0 | Generic<String> | generic_anonymous.kt:1:1:9:1 | Generic<> |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/SuperChain2.class:0:0:0:0 | SuperChain2<T5,String> | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> |
 | generic_anonymous.kt:1:1:9:1 | Generic | file://<external>/Object.class:0:0:0:0 | Object |
+| generic_anonymous.kt:1:1:9:1 | Generic | generic_anonymous.kt:1:1:9:1 | Generic<> |
+| generic_anonymous.kt:1:1:9:1 | Generic<> | file://<external>/Object.class:0:0:0:0 | Object |
 | generic_anonymous.kt:3:19:5:3 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
+| generic_anonymous.kt:3:19:5:3 | new Object(...) { ... }<> | file://<external>/Object.class:0:0:0:0 | Object |
 | generic_anonymous.kt:15:1:33:1 | Outer | file://<external>/Object.class:0:0:0:0 | Object |
 | generic_anonymous.kt:25:9:31:9 |  | file://<external>/Object.class:0:0:0:0 | Object |
 | generic_anonymous.kt:26:13:26:37 | new Object(...) { ... } | file://<external>/Outer$C0.class:0:0:0:0 | C0<U2> |

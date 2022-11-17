@@ -93,8 +93,6 @@ class NosqlInjectionAtmConfig extends AtmConfig {
     source instanceof NosqlInjection::Source or TaintedObject::isSource(source, _)
   }
 
-  override predicate isKnownSink(DataFlow::Node sink) { sink instanceof NosqlInjection::Sink }
-
   override predicate isEffectiveSink(DataFlow::Node sinkCandidate) {
     not exists(SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate))
   }

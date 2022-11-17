@@ -28,5 +28,5 @@ where
     else highlight = sink.getNode()
   ) and
   sourceNode = source.getNode()
-select highlight, source, sink, "Command line depends on $@.", source.getNode(),
-  "a user-provided value"
+select highlight, source, sink, "This command line depends on a $@.", source.getNode(),
+  "user-provided value"

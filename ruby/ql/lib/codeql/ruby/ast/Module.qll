@@ -3,6 +3,7 @@ private import codeql.ruby.CFG
 private import internal.AST
 private import internal.Module
 private import internal.TreeSitter
+private import internal.Scope
 
 /**
  * A representation of a run-time `module` or `class` value.
@@ -23,9 +24,30 @@ class Module extends TModule {
   /** Gets an `include`d module. */
   Module getAnIncludedModule() { result = getAnIncludedModule(this) }
 
+  /** Gets the super class or an included or prepended module. */
+  Module getAnImmediateAncestor() {
+    result = [this.getSuperClass(), this.getAPrependedModule(), this.getAnIncludedModule()]
+  }
+
+  /** Gets a direct subclass or module including or prepending this one. */
+  Module getAnImmediateDescendent() { this = result.getAnImmediateAncestor() }
+
+  /** Gets a module that is transitively subclassed, included, or prepended by this module. */
+  pragma[inline]
+  Module getAnAncestor() { result = this.getAnImmediateAncestor*() }
+
+  /** Gets a module that transitively subclasses, includes, or prepends this module. */
+  pragma[inline]
+  Module getADescendent() { result = this.getAnImmediateDescendent*() }
+
   /** Holds if this module is a class. */
   pragma[noinline]
-  predicate isClass() { this.getADeclaration() instanceof ClassDeclaration }
+  predicate isClass() {
+    this.getADeclaration() instanceof ClassDeclaration
+    or
+    // If another class extends this, but we can't see the class declaration, assume it's a class
+    getSuperClass(_) = this
+  }
 
   /** Gets a textual representation of this module. */
   string toString() {
@@ -57,6 +79,99 @@ class Module extends TModule {
           weight, count(n.getAStmt()) desc, loc.getFile().getAbsolutePath(), loc.getStartLine(),
           loc.getStartColumn()
       )
+  }
+
+  /** Gets a constant or `self` access that refers to this module. */
+  private Expr getAnImmediateReferenceBase() {
+    resolveConstantReadAccess(result) = this
+    or
+    result.(SelfVariableAccess).getVariable() = this.getADeclaration().getModuleSelfVariable()
+  }
+
+  /** Gets a singleton class that augments this module object. */
+  SingletonClass getASingletonClass() { result.getValue() = this.getAnImmediateReferenceBase() }
+
+  /**
+   * Gets a singleton method on this module, either declared as a singleton method
+   * or an instance method on a singleton class.
+   *
+   * Does not take inheritance into account.
+   */
+  MethodBase getAnOwnSingletonMethod() {
+    result.(SingletonMethod).getObject() = this.getAnImmediateReferenceBase()
+    or
+    result = this.getASingletonClass().getAMethod().(Method)
+  }
+
+  /**
+   * Gets an instance method named `name` declared in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  Method getOwnInstanceMethod(string name) { result = this.getADeclaration().getMethod(name) }
+
+  /**
+   * Gets an instance method declared in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  Method getAnOwnInstanceMethod() { result = this.getADeclaration().getMethod(_) }
+
+  /**
+   * Gets the instance method named `name` available in this module, including methods inherited
+   * from ancestors.
+   */
+  Method getInstanceMethod(string name) { result = lookupMethod(this, name) }
+
+  /**
+   * Gets an instance method available in this module, including methods inherited
+   * from ancestors.
+   */
+  Method getAnInstanceMethod() { result = lookupMethod(this, _) }
+
+  /** Gets a constant or `self` access that refers to this module. */
+  Expr getAnImmediateReference() {
+    result = this.getAnImmediateReferenceBase()
+    or
+    result.(SelfVariableAccess).getVariable().getDeclaringScope() = this.getAnOwnSingletonMethod()
+  }
+
+  pragma[nomagic]
+  private string getEnclosingModuleName() {
+    exists(string qname |
+      qname = this.getQualifiedName() and
+      result = qname.regexpReplaceAll("::[^:]*$", "") and
+      qname != result
+    )
+  }
+
+  pragma[nomagic]
+  private string getOwnModuleName() {
+    result = this.getQualifiedName().regexpReplaceAll("^.*::", "")
+  }
+
+  /**
+   * Gets the enclosing module, as it appears in the qualified name of this module.
+   *
+   * For example, the parent module of `A::B` is `A`, and `A` itself has no parent module.
+   */
+  pragma[nomagic]
+  Module getParentModule() { result.getQualifiedName() = this.getEnclosingModuleName() }
+
+  /**
+   * Gets a module named `name` declared inside this one (not aliased), provided
+   * that such a module is defined or reopened in the current codebase.
+   *
+   * For example, for `A::B` the nested module named `C` would be `A::B::C`.
+   *
+   * Note that this is not the same as constant lookup. If `A::B::C` would resolve to a
+   * module whose qualified name is not `A::B::C`, then it will not be found by
+   * this predicate.
+   */
+  pragma[nomagic]
+  Module getNestedModule(string name) {
+    result.getParentModule() = this and
+    result.getOwnModuleName() = name
   }
 }
 
@@ -136,6 +251,46 @@ class ModuleBase extends BodyStmt, Scope, TModuleBase {
 
   /** Gets the representation of the run-time value of this module or class. */
   Module getModule() { none() }
+
+  /**
+   * Gets the `self` variable in the module-level scope.
+   *
+   * Does not include the `self` variable from any of the methods in the module.
+   */
+  SelfVariable getModuleSelfVariable() { result.getDeclaringScope() = this }
+
+  /** Gets the nearest enclosing `Namespace` or `Toplevel`, possibly this module itself. */
+  Namespace getNamespaceOrToplevel() {
+    result = this
+    or
+    not this instanceof Namespace and
+    result = this.getEnclosingModule().getNamespaceOrToplevel()
+  }
+
+  /**
+   * Gets an expression denoting the super class or an included or prepended module.
+   *
+   * For example, `C` is an ancestor expression of `M` in each of the following examples:
+   * ```rb
+   * class M < C
+   * end
+   *
+   * module M
+   *   include C
+   *   prepend C
+   * end
+   * ```
+   */
+  Expr getAnAncestorExpr() {
+    exists(MethodCall call |
+      call.getReceiver().(SelfVariableAccess).getVariable() = this.getModuleSelfVariable() and
+      call.getMethodName() = ["include", "prepend"] and
+      result = call.getArgument(0) and
+      scopeOfInclSynth(call) = this // only permit calls directly in the module scope, not in a block
+    )
+    or
+    result = this.(ClassDeclaration).getSuperclassExpr()
+  }
 }
 
 /**

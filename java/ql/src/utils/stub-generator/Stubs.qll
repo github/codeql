@@ -7,12 +7,17 @@
 
 import java
 
+/** Holds if `id` is a valid Java identifier. */
+bindingset[id]
+private predicate isValidIdentifier(string id) { id.regexpMatch("[\\w_$]+") }
+
 /** A type that should be in the generated code. */
 abstract private class GeneratedType extends ClassOrInterface {
   GeneratedType() {
     not this instanceof AnonymousClass and
     not this.isLocal() and
-    not this.getPackage() instanceof ExcludedPackage
+    not this.getPackage() instanceof ExcludedPackage and
+    isValidIdentifier(this.getName())
   }
 
   private string stubKeyword() {
@@ -108,7 +113,8 @@ abstract private class GeneratedType extends ClassOrInterface {
     not result.isPrivate() and
     not result.isPackageProtected() and
     not result instanceof StaticInitializer and
-    not result instanceof InstanceInitializer
+    not result instanceof InstanceInitializer and
+    isValidIdentifier(result.getName())
   }
 
   final Type getAGeneratedType() {

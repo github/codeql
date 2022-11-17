@@ -2,6 +2,7 @@ private import swift
 private import DataFlowPrivate
 private import TaintTrackingPublic
 private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.FlowSteps
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.CfgNodes
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -55,8 +56,16 @@ private module Cached {
       se = nodeTo.asExpr()
     )
     or
+    // flow through the read of a content that inherits taint
+    exists(DataFlow::ContentSet f |
+      readStep(nodeFrom, f, nodeTo) and
+      f.getAReadContent() instanceof TaintInheritingContent
+    )
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
   }
 
   /**

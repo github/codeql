@@ -15,6 +15,7 @@ comments
 | comments.kt:71:9:73:11 | /**\n         * An anonymous function comment\n         */ | /**\n         * An anonymous function comment\n         */ |
 | comments.kt:79:9:81:11 | /**\n         * A local function comment\n         */ | /**\n         * A local function comment\n         */ |
 | comments.kt:88:10:90:11 | /**\n         * An anonymous object comment\n         */ | /**\n         * An anonymous object comment\n         */ |
+| comments.kt:95:1:95:163 | // Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0% | // Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0% |
 commentOwners
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
@@ -39,6 +40,7 @@ commentNoOwners
 | comments.kt:1:1:1:25 | /** Kdoc with no owner */ |
 | comments.kt:24:9:24:25 | // A line comment |
 | comments.kt:28:5:30:6 | /*\n    A block comment\n    */ |
+| comments.kt:95:1:95:163 | // Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0% |
 commentSections
 | comments.kt:1:1:1:25 | /** Kdoc with no owner */ | Kdoc with no owner |
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n |

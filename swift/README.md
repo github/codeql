@@ -24,7 +24,9 @@ Notice you can run `bazel run :create-extractor-pack` if you already are in the 
 
 Using `codeql ... --search-path=swift/extractor-pack` will then pick up the Swift extractor. You can also use
 `--search-path=.`, as the extractor pack is mentioned in the root `codeql-workspace.yml`. Alternatively, you can
-set up the search path in [the per-user CodeQL configuration file](https://codeql.github.com/docs/codeql-cli/specifying-command-options-in-a-codeql-configuration-file/#using-a-codeql-configuration-file).
+set up the search path
+in [the per-user CodeQL configuration file](https://codeql.github.com/docs/codeql-cli/specifying-command-options-in-a-codeql-configuration-file/#using-a-codeql-configuration-file)
+.
 
 ## Code generation
 
@@ -53,3 +55,30 @@ options. This is known to have issues on non-Linux platforms.
 The `CMakeLists.txt` file allows to load the Swift extractor as a CMake project, which allows integration into a wider
 variety of IDEs. Building with CMake also creates a `compile_commands.json` compilation database that can be picked up
 by even more IDEs. In particular, opening the `swift` directory in VSCode should work.
+
+### Debugging codeql database creation
+
+If you want to debug a specific run of the extractor within an integration test or a complex `codeql database create`
+invocation, you can do so using [`gdbserver`][gdbserver] or [`lldb-server`][lldb-server].
+
+[gdbserver]: https://sourceware.org/gdb/onlinedocs/gdb/gdbserver-man.html
+
+[lldb-server]: https://lldb.llvm.org/man/lldb-server.html
+
+For example with `gdbserver`, you can
+
+```bash
+export CODEQL_EXTRACTOR_SWIFT_RUN_UNDER="gdbserver :1234"
+export CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER="SomeSwiftSource\.swift"  # can be any regex matching extractor args
+```
+
+before starting the database extraction, and when that source is encountered the extractor will be run under
+a `gdbserver` instance listening on port 1234. You can then attach to the running debugging server from `gdb` or your
+IDE. Please refer to your IDE's instructions for how to set up remote debugging.
+
+In particular for breakpoints to work you might need to setup the following remote path mapping:
+
+| Remote      | Local                                |
+|-------------|--------------------------------------|
+| `swift`     | `/absolute/path/to/codeql/swift`     |
+| `bazel-out` | `/absolute/path/to/codeql/bazel-out` |

@@ -3,6 +3,7 @@ import semmle.code.java.deadcode.DeadEnumConstant
 import semmle.code.java.deadcode.DeadCodeCustomizations
 import semmle.code.java.deadcode.DeadField
 import semmle.code.java.deadcode.EntryPoints
+private import semmle.code.java.frameworks.kotlin.Serialization
 
 /**
  * Holds if the given callable has any liveness causes.
@@ -273,14 +274,19 @@ class DeadMethod extends Callable {
 
 class RootdefCallable extends Callable {
   RootdefCallable() {
-    this.fromSource() and
+    this.getFile().isJavaSourceFile() and
     not this.(Method).overridesOrInstantiates(_)
   }
 
   Parameter unusedParameter() {
     exists(int i | result = this.getParameter(i) |
       not exists(result.getAnAccess()) and
-      not overrideAccess(this, i)
+      not overrideAccess(this, i) and
+      // Do not report unused parameters on extension parameters that are (companion) objects.
+      not (
+        result.isExtensionParameter() and
+        (result.getType() instanceof CompanionObject or result.getType() instanceof ClassObject)
+      )
     )
   }
 
@@ -309,10 +315,7 @@ class RootdefCallable extends Callable {
     this.isCompilerGenerated()
     or
     // Exclude Kotlin serialization constructors.
-    this.(Constructor)
-        .getParameterType(this.getNumberOfParameters() - 1)
-        .(RefType)
-        .hasQualifiedName("kotlinx.serialization.internal", "SerializationConstructorMarker")
+    this instanceof SerializationConstructor
   }
 }
 

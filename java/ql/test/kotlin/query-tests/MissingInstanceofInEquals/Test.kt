@@ -11,3 +11,15 @@ data class F(val x: Int) {
         return other != null && other::class == this::class
     }
 }
+
+data class G(val x: Int) {
+    override fun equals(other: Any?): Boolean {
+        return other != null && other.javaClass == this.javaClass
+    }
+}
+
+data class H(val x: Int) {
+    override fun equals(other: Any?): Boolean {
+        return other != null
+    }
+}

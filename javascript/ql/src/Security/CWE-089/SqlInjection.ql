@@ -25,5 +25,5 @@ where
     cfg instanceof NosqlInjection::Configuration
   ) and
   cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This query depends on $@.", source.getNode(),
-  "a user-provided value"
+select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
+  "user-provided value"
