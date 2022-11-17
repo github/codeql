@@ -3061,7 +3061,7 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
       else cc instanceof CallContextAny
     ) and
     sc instanceof SummaryCtxNone and
-    ap instanceof AccessPathNil
+    ap = TAccessPathNil(node.getDataFlowType())
   }
 
   predicate isAtSink() {
