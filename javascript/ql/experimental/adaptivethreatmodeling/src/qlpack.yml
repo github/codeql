@@ -8,4 +8,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.2.1-2022-09-06-08h55m54s.bubbly-basin-xpztl8fh.f3c3c9360a727959e428ecc6932257e6a546dc65d8a9baac525a49247123822d"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-11-17-03h54m44s.goofy-pepper-zl017wsh.7485e96b4de6ad3858d42e61ed91b613e2df9050bb26b5e0c3cf67a45e077573
