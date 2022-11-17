@@ -76,7 +76,7 @@ callArgs
 | KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:14:10:32 | new OuterGeneric<Integer>(...) | -2 |
 | KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:34:10:65 | InnerGeneric<String> | -3 |
 | KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:47:10:49 | a | 0 |
-| KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:53:10:63 | hello world | 1 |
+| KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:53:10:63 | "hello world" | 1 |
 | KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | KotlinUser.kt:11:13:11:31 | OuterGeneric<Integer> | -3 |
 | KotlinUser.kt:11:33:11:49 | new InnerNotGeneric<>(...) | KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | -2 |
 | KotlinUser.kt:11:33:11:49 | new InnerNotGeneric<>(...) | KotlinUser.kt:11:33:11:49 | InnerNotGeneric<> | -3 |
@@ -88,10 +88,10 @@ callArgs
 | KotlinUser.kt:13:31:13:52 | new InnerGeneric<String>(...) | KotlinUser.kt:13:31:13:52 | InnerGeneric<String> | -3 |
 | KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | KotlinUser.kt:14:26:14:63 | InnerStaticGeneric<String> | -3 |
 | KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | KotlinUser.kt:14:45:14:47 | a | 0 |
-| KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | KotlinUser.kt:14:51:14:61 | hello world | 1 |
+| KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | KotlinUser.kt:14:51:14:61 | "hello world" | 1 |
 | KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | KotlinUser.kt:15:13:15:39 | OuterManyParams<Integer,String> | -3 |
 | KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | KotlinUser.kt:15:29:15:29 | 1 | 0 |
-| KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | KotlinUser.kt:15:33:15:37 | hello | 1 |
+| KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | KotlinUser.kt:15:33:15:37 | "hello" | 1 |
 | KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | -2 |
 | KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | KotlinUser.kt:15:41:15:67 | MiddleManyParams<Float,Double> | -3 |
 | KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | KotlinUser.kt:15:58:15:61 | 1.0 | 0 |
@@ -103,23 +103,23 @@ callArgs
 | KotlinUser.kt:15:89:15:99 | shortValue(...) | KotlinUser.kt:15:89:15:89 | 1 | -1 |
 | KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:19:17:19 | a | -1 |
 | KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:34:17:34 | 0 | 0 |
-| KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:38:17:42 | hello | 1 |
+| KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:38:17:42 | "hello" | 1 |
 | KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:20:18:20 | a | -1 |
 | KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:20:18:50 | Character | -2 |
 | KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:35:18:35 | 0 | 0 |
-| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:39:18:43 | hello | 1 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:39:18:43 | "hello" | 1 |
 | KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:47:18:49 | a | 2 |
 | KotlinUser.kt:19:19:19:31 | identity(...) | KotlinUser.kt:19:19:19:19 | b | -1 |
 | KotlinUser.kt:19:19:19:31 | identity(...) | KotlinUser.kt:19:30:19:30 | 5 | 0 |
 | KotlinUser.kt:20:20:20:39 | identity(...) | KotlinUser.kt:20:20:20:21 | b2 | -1 |
-| KotlinUser.kt:20:20:20:39 | identity(...) | KotlinUser.kt:20:33:20:37 | hello | 0 |
+| KotlinUser.kt:20:20:20:39 | identity(...) | KotlinUser.kt:20:33:20:37 | "hello" | 0 |
 | KotlinUser.kt:21:19:21:37 | identity(...) | KotlinUser.kt:21:19:21:19 | c | -1 |
-| KotlinUser.kt:21:19:21:37 | identity(...) | KotlinUser.kt:21:31:21:35 | world | 0 |
+| KotlinUser.kt:21:19:21:37 | identity(...) | KotlinUser.kt:21:31:21:35 | "world" | 0 |
 | KotlinUser.kt:22:19:22:39 | identity(...) | KotlinUser.kt:22:19:22:19 | d | -1 |
-| KotlinUser.kt:22:19:22:39 | identity(...) | KotlinUser.kt:22:31:22:37 | goodbye | 0 |
+| KotlinUser.kt:22:19:22:39 | identity(...) | KotlinUser.kt:22:31:22:37 | "goodbye" | 0 |
 | KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:19:23:19 | e | -1 |
 | KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:33:23:33 | 1 | 0 |
-| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:37:23:41 | hello | 1 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:37:23:41 | "hello" | 1 |
 | KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:45:23:48 | 1.0 | 2 |
 | KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:51:23:53 | 1.0 | 3 |
 | KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:56:23:57 | 1 | 4 |

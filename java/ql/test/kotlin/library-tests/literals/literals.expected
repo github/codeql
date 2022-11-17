@@ -23,7 +23,7 @@
 | literals.kt:25:34:25:39 | -123.4 | DoubleLiteral |
 | literals.kt:26:30:26:32 | c | CharacterLiteral |
 | literals.kt:27:30:27:33 | \n | CharacterLiteral |
-| literals.kt:28:34:28:35 |  | StringLiteral |
-| literals.kt:29:35:29:45 | Some string | StringLiteral |
-| literals.kt:30:35:30:46 | Some\nstring | StringLiteral |
+| literals.kt:28:34:28:35 | "" | StringLiteral |
+| literals.kt:29:35:29:45 | "Some string" | StringLiteral |
+| literals.kt:30:35:30:46 | "Some\\nstring" | StringLiteral |
 | literals.kt:31:30:31:33 | null | NullLiteral |
