@@ -1142,21 +1142,21 @@ module Cryptography {
       abstract class RsaRange extends Range {
         final override string getName() { result = "RSA" }
 
-        final override int minimumSecureKeySize() { result = minSecureKeySizeAsymmetricNonEc() }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeRsa() }
       }
 
       /** A data-flow node that generates a new DSA key-pair. */
       abstract class DsaRange extends Range {
         final override string getName() { result = "DSA" }
 
-        final override int minimumSecureKeySize() { result = minSecureKeySizeAsymmetricNonEc() }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeDsa() }
       }
 
       /** A data-flow node that generates a new ECC key-pair. */
       abstract class EccRange extends Range {
         final override string getName() { result = "ECC" }
 
-        final override int minimumSecureKeySize() { result = minSecureKeySizeAsymmetricEc() }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeEcc() }
       }
     }
   }

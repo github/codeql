@@ -20,41 +20,121 @@ abstract class InsufficientKeySizeSink extends DataFlow::Node {
 private module Asymmetric {
   /** Provides models for non-elliptic-curve asymmetric cryptography. */
   private module NonEllipticCurve {
-    /** A source for an insufficient key size used in RSA, DSA, and DH algorithms. */
-    private class Source extends InsufficientKeySizeSource {
-      Source() { this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize() }
+    private module Rsa {
+      /** A source for an insufficient key size used in an RSA algorithm. */
+      private class Source extends InsufficientKeySizeSource {
+        Source() { this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize() }
 
-      override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
-    }
-
-    /** A sink for an insufficient key size used in RSA, DSA, and DH algorithms. */
-    private class Sink extends InsufficientKeySizeSink {
-      Sink() {
-        exists(KeyPairGenInit kpgInit, KeyPairGen kpg |
-          kpg.getAlgoName().matches(["RSA", "DSA", "DH"]) and
-          DataFlow::localExprFlow(kpg, kpgInit.getQualifier()) and
-          this.asExpr() = kpgInit.getKeySizeArg()
-        )
-        or
-        exists(Spec spec | this.asExpr() = spec.getKeySizeArg())
+        override predicate hasState(DataFlow::FlowState state) {
+          state = getMinKeySize().toString()
+        }
       }
 
-      override predicate hasState(DataFlow::FlowState state) { state = getMinKeySize().toString() }
-    }
+      /** A sink for an insufficient key size used in an RSA algorithm. */
+      private class Sink extends InsufficientKeySizeSink {
+        Sink() {
+          exists(KeyPairGenInit kpgInit, KeyPairGen kpg |
+            kpg.getAlgoName() = "RSA" and
+            DataFlow::localExprFlow(kpg, kpgInit.getQualifier()) and
+            this.asExpr() = kpgInit.getKeySizeArg()
+          )
+          or
+          exists(Spec spec | this.asExpr() = spec.getKeySizeArg())
+        }
 
-    /** Returns the minimum recommended key size for RSA, DSA, and DH algorithms. */
-    private int getMinKeySize() { result = minSecureKeySizeAsymmetricNonEc() }
-
-    /** An instance of an RSA, DSA, or DH algorithm specification. */
-    private class Spec extends ClassInstanceExpr {
-      Spec() {
-        this.getConstructedType() instanceof RsaKeyGenParameterSpec or
-        this.getConstructedType() instanceof DsaGenParameterSpec or
-        this.getConstructedType() instanceof DhGenParameterSpec
+        override predicate hasState(DataFlow::FlowState state) {
+          state = getMinKeySize().toString()
+        }
       }
 
-      /** Gets the `keysize` argument of this instance. */
-      Argument getKeySizeArg() { result = this.getArgument(0) }
+      /** Returns the minimum recommended key size for an RSA algorithm. */
+      private int getMinKeySize() { result = minSecureKeySizeRsa() }
+
+      /** An instance of an RSA algorithm specification. */
+      private class Spec extends ClassInstanceExpr {
+        Spec() { this.getConstructedType() instanceof RsaKeyGenParameterSpec }
+
+        /** Gets the `keysize` argument of this instance. */
+        Argument getKeySizeArg() { result = this.getArgument(0) }
+      }
+    }
+
+    private module Dsa {
+      /** A source for an insufficient key size used a DSA algorithm. */
+      private class Source extends InsufficientKeySizeSource {
+        Source() { this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize() }
+
+        override predicate hasState(DataFlow::FlowState state) {
+          state = getMinKeySize().toString()
+        }
+      }
+
+      /** A sink for an insufficient key size used in a DSA algorithm. */
+      private class Sink extends InsufficientKeySizeSink {
+        Sink() {
+          exists(KeyPairGenInit kpgInit, KeyPairGen kpg |
+            kpg.getAlgoName() = "DSA" and
+            DataFlow::localExprFlow(kpg, kpgInit.getQualifier()) and
+            this.asExpr() = kpgInit.getKeySizeArg()
+          )
+          or
+          exists(Spec spec | this.asExpr() = spec.getKeySizeArg())
+        }
+
+        override predicate hasState(DataFlow::FlowState state) {
+          state = getMinKeySize().toString()
+        }
+      }
+
+      /** Returns the minimum recommended key size for a DSA algorithm. */
+      private int getMinKeySize() { result = minSecureKeySizeDsa() }
+
+      /** An instance of a DSA algorithm specification. */
+      private class Spec extends ClassInstanceExpr {
+        Spec() { this.getConstructedType() instanceof DsaGenParameterSpec }
+
+        /** Gets the `keysize` argument of this instance. */
+        Argument getKeySizeArg() { result = this.getArgument(0) }
+      }
+    }
+
+    private module Dh {
+      /** A source for an insufficient key size used in a DH algorithm. */
+      private class Source extends InsufficientKeySizeSource {
+        Source() { this.asExpr().(IntegerLiteral).getIntValue() < getMinKeySize() }
+
+        override predicate hasState(DataFlow::FlowState state) {
+          state = getMinKeySize().toString()
+        }
+      }
+
+      /** A sink for an insufficient key size used in a DH algorithm. */
+      private class Sink extends InsufficientKeySizeSink {
+        Sink() {
+          exists(KeyPairGenInit kpgInit, KeyPairGen kpg |
+            kpg.getAlgoName() = "DH" and
+            DataFlow::localExprFlow(kpg, kpgInit.getQualifier()) and
+            this.asExpr() = kpgInit.getKeySizeArg()
+          )
+          or
+          exists(Spec spec | this.asExpr() = spec.getKeySizeArg())
+        }
+
+        override predicate hasState(DataFlow::FlowState state) {
+          state = getMinKeySize().toString()
+        }
+      }
+
+      /** Returns the minimum recommended key size for a DH algorithm. */
+      private int getMinKeySize() { result = minSecureKeySizeDh() }
+
+      /** An instance of an RSA, DSA, or DH algorithm specification. */
+      private class Spec extends ClassInstanceExpr {
+        Spec() { this.getConstructedType() instanceof DhGenParameterSpec }
+
+        /** Gets the `keysize` argument of this instance. */
+        Argument getKeySizeArg() { result = this.getArgument(0) }
+      }
     }
   }
 
@@ -88,7 +168,7 @@ private module Asymmetric {
     }
 
     /** Returns the minimum recommended key size for elliptic curve (EC) algorithms. */
-    private int getMinKeySize() { result = minSecureKeySizeAsymmetricEc() }
+    private int getMinKeySize() { result = minSecureKeySizeEcc() }
 
     /** Returns the key size from an EC algorithm's curve name string */
     bindingset[algorithm]
@@ -169,7 +249,7 @@ private module Symmetric {
   }
 
   /** Returns the minimum recommended key size for AES algorithms. */
-  private int getMinKeySize() { result = minSecureKeySizeSymmetric() }
+  private int getMinKeySize() { result = minSecureKeySizeAes() }
 
   /** A call to the `init` method declared in `javax.crypto.KeyGenerator`. */
   private class KeyGenInit extends MethodAccess {
