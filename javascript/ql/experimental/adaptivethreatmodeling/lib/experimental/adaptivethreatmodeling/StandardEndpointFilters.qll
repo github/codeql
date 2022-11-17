@@ -7,28 +7,6 @@
  */
 
 private import javascript
-private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
-private import semmle.javascript.heuristics.SyntacticHeuristics
-private import CoreKnowledge as CoreKnowledge
-import EndpointCharacteristics as EndpointCharacteristics
-
-/**
- * Holds if the node `n` is an argument to a function that has a manual model.
- */
-predicate isArgumentToModeledFunction(DataFlow::Node n) {
-  exists(DataFlow::InvokeNode invk, DataFlow::Node known |
-    invk.getAnArgument() = n and invk.getAnArgument() = known and isSomeModeledArgument(known)
-  )
-}
-
-/**
- * Holds if the node `n` is an argument that has a manual model.
- */
-predicate isSomeModeledArgument(DataFlow::Node n) {
-  CoreKnowledge::isKnownLibrarySink(n) or
-  CoreKnowledge::isKnownStepSrc(n) or
-  CoreKnowledge::isOtherModeledArgument(n, _)
-}
 
 /**
  * Holds if the data flow node is a (possibly indirect) argument of a likely external library call.
@@ -69,7 +47,7 @@ private DataFlow::SourceNode getACallback(DataFlow::ParameterNode p, DataFlow::T
  * Get calls for which we do not have the callee (i.e. the definition of the called function). This
  * acts as a heuristic for identifying calls to external library functions.
  */
-DataFlow::CallNode getACallWithoutCallee() {
+private DataFlow::CallNode getACallWithoutCallee() {
   forall(Function callee | callee = result.getACallee() | callee.getTopLevel().isExterns()) and
   not exists(DataFlow::ParameterNode param, DataFlow::FunctionNode callback |
     param.flowsTo(result.getCalleeNode()) and

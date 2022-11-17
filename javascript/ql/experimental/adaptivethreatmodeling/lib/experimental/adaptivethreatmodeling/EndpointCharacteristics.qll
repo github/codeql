@@ -144,10 +144,18 @@ private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
  */
 
 /**
+ * A characteristic that is an indicator of not being a sink of any type, because it's a modeled argument.
+ */
+abstract class OtherModeledArgumentCharacteristic extends EndpointCharacteristic {
+  bindingset[this]
+  OtherModeledArgumentCharacteristic() { any() }
+}
+
+/**
  * A characteristic that is an indicator of not being a sink of any type, because it's an argument to a function of a
  * builtin object.
  */
-abstract private class ArgumentToBuiltinFunctionCharacteristic extends EndpointCharacteristic {
+abstract private class ArgumentToBuiltinFunctionCharacteristic extends OtherModeledArgumentCharacteristic {
   bindingset[this]
   ArgumentToBuiltinFunctionCharacteristic() { any() }
 }
@@ -187,15 +195,17 @@ abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
   }
 }
 
-private class LodashUnderscore extends NotASinkCharacteristic {
-  LodashUnderscore() { this = "LodashUnderscoreArgument" }
+private class LodashUnderscoreCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
+  LodashUnderscoreCharacteristic() { this = "LodashUnderscoreArgument" }
 
   override predicate getEndpoints(DataFlow::Node n) {
     any(LodashUnderscore::Member m).getACall().getAnArgument() = n
   }
 }
 
-private class JQueryArgumentCharacteristic extends NotASinkCharacteristic {
+private class JQueryArgumentCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   JQueryArgumentCharacteristic() { this = "JQueryArgument" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -203,7 +213,8 @@ private class JQueryArgumentCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class ClientRequestCharacteristic extends NotASinkCharacteristic {
+private class ClientRequestCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   ClientRequestCharacteristic() { this = "ClientRequest" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -213,7 +224,8 @@ private class ClientRequestCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class PromiseDefinitionCharacteristic extends NotASinkCharacteristic {
+private class PromiseDefinitionCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   PromiseDefinitionCharacteristic() { this = "PromiseDefinition" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -223,13 +235,15 @@ private class PromiseDefinitionCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class CryptographicKeyCharacteristic extends NotASinkCharacteristic {
+private class CryptographicKeyCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   CryptographicKeyCharacteristic() { this = "CryptographicKey" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof CryptographicKey }
 }
 
-private class CryptographicOperationFlowCharacteristic extends NotASinkCharacteristic {
+private class CryptographicOperationFlowCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   CryptographicOperationFlowCharacteristic() { this = "CryptographicOperationFlow" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -237,7 +251,8 @@ private class CryptographicOperationFlowCharacteristic extends NotASinkCharacter
   }
 }
 
-private class LoggerMethodCharacteristic extends NotASinkCharacteristic {
+private class LoggerMethodCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   LoggerMethodCharacteristic() { this = "LoggerMethod" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -247,7 +262,8 @@ private class LoggerMethodCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class TimeoutCharacteristic extends NotASinkCharacteristic {
+private class TimeoutCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   TimeoutCharacteristic() { this = "Timeout" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -257,7 +273,8 @@ private class TimeoutCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class ReceiverStorageCharacteristic extends NotASinkCharacteristic {
+private class ReceiverStorageCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   ReceiverStorageCharacteristic() { this = "ReceiverStorage" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -267,7 +284,8 @@ private class ReceiverStorageCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class StringStartsWithCharacteristic extends NotASinkCharacteristic {
+private class StringStartsWithCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   StringStartsWithCharacteristic() { this = "StringStartsWith" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -277,7 +295,8 @@ private class StringStartsWithCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class StringEndsWithCharacteristic extends NotASinkCharacteristic {
+private class StringEndsWithCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   StringEndsWithCharacteristic() { this = "StringEndsWith" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -285,7 +304,8 @@ private class StringEndsWithCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class StringRegExpTestCharacteristic extends NotASinkCharacteristic {
+private class StringRegExpTestCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   StringRegExpTestCharacteristic() { this = "StringRegExpTest" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -295,7 +315,8 @@ private class StringRegExpTestCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class EventRegistrationCharacteristic extends NotASinkCharacteristic {
+private class EventRegistrationCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   EventRegistrationCharacteristic() { this = "EventRegistration" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -303,7 +324,8 @@ private class EventRegistrationCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class EventDispatchCharacteristic extends NotASinkCharacteristic {
+private class EventDispatchCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   EventDispatchCharacteristic() { this = "EventDispatch" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -311,7 +333,8 @@ private class EventDispatchCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class MembershipCandidateTestCharacteristic extends NotASinkCharacteristic {
+private class MembershipCandidateTestCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   MembershipCandidateTestCharacteristic() { this = "MembershipCandidateTest" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -321,7 +344,8 @@ private class MembershipCandidateTestCharacteristic extends NotASinkCharacterist
   }
 }
 
-private class FileSystemAccessCharacteristic extends NotASinkCharacteristic {
+private class FileSystemAccessCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   FileSystemAccessCharacteristic() { this = "FileSystemAccess" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -329,7 +353,8 @@ private class FileSystemAccessCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class DatabaseAccessCharacteristic extends NotASinkCharacteristic {
+private class DatabaseAccessCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   DatabaseAccessCharacteristic() { this = "DatabaseAccess" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -344,7 +369,7 @@ private class DatabaseAccessCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class DomCharacteristic extends NotASinkCharacteristic {
+private class DomCharacteristic extends NotASinkCharacteristic, OtherModeledArgumentCharacteristic {
   DomCharacteristic() { this = "DOM" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -352,7 +377,8 @@ private class DomCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class NextFunctionCallCharacteristic extends NotASinkCharacteristic {
+private class NextFunctionCallCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   NextFunctionCallCharacteristic() { this = "NextFunctionCall" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -363,7 +389,8 @@ private class NextFunctionCallCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class DojoRequireCharacteristic extends NotASinkCharacteristic {
+private class DojoRequireCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   DojoRequireCharacteristic() { this = "DojoRequire" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -373,7 +400,8 @@ private class DojoRequireCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class Base64ManipulationCharacteristic extends NotASinkCharacteristic {
+private class Base64ManipulationCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   Base64ManipulationCharacteristic() { this = "Base64Manipulation" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -475,7 +503,7 @@ abstract private class StandardEndpointFilterCharacteristic extends EndpointFilt
   }
 }
 
-private class IsArgumentToModeledFunctionCharacteristic extends StandardEndpointFilterCharacteristic {
+class IsArgumentToModeledFunctionCharacteristic extends StandardEndpointFilterCharacteristic {
   IsArgumentToModeledFunctionCharacteristic() { this = "argument to modeled function" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -487,7 +515,9 @@ private class IsArgumentToModeledFunctionCharacteristic extends StandardEndpoint
         or
         CoreKnowledge::isKnownStepSrc(known)
         or
-        CoreKnowledge::isOtherModeledArgument(known, _)
+        exists(OtherModeledArgumentCharacteristic characteristic |
+          characteristic.getEndpoints(known)
+        )
       )
     )
   }
