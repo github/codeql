@@ -2,8 +2,8 @@
 
 ### New Features
 
-* The new `string Compilation.getInfo(string)` provides access to some information about compilations.
 * Kotlin support is now in beta. This means that Java analyses will also include Kotlin code by default. Kotlin support can be disabled by setting `CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN` to `true` in the environment.
+* The new `string Compilation.getInfo(string)` predicate provides access to some information about compilations.
 
 ### Minor Analysis Improvements
 
