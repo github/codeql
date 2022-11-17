@@ -57,6 +57,12 @@ class ExportableAndroidComponent extends AndroidComponent {
     or
     this.hasIntentFilter() and
     not this.getAndroidComponentXmlElement().isNotExported()
+    or
+    exists(AndroidActivityAliasXmlElement e |
+      e = this.getAndroidComponentXmlElement() and
+      not e.isNotExported() and
+      e.hasAnIntentFilterElement()
+    )
   }
 }
 

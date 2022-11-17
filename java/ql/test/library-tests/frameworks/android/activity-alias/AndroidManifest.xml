@@ -52,7 +52,34 @@
             android:exported="true"
             android:label="@string/app_name"
             android:targetActivity="com.example.myapplication.AnotherActivity"></activity-alias>
+        <activity
+            android:name=".ExampleActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            ></activity>
 
+        <activity-alias
+            android:name=".ExampleAlias"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity=".ExampleActivity">
+        </activity-alias>
+
+        <activity
+            android:name=".Example2Activity"
+            android:exported="false"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity-alias
+            android:name=".Example2Alias"
+            android:label="@string/app_name"
+            android:targetActivity=".Example2Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <action android:name="android.intent.category.LAUNCHER"></action>
+            </intent-filter>
+        </activity-alias>
     </application>
 
 </manifest>
