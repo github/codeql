@@ -8,7 +8,6 @@ import javascript
 private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 import AdaptiveThreatModeling
-private import CoreKnowledge as CoreKnowledge
 
 class NosqlInjectionAtmConfig extends AtmConfig {
   NosqlInjectionAtmConfig() { this = "NosqlInjectionATMConfig" }
