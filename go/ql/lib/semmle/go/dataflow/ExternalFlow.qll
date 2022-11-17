@@ -124,10 +124,17 @@ predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 /** Holds if `row` is a summary model. */
 predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
+bindingset[input]
+private predicate getKind(string input, string kind, boolean generated) {
+  input.splitAt(":", 0) = "generated" and kind = input.splitAt(":", 1) and generated = true
+  or
+  not input.matches("%:%") and kind = input and generated = false
+}
+
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind
+  string output, string kind, boolean generated
 ) {
   exists(string row |
     sourceModel(row) and
@@ -139,14 +146,14 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind
+    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
   )
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind
+  string input, string kind, boolean generated
 ) {
   exists(string row |
     sinkModel(row) and
@@ -158,22 +165,22 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind
+    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
   )
 }
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind
+  string input, string output, string kind, boolean generated
 ) {
-  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, _)
+  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, generated, _)
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string row
+  string input, string output, string kind, boolean generated, string row
 ) {
   summaryModel(row) and
   row.splitAt(";", 0) = namespace and
@@ -185,14 +192,14 @@ predicate summaryModel(
   row.splitAt(";", 5) = ext and
   row.splitAt(";", 6) = input and
   row.splitAt(";", 7) = output and
-  row.splitAt(";", 8) = kind
+  exists(string k | row.splitAt(";", 8) = k and getKind(k, kind, generated))
 }
 
 /** Holds if `package` have CSV framework coverage. */
 private predicate packageHasCsvCoverage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _)
+  sourceModel(package, _, _, _, _, _, _, _, _) or
+  sinkModel(package, _, _, _, _, _, _, _, _) or
+  summaryModel(package, _, _, _, _, _, _, _, _, _)
 }
 
 /**
@@ -234,25 +241,25 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output |
+        string ext, string output, boolean generated |
         canonicalPackageHasASubpackage(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind)
+        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, generated)
       )
     or
     part = "sink" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input |
+        string ext, string input, boolean generated |
         canonicalPackageHasASubpackage(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind)
+        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, generated)
       )
     or
     part = "summary" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output |
+        string ext, string input, string output, boolean generated |
         canonicalPackageHasASubpackage(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind)
+        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, generated)
       )
   )
 }
@@ -261,9 +268,9 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
 module CsvValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, string part |
-      sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
+      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -279,9 +286,9 @@ module CsvValidation {
 
   private string getInvalidModelOutput() {
     exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _) and pred = "source"
+      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
@@ -291,8 +298,9 @@ module CsvValidation {
   }
 
   private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
+    exists(string row, string k, string kind | summaryModel(row) |
+      k = row.splitAt(";", 8) and
+      getKind(k, kind, _) and
       not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
@@ -334,11 +342,11 @@ module CsvValidation {
 
   private string getInvalidModelSignature() {
     exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _) and pred = "source"
+      sourceModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "source"
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _) and pred = "sink"
+      sinkModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "sink"
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "summary"
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "summary"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\./]*") and
       result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -371,9 +379,9 @@ pragma[nomagic]
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
 private string paramsStringPart(Function f, int i) {
@@ -421,7 +429,9 @@ SourceOrSinkElement interpretElement(
 predicate hasExternalSpecification(Function f) {
   f = any(SummarizedCallable sc).asFunction()
   or
-  exists(SourceOrSinkElement e | f = e.asEntity() | sourceElement(e, _, _) or sinkElement(e, _, _))
+  exists(SourceOrSinkElement e | f = e.asEntity() |
+    sourceElement(e, _, _, _) or sinkElement(e, _, _, _)
+  )
 }
 
 private predicate parseField(AccessPathToken c, DataFlow::FieldContent f) {

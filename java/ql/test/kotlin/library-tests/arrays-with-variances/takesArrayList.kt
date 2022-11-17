@@ -111,7 +111,5 @@ public class TakesArrayList {
 
 }
 
-// Diagnostic Matches: Incomplete annotation: @kotlin.Metadata(%)
-// Diagnostic Matches: Unknown location for kotlin.Metadata
 // Diagnostic Matches: Completion failure for type: org.jetbrains.annotations.NotNull
 // Diagnostic Matches: Unknown location for org.jetbrains.annotations.NotNull

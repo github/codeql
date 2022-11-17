@@ -56,6 +56,7 @@ predicate blockParent(Stmt empty, string msg) {
 
 from Stmt empty, string msg
 where
+  empty.getFile().isJavaSourceFile() and
   empty = emptyBody() and
   blockParent(empty, msg)
 select empty, msg + " Typographical error or missing code?"
