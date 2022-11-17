@@ -6,4 +6,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: "*"
-    codeql/javascript-experimental-atm-model: "0.2.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-11-17-01h06m10s.sharp-root-0v7bw9vr.9f76dd3cff7773d3500a67918cbf505678b246ca49cff805dc53f50918ff2c17
