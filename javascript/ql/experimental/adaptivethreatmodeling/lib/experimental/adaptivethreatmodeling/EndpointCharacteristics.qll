@@ -9,7 +9,6 @@ private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.TaintedPathCustomizations
 private import semmle.javascript.heuristics.SyntacticHeuristics as SyntacticHeuristics
 private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
-private import StandardEndpointFilters as StandardEndpointFilters
 private import semmle.javascript.security.dataflow.XxeCustomizations
 private import semmle.javascript.security.dataflow.RemotePropertyInjectionCustomizations
 private import semmle.javascript.security.dataflow.TypeConfusionThroughParameterTamperingCustomizations
@@ -154,6 +153,53 @@ private predicate isKnownStepSrc(DataFlow::Node n) {
   DataFlow::SharedFlowStep::step(n, _) or
   DataFlow::SharedFlowStep::step(n, _, _, _)
 }
+
+/**
+ * Holds if the data flow node is a (possibly indirect) argument of a likely external library call.
+ *
+ * This includes direct arguments of likely external library calls as well as nested object
+ * literals within those calls.
+ */
+private predicate flowsToArgumentOfLikelyExternalLibraryCall(DataFlow::Node n) {
+  n = getACallWithoutCallee().getAnArgument()
+  or
+  exists(DataFlow::SourceNode src | flowsToArgumentOfLikelyExternalLibraryCall(src) |
+    n = src.getAPropertyWrite().getRhs()
+  )
+  or
+  exists(DataFlow::ArrayCreationNode arr | flowsToArgumentOfLikelyExternalLibraryCall(arr) |
+    n = arr.getAnElement()
+  )
+}
+
+/**
+ * Get calls for which we do not have the callee (i.e. the definition of the called function). This
+ * acts as a heuristic for identifying calls to external library functions.
+ */
+private DataFlow::CallNode getACallWithoutCallee() {
+  forall(Function callee | callee = result.getACallee() | callee.getTopLevel().isExterns()) and
+  not exists(DataFlow::ParameterNode param, DataFlow::FunctionNode callback |
+    param.flowsTo(result.getCalleeNode()) and
+    callback = getACallback(param, DataFlow::TypeBackTracker::end())
+  )
+}
+
+/**
+ * Gets a node that flows to callback-parameter `p`.
+ */
+private DataFlow::SourceNode getACallback(DataFlow::ParameterNode p, DataFlow::TypeBackTracker t) {
+  t.start() and
+  result = p and
+  any(DataFlow::FunctionNode f).getLastParameter() = p and
+  exists(p.getACall())
+  or
+  exists(DataFlow::TypeBackTracker t2 | result = getACallback(p, t2).backtrack(t2, t))
+}
+
+/**
+ * Get calls which are likely to be to external non-built-in libraries.
+ */
+DataFlow::CallNode getALikelyExternalLibraryCall() { result = getACallWithoutCallee() }
 
 /*
  * Characteristics that are indicative of a sink.
@@ -582,7 +628,6 @@ abstract class EndpointFilterCharacteristic extends EndpointCharacteristic {
 
 /**
  * An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be a sink of any type.
- * Replaces https://github.com/github/codeql/blob/387e57546bf7352f7c1cfe781daa1a3799b7063e/javascript/ql/experimental/adaptivethreatmodeling/lib/experimental/adaptivethreatmodeling/StandardEndpointFilters.qll#LL15C24-L15C24
  */
 abstract private class StandardEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
   bindingset[this]
@@ -786,7 +831,7 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkNosqlCh
     //
     // ## Direct arguments to external library calls
     //
-    // The `StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall` endpoint filter
+    // The `flowsToArgumentOfLikelyExternalLibraryCall` endpoint filter
     // allows sink candidates which are within object literals or array literals, for example
     // `req.sendFile(_, { path: ENDPOINT })`.
     //
@@ -809,7 +854,7 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkNosqlCh
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not n = StandardEndpointFilters::getALikelyExternalLibraryCall().getAnArgument() and
+    not n = getALikelyExternalLibraryCall().getAnArgument() and
     not (
       SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(nosql|query)") or
       SyntacticHeuristics::isArgTo(n, "(?i)(query)")
@@ -878,7 +923,7 @@ private class NotAnArgumentToLikelyExternalLibraryCallOrHeuristicSinkCharacteris
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
       SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(sql|query)") or
       SyntacticHeuristics::isArgTo(n, "(?i)(query)") or
@@ -916,7 +961,7 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkTainted
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
       SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(file|folder|dir|absolute)")
       or
@@ -977,7 +1022,7 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkXssChar
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
       SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(html|innerhtml)")
       or
