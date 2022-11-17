@@ -2,7 +2,7 @@
 
 ### Minor Analysis Improvements
 
- * The ReDoS libraries in `semmle.code.python.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+ * The ReDoS libraries in `semmle.code.python.security.regexp` have been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
 
 ## 0.6.3
 
