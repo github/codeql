@@ -308,7 +308,65 @@ module ActiveSupport {
           preservesValue = true
         }
       }
-      // TODO: pick, pluck (they require Hash dataflow)
+
+      private string getKeyArgument(MethodCall mc, int i) {
+        mc.getMethodName() = ["pick", "pluck"] and
+        result = DataFlow::Content::getKnownElementIndex(mc.getArgument(i)).serialize()
+      }
+
+      private class PickSingleSummary extends SummarizedCallable {
+        private MethodCall mc;
+        private string key;
+
+        PickSingleSummary() {
+          key = getKeyArgument(mc, 0) and
+          this = "Enumerable.pick(" + key + ")" and
+          mc.getMethodName() = "pick" and
+          mc.getNumberOfArguments() = 1
+        }
+
+        override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[0].Element[" + key + "!]" and
+          output = "ReturnValue" and
+          preservesValue = true
+        }
+      }
+
+      private class PickMultipleSummary extends SummarizedCallable {
+        private MethodCall mc;
+
+        PickMultipleSummary() {
+          mc.getMethodName() = "pick" and
+          mc.getNumberOfArguments() > 1 and
+          exists(int maxKey |
+            maxKey = max(int j | exists(getKeyArgument(mc, j))) and
+            this =
+              "Enumerable.pick(" +
+                concat(int i, string key |
+                  key = getKeyArgument(mc, i)
+                  or
+                  key = "_" and
+                  not exists(getKeyArgument(mc, i)) and
+                  i in [0 .. maxKey]
+                |
+                  key, "," order by i
+                ) + ")"
+          )
+        }
+
+        override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          exists(string s, int i |
+            s = getKeyArgument(mc, i) and
+            input = "Argument[self].Element[0].Element[" + s + "!]" and
+            output = "ReturnValue.Element[" + i + "!]"
+          ) and
+          preservesValue = true
+        }
+      }
     }
   }
 

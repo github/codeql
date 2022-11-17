@@ -93,3 +93,15 @@ def m_index_with
 end
 
 m_index_with()
+
+def m_pick
+    values = [{ id: source("1"), name: source("David") }, { id: source("2"), name: source("Rafael") }]
+    sink(values.pick(:id)) # $ hasValueFlow=1
+    sink(values.pick(:name)) # $ hasValueFlow=David
+    sink(values.pick(:id, :name)[0]) # $ hasValueFlow=1
+    sink(values.pick(:id, :name)[1]) # $ hasValueFlow=David
+    sink(values.pick(:name, :id)[0]) # $ hasValueFlow=David
+    sink(values.pick(:name, :id)[1]) # $ hasValueFlow=1
+end
+
+m_pick()
