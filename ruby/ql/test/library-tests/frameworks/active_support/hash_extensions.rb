@@ -105,3 +105,14 @@ def m_pick
 end
 
 m_pick()
+
+def m_pluck(i)
+    values = [{ id: source("1"), name: source("David") }, { id: source("2"), name: source("Rafael") }]
+    sink(values.pluck(:name)[i]) # $ hasValueFlow=David $ hasValueFlow=Rafael
+    sink(values.pluck(:id, :name)[i][0]) # $ hasValueFlow=1 $ hasValueFlow=2
+    sink(values.pluck(:id, :name)[i][1]) # $ hasValueFlow=David $ hasValueFlow=Rafael
+    sink(values.pluck(:name, :id)[i][0]) # $ hasValueFlow=David $ hasValueFlow=Rafael
+    sink(values.pluck(:name, :id)[i][1]) # $ hasValueFlow=1 $ hasValueFlow=2
+end
+
+m_pluck(0)

@@ -367,6 +367,60 @@ module ActiveSupport {
           preservesValue = true
         }
       }
+
+      private class PluckSingleSummary extends SummarizedCallable {
+        private MethodCall mc;
+        private string key;
+
+        PluckSingleSummary() {
+          key = getKeyArgument(mc, 0) and
+          this = "Enumerable.pluck(" + key + ")" and
+          mc.getMethodName() = "pluck" and
+          mc.getNumberOfArguments() = 1
+        }
+
+        override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[any].Element[" + key + "!]" and
+          output = "ReturnValue.Element[any]" and
+          preservesValue = true
+        }
+      }
+
+      private class PluckMultipleSummary extends SummarizedCallable {
+        private MethodCall mc;
+
+        PluckMultipleSummary() {
+          mc.getMethodName() = "pluck" and
+          mc.getNumberOfArguments() > 1 and
+          exists(int maxKey |
+            maxKey = max(int j | exists(getKeyArgument(mc, j))) and
+            this =
+              "Enumerable.pluck(" +
+                concat(int i, string key |
+                  key = getKeyArgument(mc, i)
+                  or
+                  key = "_" and
+                  not exists(getKeyArgument(mc, i)) and
+                  i in [0 .. maxKey]
+                |
+                  key, "," order by i
+                ) + ")"
+          )
+        }
+
+        override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          exists(string s, int i |
+            s = getKeyArgument(mc, i) and
+            input = "Argument[self].Element[any].Element[" + s + "!]" and
+            output = "ReturnValue.Element[?].Element[" + i + "!]"
+          ) and
+          preservesValue = true
+        }
+      }
     }
   }
 
