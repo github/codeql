@@ -3,7 +3,7 @@
  * @description Evaluating JavaScript code containing a substring from a remote source may lead to remote code execution.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 6.1
+ * @security-severity 9.3
  * @precision high
  * @id swift/unsafe-js-eval
  * @tags security
