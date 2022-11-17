@@ -2886,7 +2886,7 @@ public class Large
     //   (
     //     if depth = 0
     //     then result = ""
-    //     else else result = "if (Prop > " + depth + ") { " + gen(depth - 1, var) + " } else Use(" + var + ");"
+    //     else result = "if (Prop > " + depth + ") { " + gen(depth - 1, var) + " } else Use(" + var + ");"
     //   )
     // }
     // 
