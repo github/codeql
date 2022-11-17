@@ -111,14 +111,6 @@ module PEP249 {
     private class CursorCall extends InstanceSource, DataFlow::CallCfgNode {
       CursorCall() { this.getFunction() = methodRef() }
     }
-
-    /** Gets a reference to a result of calling the `cursor` method on a database connection. */
-    private DataFlow::TypeTrackingNode methodResult(DataFlow::TypeTracker t) {
-      t.start() and
-      result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
-      or
-      exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
-    }
   }
 
   /**
