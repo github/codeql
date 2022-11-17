@@ -69,6 +69,11 @@ check("aliased_subpackage.subpackage_attr", aliased_subpackage.subpackage_attr, 
 import package.subpackage #$ imports=package.__init__ as=package
 check("package.package_attr", package.package_attr, "package_attr", globals()) #$ prints=package_attr
 
+# Deep imports
+import package.subpackage.submodule #$ imports=package.__init__ as=package
+check("package.subpackage.submodule.submodule_attr", package.subpackage.submodule.submodule_attr, "submodule_attr", globals()) #$ prints=submodule_attr
+
+
 if sys.version_info[0] == 3:
     # Importing from a namespace module.
     from namespace_package.namespace_module import namespace_module_attr

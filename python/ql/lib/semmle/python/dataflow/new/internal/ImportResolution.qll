@@ -231,7 +231,6 @@ module ImportResolution {
     // Reading an attribute on a module may return a submodule (or subpackage).
     exists(DataFlow::AttrRead ar, Module p, string attr_name |
       ar.accesses(getModuleReference(p), attr_name) and
-      attr_name = any(Module m0).getFile().getStem() and
       result = ar
     |
       isPreferredModuleForName(m.getFile(), p.getPackageName() + "." + attr_name + ["", ".__init__"])
