@@ -1,3 +1,3 @@
 import javascript
 import testUtilities.ConsistencyChecking
-import semmle.javascript.security.dataflow.UnsafeHtmlConstruction as UnsafeHtmlConstruction
+import semmle.javascript.security.dataflow.UnsafeHtmlConstructionQuery as UnsafeHtmlConstruction
