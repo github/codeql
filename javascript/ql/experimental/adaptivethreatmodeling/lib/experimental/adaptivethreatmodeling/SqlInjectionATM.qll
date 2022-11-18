@@ -21,10 +21,6 @@ class Configuration extends AtmConfig {
    * query, except additional sinks have been added using the sink endpoint filter.
    */
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof SqlInjection::Sink or isEffectiveSink(sink)
-  }
-
   override predicate isSanitizer(DataFlow::Node node) {
     super.isSanitizer(node) or
     node instanceof SqlInjection::Sanitizer

@@ -40,6 +40,13 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
   override predicate isSource(JS::DataFlow::Node source) { this.isKnownSource(source) }
 
   /**
+   * Holds if `sink` is a known taint sink or an "effective" sink (a candidate to be classified by an ML model).
+   */
+  override predicate isSink(JS::DataFlow::Node sink) {
+    this.isKnownSink(sink) or this.isEffectiveSink(sink)
+  }
+
+  /**
    * EXPERIMENTAL. This API may change in the future.
    *
    * Holds if `source` is a known source of flow.
