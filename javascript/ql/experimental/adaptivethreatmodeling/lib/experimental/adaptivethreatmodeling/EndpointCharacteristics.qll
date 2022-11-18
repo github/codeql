@@ -552,8 +552,7 @@ private class InIrrelevantFileCharacteristic extends StandardEndpointFilterChara
 
   override predicate getEndpoints(DataFlow::Node n) {
     // Ignore candidate sinks within externs, generated, library, and test code
-    ClassifyFiles::classify(n.getFile(), category) and
-    this = "in " + category + " file"
+    ClassifyFiles::classify(n.getFile(), category)
   }
 }
 
@@ -575,10 +574,9 @@ private class DatabaseAccessCallHeuristicCharacteristic extends NosqlInjectionSi
   DatabaseAccessCallHeuristicCharacteristic() { this = "matches database access call heuristic" }
 
   override predicate getEndpoints(DataFlow::Node n) {
-    exists(DataFlow::CallNode call | n = call.getAnArgument() |
+    exists(DataFlow::MethodCallNode call | n = call.getAnArgument() |
       // additional databases accesses that aren't modeled yet
-      call.(DataFlow::MethodCallNode).getMethodName() =
-        ["create", "createCollection", "createIndexes"]
+      call.getMethodName() = ["create", "createCollection", "createIndexes"]
     )
   }
 }
