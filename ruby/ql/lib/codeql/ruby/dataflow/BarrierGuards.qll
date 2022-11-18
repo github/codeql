@@ -35,8 +35,6 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
     stringConstCompareOr(guard, def, branch) and
     stringConstCompare(g.getLeftOperand(), testedNode, _)
   )
-  or
-  stringConstCompareAnd(guard, testedNode, branch)
 }
 
 /**
@@ -55,23 +53,6 @@ private predicate stringConstCompareOr(
   forall(CfgNode innerGuard | innerGuard = guard.getAnOperand() |
     stringConstCompare(innerGuard, def.getARead(), branch)
   )
-}
-
-/**
- * Holds if `guard` is an `and` expression containing a string comparison guard in either operand.
- * For example:
- *
- * ```rb
- * x == "foo" and other_condition()
- * other_condition() and x == "foo"
- * ```
- */
-private predicate stringConstCompareAnd(
-  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, CfgNode testedNode, boolean branch
-) {
-  guard.getExpr() instanceof LogicalAndExpr and
-  branch = true and
-  stringConstCompare(guard.getAnOperand(), testedNode, branch)
 }
 
 /**
