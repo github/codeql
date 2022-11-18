@@ -8,6 +8,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
 private import semmle.python.dataflow.new.TypeTracker
+private import semmle.python.dataflow.new.internal.DataFlowPrivate
 
 /**
  * Python modules and the way imports are resolved are... complicated. Here's a crash course in how
@@ -279,7 +280,7 @@ module ImportResolution {
     or
     // Flow (local or global) forward to a later reference to the module.
     exists(DataFlow::Node ref | ref = getModuleReference(m) |
-      DataFlow::localFlow(ref, result)
+      simpleLocalFlowStepForTypetracking(ref, result)
       or
       exists(DataFlow::ModuleVariableNode mv |
         mv.getAWrite() = ref and
