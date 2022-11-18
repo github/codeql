@@ -62,3 +62,16 @@ def m_extract!(x)
 end
 
 m_extract!(:c)
+
+def m_index_by
+    values = [source("a"), source("b"), source("c")]
+    h = values.index_by do |value|
+        sink value # $ hasValueFlow=a $ hasValueFlow=b $ hasValueFlow=c
+        make_key(value)
+    end
+
+    sink h[:foo] # $ hasValueFlow=a $ hasValueFlow=b $ hasValueFlow=c
+    sink h[:bar] # $ hasValueFlow=a $ hasValueFlow=b $ hasValueFlow=c
+end
+
+m_index_by()

@@ -145,19 +145,19 @@ dc.kt:
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
 #    0|           0: [StringTemplateExpr] "..."
-#    0|             0: [StringLiteral] ProtoMapValue(
-#    0|             1: [StringLiteral] bytes=
+#    0|             0: [StringLiteral] "ProtoMapValue("
+#    0|             1: [StringLiteral] "bytes="
 #    0|             2: [MethodAccess] toString(...)
 #    0|               -1: [TypeAccess] Arrays
 #    0|               0: [VarAccess] this.bytes
 #    0|                 -1: [ThisAccess] this
-#    0|             3: [StringLiteral] , 
-#    0|             4: [StringLiteral] strs=
+#    0|             3: [StringLiteral] ", "
+#    0|             4: [StringLiteral] "strs="
 #    0|             5: [MethodAccess] toString(...)
 #    0|               -1: [TypeAccess] Arrays
 #    0|               0: [VarAccess] this.strs
 #    0|                 -1: [ThisAccess] this
-#    0|             6: [StringLiteral] )
+#    0|             6: [StringLiteral] ")"
 #    1|     8: [Constructor] ProtoMapValue
 #-----|       4: (Parameters)
 #    1|         0: [Parameter] bytes

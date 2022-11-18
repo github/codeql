@@ -86,7 +86,8 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     group: str = ""
     pragmas: List[str] = field(default_factory=list)
-    ipa: Optional[IpaInfo] = None
+    ipa: Optional[Union[IpaInfo, bool]] = None
+    """^^^ filled with `True` for non-final classes with only synthesized final descendants """
     doc: List[str] = field(default_factory=list)
     default_doc_name: Optional[str] = None
 
@@ -247,6 +248,36 @@ def _toposort_classes_by_group(classes: typing.Dict[str, Class]) -> typing.Dict[
     return ret
 
 
+def _fill_ipa_information(classes: typing.Dict[str, Class]):
+    """ Take a dictionary where the `ipa` field is filled for all explicitly synthesized classes
+    and update it so that all non-final classes that have only synthesized final descendants
+    get `True` as` value for the `ipa` field
+    """
+    if not classes:
+        return
+
+    is_ipa: typing.Dict[str, bool] = {}
+
+    def fill_is_ipa(name: str):
+        if name not in is_ipa:
+            cls = classes[name]
+            for d in cls.derived:
+                fill_is_ipa(d)
+            if cls.ipa is not None:
+                is_ipa[name] = True
+            elif not cls.derived:
+                is_ipa[name] = False
+            else:
+                is_ipa[name] = all(is_ipa[d] for d in cls.derived)
+
+    root = next(iter(classes))
+    fill_is_ipa(root)
+
+    for name, cls in classes.items():
+        if cls.ipa is None and is_ipa[name]:
+            cls.ipa = True
+
+
 def load(m: types.ModuleType) -> Schema:
     includes = set()
     classes = {}
@@ -273,6 +304,8 @@ def load(m: types.ModuleType) -> Schema:
                 raise Error(f"Null class {null} already defined, second null class {name} not allowed")
             null = name
             cls.is_null_class = True
+
+    _fill_ipa_information(classes)
 
     return Schema(includes=includes, classes=_toposort_classes_by_group(classes), null=null)
 

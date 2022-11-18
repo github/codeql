@@ -25,6 +25,7 @@ using PackExprTag = void;
 using PackTypeTag = void;
 using ReifyPackExprTag = void;
 using PackExpansionTypeTag = void;
+using SequenceArchetypeTypeTag = void;
 // Placeholder types appear in ambiguous types but are anyway transformed to UnresolvedType
 using PlaceholderTypeTag = void;
 // SIL types that cannot really appear in the frontend run
@@ -32,6 +33,8 @@ using SILBlockStorageTypeTag = void;
 using SILBoxTypeTag = void;
 using SILFunctionTypeTag = void;
 using SILTokenTypeTag = void;
+// This is created during type checking and is only used for constraint checking
+using TypeVariableTypeTag = void;
 
 #define MAP_TYPE_TO_TAG(TYPE, TAG)    \
   template <>                         \

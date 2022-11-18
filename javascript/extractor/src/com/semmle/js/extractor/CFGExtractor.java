@@ -105,6 +105,7 @@ import com.semmle.ts.ast.ImportWholeDeclaration;
 import com.semmle.ts.ast.NamespaceDeclaration;
 import com.semmle.ts.ast.NonNullAssertion;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.data.Pair;
 import com.semmle.util.trap.TrapWriter;
@@ -471,6 +472,11 @@ public class CFGExtractor {
 
     @Override
     public Node visit(TypeAssertion nd, Void c) {
+      return nd.getExpression().accept(this, c);
+    }
+
+    @Override
+    public Node visit(SatisfiesExpr nd, Void c) {
       return nd.getExpression().accept(this, c);
     }
 
@@ -2023,6 +2029,13 @@ public class CFGExtractor {
 
     @Override
     public Void visit(TypeAssertion nd, SuccessorInfo c) {
+      visitSequence(nd.getExpression(), nd);
+      writeSuccessors(nd, c.getAllSuccessors());
+      return null;
+    }
+
+    @Override
+    public Void visit(SatisfiesExpr nd, SuccessorInfo c) {
       visitSequence(nd.getExpression(), nd);
       writeSuccessors(nd, c.getAllSuccessors());
       return null;

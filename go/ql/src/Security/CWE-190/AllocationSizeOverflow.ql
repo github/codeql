@@ -20,7 +20,7 @@ from
   DataFlow::Node allocsz
 where
   cfg.hasFlowPath(source, sink) and
-  cfg.isSink(sink.getNode(), allocsz)
+  cfg.isSinkWithAllocationSize(sink.getNode(), allocsz)
 select sink, source, sink,
   "This operation, which is used in an $@, involves a $@ and might overflow.", allocsz,
   "allocation", source, "potentially large value"

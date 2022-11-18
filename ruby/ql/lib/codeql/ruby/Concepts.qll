@@ -12,7 +12,45 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 
 /**
+ * A data-flow node that constructs a SQL statement.
+ *
+ * Often, it is worthy of an alert if a SQL statement is constructed such that
+ * executing it would be a security risk.
+ *
+ * If it is important that the SQL statement is executed, use `SqlExecution`.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `SqlConstruction::Range` instead.
+ */
+class SqlConstruction extends DataFlow::Node instanceof SqlConstruction::Range {
+  /** Gets the argument that specifies the SQL statements to be constructed. */
+  DataFlow::Node getSql() { result = super.getSql() }
+}
+
+/** Provides a class for modeling new SQL execution APIs. */
+module SqlConstruction {
+  /**
+   * A data-flow node that constructs a SQL statement.
+   *
+   * Often, it is worthy of an alert if a SQL statement is constructed such that
+   * executing it would be a security risk.
+   *
+   * If it is important that the SQL statement is executed, use `SqlExecution`.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `SqlConstruction` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the SQL statements to be constructed. */
+    abstract DataFlow::Node getSql();
+  }
+}
+
+/**
  * A data-flow node that executes SQL statements.
+ *
+ * If the context of interest is such that merely constructing a SQL statement
+ * would be valuable to report, consider using `SqlConstruction`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlExecution::Range` instead.
@@ -26,6 +64,9 @@ class SqlExecution extends DataFlow::Node instanceof SqlExecution::Range {
 module SqlExecution {
   /**
    * A data-flow node that executes SQL statements.
+   *
+   * If the context of interest is such that merely constructing a SQL
+   * statement would be valuable to report, consider using `SqlConstruction`.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `SqlExecution` instead.
