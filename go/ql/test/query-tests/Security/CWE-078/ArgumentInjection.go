@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func handler(req *http.Request) {
+func handler2(req *http.Request) {
 	path := req.URL.Query()["path"][0]
 	cmd := exec.Command("rsync", path, "/tmp")
 	cmd.Run()
