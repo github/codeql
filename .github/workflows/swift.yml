@@ -39,6 +39,7 @@ jobs:
               - 'swift/ql/lib/codeql/swift/elements/**'
               - 'swift/ql/lib/codeql/swift/generated/**'
               - 'swift/ql/test/extractor-tests/generated/**'
+              - 'swift/ql/.generated.list'
             ql:
               - 'github/workflows/swift.yml'
               - 'swift/**/*.ql'

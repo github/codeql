@@ -26,6 +26,9 @@ def ql_output_path(): return paths.swift_dir / "ql/lib/other/path"
 def ql_test_output_path(): return paths.swift_dir / "ql/test/path"
 
 
+def generated_registry_path(): return paths.swift_dir / "registry.list"
+
+
 def import_file(): return stub_path().with_suffix(".qll")
 
 
@@ -42,18 +45,19 @@ def qlgen_opts(opts):
     opts.ql_stub_output = stub_path()
     opts.ql_output = ql_output_path()
     opts.ql_test_output = ql_test_output_path()
+    opts.generated_registry = generated_registry_path()
     opts.ql_format = True
     opts.swift_dir = paths.swift_dir
     return opts
 
 
 @pytest.fixture
-def generate(input, qlgen_opts, renderer):
-    renderer.written = []
+def generate(input, qlgen_opts, renderer, render_manager):
+    render_manager.written = []
 
     def func(classes):
         input.classes = {cls.name: cls for cls in classes}
-        return run_generation(qlgen.generate, qlgen_opts, renderer)
+        return run_managed_generation(qlgen.generate, qlgen_opts, renderer, render_manager)
 
     return func
 
@@ -80,6 +84,7 @@ def generate_children_implementations(generate):
 
 def _filter_generated_classes(ret, output_test_files=False):
     files = {x for x in ret}
+    print(files)
     files.remove(import_file())
     files.remove(children_file())
     stub_files = set()
@@ -88,6 +93,7 @@ def _filter_generated_classes(ret, output_test_files=False):
     for f in files:
         try:
             stub_files.add(f.relative_to(stub_path()))
+            print(f)
         except ValueError:
             try:
                 base_files.add(f.relative_to(ql_output_path()))
@@ -396,10 +402,10 @@ def test_class_dir_imports(generate_import_list):
     ])
 
 
-def test_format(opts, generate, renderer, run_mock):
+def test_format(opts, generate, render_manager, run_mock):
     opts.codeql_binary = "my_fake_codeql"
     run_mock.return_value.stderr = "some\nlines\n"
-    renderer.written = [
+    render_manager.written = [
         pathlib.Path("x", "foo.ql"),
         pathlib.Path("bar.qll"),
         pathlib.Path("y", "baz.txt"),
@@ -411,11 +417,11 @@ def test_format(opts, generate, renderer, run_mock):
     ]
 
 
-def test_format_error(opts, generate, renderer, run_mock):
+def test_format_error(opts, generate, render_manager, run_mock):
     opts.codeql_binary = "my_fake_codeql"
     run_mock.return_value.stderr = "some\nlines\n"
     run_mock.return_value.returncode = 1
-    renderer.written = [
+    render_manager.written = [
         pathlib.Path("x", "foo.ql"),
         pathlib.Path("bar.qll"),
         pathlib.Path("y", "baz.txt"),
@@ -424,12 +430,7 @@ def test_format_error(opts, generate, renderer, run_mock):
         generate([schema.Class('A')])
 
 
-def test_empty_cleanup(generate, renderer):
-    generate([schema.Class('A')])
-    assert renderer.mock_calls[-1] == mock.call.cleanup(set())
-
-
-def test_non_empty_cleanup(opts, generate, renderer):
+def test_manage_parameters(opts, generate, renderer):
     ql_a = opts.ql_output / "A.qll"
     ql_b = opts.ql_output / "B.qll"
     stub_a = opts.ql_stub_output / "A.qll"
@@ -439,30 +440,22 @@ def test_non_empty_cleanup(opts, generate, renderer):
     test_c = opts.ql_test_output / "B.txt"
     write(ql_a)
     write(ql_b)
-    write(stub_a, "// generated\nprivate import bla\n\nclass foo extends Generated::bar {\n}\n")
-    write(stub_b, "bar\n")
+    write(stub_a)
+    write(stub_b)
     write(test_a)
     write(test_b)
     write(test_c)
     generate([schema.Class('A')])
-    assert renderer.mock_calls[-1] == mock.call.cleanup(
-        {ql_a, ql_b, stub_a, test_a, test_b})
+    assert renderer.mock_calls == [
+        mock.call.manage(generated={ql_a, ql_b, test_a, test_b, import_file()}, stubs={stub_a, stub_b},
+                         registry=opts.generated_registry)
+    ]
 
 
-def test_modified_stub_still_generated(qlgen_opts, renderer):
+def test_modified_stub_skipped(qlgen_opts, generate, render_manager):
     stub = qlgen_opts.ql_stub_output / "A.qll"
-    write(stub, "// generated\nprivate import bla\n\nclass foo extends Generated::bar, baz {\n}\n")
-    with pytest.raises(qlgen.ModifiedStubMarkedAsGeneratedError):
-        run_generation(qlgen.generate, qlgen_opts, renderer)
-
-
-def test_extended_stub_still_generated(qlgen_opts, renderer):
-    stub = qlgen_opts.ql_stub_output / "A.qll"
-    write(stub,
-          "// generated\nprivate import bla\n\nclass foo extends Generated::bar {\n}\n\n"
-          "class other {\n  other() { none() }\n}")
-    with pytest.raises(qlgen.ModifiedStubMarkedAsGeneratedError):
-        run_generation(qlgen.generate, qlgen_opts, renderer)
+    render_manager.is_customized_stub.side_effect = lambda f: f == stub
+    assert stub not in generate([schema.Class('A')])
 
 
 def test_test_missing_source(generate_tests):
