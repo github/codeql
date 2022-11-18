@@ -9,6 +9,7 @@ private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.InclusionTests
 private import codeql.ruby.ast.internal.Literal
 
+cached
 private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
     c = guard and
@@ -102,6 +103,7 @@ deprecated class StringConstCompare extends DataFlow::BarrierGuard,
   }
 }
 
+cached
 private predicate stringConstArrayInclusionCall(
   CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch
 ) {
