@@ -21,11 +21,6 @@ class Configuration extends AtmConfig {
    * except additional ATM sinks have been added to the `isSink` predicate.
    */
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof DomBasedXss::Sink or
-    isEffectiveSink(sink)
-  }
-
   override predicate isSanitizer(DataFlow::Node node) {
     super.isSanitizer(node) or
     node instanceof DomBasedXss::Sanitizer
