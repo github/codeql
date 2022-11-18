@@ -39,9 +39,8 @@ def opts():
 
 @pytest.fixture(autouse=True)
 def override_paths(tmp_path):
-    with (mock.patch("swift.codegen.lib.paths.swift_dir", tmp_path),
-          mock.patch("swift.codegen.lib.paths.exe_file", tmp_path / "exe"),
-          ):
+    with mock.patch("swift.codegen.lib.paths.swift_dir", tmp_path), \
+            mock.patch("swift.codegen.lib.paths.exe_file", tmp_path / "exe"):
         yield
 
 
