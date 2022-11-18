@@ -153,7 +153,7 @@ Requirements: `codeql` should both appear on your path.
         for (row) in results['#select']['tuples']:
             rows += "            \"" + row[0] + "\",\n"
 
-        return rows[:-2]
+        return rows[:-1]
 
 
     def asCsvModel(self, superclass, kind, rows):
