@@ -8,31 +8,24 @@ private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 import AdaptiveThreatModeling
 
-class DomBasedXssAtmConfig extends AtmConfig {
-  DomBasedXssAtmConfig() { this = "DomBasedXssATMConfig" }
+class Configuration extends AtmConfig {
+  Configuration() { this = "DomBasedXssATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof DomBasedXss::Source }
 
   override EndpointType getASinkEndpointType() { result instanceof XssSinkType }
-}
 
-/** DEPRECATED: Alias for DomBasedXssAtmConfig */
-deprecated class DomBasedXssATMConfig = DomBasedXssAtmConfig;
-
-/**
- * A taint-tracking configuration for reasoning about XSS vulnerabilities.
- *
- * This is largely a copy of the taint tracking configuration for the standard XSSThroughDom query,
- * except additional ATM sinks have been added to the `isSink` predicate.
- */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "DomBasedXssATMConfiguration" }
-
+  /**
+   * A taint-tracking configuration for reasoning about XSS vulnerabilities.
+   *
+   * This is largely a copy of the taint tracking configuration for the standard XSSThroughDom query,
+   * except additional ATM sinks have been added to the `isSink` predicate.
+   */
   override predicate isSource(DataFlow::Node source) { source instanceof DomBasedXss::Source }
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof DomBasedXss::Sink or
-    any(DomBasedXssAtmConfig cfg).isEffectiveSink(sink)
+    isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

@@ -19,16 +19,16 @@ private import experimental.adaptivethreatmodeling.XssATM as XssAtm
 
 string getAReasonSinkExcluded(DataFlow::Node sinkCandidate, Query query) {
   query instanceof NosqlInjectionQuery and
-  result = any(NosqlInjectionAtm::NosqlInjectionAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
+  result = any(NosqlInjectionAtm::Configuration cfg).getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof SqlInjectionQuery and
-  result = any(SqlInjectionAtm::SqlInjectionAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
+  result = any(SqlInjectionAtm::Configuration cfg).getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof TaintedPathQuery and
-  result = any(TaintedPathAtm::TaintedPathAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
+  result = any(TaintedPathAtm::Configuration cfg).getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof XssQuery and
-  result = any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
+  result = any(XssAtm::Configuration cfg).getAReasonSinkExcluded(sinkCandidate)
 }
 
 pragma[inline]

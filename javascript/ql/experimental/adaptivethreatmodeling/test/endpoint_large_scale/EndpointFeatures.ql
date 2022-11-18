@@ -17,10 +17,10 @@ private import experimental.adaptivethreatmodeling.EndpointCharacteristics as En
 
 query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
   (
-    not exists(any(NosqlInjectionAtm::NosqlInjectionAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
-    not exists(any(SqlInjectionAtm::SqlInjectionAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
-    not exists(any(TaintedPathAtm::TaintedPathAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
-    not exists(any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
+    not exists(any(NosqlInjectionAtm::Configuration cfg).getAReasonSinkExcluded(endpoint)) or
+    not exists(any(SqlInjectionAtm::Configuration cfg).getAReasonSinkExcluded(endpoint)) or
+    not exists(any(TaintedPathAtm::Configuration cfg).getAReasonSinkExcluded(endpoint)) or
+    not exists(any(XssAtm::Configuration cfg).getAReasonSinkExcluded(endpoint)) or
     any(EndpointCharacteristics::IsArgumentToModeledFunctionCharacteristic characteristic)
         .getEndpoints(endpoint)
   ) and

@@ -23,24 +23,24 @@ import experimental.adaptivethreatmodeling.XssATM as XssAtm
 
 query predicate nosqlFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof NosqlInjection::Sink and
-  reason = any(NosqlInjectionAtm::NosqlInjectionAtmConfig cfg).getAReasonSinkExcluded(endpoint) and
+  reason = any(NosqlInjectionAtm::Configuration cfg).getAReasonSinkExcluded(endpoint) and
   not reason = ["argument to modeled function", "modeled sink", "modeled database access"]
 }
 
 query predicate sqlFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof SqlInjection::Sink and
-  reason = any(SqlInjectionAtm::SqlInjectionAtmConfig cfg).getAReasonSinkExcluded(endpoint) and
+  reason = any(SqlInjectionAtm::Configuration cfg).getAReasonSinkExcluded(endpoint) and
   reason != "argument to modeled function"
 }
 
 query predicate taintedPathFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof TaintedPath::Sink and
-  reason = any(TaintedPathAtm::TaintedPathAtmConfig cfg).getAReasonSinkExcluded(endpoint) and
+  reason = any(TaintedPathAtm::Configuration cfg).getAReasonSinkExcluded(endpoint) and
   reason != "argument to modeled function"
 }
 
 query predicate xssFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof DomBasedXss::Sink and
-  reason = any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(endpoint) and
+  reason = any(XssAtm::Configuration cfg).getAReasonSinkExcluded(endpoint) and
   reason != "argument to modeled function"
 }
