@@ -29,7 +29,7 @@ import EndpointCharacteristics as EndpointCharacteristics
  * `isAdditionalFlowStep` with a more generalised definition of additional edges. See
  * `NosqlInjectionATM.qll` for an example of doing this.
  */
-abstract class AtmConfig extends string {
+abstract class AtmConfig extends JS::TaintTracking::Configuration {
   bindingset[this]
   AtmConfig() { any() }
 

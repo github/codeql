@@ -14,15 +14,15 @@ from string queryName, AtmConfig c, EndpointType e
 where
   (
     queryName = "SqlInjection" and
-    c instanceof SqlInjectionAtm::SqlInjectionAtmConfig
+    c instanceof SqlInjectionAtm::Configuration
     or
     queryName = "NosqlInjection" and
-    c instanceof NosqlInjectionAtm::NosqlInjectionAtmConfig
+    c instanceof NosqlInjectionAtm::Configuration
     or
     queryName = "TaintedPath" and
-    c instanceof TaintedPathAtm::TaintedPathAtmConfig
+    c instanceof TaintedPathAtm::Configuration
     or
-    queryName = "Xss" and c instanceof XssAtm::DomBasedXssAtmConfig
+    queryName = "Xss" and c instanceof XssAtm::Configuration
   ) and
   e = c.getASinkEndpointType()
 select queryName, e.getEncoding() as label
