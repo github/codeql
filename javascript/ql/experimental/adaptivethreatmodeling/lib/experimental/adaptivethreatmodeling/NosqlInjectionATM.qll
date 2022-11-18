@@ -25,8 +25,6 @@ class Configuration extends AtmConfig {
    * generalised to cover the sinks predicted by ATM.
    */
 
-  override predicate isSource(DataFlow::Node source) { source instanceof NosqlInjection::Source }
-
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
     TaintedObject::isSource(source, label)
   }

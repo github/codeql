@@ -1,6 +1,7 @@
 /**
  * For internal use only.
  *
+ * A taint-tracking configuration for reasoning about XSS vulnerabilities.
  * Defines shared code used by the XSS boosted query.
  */
 
@@ -15,13 +16,10 @@ class Configuration extends AtmConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof XssSinkType }
 
-  /**
-   * A taint-tracking configuration for reasoning about XSS vulnerabilities.
-   *
+  /*
    * This is largely a copy of the taint tracking configuration for the standard XSSThroughDom query,
    * except additional ATM sinks have been added to the `isSink` predicate.
    */
-  override predicate isSource(DataFlow::Node source) { source instanceof DomBasedXss::Source }
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof DomBasedXss::Sink or

@@ -34,6 +34,12 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
   AtmConfig() { any() }
 
   /**
+   * Holds if `source` is a relevant taint source. When sources are not boosted, `isSource` is equivalent to
+   * `isKnownSource` (i.e there are no "effective" sources to be classified by an ML model).
+   */
+  override predicate isSource(JS::DataFlow::Node source) { this.isKnownSource(source) }
+
+  /**
    * EXPERIMENTAL. This API may change in the future.
    *
    * Holds if `source` is a known source of flow.
