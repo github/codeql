@@ -26,7 +26,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         uses: actions/cache@v3
         with:
-          path: '*/ql/src/.cache'
+          path: '**/.cache'
           key: codeql-compile-pr-${{ github.sha }} # deliberately not using the `compile-compile-main` keys here.
           restore-keys: |
             codeql-compile-${{ github.base_ref }}-${{ env.merge-base }}
@@ -36,7 +36,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/cache@v3
         with:
-          path: '*/ql/src/.cache'
+          path: '**/.cache'
           key: codeql-compile-${{ github.ref_name }}-${{ github.sha }} # just fill on main
           restore-keys: | # restore from another random commit, to speed up compilation.
             codeql-compile-${{ github.ref_name }}- 
@@ -51,7 +51,7 @@ jobs:
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.event_name == 'pull_request' }}
         shell: bash
-        run: codeql query compile -j0 */ql/src --keep-going --warnings=error --check-only
+        run: codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --check-only
       - name: compile queries - full
         # do full compile if running on main - this populates the cache
         if : ${{ github.event_name != 'pull_request' }}
@@ -59,13 +59,13 @@ jobs:
         run: |
           # Move all the existing cache into another folder, so we only preserve the cache for the current queries.
           mkdir -p ${COMBINED_CACHE_DIR}
-          rm */ql/src/.cache/{lock,size}
+          rm -f */ql/{src,examples}/.cache/{lock,size} # -f to avoid errors if the cache is empty.
           # copy the contents of the .cache folders into the combined cache folder.
-          cp -r */ql/src/.cache/* ${COMBINED_CACHE_DIR}/
+          cp -r */ql/{src,examples}/.cache/* ${COMBINED_CACHE_DIR}/ || : # ignore missing files
           # clean up the .cache folders
-          rm -rf */ql/src/.cache/*
+          rm -rf */ql/{src,examples}/.cache/*
 
           # compile the queries
-          codeql query compile -j0 */ql/src --keep-going --warnings=error --compilation-cache ${COMBINED_CACHE_DIR}
+          codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --compilation-cache ${COMBINED_CACHE_DIR}
         env: 
           COMBINED_CACHE_DIR: ${{ github.workspace }}/compilation-dir
