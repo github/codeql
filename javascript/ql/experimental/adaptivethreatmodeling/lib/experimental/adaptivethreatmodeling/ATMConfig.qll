@@ -7,6 +7,7 @@
 private import javascript as JS
 import EndpointTypes
 import EndpointCharacteristics as EndpointCharacteristics
+import AdaptiveThreatModeling::ATM::ResultsInfo as AtmResultsInfo
 
 /**
  * EXPERIMENTAL. This API may change in the future.
@@ -140,6 +141,17 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
    * A cut-off value of 1 produces all alerts including those that are likely false-positives.
    */
   float getScoreCutoff() { result = 0.0 }
+
+  /**
+   * Holds if there's an ATM alert (a flow path from `source` to `sink` with ML-determined likelihood `score`) according
+   * to this ML-boosted configuration, whereas the unboosted base query is unlikely to report an alert for this source
+   * and sink.
+   */
+  predicate getAlerts(JS::DataFlow::PathNode source, JS::DataFlow::PathNode sink, float score) {
+    this.hasFlowPath(source, sink) and
+    not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
+    score = AtmResultsInfo::getScoreForFlow(source.getNode(), sink.getNode())
+  }
 }
 
 /** DEPRECATED: Alias for AtmConfig */
