@@ -33,11 +33,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
-      - name: Check QL compilation
-        run: |
-          codeql query compile --check-only --threads=0 --ram 5000 --warnings=error "ql/src" "ql/examples"
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
   qlupgrade:
     runs-on: ubuntu-latest
     steps:
