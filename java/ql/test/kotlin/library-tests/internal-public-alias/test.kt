@@ -11,5 +11,3 @@ public class Test {
 
 }
 
-// Diagnostic Matches: Incomplete annotation: @kotlin.Metadata(%)
-// Diagnostic Matches: Unknown location for kotlin.Metadata

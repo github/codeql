@@ -75,6 +75,7 @@ predicate isMustBeQualifierMockingMethod(Method m) {
 
 predicate relevantMethodCall(MethodAccess ma, Method m) {
   // For "return value ignored", all method calls are relevant.
+  not ma.getFile().isKotlinSourceFile() and
   ma.getMethod() = m and
   not m.getReturnType().hasName("void") and
   (not isMockingMethod(m) or isMustBeQualifierMockingMethod(m)) and

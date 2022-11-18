@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -162,6 +163,13 @@ namespace Semmle.Extraction.CSharp.Entities
                     operatorName = "false";
                     break;
                 default:
+                    var match = Regex.Match(methodName, "^op_Checked(.*)$");
+                    if (match.Success)
+                    {
+                        OperatorSymbol("op_" + match.Groups[1], out var uncheckedName);
+                        operatorName = "checked " + uncheckedName;
+                        break;
+                    }
                     operatorName = methodName;
                     success = false;
                     break;
