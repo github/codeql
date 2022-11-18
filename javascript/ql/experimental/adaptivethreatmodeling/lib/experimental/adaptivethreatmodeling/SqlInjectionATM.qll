@@ -16,11 +16,10 @@ class Configuration extends AtmConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof SqlInjectionSinkType }
 
-  /**
+  /*
    * This is largely a copy of the taint tracking configuration for the standard SQL injection
    * query, except additional sinks have been added using the sink endpoint filter.
    */
-  override predicate isSource(DataFlow::Node source) { source instanceof SqlInjection::Source }
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof SqlInjection::Sink or isEffectiveSink(sink)

@@ -16,11 +16,10 @@ class Configuration extends AtmConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof TaintedPathSinkType }
 
-  /**
+  /*
    * This is largely a copy of the taint tracking configuration for the standard path injection
    * query, except additional ATM sinks have been added to the `isSink` predicate.
    */
-  override predicate isSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
     label = sink.(TaintedPath::Sink).getAFlowLabel()
