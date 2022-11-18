@@ -43,10 +43,6 @@ class FormatError(Error):
     pass
 
 
-class ModifiedStubMarkedAsGeneratedError(Error):
-    pass
-
-
 class RootElementHasChildren(Error):
     pass
 

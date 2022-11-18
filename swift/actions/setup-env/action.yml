@@ -21,3 +21,4 @@ runs:
       shell: bash
       run: |
         echo build --repository_cache=~/.cache/bazel-repository-cache --disk_cache=~/.cache/bazel-disk-cache > ~/.bazelrc
+        echo test --test_output=errors
