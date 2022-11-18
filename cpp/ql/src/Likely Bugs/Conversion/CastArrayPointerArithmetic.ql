@@ -64,10 +64,15 @@ predicate introducesNewField(Class derived, Class base) {
   )
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, CastToPointerArithFlow cfg
+pragma[nomagic]
+predicate hasFullyConvertedType(DataFlow::PathNode node, Type t) {
+  t = node.getNode().asExpr().getFullyConverted().getUnspecifiedType()
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, CastToPointerArithFlow cfg, Type t
 where
-  cfg.hasFlowPath(source, sink) and
-  source.getNode().asExpr().getFullyConverted().getUnspecifiedType() =
-    sink.getNode().asExpr().getFullyConverted().getUnspecifiedType()
+  cfg.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
+  hasFullyConvertedType(source, t) and
+  hasFullyConvertedType(sink, t)
 select sink, source, sink, "This pointer arithmetic may be done with the wrong type because of $@.",
   source, "this cast"
