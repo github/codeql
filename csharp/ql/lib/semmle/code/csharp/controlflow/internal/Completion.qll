@@ -103,7 +103,6 @@ abstract class Completion extends TCompletion {
    * otherwise it is a normal non-Boolean completion.
    */
   predicate isValidFor(ControlFlowElement cfe) {
-    cfe instanceof NonReturningCall and
     this = cfe.(NonReturningCall).getACompletion()
     or
     this = TThrowCompletion(cfe.(TriedControlFlowElement).getAThrownException())
