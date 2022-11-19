@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-11-19-00h30m48s.sharp-feather-2cnkgslz.b17b514fa37fa7ab727ad968d8ca992b80aaac87e923c1ee5b279739d295d7e2
 compiled: false
 lockVersion: 1.0.0
