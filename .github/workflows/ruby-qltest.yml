@@ -28,11 +28,6 @@ defaults:
     working-directory: ruby
 
 jobs:
-  qlcompile:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/fetch-codeql
   qlupgrade:
     runs-on: ubuntu-latest
     steps:
