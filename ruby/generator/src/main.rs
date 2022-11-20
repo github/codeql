@@ -542,6 +542,397 @@ fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
     (case, table)
 }
 
+fn create_xml() -> Vec<dbscheme::Entry<'static>> {
+    /*
+     * XML Files
+     */
+    let numlines = dbscheme::Entry::Table(dbscheme::Table {
+        name: "numlines",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "element_id",
+                ql_type: ql::Type::At("xmllocatable"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "num_lines",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "num_code",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "num_comment",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+    let xml_encoding = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmlEncoding",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::At("file"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "encoding",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+    let xml_dtds = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmlDTDs",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::At("xmldtd"),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "root",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "publicId",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "systemId",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "fileid",
+                ql_type: ql::Type::At("file"),
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+
+    let xml_elements = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmlElements",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::At("xmlelement"),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "name",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "parentid",
+                ql_type: ql::Type::At("xmlparent"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "idx",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "fileid",
+                ql_type: ql::Type::At("file"),
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+    let xml_attrs = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmlAttrs",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::At("xmlattribute"),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "elementid",
+                ql_type: ql::Type::At("xmlelement"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "name",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "value",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "idx",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "fileid",
+                ql_type: ql::Type::At("file"),
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+    let xml_ns = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmlNs",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::At("xmlnamespace"),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "prefixName",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "URI",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "fileid",
+                ql_type: ql::Type::At("file"),
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+    let xml_has_ns = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmlHasNs",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "elementId",
+                ql_type: ql::Type::At("xmlnamespaceable"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "nsId",
+                ql_type: ql::Type::At("xmlnamespace"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "fileid",
+                ql_type: ql::Type::At("file"),
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+    let xml_comments = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmlComments",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::At("xmlcomment"),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "text",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "parentid",
+                ql_type: ql::Type::At("xmlparent"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "fileid",
+                ql_type: ql::Type::At("file"),
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+    let xml_chars = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmlChars",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::At("xmlcharacters"),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "text",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "parentid",
+                ql_type: ql::Type::At("xmlparent"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "idx",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "isCDATA",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "fileid",
+                ql_type: ql::Type::At("file"),
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+    let xmlparent = dbscheme::Entry::Union(dbscheme::Union {
+        name: "xmlparent",
+        members: vec!["file", "xmlelement"].into_iter().collect(),
+    });
+    let xmlnamespaceable = dbscheme::Entry::Union(dbscheme::Union {
+        name: "xmlnamespaceable",
+        members: vec!["xmlelement", "xmlattribute"].into_iter().collect(),
+    });
+    let xmllocations = dbscheme::Entry::Table(dbscheme::Table {
+        name: "xmllocations",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "xmlElement",
+                ql_type: ql::Type::At("xmllocatable"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "location",
+                ql_type: ql::Type::At("location_default"),
+                ql_type_is_ref: true,
+            },
+        ],
+    });
+
+    let xmllocatable = dbscheme::Entry::Union(dbscheme::Union {
+        name: "xmllocatable",
+        members: vec![
+            "xmlcharacters",
+            "xmlelement",
+            "xmlcomment",
+            "xmlattribute",
+            "xmldtd",
+            "file",
+            "xmlnamespace",
+        ]
+        .into_iter()
+        .collect(),
+    });
+    vec![
+        numlines,
+        xml_encoding,
+        xml_dtds,
+        xml_elements,
+        xml_attrs,
+        xml_ns,
+        xml_has_ns,
+        xml_comments,
+        xml_chars,
+        xmlparent,
+        xmlnamespaceable,
+        xmllocations,
+        xmllocatable,
+    ]
+}
 fn main() -> std::io::Result<()> {
     tracing_subscriber::fmt()
         .with_target(false)
@@ -595,6 +986,8 @@ fn main() -> std::io::Result<()> {
             dbscheme::Entry::Case(diagnostics_case),
         ],
     )?;
+    write!(dbscheme_writer, "/*\n * XML Files\n */\n\n")?;
+    dbscheme::write(&mut dbscheme_writer, &create_xml())?;
 
     let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
     write!(

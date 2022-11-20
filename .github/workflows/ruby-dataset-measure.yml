@@ -24,7 +24,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: [rails/rails, discourse/discourse, spree/spree, ruby/ruby]
+        repo:
+          [
+            rails/rails,
+            discourse/discourse,
+            spree/spree,
+            ruby/ruby,
+            wikimedia/puppet,
+          ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -40,11 +47,13 @@ jobs:
           path: ${{ github.workspace }}/repo
       - name: Create database
         run: |
-          codeql database create \
+          codeql database init \
             --search-path "${{ github.workspace }}/ruby/extractor-pack" \
-            --threads 4 \
             --language ruby --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
+          codeql database trace-command --threads 4 --index-traceless-dbs "${{ runner.temp }}/database"
+          codeql database index-files -l xml --include "**/*.xml.erb" "${{ runner.temp }}/database"
+          codeql database finalize "${{ runner.temp }}/database"
       - name: Measure database
         run: |
           mkdir -p "stats/${{ matrix.repo }}"
