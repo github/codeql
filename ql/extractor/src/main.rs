@@ -3,6 +3,7 @@ mod trap;
 
 extern crate num_cpus;
 
+use clap::arg;
 use rayon::prelude::*;
 use std::fs;
 use std::io::BufRead;
@@ -44,7 +45,6 @@ fn main() -> std::io::Result<()> {
         .with_level(true)
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
-
     let num_threads = num_codeql_threads();
     tracing::info!(
         "Using {} {}",
@@ -64,11 +64,9 @@ fn main() -> std::io::Result<()> {
         .version("1.0")
         .author("GitHub")
         .about("CodeQL QL extractor")
-        .args_from_usage(
-            "--source-archive-dir=<DIR> 'Sets a custom source archive folder'
-                    --output-dir=<DIR>         'Sets a custom trap folder'
-                    --file-list=<FILE_LIST>    'A text files containing the paths of the files to extract'",
-        )
+        .arg(arg!(--"source-archive-dir" <DIR> "Sets a custom source archive folder"))
+        .arg(arg!(--"output-dir" <DIR>         "Sets a custom trap folder"))
+        .arg(arg!(--"file-list" <FILE_LIST>    "A text file containing the paths of the files to extract"))
         .get_matches();
     let src_archive_dir = matches
         .value_of("source-archive-dir")
@@ -97,15 +95,6 @@ fn main() -> std::io::Result<()> {
     lines
         .par_iter()
         .try_for_each(|line| {
-            // only consider files that end with .ql/.qll/.dbscheme/qlpack.yml
-            // TODO: This is a bad fix, wait for the post-merge discussion in https://github.com/github/codeql/pull/7444 to be resolved
-            if !line.ends_with(".ql")
-                && !line.ends_with(".qll")
-                && !line.ends_with(".dbscheme")
-                && !line.ends_with("qlpack.yml")
-            {
-                return Ok(());
-            }
             let path = PathBuf::from(line).canonicalize()?;
             let src_archive_file = path_for(&src_archive_dir, &path, "");
             let source = std::fs::read(&path)?;

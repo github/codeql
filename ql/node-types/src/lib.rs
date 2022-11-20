@@ -434,7 +434,7 @@ fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
 
 #[test]
 fn to_snake_case_test() {
-    assert_eq!("python", to_snake_case("Python"));
-    assert_eq!("yaml", to_snake_case("YAML"));
-    assert_eq!("set_literal", to_snake_case("SetLiteral"));
+    assert_eq!("ruby", to_snake_case("Ruby"));
+    assert_eq!("erb", to_snake_case("ERB"));
+    assert_eq!("embedded_template", to_snake_case("EmbeddedTemplate"));
 }
