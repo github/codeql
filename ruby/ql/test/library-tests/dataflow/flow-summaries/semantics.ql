@@ -201,7 +201,7 @@ private class S16 extends Summary {
 }
 
 /**
- * `Argument[hash-splat]` (output)
+ * `Argument[hash-splat]` (output) 1
  */
 private class S17 extends Summary {
   S17() { this = "s17" }
@@ -218,6 +218,357 @@ private class S18 extends Summary {
   S18() { this = "s18" }
 
   override predicate propagates(string input, string output) {
-    input = "Argument[0]" and output = "Argument[hash-splat].Element[any]"
+    input = "Argument[0]" and output = "Argument[hash-splat].Element[:foo]"
+  }
+}
+
+/** `Element[?]` (input) */
+private class S19 extends Summary {
+  S19() { this = "s19" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[?]" and output = "ReturnValue"
+  }
+}
+
+/** `Element[?]` (output) */
+private class S20 extends Summary {
+  S20() { this = "s20" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[?]"
+  }
+}
+
+/** `Element[any]` (input) */
+private class S21 extends Summary {
+  S21() { this = "s21" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[any]" and output = "ReturnValue"
+  }
+}
+
+/** `Element[any]` (output) */
+private class S22 extends Summary {
+  S22() { this = "s22" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[any]"
+  }
+}
+
+/** `Element[<integer>]` (input) */
+private class S23 extends Summary {
+  S23() { this = "s23" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[0]" and output = "ReturnValue"
+  }
+}
+
+/** `Element[<integer>]` (output) */
+private class S24 extends Summary {
+  S24() { this = "s24" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[0]"
+  }
+}
+
+/** `Element[<integer>!]` (input) */
+private class S25 extends Summary {
+  S25() { this = "s25" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[0!]" and output = "ReturnValue"
+  }
+}
+
+/** `Element[<integer>!]` (output) */
+private class S26 extends Summary {
+  S26() { this = "s26" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[0!]"
+  }
+}
+
+/** `Element[<integer>..]` (input) */
+private class S27 extends Summary {
+  S27() { this = "s27" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[1..]" and output = "ReturnValue"
+  }
+}
+
+/** `Element[<integer>..]` (output) */
+private class S28 extends Summary {
+  S28() { this = "s28" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[1..]"
+  }
+}
+
+/** `Element[<integer>..!]` (input) */
+private class S29 extends Summary {
+  S29() { this = "s29" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[1..!]" and output = "ReturnValue"
+  }
+}
+
+/** `Element[<integer>..!]` (output) */
+private class S30 extends Summary {
+  S30() { this = "s30" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[1..!]"
+  }
+}
+
+/**
+ * `Element[<string>]` (input) 1
+ *
+ * In general, the key format must match the output of `ConstantValue::serialize/0`.
+ * For example, symbol keys must be prefixed by `:`.
+ */
+private class S31 extends Summary {
+  S31() { this = "s31" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[:foo]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `Element[<string>]` (input) 2
+ *
+ * String keys must be wrapped double quotes.
+ */
+private class S32 extends Summary {
+  S32() { this = "s32" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[\"foo\"]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `Element[<string>]` (input) 3
+ *
+ * `nil`, `true` and `false` keys can be written verbatim.
+ */
+private class S33 extends Summary {
+  S33() { this = "s33" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[nil,true,false]" and output = "ReturnValue"
+  }
+}
+
+/** `Element[<string>]` (output) 1 */
+private class S35 extends Summary {
+  S35() { this = "s35" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[:foo]"
+  }
+}
+
+/** `Element[<string>]` (output) 2 */
+private class S36 extends Summary {
+  S36() { this = "s36" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[\"foo\"]"
+  }
+}
+
+/** `Element[<string>]` (output) 3 */
+private class S37 extends Summary {
+  S37() { this = "s37" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[true]"
+  }
+}
+
+/**
+ * `Element[<string>!]` (input)
+ */
+private class S38 extends Summary {
+  S38() { this = "s38" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Element[\"foo\"!]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `Element[<string>!]` (output)
+ */
+private class S39 extends Summary {
+  S39() { this = "s39" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Element[:foo!]"
+  }
+}
+
+/**
+ * `Field[@<string>]` (input)
+ */
+private class S40 extends Summary {
+  S40() { this = "s40" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].Field[@foo]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `Field[@<string>]` (output)
+ */
+private class S41 extends Summary {
+  S41() { this = "s41" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0]" and output = "ReturnValue.Field[@foo]"
+  }
+}
+
+/**
+ * `WithElement`
+ */
+private class S42 extends Summary {
+  S42() { this = "s42" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithElement[0]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `WithElement[!]`
+ */
+private class S43 extends Summary {
+  S43() { this = "s43" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithElement[0!]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `WithoutElement` 1
+ */
+private class S44 extends Summary {
+  S44() { this = "s44" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithoutElement[0]" and output = "Argument[0]"
+  }
+}
+
+/**
+ * `WithoutElement` 2
+ */
+private class S45 extends Summary {
+  S45() { this = "s45" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithoutElement[0!]" and output = "Argument[0]"
+  }
+}
+
+/**
+ * `WithoutElement` 3
+ */
+private class S46 extends Summary {
+  S46() { this = "s46" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithoutElement[0]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `WithoutElement` 4
+ */
+private class S47 extends Summary {
+  S47() { this = "s47" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithoutElement[:foo].WithElement[any]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `WithoutElement` 5
+ */
+private class S48 extends Summary {
+  S48() { this = "s48" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithoutElement[:foo]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `WithoutElement` 6
+ */
+private class S49 extends Summary {
+  S49() { this = "s49" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithoutElement[:foo!]" and output = "ReturnValue"
+  }
+}
+
+/**
+ * `WithoutElement` 7
+ */
+private class S50 extends Summary {
+  S50() { this = "s50" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithoutElement[:foo]" and output = "Argument[0]"
+  }
+}
+
+/**
+ * `WithoutElement` 8
+ */
+private class S51 extends Summary {
+  S51() { this = "s51" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[0].WithoutElement[:foo!]" and output = "Argument[0]"
+  }
+}
+
+/**
+ * `WithoutElement` 9
+ */
+private class S52 extends Summary {
+  S52() { this = "s52" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[self].WithoutElement[:foo]" and output = "Argument[self]"
+  }
+}
+
+/**
+ * `WithoutElement` 10
+ */
+private class S53 extends Summary {
+  S53() { this = "s53" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[self].WithoutElement[:foo]" and output = "ReturnValue"
   }
 }

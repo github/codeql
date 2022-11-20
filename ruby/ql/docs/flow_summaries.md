@@ -181,9 +181,10 @@ Any element at a known index greater or equal to the integer.
 
 #### `<string>`, `<string>!`
 An element at the index given by string. The string should match the result of
-`serialize()` on the `ConstantValue` that represents the index. This is
-typically something like `foo` for the string key `"foo"` and `:foo` for the
-symbol `:foo`.
+`serialize()` on the `ConstantValue` that represents the index. For a string
+with contents `foo` this is `"foo"` and for a symbol `:foo` it is `:foo`. The
+Ruby values `true`, `false` and `nil` can be written verbatim. See tests 31-33
+for examples.
 
 ## `Field`
 A "field" in the object. In practice this refers to a value stored in an
@@ -192,8 +193,7 @@ instance variable in the object. The only valid specifier is `@<string>`, where
 setter call such as `x.foo = bar` means there is a field `foo` in `x`, backed by
 an instance variable `@foo`.
 
-For example, the access path `Argument[0].Field[@foo]` would refer to the value
-`"foo"` in
+For example, the access path `Argument[0].Field[@foo]` would refer to the value `"foo"` in
 
 ```rb
 x = SomeClass.new
