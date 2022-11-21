@@ -208,7 +208,7 @@ open class KotlinFileExtractor(
                 is IrField -> {
                     val parentId = useDeclarationParent(getFieldParent(declaration), false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractField(declaration, parentId)
+                        extractField(declaration, parentId, extractFunctionBodies)
                     }
                     Unit
                 }
@@ -480,21 +480,22 @@ open class KotlinFileExtractor(
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
 
-    private fun extractAnnotations(annotations: List<IrConstructorCall>, parent: Label<out DbExprparent>) {
+    private fun extractAnnotations(annotations: List<IrConstructorCall>, parent: Label<out DbExprparent>, extractEnumTypeAccesses: Boolean) {
         val groupedAnnotations = metaAnnotationSupport.groupRepeatableAnnotations(annotations)
         for ((idx, constructorCall: IrConstructorCall) in groupedAnnotations.sortedBy { v -> v.type.classFqName?.asString() }.withIndex()) {
-            extractAnnotation(constructorCall, parent, idx)
+            extractAnnotation(constructorCall, parent, idx, extractEnumTypeAccesses)
         }
     }
 
-    private fun extractAnnotations(c: IrAnnotationContainer, parent: Label<out DbExprparent>) {
-        extractAnnotations(c.annotations, parent)
+    private fun extractAnnotations(c: IrAnnotationContainer, parent: Label<out DbExprparent>, extractEnumTypeAccesses: Boolean) {
+        extractAnnotations(c.annotations, parent, extractEnumTypeAccesses)
     }
 
     private fun extractAnnotation(
         constructorCall: IrConstructorCall,
         parent: Label<out DbExprparent>,
         idx: Int,
+        extractEnumTypeAccesses: Boolean,
         contextLabel: String? = null
     ): Label<out DbExpr> {
         // Erase the type here because the JVM lowering erases the annotation type, and so the Java extractor will see it in erased form.
@@ -518,7 +519,7 @@ open class KotlinFileExtractor(
                 logger.warnElement("Expected annotation property to define a getter", prop)
             } else {
                 val getterId = useFunction<DbMethod>(getter)
-                val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}", getter.returnType)
+                val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}", getter.returnType, extractEnumTypeAccesses)
                 if (exprId != null) {
                     tw.writeAnnotValue(id, getterId, exprId)
                 }
@@ -532,7 +533,8 @@ open class KotlinFileExtractor(
         parent: Label<out DbExprparent>,
         idx: Int,
         contextLabel: String,
-        contextType: IrType?): Label<out DbExpr>? {
+        contextType: IrType?,
+        extractEnumTypeAccesses: Boolean): Label<out DbExpr>? {
 
         fun exprId() = tw.getLabelFor<DbExpr>("@\"annotationExpr;{$parent};$idx\"")
 
@@ -541,7 +543,7 @@ open class KotlinFileExtractor(
                 extractConstant(v, parent, idx, null, null, overrideId = exprId())
             }
             is IrGetEnumValue -> {
-                extractEnumValue(v, parent, idx, null, null, overrideId = exprId())
+                extractEnumValue(v, parent, idx, null, null, extractTypeAccess = extractEnumTypeAccesses, overrideId = exprId())
             }
             is IrClassReference -> {
                 val classRefId = exprId()
@@ -549,7 +551,7 @@ open class KotlinFileExtractor(
                 extractClassReference(v, parent, idx, null, null, overrideId = classRefId, typeAccessOverrideId = typeAccessId, useJavaLangClassType = true)
             }
             is IrConstructorCall -> {
-                extractAnnotation(v, parent, idx, contextLabel)
+                extractAnnotation(v, parent, idx, extractEnumTypeAccesses, contextLabel)
             }
             is IrVararg -> {
                 tw.getLabelFor<DbArrayinit>("@\"annotationarray;{${parent}};$contextLabel\"").also { arrayId ->
@@ -573,7 +575,7 @@ open class KotlinFileExtractor(
                                     null
                                 }
                             }
-                            extractAnnotationValueExpression(argExpr, arrayId, index, "child;$index", null)
+                            extractAnnotationValueExpression(argExpr, arrayId, index, "child;$index", null, extractEnumTypeAccesses)
                         } }
                     }
                 }
@@ -682,11 +684,11 @@ open class KotlinFileExtractor(
 
                 val additionalAnnotations =
                     if (c.kind == ClassKind.ANNOTATION_CLASS && c.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB)
-                        metaAnnotationSupport.generateJavaMetaAnnotations(c)
+                        metaAnnotationSupport.generateJavaMetaAnnotations(c, extractFunctionBodies)
                     else
                         listOf()
 
-                extractAnnotations(c.annotations + additionalAnnotations, id)
+                extractAnnotations(c.annotations + additionalAnnotations, id, extractFunctionBodies)
 
                 if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
                     externalClassExtractor.writeStubTrapFile(c)
@@ -878,7 +880,7 @@ open class KotlinFileExtractor(
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
             val syntheticParameterNames = isUnderscoreParameter(vp) || ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
-            extractAnnotations(vp, id)
+            extractAnnotations(vp, id, extractTypeAccess)
             return extractValueParameter(id, substitutedType, vp.name.asString(), location, parent, idx, useValueParameter(vp, parentSourceDeclaration), syntheticParameterNames, vp.isVararg, vp.isNoinline, vp.isCrossinline)
         }
     }
@@ -1419,7 +1421,7 @@ open class KotlinFileExtractor(
                 linesOfCode?.linesOfCodeInDeclaration(f, id)
 
                 if (extractAnnotations)
-                    extractAnnotations(f, id)
+                    extractAnnotations(f, id, extractMethodAndParameterTypeAccesses)
 
                 return id
             }
@@ -1432,13 +1434,13 @@ open class KotlinFileExtractor(
                 && f.symbol !is IrConstructorSymbol     // not a constructor
     }
 
-    private fun extractField(f: IrField, parentId: Label<out DbReftype>): Label<out DbField> {
+    private fun extractField(f: IrField, parentId: Label<out DbReftype>, extractAnnotationEnumTypeAccesses: Boolean): Label<out DbField> {
         with("field", f) {
            DeclarationStackAdjuster(f).use {
                val fNameSuffix = getExtensionReceiverType(f)?.let { it.classFqName?.asString()?.replace(".", "$$") } ?: ""
                val extractType = if (isAnnotationClassField(f)) kClassToJavaClass(f.type) else f.type
                val id = useField(f)
-               extractAnnotations(f, id)
+               extractAnnotations(f, id, extractAnnotationEnumTypeAccesses)
                return extractField(id, "${f.name.asString()}$fNameSuffix", extractType, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal, isDirectlyExposedCompanionObjectField(f))
            }
         }
@@ -1522,7 +1524,7 @@ open class KotlinFileExtractor(
                 if (bf != null && extractBackingField) {
                     val fieldParentId = useDeclarationParent(getFieldParent(bf), false)
                     if (fieldParentId != null) {
-                        val fieldId = extractField(bf, fieldParentId.cast())
+                        val fieldId = extractField(bf, fieldParentId.cast(), extractFunctionBodies)
                         tw.writeKtPropertyBackingFields(id, fieldId)
                         if (p.isDelegated) {
                             tw.writeKtPropertyDelegates(id, fieldId)
@@ -1578,7 +1580,7 @@ open class KotlinFileExtractor(
                     extractDeclaration(it, extractPrivateMembers, extractFunctionBodies, extractAnnotations = true)
                 }
 
-                extractAnnotations(ee, id)
+                extractAnnotations(ee, id, extractFunctionBodies)
             }
         }
     }
@@ -4240,6 +4242,7 @@ open class KotlinFileExtractor(
         idx: Int,
         enclosingCallable: Label<out DbCallable>?,
         enclosingStmt: Label<out DbStmt>?,
+        extractTypeAccess: Boolean = true,
         overrideId: Label<out DbExpr>? = null
     ) =
         exprIdOrFresh<DbVaraccess>(overrideId).also { id ->
@@ -4254,7 +4257,8 @@ open class KotlinFileExtractor(
                 val vId = useEnumEntry(owner)
                 tw.writeVariableBinding(id, vId)
 
-                extractStaticTypeAccessQualifier(owner, id, locId, enclosingCallable, enclosingStmt)
+                if (extractTypeAccess)
+                    extractStaticTypeAccessQualifier(owner, id, locId, enclosingCallable, enclosingStmt)
 
             }
         }

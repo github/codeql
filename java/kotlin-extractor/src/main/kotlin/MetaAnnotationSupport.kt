@@ -352,7 +352,7 @@ class MetaAnnotationSupport(private val logger: FileLogger, private val pluginCo
         }
 
     // Adapted from AdditionalClassAnnotationLowering.kt
-    private fun generateRepeatableAnnotation(irClass: IrClass): IrConstructorCall? {
+    private fun generateRepeatableAnnotation(irClass: IrClass, extractAnnotationTypeAccesses: Boolean): IrConstructorCall? {
         if (!irClass.hasAnnotation(StandardNames.FqNames.repeatable) ||
             irClass.hasAnnotation(JvmAnnotationNames.REPEATABLE_ANNOTATION)
         ) return null
@@ -361,7 +361,7 @@ class MetaAnnotationSupport(private val logger: FileLogger, private val pluginCo
 
         val containerClass = getOrCreateSyntheticRepeatableAnnotationContainer(irClass)
         // Whenever a repeatable annotation with a Kotlin-synthesised container is extracted, extract the synthetic container to the same trap file.
-        extractor.extractClassSource(containerClass, extractDeclarations = true, extractStaticInitializer = true, extractPrivateMembers = true, extractFunctionBodies = true)
+        extractor.extractClassSource(containerClass, extractDeclarations = true, extractStaticInitializer = true, extractPrivateMembers = true, extractFunctionBodies = extractAnnotationTypeAccesses)
 
         val containerReference = IrClassReferenceImpl(
             UNDEFINED_OFFSET, UNDEFINED_OFFSET, pluginContext.irBuiltIns.kClassClass.typeWith(containerClass.defaultType),
@@ -389,8 +389,8 @@ class MetaAnnotationSupport(private val logger: FileLogger, private val pluginCo
         )
     }
 
-    fun generateJavaMetaAnnotations(c: IrClass) =
+    fun generateJavaMetaAnnotations(c: IrClass, extractAnnotationTypeAccesses: Boolean) =
         // This is essentially AdditionalClassAnnotationLowering adapted to run outside the backend.
-        listOfNotNull(generateTargetAnnotation(c), generateRetentionAnnotation(c), generateRepeatableAnnotation(c), generateDocumentedAnnotation(c))
+        listOfNotNull(generateTargetAnnotation(c), generateRetentionAnnotation(c), generateRepeatableAnnotation(c, extractAnnotationTypeAccesses), generateDocumentedAnnotation(c))
 }
 
