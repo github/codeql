@@ -1,14 +1,3 @@
-# This should cover all the syntactical constructs that we hope to support.
-# Headings refer to https://docs.python.org/3/reference/expressions.html,
-# and are selected whenever they incur dataflow.
-# Intended sources should be the variable `SOURCE` and intended sinks should be
-# arguments to the function `SINK` (see python/ql/test/experimental/dataflow/testConfig.qll).
-#
-# Functions whose name ends with "_with_local_flow" will also be tested for local flow.
-#
-# All functions starting with "test_" should run and execute `print("OK")` exactly once.
-# This can be checked by running validTest.py.
-
 import sys
 import os
 
