@@ -81,6 +81,14 @@ int getMaxIndirectionsForType(Type type) {
   result = countIndirectionsForCppType(getTypeForGLValue(type))
 }
 
+private class PointerOrReferenceType extends Cpp::DerivedType {
+  PointerOrReferenceType() {
+    this instanceof Cpp::PointerType
+    or
+    this instanceof Cpp::ReferenceType
+  }
+}
+
 /**
  * Gets the maximum number of indirections a value of type `type` can have.
  *
@@ -88,12 +96,9 @@ int getMaxIndirectionsForType(Type type) {
  * (i.e., `countIndirections(e.getUnspecifiedType())`).
  */
 private int countIndirections(Type t) {
-  result =
-    1 +
-      countIndirections([t.(Cpp::PointerType).getBaseType(), t.(Cpp::ReferenceType).getBaseType()])
+  result = 1 + countIndirections(t.(PointerOrReferenceType).getBaseType())
   or
-  not t instanceof Cpp::PointerType and
-  not t instanceof Cpp::ReferenceType and
+  not t instanceof PointerOrReferenceType and
   result = 0
 }
 
@@ -139,8 +144,41 @@ predicate isModifiableByCall(ArgumentOperand operand) {
     type = getLanguageType(operand) and
     call.getArgumentOperand(index) = operand and
     if index = -1
-    then not call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
-    else not SideEffects::isConstPointerLike(any(Type t | type.hasType(t, _)))
+    then
+      // A qualifier is "modifiable" if:
+      // 1. the member function is not const specified, or
+      // 2. the member funtion is `const` specified, but returns a pointer or reference
+      // type that is non-const.
+      //
+      // To see why this is necessary, consider the following function:
+      // ```
+      // struct C {
+      //   void* data_;
+      //   void* data() const { return data; }
+      // };
+      // ...
+      // C c;
+      // memcpy(c.data(), source, 16)
+      // ```
+      // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
+      // `C::data` has a const specifier. So we further place the restriction that the type returned
+      // by `call` should not be of the form `const T*` (for some deeply const type `T`).
+      if call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
+      then
+        exists(PointerOrReferenceType resultType |
+          resultType = call.getResultType() and
+          not resultType.isDeeplyConstBelow()
+        )
+      else any()
+    else
+      // An argument is modifiable if it's a non-const pointer or reference type.
+      exists(Type t, boolean isGLValue | type.hasType(t, isGLValue) |
+        // If t is a glvalue it means that t is always a pointer-like type.
+        isGLValue = true
+        or
+        t instanceof PointerOrReferenceType and
+        not SideEffects::isConstPointerLike(t)
+      )
   )
 }
 

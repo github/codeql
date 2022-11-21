@@ -48,11 +48,11 @@ module AllocationSizeOverflow {
      * Holds if `nd` is at a position where overflow might occur, and its result is used to compute
      * allocation size `allocsz`.
      */
-    predicate isSink(DataFlow::Node nd, DataFlow::Node allocsz) {
+    predicate isSinkWithAllocationSize(DataFlow::Node nd, DataFlow::Node allocsz) {
       nd.(Sink).getAllocationSize() = allocsz
     }
 
-    override predicate isSink(DataFlow::Node nd) { isSink(nd, _) }
+    override predicate isSink(DataFlow::Node nd) { isSinkWithAllocationSize(nd, _) }
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
       additionalStep(pred, succ)

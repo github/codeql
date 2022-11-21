@@ -1,0 +1,2 @@
+| arel.rb:3:8:3:18 | call to sql | arel.rb:3:17:3:17 | x |
+| arel.rb:8:8:8:18 | call to sql | arel.rb:8:17:8:17 | x |

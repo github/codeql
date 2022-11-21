@@ -16,6 +16,11 @@ newtype TEndpointType =
 abstract class EndpointType extends TEndpointType {
   abstract string getDescription();
 
+  /**
+   * Gets the integer representation of this endpoint type. This integer representation specifies the class number
+   * used by the endpoint scoring model (the classifier) to represent this endpoint type. Class 0 is the negative
+   * class (non-sink). Each positive int corresponds to a single sink type.
+   */
   abstract int getEncoding();
 
   string toString() { result = getDescription() }

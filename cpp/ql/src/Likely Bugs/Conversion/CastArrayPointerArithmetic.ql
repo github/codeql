@@ -20,21 +20,29 @@ import cpp
 import semmle.code.cpp.dataflow.DataFlow
 import DataFlow::PathGraph
 
+Type getFullyConvertedType(DataFlow::Node node) {
+  result = node.asExpr().getFullyConverted().getUnspecifiedType()
+}
+
 class CastToPointerArithFlow extends DataFlow::Configuration {
   CastToPointerArithFlow() { this = "CastToPointerArithFlow" }
 
-  override predicate isSource(DataFlow::Node node) {
+  override predicate isSource(DataFlow::Node node, DataFlow::FlowState state) {
     not node.asExpr() instanceof Conversion and
     exists(Type baseType1, Type baseType2 |
       hasBaseType(node.asExpr(), baseType1) and
       hasBaseType(node.asExpr().getConversion*(), baseType2) and
       introducesNewField(baseType1, baseType2)
-    )
+    ) and
+    getFullyConvertedType(node).getName() = state
   }
 
-  override predicate isSink(DataFlow::Node node) {
-    exists(PointerAddExpr pae | pae.getAnOperand() = node.asExpr()) or
-    exists(ArrayExpr ae | ae.getArrayBase() = node.asExpr())
+  override predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
+    (
+      exists(PointerAddExpr pae | pae.getAnOperand() = node.asExpr()) or
+      exists(ArrayExpr ae | ae.getArrayBase() = node.asExpr())
+    ) and
+    getFullyConvertedType(node).getName() = state
   }
 }
 
@@ -64,10 +72,15 @@ predicate introducesNewField(Class derived, Class base) {
   )
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, CastToPointerArithFlow cfg
+pragma[nomagic]
+predicate hasFullyConvertedType(DataFlow::PathNode node, Type t) {
+  getFullyConvertedType(node.getNode()) = t
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, CastToPointerArithFlow cfg, Type t
 where
-  cfg.hasFlowPath(source, sink) and
-  source.getNode().asExpr().getFullyConverted().getUnspecifiedType() =
-    sink.getNode().asExpr().getFullyConverted().getUnspecifiedType()
+  cfg.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
+  hasFullyConvertedType(source, t) and
+  hasFullyConvertedType(sink, t)
 select sink, source, sink, "This pointer arithmetic may be done with the wrong type because of $@.",
   source, "this cast"

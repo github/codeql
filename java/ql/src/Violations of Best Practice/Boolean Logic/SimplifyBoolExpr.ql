@@ -92,13 +92,16 @@ class ComparisonOrEquality extends BinaryExpr {
 
 from Expr e, string pattern, string rewrite
 where
-  e.(BoolCompare).simplify(pattern, rewrite)
-  or
-  conditionalWithBool(e, pattern, rewrite)
-  or
-  e.(LogNotExpr).getExpr().(ComparisonOrEquality).negate(pattern, rewrite)
-  or
-  e.(LogNotExpr).getExpr() instanceof LogNotExpr and
-  pattern = "!!A" and
-  rewrite = "A"
+  e.getFile().isJavaSourceFile() and
+  (
+    e.(BoolCompare).simplify(pattern, rewrite)
+    or
+    conditionalWithBool(e, pattern, rewrite)
+    or
+    e.(LogNotExpr).getExpr().(ComparisonOrEquality).negate(pattern, rewrite)
+    or
+    e.(LogNotExpr).getExpr() instanceof LogNotExpr and
+    pattern = "!!A" and
+    rewrite = "A"
+  )
 select e, "Expressions of the form \"" + pattern + "\" can be simplified to \"" + rewrite + "\"."
