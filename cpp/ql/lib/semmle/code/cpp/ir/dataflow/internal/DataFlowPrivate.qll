@@ -506,7 +506,9 @@ predicate nodeHasInstruction(Node node, Instruction instr, int indirectionIndex)
 predicate readStep(Node node1, Content c, Node node2) {
   exists(FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2 |
     nodeHasOperand(node2, operand, indirectionIndex2) and
-    nodeHasOperand(node1, fa1.getObjectAddressOperand(), _) and
+    // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
+    // in `storeStep`.
+    nodeHasOperand(node1, fa1.getObjectAddressOperand(), 1) and
     numberOfLoadsFromOperand(fa1, operand, numberOfLoads)
   |
     exists(FieldContent fc | fc = c |
