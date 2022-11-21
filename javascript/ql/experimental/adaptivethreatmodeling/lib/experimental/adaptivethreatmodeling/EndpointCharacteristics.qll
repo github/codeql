@@ -8,7 +8,7 @@ private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.TaintedPathCustomizations
 private import CoreKnowledge as CoreKnowledge
-private import semmle.javascript.heuristics.SyntacticHeuristics
+private import semmle.javascript.heuristics.SyntacticHeuristics as SyntacticHeuristics
 private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 private import StandardEndpointFilters as StandardEndpointFilters
 
@@ -540,7 +540,9 @@ private class IsHashCharacteristic extends StandardEndpointFilterCharacteristic 
 private class IsNumericCharacteristic extends StandardEndpointFilterCharacteristic {
   IsNumericCharacteristic() { this = "numeric" }
 
-  override predicate getEndpoints(DataFlow::Node n) { isReadFrom(n, ".*index.*") }
+  override predicate getEndpoints(DataFlow::Node n) {
+    SyntacticHeuristics::isReadFrom(n, ".*index.*")
+  }
 }
 
 private class InIrrelevantFileCharacteristic extends StandardEndpointFilterCharacteristic {
@@ -676,8 +678,8 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkNosqlCh
     // heuristic sinks as known sinks.
     not n = StandardEndpointFilters::getALikelyExternalLibraryCall().getAnArgument() and
     not (
-      isAssignedToOrConcatenatedWith(n, "(?i)(nosql|query)") or
-      isArgTo(n, "(?i)(query)")
+      SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(nosql|query)") or
+      SyntacticHeuristics::isArgTo(n, "(?i)(query)")
     )
   }
 }
@@ -745,9 +747,9 @@ private class NotAnArgumentToLikelyExternalLibraryCallOrHeuristicSinkCharacteris
     // heuristic sinks as known sinks.
     not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
-      isAssignedToOrConcatenatedWith(n, "(?i)(sql|query)") or
-      isArgTo(n, "(?i)(query)") or
-      isConcatenatedWithString(n,
+      SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(sql|query)") or
+      SyntacticHeuristics::isArgTo(n, "(?i)(query)") or
+      SyntacticHeuristics::isConcatenatedWithString(n,
         "(?s).*(ALTER|COUNT|CREATE|DATABASE|DELETE|DISTINCT|DROP|FROM|GROUP|INSERT|INTO|LIMIT|ORDER|SELECT|TABLE|UPDATE|WHERE).*")
     )
   }
@@ -783,24 +785,24 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkTainted
     // heuristic sinks as known sinks.
     not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
-      isAssignedToOrConcatenatedWith(n, "(?i)(file|folder|dir|absolute)")
+      SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(file|folder|dir|absolute)")
       or
-      isArgTo(n, "(?i)(get|read)file")
+      SyntacticHeuristics::isArgTo(n, "(?i)(get|read)file")
       or
       exists(string pathPattern |
         // paths with at least two parts, and either a trailing or leading slash
         pathPattern = "(?i)([a-z0-9_.-]+/){2,}" or
         pathPattern = "(?i)(/[a-z0-9_.-]+){2,}"
       |
-        isConcatenatedWithString(n, pathPattern)
+        SyntacticHeuristics::isConcatenatedWithString(n, pathPattern)
       )
       or
-      isConcatenatedWithStrings(".*/", n, "/.*")
+      SyntacticHeuristics::isConcatenatedWithStrings(".*/", n, "/.*")
       or
       // In addition to the names from `HeuristicTaintedPathSink` in the
       // `isAssignedToOrConcatenatedWith` predicate call above, we also allow the noisier "path"
       // name.
-      isAssignedToOrConcatenatedWith(n, "(?i)path")
+      SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)path")
     )
   }
 }
@@ -844,13 +846,13 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkXssChar
     // heuristic sinks as known sinks.
     not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
-      isAssignedToOrConcatenatedWith(n, "(?i)(html|innerhtml)")
+      SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(html|innerhtml)")
       or
-      isArgTo(n, "(?i)(html|render)")
+      SyntacticHeuristics::isArgTo(n, "(?i)(html|render)")
       or
       n instanceof StringOps::HtmlConcatenationLeaf
       or
-      isConcatenatedWithStrings("(?is).*<[a-z ]+.*", n, "(?s).*>.*")
+      SyntacticHeuristics::isConcatenatedWithStrings("(?is).*<[a-z ]+.*", n, "(?s).*>.*")
       or
       // In addition to the heuristic sinks from `HeuristicDomBasedXssSink`, explicitly allow
       // property writes like `elem.innerHTML = <TAINT>` that may not be picked up as HTML
