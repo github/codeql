@@ -642,7 +642,7 @@ open class KotlinFileExtractor(
                                 if (getter == null) {
                                     logger.warnElement("Expected an annotation property to have a getter", it)
                                 } else {
-                                    extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = true, extractAnnotations = true, null, listOf())?.also { functionLabel ->
+                                    extractFunction(getter, id, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, extractAnnotations = true, null, listOf())?.also { functionLabel ->
                                         tw.writeIsAnnotElem(functionLabel.cast())
                                     }
                                 }
