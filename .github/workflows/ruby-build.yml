@@ -2,7 +2,11 @@ name: "Ruby: Build"
 
 on:
   push:
-    # No path requirement on branch pushes, so the cache is more effective.
+    paths:
+      - "ruby/**"
+      - .github/workflows/ruby-build.yml
+      - .github/actions/fetch-codeql/action.yml
+      - codeql-workspace.yml
     branches:
       - main
       - "rc/*"
