@@ -94,10 +94,10 @@ jobs:
           key: ruby-build
       - name: Build Query Pack
         run: |
-          codeql pack create -j0 ../shared/ssa --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          codeql pack create -j0 ../misc/suite-helpers --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          codeql pack create -j0 ../shared/regex --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          codeql pack create -j0 ql/lib --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql pack create ../shared/ssa --output target/packs
+          codeql pack create ../misc/suite-helpers --output target/packs
+          codeql pack create ../shared/regex --output target/packs
+          codeql pack create ql/lib --output target/packs
           codeql pack create -j0 ql/src --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
           PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
           codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
