@@ -27,7 +27,7 @@ class UnsafeUseOfThisConfig extends MustFlowConfiguration {
   override predicate isSink(Operand sink) { isSink(sink, _) }
 }
 
-/** Holds if `instr` is a `this` pointer used by the call instruction `call`. */
+/** Holds if `sink` is a `this` pointer used by the call instruction `call`. */
 predicate isSink(Operand sink, CallInstruction call) {
   exists(PureVirtualFunction func |
     call.getStaticCallTarget() = func and
@@ -37,7 +37,12 @@ predicate isSink(Operand sink, CallInstruction call) {
   )
 }
 
-/** Holds if `init` initializes the `this` pointer in class `c`. */
+/**
+ * Holds if `source` initializes the `this` pointer in class `c`.
+ *
+ * The string `msg` describes whether the enclosing function is a
+ * constructor or destructor.
+ */
 predicate isSource(InitializeParameterInstruction source, string msg, Class c) {
   (
     exists(Constructor func |
