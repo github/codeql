@@ -442,7 +442,7 @@ void intArraySourceCaller() {
   sink(local); // $ ast,ir=440:7 ast,ir=441:18
 }
 
-// The IR results for this test _is_ equivalent to the AST ones.
+// The IR results for this test _are_ equivalent to the AST ones.
 // See the comment on `intPointerSourceCaller2` for an explanation.
 void intArraySourceCaller2() {
   int local[2];
