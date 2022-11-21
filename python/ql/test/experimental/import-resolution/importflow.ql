@@ -93,15 +93,15 @@ class ResolutionTest extends InlineExpectationsTest {
   }
 }
 
+private string getTagForVersion(int version) {
+  result = "prints" + version and
+  version = major_version()
+}
+
 class VersionSpecificResolutionTest extends InlineExpectationsTest {
   VersionSpecificResolutionTest() { this = "VersionSpecificResolutionTest" }
 
   override string getARelevantTag() { result = getTagForVersion(_) }
-
-  private string getTagForVersion(int version) {
-    result = "prints" + version and
-    version = major_version()
-  }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     (
