@@ -23,7 +23,7 @@ runs:
         BASE_BRANCH: ${{ github.base_ref }}
       run: |
         MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
-        echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
+        echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
     - name: Read CodeQL query compilation - PR
       if: ${{ github.event_name == 'pull_request' }}
       uses: actions/cache@v3
@@ -31,7 +31,7 @@ runs:
         path: '**/.cache'
         key: codeql-compile-${{ inputs.key }}-pr-${{ github.sha }} # deliberately not using the `compile-compile-main` keys here.
         restore-keys: |
-          codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-${{ env.merge-base }}
+          codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-${{ env.merge_base }}
           codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-
           codeql-compile-${{ inputs.key }}-main-
     - name: Fill CodeQL query compilation cache - main
