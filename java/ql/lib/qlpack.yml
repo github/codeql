@@ -10,3 +10,4 @@ dependencies:
 dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml
+  - ext/experimental/*.model.yml

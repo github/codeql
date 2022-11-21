@@ -195,6 +195,77 @@ private predicate negativeSummaryModelInternal(string row) {
 }
 
 /**
+ * Holds if an experimental source model exists for the given parameters.
+ * This is only for experimental queries.
+ */
+extensible predicate extExperimentalSourceModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance, string filter
+);
+
+/**
+ * Holds if an experimental sink model exists for the given parameters.
+ * This is only for experimental queries.
+ */
+extensible predicate extExperimentalSinkModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string kind, string provenance, string filter
+);
+
+/**
+ * Holds if an experimental summary model exists for the given parameters.
+ * This is only for experimental queries.
+ */
+extensible predicate extExperimentalSummaryModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, string filter
+);
+
+/**
+ * A class for activating additional model rows.
+ *
+ * Extend this class to include experimental model rows with `this` name
+ * in data flow analysis.
+ */
+abstract class ActiveExperimentalModels extends string {
+  bindingset[this]
+  ActiveExperimentalModels() { any() }
+
+  /**
+   * Holds if an experimental source model exists for the given parameters.
+   */
+  predicate sourceModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  ) {
+    extExperimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
+      provenance, this)
+  }
+
+  /**
+   * Holds if an experimental sink model exists for the given parameters.
+   */
+  predicate sinkModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  ) {
+    extExperimentalSinkModel(package, type, subtypes, name, signature, ext, output, kind,
+      provenance, this)
+  }
+
+  /**
+   * Holds if an experimental summary model exists for the given parameters.
+   */
+  predicate summaryModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  ) {
+    extExperimentalSummaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
+      provenance, this)
+  }
+}
+
+/**
  * Holds if a source model exists for the given parameters.
  */
 extensible predicate extSourceModel(
@@ -222,6 +293,9 @@ predicate sourceModel(
   )
   or
   extSourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+  or
+  any(ActiveExperimentalModels q)
+      .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
 }
 
 /** Holds if a sink model exists for the given parameters. */
@@ -250,6 +324,9 @@ predicate sinkModel(
   )
   or
   extSinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
+  or
+  any(ActiveExperimentalModels q)
+      .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
 }
 
 /** Holds if a summary model exists for the given parameters. */
@@ -279,6 +356,9 @@ predicate summaryModel(
   )
   or
   extSummaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
+  or
+  any(ActiveExperimentalModels q)
+      .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
 
 /** Holds if a summary model exists indicating there is no flow for the given parameters. */
