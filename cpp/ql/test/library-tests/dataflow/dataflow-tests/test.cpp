@@ -423,7 +423,7 @@ void intPointerSourceCaller() {
   intPointerSource(&local);
   sink(local); // $ ast,ir=422:7 ast,ir=423:20
 }
-// The IR results for this test _is_ equivalent to the AST ones.
+// The IR results for this test _are_ equivalent to the AST ones.
 // The IR annotation is just "ir" because the sink of the unitialized source at
 // 428:7 is value of `local`, but the sink of the source from `intPointerSource`
 // value of `*local` (i.e., the indirection node of `local`). So unlike AST dataflow,
