@@ -47,8 +47,3 @@ jobs:
           find ql/ql/src "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-      - name: Check QL compilation
-        run: |
-          "${CODEQL}" query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}/ql/extractor-pack" "ql/ql/src" "ql/ql/examples"
-        env:
-          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}

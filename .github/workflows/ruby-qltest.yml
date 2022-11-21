@@ -28,16 +28,6 @@ defaults:
     working-directory: ruby
 
 jobs:
-  qlcompile:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/fetch-codeql
-      - name: Check QL compilation
-        run: |
-          codeql query compile --check-only --threads=0 --ram 5000 --warnings=error "ql/src" "ql/examples"
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
   qlupgrade:
     runs-on: ubuntu-latest
     steps:
@@ -69,6 +59,6 @@ jobs:
       - uses: ./ruby/actions/create-extractor-pack
       - name: Run QL tests
         run: |
-          codeql test run --threads=0 --ram 5000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}/ruby/extractor-pack" --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test
+          codeql test run --threads=0 --ram 5000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}/ruby/extractor-pack" --check-databases --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test
         env:
           GITHUB_TOKEN: ${{ github.token }}

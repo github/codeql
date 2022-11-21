@@ -90,7 +90,7 @@ predicate exceptions(Class c, Field f) {
 
 from Class c, Field f, string reason
 where
-  c.fromSource() and
+  c.getFile().isJavaSourceFile() and
   c.getAStrictAncestor() instanceof TypeSerializable and
   f.getDeclaringType() = c and
   not exceptions(c, f) and

@@ -61,5 +61,17 @@
             <!-- GOOD! Use HTTPS -->
             <url>https://insecure-repository.example</url>
         </pluginRepository>
+        <pluginRepository>
+            <id>disabled-repo</id>
+            <name>Disabled Repository</name>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <!-- GOOD! Disabled repo -->
+            <url>http://insecure-repository.example</url>
+        </pluginRepository>
     </pluginRepositories>
 </project>

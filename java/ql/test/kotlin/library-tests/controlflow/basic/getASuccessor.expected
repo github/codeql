@@ -207,20 +207,20 @@ missingSuccessor
 | Test.kt:105:9:107:5 | ... -> ... | WhenBranch | Test.kt:105:9:105:9 | x | VarAccess |
 | Test.kt:105:14:105:17 | null | NullLiteral | Test.kt:105:9:105:17 | ... (value not-equals) ... | ValueNEExpr |
 | Test.kt:105:20:107:5 | { ... } | BlockStmt | Test.kt:106:9:106:29 | <Expr>; | ExprStmt |
-| Test.kt:106:9:106:29 | <Expr>; | ExprStmt | Test.kt:106:18:106:27 | x not null | StringLiteral |
+| Test.kt:106:9:106:29 | <Expr>; | ExprStmt | Test.kt:106:18:106:27 | "x not null" | StringLiteral |
 | Test.kt:106:9:106:29 | ConsoleKt | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:106:9:106:29 | println(...) | MethodAccess | Test.kt:100:1:110:1 | fn | Method |
-| Test.kt:106:18:106:27 | x not null | StringLiteral | Test.kt:106:9:106:29 | println(...) | MethodAccess |
+| Test.kt:106:18:106:27 | "x not null" | StringLiteral | Test.kt:106:9:106:29 | println(...) | MethodAccess |
 | Test.kt:107:16:107:16 | y | VarAccess | Test.kt:107:21:107:24 | null | NullLiteral |
 | Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr | Test.kt:100:1:110:1 | fn | Method |
 | Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr | Test.kt:107:27:109:5 | { ... } | BlockStmt |
 | Test.kt:107:16:109:5 | ... -> ... | WhenBranch | Test.kt:107:16:107:16 | y | VarAccess |
 | Test.kt:107:21:107:24 | null | NullLiteral | Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr |
 | Test.kt:107:27:109:5 | { ... } | BlockStmt | Test.kt:108:9:108:29 | <Expr>; | ExprStmt |
-| Test.kt:108:9:108:29 | <Expr>; | ExprStmt | Test.kt:108:18:108:27 | y not null | StringLiteral |
+| Test.kt:108:9:108:29 | <Expr>; | ExprStmt | Test.kt:108:18:108:27 | "y not null" | StringLiteral |
 | Test.kt:108:9:108:29 | ConsoleKt | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:108:9:108:29 | println(...) | MethodAccess | Test.kt:100:1:110:1 | fn | Method |
-| Test.kt:108:18:108:27 | y not null | StringLiteral | Test.kt:108:9:108:29 | println(...) | MethodAccess |
+| Test.kt:108:18:108:27 | "y not null" | StringLiteral | Test.kt:108:9:108:29 | println(...) | MethodAccess |
 | Test.kt:112:1:116:1 | Unit | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:112:1:116:1 | fn | Method | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:112:8:112:17 | boolean | TypeAccess | file://:0:0:0:0 | <none> | <none> |

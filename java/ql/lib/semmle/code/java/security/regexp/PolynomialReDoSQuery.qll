@@ -1,19 +1,19 @@
 /** Definitions and configurations for the Polynomial ReDoS query */
 
-import semmle.code.java.security.regexp.SuperlinearBackTracking
+private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
+import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView> as SuperlinearBackTracking
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.regex.RegexTreeView
 import semmle.code.java.regex.RegexFlowConfigs
 import semmle.code.java.dataflow.FlowSources
 
 /** A sink for polynomial redos queries, where a regex is matched. */
 class PolynomialRedosSink extends DataFlow::Node {
-  RegExpLiteral reg;
+  TreeView::RegExpLiteral reg;
 
   PolynomialRedosSink() { regexMatchedAgainst(reg.getRegex(), this.asExpr()) }
 
   /** Gets the regex that is matched against this node. */
-  RegExpTerm getRegExp() { result.getParent() = reg }
+  TreeView::RegExpTerm getRegExp() { result.getParent() = reg }
 }
 
 /**
@@ -49,7 +49,8 @@ class PolynomialRedosConfig extends TaintTracking::Configuration {
 
 /** Holds if there is flow from `source` to `sink` that is matched against the regexp term `regexp` that is vulnerable to Polynomial ReDoS. */
 predicate hasPolynomialReDoSResult(
-  DataFlow::PathNode source, DataFlow::PathNode sink, PolynomialBackTrackingTerm regexp
+  DataFlow::PathNode source, DataFlow::PathNode sink,
+  SuperlinearBackTracking::PolynomialBackTrackingTerm regexp
 ) {
   any(PolynomialRedosConfig config).hasFlowPath(source, sink) and
   regexp.getRootTerm() = sink.getNode().(PolynomialRedosSink).getRegExp()
