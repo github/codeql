@@ -503,7 +503,6 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;Sets;false;filter;(SortedSet,Predicate);;Argument[0].Element;ReturnValue.Element;value;manual",
         "com.google.common.collect;Sets;false;intersection;(Set,Set);;Argument[0..1].Element;ReturnValue.Element;value;manual",
         "com.google.common.collect;Sets;false;newConcurrentHashSet;(Iterable);;Argument[0].Element;ReturnValue.Element;value;manual",
-        "com.google.common.collect;Sets;false;newConcurrentHashSet;(Iterable);;Argument[0].Element;ReturnValue.Element;value;manual",
         "com.google.common.collect;Sets;false;newCopyOnWriteArraySet;(Iterable);;Argument[0].Element;ReturnValue.Element;value;manual",
         "com.google.common.collect;Sets;false;newHashSet;(Iterable);;Argument[0].Element;ReturnValue.Element;value;manual",
         "com.google.common.collect;Sets;false;newHashSet;(Iterator);;Argument[0].Element;ReturnValue.Element;value;manual",
