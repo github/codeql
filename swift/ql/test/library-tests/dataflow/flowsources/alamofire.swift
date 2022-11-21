@@ -88,7 +88,7 @@ struct DataResponse<Success, Failure: Error> {
 
     let result: Result<Success, Failure>
 
-    var value: Success? { result.success }
+    var value: Success? { result.success } // SOURCE
 }
 
 struct DownloadResponse<Success, Failure: Error> {
@@ -96,7 +96,7 @@ struct DownloadResponse<Success, Failure: Error> {
 
     let result: Result<Success, Failure>
 
-    var value: Success? { result.success }
+    var value: Success? { result.success } // SOURCE
 }
 
 typealias AFDataResponse<Success> = DataResponse<Success, AFError>
@@ -339,42 +339,42 @@ func testAlamofire() {
 
     AF.request("http://example.com/").response {
         response in
-        if let data = response.data { // SOURCE [NOT DETECTED]
+        if let data = response.data { // SOURCE
             // ...
         }
     }
 
     AF.request("http://example.com/").response(responseSerializer: MySerializer()) {
         response in
-        if let obj = response.value { // SOURCE [NOT DETECTED]
+        if let obj = response.value { // SOURCE
             // ...
         }
     }
 
     AF.request("http://example.com/").responseData {
         response in
-        if let data = response.value { // SOURCE [NOT DETECTED]
+        if let data = response.value { // SOURCE
             // ...
         }
     }
 
     AF.request("http://example.com/").responseString {
         response in
-        if let str = response.value { // SOURCE [NOT DETECTED]
+        if let str = response.value { // SOURCE
             // ...
         }
     }
 
     AF.request("http://example.com/").responseJSON {
         response in
-        if let json = response.value { // SOURCE [NOT DETECTED]
+        if let json = response.value { // SOURCE
             // ...
         }
     }
 
     AF.request("http://example.com/").responseDecodable(of: MyDecodable.self) {
         response in
-        if let decodable = response.value { // SOURCE [NOT DETECTED]
+        if let decodable = response.value { // SOURCE
             // ...
         }
     }
@@ -391,14 +391,14 @@ func testAlamofire() {
 
     AF.download("http://example.com/").response(responseSerializer: MySerializer()) {
         response in
-        if let obj = response.value { // SOURCE [NOT DETECTED]
+        if let obj = response.value { // SOURCE
             // ...
         }
     }
 
     AF.download("http://example.com/").responseURL {
         response in
-        if let url = response.value {
+        if let url = response.value { // just the URL [FALSE POSITIVE]
             let str = try? String(contentsOf: url) // SOURCE
             // ...
         }
@@ -406,27 +406,27 @@ func testAlamofire() {
 
     AF.download("http://example.com/").responseData {
         response in
-        if let data = response.value { // SOURCE [NOT DETECTED]
+        if let data = response.value { // SOURCE
             // ...
         }
     }
 
     AF.download("http://example.com/").responseString {
         response in
-        if let str = response.value { // SOURCE [NOT DETECTED]
+        if let str = response.value { // SOURCE
             // ...
         }
     }
 
     AF.download("http://example.com/").responseJSON {
         response in
-        if let json = response.value { // SOURCE [NOT DETECTED]
+        if let json = response.value { // SOURCE
         }
     }
 
     AF.download("http://example.com/").responseDecodable(of: MyDecodable.self) {
         response in
-        if let decodable = response.value { // SOURCE [NOT DETECTED]
+        if let decodable = response.value { // SOURCE
             // ...
         }
     }
@@ -450,13 +450,13 @@ func testAlamofire() {
 
     AF.request("http://example.com/").response {
         response in
-        if let data = response.data { // SOURCE [NOT DETECTED]
+        if let data = response.data { // SOURCE
             // ...
         }
     }
     .response {
         response in
-        if let data = response.data { // SOURCE [NOT DETECTED]
+        if let data = response.data { // SOURCE
             // ...
         }
     }
