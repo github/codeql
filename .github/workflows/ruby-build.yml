@@ -82,9 +82,7 @@ jobs:
             ruby/target/release/ruby-extractor.exe
           retention-days: 1
   compile-queries:
-    runs-on: ubuntu-latest
-    env:
-      CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
+    runs-on: ubuntu-latest-xl
     steps:
       - uses: actions/checkout@v3
       - name: Fetch CodeQL
@@ -96,11 +94,11 @@ jobs:
           key: ruby-build
       - name: Build Query Pack
         run: |
-          codeql pack create ../shared/ssa --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          codeql pack create ../misc/suite-helpers --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          codeql pack create ../shared/regex --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          codeql pack create ql/lib --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          codeql pack create ql/src --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql pack create -j0 ../shared/ssa --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql pack create -j0 ../misc/suite-helpers --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql pack create -j0 ../shared/regex --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql pack create -j0 ql/lib --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql pack create -j0 ql/src --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
           PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
           codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
