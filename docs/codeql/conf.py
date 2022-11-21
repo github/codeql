@@ -2,13 +2,13 @@
 #
 # The Sphinx config values used in the CodeQL documentation that is published
 # at codeql.github.com/docs
-# 
+#
 # Note that not all possible configuration values are present in this file.
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 #
-# For details of all possible config values, 
+# For details of all possible config values,
 # see https://www.sphinx-doc.org/en/master/usage/configuration.html
 #
 # -- GENERAL CONFIG VALUES ------------------------------------------------
@@ -50,9 +50,9 @@ import os
 import sys
 
 def setup(sphinx):
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))	
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from qllexer import QLLexer
-    sphinx.add_lexer("ql", QLLexer())
+    sphinx.add_lexer("ql", QLLexer)
 
 # The version of CodeQL for the current release you're documenting, acts as replacement for
 # |version| and |release|. Not currently used except in LGTM Enterprise support info.
@@ -83,7 +83,7 @@ html_theme = 'alabaster'
 
 # HTML theme options used to customize the look and feel of the docs.
 html_theme_options = {'font_size': '16px',
-                      'body_text': '#333', 
+                      'body_text': '#333',
                       'link': '#2F1695',
                       'link_hover': '#2F1695',
                       'show_powered_by': False,
