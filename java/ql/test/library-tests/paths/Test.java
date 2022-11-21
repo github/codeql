@@ -2,6 +2,7 @@ package generatedtest;
 
 import java.io.File;
 import java.net.URI;
+import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -13,6 +14,119 @@ public class Test {
 
 	public void test() throws Exception {
 
+		{
+			// "java.io;File;false;File;;;Argument[0];Argument[-1];taint;manual"
+			File out = null;
+			File in = (File)source();
+			out = new File(in, (String)null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;false;File;;;Argument[0];Argument[-1];taint;manual"
+			File out = null;
+			String in = (String)source();
+			out = new File(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;false;File;;;Argument[0];Argument[-1];taint;manual"
+			File out = null;
+			String in = (String)source();
+			out = new File(in, (String)null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;false;File;;;Argument[0];Argument[-1];taint;manual"
+			File out = null;
+			URI in = (URI)source();
+			out = new File(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;false;File;;;Argument[1];Argument[-1];taint;manual"
+			File out = null;
+			String in = (String)source();
+			out = new File((File)null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;false;File;;;Argument[1];Argument[-1];taint;manual"
+			File out = null;
+			String in = (String)source();
+			out = new File((String)null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;true;getAbsoluteFile;;;Argument[-1];ReturnValue;taint;manual"
+			File out = null;
+			File in = (File)source();
+			out = in.getAbsoluteFile();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint;manual"
+			String out = null;
+			File in = (File)source();
+			out = in.getAbsolutePath();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;true;getCanonicalFile;;;Argument[-1];ReturnValue;taint;manual"
+			File out = null;
+			File in = (File)source();
+			out = in.getCanonicalFile();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;true;getCanonicalPath;;;Argument[-1];ReturnValue;taint;manual"
+			String out = null;
+			File in = (File)source();
+			out = in.getCanonicalPath();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;true;toPath;;;Argument[-1];ReturnValue;taint;manual"
+			Path out = null;
+			File in = (File)source();
+			out = in.toPath();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;true;toString;;;Argument[-1];ReturnValue;taint;manual"
+			String out = null;
+			File in = (File)source();
+			out = in.toString();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.io;File;true;toURI;;;Argument[-1];ReturnValue;taint;manual"
+			URI out = null;
+			File in = (File)source();
+			out = in.toURI();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.nio.file;FileSystem;true;getPath;;;Argument[0];ReturnValue;taint;manual"
+			Path out = null;
+			String in = (String)source();
+			FileSystem instance = null;
+			out = instance.getPath(in, (String[])null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint;manual"
+			File out = null;
+			Path in = (Path)source();
+			out = in.toFile();
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.nio.file;Path;true;getParent;;;Argument[-1];ReturnValue;taint;manual"
+			Path out = null;
+			Path in = (Path)source();
+			out = in.getParent();
+			sink(out); // $ hasTaintFlow
+		}
 		{
 			// "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual"
 			Path out = null;
@@ -51,10 +165,10 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;toFile;;;Argument[-1];ReturnValue;taint;manual"
-			File out = null;
+			// "java.nio.file;Path;true;toAbsolutePath;;;Argument[-1];ReturnValue;taint;manual"
+			Path out = null;
 			Path in = (Path)source();
-			out = in.toFile();
+			out = in.toAbsolutePath();
 			sink(out); // $ hasTaintFlow
 		}
 		{
@@ -72,24 +186,24 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual"
+			// "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint;manual"
 			Path out = null;
 			String in = (String)source();
 			out = Paths.get(in, (String[])null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual"
-			Path out = null;
-			String[] in = (String[])source();
-			out = Paths.get((String)null, in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual"
+			// "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint;manual"
 			Path out = null;
 			URI in = (URI)source();
 			out = Paths.get(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.nio.file;Paths;true;get;;;Argument[1].ArrayElement;ReturnValue;taint;manual"
+			Path out = null;
+			String[] in = (String[])new String[]{(String)source()};
+			out = Paths.get((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 
