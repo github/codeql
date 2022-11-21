@@ -425,10 +425,10 @@ void intPointerSourceCaller() {
 }
 // The IR results for this test _are_ equivalent to the AST ones.
 // The IR annotation is just "ir" because the sink of the unitialized source at
-// 428:7 is value of `local`, but the sink of the source from `intPointerSource`
-// value of `*local` (i.e., the indirection node of `local`). So unlike AST dataflow,
-// each of these two sinks correspond to a unique source, and thus we don't need to
-// attach a location annotation to it.
+// `433:7` (i.e., the declaration `int local[1];`) is value of `local`, but the sink
+// of the source from `intPointerSource` value of `*local` (i.e., the indirection node
+// of `local`). So unlike AST dataflow, each of these two sinks correspond to a unique
+// source, and thus we don't need to attach a location annotation to it.
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
