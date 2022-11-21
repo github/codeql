@@ -123,8 +123,8 @@ func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[st
 // It passes the `go list` the flags specified by `flags`.
 func GetPkgInfo(pkgpath string, flags ...string) PkgInfo {
 	return PkgInfo{
-		PkgDir: GetModDir(pkgpath, flags...),
-		ModDir: GetPkgDir(pkgpath, flags...),
+		PkgDir: GetPkgDir(pkgpath, flags...),
+		ModDir: GetModDir(pkgpath, flags...),
 	}
 }
 
