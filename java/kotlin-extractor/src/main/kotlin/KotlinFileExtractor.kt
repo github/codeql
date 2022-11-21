@@ -1709,6 +1709,10 @@ open class KotlinFileExtractor(
             when (b.kind) {
                 IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
                 IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+                else -> {
+                    // TODO: Support IrSyntheticBodyKind.ENUM_ENTRIES
+                    logger.errorElement("Unhandled synthetic body kind " + b.kind.javaClass, b)
+                }
             }
         }
     }
@@ -2400,7 +2404,7 @@ open class KotlinFileExtractor(
 
     private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, parameterTypes: Array<String>, warnAgainstElement: IrElement): IrFunction? {
 
-        val fn = pluginContext.referenceFunctions(FqName(functionFilter))
+        val fn = getFunctionsByFqName(pluginContext, functionFilter)
             .firstOrNull { fnSymbol ->
                 fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
                 fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
@@ -2419,7 +2423,7 @@ open class KotlinFileExtractor(
 
     private fun findTopLevelPropertyOrWarn(propertyFilter: String, type: String, warnAgainstElement: IrElement): IrProperty? {
 
-        val prop = pluginContext.referenceProperties(FqName(propertyFilter))
+        val prop = getPropertiesByFqName(pluginContext, propertyFilter)
             .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
             ?.owner
 
