@@ -3,8 +3,9 @@
  */
 
 import codeql.ruby.frameworks.core.String
-import codeql.ruby.regexp.RegExpTreeView
-import codeql.ruby.security.regexp.NfaUtils as NfaUtils
+private import codeql.ruby.regexp.RegExpTreeView::RegexTreeView as TreeView
+import TreeView
+import codeql.regex.nfa.NfaUtils::Make<TreeView> as NfaUtils
 
 /**
  * A regexp term that matches substrings that should be replaced with the empty string.
