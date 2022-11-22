@@ -12,6 +12,8 @@ annotation class GenericAnnotation<T : Any>(val x: KClass<T>, val y: Array<KClas
 @Repeatable
 annotation class VarargAnnotation(vararg val x: Int) { }
 
+annotation class AnnWithDefaults(val x: Int = 1, val y: String = "hello", val z: DayOfWeek = DayOfWeek.TUESDAY, val w: Array<Ann3> = [Ann3(1)]) { }
+
 @Ann1(1, Ann2("Hello", String::class, intArrayOf(1, 2, 3), arrayOf(Ann3(1), Ann3(2)), arrayOf(String::class, Int::class)), DayOfWeek.MONDAY)
 @GenericAnnotation<String>(String::class, arrayOf(String::class, String::class))
 @VarargAnnotation
@@ -19,6 +21,7 @@ annotation class VarargAnnotation(vararg val x: Int) { }
 @VarargAnnotation(1, 2)
 @VarargAnnotation(*[1, 2, 3])
 @VarargAnnotation(*intArrayOf(1, 2, 3))
+@AnnWithDefaults
 class Annotated { }
 
 @Ann1(1, Ann2("Hello", String::class, intArrayOf(1, 2, 3), arrayOf(Ann3(1), Ann3(2)), arrayOf(String::class, Int::class)), DayOfWeek.MONDAY)
@@ -28,5 +31,6 @@ class Annotated { }
 @VarargAnnotation(1, 2)
 @VarargAnnotation(*[1, 2, 3])
 @VarargAnnotation(*intArrayOf(1, 2, 3))
+@AnnWithDefaults
 class AnnotatedUsedByKotlin { }
 

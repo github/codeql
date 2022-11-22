@@ -582,17 +582,9 @@ open class KotlinFileExtractor(
             }
             // is IrErrorExpression
             // null
-            else -> {
-                val eId = tw.getFreshIdLabel<DbErrorexpr>()
-                val type = useType(v?.type ?: pluginContext.irBuiltIns.unitType)
-                tw.writeExprs_errorexpr(eId, type.javaResult.id, parent, idx)
-                tw.writeExprsKotlinType(eId, type.kotlinResult.id)
-
-                if (v != null) {
-                    tw.writeHasLocation(eId, tw.getLocation(v))
-                }
-                eId
-            }
+            // Note: emitting an ErrorExpr here would induce an inconsistency if this annotation is later seen from source or by the Java extractor,
+            // in both of which cases the real value will get extracted.
+            else -> null
         }
     }
 
