@@ -811,7 +811,7 @@ case.rb:
 #-----|  -> [ ..., * ]
 
 #   35| [ ..., * ]
-#-----| match -> x
+#-----| false, match, true -> x
 #-----| no-match -> in ... then ...
 
 #   35| x
@@ -821,7 +821,7 @@ case.rb:
 #-----|  -> [ ..., * ]
 
 #   36| [ ..., * ]
-#-----| match -> x
+#-----| false, match, true -> x
 #-----| no-match -> in ... then ...
 
 #   36| x
@@ -836,7 +836,7 @@ case.rb:
 
 #   37| [ ..., * ]
 #-----| raise -> exit case_match_array (abnormal)
-#-----| match -> a
+#-----| false, match, true -> a
 
 #   37| a
 #-----| match -> b
@@ -881,7 +881,7 @@ case.rb:
 
 #   43| [ *,...,* ]
 #-----| raise -> exit case_match_find (abnormal)
-#-----| match -> x
+#-----| false, match, true -> x
 
 #   43| x
 #-----|  -> 1
@@ -931,7 +931,7 @@ case.rb:
 #-----| no-match -> in ... then ...
 
 #   49| { ..., ** }
-#-----| match -> 1
+#-----| false, match, true -> 1
 #-----| no-match -> in ... then ...
 
 #   49| 1
@@ -952,7 +952,7 @@ case.rb:
 #-----| no-match -> in ... then ...
 
 #   50| { ..., ** }
-#-----| match -> 1
+#-----| false, match, true -> 1
 #-----| no-match -> in ... then ...
 
 #   50| 1
@@ -968,7 +968,7 @@ case.rb:
 
 #   51| { ..., ** }
 #-----| raise -> exit case_match_hash (abnormal)
-#-----| match -> case ...
+#-----| false, match, true -> case ...
 
 #   55| case_match_variable
 #-----|  -> case_match_underscore
@@ -1372,7 +1372,7 @@ case.rb:
 
 #   91| { ..., ** }
 #-----| raise -> exit case_match_various (abnormal)
-#-----| match -> case ...
+#-----| false, match, true -> case ...
 
 #   95| case_match_guard_no_else
 #-----|  -> exit case.rb (normal)
@@ -2559,7 +2559,7 @@ cfg.rb:
 #-----|  -> type
 
 #  101| value
-#-----| no-match -> 42
+#-----| false, no-match, true -> 42
 #-----| match -> key
 
 #  101| 42
@@ -6535,7 +6535,7 @@ raise.rb:
 #-----|  -> m11
 
 #  121| p
-#-----| no-match -> self
+#-----| false, no-match, true -> self
 #-----| match -> self
 
 #  121| call to raise

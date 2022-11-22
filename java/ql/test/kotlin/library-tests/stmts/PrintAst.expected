@@ -188,7 +188,7 @@ stmts.kt:
 #   48|             0: [ThrowStmt] throw ...
 #   48|               0: [ClassInstanceExpr] new Exception(...)
 #   48|                 -3: [TypeAccess] Exception
-#   48|                 0: [StringLiteral] Foo
+#   48|                 0: [StringLiteral] "Foo"
 #   50|           0: [CatchClause] catch (...)
 #-----|             0: (Single Local Variable Declaration)
 #   50|               0: [TypeAccess] Exception

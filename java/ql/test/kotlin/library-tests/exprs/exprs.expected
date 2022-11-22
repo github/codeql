@@ -51,7 +51,7 @@
 | delegatedProperties.kt:6:32:9:9 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:7:13:7:27 | ConsoleKt | delegatedProperties.kt:6:32:9:9 | invoke | TypeAccess |
 | delegatedProperties.kt:7:13:7:27 | println(...) | delegatedProperties.kt:6:32:9:9 | invoke | MethodAccess |
-| delegatedProperties.kt:7:22:7:25 | init | delegatedProperties.kt:6:32:9:9 | invoke | StringLiteral |
+| delegatedProperties.kt:7:22:7:25 | "init" | delegatedProperties.kt:6:32:9:9 | invoke | StringLiteral |
 | delegatedProperties.kt:8:13:8:13 | 5 | delegatedProperties.kt:6:32:9:9 | invoke | IntegerLiteral |
 | delegatedProperties.kt:10:9:10:22 | ConsoleKt | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
 | delegatedProperties.kt:10:9:10:22 | println(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodAccess |
@@ -1337,9 +1337,9 @@
 | exprs.kt:123:5:123:15 | c | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:123:13:123:15 | x | exprs.kt:4:1:142:1 | topLevelMethod | CharacterLiteral |
 | exprs.kt:124:5:124:26 | str | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:124:16:124:25 | string lit | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:124:16:124:25 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:125:5:125:38 | strWithQuote | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:125:25:125:37 | string " lit | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:125:25:125:37 | "string \\" lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:126:5:126:22 | b6 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:126:14:126:15 | i1 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:126:14:126:22 | ...instanceof... | exprs.kt:4:1:142:1 | topLevelMethod | InstanceOfExpr |
@@ -1353,30 +1353,30 @@
 | exprs.kt:128:14:128:26 | (...)... | exprs.kt:4:1:142:1 | topLevelMethod | CastExpr |
 | exprs.kt:128:14:128:26 | boolean | exprs.kt:4:1:142:1 | topLevelMethod | TypeAccess |
 | exprs.kt:129:5:129:35 | str1 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:129:25:129:34 | string lit | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:129:25:129:34 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:130:5:130:36 | str2 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:130:26:130:35 | string lit | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:130:26:130:35 | "string lit" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:131:5:131:28 | str3 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:131:25:131:28 | null | exprs.kt:4:1:142:1 | topLevelMethod | NullLiteral |
 | exprs.kt:132:5:132:48 | str4 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:132:24:132:48 | "..." | exprs.kt:4:1:142:1 | topLevelMethod | StringTemplateExpr |
-| exprs.kt:132:25:132:28 | foo  | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:132:25:132:28 | "foo " | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:132:30:132:33 | str1 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:132:34:132:38 |  bar  | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:132:34:132:38 | " bar " | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:132:40:132:43 | str2 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:132:44:132:47 |  baz | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:132:44:132:47 | " baz" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:133:5:133:66 | str5 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:133:24:133:66 | "..." | exprs.kt:4:1:142:1 | topLevelMethod | StringTemplateExpr |
-| exprs.kt:133:25:133:28 | foo  | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:133:25:133:28 | "foo " | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:133:31:133:34 | str1 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:133:31:133:41 | ... + ... | exprs.kt:4:1:142:1 | topLevelMethod | AddExpr |
 | exprs.kt:133:38:133:41 | str2 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:133:43:133:47 |  bar  | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:133:43:133:47 | " bar " | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:133:50:133:53 | str2 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:133:50:133:60 | Intrinsics | exprs.kt:4:1:142:1 | topLevelMethod | TypeAccess |
 | exprs.kt:133:50:133:60 | stringPlus(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
 | exprs.kt:133:57:133:60 | str1 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:133:62:133:65 |  baz | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
+| exprs.kt:133:62:133:65 | " baz" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:134:5:134:26 | str6 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:134:16:134:19 | str1 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:134:16:134:26 | ... + ... | exprs.kt:4:1:142:1 | topLevelMethod | AddExpr |
@@ -1605,11 +1605,11 @@
 | exprs.kt:215:9:215:44 | d0 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:215:18:215:44 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
 | exprs.kt:215:18:215:44 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
-| exprs.kt:215:38:215:42 | GREEN | exprs.kt:206:5:217:5 | x | StringLiteral |
+| exprs.kt:215:38:215:42 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
 | exprs.kt:216:9:216:39 | d1 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:216:24:216:39 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
 | exprs.kt:216:24:216:39 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
-| exprs.kt:216:33:216:37 | GREEN | exprs.kt:206:5:217:5 | x | StringLiteral |
+| exprs.kt:216:33:216:37 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
 | exprs.kt:220:1:222:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:221:5:221:10 | StandardKt | exprs.kt:220:1:222:1 | todo | TypeAccess |
 | exprs.kt:221:5:221:10 | TODO(...) | exprs.kt:220:1:222:1 | todo | MethodAccess |
@@ -2730,7 +2730,7 @@
 | funcExprs.kt:36:100:36:102 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:36:104:36:106 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:36:108:36:110 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| funcExprs.kt:36:115:36:116 |  | funcExprs.kt:36:29:36:117 | invoke | StringLiteral |
+| funcExprs.kt:36:115:36:116 | "" | funcExprs.kt:36:29:36:117 | invoke | StringLiteral |
 | funcExprs.kt:38:5:38:39 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:38:5:38:39 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
 | funcExprs.kt:38:26:38:34 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -3231,7 +3231,7 @@
 | funcExprs.kt:70:102:70:109 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:70:112:70:119 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:70:122:70:129 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| funcExprs.kt:70:134:70:135 |  | funcExprs.kt:69:5:70:135 | f23 | StringLiteral |
+| funcExprs.kt:70:134:70:135 | "" | funcExprs.kt:69:5:70:135 | f23 | StringLiteral |
 | funcExprs.kt:74:5:76:5 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:75:9:75:22 | fn(...) | funcExprs.kt:74:5:76:5 | call | MethodAccess |
 | funcExprs.kt:75:9:75:22 | this | funcExprs.kt:74:5:76:5 | call | ThisAccess |
@@ -3245,7 +3245,7 @@
 | funcExprs.kt:75:14:75:14 | Generic<Generic<Integer>> | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:75:14:75:14 | Generic<Integer> | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:75:14:75:14 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
-| funcExprs.kt:75:20:75:20 | a | funcExprs.kt:75:12:75:22 | invoke | StringLiteral |
+| funcExprs.kt:75:20:75:20 | "a" | funcExprs.kt:75:12:75:22 | invoke | StringLiteral |
 | funcExprs.kt:77:13:77:60 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:77:20:77:55 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
 | funcExprs.kt:77:20:77:55 | Function1<? super Generic<Generic<Integer>>,String> | file://:0:0:0:0 | <none> | TypeAccess |
@@ -3427,7 +3427,7 @@
 | funcExprs.kt:90:57:90:57 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:90:59:90:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:90:61:90:61 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| funcExprs.kt:90:67:90:68 |  | funcExprs.kt:90:15:90:69 | invoke | StringLiteral |
+| funcExprs.kt:90:67:90:68 | "" | funcExprs.kt:90:15:90:69 | invoke | StringLiteral |
 | funcExprs.kt:91:5:91:6 | l3 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
 | funcExprs.kt:91:5:91:60 | 23 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
 | funcExprs.kt:91:5:91:60 | Object | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
@@ -3508,7 +3508,7 @@
 | funcExprs.kt:94:55:94:55 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:94:57:94:57 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:94:59:94:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| funcExprs.kt:94:65:94:66 |  | funcExprs.kt:94:15:94:67 | invoke | StringLiteral |
+| funcExprs.kt:94:65:94:66 | "" | funcExprs.kt:94:15:94:67 | invoke | StringLiteral |
 | funcExprs.kt:95:5:95:6 | l4 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
 | funcExprs.kt:95:5:95:58 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
 | funcExprs.kt:95:8:95:58 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
@@ -3724,7 +3724,7 @@
 | samConversion.kt:7:31:7:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:7:36:7:39 | this | samConversion.kt:7:29:7:46 | invoke | ExtensionReceiverAccess |
 | samConversion.kt:7:36:7:45 | ... (value equals) ... | samConversion.kt:7:29:7:46 | invoke | ValueEQExpr |
-| samConversion.kt:7:44:7:45 |  | samConversion.kt:7:29:7:46 | invoke | StringLiteral |
+| samConversion.kt:7:44:7:45 | "" | samConversion.kt:7:29:7:46 | invoke | StringLiteral |
 | samConversion.kt:9:5:13:6 | x | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
 | samConversion.kt:9:13:13:6 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:9:13:13:6 | ...=... | samConversion.kt:9:13:13:6 |  | AssignExpr |
@@ -4379,6 +4379,6 @@
 | whenExpr.kt:6:5:6:5 | tmp0_subject | whenExpr.kt:1:1:9:1 | testWhen | VarAccess |
 | whenExpr.kt:6:16:6:44 | Exception | whenExpr.kt:1:1:9:1 | testWhen | TypeAccess |
 | whenExpr.kt:6:16:6:44 | new Exception(...) | whenExpr.kt:1:1:9:1 | testWhen | ClassInstanceExpr |
-| whenExpr.kt:6:27:6:42 | No threes please | whenExpr.kt:1:1:9:1 | testWhen | StringLiteral |
+| whenExpr.kt:6:27:6:42 | "No threes please" | whenExpr.kt:1:1:9:1 | testWhen | StringLiteral |
 | whenExpr.kt:7:13:7:15 | 999 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
 | whenExpr.kt:7:13:7:15 | true | whenExpr.kt:1:1:9:1 | testWhen | BooleanLiteral |

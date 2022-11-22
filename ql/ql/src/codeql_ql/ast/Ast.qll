@@ -983,6 +983,8 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 
   override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
 
+  override Annotation getAnAnnotation() { toQL(this).getAFieldOrChild() = toQL(result) }
+
   override Type getParameterType(int i) { result = this.getField(i).getType() }
 
   override int getArity() { result = count(this.getField(_)) }
@@ -2397,6 +2399,8 @@ private class AnnotationArg extends TAnnotationArg, AstNode {
   }
 
   override string toString() { result = this.getValue() }
+
+  override string getAPrimaryQlClass() { result = "AnnotationArg" }
 }
 
 private class NoInlineArg extends AnnotationArg {
