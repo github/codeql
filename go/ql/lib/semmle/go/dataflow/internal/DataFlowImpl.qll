@@ -163,7 +163,9 @@ abstract class Configuration extends string {
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
    */
-  predicate hasFlowTo(Node sink) { this.hasFlow(_, sink) }
+  predicate hasFlowTo(Node sink) {
+    sink = any(PathNodeSink n | this = n.getConfiguration()).getNodeEx().asNode()
+  }
 
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
