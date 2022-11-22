@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 // Need to import `semmle.python.Frameworks` since frameworks can extend `SensitiveDataSource::Range`
 private import semmle.python.Frameworks
 private import semmle.python.security.internal.SensitiveDataHeuristics as SensitiveDataHeuristics
+private import semmle.python.ApiGraphs
 
 // We export these explicitly, so we don't also export the `HeuristicNames` module.
 class SensitiveDataClassification = SensitiveDataHeuristics::SensitiveDataClassification;
@@ -321,6 +322,17 @@ private module SensitiveDataModeling {
     SensitiveParameter() { this.getParameter().getName() = sensitiveString(classification) }
 
     override SensitiveDataClassification getClassification() { result = classification }
+  }
+
+  /**
+   * A call to `getpass.getpass`, see https://docs.python.org/3.10/library/getpass.html#getpass.getpass
+   */
+  class GetPassCall extends SensitiveDataSource::Range, API::CallNode {
+    GetPassCall() { this = API::moduleImport("getpass").getMember("getpass").getACall() }
+
+    override SensitiveDataClassification getClassification() {
+      result = SensitiveDataClassification::password()
+    }
   }
 }
 
