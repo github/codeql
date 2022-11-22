@@ -56,7 +56,6 @@ private class SummaryModels extends SummaryModelCsv {
         "android.content;ContentValues;false;putAll;;;Argument[0].MapValue;Argument[-1].MapValue;value;manual",
         "android.content;ContentResolver;true;acquireContentProviderClient;;;Argument[0];ReturnValue;taint;manual",
         "android.content;ContentResolver;true;acquireUnstableContentProviderClient;;;Argument[0];ReturnValue;taint;manual",
-        "android.content;ContentResolver;true;acquireUnstableContentProviderClient;;;Argument[0];ReturnValue;taint;manual",
         "android.content;ContentResolver;true;applyBatch;;;Argument[1];ReturnValue;taint;manual",
         "android.content;ContentResolver;true;call;;;Argument[0];ReturnValue;taint;manual",
         "android.content;ContentResolver;true;canonicalize;;;Argument[0];ReturnValue;taint;manual",
