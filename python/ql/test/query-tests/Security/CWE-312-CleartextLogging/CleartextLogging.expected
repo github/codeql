@@ -1,37 +1,12 @@
 edges
-| file:///usr/lib/python3.8/getpass.py:44:14:44:17 | ControlFlowNode for None | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:44:14:44:17 | ControlFlowNode for None | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:44:14:44:17 | ControlFlowNode for None | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:62:26:62:57 | ControlFlowNode for fallback_getpass() | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd | test.py:44:9:44:25 | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd | test.py:44:9:44:25 | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd | test.py:44:9:44:25 | ControlFlowNode for Attribute() |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:20:48:20:55 | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:22:58:22:65 | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:23:58:23:65 | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:27:40:27:47 | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:30:58:30:65 | ControlFlowNode for password |
-| test.py:44:9:44:25 | ControlFlowNode for Attribute() | test.py:45:11:45:11 | ControlFlowNode for x |
 | test.py:70:14:73:5 | ControlFlowNode for Dict | test.py:74:11:74:31 | ControlFlowNode for Subscript |
 | test.py:72:21:72:37 | ControlFlowNode for Attribute | test.py:70:14:73:5 | ControlFlowNode for Dict |
 nodes
-| file:///usr/lib/python3.8/getpass.py:44:14:44:17 | ControlFlowNode for None | semmle.label | ControlFlowNode for None |
-| file:///usr/lib/python3.8/getpass.py:62:26:62:57 | ControlFlowNode for fallback_getpass() | semmle.label | ControlFlowNode for fallback_getpass() |
-| file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | semmle.label | ControlFlowNode for _raw_input() |
-| file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | semmle.label | ControlFlowNode for _raw_input() |
-| file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | semmle.label | ControlFlowNode for _raw_input() |
-| file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | semmle.label | ControlFlowNode for fallback_getpass() |
-| file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | semmle.label | ControlFlowNode for fallback_getpass() |
-| file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | semmle.label | ControlFlowNode for fallback_getpass() |
-| file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd | semmle.label | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd | semmle.label | ControlFlowNode for passwd |
-| file:///usr/lib/python3.8/getpass.py:94:16:94:21 | ControlFlowNode for passwd | semmle.label | ControlFlowNode for passwd |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:20:48:20:55 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:22:58:22:65 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
@@ -42,8 +17,6 @@ nodes
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
-| test.py:44:9:44:25 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:45:11:45:11 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:70:14:73:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
 | test.py:72:21:72:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:74:11:74:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
@@ -58,12 +31,4 @@ subpaths
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | test.py:37:11:37:24 | ControlFlowNode for get_password() | test.py:37:11:37:24 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:37:11:37:24 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | test.py:39:22:39:35 | ControlFlowNode for get_password() | test.py:39:22:39:35 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:39:22:39:35 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | test.py:40:22:40:35 | ControlFlowNode for get_password() | test.py:40:22:40:35 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:40:22:40:35 | ControlFlowNode for get_password() | sensitive data (password) |
-| test.py:45:11:45:11 | ControlFlowNode for x | file:///usr/lib/python3.8/getpass.py:44:14:44:17 | ControlFlowNode for None | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | file:///usr/lib/python3.8/getpass.py:44:14:44:17 | ControlFlowNode for None | sensitive data (password) |
-| test.py:45:11:45:11 | ControlFlowNode for x | file:///usr/lib/python3.8/getpass.py:62:26:62:57 | ControlFlowNode for fallback_getpass() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | file:///usr/lib/python3.8/getpass.py:62:26:62:57 | ControlFlowNode for fallback_getpass() | sensitive data (password) |
-| test.py:45:11:45:11 | ControlFlowNode for x | file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | sensitive data (password) |
-| test.py:45:11:45:11 | ControlFlowNode for x | file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | sensitive data (password) |
-| test.py:45:11:45:11 | ControlFlowNode for x | file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | file:///usr/lib/python3.8/getpass.py:77:30:77:68 | ControlFlowNode for _raw_input() | sensitive data (password) |
-| test.py:45:11:45:11 | ControlFlowNode for x | file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | sensitive data (password) |
-| test.py:45:11:45:11 | ControlFlowNode for x | file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | sensitive data (password) |
-| test.py:45:11:45:11 | ControlFlowNode for x | file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | file:///usr/lib/python3.8/getpass.py:91:26:91:57 | ControlFlowNode for fallback_getpass() | sensitive data (password) |
 | test.py:74:11:74:31 | ControlFlowNode for Subscript | test.py:72:21:72:37 | ControlFlowNode for Attribute | test.py:74:11:74:31 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | test.py:72:21:72:37 | ControlFlowNode for Attribute | sensitive data (password) |

@@ -23,7 +23,17 @@ module SensitiveDataClassification = SensitiveDataHeuristics::SensitiveDataClass
 class SensitiveDataSource extends DataFlow::Node {
   SensitiveDataSource::Range range;
 
-  SensitiveDataSource() { this = range }
+  SensitiveDataSource() {
+    this = range and
+    // ignore sensitive password sources in getpass.py, that can escape through `getpass.getpass()` return value,
+    // since `getpass.getpass()` is considered a source itself.
+    not exists(Module getpass |
+      getpass.getName() = "getpass" and
+      this.getScope().getEnclosingModule() = getpass and
+      // do allow this call if we're analyzing getpass.py as part of CPython though
+      not exists(getpass.getFile().getRelativePath())
+    )
+  }
 
   /**
    * Gets the classification of the sensitive data.
