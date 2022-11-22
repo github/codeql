@@ -85,9 +85,11 @@ private class MutablePendingIntentFlowStep extends ImplicitPendingIntentAddition
       // unless it is at least sometimes explicitly marked immutable and never marked mutable.
       // Note: for API level < 31, PendingIntents were mutable by default, whereas since then
       // they are immutable by default.
-      not TaintTracking::localExprTaint(any(ImmutablePendingIntentFlag flag).getAnAccess(), flagArg)
+      not bitwiseLocalTaintStep*(DataFlow::exprNode(any(ImmutablePendingIntentFlag flag)
+              .getAnAccess()), DataFlow::exprNode(flagArg))
       or
-      TaintTracking::localExprTaint(any(MutablePendingIntentFlag flag).getAnAccess(), flagArg)
+      bitwiseLocalTaintStep*(DataFlow::exprNode(any(MutablePendingIntentFlag flag).getAnAccess()),
+        DataFlow::exprNode(flagArg))
     )
   }
 }
@@ -123,4 +125,13 @@ private class PendingIntentSentSinkModels extends SinkModelCsv {
         "androidx.core.app;AlarmManagerCompat;true;setExactAndAllowWhileIdle;;;Argument[3];pending-intent-sent;manual",
       ]
   }
+}
+
+/**
+ * Holds if taint can flow from `source` to `sink` in one local step,
+ * including bitwise operations.
+ */
+private predicate bitwiseLocalTaintStep(DataFlow::Node source, DataFlow::Node sink) {
+  TaintTracking::localTaintStep(source, sink) or
+  source.asExpr() = sink.asExpr().(BitwiseExpr).(BinaryExpr).getAnOperand()
 }
