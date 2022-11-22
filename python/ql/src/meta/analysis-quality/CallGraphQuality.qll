@@ -81,7 +81,7 @@ module PointsToBasedCallGraph {
    */
   class ResolvableCallRelevantTarget extends ResolvableCall {
     ResolvableCallRelevantTarget() {
-      exists(Target target | target = getTarget() |
+      exists(Target target | target = this.getTarget() |
         exists(target.getLocation().getFile().getRelativePath())
       )
     }
@@ -137,7 +137,7 @@ module TypeTrackingBasedCallGraph {
    */
   class ResolvableCallRelevantTarget extends ResolvableCall {
     ResolvableCallRelevantTarget() {
-      exists(Target target | target = getTarget() |
+      exists(Target target | target = this.getTarget() |
         exists(target.getLocation().getFile().getRelativePath())
       )
     }

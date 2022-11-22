@@ -478,7 +478,7 @@ private TypeTrackingNode classTracker(TypeTracker t, Class cls) {
     or
     // when a class is decorated, it's the result of the (last) decorator call that
     // is used
-    result.asExpr() = cls.getParent().(ClassExpr).getADecoratorCall()
+    result.asExpr() = cls.getParent().getADecoratorCall()
     or
     // `type(obj)`, where obj is an instance of this class
     result = getTypeCall() and
@@ -1102,8 +1102,8 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
 }
 
 /**
- * Gets the argument of `call` at position `apos`, if any, where we can resolve `call`
- * to `target` with CallType `type`.
+ * Gets the argument `arg` of `call` at position `apos`, if any. Requires that we can
+ * resolve `call` to `target` with CallType `type`.
  *
  * It might seem like it's enough to know the CallType to resolve arguments. The reason
  * we also need the `target`, is to avoid cross-talk. In the example below, assuming
