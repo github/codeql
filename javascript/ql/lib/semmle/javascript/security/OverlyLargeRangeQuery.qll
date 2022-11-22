@@ -4,5 +4,5 @@
 
 private import regexp.RegexTreeView::RegexTreeView as TreeView
 // OverlyLargeRangeQuery should be used directly from the shared pack, and not from this file.
-deprecated import codeql.regex.OverlyLargeRangeQuery::Make<TreeView> as Dep
+deprecated private import codeql.regex.OverlyLargeRangeQuery::Make<TreeView> as Dep
 import Dep
