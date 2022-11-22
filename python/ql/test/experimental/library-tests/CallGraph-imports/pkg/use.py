@@ -7,7 +7,7 @@ test_direct_import() # $ pt,tt=test_direct_import
 
 def test_alias_problem():
     from .alias_problem import func
-    func() # $ pt="pkg/func_def.py:func" MISSING: tt="pkg/func_def.py:func"
+    func() # $ pt,tt="pkg/func_def.py:func"
 
 test_alias_problem() # $ pt,tt=test_alias_problem
 
