@@ -751,6 +751,27 @@ module Private {
     }
 
     /**
+     * Holds if `p` can reach `n` in a summarized callable, using only value-preserving
+     * local steps. `clearsOrExpects` records whether any node on the path from `p` to
+     * `n` either clears or expects contents.
+     */
+    private predicate paramReachesLocal(ParamNode p, Node n, boolean clearsOrExpects) {
+      viableParam(_, _, _, p) and
+      n = p and
+      clearsOrExpects = false
+      or
+      exists(Node mid, boolean clearsOrExpectsMid |
+        paramReachesLocal(p, mid, clearsOrExpectsMid) and
+        summaryLocalStep(mid, n, true) and
+        if
+          summaryClearsContent(n, _) or
+          summaryExpectsContent(n, _)
+        then clearsOrExpects = true
+        else clearsOrExpects = clearsOrExpectsMid
+      )
+    }
+
+    /**
      * Holds if use-use flow starting from `arg` should be prohibited.
      *
      * This is the case when `arg` is the argument of a call that targets a
@@ -759,15 +780,11 @@ module Private {
      */
     pragma[nomagic]
     predicate prohibitsUseUseFlow(ArgNode arg, SummarizedCallable sc) {
-      exists(ParamNode p, Node mid, ParameterPosition ppos, Node ret |
+      exists(ParamNode p, ParameterPosition ppos, Node ret |
+        paramReachesLocal(p, ret, true) and
         p = summaryArgParam0(_, arg, sc) and
         p.isParameterOf(_, pragma[only_bind_into](ppos)) and
-        summaryLocalStep(p, mid, true) and
-        summaryLocalStep(mid, ret, true) and
         isParameterPostUpdate(ret, _, pragma[only_bind_into](ppos))
-      |
-        summaryClearsContent(mid, _) or
-        summaryExpectsContent(mid, _)
       )
     }
 
