@@ -1,0 +1,13 @@
+processMethods
+| action_mailbox.rb:2:3:5:5 | process |
+| action_mailbox.rb:13:5:15:7 | process |
+messageInstances
+| action_mailbox.rb:3:5:3:8 | call to mail |
+| action_mailbox.rb:4:5:4:8 | call to mail |
+| action_mailbox.rb:8:5:8:8 | call to mail |
+| action_mailbox.rb:14:9:14:12 | call to mail |
+remoteContent
+| action_mailbox.rb:3:5:3:13 | call to body |
+| action_mailbox.rb:4:5:4:11 | call to to |
+| action_mailbox.rb:8:5:8:18 | call to text_part |
+| action_mailbox.rb:14:9:14:23 | call to raw_source |

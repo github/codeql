@@ -7,6 +7,7 @@ private import codeql.ruby.frameworks.ActionCable
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActiveJob
 private import codeql.ruby.frameworks.ActionMailer
+private import codeql.ruby.frameworks.ActionMailbox
 private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActiveResource
 private import codeql.ruby.frameworks.ActiveStorage
