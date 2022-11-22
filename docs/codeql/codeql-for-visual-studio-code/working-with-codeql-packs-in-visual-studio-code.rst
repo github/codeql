@@ -30,7 +30,7 @@ You can then use the CodeQL CLI to publish your pack to share with others. For m
 Viewing CodeQL packs and their dependencies in Visual Studio Code
 -----------------------------------------------------------------
 To download a CodeQL pack that someone else has created, run the **CodeQL: Download Packs** command from the Command Palette.
-You can download all the core CodeQL query packs, or enter the full name of a specific pack to download. For example, to download the core queries for analyzing Java, enter ``codeql/java-queries``.
+You can download all the core CodeQL query packs, or enter the full name of a specific pack to download. For example, to download the core queries for analyzing Java or Kotlin, enter ``codeql/java-queries``.
 
 Whether you have downloaded a CodeQL pack or created your own, you can open the ``qlpack.yml`` file in the root of a CodeQL pack directory in Visual Studio Code and view the dependencies section to see what libraries the pack depends on.
 

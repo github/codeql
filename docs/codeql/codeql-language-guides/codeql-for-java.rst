@@ -1,9 +1,17 @@
 .. _codeql-for-java:
 
-CodeQL for Java
-===============
+CodeQL for Java and Kotlin
+==========================
 
-Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Java codebases.
+Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Java and Kotlin codebases.
+
+.. include:: ../reusables/kotlin-beta-note.rst
+
+.. include:: ../reusables/kotlin-java-differences.rst
+
+.. pull-quote:: Enabling Kotlin support
+
+   To enable Kotlin support, you should enable `java` as a language.
 
 .. toctree::
    :hidden:

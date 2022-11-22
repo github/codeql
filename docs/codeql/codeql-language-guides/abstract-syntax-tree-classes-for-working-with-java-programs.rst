@@ -7,6 +7,8 @@ CodeQL has a large selection of classes for representing the abstract syntax tre
 
 .. include:: ../reusables/abstract-syntax-tree.rst
 
+.. include:: ../reusables/kotlin-java-differences.rst
+
 Statement classes
 -----------------
 
