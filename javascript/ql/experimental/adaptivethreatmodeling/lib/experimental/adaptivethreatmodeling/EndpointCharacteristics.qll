@@ -459,10 +459,10 @@ abstract class EndpointFilterCharacteristic extends EndpointCharacteristic {
 }
 
 /**
- * An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be a sink of any type.
+ * An EndpointFilterCharacteristic that indicates that an endpoint is not a sink of any type.
  * Replaces https://github.com/github/codeql/blob/387e57546bf7352f7c1cfe781daa1a3799b7063e/javascript/ql/experimental/adaptivethreatmodeling/lib/experimental/adaptivethreatmodeling/StandardEndpointFilters.qll#LL15C24-L15C24
  */
-abstract class StandardEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
+abstract private class StandardEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
   bindingset[this]
   StandardEndpointFilterCharacteristic() { any() }
 
@@ -471,7 +471,7 @@ abstract class StandardEndpointFilterCharacteristic extends EndpointFilterCharac
   ) {
     endpointClass instanceof NegativeType and
     isPositiveIndicator = true and
-    confidence = mediumConfidence()
+    confidence = maximalConfidence()
   }
 }
 

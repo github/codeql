@@ -76,15 +76,18 @@ abstract class AtmConfig extends string {
   final EndpointCharacteristics::EndpointCharacteristic getAReasonSinkExcluded(
     JS::DataFlow::Node candidateSink
   ) {
-    // An endpoint is an effective sink if it has neither standard endpoint filter characteristics nor endpoint filter
-    // characteristics that are specific to this sink type.
-    // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that implies
-    // they're not sinks for this sink type (or not sinks for any sink type), not just the EndpointFilterCharacteristics.
-    exists(EndpointCharacteristics::StandardEndpointFilterCharacteristic standardFilter |
-      standardFilter.getEndpoints(candidateSink) and
-      result = standardFilter
+    // If an endpoint characteristic claims, with maximal confidence, that it
+    // is a Negative, we exclude an endpoint.
+    exists(EndpointCharacteristics::EndpointCharacteristic filter, float c |
+      filter.getEndpoints(candidateSink) and
+      c >= any(EndpointCharacteristics::EndpointCharacteristic ch).maximalConfidence() and
+      filter.getImplications(any(NegativeType n), true, c) and
+      result = filter
     )
     or
+    // If an endpoint characteristic claims, with any confidence, that an endpoint is
+    // not a sink for any given endpoint type, we exclude the endpoint.
+    // TODO this should probably be looked at in experiments.
     exists(EndpointCharacteristics::EndpointFilterCharacteristic specificFilter |
       specificFilter.getEndpoints(candidateSink) and
       specificFilter.getImplications(this.getASinkEndpointType(), false, _) and
