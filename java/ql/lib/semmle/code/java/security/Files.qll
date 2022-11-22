@@ -84,13 +84,15 @@ private class FileSummaryModels extends SummaryModelCsv {
         "java.io;File;true;toPath;;;Argument[-1];ReturnValue;taint;manual",
         "java.io;File;true;toString;;;Argument[-1];ReturnValue;taint;manual",
         "java.io;File;true;toURI;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;getParent;;;Argument[-1];ReturnValue;taint;manual",
         "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual",
         "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual",
         "java.nio.file;Path;true;toAbsolutePath;;;Argument[-1];ReturnValue;taint;manual",
         "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint;manual",
         "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint;manual",
         "java.nio.file;Path;true;toUri;;;Argument[-1];ReturnValue;taint;manual",
-        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual",
+        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint;manual",
+        "java.nio.file;Paths;true;get;;;Argument[1].ArrayElement;ReturnValue;taint;manual",
         "java.nio.file;FileSystem;true;getPath;;;Argument[0];ReturnValue;taint;manual",
         "java.nio.file;FileSystem;true;getRootDirectories;;;Argument[0];ReturnValue;taint;manual"
       ]

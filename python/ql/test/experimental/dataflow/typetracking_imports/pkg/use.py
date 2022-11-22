@@ -6,8 +6,8 @@ test_direct_import()
 
 
 def test_alias_problem():
-    from .alias_problem import foo # $ MISSING: tracked
-    print(foo) # $ MISSING: tracked
+    from .alias_problem import foo # $ tracked
+    print(foo) # $ tracked
 
 test_alias_problem()
 
@@ -34,8 +34,8 @@ test_alias_only_direct()
 
 
 def test_problem_absolute_import():
-    from pkg.problem_absolute_import import foo # $ MISSING: tracked
-    print(foo) # $ MISSING: tracked
+    from pkg.problem_absolute_import import foo # $ tracked
+    print(foo) # $ tracked
 
 test_problem_absolute_import()
 
