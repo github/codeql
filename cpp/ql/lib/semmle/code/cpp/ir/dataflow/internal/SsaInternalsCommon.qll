@@ -28,7 +28,9 @@ predicate ignoreInstruction(Instruction instr) {
     instr instanceof PhiInstruction or
     instr instanceof ReadSideEffectInstruction or
     instr instanceof ChiInstruction or
-    instr instanceof InitializeIndirectionInstruction
+    instr instanceof InitializeIndirectionInstruction or
+    instr instanceof AliasedDefinitionInstruction or
+    instr instanceof InitializeNonLocalInstruction
   )
 }
 
