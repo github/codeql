@@ -18,7 +18,7 @@ The same vulnerability applies to <code>IO.read</code>, <code>IO.write</code>,
 does not have this vulnerability. Similarly, use the methods from the <code>File</code>
 class instead of the <code>IO</code> class e.g. <code>File.read</code> instead
 of <code>IO.read</code>.</p>
-<p>Instead of <code>URI.open</code> use <code>URI(<uri>).open</code> or an HTTP Client.</p>
+<p>Instead of <code>URI.open</code> use <code>URI(..).open</code> or an HTTP Client.</p>
 
 </recommendation>
 <example>
