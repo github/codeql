@@ -98,6 +98,7 @@ jobs:
           key: ruby-build
       - name: Build Query Pack
         run: |
+          rm -rf target/packs
           codeql pack create ../shared/ssa --output target/packs
           codeql pack create ../misc/suite-helpers --output target/packs
           codeql pack create ../shared/regex --output target/packs
