@@ -6,4 +6,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: "*"
-    codeql/javascript-experimental-atm-model: "0.2.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-11-22-01h40m15s.stoic-orange-vl8j3mk4.97c18df200560bf658774a9972dbf427f1405f49aac0d96d309a8ba4d7212309
