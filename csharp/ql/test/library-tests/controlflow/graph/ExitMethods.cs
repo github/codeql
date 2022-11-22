@@ -29,7 +29,7 @@ class ExitMethods
         return; // dead
     }
 
-    void M5()
+    void M5d()
     {
         ApplicationExit();
         return; // dead
