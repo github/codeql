@@ -549,7 +549,7 @@ module ModelValidation {
       ext = "" and
       pred = "negative summary"
     |
-      not package.regexpMatch("[a-zA-Z0-9_\\.]+") and
+      not package.regexpMatch("[a-zA-Z0-9_\\.]*") and
       result = "Dubious package \"" + package + "\" in " + pred + " model."
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
