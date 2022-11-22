@@ -13,7 +13,17 @@ def is_source(x):
     return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
 
 
-def SINK(x):
+def SINK(x, *, not_present_at_runtime=False):
+    # not_present_at_runtime supports use-cases where we want flow from data-flow layer
+    # (so we want to use SINK), but we end up in a siaution where it's not possible to
+    # actually get flow from a source at runtime. The only use-case is for the
+    # cross-talk tests, where our ability to use if-then-else is limited because doing
+    # so would make cfg-splitting kick in, and that would solve the problem trivially
+    # (by the splitting).
+    if not_present_at_runtime:
+        print("OK")
+        return
+
     if is_source(x):
         print("OK")
     else:
@@ -186,6 +196,9 @@ def test_nested_obj_method():
 # ------------------------------------------------------------------------------
 # Crosstalk test -- using different function based on conditional
 # ------------------------------------------------------------------------------
+# NOTE: These tests use `SINK(objy.y, not_present_at_runtime=True)` since it's not
+# possible to use if-then-else statements, since that would make cfg-splitting kick in,
+# and that would solve the problem trivially (by the splitting).
 
 class CrosstalkTestX:
     def __init__(self):
@@ -229,7 +242,7 @@ def test_no_crosstalk_reference(cond=True):
     SINK(objx.x) # $ flow="SOURCE, l:-4 -> objx.x"
     SINK_F(objx.y)
     SINK_F(objy.x)
-    SINK_F(objy.y) # $ flow="SOURCE, l:-5 -> objy.y"
+    SINK(objy.y, not_present_at_runtime=True) # $ flow="SOURCE, l:-5 -> objy.y"
 
 
 @expects(8) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
@@ -252,7 +265,7 @@ def test_potential_crosstalk_different_name(cond=True):
     SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
     SINK_F(objx.y)
     SINK_F(objy.x)
-    SINK_F(objy.y) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+    SINK(objy.y, not_present_at_runtime=True) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
 
 
 @expects(8) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
@@ -275,7 +288,7 @@ def test_potential_crosstalk_same_name(cond=True):
     SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
     SINK_F(objx.y)
     SINK_F(objy.x)
-    SINK_F(objy.y) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+    SINK(objy.y, not_present_at_runtime=True) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
 
 
 @expects(10) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
@@ -298,10 +311,10 @@ def test_potential_crosstalk_same_name_object_reference(cond=True):
     SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
     SINK_F(objx.y)
     SINK_F(objy.x)
-    SINK_F(objy.y) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+    SINK(objy.y, not_present_at_runtime=True) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
 
     SINK(obj.x) # $ flow="SOURCE, l:-7 -> obj.x"
-    SINK_F(obj.y) # $ flow="SOURCE, l:-8 -> obj.y"
+    SINK(obj.y, not_present_at_runtime=True) # $ flow="SOURCE, l:-8 -> obj.y"
 
 
 # ------------------------------------------------------------------------------
