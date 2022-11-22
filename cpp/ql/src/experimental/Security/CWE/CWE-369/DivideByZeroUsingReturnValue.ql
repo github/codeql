@@ -218,7 +218,7 @@ where
       changeInt = 0
       or
       // Denominator can be sum or difference.
-      changeInt = getValueOperand(div.getRV(), findVal.getAnExpr(), _) and
+      pragma[only_bind_into](changeInt) = getValueOperand(div.getRV(), findVal.getAnExpr(), _) and
       mayBeReturnValue(fn, changeInt)
     ) and
     exp = div and
@@ -236,6 +236,7 @@ where
       ) and
       (
         divVal = div.getRV() and
+        divFc.getArgument(posArg) != findVal.getAnExpr() and
         (
           // Function return value can be zero.
           mayBeReturnZero(fn) and
@@ -245,13 +246,14 @@ where
           changeInt2 = 0
           or
           // Denominator can be sum or difference.
-          changeInt = getValueOperand(divFc.getArgument(posArg), findVal.getAnExpr(), _) and
+          pragma[only_bind_into](changeInt) =
+            getValueOperand(divFc.getArgument(posArg), findVal.getAnExpr(), _) and
           mayBeReturnValue(fn, changeInt) and
           changeInt2 = 0
         )
         or
         // Look for a situation where the difference or subtraction is considered as an argument, and it can be used in the same way.
-        changeInt = getValueOperand(div.getRV(), divVal, _) and
+        pragma[only_bind_into](changeInt) = getValueOperand(div.getRV(), divVal, _) and
         changeInt2 = changeInt and
         mayBeReturnValue(fn, changeInt) and
         divFc.getArgument(posArg) = findVal.getAnExpr()
