@@ -559,12 +559,15 @@ pragma[nomagic]
 private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
 
 pragma[nomagic]
+private predicate hasReadStep(Content c, Configuration config) { read(_, c, _, config) }
+
+pragma[nomagic]
 private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
   store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
     contentType) and
-  read(_, tc.getContent(), _, config) and
+  hasReadStep(tc.getContent(), config) and
   stepFilter(node1, node2, config)
 }
 
