@@ -598,13 +598,9 @@ private predicate hasSinkCallCtx(Configuration config) {
 }
 
 private module Stage1 implements StageSig {
-  class ApApprox = Unit;
-
   class Ap = Unit;
 
-  class ApOption = Unit;
-
-  class Cc = boolean;
+  private class Cc = boolean;
 
   /* Begin: Stage 1 logic. */
   /**
@@ -613,7 +609,7 @@ private module Stage1 implements StageSig {
    * The Boolean `cc` records whether the node is reached through an
    * argument in a call.
    */
-  predicate fwdFlow(NodeEx node, Cc cc, Configuration config) {
+  private predicate fwdFlow(NodeEx node, Cc cc, Configuration config) {
     sourceNode(node, _, config) and
     if hasSourceCallCtx(config) then cc = true else cc = false
     or
@@ -753,7 +749,7 @@ private module Stage1 implements StageSig {
    * the enclosing callable in order to reach a sink.
    */
   pragma[nomagic]
-  predicate revFlow(NodeEx node, boolean toReturn, Configuration config) {
+  private predicate revFlow(NodeEx node, boolean toReturn, Configuration config) {
     revFlow0(node, toReturn, config) and
     fwdFlow(node, config)
   }
