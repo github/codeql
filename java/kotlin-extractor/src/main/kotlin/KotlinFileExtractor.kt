@@ -498,8 +498,19 @@ open class KotlinFileExtractor(
         extractEnumTypeAccesses: Boolean,
         contextLabel: String? = null
     ): Label<out DbExpr> {
+        val isConvertedJavaDeprecatedAnnotation = (constructorCall.type as? IrSimpleType)?.classFqName?.asString() == "kotlin.Deprecated" &&
+                constructorCall.source is JavaSourceElement
+
+        val extractType =
+            (
+                if (isConvertedJavaDeprecatedAnnotation)
+                    pluginContext.referenceClass(FqName("java.lang.Deprecated"))?.defaultType
+                else
+                    null
+            ) ?: erase(constructorCall.type)
+
         // Erase the type here because the JVM lowering erases the annotation type, and so the Java extractor will see it in erased form.
-        val t = useType(erase(constructorCall.type))
+        val t = useType(extractType)
         val annotationContextLabel = contextLabel ?: "{${t.javaResult.id}}"
         val id = tw.getLabelFor<DbDeclannotation>("@\"annotation;{$parent};$annotationContextLabel\"")
         tw.writeExprs_declannotation(id, t.javaResult.id, parent, idx)
@@ -508,7 +519,11 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(constructorCall)
         tw.writeHasLocation(id, locId)
 
-        for (i in 0 until constructorCall.valueArgumentsCount) {
+        // If this is `java.lang.Deprecated`, extract an annotation without parameters -- whatever the original source
+        // may have supplied has been lost.
+        val paramCount = if (isConvertedJavaDeprecatedAnnotation) 0 else constructorCall.valueArgumentsCount
+
+        for (i in 0 until paramCount) {
             val param = constructorCall.symbol.owner.valueParameters[i]
             val prop = constructorCall.symbol.owner.parentAsClass.declarations
                 .filterIsInstance<IrProperty>()

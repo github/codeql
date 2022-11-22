@@ -34,3 +34,14 @@ class Annotated { }
 @AnnWithDefaults
 class AnnotatedUsedByKotlin { }
 
+@java.lang.Deprecated
+class HasJavaDeprecatedAnnotationUsedByJava
+
+@kotlin.Deprecated("Kotlin deprecation message 1")
+class HasKotlinDeprecatedAnnotationUsedByJava
+
+@java.lang.Deprecated
+class HasJavaDeprecatedAnnotationUsedByKotlin
+
+@kotlin.Deprecated("Kotlin deprecation message 2")
+class HasKotlinDeprecatedAnnotationUsedByKotlin

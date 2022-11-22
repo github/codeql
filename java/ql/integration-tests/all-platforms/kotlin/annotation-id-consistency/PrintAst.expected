@@ -18,6 +18,12 @@ User.java:
 #    4|         2: [ExprStmt] <Expr>;
 #    4|           0: [ClassInstanceExpr] new Annotated(...)
 #    4|             -3: [TypeAccess] Annotated
+#    4|         3: [ExprStmt] <Expr>;
+#    4|           0: [ClassInstanceExpr] new HasJavaDeprecatedAnnotationUsedByJava(...)
+#    4|             -3: [TypeAccess] HasJavaDeprecatedAnnotationUsedByJava
+#    4|         4: [ExprStmt] <Expr>;
+#    4|           0: [ClassInstanceExpr] new HasKotlinDeprecatedAnnotationUsedByJava(...)
+#    4|             -3: [TypeAccess] HasKotlinDeprecatedAnnotationUsedByJava
 ktUser.kt:
 #    0| [CompilationUnit] ktUser
 #    1|   1: [Class] KtUser
@@ -32,6 +38,20 @@ ktUser.kt:
 #    4|           1: [LocalVariableDeclExpr] a
 #    4|             0: [ClassInstanceExpr] new AnnotatedUsedByKotlin(...)
 #    4|               -3: [TypeAccess] AnnotatedUsedByKotlin
+#    5|         1: [LocalVariableDeclStmt] var ...;
+#    5|           1: [LocalVariableDeclExpr] b
+#    5|             0: [ClassInstanceExpr] new HasJavaDeprecatedAnnotationUsedByKotlin(...)
+#    5|               -3: [TypeAccess] HasJavaDeprecatedAnnotationUsedByKotlin
+#    6|         2: [LocalVariableDeclStmt] var ...;
+#    6|           1: [LocalVariableDeclExpr] c
+#    6|             0: [ClassInstanceExpr] new HasKotlinDeprecatedAnnotationUsedByKotlin(...)
+#    6|               -3: [TypeAccess] HasKotlinDeprecatedAnnotationUsedByKotlin
+#    8|         3: [ExprStmt] <Expr>;
+#    8|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#    8|             0: [TypeAccess] Unit
+#    8|             1: [MethodAccess] isJavaLetter(...)
+#    8|               -1: [TypeAccess] Character
+#    8|               0: [CharacterLiteral] a
 test.kt:
 #    0| [CompilationUnit] test
 #    4|   1: [Interface] Ann1
@@ -235,6 +255,36 @@ test.kt:
 #   27|       5: [BlockStmt] { ... }
 #   27|         0: [SuperConstructorInvocationStmt] super(...)
 #   35|         1: [BlockStmt] { ... }
+#   37|   10: [Class] HasJavaDeprecatedAnnotationUsedByJava
+#-----|     -3: (Annotations)
+#   37|       1: [Annotation] Deprecated
+#   38|     1: [Constructor] HasJavaDeprecatedAnnotationUsedByJava
+#   37|       5: [BlockStmt] { ... }
+#   37|         0: [SuperConstructorInvocationStmt] super(...)
+#   38|         1: [BlockStmt] { ... }
+#   40|   11: [Class] HasKotlinDeprecatedAnnotationUsedByJava
+#-----|     -3: (Annotations)
+#   40|       1: [Annotation] Deprecated
+#    0|         1: [StringLiteral] "Kotlin deprecation message 1"
+#   41|     1: [Constructor] HasKotlinDeprecatedAnnotationUsedByJava
+#   40|       5: [BlockStmt] { ... }
+#   40|         0: [SuperConstructorInvocationStmt] super(...)
+#   41|         1: [BlockStmt] { ... }
+#   43|   12: [Class] HasJavaDeprecatedAnnotationUsedByKotlin
+#-----|     -3: (Annotations)
+#   43|       1: [Annotation] Deprecated
+#   44|     1: [Constructor] HasJavaDeprecatedAnnotationUsedByKotlin
+#   43|       5: [BlockStmt] { ... }
+#   43|         0: [SuperConstructorInvocationStmt] super(...)
+#   44|         1: [BlockStmt] { ... }
+#   46|   13: [Class] HasKotlinDeprecatedAnnotationUsedByKotlin
+#-----|     -3: (Annotations)
+#   46|       1: [Annotation] Deprecated
+#    0|         1: [StringLiteral] "Kotlin deprecation message 2"
+#   47|     1: [Constructor] HasKotlinDeprecatedAnnotationUsedByKotlin
+#   46|       5: [BlockStmt] { ... }
+#   46|         0: [SuperConstructorInvocationStmt] super(...)
+#   47|         1: [BlockStmt] { ... }
 #    0| [TypeLiteral] String.class
 #    0|   0: [TypeAccess] String
 #    0| [ArrayInit] {...}
