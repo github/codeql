@@ -39,10 +39,10 @@ def print_password():
     sys.stdout.write(get_password()) # NOT OK
     sys.stderr.write(get_password()) # NOT OK
 
-    # import getpass
+    import getpass
 
-    # x = getpass.getpass()
-    # print(x) # NOT OK
+    x = getpass.getpass()
+    print(x) # NOT OK
 
 
 def FPs(account, account_id):
