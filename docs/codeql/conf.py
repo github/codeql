@@ -52,7 +52,7 @@ import sys
 def setup(sphinx):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from qllexer import QLLexer
-    sphinx.add_lexer("ql", QLLexer)
+    sphinx.add_lexer("ql", QLLexer() if callable(QLLexer) else QLLexer)
 
 # The version of CodeQL for the current release you're documenting, acts as replacement for
 # |version| and |release|. Not currently used except in LGTM Enterprise support info.
