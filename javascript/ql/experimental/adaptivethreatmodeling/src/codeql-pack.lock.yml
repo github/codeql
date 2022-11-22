@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-11-22-11h29m25s.silver-bag-hdgsvg6k.1f264018d2f19a442a9b08323c39ade7221775f76fe3e199e0bfc23a6cb0e512
 compiled: false
 lockVersion: 1.0.0
