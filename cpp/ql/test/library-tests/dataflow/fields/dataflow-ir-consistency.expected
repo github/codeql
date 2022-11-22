@@ -21,6 +21,16 @@ compatibleTypesReflexive
 unreachableNodeCCtx
 localCallNodes
 postIsNotPre
+| A.cpp:98:12:98:18 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| B.cpp:6:15:6:24 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| B.cpp:15:15:15:27 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| C.cpp:22:12:22:21 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| C.cpp:24:16:24:25 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| D.cpp:28:15:28:24 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| D.cpp:35:15:35:24 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| D.cpp:42:15:42:24 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| D.cpp:49:15:49:24 | new indirection | PostUpdateNode should not equal its pre-update node. |
+| D.cpp:56:15:56:24 | new indirection | PostUpdateNode should not equal its pre-update node. |
 postHasUniquePre
 uniquePostUpdate
 | aliasing.cpp:70:11:70:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
@@ -41,6 +51,16 @@ postIsInSameCallable
 reverseRead
 argHasPostUpdate
 postWithInFlow
+| A.cpp:98:12:98:18 | new indirection | PostUpdateNode should not be the target of local flow. |
+| B.cpp:6:15:6:24 | new indirection | PostUpdateNode should not be the target of local flow. |
+| B.cpp:15:15:15:27 | new indirection | PostUpdateNode should not be the target of local flow. |
+| C.cpp:22:12:22:21 | new indirection | PostUpdateNode should not be the target of local flow. |
+| C.cpp:24:16:24:25 | new indirection | PostUpdateNode should not be the target of local flow. |
+| D.cpp:28:15:28:24 | new indirection | PostUpdateNode should not be the target of local flow. |
+| D.cpp:35:15:35:24 | new indirection | PostUpdateNode should not be the target of local flow. |
+| D.cpp:42:15:42:24 | new indirection | PostUpdateNode should not be the target of local flow. |
+| D.cpp:49:15:49:24 | new indirection | PostUpdateNode should not be the target of local flow. |
+| D.cpp:56:15:56:24 | new indirection | PostUpdateNode should not be the target of local flow. |
 | realistic.cpp:54:16:54:47 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 | realistic.cpp:60:16:60:18 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
