@@ -149,7 +149,7 @@ predicate isModifiableByCall(ArgumentOperand operand) {
     then
       // A qualifier is "modifiable" if:
       // 1. the member function is not const specified, or
-      // 2. the member funtion is `const` specified, but returns a pointer or reference
+      // 2. the member function is `const` specified, but returns a pointer or reference
       // type that is non-const.
       //
       // To see why this is necessary, consider the following function:
