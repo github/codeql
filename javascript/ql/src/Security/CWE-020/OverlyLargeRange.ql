@@ -12,7 +12,7 @@
  *       external/cwe/cwe-020
  */
 
-private import semmle.javascript.security.regexp.RegexTreeView::RegexTreeView as TreeView
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 import codeql.regex.OverlyLargeRangeQuery::Make<TreeView>
 
 from TreeView::RegExpCharacterRange range, string reason

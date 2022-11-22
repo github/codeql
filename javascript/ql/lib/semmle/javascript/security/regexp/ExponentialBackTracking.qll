@@ -62,7 +62,7 @@
  *     a suffix `x` (possible empty) that is most likely __not__ accepted.
  */
 
-private import RegexTreeView::RegexTreeView as TreeView
+private import RegExpTreeView::RegExpTreeView as TreeView
 // ExponentialBackTracking should be used directly from the shared pack, and not from this file.
 deprecated private import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView> as Dep
 import Dep

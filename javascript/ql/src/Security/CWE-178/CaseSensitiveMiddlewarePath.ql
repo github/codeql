@@ -20,7 +20,7 @@ string toOtherCase(string s) {
   if s.regexpMatch(".*[a-z].*") then result = s.toUpperCase() else result = s.toLowerCase()
 }
 
-private import semmle.javascript.security.regexp.RegexTreeView::RegexTreeView as TreeView
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 import codeql.regex.nfa.NfaUtils::Make<TreeView> as NfaUtils
 
 /** Holds if `s` is a relevant regexp term were we want to compute a string that matches the term (for `getCaseSensitiveBypassExample`). */

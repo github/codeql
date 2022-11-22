@@ -6,7 +6,7 @@ private import codeql.regex.nfa.NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView
 
 /** An implementation that parses a regular expression into a tree of `RegExpTerm`s. */
-module RegexTreeView implements RegexTreeViewSig {
+module RegExpTreeView implements RegexTreeViewSig {
   import javascript
 
   class Top = Locatable;

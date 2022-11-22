@@ -16,7 +16,7 @@
  *       external/cwe/cwe-186
  */
 
-private import semmle.javascript.security.regexp.RegexTreeView::RegexTreeView as TreeView
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 import codeql.regex.nfa.BadTagFilterQuery::Make<TreeView>
 
 from HtmlMatchingRegExp regexp, string msg

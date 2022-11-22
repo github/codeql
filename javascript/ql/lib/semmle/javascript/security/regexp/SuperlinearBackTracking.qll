@@ -35,7 +35,7 @@
  * It also doesn't find all transitions in the product automaton, which can cause false negatives.
  */
 
-private import RegexTreeView::RegexTreeView as TreeView
+private import RegExpTreeView::RegExpTreeView as TreeView
 // SuperlinearBackTracking should be used directly from the shared pack, and not from this file.
 deprecated private import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView> as Dep
 import Dep

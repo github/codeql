@@ -5,7 +5,7 @@
  */
 
 import javascript
-private import semmle.javascript.security.regexp.RegexTreeView::RegexTreeView as TreeView
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 
 /** Module containing sources, sinks, and sanitizers for polynomial regular expression denial-of-service attacks. */
 module PolynomialReDoS {

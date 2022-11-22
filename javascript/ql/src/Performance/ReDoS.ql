@@ -15,7 +15,7 @@
  */
 
 import javascript
-private import semmle.javascript.security.regexp.RegexTreeView::RegexTreeView as TreeView
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
 
 from RegExpTerm t, string pump, State s, string prefixMsg

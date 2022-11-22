@@ -3,7 +3,7 @@
  */
 
 import javascript
-private import semmle.javascript.security.regexp.RegexTreeView::RegexTreeView as TreeView
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 import codeql.regex.nfa.NfaUtils::Make<TreeView> as NfaUtils
 
 class StringSubstitutionCall = StringReplaceCall;
