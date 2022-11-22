@@ -138,14 +138,14 @@ classes.kt:
 #   39|           0: [ExprStmt] <Expr>;
 #   39|             0: [MethodAccess] f(...)
 #   39|               -1: [TypeAccess] ClassesKt
-#   39|               0: [StringLiteral] init1
+#   39|               0: [StringLiteral] "init1"
 #   42|           1: [ExprStmt] <Expr>;
 #   42|             0: [KtInitializerAssignExpr] ...=...
 #   42|               0: [VarAccess] x
 #   45|           2: [ExprStmt] <Expr>;
 #   45|             0: [MethodAccess] f(...)
 #   45|               -1: [TypeAccess] ClassesKt
-#   45|               0: [StringLiteral] init2
+#   45|               0: [StringLiteral] "init2"
 #   36|         2: [ExprStmt] <Expr>;
 #   36|           0: [MethodAccess] f(...)
 #   36|             -1: [TypeAccess] ClassesKt
@@ -174,6 +174,8 @@ classes.kt:
 #   49|           0: [ClassInstanceExpr] new Enum(...)
 #   49|             -3: [TypeAccess] Enum<Direction>
 #   49|               0: [TypeAccess] Direction
+#   49|             0: [NullLiteral] null
+#   49|             1: [IntegerLiteral] 0
 #   49|         1: [BlockStmt] { ... }
 #   50|     5: [FieldDeclaration] Direction NORTH;
 #   50|       -1: [TypeAccess] Direction
@@ -209,6 +211,8 @@ classes.kt:
 #   53|           0: [ClassInstanceExpr] new Enum(...)
 #   53|             -3: [TypeAccess] Enum<Color>
 #   53|               0: [TypeAccess] Color
+#   53|             0: [NullLiteral] null
+#   53|             1: [IntegerLiteral] 0
 #   53|         1: [BlockStmt] { ... }
 #   53|           0: [ExprStmt] <Expr>;
 #   53|             0: [KtInitializerAssignExpr] ...=...
@@ -1115,7 +1119,7 @@ local_anonymous.kt:
 #   40|                   1: [BlockStmt] { ... }
 #   42|                     0: [LocalVariableDeclStmt] var ...;
 #   42|                       1: [LocalVariableDeclExpr] answer
-#   42|                         0: [StringLiteral] 42
+#   42|                         0: [StringLiteral] "42"
 #   40|           1: [ExprStmt] <Expr>;
 #   40|             0: [ClassInstanceExpr] new (...)
 #   40|               -3: [TypeAccess] Interface2

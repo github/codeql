@@ -1,3 +1,30 @@
+## 0.4.4
+
+### Minor Analysis Improvements
+
+* Added support for `@hapi/glue` and Hapi plugins to the `frameworks/Hapi.qll` library.
+
+### Bug Fixes
+
+* Fixed a bug that would cause the extractor to crash when an `import` type is used in
+  the `extends` clause of an `interface`.
+* Fixed an issue with multi-line strings in YAML files being associated with an invalid location,
+  causing alerts related to such strings to appear at the top of the YAML file.
+
+## 0.4.3
+
+### New Queries
+
+* Added a new query, `js/second-order-command-line-injection`, to detect shell
+  commands that may execute arbitrary code when the user has control over 
+  the arguments to a command-line program.
+  This currently flags up unsafe invocations of git and hg.
+
+### Minor Analysis Improvements
+
+* Added sources for user defined path and query parameters in `Next.js`.
+* The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
+
 ## 0.4.2
 
 ### Minor Analysis Improvements

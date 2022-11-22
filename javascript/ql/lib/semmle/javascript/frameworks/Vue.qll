@@ -116,11 +116,6 @@ module Vue {
   }
 
   /**
-   * DEPRECATED. This class has been renamed to `Vue::Component`.
-   */
-  deprecated class Instance = Component;
-
-  /**
    * A Vue component, such as a `new Vue({ ... })` call or a `.vue` file.
    *
    * Generally speaking, a component is always created by calling `Vue.extend()` or
@@ -384,23 +379,6 @@ module Vue {
   }
 
   /**
-   * DEPRECATED. Use `Vue::Component` instead.
-   *
-   * A Vue component from `new Vue({...})`.
-   */
-  deprecated class VueInstance extends Component {
-    VueInstance() {
-      // restrict charpred to match original behavior
-      this = MkComponentInstantiation(vueLibrary().getAnInstantiation())
-    }
-  }
-
-  /**
-   * DEPRECATED. Use `Vue::ComponentExtension` or `Vue::Component` instead.
-   */
-  deprecated class ExtendedVue = ComponentExtension;
-
-  /**
    * A component created via an explicit call to `Vue.extend({...})` or `CustomComponent.extend({...})`.
    */
   class ComponentExtension extends Component, MkComponentExtension {
@@ -426,19 +404,6 @@ module Vue {
       result = Component.super.getABaseComponent()
       or
       result.getComponentRef().getMember("extend").getACall() = extend
-    }
-  }
-
-  /**
-   * DEPRECATED. Use `Vue::Component` instead.
-   *
-   * An instance of an extended Vue, for example `instance` of `var Ext = Vue.extend({...}); var instance = new Ext({...})`.
-   */
-  deprecated class ExtendedInstance extends Component {
-    ExtendedInstance() {
-      // restrict charpred to match original behavior
-      this =
-        MkComponentInstantiation(vueLibrary().getMember("extend").getReturn().getAnInstantiation())
     }
   }
 
@@ -568,9 +533,6 @@ module Vue {
     }
   }
 
-  /** DEPRECATED. Do not use. */
-  deprecated class InstanceHeapStep = PropStep;
-
   /**
    * A Vue `v-html` attribute.
    */
@@ -608,11 +570,6 @@ module Vue {
       )
     }
   }
-
-  /**
-   * DEPRECATED. Do not use.
-   */
-  deprecated class VHtmlSourceWrite = VHtmlAttributeStep;
 
   /*
    * Provides classes for working with Vue templates.

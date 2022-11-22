@@ -27,15 +27,15 @@ abstract class SqlSink extends DataFlow::Node { }
 class CApiSqlSink extends SqlSink {
   CApiSqlSink() {
     // `sqlite3_exec` and variants of `sqlite3_prepare`.
-    exists(AbstractFunctionDecl f, CallExpr call |
-      f.getName() =
-        [
-          "sqlite3_exec(_:_:_:_:_:)", "sqlite3_prepare(_:_:_:_:_:)",
-          "sqlite3_prepare_v2(_:_:_:_:_:)", "sqlite3_prepare_v3(_:_:_:_:_:_:)",
-          "sqlite3_prepare16(_:_:_:_:_:)", "sqlite3_prepare16_v2(_:_:_:_:_:)",
-          "sqlite3_prepare16_v3(_:_:_:_:_:_:)"
-        ] and
-      call.getStaticTarget() = f and
+    exists(CallExpr call |
+      call.getStaticTarget()
+          .(FreeFunctionDecl)
+          .hasName([
+              "sqlite3_exec(_:_:_:_:_:)", "sqlite3_prepare(_:_:_:_:_:)",
+              "sqlite3_prepare_v2(_:_:_:_:_:)", "sqlite3_prepare_v3(_:_:_:_:_:_:)",
+              "sqlite3_prepare16(_:_:_:_:_:)", "sqlite3_prepare16_v2(_:_:_:_:_:)",
+              "sqlite3_prepare16_v3(_:_:_:_:_:_:)"
+            ]) and
       call.getArgument(1).getExpr() = this.asExpr()
     )
   }
@@ -47,20 +47,17 @@ class CApiSqlSink extends SqlSink {
 class SQLiteSwiftSqlSink extends SqlSink {
   SQLiteSwiftSqlSink() {
     // Variants of `Connection.execute`, `connection.prepare` and `connection.scalar`.
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "Connection" and
-      c.getAMember() = f and
-      f.getName() = ["execute(_:)", "prepare(_:_:)", "run(_:_:)", "scalar(_:_:)"] and
-      call.getStaticTarget() = f and
+    exists(CallExpr call |
+      call.getStaticTarget()
+          .(MethodDecl)
+          .hasQualifiedName("Connection",
+            ["execute(_:)", "prepare(_:_:)", "run(_:_:)", "scalar(_:_:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
     )
     or
     // String argument to the `Statement` constructor.
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "Statement" and
-      c.getAMember() = f and
-      f.getName() = "init(_:_:)" and
-      call.getStaticTarget() = f and
+    exists(CallExpr call |
+      call.getStaticTarget().(MethodDecl).hasQualifiedName("Statement", "init(_:_:)") and
       call.getArgument(1).getExpr() = this.asExpr()
     )
   }

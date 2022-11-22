@@ -9,7 +9,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DependentMemberType" }
 
     /**
-     * Gets the basetype of this dependent member type.
+     * Gets the base type of this dependent member type.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -22,7 +22,7 @@ module Generated {
     }
 
     /**
-     * Gets the basetype of this dependent member type.
+     * Gets the base type of this dependent member type.
      */
     final Type getBaseType() { result = getImmediateBaseType().resolve() }
 

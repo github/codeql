@@ -1,7 +1,6 @@
 package com.github.codeql
 
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
-import com.github.codeql.utils.versions.FileEntry
 import java.io.BufferedWriter
 import java.io.File
 import org.jetbrains.kotlin.ir.IrElement
@@ -15,6 +14,7 @@ import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
+import org.jetbrains.kotlin.ir.expressions.IrCall
 
 /**
  * Each `.trap` file has a `TrapLabelManager` while we are writing it.
@@ -269,11 +269,42 @@ open class FileTrapWriter (
      */
     val fileId = mkFileId(filePath, populateFileTables)
 
+    private fun offsetMinOf(default: Int, vararg options: Int?): Int {
+        if (default == UNDEFINED_OFFSET || default == SYNTHETIC_OFFSET) {
+            return default
+        }
+
+        var currentMin = default
+        for (option in options) {
+            if (option != null && option != UNDEFINED_OFFSET && option != SYNTHETIC_OFFSET && option < currentMin) {
+                currentMin = option
+            }
+        }
+
+        return currentMin
+    }
+
+    private fun getStartOffset(e: IrElement): Int {
+        return when (e) {
+            is IrCall -> {
+                // Calls have incorrect startOffset, so we adjust them:
+                val dr = e.dispatchReceiver?.let { getStartOffset(it) }
+                val er = e.extensionReceiver?.let { getStartOffset(it) }
+                offsetMinOf(e.startOffset, dr, er)
+            }
+            else -> e.startOffset
+        }
+    }
+
+    private fun getEndOffset(e: IrElement): Int {
+        return e.endOffset
+    }
+
     /**
      * Gets a label for the location of `e`.
      */
     fun getLocation(e: IrElement): Label<DbLocation> {
-        return getLocation(e.startOffset, e.endOffset)
+        return getLocation(getStartOffset(e), getEndOffset(e))
     }
     /**
      * Gets a label for the location corresponding to `startOffset` and

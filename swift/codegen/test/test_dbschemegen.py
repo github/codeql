@@ -18,8 +18,9 @@ def dir_param(request):
 
 @pytest.fixture
 def generate(opts, input, renderer):
-    def func(classes):
+    def func(classes, null=None):
         input.classes = {cls.name: cls for cls in classes}
+        input.null = null
         (out, data), = run_generation(dbschemegen.generate, opts, renderer).items()
         assert out is opts.dbscheme
         return data
@@ -254,8 +255,9 @@ def test_final_class_with_more_fields(generate, dir_param):
 
 def test_empty_class_with_derived(generate):
     assert generate([
-        schema.Class(
-            name="Base", derived={"Left", "Right"}),
+        schema.Class(name="Base", derived={"Left", "Right"}),
+        schema.Class(name="Left", bases=["Base"]),
+        schema.Class(name="Right", bases=["Base"]),
     ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
@@ -263,6 +265,14 @@ def test_empty_class_with_derived(generate):
             dbscheme.Union(
                 lhs="@base",
                 rhs=["@left", "@right"],
+            ),
+            dbscheme.Table(
+                name="lefts",
+                columns=[dbscheme.Column("id", "@left", binding=True)],
+            ),
+            dbscheme.Table(
+                name="rights",
+                columns=[dbscheme.Column("id", "@right", binding=True)],
             ),
         ],
     )
@@ -277,6 +287,8 @@ def test_class_with_derived_and_single_property(generate, dir_param):
             properties=[
                 schema.SingleProperty("single", "Prop"),
             ]),
+        schema.Class(name="Left", bases=["Base"]),
+        schema.Class(name="Right", bases=["Base"]),
     ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
@@ -293,7 +305,15 @@ def test_class_with_derived_and_single_property(generate, dir_param):
                     dbscheme.Column('single', '@prop'),
                 ],
                 dir=dir_param.expected,
-            )
+            ),
+            dbscheme.Table(
+                name="lefts",
+                columns=[dbscheme.Column("id", "@left", binding=True)],
+            ),
+            dbscheme.Table(
+                name="rights",
+                columns=[dbscheme.Column("id", "@right", binding=True)],
+            ),
         ],
     )
 
@@ -307,6 +327,8 @@ def test_class_with_derived_and_optional_property(generate, dir_param):
             properties=[
                 schema.OptionalProperty("opt", "Prop"),
             ]),
+        schema.Class(name="Left", bases=["Base"]),
+        schema.Class(name="Right", bases=["Base"]),
     ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
@@ -323,7 +345,15 @@ def test_class_with_derived_and_optional_property(generate, dir_param):
                     dbscheme.Column('opt', '@prop'),
                 ],
                 dir=dir_param.expected,
-            )
+            ),
+            dbscheme.Table(
+                name="lefts",
+                columns=[dbscheme.Column("id", "@left", binding=True)],
+            ),
+            dbscheme.Table(
+                name="rights",
+                columns=[dbscheme.Column("id", "@right", binding=True)],
+            ),
         ],
     )
 
@@ -337,6 +367,8 @@ def test_class_with_derived_and_repeated_property(generate, dir_param):
             properties=[
                 schema.RepeatedProperty("rep", "Prop"),
             ]),
+        schema.Class(name="Left", bases=["Base"]),
+        schema.Class(name="Right", bases=["Base"]),
     ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
@@ -354,6 +386,155 @@ def test_class_with_derived_and_repeated_property(generate, dir_param):
                     dbscheme.Column('rep', '@prop'),
                 ],
                 dir=dir_param.expected,
+            ),
+            dbscheme.Table(
+                name="lefts",
+                columns=[dbscheme.Column("id", "@left", binding=True)],
+            ),
+            dbscheme.Table(
+                name="rights",
+                columns=[dbscheme.Column("id", "@right", binding=True)],
+            ),
+        ],
+    )
+
+
+def test_null_class(generate):
+    assert generate([
+        schema.Class(
+            name="Base",
+            derived={"W", "X", "Y", "Z", "Null"},
+        ),
+        schema.Class(
+            name="W",
+            bases=["Base"],
+            properties=[
+                schema.SingleProperty("w", "W"),
+                schema.SingleProperty("x", "X"),
+                schema.OptionalProperty("y", "Y"),
+                schema.RepeatedProperty("z", "Z"),
+            ]
+        ),
+        schema.Class(
+            name="X",
+            bases=["Base"],
+        ),
+        schema.Class(
+            name="Y",
+            bases=["Base"],
+        ),
+        schema.Class(
+            name="Z",
+            bases=["Base"],
+        ),
+        schema.Class(
+            name="Null",
+            bases=["Base"],
+        ),
+    ], null="Null") == dbscheme.Scheme(
+        src=schema_file,
+        includes=[],
+        declarations=[
+            dbscheme.Union(
+                lhs="@base",
+                rhs=["@null", "@w", "@x", "@y", "@z"],
+            ),
+            dbscheme.Table(
+                name="ws",
+                columns=[
+                    dbscheme.Column('id', '@w', binding=True),
+                    dbscheme.Column('w', '@w_or_none'),
+                    dbscheme.Column('x', '@x_or_none'),
+                ],
+            ),
+            dbscheme.Table(
+                name="w_ies",
+                keyset=dbscheme.KeySet(["id"]),
+                columns=[
+                    dbscheme.Column('id', '@w'),
+                    dbscheme.Column('y', '@y_or_none'),
+                ],
+            ),
+            dbscheme.Table(
+                name="w_zs",
+                keyset=dbscheme.KeySet(["id", "index"]),
+                columns=[
+                    dbscheme.Column('id', '@w'),
+                    dbscheme.Column('index', 'int'),
+                    dbscheme.Column('z', '@z_or_none'),
+                ],
+            ),
+            dbscheme.Table(
+                name="xes",
+                columns=[
+                    dbscheme.Column('id', '@x', binding=True),
+                ],
+            ),
+            dbscheme.Table(
+                name="ys",
+                columns=[
+                    dbscheme.Column('id', '@y', binding=True),
+                ],
+            ),
+            dbscheme.Table(
+                name="zs",
+                columns=[
+                    dbscheme.Column('id', '@z', binding=True),
+                ],
+            ),
+            dbscheme.Table(
+                name="nulls",
+                columns=[
+                    dbscheme.Column('id', '@null', binding=True),
+                ],
+            ),
+            dbscheme.Union(
+                lhs="@w_or_none",
+                rhs=["@w", "@null"],
+            ),
+            dbscheme.Union(
+                lhs="@x_or_none",
+                rhs=["@x", "@null"],
+            ),
+            dbscheme.Union(
+                lhs="@y_or_none",
+                rhs=["@y", "@null"],
+            ),
+            dbscheme.Union(
+                lhs="@z_or_none",
+                rhs=["@z", "@null"],
+            ),
+        ],
+    )
+
+
+def test_ipa_classes_ignored(generate):
+    assert generate([
+        schema.Class(name="A", ipa=schema.IpaInfo()),
+        schema.Class(name="B", ipa=schema.IpaInfo(from_class="A")),
+        schema.Class(name="C", ipa=schema.IpaInfo(on_arguments={"x": "A"})),
+    ]) == dbscheme.Scheme(
+        src=schema_file,
+        includes=[],
+        declarations=[],
+    )
+
+
+def test_ipa_derived_classes_ignored(generate):
+    assert generate([
+        schema.Class(name="A", derived={"B", "C"}),
+        schema.Class(name="B", bases=["A"], ipa=schema.IpaInfo()),
+        schema.Class(name="C", bases=["A"]),
+    ]) == dbscheme.Scheme(
+        src=schema_file,
+        includes=[],
+        declarations=[
+            dbscheme.Union("@a", ["@c"]),
+            dbscheme.Table(
+                name="cs",
+                columns=[
+                    dbscheme.Column("id", "@c", binding=True),
+                ],
             )
         ],
     )

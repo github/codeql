@@ -15,11 +15,6 @@ include("prefix.dbscheme")
 class Element:
     is_unknown: predicate | cpp.skip
 
-@qltest.skip
-@qltest.collapse_hierarchy
-class UnresolvedElement(Element):
-    pass
-
 @qltest.collapse_hierarchy
 class File(Element):
     name: string
@@ -37,8 +32,25 @@ class Location(Element):
 class Locatable(Element):
     location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
 
+@qltest.collapse_hierarchy
+@qltest.skip
+class ErrorElement(Locatable):
+    """The superclass of all elements indicating some kind of error."""
+    pass
+
+@use_for_null
+class UnspecifiedElement(ErrorElement):
+    parent: optional[Element]
+    property: string
+    index: optional[int]
+    error: string
+
 class Comment(Locatable):
     text: string
+
+class Diagnostics(Locatable):
+    text: string
+    kind: int
 
 class DbFile(File):
     pass
@@ -101,8 +113,10 @@ class ImportDecl(Decl):
     imported_module: optional["ModuleDecl"]
     declarations: list["ValueDecl"]
 
+@qltest.skip
 class MissingMemberDecl(Decl):
-    pass
+    """A placeholder for missing declarations that can arise on object deserialization."""
+    name: string
 
 class OperatorDecl(Decl):
     name: string
@@ -112,7 +126,9 @@ class PatternBindingDecl(Decl):
     patterns: list[Pattern] | child
 
 class PoundDiagnosticDecl(Decl):
-    pass
+    """ A diagnostic directive, which is either `#error` or `#warning`."""
+    kind: int | doc("""This is 1 for `#error` and 2 for `#warning`""")
+    message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
     pass
@@ -132,9 +148,33 @@ class VarDecl(AbstractStorageDecl):
     attached_property_wrapper_type: optional[Type]
     parent_pattern: optional[Pattern]
     parent_initializer: optional[Expr]
+    property_wrapper_backing_var_binding: optional[PatternBindingDecl] | child | desc("""
+        This is the synthesized binding introducing the property wrapper backing variable for this
+        variable, if any.
+    """)
+    property_wrapper_backing_var: optional["VarDecl"] | child | desc("""
+        This is the synthesized variable holding the property wrapper for this variable, if any.
+    """)
+    property_wrapper_projection_var_binding: optional[PatternBindingDecl] | child | desc("""
+        This is the synthesized binding introducing the property wrapper projection variable for this
+        variable, if any.
+    """)
+    property_wrapper_projection_var: optional["VarDecl"] | child | desc("""
+        If this variable has a property wrapper with a projected value, this is the corresponding
+        synthesized variable holding that projected value, accessible with this variable's name
+        prefixed with `$`.
+    """)
 
 class ParamDecl(VarDecl):
     is_inout: predicate | doc("this is an `inout` parameter")
+    property_wrapper_local_wrapped_var_binding: optional[PatternBindingDecl] | child | desc("""
+        This is the synthesized binding introducing the property wrapper local wrapped projection
+        variable for this variable, if any.
+    """)
+    property_wrapper_local_wrapped_var: optional["VarDecl"] | child | desc("""
+        This is the synthesized local wrapped value, shadowing this parameter declaration in case it
+        has a property wrapper.
+    """)
 
 class Callable(Element):
     self_param: optional[ParamDecl] | child
@@ -211,7 +251,20 @@ class NominalTypeDecl(GenericTypeDecl, IterableDeclContext):
     type: Type
 
 class OpaqueTypeDecl(GenericTypeDecl):
-    pass
+    """
+    A declaration of an opaque type, that is formally equivalent to a given type but abstracts it
+    away.
+
+    Such a declaration is implicitly given when a declaration is written with an opaque result type,
+    for example
+    ```
+    func opaque() -> some SignedInteger { return 1 }
+    ```
+    See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html.
+    """
+    naming_declaration: ValueDecl
+    opaque_generic_params: list["GenericTypeParamType"]
+    opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
     pass
@@ -240,14 +293,14 @@ class AnyTryExpr(Expr):
     sub_expr: Expr | child
 
 class AppliedPropertyWrapperExpr(Expr):
-    pass
+    """An implicit application of a property wrapper on the argument of a call."""
+    kind: int | desc("This is 1 for a wrapped value and 2 for a projected one.")
+    value: Expr | child | desc("The value on which the wrapper is applied.")
+    param: ParamDecl | doc("parameter declaration owning this wrapper application")
 
 class ApplyExpr(Expr):
     function: Expr | child | doc("function being applied")
     arguments: list[Argument] | child | doc("arguments passed to the applied function")
-
-class ArrowExpr(Expr):
-    pass
 
 class AssignExpr(Expr):
     dest: Expr | child
@@ -259,9 +312,6 @@ class BindOptionalExpr(Expr):
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
     closure_body: "ClosureExpr" | child
-
-class CodeCompletionExpr(Expr):
-    pass
 
 class CollectionExpr(Expr):
     pass
@@ -288,15 +338,12 @@ class DotSyntaxBaseIgnoredExpr(Expr):
 class DynamicTypeExpr(Expr):
     base: Expr | child
 
-class EditorPlaceholderExpr(Expr):
-    pass
-
 class EnumIsCaseExpr(Expr):
     sub_expr: Expr | child
     element: EnumElementDecl
 
 @qltest.skip
-class ErrorExpr(Expr):
+class ErrorExpr(Expr, ErrorElement):
     pass
 
 class ExplicitCastExpr(Expr):
@@ -305,6 +352,7 @@ class ExplicitCastExpr(Expr):
 class ForceValueExpr(Expr):
     sub_expr: Expr | child
 
+@qltest.collapse_hierarchy
 class IdentityExpr(Expr):
     sub_expr: Expr | child
 
@@ -368,11 +416,13 @@ class OptionalEvaluationExpr(Expr):
 class OtherConstructorDeclRefExpr(Expr):
     constructor_decl: ConstructorDecl
 
-class OverloadSetRefExpr(Expr):
-    pass
-
 class PropertyWrapperValuePlaceholderExpr(Expr):
-    pass
+    """
+    A placeholder substituting property initializations with `=` when the property has a property
+    wrapper with an initializer.
+    """
+    wrapped_value: optional[Expr]
+    placeholder: OpaqueValueExpr
 
 class RebindSelfInConstructorExpr(Expr):
     sub_expr: Expr | child
@@ -399,22 +449,17 @@ class TupleExpr(Expr):
 
 class TypeExpr(Expr):
     type_repr: optional["TypeRepr"] | child
-
-class UnresolvedDeclRefExpr(Expr, UnresolvedElement):
+class UnresolvedDeclRefExpr(Expr, ErrorElement):
     name: optional[string]
-
-class UnresolvedDotExpr(Expr, UnresolvedElement):
+class UnresolvedDotExpr(Expr, ErrorElement):
     base: Expr | child
     name: string
-
-class UnresolvedMemberExpr(Expr, UnresolvedElement):
+class UnresolvedMemberExpr(Expr, ErrorElement):
     name: string
-
-class UnresolvedPatternExpr(Expr, UnresolvedElement):
+class UnresolvedPatternExpr(Expr, ErrorElement):
     sub_pattern: Pattern | child
-
-class UnresolvedSpecializeExpr(Expr, UnresolvedElement):
-    pass
+class UnresolvedSpecializeExpr(Expr, ErrorElement):
+    sub_expr: Expr | child
 
 class VarargExpansionExpr(Expr):
     sub_expr: Expr | child
@@ -497,6 +542,7 @@ class DifferentiableFunctionExtractOriginalExpr(ImplicitConversionExpr):
 class DotSelfExpr(IdentityExpr):
     pass
 
+@qltest.collapse_hierarchy
 class DynamicLookupExpr(LookupExpr):
     pass
 
@@ -551,13 +597,21 @@ class NilLiteralExpr(LiteralExpr):
     pass
 
 class ObjectLiteralExpr(LiteralExpr):
-    pass
+    """
+    An instance of `#fileLiteral`, `#imageLiteral` or `#colorLiteral` expressions, which are used in playgrounds.
+    """
+    kind: int | desc("""This is 0 for `#fileLiteral`, 1 for `#imageLiteral` and 2 for `#colorLiteral`.""")
+    arguments: list[Argument] | child
 
 class OptionalTryExpr(AnyTryExpr):
     pass
 
-class OverloadedDeclRefExpr(OverloadSetRefExpr):
-    pass
+class OverloadedDeclRefExpr(Expr, ErrorElement):
+    """
+    An ambiguous expression that might refer to multiple declarations. This will be present only
+    for failing compilations.
+    """
+    possible_declarations: list[ValueDecl]
 
 class ParenExpr(IdentityExpr):
     pass
@@ -597,13 +651,10 @@ class UnderlyingToOpaqueExpr(ImplicitConversionExpr):
 
 class UnevaluatedInstanceExpr(ImplicitConversionExpr):
     pass
-
-class UnresolvedMemberChainResultExpr(IdentityExpr, UnresolvedElement):
+class UnresolvedMemberChainResultExpr(IdentityExpr, ErrorElement):
     pass
-
-class UnresolvedTypeConversionExpr(ImplicitConversionExpr, UnresolvedElement):
+class UnresolvedTypeConversionExpr(ImplicitConversionExpr, ErrorElement):
     pass
-
 class BooleanLiteralExpr(BuiltinLiteralExpr):
     value: boolean
 
@@ -646,12 +697,6 @@ class FloatLiteralExpr(NumberLiteralExpr):
 
 class IntegerLiteralExpr(NumberLiteralExpr):
     string_value: string
-
-class PackExpr(Expr):
-    pass
-
-class ReifyPackExpr(ImplicitConversionExpr):
-    pass
 
 class AnyPattern(Pattern):
     pass
@@ -734,7 +779,8 @@ class LabeledStmt(Stmt):
     label: optional[string]
 
 class PoundAssertStmt(Stmt):
-    pass
+    condition: Expr
+    message: string
 
 class ReturnStmt(Stmt):
     result: optional[Expr] | child
@@ -787,7 +833,7 @@ class TypeRepr(AstNode):
 class AnyFunctionType(Type):
     result: Type
     param_types: list[Type]
-    param_labels: list[string]
+    param_labels: list[optional[string]]
     is_throwing: predicate | doc("this type refers to a throwing function")
     is_async: predicate | doc("this type refers to an `async` function")
 
@@ -803,13 +849,12 @@ class BuiltinType(Type):
     pass
 
 class DependentMemberType(Type):
-    baseType: Type
+    base_type: Type
     associated_type_decl: AssociatedTypeDecl
 
 class DynamicSelfType(Type):
     static_self_type: Type
-
-class ErrorType(Type):
+class ErrorType(Type, ErrorElement):
     pass
 
 class ExistentialType(Type):
@@ -824,26 +869,11 @@ class LValueType(Type):
 class ModuleType(Type):
     module: ModuleDecl
 
-class PlaceholderType(Type):
-    pass
-
 class ProtocolCompositionType(Type):
     members: list[Type]
 
 class ReferenceStorageType(Type):
     referent_type: Type
-
-class SilBlockStorageType(Type):
-    pass
-
-class SilBoxType(Type):
-    pass
-
-class SilFunctionType(Type):
-    pass
-
-class SilTokenType(Type):
-    pass
 
 class SubstitutableType(Type):
     pass
@@ -853,14 +883,9 @@ class SugarType(Type):
 
 class TupleType(Type):
     types: list[Type]
-    names: list[string]
-
-class TypeVariableType(Type):
+    names: list[optional[string]]
+class UnresolvedType(Type, ErrorElement):
     pass
-
-class UnresolvedType(Type, UnresolvedElement):
-    pass
-
 class AnyBuiltinIntegerType(BuiltinType):
     pass
 
@@ -957,17 +982,16 @@ class NominalType(NominalOrBoundGenericNominalType):
     pass
 
 class OpaqueTypeArchetypeType(ArchetypeType):
-    pass
+    """An opaque type, that is a type formally equivalent to an underlying type but abstracting it away.
+
+    See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html."""
+    declaration: OpaqueTypeDecl
 
 class OpenedArchetypeType(ArchetypeType):
     pass
 
 class PrimaryArchetypeType(ArchetypeType):
     pass
-
-class SequenceArchetypeType(ArchetypeType):
-    pass
-
 class UnarySyntaxSugarType(SyntaxSugarType):
     base_type: Type
 
@@ -1001,11 +1025,11 @@ class StructType(NominalType):
 class VariadicSequenceType(UnarySyntaxSugarType):
     pass
 
-class PackType(Type):
-    pass
-
-class PackExpansionType(Type):
-    pass
-
 class ParameterizedProtocolType(Type):
-    pass
+    """
+    A sugar type of the form `P<X>` with `P` a protocol.
+
+    If `P` has primary associated type `A`, then `T: P<X>` is a shortcut for `T: P where T.A == X`.
+    """
+    base: ProtocolType
+    args: list[Type]

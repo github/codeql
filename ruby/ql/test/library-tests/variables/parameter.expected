@@ -38,6 +38,10 @@ parameterVariable
 | ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo |
 | ssa.rb:64:8:64:8 | a | ssa.rb:64:8:64:8 | a |
 | ssa.rb:66:15:66:15 | a | ssa.rb:66:15:66:15 | a |
+| ssa.rb:90:9:90:10 | b1 | ssa.rb:90:9:90:10 | b1 |
+| ssa.rb:90:13:90:14 | b2 | ssa.rb:90:13:90:14 | b2 |
+| ssa.rb:90:17:90:18 | b3 | ssa.rb:90:17:90:18 | b3 |
+| ssa.rb:90:21:90:22 | b4 | ssa.rb:90:21:90:22 | b4 |
 parameterNoVariable
 | parameters.rb:45:22:45:22 | _ |
 parameterVariableNoAccess

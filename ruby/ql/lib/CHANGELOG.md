@@ -1,3 +1,26 @@
+## 0.4.4
+
+### Minor Analysis Improvements
+
+* Data flow through the `ActiveSupport` extension `Enumerable#index_by` is now modeled.
+* The `codeql.ruby.Concepts` library now has a `SqlConstruction` class, in addition to the existing `SqlExecution` class.
+* Calls to `Arel.sql` are now modeled as instances of the new `SqlConstruction` concept.
+* Arguments to RPC endpoints (public methods) on subclasses of `ActionCable::Channel::Base` are now recognized as sources of remote user input.
+* Taint flow through the `ActiveSupport` extensions `Hash#reverse_merge` and `Hash:reverse_merge!`, and their aliases, is now modeled more generally, where previously it was only modeled in the context of `ActionController` parameters.
+* Calls to `logger` in `ActiveSupport` actions are now recognised as logger instances.
+* Calls to `send_data` in `ActiveSupport` actions are recognised as HTTP responses.
+* Calls to `body_stream` in `ActiveSupport` actions are recognised as HTTP request accesses.
+* The `ActiveSupport` extensions `Object#try` and `Object#try!` are now recognised as code executions.
+
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* There was a bug in `TaintTracking::localTaint` and `TaintTracking::localTaintStep` such that they only tracked non-value-preserving flow steps. They have been fixed and now also include value-preserving steps.
+* Instantiations using `Faraday::Connection.new` are now recognized as part of `FaradayHttpRequest`s, meaning they will be considered as sinks for queries such as `rb/request-forgery`.
+* Taint flow is now tracked through extension methods on `Hash`, `String` and
+  `Object` provided by `ActiveSupport`.
+
 ## 0.4.2
 
 ### Minor Analysis Improvements

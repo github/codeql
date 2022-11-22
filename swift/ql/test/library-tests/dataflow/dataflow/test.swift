@@ -124,7 +124,7 @@ func forwarder() {
         return i
     })
     sink(arg: z) // $ flow=122
-    
+
     var clean: Int = forward(arg: source(), lambda: {
         (i: Int) -> Int in
         return 0
@@ -262,10 +262,51 @@ func optionalSource() -> Int? {
 func test_optionals() {
     let x = optionalSource()
     sink(arg: x!) // $ flow=259
-    sink(arg: source().signum()) // $ MISSING: flow=259
-    sink(opt: x?.signum()) // $ MISSING: flow=259
+    sink(arg: source().signum()) // $ flow=265
+    sink(opt: x?.signum()) // $ flow=259
     sink(arg: x ?? 0) // $ MISSING: flow=259
     if let y = x {
         sink(arg: y) // $ MISSING: flow=259
     }
+}
+
+func sink(arg: (Int, Int)) {}
+func sink(arg: (Int, Int, Int)) {}
+
+func testTuples() {
+    var t1 = (1, source())
+
+    sink(arg: t1)
+    sink(arg: t1.0)
+    sink(arg: t1.1) // $ flow=277
+
+    t1.1 = 2
+
+    sink(arg: t1)
+    sink(arg: t1.0)
+    sink(arg: t1.1)
+
+    t1.0 = source()
+
+    sink(arg: t1)
+    sink(arg: t1.0) // $ flow=289
+    sink(arg: t1.1)
+}
+
+func testTuples2() {
+    let t1 = (x: source(), y: source(), z: 0)
+    let t2 = t1
+    let (a, b, c) = t1
+
+    sink(arg: t1)
+    sink(arg: t1.x) // $ flow=297
+    sink(arg: t1.y) // $ flow=297
+    sink(arg: t1.z)
+    sink(arg: t2)
+    sink(arg: t2.x) // $ flow=297
+    sink(arg: t2.y) // $ flow=297
+    sink(arg: t2.z)
+    sink(arg: a) // $ MISSING: flow=297
+    sink(arg: b) // $ MISSING: flow=297
+    sink(arg: c)
 }

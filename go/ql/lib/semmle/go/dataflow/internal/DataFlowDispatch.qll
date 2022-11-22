@@ -108,3 +108,21 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) { non
  * restricted to those `call`s for which a context might make a difference.
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
+
+private int parameterPosition() {
+  result = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
+}
+
+/** A parameter position represented by an integer. */
+class ParameterPosition extends int {
+  ParameterPosition() { this = parameterPosition() }
+}
+
+/** An argument position represented by an integer. */
+class ArgumentPosition extends int {
+  ArgumentPosition() { this = parameterPosition() }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }

@@ -25,6 +25,10 @@ class AstNode extends TAstNode {
   cached
   Location getLocation() { result = this.getFullLocation() } // overridden in some subclasses
 
+  /** Gets the file containing this AST node. */
+  cached
+  File getFile() { result = this.getFullLocation().getFile() }
+
   /** Gets the location that spans the entire AST node. */
   cached
   final Location getFullLocation() {
@@ -978,6 +982,8 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
   override Formula getBody() { toQL(result) = branch.getChild(_).(QL::Body).getChild() }
 
   override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
+
+  override Annotation getAnAnnotation() { toQL(this).getAFieldOrChild() = toQL(result) }
 
   override Type getParameterType(int i) { result = this.getField(i).getType() }
 
@@ -2393,6 +2399,8 @@ private class AnnotationArg extends TAnnotationArg, AstNode {
   }
 
   override string toString() { result = this.getValue() }
+
+  override string getAPrimaryQlClass() { result = "AnnotationArg" }
 }
 
 private class NoInlineArg extends AnnotationArg {

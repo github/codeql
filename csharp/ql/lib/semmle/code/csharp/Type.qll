@@ -57,13 +57,6 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
   /**
-   * DEPRECATED: use `getUndecoratedName()` instead.
-   *
-   * Gets the name of this type without `<...>` brackets, in case it is a generic type.
-   */
-  deprecated string getNameWithoutBrackets() { types(this, _, result) }
-
-  /**
    * Holds if this type has the qualified name `qualifier`.`name`.
    *
    * For example the class `System.IO.IOException` has
@@ -824,6 +817,8 @@ class RecordClass extends RecordType, Class {
  */
 class AnonymousClass extends Class {
   AnonymousClass() { anonymous_types(this) }
+
+  override string getAPrimaryQlClass() { result = "AnonymousClass" }
 }
 
 /**

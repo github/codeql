@@ -77,7 +77,7 @@ predicate exceptions(NestedClass inner) {
 
 from NestedClass inner, Class outer, string advice
 where
-  inner.fromSource() and
+  inner.getFile().isJavaSourceFile() and
   isSerializable(inner) and
   outer = enclosingInstanceType+(inner) and
   not isSerializable(outer) and

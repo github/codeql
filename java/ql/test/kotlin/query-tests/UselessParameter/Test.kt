@@ -19,3 +19,6 @@ object O {}
 fun C.fn() {}
 fun C.Companion.fn() {}
 fun O.fn() {}
+
+@Suppress("UNUSED_PARAMETER")
+fun fn2(a: Int) {}

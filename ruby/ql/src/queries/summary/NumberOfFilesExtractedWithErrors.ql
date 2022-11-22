@@ -1,6 +1,6 @@
 /**
  * @id rb/summary/number-of-files-extracted-with-errors
- * @name Total number of files that were extracted with errors
+ * @name Total number of Ruby files that were extracted with errors
  * @description The total number of Ruby code files that we extracted, but where
  *  at least one extraction error occurred in the process.
  * @kind metric

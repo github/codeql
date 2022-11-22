@@ -103,7 +103,7 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
                  '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] + [s for s in srcs if s.endswith(".java")])
 
 
-def compile_to_jar(build_dir, srcs, classpath, java_classpath, output):
+def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output):
     class_dir = build_dir + '/classes'
 
     if os.path.exists(class_dir):
@@ -114,7 +114,8 @@ def compile_to_jar(build_dir, srcs, classpath, java_classpath, output):
 
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',
-                 '-C', 'src/main/resources', 'META-INF'])
+                 '-C', tmp_src_dir + '/main/resources', 'META-INF',
+                 '-C', tmp_src_dir + '/main/resources', 'com/github/codeql/extractor.name'])
     shutil.rmtree(class_dir)
 
 
@@ -185,6 +186,11 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
     include_version_folder = tmp_src_dir + '/main/kotlin/utils/versions/to_include'
     os.makedirs(include_version_folder)
 
+    resource_dir = tmp_src_dir + '/main/resources/com/github/codeql'
+    os.makedirs(resource_dir)
+    with open(resource_dir + '/extractor.name', 'w') as f:
+        f.write(output)
+
     parsed_current_version = kotlin_plugin_versions.version_string_to_tuple(
         current_version)
 
@@ -211,7 +217,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
 
     transform_to_embeddable(srcs)
 
-    compile_to_jar(build_dir, srcs, classpath, java_classpath, output)
+    compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output)
 
     shutil.rmtree(tmp_src_dir)
 

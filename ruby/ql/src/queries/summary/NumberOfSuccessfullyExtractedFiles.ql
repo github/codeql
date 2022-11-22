@@ -1,6 +1,6 @@
 /**
  * @id rb/summary/number-of-successfully-extracted-files
- * @name Total number of files that were extracted without error
+ * @name Total number of Ruby files that were extracted without error
  * @description The total number of Ruby code files that we extracted without
  *   encountering any extraction errors
  * @kind metric

@@ -10,8 +10,9 @@ swift_cc_binary(
     visibility = ["//swift:__pkg__"],
     deps = [
         "//swift/extractor/infra",
+        "//swift/extractor/invocation",
         "//swift/extractor/remapping",
-        "//swift/extractor/visitors",
+        "//swift/extractor/translators",
         "//swift/third_party/swift-llvm-support",
     ],
 )

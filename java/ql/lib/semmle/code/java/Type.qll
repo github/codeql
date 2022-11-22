@@ -304,6 +304,7 @@ private predicate hasSubtypeStar1(RefType t, RefType sub) {
 /**
  * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardLowerBound(sub)`.
  */
+pragma[assume_small_delta]
 pragma[nomagic]
 private predicate hasSubtypeStar2(RefType t, RefType sub) {
   sub = t and getAWildcardLowerBound(sub)
@@ -826,12 +827,6 @@ class LocalClassOrInterface extends NestedType, ClassOrInterface {
 
   /** Gets the statement that declares this local class. */
   LocalTypeDeclStmt getLocalTypeDeclStmt() { isLocalClassOrInterface(this, result) }
-
-  /**
-   * DEPRECATED: renamed `getLocalTypeDeclStmt` to reflect the fact that
-   * as of Java 16 interfaces can also be declared locally.
-   */
-  deprecated LocalTypeDeclStmt getLocalClassDeclStmt() { result = this.getLocalTypeDeclStmt() }
 
   override string getAPrimaryQlClass() { result = "LocalClassOrInterface" }
 }
