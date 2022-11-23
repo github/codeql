@@ -2874,54 +2874,16 @@ private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
   }
 }
 
-/**
- * A `Node` augmented with a call context (except for sinks), an access path, and a configuration.
- * Only those `PathNode`s that are reachable from a source are generated.
- */
-class PathNode extends TPathNode {
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
-
-  /**
-   * Gets a textual representation of this element, including a textual
-   * representation of the call context.
-   */
-  string toStringWithContext() { none() }
-
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    none()
-  }
-
-  /** Gets the underlying `Node`. */
-  final Node getNode() { this.(PathNodeImpl).getNodeEx().projectToNode() = result }
-
+abstract private class PathNodeImpl extends TPathNode {
   /** Gets the `FlowState` of this node. */
-  FlowState getState() { none() }
+  abstract FlowState getState();
 
   /** Gets the associated configuration. */
-  Configuration getConfiguration() { none() }
-
-  /** Gets a successor of this node, if any. */
-  final PathNode getASuccessor() {
-    result = this.(PathNodeImpl).getANonHiddenSuccessor() and
-    reach(this) and
-    reach(result)
-  }
+  abstract Configuration getConfiguration();
 
   /** Holds if this node is a source. */
-  predicate isSource() { none() }
-}
+  abstract predicate isSource();
 
-abstract private class PathNodeImpl extends PathNode {
   abstract PathNodeImpl getASuccessorImpl();
 
   private PathNodeImpl getASuccessorIfHidden() {
@@ -2967,13 +2929,23 @@ abstract private class PathNodeImpl extends PathNode {
     result = " <" + this.(PathNodeMid).getCallContext().toString() + ">"
   }
 
-  override string toString() { result = this.getNodeEx().toString() + this.ppAp() }
+  /** Gets a textual representation of this element. */
+  string toString() { result = this.getNodeEx().toString() + this.ppAp() }
 
-  override string toStringWithContext() {
-    result = this.getNodeEx().toString() + this.ppAp() + this.ppCtx()
-  }
+  /**
+   * Gets a textual representation of this element, including a textual
+   * representation of the call context.
+   */
+  string toStringWithContext() { result = this.getNodeEx().toString() + this.ppAp() + this.ppCtx() }
 
-  override predicate hasLocationInfo(
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -2986,14 +2958,59 @@ private predicate directReach(PathNodeImpl n) {
 }
 
 /** Holds if `n` can reach a sink or is used in a subpath that can reach a sink. */
-private predicate reach(PathNode n) { directReach(n) or Subpaths::retReach(n) }
+private predicate reach(PathNodeImpl n) { directReach(n) or Subpaths::retReach(n) }
 
 /** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
-private predicate pathSucc(PathNodeImpl n1, PathNode n2) {
+private predicate pathSucc(PathNodeImpl n1, PathNodeImpl n2) {
   n1.getANonHiddenSuccessor() = n2 and directReach(n2)
 }
 
-private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1, n2)
+private predicate pathSuccPlus(PathNodeImpl n1, PathNodeImpl n2) = fastTC(pathSucc/2)(n1, n2)
+
+/**
+ * A `Node` augmented with a call context (except for sinks), an access path, and a configuration.
+ * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
+ */
+class PathNode instanceof PathNodeImpl {
+  PathNode() { reach(this) }
+
+  /** Gets a textual representation of this element. */
+  final string toString() { result = super.toString() }
+
+  /**
+   * Gets a textual representation of this element, including a textual
+   * representation of the call context.
+   */
+  final string toStringWithContext() { result = super.toStringWithContext() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  final predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  /** Gets the underlying `Node`. */
+  final Node getNode() { super.getNodeEx().projectToNode() = result }
+
+  /** Gets the `FlowState` of this node. */
+  final FlowState getState() { result = super.getState() }
+
+  /** Gets the associated configuration. */
+  final Configuration getConfiguration() { result = super.getConfiguration() }
+
+  /** Gets a successor of this node, if any. */
+  final PathNode getASuccessor() { result = super.getANonHiddenSuccessor() }
+
+  /** Holds if this node is a source. */
+  final predicate isSource() { super.isSource() }
+}
 
 /**
  * Provides the query predicates needed to include a graph in a path-problem query.
@@ -3004,7 +3021,7 @@ module PathGraph {
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode n, string key, string val) {
-    reach(n) and key = "semmle.label" and val = n.toString()
+    key = "semmle.label" and val = n.toString()
   }
 
   /**
@@ -3013,11 +3030,7 @@ module PathGraph {
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
   query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
-    Subpaths::subpaths(arg, par, ret, out) and
-    reach(arg) and
-    reach(par) and
-    reach(ret) and
-    reach(out)
+    Subpaths::subpaths(arg, par, ret, out)
   }
 }
 
@@ -3399,7 +3412,7 @@ private module Subpaths {
    */
   pragma[nomagic]
   private predicate subpaths02(
-    PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
+    PathNodeImpl arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
     NodeEx out, FlowState sout, AccessPath apout
   ) {
     subpaths01(arg, par, sc, innercc, kind, out, sout, apout) and
@@ -3407,14 +3420,14 @@ private module Subpaths {
   }
 
   pragma[nomagic]
-  private Configuration getPathNodeConf(PathNode n) { result = n.getConfiguration() }
+  private Configuration getPathNodeConf(PathNodeImpl n) { result = n.getConfiguration() }
 
   /**
    * Holds if `(arg, par, ret, out)` forms a subpath-tuple.
    */
   pragma[nomagic]
   private predicate subpaths03(
-    PathNode arg, ParamNodeEx par, PathNodeMid ret, NodeEx out, FlowState sout, AccessPath apout
+    PathNodeImpl arg, ParamNodeEx par, PathNodeMid ret, NodeEx out, FlowState sout, AccessPath apout
   ) {
     exists(SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind, RetNodeEx retnode |
       subpaths02(arg, par, sc, innercc, kind, out, sout, apout) and
@@ -3444,7 +3457,7 @@ private module Subpaths {
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
-  predicate subpaths(PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
+  predicate subpaths(PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out) {
     exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
       pragma[only_bind_into](arg).getANonHiddenSuccessor() = pragma[only_bind_into](out0) and
       subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, apout) and
@@ -3460,7 +3473,7 @@ private module Subpaths {
    * Holds if `n` can reach a return node in a summarized subpath that can reach a sink.
    */
   predicate retReach(PathNodeImpl n) {
-    exists(PathNode out | subpaths(_, _, n, out) | directReach(out) or retReach(out))
+    exists(PathNodeImpl out | subpaths(_, _, n, out) | directReach(out) or retReach(out))
     or
     exists(PathNodeImpl mid |
       retReach(mid) and
@@ -3477,11 +3490,12 @@ private module Subpaths {
  * sinks.
  */
 private predicate flowsTo(
-  PathNode flowsource, PathNodeSink flowsink, Node source, Node sink, Configuration configuration
+  PathNodeImpl flowsource, PathNodeSink flowsink, Node source, Node sink,
+  Configuration configuration
 ) {
   flowsource.isSource() and
   flowsource.getConfiguration() = configuration and
-  flowsource.(PathNodeImpl).getNodeEx().asNode() = source and
+  flowsource.getNodeEx().asNode() = source and
   (flowsource = flowsink or pathSuccPlus(flowsource, flowsink)) and
   flowsink.getNodeEx().asNode() = sink
 }
@@ -3504,14 +3518,14 @@ private predicate finalStats(
   fields = count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0)) and
   conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap)) and
   states = count(FlowState state | exists(PathNodeMid pn | pn.getState() = state)) and
-  tuples = count(PathNode pn)
+  tuples = count(PathNodeImpl pn)
   or
   fwd = false and
   nodes = count(NodeEx n0 | exists(PathNodeImpl pn | pn.getNodeEx() = n0 and reach(pn))) and
   fields = count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0 and reach(pn))) and
   conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap and reach(pn))) and
   states = count(FlowState state | exists(PathNodeMid pn | pn.getState() = state and reach(pn))) and
-  tuples = count(PathNode pn | reach(pn))
+  tuples = count(PathNode pn)
 }
 
 /**
