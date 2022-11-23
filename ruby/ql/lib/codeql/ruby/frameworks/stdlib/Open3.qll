@@ -3,12 +3,8 @@
  */
 
 private import ruby
-private import codeql.ruby.AST
-private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.frameworks.Stdlib
 private import codeql.ruby.Concepts
-private import codeql.ruby.frameworks.core.Kernel
 
 /**
  * Provides modeling for the `Open3` library.
@@ -58,7 +54,7 @@ module Open3 {
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // A command in the pipeline is executed in a subshell if it is given as a single string argument.
-      arg.asExpr().getExpr() instanceof StringlikeLiteral and
+      arg.asExpr().getExpr() instanceof Ast::StringlikeLiteral and
       arg = this.getAnArgument()
     }
   }
