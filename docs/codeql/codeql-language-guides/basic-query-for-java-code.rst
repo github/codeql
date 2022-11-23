@@ -37,7 +37,7 @@ Running the query
 
       import java
 
-      from IfStmt ifstmt, Block block
+      from IfStmt ifstmt, BlockStmt block
       where ifstmt.getThen() = block and
         block.getNumStmt() = 0
       select ifstmt, "This 'if' statement is redundant." 
@@ -59,7 +59,7 @@ Running the query
 
    The query will take a few moments to return results. When the query completes, the results are displayed below the project name. The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ifstmt`` and is linked to the location in the source code of the project where ``ifstmt`` occurs. The second column is the alert message.
 
-   ➤ `Example query results <https://lgtm.com/query/3235645104630320782/>`__
+   ➤ `Example query results <https://lgtm.com/query/8628882704378129297/>`__
 
    .. pull-quote::
 
@@ -81,10 +81,10 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +===============================================================+===================================================================================================================+========================================================================================================================+
 | ``import java``                                               | Imports the standard CodeQL libraries for Java.                                                                   | Every query begins with one or more ``import`` statements.                                                             |
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
-| ``from IfStmt ifstmt, Block block``                           | Defines the variables for the query.                                                                              | We use:                                                                                                                |
+| ``from IfStmt ifstmt, BlockStmt block``                       | Defines the variables for the query.                                                                              | We use:                                                                                                                |
 |                                                               | Declarations are of the form:                                                                                     |                                                                                                                        |
 |                                                               | ``<type> <variable name>``                                                                                        | - an ``IfStmt`` variable for ``if`` statements                                                                         |
-|                                                               |                                                                                                                   | - a ``Block`` variable for the then block                                                                              |
+|                                                               |                                                                                                                   | - a ``BlockStmt`` variable for the ``then`` block                                                                      |
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | ``where ifstmt.getThen() = block and block.getNumStmt() = 0`` | Defines a condition on the variables.                                                                             | ``ifstmt.getThen() = block`` relates the two variables. The block must be the ``then`` branch of the ``if`` statement. |
 |                                                               |                                                                                                                   |                                                                                                                        |
@@ -138,7 +138,7 @@ To exclude ``if`` statements that have an ``else`` branch:
 
    There are now fewer results because ``if`` statements with an ``else`` branch are no longer included.
 
-➤ `See this in the query console <https://lgtm.com/query/6382189874776576029/>`__
+➤ `See this in the query console <https://lgtm.com/query/2005778170075484819/>`__
 
 Further reading
 ---------------
