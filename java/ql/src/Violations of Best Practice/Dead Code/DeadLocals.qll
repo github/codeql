@@ -1,4 +1,4 @@
-/*
+/**
  * Provides classes and predicates for "dead locals": which variables are used, which assignments are useless, etc.
  */
 

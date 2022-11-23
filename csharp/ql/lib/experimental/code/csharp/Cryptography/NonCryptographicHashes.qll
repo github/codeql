@@ -1,4 +1,4 @@
-/*
+/**
  * Predicates that help detect potential non-cryptographic hash functions
  *
  * By themselves, non-cryptographic functions are common and not dangerous
