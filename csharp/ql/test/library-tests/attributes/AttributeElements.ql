@@ -1,8 +1,9 @@
 import csharp
+import semmle.code.csharp.commons.QualifiedName
 
-from Attributable element, Attribute attribute, string qualifier, string name
+from Attributable element, Attribute attribute, string namespace, string name
 where
   attribute = element.getAnAttribute() and
   (attribute.fromSource() or element.(Assembly).getName() in ["attributes", "Assembly1"]) and
-  attribute.getType().hasQualifiedName(qualifier, name)
-select element, attribute, printQualifiedName(qualifier, name)
+  attribute.getType().hasQualifiedName(namespace, name)
+select element, attribute, printQualifiedName(namespace, name)

@@ -4,14 +4,14 @@
 
 import Element
 import Type
-private import semmle.code.csharp.Printing
+private import semmle.code.csharp.commons.QualifiedName
 
 /** A declaration. */
 class Declaration extends NamedElement, @dotnet_declaration {
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string dqualifier, string dname |
-      this.getDeclaringType().hasQualifiedName(dqualifier, dname) and
-      qualifier = printQualifiedName(dqualifier, dname)
+  override predicate hasQualifiedName(string namespace, string name) {
+    exists(string dnamespace, string dname |
+      this.getDeclaringType().hasQualifiedName(dnamespace, dname) and
+      namespace = printQualifiedName(dnamespace, dname)
     ) and
     name = this.getName()
   }
@@ -85,8 +85,8 @@ class Member extends Declaration, @dotnet_member {
    * with qualifier `qualifier`
    */
   cached
-  predicate hasQualifiedName(string qualifier, string type, string name) {
-    this.getDeclaringType().hasQualifiedName(qualifier, type) and
+  predicate hasQualifiedName(string namespace, string type, string name) {
+    this.getDeclaringType().hasQualifiedName(namespace, type) and
     name = this.getName()
   }
 }

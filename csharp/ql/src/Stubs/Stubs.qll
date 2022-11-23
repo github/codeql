@@ -12,6 +12,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.dotnet.DotNet as DotNet // added to handle VoidType as a ValueOrRefType
 
@@ -120,10 +121,10 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   }
 
   private string stubComment() {
-    exists(string qualifier, string name |
-      this.hasQualifiedName(qualifier, name) and
+    exists(string namespace, string name |
+      this.hasQualifiedName(namespace, name) and
       result =
-        "// Generated from `" + printQualifiedName(qualifier, name) + "` in `" +
+        "// Generated from `" + printQualifiedName(namespace, name) + "` in `" +
           concat(this.getALocation().toString(), "; ") + "`\n"
     )
   }

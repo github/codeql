@@ -97,7 +97,7 @@ class NamedElement extends Element, @dotnet_named_element {
   }
 
   /**
-   * DEPRECATED: Use hasQualifiedName instead.
+   * DEPRECATED: Use `hasQualifiedName/2` instead.
    * Holds if this element has qualified name `qualifiedName`, for example
    * `System.Console.WriteLine`.
    */
@@ -107,8 +107,8 @@ class NamedElement extends Element, @dotnet_named_element {
 
   /** Holds if this element has the qualified name `qualifier`.`name`. */
   cached
-  predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "" and name = this.getName()
+  predicate hasQualifiedName(string namespace, string name) {
+    namespace = "" and name = this.getName()
   }
 
   /** Gets a unique string label for this element. */

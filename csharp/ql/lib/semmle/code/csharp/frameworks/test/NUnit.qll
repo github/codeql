@@ -2,6 +2,7 @@
 
 import csharp
 import semmle.code.csharp.frameworks.Test
+private import semmle.code.csharp.commons.QualifiedName
 
 /** A class that is an NUnit test fixture */
 class NUnitFixture extends TestClass {
@@ -12,19 +13,6 @@ class NUnitFixture extends TestClass {
     or
     this = any(NUnitTestMethod m).getDeclaringType()
   }
-}
-
-private string getNameSplitter() { result = "(.*)\\.([^\\.]+)$" }
-
-bindingset[name]
-private predicate splitExceptionName(string name, string namespace, string type) {
-  if name.regexpMatch(getNameSplitter())
-  then
-    namespace = name.regexpCapture(getNameSplitter(), 1) and
-    type = name.regexpCapture(getNameSplitter(), 2)
-  else (
-    namespace = "" and type = name
-  )
 }
 
 /** An NUnit test method. */
@@ -54,7 +42,7 @@ class NUnitTestMethod extends TestMethod {
       then
         exists(string namespace, string type |
           result.hasQualifiedName(namespace, type) and
-          splitExceptionName(expected.getArgument(0).getValue(), namespace, type)
+          splitQualifiedName(expected.getArgument(0).getValue(), namespace, type)
         )
       else result = expected.getArgument(0).(TypeofExpr).getTypeAccess().getTarget()
     )

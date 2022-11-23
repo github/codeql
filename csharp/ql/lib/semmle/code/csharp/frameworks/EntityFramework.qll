@@ -37,11 +37,7 @@ private predicate isNotMapped(Attributable a) {
 module EntityFramework {
   /** An EF6 or EFCore namespace. */
   class EFNamespace extends Namespace {
-    EFNamespace() {
-      this.hasQualifiedName("Microsoft", "EntityFrameworkCore")
-      or
-      this.hasQualifiedName("System.Data", "Entity")
-    }
+    EFNamespace() { this.getFullName() = ["Microsoft.EntityFrameworkCore", "System.Data.Entity"] }
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */

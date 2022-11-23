@@ -4,7 +4,7 @@
 
 import CIL
 private import dotnet
-private import semmle.code.csharp.Printing
+private import semmle.code.csharp.commons.QualifiedName
 
 /**
  * Something that contains other types.
@@ -51,10 +51,10 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
    */
   Type getUnboundType() { cil_type(this, _, _, _, result) }
 
-  override predicate hasQualifiedName(string qualifier, string name) {
+  override predicate hasQualifiedName(string namespace, string name) {
     name = this.getName() and
-    exists(string pqualifier, string pname | this.getParent().hasQualifiedName(pqualifier, pname) |
-      qualifier = printQualifiedName(pqualifier, pname)
+    exists(string pnamespace, string pname | this.getParent().hasQualifiedName(pnamespace, pname) |
+      namespace = printQualifiedName(pnamespace, pname)
     )
   }
 

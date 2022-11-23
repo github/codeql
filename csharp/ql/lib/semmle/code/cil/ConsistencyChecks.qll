@@ -4,6 +4,7 @@
 
 private import CIL
 private import csharp as CS
+private import semmle.code.csharp.commons.QualifiedName
 
 private newtype ConsistencyCheck =
   MissingEntityCheck() or
@@ -484,12 +485,11 @@ class InvalidOverride extends MethodViolation {
   }
 
   override string getMessage() {
-    exists(string qualifier, string name |
-      base.getDeclaringType().hasQualifiedName(qualifier, name)
+    exists(string namespace, string type |
+      base.getDeclaringType().hasQualifiedName(namespace, type)
     |
       result =
-        "Overridden method from " + CS::printQualifiedName(qualifier, name) +
-          " is not in a base type"
+        "Overridden method from " + printQualifiedName(namespace, type) + " is not in a base type"
     )
   }
 }

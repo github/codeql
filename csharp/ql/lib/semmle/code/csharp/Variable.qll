@@ -71,7 +71,7 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
    */
   predicate isRef() { none() }
 
-  override predicate hasQualifiedName(string qualifier, string name) { none() }
+  override predicate hasQualifiedName(string namespace, string name) { none() }
 }
 
 /**

@@ -11,6 +11,7 @@
  */
 
 import csharp
+import semmle.code.csharp.commons.QualifiedName
 
 private predicate potentialOverride(Method vm, Method m) {
   vm.getDeclaringType() = m.getDeclaringType().getBaseClass+()
@@ -36,10 +37,10 @@ predicate nonOverridingMethod(Method m, Method vm) {
   m.getName().toLowerCase() = vm.getName().toLowerCase()
 }
 
-from Method m, Method vm, string qualifier, string type, string name
+from Method m, Method vm, string namespace, string type, string name
 where
   m.fromSource() and
   nonOverridingMethod(m, vm) and
-  vm.hasQualifiedName(qualifier, type, name)
+  vm.hasQualifiedName(namespace, type, name)
 select m, "Method '" + m.getName() + "' looks like it should override $@ but does not do so.",
-  vm.getUnboundDeclaration(), printQualifiedName(qualifier, type, name)
+  vm.getUnboundDeclaration(), printQualifiedName(namespace, type, name)

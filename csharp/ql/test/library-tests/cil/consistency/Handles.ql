@@ -1,6 +1,7 @@
 import csharp
 import cil
 import dotnet
+import semmle.code.csharp.commons.QualifiedName
 
 class MetadataEntity extends DotNet::NamedElement, @metadata_entity {
   int getHandle() { metadata_handle(this, _, result) }
@@ -11,10 +12,10 @@ class MetadataEntity extends DotNet::NamedElement, @metadata_entity {
 }
 
 query predicate tooManyHandles(string s) {
-  exists(MetadataEntity e, Assembly a, string qualifier, string name |
+  exists(MetadataEntity e, Assembly a, string namespace, string name |
     strictcount(int handle | metadata_handle(e, a, handle)) > 1 and
-    e.hasQualifiedName(qualifier, name) and
-    s = printQualifiedName(qualifier, name)
+    e.hasQualifiedName(namespace, name) and
+    s = printQualifiedName(namespace, name)
   )
 }
 
@@ -30,11 +31,11 @@ private class UniqueMetadataEntity extends MetadataEntity {
 }
 
 query predicate tooManyMatchingHandles(string s) {
-  exists(UniqueMetadataEntity e, Assembly a, int handle, string qualifier, string name |
+  exists(UniqueMetadataEntity e, Assembly a, int handle, string namespace, string name |
     metadata_handle(e, a, handle) and
     strictcount(UniqueMetadataEntity e2 | metadata_handle(e2, a, handle)) > 2 and
-    e.hasQualifiedName(qualifier, name) and
-    s = printQualifiedName(qualifier, name)
+    e.hasQualifiedName(namespace, name) and
+    s = printQualifiedName(namespace, name)
   )
 }
 

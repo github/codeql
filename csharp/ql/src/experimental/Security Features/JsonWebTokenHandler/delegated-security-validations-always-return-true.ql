@@ -14,11 +14,12 @@
 import csharp
 import DataFlow
 import JsonWebTokenHandlerLib
+import semmle.code.csharp.commons.QualifiedName
 
 from
-  TokenValidationParametersProperty p, CallableAlwaysReturnsTrueHigherPrecision e, string qualifier,
+  TokenValidationParametersProperty p, CallableAlwaysReturnsTrueHigherPrecision e, string namespace,
   string name
-where e = p.getAnAssignedValue() and p.hasQualifiedName(qualifier, name)
+where e = p.getAnAssignedValue() and p.hasQualifiedName(namespace, name)
 select e,
   "JsonWebTokenHandler security-sensitive property $@ is being delegated to this callable that always returns \"true\".",
-  p, printQualifiedName(qualifier, name)
+  p, printQualifiedName(namespace, name)

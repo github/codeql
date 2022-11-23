@@ -1,16 +1,15 @@
 import csharp
+import semmle.code.csharp.commons.QualifiedName
 
-from TrivialProperty prop, string qualifier, string name
+from TrivialProperty prop, string namespace, string type, string name
 where
-  exists(string dqualifier, string dname |
-    prop.getDeclaringType().hasQualifiedName(dqualifier, dname) and
-    (
-      dqualifier = "System.Reflection" and dname = "AssemblyName"
-      or
-      dqualifier = "System.Collections" and dname = "DictionaryEntry"
-      or
-      dqualifier = "Dataflow" and dname = "Properties"
-    )
+  prop.getDeclaringType().hasQualifiedName(namespace, type) and
+  (
+    namespace = "System.Reflection" and type = "AssemblyName"
+    or
+    namespace = "System.Collections" and type = "DictionaryEntry"
+    or
+    namespace = "Dataflow" and type = "Properties"
   ) and
-  prop.hasQualifiedName(qualifier, name)
-select printQualifiedName(qualifier, name)
+  prop.hasQualifiedName(namespace, type, name)
+select printQualifiedName(namespace, type, name)

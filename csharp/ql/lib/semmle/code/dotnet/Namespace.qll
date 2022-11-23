@@ -3,7 +3,7 @@
  */
 
 private import Declaration
-private import semmle.code.csharp.Printing
+private import semmle.code.csharp.commons.QualifiedName
 
 /** A namespace. */
 class Namespace extends Declaration, @namespace {
@@ -20,15 +20,15 @@ class Namespace extends Declaration, @namespace {
   Namespace getAChildNamespace() { result.getParentNamespace() = this }
 
   /**
-   * Holds if this namespace has the qualified name `qualifier`.`name`.
+   * Holds if this namespace has the qualified name `namespace`.`name`.
    *
    * For example if the qualified name is `System.Collections.Generic`, then
-   * `qualifier`=`System.Collections` and `name`=`Generic`.
+   * `namespace`=`System.Collections` and `name`=`Generic`.
    */
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string pqualifier, string pname |
-      this.getParentNamespace().hasQualifiedName(pqualifier, pname) and
-      qualifier = printQualifiedName(pqualifier, pname)
+  override predicate hasQualifiedName(string namespace, string name) {
+    exists(string pnamespace, string pname |
+      this.getParentNamespace().hasQualifiedName(pnamespace, pname) and
+      namespace = printQualifiedName(pnamespace, pname)
     ) and
     name = this.getName()
   }
@@ -50,9 +50,9 @@ class Namespace extends Declaration, @namespace {
    * Get the fully qualified name of this namespace.
    */
   string getFullName() {
-    exists(string qualifier, string name |
-      this.hasQualifiedName(qualifier, name) and
-      result = printQualifiedName(qualifier, name)
+    exists(string namespace, string name |
+      this.hasQualifiedName(namespace, name) and
+      result = printQualifiedName(namespace, name)
     )
   }
 }
@@ -61,7 +61,7 @@ class Namespace extends Declaration, @namespace {
 class GlobalNamespace extends Namespace {
   GlobalNamespace() { this.getName() = "" }
 
-  override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "" and name = ""
+  override predicate hasQualifiedName(string namespace, string name) {
+    namespace = "" and name = ""
   }
 }

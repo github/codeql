@@ -10,14 +10,7 @@
  */
 
 import Documentation
-
-private string getNameSplitter() { result = "(.*)\\.([^\\.]+)$" }
-
-bindingset[name]
-private predicate splitExceptionName(string name, string namespace, string type) {
-  namespace = name.regexpCapture(getNameSplitter(), 1) and
-  type = name.regexpCapture(getNameSplitter(), 2)
-}
+import semmle.code.csharp.commons.QualifiedName
 
 from SourceMethodOrConstructor m, ThrowElement throw, RefType throwType
 where
@@ -32,7 +25,7 @@ where
       throwBaseType.hasName(exceptionName)
       or
       exists(string namespace, string type |
-        splitExceptionName(exceptionName, namespace, type) and
+        splitQualifiedName(exceptionName, namespace, type) and
         throwBaseType.hasQualifiedName(namespace, type)
       )
       // and comment.hasBody(offset) // Too slow

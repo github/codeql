@@ -12,14 +12,15 @@
 
 import csharp
 import JsonWebTokenHandlerLib
+import semmle.code.csharp.commons.QualifiedName
 
 from
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation config,
   DataFlow::Node source, DataFlow::Node sink,
-  TokenValidationParametersPropertySensitiveValidation pw, string qualifier, string name
+  TokenValidationParametersPropertySensitiveValidation pw, string namespace, string name
 where
   config.hasFlow(source, sink) and
   sink.asExpr() = pw.getAnAssignedValue() and
-  pw.hasQualifiedName(qualifier, name)
+  pw.hasQualifiedName(namespace, name)
 select sink, "The security sensitive property $@ is being disabled by the following value: $@.", pw,
-  printQualifiedName(qualifier, name), source, "false"
+  printQualifiedName(namespace, name), source, "false"

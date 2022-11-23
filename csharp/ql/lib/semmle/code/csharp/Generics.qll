@@ -15,6 +15,7 @@
 
 import Location
 import Namespace
+private import commons.QualifiedName
 private import dotnet
 private import TypeRef
 
@@ -99,9 +100,9 @@ private string getTypeArgumentsNames(ConstructedGeneric cg) {
 
 bindingset[t]
 private string getFullName(Type t) {
-  exists(string qualifier, string name |
-    t.hasQualifiedName(qualifier, name) and
-    result = printQualifiedName(qualifier, name)
+  exists(string namespace, string name |
+    t.hasQualifiedName(namespace, name) and
+    result = printQualifiedName(namespace, name)
   )
 }
 
@@ -158,15 +159,15 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
     result = this.getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
   }
 
-  final override predicate hasQualifiedName(string qualifier, string name) {
+  final override predicate hasQualifiedName(string namespace, string name) {
     exists(string name0 | name = name0 + "<" + getTypeParameterCommas(this) + ">" |
       exists(string enclosing |
-        this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
+        this.getDeclaringType().hasQualifiedName(namespace, enclosing) and
         name0 = enclosing + "+" + this.getUndecoratedName()
       )
       or
       not exists(this.getDeclaringType()) and
-      qualifier = this.getNamespace().getFullName() and
+      namespace = this.getNamespace().getFullName() and
       name0 = this.getUndecoratedName()
     )
   }
@@ -236,8 +237,8 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   /** Gets the generic that defines this type parameter. */
   UnboundGeneric getGeneric() { type_parameters(this, _, result, _) }
 
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "" and
+  final override predicate hasQualifiedName(string namespace, string name) {
+    namespace = "" and
     name = this.getName()
   }
 
@@ -423,15 +424,15 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
-  final override predicate hasQualifiedName(string qualifier, string name) {
+  final override predicate hasQualifiedName(string namespace, string name) {
     exists(string name0 | name = name0 + "<" + getTypeArgumentsQualifiedNames(this) + ">" |
       exists(string enclosing |
-        this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
+        this.getDeclaringType().hasQualifiedName(namespace, enclosing) and
         name0 = enclosing + "+" + this.getUndecoratedName()
       )
       or
       not exists(this.getDeclaringType()) and
-      qualifier = this.getNamespace().getFullName() and
+      namespace = this.getNamespace().getFullName() and
       name0 = this.getUndecoratedName()
     )
   }
@@ -601,8 +602,8 @@ class ConstructedMethod extends Method, ConstructedGeneric {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
-  override predicate hasQualifiedName(string qualifier, string type, string name) {
-    this.getDeclaringType().hasQualifiedName(qualifier, type) and
+  override predicate hasQualifiedName(string namespace, string type, string name) {
+    this.getDeclaringType().hasQualifiedName(namespace, type) and
     name = this.getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(this) + ">"
   }
 

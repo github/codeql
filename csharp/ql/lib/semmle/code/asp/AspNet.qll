@@ -5,6 +5,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.QualifiedName
 
 /**
  * An ASP.NET program element. Either an attribute (`AspAttribute`), an open
@@ -184,9 +185,9 @@ class PageDirective extends AspDirective {
    * Gets the 'CodeBehind' class from which this page inherits.
    */
   ValueOrRefType getInheritedType() {
-    exists(string qualifier, string name |
-      result.hasQualifiedName(qualifier, name) and
-      printQualifiedName(qualifier, name) = this.getInheritedTypeQualifiedName()
+    exists(string namespace, string type |
+      result.hasQualifiedName(namespace, type) and
+      splitQualifiedName(this.getInheritedTypeQualifiedName(), namespace, type)
     )
   }
 
