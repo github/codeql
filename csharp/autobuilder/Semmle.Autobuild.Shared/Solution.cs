@@ -40,11 +40,11 @@ namespace Semmle.Autobuild.Shared
     /// <summary>
     /// A solution file on the filesystem, read using Microsoft.Build.
     /// </summary>
-    internal class Solution : ProjectOrSolution, ISolution
+    internal class Solution<TAutobuildOptions> : ProjectOrSolution<TAutobuildOptions>, ISolution where TAutobuildOptions : AutobuildOptionsShared
     {
         private readonly SolutionFile? solution;
 
-        private readonly IEnumerable<Project> includedProjects;
+        private readonly IEnumerable<Project<TAutobuildOptions>> includedProjects;
 
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjects;
 
@@ -57,7 +57,7 @@ namespace Semmle.Autobuild.Shared
         public string DefaultPlatformName =>
             solution is null ? "" : solution.GetDefaultPlatformName();
 
-        public Solution(Autobuilder builder, string path, bool allowProject) : base(builder, path)
+        public Solution(Autobuilder<TAutobuildOptions> builder, string path, bool allowProject) : base(builder, path)
         {
             try
             {
@@ -69,19 +69,19 @@ namespace Semmle.Autobuild.Shared
                 // that scenario as a solution with just that one project
                 if (allowProject)
                 {
-                    includedProjects = new[] { new Project(builder, path) };
+                    includedProjects = new[] { new Project<TAutobuildOptions>(builder, path) };
                     return;
                 }
 
                 builder.Log(Severity.Info, $"Unable to read solution file {path}.");
-                includedProjects = Array.Empty<Project>();
+                includedProjects = Array.Empty<Project<TAutobuildOptions>>();
                 return;
             }
 
             includedProjects = solution.ProjectsInOrder
                 .Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat)
                 .Select(p => builder.Actions.PathCombine(DirectoryName, builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries))))
-                .Select(p => new Project(builder, p))
+                .Select(p => new Project<TAutobuildOptions>(builder, p))
                 .ToArray();
         }
 

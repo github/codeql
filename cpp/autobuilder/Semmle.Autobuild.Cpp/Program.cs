@@ -11,14 +11,14 @@ namespace Semmle.Autobuild.Cpp
             try
             {
                 var actions = SystemBuildActions.Instance;
-                var options = new AutobuildOptions(actions, Language.Cpp);
+                var options = new CppAutobuildOptions(actions);
                 try
                 {
                     Console.WriteLine("CodeQL C++ autobuilder");
                     var builder = new CppAutobuilder(actions, options);
                     return builder.AttemptBuild();
                 }
-                catch(InvalidEnvironmentException ex)
+                catch (InvalidEnvironmentException ex)
                 {
                     Console.WriteLine("The environment is invalid: {0}", ex.Message);
                 }
