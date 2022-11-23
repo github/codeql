@@ -52,6 +52,66 @@ predicate trustedDomain(string domainName) {
   trustedDomainViaOkHttp(domainName)
 }
 
+/**
+ * Holds if `setSocketFactory` is a call to `HttpsURLConnection.setSSLSocketFactory` or `HttpsURLConnection.setDefaultSSLSocketFactory`
+ * that uses a socket factory derrived from a `TrustManager`.
+ * `default` is true if the default SSL socket factory for all URLs is being set.
+ */
+private predicate trustedSocketFactory(MethodAccess setSocketFactory, boolean default) {
+  exists(MethodAccess getSocketFactory, MethodAccess initSslContext, string methodName |
+    setSocketFactory
+        .getMethod()
+        .getASourceOverriddenMethod*()
+        .hasQualifiedName("javax.net.ssl", "HttpsURLConnection", methodName) and
+    (
+      default = true and methodName = "setDefaultSSLSocketFactory"
+      or
+      default = false and methodName = "setSSLSocketFactory"
+    ) and
+    initSslContext.getMethod().hasQualifiedName("javax.net.ssl", "SSLContext", "init") and
+    getSocketFactory
+        .getMethod()
+        .getASourceOverriddenMethod*()
+        .hasQualifiedName("javax.net.ssl", "SSLContext", "getSocketFactory") and
+    not initSslContext.getArgument(1) instanceof NullLiteral and
+    DataFlow::localExprFlow(initSslContext.getQualifier(), getSocketFactory.getQualifier()) and
+    DataFlow::localExprFlow(getSocketFactory, setSocketFactory.getArgument(0))
+  )
+}
+
+/**
+ * Holds if the given expression is an qualifier to a `URL.openConnection` or `URL.openStream` call
+ * that is trusted due to its SSL socket factory being set.
+ */
+private predicate trustedUrlConnection(Expr url) {
+  exists(MethodAccess openCon |
+    openCon
+        .getMethod()
+        .getASourceOverriddenMethod*()
+        .hasQualifiedName("java.net", "URL", "openConnection") and
+    url = openCon.getQualifier() and
+    exists(MethodAccess setSocketFactory |
+      trustedSocketFactory(setSocketFactory, false) and
+      TaintTracking::localExprTaint(openCon, setSocketFactory.getQualifier())
+    )
+  )
+  or
+  trustedSocketFactory(_, true) and
+  exists(MethodAccess open |
+    open.getMethod()
+        .getASourceOverriddenMethod*()
+        .hasQualifiedName("java.net", "URL", ["openConnection", "openStream"]) and
+    url = open.getQualifier()
+  )
+}
+
+private class MissingPinningSink extends DataFlow::Node {
+  MissingPinningSink() {
+    this instanceof UrlOpenSink and
+    not trustedUrlConnection(this.asExpr())
+  }
+}
+
 /** Configuration for finding uses of non trusted URLs. */
 private class UntrustedUrlConfig extends TaintTracking::Configuration {
   UntrustedUrlConfig() { this = "UntrustedUrlConfig" }
@@ -64,13 +124,13 @@ private class UntrustedUrlConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof UrlOpenSink }
+  override predicate isSink(DataFlow::Node node) { node instanceof MissingPinningSink }
 }
 
 /** Holds if `node` is a network communication call for which certificate pinning is not implemented. */
 predicate missingPinning(DataFlow::Node node) {
   isAndroid() and
-  node instanceof UrlOpenSink and
+  node instanceof MissingPinningSink and
   (
     not exists(string s | trustedDomain(s))
     or
