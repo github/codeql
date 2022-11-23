@@ -80,15 +80,18 @@ abstract class AtmConfig extends string {
     // characteristics that are specific to this sink type.
     // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that implies
     // they're not sinks for this sink type (or not sinks for any sink type), not just the EndpointFilterCharacteristics.
-    exists(EndpointCharacteristics::StandardEndpointFilterCharacteristic standardFilter |
-      standardFilter.getEndpoints(candidateSink) and
-      result = standardFilter
-    )
-    or
-    exists(EndpointCharacteristics::EndpointFilterCharacteristic specificFilter |
-      specificFilter.getEndpoints(candidateSink) and
-      specificFilter.getImplications(this.getASinkEndpointType(), false, _) and
-      result = specificFilter
+    exists(EndpointCharacteristics::EndpointCharacteristic filter, float confidence |
+      filter.getEndpoints(candidateSink) and
+      confidence >= filter.mediumConfidence() and
+      confidence < filter.highConfidence() and
+      (
+        // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
+        filter.getImplications(any(NegativeType negative), true, confidence)
+        or
+        // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
+        filter.getImplications(this.getASinkEndpointType(), false, confidence)
+      ) and
+      result = filter
     )
   }
 
