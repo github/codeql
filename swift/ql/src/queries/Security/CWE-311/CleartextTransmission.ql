@@ -66,8 +66,7 @@ class AlamofireTransmitted extends Transmitted {
       fName.regexpMatch("(request|streamRequest|download)\\(.*") and
       (
         call.getArgument(0).getExpr() = this or
-        call.getArgumentWithLabel("parameters").getExpr() = this or
-        call.getArgumentWithLabel("headers").getExpr() = this
+        call.getArgumentWithLabel(["headers", "parameters"]).getExpr() = this
       )
     )
   }
