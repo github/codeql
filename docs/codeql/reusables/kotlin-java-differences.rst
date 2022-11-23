@@ -5,7 +5,7 @@ When writing Kotlin-specific elements (such as a `WhenExpr`) you’ll need to us
 
 There are however some important cases where writing queries for Kotlin can produce surprising results compared to writing Java queries, as CodeQL works with the JVM bytecode representation of the source code. 
 
-Be careful when trying to model code elements that don’t exist in Java, such as `NotNullExpr (expr!!)`, because they could interact in unexpected ways with common predicates. For example, `MethodAccess.getQualifier()` gets a `NotNullExpr `instead of a `VarAccess`` in the following Kotlin code:
+Be careful when you model code elements that don’t exist in Java, such as ``NotNullExpr (expr!!)``, because they could interact in unexpected ways with common predicates. For example, ``MethodAccess.getQualifier()`` returns a ``NotNullExpr`` instead of a ``VarAccess`` in the following Kotlin code:
 
 .. code-block:: kotlin
    someVar!!.someMethodCall()
