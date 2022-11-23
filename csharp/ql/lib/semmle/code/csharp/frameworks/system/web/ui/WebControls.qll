@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.web.UI
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Web.UI.WebControls` namespace. */
 class SystemWebUIWebControlsNamespace extends Namespace {
