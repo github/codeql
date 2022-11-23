@@ -13,7 +13,7 @@ private import semmle.python.frameworks.data.ModelsAsData
 private module Asyncpg {
   class AsyncpgModel extends ModelInput::TypeModelCsv {
     override predicate row(string row) {
-      // package1;type1;package2;type2;path
+      // type1;type2;path
       row =
         [
           // a `ConnectionPool` that is created when the result of `asyncpg.create_pool()` is awaited.
@@ -31,7 +31,7 @@ private module Asyncpg {
   }
 
   class AsyncpgSink extends ModelInput::SinkModelCsv {
-    // package;type;path;kind
+    // type;path;kind
     override predicate row(string row) {
       row =
         [
