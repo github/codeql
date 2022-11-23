@@ -147,6 +147,12 @@ abstract class Configuration extends string {
    */
   FlowFeature getAFeature() { none() }
 
+  /** Holds if sources should be grouped in the result of `hasFlowPath`. */
+  predicate sourceGrouping(Node source, string sourceGroup) { none() }
+
+  /** Holds if sinks should be grouped in the result of `hasFlowPath`. */
+  predicate sinkGrouping(Node sink, string sinkGroup) { none() }
+
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.
    */
@@ -158,7 +164,7 @@ abstract class Configuration extends string {
    * The corresponding paths are generated from the end-points and the graph
    * included in the module `PathGraph`.
    */
-  predicate hasFlowPath(PathNode source, PathNode sink) { flowsTo(source, sink, _, _, this) }
+  predicate hasFlowPath(PathNode source, PathNode sink) { hasFlowPath(source, sink, this) }
 
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
@@ -2712,6 +2718,18 @@ private newtype TPathNode =
       state = sink.getState() and
       config = sink.getConfiguration()
     )
+  } or
+  TPathNodeSourceGroup(string sourceGroup, Configuration config) {
+    exists(PathNodeImpl source |
+      sourceGroup = source.getSourceGroup() and
+      config = source.getConfiguration()
+    )
+  } or
+  TPathNodeSinkGroup(string sinkGroup, Configuration config) {
+    exists(PathNodeSink sink |
+      sinkGroup = sink.getSinkGroup() and
+      config = sink.getConfiguration()
+    )
   }
 
 /**
@@ -2920,6 +2938,22 @@ abstract private class PathNodeImpl extends TPathNode {
     )
   }
 
+  string getSourceGroup() {
+    this.isSource() and
+    this.getConfiguration().sourceGrouping(this.getNodeEx().asNode(), result)
+  }
+
+  predicate isFlowSource() {
+    this.isSource() and not exists(this.getSourceGroup())
+    or
+    this instanceof PathNodeSourceGroup
+  }
+
+  predicate isFlowSink() {
+    this = any(PathNodeSink sink | not exists(sink.getSinkGroup())) or
+    this instanceof PathNodeSinkGroup
+  }
+
   private string ppAp() {
     this instanceof PathNodeSink and result = ""
     or
@@ -2959,7 +2993,9 @@ abstract private class PathNodeImpl extends TPathNode {
 
 /** Holds if `n` can reach a sink. */
 private predicate directReach(PathNodeImpl n) {
-  n instanceof PathNodeSink or directReach(n.getANonHiddenSuccessor())
+  n instanceof PathNodeSink or
+  n instanceof PathNodeSinkGroup or
+  directReach(n.getANonHiddenSuccessor())
 }
 
 /** Holds if `n` can reach a sink or is used in a subpath that can reach a sink. */
@@ -3015,6 +3051,12 @@ class PathNode instanceof PathNodeImpl {
 
   /** Holds if this node is a source. */
   final predicate isSource() { super.isSource() }
+
+  /** Holds if this node is a grouping of source nodes. */
+  final predicate isSourceGroup(string group) { this = TPathNodeSourceGroup(group, _) }
+
+  /** Holds if this node is a grouping of sink nodes. */
+  final predicate isSinkGroup(string group) { this = TPathNodeSinkGroup(group, _) }
 }
 
 /**
@@ -3136,9 +3178,66 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
 
   override Configuration getConfiguration() { result = config }
 
-  override PathNodeImpl getASuccessorImpl() { none() }
+  override PathNodeImpl getASuccessorImpl() {
+    result = TPathNodeSinkGroup(this.getSinkGroup(), config)
+  }
 
   override predicate isSource() { sourceNode(node, state, config) }
+
+  string getSinkGroup() { config.sinkGrouping(node.asNode(), result) }
+}
+
+private class PathNodeSourceGroup extends PathNodeImpl, TPathNodeSourceGroup {
+  string sourceGroup;
+  Configuration config;
+
+  PathNodeSourceGroup() { this = TPathNodeSourceGroup(sourceGroup, config) }
+
+  override NodeEx getNodeEx() { none() }
+
+  override FlowState getState() { none() }
+
+  override Configuration getConfiguration() { result = config }
+
+  override PathNodeImpl getASuccessorImpl() {
+    result.getSourceGroup() = sourceGroup and
+    result.getConfiguration() = config
+  }
+
+  override predicate isSource() { none() }
+
+  override string toString() { result = sourceGroup }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+  }
+}
+
+private class PathNodeSinkGroup extends PathNodeImpl, TPathNodeSinkGroup {
+  string sinkGroup;
+  Configuration config;
+
+  PathNodeSinkGroup() { this = TPathNodeSinkGroup(sinkGroup, config) }
+
+  override NodeEx getNodeEx() { none() }
+
+  override FlowState getState() { none() }
+
+  override Configuration getConfiguration() { result = config }
+
+  override PathNodeImpl getASuccessorImpl() { none() }
+
+  override predicate isSource() { none() }
+
+  override string toString() { result = sinkGroup }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+  }
 }
 
 private predicate pathNode(
@@ -3495,6 +3594,15 @@ private module Subpaths {
  * Will only have results if `configuration` has non-empty sources and
  * sinks.
  */
+private predicate hasFlowPath(
+  PathNodeImpl flowsource, PathNodeImpl flowsink, Configuration configuration
+) {
+  flowsource.isFlowSource() and
+  flowsource.getConfiguration() = configuration and
+  (flowsource = flowsink or pathSuccPlus(flowsource, flowsink)) and
+  flowsink.isFlowSink()
+}
+
 private predicate flowsTo(
   PathNodeImpl flowsource, PathNodeSink flowsink, Node source, Node sink,
   Configuration configuration
