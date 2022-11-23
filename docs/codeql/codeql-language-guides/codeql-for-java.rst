@@ -7,7 +7,6 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 .. include:: ../reusables/kotlin-beta-note.rst
 
-.. include:: ../reusables/kotlin-java-differences.rst
 
 .. pull-quote:: Enabling Kotlin support
 
