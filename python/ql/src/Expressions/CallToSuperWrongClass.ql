@@ -13,17 +13,14 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
 
-from CallNode call_to_super, string name
+from DataFlow::CallCfgNode call_to_super, string name
 where
-  exists(GlobalVariable gv, ControlFlowNode cn |
-    call_to_super = ClassValue::super_().getACall() and
-    gv.getId() = "super" and
-    cn = call_to_super.getArg(0) and
-    name = call_to_super.getScope().getScope().(Class).getName() and
-    exists(ClassValue other |
-      cn.pointsTo(other) and
-      not other.getScope().getName() = name
-    )
+  call_to_super.getFunction().getALocalSource().asExpr().(Name).getId() = "super" and
+  name = call_to_super.getScope().getScope().(Class).getName() and
+  exists(DataFlow::Node arg |
+    arg = call_to_super.getArg(0) and
+    not arg.getALocalSource().asExpr().(Name).getId() = name
   )
 select call_to_super.getNode(), "First argument to super() should be " + name + "."
