@@ -47,19 +47,19 @@ private module Cached {
   }
 
   cached
-  ReadAccess getAFirstRead(Definition def) {
+  ReadAccess getAFirstReadExt(DefinitionExt def) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefRead(def, bb1, i1, bb2, i2) and
+      def.definesAt(_, bb1, i1, _) and
+      adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
       result = bb2.getNode(i2)
     )
   }
 
   cached
-  predicate hasAdjacentReads(Definition def, ReadAccess first, ReadAccess second) {
+  predicate hasAdjacentReadsExt(DefinitionExt def, ReadAccess first, ReadAccess second) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
       first = bb1.getNode(i1) and
-      adjacentDefRead(def, bb1, i1, bb2, i2) and
+      adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
       second = bb2.getNode(i2)
     )
   }
@@ -68,9 +68,35 @@ private module Cached {
   Definition getAPhiInput(PhiNode phi) { phiHasInputFromBlock(phi, result, _) }
 
   cached
-  predicate lastRefBeforeRedef(Definition def, BasicBlock bb, int i, Definition next) {
-    lastRefRedef(def, bb, i, next)
+  predicate lastRefBeforeRedefExt(DefinitionExt def, BasicBlock bb, int i, DefinitionExt next) {
+    lastRefRedefExt(def, _, bb, i, next)
   }
 }
 
 import Cached
+
+private module Deprecated {
+  private import CIL
+
+  deprecated ReadAccess getAFirstRead(Definition def) {
+    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+      def.definesAt(_, bb1, i1) and
+      adjacentDefRead(def, bb1, i1, bb2, i2) and
+      result = bb2.getNode(i2)
+    )
+  }
+
+  deprecated predicate hasAdjacentReads(Definition def, ReadAccess first, ReadAccess second) {
+    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+      first = bb1.getNode(i1) and
+      adjacentDefRead(def, bb1, i1, bb2, i2) and
+      second = bb2.getNode(i2)
+    )
+  }
+
+  deprecated predicate lastRefBeforeRedef(Definition def, BasicBlock bb, int i, Definition next) {
+    lastRefRedef(def, bb, i, next)
+  }
+}
+
+import Deprecated
