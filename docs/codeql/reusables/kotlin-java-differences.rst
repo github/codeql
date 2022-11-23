@@ -7,7 +7,8 @@ There are however some important cases where writing queries for Kotlin can prod
 
 Be careful when trying to model code elements that don’t exist in Java, such as `NotNullExpr (expr!!)`, because they could interact in unexpected ways with common predicates. For example, `MethodAccess.getQualifier()` gets a `NotNullExpr `instead of a `VarAccess`` in the following Kotlin code:
 
-`someVar!!.someMethodCall()`
+.. code-block:: kotlin
+   someVar!!.someMethodCall()
 
 In that specific case, you can use the predicate `Expr.getUnderlyingExpr()`. This goes directly to the underlying `VarAccess`` to produce a more similar behavior to that in Java.
 
