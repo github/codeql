@@ -365,7 +365,7 @@ private module Sequelize {
 private module SpannerCsv {
   class SpannerSinks extends ModelInput::SinkModelCsv {
     override predicate row(string row) {
-      // package; type; path; kind
+      // type; path; kind
       row =
         [
           "@google-cloud/spanner.~SqlExecutorDirect;Argument[0];sql-injection",
