@@ -713,6 +713,14 @@ class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExec
   /** Holds if a shell interprets `arg`. */
   predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
 
+  /**
+   * Gets an argument to this command execution that specifies the argument list
+   * to the command.
+   * TODO: Can also invlide the command.
+   * TODO: Look through all the `SystemCommandExecution` models. 
+   */
+  DataFlow::Node getArgumentList() { result = super.getArgumentList() }
+
   /** Gets an argument to this execution that specifies the command or an argument to it. */
   DataFlow::Node getAnArgument() { result = super.getAnArgument() }
 }
@@ -732,6 +740,12 @@ module SystemCommandExecution {
 
     /** Holds if a shell interprets `arg`. */
     predicate isShellInterpreted(DataFlow::Node arg) { none() }
+
+    /**
+     * Gets an argument to this command execution that specifies the argument list
+     * to the command.
+     */
+    DataFlow::Node getArgumentList() { none() }
 
     /** Gets an argument to this execution that specifies the command. */
     DataFlow::Node getACommandArgument() { none() }

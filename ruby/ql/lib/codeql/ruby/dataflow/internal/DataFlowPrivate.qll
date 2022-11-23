@@ -263,6 +263,10 @@ private class Argument extends CfgNodes::ExprCfgNode {
     this = call.getArgument(0) and
     this.getExpr() instanceof SplatExpr and
     arg.isSplatAll()
+    or
+    this = call.getArgument(0) and
+    this.getExpr() instanceof SplatExpr and
+    arg.isSplatAll()
   }
 
   /** Holds if this expression is the `i`th argument of `c`. */
