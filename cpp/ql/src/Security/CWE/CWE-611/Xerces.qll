@@ -67,8 +67,7 @@ class XercesDomParserLibrary extends XmlLibrary {
     // constructor.
     exists(CallInstruction call |
       call.getStaticCallTarget() = any(XercesDomParserClass c).getAConstructor() and
-      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-        call.getThisArgument() and
+      node.asInstruction().(StoreInstruction).getSourceValue() = call.getThisArgument() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
   }
@@ -153,8 +152,7 @@ class SaxParserLibrary extends XmlLibrary {
     // constructor.
     exists(CallInstruction call |
       call.getStaticCallTarget() = any(SaxParserClass c).getAConstructor() and
-      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-        call.getThisArgument() and
+      node.asInstruction().(StoreInstruction).getSourceValue() = call.getThisArgument() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
   }
