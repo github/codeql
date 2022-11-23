@@ -83,3 +83,4 @@ jobs:
           dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/extractor/Semmle.Util.Tests"
           dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/extractor/Semmle.Extraction.Tests"
           dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/autobuilder/Semmle.Autobuild.CSharp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"

@@ -4,9 +4,32 @@ using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
 {
-    public class CSharpAutobuilder : Autobuilder
+    /// <summary>
+    /// Encapsulates C# build options.
+    /// </summary>
+    public class CSharpAutobuildOptions : AutobuildOptionsShared
     {
-        public CSharpAutobuilder(IBuildActions actions, AutobuildOptions options) : base(actions, options) { }
+        private const string extractorOptionPrefix = "CODEQL_EXTRACTOR_CSHARP_OPTION_";
+
+        public bool Buildless { get; }
+
+        public override Language Language => Language.CSharp;
+
+
+        /// <summary>
+        /// Reads options from environment variables.
+        /// Throws ArgumentOutOfRangeException for invalid arguments.
+        /// </summary>
+        public CSharpAutobuildOptions(IBuildActions actions) : base(actions)
+        {
+            Buildless = actions.GetEnvironmentVariable(lgtmPrefix + "BUILDLESS").AsBool("buildless", false) ||
+                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false);
+        }
+    }
+
+    public class CSharpAutobuilder : Autobuilder<CSharpAutobuildOptions>
+    {
+        public CSharpAutobuilder(IBuildActions actions, CSharpAutobuildOptions options) : base(actions, options) { }
 
         public override BuildScript GetBuildScript()
         {
