@@ -72,4 +72,12 @@ public class MybatisSqlInjectionService {
 	public void badInsert(String input) {
 		sqlInjectionMapper.badInsert(input);
 	}
+
+	public void kkbad1(String name, Integer age){
+		sqlInjectionMapper.kkbad1(name, age);
+	}
+
+	public void kkbad2(String age){
+		sqlInjectionMapper.kkbad2(age);
+	}
 }

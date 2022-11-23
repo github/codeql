@@ -79,7 +79,7 @@ public class MybatisSqlInjection {
 	public void badDelete(@RequestParam String name) {
 		mybatisSqlInjectionService.badDelete(name);
 	}
-	
+
 	@GetMapping(value = "badUpdate")
 	public void badUpdate(@RequestParam String name) {
 		mybatisSqlInjectionService.badUpdate(name);
@@ -88,5 +88,15 @@ public class MybatisSqlInjection {
 	@GetMapping(value = "badInsert")
 	public void badInsert(@RequestParam String name) {
 		mybatisSqlInjectionService.badInsert(name);
+	}
+
+	@GetMapping(value = "kkbad1")
+	public void kkbad1(@RequestParam String name, @RequestParam Integer age) {
+		mybatisSqlInjectionService.kkbad1(name, age);
+	}
+
+	@GetMapping(value = "kkbad2")
+	public void kkbad2(@RequestParam String age) {
+		mybatisSqlInjectionService.kkbad2(age);
 	}
 }
