@@ -235,7 +235,13 @@ class Node extends TIRDataFlowNode {
   Expr asIndirectArgument() { result = this.asIndirectArgument(_) }
 
   /** Gets the positional parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.asParameter(0) }
+  Parameter asParameter() {
+    exists(int indirectionIndex | result = this.asParameter(indirectionIndex) |
+      if result.getUnspecifiedType() instanceof ReferenceType
+      then indirectionIndex = 1
+      else indirectionIndex = 0
+    )
+  }
 
   /**
    * Gets the uninitialized local variable corresponding to this node, if
@@ -1233,35 +1239,11 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
 }
 
-pragma[noinline]
-private predicate getAddressType(LoadInstruction load, Type t) {
-  exists(Instruction address |
-    address = load.getSourceAddress() and
-    t = address.getResultType()
-  )
-}
-
-/**
- * Like the AST dataflow library, we want to conflate the address and value of a reference. This class
- * represents the `LoadInstruction` that is generated from a reference dereference.
- */
-private class ReferenceDereferenceInstruction extends LoadInstruction {
-  ReferenceDereferenceInstruction() {
-    exists(ReferenceType ref |
-      getAddressType(this, ref) and
-      this.getResultType() = ref.getBaseType()
-    )
-  }
-}
-
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
   // Treat all conversions as flow, even conversions between different numeric types.
   conversionFlow(opFrom, iTo, false)
   or
   iTo.(CopyInstruction).getSourceValueOperand() = opFrom
-  or
-  // Conflate references and values like in AST dataflow.
-  iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
 }
 
 private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {

@@ -2,7 +2,6 @@ edges
 | test2.cpp:12:21:12:21 | v | test2.cpp:14:11:14:11 | v |
 | test2.cpp:12:21:12:21 | v | test2.cpp:14:11:14:11 | v |
 | test2.cpp:25:22:25:23 | & ... | test2.cpp:27:13:27:13 | v |
-| test2.cpp:25:22:25:23 | & ... | test2.cpp:27:13:27:13 | v |
 | test2.cpp:25:22:25:23 | fscanf output argument | test2.cpp:27:13:27:13 | v |
 | test2.cpp:27:13:27:13 | v | test2.cpp:12:21:12:21 | v |
 | test5.cpp:5:5:5:17 | VariableAddress indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
@@ -33,7 +32,6 @@ nodes
 | test2.cpp:12:21:12:21 | v | semmle.label | v |
 | test2.cpp:14:11:14:11 | v | semmle.label | v |
 | test2.cpp:14:11:14:11 | v | semmle.label | v |
-| test2.cpp:25:22:25:23 | & ... | semmle.label | & ... |
 | test2.cpp:25:22:25:23 | & ... | semmle.label | & ... |
 | test2.cpp:25:22:25:23 | fscanf output argument | semmle.label | fscanf output argument |
 | test2.cpp:27:13:27:13 | v | semmle.label | v |

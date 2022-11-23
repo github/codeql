@@ -197,11 +197,11 @@ private module Cached {
   predicate isUse(boolean certain, Operand op, Instruction base, int ind, int indirectionIndex) {
     not ignoreOperand(op) and
     certain = true and
-    exists(LanguageType type, int m, int ind0 |
+    exists(LanguageType type, int upper, int ind0 |
       type = getLanguageType(op) and
-      m = countIndirectionsForCppType(type) and
+      upper = countIndirectionsForCppType(type) and
       isUseImpl(op, base, ind0) and
-      ind = ind0 + [0 .. m] and
+      ind = ind0 + [0 .. upper] and
       indirectionIndex = ind - ind0
     )
   }
@@ -277,7 +277,7 @@ private module Cached {
     int indirectionIndex
   ) {
     certain = true and
-    exists(int ind0, CppType type, int m |
+    exists(int ind0, CppType type, int lower, int upper |
       address =
         [
           instr.(StoreInstruction).getDestinationAddressOperand(),
@@ -288,9 +288,10 @@ private module Cached {
     |
       isDefImpl(address, base, ind0) and
       type = getLanguageType(address) and
-      m = countIndirectionsForCppType(type) and
-      ind = ind0 + [1 .. m] and
-      indirectionIndex = ind - (ind0 + 1)
+      upper = countIndirectionsForCppType(type) and
+      ind = ind0 + [lower .. upper] and
+      indirectionIndex = ind - (ind0 + lower) and
+      if type.hasType(any(Cpp::ArrayType arrayType), true) then lower = 0 else lower = 1
     )
   }
 

@@ -275,10 +275,10 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
   exists(IRBlock bb1, int i1, SourceVariable v |
     defOrUse1.asDefOrUse().hasIndexInBlock(bb1, i1, v)
   |
-    exists(IRBlock bb2, int i2 |
-      adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
-        pragma[only_bind_into](bb2), pragma[only_bind_into](i2))
-    |
+    exists(IRBlock bb2, int i2, Definition def |
+      adjacentDefRead(pragma[only_bind_into](def), pragma[only_bind_into](bb1),
+        pragma[only_bind_into](i1), pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
+      def.getSourceVariable() = v and
       use.asDefOrUse().(UseImpl).hasIndexInBlock(bb2, i2, v)
     )
     or
