@@ -36,6 +36,8 @@ using SILTokenTypeTag = void;
 // This is created during type checking and is only used for constraint checking
 using TypeVariableTypeTag = void;
 
+using ABISafeConversionExprTag = AbiSafeConversionExprTag;
+
 #define MAP_TYPE_TO_TAG(TYPE, TAG)    \
   template <>                         \
   struct detail::ToTagFunctor<TYPE> { \

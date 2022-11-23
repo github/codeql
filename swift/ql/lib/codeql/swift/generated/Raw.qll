@@ -677,6 +677,10 @@ module Raw {
     Expr getSubExpr() { vararg_expansion_exprs(this, result) }
   }
 
+  class AbiSafeConversionExpr extends @abi_safe_conversion_expr, ImplicitConversionExpr {
+    override string toString() { result = "AbiSafeConversionExpr" }
+  }
+
   class AnyHashableErasureExpr extends @any_hashable_erasure_expr, ImplicitConversionExpr {
     override string toString() { result = "AnyHashableErasureExpr" }
   }
