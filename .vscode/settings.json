@@ -1,3 +1,6 @@
 {
-    "omnisharp.autoStart": false
+    "omnisharp.autoStart": false,
+    "[ql]": {
+        "editor.formatOnSave": true,
+    },
 }
