@@ -16,4 +16,4 @@ Nullable elements (`?`) can also produce unexpected behavior. To avoid a `NullPo
 
 Another example is that if-else expressions are translated into `WhenExprs` in CodeQL, instead of the more typical `IfStmt` in Java.
 
-In general, you can debug these issues with the AST (you can use the `CodeQL: View AST`` command from Visual Studio Code’s CodeQL extension, or run the `PrintAst.ql`` query) and checking what exactly CodeQL is extracting from your code.
+In general, you can debug these issues with the AST (you can use the ``CodeQL: View AST`` command from Visual Studio Code’s CodeQL extension, or run the ``PrintAst.ql`` query) and see exactly what CodeQL is extracting from your code.
