@@ -11,7 +11,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 .. pull-quote:: Enabling Kotlin support
 
-   To enable Kotlin support, you should enable `java` as a language.
+   To enable Kotlin support, you should enable ``java`` as a language.
 
 .. toctree::
    :hidden:
