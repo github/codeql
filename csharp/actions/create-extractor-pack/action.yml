@@ -1,0 +1,13 @@
+name: Build C# CodeQL pack
+description: Builds the C# CodeQL pack
+runs:
+  using: composite
+  steps:
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.202
+    - name: Build Extractor
+      shell: bash
+      run: scripts/create-extractor-pack.sh
+      working-directory: csharp
