@@ -1,5 +1,5 @@
-Writing CodeQL queries in Kotlin versus Java
---------------------------------------------
+Writing CodeQL queries for Kotlin versus Java analysis
+------------------------------------------------------
 
 When writing Kotlin-specific elements (such as a `WhenExpr`) you’ll need to use Kotlin-specific CodeQL classes, but writing queries for Kotlin and Java is largely the same. The two make use of the same libraries such as DataFlow, TaintTracking, or SSA, and the same classes such as `MethodAccess` or `Class`. 
 
