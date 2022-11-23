@@ -82,7 +82,7 @@ private string asTaintModel(TargetApiSpecific api, string input, string output) 
  * Gets the sink model for `api` with `input` and `kind`.
  */
 bindingset[input, kind]
-private string asSinkModel(TargetApiSpecific api, string input, string kind) {
+string asSinkModel(TargetApiSpecific api, string input, string kind) {
   result =
     asPartialModel(api) + input + ";" //
       + kind + ";" //
@@ -262,7 +262,7 @@ string captureSource(DataFlowTargetApi api) {
  * This can be used to generate Sink summaries for APIs, if the API propagates a parameter (or enclosing type field)
  * into an existing known sink (then the API itself becomes a sink).
  */
-private class PropagateToSinkConfiguration extends TaintTracking::Configuration {
+class PropagateToSinkConfiguration extends TaintTracking::Configuration {
   PropagateToSinkConfiguration() {
     this = "parameters or fields flowing into sinks" and
     any(ActiveConfiguration ac).activateToSinkConfig()
@@ -282,8 +282,8 @@ private class PropagateToSinkConfiguration extends TaintTracking::Configuration 
 /**
  * Gets the sink model(s) of `api`, if there is flow from a parameter to an existing known sink.
  */
-string captureSink(DataFlowTargetApi api) {
-  exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
+string captureSink(DataFlowTargetApi api, string kind) {
+  exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config |
     config.hasFlow(src, sink) and
     ExternalFlow::sinkNode(sink, kind) and
     api = src.getEnclosingCallable() and

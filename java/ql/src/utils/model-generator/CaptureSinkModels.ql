@@ -7,11 +7,13 @@
  */
 
 import utils.modelgenerator.internal.CaptureModels
+import semmle.code.java.dataflow.ExternalFlow
+import excludes.Sinks
 
 class Activate extends ActiveConfiguration {
   override predicate activateToSinkConfig() { any() }
 }
 
-from DataFlowTargetApi api, string sink
-where sink = captureSink(api)
+from DataFlowTargetApi api, string kind, string sink
+where sink = captureSink(api, kind) and not hasSink(api, kind, false) and not isExcludedSink(sink)
 select sink order by sink

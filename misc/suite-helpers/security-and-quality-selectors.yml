@@ -32,3 +32,4 @@
 - exclude:
     tags contain:
       - model-generator
+      - debug

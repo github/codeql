@@ -694,6 +694,13 @@ predicate parseContent(AccessPathToken component, Content content) {
   component = "MapValue" and content instanceof MapValueContent
 }
 
+/**
+ * Holds if `c` is a `generated` sink with `kind` kind.
+ */
+predicate hasSink(Callable c, string kind, boolean generated) {
+  FlowSummaryImplSpecific::sinkElement(c, _, kind, generated)
+}
+
 cached
 private module Cached {
   /**
