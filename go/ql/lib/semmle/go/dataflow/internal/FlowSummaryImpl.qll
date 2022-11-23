@@ -892,7 +892,7 @@ module Private {
   }
 
   /**
-   * Provides a means of translating externally (e.g., CSV) defined flow
+   * Provides a means of translating externally (e.g., MaD) defined flow
    * summaries into a `SummarizedCallable`s.
    */
   module External {
@@ -1121,7 +1121,7 @@ module Private {
     }
 
     /**
-     * Holds if `node` is specified as a source with the given kind in a CSV flow
+     * Holds if `node` is specified as a source with the given kind in a MaD flow
      * model.
      */
     predicate isSourceNode(InterpretNode node, string kind) {
@@ -1132,7 +1132,7 @@ module Private {
     }
 
     /**
-     * Holds if `node` is specified as a sink with the given kind in a CSV flow
+     * Holds if `node` is specified as a sink with the given kind in a MaD flow
      * model.
      */
     predicate isSinkNode(InterpretNode node, string kind) {
