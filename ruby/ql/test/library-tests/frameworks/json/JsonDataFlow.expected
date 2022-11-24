@@ -29,4 +29,3 @@ nodes
 | json.rb:10:6:10:34 | call to fast_unparse | semmle.label | call to fast_unparse |
 | json.rb:10:24:10:33 | call to source :  | semmle.label | call to source :  |
 subpaths
-#select
