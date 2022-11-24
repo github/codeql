@@ -29,6 +29,18 @@ class Foobar
     eval(my_arr.join("\n")) # NOT OK
   end
 
-  # TODO: [x, y].join("\n") is not yet supported
-  # TODO: list << element. 
+  def joinWithElemt(x) 
+    arr = [x, "foobar"]
+    eval(arr.join("\n")) # NOT OK
+  end
+
+  def pushArr(x, y)
+    arr = []
+    arr.push(x)
+    eval(arr.join("\n")) # NOT OK
+
+    arr2 = []
+    arr2 << y
+    eval(arr.join("\n")) # NOT OK
+  end
 end
