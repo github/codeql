@@ -1,4 +1,5 @@
 edges
+| file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  | nsdata.swift:110:9:110:9 | bytes :  |
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | url.swift:120:61:120:61 | data :  |
 | nsdata.swift:22:9:22:9 | self :  | file://:0:0:0:0 | .bytes :  |
 | nsdata.swift:23:9:23:9 | self :  | file://:0:0:0:0 | .description :  |
@@ -19,6 +20,7 @@ edges
 | nsdata.swift:38:5:38:96 | [summary param] this in base64EncodedString(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  |
 | nsdata.swift:39:5:39:49 | [summary param] this in base64Encoding() :  | file://:0:0:0:0 | [summary] to write: return (return) in base64Encoding() :  |
 | nsdata.swift:40:5:40:82 | [summary param] 0 in dataWithContentsOfMappedFile(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in dataWithContentsOfMappedFile(_:) :  |
+| nsdata.swift:41:5:41:104 | [summary param] this in enumerateBytes(_:) :  | file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  |
 | nsdata.swift:42:5:42:55 | [summary param] this in getBytes(_:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:) :  |
 | nsdata.swift:43:5:43:68 | [summary param] this in getBytes(_:length:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:length:) :  |
 | nsdata.swift:44:5:44:71 | [summary param] this in getBytes(_:range:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:range:) :  |
@@ -82,6 +84,9 @@ edges
 | nsdata.swift:106:15:106:70 | call to dataWithContentsOfMappedFile(_:) :  | nsdata.swift:106:15:106:71 | ...! |
 | nsdata.swift:106:51:106:58 | call to source() :  | nsdata.swift:40:5:40:82 | [summary param] 0 in dataWithContentsOfMappedFile(_:) :  |
 | nsdata.swift:106:51:106:58 | call to source() :  | nsdata.swift:106:15:106:70 | call to dataWithContentsOfMappedFile(_:) :  |
+| nsdata.swift:108:27:108:34 | call to source() :  | nsdata.swift:109:5:109:5 | nsDataTainted17 :  |
+| nsdata.swift:109:5:109:5 | nsDataTainted17 :  | nsdata.swift:41:5:41:104 | [summary param] this in enumerateBytes(_:) :  |
+| nsdata.swift:110:9:110:9 | bytes :  | nsdata.swift:110:45:110:45 | bytes |
 | nsdata.swift:113:27:113:34 | call to source() :  | nsdata.swift:115:5:115:5 | nsDataTainted18 :  |
 | nsdata.swift:115:5:115:5 | nsDataTainted18 :  | nsdata.swift:42:5:42:55 | [summary param] this in getBytes(_:) :  |
 | nsdata.swift:115:5:115:5 | nsDataTainted18 :  | nsdata.swift:115:30:115:30 | [post] bufferTainted18 :  |
@@ -382,6 +387,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:length:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:length:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:range:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:range:) :  |
+| file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  | semmle.label | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:length:) :  | semmle.label | [summary] to write: argument this in append(_:length:) :  |
@@ -459,6 +465,7 @@ nodes
 | nsdata.swift:38:5:38:96 | [summary param] this in base64EncodedString(options:) :  | semmle.label | [summary param] this in base64EncodedString(options:) :  |
 | nsdata.swift:39:5:39:49 | [summary param] this in base64Encoding() :  | semmle.label | [summary param] this in base64Encoding() :  |
 | nsdata.swift:40:5:40:82 | [summary param] 0 in dataWithContentsOfMappedFile(_:) :  | semmle.label | [summary param] 0 in dataWithContentsOfMappedFile(_:) :  |
+| nsdata.swift:41:5:41:104 | [summary param] this in enumerateBytes(_:) :  | semmle.label | [summary param] this in enumerateBytes(_:) :  |
 | nsdata.swift:42:5:42:55 | [summary param] this in getBytes(_:) :  | semmle.label | [summary param] this in getBytes(_:) :  |
 | nsdata.swift:43:5:43:68 | [summary param] this in getBytes(_:length:) :  | semmle.label | [summary param] this in getBytes(_:length:) :  |
 | nsdata.swift:44:5:44:71 | [summary param] this in getBytes(_:range:) :  | semmle.label | [summary param] this in getBytes(_:range:) :  |
@@ -520,6 +527,10 @@ nodes
 | nsdata.swift:106:15:106:70 | call to dataWithContentsOfMappedFile(_:) :  | semmle.label | call to dataWithContentsOfMappedFile(_:) :  |
 | nsdata.swift:106:15:106:71 | ...! | semmle.label | ...! |
 | nsdata.swift:106:51:106:58 | call to source() :  | semmle.label | call to source() :  |
+| nsdata.swift:108:27:108:34 | call to source() :  | semmle.label | call to source() :  |
+| nsdata.swift:109:5:109:5 | nsDataTainted17 :  | semmle.label | nsDataTainted17 :  |
+| nsdata.swift:110:9:110:9 | bytes :  | semmle.label | bytes :  |
+| nsdata.swift:110:45:110:45 | bytes | semmle.label | bytes |
 | nsdata.swift:113:27:113:34 | call to source() :  | semmle.label | call to source() :  |
 | nsdata.swift:115:5:115:5 | nsDataTainted18 :  | semmle.label | nsDataTainted18 :  |
 | nsdata.swift:115:30:115:30 | [post] bufferTainted18 :  | semmle.label | [post] bufferTainted18 :  |
@@ -873,6 +884,7 @@ subpaths
 | nsdata.swift:101:15:101:62 | call to base64EncodedString(options:) | nsdata.swift:99:27:99:34 | call to source() :  | nsdata.swift:101:15:101:62 | call to base64EncodedString(options:) | result |
 | nsdata.swift:104:15:104:46 | call to base64Encoding() | nsdata.swift:103:27:103:34 | call to source() :  | nsdata.swift:104:15:104:46 | call to base64Encoding() | result |
 | nsdata.swift:106:15:106:71 | ...! | nsdata.swift:106:51:106:58 | call to source() :  | nsdata.swift:106:15:106:71 | ...! | result |
+| nsdata.swift:110:45:110:45 | bytes | nsdata.swift:108:27:108:34 | call to source() :  | nsdata.swift:110:45:110:45 | bytes | result |
 | nsdata.swift:116:15:116:15 | bufferTainted18 | nsdata.swift:113:27:113:34 | call to source() :  | nsdata.swift:116:15:116:15 | bufferTainted18 | result |
 | nsdata.swift:121:15:121:15 | bufferTainted19 | nsdata.swift:118:27:118:34 | call to source() :  | nsdata.swift:121:15:121:15 | bufferTainted19 | result |
 | nsdata.swift:126:15:126:15 | bufferTainted20 | nsdata.swift:123:27:123:34 | call to source() :  | nsdata.swift:126:15:126:15 | bufferTainted20 | result |

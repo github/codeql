@@ -45,8 +45,7 @@ private class NsDataSummaries extends SummaryModelCsv {
         ";NSData;true;base64EncodedString(options:);;;Argument[-1];ReturnValue;taint",
         ";NSData;true;base64Encoding();;;Argument[-1];ReturnValue;taint",
         ";NSData;true;dataWithContentsOfMappedFile(_:);;;Argument[0];ReturnValue;taint",
-        // TODO: Needs block flow
-        // ";NSData;true;enumerateBytes(_:);;;Argument[-1];Argument[0].Parameter[0];taint"
+        ";NSData;true;enumerateBytes(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
         ";NSData;true;getBytes(_:);;;Argument[-1];Argument[0];taint",
         ";NSData;true;getBytes(_:length:);;;Argument[-1];Argument[0];taint",
         ";NSData;true;getBytes(_:range:);;;Argument[-1];Argument[0];taint",
