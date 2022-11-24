@@ -1502,10 +1502,13 @@ private module MkStage<StageSig PrevStage> {
     private predicate flowThroughIntoCall(
       DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Configuration config
     ) {
-      flowIntoCall(call, pragma[only_bind_into](arg), pragma[only_bind_into](p), allowsFieldFlow,
-        pragma[only_bind_into](config)) and
-      fwdFlow(arg, _, _, _, _, _, pragma[only_bind_into](config)) and
-      returnFlowsThrough(_, _, _, _, p.asNode(), _, _, pragma[only_bind_into](config))
+      exists(Ap argAp |
+        flowIntoCall(call, pragma[only_bind_into](arg), pragma[only_bind_into](p), allowsFieldFlow,
+          pragma[only_bind_into](config)) and
+        fwdFlow(arg, _, _, _, _, pragma[only_bind_into](argAp), pragma[only_bind_into](config)) and
+        returnFlowsThrough(_, _, _, _, p.asNode(), pragma[only_bind_into](argAp), _,
+          pragma[only_bind_into](config))
+      )
     }
 
     /**
