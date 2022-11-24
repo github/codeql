@@ -109,10 +109,6 @@ class UnsafeJsEvalConfig extends TaintTracking::Configuration {
         ).getArgument(0)
       or
       arg =
-        any(CallExpr ce | ce.getStaticTarget().(MethodDecl).hasQualifiedName("Data", "init(_:)"))
-            .getArgument(0)
-      or
-      arg =
         any(CallExpr ce |
           ce.getStaticTarget().(MethodDecl).hasQualifiedName("String", "init(decoding:as:)")
         ).getArgument(0)
