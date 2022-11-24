@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.IO
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.IO.Compression` namespace. */
 class SystemIOCompressionNamespace extends Namespace {

@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Net
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Net.Mail` namespace. */
 class SystemNetMailNamespace extends Namespace {

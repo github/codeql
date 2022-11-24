@@ -6,7 +6,6 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** A class representing a Service */
 private class ServiceClass extends Class {
