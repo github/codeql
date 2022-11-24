@@ -916,9 +916,9 @@ private module Cached {
     TDataFlowCallSome(DataFlowCall call)
 
   cached
-  newtype TParamNodeOption =
-    TParamNodeNone() or
-    TParamNodeSome(ParamNode p)
+  newtype TParameterPositionOption =
+    TParameterPositionNone() or
+    TParameterPositionSome(ParameterPosition pos)
 
   cached
   newtype TReturnCtx =
@@ -1315,15 +1315,15 @@ class DataFlowCallOption extends TDataFlowCallOption {
   }
 }
 
-/** An optional `ParamNode`. */
-class ParamNodeOption extends TParamNodeOption {
+/** An optional `ParameterPosition`. */
+class ParameterPositionOption extends TParameterPositionOption {
   string toString() {
-    this = TParamNodeNone() and
+    this = TParameterPositionNone() and
     result = "(none)"
     or
-    exists(ParamNode p |
-      this = TParamNodeSome(p) and
-      result = p.toString()
+    exists(ParameterPosition pos |
+      this = TParameterPositionSome(pos) and
+      result = pos.toString()
     )
   }
 }
