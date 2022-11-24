@@ -93,6 +93,8 @@ module Stages {
       exists(PyFlow::DefinitionNode b)
       or
       exists(any(PyFlow::SequenceNode n).getElement(_))
+      or
+      exists(any(PyFlow::ControlFlowNode c).toString())
     }
   }
 
@@ -140,7 +142,6 @@ module Stages {
     private import semmle.python.pointsto.Base as PointsToBase
     private import semmle.python.types.Object as TypeObject
     private import semmle.python.objects.TObject as TObject
-    private import semmle.python.Flow as Flow
     private import semmle.python.objects.ObjectInternal as ObjectInternal
     // have to alias since this module is also called PointsTo
     private import semmle.python.pointsto.PointsTo as RealPointsTo
@@ -158,8 +159,6 @@ module Stages {
       exists(TypeObject::Object a)
       or
       exists(TObject::TObject f)
-      or
-      exists(any(Flow::ControlFlowNode c).toString())
       or
       exists(any(ObjectInternal::ObjectInternal o).toString())
       or
