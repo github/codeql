@@ -21,7 +21,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    hash-consing-and-value-numbering
 
 
--  :doc:`Basic query for C and C++ code <basic-query-for-cpp-code>`: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for C and C++ code <basic-query-for-cpp-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for C and C++ <codeql-library-for-cpp>`: When analyzing C or C++ code, you can use the large collection of classes in the CodeQL library for C and C++.
 

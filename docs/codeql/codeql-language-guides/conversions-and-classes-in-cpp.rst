@@ -165,8 +165,6 @@ Our starting point for the query is pairs of a base class and a derived class, c
    where derived.getABaseClass+() = base
    select base, derived, "The second class is derived from the first."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505902347211/>`__
-
 Note that the transitive closure symbol ``+`` indicates that ``Class.getABaseClass()`` may be followed one or more times, rather than only accepting a direct base class.
 
 A lot of the results are uninteresting template parameters. You can remove those results by updating the ``where`` clause as follows:
@@ -176,8 +174,6 @@ A lot of the results are uninteresting template parameters. You can remove those
    where derived.getABaseClass+() = base
      and not exists(base.getATemplateArgument())
      and not exists(derived.getATemplateArgument())
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505907047251/>`__
 
 Finding derived classes with destructors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,8 +191,6 @@ Now we can extend the query to find derived classes with destructors, using the 
      and d1 = base.getDestructor()
      and d2 = derived.getDestructor()
    select base, derived, "The second class is derived from the first, and both have a destructor."
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505901767389/>`__
 
 Notice that getting the destructor implicitly asserts that one exists. As a result, this version of the query returns fewer results than before.
 
@@ -216,11 +210,9 @@ Our last change is to use ``Function.isVirtual()`` to find cases where the base 
      and not d1.isVirtual()
    select d1, "This destructor should probably be virtual."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505908156827/>`__
-
 That completes the query.
 
-There is a similar built-in `query <https://lgtm.com/rules/2158670642/>`__ on LGTM.com that finds classes in a C/C++ project with virtual functions but no virtual destructor. You can take a look at the code for this query by clicking **Open in query console** at the top of that page.
+There is a similar standard query `Non-virtual destructor in base class <https://codeql.github.com/codeql-query-help/cpp/cpp-virtual-destructor/>`__ that finds classes in a C/C++ project with virtual functions but no virtual destructor.
 
 Further reading
 ---------------
