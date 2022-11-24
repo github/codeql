@@ -1399,7 +1399,9 @@ module Trees {
   }
 
   private class WhenTree extends ControlFlowTree, WhenClause {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAPattern() }
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = [this.getAPattern(), this.getBody()]
+    }
 
     final Expr getLastPattern() {
       exists(int i |
@@ -1415,8 +1417,7 @@ module Trees {
       c.isValidFor(this) and
       c.(ConditionalCompletion).getValue() = false
       or
-      last(this.getBody(), last, c) and
-      c instanceof NormalCompletion
+      last(this.getBody(), last, c)
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
