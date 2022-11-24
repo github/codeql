@@ -43,4 +43,11 @@ class Foobar
     arr2 << y
     eval(arr.join("\n")) # NOT OK
   end
+
+  def hereDoc(x)
+    foo = <<~HERE
+        #{x}
+    HERE
+    eval(foo) # NOT OK
+  end
 end

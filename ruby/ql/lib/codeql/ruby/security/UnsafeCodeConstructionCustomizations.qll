@@ -84,7 +84,7 @@ module UnsafeCodeConstruction {
     Concepts::CodeExecution s;
 
     StringFormatAsSink() {
-      exists(Ast::StringLiteral lit |
+      exists(Ast::StringlikeLiteral lit |
         any(DataFlow::Node n | n.asExpr().getExpr() = lit) = getANodeExecutedAsCode(s) and
         this.asExpr().getExpr() = lit.getComponent(_)
       )
