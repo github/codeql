@@ -12,4 +12,10 @@ class FooController < ApplicationController
     render body: bt, content_type: "text/plain"
   end
 
+  def show3
+    not_a_method()
+  rescue NoMethodError => e
+    render body: e.backtrace, content_type: "text/plain"
+  end
+
 end
