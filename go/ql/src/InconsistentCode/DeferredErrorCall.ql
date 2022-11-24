@@ -12,11 +12,17 @@
 
 import go
 
+string getFunctionName(CallExpr call) {
+  if exists(call.getCalleeName())
+  then result = call.getCalleeName()
+  else result = "an anonymous function"
+}
+
 from DeferStmt defer, SignatureType sig
 where
   // match all deferred function calls and obtain their type signatures
   sig = defer.getCall().getCalleeExpr().getType() and
   // check that one of the results is an error
   sig.getResultType(_).implements(Builtin::error().getType().getUnderlyingType())
-select defer,
-  "Deferred a call to " + defer.getCall().getCalleeName() + ", which may return an error."
+select defer, "Deferred a call to $@, which may return an error.", defer.getCall().getCalleeExpr(),
+  getFunctionName(defer.getCall())

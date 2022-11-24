@@ -1,2 +1,4 @@
-| tests.go:16:2:16:20 | defer statement | Deferred a call to returnsPair, which may return an error. |
-| tests.go:17:2:17:23 | defer statement | Deferred a call to checkSomething, which may return an error. |
+| tests.go:17:2:17:20 | defer statement | Deferred a call to $@, which may return an error. | tests.go:17:8:17:18 | returnsPair | returnsPair |
+| tests.go:18:2:18:23 | defer statement | Deferred a call to $@, which may return an error. | tests.go:18:8:18:21 | checkSomething | checkSomething |
+| tests.go:21:2:21:12 | defer statement | Deferred a call to $@, which may return an error. | tests.go:21:8:21:10 | fun | fun |
+| tests.go:23:2:23:36 | defer statement | Deferred a call to $@, which may return an error. | tests.go:23:8:23:34 | function literal | an anonymous function |
