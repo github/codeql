@@ -13,7 +13,7 @@ Be careful when you model code elements that don’t exist in Java, such as ``No
 
 In that specific case, you can use the predicate ``Expr.getUnderlyingExpr()``. This goes directly to the underlying ``VarAccess`` to produce a more similar behavior to that in Java.
 
-Nullable elements (`?`) can also produce unexpected behavior. To avoid a `NullPointerException`, Kotlin may inline calls like `expr.toString()` to `String.valueOf(expr)` when `expr` is nullable. Make sure that you write CodeQL around the extracted code, which may not exactly match the code as written in the codebase.
+Nullable elements (``?``) can also produce unexpected behavior. To avoid a ``NullPointerException``, Kotlin may inline calls like ``expr.toString()`` to ``String.valueOf(expr)`` when ``expr`` is nullable. Make sure that you write CodeQL around the extracted code, which may not exactly match the code as written in the codebase.
 
 Another example is that if-else expressions in Kotlin are translated into ``WhenExprs`` in CodeQL, instead of the more typical ``IfStmt`` seen in Java.
 
