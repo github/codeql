@@ -4,15 +4,15 @@ class UsersController < ApplicationController
     do_computation()
   rescue => e
     # BAD
-    render e.backtrace, content_type: "text/plain"
+    render body: e.backtrace, content_type: "text/plain"
   end
 
   def update_good(id)
     do_computation()
   rescue => e
     # GOOD
-    log e.backtrace
-    redner "Computation failed", content_type: "text/plain"
+    logger.error e.backtrace
+    render body: "Computation failed", content_type: "text/plain"
   end
 
 end
