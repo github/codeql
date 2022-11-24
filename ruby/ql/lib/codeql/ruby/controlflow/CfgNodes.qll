@@ -900,20 +900,17 @@ module ExprNodes {
     final override RelationalOperation getExpr() { result = super.getExpr() }
   }
 
-  private class SplatExprChildMapping extends ExprChildMapping, SplatExpr {
+  private class SplatExprChildMapping extends OperationExprChildMapping, SplatExpr {
     override predicate relevantChild(AstNode n) { n = this.getOperand() }
   }
 
   /** A control-flow node that wraps a `SplatExpr` AST expression. */
-  class SplatExprCfgNode extends ExprCfgNode {
+  class SplatExprCfgNode extends UnaryOperationCfgNode {
     override string getAPrimaryQlClass() { result = "SplatExprCfgNode" }
 
     override SplatExprChildMapping e;
 
     final override SplatExpr getExpr() { result = super.getExpr() }
-
-    /** Gets the operand of this splat expression. */
-    final ExprCfgNode getOperand() { e.hasCfgChild(e.getOperand(), this, result) }
   }
 
   /** A control-flow node that wraps an `ElementReference` AST expression. */
