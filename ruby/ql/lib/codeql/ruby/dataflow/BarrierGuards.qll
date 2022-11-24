@@ -31,15 +31,15 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
   or
   stringConstCaseCompare(guard, testedNode, branch)
   or
-  exists(Ssa::Definition def, CfgNodes::ExprNodes::BinaryOperationCfgNode g |
+  exists(CfgNodes::ExprNodes::BinaryOperationCfgNode g |
     g = guard and
-    stringConstCompareOr(guard, def, branch) and
+    stringConstCompareOr(guard, branch) and
     stringConstCompare(g.getLeftOperand(), testedNode, _)
   )
 }
 
 /**
- * Holds if `guard` is an `or` expression whose operands are string comparison guards that test `def`.
+ * Holds if `guard` is an `or` expression whose operands are string comparison guards.
  * For example:
  *
  * ```rb
@@ -47,12 +47,12 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
  * ```
  */
 private predicate stringConstCompareOr(
-  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, Ssa::Definition def, boolean branch
+  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, boolean branch
 ) {
   guard.getExpr() instanceof LogicalOrExpr and
   branch = true and
   forall(CfgNode innerGuard | innerGuard = guard.getAnOperand() |
-    stringConstCompare(innerGuard, def.getARead(), branch)
+    stringConstCompare(innerGuard, any(Ssa::Definition def).getARead(), branch)
   )
 }
 
@@ -190,34 +190,35 @@ private predicate stringConstCaseCompare(
   exists(CfgNodes::ExprNodes::CaseExprCfgNode case |
     case.getValue() = testedNode and
     (
-      exists(CfgNodes::ExprNodes::WhenClauseCfgNode branchNode |
-        guard = branchNode and
-        branchNode = case.getBranch(_) and
-        // For simplicity, consider patterns that contain only string literals or arrays of string literals
-        forall(ExprCfgNode pattern | pattern = branchNode.getPattern(_) |
-          // when "foo"
-          // when "foo", "bar"
-          pattern instanceof ExprNodes::StringLiteralCfgNode
-          or
-          exists(CfgNodes::ExprNodes::SplatExprCfgNode splat | splat = pattern |
-            // when *["foo", "bar"]
-            forex(ExprCfgNode elem |
-              elem = splat.getOperand().(ExprNodes::ArrayLiteralCfgNode).getAnArgument()
-            |
-              elem instanceof ExprNodes::StringLiteralCfgNode
-            )
+      guard =
+        any(CfgNodes::ExprNodes::WhenClauseCfgNode branchNode |
+          branchNode = case.getBranch(_) and
+          // For simplicity, consider patterns that contain only string literals or arrays of string literals
+          forall(ExprCfgNode pattern | pattern = branchNode.getPattern(_) |
+            // when "foo"
+            // when "foo", "bar"
+            pattern instanceof ExprNodes::StringLiteralCfgNode
             or
-            // when *some_var
-            // when *SOME_CONST
-            exists(ExprNodes::ArrayLiteralCfgNode arr |
-              isArrayConstant(splat.getOperand(), arr) and
-              forall(ExprCfgNode elem | elem = arr.getAnArgument() |
-                elem instanceof ExprNodes::StringLiteralCfgNode
+            pattern =
+              any(CfgNodes::ExprNodes::SplatExprCfgNode splat |
+                // when *["foo", "bar"]
+                forex(ExprCfgNode elem |
+                  elem = splat.getOperand().(ExprNodes::ArrayLiteralCfgNode).getAnArgument()
+                |
+                  elem instanceof ExprNodes::StringLiteralCfgNode
+                )
+                or
+                // when *some_var
+                // when *SOME_CONST
+                exists(ExprNodes::ArrayLiteralCfgNode arr |
+                  isArrayConstant(splat.getOperand(), arr) and
+                  forall(ExprCfgNode elem | elem = arr.getAnArgument() |
+                    elem instanceof ExprNodes::StringLiteralCfgNode
+                  )
+                )
               )
-            )
           )
         )
-      )
       or
       // in "foo"
       exists(
