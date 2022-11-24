@@ -15,7 +15,7 @@ import go
 from DeferStmt defer, SignatureType sig
 where
   // match all deferred function calls and obtain their type signatures
-  sig = defer.getCall().getCalleeExpr().getType().(SignatureType) and
+  sig = defer.getCall().getCalleeExpr().getType() and
   // check that one of the results is an error
   sig.getResultType(_).implements(Builtin::error().getType().getUnderlyingType())
 select defer,
