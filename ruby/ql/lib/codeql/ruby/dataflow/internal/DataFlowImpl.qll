@@ -1390,7 +1390,16 @@ private module MkStage<StageSig PrevStage> {
       )
       or
       // flow out of a callable
-      fwdFlowOutNotFromArg(node, state, cc, summaryCtx, argAp, ap, config)
+      exists(
+        DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc,
+        DataFlowCallable inner
+      |
+        fwdFlow(ret, state, innercc, summaryCtx, argAp, ap, config) and
+        flowOutOfCall(call, ret, _, node, allowsFieldFlow, config) and
+        inner = ret.getEnclosingCallable() and
+        cc = getCallContextReturn(inner, call, innercc) and
+        if allowsFieldFlow = false then ap instanceof ApNil else any()
+      )
       or
       // flow through a callable
       exists(DataFlowCall call, ParameterPosition summaryCtx0, Ap argAp0 |
@@ -1443,23 +1452,6 @@ private module MkStage<StageSig PrevStage> {
         fwdFlow(arg, state, outercc, summaryCtx, argAp, ap, config) and
         flowIntoCall(call, arg, p, allowsFieldFlow, config) and
         innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
-      )
-    }
-
-    pragma[nomagic]
-    private predicate fwdFlowOutNotFromArg(
-      NodeEx out, FlowState state, Cc ccOut, ParameterPositionOption summaryCtx, ApOption argAp,
-      Ap ap, Configuration config
-    ) {
-      exists(
-        DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc,
-        DataFlowCallable inner
-      |
-        fwdFlow(ret, state, innercc, summaryCtx, argAp, ap, config) and
-        flowOutOfCall(call, ret, _, out, allowsFieldFlow, config) and
-        inner = ret.getEnclosingCallable() and
-        ccOut = getCallContextReturn(inner, call, innercc) and
         if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
