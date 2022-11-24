@@ -176,6 +176,20 @@ private module Shared {
     )
   }
 
+  /**
+   * Holds if some render call passes `value` for `hashKey` in the `assigns`
+   * argument, in ERB file `erb`.
+   */
+  pragma[noinline]
+  private predicate renderCallAssigns(string hashKey, Expr value, ErbFile erb) {
+    exists(Rails::RenderCall call, Pair kvPair |
+      call.getAssigns().getAKeyValuePair() = kvPair and
+      kvPair.getValue() = value and
+      kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
+      call.getTemplateFile() = erb
+    )
+  }
+
   pragma[noinline]
   private predicate isFlowFromLocals0(
     CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, string hashKey, ErbFile erb
@@ -199,6 +213,16 @@ private module Shared {
       // ...node2 is a "method call" to a "method" with `hashKey` as its name
       // TODO: This may be a variable read in reality that we interpret as a method call
       isMethodCall(node2.asExpr().getExpr(), hashKey, erb)
+    )
+  }
+
+  private predicate isFlowFromAssigns(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(string hashKey, ErbFile erb |
+      // node1 is an `assigns` argument to a render call...
+      renderCallAssigns(hashKey, node1.asExpr().getExpr(), erb)
+    |
+      // node2 is a read of an instance variable named `hashKey`
+      isVariableReadAccess(node2.asExpr().getExpr(), "@" + hashKey, erb)
     )
   }
 
@@ -276,6 +300,8 @@ private module Shared {
    */
   predicate isAdditionalXssFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isFlowFromLocals(node1, node2)
+    or
+    isFlowFromAssigns(node1, node2)
     or
     isFlowFromControllerInstanceVariable(node1, node2)
     or

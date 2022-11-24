@@ -66,9 +66,14 @@ module Rails {
     }
 
     /**
-     * Get the local variables passed as context to the renderer
+     * Get the local variables passed as context to the renderer.
      */
     HashLiteral getLocals() { result = this.getKeywordArgument("locals") }
+
+    /**
+     * Get the instance variables passed as context to the renderer.
+     */
+    HashLiteral getAssigns() { result = this.getKeywordArgument("assigns") }
     // TODO: implicit renders in controller actions
   }
 

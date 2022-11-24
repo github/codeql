@@ -781,3 +781,23 @@ private class ActionControllerLoggingCall extends DataFlow::CallNode, Logging::R
     exprNodeReturnedFrom(result, this.getBlock().asExpr().getExpr())
   }
 }
+
+/**
+ * An instance of `ActionController::Renderer`, which can be used to render
+ * arbitrary templates.
+ */
+private class Renderer extends DataFlow::LocalSourceNode {
+  Renderer() {
+    this = any(ActionControllerClass c).getAnImmediateReference().getAMethodCall("renderer")
+  }
+
+  DataFlow::LocalSourceNode getAnInstance() { result = this.getAMethodCall("new") }
+
+  MethodCall getARenderCall() {
+    result = [this, this.getAnInstance()].getAMethodCall("render").asExpr().getExpr()
+  }
+}
+
+private class RendererRenderCall extends RenderCallImpl {
+  RendererRenderCall() { this = any(Renderer r).getARenderCall() }
+}

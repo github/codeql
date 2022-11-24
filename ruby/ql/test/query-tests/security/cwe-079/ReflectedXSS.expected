@@ -21,6 +21,12 @@ edges
 | app/controllers/foo/bars_controller.rb:26:53:26:54 | dt :  | app/views/foo/bars/show.html.erb:44:76:44:87 | call to display_text :  |
 | app/controllers/foo/bars_controller.rb:30:11:30:16 | call to params :  | app/controllers/foo/bars_controller.rb:30:11:30:28 | ...[...] :  |
 | app/controllers/foo/bars_controller.rb:30:11:30:28 | ...[...] :  | app/controllers/foo/bars_controller.rb:31:5:31:7 | str |
+| app/controllers/users_controller.rb:3:62:3:67 | call to params :  | app/controllers/users_controller.rb:3:62:3:75 | ...[...] :  |
+| app/controllers/users_controller.rb:3:62:3:75 | ...[...] :  | app/views/users/custom_index.html.erb:1:5:1:10 | @users |
+| app/controllers/users_controller.rb:3:95:3:100 | call to params :  | app/controllers/users_controller.rb:3:95:3:106 | ...[...] :  |
+| app/controllers/users_controller.rb:3:95:3:106 | ...[...] :  | app/views/users/custom_index.html.erb:3:5:3:7 | call to foo |
+| app/controllers/users_controller.rb:4:93:4:98 | call to params :  | app/controllers/users_controller.rb:4:93:4:106 | ...[...] :  |
+| app/controllers/users_controller.rb:4:93:4:106 | ...[...] :  | app/views/users/custom_index.html.erb:5:5:5:10 | call to people |
 | app/views/foo/bars/show.html.erb:44:64:44:87 | ... + ... :  | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text |
 | app/views/foo/bars/show.html.erb:44:64:44:87 | ... + ... :  | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] |
 | app/views/foo/bars/show.html.erb:44:76:44:87 | call to display_text :  | app/views/foo/bars/show.html.erb:44:64:44:87 | ... + ... :  |
@@ -46,6 +52,12 @@ nodes
 | app/controllers/foo/bars_controller.rb:30:11:30:16 | call to params :  | semmle.label | call to params :  |
 | app/controllers/foo/bars_controller.rb:30:11:30:28 | ...[...] :  | semmle.label | ...[...] :  |
 | app/controllers/foo/bars_controller.rb:31:5:31:7 | str | semmle.label | str |
+| app/controllers/users_controller.rb:3:62:3:67 | call to params :  | semmle.label | call to params :  |
+| app/controllers/users_controller.rb:3:62:3:75 | ...[...] :  | semmle.label | ...[...] :  |
+| app/controllers/users_controller.rb:3:95:3:100 | call to params :  | semmle.label | call to params :  |
+| app/controllers/users_controller.rb:3:95:3:106 | ...[...] :  | semmle.label | ...[...] :  |
+| app/controllers/users_controller.rb:4:93:4:98 | call to params :  | semmle.label | call to params :  |
+| app/controllers/users_controller.rb:4:93:4:106 | ...[...] :  | semmle.label | ...[...] :  |
 | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | semmle.label | call to display_text |
 | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | semmle.label | ...[...] |
 | app/views/foo/bars/show.html.erb:2:18:2:30 | @user_website | semmle.label | @user_website |
@@ -66,6 +78,9 @@ nodes
 | app/views/foo/bars/show.html.erb:74:19:74:34 | ...[...] | semmle.label | ...[...] |
 | app/views/foo/bars/show.html.erb:77:28:77:33 | call to params :  | semmle.label | call to params :  |
 | app/views/foo/bars/show.html.erb:77:28:77:39 | ...[...] | semmle.label | ...[...] |
+| app/views/users/custom_index.html.erb:1:5:1:10 | @users | semmle.label | @users |
+| app/views/users/custom_index.html.erb:3:5:3:7 | call to foo | semmle.label | call to foo |
+| app/views/users/custom_index.html.erb:5:5:5:10 | call to people | semmle.label | call to people |
 subpaths
 #select
 | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params :  | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | user-provided value |
@@ -84,3 +99,6 @@ subpaths
 | app/views/foo/bars/show.html.erb:57:13:57:28 | ...[...] | app/views/foo/bars/show.html.erb:57:13:57:18 | call to params :  | app/views/foo/bars/show.html.erb:57:13:57:28 | ...[...] | Cross-site scripting vulnerability due to a $@. | app/views/foo/bars/show.html.erb:57:13:57:18 | call to params | user-provided value |
 | app/views/foo/bars/show.html.erb:74:19:74:34 | ...[...] | app/views/foo/bars/show.html.erb:74:19:74:24 | call to params :  | app/views/foo/bars/show.html.erb:74:19:74:34 | ...[...] | Cross-site scripting vulnerability due to a $@. | app/views/foo/bars/show.html.erb:74:19:74:24 | call to params | user-provided value |
 | app/views/foo/bars/show.html.erb:77:28:77:39 | ...[...] | app/views/foo/bars/show.html.erb:77:28:77:33 | call to params :  | app/views/foo/bars/show.html.erb:77:28:77:39 | ...[...] | Cross-site scripting vulnerability due to a $@. | app/views/foo/bars/show.html.erb:77:28:77:33 | call to params | user-provided value |
+| app/views/users/custom_index.html.erb:1:5:1:10 | @users | app/controllers/users_controller.rb:3:62:3:67 | call to params :  | app/views/users/custom_index.html.erb:1:5:1:10 | @users | Cross-site scripting vulnerability due to a $@. | app/controllers/users_controller.rb:3:62:3:67 | call to params | user-provided value |
+| app/views/users/custom_index.html.erb:3:5:3:7 | call to foo | app/controllers/users_controller.rb:3:95:3:100 | call to params :  | app/views/users/custom_index.html.erb:3:5:3:7 | call to foo | Cross-site scripting vulnerability due to a $@. | app/controllers/users_controller.rb:3:95:3:100 | call to params | user-provided value |
+| app/views/users/custom_index.html.erb:5:5:5:10 | call to people | app/controllers/users_controller.rb:4:93:4:98 | call to params :  | app/views/users/custom_index.html.erb:5:5:5:10 | call to people | Cross-site scripting vulnerability due to a $@. | app/controllers/users_controller.rb:4:93:4:98 | call to params | user-provided value |
