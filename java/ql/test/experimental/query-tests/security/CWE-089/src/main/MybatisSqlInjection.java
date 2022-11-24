@@ -90,13 +90,13 @@ public class MybatisSqlInjection {
 		mybatisSqlInjectionService.badInsert(name);
 	}
 
-	@GetMapping(value = "kkbad1")
-	public void kkbad1(@RequestParam String name, @RequestParam Integer age) {
-		mybatisSqlInjectionService.kkbad1(name, age);
+	@GetMapping(value = "good2")
+	public void good2(@RequestParam String name, @RequestParam Integer age) {
+		mybatisSqlInjectionService.good2(name, age);
 	}
 
-	@GetMapping(value = "kkbad2")
-	public void kkbad2(@RequestParam String age) {
-		mybatisSqlInjectionService.kkbad2(age);
+	@GetMapping(value = "good3")
+	public void good3(@RequestParam String age) {
+		mybatisSqlInjectionService.good3(age);
 	}
 }

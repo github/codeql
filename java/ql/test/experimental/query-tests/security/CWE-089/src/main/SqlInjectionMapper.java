@@ -61,9 +61,9 @@ public interface SqlInjectionMapper {
 	void badInsert(String input);
 
 	@Select("select * from user_info where name = #{name} and age = ${age}")
-	String kkbad1(@Param("name") String name, Integer age);
+	String good2(@Param("name") String name, Integer age);
 
 	@Select("select * from user_info where age = #{age}")
-	String kkbad2(@Param("age") String age);
+	String good3(@Param("age") String age);
 
 }
