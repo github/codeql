@@ -1626,8 +1626,12 @@ private module MkStage<StageSig PrevStage> {
       )
       or
       // flow into a callable
-      revFlowInNotToReturn(node, state, returnAp, ap, config) and
-      returnCtx = TReturnCtxNone()
+      exists(ParamNodeEx p, boolean allowsFieldFlow |
+        revFlow(p, state, TReturnCtxNone(), returnAp, ap, config) and
+        flowIntoCall(_, node, p, allowsFieldFlow, config) and
+        (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
+        returnCtx = TReturnCtxNone()
+      )
       or
       // flow through a callable
       exists(DataFlowCall call, ReturnKindExt returnKind0, Ap returnAp0 |
@@ -1679,17 +1683,6 @@ private module MkStage<StageSig PrevStage> {
       exists(NodeEx out, boolean allowsFieldFlow |
         revFlow(out, state, returnCtx, returnAp, ap, config) and
         flowOutOfCall(call, ret, kind, out, allowsFieldFlow, config) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
-      )
-    }
-
-    pragma[nomagic]
-    private predicate revFlowInNotToReturn(
-      ArgNodeEx arg, FlowState state, ApOption returnAp, Ap ap, Configuration config
-    ) {
-      exists(ParamNodeEx p, boolean allowsFieldFlow |
-        revFlow(p, state, TReturnCtxNone(), returnAp, ap, config) and
-        flowIntoCall(_, arg, p, allowsFieldFlow, config) and
         if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
