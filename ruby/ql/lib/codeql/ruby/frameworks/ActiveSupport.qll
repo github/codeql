@@ -312,6 +312,20 @@ module ActiveSupport {
     }
   }
 
+  module Erb {
+    module Util {
+      private class JsonEscapeSummary extends SimpleSummarizedCallable {
+        JsonEscapeSummary() { this = "json_escape" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[0]" and
+          output = "ReturnValue" and
+          preservesValue = false
+        }
+      }
+    }
+  }
+
   /**
    * Type summaries for extensions to the `Pathname` module.
    */
