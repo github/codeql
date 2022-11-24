@@ -4,10 +4,9 @@
  * well as extension points for adding your own.
  */
 
-private import codeql.ruby.DataFlow
+private import ruby
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.core.Gem::Gem as Gem
-private import codeql.ruby.AST as Ast
 private import codeql.ruby.Concepts as Concepts
 
 /**
@@ -56,6 +55,25 @@ module UnsafeCodeConstruction {
     exists(TypeTracker::TypeBackTracker t2 |
       result = getANodeExecutedAsCode(t2, codeExec).backtrack(t2, t)
     )
+  }
+
+  /**
+   * A string constructed using a `.join(...)` call, where the resulting string ends up being executed as code.
+   */
+  class ArrayJoin extends Sink {
+    Concepts::CodeExecution s;
+    DataFlow::CallNode call;
+
+    ArrayJoin() {
+      call.getMethodName() = "join" and
+      call.getNumberOfArguments() = 1 and // any string. E.g. ";" or "\n".
+      call = getANodeExecutedAsCode(s) and
+      this = call.getReceiver()
+    }
+
+    override DataFlow::Node getCodeSink() { result = s }
+
+    override string getSinkType() { result = "array" }
   }
 
   /**

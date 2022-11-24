@@ -24,4 +24,11 @@ class Foobar
   def named_code(code)
     foo.send("def \n #{code} \n end") # OK - parameter is named code
   end
+
+  def joinStuff(my_arr)
+    eval(my_arr.join("\n")) # NOT OK
+  end
+
+  # TODO: [x, y].join("\n") is not yet supported
+  # TODO: list << element. 
 end
