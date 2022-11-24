@@ -49,6 +49,9 @@ module CommandInjection {
   class ShellwordsEscapeAsSanitizer extends Sanitizer {
     ShellwordsEscapeAsSanitizer() {
       this = API::getTopLevelMember("Shellwords").getAMethodCall(["escape", "shellescape"])
+      or
+      // The method is also added as `String#shellescape`.
+      this.(DataFlow::CallNode).getMethodName() = "shellescape"
     }
   }
 }

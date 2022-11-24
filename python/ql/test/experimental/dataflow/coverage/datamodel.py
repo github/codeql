@@ -8,15 +8,30 @@
 # Intended sources should be the variable `SOURCE` and intended sinks should be
 # arguments to the function `SINK` (see python/ql/test/experimental/dataflow/testConfig.qll).
 
+import sys
+import os
+import functools
+
+sys.path.append(os.path.dirname(os.path.dirname((__file__))))
+from testlib import expects
+
 # These are defined so that we can evaluate the test code.
 NONSOURCE = "not a source"
 SOURCE = "source"
 
+arg1 = "source1"
+arg2 = "source2"
+arg3 = "source3"
+arg4 = "source4"
+arg5 = "source5"
+arg6 = "source6"
+arg7 = "source7"
+
 def is_source(x):
     return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
 
-def SINK(x):
-    if is_source(x):
+def SINK(x, expected=SOURCE):
+    if is_source(x) or x == expected:
         print("OK")
     else:
         print("Unexpected flow", x)
@@ -26,6 +41,14 @@ def SINK_F(x):
         print("Unexpected flow", x)
     else:
         print("OK")
+
+SINK1 = functools.partial(SINK, expected=arg1)
+SINK2 = functools.partial(SINK, expected=arg2)
+SINK3 = functools.partial(SINK, expected=arg3)
+SINK4 = functools.partial(SINK, expected=arg4)
+SINK5 = functools.partial(SINK, expected=arg5)
+SINK6 = functools.partial(SINK, expected=arg6)
+SINK7 = functools.partial(SINK, expected=arg7)
 
 # Callable types
 # These are the types to which the function call operation (see section Calls) can be applied:
@@ -41,17 +64,19 @@ SINK(f(SOURCE, 3)) #$ flow="SOURCE -> f(..)"
 # An instance method object combines a class, a class instance and any callable object (normally a user-defined function).
 class C(object):
 
-    def method(self, x, cls):
-        assert cls is self.__class__
-        return x
+    def method(self, x, y):
+        SINK1(x)
+        SINK2(y)
 
     @classmethod
-    def classmethod(cls, x):
-        return x
+    def classmethod(cls, x, y):
+        SINK1(x)
+        SINK2(y)
 
     @staticmethod
-    def staticmethod(x):
-        return x
+    def staticmethod(x, y):
+        SINK1(x)
+        SINK2(y)
 
     def gen(self, x, count):
       n = count
@@ -64,22 +89,40 @@ class C(object):
 
 c = C()
 
-# When an instance method object is created by retrieving a user-defined function object from a class via one of its instances, its __self__ attribute is the instance, and the method object is said to be bound. The new method’s __func__ attribute is the original function object.
-func_obj = c.method.__func__
+@expects(6)
+def test_method_call():
+  # When an instance method object is created by retrieving a user-defined function object from a class via one of its instances, its __self__ attribute is the instance, and the method object is said to be bound. The new method’s __func__ attribute is the original function object.
+  func_obj = c.method.__func__
 
-# When an instance method object is called, the underlying function (__func__) is called, inserting the class instance (__self__) in front of the argument list. For instance, when C is a class which contains a definition for a function f(), and x is an instance of C, calling x.f(1) is equivalent to calling C.f(x, 1).
-SINK(c.method(SOURCE, C)) #$ flow="SOURCE -> c.method(..)"
-SINK(C.method(c, SOURCE, C)) #$ flow="SOURCE -> C.method(..)"
-SINK(func_obj(c, SOURCE, C)) #$ MISSING: flow="SOURCE -> func_obj(..)"
+  # When an instance method object is called, the underlying function (__func__) is called, inserting the class instance (__self__) in front of the argument list. For instance, when C is a class which contains a definition for a function f(), and x is an instance of C, calling x.f(1) is equivalent to calling C.f(x, 1).
+  c.method(arg1, arg2) # $ func=C.method arg1 arg2
+  C.method(c, arg1, arg2) # $ func=C.method arg1 arg2
+  func_obj(c, arg1, arg2) # $ MISSING: func=C.method arg1 arg2
 
 
-# When an instance method object is created by retrieving a class method object from a class or instance, its __self__ attribute is the class itself, and its __func__ attribute is the function object underlying the class method.
-c_func_obj = C.classmethod.__func__
+@expects(6)
+def test_classmethod_call():
+  # When an instance method object is created by retrieving a class method object from a class or instance, its __self__ attribute is the class itself, and its __func__ attribute is the function object underlying the class method.
+  c_func_obj = C.classmethod.__func__
 
-# When an instance method object is derived from a class method object, the “class instance” stored in __self__ will actually be the class itself, so that calling either x.f(1) or C.f(1) is equivalent to calling f(C,1) where f is the underlying function.
-SINK(c.classmethod(SOURCE)) #$ flow="SOURCE -> c.classmethod(..)"
-SINK(C.classmethod(SOURCE)) #$ flow="SOURCE -> C.classmethod(..)"
-SINK(c_func_obj(C, SOURCE)) #$ MISSING: flow="SOURCE -> c_func_obj(..)"
+  # When an instance method object is derived from a class method object, the “class instance” stored in __self__ will actually be the class itself, so that calling either x.f(1) or C.f(1) is equivalent to calling f(C,1) where f is the underlying function.
+  c.classmethod(arg1, arg2) # $ func=C.classmethod arg1 arg2
+  C.classmethod(arg1, arg2) # $ func=C.classmethod arg1 arg2
+  c_func_obj(C, arg1, arg2) # $ MISSING: func=C.classmethod arg1 arg2
+
+
+@expects(5)
+def test_staticmethod_call():
+  # staticmethods does not have a __func__ attribute
+  try:
+    C.staticmethod.__func__
+  except AttributeError:
+    print("OK")
+
+  # When an instance method object is derived from a class method object, the “class instance” stored in __self__ will actually be the class itself, so that calling either x.f(1) or C.f(1) is equivalent to calling f(C,1) where f is the underlying function.
+  c.staticmethod(arg1, arg2) # $ func=C.staticmethod arg1 arg2
+  C.staticmethod(arg1, arg2) # $ func=C.staticmethod arg1 arg2
+
 
 # Generator functions
 # A function or method which uses the yield statement (see section The yield statement) is called a generator function. Such a function, when called, always returns an iterator object which can be used to execute the body of the function: calling the iterator’s iterator.__next__() method will cause the function to execute until it provides a value using the yield statement. When the function executes a return statement or falls off the end, a StopIteration exception is raised and the iterator will have reached the end of the set of values to be returned.

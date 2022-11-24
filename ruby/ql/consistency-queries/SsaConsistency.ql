@@ -1,7 +1,8 @@
 import codeql.ruby.dataflow.SSA
-import codeql.ruby.dataflow.internal.SsaImpl::Consistency as Consistency
+import codeql.ruby.dataflow.internal.SsaImpl
+import Consistency
 
-class MyRelevantDefinition extends Consistency::RelevantDefinition, Ssa::Definition {
+class MyRelevantDefinition extends RelevantDefinition, Ssa::Definition {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
@@ -9,10 +10,10 @@ class MyRelevantDefinition extends Consistency::RelevantDefinition, Ssa::Definit
   }
 }
 
-query predicate nonUniqueDef = Consistency::nonUniqueDef/4;
-
-query predicate readWithoutDef = Consistency::readWithoutDef/3;
-
-query predicate deadDef = Consistency::deadDef/2;
-
-query predicate notDominatedByDef = Consistency::notDominatedByDef/4;
+class MyRelevantDefinitionExt extends RelevantDefinitionExt, DefinitionExt {
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}

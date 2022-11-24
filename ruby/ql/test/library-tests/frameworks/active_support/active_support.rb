@@ -290,3 +290,11 @@ def m_deep_dup
   x = source "a"
   sink x.deep_dup # $hasValueFlow=a
 end
+
+def m_try(method)
+    x = "abc"
+    x.try(:upcase)
+    x.try(method)
+    x.try!(:upcase).try!(:downcase)
+    x.try!(method)
+end

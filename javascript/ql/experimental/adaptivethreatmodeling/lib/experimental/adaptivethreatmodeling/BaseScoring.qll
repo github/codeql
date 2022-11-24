@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Provides shared scoring functionality for use in adaptive threat modeling (ATM).

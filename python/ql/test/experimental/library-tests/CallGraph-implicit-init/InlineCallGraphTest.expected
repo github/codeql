@@ -1,0 +1,5 @@
+failures
+debug_callableNotUnique
+pointsTo_found_typeTracker_notFound
+| example.py:22:1:22:16 | ControlFlowNode for explicit_afunc() | explicit_afunc |
+typeTracker_found_pointsTo_notFound

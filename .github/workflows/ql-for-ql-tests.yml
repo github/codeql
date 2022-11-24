@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
+        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           languages: javascript # does not matter
       - uses: actions/cache@v3
@@ -45,10 +45,5 @@ jobs:
       - name: Check QL formatting
         run: |
           find ql/ql/src "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
-        env:
-          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-      - name: Check QL compilation
-        run: |
-          "${CODEQL}" query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}/ql/extractor-pack" "ql/ql/src" "ql/ql/examples"
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}

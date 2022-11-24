@@ -59,7 +59,7 @@ test.kt:
 #   10|           0: [TypeAccess] int
 #   10|       5: [BlockStmt] { ... }
 #   10|         0: [ReturnStmt] return ...
-#   10|           0: [StringLiteral] 
+#   10|           0: [StringLiteral] ""
 #   11|     3: [ExtensionMethod] set
 #   11|       3: [TypeAccess] String
 #-----|       4: (Parameters)
@@ -73,7 +73,7 @@ test.kt:
 #   11|           0: [TypeAccess] int
 #   11|       5: [BlockStmt] { ... }
 #   11|         0: [ReturnStmt] return ...
-#   11|           0: [StringLiteral] 
+#   11|           0: [StringLiteral] ""
 #   12|     4: [ExtensionMethod] set
 #   12|       3: [TypeAccess] String
 #-----|       4: (Parameters)
@@ -85,7 +85,7 @@ test.kt:
 #   12|           0: [TypeAccess] C
 #   12|       5: [BlockStmt] { ... }
 #   12|         0: [ReturnStmt] return ...
-#   12|           0: [StringLiteral] 
+#   12|           0: [StringLiteral] ""
 #   15|   2: [Class] C
 #   15|     1: [Constructor] C
 #   15|       5: [BlockStmt] { ... }
@@ -100,4 +100,4 @@ test.kt:
 #   16|           0: [TypeAccess] int
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
-#   16|           0: [StringLiteral] 
+#   16|           0: [StringLiteral] ""

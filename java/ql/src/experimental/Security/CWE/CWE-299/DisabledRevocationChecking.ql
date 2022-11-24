@@ -1,5 +1,5 @@
 /**
- * @name Disabled ceritificate revocation checking
+ * @name Disabled certificate revocation checking
  * @description Using revoked certificates is dangerous.
  *              Therefore, revocation status of certificates in a chain should be checked.
  * @kind path-problem

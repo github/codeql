@@ -1,4 +1,5 @@
-/* Definitions related to `java.util.Properties`. */
+/** Definitions related to `java.util.Properties`. */
+
 import semmle.code.java.Type
 private import semmle.code.java.dataflow.FlowSteps
 

@@ -11,7 +11,7 @@
 
 import javascript
 import experimental.adaptivethreatmodeling.ATMConfig
-import extraction.ExtractEndpointData
+import extraction.ExtractEndpointDataTraining
 
 string getAReasonSinkExcluded(DataFlow::Node sinkCandidate, Query query) {
   query instanceof NosqlInjectionQuery and
@@ -33,7 +33,7 @@ string getDescriptionForAlertCandidate(
 ) {
   result = "excluded[reason=" + getAReasonSinkExcluded(sinkCandidate, query) + "]"
   or
-  getAtmCfg(query).isKnownSink(sinkCandidate) and
+  getDataFlowCfg(query).(AtmConfig).isKnownSink(sinkCandidate) and
   result = "excluded[reason=known-sink]"
   or
   not exists(getAReasonSinkExcluded(sinkCandidate, query)) and

@@ -103,7 +103,7 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
                  '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] + [s for s in srcs if s.endswith(".java")])
 
 
-def compile_to_jar(build_dir, srcs, classpath, java_classpath, output):
+def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output):
     class_dir = build_dir + '/classes'
 
     if os.path.exists(class_dir):
@@ -114,7 +114,8 @@ def compile_to_jar(build_dir, srcs, classpath, java_classpath, output):
 
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',
-                 '-C', 'src/main/resources', 'META-INF'])
+                 '-C', tmp_src_dir + '/main/resources', 'META-INF',
+                 '-C', tmp_src_dir + '/main/resources', 'com/github/codeql/extractor.name'])
     shutil.rmtree(class_dir)
 
 
@@ -146,18 +147,17 @@ def get_gradle_lib_folder():
     return gradle_home + '/lib'
 
 
-def find_jar(path, pattern):
-    result = glob.glob(path + '/' + pattern + '*.jar')
-    if len(result) == 0:
-        raise Exception('Cannot find jar file %s under path %s' %
-                        (pattern, path))
-    return result
+def find_jar(path, base):
+    fn = path + '/' + base + '.jar'
+    if not os.path.isfile(fn):
+        raise Exception('Cannot find jar file at %s' % fn)
+    return fn
 
 
-def patterns_to_classpath(path, patterns):
+def bases_to_classpath(path, bases):
     result = []
-    for pattern in patterns:
-        result += find_jar(path, pattern)
+    for base in bases:
+        result.append(find_jar(path, base))
     return os.path.pathsep.join(result)
 
 
@@ -173,8 +173,8 @@ def transform_to_embeddable(srcs):
 
 
 def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, build_dir, current_version):
-    classpath = patterns_to_classpath(dependency_folder, jars)
-    java_classpath = patterns_to_classpath(dependency_folder, java_jars)
+    classpath = bases_to_classpath(dependency_folder, jars)
+    java_classpath = bases_to_classpath(dependency_folder, java_jars)
 
     tmp_src_dir = build_dir + '/temp_src'
 
@@ -184,6 +184,11 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
 
     include_version_folder = tmp_src_dir + '/main/kotlin/utils/versions/to_include'
     os.makedirs(include_version_folder)
+
+    resource_dir = tmp_src_dir + '/main/resources/com/github/codeql'
+    os.makedirs(resource_dir)
+    with open(resource_dir + '/extractor.name', 'w') as f:
+        f.write(output)
 
     parsed_current_version = kotlin_plugin_versions.version_string_to_tuple(
         current_version)
@@ -211,7 +216,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
 
     transform_to_embeddable(srcs)
 
-    compile_to_jar(build_dir, srcs, classpath, java_classpath, output)
+    compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output)
 
     shutil.rmtree(tmp_src_dir)
 

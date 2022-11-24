@@ -80,6 +80,25 @@ def test_class_with_field(generate, type, expected, property_cls, optional, repe
     ]
 
 
+def test_class_field_with_null(generate, input):
+    input.null = "Null"
+    a = cpp.Class(name="A")
+    assert generate([
+        schema.Class(name="A", derived={"B"}),
+        schema.Class(name="B", bases=["A"], properties=[
+            schema.SingleProperty("x", "A"),
+            schema.SingleProperty("y", "B"),
+        ])
+    ]) == [
+        a,
+        cpp.Class(name="B", bases=[a], final=True, trap_name="Bs",
+                  fields=[
+            cpp.Field("x", "TrapLabel<ATag>"),
+            cpp.Field("y", "TrapLabel<BOrNoneTag>"),
+        ]),
+    ]
+
+
 def test_class_with_predicate(generate):
     assert generate([
         schema.Class(name="MyClass", properties=[
@@ -158,6 +177,28 @@ def test_cpp_skip_pragma(generate):
         cpp.Class(name="A", final=True, trap_name="As", fields=[
             cpp.Field("x", "foo"),
         ]),
+    ]
+
+
+def test_ipa_classes_ignored(generate):
+    assert generate([
+        schema.Class(
+            name="W",
+            ipa=schema.IpaInfo(),
+        ),
+        schema.Class(
+            name="X",
+            ipa=schema.IpaInfo(from_class="A"),
+        ),
+        schema.Class(
+            name="Y",
+            ipa=schema.IpaInfo(on_arguments={"a": "A", "b": "int"}),
+        ),
+        schema.Class(
+            name="Z",
+        ),
+    ]) == [
+        cpp.Class(name="Z", final=True, trap_name="Zs"),
     ]
 
 

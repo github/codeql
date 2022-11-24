@@ -128,7 +128,7 @@ private class SafeUrlSink extends SafeUrlFlow::Sink {
 private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
   UnsafeFieldReadSanitizer() {
     exists(DataFlow::FieldReadNode frn, string name |
-      name = ["User", "RawQuery", "Fragment", "User"] and
+      name = ["User", "RawQuery", "Fragment"] and
       frn.getField().hasQualifiedName("net/url", "URL")
     |
       this = frn.getBase()

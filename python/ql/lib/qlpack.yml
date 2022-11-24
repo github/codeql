@@ -1,7 +1,9 @@
 name: codeql/python-all
-version: 0.6.4-dev
+version: 0.6.5-dev
 groups: python
 dbscheme: semmlecode.python.dbscheme
 extractor: python
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/regex: ${workspace}

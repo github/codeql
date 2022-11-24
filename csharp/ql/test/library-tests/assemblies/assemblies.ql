@@ -34,7 +34,6 @@ where
   f.hasName("f") and
   g.hasName("g") and
   a.getDeclaringType() = class1 and
-  a.getDeclaringType() = class1 and
   b.getDeclaringType() = class1 and
   c.getDeclaringType() = class1 and
   not exists(c.getParameter(0).getType().(KnownType)) and

@@ -1,0 +1,22 @@
+failures
+debug_callableNotUnique
+| code/class_advanced.py:18:5:18:18 | Function arg | Qualified function name 'B.arg' is not unique. Please fix. |
+| code/class_advanced.py:23:5:23:25 | Function arg | Qualified function name 'B.arg' is not unique. Please fix. |
+pointsTo_found_typeTracker_notFound
+| code/class_simple.py:24:1:24:15 | ControlFlowNode for Attribute() | A.some_method |
+| code/class_simple.py:25:1:25:21 | ControlFlowNode for Attribute() | A.some_staticmethod |
+| code/class_simple.py:26:1:26:20 | ControlFlowNode for Attribute() | A.some_classmethod |
+| code/class_simple.py:28:1:28:21 | ControlFlowNode for Attribute() | A.some_staticmethod |
+| code/class_simple.py:29:1:29:20 | ControlFlowNode for Attribute() | A.some_classmethod |
+| code/runtime_decision.py:18:1:18:6 | ControlFlowNode for func() | rd_bar |
+| code/runtime_decision.py:18:1:18:6 | ControlFlowNode for func() | rd_foo |
+| code/runtime_decision.py:26:1:26:7 | ControlFlowNode for func2() | rd_bar |
+| code/runtime_decision.py:26:1:26:7 | ControlFlowNode for func2() | rd_foo |
+| code/simple.py:15:1:15:5 | ControlFlowNode for foo() | foo |
+| code/simple.py:16:1:16:14 | ControlFlowNode for indirect_foo() | foo |
+| code/simple.py:17:1:17:5 | ControlFlowNode for bar() | bar |
+| code/simple.py:18:1:18:5 | ControlFlowNode for lam() | lambda[simple.py:12:7] |
+| code/underscore_prefix_func_name.py:18:5:18:19 | ControlFlowNode for some_function() | some_function |
+| code/underscore_prefix_func_name.py:21:5:21:19 | ControlFlowNode for some_function() | some_function |
+| code/underscore_prefix_func_name.py:24:1:24:21 | ControlFlowNode for _works_since_called() | _works_since_called |
+typeTracker_found_pointsTo_notFound

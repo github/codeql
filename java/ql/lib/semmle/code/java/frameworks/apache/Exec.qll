@@ -1,4 +1,5 @@
-/* Definitions related to the Apache Commons Exec library. */
+/** Definitions related to the Apache Commons Exec library. */
+
 import semmle.code.java.Type
 import semmle.code.java.security.ExternalProcess
 

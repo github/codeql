@@ -27,6 +27,12 @@ private class RegexSinkCsv extends SinkModelCsv {
         "com.google.common.base;Splitter;false;split;(CharSequence);;Argument[-1];regex-use[0];manual",
         "com.google.common.base;Splitter;false;splitToList;(CharSequence);;Argument[-1];regex-use[0];manual",
         "com.google.common.base;Splitter$MapSplitter;false;split;(CharSequence);;Argument[-1];regex-use[0];manual",
+        "org.apache.commons.lang3;RegExUtils;false;removeAll;(String,String);;Argument[1];regex-use;manual",
+        "org.apache.commons.lang3;RegExUtils;false;removeFirst;(String,String);;Argument[1];regex-use;manual",
+        "org.apache.commons.lang3;RegExUtils;false;removePattern;(String,String);;Argument[1];regex-use;manual",
+        "org.apache.commons.lang3;RegExUtils;false;replaceAll;(String,String,String);;Argument[1];regex-use;manual",
+        "org.apache.commons.lang3;RegExUtils;false;replaceFirst;(String,String,String);;Argument[1];regex-use;manual",
+        "org.apache.commons.lang3;RegExUtils;false;replacePattern;(String,String,String);;Argument[1];regex-use;manual",
       ]
   }
 }

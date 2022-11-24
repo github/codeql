@@ -1,7 +1,8 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with flow models specified in CSV format.
+ * Provides classes and predicates for dealing with MaD flow models specified
+ * in data extensions and CSV format.
  *
  * The CSV specification has the following columns:
  * - Sources:
@@ -90,106 +91,78 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 
 /**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import semmle.code.csharp.frameworks.EntityFramework
-  private import semmle.code.csharp.frameworks.Generated
-  private import semmle.code.csharp.frameworks.JsonNET
-  private import semmle.code.csharp.frameworks.microsoft.extensions.Primitives
-  private import semmle.code.csharp.frameworks.microsoft.VisualBasic
-  private import semmle.code.csharp.frameworks.ServiceStack
-  private import semmle.code.csharp.frameworks.Sql
-  private import semmle.code.csharp.frameworks.System
-  private import semmle.code.csharp.frameworks.system.CodeDom
-  private import semmle.code.csharp.frameworks.system.Collections
-  private import semmle.code.csharp.frameworks.system.collections.Concurrent
-  private import semmle.code.csharp.frameworks.system.collections.Generic
-  private import semmle.code.csharp.frameworks.system.collections.Immutable
-  private import semmle.code.csharp.frameworks.system.collections.ObjectModel
-  private import semmle.code.csharp.frameworks.system.collections.Specialized
-  private import semmle.code.csharp.frameworks.system.ComponentModel
-  private import semmle.code.csharp.frameworks.system.componentmodel.Design
-  private import semmle.code.csharp.frameworks.system.Configuration
-  private import semmle.code.csharp.frameworks.system.Data
-  private import semmle.code.csharp.frameworks.system.data.Common
-  private import semmle.code.csharp.frameworks.system.Diagnostics
-  private import semmle.code.csharp.frameworks.system.Dynamic
-  private import semmle.code.csharp.frameworks.system.Linq
-  private import semmle.code.csharp.frameworks.system.Net
-  private import semmle.code.csharp.frameworks.system.net.Http
-  private import semmle.code.csharp.frameworks.system.net.Mail
-  private import semmle.code.csharp.frameworks.system.IO
-  private import semmle.code.csharp.frameworks.system.io.Compression
-  private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
-  private import semmle.code.csharp.frameworks.system.Security
-  private import semmle.code.csharp.frameworks.system.security.Cryptography
-  private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
-  private import semmle.code.csharp.frameworks.system.Text
-  private import semmle.code.csharp.frameworks.system.text.RegularExpressions
-  private import semmle.code.csharp.frameworks.system.threading.Tasks
-  private import semmle.code.csharp.frameworks.system.Web
-  private import semmle.code.csharp.frameworks.system.web.ui.WebControls
-  private import semmle.code.csharp.frameworks.system.Xml
-  private import semmle.code.csharp.frameworks.system.xml.Schema
-  private import semmle.code.csharp.frameworks.system.xml.Serialization
-  private import semmle.code.csharp.security.dataflow.flowsinks.Html
-  private import semmle.code.csharp.security.dataflow.flowsources.Local
-  private import semmle.code.csharp.security.dataflow.XSSSinks
-}
-
-/**
+ * DEPRECATED: Define source models as data extensions instead.
+ *
  * A unit class for adding additional source model rows.
  *
  * Extend this class to add additional source definitions.
  */
-class SourceModelCsv extends Unit {
+deprecated class SourceModelCsv = SourceModelCsvInternal;
+
+private class SourceModelCsvInternal extends Unit {
   /** Holds if `row` specifies a source definition. */
   abstract predicate row(string row);
 }
 
 /**
+ * DEPRECATED: Define sink models as data extensions instead.
+ *
  * A unit class for adding additional sink model rows.
  *
  * Extend this class to add additional sink definitions.
  */
-class SinkModelCsv extends Unit {
+deprecated class SinkModelCsv = SinkModelCsvInternal;
+
+private class SinkModelCsvInternal extends Unit {
   /** Holds if `row` specifies a sink definition. */
   abstract predicate row(string row);
 }
 
 /**
+ * DEPRECATED: Define summary models as data extensions instead.
+ *
  * A unit class for adding additional summary model rows.
  *
  * Extend this class to add additional flow summary definitions.
  */
-class SummaryModelCsv extends Unit {
+deprecated class SummaryModelCsv = SummaryModelCsvInternal;
+
+private class SummaryModelCsvInternal extends Unit {
   /** Holds if `row` specifies a summary definition. */
   abstract predicate row(string row);
 }
 
 /**
- * A unit class for adding negative summary model rows.
+ * DEPRECATED: Define negative summary models as data extensions instead.
  *
- * Extend this class to add additional flow summary definitions.
+ * A unit class for adding additional negative summary model rows.
+ *
+ * Extend this class to add additional negative summary definitions.
  */
-class NegativeSummaryModelCsv extends Unit {
+deprecated class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
+
+private class NegativeSummaryModelCsvInternal extends Unit {
   /** Holds if `row` specifies a negative summary definition. */
   abstract predicate row(string row);
 }
 
-/** Holds if `row` is a source model. */
-predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
+private predicate sourceModelInternal(string row) { any(SourceModelCsvInternal s).row(row) }
 
-/** Holds if `row` is a sink model. */
-predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
+private predicate summaryModelInternal(string row) { any(SummaryModelCsvInternal s).row(row) }
 
-/** Holds if `row` is a summary model. */
-predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
+private predicate sinkModelInternal(string row) { any(SinkModelCsvInternal s).row(row) }
 
-/** Holds if `row` is a negative summary model. */
-predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
+private predicate negativeSummaryModelInternal(string row) {
+  any(NegativeSummaryModelCsvInternal s).row(row)
+}
+
+/**
+ * Holds if a source model exists for the given parameters.
+ */
+extensible predicate extSourceModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance
+);
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
@@ -197,7 +170,7 @@ predicate sourceModel(
   string output, string kind, string provenance
 ) {
   exists(string row |
-    sourceModel(row) and
+    sourceModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = subtypes.toString() and
@@ -209,7 +182,15 @@ predicate sourceModel(
     row.splitAt(";", 7) = kind and
     row.splitAt(";", 8) = provenance
   )
+  or
+  extSourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)
 }
+
+/** Holds if a sink model exists for the given parameters. */
+extensible predicate extSinkModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string kind, string provenance
+);
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
@@ -217,7 +198,7 @@ predicate sinkModel(
   string input, string kind, string provenance
 ) {
   exists(string row |
-    sinkModel(row) and
+    sinkModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = subtypes.toString() and
@@ -229,7 +210,15 @@ predicate sinkModel(
     row.splitAt(";", 7) = kind and
     row.splitAt(";", 8) = provenance
   )
+  or
+  extSinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)
 }
+
+/** Holds if a summary model exists for the given parameters. */
+extensible predicate extSummaryModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance
+);
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
@@ -237,7 +226,7 @@ predicate summaryModel(
   string input, string output, string kind, string provenance
 ) {
   exists(string row |
-    summaryModel(row) and
+    summaryModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = subtypes.toString() and
@@ -250,20 +239,29 @@ predicate summaryModel(
     row.splitAt(";", 8) = kind and
     row.splitAt(";", 9) = provenance
   )
+  or
+  extSummaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
+
+/** Holds if a summary model exists indicating there is no flow for the given parameters. */
+extensible predicate extNegativeSummaryModel(
+  string namespace, string type, string name, string signature, string provenance
+);
 
 /** Holds if a summary model exists indicating there is no flow for the given parameters. */
 predicate negativeSummaryModel(
   string namespace, string type, string name, string signature, string provenance
 ) {
   exists(string row |
-    negativeSummaryModel(row) and
+    negativeSummaryModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = name and
     row.splitAt(";", 3) = signature and
     row.splitAt(";", 4) = provenance
   )
+  or
+  extNegativeSummaryModel(namespace, type, name, signature, provenance)
 }
 
 private predicate relevantNamespace(string namespace) {
@@ -288,7 +286,7 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 }
 
 /**
- * Holds if CSV framework coverage of `namespace` is `n` api endpoints of the
+ * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
  * kind `(kind, part)`.
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
@@ -320,8 +318,8 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
   )
 }
 
-/** Provides a query predicate to check the CSV data for validation errors. */
-module CsvValidation {
+/** Provides a query predicate to check the MaD models for validation errors. */
+module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, string part |
       sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
@@ -355,21 +353,18 @@ module CsvValidation {
   }
 
   private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
+    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
       not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
-    exists(string row, string kind | sinkModel(row) |
-      kind = row.splitAt(";", 7) and
+    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
       not kind = ["code", "sql", "xss", "remote", "html"] and
       not kind.matches("encryption-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
-    exists(string row, string kind | sourceModel(row) |
-      kind = row.splitAt(";", 7) and
+    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
       not kind = ["local", "file"] and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
@@ -377,11 +372,11 @@ module CsvValidation {
 
   private string getInvalidModelSubtype() {
     exists(string pred, string row |
-      sourceModel(row) and pred = "source"
+      sourceModelInternal(row) and pred = "source"
       or
-      sinkModel(row) and pred = "sink"
+      sinkModelInternal(row) and pred = "sink"
       or
-      summaryModel(row) and pred = "summary"
+      summaryModelInternal(row) and pred = "summary"
     |
       exists(string b |
         b = row.splitAt(";", 2) and
@@ -393,13 +388,13 @@ module CsvValidation {
 
   private string getInvalidModelColumnCount() {
     exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 9 and pred = "source"
+      sourceModelInternal(row) and expect = 9 and pred = "source"
       or
-      sinkModel(row) and expect = 9 and pred = "sink"
+      sinkModelInternal(row) and expect = 9 and pred = "sink"
       or
-      summaryModel(row) and expect = 10 and pred = "summary"
+      summaryModelInternal(row) and expect = 10 and pred = "summary"
       or
-      negativeSummaryModel(row) and expect = 5 and pred = "negative summary"
+      negativeSummaryModelInternal(row) and expect = 5 and pred = "negative summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
@@ -447,7 +442,7 @@ module CsvValidation {
     )
   }
 
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
+  /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
@@ -620,7 +615,7 @@ predicate hasSummary(Callable c, boolean generated) { summaryElement(c, _, _, _,
 cached
 private module Cached {
   /**
-   * Holds if `node` is specified as a source with the given kind in a CSV flow
+   * Holds if `node` is specified as a source with the given kind in a MaD flow
    * model.
    */
   cached
@@ -629,7 +624,7 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` is specified as a sink with the given kind in a CSV flow
+   * Holds if `node` is specified as a sink with the given kind in a MaD flow
    * model.
    */
   cached

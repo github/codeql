@@ -170,6 +170,10 @@ nodes
 | lib/lib.js:277:23:277:26 | opts |
 | lib/lib.js:277:23:277:30 | opts.bla |
 | lib/lib.js:277:23:277:30 | opts.bla |
+| lib/lib.js:279:19:279:22 | opts |
+| lib/lib.js:279:19:279:26 | opts.bla |
+| lib/lib.js:281:23:281:35 | this.opts.bla |
+| lib/lib.js:281:23:281:35 | this.opts.bla |
 | lib/lib.js:307:39:307:42 | name |
 | lib/lib.js:307:39:307:42 | name |
 | lib/lib.js:308:23:308:26 | name |
@@ -223,8 +227,14 @@ nodes
 | lib/lib.js:420:29:420:32 | name |
 | lib/lib.js:424:24:424:27 | name |
 | lib/lib.js:424:24:424:27 | name |
+| lib/lib.js:425:6:425:13 | arr |
+| lib/lib.js:425:12:425:13 | [] |
 | lib/lib.js:426:11:426:14 | name |
 | lib/lib.js:426:11:426:14 | name |
+| lib/lib.js:427:14:427:16 | arr |
+| lib/lib.js:427:14:427:16 | arr |
+| lib/lib.js:428:14:428:58 | build(" ...  + '-') |
+| lib/lib.js:428:14:428:58 | build(" ...  + '-') |
 | lib/lib.js:428:28:428:51 | (name ? ... ' : '') |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' |
 | lib/lib.js:428:29:428:50 | name ?  ... :' : '' |
@@ -302,6 +312,10 @@ nodes
 | lib/subLib/index.js:7:32:7:35 | name |
 | lib/subLib/index.js:8:22:8:25 | name |
 | lib/subLib/index.js:8:22:8:25 | name |
+| lib/subLib/index.js:13:44:13:46 | arr |
+| lib/subLib/index.js:13:44:13:46 | arr |
+| lib/subLib/index.js:14:22:14:24 | arr |
+| lib/subLib/index.js:14:22:14:24 | arr |
 edges
 | lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name |
 | lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name |
@@ -504,8 +518,13 @@ edges
 | lib/lib.js:268:22:268:24 | obj | lib/lib.js:268:22:268:32 | obj.version |
 | lib/lib.js:276:8:276:11 | opts | lib/lib.js:277:23:277:26 | opts |
 | lib/lib.js:276:8:276:11 | opts | lib/lib.js:277:23:277:26 | opts |
+| lib/lib.js:276:8:276:11 | opts | lib/lib.js:279:19:279:22 | opts |
+| lib/lib.js:276:8:276:11 | opts | lib/lib.js:279:19:279:22 | opts |
 | lib/lib.js:277:23:277:26 | opts | lib/lib.js:277:23:277:30 | opts.bla |
 | lib/lib.js:277:23:277:26 | opts | lib/lib.js:277:23:277:30 | opts.bla |
+| lib/lib.js:279:19:279:22 | opts | lib/lib.js:279:19:279:26 | opts.bla |
+| lib/lib.js:279:19:279:26 | opts.bla | lib/lib.js:281:23:281:35 | this.opts.bla |
+| lib/lib.js:279:19:279:26 | opts.bla | lib/lib.js:281:23:281:35 | this.opts.bla |
 | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name |
 | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name |
 | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name |
@@ -575,7 +594,13 @@ edges
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:428:36:428:39 | name |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:428:36:428:39 | name |
+| lib/lib.js:425:6:425:13 | arr | lib/lib.js:427:14:427:16 | arr |
+| lib/lib.js:425:6:425:13 | arr | lib/lib.js:427:14:427:16 | arr |
+| lib/lib.js:425:12:425:13 | [] | lib/lib.js:425:6:425:13 | arr |
+| lib/lib.js:426:11:426:14 | name | lib/lib.js:425:12:425:13 | [] |
 | lib/lib.js:428:28:428:51 | (name ? ... ' : '') | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' |
+| lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:428:14:428:58 | build(" ...  + '-') |
+| lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:428:14:428:58 | build(" ...  + '-') |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last |
 | lib/lib.js:428:29:428:50 | name ?  ... :' : '' | lib/lib.js:428:28:428:51 | (name ? ... ' : '') |
 | lib/lib.js:428:36:428:39 | name | lib/lib.js:428:36:428:45 | name + ':' |
@@ -663,6 +688,10 @@ edges
 | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
 | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
 | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
+| lib/subLib/index.js:13:44:13:46 | arr | lib/subLib/index.js:14:22:14:24 | arr |
+| lib/subLib/index.js:13:44:13:46 | arr | lib/subLib/index.js:14:22:14:24 | arr |
+| lib/subLib/index.js:13:44:13:46 | arr | lib/subLib/index.js:14:22:14:24 | arr |
+| lib/subLib/index.js:13:44:13:46 | arr | lib/subLib/index.js:14:22:14:24 | arr |
 #select
 | lib/isImported.js:6:10:6:25 | "rm -rf " + name | lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/isImported.js:5:49:5:52 | name | library input | lib/isImported.js:6:2:6:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib2.js:3:28:3:31 | name | library input | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
@@ -714,6 +743,7 @@ edges
 | lib/lib.js:261:11:261:33 | "rm -rf ...  + name | lib/lib.js:257:35:257:38 | name | lib/lib.js:261:30:261:33 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:257:35:257:38 | name | library input | lib/lib.js:261:3:261:34 | cp.exec ... + name) | shell command |
 | lib/lib.js:268:10:268:32 | "rm -rf ... version | lib/lib.js:267:46:267:48 | obj | lib/lib.js:268:22:268:32 | obj.version | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:267:46:267:48 | obj | library input | lib/lib.js:268:2:268:33 | cp.exec ... ersion) | shell command |
 | lib/lib.js:277:11:277:30 | "rm -rf " + opts.bla | lib/lib.js:276:8:276:11 | opts | lib/lib.js:277:23:277:30 | opts.bla | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:276:8:276:11 | opts | library input | lib/lib.js:277:3:277:31 | cp.exec ... ts.bla) | shell command |
+| lib/lib.js:281:11:281:35 | "rm -rf ... pts.bla | lib/lib.js:276:8:276:11 | opts | lib/lib.js:281:23:281:35 | this.opts.bla | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:276:8:276:11 | opts | library input | lib/lib.js:281:3:281:36 | cp.exec ... ts.bla) | shell command |
 | lib/lib.js:308:11:308:26 | "rm -rf " + name | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:307:39:307:42 | name | library input | lib/lib.js:308:3:308:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:315:10:315:25 | "rm -rf " + name | lib/lib.js:314:40:314:43 | name | lib/lib.js:315:22:315:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:314:40:314:43 | name | library input | lib/lib.js:315:2:315:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:320:11:320:26 | "rm -rf " + name | lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:314:40:314:43 | name | library input | lib/lib.js:320:3:320:27 | cp.exec ... + name) | shell command |
@@ -729,6 +759,8 @@ edges
 | lib/lib.js:420:29:420:32 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:420:29:420:32 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:420:2:420:49 | cp.spaw ...  true}) | shell command |
 | lib/lib.js:424:24:424:27 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:424:2:424:40 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:426:11:426:14 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:427:2:427:28 | spawn(" ... WN_OPT) | shell command |
+| lib/lib.js:427:14:427:16 | arr | lib/lib.js:414:40:414:43 | name | lib/lib.js:427:14:427:16 | arr | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:427:2:427:28 | spawn(" ... WN_OPT) | shell command |
+| lib/lib.js:428:14:428:58 | build(" ...  + '-') | lib/lib.js:414:40:414:43 | name | lib/lib.js:428:14:428:58 | build(" ...  + '-') | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:428:2:428:70 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:436:19:436:22 | last | lib/lib.js:414:40:414:43 | name | lib/lib.js:436:19:436:22 | last | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:428:2:428:70 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:442:12:442:27 | "rm -rf " + name | lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:441:39:441:42 | name | library input | lib/lib.js:442:2:442:28 | asyncEx ... + name) | shell command |
 | lib/lib.js:447:13:447:28 | "rm -rf " + name | lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:446:20:446:23 | name | library input | lib/lib.js:447:3:447:29 | asyncEx ... + name) | shell command |
@@ -750,3 +782,4 @@ edges
 | lib/subLib/amdSub.js:4:10:4:25 | "rm -rf " + name | lib/subLib/amdSub.js:3:28:3:31 | name | lib/subLib/amdSub.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib/amdSub.js:3:28:3:31 | name | library input | lib/subLib/amdSub.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/subLib/index.js:4:10:4:25 | "rm -rf " + name | lib/subLib/index.js:3:28:3:31 | name | lib/subLib/index.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib/index.js:3:28:3:31 | name | library input | lib/subLib/index.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib/index.js:7:32:7:35 | name | library input | lib/subLib/index.js:8:2:8:26 | cp.exec ... + name) | shell command |
+| lib/subLib/index.js:14:22:14:24 | arr | lib/subLib/index.js:13:44:13:46 | arr | lib/subLib/index.js:14:22:14:24 | arr | This shell argument which depends on $@ is later used in a $@. | lib/subLib/index.js:13:44:13:46 | arr | library input | lib/subLib/index.js:14:5:14:40 | cp.spaw ...  true}) | shell command |
