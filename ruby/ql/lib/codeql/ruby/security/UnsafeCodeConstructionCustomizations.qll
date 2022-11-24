@@ -62,13 +62,14 @@ module UnsafeCodeConstruction {
    */
   class ArrayJoin extends Sink {
     Concepts::CodeExecution s;
-    DataFlow::CallNode call;
 
     ArrayJoin() {
-      call.getMethodName() = "join" and
-      call.getNumberOfArguments() = 1 and // any string. E.g. ";" or "\n".
-      call = getANodeExecutedAsCode(s) and
-      this = call.getReceiver()
+      exists(DataFlow::CallNode call |
+        call.getMethodName() = "join" and
+        call.getNumberOfArguments() = 1 and // any string. E.g. ";" or "\n".
+        call = getANodeExecutedAsCode(s) and
+        this = call.getReceiver()
+      )
     }
 
     override DataFlow::Node getCodeSink() { result = s }
