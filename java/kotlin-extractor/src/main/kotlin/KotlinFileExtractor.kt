@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
+import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.builders.declarations.*
 import org.jetbrains.kotlin.ir.declarations.*
@@ -44,8 +45,13 @@ import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import org.jetbrains.kotlin.ir.util.primaryConstructor
 import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.util.target
+import org.jetbrains.kotlin.load.java.JvmAnnotationNames
+import org.jetbrains.kotlin.load.java.NOT_NULL_ANNOTATIONS
+import org.jetbrains.kotlin.load.java.NULLABLE_ANNOTATIONS
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
+import org.jetbrains.kotlin.load.java.structure.JavaAnnotation
 import org.jetbrains.kotlin.load.java.structure.JavaClass
+import org.jetbrains.kotlin.load.java.structure.JavaConstructor
 import org.jetbrains.kotlin.load.java.structure.JavaMethod
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
@@ -53,6 +59,7 @@ import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
+import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import java.io.Closeable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -887,7 +894,13 @@ open class KotlinFileExtractor(
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
             val syntheticParameterNames = isUnderscoreParameter(vp) || ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
-            extractAnnotations(vp, id, extractTypeAccess)
+            val javaParameter = when(val callable = (vp.parent as? IrFunction)?.let { getJavaCallable(it) }) {
+                is JavaConstructor -> callable.valueParameters.getOrNull(idx)
+                is JavaMethod -> callable.valueParameters.getOrNull(idx)
+                else -> null
+            }
+            val extraAnnotations = listOfNotNull(getNullabilityAnnotation(vp.type, vp.origin, vp.annotations, javaParameter?.annotations))
+            extractAnnotations(vp.annotations + extraAnnotations, id, extractTypeAccess)
             return extractValueParameter(id, substitutedType, vp.name.asString(), location, parent, idx, useValueParameter(vp, parentSourceDeclaration), syntheticParameterNames, vp.isVararg, vp.isNoinline, vp.isCrossinline)
         }
     }
@@ -1337,6 +1350,32 @@ open class KotlinFileExtractor(
                 logger.warn("Needed a signature for a type that doesn't have one")
         }
 
+    private fun getNullabilityAnnotationName(t: IrType, declOrigin: IrDeclarationOrigin, existingAnnotations: List<IrConstructorCall>, javaAnnotations: Collection<JavaAnnotation>?): FqName? {
+        if (t !is IrSimpleType)
+            return null
+
+        return if (declOrigin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
+            // Java declaration: restore a NotNull or Nullable annotation if the original Java member had one but the Kotlin compiler removed it.
+            javaAnnotations?.mapNotNull { it.classId?.asSingleFqName() }
+            ?.singleOrNull { NOT_NULL_ANNOTATIONS.contains(it) || NULLABLE_ANNOTATIONS.contains(it) }
+            ?.takeUnless { existingAnnotations.any { existing -> existing.type.classFqName == it } }
+        } else {
+            // Kotlin declaration: add a NotNull annotation to a non-nullable non-primitive type.
+            JvmAnnotationNames.JETBRAINS_NOT_NULL_ANNOTATION.takeUnless { t.isNullable() || primitiveTypeMapping.getPrimitiveInfo(t) != null }
+        }
+    }
+
+    private fun getNullabilityAnnotation(t: IrType, declOrigin: IrDeclarationOrigin, existingAnnotations: List<IrConstructorCall>, javaAnnotations: Collection<JavaAnnotation>?) =
+        getNullabilityAnnotationName(t, declOrigin, existingAnnotations, javaAnnotations)?.let {
+            pluginContext.referenceClass(it)?.let { annotationClass ->
+                annotationClass.owner.declarations.firstIsInstanceOrNull<IrConstructor>()?.let { annotationConstructor ->
+                    IrConstructorCallImpl.fromSymbolOwner(
+                        UNDEFINED_OFFSET, UNDEFINED_OFFSET, annotationConstructor.returnType, annotationConstructor.symbol, 0
+                    )
+                }
+            }
+        }
+
     private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, extractAnnotations: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractOrigin: Boolean = true, overriddenAttributes: OverriddenFunctionAttributes? = null): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f, overriddenAttributes).use {
@@ -1427,8 +1466,10 @@ open class KotlinFileExtractor(
 
                 linesOfCode?.linesOfCodeInDeclaration(f, id)
 
-                if (extractAnnotations)
-                    extractAnnotations(f, id, extractMethodAndParameterTypeAccesses)
+                if (extractAnnotations) {
+                    val extraAnnotations = listOfNotNull(getNullabilityAnnotation(f.returnType, f.origin, f.annotations, getJavaCallable(f)?.annotations))
+                    extractAnnotations(f.annotations + extraAnnotations, id, extractMethodAndParameterTypeAccesses)
+                }
 
                 return id
             }
