@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.security.Cryptography
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Security.Cryptography.X509Certificates` namespace. */
 class SystemSecurityCryptographyX509CertificatesNamespace extends Namespace {

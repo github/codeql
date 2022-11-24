@@ -3,7 +3,6 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** Definitions relating to the `Json.NET` package. */
 module JsonNET {
