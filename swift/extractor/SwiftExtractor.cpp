@@ -46,7 +46,6 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   if (ec) {
     std::cerr << "Cannot archive source file " << srcFilePath << " -> " << dstFilePath << ": "
               << ec.message() << "\n";
-    std::abort();
   }
 }
 

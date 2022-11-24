@@ -93,8 +93,10 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    `yaml <https://gopkg.in/yaml.v3>`_, Serialization
    `zap <https://go.uber.org/zap>`_, Logging library
 
-Java built-in support
+Java and Kotlin built-in support
 ==================================
+
+.. include:: ../reusables/kotlin-beta-note.rst
 
 Provided by the current versions of the
 CodeQL query pack ``codeql/java-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src>`__)

@@ -168,7 +168,9 @@ generate a database, therefore the build method must be available to the CLI.
 Detecting the build system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The CodeQL CLI includes autobuilders for C/C++, C#, Go, and Java code. CodeQL
+.. include:: ../reusables/kotlin-beta-note.rst
+
+The CodeQL CLI includes autobuilders for C/C++, C#, Go, Java and Kotlin code. CodeQL
 autobuilders allow you to build projects for compiled languages without
 specifying any build commands. When an autobuilder is invoked, CodeQL examines
 the source for evidence of a build system and attempts to run the optimal set of
