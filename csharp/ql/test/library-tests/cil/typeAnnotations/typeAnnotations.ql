@@ -1,26 +1,42 @@
 import cil
+import semmle.code.csharp.commons.QualifiedName
 import semmle.code.cil.Type
 
 private string elementType(Element e, string toString) {
-  toString = e.(Method).getQualifiedName() and result = "method"
-  or
-  toString = e.(Property).getQualifiedName() and result = "property"
+  exists(string namespace, string type, string name |
+    toString = printQualifiedName(namespace, type, name)
+  |
+    e.(Method).hasQualifiedName(namespace, type, name) and result = "method"
+    or
+    e.(Property).hasQualifiedName(namespace, type, name) and result = "property"
+  )
   or
   e =
     any(Parameter p |
-      toString = "Parameter " + p.getIndex() + " of " + p.getDeclaringElement().getQualifiedName()
+      exists(string namespace, string name |
+        p.getDeclaringElement().hasQualifiedName(namespace, name)
+      |
+        toString = "Parameter " + p.getIndex() + " of " + printQualifiedName(namespace, name)
+      )
     ) and
   result = "parameter"
   or
   e =
     any(LocalVariable v |
-      toString =
-        "Local variable " + v.getIndex() + " of method " +
-          v.getImplementation().getMethod().getQualifiedName()
+      exists(string namespace, string type, string name |
+        v.getImplementation().getMethod().hasQualifiedName(namespace, type, name)
+      |
+        toString =
+          "Local variable " + v.getIndex() + " of method " +
+            printQualifiedName(namespace, type, name)
+      )
     ) and
   result = "local"
   or
-  toString = e.(FunctionPointerType).getQualifiedName() and result = "fnptr"
+  exists(string namespace, string name | e.(FunctionPointerType).hasQualifiedName(namespace, name) |
+    toString = printQualifiedName(namespace, name)
+  ) and
+  result = "fnptr"
   or
   not e instanceof Method and
   not e instanceof Property and
@@ -53,7 +69,9 @@ where
   (
     not e instanceof Parameter
     or
-    e.(Parameter).getDeclaringElement().(Method).getDeclaringType().getQualifiedName() !=
-      "System.Environment" // There are OS specific methods in this class
+    not exists(Type t |
+      t = e.(Parameter).getDeclaringElement().(Method).getDeclaringType() and
+      t.hasQualifiedName("System", "Environment")
+    ) // There are OS specific methods in this class
   )
 select toString, type, i

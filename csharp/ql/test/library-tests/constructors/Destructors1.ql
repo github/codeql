@@ -3,9 +3,11 @@
  */
 
 import csharp
+import semmle.code.csharp.commons.QualifiedName
 
-from Destructor c
+from Destructor c, string namespace, string name
 where
-  c.getDeclaringType().getName() = "Class" and
-  c.getDeclaringType().getNamespace().getQualifiedName() = "Constructors"
+  c.getDeclaringType().hasQualifiedName(namespace, name) and
+  namespace = "Constructors" and
+  name = "Class"
 select c, c.getDeclaringType().getQualifiedName()
