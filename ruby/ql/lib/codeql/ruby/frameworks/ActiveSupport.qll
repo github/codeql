@@ -312,7 +312,13 @@ module ActiveSupport {
     }
   }
 
+  /**
+   * `ActiveSupport::ERB`
+   */
   module Erb {
+    /**
+     * `ActiveSupport::ERB::Util`
+     */
     module Util {
       private class JsonEscapeSummary extends SimpleSummarizedCallable {
         JsonEscapeSummary() { this = "json_escape" }
