@@ -53,7 +53,7 @@ All scopes are basically a list of statements, although ``Scope`` classes have a
    where f.getScope() instanceof Function
    select f
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665620040/>`__. Many projects have nested functions.
+Many codebases use nested functions.
 
 Statement
 ^^^^^^^^^
@@ -95,7 +95,7 @@ As an example, to find expressions of the form ``a+2`` where the left is a simpl
    where bin.getLeft() instanceof Name and bin.getRight() instanceof Num
    select bin
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/669950026/>`__. Many projects include examples of this pattern.
+Many codebases include examples of this pattern.
 
 Variable
 ^^^^^^^^
@@ -126,7 +126,7 @@ For our first example, we can find all ``finally`` blocks by using the ``Try`` c
    from Try t
    select t.getFinalbody()
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
+Many codebases include examples of this pattern.
 
 2. Finding ``except`` blocks that do nothing
 ''''''''''''''''''''''''''''''''''''''''''''
@@ -157,7 +157,7 @@ Both forms are equivalent. Using the positive expression, the whole query looks 
    where forall(Stmt s | s = ex.getAStmt() | s instanceof Pass)
    select ex
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/690010036/>`__. Many projects include pass-only ``except`` blocks.
+Many codebases include pass-only ``except`` blocks.
 
 Summary
 ^^^^^^^
@@ -277,8 +277,6 @@ Using this predicate we can select the longest ``BasicBlock`` by selecting the `
    from BasicBlock b
    where bb_length(b) = max(bb_length(_))
    select b
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/666730036/>`__. When we ran it on the LGTM.com demo projects, the *openstack/nova* and *ytdl-org/youtube-dl* projects both contained source code results for this query.
 
 .. pull-quote::
 

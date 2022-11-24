@@ -97,11 +97,9 @@ Python has builtin functionality for reading and writing files, such as the func
       call = API::moduleImport("os").getMember("open").getACall()
     select call.getArg(0)
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8635258505893505141/>`__. Two of the demo projects make use of this low-level API.
-
 Notice the use of the ``API`` module for referring to library functions. For more information, see ":doc:`Using API graphs in Python <using-api-graphs-in-python>`."
 
-Unfortunately this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:
+Unfortunately this query will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:
 
 .. code-block:: ql
 
@@ -115,9 +113,7 @@ Unfortunately this will only give the expression in the argument, not the values
       DataFlow::localFlow(expr, call.getArg(0))
     select call, expr
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8213643003890447109/>`__. Many expressions flow to the same call.
-
-We see that we get several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the ``call`` column). We are mostly interested in the "first" of these, what might be called the local source for the file name. To restrict attention to such local sources, and to simultaneously make the analysis more performant, we have the QL class ``LocalSourceNode``. We could demand that ``expr`` is such a node:
+Typically, you will see several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the ``call`` column). We are mostly interested in the "first" of these, what might be called the local source for the file name. To restrict attention to such local sources, and to simultaneously make the analysis more performant, we have the QL class ``LocalSourceNode``. We could demand that ``expr`` is such a node:
 
 .. code-block:: ql
 
@@ -160,9 +156,9 @@ As an alternative, we can ask more directly that ``expr`` is a local source of t
       expr = call.getArg(0).getALocalSource()
     select call, expr
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/6602079735954016687/>`__. All these three queries give identical results. We now mostly have one expression per call.
+These three queries all give identical results. We now mostly have one expression per call.
 
-We still have some cases of more than one expression flowing to a call, but then they flow through different code paths (possibly due to control-flow splitting, as in the second case).
+We still have some cases of more than one expression flowing to a call, but then they flow through different code paths (possibly due to control-flow splitting).
 
 We might want to make the source more specific, for example a parameter to a function or method. This query finds instances where a parameter is used as the name when opening a file:
 
@@ -178,7 +174,7 @@ We might want to make the source more specific, for example a parameter to a fun
       DataFlow::localFlow(p, call.getArg(0))
     select call, p
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3998032643497238063/>`__. Very few results now; these could feasibly be inspected manually.
+For most codebases, this will return only a few results and these could be inspected manually.
 
 Using the exact name supplied via the parameter may be too strict. If we want to know if the parameter influences the file name, we can use taint tracking instead of data flow. This query finds calls to ``os.open`` where the filename is derived from a parameter:
 
@@ -194,7 +190,7 @@ Using the exact name supplied via the parameter may be too strict. If we want to
       TaintTracking::localTaint(p, call.getArg(0))
     select call, p
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2129957933670836953/>`__. Now we get more results and in more projects.
+Typically, this finds more results.
 
 Global data flow
 ----------------
@@ -368,8 +364,6 @@ This data flow configuration tracks data flow from environment variables to open
     where config.hasFlow(DataFlow::exprNode(environment), DataFlow::exprNode(fileOpen))
     select fileOpen, "This call to 'os.open' uses data from $@.",
       environment, "call to 'os.getenv'"
-
-➤ `Running this in the query console on LGTM.com <https://lgtm.com/query/6582374907796191895/>`__ unsurprisingly yields no results in the demo projects.
 
 
 Further reading

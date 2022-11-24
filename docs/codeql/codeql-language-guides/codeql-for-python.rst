@@ -16,7 +16,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    expressions-and-statements-in-python
    analyzing-control-flow-in-python
 
--  :doc:`Basic query for Python code <basic-query-for-python-code>`: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for Python code <basic-query-for-python-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for Python <codeql-library-for-python>`: When you need to analyze a Python program, you can make use of the large collection of classes in the CodeQL library for Python.
 
