@@ -924,7 +924,7 @@ private module Cached {
   newtype TReturnCtx =
     TReturnCtxNone() or
     TReturnCtxNoFlowThrough() or
-    TReturnCtxMaybeFlowThrough(ReturnPosition pos)
+    TReturnCtxMaybeFlowThrough(ReturnKindExt kind)
 
   cached
   newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
@@ -1335,7 +1335,7 @@ class ParameterPositionOption extends TParameterPositionOption {
  *
  * - `TReturnCtxNone()`: no return flow.
  * - `TReturnCtxNoFlowThrough()`: return flow, but flow through is not possible.
- * - `TReturnCtxMaybeFlowThrough(ReturnPosition pos)`: return flow, of kind `pos`, and
+ * - `TReturnCtxMaybeFlowThrough(ReturnKindExt kind)`: return flow, of kind `kind`, and
  *    flow through may be possible.
  */
 class ReturnCtx extends TReturnCtx {
@@ -1346,9 +1346,9 @@ class ReturnCtx extends TReturnCtx {
     this = TReturnCtxNoFlowThrough() and
     result = "(no flow through)"
     or
-    exists(ReturnPosition pos |
-      this = TReturnCtxMaybeFlowThrough(pos) and
-      result = pos.toString()
+    exists(ReturnKindExt kind |
+      this = TReturnCtxMaybeFlowThrough(kind) and
+      result = kind.toString()
     )
   }
 }
