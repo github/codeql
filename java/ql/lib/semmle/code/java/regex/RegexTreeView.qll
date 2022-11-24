@@ -615,7 +615,7 @@ module Impl implements RegexTreeViewSig {
    * \p{Digit}
    * \p{IsLowerCase}
    */
-  class RegExpNamedProperty extends RegExpCharacterClassEscape {
+  additional class RegExpNamedProperty extends RegExpCharacterClassEscape {
     boolean inverted;
     string name;
 
@@ -745,7 +745,7 @@ module Impl implements RegexTreeViewSig {
    * \t
    * ```
    */
-  class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
+  additional class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
     RegExpNormalChar() { this = TRegExpNormalChar(re, start, end) }
 
     /**
@@ -770,7 +770,7 @@ module Impl implements RegexTreeViewSig {
    * \Qabc\E
    * ```
    */
-  class RegExpQuote extends RegExpTerm, TRegExpQuote {
+  additional class RegExpQuote extends RegExpTerm, TRegExpQuote {
     string value;
 
     RegExpQuote() {
@@ -880,7 +880,7 @@ module Impl implements RegexTreeViewSig {
    * .
    * ```
    */
-  class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
+  additional class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
     string char;
 
     RegExpSpecialChar() {
@@ -956,7 +956,7 @@ module Impl implements RegexTreeViewSig {
    * (?=\w)
    * ```
    */
-  class RegExpZeroWidthMatch extends RegExpGroup {
+  additional class RegExpZeroWidthMatch extends RegExpGroup {
     RegExpZeroWidthMatch() { re.zeroWidthMatch(start, end) }
 
     override RegExpTerm getChild(int i) { none() }
@@ -1023,7 +1023,7 @@ module Impl implements RegexTreeViewSig {
    * (?!\n)
    * ```
    */
-  class RegExpNegativeLookahead extends RegExpLookahead {
+  additional class RegExpNegativeLookahead extends RegExpLookahead {
     RegExpNegativeLookahead() { re.negativeLookaheadAssertionGroup(start, end) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookahead" }
@@ -1065,7 +1065,7 @@ module Impl implements RegexTreeViewSig {
    * (?<!\\)
    * ```
    */
-  class RegExpNegativeLookbehind extends RegExpLookbehind {
+  additional class RegExpNegativeLookbehind extends RegExpLookbehind {
     RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookbehind" }
@@ -1159,7 +1159,7 @@ module Impl implements RegexTreeViewSig {
   /**
    * Gets the flags for `root`, or the empty string if `root` has no flags.
    */
-  deprecated string getFlags(RegExpTerm root) {
+  additional deprecated string getFlags(RegExpTerm root) {
     root.isRootTerm() and
     result = root.getLiteral().getFlags()
   }
