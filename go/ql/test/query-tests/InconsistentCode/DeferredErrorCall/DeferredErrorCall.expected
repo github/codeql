@@ -1,0 +1,2 @@
+| tests.go:16:2:16:20 | defer statement | Deferred a call to returnsPair, which may return an error. |
+| tests.go:17:2:17:23 | defer statement | Deferred a call to checkSomething, which may return an error. |

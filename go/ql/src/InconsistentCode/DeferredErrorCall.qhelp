@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When calling a function which may return an error, we should check whether an error has
+occurred and handle it in some meaningful way. Deferring a function call does not allow
+us to perform such a check. Therefore, calls to functions which may return errors should
+not be deferred.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the deferred function call carefully to check whether any errors that may arise should be
+handled explicitly.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, a call to <code>io.WriteLine</code> is deferred with the intention of
+appendending some data to a file after some other data has been written to it. However, the call
+may not succeed and return and error, as demonstrated in the other use of
+<code>io.WriteLine</code>.
+</p>
+
+<sample src="DeferredErrorCall.go" />
+
+<p>
+To correct this issue, do not defer the function call that may return an error and handle the
+error explicitly instead:
+</p>
+
+<sample src="DeferredErrorCallGood.go" />
+
+</example>
+
+<references>
+    <li>The Go Programming Language Specification: <a href="https://go.dev/ref/spec#Defer_statements">Defer statements</a>.</li>
+    <li>The Go Programming Language Specification: <a href="https://go.dev/ref/spec#Errors">Errors</a>.</li>
+</references>
+</qhelp>
