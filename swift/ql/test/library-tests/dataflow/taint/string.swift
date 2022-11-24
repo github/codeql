@@ -87,3 +87,27 @@ func taintThroughStringOperations() {
   sink(arg: clean.debugDescription)
   sink(arg: tainted.debugDescription) // $ MISSING: tainted=74
 }
+
+class Data
+{
+    init<S>(_ elements: S) {}
+}
+
+extension String {
+	struct Encoding {
+		static let utf8 = Encoding()
+	}
+
+	init?(data: Data, encoding: Encoding) { self.init() }
+}
+
+
+func source3() -> Data { return Data("") }
+
+func taintThroughData() {
+  let stringClean = String(data: Data(""), encoding: String.Encoding.utf8)
+  let stringTainted = String(data: source3(), encoding: String.Encoding.utf8)
+
+	sink(arg: stringClean!)
+	sink(arg: stringTainted!) // $ MISSING: tainted=100
+}

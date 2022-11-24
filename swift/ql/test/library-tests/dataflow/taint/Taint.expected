@@ -1,4 +1,154 @@
 edges
+| data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  |
+| data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  |
+| data.swift:27:2:27:62 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  |
+| data.swift:28:2:28:45 | [summary param] 0 in init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bytes:count:) :  |
+| data.swift:29:2:29:82 | [summary param] 0 in init(bytesNoCopy:count:deallocator:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:30:2:30:50 | [summary param] 0 in init(contentsOf:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(contentsOf:options:) :  |
+| data.swift:31:2:31:29 | [summary param] 0 in init(referencing:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(referencing:) :  |
+| data.swift:32:2:32:24 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
+| data.swift:33:2:33:25 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
+| data.swift:34:2:34:63 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  |
+| data.swift:35:2:35:52 | [summary param] 0 in append(_:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:count:) :  |
+| data.swift:36:2:36:36 | [summary param] 0 in append(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  |
+| data.swift:38:2:38:88 | [summary param] this in base64EncodedData(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedData(options:) :  |
+| data.swift:39:2:39:86 | [summary param] this in base64EncodedString(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  |
+| data.swift:40:2:40:99 | [summary param] this in compactMap(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in compactMap(_:) :  |
+| data.swift:41:2:41:53 | [summary param] this in copyBytes(to:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:) :  |
+| data.swift:44:2:44:137 | [summary param] this in flatMap(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  |
+| data.swift:45:2:45:97 | [summary param] this in flatMap(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  |
+| data.swift:46:2:46:34 | [summary param] 0 in insert(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in insert(_:at:) :  |
+| data.swift:47:2:47:83 | [summary param] 0 in insert(contentsOf:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in insert(contentsOf:at:) :  |
+| data.swift:48:2:48:50 | [summary param] this in map(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in map(_:) :  |
+| data.swift:49:2:49:115 | [summary param] this in reduce(into:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in reduce(into:_:) :  |
+| data.swift:50:2:50:180 | [summary param] 1 in replace(_:with:maxReplacements:) :  | file://:0:0:0:0 | [summary] to write: argument this in replace(_:with:maxReplacements:) :  |
+| data.swift:51:2:51:58 | [summary param] 1 in replaceSubrange(_:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  |
+| data.swift:52:2:52:151 | [summary param] 1 in replaceSubrange(_:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  |
+| data.swift:54:2:54:82 | [summary param] 1 in replaceSubrange(_:with:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:count:) :  |
+| data.swift:56:2:56:214 | [summary param] 1 in replacing(_:with:maxReplacements:) :  | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  |
+| data.swift:57:2:57:236 | [summary param] 1 in replacing(_:with:subrange:maxReplacements:) :  | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  |
+| data.swift:58:2:58:39 | [summary param] this in sorted() :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted() :  |
+| data.swift:59:2:59:81 | [summary param] this in sorted(by:) :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted(by:) :  |
+| data.swift:60:2:60:132 | [summary param] this in sorted(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted(using:) :  |
+| data.swift:61:2:61:41 | [summary param] this in shuffled() :  | file://:0:0:0:0 | [summary] to write: return (return) in shuffled() :  |
+| data.swift:62:2:62:58 | [summary param] this in shuffled(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in shuffled(using:) :  |
+| data.swift:63:2:63:123 | [summary param] this in trimmingPrefix(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(_:) :  |
+| data.swift:64:2:64:72 | [summary param] this in trimmingPrefix(while:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(while:) :  |
+| data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  | data.swift:90:12:90:12 | dataTainted3 |
+| data.swift:89:41:89:48 | call to source() :  | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  |
+| data.swift:89:41:89:48 | call to source() :  | data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  |
+| data.swift:93:21:93:73 | call to init(buffer:) :  | data.swift:94:12:94:12 | dataTainted4 |
+| data.swift:93:34:93:41 | call to source() :  | data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  |
+| data.swift:93:34:93:41 | call to source() :  | data.swift:93:21:93:73 | call to init(buffer:) :  |
+| data.swift:95:21:95:74 | call to init(buffer:) :  | data.swift:96:12:96:12 | dataTainted5 |
+| data.swift:95:34:95:41 | call to source() :  | data.swift:27:2:27:62 | [summary param] 0 in init(buffer:) :  |
+| data.swift:95:34:95:41 | call to source() :  | data.swift:95:21:95:74 | call to init(buffer:) :  |
+| data.swift:99:21:99:72 | call to init(bytes:count:) :  | data.swift:100:12:100:12 | dataTainted6 |
+| data.swift:99:33:99:40 | call to source() :  | data.swift:28:2:28:45 | [summary param] 0 in init(bytes:count:) :  |
+| data.swift:99:33:99:40 | call to source() :  | data.swift:99:21:99:72 | call to init(bytes:count:) :  |
+| data.swift:103:21:103:114 | call to init(bytesNoCopy:count:deallocator:) :  | data.swift:104:12:104:12 | dataTainted7 |
+| data.swift:103:39:103:46 | call to source() :  | data.swift:29:2:29:82 | [summary param] 0 in init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:103:39:103:46 | call to source() :  | data.swift:103:21:103:114 | call to init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:107:20:107:27 | call to source() :  | data.swift:108:38:108:38 | urlTainted8 :  |
+| data.swift:108:21:108:62 | call to init(contentsOf:options:) :  | data.swift:109:12:109:12 | dataTainted8 |
+| data.swift:108:38:108:38 | urlTainted8 :  | data.swift:30:2:30:50 | [summary param] 0 in init(contentsOf:options:) :  |
+| data.swift:108:38:108:38 | urlTainted8 :  | data.swift:108:21:108:62 | call to init(contentsOf:options:) :  |
+| data.swift:112:21:112:58 | call to init(referencing:) :  | data.swift:113:12:113:12 | dataTainted9 |
+| data.swift:112:39:112:46 | call to source() :  | data.swift:31:2:31:29 | [summary param] 0 in init(referencing:) :  |
+| data.swift:112:39:112:46 | call to source() :  | data.swift:112:21:112:58 | call to init(referencing:) :  |
+| data.swift:117:2:117:2 | [post] dataTainted10 :  | data.swift:118:12:118:12 | dataTainted10 |
+| data.swift:117:23:117:30 | call to source() :  | data.swift:32:2:32:24 | [summary param] 0 in append(_:) :  |
+| data.swift:117:23:117:30 | call to source() :  | data.swift:117:2:117:2 | [post] dataTainted10 :  |
+| data.swift:121:2:121:2 | [post] dataTainted11 :  | data.swift:122:12:122:12 | dataTainted11 |
+| data.swift:121:23:121:30 | call to source() :  | data.swift:33:2:33:25 | [summary param] 0 in append(_:) :  |
+| data.swift:121:23:121:30 | call to source() :  | data.swift:121:2:121:2 | [post] dataTainted11 :  |
+| data.swift:125:2:125:2 | [post] dataTainted12 :  | data.swift:126:12:126:12 | dataTainted12 |
+| data.swift:125:23:125:30 | call to source() :  | data.swift:34:2:34:63 | [summary param] 0 in append(_:) :  |
+| data.swift:125:23:125:30 | call to source() :  | data.swift:125:2:125:2 | [post] dataTainted12 :  |
+| data.swift:130:2:130:2 | [post] dataTainted13 :  | data.swift:131:12:131:12 | dataTainted13 |
+| data.swift:130:23:130:30 | call to source() :  | data.swift:35:2:35:52 | [summary param] 0 in append(_:count:) :  |
+| data.swift:130:23:130:30 | call to source() :  | data.swift:130:2:130:2 | [post] dataTainted13 :  |
+| data.swift:135:2:135:2 | [post] dataTainted14 :  | data.swift:136:12:136:12 | dataTainted14 |
+| data.swift:135:35:135:42 | call to source() :  | data.swift:36:2:36:36 | [summary param] 0 in append(contentsOf:) :  |
+| data.swift:135:35:135:42 | call to source() :  | data.swift:135:2:135:2 | [post] dataTainted14 :  |
+| data.swift:139:22:139:29 | call to source() :  | data.swift:140:12:140:12 | dataTainted15 :  |
+| data.swift:140:12:140:12 | dataTainted15 :  | data.swift:38:2:38:88 | [summary param] this in base64EncodedData(options:) :  |
+| data.swift:140:12:140:12 | dataTainted15 :  | data.swift:140:12:140:55 | call to base64EncodedData(options:) |
+| data.swift:143:22:143:29 | call to source() :  | data.swift:144:12:144:12 | dataTainted16 :  |
+| data.swift:144:12:144:12 | dataTainted16 :  | data.swift:39:2:39:86 | [summary param] this in base64EncodedString(options:) :  |
+| data.swift:144:12:144:12 | dataTainted16 :  | data.swift:144:12:144:57 | call to base64EncodedString(options:) |
+| data.swift:147:22:147:29 | call to source() :  | data.swift:148:29:148:29 | dataTainted17 :  |
+| data.swift:148:29:148:29 | dataTainted17 :  | data.swift:40:2:40:99 | [summary param] this in compactMap(_:) :  |
+| data.swift:148:29:148:29 | dataTainted17 :  | data.swift:148:29:148:72 | call to compactMap(_:) :  |
+| data.swift:148:29:148:72 | call to compactMap(_:) :  | data.swift:149:12:149:12 | compactMapped |
+| data.swift:152:22:152:29 | call to source() :  | data.swift:154:2:154:2 | dataTainted18 :  |
+| data.swift:154:2:154:2 | dataTainted18 :  | data.swift:41:2:41:53 | [summary param] this in copyBytes(to:) :  |
+| data.swift:154:2:154:2 | dataTainted18 :  | data.swift:154:30:154:30 | [post] pointerTainted18 :  |
+| data.swift:154:30:154:30 | [post] pointerTainted18 :  | data.swift:155:12:155:12 | pointerTainted18 |
+| data.swift:170:22:170:29 | call to source() :  | data.swift:171:19:171:19 | dataTainted21 :  |
+| data.swift:171:19:171:19 | dataTainted21 :  | data.swift:44:2:44:137 | [summary param] this in flatMap(_:) :  |
+| data.swift:171:19:171:19 | dataTainted21 :  | data.swift:171:19:171:74 | call to flatMap(_:) :  |
+| data.swift:171:19:171:74 | call to flatMap(_:) :  | data.swift:172:12:172:12 | flatMapped |
+| data.swift:174:22:174:29 | call to source() :  | data.swift:175:20:175:20 | dataTainted22 :  |
+| data.swift:175:20:175:20 | dataTainted22 :  | data.swift:45:2:45:97 | [summary param] this in flatMap(_:) :  |
+| data.swift:175:20:175:20 | dataTainted22 :  | data.swift:175:20:175:60 | call to flatMap(_:) :  |
+| data.swift:175:20:175:60 | call to flatMap(_:) :  | data.swift:176:12:176:12 | flatMapped2 |
+| data.swift:180:2:180:2 | [post] dataTainted23 :  | data.swift:181:12:181:12 | dataTainted23 |
+| data.swift:180:23:180:30 | call to source() :  | data.swift:46:2:46:34 | [summary param] 0 in insert(_:at:) :  |
+| data.swift:180:23:180:30 | call to source() :  | data.swift:180:2:180:2 | [post] dataTainted23 :  |
+| data.swift:185:2:185:2 | [post] dataTainted24 :  | data.swift:186:12:186:12 | dataTainted24 |
+| data.swift:185:35:185:42 | call to source() :  | data.swift:47:2:47:83 | [summary param] 0 in insert(contentsOf:at:) :  |
+| data.swift:185:35:185:42 | call to source() :  | data.swift:185:2:185:2 | [post] dataTainted24 :  |
+| data.swift:189:22:189:29 | call to source() :  | data.swift:190:15:190:15 | dataTainted25 :  |
+| data.swift:190:15:190:15 | dataTainted25 :  | data.swift:48:2:48:50 | [summary param] this in map(_:) :  |
+| data.swift:190:15:190:15 | dataTainted25 :  | data.swift:190:15:190:38 | call to map(_:) :  |
+| data.swift:190:15:190:38 | call to map(_:) :  | data.swift:191:12:191:12 | mapped |
+| data.swift:194:22:194:29 | call to source() :  | data.swift:195:16:195:16 | dataTainted26 :  |
+| data.swift:195:16:195:16 | dataTainted26 :  | data.swift:49:2:49:115 | [summary param] this in reduce(into:_:) :  |
+| data.swift:195:16:195:16 | dataTainted26 :  | data.swift:195:16:195:80 | call to reduce(into:_:) :  |
+| data.swift:195:16:195:80 | call to reduce(into:_:) :  | data.swift:196:12:196:12 | reduced |
+| data.swift:200:2:200:2 | [post] dataTainted27 :  | data.swift:201:12:201:12 | dataTainted27 |
+| data.swift:200:35:200:42 | call to source() :  | data.swift:50:2:50:180 | [summary param] 1 in replace(_:with:maxReplacements:) :  |
+| data.swift:200:35:200:42 | call to source() :  | data.swift:200:2:200:2 | [post] dataTainted27 :  |
+| data.swift:205:2:205:2 | [post] dataTainted28 :  | data.swift:206:12:206:12 | dataTainted28 |
+| data.swift:205:45:205:52 | call to source() :  | data.swift:51:2:51:58 | [summary param] 1 in replaceSubrange(_:with:) :  |
+| data.swift:205:45:205:52 | call to source() :  | data.swift:205:2:205:2 | [post] dataTainted28 :  |
+| data.swift:209:2:209:2 | [post] dataTainted29 :  | data.swift:210:12:210:12 | dataTainted29 |
+| data.swift:209:45:209:52 | call to source() :  | data.swift:52:2:52:151 | [summary param] 1 in replaceSubrange(_:with:) :  |
+| data.swift:209:45:209:52 | call to source() :  | data.swift:209:2:209:2 | [post] dataTainted29 :  |
+| data.swift:213:2:213:2 | [post] dataTainted30 :  | data.swift:214:12:214:12 | dataTainted30 |
+| data.swift:213:45:213:52 | call to source() :  | data.swift:52:2:52:151 | [summary param] 1 in replaceSubrange(_:with:) :  |
+| data.swift:213:45:213:52 | call to source() :  | data.swift:213:2:213:2 | [post] dataTainted30 :  |
+| data.swift:218:2:218:2 | [post] dataTainted31 :  | data.swift:219:12:219:12 | dataTainted31 |
+| data.swift:218:45:218:52 | call to source() :  | data.swift:54:2:54:82 | [summary param] 1 in replaceSubrange(_:with:count:) :  |
+| data.swift:218:45:218:52 | call to source() :  | data.swift:218:2:218:2 | [post] dataTainted31 :  |
+| data.swift:223:10:223:10 | [post] dataTainted32 :  | data.swift:224:12:224:12 | dataTainted32 |
+| data.swift:223:45:223:52 | call to source() :  | data.swift:56:2:56:214 | [summary param] 1 in replacing(_:with:maxReplacements:) :  |
+| data.swift:223:45:223:52 | call to source() :  | data.swift:223:10:223:10 | [post] dataTainted32 :  |
+| data.swift:228:10:228:10 | [post] dataTainted33 :  | data.swift:229:12:229:12 | dataTainted33 |
+| data.swift:228:45:228:52 | call to source() :  | data.swift:57:2:57:236 | [summary param] 1 in replacing(_:with:subrange:maxReplacements:) :  |
+| data.swift:228:45:228:52 | call to source() :  | data.swift:228:10:228:10 | [post] dataTainted33 :  |
+| data.swift:236:22:236:29 | call to source() :  | data.swift:237:12:237:12 | dataTainted35 :  |
+| data.swift:237:12:237:12 | dataTainted35 :  | data.swift:58:2:58:39 | [summary param] this in sorted() :  |
+| data.swift:237:12:237:12 | dataTainted35 :  | data.swift:237:12:237:33 | call to sorted() |
+| data.swift:240:22:240:29 | call to source() :  | data.swift:241:12:241:12 | dataTainted36 :  |
+| data.swift:241:12:241:12 | dataTainted36 :  | data.swift:59:2:59:81 | [summary param] this in sorted(by:) :  |
+| data.swift:241:12:241:12 | dataTainted36 :  | data.swift:241:12:241:54 | call to sorted(by:) |
+| data.swift:244:22:244:29 | call to source() :  | data.swift:245:12:245:12 | dataTainted37 :  |
+| data.swift:245:12:245:12 | dataTainted37 :  | data.swift:60:2:60:132 | [summary param] this in sorted(using:) :  |
+| data.swift:245:12:245:12 | dataTainted37 :  | data.swift:245:12:245:46 | call to sorted(using:) |
+| data.swift:248:22:248:29 | call to source() :  | data.swift:249:12:249:12 | dataTainted38 :  |
+| data.swift:249:12:249:12 | dataTainted38 :  | data.swift:61:2:61:41 | [summary param] this in shuffled() :  |
+| data.swift:249:12:249:12 | dataTainted38 :  | data.swift:249:12:249:35 | call to shuffled() |
+| data.swift:252:22:252:29 | call to source() :  | data.swift:254:12:254:12 | dataTainted39 :  |
+| data.swift:254:12:254:12 | dataTainted39 :  | data.swift:62:2:62:58 | [summary param] this in shuffled(using:) :  |
+| data.swift:254:12:254:12 | dataTainted39 :  | data.swift:254:12:254:46 | call to shuffled(using:) |
+| data.swift:257:22:257:29 | call to source() :  | data.swift:258:12:258:12 | dataTainted40 :  |
+| data.swift:258:12:258:12 | dataTainted40 :  | data.swift:63:2:63:123 | [summary param] this in trimmingPrefix(_:) :  |
+| data.swift:258:12:258:12 | dataTainted40 :  | data.swift:258:12:258:44 | call to trimmingPrefix(_:) |
+| data.swift:261:22:261:29 | call to source() :  | data.swift:262:12:262:12 | dataTainted41 :  |
+| data.swift:262:12:262:12 | dataTainted41 :  | data.swift:64:2:64:72 | [summary param] this in trimmingPrefix(while:) :  |
+| data.swift:262:12:262:12 | dataTainted41 :  | data.swift:262:12:262:54 | call to trimmingPrefix(while:) |
 | file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  | nsdata.swift:110:9:110:9 | bytes :  |
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | url.swift:120:61:120:61 | data :  |
 | nsdata.swift:22:9:22:9 | self :  | file://:0:0:0:0 | .bytes :  |
@@ -381,39 +531,214 @@ edges
 | webview.swift:97:17:97:17 | s :  | webview.swift:44:5:44:48 | [summary param] 0 in setValue(_:forProperty:) :  |
 | webview.swift:97:17:97:17 | s :  | webview.swift:97:5:97:5 | [post] v3 :  |
 nodes
+| data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | semmle.label | [summary param] 0 in init(base64Encoded:options:) :  |
+| data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | semmle.label | [summary param] 0 in init(buffer:) :  |
+| data.swift:27:2:27:62 | [summary param] 0 in init(buffer:) :  | semmle.label | [summary param] 0 in init(buffer:) :  |
+| data.swift:28:2:28:45 | [summary param] 0 in init(bytes:count:) :  | semmle.label | [summary param] 0 in init(bytes:count:) :  |
+| data.swift:29:2:29:82 | [summary param] 0 in init(bytesNoCopy:count:deallocator:) :  | semmle.label | [summary param] 0 in init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:30:2:30:50 | [summary param] 0 in init(contentsOf:options:) :  | semmle.label | [summary param] 0 in init(contentsOf:options:) :  |
+| data.swift:31:2:31:29 | [summary param] 0 in init(referencing:) :  | semmle.label | [summary param] 0 in init(referencing:) :  |
+| data.swift:32:2:32:24 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
+| data.swift:33:2:33:25 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
+| data.swift:34:2:34:63 | [summary param] 0 in append(_:) :  | semmle.label | [summary param] 0 in append(_:) :  |
+| data.swift:35:2:35:52 | [summary param] 0 in append(_:count:) :  | semmle.label | [summary param] 0 in append(_:count:) :  |
+| data.swift:36:2:36:36 | [summary param] 0 in append(contentsOf:) :  | semmle.label | [summary param] 0 in append(contentsOf:) :  |
+| data.swift:38:2:38:88 | [summary param] this in base64EncodedData(options:) :  | semmle.label | [summary param] this in base64EncodedData(options:) :  |
+| data.swift:39:2:39:86 | [summary param] this in base64EncodedString(options:) :  | semmle.label | [summary param] this in base64EncodedString(options:) :  |
+| data.swift:40:2:40:99 | [summary param] this in compactMap(_:) :  | semmle.label | [summary param] this in compactMap(_:) :  |
+| data.swift:41:2:41:53 | [summary param] this in copyBytes(to:) :  | semmle.label | [summary param] this in copyBytes(to:) :  |
+| data.swift:44:2:44:137 | [summary param] this in flatMap(_:) :  | semmle.label | [summary param] this in flatMap(_:) :  |
+| data.swift:45:2:45:97 | [summary param] this in flatMap(_:) :  | semmle.label | [summary param] this in flatMap(_:) :  |
+| data.swift:46:2:46:34 | [summary param] 0 in insert(_:at:) :  | semmle.label | [summary param] 0 in insert(_:at:) :  |
+| data.swift:47:2:47:83 | [summary param] 0 in insert(contentsOf:at:) :  | semmle.label | [summary param] 0 in insert(contentsOf:at:) :  |
+| data.swift:48:2:48:50 | [summary param] this in map(_:) :  | semmle.label | [summary param] this in map(_:) :  |
+| data.swift:49:2:49:115 | [summary param] this in reduce(into:_:) :  | semmle.label | [summary param] this in reduce(into:_:) :  |
+| data.swift:50:2:50:180 | [summary param] 1 in replace(_:with:maxReplacements:) :  | semmle.label | [summary param] 1 in replace(_:with:maxReplacements:) :  |
+| data.swift:51:2:51:58 | [summary param] 1 in replaceSubrange(_:with:) :  | semmle.label | [summary param] 1 in replaceSubrange(_:with:) :  |
+| data.swift:52:2:52:151 | [summary param] 1 in replaceSubrange(_:with:) :  | semmle.label | [summary param] 1 in replaceSubrange(_:with:) :  |
+| data.swift:54:2:54:82 | [summary param] 1 in replaceSubrange(_:with:count:) :  | semmle.label | [summary param] 1 in replaceSubrange(_:with:count:) :  |
+| data.swift:56:2:56:214 | [summary param] 1 in replacing(_:with:maxReplacements:) :  | semmle.label | [summary param] 1 in replacing(_:with:maxReplacements:) :  |
+| data.swift:57:2:57:236 | [summary param] 1 in replacing(_:with:subrange:maxReplacements:) :  | semmle.label | [summary param] 1 in replacing(_:with:subrange:maxReplacements:) :  |
+| data.swift:58:2:58:39 | [summary param] this in sorted() :  | semmle.label | [summary param] this in sorted() :  |
+| data.swift:59:2:59:81 | [summary param] this in sorted(by:) :  | semmle.label | [summary param] this in sorted(by:) :  |
+| data.swift:60:2:60:132 | [summary param] this in sorted(using:) :  | semmle.label | [summary param] this in sorted(using:) :  |
+| data.swift:61:2:61:41 | [summary param] this in shuffled() :  | semmle.label | [summary param] this in shuffled() :  |
+| data.swift:62:2:62:58 | [summary param] this in shuffled(using:) :  | semmle.label | [summary param] this in shuffled(using:) :  |
+| data.swift:63:2:63:123 | [summary param] this in trimmingPrefix(_:) :  | semmle.label | [summary param] this in trimmingPrefix(_:) :  |
+| data.swift:64:2:64:72 | [summary param] this in trimmingPrefix(while:) :  | semmle.label | [summary param] this in trimmingPrefix(while:) :  |
+| data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  | semmle.label | call to init(base64Encoded:options:) :  |
+| data.swift:89:41:89:48 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:90:12:90:12 | dataTainted3 | semmle.label | dataTainted3 |
+| data.swift:93:21:93:73 | call to init(buffer:) :  | semmle.label | call to init(buffer:) :  |
+| data.swift:93:34:93:41 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:94:12:94:12 | dataTainted4 | semmle.label | dataTainted4 |
+| data.swift:95:21:95:74 | call to init(buffer:) :  | semmle.label | call to init(buffer:) :  |
+| data.swift:95:34:95:41 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:96:12:96:12 | dataTainted5 | semmle.label | dataTainted5 |
+| data.swift:99:21:99:72 | call to init(bytes:count:) :  | semmle.label | call to init(bytes:count:) :  |
+| data.swift:99:33:99:40 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:100:12:100:12 | dataTainted6 | semmle.label | dataTainted6 |
+| data.swift:103:21:103:114 | call to init(bytesNoCopy:count:deallocator:) :  | semmle.label | call to init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:103:39:103:46 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:104:12:104:12 | dataTainted7 | semmle.label | dataTainted7 |
+| data.swift:107:20:107:27 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:108:21:108:62 | call to init(contentsOf:options:) :  | semmle.label | call to init(contentsOf:options:) :  |
+| data.swift:108:38:108:38 | urlTainted8 :  | semmle.label | urlTainted8 :  |
+| data.swift:109:12:109:12 | dataTainted8 | semmle.label | dataTainted8 |
+| data.swift:112:21:112:58 | call to init(referencing:) :  | semmle.label | call to init(referencing:) :  |
+| data.swift:112:39:112:46 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:113:12:113:12 | dataTainted9 | semmle.label | dataTainted9 |
+| data.swift:117:2:117:2 | [post] dataTainted10 :  | semmle.label | [post] dataTainted10 :  |
+| data.swift:117:23:117:30 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:118:12:118:12 | dataTainted10 | semmle.label | dataTainted10 |
+| data.swift:121:2:121:2 | [post] dataTainted11 :  | semmle.label | [post] dataTainted11 :  |
+| data.swift:121:23:121:30 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:122:12:122:12 | dataTainted11 | semmle.label | dataTainted11 |
+| data.swift:125:2:125:2 | [post] dataTainted12 :  | semmle.label | [post] dataTainted12 :  |
+| data.swift:125:23:125:30 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:126:12:126:12 | dataTainted12 | semmle.label | dataTainted12 |
+| data.swift:130:2:130:2 | [post] dataTainted13 :  | semmle.label | [post] dataTainted13 :  |
+| data.swift:130:23:130:30 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:131:12:131:12 | dataTainted13 | semmle.label | dataTainted13 |
+| data.swift:135:2:135:2 | [post] dataTainted14 :  | semmle.label | [post] dataTainted14 :  |
+| data.swift:135:35:135:42 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:136:12:136:12 | dataTainted14 | semmle.label | dataTainted14 |
+| data.swift:139:22:139:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:140:12:140:12 | dataTainted15 :  | semmle.label | dataTainted15 :  |
+| data.swift:140:12:140:55 | call to base64EncodedData(options:) | semmle.label | call to base64EncodedData(options:) |
+| data.swift:143:22:143:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:144:12:144:12 | dataTainted16 :  | semmle.label | dataTainted16 :  |
+| data.swift:144:12:144:57 | call to base64EncodedString(options:) | semmle.label | call to base64EncodedString(options:) |
+| data.swift:147:22:147:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:148:29:148:29 | dataTainted17 :  | semmle.label | dataTainted17 :  |
+| data.swift:148:29:148:72 | call to compactMap(_:) :  | semmle.label | call to compactMap(_:) :  |
+| data.swift:149:12:149:12 | compactMapped | semmle.label | compactMapped |
+| data.swift:152:22:152:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:154:2:154:2 | dataTainted18 :  | semmle.label | dataTainted18 :  |
+| data.swift:154:30:154:30 | [post] pointerTainted18 :  | semmle.label | [post] pointerTainted18 :  |
+| data.swift:155:12:155:12 | pointerTainted18 | semmle.label | pointerTainted18 |
+| data.swift:170:22:170:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:171:19:171:19 | dataTainted21 :  | semmle.label | dataTainted21 :  |
+| data.swift:171:19:171:74 | call to flatMap(_:) :  | semmle.label | call to flatMap(_:) :  |
+| data.swift:172:12:172:12 | flatMapped | semmle.label | flatMapped |
+| data.swift:174:22:174:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:175:20:175:20 | dataTainted22 :  | semmle.label | dataTainted22 :  |
+| data.swift:175:20:175:60 | call to flatMap(_:) :  | semmle.label | call to flatMap(_:) :  |
+| data.swift:176:12:176:12 | flatMapped2 | semmle.label | flatMapped2 |
+| data.swift:180:2:180:2 | [post] dataTainted23 :  | semmle.label | [post] dataTainted23 :  |
+| data.swift:180:23:180:30 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:181:12:181:12 | dataTainted23 | semmle.label | dataTainted23 |
+| data.swift:185:2:185:2 | [post] dataTainted24 :  | semmle.label | [post] dataTainted24 :  |
+| data.swift:185:35:185:42 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:186:12:186:12 | dataTainted24 | semmle.label | dataTainted24 |
+| data.swift:189:22:189:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:190:15:190:15 | dataTainted25 :  | semmle.label | dataTainted25 :  |
+| data.swift:190:15:190:38 | call to map(_:) :  | semmle.label | call to map(_:) :  |
+| data.swift:191:12:191:12 | mapped | semmle.label | mapped |
+| data.swift:194:22:194:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:195:16:195:16 | dataTainted26 :  | semmle.label | dataTainted26 :  |
+| data.swift:195:16:195:80 | call to reduce(into:_:) :  | semmle.label | call to reduce(into:_:) :  |
+| data.swift:196:12:196:12 | reduced | semmle.label | reduced |
+| data.swift:200:2:200:2 | [post] dataTainted27 :  | semmle.label | [post] dataTainted27 :  |
+| data.swift:200:35:200:42 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:201:12:201:12 | dataTainted27 | semmle.label | dataTainted27 |
+| data.swift:205:2:205:2 | [post] dataTainted28 :  | semmle.label | [post] dataTainted28 :  |
+| data.swift:205:45:205:52 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:206:12:206:12 | dataTainted28 | semmle.label | dataTainted28 |
+| data.swift:209:2:209:2 | [post] dataTainted29 :  | semmle.label | [post] dataTainted29 :  |
+| data.swift:209:45:209:52 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:210:12:210:12 | dataTainted29 | semmle.label | dataTainted29 |
+| data.swift:213:2:213:2 | [post] dataTainted30 :  | semmle.label | [post] dataTainted30 :  |
+| data.swift:213:45:213:52 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:214:12:214:12 | dataTainted30 | semmle.label | dataTainted30 |
+| data.swift:218:2:218:2 | [post] dataTainted31 :  | semmle.label | [post] dataTainted31 :  |
+| data.swift:218:45:218:52 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:219:12:219:12 | dataTainted31 | semmle.label | dataTainted31 |
+| data.swift:223:10:223:10 | [post] dataTainted32 :  | semmle.label | [post] dataTainted32 :  |
+| data.swift:223:45:223:52 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:224:12:224:12 | dataTainted32 | semmle.label | dataTainted32 |
+| data.swift:228:10:228:10 | [post] dataTainted33 :  | semmle.label | [post] dataTainted33 :  |
+| data.swift:228:45:228:52 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:229:12:229:12 | dataTainted33 | semmle.label | dataTainted33 |
+| data.swift:236:22:236:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:237:12:237:12 | dataTainted35 :  | semmle.label | dataTainted35 :  |
+| data.swift:237:12:237:33 | call to sorted() | semmle.label | call to sorted() |
+| data.swift:240:22:240:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:241:12:241:12 | dataTainted36 :  | semmle.label | dataTainted36 :  |
+| data.swift:241:12:241:54 | call to sorted(by:) | semmle.label | call to sorted(by:) |
+| data.swift:244:22:244:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:245:12:245:12 | dataTainted37 :  | semmle.label | dataTainted37 :  |
+| data.swift:245:12:245:46 | call to sorted(using:) | semmle.label | call to sorted(using:) |
+| data.swift:248:22:248:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:249:12:249:12 | dataTainted38 :  | semmle.label | dataTainted38 :  |
+| data.swift:249:12:249:35 | call to shuffled() | semmle.label | call to shuffled() |
+| data.swift:252:22:252:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:254:12:254:12 | dataTainted39 :  | semmle.label | dataTainted39 :  |
+| data.swift:254:12:254:46 | call to shuffled(using:) | semmle.label | call to shuffled(using:) |
+| data.swift:257:22:257:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:258:12:258:12 | dataTainted40 :  | semmle.label | dataTainted40 :  |
+| data.swift:258:12:258:44 | call to trimmingPrefix(_:) | semmle.label | call to trimmingPrefix(_:) |
+| data.swift:261:22:261:29 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:262:12:262:12 | dataTainted41 :  | semmle.label | dataTainted41 :  |
+| data.swift:262:12:262:54 | call to trimmingPrefix(while:) | semmle.label | call to trimmingPrefix(while:) |
 | file://:0:0:0:0 | .bytes :  | semmle.label | .bytes :  |
 | file://:0:0:0:0 | .description :  | semmle.label | .description :  |
 | file://:0:0:0:0 | .mutableBytes :  | semmle.label | .mutableBytes :  |
+| file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:) :  | semmle.label | [summary] to write: argument 0 in copyBytes(to:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:length:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:length:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0 in getBytes(_:range:) :  | semmle.label | [summary] to write: argument 0 in getBytes(_:range:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  | semmle.label | [summary] to write: argument 0.parameter 0 in enumerateBytes(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | semmle.label | [summary] to write: argument this in append(_:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in append(_:count:) :  | semmle.label | [summary] to write: argument this in append(_:count:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in append(_:length:) :  | semmle.label | [summary] to write: argument this in append(_:length:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  | semmle.label | [summary] to write: argument this in append(contentsOf:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in defineProperty(_:descriptor:) :  | semmle.label | [summary] to write: argument this in defineProperty(_:descriptor:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in insert(_:at:) :  | semmle.label | [summary] to write: argument this in insert(_:at:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in insert(contentsOf:at:) :  | semmle.label | [summary] to write: argument this in insert(contentsOf:at:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replace(_:with:maxReplacements:) :  | semmle.label | [summary] to write: argument this in replace(_:with:maxReplacements:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceBytes(in:withBytes:) :  | semmle.label | [summary] to write: argument this in replaceBytes(in:withBytes:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in replaceBytes(in:withBytes:length:) :  | semmle.label | [summary] to write: argument this in replaceBytes(in:withBytes:length:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:count:) :  | semmle.label | [summary] to write: argument this in replaceSubrange(_:with:count:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  | semmle.label | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  |
+| file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  | semmle.label | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in setData(_:) :  | semmle.label | [summary] to write: argument this in setData(_:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:at:) :  | semmle.label | [summary] to write: argument this in setValue(_:at:) :  |
 | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:forProperty:) :  | semmle.label | [summary] to write: argument this in setValue(_:forProperty:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in atIndex(_:) :  | semmle.label | [summary] to write: return (return) in atIndex(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedData(options:) :  | semmle.label | [summary] to write: return (return) in base64EncodedData(options:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedData(options:) :  | semmle.label | [summary] to write: return (return) in base64EncodedData(options:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  | semmle.label | [summary] to write: return (return) in base64EncodedString(options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  | semmle.label | [summary] to write: return (return) in base64EncodedString(options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in base64Encoding() :  | semmle.label | [summary] to write: return (return) in base64Encoding() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in compactMap(_:) :  | semmle.label | [summary] to write: return (return) in compactMap(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in compressed(using:) :  | semmle.label | [summary] to write: return (return) in compressed(using:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in dataWithContentsOfMappedFile(_:) :  | semmle.label | [summary] to write: return (return) in dataWithContentsOfMappedFile(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in decompressed(using:) :  | semmle.label | [summary] to write: return (return) in decompressed(using:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  | semmle.label | [summary] to write: return (return) in flatMap(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  | semmle.label | [summary] to write: return (return) in flatMap(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in forProperty(_:) :  | semmle.label | [summary] to write: return (return) in forProperty(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | semmle.label | [summary] to write: return (return) in init(base64Encoded:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | semmle.label | [summary] to write: return (return) in init(base64Encoded:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | semmle.label | [summary] to write: return (return) in init(base64Encoded:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoding:) :  | semmle.label | [summary] to write: return (return) in init(base64Encoding:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(bool:in:) :  | semmle.label | [summary] to write: return (return) in init(bool:in:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  | semmle.label | [summary] to write: return (return) in init(buffer:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  | semmle.label | [summary] to write: return (return) in init(buffer:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(bytes:count:) :  | semmle.label | [summary] to write: return (return) in init(bytes:count:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(bytes:length:) :  | semmle.label | [summary] to write: return (return) in init(bytes:length:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(bytesNoCopy:count:deallocator:) :  | semmle.label | [summary] to write: return (return) in init(bytesNoCopy:count:deallocator:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(bytesNoCopy:length:) :  | semmle.label | [summary] to write: return (return) in init(bytesNoCopy:length:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(bytesNoCopy:length:deallocator:) :  | semmle.label | [summary] to write: return (return) in init(bytesNoCopy:length:deallocator:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(bytesNoCopy:length:freeWhenDone:) :  | semmle.label | [summary] to write: return (return) in init(bytesNoCopy:length:freeWhenDone:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(contentsOf:) :  | semmle.label | [summary] to write: return (return) in init(contentsOf:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(contentsOf:options:) :  | semmle.label | [summary] to write: return (return) in init(contentsOf:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(contentsOf:options:) :  | semmle.label | [summary] to write: return (return) in init(contentsOf:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(contentsOfFile:) :  | semmle.label | [summary] to write: return (return) in init(contentsOfFile:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(contentsOfFile:options:) :  | semmle.label | [summary] to write: return (return) in init(contentsOfFile:options:) :  |
@@ -425,11 +750,19 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in init(point:in:) :  | semmle.label | [summary] to write: return (return) in init(point:in:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(range:in:) :  | semmle.label | [summary] to write: return (return) in init(range:in:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(rect:in:) :  | semmle.label | [summary] to write: return (return) in init(rect:in:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(referencing:) :  | semmle.label | [summary] to write: return (return) in init(referencing:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(size:in:) :  | semmle.label | [summary] to write: return (return) in init(size:in:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | semmle.label | [summary] to write: return (return) in init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(uInt32:in:) :  | semmle.label | [summary] to write: return (return) in init(uInt32:in:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in map(_:) :  | semmle.label | [summary] to write: return (return) in map(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in reduce(into:_:) :  | semmle.label | [summary] to write: return (return) in reduce(into:_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in shuffled() :  | semmle.label | [summary] to write: return (return) in shuffled() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in shuffled(using:) :  | semmle.label | [summary] to write: return (return) in shuffled(using:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in sorted() :  | semmle.label | [summary] to write: return (return) in sorted() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in sorted(by:) :  | semmle.label | [summary] to write: return (return) in sorted(by:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in sorted(using:) :  | semmle.label | [summary] to write: return (return) in sorted(using:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in subdata(with:) :  | semmle.label | [summary] to write: return (return) in subdata(with:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in toArray() :  | semmle.label | [summary] to write: return (return) in toArray() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in toBool() :  | semmle.label | [summary] to write: return (return) in toBool() :  |
@@ -446,6 +779,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in toSize() :  | semmle.label | [summary] to write: return (return) in toSize() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in toString() :  | semmle.label | [summary] to write: return (return) in toString() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in toUInt32() :  | semmle.label | [summary] to write: return (return) in toUInt32() :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(_:) :  | semmle.label | [summary] to write: return (return) in trimmingPrefix(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(while:) :  | semmle.label | [summary] to write: return (return) in trimmingPrefix(while:) :  |
 | nsdata.swift:22:9:22:9 | self :  | semmle.label | self :  |
 | nsdata.swift:23:9:23:9 | self :  | semmle.label | self :  |
 | nsdata.swift:24:5:24:50 | [summary param] 0 in init(bytes:length:) :  | semmle.label | [summary param] 0 in init(bytes:length:) :  |
@@ -782,6 +1117,42 @@ nodes
 | webview.swift:97:17:97:17 | s :  | semmle.label | s :  |
 | webview.swift:98:10:98:10 | v3 | semmle.label | v3 |
 subpaths
+| data.swift:89:41:89:48 | call to source() :  | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  |
+| data.swift:93:34:93:41 | call to source() :  | data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  | data.swift:93:21:93:73 | call to init(buffer:) :  |
+| data.swift:95:34:95:41 | call to source() :  | data.swift:27:2:27:62 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  | data.swift:95:21:95:74 | call to init(buffer:) :  |
+| data.swift:99:33:99:40 | call to source() :  | data.swift:28:2:28:45 | [summary param] 0 in init(bytes:count:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bytes:count:) :  | data.swift:99:21:99:72 | call to init(bytes:count:) :  |
+| data.swift:103:39:103:46 | call to source() :  | data.swift:29:2:29:82 | [summary param] 0 in init(bytesNoCopy:count:deallocator:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bytesNoCopy:count:deallocator:) :  | data.swift:103:21:103:114 | call to init(bytesNoCopy:count:deallocator:) :  |
+| data.swift:108:38:108:38 | urlTainted8 :  | data.swift:30:2:30:50 | [summary param] 0 in init(contentsOf:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(contentsOf:options:) :  | data.swift:108:21:108:62 | call to init(contentsOf:options:) :  |
+| data.swift:112:39:112:46 | call to source() :  | data.swift:31:2:31:29 | [summary param] 0 in init(referencing:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(referencing:) :  | data.swift:112:21:112:58 | call to init(referencing:) :  |
+| data.swift:117:23:117:30 | call to source() :  | data.swift:32:2:32:24 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:117:2:117:2 | [post] dataTainted10 :  |
+| data.swift:121:23:121:30 | call to source() :  | data.swift:33:2:33:25 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:121:2:121:2 | [post] dataTainted11 :  |
+| data.swift:125:23:125:30 | call to source() :  | data.swift:34:2:34:63 | [summary param] 0 in append(_:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:) :  | data.swift:125:2:125:2 | [post] dataTainted12 :  |
+| data.swift:130:23:130:30 | call to source() :  | data.swift:35:2:35:52 | [summary param] 0 in append(_:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(_:count:) :  | data.swift:130:2:130:2 | [post] dataTainted13 :  |
+| data.swift:135:35:135:42 | call to source() :  | data.swift:36:2:36:36 | [summary param] 0 in append(contentsOf:) :  | file://:0:0:0:0 | [summary] to write: argument this in append(contentsOf:) :  | data.swift:135:2:135:2 | [post] dataTainted14 :  |
+| data.swift:140:12:140:12 | dataTainted15 :  | data.swift:38:2:38:88 | [summary param] this in base64EncodedData(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedData(options:) :  | data.swift:140:12:140:55 | call to base64EncodedData(options:) |
+| data.swift:144:12:144:12 | dataTainted16 :  | data.swift:39:2:39:86 | [summary param] this in base64EncodedString(options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in base64EncodedString(options:) :  | data.swift:144:12:144:57 | call to base64EncodedString(options:) |
+| data.swift:148:29:148:29 | dataTainted17 :  | data.swift:40:2:40:99 | [summary param] this in compactMap(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in compactMap(_:) :  | data.swift:148:29:148:72 | call to compactMap(_:) :  |
+| data.swift:154:2:154:2 | dataTainted18 :  | data.swift:41:2:41:53 | [summary param] this in copyBytes(to:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:) :  | data.swift:154:30:154:30 | [post] pointerTainted18 :  |
+| data.swift:171:19:171:19 | dataTainted21 :  | data.swift:44:2:44:137 | [summary param] this in flatMap(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  | data.swift:171:19:171:74 | call to flatMap(_:) :  |
+| data.swift:175:20:175:20 | dataTainted22 :  | data.swift:45:2:45:97 | [summary param] this in flatMap(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  | data.swift:175:20:175:60 | call to flatMap(_:) :  |
+| data.swift:180:23:180:30 | call to source() :  | data.swift:46:2:46:34 | [summary param] 0 in insert(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in insert(_:at:) :  | data.swift:180:2:180:2 | [post] dataTainted23 :  |
+| data.swift:185:35:185:42 | call to source() :  | data.swift:47:2:47:83 | [summary param] 0 in insert(contentsOf:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in insert(contentsOf:at:) :  | data.swift:185:2:185:2 | [post] dataTainted24 :  |
+| data.swift:190:15:190:15 | dataTainted25 :  | data.swift:48:2:48:50 | [summary param] this in map(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in map(_:) :  | data.swift:190:15:190:38 | call to map(_:) :  |
+| data.swift:195:16:195:16 | dataTainted26 :  | data.swift:49:2:49:115 | [summary param] this in reduce(into:_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in reduce(into:_:) :  | data.swift:195:16:195:80 | call to reduce(into:_:) :  |
+| data.swift:200:35:200:42 | call to source() :  | data.swift:50:2:50:180 | [summary param] 1 in replace(_:with:maxReplacements:) :  | file://:0:0:0:0 | [summary] to write: argument this in replace(_:with:maxReplacements:) :  | data.swift:200:2:200:2 | [post] dataTainted27 :  |
+| data.swift:205:45:205:52 | call to source() :  | data.swift:51:2:51:58 | [summary param] 1 in replaceSubrange(_:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | data.swift:205:2:205:2 | [post] dataTainted28 :  |
+| data.swift:209:45:209:52 | call to source() :  | data.swift:52:2:52:151 | [summary param] 1 in replaceSubrange(_:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | data.swift:209:2:209:2 | [post] dataTainted29 :  |
+| data.swift:213:45:213:52 | call to source() :  | data.swift:52:2:52:151 | [summary param] 1 in replaceSubrange(_:with:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:) :  | data.swift:213:2:213:2 | [post] dataTainted30 :  |
+| data.swift:218:45:218:52 | call to source() :  | data.swift:54:2:54:82 | [summary param] 1 in replaceSubrange(_:with:count:) :  | file://:0:0:0:0 | [summary] to write: argument this in replaceSubrange(_:with:count:) :  | data.swift:218:2:218:2 | [post] dataTainted31 :  |
+| data.swift:223:45:223:52 | call to source() :  | data.swift:56:2:56:214 | [summary param] 1 in replacing(_:with:maxReplacements:) :  | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:maxReplacements:) :  | data.swift:223:10:223:10 | [post] dataTainted32 :  |
+| data.swift:228:45:228:52 | call to source() :  | data.swift:57:2:57:236 | [summary param] 1 in replacing(_:with:subrange:maxReplacements:) :  | file://:0:0:0:0 | [summary] to write: argument this in replacing(_:with:subrange:maxReplacements:) :  | data.swift:228:10:228:10 | [post] dataTainted33 :  |
+| data.swift:237:12:237:12 | dataTainted35 :  | data.swift:58:2:58:39 | [summary param] this in sorted() :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted() :  | data.swift:237:12:237:33 | call to sorted() |
+| data.swift:241:12:241:12 | dataTainted36 :  | data.swift:59:2:59:81 | [summary param] this in sorted(by:) :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted(by:) :  | data.swift:241:12:241:54 | call to sorted(by:) |
+| data.swift:245:12:245:12 | dataTainted37 :  | data.swift:60:2:60:132 | [summary param] this in sorted(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in sorted(using:) :  | data.swift:245:12:245:46 | call to sorted(using:) |
+| data.swift:249:12:249:12 | dataTainted38 :  | data.swift:61:2:61:41 | [summary param] this in shuffled() :  | file://:0:0:0:0 | [summary] to write: return (return) in shuffled() :  | data.swift:249:12:249:35 | call to shuffled() |
+| data.swift:254:12:254:12 | dataTainted39 :  | data.swift:62:2:62:58 | [summary param] this in shuffled(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in shuffled(using:) :  | data.swift:254:12:254:46 | call to shuffled(using:) |
+| data.swift:258:12:258:12 | dataTainted40 :  | data.swift:63:2:63:123 | [summary param] this in trimmingPrefix(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(_:) :  | data.swift:258:12:258:44 | call to trimmingPrefix(_:) |
+| data.swift:262:12:262:12 | dataTainted41 :  | data.swift:64:2:64:72 | [summary param] this in trimmingPrefix(while:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(while:) :  | data.swift:262:12:262:54 | call to trimmingPrefix(while:) |
 | nsdata.swift:57:40:57:47 | call to source() :  | nsdata.swift:24:5:24:50 | [summary param] 0 in init(bytes:length:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bytes:length:) :  | nsdata.swift:57:26:57:80 | call to init(bytes:length:) :  |
 | nsdata.swift:60:46:60:53 | call to source() :  | nsdata.swift:25:5:25:68 | [summary param] 0 in init(bytesNoCopy:length:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bytesNoCopy:length:) :  | nsdata.swift:60:26:60:93 | call to init(bytesNoCopy:length:) :  |
 | nsdata.swift:63:46:63:53 | call to source() :  | nsdata.swift:26:5:26:130 | [summary param] 0 in init(bytesNoCopy:length:deallocator:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bytesNoCopy:length:deallocator:) :  | nsdata.swift:63:26:63:111 | call to init(bytesNoCopy:length:deallocator:) :  |
@@ -865,6 +1236,42 @@ subpaths
 | webview.swift:93:17:93:17 | s :  | webview.swift:43:5:43:38 | [summary param] 0 in setValue(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:at:) :  | webview.swift:93:5:93:5 | [post] v2 :  |
 | webview.swift:97:17:97:17 | s :  | webview.swift:44:5:44:48 | [summary param] 0 in setValue(_:forProperty:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:forProperty:) :  | webview.swift:97:5:97:5 | [post] v3 :  |
 #select
+| data.swift:90:12:90:12 | dataTainted3 | data.swift:89:41:89:48 | call to source() :  | data.swift:90:12:90:12 | dataTainted3 | result |
+| data.swift:94:12:94:12 | dataTainted4 | data.swift:93:34:93:41 | call to source() :  | data.swift:94:12:94:12 | dataTainted4 | result |
+| data.swift:96:12:96:12 | dataTainted5 | data.swift:95:34:95:41 | call to source() :  | data.swift:96:12:96:12 | dataTainted5 | result |
+| data.swift:100:12:100:12 | dataTainted6 | data.swift:99:33:99:40 | call to source() :  | data.swift:100:12:100:12 | dataTainted6 | result |
+| data.swift:104:12:104:12 | dataTainted7 | data.swift:103:39:103:46 | call to source() :  | data.swift:104:12:104:12 | dataTainted7 | result |
+| data.swift:109:12:109:12 | dataTainted8 | data.swift:107:20:107:27 | call to source() :  | data.swift:109:12:109:12 | dataTainted8 | result |
+| data.swift:113:12:113:12 | dataTainted9 | data.swift:112:39:112:46 | call to source() :  | data.swift:113:12:113:12 | dataTainted9 | result |
+| data.swift:118:12:118:12 | dataTainted10 | data.swift:117:23:117:30 | call to source() :  | data.swift:118:12:118:12 | dataTainted10 | result |
+| data.swift:122:12:122:12 | dataTainted11 | data.swift:121:23:121:30 | call to source() :  | data.swift:122:12:122:12 | dataTainted11 | result |
+| data.swift:126:12:126:12 | dataTainted12 | data.swift:125:23:125:30 | call to source() :  | data.swift:126:12:126:12 | dataTainted12 | result |
+| data.swift:131:12:131:12 | dataTainted13 | data.swift:130:23:130:30 | call to source() :  | data.swift:131:12:131:12 | dataTainted13 | result |
+| data.swift:136:12:136:12 | dataTainted14 | data.swift:135:35:135:42 | call to source() :  | data.swift:136:12:136:12 | dataTainted14 | result |
+| data.swift:140:12:140:55 | call to base64EncodedData(options:) | data.swift:139:22:139:29 | call to source() :  | data.swift:140:12:140:55 | call to base64EncodedData(options:) | result |
+| data.swift:144:12:144:57 | call to base64EncodedString(options:) | data.swift:143:22:143:29 | call to source() :  | data.swift:144:12:144:57 | call to base64EncodedString(options:) | result |
+| data.swift:149:12:149:12 | compactMapped | data.swift:147:22:147:29 | call to source() :  | data.swift:149:12:149:12 | compactMapped | result |
+| data.swift:155:12:155:12 | pointerTainted18 | data.swift:152:22:152:29 | call to source() :  | data.swift:155:12:155:12 | pointerTainted18 | result |
+| data.swift:172:12:172:12 | flatMapped | data.swift:170:22:170:29 | call to source() :  | data.swift:172:12:172:12 | flatMapped | result |
+| data.swift:176:12:176:12 | flatMapped2 | data.swift:174:22:174:29 | call to source() :  | data.swift:176:12:176:12 | flatMapped2 | result |
+| data.swift:181:12:181:12 | dataTainted23 | data.swift:180:23:180:30 | call to source() :  | data.swift:181:12:181:12 | dataTainted23 | result |
+| data.swift:186:12:186:12 | dataTainted24 | data.swift:185:35:185:42 | call to source() :  | data.swift:186:12:186:12 | dataTainted24 | result |
+| data.swift:191:12:191:12 | mapped | data.swift:189:22:189:29 | call to source() :  | data.swift:191:12:191:12 | mapped | result |
+| data.swift:196:12:196:12 | reduced | data.swift:194:22:194:29 | call to source() :  | data.swift:196:12:196:12 | reduced | result |
+| data.swift:201:12:201:12 | dataTainted27 | data.swift:200:35:200:42 | call to source() :  | data.swift:201:12:201:12 | dataTainted27 | result |
+| data.swift:206:12:206:12 | dataTainted28 | data.swift:205:45:205:52 | call to source() :  | data.swift:206:12:206:12 | dataTainted28 | result |
+| data.swift:210:12:210:12 | dataTainted29 | data.swift:209:45:209:52 | call to source() :  | data.swift:210:12:210:12 | dataTainted29 | result |
+| data.swift:214:12:214:12 | dataTainted30 | data.swift:213:45:213:52 | call to source() :  | data.swift:214:12:214:12 | dataTainted30 | result |
+| data.swift:219:12:219:12 | dataTainted31 | data.swift:218:45:218:52 | call to source() :  | data.swift:219:12:219:12 | dataTainted31 | result |
+| data.swift:224:12:224:12 | dataTainted32 | data.swift:223:45:223:52 | call to source() :  | data.swift:224:12:224:12 | dataTainted32 | result |
+| data.swift:229:12:229:12 | dataTainted33 | data.swift:228:45:228:52 | call to source() :  | data.swift:229:12:229:12 | dataTainted33 | result |
+| data.swift:237:12:237:33 | call to sorted() | data.swift:236:22:236:29 | call to source() :  | data.swift:237:12:237:33 | call to sorted() | result |
+| data.swift:241:12:241:54 | call to sorted(by:) | data.swift:240:22:240:29 | call to source() :  | data.swift:241:12:241:54 | call to sorted(by:) | result |
+| data.swift:245:12:245:46 | call to sorted(using:) | data.swift:244:22:244:29 | call to source() :  | data.swift:245:12:245:46 | call to sorted(using:) | result |
+| data.swift:249:12:249:35 | call to shuffled() | data.swift:248:22:248:29 | call to source() :  | data.swift:249:12:249:35 | call to shuffled() | result |
+| data.swift:254:12:254:46 | call to shuffled(using:) | data.swift:252:22:252:29 | call to source() :  | data.swift:254:12:254:46 | call to shuffled(using:) | result |
+| data.swift:258:12:258:44 | call to trimmingPrefix(_:) | data.swift:257:22:257:29 | call to source() :  | data.swift:258:12:258:44 | call to trimmingPrefix(_:) | result |
+| data.swift:262:12:262:54 | call to trimmingPrefix(while:) | data.swift:261:22:261:29 | call to source() :  | data.swift:262:12:262:54 | call to trimmingPrefix(while:) | result |
 | nsdata.swift:58:15:58:15 | nsDataTainted1 | nsdata.swift:57:40:57:47 | call to source() :  | nsdata.swift:58:15:58:15 | nsDataTainted1 | result |
 | nsdata.swift:61:15:61:15 | nsDataTainted2 | nsdata.swift:60:46:60:53 | call to source() :  | nsdata.swift:61:15:61:15 | nsDataTainted2 | result |
 | nsdata.swift:64:15:64:15 | nsDataTainted3 | nsdata.swift:63:46:63:53 | call to source() :  | nsdata.swift:64:15:64:15 | nsDataTainted3 | result |
