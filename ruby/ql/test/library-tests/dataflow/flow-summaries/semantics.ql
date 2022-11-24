@@ -569,6 +569,19 @@ private class S53 extends Summary {
   S53() { this = "s53" }
 
   override predicate propagates(string input, string output) {
-    input = "Argument[self].WithoutElement[:foo]" and output = "ReturnValue"
+    input = "Argument[self].WithoutElement[:foo]" and
+    output = "ReturnValue"
+  }
+}
+
+/**
+ * `WithoutElement` 11
+ */
+private class S54 extends Summary {
+  S54() { this = "s54" }
+
+  override predicate propagates(string input, string output) {
+    input = "Argument[self].WithoutElement[:foo].WithElement[any]" and
+    output = "ReturnValue"
   }
 }

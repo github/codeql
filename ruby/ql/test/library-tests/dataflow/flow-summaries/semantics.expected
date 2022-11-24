@@ -868,6 +868,42 @@ edges
 | semantics.rb:496:9:496:15 | call to s53 [element :bar] :  | semantics.rb:499:10:499:10 | x [element :bar] :  |
 | semantics.rb:499:10:499:10 | x [element :bar] :  | semantics.rb:499:10:499:16 | ...[...] |
 | semantics.rb:499:10:499:10 | x [element :bar] :  | semantics.rb:499:10:499:16 | ...[...] |
+| semantics.rb:501:10:501:20 | call to source :  | semantics.rb:501:10:501:26 | call to s53 |
+| semantics.rb:501:10:501:20 | call to source :  | semantics.rb:501:10:501:26 | call to s53 |
+| semantics.rb:505:5:505:5 | [post] h [element :foo] :  | semantics.rb:506:5:506:5 | h [element :foo] :  |
+| semantics.rb:505:5:505:5 | [post] h [element :foo] :  | semantics.rb:506:5:506:5 | h [element :foo] :  |
+| semantics.rb:505:15:505:25 | call to source :  | semantics.rb:505:5:505:5 | [post] h [element :foo] :  |
+| semantics.rb:505:15:505:25 | call to source :  | semantics.rb:505:5:505:5 | [post] h [element :foo] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :bar] :  | semantics.rb:510:10:510:10 | h [element :bar] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :bar] :  | semantics.rb:510:10:510:10 | h [element :bar] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :bar] :  | semantics.rb:512:9:512:9 | h [element :bar] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :bar] :  | semantics.rb:512:9:512:9 | h [element :bar] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :foo] :  | semantics.rb:509:10:509:10 | h [element :foo] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :foo] :  | semantics.rb:509:10:509:10 | h [element :foo] :  |
+| semantics.rb:506:5:506:5 | h [element :foo] :  | semantics.rb:506:5:506:5 | [post] h [element :foo] :  |
+| semantics.rb:506:5:506:5 | h [element :foo] :  | semantics.rb:506:5:506:5 | [post] h [element :foo] :  |
+| semantics.rb:506:15:506:25 | call to source :  | semantics.rb:506:5:506:5 | [post] h [element :bar] :  |
+| semantics.rb:506:15:506:25 | call to source :  | semantics.rb:506:5:506:5 | [post] h [element :bar] :  |
+| semantics.rb:507:5:507:5 | [post] h [element] :  | semantics.rb:509:10:509:10 | h [element] :  |
+| semantics.rb:507:5:507:5 | [post] h [element] :  | semantics.rb:509:10:509:10 | h [element] :  |
+| semantics.rb:507:5:507:5 | [post] h [element] :  | semantics.rb:510:10:510:10 | h [element] :  |
+| semantics.rb:507:5:507:5 | [post] h [element] :  | semantics.rb:510:10:510:10 | h [element] :  |
+| semantics.rb:507:12:507:22 | call to source :  | semantics.rb:507:5:507:5 | [post] h [element] :  |
+| semantics.rb:507:12:507:22 | call to source :  | semantics.rb:507:5:507:5 | [post] h [element] :  |
+| semantics.rb:509:10:509:10 | h [element :foo] :  | semantics.rb:509:10:509:16 | ...[...] |
+| semantics.rb:509:10:509:10 | h [element :foo] :  | semantics.rb:509:10:509:16 | ...[...] |
+| semantics.rb:509:10:509:10 | h [element] :  | semantics.rb:509:10:509:16 | ...[...] |
+| semantics.rb:509:10:509:10 | h [element] :  | semantics.rb:509:10:509:16 | ...[...] |
+| semantics.rb:510:10:510:10 | h [element :bar] :  | semantics.rb:510:10:510:16 | ...[...] |
+| semantics.rb:510:10:510:10 | h [element :bar] :  | semantics.rb:510:10:510:16 | ...[...] |
+| semantics.rb:510:10:510:10 | h [element] :  | semantics.rb:510:10:510:16 | ...[...] |
+| semantics.rb:510:10:510:10 | h [element] :  | semantics.rb:510:10:510:16 | ...[...] |
+| semantics.rb:512:9:512:9 | h [element :bar] :  | semantics.rb:512:9:512:15 | call to s54 [element :bar] :  |
+| semantics.rb:512:9:512:9 | h [element :bar] :  | semantics.rb:512:9:512:15 | call to s54 [element :bar] :  |
+| semantics.rb:512:9:512:15 | call to s54 [element :bar] :  | semantics.rb:515:10:515:10 | x [element :bar] :  |
+| semantics.rb:512:9:512:15 | call to s54 [element :bar] :  | semantics.rb:515:10:515:10 | x [element :bar] :  |
+| semantics.rb:515:10:515:10 | x [element :bar] :  | semantics.rb:515:10:515:16 | ...[...] |
+| semantics.rb:515:10:515:10 | x [element :bar] :  | semantics.rb:515:10:515:16 | ...[...] |
 nodes
 | semantics.rb:2:9:2:18 | call to source :  | semmle.label | call to source :  |
 | semantics.rb:2:9:2:18 | call to source :  | semmle.label | call to source :  |
@@ -1820,4 +1856,44 @@ nodes
 | semantics.rb:499:10:499:10 | x [element :bar] :  | semmle.label | x [element :bar] :  |
 | semantics.rb:499:10:499:16 | ...[...] | semmle.label | ...[...] |
 | semantics.rb:499:10:499:16 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:501:10:501:20 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:501:10:501:20 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:501:10:501:26 | call to s53 | semmle.label | call to s53 |
+| semantics.rb:501:10:501:26 | call to s53 | semmle.label | call to s53 |
+| semantics.rb:505:5:505:5 | [post] h [element :foo] :  | semmle.label | [post] h [element :foo] :  |
+| semantics.rb:505:5:505:5 | [post] h [element :foo] :  | semmle.label | [post] h [element :foo] :  |
+| semantics.rb:505:15:505:25 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:505:15:505:25 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:506:5:506:5 | [post] h [element :bar] :  | semmle.label | [post] h [element :bar] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :bar] :  | semmle.label | [post] h [element :bar] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :foo] :  | semmle.label | [post] h [element :foo] :  |
+| semantics.rb:506:5:506:5 | [post] h [element :foo] :  | semmle.label | [post] h [element :foo] :  |
+| semantics.rb:506:5:506:5 | h [element :foo] :  | semmle.label | h [element :foo] :  |
+| semantics.rb:506:5:506:5 | h [element :foo] :  | semmle.label | h [element :foo] :  |
+| semantics.rb:506:15:506:25 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:506:15:506:25 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:507:5:507:5 | [post] h [element] :  | semmle.label | [post] h [element] :  |
+| semantics.rb:507:5:507:5 | [post] h [element] :  | semmle.label | [post] h [element] :  |
+| semantics.rb:507:12:507:22 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:507:12:507:22 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:509:10:509:10 | h [element :foo] :  | semmle.label | h [element :foo] :  |
+| semantics.rb:509:10:509:10 | h [element :foo] :  | semmle.label | h [element :foo] :  |
+| semantics.rb:509:10:509:10 | h [element] :  | semmle.label | h [element] :  |
+| semantics.rb:509:10:509:10 | h [element] :  | semmle.label | h [element] :  |
+| semantics.rb:509:10:509:16 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:509:10:509:16 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:510:10:510:10 | h [element :bar] :  | semmle.label | h [element :bar] :  |
+| semantics.rb:510:10:510:10 | h [element :bar] :  | semmle.label | h [element :bar] :  |
+| semantics.rb:510:10:510:10 | h [element] :  | semmle.label | h [element] :  |
+| semantics.rb:510:10:510:10 | h [element] :  | semmle.label | h [element] :  |
+| semantics.rb:510:10:510:16 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:510:10:510:16 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:512:9:512:9 | h [element :bar] :  | semmle.label | h [element :bar] :  |
+| semantics.rb:512:9:512:9 | h [element :bar] :  | semmle.label | h [element :bar] :  |
+| semantics.rb:512:9:512:15 | call to s54 [element :bar] :  | semmle.label | call to s54 [element :bar] :  |
+| semantics.rb:512:9:512:15 | call to s54 [element :bar] :  | semmle.label | call to s54 [element :bar] :  |
+| semantics.rb:515:10:515:10 | x [element :bar] :  | semmle.label | x [element :bar] :  |
+| semantics.rb:515:10:515:10 | x [element :bar] :  | semmle.label | x [element :bar] :  |
+| semantics.rb:515:10:515:16 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:515:10:515:16 | ...[...] | semmle.label | ...[...] |
 subpaths

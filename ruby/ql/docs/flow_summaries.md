@@ -255,5 +255,22 @@ sink a[0]
 sink a[1] # $ hasValueFlow=1
 ```
 
+It is also important to note that in a summary such as
+
+```ql
+input = "Argument[self].WithoutElement[0]" and
+output = "ReturnValue"
+```
+
+if `Argument[self]` contains data, it will be copied to `ReturnValue`. If you only want to copy data in elements, and not in the container itself, add `WithElement[any]` to the input path:
+
+```ql
+input = "Argument[self].WithoutElement[0].WithElement[any]" and
+output = "ReturnValue"
+```
+
+See tests 53 and 54 for examples of this behaviour.
+
+
 
 [^1]: I've chosen this name to avoid overloading the word "argument".

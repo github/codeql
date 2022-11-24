@@ -497,4 +497,22 @@ def m53(i, h)
     
     sink x[:foo]
     sink x[:bar] # $ hasValueFlow=b
+
+    sink(source("d").s53()) # $ hasValueFlow=d
+end
+
+def m54(i, h)
+    h[:foo] = source("a")
+    h[:bar] = source("b")
+    h[i] = source("c")
+
+    sink h[:foo] # $ hasValueFlow=a hasValueFlow=c
+    sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
+
+    x = h.s54()
+
+    sink x[:foo]
+    sink x[:bar] # $ hasValueFlow=b
+
+    sink(source("d").s54())
 end
