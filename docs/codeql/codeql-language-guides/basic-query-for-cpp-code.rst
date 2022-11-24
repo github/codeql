@@ -3,7 +3,9 @@
 Basic query for C and C++ code
 ==============================
 
-Learn to write and run a simple CodeQL query using LGTM.
+Learn to write and run a simple CodeQL query using Visual Studio Code with the CodeQL extension.
+
+.. include:: ../reusables/setup-to-run-queries.rst
 
 About the query
 ---------------
@@ -14,24 +16,42 @@ The query we're going to run performs a basic search of the code for ``if`` stat
 
    if (error) { }
 
+Finding a CodeQL database to experiment with
+--------------------------------------------
+
+Before you start writing queries, you need a CodeQL database to run them against. The simplest way to do this is to download a database directly from GitHub.com.
+
+#. In Visual Studio Code, click the **QL** icon |codeql-ext-icon| in the left sidebar to display the CodeQL extension. 
+
+#. Click **From GitHub** or the GitHub logo |github-db| at the top of the CodeQL extension to open an entry field.
+
+#. Copy the URL for the repository into the field and press the keyboard **Enter** key.
+
+#. Optionally, if the repository has more than one CodeQL database available, choose which language to download.
+
+Information about the progress of the database download is shown in the bottom right corner of Visual Studio Code. When the download is complete, the database is shown with a check mark in the **Databases** section of the CodeQL extension.
+
+.. image:: ../images/codeql-for-visual-studio-code/database-selected.png
+       :align: center
+       :width: 500
+
 Running the query
 -----------------
 
-#. In the main search box on LGTM.com, search for the project you want to query. For tips, see `Searching <https://lgtm.com/help/lgtm/searching>`__.
+#. In Visual Studio Code, create a new folder to store your experimental queries for C and C++ CodeQL databases. For example, ``cpp-experiments``.
 
-#. Click the project in the search results.
+#. Create a ``qlpack.yml`` file in your experiments folder with the contents shown below. This tells the CodeQL extension that any queries you create in the folder are intended to run on C or C++ CodeQL databases.
 
-#. Click **Query this project**.
+   .. code-block:: yaml
 
-   This opens the query console. (For information about using this, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.)
+      name: github-owner/cpp-experiments
+      version: 0.0.1
+      dependencies:
+         codeql/cpp-all: ^0.1.2
 
-   .. pull-quote::
+#. Create a second new file in your experiements folder with the ``.ql`` file extension. You will write your first query in this file.
 
-      Note
-
-      Alternatively, you can go straight to the query console by clicking **Query console** (at the top of any page), selecting **C/C++** from the **Language** drop-down list, then choosing one or more projects to query from those displayed in the **Project** drop-down list.
-
-#. Copy the following query into the text box in the query console:
+#. Copy the following query into the new file and save the file:
 
    .. code-block:: ql
 
@@ -42,34 +62,19 @@ Running the query
         block.getNumStmt() = 0
       select ifstmt, "This 'if' statement is redundant."
 
-   LGTM checks whether your query compiles and, if all is well, the **Run** button changes to green to indicate that you can go ahead and run the query.
+#. Right-click in the query window and select **CodeQL: Run Query**. (Alternatively, run the command from the Command Palette.)
 
-#. Click **Run**.
+   The query will take a few moments to return results. When the query completes, the results are displayed in a CodeQL Query Results window, alongside the query window.
+   
+   The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ifstmt`` and is linked to the location in the source code of the project where ``ifstmt`` occurs. The second column is the alert message.
 
-   The name of the project you are querying, and the ID of the most recently analyzed commit to the project, are listed below the query box. To the right of this is an icon that indicates the progress of the query operation:
+.. image:: ../images/codeql-for-visual-studio-code/basic-cpp-query-results-1.png
+    :align: center
 
-   .. image:: ../images/query-progress.png
-       :align: center
+If any matching code is found, click a link in the ``ifstmt`` column to open the file and highlight the matching ``if`` statement.
 
-   .. pull-quote::
-
-      Note
-
-      Your query is always run against the most recently analyzed commit to the selected project.
-
-   The query will take a few moments to return results. When the query completes, the results are displayed below the project name. The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ifstmt`` and is linked to the location in the source code of the project where ``ifstmt`` occurs. The second column is the alert message.
-
-   ➤ `Example query results <https://lgtm.com/query/4242591143131494898/>`__
-
-   .. pull-quote::
-
-      Note
-
-      An ellipsis (…) at the bottom of the table indicates that the entire list is not displayed—click it to show more results.
-
-#. If any matching code is found, click a link in the ``ifstmt`` column to view the ``if`` statement in the code viewer.
-
-   The matching ``if`` statement is highlighted with a yellow background in the code viewer. If any code in the file also matches a query from the standard query library for that language, you will see a red alert message at the appropriate point within the code.
+.. image:: ../images/codeql-for-visual-studio-code/basic-cpp-query-results-2.png
+    :align: center
 
 About the query structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,7 +125,7 @@ In this case, identifying the ``if`` statement with the empty ``then`` branch as
 
 To exclude ``if`` statements that have an ``else`` branch:
 
-#. Extend the ``where`` clause to include the following extra condition:
+#. Edit your query and extend the ``where`` clause to include the following extra condition:
 
    .. code-block:: ql
 
@@ -134,14 +139,20 @@ To exclude ``if`` statements that have an ``else`` branch:
         block.getNumStmt() = 0 and
         not ifstmt.hasElse()
 
-#. Click **Run**.
+#. Re-run the query.
 
    There are now fewer results because ``if`` statements with an ``else`` branch are no longer reported.
-
-➤ `See this in the query console <https://lgtm.com/query/1899933116489579248/>`__
 
 Further reading
 ---------------
 
 .. include:: ../reusables/cpp-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
+
+.. |codeql-ext-icon| image:: ../images/codeql-for-visual-studio-code/codeql-extension-icon.png
+  :width: 20
+  :alt: Icon for the CodeQL extension.
+
+.. |github-db| image:: ../images/codeql-for-visual-studio-code/add-codeql-db-github.png
+  :width: 20
+  :alt: Icon for the CodeQL extension option to download a CodeQL database from GitHub.
