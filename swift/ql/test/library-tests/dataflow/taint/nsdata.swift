@@ -107,7 +107,7 @@ func test() {
     // ";NSData;true;enumerateBytes(_:);;;Argument[-1];Argument[0].Parameter[0];taint"
     let nsDataTainted17 = source() as! NSData
     nsDataTainted17.enumerateBytes {
-        bytes, byteRange, stop in sink(arg: bytes) // tainted=108
+        bytes, byteRange, stop in sink(arg: bytes) // $ tainted=108
     }
     // ";NSData;true;getBytes(_:);;;Argument[-1];Argument[0];taint",
     let nsDataTainted18 = source() as! NSData
