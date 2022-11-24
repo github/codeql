@@ -81,7 +81,7 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
     )
     or
     exists(Variable checkedVar |
-      readsVariable(node.asInstruction(), checkedVar) and
+      node.asExpr().(VariableAccess).getTarget() = checkedVar and
       hasUpperBoundsCheck(checkedVar)
     )
     or

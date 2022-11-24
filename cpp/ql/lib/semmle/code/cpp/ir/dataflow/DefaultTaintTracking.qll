@@ -175,7 +175,7 @@ private module Cached {
   cached
   predicate nodeIsBarrier(DataFlow::Node node) {
     exists(Variable checkedVar |
-      readsVariable(node.asInstruction(), checkedVar) and
+      node.asExpr().(VariableAccess).getTarget() = checkedVar and
       hasUpperBoundsCheck(checkedVar)
     )
     or
