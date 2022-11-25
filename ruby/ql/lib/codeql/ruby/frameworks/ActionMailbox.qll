@@ -30,8 +30,8 @@ module ActionMailbox {
    * `ActionMailbox::Base#mail`, which is equivalent. The returned object
    * contains data from the incoming email.
    */
-  class MailCall extends DataFlow::CallNode, Mail::Message::Range {
-    MailCall() {
+  class Mail extends DataFlow::CallNode {
+    Mail() {
       this =
         [
           controller().getAnInstanceSelf().getAMethodCall("inbound_email").getAMethodCall("mail"),
@@ -41,34 +41,21 @@ module ActionMailbox {
   }
 
   /**
-   * Models classes from the `mail` library.
-   * Version: 2.7.1.
+   * A method call on a `Mail::Message` object which may return data from a remote source.
    */
-  module Mail {
-    /**
-     * An instance of `Mail::Message`.
-     */
-    class Message extends DataFlow::Node instanceof Message::Range { }
-
-    module Message {
-      abstract class Range extends DataFlow::Node { }
+  private class RemoteContent extends DataFlow::CallNode, RemoteFlowSource::Range {
+    RemoteContent() {
+      this =
+        any(Mail m)
+            .(DataFlow::LocalSourceNode)
+            .getAMethodCall([
+                "body", "to", "from", "raw_source", "subject", "from_address",
+                "recipients_addresses", "cc_addresses", "bcc_addresses", "in_reply_to",
+                "references", "reply_to", "raw_envelope", "to_s", "encoded", "header", "bcc", "cc",
+                "text_part", "html_part"
+              ])
     }
 
-    /**
-     * A method call on a `Mail::Message` object which may return data from a remote source.
-     */
-    class RemoteContent extends DataFlow::CallNode, RemoteFlowSource::Range {
-      RemoteContent() {
-        this.getReceiver() instanceof Message and
-        this.getMethodName() =
-          [
-            "body", "to", "from", "raw_source", "subject", "from_address", "recipients_addresses",
-            "cc_addresses", "bcc_addresses", "in_reply_to", "references", "reply_to",
-            "raw_envelope", "to_s", "encoded", "header", "bcc", "cc", "text_part", "html_part"
-          ]
-      }
-
-      override string getSourceType() { result = "ActionMailbox" }
-    }
+    override string getSourceType() { result = "ActionMailbox" }
   }
 }
