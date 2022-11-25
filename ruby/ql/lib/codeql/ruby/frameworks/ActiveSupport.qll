@@ -313,6 +313,26 @@ module ActiveSupport {
   }
 
   /**
+   * `ActiveSupport::ERB`
+   */
+  module Erb {
+    /**
+     * `ActiveSupport::ERB::Util`
+     */
+    module Util {
+      private class JsonEscapeSummary extends SimpleSummarizedCallable {
+        JsonEscapeSummary() { this = "json_escape" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[0]" and
+          output = "ReturnValue" and
+          preservesValue = false
+        }
+      }
+    }
+  }
+
+  /**
    * Type summaries for extensions to the `Pathname` module.
    */
   private class PathnameTypeSummary extends ModelInput::TypeModelCsv {
