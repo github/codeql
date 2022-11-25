@@ -26,7 +26,7 @@ private class AlamofireResponseType extends NominalTypeDecl {
 }
 
 /**
- * A remote flow source that is an access to a remote data from an Alamofire response handler.
+ * A remote flow source that is an access to remote data from an Alamofire response handler.
  */
 private class AlamofireResponseSource extends RemoteFlowSource {
   AlamofireResponseSource() {
