@@ -17,8 +17,9 @@
 import cpp
 import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.security.TaintTracking
-import TaintedWithPath
+import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import DataFlow::PathGraph
 
 /**
  * A function for opening a file.
@@ -46,18 +47,42 @@ class FileFunction extends FunctionWithWrappers {
   override predicate interestingArg(int arg) { arg = 0 }
 }
 
-class TaintedPathConfiguration extends TaintTrackingConfiguration {
-  override predicate isSink(Element tainted) {
-    exists(FileFunction fileFunction | fileFunction.outermostWrapperFunctionCall(tainted, _))
+Expr asSourceExpr(DataFlow::Node node) {
+  result in [node.asConvertedExpr(), node.asDefiningArgument()]
+}
+
+Expr asSinkExpr(DataFlow::Node node) {
+  result = node.asConvertedExpr()
+  or
+  result =
+    node.asOperand()
+        .(SideEffectOperand)
+        .getUse()
+        .(ReadSideEffectInstruction)
+        .getArgumentDef()
+        .getUnconvertedResultExpression()
+}
+
+class TaintedPathConfiguration extends TaintTracking::Configuration {
+  TaintedPathConfiguration() { this = "TaintedPathConfiguration" }
+
+  override predicate isSource(DataFlow::Node node) { isUserInput(asSourceExpr(node), _) }
+
+  override predicate isSink(DataFlow::Node node) {
+    exists(FileFunction fileFunction |
+      fileFunction.outermostWrapperFunctionCall(asSinkExpr(node), _)
+    )
   }
 }
 
 from
-  FileFunction fileFunction, Expr taintedArg, Expr taintSource, PathNode sourceNode,
-  PathNode sinkNode, string taintCause, string callChain
+  FileFunction fileFunction, Expr taintedArg, Expr taintSource, TaintedPathConfiguration cfg,
+  DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, string taintCause, string callChain
 where
+  taintedArg = asSinkExpr(sinkNode.getNode()) and
   fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
-  taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
+  cfg.hasFlowPath(sourceNode, sinkNode) and
+  taintSource = asSourceExpr(sourceNode.getNode()) and
   isUserInput(taintSource, taintCause)
 select taintedArg, sourceNode, sinkNode,
   "This argument to a file access function is derived from $@ and then passed to " + callChain + ".",
