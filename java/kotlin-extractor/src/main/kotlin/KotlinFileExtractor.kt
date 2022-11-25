@@ -5396,6 +5396,7 @@ open class KotlinFileExtractor(
         val id = ids.type.javaResult.id.cast<DbClass>()
         val pkgId = extractPackage("")
         tw.writeClasses(id, "", pkgId, id)
+        tw.writeCompiler_generated(id, CompilerGeneratedKinds.CALLABLE_CLASS.kind)
         tw.writeHasLocation(id, locId)
 
         // Extract constructor
@@ -5520,5 +5521,6 @@ open class KotlinFileExtractor(
         DEFAULT_ARGUMENTS_METHOD(10),
         INTERFACE_FORWARDER(11),
         ENUM_CONSTRUCTOR_ARGUMENT(12),
+        CALLABLE_CLASS(13),
     }
 }

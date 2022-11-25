@@ -12,7 +12,8 @@ import java
 
 from RefType t
 where
-  t.getFile().isJavaSourceFile() and
+  t.fromSource() and
   not t instanceof AnonymousClass and
+  not t.isCompilerGenerated() and
   not t.getName().substring(0, 1).toUpperCase() = t.getName().substring(0, 1)
 select t, "Class and interface names should start in uppercase."
