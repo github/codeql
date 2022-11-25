@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.app"
+    android:installLocation="auto"
+    android:versionCode="1"
+    android:versionName="0.1" >
+
+    <application android:networkSecurityConfig="@xml/NetworkSecurityConfig">
+    </application>
+
+</manifest>
