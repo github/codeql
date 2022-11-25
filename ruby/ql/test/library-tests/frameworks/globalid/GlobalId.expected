@@ -1,0 +1,24 @@
+locateCalls
+| globalid.rb:6:3:6:30 | call to locate |
+| globalid.rb:11:3:11:30 | call to locate |
+locateSignedCalls
+| globalid.rb:16:3:16:38 | call to locate_signed |
+| globalid.rb:21:3:21:38 | call to locate_signed |
+toGlobalIdCalls
+| globalid.rb:5:9:5:33 | call to to_global_id |
+| globalid.rb:10:9:10:27 | call to to_gid |
+toGidParamCalls
+| globalid.rb:35:10:35:34 | call to to_gid_param |
+toSignedGlobalIdCalls
+| globalid.rb:15:10:15:41 | call to to_signed_global_id |
+| globalid.rb:20:10:20:29 | call to to_sgid |
+toSgidParamCalls
+| globalid.rb:41:11:41:36 | call to to_sgid_param |
+globalIdParseCalls
+| globalid.rb:36:9:36:27 | call to parse |
+globalIdFindCalls
+| globalid.rb:37:3:37:19 | call to find |
+signedGlobalIdParseCalls
+| globalid.rb:42:10:42:35 | call to parse |
+signedGlobalIdFindCalls
+| globalid.rb:43:3:43:26 | call to find |
