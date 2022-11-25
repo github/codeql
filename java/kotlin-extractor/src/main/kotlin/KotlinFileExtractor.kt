@@ -487,15 +487,42 @@ open class KotlinFileExtractor(
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
 
-    private fun extractAnnotations(annotations: List<IrConstructorCall>, parent: Label<out DbExprparent>, extractEnumTypeAccesses: Boolean) {
-        val groupedAnnotations = metaAnnotationSupport.groupRepeatableAnnotations(annotations)
+    private val javaLangDeprecated by lazy { referenceExternalClass("java.lang.Deprecated") }
+
+    private val javaLangDeprecatedConstructor by lazy { javaLangDeprecated?.constructors?.singleOrNull() }
+
+    private fun replaceKotlinDeprecatedAnnotation(annotations: List<IrConstructorCall>): List<IrConstructorCall> {
+        val shouldReplace =
+            annotations.any { (it.type as? IrSimpleType)?.classFqName?.asString() == "kotlin.Deprecated" } &&
+                    annotations.none { (it.type as? IrSimpleType)?.classFqName?.asString() == "java.lang.Deprecated" }
+        val jldConstructor = javaLangDeprecatedConstructor
+        if (!shouldReplace || jldConstructor == null)
+            return annotations
+        return annotations.filter { (it.type as? IrSimpleType)?.classFqName?.asString() != "kotlin.Deprecated" } +
+                // Note we lose any arguments to @java.lang.Deprecated that were written in source.
+                IrConstructorCallImpl.fromSymbolOwner(
+                    UNDEFINED_OFFSET, UNDEFINED_OFFSET, jldConstructor.returnType, jldConstructor.symbol, 0
+                )
+    }
+
+    private fun extractAnnotations(c: IrAnnotationContainer, annotations: List<IrConstructorCall>, parent: Label<out DbExprparent>, extractEnumTypeAccesses: Boolean) {
+        val origin = when(c) {
+            is IrDeclaration -> c.origin
+            else -> null
+        }
+        val replacedAnnotations =
+            if (origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB)
+                replaceKotlinDeprecatedAnnotation(annotations)
+            else
+                annotations
+        val groupedAnnotations = metaAnnotationSupport.groupRepeatableAnnotations(replacedAnnotations)
         for ((idx, constructorCall: IrConstructorCall) in groupedAnnotations.sortedBy { v -> v.type.classFqName?.asString() }.withIndex()) {
             extractAnnotation(constructorCall, parent, idx, extractEnumTypeAccesses)
         }
     }
 
     private fun extractAnnotations(c: IrAnnotationContainer, parent: Label<out DbExprparent>, extractEnumTypeAccesses: Boolean) {
-        extractAnnotations(c.annotations, parent, extractEnumTypeAccesses)
+        extractAnnotations(c, c.annotations, parent, extractEnumTypeAccesses)
     }
 
     private fun extractAnnotation(
@@ -505,19 +532,8 @@ open class KotlinFileExtractor(
         extractEnumTypeAccesses: Boolean,
         contextLabel: String? = null
     ): Label<out DbExpr> {
-        val isConvertedJavaDeprecatedAnnotation = (constructorCall.type as? IrSimpleType)?.classFqName?.asString() == "kotlin.Deprecated" &&
-                constructorCall.source is JavaSourceElement
-
-        val extractType =
-            (
-                if (isConvertedJavaDeprecatedAnnotation)
-                    pluginContext.referenceClass(FqName("java.lang.Deprecated"))?.defaultType
-                else
-                    null
-            ) ?: erase(constructorCall.type)
-
         // Erase the type here because the JVM lowering erases the annotation type, and so the Java extractor will see it in erased form.
-        val t = useType(extractType)
+        val t = useType(erase(constructorCall.type))
         val annotationContextLabel = contextLabel ?: "{${t.javaResult.id}}"
         val id = tw.getLabelFor<DbDeclannotation>("@\"annotation;{$parent};$annotationContextLabel\"")
         tw.writeExprs_declannotation(id, t.javaResult.id, parent, idx)
@@ -526,11 +542,7 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(constructorCall)
         tw.writeHasLocation(id, locId)
 
-        // If this is `java.lang.Deprecated`, extract an annotation without parameters -- whatever the original source
-        // may have supplied has been lost.
-        val paramCount = if (isConvertedJavaDeprecatedAnnotation) 0 else constructorCall.valueArgumentsCount
-
-        for (i in 0 until paramCount) {
+        for (i in 0 until constructorCall.valueArgumentsCount) {
             val param = constructorCall.symbol.owner.valueParameters[i]
             val prop = constructorCall.symbol.owner.parentAsClass.declarations
                 .filterIsInstance<IrProperty>()
@@ -702,7 +714,7 @@ open class KotlinFileExtractor(
                     else
                         listOf()
 
-                extractAnnotations(c.annotations + additionalAnnotations, id, extractFunctionBodies)
+                extractAnnotations(c, c.annotations + additionalAnnotations, id, extractFunctionBodies)
 
                 if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
                     externalClassExtractor.writeStubTrapFile(c)
@@ -900,7 +912,7 @@ open class KotlinFileExtractor(
                 else -> null
             }
             val extraAnnotations = listOfNotNull(getNullabilityAnnotation(vp.type, vp.origin, vp.annotations, javaParameter?.annotations))
-            extractAnnotations(vp.annotations + extraAnnotations, id, extractTypeAccess)
+            extractAnnotations(vp, vp.annotations + extraAnnotations, id, extractTypeAccess)
             return extractValueParameter(id, substitutedType, vp.name.asString(), location, parent, idx, useValueParameter(vp, parentSourceDeclaration), syntheticParameterNames, vp.isVararg, vp.isNoinline, vp.isCrossinline)
         }
     }
@@ -1468,7 +1480,7 @@ open class KotlinFileExtractor(
 
                 if (extractAnnotations) {
                     val extraAnnotations = listOfNotNull(getNullabilityAnnotation(f.returnType, f.origin, f.annotations, getJavaCallable(f)?.annotations))
-                    extractAnnotations(f.annotations + extraAnnotations, id, extractMethodAndParameterTypeAccesses)
+                    extractAnnotations(f, f.annotations + extraAnnotations, id, extractMethodAndParameterTypeAccesses)
                 }
 
                 return id
