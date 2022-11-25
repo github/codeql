@@ -16,7 +16,7 @@ CodeQL library packs (`source <https://github.com/github/codeql/tree/codeql-cli/
 and CodeQL bundle (`releases <https://github.com/github/codeql-action/releases>`__)
 support the following languages and compilers.
 
-.. include:: ../support/reusables/versions-compilers.rst
+.. include:: ../reusables/supported-versions-compilers.rst
 
 Frameworks and libraries
 ########################
@@ -31,4 +31,4 @@ The current versions of the CodeQL library and query packs (`source <https://git
     For example, by extending the data flow libraries to include data sources
     and sinks for additional libraries or frameworks.
     
-.. include:: ../support/reusables/frameworks.rst
+.. include:: ../reusables/supported-frameworks.rst

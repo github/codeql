@@ -41,7 +41,7 @@ For this example you should download:
 
 .. note::
 
-   Some notes about the project, perhaps a link to the project page on LGTM.
+   Some notes about the project.
 
 .. Agenda slide. Explaining what is to be covered in the presentation
 
