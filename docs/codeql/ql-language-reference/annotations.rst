@@ -433,7 +433,6 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
   (for characteristic predicates and member predicates) and ``result`` (for predicates that return a result). 
   For more information, see ":ref:`predicate-binding`."
 - When you annotate a class, each variable must be ``this`` or a field in the class. 
-  Binding sets for classes are supported from release 2.3.0 of the CodeQL CLI, and release 1.26 of LGTM Enterprise.
 
 .. Links to use in substitutions
 
