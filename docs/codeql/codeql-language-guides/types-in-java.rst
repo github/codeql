@@ -80,6 +80,8 @@ This recipe is not too difficult to translate into a query:
        target.getElementType().(RefType).getASupertype+() = source.getElementType()
    select ce, "Potentially problematic array downcast."
 
+Many projects return results for this query.
+
 Note that by casting ``target.getElementType()`` to a ``RefType``, we eliminate all cases where the element type is a primitive type, that is, ``target`` is an array of primitive type: the problem we are looking for cannot arise in that case. Unlike in Java, a cast in QL never fails: if an expression cannot be cast to the desired type, it is simply excluded from the query results, which is exactly what we want.
 
 Improvements

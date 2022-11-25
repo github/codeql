@@ -299,6 +299,8 @@ For Javadoc, class ``Element`` has a member predicate ``getDoc`` that returns a 
        jdoc = f.getDoc().getJavadoc()
    select jdoc
 
+You can see this pattern in many projects.
+
 Class ``Javadoc`` represents an entire Javadoc comment as a tree of ``JavadocElement`` nodes, which can be traversed using member predicates ``getAChild`` and ``getParent``. For instance, you could edit the query so that it finds all ``@author`` tags in Javadoc comments on private fields:
 
 .. code-block:: ql
