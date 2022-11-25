@@ -2,6 +2,8 @@ class A < ActionMailbox::Base
   def process
     mail.body
     mail.to
+    m = inbound_email
+    m.mail.to
   end
 
   def other_method

@@ -25,11 +25,19 @@ module ActionMailbox {
   }
 
   /**
-   * A call to `ActionMailbox::Base#mail`, which is equivalent to calling `inbound_mail.mail`.
-   * The returned object contains data from the incoming mail.
+   * A call to `mail` on the return value of
+   * `ActionMailbox::Base#inbound_email`, or a direct call to
+   * `ActionMailbox::Base#mail`, which is equivalent. The returned object
+   * contains data from the incoming email.
    */
   class MailCall extends DataFlow::CallNode, Mail::Message::Range {
-    MailCall() { this = controller().getAnInstanceSelf().getAMethodCall("mail") }
+    MailCall() {
+      this =
+        [
+          controller().getAnInstanceSelf().getAMethodCall("inbound_email").getAMethodCall("mail"),
+          controller().getAnInstanceSelf().getAMethodCall("mail")
+        ]
+    }
   }
 
   /**
