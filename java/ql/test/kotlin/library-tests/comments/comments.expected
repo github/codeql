@@ -25,7 +25,6 @@ commentOwners
 | comments.kt:19:5:22:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | comments.kt:23:5:26:5 | add |
 | comments.kt:35:5:35:34 | /** Medium is in the middle */ | comments.kt:36:5:36:14 | Medium |
 | comments.kt:37:5:37:23 | /** This is high */ | comments.kt:38:5:38:11 | High |
-| comments.kt:42:5:44:7 | /**\n     * A variable.\n     */ | comments.kt:45:5:45:13 | int a |
 | comments.kt:48:1:50:3 | /**\n * A type alias comment\n */ | comments.kt:51:1:51:24 | MyType |
 | comments.kt:54:5:56:7 | /**\n     * An init block comment\n     */ | comments.kt:53:1:58:1 | InitBlock |
 | comments.kt:61:5:63:7 | /**\n     * A prop comment\n     */ | comments.kt:64:5:68:17 | prop |
@@ -40,6 +39,7 @@ commentNoOwners
 | comments.kt:1:1:1:25 | /** Kdoc with no owner */ |
 | comments.kt:24:9:24:25 | // A line comment |
 | comments.kt:28:5:30:6 | /*\n    A block comment\n    */ |
+| comments.kt:42:5:44:7 | /**\n     * A variable.\n     */ |
 | comments.kt:95:1:95:163 | // Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0% |
 commentSections
 | comments.kt:1:1:1:25 | /** Kdoc with no owner */ | Kdoc with no owner |
