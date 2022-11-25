@@ -1,10 +1,21 @@
 name: "Go: Run Tests"
 on:
+  push:
+    paths:
+      - "go/**"
+      - .github/workflows/go-tests.yml
+      - .github/actions/fetch-codeql/action.yml
+      - .github/actions/cache-query-compilation/action.yml
+      - codeql-workspace.yml
+    branches:
+      - main
+      - "rc/*"
   pull_request:
     paths:
       - "go/**"
       - .github/workflows/go-tests.yml
       - .github/actions/fetch-codeql/action.yml
+      - .github/actions/cache-query-compilation/action.yml
       - codeql-workspace.yml
 jobs:
   test-linux:
@@ -48,14 +59,21 @@ jobs:
           name: qhelp-markdown
           path: go/qhelp-out/**/*.md
 
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: go-qltest
+    
       - name: Test
         run: |
           cd go
-          make test
+          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
 
   test-mac:
     name: Test MacOS
     runs-on: macos-latest-xl
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Set up Go 1.19
         uses: actions/setup-go@v3
@@ -78,14 +96,20 @@ jobs:
           cd go
           make
 
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: go-qltest
       - name: Test
         run: |
           cd go
-          make test
+          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
 
   test-win:
     name: Test Windows
     runs-on: windows-latest-xl
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Set up Go 1.19
         uses: actions/setup-go@v3
@@ -108,7 +132,13 @@ jobs:
           cd go
           make
 
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: go-qltest
+
       - name: Test
         run: |
           cd go
-          make test
+          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
