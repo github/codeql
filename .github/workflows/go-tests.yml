@@ -32,7 +32,7 @@ jobs:
           cd go
           make
 
-      - name: Check that all QL and Go code is autoformatted
+      - name: Check that all Go code is autoformatted
         run: |
           cd go
           make check-formatting

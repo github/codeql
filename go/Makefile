@@ -34,7 +34,6 @@ autoformat:
 	find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -w
 
 check-formatting:
-	find ql -iregex '.*\.qll?' -print0 | xargs -0 codeql query format --check-only
 	test -z "$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
 
 install-deps:
