@@ -75,7 +75,7 @@ enum class TranslatorPolicy {
 #define DEFINE_VISIT(KIND, CLASS, PARENT)                                            \
  public:                                                                             \
   static constexpr TranslatorPolicy getPolicyFor##CLASS##KIND() {                    \
-    if constexpr (std::is_same_v<CLASS##KIND##Tag, void>) {                          \
+    if constexpr (std::is_same_v<TrapTagOf<swift::CLASS##KIND>, void>) {             \
       return TranslatorPolicy::ignore;                                               \
     } else if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {   \
       return TranslatorPolicy::translate;                                            \
