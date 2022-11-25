@@ -6,7 +6,6 @@
  * @tags model-generator
  */
 
-import semmle.code.csharp.dataflow.ExternalFlow
 import utils.modelgenerator.internal.CaptureTypeBasedSummaryModels
 
 from TypeBasedFlowTargetApi api, string flow

@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Extracts data about the database for use in adaptive threat modeling (ATM).

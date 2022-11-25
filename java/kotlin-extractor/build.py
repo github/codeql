@@ -147,18 +147,17 @@ def get_gradle_lib_folder():
     return gradle_home + '/lib'
 
 
-def find_jar(path, pattern):
-    result = glob.glob(path + '/' + pattern + '*.jar')
-    if len(result) == 0:
-        raise Exception('Cannot find jar file %s under path %s' %
-                        (pattern, path))
-    return result
+def find_jar(path, base):
+    fn = path + '/' + base + '.jar'
+    if not os.path.isfile(fn):
+        raise Exception('Cannot find jar file at %s' % fn)
+    return fn
 
 
-def patterns_to_classpath(path, patterns):
+def bases_to_classpath(path, bases):
     result = []
-    for pattern in patterns:
-        result += find_jar(path, pattern)
+    for base in bases:
+        result.append(find_jar(path, base))
     return os.path.pathsep.join(result)
 
 
@@ -174,8 +173,8 @@ def transform_to_embeddable(srcs):
 
 
 def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, build_dir, current_version):
-    classpath = patterns_to_classpath(dependency_folder, jars)
-    java_classpath = patterns_to_classpath(dependency_folder, java_jars)
+    classpath = bases_to_classpath(dependency_folder, jars)
+    java_classpath = bases_to_classpath(dependency_folder, java_jars)
 
     tmp_src_dir = build_dir + '/temp_src'
 

@@ -93,26 +93,29 @@ class ResolutionTest extends InlineExpectationsTest {
   }
 }
 
-class ResolutionTest3 extends InlineExpectationsTest {
-  ResolutionTest3() { this = "ResolutionTest3" }
+private string getTagForVersion(int version) {
+  result = "prints" + version and
+  version = major_version()
+}
 
-  override string getARelevantTag() { result = "prints3" and major_version() = 3 }
+class VersionSpecificResolutionTest extends InlineExpectationsTest {
+  VersionSpecificResolutionTest() { this = "VersionSpecificResolutionTest" }
+
+  override string getARelevantTag() { result = getTagForVersion(_) }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     (
       exists(DataFlow::PathNode source, DataFlow::PathNode sink, ImportConfiguration config |
         config.hasFlowPath(source, sink) and
-        sink.getNode().(VersionGuardedNode).getVersion() = 3 and
-        tag = "prints3" and
+        tag = getTagForVersion(sink.getNode().(VersionGuardedNode).getVersion()) and
         location = sink.getNode().getLocation() and
         value = source.getNode().(SourceString).getContents() and
         element = sink.getNode().toString()
       )
       or
       exists(ModuleRef ref |
-        ref.(VersionGuardedNode).getVersion() = 3 and
         ref instanceof CheckArgument and
-        tag = "prints3" and
+        tag = getTagForVersion(ref.(VersionGuardedNode).getVersion()) and
         location = ref.getLocation() and
         value = "\"<module " + ref.getName() + ">\"" and
         element = ref.toString()

@@ -237,7 +237,7 @@ private TValueNumber nonUniqueValueNumber(Expr e) {
 
 /** Gets the value number of an expression `e`. */
 cached
-TValueNumber valueNumber(Expr e) {
+ValueNumber valueNumber(Expr e) {
   result = nonUniqueValueNumber(e)
   or
   uniqueValueNumber(e) and

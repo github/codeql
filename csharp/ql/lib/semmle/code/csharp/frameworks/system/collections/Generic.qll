@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Collections
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Collections.Generic` namespace. */
 class SystemCollectionsGenericNamespace extends Namespace {

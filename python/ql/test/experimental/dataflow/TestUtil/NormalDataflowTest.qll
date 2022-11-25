@@ -16,8 +16,9 @@ class DataFlowTest extends FlowTest {
 query predicate missingAnnotationOnSink(Location location, string error, string element) {
   error = "ERROR, you should add `# $ MISSING: flow` annotation" and
   exists(DataFlow::Node sink |
+    any(TestConfiguration config).isSink(sink) and
+    // note: we only care about `SINK` and not `SINK_F`, so we have to reconstruct manually.
     exists(DataFlow::CallCfgNode call |
-      // note: we only care about `SINK` and not `SINK_F`, so we have to reconstruct manually.
       call.getFunction().asCfgNode().(NameNode).getId() = "SINK" and
       (sink = call.getArg(_) or sink = call.getArgByName(_))
     ) and

@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Extracts training data we can use to train ML models for ML-powered queries.

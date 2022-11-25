@@ -2,7 +2,6 @@
 
 import semmle.code.csharp.Type
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Diagnostics` namespace. */
 class SystemDiagnosticsNamespace extends Namespace {
