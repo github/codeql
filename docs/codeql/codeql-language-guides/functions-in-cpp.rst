@@ -60,7 +60,7 @@ This query returns fewer results. However, if you examine the results then you c
 
 For example, there is a more complicated standard query, `Unused static function <https://codeql.github.com/codeql-query-help/cpp/cpp-unused-static-function/>`__, that finds unused static functions.
 
-   You can explore the definition of an element in the standard libraries and see what predicates are available. Use the keyboard **F3** button to open the definition of any element. Alternatively, hover over the element and click **Jump to definition** in the tooltip displayed. The library file is opened in a new tab with the definition highlighted.
+   You can explore the definition of an element in the standard libraries and see what predicates are available. Highlight the element, right-click to display the context menu, and click **Go to Definition**. The library file is opened in a new tab with the definition of the element highlighted.
 
 Finding a specific function
 ---------------------------
