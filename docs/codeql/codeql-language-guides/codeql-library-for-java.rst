@@ -270,7 +270,7 @@ For annotations, class ``Annotatable`` is a superclass of all program elements t
    from Constructor c
    select c.getAnAnnotation()
 
-You may see examples where annottions are used to suppress warnings or to mark code as deprecated.
+You may see examples where annotations are used to suppress warnings or to mark code as deprecated.
 
 These annotations are represented by class ``Annotation``. An annotation is simply an expression whose type is an ``AnnotationType``. For example, you can amend this query so that it only reports deprecated constructors:
 
@@ -369,7 +369,7 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
    where not exists(c.getAReference())
    select c
 
-Codebases often have many methods that are not called direcstly, but this is unlikely to be the whole story. To explore this area further, see ":doc:`Navigating the call graph <navigating-the-call-graph>`."
+Codebases often have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see ":doc:`Navigating the call graph <navigating-the-call-graph>`."
 
 For more information about callables and calls, see the :doc:`article on the call graph <navigating-the-call-graph>`.
 
