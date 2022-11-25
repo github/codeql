@@ -3,6 +3,7 @@
  * @description Network communication should use certificate pinning.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @id java/android/missing-certificate-pinning
  * @tags security
