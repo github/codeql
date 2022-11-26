@@ -26,5 +26,21 @@ int main(int argc, char** argv) {
     strncat(fileName+len, fixed, FILENAME_MAX-len-1);
     fopen(fileName, "wb+");
   }
-}
 
+  {
+    char *fileName = argv[1];
+    fopen(fileName, "wb+"); // BAD
+  }
+
+  {
+    char fileName[20];
+    scanf("%s", fileName);
+    fopen(fileName, "wb+"); // BAD
+  }
+
+  {
+    char *fileName = malloc(20 * sizeof(char));
+    scanf("%s", fileName);
+    fopen(fileName, "wb+"); // BAD
+  }
+}

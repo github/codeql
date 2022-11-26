@@ -73,6 +73,8 @@ class TaintedPathConfiguration extends TaintTracking::Configuration {
       fileFunction.outermostWrapperFunctionCall(asSinkExpr(node), _)
     )
   }
+
+  override predicate isSanitizerIn(DataFlow::Node node) { this.isSource(node) }
 }
 
 from
