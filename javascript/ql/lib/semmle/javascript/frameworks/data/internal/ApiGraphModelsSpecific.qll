@@ -32,12 +32,11 @@ import JS::DataFlow as DataFlow
 private import AccessPathSyntax
 
 /**
- * Holds if `rawType` represents the JavaScript npm `package` with type `qualifiedName`.  
- * The `qualifiedName` is everything after the first ".".   
- * So e.g. `rawType = "foo.bar"` will parse to `package = "foo" and qualifiedName = "bar"`.  
- * `package´ can be enclosed in single-quotes if the package name includes dots, 
- * e.g. `'my.package'.type` parses to `package = "my.package" and qualifiedName = "type"`.  
- */ 
+ * Holds if `rawType` represents the JavaScript type `qualifiedName` from the given NPM `package`.
+ *
+ * Type names have form `package.type` or just `package` if referring to the package export
+ * object. If `package` contains a `.` character it must be enclosed in single quotes, such as `'package'.type`.
+ */
 bindingset[rawType]
 predicate parseTypeString(string rawType, string package, string qualifiedName) {
   exists(string regexp |
