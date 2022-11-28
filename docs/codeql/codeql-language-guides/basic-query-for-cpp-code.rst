@@ -19,48 +19,44 @@ The query we're going to run performs a basic search of the code for ``if`` stat
 Finding a CodeQL database to experiment with
 --------------------------------------------
 
-Before you start writing queries, you need a CodeQL database to run them against. The simplest way to do this is to download a database directly from GitHub.com.
+Before you start writing queries for C or C++ code, you need a CodeQL database to run them against. The simplest way to do this is to download a database for a repository that uses C or C++ directly from GitHub.com.
 
 #. In Visual Studio Code, click the **QL** icon |codeql-ext-icon| in the left sidebar to display the CodeQL extension. 
 
 #. Click **From GitHub** or the GitHub logo |github-db| at the top of the CodeQL extension to open an entry field.
 
-#. Copy the URL for the repository into the field and press the keyboard **Enter** key.
+#. Copy the URL for the repository into the field and press the keyboard **Enter** key. For example, https://github.com/protocolbuffers/protobuf.
 
-#. Optionally, if the repository has more than one CodeQL database available, choose which language to download.
+#. Optionally, if the repository has more than one CodeQL database available, select ``cpp`` to download the database created from the C and/or C++ code. 
 
-Information about the progress of the database download is shown in the bottom right corner of Visual Studio Code. When the download is complete, the database is shown with a check mark in the **Databases** section of the CodeQL extension.
+Information about the download progress for the database is shown in the bottom right corner of Visual Studio Code. When the download is complete, the database is shown with a check mark in the **Databases** section of the CodeQL extension.
 
 .. image:: ../images/codeql-for-visual-studio-code/database-selected.png
        :align: center
        :width: 500
 
-Running the query
------------------
+Running a quick query
+---------------------
 
-#. In Visual Studio Code, create a new folder to store your experimental queries for C and C++ CodeQL databases. For example, ``cpp-experiments``.
+The CodeQL extension for Visual Studio Code adds several **CodeQL:** commands to the command palette including **Quick Query**, which you can use to run a query without any set up.
 
-#. Create a ``qlpack.yml`` file in your experiments folder with the contents shown below. This tells the CodeQL extension that any queries you create in the folder are intended to run on C or C++ CodeQL databases.
+#. From the command palette in Visual Studio Code, select **CodeQL: Quick Query**.
 
-   .. code-block:: yaml
+#. After a momment, a new tab *quick-query.ql* is opened, ready for you to write a query for your currently selected CodeQL database (here a ``cpp`` database).
 
-      name: github-owner/cpp-experiments
-      version: 0.0.1
-      dependencies:
-         codeql/cpp-all: ^0.1.2
+   .. image:: ../images/codeql-for-visual-studio-code/quick-query-tab.png
+       :align: center
 
-#. Create a second new file in your experiements folder with the ``.ql`` file extension. You will write your first query in this file.
-
-#. Copy the following query into the new file and save the file:
+#. In the quick query tab, delete ``select ""`` and paste the following query beneath the import statement ``import cpp``.
 
    .. code-block:: ql
-
-      import cpp
 
       from IfStmt ifstmt, BlockStmt block
       where ifstmt.getThen() = block and
         block.getNumStmt() = 0
       select ifstmt, "This 'if' statement is redundant."
+
+#. Save the query in its default location (a temporary "Quick Queries" directory under the workspace for ``GitHub.vscode-codeql/quick-queries``).
 
 #. Right-click in the query window and select **CodeQL: Run Query**. (Alternatively, run the command from the Command Palette.)
 
@@ -75,6 +71,12 @@ If any matching code is found, click a link in the ``ifstmt`` column to open the
 
 .. image:: ../images/codeql-for-visual-studio-code/basic-cpp-query-results-2.png
     :align: center
+
+.. pull-quote::
+
+   Note
+
+   If you want to move your experimental query somewhere more permanent, you need to move the whole ``Quick Queries`` directory. The directory is a CodeQL pack with a ``qlpack.yml`` file that defines the content as queries for C/C++ CodeQL databases. For more information about CodeQL packs, see ":ref:`Working with CodeQL packs in Visual Studio Code <working-with-codeql-packs-in-visual-studio-code>`."
 
 About the query structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,6 +144,24 @@ To exclude ``if`` statements that have an ``else`` branch:
 #. Re-run the query.
 
    There are now fewer results because ``if`` statements with an ``else`` branch are no longer reported.
+
+Saving your quick query for future development
+----------------------------------------------
+
+
+#. In Visual Studio Code, create a new folder to store your experimental queries for C and C++ CodeQL databases. For example, ``cpp-experiments``.
+
+#. Create a ``qlpack.yml`` file in your experiments folder with the contents shown below. This tells the CodeQL extension that any queries you create in the folder are intended to run on C or C++ CodeQL databases.
+
+   .. code-block:: yaml
+
+      name: github-owner/cpp-experiments
+      version: 0.0.1
+      dependencies:
+         codeql/cpp-all: ^0.1.2
+
+#. Create a second new file in your experiements folder with the ``.ql`` file extension. You will write your first query in this file.
+
 
 Further reading
 ---------------
