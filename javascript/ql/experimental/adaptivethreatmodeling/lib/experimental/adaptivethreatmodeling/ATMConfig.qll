@@ -73,22 +73,32 @@ abstract class AtmConfig extends string {
     not exists(this.getAReasonSinkExcluded(candidateSink))
   }
 
+  /**
+   * Gets the list of characteristics that cause `candidateSink` to be excluded as an effective sink.
+   */
   final EndpointCharacteristics::EndpointCharacteristic getAReasonSinkExcluded(
     JS::DataFlow::Node candidateSink
   ) {
-    // An endpoint is an effective sink if it has neither standard endpoint filter characteristics nor endpoint filter
-    // characteristics that are specific to this sink type.
-    // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that implies
-    // they're not sinks for this sink type (or not sinks for any sink type), not just the EndpointFilterCharacteristics.
-    exists(EndpointCharacteristics::StandardEndpointFilterCharacteristic standardFilter |
-      standardFilter.getEndpoints(candidateSink) and
-      result = standardFilter
-    )
-    or
-    exists(EndpointCharacteristics::EndpointFilterCharacteristic specificFilter |
-      specificFilter.getEndpoints(candidateSink) and
-      specificFilter.getImplications(this.getASinkEndpointType(), false, _) and
-      result = specificFilter
+    // An endpoint is an effective sink (sink candidate) if none of its characteristics give much indication whether or
+    // not it is a sink. Historically, we used endpoint filters, and scored endpoints that are filtered out neither by
+    // a standard endpoint filter nor by an endpoint filter specific to this sink type. To replicate this behaviour, we
+    // have given the endpoint filter characteristics medium confidence, and we exclude endpoints that have a
+    // medium-confidence characteristic that indicates that they are not sinks, either in general or for this sink type.
+    exists(EndpointCharacteristics::EndpointCharacteristic filter, float confidence |
+      filter.getEndpoints(candidateSink) and
+      confidence >= filter.mediumConfidence() and
+      // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that
+      // implies they're not sinks, rather than using only medium-confidence characteristics, by deleting the following
+      // line.
+      confidence < filter.highConfidence() and
+      (
+        // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
+        filter.getImplications(any(NegativeType negative), true, confidence)
+        or
+        // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
+        filter.getImplications(this.getASinkEndpointType(), false, confidence)
+      ) and
+      result = filter
     )
   }
 
