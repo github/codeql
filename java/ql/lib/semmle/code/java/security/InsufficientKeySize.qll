@@ -20,7 +20,7 @@ abstract class InsufficientKeySizeSink extends DataFlow::Node {
 private module Asymmetric {
   /** Provides models for non-elliptic-curve asymmetric cryptography. */
   private module NonEllipticCurve {
-    /** A source for an insufficient key size used in an RSA, DSA, and DH algorithms. */
+    /** A source for an insufficient key size used in RSA, DSA, and DH algorithms. */
     private class Source extends InsufficientKeySizeSource {
       string algoName;
 
@@ -31,7 +31,7 @@ private module Asymmetric {
       }
     }
 
-    /** A sink for an insufficient key size used in an RSA, DSA, and DH algorithms. */
+    /** A sink for an insufficient key size used in RSA, DSA, and DH algorithms. */
     private class Sink extends InsufficientKeySizeSink {
       string algoName;
 
