@@ -80,6 +80,7 @@ private import internal.FlowSummaryImplSpecific
 private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
   private import codeql.swift.frameworks.StandardLibrary.Data
+  private import codeql.swift.frameworks.StandardLibrary.FilePath
   private import codeql.swift.frameworks.StandardLibrary.InputStream
   private import codeql.swift.frameworks.StandardLibrary.NSData
   private import codeql.swift.frameworks.StandardLibrary.NsUrl

@@ -3,6 +3,8 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
+private import codeql.swift.dataflow.TaintTracking
+private import codeql.swift.frameworks.StandardLibrary.FilePath
 
 /** A data flow sink for path injection vulnerabilities. */
 abstract class PathInjectionSink extends DataFlow::Node { }
@@ -29,7 +31,19 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
 }
 
 private class DefaultPathInjectionSanitizer extends PathInjectionSanitizer {
-  DefaultPathInjectionSanitizer() { none() } // TODO: Implement a proper path sanitizer
+  DefaultPathInjectionSanitizer() {
+    // This is a simple implementation prone to FNs by sanitizing too many nodes.
+    // TODO: Implement a complete path sanitizer when Guards are available.
+    exists(CallExpr starts, CallExpr normalize |
+      starts.getStaticTarget().getName() = "starts(with:)" and
+      starts.getStaticTarget().getEnclosingDecl() instanceof FilePath and
+      normalize.getStaticTarget().getName() = "lexicallyNormalized()" and
+      normalize.getStaticTarget().getEnclosingDecl() instanceof FilePath
+    |
+      TaintTracking::localTaint(this, DataFlow::exprNode(normalize.getQualifier())) and
+      DataFlow::localExprFlow(normalize, starts.getQualifier())
+    )
+  }
 }
 
 private class PathInjectionSinks extends SinkModelCsv {
