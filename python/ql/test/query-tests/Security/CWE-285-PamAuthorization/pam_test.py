@@ -39,29 +39,30 @@ pam_acct_mgmt.restype = c_int
 pam_acct_mgmt.argtypes = [PamHandle, c_int]
 
 
-class pam():
+def authenticate_bad_but_no_alert(self, username, service='login'):
+    # This is not OK, but since we don't have flow from a remote-flow-source, we
+    # don't give an alert.
+    handle = PamHandle()
+    conv = PamConv(None, 0)
+    retval = pam_start(service, username, byref(conv), byref(handle))
+    retval = pam_authenticate(handle, 0)
+    # NOT OK: no call to `pam_acct_mgmt`
+    auth_success = retval == 0
 
-    def authenticate_bad_but_good(self, username, service='login'):
-        handle = PamHandle()
-        conv = PamConv(None, 0)
-        retval = pam_start(service, username, byref(conv), byref(handle))
-        # This is not fine but we don't alert here as there is a possibility that the function is not actually used
-        retval = pam_authenticate(handle, 0)
-        auth_success = retval == 0
+    return auth_success
 
-        return auth_success
 
-    def authenticate_good(self, username, service='login'):
-        handle = PamHandle()
-        conv = PamConv(None, 0)
-        retval = pam_start(service, username, byref(conv), byref(handle))
+def authenticate_good(self, username, service='login'):
+    handle = PamHandle()
+    conv = PamConv(None, 0)
+    retval = pam_start(service, username, byref(conv), byref(handle))
 
-        retval = pam_authenticate(handle, 0)
-        if retval == 0:
-            retval = pam_acct_mgmt(handle, 0)
-        auth_success = retval == 0
+    retval = pam_authenticate(handle, 0)
+    if retval == 0:
+        retval = pam_acct_mgmt(handle, 0)
+    auth_success = retval == 0
 
-        return auth_success
+    return auth_success
 
 
 app = Flask(__name__)
@@ -73,9 +74,11 @@ def bad():
     retval = pam_start(service, username, byref(conv), byref(handle))
 
     retval = pam_authenticate(handle, 0)
+    # NOT OK: no call to `pam_acct_mgmt`
     auth_success = retval == 0
 
     return auth_success
+
 
 @app.route('/good')
 def good():
