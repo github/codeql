@@ -81,7 +81,7 @@ abstract class AtmConfig extends string {
   ) {
     // An endpoint is an effective sink (sink candidate) if none of its characteristics give much indication whether or
     // not it is a sink. Historically, we used endpoint filters, and scored endpoints that are filtered out neither by
-    // a standard endpoint filter nor by an endpoint filter specific to this sink type. To replicate this behaviour, we
+    // a standard endpoint filter nor by an endpoint filter specific to this sink type. To replicate this behavior, we
     // have given the endpoint filter characteristics medium confidence, and we exclude endpoints that have a
     // medium-confidence characteristic that indicates that they are not sinks, either in general or for this sink type.
     exists(EndpointCharacteristics::EndpointCharacteristic filter, float confidence |
