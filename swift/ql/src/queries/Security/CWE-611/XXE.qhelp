@@ -7,8 +7,7 @@ Parsing untrusted XML files with a weakly configured XML parser may lead to an X
 uses external entity references to access arbitrary files on a system, carry out denial-of-service attacks, or server-side
 request forgery. Even when the result of parsing is not returned to the user, out-of-band
 data retrieval techniques may allow attackers to steal sensitive data. Denial of services can also be
-carried out in this situation. 
-TESTING STUFF!
+carried out in this situation.
 </p>
 </overview>
 
