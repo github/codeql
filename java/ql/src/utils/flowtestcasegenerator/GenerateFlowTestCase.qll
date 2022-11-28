@@ -85,12 +85,12 @@ SupportMethod getASupportMethod() {
 }
 
 /**
- * Returns a CSV specification of the taint-/value-propagation behavior of a test support method (`get` or `newWith` method).
+ * Returns a data extension specification of the taint-/value-propagation behavior of a test support method (`get` or `newWith` method).
  */
-query string getASupportMethodModel() { result = getASupportMethod().getCsvModel() }
+query string getASupportMethodModel() { result = getASupportMethod().getDataExtensionModel() }
 
 /**
- * Gets a Java file body testing all requested CSV rows against whatever classes and methods they resolve against.
+ * Gets a Java file body testing all requested Models as Data rows against whatever classes and methods they resolve against.
  */
 query string getTestCase() {
   result =
