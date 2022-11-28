@@ -446,17 +446,17 @@ private Element interpretElement0(
     or
     // Fields
     signature = "" and
-    exists(NominalType nomType, IterableDeclContext decl, FieldDecl field |
+    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, FieldDecl field |
       field.getName() = name and
       field = decl.getAMember() and
-      nomType.getFullName() = type and
+      nomTypeDecl.getFullName() = type and
       result = field
     |
       subtypes = true and
-      getDeclType(decl) = nomType.getADerivedType*()
+      decl = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      getDeclType(decl) = nomType
+      decl = nomTypeDecl
     )
   )
 }
