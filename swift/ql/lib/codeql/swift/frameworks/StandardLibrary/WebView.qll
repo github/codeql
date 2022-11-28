@@ -131,3 +131,16 @@ private class JsExportedSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "Member of a type exposed through JSExport" }
 }
+
+/**
+ * A model for `WKUserScript` summaries.
+ */
+private class WKUserScriptSummaries extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";WKUserScript;true;init(source:injectionTime:forMainFrameOnly:);;;Argument[0];ReturnValue;taint",
+        ";WKUserScript;true;init(source:injectionTime:forMainFrameOnly:in:);;;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
