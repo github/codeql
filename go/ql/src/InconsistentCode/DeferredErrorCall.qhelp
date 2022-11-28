@@ -22,7 +22,7 @@ handled explicitly.
 <example>
 <p>
 In the following example, a call to <code>io.WriteLine</code> is deferred with the intention of
-appendending some data to a file after some other data has been written to it. However, the call
+appending some data to a file after some other data has been written to it. However, the call
 may not succeed and return and error, as demonstrated in the other use of
 <code>io.WriteLine</code>.
 </p>
