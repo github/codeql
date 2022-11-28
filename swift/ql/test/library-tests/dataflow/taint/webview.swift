@@ -131,10 +131,10 @@ func testWKUserScript() {
 
     let b = WKUserScript(source: source() as! String, injectionTime: atStart, forMainFrameOnly: false)
     sink(b) // $ tainted=132
-    sink(b.source) // $ MISSING: tainted=132
+    sink(b.source) // $ tainted=132
 
     let world = WKContentWorld()
     let c = WKUserScript(source: source() as! String, injectionTime: atStart, forMainFrameOnly: false, in: world)
     sink(c) // $ tainted=137
-    sink(c.source) // $ MISSING: tainted=137
+    sink(c.source) // $ tainted=137
 }

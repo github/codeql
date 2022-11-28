@@ -144,3 +144,16 @@ private class WKUserScriptSummaries extends SummaryModelCsv {
       ]
   }
 }
+
+/**
+ * A content implying that, if a `WKUserScript` is tainted, its `source` field is tainted.
+ */
+private class WKUserScriptInheritsTaint extends TaintInheritingContent,
+  DataFlow::Content::FieldContent {
+  WKUserScriptInheritsTaint() {
+    exists(FieldDecl f | this.getField() = f |
+      f.getEnclosingDecl().(ClassOrStructDecl).getName() = "WKUserScript" and
+      f.getName() = "source"
+    )
+  }
+}

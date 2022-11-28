@@ -533,9 +533,11 @@ edges
 | webview.swift:122:17:122:17 | s :  | webview.swift:55:5:55:48 | [summary param] 0 in setValue(_:forProperty:) :  |
 | webview.swift:122:17:122:17 | s :  | webview.swift:122:5:122:5 | [post] v3 :  |
 | webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  | webview.swift:133:10:133:10 | b |
+| webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  | webview.swift:134:10:134:12 | .source |
 | webview.swift:132:34:132:41 | call to source() :  | webview.swift:65:5:65:93 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  |
 | webview.swift:132:34:132:41 | call to source() :  | webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  |
 | webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  | webview.swift:138:10:138:10 | c |
+| webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  | webview.swift:139:10:139:12 | .source |
 | webview.swift:137:34:137:41 | call to source() :  | webview.swift:66:5:66:126 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  |
 | webview.swift:137:34:137:41 | call to source() :  | webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  |
 nodes
@@ -1131,9 +1133,11 @@ nodes
 | webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | call to init(source:injectionTime:forMainFrameOnly:) :  |
 | webview.swift:132:34:132:41 | call to source() :  | semmle.label | call to source() :  |
 | webview.swift:133:10:133:10 | b | semmle.label | b |
+| webview.swift:134:10:134:12 | .source | semmle.label | .source |
 | webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | call to init(source:injectionTime:forMainFrameOnly:in:) :  |
 | webview.swift:137:34:137:41 | call to source() :  | semmle.label | call to source() :  |
 | webview.swift:138:10:138:10 | c | semmle.label | c |
+| webview.swift:139:10:139:12 | .source | semmle.label | .source |
 subpaths
 | data.swift:89:41:89:48 | call to source() :  | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  |
 | data.swift:93:34:93:41 | call to source() :  | data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  | data.swift:93:21:93:73 | call to init(buffer:) :  |
@@ -1410,4 +1414,6 @@ subpaths
 | webview.swift:119:10:119:10 | v2 | webview.swift:81:13:81:20 | call to source() :  | webview.swift:119:10:119:10 | v2 | result |
 | webview.swift:123:10:123:10 | v3 | webview.swift:81:13:81:20 | call to source() :  | webview.swift:123:10:123:10 | v3 | result |
 | webview.swift:133:10:133:10 | b | webview.swift:132:34:132:41 | call to source() :  | webview.swift:133:10:133:10 | b | result |
+| webview.swift:134:10:134:12 | .source | webview.swift:132:34:132:41 | call to source() :  | webview.swift:134:10:134:12 | .source | result |
 | webview.swift:138:10:138:10 | c | webview.swift:137:34:137:41 | call to source() :  | webview.swift:138:10:138:10 | c | result |
+| webview.swift:139:10:139:12 | .source | webview.swift:137:34:137:41 | call to source() :  | webview.swift:139:10:139:12 | .source | result |
