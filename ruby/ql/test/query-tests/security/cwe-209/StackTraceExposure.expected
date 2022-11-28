@@ -1,0 +1,12 @@
+edges
+| StackTraceExposure.rb:11:10:11:17 | call to caller :  | StackTraceExposure.rb:12:18:12:19 | bt |
+nodes
+| StackTraceExposure.rb:6:18:6:28 | call to backtrace | semmle.label | call to backtrace |
+| StackTraceExposure.rb:11:10:11:17 | call to caller :  | semmle.label | call to caller :  |
+| StackTraceExposure.rb:12:18:12:19 | bt | semmle.label | bt |
+| StackTraceExposure.rb:18:18:18:28 | call to backtrace | semmle.label | call to backtrace |
+subpaths
+#select
+| StackTraceExposure.rb:6:18:6:28 | call to backtrace | StackTraceExposure.rb:6:18:6:28 | call to backtrace | StackTraceExposure.rb:6:18:6:28 | call to backtrace | $@ can be exposed to an external user. | StackTraceExposure.rb:6:18:6:28 | call to backtrace | Error information |
+| StackTraceExposure.rb:12:18:12:19 | bt | StackTraceExposure.rb:11:10:11:17 | call to caller :  | StackTraceExposure.rb:12:18:12:19 | bt | $@ can be exposed to an external user. | StackTraceExposure.rb:11:10:11:17 | call to caller | Error information |
+| StackTraceExposure.rb:18:18:18:28 | call to backtrace | StackTraceExposure.rb:18:18:18:28 | call to backtrace | StackTraceExposure.rb:18:18:18:28 | call to backtrace | $@ can be exposed to an external user. | StackTraceExposure.rb:18:18:18:28 | call to backtrace | Error information |
