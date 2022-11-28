@@ -57,6 +57,7 @@ function copyDirSync(src, dest) {
 // # copy the contents of the .cache folders into the combined cache folder.
 // cp -r **/.cache/* ${COMBINED_CACHE_DIR}/ || : # ignore missing files
 walkCaches(".", (dir) => {
+  console.log("Found cache in", dir);
   copyDirSync(dir, COMBINED_CACHE_DIR);
 });
 
