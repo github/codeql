@@ -12,7 +12,7 @@ private import codeql.ruby.TaintTracking
 private import codeql.ruby.dataflow.BarrierGuards
 
 /**
- * A taint-tracking configuration for detecting shell command constructed from library input vulnerabilities.
+ * A taint-tracking configuration for detecting code constructed from library input vulnerabilities.
  */
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnsafeShellCommandConstruction" }
