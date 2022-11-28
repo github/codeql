@@ -17,7 +17,7 @@ private class AlamofireResponseType extends NominalTypeDecl {
   }
 
   /**
-   * A response handler field that contains remote data.
+   * Gets a field that contains remote data.
    */
   FieldDecl getADataField() {
     result = this.getAMember() and
