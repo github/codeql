@@ -39,7 +39,7 @@ class EncryptionInitializationSink extends Expr {
               "AES", "ChaCha20", "Blowfish", "Rabbit", "CBC", "CFB", "GCM", "OCB", "OFB", "PCBC",
               "CCM", "CTR"
             ], fName) and
-      fName.matches("%init(%iv:%") and
+      fName.matches("%init(%") and
       call.getArgumentWithLabel("iv").getExpr() = this
     )
   }

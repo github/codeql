@@ -36,7 +36,7 @@ class InsufficientHashIterationsSink extends Expr {
     exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
       c.getFullName() = ["PBKDF1", "PBKDF2"] and
       c.getAMember() = f and
-      f.getName().matches("init(%iterations:%") and
+      f.getName().matches("init(%") and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel("iterations").getExpr() = this
     )

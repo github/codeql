@@ -35,7 +35,7 @@ class ConstantSaltSink extends Expr {
     exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
       c.getFullName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
-      f.getName().matches("%init(%salt:%") and
+      f.getName().matches("%init(%") and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel("salt").getExpr() = this
     )
