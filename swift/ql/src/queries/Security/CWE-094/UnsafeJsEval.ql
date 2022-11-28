@@ -20,9 +20,8 @@ import DataFlow::PathGraph
 
 /**
  * A source of untrusted, user-controlled data.
- * TODO: Extend to more (non-remote) sources in the future.
  */
-class Source = RemoteFlowSource;
+class Source = FlowSource;
 
 /**
  * A sink that evaluates a string of JavaScript code.
