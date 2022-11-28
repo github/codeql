@@ -520,7 +520,8 @@ module Private {
   predicate summaryParameterNodeRange(SummarizedCallable c, ParameterPosition pos) {
     parameterReadState(c, _, pos)
     or
-    isParameterPostUpdate(_, c, pos)
+    // Same as `isParameterPostUpdate(_, c, pos)`, but can be used in a negative context
+    any(SummaryNodeState state).isOutputState(c, SummaryComponentStack::argument(pos))
   }
 
   private predicate callbackOutput(
