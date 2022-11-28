@@ -53,5 +53,7 @@ runs:
         node $GITHUB_WORKSPACE/.github/actions/cache-query-compilation/move-caches.js ${COMBINED_CACHE_DIR}
 
         echo "compdir=${COMBINED_CACHE_DIR}" >> $GITHUB_OUTPUT
+
+        du -sh ${COMBINED_CACHE_DIR} # print the size of the cache.
       env: 
-        COMBINED_CACHE_DIR: ${{ github.workspace }}/compilation-dir # TODO: tmp dir?
+        COMBINED_CACHE_DIR: ${{ runner.temp }}/compilation-dir
