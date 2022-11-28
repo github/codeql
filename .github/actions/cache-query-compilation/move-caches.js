@@ -6,6 +6,8 @@
 // # clean up the .cache folders
 // rm -rf **/.cache/*
 
+// TODO: Async all the things!s
+
 const fs = require("fs");
 const path = require("path");
 
