@@ -13,7 +13,7 @@
 
 /*
  * Note: this query is not assigned a precision yet because we don't want it
- * included in query suites until its performance is well understood.
+ * to be included in query suites until its performance is well understood.
  */
 
 import cpp
