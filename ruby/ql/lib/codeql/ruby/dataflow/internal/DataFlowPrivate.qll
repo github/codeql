@@ -119,7 +119,12 @@ module LocalFlow {
    * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
    */
   predicate localFlowSsaParamInput(Node nodeFrom, Node nodeTo) {
-    nodeTo = getParameterDefNode(nodeFrom.(ParameterNodeImpl).getParameter())
+    exists(Parameter p | p = nodeFrom.(ParameterNodeImpl).getParameter() |
+      nodeTo = TSynthHashSplatParameterFilteredNode(p)
+      or
+      nodeTo = getParameterDefNode(p) and
+      not p instanceof HashSplatParameter
+    )
     or
     nodeTo = getSelfParameterDefNode(nodeFrom.(SelfParameterNode).getMethod())
   }
@@ -183,6 +188,11 @@ module LocalFlow {
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    exists(Parameter p |
+      nodeFrom = TSynthHashSplatParameterFilteredNode(p) and
+      nodeTo = getParameterDefNode(p)
+    )
+    or
     localSsaFlowStep(nodeFrom, nodeTo)
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
@@ -281,8 +291,12 @@ private module Cached {
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
     TSynthHashSplatParameterNode(DataFlowCallable c) {
-      isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
+      isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_))) and
+      not c.asCallable().getAParameter() instanceof HashSplatParameter and
+      not FlowSummaryImpl::Private::summaryParameterNodeRange(c.asLibraryCallable(),
+        any(ParameterPosition p | p.isHashSplat()))
     } or
+    TSynthHashSplatParameterFilteredNode(HashSplatParameter p) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       // filter out nodes that clearly don't need post-update nodes
       isNonConstantExpr(n) and
@@ -521,6 +535,8 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof SynthHashSplatParameterNode
   or
+  n instanceof SynthHashSplatParameterFilteredNode
+  or
   n instanceof SynthHashSplatArgumentNode
 }
 
@@ -689,8 +705,8 @@ private module ParameterNodes {
 
   /**
    * For all methods containing keyword parameters, we construct a synthesized
-   * (hidden) parameter node to contain all keyword arguments. This allows us
-   * to handle cases like
+   * (hidden) parameter node to contain all keyword arguments (unless there
+   * already exists a hash splat parameter). This allows us to handle cases like
    *
    * ```rb
    * def foo(p1:, p2:)
@@ -726,19 +742,6 @@ private module ParameterNodes {
 
     SynthHashSplatParameterNode() { this = TSynthHashSplatParameterNode(callable) }
 
-    /**
-     * Gets a keyword parameter that will be the result of reading `c` out of this
-     * synthesized node.
-     */
-    ParameterNode getAKeywordParameter(ContentSet c) {
-      exists(string name |
-        isParameterNode(result, callable, any(ParameterPosition p | p.isKeyword(name)))
-      |
-        c = getKeywordContent(name) or
-        c.isSingleton(TUnknownElementContent())
-      )
-    }
-
     final override Parameter getParameter() { none() }
 
     final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
@@ -752,6 +755,29 @@ private module ParameterNodes {
     final override Location getLocationImpl() { result = callable.getLocation() }
 
     final override string toStringImpl() { result = "**kwargs" }
+  }
+
+  /**
+   * A node that sits in between a hash splat parameter and its corresponding SSA
+   * definition node.
+   *
+   * Having such an extra node allows us to filter away data that is stored inside
+   * an index for which there is an explicit keyword parameter. We cannot filter on
+   * the parameter node itself, as data will then not be able to reach the keyword
+   * parameter.
+   */
+  class SynthHashSplatParameterFilteredNode extends NodeImpl, TSynthHashSplatParameterFilteredNode {
+    private HashSplatParameter p;
+
+    SynthHashSplatParameterFilteredNode() { this = TSynthHashSplatParameterFilteredNode(p) }
+
+    final override CfgScope getCfgScope() { result = p.getCallable() }
+
+    final override DataFlowCallable getEnclosingCallable() { result.asCallable() = p.getCallable() }
+
+    final override Location getLocationImpl() { result = p.getLocation() }
+
+    final override string toStringImpl() { result = p.toString() }
   }
 
   /** A parameter for a library callable with a flow summary. */
@@ -1150,7 +1176,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
         ))
     )
   or
-  node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
+  exists(DataFlowCallable callable, string name |
+    isParameterNode(node2, callable, any(ParameterPosition p | p.isKeyword(name))) and
+    isParameterNode(node1, callable, any(ParameterPosition p | p.isHashSplat()))
+  |
+    c = getKeywordContent(name) or
+    c.isSingleton(TUnknownElementContent())
+  )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
 }
@@ -1166,11 +1198,11 @@ predicate clearsContent(Node n, ContentSet c) {
   // Filter out keyword arguments that are part of the method signature from
   // the hash-splat parameter
   exists(
-    DataFlowCallable callable, ParameterPosition hashSplatPos, ParameterNodeImpl keywordParam,
+    DataFlowCallable callable, HashSplatParameter p, ParameterNodeImpl keywordParam,
     ParameterPosition keywordPos, string name
   |
-    n.(ParameterNodes::NormalParameterNode).isParameterOf(callable, hashSplatPos) and
-    hashSplatPos.isHashSplat() and
+    n = TSynthHashSplatParameterFilteredNode(p) and
+    callable.asCallable() = p.getCallable() and
     keywordParam.isParameterOf(callable, keywordPos) and
     keywordPos.isKeyword(name) and
     c = getKeywordContent(name)
