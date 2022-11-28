@@ -42,7 +42,9 @@ function copyDirSync(src, dest) {
     const destPath = path.join(dest, file);
     const stat = fs.statSync(srcPath);
     if (stat.isDirectory()) {
-      fs.mkdirSync(destPath);
+      if (!fs.existsSync(destPath)) {
+        fs.mkdirSync(destPath);
+      }
       copyDirSync(srcPath, destPath);
     } else {
       fs.copyFileSync(srcPath, destPath);
