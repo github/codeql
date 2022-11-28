@@ -145,24 +145,6 @@ To exclude ``if`` statements that have an ``else`` branch:
 
    There are now fewer results because ``if`` statements with an ``else`` branch are no longer reported.
 
-Saving your quick query for future development
-----------------------------------------------
-
-
-#. In Visual Studio Code, create a new folder to store your experimental queries for C and C++ CodeQL databases. For example, ``cpp-experiments``.
-
-#. Create a ``qlpack.yml`` file in your experiments folder with the contents shown below. This tells the CodeQL extension that any queries you create in the folder are intended to run on C or C++ CodeQL databases.
-
-   .. code-block:: yaml
-
-      name: github-owner/cpp-experiments
-      version: 0.0.1
-      dependencies:
-         codeql/cpp-all: ^0.1.2
-
-#. Create a second new file in your experiements folder with the ``.ql`` file extension. You will write your first query in this file.
-
-
 Further reading
 ---------------
 
