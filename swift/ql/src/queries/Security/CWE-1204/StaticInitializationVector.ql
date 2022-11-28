@@ -32,7 +32,7 @@ class StaticInitializationVectorSource extends Expr {
 class EncryptionInitializationSink extends Expr {
   EncryptionInitializationSink() {
     // `iv` arg in `init` is a sink
-    exists(CallExpr call, string fName, int arg |
+    exists(CallExpr call, string fName |
       call.getStaticTarget()
           .(MethodDecl)
           .hasQualifiedName([
@@ -40,9 +40,7 @@ class EncryptionInitializationSink extends Expr {
               "CCM", "CTR"
             ], fName) and
       fName.matches("%init(%iv:%") and
-      arg = [0, 1] and
-      call.getStaticTarget().(MethodDecl).getParam(pragma[only_bind_into](arg)).getName() = "iv" and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this
+      call.getArgumentWithLabel("iv").getExpr() = this
     )
   }
 }
