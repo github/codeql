@@ -31,6 +31,13 @@ import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPath
 import JS::DataFlow as DataFlow
 private import AccessPathSyntax
 
+/**
+ * Holds if `rawType` represents the JavaScript npm `package` with type `qualifiedName`.  
+ * The `qualifiedName` is everything after the first ".".   
+ * So e.g. `rawType = "foo.bar"` will parse to `package = "foo" and qualifiedName = "bar"`.  
+ * `package´ can be enclosed in single-quotes if the package name includes dots, 
+ * e.g. `'my.package'.type` parses to `package = "my.package" and qualifiedName = "type"`.  
+ */ 
 bindingset[rawType]
 predicate parseTypeString(string rawType, string package, string qualifiedName) {
   exists(string regexp |
