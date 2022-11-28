@@ -1,5 +1,6 @@
 name: integration-tests-swift
 version: 0.0.0
-extractor: swift
 dependencies:
-  codeql/swift-all: '*'
+  codeql/swift-all: ${workspace}
+tests: .
+extractor: swift
