@@ -34,12 +34,11 @@ class EncryptionInitializationSink extends Expr {
     // `iv` arg in `init` is a sink
     exists(CallExpr call, string fName |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(ConstructorDecl)
           .hasQualifiedName([
               "AES", "ChaCha20", "Blowfish", "Rabbit", "CBC", "CFB", "GCM", "OCB", "OFB", "PCBC",
               "CCM", "CTR"
             ], fName) and
-      fName.matches("%init(%") and
       call.getArgumentWithLabel("iv").getExpr() = this
     )
   }
