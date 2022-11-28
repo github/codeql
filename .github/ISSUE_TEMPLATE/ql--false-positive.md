@@ -1,5 +1,5 @@
 ---
-name: CodeQL False positive
+name: CodeQL false positive
 about: Report CodeQL alerts that you think should not have been detected (not applicable, not exploitable, etc.)
 title: False positive
 labels: false-positive
