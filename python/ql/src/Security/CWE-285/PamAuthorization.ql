@@ -13,7 +13,7 @@
 import python
 import DataFlow::PathGraph
 import semmle.python.ApiGraphs
-import semmle.python.security.dataflow.PamAuthorization
+import semmle.python.security.dataflow.PamAuthorizationQuery
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)

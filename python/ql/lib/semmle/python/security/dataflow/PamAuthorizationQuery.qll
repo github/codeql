@@ -15,7 +15,7 @@ import PamAuthorizationCustomizations::PamAuthorizationCustomizations
  * A taint-tracking configuration for detecting "PAM Authorization" vulnerabilities.
  */
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "RemoteToPam" }
+  Configuration() { this = "PamAuthorization" }
 
   override predicate isSource(DataFlow::Node node) { node instanceof Source }
 
