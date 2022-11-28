@@ -55,5 +55,6 @@ runs:
         echo "compdir=${COMBINED_CACHE_DIR}" >> $GITHUB_OUTPUT
 
         du -sh ${COMBINED_CACHE_DIR} # print the size of the cache.
+        find ${COMBINED_CACHE_DIR} -type f # print the files in the cache.
       env: 
         COMBINED_CACHE_DIR: ${{ runner.temp }}/compilation-dir
