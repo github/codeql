@@ -20,7 +20,7 @@ runs:
     - id: query-cache
       uses: ./.github/actions/cache-query-compilation
       with:
-        key: swift-qltest
+        key: swift-integration
     - name: Run integration tests
       shell: bash
       run: |
