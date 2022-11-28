@@ -98,17 +98,6 @@ class UnsafeJsEvalConfig extends TaintTracking::Configuration {
     exists(Argument arg |
       arg =
         any(CallExpr ce |
-          ce.getStaticTarget()
-              .(MethodDecl)
-              .hasQualifiedName("WKUserScript",
-                [
-                  "init(source:injectionTime:forMainFrameOnly:)",
-                  "init(source:injectionTime:forMainFrameOnly:in:)"
-                ])
-        ).getArgument(0)
-      or
-      arg =
-        any(CallExpr ce |
           ce.getStaticTarget().(MethodDecl).hasQualifiedName("String", "init(decoding:as:)")
         ).getArgument(0)
       or
