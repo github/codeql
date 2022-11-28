@@ -298,19 +298,21 @@ final class AnnotationPartNode extends ExprStmtNode {
 
   override ElementNode getChild(int childIndex) {
     result.getElement() =
-      rank[childIndex](Element ch, string file, int line, int column |
-        ch = this.getAnAnnotationChild() and locationSortKeys(ch, file, line, column)
+      rank[childIndex](Element ch, string file, int line, int column, int idx |
+        ch = this.getAnnotationChild(idx) and locationSortKeys(ch, file, line, column)
       |
-        ch order by file, line, column
+        ch order by file, line, column, idx
       )
   }
 
-  private Expr getAnAnnotationChild() {
-    result = element.(Annotation).getValue(_)
+  private Expr getAnnotationChild(int index) {
+    result = element.(Annotation).getValue(_) and
+    index >= 0 and
+    if exists(int x | x >= 0 | result.isNthChildOf(element, x))
+    then result.isNthChildOf(element, index)
+    else result.isNthChildOf(element, -(index + 1))
     or
-    result = element.(ArrayInit).getAnInit()
-    or
-    result = element.(ArrayInit).(Annotatable).getAnAnnotation()
+    result = element.(ArrayInit).getInit(index)
   }
 }
 
