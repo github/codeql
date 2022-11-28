@@ -183,6 +183,18 @@ module LocalFlow {
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    exists(DataFlowCallable c | nodeFrom = TSynthHashSplatParameterNode(c) |
+      exists(HashSplatParameter p |
+        p.getCallable() = c.asCallable() and
+        nodeTo = TNormalParameterNode(p)
+      )
+      or
+      exists(ParameterPosition pos |
+        nodeTo = TSummaryParameterNode(c.asLibraryCallable(), pos) and
+        pos.isHashSplat()
+      )
+    )
+    or
     localSsaFlowStep(nodeFrom, nodeTo)
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
@@ -620,7 +632,9 @@ private module ParameterNodes {
           )
         or
         parameter = callable.getAParameter().(HashSplatParameter) and
-        pos.isHashSplat()
+        pos.isHashSplat() and
+        // avoid overlap with `SynthHashSplatParameterNode`
+        not callable.getAParameter() instanceof KeywordParameter
         or
         parameter = callable.getParameter(0).(SplatParameter) and
         pos.isSplatAll()
@@ -772,7 +786,16 @@ private module ParameterNodes {
     override Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c.asLibraryCallable() and pos = pos_
+      sc = c.asLibraryCallable() and
+      pos = pos_ and
+      // avoid overlap with `SynthHashSplatParameterNode`
+      not (
+        pos.isHashSplat() and
+        exists(ParameterPosition keywordPos |
+          FlowSummaryImpl::Private::summaryParameterNodeRange(sc, keywordPos) and
+          keywordPos.isKeyword(_)
+        )
+      )
     }
 
     override CfgScope getCfgScope() { none() }
@@ -1174,11 +1197,11 @@ predicate clearsContent(Node n, ContentSet c) {
   // Filter out keyword arguments that are part of the method signature from
   // the hash-splat parameter
   exists(
-    DataFlowCallable callable, ParameterPosition hashSplatPos, ParameterNodeImpl keywordParam,
+    DataFlowCallable callable, HashSplatParameter hashSplatParam, ParameterNodeImpl keywordParam,
     ParameterPosition keywordPos, string name
   |
-    n.(ParameterNodes::NormalParameterNode).isParameterOf(callable, hashSplatPos) and
-    hashSplatPos.isHashSplat() and
+    n = TNormalParameterNode(hashSplatParam) and
+    callable.asCallable() = hashSplatParam.getCallable() and
     keywordParam.isParameterOf(callable, keywordPos) and
     keywordPos.isKeyword(name) and
     c = getKeywordContent(name)
