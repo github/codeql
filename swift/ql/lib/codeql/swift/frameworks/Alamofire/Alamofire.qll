@@ -12,8 +12,7 @@ private import codeql.swift.dataflow.FlowSources
  */
 private class AlamofireResponseType extends NominalTypeDecl {
   AlamofireResponseType() {
-    this.getFullName() = ["DataResponse", "DownloadResponse"] or
-    this.getABaseTypeDecl() instanceof AlamofireResponseType
+    this.getABaseTypeDecl*().getFullName() = ["DataResponse", "DownloadResponse"]
   }
 
   /**
