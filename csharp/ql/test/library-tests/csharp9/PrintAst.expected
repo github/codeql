@@ -5,7 +5,8 @@ AnonymousObjectCreation.cs:
 #    7|       1: [TypeMention] AnonObj
 #    7|     1: [AssignExpr] ... = ...
 #    7|       0: [FieldAccess] access to field l
-#    7|       1: [ObjectCreation] object creation of type List<AnonObj>
+#    7|       1: [CastExpr] (...) ...
+#    7|         1: [ObjectCreation] object creation of type List<AnonObj>
 #    9|   6: [Property] Prop1
 #    9|     -1: [TypeMention] int
 #    9|     3: [Getter] get_Prop1
@@ -21,13 +22,15 @@ AnonymousObjectCreation.cs:
 #   13|       0: [ExprStmt] ...;
 #   13|         0: [MethodCall] call to method M1
 #   13|           -1: [ThisAccess] this access
-#   13|           0: [ObjectCreation] object creation of type AnonObj
-#   13|             -1: [ObjectInitializer] { ..., ... }
-#   13|               0: [MemberInitializer] ... = ...
-#   13|                 0: [PropertyCall] access to property Prop1
-#   13|                 1: [IntLiteral] 1
+#   13|           0: [CastExpr] (...) ...
+#   13|             1: [ObjectCreation] object creation of type AnonObj
+#   13|               -1: [ObjectInitializer] { ..., ... }
+#   13|                 0: [MemberInitializer] ... = ...
+#   13|                   0: [PropertyCall] access to property Prop1
+#   13|                   1: [IntLiteral] 1
 #   14|       1: [ReturnStmt] return ...;
-#   14|         0: [ObjectCreation] object creation of type AnonObj
+#   14|         0: [CastExpr] (...) ...
+#   14|           1: [ObjectCreation] object creation of type AnonObj
 #   17|   8: [DelegateType] D
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x
@@ -42,9 +45,10 @@ AnonymousObjectCreation.cs:
 #   21|     -1: [TypeMention] D
 #   21|     4: [BlockStmt] {...}
 #   21|       0: [ReturnStmt] return ...;
-#   21|         0: [ExplicitDelegateCreation] delegate creation of type D
-#   21|           0: [ImplicitDelegateCreation] delegate creation of type D
-#   21|             0: [MethodAccess] access to method M2
+#   21|         0: [CastExpr] (...) ...
+#   21|           1: [ExplicitDelegateCreation] delegate creation of type D
+#   21|             0: [ImplicitDelegateCreation] delegate creation of type D
+#   21|               0: [MethodAccess] access to method M2
 #   23|   11: [Method] MethodAdd
 #   23|     -1: [TypeMention] Void
 #   24|     4: [BlockStmt] {...}
@@ -53,7 +57,8 @@ AnonymousObjectCreation.cs:
 #   25|           -1: [TypeMention] List<int>
 #   25|             1: [TypeMention] int
 #   25|           0: [LocalVariableAccess] access to local variable list
-#   25|           1: [ObjectCreation] object creation of type List<Int32>
+#   25|           1: [CastExpr] (...) ...
+#   25|             1: [ObjectCreation] object creation of type List<Int32>
 BinaryPattern.cs:
 #    3| [Class] BinaryPattern
 #    5|   5: [Property] P1

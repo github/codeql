@@ -1,3 +1,7 @@
+| data.swift:195:58:195:58 | &... | data.swift:195:58:195:73 | ...[...] |
+| nsdata.swift:139:15:139:15 | nsDataTainted24 | nsdata.swift:139:15:139:31 | .bytes |
+| nsdata.swift:140:15:140:15 | nsDataTainted24 | nsdata.swift:140:15:140:31 | .description |
+| nsmutabledata.swift:49:15:49:15 | nsMutableDataTainted6 | nsmutabledata.swift:49:15:49:37 | .mutableBytes |
 | string.swift:7:13:7:13 |  | string.swift:7:13:7:13 | [post]  |
 | string.swift:7:13:7:13 |  | string.swift:7:14:7:14 | [post] &... |
 | string.swift:7:13:7:13 | TapExpr | string.swift:7:13:7:13 | "..." |
@@ -161,4 +165,7 @@
 | url.swift:100:12:100:54 | ...! | url.swift:100:12:100:56 | .standardizedFileURL |
 | url.swift:101:15:101:57 | ...! | url.swift:101:15:101:59 | .user |
 | url.swift:102:15:102:57 | ...! | url.swift:102:15:102:59 | .password |
-| webview.swift:52:11:52:18 | call to source() | webview.swift:52:10:52:41 | .body |
+| webview.swift:77:11:77:18 | call to source() | webview.swift:77:10:77:41 | .body |
+| webview.swift:130:10:130:10 | a | webview.swift:130:10:130:12 | .source |
+| webview.swift:134:10:134:10 | b | webview.swift:134:10:134:12 | .source |
+| webview.swift:139:10:139:10 | c | webview.swift:139:10:139:12 | .source |

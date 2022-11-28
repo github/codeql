@@ -99,9 +99,11 @@ private module Dispatch {
   private predicate lowConfidenceDispatchType(SrcRefType t) {
     t instanceof TypeObject
     or
-    t instanceof FunctionalInterface
+    t instanceof Interface and not t.fromSource()
     or
     t.hasQualifiedName("java.io", "Serializable")
+    or
+    t.hasQualifiedName("java.lang", "Iterable")
     or
     t.hasQualifiedName("java.lang", "Cloneable")
     or

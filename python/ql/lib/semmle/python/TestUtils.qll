@@ -1,4 +1,5 @@
-/* This file contains test-related utility functions */
+/** This file contains test-related utility functions */
+
 import python
 
 /** Removes everything up to the occurrence of `sub` in the string `str` */

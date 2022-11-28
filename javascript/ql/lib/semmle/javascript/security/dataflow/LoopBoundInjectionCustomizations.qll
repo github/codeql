@@ -122,10 +122,10 @@ module LoopBoundInjection {
         "flattenDeep", "flattenDepth", "initial", "intersection", "intersectionBy",
         "intersectionWith", "join", "remove", "reverse", "slice", "sortedUniq", "sortedUniqBy",
         "tail", "union", "unionBy", "unionWith", "uniqBy", "unzip", "unzipWith", "without", "zip",
-        "zipObject", "zipObjectDeep", "zipWith", "countBy", "each", "forEach", "eachRight",
-        "forEachRight", "filter", "find", "findLast", "flatMap", "flatMapDeep", "flatMapDepth",
-        "forEach", "forEachRight", "groupBy", "invokeMap", "keyBy", "map", "orderBy", "partition",
-        "reduce", "reduceRight", "reject", "sortBy"
+        "zipObject", "zipObjectDeep", "zipWith", "countBy", "each", "eachRight", "forEachRight",
+        "filter", "find", "findLast", "flatMap", "flatMapDeep", "flatMapDepth", "forEach",
+        "groupBy", "invokeMap", "keyBy", "map", "orderBy", "partition", "reduce", "reduceRight",
+        "reject", "sortBy"
       ]
   }
 

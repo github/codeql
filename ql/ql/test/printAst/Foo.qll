@@ -25,3 +25,7 @@ predicate calls(Foo f) {
   or
   true = false
 }
+
+newtype TPathNode =
+  pragma[assume_small_delta]
+  TPathNodeMid()

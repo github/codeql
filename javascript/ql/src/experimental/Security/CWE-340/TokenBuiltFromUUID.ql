@@ -6,7 +6,7 @@
  * @precision medium
  * @problem.severity error
  * @security-severity 5
- * @id py/predictable-token
+ * @id js/predictable-token
  * @tags security
  *       external/cwe/cwe-340
  */

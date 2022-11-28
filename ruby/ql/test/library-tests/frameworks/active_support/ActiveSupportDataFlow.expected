@@ -186,6 +186,9 @@ edges
 | active_support.rb:290:7:290:16 | call to source :  | active_support.rb:291:8:291:8 | x :  |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
+| active_support.rb:303:7:303:16 | call to source :  | active_support.rb:304:19:304:19 | a :  |
+| active_support.rb:304:7:304:19 | call to json_escape :  | active_support.rb:305:8:305:8 | b |
+| active_support.rb:304:19:304:19 | a :  | active_support.rb:304:7:304:19 | call to json_escape :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  |
@@ -258,6 +261,34 @@ edges
 | hash_extensions.rb:58:10:58:10 | x [element :a] :  | hash_extensions.rb:58:10:58:14 | ...[...] |
 | hash_extensions.rb:59:10:59:10 | x [element :b] :  | hash_extensions.rb:59:10:59:14 | ...[...] |
 | hash_extensions.rb:59:10:59:10 | x [element :b] :  | hash_extensions.rb:59:10:59:14 | ...[...] |
+| hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 0] :  |
+| hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 0] :  |
+| hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 1] :  |
+| hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 1] :  |
+| hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 2] :  |
+| hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 2] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 0] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 0] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 0] :  | hash_extensions.rb:68:29:68:33 | value :  |
+| hash_extensions.rb:68:9:68:14 | values [element 0] :  | hash_extensions.rb:68:29:68:33 | value :  |
+| hash_extensions.rb:68:9:68:14 | values [element 1] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 1] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 1] :  | hash_extensions.rb:68:29:68:33 | value :  |
+| hash_extensions.rb:68:9:68:14 | values [element 1] :  | hash_extensions.rb:68:29:68:33 | value :  |
+| hash_extensions.rb:68:9:68:14 | values [element 2] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 2] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 2] :  | hash_extensions.rb:68:29:68:33 | value :  |
+| hash_extensions.rb:68:9:68:14 | values [element 2] :  | hash_extensions.rb:68:29:68:33 | value :  |
+| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:73:10:73:10 | h [element] :  |
+| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:73:10:73:10 | h [element] :  |
+| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:74:10:74:10 | h [element] :  |
+| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:74:10:74:10 | h [element] :  |
+| hash_extensions.rb:68:29:68:33 | value :  | hash_extensions.rb:69:14:69:18 | value |
+| hash_extensions.rb:68:29:68:33 | value :  | hash_extensions.rb:69:14:69:18 | value |
+| hash_extensions.rb:73:10:73:10 | h [element] :  | hash_extensions.rb:73:10:73:16 | ...[...] |
+| hash_extensions.rb:73:10:73:10 | h [element] :  | hash_extensions.rb:73:10:73:16 | ...[...] |
+| hash_extensions.rb:74:10:74:10 | h [element] :  | hash_extensions.rb:74:10:74:16 | ...[...] |
+| hash_extensions.rb:74:10:74:10 | h [element] :  | hash_extensions.rb:74:10:74:16 | ...[...] |
 nodes
 | active_support.rb:10:9:10:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:11:10:11:10 | x :  | semmle.label | x :  |
@@ -504,6 +535,10 @@ nodes
 | active_support.rb:291:8:291:8 | x :  | semmle.label | x :  |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
+| active_support.rb:303:7:303:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:304:7:304:19 | call to json_escape :  | semmle.label | call to json_escape :  |
+| active_support.rb:304:19:304:19 | a :  | semmle.label | a :  |
+| active_support.rb:305:8:305:8 | b | semmle.label | b |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | semmle.label | h [element :a] :  |
@@ -594,6 +629,32 @@ nodes
 | hash_extensions.rb:59:10:59:10 | x [element :b] :  | semmle.label | x [element :b] :  |
 | hash_extensions.rb:59:10:59:14 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:59:10:59:14 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:67:15:67:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:67:15:67:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:67:28:67:38 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:67:28:67:38 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:67:41:67:51 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:67:41:67:51 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:68:9:68:14 | values [element 0] :  | semmle.label | values [element 0] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 0] :  | semmle.label | values [element 0] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 1] :  | semmle.label | values [element 1] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 1] :  | semmle.label | values [element 1] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 2] :  | semmle.label | values [element 2] :  |
+| hash_extensions.rb:68:9:68:14 | values [element 2] :  | semmle.label | values [element 2] :  |
+| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | semmle.label | call to index_by [element] :  |
+| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | semmle.label | call to index_by [element] :  |
+| hash_extensions.rb:68:29:68:33 | value :  | semmle.label | value :  |
+| hash_extensions.rb:68:29:68:33 | value :  | semmle.label | value :  |
+| hash_extensions.rb:69:14:69:18 | value | semmle.label | value |
+| hash_extensions.rb:69:14:69:18 | value | semmle.label | value |
+| hash_extensions.rb:73:10:73:10 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:73:10:73:10 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:73:10:73:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:73:10:73:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:74:10:74:10 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:74:10:74:10 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:74:10:74:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:74:10:74:16 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
 | active_support.rb:182:10:182:13 | ...[...] | active_support.rb:180:10:180:17 | call to source :  | active_support.rb:182:10:182:13 | ...[...] | $@ | active_support.rb:180:10:180:17 | call to source :  | call to source :  |
@@ -622,3 +683,12 @@ subpaths
 | hash_extensions.rb:56:10:56:14 | ...[...] | hash_extensions.rb:50:52:50:61 | call to taint :  | hash_extensions.rb:56:10:56:14 | ...[...] | $@ | hash_extensions.rb:50:52:50:61 | call to taint :  | call to taint :  |
 | hash_extensions.rb:58:10:58:14 | ...[...] | hash_extensions.rb:50:14:50:23 | call to taint :  | hash_extensions.rb:58:10:58:14 | ...[...] | $@ | hash_extensions.rb:50:14:50:23 | call to taint :  | call to taint :  |
 | hash_extensions.rb:59:10:59:14 | ...[...] | hash_extensions.rb:50:29:50:38 | call to taint :  | hash_extensions.rb:59:10:59:14 | ...[...] | $@ | hash_extensions.rb:50:29:50:38 | call to taint :  | call to taint :  |
+| hash_extensions.rb:69:14:69:18 | value | hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:69:14:69:18 | value | $@ | hash_extensions.rb:67:15:67:25 | call to source :  | call to source :  |
+| hash_extensions.rb:69:14:69:18 | value | hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:69:14:69:18 | value | $@ | hash_extensions.rb:67:28:67:38 | call to source :  | call to source :  |
+| hash_extensions.rb:69:14:69:18 | value | hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:69:14:69:18 | value | $@ | hash_extensions.rb:67:41:67:51 | call to source :  | call to source :  |
+| hash_extensions.rb:73:10:73:16 | ...[...] | hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:73:10:73:16 | ...[...] | $@ | hash_extensions.rb:67:15:67:25 | call to source :  | call to source :  |
+| hash_extensions.rb:73:10:73:16 | ...[...] | hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:73:10:73:16 | ...[...] | $@ | hash_extensions.rb:67:28:67:38 | call to source :  | call to source :  |
+| hash_extensions.rb:73:10:73:16 | ...[...] | hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:73:10:73:16 | ...[...] | $@ | hash_extensions.rb:67:41:67:51 | call to source :  | call to source :  |
+| hash_extensions.rb:74:10:74:16 | ...[...] | hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:74:10:74:16 | ...[...] | $@ | hash_extensions.rb:67:15:67:25 | call to source :  | call to source :  |
+| hash_extensions.rb:74:10:74:16 | ...[...] | hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:74:10:74:16 | ...[...] | $@ | hash_extensions.rb:67:28:67:38 | call to source :  | call to source :  |
+| hash_extensions.rb:74:10:74:16 | ...[...] | hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:74:10:74:16 | ...[...] | $@ | hash_extensions.rb:67:41:67:51 | call to source :  | call to source :  |

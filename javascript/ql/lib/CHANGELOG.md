@@ -1,3 +1,9 @@
+## 0.3.4
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 4.9.
+
 ## 0.3.3
 
 No user-facing changes.

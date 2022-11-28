@@ -53,9 +53,11 @@ class MockitoInitedTest extends Class {
   MockitoInitedTest() {
     // Tests run with the Mockito runner.
     exists(RunWithAnnotation a | a = this.getAnAncestor().getAnAnnotation() |
+      a.getRunner().(RefType).hasQualifiedName("org.mockito.junit", "MockitoJUnitRunner")
+      or
+      // Deprecated styles.
       a.getRunner().(RefType).hasQualifiedName("org.mockito.runners", "MockitoJUnitRunner")
       or
-      // Deprecated style.
       a.getRunner().(RefType).hasQualifiedName("org.mockito.runners", "MockitoJUnit44Runner")
     )
     or

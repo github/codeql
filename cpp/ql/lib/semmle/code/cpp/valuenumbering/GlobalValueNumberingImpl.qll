@@ -1,4 +1,8 @@
 /**
+ * DEPRECATED: This library has been replaced with a newer version which
+ * provides better performance and precision. Use
+ * `semmle.code.cpp.valuenumbering.GlobalValueNumbering` instead.
+ *
  * Provides an implementation of Global Value Numbering.
  * See https://en.wikipedia.org/wiki/Global_value_numbering
  *
@@ -221,7 +225,7 @@ private newtype GvnBase =
  * expression with this `GVN` and using its `toString` and `getLocation`
  * methods.
  */
-class GVN extends GvnBase {
+deprecated class GVN extends GvnBase {
   GVN() { this instanceof GvnBase }
 
   /** Gets an expression that has this GVN. */
@@ -503,7 +507,7 @@ private predicate mk_Deref(GVN p, ControlFlowNode dominator, PointerDereferenceE
 
 /** Gets the global value number of expression `e`. */
 cached
-GVN globalValueNumber(Expr e) {
+deprecated GVN globalValueNumber(Expr e) {
   exists(int val, Type t |
     mk_IntConst(val, t, e) and
     result = GVN_IntConst(val, t)

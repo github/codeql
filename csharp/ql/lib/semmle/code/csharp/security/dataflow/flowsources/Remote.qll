@@ -19,6 +19,13 @@ abstract class RemoteFlowSource extends DataFlow::Node {
   abstract string getSourceType();
 }
 
+/**
+ * A module for importing frameworks that defines remote flow sources.
+ */
+private module RemoteFlowSources {
+  private import semmle.code.csharp.frameworks.ServiceStack
+}
+
 /** A data flow source of remote user input (ASP.NET). */
 abstract class AspNetRemoteFlowSource extends RemoteFlowSource { }
 

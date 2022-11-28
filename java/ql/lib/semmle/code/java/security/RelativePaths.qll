@@ -1,4 +1,5 @@
-/* Detection of strings and arrays of strings containing relative paths. */
+/** Detection of strings and arrays of strings containing relative paths. */
+
 import java
 
 /**

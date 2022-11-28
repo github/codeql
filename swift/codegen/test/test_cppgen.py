@@ -180,5 +180,27 @@ def test_cpp_skip_pragma(generate):
     ]
 
 
+def test_ipa_classes_ignored(generate):
+    assert generate([
+        schema.Class(
+            name="W",
+            ipa=schema.IpaInfo(),
+        ),
+        schema.Class(
+            name="X",
+            ipa=schema.IpaInfo(from_class="A"),
+        ),
+        schema.Class(
+            name="Y",
+            ipa=schema.IpaInfo(on_arguments={"a": "A", "b": "int"}),
+        ),
+        schema.Class(
+            name="Z",
+        ),
+    ]) == [
+        cpp.Class(name="Z", final=True, trap_name="Zs"),
+    ]
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

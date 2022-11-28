@@ -250,7 +250,6 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
         "java.util;Scanner;true;Scanner;;;Argument[0];Argument[-1];taint;manual",
         "java.util;Scanner;true;findInLine;;;Argument[-1];ReturnValue;taint;manual",
         "java.util;Scanner;true;findWithinHorizon;;;Argument[-1];ReturnValue;taint;manual",
-        "java.util;Scanner;true;findWithinHorizon;;;Argument[-1];ReturnValue;taint;manual",
         "java.util;Scanner;true;next;;;Argument[-1];ReturnValue;taint;manual",
         "java.util;Scanner;true;nextBigDecimal;;;Argument[-1];ReturnValue;taint;manual",
         "java.util;Scanner;true;nextBigInteger;;;Argument[-1];ReturnValue;taint;manual",

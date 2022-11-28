@@ -1,3 +1,6 @@
+| stmts.kt:0:0:0:0 | component1(...) | MethodAccess |
+| stmts.kt:0:0:0:0 | component2(...) | MethodAccess |
+| stmts.kt:0:0:0:0 | tmp3_loop_parameter | VarAccess |
 | stmts.kt:2:1:20:1 | int | TypeAccess |
 | stmts.kt:2:20:2:25 | int | TypeAccess |
 | stmts.kt:2:28:2:33 | int | TypeAccess |
@@ -21,9 +24,9 @@
 | stmts.kt:14:13:14:13 | x | VarAccess |
 | stmts.kt:14:13:14:17 | ... < ... | LTExpr |
 | stmts.kt:14:17:14:17 | y | VarAccess |
-| stmts.kt:15:5:15:13 | z | LocalVariableDeclExpr |
+| stmts.kt:15:9:15:9 | z | LocalVariableDeclExpr |
 | stmts.kt:15:13:15:13 | 3 | IntegerLiteral |
-| stmts.kt:17:5:17:58 | q2 | LocalVariableDeclExpr |
+| stmts.kt:17:9:17:10 | q2 | LocalVariableDeclExpr |
 | stmts.kt:17:26:17:58 | true | BooleanLiteral |
 | stmts.kt:17:26:17:58 | when ... | WhenExpr |
 | stmts.kt:17:29:17:32 | true | BooleanLiteral |
@@ -33,7 +36,7 @@
 | stmts.kt:17:52:17:52 | z | VarAccess |
 | stmts.kt:17:52:17:56 | ...=... | AssignExpr |
 | stmts.kt:17:56:17:56 | 5 | IntegerLiteral |
-| stmts.kt:18:5:18:56 | q3 | LocalVariableDeclExpr |
+| stmts.kt:18:9:18:10 | q3 | LocalVariableDeclExpr |
 | stmts.kt:18:26:18:56 | true | BooleanLiteral |
 | stmts.kt:18:26:18:56 | when ... | WhenExpr |
 | stmts.kt:18:29:18:32 | true | BooleanLiteral |
@@ -81,12 +84,9 @@
 | stmts.kt:38:18:38:18 | y | VarAccess |
 | stmts.kt:38:18:38:24 | ... > ... | GTExpr |
 | stmts.kt:38:22:38:24 | 100 | IntegerLiteral |
-| stmts.kt:41:11:41:11 | component1(...) | MethodAccess |
 | stmts.kt:41:11:41:11 | v | LocalVariableDeclExpr |
-| stmts.kt:41:13:41:13 | component2(...) | MethodAccess |
 | stmts.kt:41:13:41:13 | i | LocalVariableDeclExpr |
 | stmts.kt:41:19:41:36 | tmp3_loop_parameter | LocalVariableDeclExpr |
-| stmts.kt:41:19:41:36 | tmp3_loop_parameter | VarAccess |
 | stmts.kt:41:19:41:36 | tmp3_loop_parameter | VarAccess |
 | stmts.kt:41:20:41:20 | x | VarAccess |
 | stmts.kt:41:20:41:23 | rangeTo(...) | MethodAccess |
@@ -101,7 +101,7 @@
 | stmts.kt:46:1:56:1 | int | TypeAccess |
 | stmts.kt:48:15:48:30 | Exception | TypeAccess |
 | stmts.kt:48:15:48:30 | new Exception(...) | ClassInstanceExpr |
-| stmts.kt:48:26:48:28 | Foo | StringLiteral |
+| stmts.kt:48:26:48:28 | "Foo" | StringLiteral |
 | stmts.kt:50:12:50:23 | Exception | TypeAccess |
 | stmts.kt:50:12:50:23 | e | LocalVariableDeclExpr |
 | stmts.kt:51:16:51:16 | 1 | IntegerLiteral |

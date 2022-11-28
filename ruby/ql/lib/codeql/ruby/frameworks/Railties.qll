@@ -27,12 +27,12 @@ module Railties {
    * A call to `Rails::Generators::Actions#execute_command`.
    * This method concatenates its first and second arguments and executes the result as a shell command.
    */
-  private class ExecuteCommandCall extends SystemCommandExecution::Range, DataFlow::CallNode {
+  private class ExecuteCommandCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     ExecuteCommandCall() {
       this = generatorsActionsClass().getAnInstanceSelf().getAMethodCall("execute_command")
     }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument([0, 1]) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument([0, 1]) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
   }
@@ -40,7 +40,7 @@ module Railties {
   /**
    * A call to a method in `Rails::Generators::Actions` which delegates to `execute_command`.
    */
-  private class ExecuteCommandWrapperCall extends SystemCommandExecution::Range, DataFlow::CallNode {
+  private class ExecuteCommandWrapperCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     ExecuteCommandWrapperCall() {
       this =
         generatorsActionsClass()
@@ -48,7 +48,7 @@ module Railties {
             .getAMethodCall(["rake", "rails_command", "git"])
     }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument(0) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
   }

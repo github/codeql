@@ -4,7 +4,7 @@
 
 import javascript
 import experimental.poi.PoI
-import semmle.javascript.security.dataflow.TaintedPath
+import semmle.javascript.security.dataflow.TaintedPathQuery as TaintedPath
 
 class MyDataflowRelatedPoIs extends DataFlowConfigurationPoI, ActivePoI { }
 

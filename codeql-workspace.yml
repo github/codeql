@@ -25,7 +25,8 @@ provide:
   - "misc/suite-helpers/qlpack.yml"
   - "ruby/extractor-pack/codeql-extractor.yml"
   - "swift/extractor-pack/codeql-extractor.yml"
-  - "ql/extractor-pack/codeql-extractor.ym"
+  - "swift/integration-tests/qlpack.yml"
+  - "ql/extractor-pack/codeql-extractor.yml"
 
 versionPolicies:
   default:

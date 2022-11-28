@@ -131,3 +131,29 @@ private class JsExportedSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "Member of a type exposed through JSExport" }
 }
+
+/**
+ * A model for `WKUserScript` summaries.
+ */
+private class WKUserScriptSummaries extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";WKUserScript;true;init(source:injectionTime:forMainFrameOnly:);;;Argument[0];ReturnValue;taint",
+        ";WKUserScript;true;init(source:injectionTime:forMainFrameOnly:in:);;;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
+/**
+ * A content implying that, if a `WKUserScript` is tainted, its `source` field is tainted.
+ */
+private class WKUserScriptInheritsTaint extends TaintInheritingContent,
+  DataFlow::Content::FieldContent {
+  WKUserScriptInheritsTaint() {
+    exists(FieldDecl f | this.getField() = f |
+      f.getEnclosingDecl().(ClassOrStructDecl).getName() = "WKUserScript" and
+      f.getName() = "source"
+    )
+  }
+}

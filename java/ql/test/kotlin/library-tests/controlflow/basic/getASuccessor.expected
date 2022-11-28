@@ -8,23 +8,23 @@ missingSuccessor
 | Test.kt:3:8:80:1 | { ... } | BlockStmt | Test.kt:3:8:80:1 | Test | Constructor |
 | Test.kt:4:2:79:2 | Unit | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:4:2:79:2 | test | Method | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:4:13:79:2 | { ... } | BlockStmt | Test.kt:5:3:5:16 | var ...; | LocalVariableDeclStmt |
-| Test.kt:5:3:5:16 | int x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:5:3:5:16 | var ...; | LocalVariableDeclStmt | Test.kt:5:16:5:16 | 0 | IntegerLiteral |
-| Test.kt:5:3:5:16 | x | LocalVariableDeclExpr | Test.kt:6:3:6:18 | var ...; | LocalVariableDeclStmt |
-| Test.kt:5:16:5:16 | 0 | IntegerLiteral | Test.kt:5:3:5:16 | x | LocalVariableDeclExpr |
-| Test.kt:6:3:6:18 | long y | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:6:3:6:18 | var ...; | LocalVariableDeclStmt | Test.kt:6:17:6:18 | 50 | LongLiteral |
-| Test.kt:6:3:6:18 | y | LocalVariableDeclExpr | Test.kt:7:3:7:16 | var ...; | LocalVariableDeclStmt |
-| Test.kt:6:17:6:18 | 50 | LongLiteral | Test.kt:6:3:6:18 | y | LocalVariableDeclExpr |
-| Test.kt:7:3:7:16 | int z | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:7:3:7:16 | var ...; | LocalVariableDeclStmt | Test.kt:7:16:7:16 | 0 | IntegerLiteral |
-| Test.kt:7:3:7:16 | z | LocalVariableDeclExpr | Test.kt:8:3:8:16 | var ...; | LocalVariableDeclStmt |
-| Test.kt:7:16:7:16 | 0 | IntegerLiteral | Test.kt:7:3:7:16 | z | LocalVariableDeclExpr |
-| Test.kt:8:3:8:16 | int w | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:8:3:8:16 | var ...; | LocalVariableDeclStmt | Test.kt:8:16:8:16 | 0 | IntegerLiteral |
-| Test.kt:8:3:8:16 | w | LocalVariableDeclExpr | Test.kt:11:3:16:3 | <Expr>; | ExprStmt |
-| Test.kt:8:16:8:16 | 0 | IntegerLiteral | Test.kt:8:3:8:16 | w | LocalVariableDeclExpr |
+| Test.kt:4:13:79:2 | { ... } | BlockStmt | Test.kt:5:7:5:7 | var ...; | LocalVariableDeclStmt |
+| Test.kt:5:7:5:7 | int x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:5:7:5:7 | var ...; | LocalVariableDeclStmt | Test.kt:5:16:5:16 | 0 | IntegerLiteral |
+| Test.kt:5:7:5:7 | x | LocalVariableDeclExpr | Test.kt:6:7:6:7 | var ...; | LocalVariableDeclStmt |
+| Test.kt:5:16:5:16 | 0 | IntegerLiteral | Test.kt:5:7:5:7 | x | LocalVariableDeclExpr |
+| Test.kt:6:7:6:7 | long y | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:6:7:6:7 | var ...; | LocalVariableDeclStmt | Test.kt:6:17:6:18 | 50 | LongLiteral |
+| Test.kt:6:7:6:7 | y | LocalVariableDeclExpr | Test.kt:7:7:7:7 | var ...; | LocalVariableDeclStmt |
+| Test.kt:6:17:6:18 | 50 | LongLiteral | Test.kt:6:7:6:7 | y | LocalVariableDeclExpr |
+| Test.kt:7:7:7:7 | int z | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:7:7:7:7 | var ...; | LocalVariableDeclStmt | Test.kt:7:16:7:16 | 0 | IntegerLiteral |
+| Test.kt:7:7:7:7 | z | LocalVariableDeclExpr | Test.kt:8:7:8:7 | var ...; | LocalVariableDeclStmt |
+| Test.kt:7:16:7:16 | 0 | IntegerLiteral | Test.kt:7:7:7:7 | z | LocalVariableDeclExpr |
+| Test.kt:8:7:8:7 | int w | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:8:7:8:7 | var ...; | LocalVariableDeclStmt | Test.kt:8:16:8:16 | 0 | IntegerLiteral |
+| Test.kt:8:7:8:7 | w | LocalVariableDeclExpr | Test.kt:11:3:16:3 | <Expr>; | ExprStmt |
+| Test.kt:8:16:8:16 | 0 | IntegerLiteral | Test.kt:8:7:8:7 | w | LocalVariableDeclExpr |
 | Test.kt:11:3:16:3 | ... -> ... | WhenBranch | Test.kt:11:3:16:3 | true | BooleanLiteral |
 | Test.kt:11:3:16:3 | ... -> ... | WhenBranch | Test.kt:11:7:11:7 | x | VarAccess |
 | Test.kt:11:3:16:3 | <Expr>; | ExprStmt | Test.kt:11:3:16:3 | when ... | WhenExpr |
@@ -137,12 +137,12 @@ missingSuccessor
 | Test.kt:82:8:82:13 | o | Parameter | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:82:21:89:1 | { ... } | BlockStmt | Test.kt:83:2:88:2 | try ... | TryStmt |
 | Test.kt:83:2:88:2 | try ... | TryStmt | Test.kt:83:6:86:2 | { ... } | BlockStmt |
-| Test.kt:83:6:86:2 | { ... } | BlockStmt | Test.kt:84:3:84:18 | var ...; | LocalVariableDeclStmt |
-| Test.kt:84:3:84:18 | int x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:84:3:84:18 | var ...; | LocalVariableDeclStmt | Test.kt:84:11:84:11 | o | VarAccess |
-| Test.kt:84:3:84:18 | x | LocalVariableDeclExpr | Test.kt:85:10:85:10 | 1 | IntegerLiteral |
+| Test.kt:83:6:86:2 | { ... } | BlockStmt | Test.kt:84:7:84:7 | var ...; | LocalVariableDeclStmt |
+| Test.kt:84:7:84:7 | int x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:84:7:84:7 | var ...; | LocalVariableDeclStmt | Test.kt:84:11:84:11 | o | VarAccess |
+| Test.kt:84:7:84:7 | x | LocalVariableDeclExpr | Test.kt:85:10:85:10 | 1 | IntegerLiteral |
 | Test.kt:84:11:84:11 | o | VarAccess | Test.kt:84:11:84:18 | (...)... | CastExpr |
-| Test.kt:84:11:84:18 | (...)... | CastExpr | Test.kt:84:3:84:18 | x | LocalVariableDeclExpr |
+| Test.kt:84:11:84:18 | (...)... | CastExpr | Test.kt:84:7:84:7 | x | LocalVariableDeclExpr |
 | Test.kt:84:11:84:18 | (...)... | CastExpr | Test.kt:86:4:88:2 | catch (...) | CatchClause |
 | Test.kt:84:11:84:18 | int | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:85:3:85:10 | return ... | ReturnStmt | Test.kt:82:1:89:1 | t1 | Method |
@@ -160,12 +160,12 @@ missingSuccessor
 | Test.kt:91:8:91:14 | o | Parameter | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:91:22:98:1 | { ... } | BlockStmt | Test.kt:92:2:97:2 | try ... | TryStmt |
 | Test.kt:92:2:97:2 | try ... | TryStmt | Test.kt:92:6:95:2 | { ... } | BlockStmt |
-| Test.kt:92:6:95:2 | { ... } | BlockStmt | Test.kt:93:3:93:13 | var ...; | LocalVariableDeclStmt |
-| Test.kt:93:3:93:13 | Object x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
-| Test.kt:93:3:93:13 | var ...; | LocalVariableDeclStmt | Test.kt:93:11:93:11 | o | VarAccess |
-| Test.kt:93:3:93:13 | x | LocalVariableDeclExpr | Test.kt:94:10:94:10 | 1 | IntegerLiteral |
+| Test.kt:92:6:95:2 | { ... } | BlockStmt | Test.kt:93:7:93:7 | var ...; | LocalVariableDeclStmt |
+| Test.kt:93:7:93:7 | Object x | LocalVariableDecl | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:93:7:93:7 | var ...; | LocalVariableDeclStmt | Test.kt:93:11:93:11 | o | VarAccess |
+| Test.kt:93:7:93:7 | x | LocalVariableDeclExpr | Test.kt:94:10:94:10 | 1 | IntegerLiteral |
 | Test.kt:93:11:93:11 | o | VarAccess | Test.kt:93:12:93:13 | ...!! | NotNullExpr |
-| Test.kt:93:12:93:13 | ...!! | NotNullExpr | Test.kt:93:3:93:13 | x | LocalVariableDeclExpr |
+| Test.kt:93:12:93:13 | ...!! | NotNullExpr | Test.kt:93:7:93:7 | x | LocalVariableDeclExpr |
 | Test.kt:93:12:93:13 | ...!! | NotNullExpr | Test.kt:95:4:97:2 | catch (...) | CatchClause |
 | Test.kt:94:3:94:10 | return ... | ReturnStmt | Test.kt:91:1:98:1 | t2 | Method |
 | Test.kt:94:10:94:10 | 1 | IntegerLiteral | Test.kt:94:3:94:10 | return ... | ReturnStmt |
@@ -207,20 +207,20 @@ missingSuccessor
 | Test.kt:105:9:107:5 | ... -> ... | WhenBranch | Test.kt:105:9:105:9 | x | VarAccess |
 | Test.kt:105:14:105:17 | null | NullLiteral | Test.kt:105:9:105:17 | ... (value not-equals) ... | ValueNEExpr |
 | Test.kt:105:20:107:5 | { ... } | BlockStmt | Test.kt:106:9:106:29 | <Expr>; | ExprStmt |
-| Test.kt:106:9:106:29 | <Expr>; | ExprStmt | Test.kt:106:18:106:27 | x not null | StringLiteral |
+| Test.kt:106:9:106:29 | <Expr>; | ExprStmt | Test.kt:106:18:106:27 | "x not null" | StringLiteral |
 | Test.kt:106:9:106:29 | ConsoleKt | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:106:9:106:29 | println(...) | MethodAccess | Test.kt:100:1:110:1 | fn | Method |
-| Test.kt:106:18:106:27 | x not null | StringLiteral | Test.kt:106:9:106:29 | println(...) | MethodAccess |
+| Test.kt:106:18:106:27 | "x not null" | StringLiteral | Test.kt:106:9:106:29 | println(...) | MethodAccess |
 | Test.kt:107:16:107:16 | y | VarAccess | Test.kt:107:21:107:24 | null | NullLiteral |
 | Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr | Test.kt:100:1:110:1 | fn | Method |
 | Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr | Test.kt:107:27:109:5 | { ... } | BlockStmt |
 | Test.kt:107:16:109:5 | ... -> ... | WhenBranch | Test.kt:107:16:107:16 | y | VarAccess |
 | Test.kt:107:21:107:24 | null | NullLiteral | Test.kt:107:16:107:24 | ... (value not-equals) ... | ValueNEExpr |
 | Test.kt:107:27:109:5 | { ... } | BlockStmt | Test.kt:108:9:108:29 | <Expr>; | ExprStmt |
-| Test.kt:108:9:108:29 | <Expr>; | ExprStmt | Test.kt:108:18:108:27 | y not null | StringLiteral |
+| Test.kt:108:9:108:29 | <Expr>; | ExprStmt | Test.kt:108:18:108:27 | "y not null" | StringLiteral |
 | Test.kt:108:9:108:29 | ConsoleKt | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:108:9:108:29 | println(...) | MethodAccess | Test.kt:100:1:110:1 | fn | Method |
-| Test.kt:108:18:108:27 | y not null | StringLiteral | Test.kt:108:9:108:29 | println(...) | MethodAccess |
+| Test.kt:108:18:108:27 | "y not null" | StringLiteral | Test.kt:108:9:108:29 | println(...) | MethodAccess |
 | Test.kt:112:1:116:1 | Unit | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:112:1:116:1 | fn | Method | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:112:8:112:17 | boolean | TypeAccess | file://:0:0:0:0 | <none> | <none> |

@@ -50,7 +50,7 @@ d.kt:
 #    1|   1: [Class] D
 #    0|     2: [FieldDeclaration] String bar;
 #    0|       -1: [TypeAccess] String
-#    0|       0: [StringLiteral] Foobar
+#    0|       0: [StringLiteral] "Foobar"
 #    1|     3: [Constructor] D
 #    1|       5: [BlockStmt] { ... }
 #    1|         0: [SuperConstructorInvocationStmt] super(...)
