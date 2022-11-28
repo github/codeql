@@ -228,7 +228,7 @@ The `TopLevel <https://codeql.github.com/codeql-standard-libraries/javascript/se
 
    Note
 
-   By default, LGTM filters out alerts in minified top-levels, since they are often hard to interpret. When writing your own queries in the LGTM query console, this filtering is *not* done automatically, so you may want to explicitly add a condition of the form ``and not e.getTopLevel().isMinified()`` or similar to your query to exclude results in minified code.
+   By default, GitHub code scanning filters out alerts in minified top-levels, since they are often hard to interpret. When you write your own queries in Visual Studio Code, this filtering is *not* done automatically, so you may want to explicitly add a condition of the form ``and not e.getTopLevel().isMinified()`` or similar to your query to exclude results in minified code.
 
 Statements and expressions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
