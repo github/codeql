@@ -43,4 +43,12 @@ int main(int argc, char** argv) {
     scanf("%s", fileName);
     fopen(fileName, "wb+"); // BAD
   }
+
+  {
+    char *aNumber = getenv("A_NUMBER");
+    double number = strtod(aNumber, 0);
+    char fileName[20];
+    sprintf(fileName, "/foo/%f", number);
+    fopen(fileName, "wb+"); // GOOD
+  }
 }

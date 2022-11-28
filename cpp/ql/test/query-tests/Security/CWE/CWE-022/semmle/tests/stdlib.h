@@ -6,6 +6,7 @@
 typedef struct {} FILE;
 #define FILENAME_MAX 1000
 typedef unsigned long size_t;
+#define NULL ((void*)0)
 
 FILE *fopen(const char *filename, const char *mode);
 int sprintf(char *s, const char *format, ...);
@@ -13,3 +14,4 @@ size_t strlen(const char *s);
 char *strncat(char *s1, const char *s2, size_t n);
 int scanf(const char *format, ...);
 void *malloc(size_t size);
+double strtod(const char *ptr, char **endptr);
