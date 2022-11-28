@@ -7,32 +7,16 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSources
 
-/**
- * An Alamofire response handler type.
- */
-private class AlamofireResponseType extends NominalTypeDecl {
-  AlamofireResponseType() {
-    this.getABaseTypeDecl*().getFullName() = ["DataResponse", "DownloadResponse"]
+private class StringSource extends SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // `DataResponse.data`, `.value`, `.result`
+        ";DataResponse;true;data;;;;remote", ";DataResponse;true;value;;;;remote",
+        ";DataResponse;true;result;;;;remote",
+        // `DownloadResponse.data`, `.value`, `.result`
+        ";DownloadResponse;true;data;;;;remote", ";DownloadResponse;true;value;;;;remote",
+        ";DownloadResponse;true;result;;;;remote",
+      ]
   }
-
-  /**
-   * Gets a field that contains remote data.
-   */
-  FieldDecl getADataField() {
-    result = this.getAMember() and
-    result.getName() = ["data", "value", "result"]
-  }
-}
-
-/**
- * A remote flow source that is an access to remote data from an Alamofire response handler.
- */
-private class AlamofireResponseSource extends RemoteFlowSource {
-  AlamofireResponseSource() {
-    exists(AlamofireResponseType responseType |
-      this.asExpr().(MemberRefExpr).getMember() = responseType.getADataField()
-    )
-  }
-
-  override string getSourceType() { result = "Data from an Alamofire response" }
 }
