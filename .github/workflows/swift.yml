@@ -35,6 +35,7 @@ jobs:
   # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
   # without waiting for the macOS build
   build-and-test-macos:
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: macos-12-xl
     steps:
       - uses: actions/checkout@v3
