@@ -61,6 +61,6 @@ posargs(*args)
 
 args = taint(26)
 def splatstuff(*x)
-    sink x[0] # $ MISSING: hasValueFlow=26
+    sink x[0] # $ hasValueFlow=26
 end
 splatstuff(*args)
