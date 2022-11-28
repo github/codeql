@@ -42,11 +42,11 @@ predicate summaryModelRow(
 }
 
 /**
- * Gets a CSV row for which a test has been requested, but `SummaryModelCsv.row` does not hold of it.
+ * Gets a CSV row for which a test has been requested, but where a summary has not already been defined.
  */
 query string missingSummaryModelCsv() {
   any(TargetSummaryModelCsv target).row(result) and
-  not any(SummaryModelCsv model).row(result)
+  not summaryModelRow(_, _, _, _, _, _, _, _, _, _, result)
 }
 
 /**
