@@ -14,39 +14,14 @@ outputs:
 runs:
   using: composite
   steps:
-    # Cache the query compilation caches.
-    # calculate the merge-base with main, in a way that works both on PRs and pushes to main. 
-    - name: Calculate merge-base
-      shell: bash
-      if: ${{ github.event_name == 'pull_request' }}
-      env:
-        BASE_BRANCH: ${{ github.base_ref }}
-      run: |
-        MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
-        echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
-    - name: Read CodeQL query compilation - PR
-      if: ${{ github.event_name == 'pull_request' }}
-      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
+    - name: Cache the query compilation caches
+      uses: ./.github/actions/incremental-cache
       with:
         path: '**/.cache'
-        read-only: true
-        key: codeql-compile-${{ inputs.key }}-pr-${{ github.sha }} # deliberately not using the `compile-compile-main` keys here.
-        restore-keys: |
-          codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-${{ env.merge_base }}
-          codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-
-          codeql-compile-${{ inputs.key }}-main-
-    - name: Fill CodeQL query compilation cache - main
-      if: ${{ github.event_name != 'pull_request' }}
-      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
-      with:
-        path: '**/.cache'
-        key: codeql-compile-${{ inputs.key }}-${{ github.ref_name }}-${{ github.sha }} # just fill on main
-        restore-keys: | # restore from another random commit, to speed up compilation.
-          codeql-compile-${{ inputs.key }}-${{ github.ref_name }}- 
-          codeql-compile-${{ inputs.key }}-main-
+        key: codeql-compile-${{ inputs.key }}
     - name: Fill compilation cache directory
       id: fill-compilation-dir
-      shell: bash 
+      shell: bash
       run: |
         # Move all the existing cache into another folder, so we only preserve the cache for the current queries.
         mkdir -p ${COMBINED_CACHE_DIR}
@@ -57,5 +32,5 @@ runs:
         rm -rf **/.cache/*
 
         echo "compdir=${COMBINED_CACHE_DIR}" >> $GITHUB_OUTPUT
-      env: 
+      env:
         COMBINED_CACHE_DIR: ${{ github.workspace }}/compilation-dir
