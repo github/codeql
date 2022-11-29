@@ -1,6 +1,3 @@
-processMethods
-| action_mailbox.rb:2:3:7:5 | process |
-| action_mailbox.rb:15:5:17:7 | process |
 messageInstances
 | action_mailbox.rb:3:5:3:8 | call to mail |
 | action_mailbox.rb:4:5:4:8 | call to mail |

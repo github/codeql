@@ -18,13 +18,6 @@ module ActionMailbox {
   }
 
   /**
-   * A method in a mailbox which receives incoming mail.
-   */
-  class Process extends DataFlow::MethodNode {
-    Process() { this = controller().getAnInstanceMethod() and this.getMethodName() = "process" }
-  }
-
-  /**
    * A call to `mail` on the return value of
    * `ActionMailbox::Base#inbound_email`, or a direct call to
    * `ActionMailbox::Base#mail`, which is equivalent. The returned object
