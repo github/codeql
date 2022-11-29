@@ -50,5 +50,5 @@ runs:
       if: ${{ github.event_name != 'pull_request' }}
       shell: bash
       run: |
-        find "~/.cache/bazel-repository-cache" "~/.cache/bazel-disk-cache" -atime +0 -type f -delete
-        du -sh "~/.cache/bazel-repository-cache" "~/.cache/bazel-disk-cache"
+        find "~/.cache/bazel-repository-cache" "~/.cache/bazel-disk-cache" -atime +0 -type f -delete || : # ignore errors if the cache is empty
+        du -sh "~/.cache/bazel-repository-cache" "~/.cache/bazel-disk-cache" || : # ignore errors if the cache is empty
