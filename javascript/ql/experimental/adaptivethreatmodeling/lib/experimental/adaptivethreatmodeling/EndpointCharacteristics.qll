@@ -7,10 +7,46 @@ private import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.TaintedPathCustomizations
-private import CoreKnowledge as CoreKnowledge
 private import semmle.javascript.heuristics.SyntacticHeuristics as SyntacticHeuristics
 private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
-private import StandardEndpointFilters as StandardEndpointFilters
+private import semmle.javascript.security.dataflow.XxeCustomizations
+private import semmle.javascript.security.dataflow.RemotePropertyInjectionCustomizations
+private import semmle.javascript.security.dataflow.TypeConfusionThroughParameterTamperingCustomizations
+private import semmle.javascript.security.dataflow.ZipSlipCustomizations
+private import semmle.javascript.security.dataflow.TaintedPathCustomizations
+private import semmle.javascript.security.dataflow.CleartextLoggingCustomizations
+private import semmle.javascript.security.dataflow.XpathInjectionCustomizations
+private import semmle.javascript.security.dataflow.Xss::Shared as Xss
+private import semmle.javascript.security.dataflow.StackTraceExposureCustomizations
+private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
+private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
+private import semmle.javascript.security.dataflow.RequestForgeryCustomizations
+private import semmle.javascript.security.dataflow.CorsMisconfigurationForCredentialsCustomizations
+private import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentCustomizations
+private import semmle.javascript.security.dataflow.DifferentKindsComparisonBypassCustomizations
+private import semmle.javascript.security.dataflow.CommandInjectionCustomizations
+private import semmle.javascript.security.dataflow.PrototypePollutionCustomizations
+private import semmle.javascript.security.dataflow.UnvalidatedDynamicMethodCallCustomizations
+private import semmle.javascript.security.dataflow.TaintedFormatStringCustomizations
+private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
+private import semmle.javascript.security.dataflow.PostMessageStarCustomizations
+private import semmle.javascript.security.dataflow.RegExpInjectionCustomizations
+private import semmle.javascript.security.dataflow.SqlInjectionCustomizations
+private import semmle.javascript.security.dataflow.InsecureRandomnessCustomizations
+private import semmle.javascript.security.dataflow.XmlBombCustomizations
+private import semmle.javascript.security.dataflow.InsufficientPasswordHashCustomizations
+private import semmle.javascript.security.dataflow.HardcodedCredentialsCustomizations
+private import semmle.javascript.security.dataflow.FileAccessToHttpCustomizations
+private import semmle.javascript.security.dataflow.UnsafeDynamicMethodAccessCustomizations
+private import semmle.javascript.security.dataflow.UnsafeDeserializationCustomizations
+private import semmle.javascript.security.dataflow.HardcodedDataInterpretedAsCodeCustomizations
+private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
+private import semmle.javascript.security.dataflow.IndirectCommandInjectionCustomizations
+private import semmle.javascript.security.dataflow.ConditionalBypassCustomizations
+private import semmle.javascript.security.dataflow.HttpToFileAccessCustomizations
+private import semmle.javascript.security.dataflow.BrokenCryptoAlgorithmCustomizations
+private import semmle.javascript.security.dataflow.LoopBoundInjectionCustomizations
+private import semmle.javascript.security.dataflow.CleartextStorageCustomizations
 
 /**
  * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
@@ -60,6 +96,110 @@ abstract class EndpointCharacteristic extends string {
 
   final float mediumConfidence() { result = 0.6 }
 }
+
+/*
+ * Helper predicates.
+ */
+
+/**
+ * Holds if the node `n` is a known sink for the external API security query.
+ *
+ * This corresponds to known sinks from security queries whose sources include remote flow and
+ * DOM-based sources.
+ */
+private predicate isKnownExternalApiQuerySink(DataFlow::Node n) {
+  n instanceof Xxe::Sink or
+  n instanceof TaintedPath::Sink or
+  n instanceof XpathInjection::Sink or
+  n instanceof Xss::Sink or
+  n instanceof ClientSideUrlRedirect::Sink or
+  n instanceof CodeInjection::Sink or
+  n instanceof RequestForgery::Sink or
+  n instanceof CorsMisconfigurationForCredentials::Sink or
+  n instanceof CommandInjection::Sink or
+  n instanceof PrototypePollution::Sink or
+  n instanceof UnvalidatedDynamicMethodCall::Sink or
+  n instanceof TaintedFormatString::Sink or
+  n instanceof NosqlInjection::Sink or
+  n instanceof PostMessageStar::Sink or
+  n instanceof RegExpInjection::Sink or
+  n instanceof SqlInjection::Sink or
+  n instanceof XmlBomb::Sink or
+  n instanceof ZipSlip::Sink or
+  n instanceof UnsafeDeserialization::Sink or
+  n instanceof ServerSideUrlRedirect::Sink or
+  n instanceof CleartextStorage::Sink or
+  n instanceof HttpToFileAccess::Sink
+}
+
+/**
+ * Holds if the node `n` is a known sink in a modeled library.
+ */
+private predicate isKnownLibrarySink(DataFlow::Node n) {
+  isKnownExternalApiQuerySink(n) or
+  n instanceof CleartextLogging::Sink or
+  n instanceof StackTraceExposure::Sink or
+  n instanceof ShellCommandInjectionFromEnvironment::Sink or
+  n instanceof InsecureRandomness::Sink or
+  n instanceof FileAccessToHttp::Sink or
+  n instanceof IndirectCommandInjection::Sink
+}
+
+/**
+ * Holds if the node `n` is known as the predecessor in a modeled flow step.
+ */
+private predicate isKnownStepSrc(DataFlow::Node n) {
+  TaintTracking::sharedTaintStep(n, _) or
+  DataFlow::SharedFlowStep::step(n, _) or
+  DataFlow::SharedFlowStep::step(n, _, _, _)
+}
+
+/**
+ * Holds if the data flow node is a (possibly indirect) argument of a likely external library call.
+ *
+ * This includes direct arguments of likely external library calls as well as nested object
+ * literals within those calls.
+ */
+private predicate flowsToArgumentOfLikelyExternalLibraryCall(DataFlow::Node n) {
+  n = getACallWithoutCallee().getAnArgument()
+  or
+  exists(DataFlow::SourceNode src | flowsToArgumentOfLikelyExternalLibraryCall(src) |
+    n = src.getAPropertyWrite().getRhs()
+  )
+  or
+  exists(DataFlow::ArrayCreationNode arr | flowsToArgumentOfLikelyExternalLibraryCall(arr) |
+    n = arr.getAnElement()
+  )
+}
+
+/**
+ * Get calls for which we do not have the callee (i.e. the definition of the called function). This
+ * acts as a heuristic for identifying calls to external library functions.
+ */
+private DataFlow::CallNode getACallWithoutCallee() {
+  forall(Function callee | callee = result.getACallee() | callee.getTopLevel().isExterns()) and
+  not exists(DataFlow::ParameterNode param, DataFlow::FunctionNode callback |
+    param.flowsTo(result.getCalleeNode()) and
+    callback = getACallback(param, DataFlow::TypeBackTracker::end())
+  )
+}
+
+/**
+ * Gets a node that flows to callback-parameter `p`.
+ */
+private DataFlow::SourceNode getACallback(DataFlow::ParameterNode p, DataFlow::TypeBackTracker t) {
+  t.start() and
+  result = p and
+  any(DataFlow::FunctionNode f).getLastParameter() = p and
+  exists(p.getACall())
+  or
+  exists(DataFlow::TypeBackTracker t2 | result = getACallback(p, t2).backtrack(t2, t))
+}
+
+/**
+ * Get calls which are likely to be to external non-built-in libraries.
+ */
+DataFlow::CallNode getALikelyExternalLibraryCall() { result = getACallWithoutCallee() }
 
 /*
  * Characteristics that are indicative of a sink.
@@ -144,10 +284,18 @@ private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
  */
 
 /**
+ * A characteristic that is an indicator of not being a sink of any type, because it's a modeled argument.
+ */
+abstract class OtherModeledArgumentCharacteristic extends EndpointCharacteristic {
+  bindingset[this]
+  OtherModeledArgumentCharacteristic() { any() }
+}
+
+/**
  * A characteristic that is an indicator of not being a sink of any type, because it's an argument to a function of a
  * builtin object.
  */
-abstract private class ArgumentToBuiltinFunctionCharacteristic extends EndpointCharacteristic {
+abstract private class ArgumentToBuiltinFunctionCharacteristic extends OtherModeledArgumentCharacteristic {
   bindingset[this]
   ArgumentToBuiltinFunctionCharacteristic() { any() }
 }
@@ -187,15 +335,17 @@ abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
   }
 }
 
-private class LodashUnderscore extends NotASinkCharacteristic {
-  LodashUnderscore() { this = "LodashUnderscoreArgument" }
+private class LodashUnderscoreCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
+  LodashUnderscoreCharacteristic() { this = "LodashUnderscoreArgument" }
 
   override predicate getEndpoints(DataFlow::Node n) {
     any(LodashUnderscore::Member m).getACall().getAnArgument() = n
   }
 }
 
-private class JQueryArgumentCharacteristic extends NotASinkCharacteristic {
+private class JQueryArgumentCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   JQueryArgumentCharacteristic() { this = "JQueryArgument" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -203,7 +353,8 @@ private class JQueryArgumentCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class ClientRequestCharacteristic extends NotASinkCharacteristic {
+private class ClientRequestCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   ClientRequestCharacteristic() { this = "ClientRequest" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -213,7 +364,8 @@ private class ClientRequestCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class PromiseDefinitionCharacteristic extends NotASinkCharacteristic {
+private class PromiseDefinitionCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   PromiseDefinitionCharacteristic() { this = "PromiseDefinition" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -223,13 +375,15 @@ private class PromiseDefinitionCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class CryptographicKeyCharacteristic extends NotASinkCharacteristic {
+private class CryptographicKeyCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   CryptographicKeyCharacteristic() { this = "CryptographicKey" }
 
   override predicate getEndpoints(DataFlow::Node n) { n instanceof CryptographicKey }
 }
 
-private class CryptographicOperationFlowCharacteristic extends NotASinkCharacteristic {
+private class CryptographicOperationFlowCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   CryptographicOperationFlowCharacteristic() { this = "CryptographicOperationFlow" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -237,7 +391,8 @@ private class CryptographicOperationFlowCharacteristic extends NotASinkCharacter
   }
 }
 
-private class LoggerMethodCharacteristic extends NotASinkCharacteristic {
+private class LoggerMethodCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   LoggerMethodCharacteristic() { this = "LoggerMethod" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -247,7 +402,8 @@ private class LoggerMethodCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class TimeoutCharacteristic extends NotASinkCharacteristic {
+private class TimeoutCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   TimeoutCharacteristic() { this = "Timeout" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -257,7 +413,8 @@ private class TimeoutCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class ReceiverStorageCharacteristic extends NotASinkCharacteristic {
+private class ReceiverStorageCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   ReceiverStorageCharacteristic() { this = "ReceiverStorage" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -267,7 +424,8 @@ private class ReceiverStorageCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class StringStartsWithCharacteristic extends NotASinkCharacteristic {
+private class StringStartsWithCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   StringStartsWithCharacteristic() { this = "StringStartsWith" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -277,7 +435,8 @@ private class StringStartsWithCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class StringEndsWithCharacteristic extends NotASinkCharacteristic {
+private class StringEndsWithCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   StringEndsWithCharacteristic() { this = "StringEndsWith" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -285,7 +444,8 @@ private class StringEndsWithCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class StringRegExpTestCharacteristic extends NotASinkCharacteristic {
+private class StringRegExpTestCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   StringRegExpTestCharacteristic() { this = "StringRegExpTest" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -295,7 +455,8 @@ private class StringRegExpTestCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class EventRegistrationCharacteristic extends NotASinkCharacteristic {
+private class EventRegistrationCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   EventRegistrationCharacteristic() { this = "EventRegistration" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -303,7 +464,8 @@ private class EventRegistrationCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class EventDispatchCharacteristic extends NotASinkCharacteristic {
+private class EventDispatchCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   EventDispatchCharacteristic() { this = "EventDispatch" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -311,7 +473,8 @@ private class EventDispatchCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class MembershipCandidateTestCharacteristic extends NotASinkCharacteristic {
+private class MembershipCandidateTestCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   MembershipCandidateTestCharacteristic() { this = "MembershipCandidateTest" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -321,7 +484,8 @@ private class MembershipCandidateTestCharacteristic extends NotASinkCharacterist
   }
 }
 
-private class FileSystemAccessCharacteristic extends NotASinkCharacteristic {
+private class FileSystemAccessCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   FileSystemAccessCharacteristic() { this = "FileSystemAccess" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -329,7 +493,8 @@ private class FileSystemAccessCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class DatabaseAccessCharacteristic extends NotASinkCharacteristic {
+private class DatabaseAccessCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   DatabaseAccessCharacteristic() { this = "DatabaseAccess" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -344,7 +509,7 @@ private class DatabaseAccessCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class DomCharacteristic extends NotASinkCharacteristic {
+private class DomCharacteristic extends NotASinkCharacteristic, OtherModeledArgumentCharacteristic {
   DomCharacteristic() { this = "DOM" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -352,7 +517,8 @@ private class DomCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class NextFunctionCallCharacteristic extends NotASinkCharacteristic {
+private class NextFunctionCallCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   NextFunctionCallCharacteristic() { this = "NextFunctionCall" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -363,7 +529,8 @@ private class NextFunctionCallCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class DojoRequireCharacteristic extends NotASinkCharacteristic {
+private class DojoRequireCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   DojoRequireCharacteristic() { this = "DojoRequire" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -373,7 +540,8 @@ private class DojoRequireCharacteristic extends NotASinkCharacteristic {
   }
 }
 
-private class Base64ManipulationCharacteristic extends NotASinkCharacteristic {
+private class Base64ManipulationCharacteristic extends NotASinkCharacteristic,
+  OtherModeledArgumentCharacteristic {
   Base64ManipulationCharacteristic() { this = "Base64Manipulation" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -460,7 +628,6 @@ abstract class EndpointFilterCharacteristic extends EndpointCharacteristic {
 
 /**
  * An EndpointFilterCharacteristic that indicates that an endpoint is unlikely to be a sink of any type.
- * Replaces https://github.com/github/codeql/blob/387e57546bf7352f7c1cfe781daa1a3799b7063e/javascript/ql/experimental/adaptivethreatmodeling/lib/experimental/adaptivethreatmodeling/StandardEndpointFilters.qll#LL15C24-L15C24
  */
 abstract private class StandardEndpointFilterCharacteristic extends EndpointFilterCharacteristic {
   bindingset[this]
@@ -475,7 +642,7 @@ abstract private class StandardEndpointFilterCharacteristic extends EndpointFilt
   }
 }
 
-private class IsArgumentToModeledFunctionCharacteristic extends StandardEndpointFilterCharacteristic {
+class IsArgumentToModeledFunctionCharacteristic extends StandardEndpointFilterCharacteristic {
   IsArgumentToModeledFunctionCharacteristic() { this = "argument to modeled function" }
 
   override predicate getEndpoints(DataFlow::Node n) {
@@ -483,11 +650,13 @@ private class IsArgumentToModeledFunctionCharacteristic extends StandardEndpoint
       invk.getAnArgument() = n and
       invk.getAnArgument() = known and
       (
-        CoreKnowledge::isKnownLibrarySink(known)
+        isKnownLibrarySink(known)
         or
-        CoreKnowledge::isKnownStepSrc(known)
+        isKnownStepSrc(known)
         or
-        CoreKnowledge::isOtherModeledArgument(known, _)
+        exists(OtherModeledArgumentCharacteristic characteristic |
+          characteristic.getEndpoints(known)
+        )
       )
     )
   }
@@ -586,10 +755,19 @@ private class DatabaseAccessCallHeuristicCharacteristic extends NosqlInjectionSi
 private class ModeledSinkCharacteristic extends NosqlInjectionSinkEndpointFilterCharacteristic {
   ModeledSinkCharacteristic() { this = "modeled sink" }
 
+  /**
+   * Holds if the node `n` is a known sink in a modeled library, or a sibling-argument of such a sink.
+   */
+  predicate isArgumentToKnownLibrarySinkFunction(DataFlow::Node n) {
+    exists(DataFlow::InvokeNode invk, DataFlow::Node known |
+      invk.getAnArgument() = n and invk.getAnArgument() = known and isKnownLibrarySink(known)
+    )
+  }
+
   override predicate getEndpoints(DataFlow::Node n) {
     exists(DataFlow::CallNode call | n = call.getAnArgument() |
       // Remove modeled sinks
-      CoreKnowledge::isArgumentToKnownLibrarySinkFunction(n)
+      isArgumentToKnownLibrarySinkFunction(n)
     )
   }
 }
@@ -600,7 +778,7 @@ private class PredecessorInModeledFlowStepCharacteristic extends NosqlInjectionS
   override predicate getEndpoints(DataFlow::Node n) {
     exists(DataFlow::CallNode call | n = call.getAnArgument() |
       // Remove common kinds of unlikely sinks
-      CoreKnowledge::isKnownStepSrc(n)
+      isKnownStepSrc(n)
     )
   }
 }
@@ -653,7 +831,7 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkNosqlCh
     //
     // ## Direct arguments to external library calls
     //
-    // The `StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall` endpoint filter
+    // The `flowsToArgumentOfLikelyExternalLibraryCall` endpoint filter
     // allows sink candidates which are within object literals or array literals, for example
     // `req.sendFile(_, { path: ENDPOINT })`.
     //
@@ -676,7 +854,7 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkNosqlCh
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not n = StandardEndpointFilters::getALikelyExternalLibraryCall().getAnArgument() and
+    not n = getALikelyExternalLibraryCall().getAnArgument() and
     not (
       SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(nosql|query)") or
       SyntacticHeuristics::isArgTo(n, "(?i)(query)")
@@ -745,7 +923,7 @@ private class NotAnArgumentToLikelyExternalLibraryCallOrHeuristicSinkCharacteris
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
       SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(sql|query)") or
       SyntacticHeuristics::isArgTo(n, "(?i)(query)") or
@@ -783,7 +961,7 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkTainted
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
       SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(file|folder|dir|absolute)")
       or
@@ -844,7 +1022,7 @@ private class NotDirectArgumentToLikelyExternalLibraryCallOrHeuristicSinkXssChar
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+    not flowsToArgumentOfLikelyExternalLibraryCall(n) and
     not (
       SyntacticHeuristics::isAssignedToOrConcatenatedWith(n, "(?i)(html|innerhtml)")
       or

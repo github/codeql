@@ -7,7 +7,6 @@
 import semmle.javascript.heuristics.SyntacticHeuristics
 import semmle.javascript.security.dataflow.TaintedPathCustomizations
 import AdaptiveThreatModeling
-import CoreKnowledge as CoreKnowledge
 
 class TaintedPathAtmConfig extends AtmConfig {
   TaintedPathAtmConfig() { this = "TaintedPathATMConfig" }

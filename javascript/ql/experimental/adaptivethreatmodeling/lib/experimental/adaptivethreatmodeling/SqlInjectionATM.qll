@@ -7,7 +7,6 @@
 import semmle.javascript.heuristics.SyntacticHeuristics
 import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 import AdaptiveThreatModeling
-import CoreKnowledge as CoreKnowledge
 
 class SqlInjectionAtmConfig extends AtmConfig {
   SqlInjectionAtmConfig() { this = "SqlInjectionATMConfig" }
