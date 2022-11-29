@@ -1,6 +1,7 @@
 /**
- * @name Use of `Kernel.open` or `IO.read` with a non-constant value
- * @description Using `Kernel.open` or `IO.read` may allow a malicious
+ * @name Use of `Kernel.open` or `IO.read` or similar sinks with a non-constant value
+ * @description Using `Kernel.open`, `IO.read`, `IO.write`, `IO.binread`, `IO.binwrite`,
+ *              `IO.foreach`, `IO.readlines`, or `URI.open` may allow a malicious
  *              user to execute arbitrary system commands.
  * @kind problem
  * @problem.severity warning
