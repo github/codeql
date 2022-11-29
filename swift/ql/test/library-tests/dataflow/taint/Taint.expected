@@ -1,4 +1,5 @@
 edges
+| data.swift:24:5:24:29 | [summary param] 0 in init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  |
 | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  |
 | data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  |
 | data.swift:27:2:27:62 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  |
@@ -34,6 +35,14 @@ edges
 | data.swift:62:2:62:58 | [summary param] this in shuffled(using:) :  | file://:0:0:0:0 | [summary] to write: return (return) in shuffled(using:) :  |
 | data.swift:63:2:63:123 | [summary param] this in trimmingPrefix(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(_:) :  |
 | data.swift:64:2:64:72 | [summary param] this in trimmingPrefix(while:) :  | file://:0:0:0:0 | [summary] to write: return (return) in trimmingPrefix(while:) :  |
+| data.swift:81:20:81:51 | call to init(_:) :  | data.swift:82:26:82:26 | dataTainted :  |
+| data.swift:81:20:81:51 | call to init(_:) :  | data.swift:85:12:85:12 | dataTainted |
+| data.swift:81:25:81:47 | .utf8 :  | data.swift:24:5:24:29 | [summary param] 0 in init(_:) :  |
+| data.swift:81:25:81:47 | .utf8 :  | data.swift:81:20:81:51 | call to init(_:) :  |
+| data.swift:81:26:81:33 | call to source() :  | data.swift:81:25:81:47 | .utf8 :  |
+| data.swift:82:21:82:37 | call to init(_:) :  | data.swift:86:12:86:12 | dataTainted2 |
+| data.swift:82:26:82:26 | dataTainted :  | data.swift:24:5:24:29 | [summary param] 0 in init(_:) :  |
+| data.swift:82:26:82:26 | dataTainted :  | data.swift:82:21:82:37 | call to init(_:) :  |
 | data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  | data.swift:90:12:90:12 | dataTainted3 |
 | data.swift:89:41:89:48 | call to source() :  | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  |
 | data.swift:89:41:89:48 | call to source() :  | data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  |
@@ -303,9 +312,9 @@ edges
 | string.swift:28:17:28:25 | call to source2() :  | string.swift:39:13:39:29 | ... .+(_:_:) ... |
 | string.swift:74:17:74:25 | call to source2() :  | string.swift:85:13:85:21 | .description |
 | string.swift:74:17:74:25 | call to source2() :  | string.swift:88:13:88:21 | .debugDescription |
-| string.swift:97:17:97:25 | call to source2() :  | string.swift:102:13:102:13 | tainted |
-| string.swift:98:24:98:32 | call to source2() :  | string.swift:103:13:103:13 | taintedCString |
-| string.swift:99:31:99:39 | call to source2() :  | string.swift:104:13:104:13 | taintedUnicodeScalars |
+| string.swift:121:17:121:25 | call to source2() :  | string.swift:126:13:126:13 | tainted |
+| string.swift:122:24:122:32 | call to source2() :  | string.swift:127:13:127:13 | taintedCString |
+| string.swift:123:31:123:39 | call to source2() :  | string.swift:128:13:128:13 | taintedUnicodeScalars |
 | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] |
 | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... |
@@ -546,6 +555,7 @@ edges
 | webview.swift:137:34:137:41 | call to source() :  | webview.swift:66:5:66:126 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  |
 | webview.swift:137:34:137:41 | call to source() :  | webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  |
 nodes
+| data.swift:24:5:24:29 | [summary param] 0 in init(_:) :  | semmle.label | [summary param] 0 in init(_:) :  |
 | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | semmle.label | [summary param] 0 in init(base64Encoded:options:) :  |
 | data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | semmle.label | [summary param] 0 in init(buffer:) :  |
 | data.swift:27:2:27:62 | [summary param] 0 in init(buffer:) :  | semmle.label | [summary param] 0 in init(buffer:) :  |
@@ -581,6 +591,13 @@ nodes
 | data.swift:62:2:62:58 | [summary param] this in shuffled(using:) :  | semmle.label | [summary param] this in shuffled(using:) :  |
 | data.swift:63:2:63:123 | [summary param] this in trimmingPrefix(_:) :  | semmle.label | [summary param] this in trimmingPrefix(_:) :  |
 | data.swift:64:2:64:72 | [summary param] this in trimmingPrefix(while:) :  | semmle.label | [summary param] this in trimmingPrefix(while:) :  |
+| data.swift:81:20:81:51 | call to init(_:) :  | semmle.label | call to init(_:) :  |
+| data.swift:81:25:81:47 | .utf8 :  | semmle.label | .utf8 :  |
+| data.swift:81:26:81:33 | call to source() :  | semmle.label | call to source() :  |
+| data.swift:82:21:82:37 | call to init(_:) :  | semmle.label | call to init(_:) :  |
+| data.swift:82:26:82:26 | dataTainted :  | semmle.label | dataTainted :  |
+| data.swift:85:12:85:12 | dataTainted | semmle.label | dataTainted |
+| data.swift:86:12:86:12 | dataTainted2 | semmle.label | dataTainted2 |
 | data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  | semmle.label | call to init(base64Encoded:options:) :  |
 | data.swift:89:41:89:48 | call to source() :  | semmle.label | call to source() :  |
 | data.swift:90:12:90:12 | dataTainted3 | semmle.label | dataTainted3 |
@@ -739,6 +756,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  | semmle.label | [summary] to write: return (return) in flatMap(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in flatMap(_:) :  | semmle.label | [summary] to write: return (return) in flatMap(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in forProperty(_:) :  | semmle.label | [summary] to write: return (return) in forProperty(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  | semmle.label | [summary] to write: return (return) in init(_:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | semmle.label | [summary] to write: return (return) in init(base64Encoded:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | semmle.label | [summary] to write: return (return) in init(base64Encoded:options:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | semmle.label | [summary] to write: return (return) in init(base64Encoded:options:) :  |
@@ -948,12 +966,12 @@ nodes
 | string.swift:74:17:74:25 | call to source2() :  | semmle.label | call to source2() :  |
 | string.swift:85:13:85:21 | .description | semmle.label | .description |
 | string.swift:88:13:88:21 | .debugDescription | semmle.label | .debugDescription |
-| string.swift:97:17:97:25 | call to source2() :  | semmle.label | call to source2() :  |
-| string.swift:98:24:98:32 | call to source2() :  | semmle.label | call to source2() :  |
-| string.swift:99:31:99:39 | call to source2() :  | semmle.label | call to source2() :  |
-| string.swift:102:13:102:13 | tainted | semmle.label | tainted |
-| string.swift:103:13:103:13 | taintedCString | semmle.label | taintedCString |
-| string.swift:104:13:104:13 | taintedUnicodeScalars | semmle.label | taintedUnicodeScalars |
+| string.swift:121:17:121:25 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:122:24:122:32 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:123:31:123:39 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:126:13:126:13 | tainted | semmle.label | tainted |
+| string.swift:127:13:127:13 | taintedCString | semmle.label | taintedCString |
+| string.swift:128:13:128:13 | taintedUnicodeScalars | semmle.label | taintedUnicodeScalars |
 | subscript.swift:13:15:13:22 | call to source() :  | semmle.label | call to source() :  |
 | subscript.swift:13:15:13:25 | ...[...] | semmle.label | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() :  | semmle.label | call to source2() :  |
@@ -1153,6 +1171,8 @@ nodes
 | webview.swift:138:10:138:10 | c | semmle.label | c |
 | webview.swift:139:10:139:12 | .source | semmle.label | .source |
 subpaths
+| data.swift:81:25:81:47 | .utf8 :  | data.swift:24:5:24:29 | [summary param] 0 in init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  | data.swift:81:20:81:51 | call to init(_:) :  |
+| data.swift:82:26:82:26 | dataTainted :  | data.swift:24:5:24:29 | [summary param] 0 in init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  | data.swift:82:21:82:37 | call to init(_:) :  |
 | data.swift:89:41:89:48 | call to source() :  | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  |
 | data.swift:93:34:93:41 | call to source() :  | data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  | data.swift:93:21:93:73 | call to init(buffer:) :  |
 | data.swift:95:34:95:41 | call to source() :  | data.swift:27:2:27:62 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  | data.swift:95:21:95:74 | call to init(buffer:) :  |
@@ -1274,6 +1294,8 @@ subpaths
 | webview.swift:132:34:132:41 | call to source() :  | webview.swift:65:5:65:93 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  | webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  |
 | webview.swift:137:34:137:41 | call to source() :  | webview.swift:66:5:66:126 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  | webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  |
 #select
+| data.swift:85:12:85:12 | dataTainted | data.swift:81:26:81:33 | call to source() :  | data.swift:85:12:85:12 | dataTainted | result |
+| data.swift:86:12:86:12 | dataTainted2 | data.swift:81:26:81:33 | call to source() :  | data.swift:86:12:86:12 | dataTainted2 | result |
 | data.swift:90:12:90:12 | dataTainted3 | data.swift:89:41:89:48 | call to source() :  | data.swift:90:12:90:12 | dataTainted3 | result |
 | data.swift:94:12:94:12 | dataTainted4 | data.swift:93:34:93:41 | call to source() :  | data.swift:94:12:94:12 | dataTainted4 | result |
 | data.swift:96:12:96:12 | dataTainted5 | data.swift:95:34:95:41 | call to source() :  | data.swift:96:12:96:12 | dataTainted5 | result |
@@ -1356,9 +1378,9 @@ subpaths
 | string.swift:39:13:39:29 | ... .+(_:_:) ... | string.swift:28:17:28:25 | call to source2() :  | string.swift:39:13:39:29 | ... .+(_:_:) ... | result |
 | string.swift:85:13:85:21 | .description | string.swift:74:17:74:25 | call to source2() :  | string.swift:85:13:85:21 | .description | result |
 | string.swift:88:13:88:21 | .debugDescription | string.swift:74:17:74:25 | call to source2() :  | string.swift:88:13:88:21 | .debugDescription | result |
-| string.swift:102:13:102:13 | tainted | string.swift:97:17:97:25 | call to source2() :  | string.swift:102:13:102:13 | tainted | result |
-| string.swift:103:13:103:13 | taintedCString | string.swift:98:24:98:32 | call to source2() :  | string.swift:103:13:103:13 | taintedCString | result |
-| string.swift:104:13:104:13 | taintedUnicodeScalars | string.swift:99:31:99:39 | call to source2() :  | string.swift:104:13:104:13 | taintedUnicodeScalars | result |
+| string.swift:126:13:126:13 | tainted | string.swift:121:17:121:25 | call to source2() :  | string.swift:126:13:126:13 | tainted | result |
+| string.swift:127:13:127:13 | taintedCString | string.swift:122:24:122:32 | call to source2() :  | string.swift:127:13:127:13 | taintedCString | result |
+| string.swift:128:13:128:13 | taintedUnicodeScalars | string.swift:123:31:123:39 | call to source2() :  | string.swift:128:13:128:13 | taintedUnicodeScalars | result |
 | subscript.swift:13:15:13:25 | ...[...] | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] | result |
 | subscript.swift:14:15:14:26 | ...[...] | subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] | result |
 | try.swift:9:13:9:24 | try ... | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... | result |
