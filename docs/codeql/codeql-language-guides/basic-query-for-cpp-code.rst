@@ -127,4 +127,4 @@ Further reading
 
 .. |image-quick-query| image:: ../images/codeql-for-visual-studio-code/quick-query-tab-cpp.png
 
-.. |expression| replace:: ``ifstmt``
+.. |result-col-1|  replace:: The first column corresponds to the expression ``ifstmt`` and is linked to the location in the source code of the project where ``ifstmt`` occurs.
