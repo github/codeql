@@ -5,8 +5,7 @@ on:
       - "go/**"
       - "!go/ql/**" # don't run other-os if only ql/ files changed
       - .github/workflows/go-tests-other-os.yml
-      - .github/actions/fetch-codeql/action.yml
-      - .github/actions/cache-query-compilation/action.yml
+      - .github/actions/**
       - codeql-workspace.yml
 jobs:
   test-mac:
