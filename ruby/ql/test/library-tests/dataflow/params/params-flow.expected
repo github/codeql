@@ -40,6 +40,11 @@ edges
 | params_flow.rb:49:13:49:14 | p1 :  | params_flow.rb:50:10:50:11 | p1 |
 | params_flow.rb:54:9:54:17 | call to taint :  | params_flow.rb:49:13:49:14 | p1 :  |
 | params_flow.rb:57:9:57:17 | call to taint :  | params_flow.rb:49:13:49:14 | p1 :  |
+| params_flow.rb:62:8:62:16 | call to taint :  | params_flow.rb:66:13:66:16 | args :  |
+| params_flow.rb:63:16:63:17 | *x [element 0] :  | params_flow.rb:64:10:64:10 | x [element 0] :  |
+| params_flow.rb:64:10:64:10 | x [element 0] :  | params_flow.rb:64:10:64:13 | ...[...] |
+| params_flow.rb:66:12:66:16 | * ... [element 0] :  | params_flow.rb:63:16:63:17 | *x [element 0] :  |
+| params_flow.rb:66:13:66:16 | args :  | params_flow.rb:66:12:66:16 | * ... [element 0] :  |
 nodes
 | params_flow.rb:9:16:9:17 | p1 :  | semmle.label | p1 :  |
 | params_flow.rb:9:20:9:21 | p2 :  | semmle.label | p2 :  |
@@ -89,6 +94,12 @@ nodes
 | params_flow.rb:50:10:50:11 | p1 | semmle.label | p1 |
 | params_flow.rb:54:9:54:17 | call to taint :  | semmle.label | call to taint :  |
 | params_flow.rb:57:9:57:17 | call to taint :  | semmle.label | call to taint :  |
+| params_flow.rb:62:8:62:16 | call to taint :  | semmle.label | call to taint :  |
+| params_flow.rb:63:16:63:17 | *x [element 0] :  | semmle.label | *x [element 0] :  |
+| params_flow.rb:64:10:64:10 | x [element 0] :  | semmle.label | x [element 0] :  |
+| params_flow.rb:64:10:64:13 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:66:12:66:16 | * ... [element 0] :  | semmle.label | * ... [element 0] :  |
+| params_flow.rb:66:13:66:16 | args :  | semmle.label | args :  |
 subpaths
 #select
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:14:12:14:19 | call to taint :  | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:14:12:14:19 | call to taint :  | call to taint :  |
@@ -111,3 +122,4 @@ subpaths
 | params_flow.rb:29:10:29:22 | ( ... ) | params_flow.rb:34:14:34:22 | call to taint :  | params_flow.rb:29:10:29:22 | ( ... ) | $@ | params_flow.rb:34:14:34:22 | call to taint :  | call to taint :  |
 | params_flow.rb:50:10:50:11 | p1 | params_flow.rb:54:9:54:17 | call to taint :  | params_flow.rb:50:10:50:11 | p1 | $@ | params_flow.rb:54:9:54:17 | call to taint :  | call to taint :  |
 | params_flow.rb:50:10:50:11 | p1 | params_flow.rb:57:9:57:17 | call to taint :  | params_flow.rb:50:10:50:11 | p1 | $@ | params_flow.rb:57:9:57:17 | call to taint :  | call to taint :  |
+| params_flow.rb:64:10:64:13 | ...[...] | params_flow.rb:62:8:62:16 | call to taint :  | params_flow.rb:64:10:64:13 | ...[...] | $@ | params_flow.rb:62:8:62:16 | call to taint :  | call to taint :  |
