@@ -64,7 +64,7 @@ class AmbiguousPathCall extends DataFlow::CallNode {
   DataFlow::Node getPathArgument() { result = this.getArgument(0) }
 }
 
-predicate methodCallOnlyOnIO(DataFlow::CallNode node, string methodName) {
+private predicate methodCallOnlyOnIO(DataFlow::CallNode node, string methodName) {
   node = API::getTopLevelMember("IO").getAMethodCall(methodName) and
   not node = API::getTopLevelMember("File").getAMethodCall(methodName) // needed in e.g. opal/opal, where some calls have both paths (opal implements an own corelib)
 }
