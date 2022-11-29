@@ -48,7 +48,9 @@ class FileFunction extends FunctionWithWrappers {
 }
 
 Expr asSourceExpr(DataFlow::Node node) {
-  result in [node.asConvertedExpr(), node.asDefiningArgument()]
+  result = node.asConvertedExpr()
+  or
+  result = node.asDefiningArgument()
 }
 
 Expr asSinkExpr(DataFlow::Node node) {
@@ -79,6 +81,19 @@ class TaintedPathConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     node.asExpr().(Call).getTarget().getUnspecifiedType() instanceof ArithmeticType
   }
+
+  predicate hasFilteredFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
+    this.hasFlowPath(source, sink) and
+    not exists(DataFlow::PathNode source2, DataFlow::PathNode sink2 |
+      this.hasFlowPath(source2, sink2) and
+      asSourceExpr(source.getNode()) = asSourceExpr(source2.getNode()) and
+      asSinkExpr(sink.getNode()) = asSinkExpr(sink2.getNode())
+    |
+      not exists(source.getNode().asConvertedExpr()) and exists(source2.getNode().asConvertedExpr())
+      or
+      not exists(sink.getNode().asConvertedExpr()) and exists(sink2.getNode().asConvertedExpr())
+    )
+  }
 }
 
 from
@@ -87,7 +102,7 @@ from
 where
   taintedArg = asSinkExpr(sinkNode.getNode()) and
   fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
-  cfg.hasFlowPath(sourceNode, sinkNode) and
+  cfg.hasFilteredFlowPath(sourceNode, sinkNode) and
   taintSource = asSourceExpr(sourceNode.getNode()) and
   isUserInput(taintSource, taintCause)
 select taintedArg, sourceNode, sinkNode,
