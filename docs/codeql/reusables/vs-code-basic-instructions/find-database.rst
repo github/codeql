@@ -11,11 +11,7 @@ Before you start writing queries for |language-text| code, you need a CodeQL dat
 
 #. Optionally, if the repository has more than one CodeQL database available, select |language-code| to download the database created from the |language-text| code. 
 
-Information about the download progress for the database is shown in the bottom right corner of Visual Studio Code. When the download is complete, the database is shown with a check mark in the **Databases** section of the CodeQL extension.
-
-.. image:: ../images/codeql-for-visual-studio-code/database-selected.png
-       :align: center
-       :width: 500
+Information about the download progress for the database is shown in the bottom right corner of Visual Studio Code. When the download is complete, the database is shown with a check mark in the **Databases** section of the CodeQL extension (see screenshot below).
 
 .. |codeql-ext-icon| image:: ../images/codeql-for-visual-studio-code/codeql-extension-icon.png
   :width: 20

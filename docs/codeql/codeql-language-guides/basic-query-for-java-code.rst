@@ -57,7 +57,7 @@ Running a quick query
 
 If any matching code is found, click a link in the ``ma`` column to view the ``.equals`` expression in the code viewer.
 
-basic-java-query-results-2.png
+.. image:: ../images/codeql-for-visual-studio-code/basic-java-query-results-2.png
    :align: center
 
 .. include:: ../reusables/vs-code-basic-instructions/note-store-quick-query.rst

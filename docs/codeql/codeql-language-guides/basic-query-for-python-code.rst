@@ -16,6 +16,8 @@ The query we're going to run performs a basic search of the code for ``if`` stat
 
    if error: pass
 
+.. include:: ../reusables/vs-code-basic-instructions/find-database.rst
+
 Running a quick query
 ---------------------
 
@@ -35,7 +37,7 @@ Running a quick query
 .. image:: ../images/codeql-for-visual-studio-code/basic-python-query-results-1.png
    :align: center
 
-If any matching code is found, click a link in the ``ifstmt`` column to view the ``if`` statement in the code viewer.
+If any matching code is found, click a link in the ``ifstmt`` column to open the file and highlight the matching ``if`` statement.
 
 .. image:: ../images/codeql-for-visual-studio-code/basic-python-query-results-2.png
    :align: center

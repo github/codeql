@@ -35,7 +35,7 @@ Running a quick query
 .. image:: ../images/codeql-for-visual-studio-code/basic-js-query-results-1.png
    :align: center
 
-If any matching code is found, click one of the links in the ``e`` column to view the expression in the code viewer.
+If any matching code is found, click one of the links in the ``e`` column to open the file and highlight the matching expression.
 
 .. image:: ../images/codeql-for-visual-studio-code/basic-js-query-results-2.png
    :align: center

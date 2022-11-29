@@ -17,12 +17,14 @@ The query we're going to run performs a basic search of the code for ``if`` expr
    if error
      # Handle the error
 
+.. include:: ../reusables/vs-code-basic-instructions/find-database.rst
+
 Running a quick query
 ---------------------
 
 .. include:: ../reusables/vs-code-basic-instructions/run-quick-query-1.rst
 
-#. In the quick query tab, delete the content and paste in the following query`.
+#. In the quick query tab, delete the content and paste in the following query.
 
    .. code-block:: ql
 
@@ -38,7 +40,7 @@ Running a quick query
 .. image:: ../images/codeql-for-visual-studio-code/basic-ruby-query-results-1.png
    :align: center
 
-If any matching code is found, click a link in the ``ifexpr`` column to view the ``if`` statement in the code viewer.
+If any matching code is found, click a link in the ``ifexpr`` column to open the file and highlight the matching ``if`` statement.
 
 .. image:: ../images/codeql-for-visual-studio-code/basic-ruby-query-results-2.png
    :align: center

@@ -47,7 +47,7 @@ Running a quick query
 .. image:: ../images/codeql-for-visual-studio-code/basic-go-query-results-1.png
    :align: center
 
-If any matching code is found, click a link in the ``w`` column to view it in the code viewer.
+If any matching code is found, click a link in the ``w`` column to open the file and highlight the matching location.
 
 .. image:: ../images/codeql-for-visual-studio-code/basic-go-query-results-2.png
    :align: center
