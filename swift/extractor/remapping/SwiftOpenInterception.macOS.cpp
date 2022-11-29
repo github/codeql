@@ -61,7 +61,7 @@ void finalizeRemapping(
     }
     auto hash = originalHashFile(original);
     auto hashed = scratchDir / hash;
-    if (!hash.empty() && fs::exists(hashed)) {
+    if (!hash.empty() && fs::exists(patched)) {
       std::error_code ec;
       fs::create_symlink(/* target */ patched, /* symlink */ hashed, ec);
       if (ec) {
