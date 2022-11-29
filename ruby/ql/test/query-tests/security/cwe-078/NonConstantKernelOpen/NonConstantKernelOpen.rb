@@ -25,5 +25,9 @@ class UsersController < ActionController::Base
     Kernel.open("#{this_is} bad") # BAD
 
     open("| #{this_is_an_explicit_command} foo bar") # GOOD
+
+    IO.foreach("|" + EnvUtil.rubybin + " -e 'puts :foo; puts :bar; puts :baz'") {|x| a << x } # GOOD
+
+    IO.write(File.join("foo", "bar.txt"), "bar") # GOOD
   end
 end
