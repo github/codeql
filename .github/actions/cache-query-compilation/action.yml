@@ -58,4 +58,4 @@ runs:
 
         echo "compdir=${COMBINED_CACHE_DIR}" >> $GITHUB_OUTPUT
       env: 
-        COMBINED_CACHE_DIR: ${{ github.workspace }}/compilation-dir
+        COMBINED_CACHE_DIR: ${{ runner.temp }}/compilation-dir
