@@ -18,6 +18,8 @@ predicate canHaveQLDoc(AstNode node) {
   node instanceof ClasslessPredicate
   or
   node instanceof ClassPredicate
+  or
+  node instanceof TopLevel
 }
 
 pragma[noinline]
@@ -28,7 +30,7 @@ int getLineAboveNodeThatCouldHaveDoc(File file) {
 }
 
 pragma[noinline]
-BlockComment getACommentThatCouldBeQLDoc(File file) {
+BlockComment getACommentThatCouldBeQLDoc(File file, int line, string descrip) {
   exists(Location loc | loc = result.getLocation() |
     file = loc.getFile() and
     loc.getFile().getExtension() = "qll" and
@@ -36,11 +38,15 @@ BlockComment getACommentThatCouldBeQLDoc(File file) {
     not [loc.getStartLine(), loc.getEndLine()] = getLinesWithNonComment(file) and
     (
       // above something that can be commented.
-      loc.getEndLine() = getLineAboveNodeThatCouldHaveDoc(file)
+      loc.getEndLine() = getLineAboveNodeThatCouldHaveDoc(file) and
+      descrip = "the below code" and
+      line = loc.getEndLine() + 1
       or
       // toplevel in file.
       loc.getStartLine() = 1 and
-      loc.getStartColumn() = 1
+      loc.getStartColumn() = 1 and
+      descrip = "the file" and
+      line = 1
     )
   )
 }
@@ -57,28 +63,13 @@ int getLinesWithNonComment(File f) {
   )
 }
 
-pragma[noinline]
-BlockComment getCommentAtEnd(File file, int endLine) {
-  result = getACommentThatCouldBeQLDoc(file) and
-  result.getLocation().getEndLine() = endLine
-}
-
-pragma[noinline]
-BlockComment getCommentAtStart(File file, int startLine) {
-  result = getACommentThatCouldBeQLDoc(file) and
-  result.getLocation().getStartLine() = startLine
-}
-
 from AstNode node, BlockComment comment, string nodeDescrip
 where
   (
     canHaveQLDoc(node) and
-    comment = getCommentAtEnd(node.getLocation().getFile(), node.getLocation().getStartLine() - 1) and
-    nodeDescrip = "the below code"
-    or
-    node instanceof TopLevel and
-    comment = getCommentAtStart(node.getLocation().getFile(), 1) and
-    nodeDescrip = "the file"
+    comment =
+      getACommentThatCouldBeQLDoc(node.getLocation().getFile(), node.getLocation().getStartLine(),
+        nodeDescrip)
   ) and
   not exists(node.getQLDoc()) and
   not node.(ClassPredicate).isOverride() and // ignore override predicates
