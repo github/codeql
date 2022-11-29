@@ -1016,6 +1016,14 @@ module Decls {
 module Exprs {
   module AssignExprs {
     /**
+     * The control-flow of a `DiscardAssignmentExpr`, which represents the
+     * `_` leaf expression that may appear on the left-hand side of an `AssignExpr`.
+     */
+    private class DiscardAssignmentExprTree extends AstLeafTree {
+      override DiscardAssignmentExpr ast;
+    }
+
+    /**
      * The control-flow of an assignment operation.
      *
      * There are two implementation of this base class:

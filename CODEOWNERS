@@ -5,7 +5,7 @@
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
-/swift/ @github/codeql-c
+/swift/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
 /java/kotlin-explorer/ @github/codeql-kotlin
 
@@ -45,4 +45,4 @@ WORKSPACE.bazel @github/codeql-ci-reviewers
 /.github/workflows/js-ml-tests.yml @github/codeql-ml-powered-queries-reviewers
 /.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby
-/.github/workflows/swift-* @github/codeql-c
+/.github/workflows/swift.yml @github/codeql-swift

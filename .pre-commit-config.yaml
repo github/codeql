@@ -44,7 +44,7 @@ repos:
 
       - id: swift-codegen
         name: Run Swift checked in code generation
-        files: ^swift/(schema.py$|codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements))
+        files: ^swift/(schema.py$|codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements)|ql/\.generated.list)
         language: system
         entry: bazel run //swift/codegen -- --quiet
         pass_filenames: false

@@ -168,7 +168,7 @@ module ActiveStorage {
    * A call on an ActiveStorage object that results in an image transformation.
    * Arguments to these calls may be executed as system commands.
    */
-  private class ImageProcessingCall extends DataFlow::CallNode, SystemCommandExecution::Range {
+  private class ImageProcessingCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     ImageProcessingCall() {
       this.getReceiver() instanceof BlobInstance and
       this.getMethodName() = ["variant", "preview", "representation"]
@@ -209,7 +209,7 @@ module ActiveStorage {
       this = API::getTopLevelMember("ActiveStorage").getAMethodCall("video_preview_arguments=")
     }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument(0) }
   }
 
   /**

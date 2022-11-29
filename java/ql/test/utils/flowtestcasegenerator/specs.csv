@@ -1,0 +1,11 @@
+org.apache.logging.log4j;Logger;true;traceEntry;(Message);;Argument[0];ReturnValue;taint;manual
+org.apache.logging.log4j;Logger;true;traceEntry;(String,Object[]);;Argument[0..1];ReturnValue;taint;manual
+org.apache.logging.log4j;Logger;true;traceEntry;(String,Supplier[]);;Argument[0..1];ReturnValue;taint;manual
+org.apache.logging.log4j;Logger;true;traceEntry;(Supplier[]);;Argument[0];ReturnValue;taint;manual
+org.apache.logging.log4j;Logger;true;traceExit;(EntryMessage,Object);;Argument[1];ReturnValue;value;manual
+org.apache.logging.log4j;Logger;true;traceExit;(Message,Object);;Argument[1];ReturnValue;value;manual
+org.apache.logging.log4j;Logger;true;traceExit;(Object);;Argument[0];ReturnValue;value;manual
+org.apache.logging.log4j;Logger;true;traceExit;(String,Object);;Argument[1];ReturnValue;value;manual
+org.apache.commons.collections4;MapUtils;true;predicatedMap;;;Argument[0].MapValue;ReturnValue.MapValue;value;manual
+org.apache.commons.collections4;MapUtils;true;toMap;;;Argument[0].MapKey;ReturnValue.MapKey;value;manual
+org.apache.commons.collections4;MapUtils;true;toMap;;;Argument[0].MapValue;ReturnValue.MapValue;value;manual

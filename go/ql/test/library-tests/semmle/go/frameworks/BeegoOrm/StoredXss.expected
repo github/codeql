@@ -1,11 +1,6 @@
 edges
 | test.go:77:13:77:16 | &... : pointer type | test.go:78:13:78:29 | type conversion |
 | test.go:77:13:77:16 | &... : pointer type | test.go:79:13:79:43 | type conversion |
-| test.go:77:13:77:16 | &... : pointer type | test.go:79:20:79:33 | selection of substructs : slice type |
-| test.go:77:13:77:16 | &... : pointer type | test.go:79:20:79:36 | index expression : SubStruct |
-| test.go:79:20:79:33 | selection of substructs : slice type | test.go:79:13:79:43 | type conversion |
-| test.go:79:20:79:33 | selection of substructs : slice type | test.go:79:20:79:36 | index expression : SubStruct |
-| test.go:79:20:79:36 | index expression : SubStruct | test.go:79:13:79:43 | type conversion |
 | test.go:82:22:82:26 | &... : pointer type | test.go:83:13:83:30 | type conversion |
 | test.go:86:21:86:25 | &... : pointer type | test.go:87:13:87:30 | type conversion |
 | test.go:92:20:92:36 | call to Value : string | test.go:92:13:92:37 | type conversion |
@@ -18,14 +13,6 @@ edges
 | test.go:99:20:99:40 | call to RawValue : basic interface type | test.go:99:13:99:50 | type conversion |
 | test.go:100:20:100:38 | call to String : string | test.go:100:13:100:39 | type conversion |
 | test.go:106:9:106:13 | &... : pointer type | test.go:107:13:107:33 | type conversion |
-| test.go:106:9:106:13 | &... : pointer type | test.go:107:20:107:26 | implicit dereference : MyStruct |
-| test.go:106:9:106:13 | &... : pointer type | test.go:107:20:107:26 | index expression : pointer type |
-| test.go:107:20:107:26 | implicit dereference : MyStruct | test.go:107:13:107:33 | type conversion |
-| test.go:107:20:107:26 | implicit dereference : MyStruct | test.go:107:20:107:26 | implicit dereference : MyStruct |
-| test.go:107:20:107:26 | implicit dereference : MyStruct | test.go:107:20:107:26 | index expression : pointer type |
-| test.go:107:20:107:26 | index expression : pointer type | test.go:107:13:107:33 | type conversion |
-| test.go:107:20:107:26 | index expression : pointer type | test.go:107:20:107:26 | implicit dereference : MyStruct |
-| test.go:107:20:107:26 | index expression : pointer type | test.go:107:20:107:26 | index expression : pointer type |
 | test.go:110:9:110:12 | &... : pointer type | test.go:111:13:111:29 | type conversion |
 | test.go:114:12:114:19 | &... : pointer type | test.go:115:13:115:48 | type conversion |
 | test.go:118:16:118:24 | &... : pointer type | test.go:119:13:119:43 | type conversion |
@@ -43,8 +30,6 @@ nodes
 | test.go:77:13:77:16 | &... : pointer type | semmle.label | &... : pointer type |
 | test.go:78:13:78:29 | type conversion | semmle.label | type conversion |
 | test.go:79:13:79:43 | type conversion | semmle.label | type conversion |
-| test.go:79:20:79:33 | selection of substructs : slice type | semmle.label | selection of substructs : slice type |
-| test.go:79:20:79:36 | index expression : SubStruct | semmle.label | index expression : SubStruct |
 | test.go:82:22:82:26 | &... : pointer type | semmle.label | &... : pointer type |
 | test.go:83:13:83:30 | type conversion | semmle.label | type conversion |
 | test.go:86:21:86:25 | &... : pointer type | semmle.label | &... : pointer type |
@@ -69,8 +54,6 @@ nodes
 | test.go:100:20:100:38 | call to String : string | semmle.label | call to String : string |
 | test.go:106:9:106:13 | &... : pointer type | semmle.label | &... : pointer type |
 | test.go:107:13:107:33 | type conversion | semmle.label | type conversion |
-| test.go:107:20:107:26 | implicit dereference : MyStruct | semmle.label | implicit dereference : MyStruct |
-| test.go:107:20:107:26 | index expression : pointer type | semmle.label | index expression : pointer type |
 | test.go:110:9:110:12 | &... : pointer type | semmle.label | &... : pointer type |
 | test.go:111:13:111:29 | type conversion | semmle.label | type conversion |
 | test.go:114:12:114:19 | &... : pointer type | semmle.label | &... : pointer type |

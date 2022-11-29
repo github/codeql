@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Security
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Security.Cryptography` namespace. */
 class SystemSecurityCryptographyNamespace extends Namespace {

@@ -394,12 +394,6 @@ final class LocalTypeDeclStmtNode extends ExprStmtNode {
 }
 
 /**
- * DEPRECATED: Renamed `LocalTypeDeclStmtNode` to reflect the fact that
- * as of Java 16 interfaces can also be declared locally, not just classes.
- */
-deprecated class LocalClassDeclStmtNode = LocalTypeDeclStmtNode;
-
-/**
  * A node representing a `ForStmt`.
  */
 final class ForStmtNode extends ExprStmtNode {

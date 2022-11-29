@@ -12,22 +12,6 @@ class FacesContext extends RefType {
   }
 }
 
-private class ExternalContextSource extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      ["javax.", "jakarta."] +
-        [
-          "faces.context;ExternalContext;true;getRequestParameterMap;();;ReturnValue;remote;manual",
-          "faces.context;ExternalContext;true;getRequestParameterNames;();;ReturnValue;remote;manual",
-          "faces.context;ExternalContext;true;getRequestParameterValuesMap;();;ReturnValue;remote;manual",
-          "faces.context;ExternalContext;true;getRequestPathInfo;();;ReturnValue;remote;manual",
-          "faces.context;ExternalContext;true;getRequestCookieMap;();;ReturnValue;remote;manual",
-          "faces.context;ExternalContext;true;getRequestHeaderMap;();;ReturnValue;remote;manual",
-          "faces.context;ExternalContext;true;getRequestHeaderValuesMap;();;ReturnValue;remote;manual"
-        ]
-  }
-}
-
 /**
  * The method `getResponseWriter()` declared in JSF `ExternalContext`.
  */
@@ -47,17 +31,5 @@ class FacesGetResponseStreamMethod extends Method {
     this.getDeclaringType() instanceof FacesContext and
     this.hasName("getResponseStream") and
     this.getNumberOfParameters() = 0
-  }
-}
-
-private class ExternalContextXssSink extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.faces.context;ResponseWriter;true;write;;;Argument[0];xss;manual",
-        "javax.faces.context;ResponseStream;true;write;;;Argument[0];xss;manual",
-        "jakarta.faces.context;ResponseWriter;true;write;;;Argument[0];xss;manual",
-        "jakarta.faces.context;ResponseStream;true;write;;;Argument[0];xss;manual"
-      ]
   }
 }

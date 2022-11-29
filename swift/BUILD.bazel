@@ -33,6 +33,7 @@ pkg_filegroup(
     srcs = [
         ":dbscheme_files",
         ":manifest",
+        "//swift/downgrades",
         "//swift/tools",
     ],
     visibility = ["//visibility:public"],

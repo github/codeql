@@ -117,8 +117,6 @@ The values of the contained expressions need to be of :ref:`compatible types <ty
 Furthermore, at least one of the set elements has to be of a type that is a supertype of the types of all
 the other contained expressions.
 
-Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
-
 .. index:: super
 .. _super:
 
@@ -340,8 +338,6 @@ The following aggregates are available in QL:
       from int x
       where x in [-5 .. 5] and x != 0
       select unique(int y | y = x or y = x.abs() | y)
-
-  The ``unique`` aggregate is supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
 
 Evaluation of aggregates
 ========================

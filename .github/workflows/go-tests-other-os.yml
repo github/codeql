@@ -1,0 +1,80 @@
+name: "Go: Run Tests - Other OS"
+on:
+  pull_request:
+    paths:
+      - "go/**"
+      - "!go/ql/**" # don't run other-os if only ql/ files changed
+      - .github/workflows/go-tests-other-os.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+jobs:
+  test-mac:
+    name: Test MacOS
+    runs-on: macos-latest
+    steps:
+      - name: Set up Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+        id: go
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up CodeQL CLI
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Enable problem matchers in repository
+        shell: bash
+        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
+      - name: Build
+        run: |
+          cd go
+          make
+
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: go-qltest
+      - name: Test
+        run: |
+          cd go
+          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
+
+  test-win:
+    name: Test Windows
+    runs-on: windows-latest-xl
+    steps:
+      - name: Set up Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+        id: go
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up CodeQL CLI
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Enable problem matchers in repository
+        shell: bash
+        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
+      - name: Build
+        run: |
+          cd go
+          make
+
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: go-qltest
+
+      - name: Test
+        run: |
+          cd go
+          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
