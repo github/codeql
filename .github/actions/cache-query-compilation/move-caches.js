@@ -26,11 +26,10 @@ function* walkCaches(dir) {
 }
 
 async function copyDir(src, dest) {
-  for await (const file of await fs.promises.readdir(src)) {
-    const srcPath = path.join(src, file);
-    const destPath = path.join(dest, file);
-    const stat = await fs.promises.stat(srcPath);
-    if (stat.isDirectory()) {
+  for await (const file of await fs.promises.readdir(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, file.name);
+    const destPath = path.join(dest, file.name);
+    if (file.isDirectory()) {
       if (!fs.existsSync(destPath)) {
         fs.mkdirSync(destPath);
       }
