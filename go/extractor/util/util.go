@@ -118,7 +118,6 @@ func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[st
 	return pkgInfoMapping, nil
 }
 
-
 // GetPkgInfo fills the package info structure for the specified package path.
 // It passes the `go list` the flags specified by `flags`.
 func GetPkgInfo(pkgpath string, flags ...string) PkgInfo {
