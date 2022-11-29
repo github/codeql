@@ -452,8 +452,13 @@ public class AutoBuild {
       } else {
         warn("No JavaScript or TypeScript code found.");
       }
-      // ensuring that the finalize steps detects that no code was seen
-      FileUtil8.recursiveDelete(Paths.get(EnvironmentVariables.getWipDatabase() + "/src"));
+      // ensuring that the finalize steps detects that no code was seen. 
+      Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase() + "/src");
+      // check that the srcFolder is empty
+      if (Files.list(srcFolder).count() == 0) {
+        // Non-recursive delete because "src/" should be empty.
+        FileUtil8.delete(srcFolder);
+      }
       return 0;
     }
     return 0;
