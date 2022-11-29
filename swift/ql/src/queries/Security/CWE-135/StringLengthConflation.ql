@@ -162,7 +162,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         call.getStaticTarget() = funcDecl and
         flowstate = "String"
       ) and
-      // match up `funcName`, `paramName`, `arg`, `node`.
+      // match up `funcName`, `arg`, `node`.
       funcDecl.getName() = funcName and
       call.getArgument(arg).getExpr() = node.asExpr()
     )
