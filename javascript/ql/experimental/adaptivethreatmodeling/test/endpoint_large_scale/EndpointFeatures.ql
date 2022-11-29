@@ -12,8 +12,8 @@ import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 import experimental.adaptivethreatmodeling.XssATM as XssAtm
 import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
-import experimental.adaptivethreatmodeling.StandardEndpointFilters as StandardEndpointFilters
 import extraction.NoFeaturizationRestrictionsConfig
+private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 
 query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
   (
@@ -21,7 +21,8 @@ query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, strin
     not exists(any(SqlInjectionAtm::SqlInjectionAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
     not exists(any(TaintedPathAtm::TaintedPathAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
     not exists(any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
-    StandardEndpointFilters::isArgumentToModeledFunction(endpoint)
+    any(EndpointCharacteristics::IsArgumentToModeledFunctionCharacteristic characteristic)
+        .getEndpoints(endpoint)
   ) and
   EndpointFeatures::tokenFeatures(endpoint, featureName, featureValue)
 }
