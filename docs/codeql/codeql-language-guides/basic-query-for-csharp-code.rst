@@ -112,7 +112,7 @@ To exclude ``if`` statements that have an ``else`` branch:
         block.isEmpty() and
         not exists(ifstmt.getElse())
 
-#. Click **Run**.
+#. Re-run the query.
 
    There are now fewer results because ``if`` statements with an ``else`` branch are no longer included.
 

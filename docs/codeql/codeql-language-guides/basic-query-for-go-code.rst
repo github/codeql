@@ -113,7 +113,7 @@ To exclude these values:
         not recv.getType() instanceof PointerType and
         not exists(ReturnStmt ret | ret.getExpr() = recv.getARead().asExpr())
 
-#. Click **Run**.
+#. Re-run the query.
 
    There are now fewer results because value methods that return their receiver variable are no longer reported.
 
