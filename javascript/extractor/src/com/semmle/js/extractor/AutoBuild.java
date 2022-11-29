@@ -52,6 +52,7 @@ import com.semmle.util.exception.ResourceError;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.extraction.ExtractorOutputConfig;
 import com.semmle.util.files.FileUtil;
+import com.semmle.util.files.FileUtil8;
 import com.semmle.util.io.WholeIO;
 import com.semmle.util.io.csv.CSVReader;
 import com.semmle.util.language.LegacyLanguage;
@@ -438,8 +439,10 @@ public class AutoBuild {
     startThreadPool();
     try {
       extractSource();
-      extractExterns();
       extractXml();
+      if (seenCode) { // don't bother with the externs if no code was seen
+        extractExterns();
+      }
     } finally {
       shutdownThreadPool();
     }
@@ -449,7 +452,9 @@ public class AutoBuild {
       } else {
         warn("No JavaScript or TypeScript code found.");
       }
-      return -1;
+      // ensuring that the finalize steps detects that no code was seen
+      FileUtil8.recursiveDelete(Paths.get(EnvironmentVariables.getWipDatabase() + "/src"));
+      return 0;
     }
     return 0;
   }
