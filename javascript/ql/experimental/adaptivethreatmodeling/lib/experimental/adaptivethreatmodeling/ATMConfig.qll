@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Configures boosting for adaptive threat modeling (ATM).

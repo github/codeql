@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Provides predicates that expose the knowledge of models

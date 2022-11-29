@@ -186,6 +186,9 @@ edges
 | active_support.rb:290:7:290:16 | call to source :  | active_support.rb:291:8:291:8 | x :  |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
+| active_support.rb:303:7:303:16 | call to source :  | active_support.rb:304:19:304:19 | a :  |
+| active_support.rb:304:7:304:19 | call to json_escape :  | active_support.rb:305:8:305:8 | b |
+| active_support.rb:304:19:304:19 | a :  | active_support.rb:304:7:304:19 | call to json_escape :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  |
@@ -532,6 +535,10 @@ nodes
 | active_support.rb:291:8:291:8 | x :  | semmle.label | x :  |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
+| active_support.rb:303:7:303:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:304:7:304:19 | call to json_escape :  | semmle.label | call to json_escape :  |
+| active_support.rb:304:19:304:19 | a :  | semmle.label | a :  |
+| active_support.rb:305:8:305:8 | b | semmle.label | b |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | semmle.label | h [element :a] :  |

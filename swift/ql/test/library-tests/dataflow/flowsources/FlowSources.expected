@@ -3,6 +3,12 @@
 | customurlschemes.swift:38:52:38:62 | url | external |
 | customurlschemes.swift:43:9:43:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
 | customurlschemes.swift:48:9:48:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| data.swift:18:20:18:20 | call to init(contentsOf:options:) | external |
+| data.swift:18:20:18:54 | call to init(contentsOf:options:) | external |
+| nsdata.swift:18:17:18:17 | call to init(contentsOf:) | external |
+| nsdata.swift:18:17:18:40 | call to init(contentsOf:) | external |
+| nsdata.swift:19:17:19:17 | call to init(contentsOf:options:) | external |
+| nsdata.swift:19:17:19:53 | call to init(contentsOf:options:) | external |
 | string.swift:56:21:56:21 | call to init(contentsOf:) | external |
 | string.swift:56:21:56:44 | call to init(contentsOf:) | external |
 | string.swift:57:21:57:21 | call to init(contentsOf:encoding:) | external |

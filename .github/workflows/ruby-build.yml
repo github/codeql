@@ -48,7 +48,19 @@ jobs:
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+      - name: Cache entire extractor
+        uses: actions/cache@v3
+        id: cache-extractor
+        with:
+          path: |
+            ruby/target/release/ruby-autobuilder
+            ruby/target/release/ruby-autobuilder.exe
+            ruby/target/release/ruby-extractor
+            ruby/target/release/ruby-extractor.exe
+            ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+          key: ${{ runner.os }}-ruby-extractor-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}--${{ hashFiles('ruby/**/*.rs') }}
       - uses: actions/cache@v3
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         with:
           path: |
             ~/.cargo/registry
@@ -56,15 +68,19 @@ jobs:
             ruby/target
           key: ${{ runner.os }}-ruby-rust-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
       - name: Check formatting
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cargo fmt --all -- --check
       - name: Build
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cargo build --verbose
       - name: Run tests
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cargo test --verbose
       - name: Release build
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cargo build --release
       - name: Generate dbscheme
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
         run: target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.os == 'ubuntu-latest' }}

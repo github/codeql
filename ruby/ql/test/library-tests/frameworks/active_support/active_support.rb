@@ -298,3 +298,9 @@ def m_try(method)
     x.try!(:upcase).try!(:downcase)
     x.try!(method)
 end
+
+def m_json_escape
+  a = source "a"
+  b = json_escape a
+  sink b # $hasTaintFlow=a
+end

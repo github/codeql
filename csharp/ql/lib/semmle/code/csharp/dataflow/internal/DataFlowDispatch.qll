@@ -6,7 +6,6 @@ private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dispatch.RuntimeCallable
 private import semmle.code.csharp.frameworks.system.Collections

@@ -32,6 +32,8 @@ edges
 | test.cpp:259:20:259:33 | call to getenv indirection | test.cpp:263:11:263:29 | ... * ... |
 | test.cpp:289:17:289:20 | get_size output argument | test.cpp:291:11:291:28 | ... * ... |
 | test.cpp:305:18:305:21 | get_size output argument | test.cpp:308:10:308:27 | ... * ... |
+| test.cpp:338:19:338:24 | call to getenv | test.cpp:342:25:342:43 | ... * ... |
+| test.cpp:338:19:338:32 | call to getenv indirection | test.cpp:342:25:342:43 | ... * ... |
 nodes
 | test.cpp:40:21:40:24 | argv | semmle.label | argv |
 | test.cpp:43:38:43:44 | tainted | semmle.label | tainted |
@@ -72,6 +74,9 @@ nodes
 | test.cpp:291:11:291:28 | ... * ... | semmle.label | ... * ... |
 | test.cpp:305:18:305:21 | get_size output argument | semmle.label | get_size output argument |
 | test.cpp:308:10:308:27 | ... * ... | semmle.label | ... * ... |
+| test.cpp:338:19:338:24 | call to getenv | semmle.label | call to getenv |
+| test.cpp:338:19:338:32 | call to getenv indirection | semmle.label | call to getenv indirection |
+| test.cpp:342:25:342:43 | ... * ... | semmle.label | ... * ... |
 subpaths
 #select
 | test.cpp:43:31:43:36 | call to malloc | test.cpp:40:21:40:24 | argv | test.cpp:43:38:43:44 | tainted | This allocation size is derived from $@ and might overflow. | test.cpp:40:21:40:24 | argv | user input (a command-line argument) |
@@ -100,3 +105,5 @@ subpaths
 | test.cpp:291:4:291:9 | call to malloc | test.cpp:251:18:251:31 | call to getenv indirection | test.cpp:291:11:291:28 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:251:18:251:31 | call to getenv indirection | user input (an environment variable) |
 | test.cpp:308:3:308:8 | call to malloc | test.cpp:251:18:251:23 | call to getenv | test.cpp:308:10:308:27 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:251:18:251:23 | call to getenv | user input (an environment variable) |
 | test.cpp:308:3:308:8 | call to malloc | test.cpp:251:18:251:31 | call to getenv indirection | test.cpp:308:10:308:27 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:251:18:251:31 | call to getenv indirection | user input (an environment variable) |
+| test.cpp:342:18:342:23 | call to malloc | test.cpp:338:19:338:24 | call to getenv | test.cpp:342:25:342:43 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:338:19:338:24 | call to getenv | user input (an environment variable) |
+| test.cpp:342:18:342:23 | call to malloc | test.cpp:338:19:338:32 | call to getenv indirection | test.cpp:342:25:342:43 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:338:19:338:32 | call to getenv indirection | user input (an environment variable) |

@@ -14,3 +14,4 @@
 | test.c:14:15:14:35 | ... * ... | $@ flows an expression which might overflow. | test.c:11:29:11:32 | argv | User-provided value |
 | test.c:44:7:44:12 | ... -- | $@ flows an expression which might overflow negatively. | test.c:41:17:41:20 | argv | User-provided value |
 | test.c:54:7:54:12 | ... -- | $@ flows an expression which might overflow negatively. | test.c:51:17:51:20 | argv | User-provided value |
+| test.c:102:17:102:38 | ... * ... | $@ flows an expression which might overflow. | test.c:99:30:99:33 | argv | User-provided value |

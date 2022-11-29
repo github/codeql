@@ -4,7 +4,6 @@
 
 import default
 import semmle.code.csharp.frameworks.system.Text
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Text.RegularExpressions` namespace. */
 class SystemTextRegularExpressionsNamespace extends Namespace {

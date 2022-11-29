@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
 
 /** The `System.Text` namespace. */
