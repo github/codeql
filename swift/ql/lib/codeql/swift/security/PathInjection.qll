@@ -1,9 +1,12 @@
 /** Provides classes and predicates to reason about path injection vulnerabilities. */
 
 import swift
+private import codeql.swift.controlflow.BasicBlocks
+private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.TaintTracking
+private import codeql.swift.generated.ParentChild
 private import codeql.swift.frameworks.StandardLibrary.FilePath
 
 /** A data flow sink for path injection vulnerabilities. */
@@ -32,16 +35,23 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
 
 private class DefaultPathInjectionSanitizer extends PathInjectionSanitizer {
   DefaultPathInjectionSanitizer() {
-    // This is a simple implementation prone to FNs by sanitizing too many nodes.
+    // This is a simplified implementation.
     // TODO: Implement a complete path sanitizer when Guards are available.
-    exists(CallExpr starts, CallExpr normalize |
+    exists(CallExpr starts, CallExpr normalize, DataFlow::Node validated |
       starts.getStaticTarget().getName() = "starts(with:)" and
       starts.getStaticTarget().getEnclosingDecl() instanceof FilePath and
       normalize.getStaticTarget().getName() = "lexicallyNormalized()" and
       normalize.getStaticTarget().getEnclosingDecl() instanceof FilePath
     |
-      TaintTracking::localTaint(this, DataFlow::exprNode(normalize.getQualifier())) and
-      DataFlow::localExprFlow(normalize, starts.getQualifier())
+      TaintTracking::localTaint(validated, DataFlow::exprNode(normalize.getQualifier())) and
+      DataFlow::localExprFlow(normalize, starts.getQualifier()) and
+      DataFlow::localFlow(validated, this) and
+      exists(ConditionBlock bb, SuccessorTypes::BooleanSuccessor b |
+        bb.getANode().getNode().asAstNode().(IfStmt).getACondition() = getImmediateParent*(starts) and
+        b.getValue() = true
+      |
+        bb.controls(this.getCfgNode().getBasicBlock(), b)
+      )
     )
   }
 }

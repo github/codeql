@@ -196,5 +196,5 @@ func testSanitizers() {
     if (filePath.lexicallyNormalized().starts(with: FilePath(stringLiteral: "/safe"))) {
         fm.contents(atPath: remoteString) // Safe
     }
-    fm.contents(atPath: remoteString) // $ MISSING: $ hasPathInjection=191
+    fm.contents(atPath: remoteString) // $ hasPathInjection=191
 }
