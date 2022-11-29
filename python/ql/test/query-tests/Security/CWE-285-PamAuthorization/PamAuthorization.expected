@@ -13,4 +13,4 @@ nodes
 | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | semmle.label | ControlFlowNode for pam_authenticate() |
 subpaths
 #select
-| pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | This PAM authentication depends on a $@, and `pam_acct_mgmt` is not called afterwards. | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | This PAM authentication depends on a $@, and 'pam_acct_mgmt' is not called afterwards. | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |

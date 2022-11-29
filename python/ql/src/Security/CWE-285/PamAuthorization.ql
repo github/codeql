@@ -18,5 +18,5 @@ import semmle.python.security.dataflow.PamAuthorizationQuery
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "This PAM authentication depends on a $@, and `pam_acct_mgmt` is not called afterwards.",
+  "This PAM authentication depends on a $@, and 'pam_acct_mgmt' is not called afterwards.",
   source.getNode(), "user-provided value"
