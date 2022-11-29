@@ -5,7 +5,7 @@ Basic query for C and C++ code
 
 Learn to write and run a simple CodeQL query using Visual Studio Code with the CodeQL extension.
 
-.. include:: ../reusables/setup-to-run-queries.rst
+.. include:: ../reusables/vs-code-basic-instructions/setup-to-run-queries.rst
 
 About the query
 ---------------
@@ -16,36 +16,12 @@ The query we're going to run performs a basic search of the code for ``if`` stat
 
    if (error) { }
 
-Finding a CodeQL database to experiment with
---------------------------------------------
-
-Before you start writing queries for C or C++ code, you need a CodeQL database to run them against. The simplest way to do this is to download a database for a repository that uses C or C++ directly from GitHub.com.
-
-#. In Visual Studio Code, click the **QL** icon |codeql-ext-icon| in the left sidebar to display the CodeQL extension. 
-
-#. Click **From GitHub** or the GitHub logo |github-db| at the top of the CodeQL extension to open an entry field.
-
-#. Copy the URL for the repository into the field and press the keyboard **Enter** key. For example, https://github.com/protocolbuffers/protobuf.
-
-#. Optionally, if the repository has more than one CodeQL database available, select ``cpp`` to download the database created from the C and/or C++ code. 
-
-Information about the download progress for the database is shown in the bottom right corner of Visual Studio Code. When the download is complete, the database is shown with a check mark in the **Databases** section of the CodeQL extension.
-
-.. image:: ../images/codeql-for-visual-studio-code/database-selected.png
-       :align: center
-       :width: 500
+.. include:: ../reusables/vs-code-basic-instructions/find-database.rst
 
 Running a quick query
 ---------------------
 
-The CodeQL extension for Visual Studio Code adds several **CodeQL:** commands to the command palette including **Quick Query**, which you can use to run a query without any set up.
-
-#. From the command palette in Visual Studio Code, select **CodeQL: Quick Query**.
-
-#. After a momment, a new tab *quick-query.ql* is opened, ready for you to write a query for your currently selected CodeQL database (here a ``cpp`` database).
-
-   .. image:: ../images/codeql-for-visual-studio-code/quick-query-tab.png
-       :align: center
+.. include:: ../reusables/vs-code-basic-instructions/run-quick-query-1.rst
 
 #. In the quick query tab, delete ``select ""`` and paste the following query beneath the import statement ``import cpp``.
 
@@ -56,27 +32,17 @@ The CodeQL extension for Visual Studio Code adds several **CodeQL:** commands to
         block.getNumStmt() = 0
       select ifstmt, "This 'if' statement is redundant."
 
-#. Save the query in its default location (a temporary "Quick Queries" directory under the workspace for ``GitHub.vscode-codeql/quick-queries``).
-
-#. Right-click in the query window and select **CodeQL: Run Query**. (Alternatively, run the command from the Command Palette.)
-
-   The query will take a few moments to return results. When the query completes, the results are displayed in a CodeQL Query Results window, alongside the query window.
-   
-   The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ifstmt`` and is linked to the location in the source code of the project where ``ifstmt`` occurs. The second column is the alert message.
+.. include:: ../reusables/vs-code-basic-instructions/run-quick-query-2.rst
 
 .. image:: ../images/codeql-for-visual-studio-code/basic-cpp-query-results-1.png
-    :align: center
+   :align: center
 
 If any matching code is found, click a link in the ``ifstmt`` column to open the file and highlight the matching ``if`` statement.
 
 .. image:: ../images/codeql-for-visual-studio-code/basic-cpp-query-results-2.png
-    :align: center
+   :align: center
 
-.. pull-quote::
-
-   Note
-
-   If you want to move your experimental query somewhere more permanent, you need to move the whole ``Quick Queries`` directory. The directory is a CodeQL pack with a ``qlpack.yml`` file that defines the content as queries for C/C++ CodeQL databases. For more information about CodeQL packs, see ":ref:`Working with CodeQL packs in Visual Studio Code <working-with-codeql-packs-in-visual-studio-code>`."
+.. include:: ../reusables/vs-code-basic-instructions/note-store-quick-query.rst
 
 About the query structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -151,10 +117,14 @@ Further reading
 .. include:: ../reusables/cpp-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
 
-.. |codeql-ext-icon| image:: ../images/codeql-for-visual-studio-code/codeql-extension-icon.png
-  :width: 20
-  :alt: Icon for the CodeQL extension.
+.. Article-specific substitutions for the reusables used in docs/codeql/reusables/vs-code-basic-instructions
 
-.. |github-db| image:: ../images/codeql-for-visual-studio-code/add-codeql-db-github.png
-  :width: 20
-  :alt: Icon for the CodeQL extension option to download a CodeQL database from GitHub.
+.. |language-text| replace:: C/C++
+
+.. |language-code| replace:: ``cpp``
+
+.. |example-url| replace:: https://github.com/protocolbuffers/protobuf
+
+.. |image-quick-query| image:: ../images/codeql-for-visual-studio-code/quick-query-tab-cpp.png
+
+.. |expression| replace:: ``ifstmt``
