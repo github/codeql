@@ -16,23 +16,22 @@ class AmbiguousPathCall extends DataFlow::CallNode {
     this.(KernelMethodCall).getMethodName() = "open" and
     name = "Kernel.open"
     or
-    this = API::getTopLevelMember("IO").getAMethodCall("read") and
-    not this = API::getTopLevelMember("File").getAMethodCall("read") and // needed in e.g. opal/opal, where some calls have both paths, but I'm not sure why
+    methodCallOnlyOnIO(this, "read") and
     name = "IO.read"
     or
-    this = API::getTopLevelMember("IO").getAMethodCall("write") and
+    methodCallOnlyOnIO(this, "write") and
     name = "IO.write"
     or
-    this = API::getTopLevelMember("IO").getAMethodCall("binread") and
+    methodCallOnlyOnIO(this, "binread") and
     name = "IO.binread"
     or
-    this = API::getTopLevelMember("IO").getAMethodCall("binwrite") and
+    methodCallOnlyOnIO(this, "binwrite") and
     name = "IO.binwrite"
     or
-    this = API::getTopLevelMember("IO").getAMethodCall("foreach") and
+    methodCallOnlyOnIO(this, "foreach") and
     name = "IO.foreach"
     or
-    this = API::getTopLevelMember("IO").getAMethodCall("readlines") and
+    methodCallOnlyOnIO(this, "readlines") and
     name = "IO.readlines"
     or
     this = API::getTopLevelMember("URI").getAMethodCall("open") and
@@ -63,6 +62,11 @@ class AmbiguousPathCall extends DataFlow::CallNode {
 
   /** Gets the argument that specifies the path to be accessed. */
   DataFlow::Node getPathArgument() { result = this.getArgument(0) }
+}
+
+predicate methodCallOnlyOnIO(DataFlow::CallNode node, string methodName) {
+  node = API::getTopLevelMember("IO").getAMethodCall(methodName) and
+  not node = API::getTopLevelMember("File").getAMethodCall(methodName) // needed in e.g. opal/opal, where some calls have both paths (opal implements an own corelib)
 }
 
 /**
