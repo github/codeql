@@ -52,7 +52,7 @@ class Library extends LibraryT {
     // The versions reported for C/C++ dependencies are just the versions that
     // happen to be installed on the system where the build takes place.
     // Reporting those versions is likely to cause misunderstandings, both for
-    // people reading them and for the vulnerability checker of lgtm.
+    // people reading them and for vulnerability checkers.
     result = "unknown"
   }
 
