@@ -37,4 +37,4 @@
     .. [7] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [8] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
     .. [9] Requires glibc 2.17.
-    .. [10] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.
+    .. [10] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
