@@ -434,19 +434,27 @@ public class AutoBuild {
     return true;
   }
 
+  /**
+   * Returns whether the autobuilder has seen code. 
+   * This is overridden in tests. 
+   */
+  protected boolean hasSeenCode() {
+    return seenCode;
+  }
+
   /** Perform extraction. */
   public int run() throws IOException {
     startThreadPool();
     try {
       extractSource();
       extractXml();
-      if (seenCode) { // don't bother with the externs if no code was seen
+      if (hasSeenCode()) { // don't bother with the externs if no code was seen
         extractExterns();
       }
     } finally {
       shutdownThreadPool();
     }
-    if (!seenCode) {
+    if (!hasSeenCode()) {
       if (seenFiles) {
         warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
       } else {
