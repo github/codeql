@@ -157,7 +157,8 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    * TODO
    */
   private string getCurrentEndpointPrompt(DataFlow::Node endpoint) {
-    result = "Endpoint: " + endpoint.asExpr().toString()
+    result = "|" + endpoint.asExpr().toString() + "|"
+    // TODO + getNeighborhood(endpoint) + "|"
   }
 
   /**
