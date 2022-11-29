@@ -163,7 +163,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    * We can find hard TP examples for the codex prompt by extracting sinks that are found by the classical queries but
    * filtered by the endpoint filters.
    */
-  predicate hardTPExamples(
+  private predicate hardTPExamples(
     DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string reason
   ) {
     sinkType instanceof EndpointTypes::NosqlInjectionSinkType and
@@ -186,7 +186,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
   /**
    * Hardcode some hard FP examples for each query from the manual triage of the model shipped in 0.4.0.
    */
-  predicate hardFPExamples(DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType) {
+  private predicate hardFPExamples(DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType) {
     sinkType instanceof EndpointTypes::NosqlInjectionSinkType
     or
     // and
@@ -206,7 +206,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    * reason.
    */
   bindingset[numExamples]
-  predicate hardTPExamplesForCodexPrompt(
+  private predicate hardTPExamplesForCodexPrompt(
     int numExamples, DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string reason
   ) {
     hardTPExamples(endpoint, sinkType, reason)
@@ -218,7 +218,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    * Select the specified number of hard FP examples for the codex prompt for each query.
    * TODO
    */
-  private string hardFPExamplesForCodexPrompt() {
+  private private string hardFPExamplesForCodexPrompt() {
     result =
       "# Examples of security vulnerability sinks and non-sinks\n|Dataflow node|Neighborhood|Classification|\n|---|---|---|\n|`m[9] ? m[10] : null`|`                        this.authority = m[5] ? m[6] : null;                    this.path = m[7];                       this.query = m[9] ? m[10] : null;                       this.fragment = m[12] ? m[13] : null;  return this;`|non-sink|\n|`this.flowRunId`|`          variables: {            input: {              flow_run_id: this.flowRunId,              name: e            }`|non-sink|\n|`req.body.firstName`|`    res.json({      firstName: req.body.firstName,      lastName: req.body.lastName,      email: req.body.email`|non-sink|\n|`lang[1]`|`            if (lang) {                document.getElementsByTagName('html')[0].setAttribute('lang', lang[1]);            }`|non-sink|\n|`token`|`    },  });  tokenProvider.saveNewToken(token).then(ok => {    insights.trackEvent({      name: 'ReposCreateTokenFinish',`|non-sink|\n|`filename`|`function sendFile(filename, response) {  response.setHeader('Content-Type', mime.lookup(filename));  response.writeHead(200);  const fileStream = createReadStream(filename);`|non-sink|\n|`year`|`      postsData = await getPostsDateArchive(        postType,        !isNaN(parseInt(year, 10)) ? parseInt(year, 10) : null,        !isNaN(parseInt(month, 10)) ? parseInt(month, 10) : null,        !isNaN(parseInt(day, 10)) ? parseInt(day, 10) : null,`|non-sink|\n|`redirectTo === 'login' ? {redirectTo: to.path,} : to.query`|`    return next({      name: redirectTo,      query: redirectTo === 'login' ? {        redirectTo: to.path,      } : to.query,    });  }`|non-sink|\n"
   }
