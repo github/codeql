@@ -6,7 +6,7 @@
 
 private import javascript as JS
 import EndpointTypes
-import EndpointCharacteristics
+import EndpointCharacteristics as EndpointCharacteristics
 
 /**
  * EXPERIMENTAL. This API may change in the future.
@@ -48,7 +48,7 @@ abstract class AtmConfig extends string {
   final predicate isKnownSink(JS::DataFlow::Node sink) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
-    exists(EndpointCharacteristic characteristic |
+    exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
       characteristic.getEndpoints(sink) and
       characteristic
           .getImplications(this.getASinkEndpointType(), true, characteristic.maximalConfidence())
@@ -69,7 +69,38 @@ abstract class AtmConfig extends string {
    * Holds if the candidate sink `candidateSink` predicted by the machine learning model should be
    * an effective sink, i.e. one considered as a possible sink of flow in the boosted query.
    */
-  predicate isEffectiveSink(JS::DataFlow::Node candidateSink) { none() }
+  predicate isEffectiveSink(JS::DataFlow::Node candidateSink) {
+    not exists(this.getAReasonSinkExcluded(candidateSink))
+  }
+
+  /**
+   * Gets the list of characteristics that cause `candidateSink` to be excluded as an effective sink.
+   */
+  final EndpointCharacteristics::EndpointCharacteristic getAReasonSinkExcluded(
+    JS::DataFlow::Node candidateSink
+  ) {
+    // An endpoint is an effective sink (sink candidate) if none of its characteristics give much indication whether or
+    // not it is a sink. Historically, we used endpoint filters, and scored endpoints that are filtered out neither by
+    // a standard endpoint filter nor by an endpoint filter specific to this sink type. To replicate this behavior, we
+    // have given the endpoint filter characteristics medium confidence, and we exclude endpoints that have a
+    // medium-confidence characteristic that indicates that they are not sinks, either in general or for this sink type.
+    exists(EndpointCharacteristics::EndpointCharacteristic filter, float confidence |
+      filter.getEndpoints(candidateSink) and
+      confidence >= filter.mediumConfidence() and
+      // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that
+      // implies they're not sinks, rather than using only medium-confidence characteristics, by deleting the following
+      // line.
+      confidence < filter.highConfidence() and
+      (
+        // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
+        filter.getImplications(any(NegativeType negative), true, confidence)
+        or
+        // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
+        filter.getImplications(this.getASinkEndpointType(), false, confidence)
+      ) and
+      result = filter
+    )
+  }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -85,7 +116,7 @@ abstract class AtmConfig extends string {
    * Get an endpoint type for the sinks of this query. A query may have multiple applicable
    * endpoint types for its sinks.
    */
-  EndpointType getASinkEndpointType() { none() }
+  abstract EndpointType getASinkEndpointType();
 
   /**
    * EXPERIMENTAL. This API may change in the future.
