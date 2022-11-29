@@ -72,7 +72,7 @@ private module FunctionNames {
 }
 
 /** Get a name of a supported generic token-based feature. */
-string getASupportedFeatureName() { result = any(EndpointFeature f).getName() }
+string getASupportedFeatureName() { result = "codexPrompt" }
 
 /**
  * Generic token-based features for ATM.
