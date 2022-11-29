@@ -10,10 +10,10 @@ import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import NoFeaturizationRestrictionsConfig
 private import Exclusions as Exclusions
 import Queries
-import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
-import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
-import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
-import experimental.adaptivethreatmodeling.XssATM as XssAtm
+private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
+private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
+private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+private import experimental.adaptivethreatmodeling.XssATM as XssAtm
 
 /**
  * Gets the set of featureName-featureValue pairs for each endpoint in the training set.
@@ -73,6 +73,10 @@ query predicate trainingEndpoints(
       c instanceof LikelyNotASinkCharacteristic
     )
   ) and
+  // Don't surface endpoint filters as characteristics, because they were previously not surfaced.
+  // TODO: Experiment with surfacing these to the modeling code by removing the following line (and then make
+  // EndpointFilterCharacteristic private).
+  not characteristic instanceof EndpointFilterCharacteristic and
   (
     // If the list of characteristics includes positive indicators with high confidence for this class, select this as a
     // training sample belonging to the class.
@@ -188,6 +192,10 @@ query predicate reformattedTrainingEndpoints(
         confidence3 >= characteristic3.getHighConfidenceThreshold() and
         not posClass instanceof NegativeType
       ) and
+      // Don't surface endpoint filters as notASinkReasons, because they were previously not surfaced.
+      // TODO: Experiment with surfacing these to the modeling code by removing the following line (and then make
+      // EndpointFilterCharacteristic private).
+      not value instanceof EndpointFilterCharacteristic and
       valueType = "string"
     )
   )

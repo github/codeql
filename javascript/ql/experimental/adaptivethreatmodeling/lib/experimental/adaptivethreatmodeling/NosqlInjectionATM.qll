@@ -9,92 +9,12 @@ private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 import AdaptiveThreatModeling
 private import CoreKnowledge as CoreKnowledge
-private import StandardEndpointFilters as StandardEndpointFilters
-
-module SinkEndpointFilter {
-  /**
-   * Provides a set of reasons why a given data flow node should be excluded as a sink candidate.
-   *
-   * If this predicate has no results for a sink candidate `n`, then we should treat `n` as an
-   * effective sink.
-   */
-  string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
-    result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
-    or
-    exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
-      // additional databases accesses that aren't modeled yet
-      call.(DataFlow::MethodCallNode).getMethodName() =
-        ["create", "createCollection", "createIndexes"] and
-      result = "matches database access call heuristic"
-      or
-      // Remove modeled sinks
-      CoreKnowledge::isArgumentToKnownLibrarySinkFunction(sinkCandidate) and
-      result = "modeled sink"
-      or
-      // Remove common kinds of unlikely sinks
-      CoreKnowledge::isKnownStepSrc(sinkCandidate) and
-      result = "predecessor in a modeled flow step"
-      or
-      // Remove modeled database calls. Arguments to modeled calls are very likely to be modeled
-      // as sinks if they are true positives. Therefore arguments that are not modeled as sinks
-      // are unlikely to be true positives.
-      call instanceof DatabaseAccess and
-      result = "modeled database access"
-      or
-      // Remove calls to APIs that aren't relevant to NoSQL injection
-      call.getReceiver() instanceof Http::RequestNode and
-      result = "receiver is a HTTP request expression"
-      or
-      call.getReceiver() instanceof Http::ResponseNode and
-      result = "receiver is a HTTP response expression"
-    )
-    or
-    // Require NoSQL injection sink candidates to be (a) direct arguments to external library calls
-    // or (b) heuristic sinks for NoSQL injection.
-    //
-    // ## Direct arguments to external library calls
-    //
-    // The `StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall` endpoint filter
-    // allows sink candidates which are within object literals or array literals, for example
-    // `req.sendFile(_, { path: ENDPOINT })`.
-    //
-    // However, the NoSQL injection query deals differently with these types of sinks compared to
-    // other security queries. Other security queries such as SQL injection tend to treat
-    // `ENDPOINT` as the ground truth sink, but the NoSQL injection query instead treats
-    // `{ path: ENDPOINT }` as the ground truth sink and defines an additional flow step to ensure
-    // data flows from `ENDPOINT` to the ground truth sink `{ path: ENDPOINT }`.
-    //
-    // Therefore for the NoSQL injection boosted query, we must ignore sink candidates within object
-    // literals or array literals, to avoid having multiple alerts for the same security
-    // vulnerability (one FP where the sink is `ENDPOINT` and one TP where the sink is
-    // `{ path: ENDPOINT }`). We accomplish this by directly testing that the sink candidate is an
-    // argument of a likely external library call.
-    //
-    // ## Heuristic sinks
-    //
-    // We also allow heuristic sinks in addition to direct arguments to external library calls.
-    // These are copied from the `HeuristicNosqlInjectionSink` class defined within
-    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
-    // We can't reuse the class because importing that file would cause us to treat these
-    // heuristic sinks as known sinks.
-    not sinkCandidate = StandardEndpointFilters::getALikelyExternalLibraryCall().getAnArgument() and
-    not (
-      isAssignedToOrConcatenatedWith(sinkCandidate, "(?i)(nosql|query)") or
-      isArgTo(sinkCandidate, "(?i)(query)")
-    ) and
-    result = "not a direct argument to a likely external library call or a heuristic sink"
-  }
-}
 
 class NosqlInjectionAtmConfig extends AtmConfig {
   NosqlInjectionAtmConfig() { this = "NosqlInjectionATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) {
     source instanceof NosqlInjection::Source or TaintedObject::isSource(source, _)
-  }
-
-  override predicate isEffectiveSink(DataFlow::Node sinkCandidate) {
-    not exists(SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate))
   }
 
   override EndpointType getASinkEndpointType() { result instanceof NosqlInjectionSinkType }
