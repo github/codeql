@@ -7,5 +7,4 @@ private newtype TUnit = TMkUnit()
 class Unit extends TUnit {
   /** Gets a textual representation of this element. */
   string toString() { result = "unit" }
-  // test
 }
