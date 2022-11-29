@@ -1507,12 +1507,12 @@ open class KotlinFileExtractor(
                 }
                 is IrFunction -> {
                     if (s.isLocalFunction()) {
-                        val compilerGeneratedKind = if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
+                        val compilerGeneratedKindOverride = if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
                             CompilerGeneratedKinds.DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS
                         } else {
                             null
                         }
-                        val classId = extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType), compilerGeneratedKind = compilerGeneratedKind)
+                        val classId = extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType), compilerGeneratedKindOverride = compilerGeneratedKindOverride)
                         extractLocalTypeDeclStmt(classId, s, callable, parent, idx)
                         val ids = getLocallyVisibleFunctionLabels(s)
                         tw.writeKtLocalFunction(ids.function)
@@ -5390,7 +5390,7 @@ open class KotlinFileExtractor(
         locId: Label<DbLocation>,
         elementToReportOn: IrElement,
         declarationParent: IrDeclarationParent,
-        compilerGeneratedKind: CompilerGeneratedKinds? = null,
+        compilerGeneratedKindOverride: CompilerGeneratedKinds? = null,
         superConstructorSelector: (IrFunction) -> Boolean = { it.valueParameters.isEmpty() },
         extractSuperconstructorArgs: (Label<DbSuperconstructorinvocationstmt>) -> Unit = {},
     ): Label<out DbClass> {
@@ -5398,7 +5398,7 @@ open class KotlinFileExtractor(
         val id = ids.type.javaResult.id.cast<DbClass>()
         val pkgId = extractPackage("")
         tw.writeClasses(id, "", pkgId, id)
-        tw.writeCompiler_generated(id, (compilerGeneratedKind ?: CompilerGeneratedKinds.CALLABLE_CLASS).kind)
+        tw.writeCompiler_generated(id, (compilerGeneratedKindOverride ?: CompilerGeneratedKinds.CALLABLE_CLASS).kind)
         tw.writeHasLocation(id, locId)
 
         // Extract constructor
@@ -5448,12 +5448,12 @@ open class KotlinFileExtractor(
     private fun extractGeneratedClass(
         localFunction: IrFunction,
         superTypes: List<IrType>,
-        compilerGeneratedKind: CompilerGeneratedKinds? = null
+        compilerGeneratedKindOverride: CompilerGeneratedKinds? = null
     ) : Label<out DbClass> {
         with("generated class", localFunction) {
             val ids = getLocallyVisibleFunctionLabels(localFunction)
 
-            val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction, localFunction.parent, compilerGeneratedKind = compilerGeneratedKind)
+            val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction, localFunction.parent, compilerGeneratedKindOverride = compilerGeneratedKindOverride)
 
             // Extract local function as a member
             extractFunction(localFunction, id, extractBody = true, extractMethodAndParameterTypeAccesses = true, null, listOf())
