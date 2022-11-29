@@ -144,8 +144,8 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
 
   /**
    * Holds if there's an ATM alert (a flow path from `source` to `sink` with ML-determined likelihood `score`) according
-   * to this ML-boosted configuration, whereas the unboosted base query is unlikely to report an alert for this source
-   * and sink.
+   * to this ML-boosted configuration, whereas the unboosted base query does not contain this source and sink
+   * combination.
    */
   predicate getAlerts(JS::DataFlow::PathNode source, JS::DataFlow::PathNode sink, float score) {
     this.hasFlowPath(source, sink) and
