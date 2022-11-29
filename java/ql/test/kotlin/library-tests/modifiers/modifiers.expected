@@ -67,4 +67,4 @@
 | modifiers.kt:36:22:36:40 | getTest0$private | Method | private |
 | modifiers.kt:36:22:36:40 | setTest0$private | Method | private |
 | modifiers.kt:38:5:40:5 | fn | Method | public |
-| modifiers.kt:39:9:39:36 | LateInit test1 | LocalVariableDecl | lateinit |
+| modifiers.kt:39:22:39:26 | LateInit test1 | LocalVariableDecl | lateinit |

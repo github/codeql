@@ -410,126 +410,136 @@ edges
 | url.swift:117:28:117:28 | tainted :  | url.swift:117:16:117:35 | call to init(string:) :  |
 | url.swift:120:46:120:46 | urlTainted :  | url.swift:43:2:46:55 | [summary param] 0 in dataTask(with:completionHandler:) :  |
 | url.swift:120:61:120:61 | data :  | url.swift:121:15:121:19 | ...! |
-| webview.swift:16:5:16:39 | [summary param] 0 in init(object:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(object:in:) :  |
-| webview.swift:17:5:17:38 | [summary param] 0 in init(bool:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bool:in:) :  |
-| webview.swift:18:5:18:42 | [summary param] 0 in init(double:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(double:in:) :  |
-| webview.swift:19:5:19:40 | [summary param] 0 in init(int32:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(int32:in:) :  |
-| webview.swift:20:5:20:42 | [summary param] 0 in init(uInt32:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(uInt32:in:) :  |
-| webview.swift:21:5:21:42 | [summary param] 0 in init(point:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(point:in:) :  |
-| webview.swift:22:5:22:42 | [summary param] 0 in init(range:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(range:in:) :  |
-| webview.swift:23:5:23:40 | [summary param] 0 in init(rect:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(rect:in:) :  |
-| webview.swift:24:5:24:40 | [summary param] 0 in init(size:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(size:in:) :  |
-| webview.swift:25:5:25:41 | [summary param] this in toObject() :  | file://:0:0:0:0 | [summary] to write: return (return) in toObject() :  |
-| webview.swift:26:5:26:55 | [summary param] this in toObjectOf(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in toObjectOf(_:) :  |
-| webview.swift:27:5:27:42 | [summary param] this in toBool() :  | file://:0:0:0:0 | [summary] to write: return (return) in toBool() :  |
-| webview.swift:28:5:28:44 | [summary param] this in toDouble() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDouble() :  |
-| webview.swift:29:5:29:40 | [summary param] this in toInt32() :  | file://:0:0:0:0 | [summary] to write: return (return) in toInt32() :  |
-| webview.swift:30:5:30:42 | [summary param] this in toUInt32() :  | file://:0:0:0:0 | [summary] to write: return (return) in toUInt32() :  |
-| webview.swift:31:5:31:62 | [summary param] this in toNumber() :  | file://:0:0:0:0 | [summary] to write: return (return) in toNumber() :  |
-| webview.swift:32:5:32:44 | [summary param] this in toString() :  | file://:0:0:0:0 | [summary] to write: return (return) in toString() :  |
-| webview.swift:33:5:33:44 | [summary param] this in toDate() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDate() :  |
-| webview.swift:34:5:34:44 | [summary param] this in toArray() :  | file://:0:0:0:0 | [summary] to write: return (return) in toArray() :  |
-| webview.swift:35:5:35:65 | [summary param] this in toDictionary() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDictionary() :  |
-| webview.swift:36:5:36:50 | [summary param] this in toPoint() :  | file://:0:0:0:0 | [summary] to write: return (return) in toPoint() :  |
-| webview.swift:37:5:37:50 | [summary param] this in toRange() :  | file://:0:0:0:0 | [summary] to write: return (return) in toRange() :  |
-| webview.swift:38:5:38:47 | [summary param] this in toRect() :  | file://:0:0:0:0 | [summary] to write: return (return) in toRect() :  |
-| webview.swift:39:5:39:47 | [summary param] this in toSize() :  | file://:0:0:0:0 | [summary] to write: return (return) in toSize() :  |
-| webview.swift:40:5:40:84 | [summary param] this in atIndex(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in atIndex(_:) :  |
-| webview.swift:41:5:41:53 | [summary param] 1 in defineProperty(_:descriptor:) :  | file://:0:0:0:0 | [summary] to write: argument this in defineProperty(_:descriptor:) :  |
-| webview.swift:42:5:42:89 | [summary param] this in forProperty(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in forProperty(_:) :  |
-| webview.swift:43:5:43:38 | [summary param] 0 in setValue(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:at:) :  |
-| webview.swift:44:5:44:48 | [summary param] 0 in setValue(_:forProperty:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:forProperty:) :  |
-| webview.swift:52:11:52:18 | call to source() :  | webview.swift:52:10:52:41 | .body |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:59:10:59:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:60:10:60:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:61:10:61:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:62:10:62:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:63:10:63:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:64:10:64:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:65:10:65:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:66:10:66:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:67:10:67:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:68:10:68:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:69:10:69:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:70:10:70:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:71:10:71:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:72:10:72:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:73:10:73:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:74:10:74:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:75:10:75:10 | source :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:78:26:78:26 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:79:24:79:24 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:80:26:80:26 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:81:25:81:25 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:82:26:82:26 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:83:25:83:25 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:84:25:84:25 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:85:24:85:24 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:86:24:86:24 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:89:39:89:39 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:93:17:93:17 | s :  |
-| webview.swift:56:13:56:20 | call to source() :  | webview.swift:97:17:97:17 | s :  |
-| webview.swift:59:10:59:10 | source :  | webview.swift:25:5:25:41 | [summary param] this in toObject() :  |
-| webview.swift:59:10:59:10 | source :  | webview.swift:59:10:59:26 | call to toObject() |
-| webview.swift:60:10:60:10 | source :  | webview.swift:26:5:26:55 | [summary param] this in toObjectOf(_:) :  |
-| webview.swift:60:10:60:10 | source :  | webview.swift:60:10:60:41 | call to toObjectOf(_:) |
-| webview.swift:61:10:61:10 | source :  | webview.swift:27:5:27:42 | [summary param] this in toBool() :  |
-| webview.swift:61:10:61:10 | source :  | webview.swift:61:10:61:24 | call to toBool() |
-| webview.swift:62:10:62:10 | source :  | webview.swift:28:5:28:44 | [summary param] this in toDouble() :  |
-| webview.swift:62:10:62:10 | source :  | webview.swift:62:10:62:26 | call to toDouble() |
-| webview.swift:63:10:63:10 | source :  | webview.swift:29:5:29:40 | [summary param] this in toInt32() :  |
-| webview.swift:63:10:63:10 | source :  | webview.swift:63:10:63:25 | call to toInt32() |
-| webview.swift:64:10:64:10 | source :  | webview.swift:30:5:30:42 | [summary param] this in toUInt32() :  |
-| webview.swift:64:10:64:10 | source :  | webview.swift:64:10:64:26 | call to toUInt32() |
-| webview.swift:65:10:65:10 | source :  | webview.swift:31:5:31:62 | [summary param] this in toNumber() :  |
-| webview.swift:65:10:65:10 | source :  | webview.swift:65:10:65:26 | call to toNumber() |
-| webview.swift:66:10:66:10 | source :  | webview.swift:32:5:32:44 | [summary param] this in toString() :  |
-| webview.swift:66:10:66:10 | source :  | webview.swift:66:10:66:26 | call to toString() |
-| webview.swift:67:10:67:10 | source :  | webview.swift:33:5:33:44 | [summary param] this in toDate() :  |
-| webview.swift:67:10:67:10 | source :  | webview.swift:67:10:67:24 | call to toDate() |
-| webview.swift:68:10:68:10 | source :  | webview.swift:34:5:34:44 | [summary param] this in toArray() :  |
-| webview.swift:68:10:68:10 | source :  | webview.swift:68:10:68:25 | call to toArray() |
-| webview.swift:69:10:69:10 | source :  | webview.swift:35:5:35:65 | [summary param] this in toDictionary() :  |
-| webview.swift:69:10:69:10 | source :  | webview.swift:69:10:69:30 | call to toDictionary() |
-| webview.swift:70:10:70:10 | source :  | webview.swift:36:5:36:50 | [summary param] this in toPoint() :  |
-| webview.swift:70:10:70:10 | source :  | webview.swift:70:10:70:25 | call to toPoint() |
-| webview.swift:71:10:71:10 | source :  | webview.swift:37:5:37:50 | [summary param] this in toRange() :  |
-| webview.swift:71:10:71:10 | source :  | webview.swift:71:10:71:25 | call to toRange() |
-| webview.swift:72:10:72:10 | source :  | webview.swift:38:5:38:47 | [summary param] this in toRect() :  |
-| webview.swift:72:10:72:10 | source :  | webview.swift:72:10:72:24 | call to toRect() |
-| webview.swift:73:10:73:10 | source :  | webview.swift:39:5:39:47 | [summary param] this in toSize() :  |
-| webview.swift:73:10:73:10 | source :  | webview.swift:73:10:73:24 | call to toSize() |
-| webview.swift:74:10:74:10 | source :  | webview.swift:40:5:40:84 | [summary param] this in atIndex(_:) :  |
-| webview.swift:74:10:74:10 | source :  | webview.swift:74:10:74:26 | call to atIndex(_:) |
-| webview.swift:75:10:75:10 | source :  | webview.swift:42:5:42:89 | [summary param] this in forProperty(_:) :  |
-| webview.swift:75:10:75:10 | source :  | webview.swift:75:10:75:31 | call to forProperty(_:) |
-| webview.swift:78:26:78:26 | s :  | webview.swift:16:5:16:39 | [summary param] 0 in init(object:in:) :  |
-| webview.swift:78:26:78:26 | s :  | webview.swift:78:10:78:47 | call to init(object:in:) |
-| webview.swift:79:24:79:24 | s :  | webview.swift:17:5:17:38 | [summary param] 0 in init(bool:in:) :  |
-| webview.swift:79:24:79:24 | s :  | webview.swift:79:10:79:47 | call to init(bool:in:) |
-| webview.swift:80:26:80:26 | s :  | webview.swift:18:5:18:42 | [summary param] 0 in init(double:in:) :  |
-| webview.swift:80:26:80:26 | s :  | webview.swift:80:10:80:51 | call to init(double:in:) |
-| webview.swift:81:25:81:25 | s :  | webview.swift:19:5:19:40 | [summary param] 0 in init(int32:in:) :  |
-| webview.swift:81:25:81:25 | s :  | webview.swift:81:10:81:49 | call to init(int32:in:) |
-| webview.swift:82:26:82:26 | s :  | webview.swift:20:5:20:42 | [summary param] 0 in init(uInt32:in:) :  |
-| webview.swift:82:26:82:26 | s :  | webview.swift:82:10:82:51 | call to init(uInt32:in:) |
-| webview.swift:83:25:83:25 | s :  | webview.swift:21:5:21:42 | [summary param] 0 in init(point:in:) :  |
-| webview.swift:83:25:83:25 | s :  | webview.swift:83:10:83:51 | call to init(point:in:) |
-| webview.swift:84:25:84:25 | s :  | webview.swift:22:5:22:42 | [summary param] 0 in init(range:in:) :  |
-| webview.swift:84:25:84:25 | s :  | webview.swift:84:10:84:51 | call to init(range:in:) |
-| webview.swift:85:24:85:24 | s :  | webview.swift:23:5:23:40 | [summary param] 0 in init(rect:in:) :  |
-| webview.swift:85:24:85:24 | s :  | webview.swift:85:10:85:49 | call to init(rect:in:) |
-| webview.swift:86:24:86:24 | s :  | webview.swift:24:5:24:40 | [summary param] 0 in init(size:in:) :  |
-| webview.swift:86:24:86:24 | s :  | webview.swift:86:10:86:49 | call to init(size:in:) |
-| webview.swift:89:5:89:5 | [post] v1 :  | webview.swift:90:10:90:10 | v1 |
-| webview.swift:89:39:89:39 | s :  | webview.swift:41:5:41:53 | [summary param] 1 in defineProperty(_:descriptor:) :  |
-| webview.swift:89:39:89:39 | s :  | webview.swift:89:5:89:5 | [post] v1 :  |
-| webview.swift:93:5:93:5 | [post] v2 :  | webview.swift:94:10:94:10 | v2 |
-| webview.swift:93:17:93:17 | s :  | webview.swift:43:5:43:38 | [summary param] 0 in setValue(_:at:) :  |
-| webview.swift:93:17:93:17 | s :  | webview.swift:93:5:93:5 | [post] v2 :  |
-| webview.swift:97:5:97:5 | [post] v3 :  | webview.swift:98:10:98:10 | v3 |
-| webview.swift:97:17:97:17 | s :  | webview.swift:44:5:44:48 | [summary param] 0 in setValue(_:forProperty:) :  |
-| webview.swift:97:17:97:17 | s :  | webview.swift:97:5:97:5 | [post] v3 :  |
+| webview.swift:27:5:27:39 | [summary param] 0 in init(object:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(object:in:) :  |
+| webview.swift:28:5:28:38 | [summary param] 0 in init(bool:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bool:in:) :  |
+| webview.swift:29:5:29:42 | [summary param] 0 in init(double:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(double:in:) :  |
+| webview.swift:30:5:30:40 | [summary param] 0 in init(int32:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(int32:in:) :  |
+| webview.swift:31:5:31:42 | [summary param] 0 in init(uInt32:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(uInt32:in:) :  |
+| webview.swift:32:5:32:42 | [summary param] 0 in init(point:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(point:in:) :  |
+| webview.swift:33:5:33:42 | [summary param] 0 in init(range:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(range:in:) :  |
+| webview.swift:34:5:34:40 | [summary param] 0 in init(rect:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(rect:in:) :  |
+| webview.swift:35:5:35:40 | [summary param] 0 in init(size:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(size:in:) :  |
+| webview.swift:36:5:36:41 | [summary param] this in toObject() :  | file://:0:0:0:0 | [summary] to write: return (return) in toObject() :  |
+| webview.swift:37:5:37:55 | [summary param] this in toObjectOf(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in toObjectOf(_:) :  |
+| webview.swift:38:5:38:42 | [summary param] this in toBool() :  | file://:0:0:0:0 | [summary] to write: return (return) in toBool() :  |
+| webview.swift:39:5:39:44 | [summary param] this in toDouble() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDouble() :  |
+| webview.swift:40:5:40:40 | [summary param] this in toInt32() :  | file://:0:0:0:0 | [summary] to write: return (return) in toInt32() :  |
+| webview.swift:41:5:41:42 | [summary param] this in toUInt32() :  | file://:0:0:0:0 | [summary] to write: return (return) in toUInt32() :  |
+| webview.swift:42:5:42:62 | [summary param] this in toNumber() :  | file://:0:0:0:0 | [summary] to write: return (return) in toNumber() :  |
+| webview.swift:43:5:43:44 | [summary param] this in toString() :  | file://:0:0:0:0 | [summary] to write: return (return) in toString() :  |
+| webview.swift:44:5:44:44 | [summary param] this in toDate() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDate() :  |
+| webview.swift:45:5:45:44 | [summary param] this in toArray() :  | file://:0:0:0:0 | [summary] to write: return (return) in toArray() :  |
+| webview.swift:46:5:46:65 | [summary param] this in toDictionary() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDictionary() :  |
+| webview.swift:47:5:47:50 | [summary param] this in toPoint() :  | file://:0:0:0:0 | [summary] to write: return (return) in toPoint() :  |
+| webview.swift:48:5:48:50 | [summary param] this in toRange() :  | file://:0:0:0:0 | [summary] to write: return (return) in toRange() :  |
+| webview.swift:49:5:49:47 | [summary param] this in toRect() :  | file://:0:0:0:0 | [summary] to write: return (return) in toRect() :  |
+| webview.swift:50:5:50:47 | [summary param] this in toSize() :  | file://:0:0:0:0 | [summary] to write: return (return) in toSize() :  |
+| webview.swift:51:5:51:84 | [summary param] this in atIndex(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in atIndex(_:) :  |
+| webview.swift:52:5:52:53 | [summary param] 1 in defineProperty(_:descriptor:) :  | file://:0:0:0:0 | [summary] to write: argument this in defineProperty(_:descriptor:) :  |
+| webview.swift:53:5:53:89 | [summary param] this in forProperty(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in forProperty(_:) :  |
+| webview.swift:54:5:54:38 | [summary param] 0 in setValue(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:at:) :  |
+| webview.swift:55:5:55:48 | [summary param] 0 in setValue(_:forProperty:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:forProperty:) :  |
+| webview.swift:65:5:65:93 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  |
+| webview.swift:66:5:66:126 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  |
+| webview.swift:77:11:77:18 | call to source() :  | webview.swift:77:10:77:41 | .body |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:84:10:84:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:85:10:85:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:86:10:86:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:87:10:87:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:88:10:88:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:89:10:89:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:90:10:90:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:91:10:91:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:92:10:92:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:93:10:93:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:94:10:94:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:95:10:95:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:96:10:96:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:97:10:97:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:98:10:98:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:99:10:99:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:100:10:100:10 | source :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:103:26:103:26 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:104:24:104:24 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:105:26:105:26 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:106:25:106:25 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:107:26:107:26 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:108:25:108:25 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:109:25:109:25 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:110:24:110:24 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:111:24:111:24 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:114:39:114:39 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:118:17:118:17 | s :  |
+| webview.swift:81:13:81:20 | call to source() :  | webview.swift:122:17:122:17 | s :  |
+| webview.swift:84:10:84:10 | source :  | webview.swift:36:5:36:41 | [summary param] this in toObject() :  |
+| webview.swift:84:10:84:10 | source :  | webview.swift:84:10:84:26 | call to toObject() |
+| webview.swift:85:10:85:10 | source :  | webview.swift:37:5:37:55 | [summary param] this in toObjectOf(_:) :  |
+| webview.swift:85:10:85:10 | source :  | webview.swift:85:10:85:41 | call to toObjectOf(_:) |
+| webview.swift:86:10:86:10 | source :  | webview.swift:38:5:38:42 | [summary param] this in toBool() :  |
+| webview.swift:86:10:86:10 | source :  | webview.swift:86:10:86:24 | call to toBool() |
+| webview.swift:87:10:87:10 | source :  | webview.swift:39:5:39:44 | [summary param] this in toDouble() :  |
+| webview.swift:87:10:87:10 | source :  | webview.swift:87:10:87:26 | call to toDouble() |
+| webview.swift:88:10:88:10 | source :  | webview.swift:40:5:40:40 | [summary param] this in toInt32() :  |
+| webview.swift:88:10:88:10 | source :  | webview.swift:88:10:88:25 | call to toInt32() |
+| webview.swift:89:10:89:10 | source :  | webview.swift:41:5:41:42 | [summary param] this in toUInt32() :  |
+| webview.swift:89:10:89:10 | source :  | webview.swift:89:10:89:26 | call to toUInt32() |
+| webview.swift:90:10:90:10 | source :  | webview.swift:42:5:42:62 | [summary param] this in toNumber() :  |
+| webview.swift:90:10:90:10 | source :  | webview.swift:90:10:90:26 | call to toNumber() |
+| webview.swift:91:10:91:10 | source :  | webview.swift:43:5:43:44 | [summary param] this in toString() :  |
+| webview.swift:91:10:91:10 | source :  | webview.swift:91:10:91:26 | call to toString() |
+| webview.swift:92:10:92:10 | source :  | webview.swift:44:5:44:44 | [summary param] this in toDate() :  |
+| webview.swift:92:10:92:10 | source :  | webview.swift:92:10:92:24 | call to toDate() |
+| webview.swift:93:10:93:10 | source :  | webview.swift:45:5:45:44 | [summary param] this in toArray() :  |
+| webview.swift:93:10:93:10 | source :  | webview.swift:93:10:93:25 | call to toArray() |
+| webview.swift:94:10:94:10 | source :  | webview.swift:46:5:46:65 | [summary param] this in toDictionary() :  |
+| webview.swift:94:10:94:10 | source :  | webview.swift:94:10:94:30 | call to toDictionary() |
+| webview.swift:95:10:95:10 | source :  | webview.swift:47:5:47:50 | [summary param] this in toPoint() :  |
+| webview.swift:95:10:95:10 | source :  | webview.swift:95:10:95:25 | call to toPoint() |
+| webview.swift:96:10:96:10 | source :  | webview.swift:48:5:48:50 | [summary param] this in toRange() :  |
+| webview.swift:96:10:96:10 | source :  | webview.swift:96:10:96:25 | call to toRange() |
+| webview.swift:97:10:97:10 | source :  | webview.swift:49:5:49:47 | [summary param] this in toRect() :  |
+| webview.swift:97:10:97:10 | source :  | webview.swift:97:10:97:24 | call to toRect() |
+| webview.swift:98:10:98:10 | source :  | webview.swift:50:5:50:47 | [summary param] this in toSize() :  |
+| webview.swift:98:10:98:10 | source :  | webview.swift:98:10:98:24 | call to toSize() |
+| webview.swift:99:10:99:10 | source :  | webview.swift:51:5:51:84 | [summary param] this in atIndex(_:) :  |
+| webview.swift:99:10:99:10 | source :  | webview.swift:99:10:99:26 | call to atIndex(_:) |
+| webview.swift:100:10:100:10 | source :  | webview.swift:53:5:53:89 | [summary param] this in forProperty(_:) :  |
+| webview.swift:100:10:100:10 | source :  | webview.swift:100:10:100:31 | call to forProperty(_:) |
+| webview.swift:103:26:103:26 | s :  | webview.swift:27:5:27:39 | [summary param] 0 in init(object:in:) :  |
+| webview.swift:103:26:103:26 | s :  | webview.swift:103:10:103:47 | call to init(object:in:) |
+| webview.swift:104:24:104:24 | s :  | webview.swift:28:5:28:38 | [summary param] 0 in init(bool:in:) :  |
+| webview.swift:104:24:104:24 | s :  | webview.swift:104:10:104:47 | call to init(bool:in:) |
+| webview.swift:105:26:105:26 | s :  | webview.swift:29:5:29:42 | [summary param] 0 in init(double:in:) :  |
+| webview.swift:105:26:105:26 | s :  | webview.swift:105:10:105:51 | call to init(double:in:) |
+| webview.swift:106:25:106:25 | s :  | webview.swift:30:5:30:40 | [summary param] 0 in init(int32:in:) :  |
+| webview.swift:106:25:106:25 | s :  | webview.swift:106:10:106:49 | call to init(int32:in:) |
+| webview.swift:107:26:107:26 | s :  | webview.swift:31:5:31:42 | [summary param] 0 in init(uInt32:in:) :  |
+| webview.swift:107:26:107:26 | s :  | webview.swift:107:10:107:51 | call to init(uInt32:in:) |
+| webview.swift:108:25:108:25 | s :  | webview.swift:32:5:32:42 | [summary param] 0 in init(point:in:) :  |
+| webview.swift:108:25:108:25 | s :  | webview.swift:108:10:108:51 | call to init(point:in:) |
+| webview.swift:109:25:109:25 | s :  | webview.swift:33:5:33:42 | [summary param] 0 in init(range:in:) :  |
+| webview.swift:109:25:109:25 | s :  | webview.swift:109:10:109:51 | call to init(range:in:) |
+| webview.swift:110:24:110:24 | s :  | webview.swift:34:5:34:40 | [summary param] 0 in init(rect:in:) :  |
+| webview.swift:110:24:110:24 | s :  | webview.swift:110:10:110:49 | call to init(rect:in:) |
+| webview.swift:111:24:111:24 | s :  | webview.swift:35:5:35:40 | [summary param] 0 in init(size:in:) :  |
+| webview.swift:111:24:111:24 | s :  | webview.swift:111:10:111:49 | call to init(size:in:) |
+| webview.swift:114:5:114:5 | [post] v1 :  | webview.swift:115:10:115:10 | v1 |
+| webview.swift:114:39:114:39 | s :  | webview.swift:52:5:52:53 | [summary param] 1 in defineProperty(_:descriptor:) :  |
+| webview.swift:114:39:114:39 | s :  | webview.swift:114:5:114:5 | [post] v1 :  |
+| webview.swift:118:5:118:5 | [post] v2 :  | webview.swift:119:10:119:10 | v2 |
+| webview.swift:118:17:118:17 | s :  | webview.swift:54:5:54:38 | [summary param] 0 in setValue(_:at:) :  |
+| webview.swift:118:17:118:17 | s :  | webview.swift:118:5:118:5 | [post] v2 :  |
+| webview.swift:122:5:122:5 | [post] v3 :  | webview.swift:123:10:123:10 | v3 |
+| webview.swift:122:17:122:17 | s :  | webview.swift:55:5:55:48 | [summary param] 0 in setValue(_:forProperty:) :  |
+| webview.swift:122:17:122:17 | s :  | webview.swift:122:5:122:5 | [post] v3 :  |
+| webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  | webview.swift:133:10:133:10 | b |
+| webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  | webview.swift:134:10:134:12 | .source |
+| webview.swift:132:34:132:41 | call to source() :  | webview.swift:65:5:65:93 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  |
+| webview.swift:132:34:132:41 | call to source() :  | webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  |
+| webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  | webview.swift:138:10:138:10 | c |
+| webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  | webview.swift:139:10:139:12 | .source |
+| webview.swift:137:34:137:41 | call to source() :  | webview.swift:66:5:66:126 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  |
+| webview.swift:137:34:137:41 | call to source() :  | webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  |
 nodes
 | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | semmle.label | [summary param] 0 in init(base64Encoded:options:) :  |
 | data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | semmle.label | [summary param] 0 in init(buffer:) :  |
@@ -752,6 +762,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in init(rect:in:) :  | semmle.label | [summary] to write: return (return) in init(rect:in:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(referencing:) :  | semmle.label | [summary] to write: return (return) in init(referencing:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(size:in:) :  | semmle.label | [summary] to write: return (return) in init(size:in:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | semmle.label | [summary] to write: return (return) in init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
@@ -1023,99 +1035,109 @@ nodes
 | url.swift:120:46:120:46 | urlTainted :  | semmle.label | urlTainted :  |
 | url.swift:120:61:120:61 | data :  | semmle.label | data :  |
 | url.swift:121:15:121:19 | ...! | semmle.label | ...! |
-| webview.swift:16:5:16:39 | [summary param] 0 in init(object:in:) :  | semmle.label | [summary param] 0 in init(object:in:) :  |
-| webview.swift:17:5:17:38 | [summary param] 0 in init(bool:in:) :  | semmle.label | [summary param] 0 in init(bool:in:) :  |
-| webview.swift:18:5:18:42 | [summary param] 0 in init(double:in:) :  | semmle.label | [summary param] 0 in init(double:in:) :  |
-| webview.swift:19:5:19:40 | [summary param] 0 in init(int32:in:) :  | semmle.label | [summary param] 0 in init(int32:in:) :  |
-| webview.swift:20:5:20:42 | [summary param] 0 in init(uInt32:in:) :  | semmle.label | [summary param] 0 in init(uInt32:in:) :  |
-| webview.swift:21:5:21:42 | [summary param] 0 in init(point:in:) :  | semmle.label | [summary param] 0 in init(point:in:) :  |
-| webview.swift:22:5:22:42 | [summary param] 0 in init(range:in:) :  | semmle.label | [summary param] 0 in init(range:in:) :  |
-| webview.swift:23:5:23:40 | [summary param] 0 in init(rect:in:) :  | semmle.label | [summary param] 0 in init(rect:in:) :  |
-| webview.swift:24:5:24:40 | [summary param] 0 in init(size:in:) :  | semmle.label | [summary param] 0 in init(size:in:) :  |
-| webview.swift:25:5:25:41 | [summary param] this in toObject() :  | semmle.label | [summary param] this in toObject() :  |
-| webview.swift:26:5:26:55 | [summary param] this in toObjectOf(_:) :  | semmle.label | [summary param] this in toObjectOf(_:) :  |
-| webview.swift:27:5:27:42 | [summary param] this in toBool() :  | semmle.label | [summary param] this in toBool() :  |
-| webview.swift:28:5:28:44 | [summary param] this in toDouble() :  | semmle.label | [summary param] this in toDouble() :  |
-| webview.swift:29:5:29:40 | [summary param] this in toInt32() :  | semmle.label | [summary param] this in toInt32() :  |
-| webview.swift:30:5:30:42 | [summary param] this in toUInt32() :  | semmle.label | [summary param] this in toUInt32() :  |
-| webview.swift:31:5:31:62 | [summary param] this in toNumber() :  | semmle.label | [summary param] this in toNumber() :  |
-| webview.swift:32:5:32:44 | [summary param] this in toString() :  | semmle.label | [summary param] this in toString() :  |
-| webview.swift:33:5:33:44 | [summary param] this in toDate() :  | semmle.label | [summary param] this in toDate() :  |
-| webview.swift:34:5:34:44 | [summary param] this in toArray() :  | semmle.label | [summary param] this in toArray() :  |
-| webview.swift:35:5:35:65 | [summary param] this in toDictionary() :  | semmle.label | [summary param] this in toDictionary() :  |
-| webview.swift:36:5:36:50 | [summary param] this in toPoint() :  | semmle.label | [summary param] this in toPoint() :  |
-| webview.swift:37:5:37:50 | [summary param] this in toRange() :  | semmle.label | [summary param] this in toRange() :  |
-| webview.swift:38:5:38:47 | [summary param] this in toRect() :  | semmle.label | [summary param] this in toRect() :  |
-| webview.swift:39:5:39:47 | [summary param] this in toSize() :  | semmle.label | [summary param] this in toSize() :  |
-| webview.swift:40:5:40:84 | [summary param] this in atIndex(_:) :  | semmle.label | [summary param] this in atIndex(_:) :  |
-| webview.swift:41:5:41:53 | [summary param] 1 in defineProperty(_:descriptor:) :  | semmle.label | [summary param] 1 in defineProperty(_:descriptor:) :  |
-| webview.swift:42:5:42:89 | [summary param] this in forProperty(_:) :  | semmle.label | [summary param] this in forProperty(_:) :  |
-| webview.swift:43:5:43:38 | [summary param] 0 in setValue(_:at:) :  | semmle.label | [summary param] 0 in setValue(_:at:) :  |
-| webview.swift:44:5:44:48 | [summary param] 0 in setValue(_:forProperty:) :  | semmle.label | [summary param] 0 in setValue(_:forProperty:) :  |
-| webview.swift:52:10:52:41 | .body | semmle.label | .body |
-| webview.swift:52:11:52:18 | call to source() :  | semmle.label | call to source() :  |
-| webview.swift:56:13:56:20 | call to source() :  | semmle.label | call to source() :  |
-| webview.swift:59:10:59:10 | source :  | semmle.label | source :  |
-| webview.swift:59:10:59:26 | call to toObject() | semmle.label | call to toObject() |
-| webview.swift:60:10:60:10 | source :  | semmle.label | source :  |
-| webview.swift:60:10:60:41 | call to toObjectOf(_:) | semmle.label | call to toObjectOf(_:) |
-| webview.swift:61:10:61:10 | source :  | semmle.label | source :  |
-| webview.swift:61:10:61:24 | call to toBool() | semmle.label | call to toBool() |
-| webview.swift:62:10:62:10 | source :  | semmle.label | source :  |
-| webview.swift:62:10:62:26 | call to toDouble() | semmle.label | call to toDouble() |
-| webview.swift:63:10:63:10 | source :  | semmle.label | source :  |
-| webview.swift:63:10:63:25 | call to toInt32() | semmle.label | call to toInt32() |
-| webview.swift:64:10:64:10 | source :  | semmle.label | source :  |
-| webview.swift:64:10:64:26 | call to toUInt32() | semmle.label | call to toUInt32() |
-| webview.swift:65:10:65:10 | source :  | semmle.label | source :  |
-| webview.swift:65:10:65:26 | call to toNumber() | semmle.label | call to toNumber() |
-| webview.swift:66:10:66:10 | source :  | semmle.label | source :  |
-| webview.swift:66:10:66:26 | call to toString() | semmle.label | call to toString() |
-| webview.swift:67:10:67:10 | source :  | semmle.label | source :  |
-| webview.swift:67:10:67:24 | call to toDate() | semmle.label | call to toDate() |
-| webview.swift:68:10:68:10 | source :  | semmle.label | source :  |
-| webview.swift:68:10:68:25 | call to toArray() | semmle.label | call to toArray() |
-| webview.swift:69:10:69:10 | source :  | semmle.label | source :  |
-| webview.swift:69:10:69:30 | call to toDictionary() | semmle.label | call to toDictionary() |
-| webview.swift:70:10:70:10 | source :  | semmle.label | source :  |
-| webview.swift:70:10:70:25 | call to toPoint() | semmle.label | call to toPoint() |
-| webview.swift:71:10:71:10 | source :  | semmle.label | source :  |
-| webview.swift:71:10:71:25 | call to toRange() | semmle.label | call to toRange() |
-| webview.swift:72:10:72:10 | source :  | semmle.label | source :  |
-| webview.swift:72:10:72:24 | call to toRect() | semmle.label | call to toRect() |
-| webview.swift:73:10:73:10 | source :  | semmle.label | source :  |
-| webview.swift:73:10:73:24 | call to toSize() | semmle.label | call to toSize() |
-| webview.swift:74:10:74:10 | source :  | semmle.label | source :  |
-| webview.swift:74:10:74:26 | call to atIndex(_:) | semmle.label | call to atIndex(_:) |
-| webview.swift:75:10:75:10 | source :  | semmle.label | source :  |
-| webview.swift:75:10:75:31 | call to forProperty(_:) | semmle.label | call to forProperty(_:) |
-| webview.swift:78:10:78:47 | call to init(object:in:) | semmle.label | call to init(object:in:) |
-| webview.swift:78:26:78:26 | s :  | semmle.label | s :  |
-| webview.swift:79:10:79:47 | call to init(bool:in:) | semmle.label | call to init(bool:in:) |
-| webview.swift:79:24:79:24 | s :  | semmle.label | s :  |
-| webview.swift:80:10:80:51 | call to init(double:in:) | semmle.label | call to init(double:in:) |
-| webview.swift:80:26:80:26 | s :  | semmle.label | s :  |
-| webview.swift:81:10:81:49 | call to init(int32:in:) | semmle.label | call to init(int32:in:) |
-| webview.swift:81:25:81:25 | s :  | semmle.label | s :  |
-| webview.swift:82:10:82:51 | call to init(uInt32:in:) | semmle.label | call to init(uInt32:in:) |
-| webview.swift:82:26:82:26 | s :  | semmle.label | s :  |
-| webview.swift:83:10:83:51 | call to init(point:in:) | semmle.label | call to init(point:in:) |
-| webview.swift:83:25:83:25 | s :  | semmle.label | s :  |
-| webview.swift:84:10:84:51 | call to init(range:in:) | semmle.label | call to init(range:in:) |
-| webview.swift:84:25:84:25 | s :  | semmle.label | s :  |
-| webview.swift:85:10:85:49 | call to init(rect:in:) | semmle.label | call to init(rect:in:) |
-| webview.swift:85:24:85:24 | s :  | semmle.label | s :  |
-| webview.swift:86:10:86:49 | call to init(size:in:) | semmle.label | call to init(size:in:) |
-| webview.swift:86:24:86:24 | s :  | semmle.label | s :  |
-| webview.swift:89:5:89:5 | [post] v1 :  | semmle.label | [post] v1 :  |
-| webview.swift:89:39:89:39 | s :  | semmle.label | s :  |
-| webview.swift:90:10:90:10 | v1 | semmle.label | v1 |
-| webview.swift:93:5:93:5 | [post] v2 :  | semmle.label | [post] v2 :  |
-| webview.swift:93:17:93:17 | s :  | semmle.label | s :  |
-| webview.swift:94:10:94:10 | v2 | semmle.label | v2 |
-| webview.swift:97:5:97:5 | [post] v3 :  | semmle.label | [post] v3 :  |
-| webview.swift:97:17:97:17 | s :  | semmle.label | s :  |
-| webview.swift:98:10:98:10 | v3 | semmle.label | v3 |
+| webview.swift:27:5:27:39 | [summary param] 0 in init(object:in:) :  | semmle.label | [summary param] 0 in init(object:in:) :  |
+| webview.swift:28:5:28:38 | [summary param] 0 in init(bool:in:) :  | semmle.label | [summary param] 0 in init(bool:in:) :  |
+| webview.swift:29:5:29:42 | [summary param] 0 in init(double:in:) :  | semmle.label | [summary param] 0 in init(double:in:) :  |
+| webview.swift:30:5:30:40 | [summary param] 0 in init(int32:in:) :  | semmle.label | [summary param] 0 in init(int32:in:) :  |
+| webview.swift:31:5:31:42 | [summary param] 0 in init(uInt32:in:) :  | semmle.label | [summary param] 0 in init(uInt32:in:) :  |
+| webview.swift:32:5:32:42 | [summary param] 0 in init(point:in:) :  | semmle.label | [summary param] 0 in init(point:in:) :  |
+| webview.swift:33:5:33:42 | [summary param] 0 in init(range:in:) :  | semmle.label | [summary param] 0 in init(range:in:) :  |
+| webview.swift:34:5:34:40 | [summary param] 0 in init(rect:in:) :  | semmle.label | [summary param] 0 in init(rect:in:) :  |
+| webview.swift:35:5:35:40 | [summary param] 0 in init(size:in:) :  | semmle.label | [summary param] 0 in init(size:in:) :  |
+| webview.swift:36:5:36:41 | [summary param] this in toObject() :  | semmle.label | [summary param] this in toObject() :  |
+| webview.swift:37:5:37:55 | [summary param] this in toObjectOf(_:) :  | semmle.label | [summary param] this in toObjectOf(_:) :  |
+| webview.swift:38:5:38:42 | [summary param] this in toBool() :  | semmle.label | [summary param] this in toBool() :  |
+| webview.swift:39:5:39:44 | [summary param] this in toDouble() :  | semmle.label | [summary param] this in toDouble() :  |
+| webview.swift:40:5:40:40 | [summary param] this in toInt32() :  | semmle.label | [summary param] this in toInt32() :  |
+| webview.swift:41:5:41:42 | [summary param] this in toUInt32() :  | semmle.label | [summary param] this in toUInt32() :  |
+| webview.swift:42:5:42:62 | [summary param] this in toNumber() :  | semmle.label | [summary param] this in toNumber() :  |
+| webview.swift:43:5:43:44 | [summary param] this in toString() :  | semmle.label | [summary param] this in toString() :  |
+| webview.swift:44:5:44:44 | [summary param] this in toDate() :  | semmle.label | [summary param] this in toDate() :  |
+| webview.swift:45:5:45:44 | [summary param] this in toArray() :  | semmle.label | [summary param] this in toArray() :  |
+| webview.swift:46:5:46:65 | [summary param] this in toDictionary() :  | semmle.label | [summary param] this in toDictionary() :  |
+| webview.swift:47:5:47:50 | [summary param] this in toPoint() :  | semmle.label | [summary param] this in toPoint() :  |
+| webview.swift:48:5:48:50 | [summary param] this in toRange() :  | semmle.label | [summary param] this in toRange() :  |
+| webview.swift:49:5:49:47 | [summary param] this in toRect() :  | semmle.label | [summary param] this in toRect() :  |
+| webview.swift:50:5:50:47 | [summary param] this in toSize() :  | semmle.label | [summary param] this in toSize() :  |
+| webview.swift:51:5:51:84 | [summary param] this in atIndex(_:) :  | semmle.label | [summary param] this in atIndex(_:) :  |
+| webview.swift:52:5:52:53 | [summary param] 1 in defineProperty(_:descriptor:) :  | semmle.label | [summary param] 1 in defineProperty(_:descriptor:) :  |
+| webview.swift:53:5:53:89 | [summary param] this in forProperty(_:) :  | semmle.label | [summary param] this in forProperty(_:) :  |
+| webview.swift:54:5:54:38 | [summary param] 0 in setValue(_:at:) :  | semmle.label | [summary param] 0 in setValue(_:at:) :  |
+| webview.swift:55:5:55:48 | [summary param] 0 in setValue(_:forProperty:) :  | semmle.label | [summary param] 0 in setValue(_:forProperty:) :  |
+| webview.swift:65:5:65:93 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  |
+| webview.swift:66:5:66:126 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  |
+| webview.swift:77:10:77:41 | .body | semmle.label | .body |
+| webview.swift:77:11:77:18 | call to source() :  | semmle.label | call to source() :  |
+| webview.swift:81:13:81:20 | call to source() :  | semmle.label | call to source() :  |
+| webview.swift:84:10:84:10 | source :  | semmle.label | source :  |
+| webview.swift:84:10:84:26 | call to toObject() | semmle.label | call to toObject() |
+| webview.swift:85:10:85:10 | source :  | semmle.label | source :  |
+| webview.swift:85:10:85:41 | call to toObjectOf(_:) | semmle.label | call to toObjectOf(_:) |
+| webview.swift:86:10:86:10 | source :  | semmle.label | source :  |
+| webview.swift:86:10:86:24 | call to toBool() | semmle.label | call to toBool() |
+| webview.swift:87:10:87:10 | source :  | semmle.label | source :  |
+| webview.swift:87:10:87:26 | call to toDouble() | semmle.label | call to toDouble() |
+| webview.swift:88:10:88:10 | source :  | semmle.label | source :  |
+| webview.swift:88:10:88:25 | call to toInt32() | semmle.label | call to toInt32() |
+| webview.swift:89:10:89:10 | source :  | semmle.label | source :  |
+| webview.swift:89:10:89:26 | call to toUInt32() | semmle.label | call to toUInt32() |
+| webview.swift:90:10:90:10 | source :  | semmle.label | source :  |
+| webview.swift:90:10:90:26 | call to toNumber() | semmle.label | call to toNumber() |
+| webview.swift:91:10:91:10 | source :  | semmle.label | source :  |
+| webview.swift:91:10:91:26 | call to toString() | semmle.label | call to toString() |
+| webview.swift:92:10:92:10 | source :  | semmle.label | source :  |
+| webview.swift:92:10:92:24 | call to toDate() | semmle.label | call to toDate() |
+| webview.swift:93:10:93:10 | source :  | semmle.label | source :  |
+| webview.swift:93:10:93:25 | call to toArray() | semmle.label | call to toArray() |
+| webview.swift:94:10:94:10 | source :  | semmle.label | source :  |
+| webview.swift:94:10:94:30 | call to toDictionary() | semmle.label | call to toDictionary() |
+| webview.swift:95:10:95:10 | source :  | semmle.label | source :  |
+| webview.swift:95:10:95:25 | call to toPoint() | semmle.label | call to toPoint() |
+| webview.swift:96:10:96:10 | source :  | semmle.label | source :  |
+| webview.swift:96:10:96:25 | call to toRange() | semmle.label | call to toRange() |
+| webview.swift:97:10:97:10 | source :  | semmle.label | source :  |
+| webview.swift:97:10:97:24 | call to toRect() | semmle.label | call to toRect() |
+| webview.swift:98:10:98:10 | source :  | semmle.label | source :  |
+| webview.swift:98:10:98:24 | call to toSize() | semmle.label | call to toSize() |
+| webview.swift:99:10:99:10 | source :  | semmle.label | source :  |
+| webview.swift:99:10:99:26 | call to atIndex(_:) | semmle.label | call to atIndex(_:) |
+| webview.swift:100:10:100:10 | source :  | semmle.label | source :  |
+| webview.swift:100:10:100:31 | call to forProperty(_:) | semmle.label | call to forProperty(_:) |
+| webview.swift:103:10:103:47 | call to init(object:in:) | semmle.label | call to init(object:in:) |
+| webview.swift:103:26:103:26 | s :  | semmle.label | s :  |
+| webview.swift:104:10:104:47 | call to init(bool:in:) | semmle.label | call to init(bool:in:) |
+| webview.swift:104:24:104:24 | s :  | semmle.label | s :  |
+| webview.swift:105:10:105:51 | call to init(double:in:) | semmle.label | call to init(double:in:) |
+| webview.swift:105:26:105:26 | s :  | semmle.label | s :  |
+| webview.swift:106:10:106:49 | call to init(int32:in:) | semmle.label | call to init(int32:in:) |
+| webview.swift:106:25:106:25 | s :  | semmle.label | s :  |
+| webview.swift:107:10:107:51 | call to init(uInt32:in:) | semmle.label | call to init(uInt32:in:) |
+| webview.swift:107:26:107:26 | s :  | semmle.label | s :  |
+| webview.swift:108:10:108:51 | call to init(point:in:) | semmle.label | call to init(point:in:) |
+| webview.swift:108:25:108:25 | s :  | semmle.label | s :  |
+| webview.swift:109:10:109:51 | call to init(range:in:) | semmle.label | call to init(range:in:) |
+| webview.swift:109:25:109:25 | s :  | semmle.label | s :  |
+| webview.swift:110:10:110:49 | call to init(rect:in:) | semmle.label | call to init(rect:in:) |
+| webview.swift:110:24:110:24 | s :  | semmle.label | s :  |
+| webview.swift:111:10:111:49 | call to init(size:in:) | semmle.label | call to init(size:in:) |
+| webview.swift:111:24:111:24 | s :  | semmle.label | s :  |
+| webview.swift:114:5:114:5 | [post] v1 :  | semmle.label | [post] v1 :  |
+| webview.swift:114:39:114:39 | s :  | semmle.label | s :  |
+| webview.swift:115:10:115:10 | v1 | semmle.label | v1 |
+| webview.swift:118:5:118:5 | [post] v2 :  | semmle.label | [post] v2 :  |
+| webview.swift:118:17:118:17 | s :  | semmle.label | s :  |
+| webview.swift:119:10:119:10 | v2 | semmle.label | v2 |
+| webview.swift:122:5:122:5 | [post] v3 :  | semmle.label | [post] v3 :  |
+| webview.swift:122:17:122:17 | s :  | semmle.label | s :  |
+| webview.swift:123:10:123:10 | v3 | semmle.label | v3 |
+| webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | call to init(source:injectionTime:forMainFrameOnly:) :  |
+| webview.swift:132:34:132:41 | call to source() :  | semmle.label | call to source() :  |
+| webview.swift:133:10:133:10 | b | semmle.label | b |
+| webview.swift:134:10:134:12 | .source | semmle.label | .source |
+| webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | call to init(source:injectionTime:forMainFrameOnly:in:) :  |
+| webview.swift:137:34:137:41 | call to source() :  | semmle.label | call to source() :  |
+| webview.swift:138:10:138:10 | c | semmle.label | c |
+| webview.swift:139:10:139:12 | .source | semmle.label | .source |
 subpaths
 | data.swift:89:41:89:48 | call to source() :  | data.swift:25:2:25:66 | [summary param] 0 in init(base64Encoded:options:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(base64Encoded:options:) :  | data.swift:89:21:89:71 | call to init(base64Encoded:options:) :  |
 | data.swift:93:34:93:41 | call to source() :  | data.swift:26:2:26:61 | [summary param] 0 in init(buffer:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(buffer:) :  | data.swift:93:21:93:73 | call to init(buffer:) :  |
@@ -1206,35 +1228,37 @@ subpaths
 | url.swift:101:46:101:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:101:15:101:56 | call to init(string:relativeTo:) :  |
 | url.swift:102:46:102:46 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:102:15:102:56 | call to init(string:relativeTo:) :  |
 | url.swift:117:28:117:28 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:117:16:117:35 | call to init(string:) :  |
-| webview.swift:59:10:59:10 | source :  | webview.swift:25:5:25:41 | [summary param] this in toObject() :  | file://:0:0:0:0 | [summary] to write: return (return) in toObject() :  | webview.swift:59:10:59:26 | call to toObject() |
-| webview.swift:60:10:60:10 | source :  | webview.swift:26:5:26:55 | [summary param] this in toObjectOf(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in toObjectOf(_:) :  | webview.swift:60:10:60:41 | call to toObjectOf(_:) |
-| webview.swift:61:10:61:10 | source :  | webview.swift:27:5:27:42 | [summary param] this in toBool() :  | file://:0:0:0:0 | [summary] to write: return (return) in toBool() :  | webview.swift:61:10:61:24 | call to toBool() |
-| webview.swift:62:10:62:10 | source :  | webview.swift:28:5:28:44 | [summary param] this in toDouble() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDouble() :  | webview.swift:62:10:62:26 | call to toDouble() |
-| webview.swift:63:10:63:10 | source :  | webview.swift:29:5:29:40 | [summary param] this in toInt32() :  | file://:0:0:0:0 | [summary] to write: return (return) in toInt32() :  | webview.swift:63:10:63:25 | call to toInt32() |
-| webview.swift:64:10:64:10 | source :  | webview.swift:30:5:30:42 | [summary param] this in toUInt32() :  | file://:0:0:0:0 | [summary] to write: return (return) in toUInt32() :  | webview.swift:64:10:64:26 | call to toUInt32() |
-| webview.swift:65:10:65:10 | source :  | webview.swift:31:5:31:62 | [summary param] this in toNumber() :  | file://:0:0:0:0 | [summary] to write: return (return) in toNumber() :  | webview.swift:65:10:65:26 | call to toNumber() |
-| webview.swift:66:10:66:10 | source :  | webview.swift:32:5:32:44 | [summary param] this in toString() :  | file://:0:0:0:0 | [summary] to write: return (return) in toString() :  | webview.swift:66:10:66:26 | call to toString() |
-| webview.swift:67:10:67:10 | source :  | webview.swift:33:5:33:44 | [summary param] this in toDate() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDate() :  | webview.swift:67:10:67:24 | call to toDate() |
-| webview.swift:68:10:68:10 | source :  | webview.swift:34:5:34:44 | [summary param] this in toArray() :  | file://:0:0:0:0 | [summary] to write: return (return) in toArray() :  | webview.swift:68:10:68:25 | call to toArray() |
-| webview.swift:69:10:69:10 | source :  | webview.swift:35:5:35:65 | [summary param] this in toDictionary() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDictionary() :  | webview.swift:69:10:69:30 | call to toDictionary() |
-| webview.swift:70:10:70:10 | source :  | webview.swift:36:5:36:50 | [summary param] this in toPoint() :  | file://:0:0:0:0 | [summary] to write: return (return) in toPoint() :  | webview.swift:70:10:70:25 | call to toPoint() |
-| webview.swift:71:10:71:10 | source :  | webview.swift:37:5:37:50 | [summary param] this in toRange() :  | file://:0:0:0:0 | [summary] to write: return (return) in toRange() :  | webview.swift:71:10:71:25 | call to toRange() |
-| webview.swift:72:10:72:10 | source :  | webview.swift:38:5:38:47 | [summary param] this in toRect() :  | file://:0:0:0:0 | [summary] to write: return (return) in toRect() :  | webview.swift:72:10:72:24 | call to toRect() |
-| webview.swift:73:10:73:10 | source :  | webview.swift:39:5:39:47 | [summary param] this in toSize() :  | file://:0:0:0:0 | [summary] to write: return (return) in toSize() :  | webview.swift:73:10:73:24 | call to toSize() |
-| webview.swift:74:10:74:10 | source :  | webview.swift:40:5:40:84 | [summary param] this in atIndex(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in atIndex(_:) :  | webview.swift:74:10:74:26 | call to atIndex(_:) |
-| webview.swift:75:10:75:10 | source :  | webview.swift:42:5:42:89 | [summary param] this in forProperty(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in forProperty(_:) :  | webview.swift:75:10:75:31 | call to forProperty(_:) |
-| webview.swift:78:26:78:26 | s :  | webview.swift:16:5:16:39 | [summary param] 0 in init(object:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(object:in:) :  | webview.swift:78:10:78:47 | call to init(object:in:) |
-| webview.swift:79:24:79:24 | s :  | webview.swift:17:5:17:38 | [summary param] 0 in init(bool:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bool:in:) :  | webview.swift:79:10:79:47 | call to init(bool:in:) |
-| webview.swift:80:26:80:26 | s :  | webview.swift:18:5:18:42 | [summary param] 0 in init(double:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(double:in:) :  | webview.swift:80:10:80:51 | call to init(double:in:) |
-| webview.swift:81:25:81:25 | s :  | webview.swift:19:5:19:40 | [summary param] 0 in init(int32:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(int32:in:) :  | webview.swift:81:10:81:49 | call to init(int32:in:) |
-| webview.swift:82:26:82:26 | s :  | webview.swift:20:5:20:42 | [summary param] 0 in init(uInt32:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(uInt32:in:) :  | webview.swift:82:10:82:51 | call to init(uInt32:in:) |
-| webview.swift:83:25:83:25 | s :  | webview.swift:21:5:21:42 | [summary param] 0 in init(point:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(point:in:) :  | webview.swift:83:10:83:51 | call to init(point:in:) |
-| webview.swift:84:25:84:25 | s :  | webview.swift:22:5:22:42 | [summary param] 0 in init(range:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(range:in:) :  | webview.swift:84:10:84:51 | call to init(range:in:) |
-| webview.swift:85:24:85:24 | s :  | webview.swift:23:5:23:40 | [summary param] 0 in init(rect:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(rect:in:) :  | webview.swift:85:10:85:49 | call to init(rect:in:) |
-| webview.swift:86:24:86:24 | s :  | webview.swift:24:5:24:40 | [summary param] 0 in init(size:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(size:in:) :  | webview.swift:86:10:86:49 | call to init(size:in:) |
-| webview.swift:89:39:89:39 | s :  | webview.swift:41:5:41:53 | [summary param] 1 in defineProperty(_:descriptor:) :  | file://:0:0:0:0 | [summary] to write: argument this in defineProperty(_:descriptor:) :  | webview.swift:89:5:89:5 | [post] v1 :  |
-| webview.swift:93:17:93:17 | s :  | webview.swift:43:5:43:38 | [summary param] 0 in setValue(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:at:) :  | webview.swift:93:5:93:5 | [post] v2 :  |
-| webview.swift:97:17:97:17 | s :  | webview.swift:44:5:44:48 | [summary param] 0 in setValue(_:forProperty:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:forProperty:) :  | webview.swift:97:5:97:5 | [post] v3 :  |
+| webview.swift:84:10:84:10 | source :  | webview.swift:36:5:36:41 | [summary param] this in toObject() :  | file://:0:0:0:0 | [summary] to write: return (return) in toObject() :  | webview.swift:84:10:84:26 | call to toObject() |
+| webview.swift:85:10:85:10 | source :  | webview.swift:37:5:37:55 | [summary param] this in toObjectOf(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in toObjectOf(_:) :  | webview.swift:85:10:85:41 | call to toObjectOf(_:) |
+| webview.swift:86:10:86:10 | source :  | webview.swift:38:5:38:42 | [summary param] this in toBool() :  | file://:0:0:0:0 | [summary] to write: return (return) in toBool() :  | webview.swift:86:10:86:24 | call to toBool() |
+| webview.swift:87:10:87:10 | source :  | webview.swift:39:5:39:44 | [summary param] this in toDouble() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDouble() :  | webview.swift:87:10:87:26 | call to toDouble() |
+| webview.swift:88:10:88:10 | source :  | webview.swift:40:5:40:40 | [summary param] this in toInt32() :  | file://:0:0:0:0 | [summary] to write: return (return) in toInt32() :  | webview.swift:88:10:88:25 | call to toInt32() |
+| webview.swift:89:10:89:10 | source :  | webview.swift:41:5:41:42 | [summary param] this in toUInt32() :  | file://:0:0:0:0 | [summary] to write: return (return) in toUInt32() :  | webview.swift:89:10:89:26 | call to toUInt32() |
+| webview.swift:90:10:90:10 | source :  | webview.swift:42:5:42:62 | [summary param] this in toNumber() :  | file://:0:0:0:0 | [summary] to write: return (return) in toNumber() :  | webview.swift:90:10:90:26 | call to toNumber() |
+| webview.swift:91:10:91:10 | source :  | webview.swift:43:5:43:44 | [summary param] this in toString() :  | file://:0:0:0:0 | [summary] to write: return (return) in toString() :  | webview.swift:91:10:91:26 | call to toString() |
+| webview.swift:92:10:92:10 | source :  | webview.swift:44:5:44:44 | [summary param] this in toDate() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDate() :  | webview.swift:92:10:92:24 | call to toDate() |
+| webview.swift:93:10:93:10 | source :  | webview.swift:45:5:45:44 | [summary param] this in toArray() :  | file://:0:0:0:0 | [summary] to write: return (return) in toArray() :  | webview.swift:93:10:93:25 | call to toArray() |
+| webview.swift:94:10:94:10 | source :  | webview.swift:46:5:46:65 | [summary param] this in toDictionary() :  | file://:0:0:0:0 | [summary] to write: return (return) in toDictionary() :  | webview.swift:94:10:94:30 | call to toDictionary() |
+| webview.swift:95:10:95:10 | source :  | webview.swift:47:5:47:50 | [summary param] this in toPoint() :  | file://:0:0:0:0 | [summary] to write: return (return) in toPoint() :  | webview.swift:95:10:95:25 | call to toPoint() |
+| webview.swift:96:10:96:10 | source :  | webview.swift:48:5:48:50 | [summary param] this in toRange() :  | file://:0:0:0:0 | [summary] to write: return (return) in toRange() :  | webview.swift:96:10:96:25 | call to toRange() |
+| webview.swift:97:10:97:10 | source :  | webview.swift:49:5:49:47 | [summary param] this in toRect() :  | file://:0:0:0:0 | [summary] to write: return (return) in toRect() :  | webview.swift:97:10:97:24 | call to toRect() |
+| webview.swift:98:10:98:10 | source :  | webview.swift:50:5:50:47 | [summary param] this in toSize() :  | file://:0:0:0:0 | [summary] to write: return (return) in toSize() :  | webview.swift:98:10:98:24 | call to toSize() |
+| webview.swift:99:10:99:10 | source :  | webview.swift:51:5:51:84 | [summary param] this in atIndex(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in atIndex(_:) :  | webview.swift:99:10:99:26 | call to atIndex(_:) |
+| webview.swift:100:10:100:10 | source :  | webview.swift:53:5:53:89 | [summary param] this in forProperty(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in forProperty(_:) :  | webview.swift:100:10:100:31 | call to forProperty(_:) |
+| webview.swift:103:26:103:26 | s :  | webview.swift:27:5:27:39 | [summary param] 0 in init(object:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(object:in:) :  | webview.swift:103:10:103:47 | call to init(object:in:) |
+| webview.swift:104:24:104:24 | s :  | webview.swift:28:5:28:38 | [summary param] 0 in init(bool:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(bool:in:) :  | webview.swift:104:10:104:47 | call to init(bool:in:) |
+| webview.swift:105:26:105:26 | s :  | webview.swift:29:5:29:42 | [summary param] 0 in init(double:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(double:in:) :  | webview.swift:105:10:105:51 | call to init(double:in:) |
+| webview.swift:106:25:106:25 | s :  | webview.swift:30:5:30:40 | [summary param] 0 in init(int32:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(int32:in:) :  | webview.swift:106:10:106:49 | call to init(int32:in:) |
+| webview.swift:107:26:107:26 | s :  | webview.swift:31:5:31:42 | [summary param] 0 in init(uInt32:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(uInt32:in:) :  | webview.swift:107:10:107:51 | call to init(uInt32:in:) |
+| webview.swift:108:25:108:25 | s :  | webview.swift:32:5:32:42 | [summary param] 0 in init(point:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(point:in:) :  | webview.swift:108:10:108:51 | call to init(point:in:) |
+| webview.swift:109:25:109:25 | s :  | webview.swift:33:5:33:42 | [summary param] 0 in init(range:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(range:in:) :  | webview.swift:109:10:109:51 | call to init(range:in:) |
+| webview.swift:110:24:110:24 | s :  | webview.swift:34:5:34:40 | [summary param] 0 in init(rect:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(rect:in:) :  | webview.swift:110:10:110:49 | call to init(rect:in:) |
+| webview.swift:111:24:111:24 | s :  | webview.swift:35:5:35:40 | [summary param] 0 in init(size:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(size:in:) :  | webview.swift:111:10:111:49 | call to init(size:in:) |
+| webview.swift:114:39:114:39 | s :  | webview.swift:52:5:52:53 | [summary param] 1 in defineProperty(_:descriptor:) :  | file://:0:0:0:0 | [summary] to write: argument this in defineProperty(_:descriptor:) :  | webview.swift:114:5:114:5 | [post] v1 :  |
+| webview.swift:118:17:118:17 | s :  | webview.swift:54:5:54:38 | [summary param] 0 in setValue(_:at:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:at:) :  | webview.swift:118:5:118:5 | [post] v2 :  |
+| webview.swift:122:17:122:17 | s :  | webview.swift:55:5:55:48 | [summary param] 0 in setValue(_:forProperty:) :  | file://:0:0:0:0 | [summary] to write: argument this in setValue(_:forProperty:) :  | webview.swift:122:5:122:5 | [post] v3 :  |
+| webview.swift:132:34:132:41 | call to source() :  | webview.swift:65:5:65:93 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  | webview.swift:132:13:132:102 | call to init(source:injectionTime:forMainFrameOnly:) :  |
+| webview.swift:137:34:137:41 | call to source() :  | webview.swift:66:5:66:126 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  | webview.swift:137:13:137:113 | call to init(source:injectionTime:forMainFrameOnly:in:) :  |
 #select
 | data.swift:90:12:90:12 | dataTainted3 | data.swift:89:41:89:48 | call to source() :  | data.swift:90:12:90:12 | dataTainted3 | result |
 | data.swift:94:12:94:12 | dataTainted4 | data.swift:93:34:93:41 | call to source() :  | data.swift:94:12:94:12 | dataTainted4 | result |
@@ -1359,33 +1383,37 @@ subpaths
 | url.swift:102:15:102:67 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:102:15:102:67 | ...! | result |
 | url.swift:118:12:118:12 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:118:12:118:12 | ...! | result |
 | url.swift:121:15:121:19 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:121:15:121:19 | ...! | result |
-| webview.swift:52:10:52:41 | .body | webview.swift:52:11:52:18 | call to source() :  | webview.swift:52:10:52:41 | .body | result |
-| webview.swift:59:10:59:26 | call to toObject() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:59:10:59:26 | call to toObject() | result |
-| webview.swift:60:10:60:41 | call to toObjectOf(_:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:60:10:60:41 | call to toObjectOf(_:) | result |
-| webview.swift:61:10:61:24 | call to toBool() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:61:10:61:24 | call to toBool() | result |
-| webview.swift:62:10:62:26 | call to toDouble() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:62:10:62:26 | call to toDouble() | result |
-| webview.swift:63:10:63:25 | call to toInt32() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:63:10:63:25 | call to toInt32() | result |
-| webview.swift:64:10:64:26 | call to toUInt32() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:64:10:64:26 | call to toUInt32() | result |
-| webview.swift:65:10:65:26 | call to toNumber() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:65:10:65:26 | call to toNumber() | result |
-| webview.swift:66:10:66:26 | call to toString() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:66:10:66:26 | call to toString() | result |
-| webview.swift:67:10:67:24 | call to toDate() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:67:10:67:24 | call to toDate() | result |
-| webview.swift:68:10:68:25 | call to toArray() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:68:10:68:25 | call to toArray() | result |
-| webview.swift:69:10:69:30 | call to toDictionary() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:69:10:69:30 | call to toDictionary() | result |
-| webview.swift:70:10:70:25 | call to toPoint() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:70:10:70:25 | call to toPoint() | result |
-| webview.swift:71:10:71:25 | call to toRange() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:71:10:71:25 | call to toRange() | result |
-| webview.swift:72:10:72:24 | call to toRect() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:72:10:72:24 | call to toRect() | result |
-| webview.swift:73:10:73:24 | call to toSize() | webview.swift:56:13:56:20 | call to source() :  | webview.swift:73:10:73:24 | call to toSize() | result |
-| webview.swift:74:10:74:26 | call to atIndex(_:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:74:10:74:26 | call to atIndex(_:) | result |
-| webview.swift:75:10:75:31 | call to forProperty(_:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:75:10:75:31 | call to forProperty(_:) | result |
-| webview.swift:78:10:78:47 | call to init(object:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:78:10:78:47 | call to init(object:in:) | result |
-| webview.swift:79:10:79:47 | call to init(bool:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:79:10:79:47 | call to init(bool:in:) | result |
-| webview.swift:80:10:80:51 | call to init(double:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:80:10:80:51 | call to init(double:in:) | result |
-| webview.swift:81:10:81:49 | call to init(int32:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:81:10:81:49 | call to init(int32:in:) | result |
-| webview.swift:82:10:82:51 | call to init(uInt32:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:82:10:82:51 | call to init(uInt32:in:) | result |
-| webview.swift:83:10:83:51 | call to init(point:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:83:10:83:51 | call to init(point:in:) | result |
-| webview.swift:84:10:84:51 | call to init(range:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:84:10:84:51 | call to init(range:in:) | result |
-| webview.swift:85:10:85:49 | call to init(rect:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:85:10:85:49 | call to init(rect:in:) | result |
-| webview.swift:86:10:86:49 | call to init(size:in:) | webview.swift:56:13:56:20 | call to source() :  | webview.swift:86:10:86:49 | call to init(size:in:) | result |
-| webview.swift:90:10:90:10 | v1 | webview.swift:56:13:56:20 | call to source() :  | webview.swift:90:10:90:10 | v1 | result |
-| webview.swift:94:10:94:10 | v2 | webview.swift:56:13:56:20 | call to source() :  | webview.swift:94:10:94:10 | v2 | result |
-| webview.swift:98:10:98:10 | v3 | webview.swift:56:13:56:20 | call to source() :  | webview.swift:98:10:98:10 | v3 | result |
+| webview.swift:77:10:77:41 | .body | webview.swift:77:11:77:18 | call to source() :  | webview.swift:77:10:77:41 | .body | result |
+| webview.swift:84:10:84:26 | call to toObject() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:84:10:84:26 | call to toObject() | result |
+| webview.swift:85:10:85:41 | call to toObjectOf(_:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:85:10:85:41 | call to toObjectOf(_:) | result |
+| webview.swift:86:10:86:24 | call to toBool() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:86:10:86:24 | call to toBool() | result |
+| webview.swift:87:10:87:26 | call to toDouble() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:87:10:87:26 | call to toDouble() | result |
+| webview.swift:88:10:88:25 | call to toInt32() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:88:10:88:25 | call to toInt32() | result |
+| webview.swift:89:10:89:26 | call to toUInt32() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:89:10:89:26 | call to toUInt32() | result |
+| webview.swift:90:10:90:26 | call to toNumber() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:90:10:90:26 | call to toNumber() | result |
+| webview.swift:91:10:91:26 | call to toString() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:91:10:91:26 | call to toString() | result |
+| webview.swift:92:10:92:24 | call to toDate() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:92:10:92:24 | call to toDate() | result |
+| webview.swift:93:10:93:25 | call to toArray() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:93:10:93:25 | call to toArray() | result |
+| webview.swift:94:10:94:30 | call to toDictionary() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:94:10:94:30 | call to toDictionary() | result |
+| webview.swift:95:10:95:25 | call to toPoint() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:95:10:95:25 | call to toPoint() | result |
+| webview.swift:96:10:96:25 | call to toRange() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:96:10:96:25 | call to toRange() | result |
+| webview.swift:97:10:97:24 | call to toRect() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:97:10:97:24 | call to toRect() | result |
+| webview.swift:98:10:98:24 | call to toSize() | webview.swift:81:13:81:20 | call to source() :  | webview.swift:98:10:98:24 | call to toSize() | result |
+| webview.swift:99:10:99:26 | call to atIndex(_:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:99:10:99:26 | call to atIndex(_:) | result |
+| webview.swift:100:10:100:31 | call to forProperty(_:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:100:10:100:31 | call to forProperty(_:) | result |
+| webview.swift:103:10:103:47 | call to init(object:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:103:10:103:47 | call to init(object:in:) | result |
+| webview.swift:104:10:104:47 | call to init(bool:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:104:10:104:47 | call to init(bool:in:) | result |
+| webview.swift:105:10:105:51 | call to init(double:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:105:10:105:51 | call to init(double:in:) | result |
+| webview.swift:106:10:106:49 | call to init(int32:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:106:10:106:49 | call to init(int32:in:) | result |
+| webview.swift:107:10:107:51 | call to init(uInt32:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:107:10:107:51 | call to init(uInt32:in:) | result |
+| webview.swift:108:10:108:51 | call to init(point:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:108:10:108:51 | call to init(point:in:) | result |
+| webview.swift:109:10:109:51 | call to init(range:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:109:10:109:51 | call to init(range:in:) | result |
+| webview.swift:110:10:110:49 | call to init(rect:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:110:10:110:49 | call to init(rect:in:) | result |
+| webview.swift:111:10:111:49 | call to init(size:in:) | webview.swift:81:13:81:20 | call to source() :  | webview.swift:111:10:111:49 | call to init(size:in:) | result |
+| webview.swift:115:10:115:10 | v1 | webview.swift:81:13:81:20 | call to source() :  | webview.swift:115:10:115:10 | v1 | result |
+| webview.swift:119:10:119:10 | v2 | webview.swift:81:13:81:20 | call to source() :  | webview.swift:119:10:119:10 | v2 | result |
+| webview.swift:123:10:123:10 | v3 | webview.swift:81:13:81:20 | call to source() :  | webview.swift:123:10:123:10 | v3 | result |
+| webview.swift:133:10:133:10 | b | webview.swift:132:34:132:41 | call to source() :  | webview.swift:133:10:133:10 | b | result |
+| webview.swift:134:10:134:12 | .source | webview.swift:132:34:132:41 | call to source() :  | webview.swift:134:10:134:12 | .source | result |
+| webview.swift:138:10:138:10 | c | webview.swift:137:34:137:41 | call to source() :  | webview.swift:138:10:138:10 | c | result |
+| webview.swift:139:10:139:12 | .source | webview.swift:137:34:137:41 | call to source() :  | webview.swift:139:10:139:12 | .source | result |
