@@ -39,6 +39,6 @@ runs:
       with:
         path: ${{ inputs.path }}
         key: ${{ inputs.key }}-${{ github.ref_name }}-${{ github.sha }} # just fill on main
-        restore-keys: | # restore from another random commit, to speed up compilation.
+        restore-keys: | # restore the latest cache if the exact cache is unavailable, to speed up compilation.
           ${{ inputs.key }}-${{ github.ref_name }}-
           ${{ inputs.key }}-main-
