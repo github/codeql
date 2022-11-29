@@ -1,5 +1,5 @@
 {
-  "DataFlow Java/C++/C#/Python": [
+  "DataFlow Java/C++/C#/Go/Python/Ruby/Swift": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl2.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl3.qll",
@@ -40,7 +40,7 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForPathname.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl.qll"
   ],
-  "DataFlow Java/C++/C#/Python Common": [
+  "DataFlow Java/C++/C#/Go/Python/Ruby/Swift Common": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
@@ -51,7 +51,7 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplCommon.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImplCommon.qll"
   ],
-  "TaintTracking::Configuration Java/C++/C#/Python": [
+  "TaintTracking::Configuration Java/C++/C#/Go/Python/Ruby/Swift": [
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
@@ -77,7 +77,7 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
-  "DataFlow Java/C++/C#/Python Consistency checks": [
+  "DataFlow Java/C++/C#/Python/Ruby/Swift Consistency checks": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
@@ -87,7 +87,7 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImplConsistency.qll"
   ],
-  "DataFlow Java/C#/Ruby/Python/Swift Flow Summaries": [
+  "DataFlow Java/C#/Go/Ruby/Python/Swift Flow Summaries": [
     "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
     "go/ql/lib/semmle/go/dataflow/internal/FlowSummaryImpl.qll",
