@@ -49,12 +49,7 @@ runs:
       shell: bash 
       run: |
         # Move all the existing cache into another folder, so we only preserve the cache for the current queries.
-        mkdir -p ${COMBINED_CACHE_DIR}
-        rm -f **/.cache/{lock,size} # -f to avoid errors if the cache is empty.
-        # copy the contents of the .cache folders into the combined cache folder.
-        cp -r **/.cache/* ${COMBINED_CACHE_DIR}/ || : # ignore missing files
-        # clean up the .cache folders
-        rm -rf **/.cache/*
+        node $GITHUB_WORKSPACE/.github/actions/cache-query-compilation/move-caches.js ${COMBINED_CACHE_DIR}
 
         echo "compdir=${COMBINED_CACHE_DIR}" >> $GITHUB_OUTPUT
       env: 
