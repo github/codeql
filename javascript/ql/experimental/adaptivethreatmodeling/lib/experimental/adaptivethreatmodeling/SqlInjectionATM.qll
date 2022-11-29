@@ -9,8 +9,8 @@ import semmle.javascript.heuristics.SyntacticHeuristics
 import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 import AdaptiveThreatModeling
 
-class Configuration extends AtmConfig {
-  Configuration() { this = "SqlInjectionATMConfig" }
+class SqlInjectionAtmConfig extends AtmConfig {
+  SqlInjectionAtmConfig() { this = "SqlInjectionAtmConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof SqlInjection::Source }
 

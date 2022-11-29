@@ -9,8 +9,8 @@ private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 import AdaptiveThreatModeling
 
-class Configuration extends AtmConfig {
-  Configuration() { this = "DomBasedXssATMConfig" }
+class DomBasedXssAtmConfig extends AtmConfig {
+  DomBasedXssAtmConfig() { this = "DomBasedXssAtmConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof DomBasedXss::Source }
 

@@ -9,8 +9,8 @@ import semmle.javascript.heuristics.SyntacticHeuristics
 import semmle.javascript.security.dataflow.TaintedPathCustomizations
 import AdaptiveThreatModeling
 
-class Configuration extends AtmConfig {
-  Configuration() { this = "TaintedPathATMConfig" }
+class TaintedPathAtmConfig extends AtmConfig {
+  TaintedPathAtmConfig() { this = "TaintedPathAtmConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
 

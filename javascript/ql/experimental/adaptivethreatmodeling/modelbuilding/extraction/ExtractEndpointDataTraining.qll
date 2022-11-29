@@ -206,13 +206,14 @@ query predicate reformattedTrainingEndpoints(
  * TODO: Delete this once we are no longer surfacing `hasFlowFromSource`.
  */
 DataFlow::Configuration getDataFlowCfg(Query query) {
-  query instanceof NosqlInjectionQuery and result instanceof NosqlInjectionAtm::Configuration
+  query instanceof NosqlInjectionQuery and
+  result instanceof NosqlInjectionAtm::NosqlInjectionAtmConfig
   or
-  query instanceof SqlInjectionQuery and result instanceof SqlInjectionAtm::Configuration
+  query instanceof SqlInjectionQuery and result instanceof SqlInjectionAtm::SqlInjectionAtmConfig
   or
-  query instanceof TaintedPathQuery and result instanceof TaintedPathAtm::Configuration
+  query instanceof TaintedPathQuery and result instanceof TaintedPathAtm::TaintedPathAtmConfig
   or
-  query instanceof XssQuery and result instanceof XssAtm::Configuration
+  query instanceof XssQuery and result instanceof XssAtm::DomBasedXssAtmConfig
 }
 
 // TODO: Delete this once we are no longer surfacing `hasFlowFromSource`.
