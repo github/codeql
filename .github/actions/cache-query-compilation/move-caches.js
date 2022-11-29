@@ -13,16 +13,12 @@ const path = require("path");
 const COMBINED_CACHE_DIR = process.argv[2];
 
 function* walkCaches(dir) {
-  const files = fs.readdirSync(dir);
+  const files = fs.readdirSync(dir, { withFileTypes: true });
   for (const file of files) {
-    const filePath = path.join(dir, file);
-    if (!fs.existsSync(filePath)) {
-      continue;
-    }
-    const stat = fs.statSync(filePath);
-    if (stat.isDirectory()) {
+    if (file.isDirectory()) {
+      const filePath = path.join(dir, file.name);
       yield* walkCaches(filePath);
-      if (file === ".cache") {
+      if (file.name === ".cache") {
         yield filePath;
       }
     }
