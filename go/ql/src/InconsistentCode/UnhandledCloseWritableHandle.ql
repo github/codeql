@@ -33,21 +33,21 @@ QualifiedName getConstants(ValueExpr expr) {
 }
 
 /**
- * Matches the `os.OpenFile` function.
+ * The `os.OpenFile` function.
  */
 class OpenFileFun extends Function {
   OpenFileFun() { this.hasQualifiedName("os", "OpenFile") }
 }
 
 /**
- * Matches the `os.File.Close` function.
+ * The `os.File.Close` function.
  */
 class CloseFileFun extends Function {
   CloseFileFun() { this.hasQualifiedName("os.File", "Close") }
 }
 
 /**
- * Matches the `os.File.Sync` function.
+ * The `os.File.Sync` function.
  */
 class SyncFileFun extends Function {
   SyncFileFun() { this.hasQualifiedName("os.File", "Sync") }
