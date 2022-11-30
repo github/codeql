@@ -28,6 +28,9 @@ module Option<TypeWithToString T> {
 
     /** Gets the wrapped element, if any. */
     T asSome() { this = TSome(result) }
+    
+    /** Holds if this option is the singleton `None`. */
+    predicate isNone() { this = TNone() }
   }
 
   /** The singleton `None` element. */
