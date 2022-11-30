@@ -103,12 +103,18 @@ class RenderManager(Renderer):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        for f in self._existing - self._skipped - self.written:
-            self._hashes.pop(self._get_path(f), None)
-            f.unlink(missing_ok=True)
-            log.info(f"removed {f.name}")
-        for f in self.written:
-            self._hashes[self._get_path(f)].post = self._hash_file(f)
+        if exc_val is None:
+            for f in self._existing - self._skipped - self.written:
+                self._hashes.pop(self._get_path(f), None)
+                f.unlink(missing_ok=True)
+                log.info(f"removed {f.name}")
+            for f in self.written:
+                self._hashes[self._get_path(f)].post = self._hash_file(f)
+        else:
+            # if an error was encountered, drop already written files from the registry
+            # so that they get the chance to be regenerated again during the next run
+            for f in self.written:
+                self._hashes.pop(self._get_path(f), None)
         self._dump_registry()
 
     def _do_write(self, mnemonic: str, contents: str, output: pathlib.Path):
