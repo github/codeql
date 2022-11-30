@@ -117,6 +117,7 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
 
 static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
     const SwiftExtractorConfiguration& config,
+    SwiftExtractorState& state,
     swift::CompilerInstance& compiler,
     swift::ModuleDecl& module,
     swift::SourceFile* primaryFile = nullptr) {
@@ -125,7 +126,7 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following
   // will just skip the work
-  auto trapTarget = createTargetTrapFile(config, filename);
+  auto trapTarget = createTargetTrapFile(config, state, filename);
   if (!trapTarget) {
     // another process arrived first, nothing to do for us
     return {};
@@ -179,10 +180,11 @@ static std::vector<swift::ModuleDecl*> collectLoadedModules(swift::CompilerInsta
 }
 
 void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
+                               SwiftExtractorState& state,
                                swift::CompilerInstance& compiler) {
   auto inputFiles = collectInputFilenames(compiler);
   std::vector<swift::ModuleDecl*> todo = collectLoadedModules(compiler);
-  std::unordered_set<swift::ModuleDecl*> seen{todo.begin(), todo.end()};
+  state.encounteredModules.insert(todo.begin(), todo.end());
 
   while (!todo.empty()) {
     auto module = todo.back();
@@ -199,15 +201,15 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
         continue;
       }
       archiveFile(config, *sourceFile);
-      encounteredModules = extractDeclarations(config, compiler, *module, sourceFile);
+      encounteredModules = extractDeclarations(config, state, compiler, *module, sourceFile);
     }
     if (!isFromSourceFile) {
-      encounteredModules = extractDeclarations(config, compiler, *module);
+      encounteredModules = extractDeclarations(config, state, compiler, *module);
     }
     for (auto encountered : encounteredModules) {
-      if (seen.count(encountered) == 0) {
+      if (state.encounteredModules.count(encountered) == 0) {
         todo.push_back(encountered);
-        seen.insert(encountered);
+        state.encounteredModules.insert(encountered);
       }
     }
   }
