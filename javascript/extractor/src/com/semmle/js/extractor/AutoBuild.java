@@ -447,10 +447,10 @@ public class AutoBuild {
     startThreadPool();
     try {
       extractSource();
-      extractXml();
       if (hasSeenCode()) { // don't bother with the externs if no code was seen
         extractExterns();
       }
+      extractXml();
     } finally {
       shutdownThreadPool();
     }
