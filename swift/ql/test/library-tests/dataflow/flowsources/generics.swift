@@ -57,7 +57,7 @@ func useDerived(generic: MyGeneric<Int>, generic2: MyGeneric<Any>, derived: MyDe
     _ = derived.source4 // SOURCE
     _ = derived.source5 // SOURCE
     _ = derived.source6() // SOURCE [NOT DETECTED]
-    _ = derived.source7 // SOURCE [NOT DETECTED]
+    _ = derived.source7 // SOURCE
     _ = derived.source8() // SOURCE [NOT DETECTED]
     _ = derived2.source1 // SOURCE
     _ = derived2.source2 // SOURCE
@@ -65,7 +65,7 @@ func useDerived(generic: MyGeneric<Int>, generic2: MyGeneric<Any>, derived: MyDe
     _ = derived2.source9 // SOURCE
     _ = derived2.source10 // SOURCE
     _ = derived2.source11() // SOURCE
-    _ = derived2.source12 // SOURCE [NOT DETECTED]
+    _ = derived2.source12 // SOURCE
     _ = derived2.source13() // SOURCE
 }
 
@@ -88,9 +88,9 @@ func useProtocol(proto: MyProtocol, impl: MyImpl<Int>, impl2: MyImpl<Any>) {
     _ = proto.source1 // SOURCE
     _ = proto.source2 // SOURCE
     _ = impl.source1 // SOURCE
-    _ = impl.source2 // SOURCE [NOT DETECTED]
+    _ = impl.source2 // SOURCE
     _ = impl2.source1 // SOURCE
-    _ = impl2.source2 // SOURCE [NOT DETECTED]
+    _ = impl2.source2 // SOURCE
 }
 
 // ---

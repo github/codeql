@@ -20,16 +20,20 @@
 | generics.swift:55:9:55:17 | .source2 | external |
 | generics.swift:57:9:57:17 | .source4 | external |
 | generics.swift:58:9:58:17 | .source5 | external |
+| generics.swift:60:9:60:17 | .source7 | external |
 | generics.swift:62:9:62:18 | .source1 | external |
 | generics.swift:63:9:63:18 | .source2 | external |
 | generics.swift:65:9:65:18 | .source9 | external |
 | generics.swift:66:9:66:18 | .source10 | external |
 | generics.swift:67:9:67:27 | call to source11() | external |
+| generics.swift:68:9:68:18 | .source12 | external |
 | generics.swift:69:9:69:27 | call to source13() | external |
 | generics.swift:88:9:88:15 | .source1 | external |
 | generics.swift:89:9:89:15 | .source2 | external |
 | generics.swift:90:9:90:14 | .source1 | external |
+| generics.swift:91:9:91:14 | .source2 | external |
 | generics.swift:92:9:92:15 | .source1 | external |
+| generics.swift:93:9:93:15 | .source2 | external |
 | generics.swift:112:9:112:15 | .source1 | external |
 | generics.swift:113:9:113:15 | .source2 | external |
 | nsdata.swift:18:17:18:17 | call to init(contentsOf:) | external |
