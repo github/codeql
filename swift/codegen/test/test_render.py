@@ -76,6 +76,24 @@ def test_managed_render(pystache_renderer, sut):
     ]
 
 
+def test_managed_render_with_no_registry(pystache_renderer, sut):
+    data = mock.Mock(spec=("template",))
+    text = "some text"
+    pystache_renderer.render_name.side_effect = (text,)
+    output = paths.swift_dir / "some/output.txt"
+    registry = paths.swift_dir / "a/registry.list"
+
+    with sut.manage(generated=(), stubs=(), registry=registry) as renderer:
+        renderer.render(data, output)
+        assert renderer.written == {output}
+        assert_file(output, text)
+
+    assert_file(registry, f"some/output.txt {hash(text)} {hash(text)}\n")
+    assert pystache_renderer.mock_calls == [
+        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.swift_dir)),
+    ]
+
+
 def test_managed_render_with_post_processing(pystache_renderer, sut):
     data = mock.Mock(spec=("template",))
     text = "some text"
@@ -192,6 +210,45 @@ def test_managed_render_with_modified_stub_file_not_marked_as_generated(pystache
     assert_file(registry, "")
 
 
+class MyError(Exception):
+    pass
+
+
+def test_managed_render_exception_drops_written_from_registry(pystache_renderer, sut):
+    data = mock.Mock(spec=("template",))
+    text = "some text"
+    pystache_renderer.render_name.side_effect = (text,)
+    output = paths.swift_dir / "some/output.txt"
+    registry = paths.swift_dir / "a/registry.list"
+    write(output, text)
+    write(registry, "a a a\n"
+                    f"some/output.txt whatever {hash(text)}\n"
+                    "b b b")
+
+    with pytest.raises(MyError):
+        with sut.manage(generated=(), stubs=(), registry=registry) as renderer:
+            renderer.render(data, output)
+            raise MyError
+
+    assert_file(registry, "a a a\nb b b\n")
+
+
+def test_managed_render_exception_does_not_erase(pystache_renderer, sut):
+    output = paths.swift_dir / "some/output.txt"
+    stub = paths.swift_dir / "some/stub.txt"
+    registry = paths.swift_dir / "a/registry.list"
+    write(output)
+    write(stub, "// generated bla bla")
+    write(registry)
+
+    with pytest.raises(MyError):
+        with sut.manage(generated=(output,), stubs=(stub,), registry=registry) as renderer:
+            raise MyError
+
+    assert output.is_file()
+    assert stub.is_file()
+
+
 def test_render_with_extensions(pystache_renderer, sut):
     data = mock.Mock(spec=("template", "extensions"))
     data.template = "test_template"
@@ -208,6 +265,71 @@ def test_render_with_extensions(pystache_renderer, sut):
     ]
     for expected_output, expected_contents in zip(expected_outputs, rendered):
         assert_file(expected_output, expected_contents)
+
+
+def test_managed_render_with_force_not_skipping_generated_file(pystache_renderer, sut):
+    data = mock.Mock(spec=("template",))
+    output = paths.swift_dir / "some/output.txt"
+    some_output = "some output"
+    registry = paths.swift_dir / "a/registry.list"
+    write(output, some_output)
+    write(registry, f"some/output.txt {hash(some_output)} {hash(some_output)}\n")
+
+    pystache_renderer.render_name.side_effect = (some_output,)
+
+    with sut.manage(generated=(output,), stubs=(), registry=registry, force=True) as renderer:
+        renderer.render(data, output)
+        assert renderer.written == {output}
+        assert_file(output, some_output)
+
+    assert_file(registry, f"some/output.txt {hash(some_output)} {hash(some_output)}\n")
+    assert pystache_renderer.mock_calls == [
+        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.swift_dir)),
+    ]
+
+
+def test_managed_render_with_force_not_skipping_stub_file(pystache_renderer, sut):
+    data = mock.Mock(spec=("template",))
+    stub = paths.swift_dir / "some/stub.txt"
+    some_output = "// generated some output"
+    some_processed_output = "// generated some processed output"
+    registry = paths.swift_dir / "a/registry.list"
+    write(stub, some_processed_output)
+    write(registry, f"some/stub.txt {hash(some_output)} {hash(some_processed_output)}\n")
+
+    pystache_renderer.render_name.side_effect = (some_output,)
+
+    with sut.manage(generated=(), stubs=(stub,), registry=registry, force=True) as renderer:
+        renderer.render(data, stub)
+        assert renderer.written == {stub}
+        assert_file(stub, some_output)
+
+    assert_file(registry, f"some/stub.txt {hash(some_output)} {hash(some_output)}\n")
+    assert pystache_renderer.mock_calls == [
+        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.swift_dir)),
+    ]
+
+
+def test_managed_render_with_force_ignores_modified_generated_file(sut):
+    output = paths.swift_dir / "some/output.txt"
+    some_processed_output = "// some processed output"
+    registry = paths.swift_dir / "a/registry.list"
+    write(output, "// something else")
+    write(registry, f"some/output.txt whatever {hash(some_processed_output)}\n")
+
+    with sut.manage(generated=(output,), stubs=(), registry=registry, force=True):
+        pass
+
+
+def test_managed_render_with_force_ignores_modified_stub_file_still_marked_as_generated(sut):
+    stub = paths.swift_dir / "some/stub.txt"
+    some_processed_output = "// generated some processed output"
+    registry = paths.swift_dir / "a/registry.list"
+    write(stub, "// generated something else")
+    write(registry, f"some/stub.txt whatever {hash(some_processed_output)}\n")
+
+    with sut.manage(generated=(), stubs=(stub,), registry=registry, force=True):
+        pass
 
 
 if __name__ == '__main__':
