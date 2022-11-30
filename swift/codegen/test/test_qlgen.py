@@ -48,6 +48,7 @@ def qlgen_opts(opts):
     opts.generated_registry = generated_registry_path()
     opts.ql_format = True
     opts.swift_dir = paths.swift_dir
+    opts.force = False
     return opts
 
 
@@ -430,7 +431,9 @@ def test_format_error(opts, generate, render_manager, run_mock):
         generate([schema.Class('A')])
 
 
-def test_manage_parameters(opts, generate, renderer):
+@pytest.mark.parametrize("force", [False, True])
+def test_manage_parameters(opts, generate, renderer, force):
+    opts.force = force
     ql_a = opts.ql_output / "A.qll"
     ql_b = opts.ql_output / "B.qll"
     stub_a = opts.ql_stub_output / "A.qll"
@@ -448,7 +451,7 @@ def test_manage_parameters(opts, generate, renderer):
     generate([schema.Class('A')])
     assert renderer.mock_calls == [
         mock.call.manage(generated={ql_a, ql_b, test_a, test_b, import_file()}, stubs={stub_a, stub_b},
-                         registry=opts.generated_registry)
+                         registry=opts.generated_registry, force=force)
     ]
 
 

@@ -42,6 +42,8 @@ def _parse_args() -> argparse.Namespace:
                    help="output directory for generated C++ files, required if trap or cpp is provided to --generate")
     p.add_argument("--generated-registry", type=_abspath, default=paths.swift_dir / "ql/.generated.list",
                    help="registry file containing information about checked-in generated code")
+    p.add_argument("--force", "-f", action="store_true",
+                   help="generate all files without skipping unchanged files and overwriting modified ones")
     return p.parse_args()
 
 
