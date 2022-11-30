@@ -21,6 +21,11 @@
       <li><code>setAllowFileAccessFromFileURLs</code></li>
       <li><code>setAllowUniversalAccessFromFileURLs</code></li>
     </ul>
+
+    <p>If your application requires access to the file system, it is best to
+    avoid using <code>file://</code> urls, and instead use an alternative that
+    allows loading files via https, such
+    as <code>androidx.webkit.WebViewAssetLoader</code>.</p>
   </recommendation>
 
   <example>
@@ -44,6 +49,9 @@
     </li>
     <li>
       Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowUniversalAccessFromFileURLs(boolean)">WebSettings.setAllowUniversalAccessFromFileURLs</a>.
+    </li>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader">WebViewAssetLoader</a>.
     </li>
   </references>
 
