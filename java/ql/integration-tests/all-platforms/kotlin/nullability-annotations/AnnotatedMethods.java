@@ -1,7 +1,7 @@
 import org.jetbrains.annotations.*;
 import zpkg.A;
 
-public class AnnotatedMethods {
+public class AnnotatedMethods implements AnnotatedInterface {
 
   public @A @NotNull String notNullAnnotated(@A @NotNull String param) { return param; }
 

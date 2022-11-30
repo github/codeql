@@ -1366,14 +1366,19 @@ open class KotlinFileExtractor(
         if (t !is IrSimpleType)
             return null
 
+        fun hasExistingAnnotation(name: FqName) =
+            existingAnnotations.any { existing -> existing.type.classFqName == name }
+
         return if (declOrigin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB) {
             // Java declaration: restore a NotNull or Nullable annotation if the original Java member had one but the Kotlin compiler removed it.
             javaAnnotations?.mapNotNull { it.classId?.asSingleFqName() }
             ?.singleOrNull { NOT_NULL_ANNOTATIONS.contains(it) || NULLABLE_ANNOTATIONS.contains(it) }
-            ?.takeUnless { existingAnnotations.any { existing -> existing.type.classFqName == it } }
+            ?.takeUnless { hasExistingAnnotation(it) }
         } else {
-            // Kotlin declaration: add a NotNull annotation to a non-nullable non-primitive type.
-            JvmAnnotationNames.JETBRAINS_NOT_NULL_ANNOTATION.takeUnless { t.isNullable() || primitiveTypeMapping.getPrimitiveInfo(t) != null }
+            // Kotlin declaration: add a NotNull annotation to a non-nullable non-primitive type, unless one is already present.
+            // Usually Kotlin declarations can't have a manual `@NotNull`, but this happens at least when delegating members are
+            // synthesised and inherit the annotation from the delegate (which given it has @NotNull, is likely written in Java)
+            JvmAnnotationNames.JETBRAINS_NOT_NULL_ANNOTATION.takeUnless { t.isNullable() || primitiveTypeMapping.getPrimitiveInfo(t) != null || hasExistingAnnotation(it) }
         }
     }
 
