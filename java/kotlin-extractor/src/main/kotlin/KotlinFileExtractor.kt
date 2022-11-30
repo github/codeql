@@ -516,6 +516,9 @@ open class KotlinFileExtractor(
 
                 linesOfCode?.linesOfCodeInDeclaration(c, id)
 
+                if (extractFunctionBodies)
+                    externalClassExtractor.noteClassSourceExtractedTo(c, tw.filePath)
+
                 return id
             }
         }
