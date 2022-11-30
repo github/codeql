@@ -5,18 +5,6 @@ name: Internal CI Checks
 on:
   pull_request_target:
 
-permissions:
-  actions: write
-  checks: write
-  contents: write
-  deployments: write
-  issues: write
-  packages: write
-  pull-requests: write
-  repository-projects: write
-  security-events: write
-  statuses: write
-
 jobs:
   set-label:
     runs-on: ubuntu-latest
@@ -32,7 +20,8 @@ jobs:
           echo "Testing API calls"
           gh api -i /repos/github/codeql
           echo "Checking if user $USERNAME is a member of the CodeQL team"
-          if [ "$(gh api "/orgs/github/teams/codeql/memberships/$USERNAME" --jq .state)" == "active" ]; then
+          gh api -H "Accept: application/vnd.github+json" /orgs/github/teams/codeql/memberships/$USERNAME > /dev/null 2>&1
+          if [ "$?" == 0 ]; then
               echo "User $USERNAME is a member of the CodeQL team"
               echo "Adding '${LABEL}' label"
               gh pr edit "${PR_NUMBER}" --repo "$GITHUB_REPOSITORY" --add-label "$LABEL"
