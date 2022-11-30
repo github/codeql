@@ -38,7 +38,7 @@ private module Asymmetric {
       Sink() {
         exists(KeyPairGenInit kpgInit, KeyPairGen kpg |
           algoName in ["RSA", "DSA", "DH"] and
-          kpg.getAlgoName().matches(algoName) and
+          kpg.getAlgoName() = algoName and
           DataFlow::localExprFlow(kpg, kpgInit.getQualifier()) and
           this.asExpr() = kpgInit.getKeySizeArg()
         )
