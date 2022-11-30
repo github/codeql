@@ -1,6 +1,7 @@
 /**
  * For internal use only.
  *
+ * A taint-tracking configuration for reasoning about path injection vulnerabilities.
  * Defines shared code used by the path injection boosted query.
  */
 
@@ -9,32 +10,22 @@ import semmle.javascript.security.dataflow.TaintedPathCustomizations
 import AdaptiveThreatModeling
 
 class TaintedPathAtmConfig extends AtmConfig {
-  TaintedPathAtmConfig() { this = "TaintedPathATMConfig" }
+  TaintedPathAtmConfig() { this = "TaintedPathAtmConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
 
   override EndpointType getASinkEndpointType() { result instanceof TaintedPathSinkType }
-}
 
-/** DEPRECATED: Alias for TaintedPathAtmConfig */
-deprecated class TaintedPathATMConfig = TaintedPathAtmConfig;
-
-/**
- * A taint-tracking configuration for reasoning about path injection vulnerabilities.
- *
- * This is largely a copy of the taint tracking configuration for the standard path injection
- * query, except additional ATM sinks have been added to the `isSink` predicate.
- */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "TaintedPathATM" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
+  /*
+   * This is largely a copy of the taint tracking configuration for the standard path injection
+   * query, except additional ATM sinks have been added to the `isSink` predicate.
+   */
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
     label = sink.(TaintedPath::Sink).getAFlowLabel()
     or
     // Allow effective sinks to have any taint label
-    any(TaintedPathAtmConfig cfg).isEffectiveSink(sink)
+    isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof TaintedPath::Sanitizer }
@@ -60,7 +51,7 @@ class Configuration extends TaintTracking::Configuration {
  * of barrier guards, we port the barrier guards for the boosted query from the standard library to
  * sanitizer guards here.
  */
-class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitizerGuardNode {
+private class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitizerGuardNode {
   BarrierGuardNodeAsSanitizerGuardNode() { this instanceof TaintedPath::BarrierGuardNode }
 
   override predicate sanitizes(boolean outcome, Expr e) {
