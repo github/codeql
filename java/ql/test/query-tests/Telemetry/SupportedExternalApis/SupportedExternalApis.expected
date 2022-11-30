@@ -1,0 +1,3 @@
+| java.lang.StringBuilder#append(String) | 1 |
+| java.lang.StringBuilder#toString() | 1 |
+| java.util.Map#put(Object,Object) | 1 |
