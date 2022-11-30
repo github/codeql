@@ -1,3 +1,3 @@
-import experimental.adaptivethreatmodeling.StandardEndpointFilters
+import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 
-select getALikelyExternalLibraryCall()
+select EndpointCharacteristics::getALikelyExternalLibraryCall()

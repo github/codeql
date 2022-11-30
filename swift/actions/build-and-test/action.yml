@@ -1,0 +1,55 @@
+name: Build Swift CodeQL pack
+description: Builds the Swift CodeQL pack
+runs:
+  using: composite
+  steps:
+    - uses: bazelbuild/setup-bazelisk@v2
+    - uses: actions/setup-python@v4
+      with:
+        python-version-file: 'swift/.python-version'
+    - name: Mount bazel cache
+      uses: ./.github/actions/incremental-cache
+      with:
+        path: bazel-repository-cache
+        key: bazel-cache-${{ runner.os }}-${{ runner.arch }}
+    - name: Mount bazel disk cache
+      uses: ./.github/actions/incremental-cache
+      with:
+        path: bazel-disk-cache
+        key: bazel-disk-cache-${{ runner.os }}-${{ runner.arch }}
+    - name: Configure bazel cache
+      shell: bash
+      run: |
+        mkdir bazel-repository-cache bazel-disk-cache
+        echo build --repository_cache=bazel-repository-cache --disk_cache=bazel-disk-cache > local.bazelrc
+        echo test --test_output=errors >> local.bazelrc
+    - name: Print unextracted entities
+      shell: bash
+      run: |
+        bazel run //swift/extractor/print_unextracted
+    - uses: ./swift/actions/share-extractor-pack
+    - name: Build Swift extractor
+      shell: bash
+      run: |
+        bazel run //swift:create-extractor-pack
+    - name: Run xcode-autobuilder tests
+      if : ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
+      shell: bash
+      run: |
+        bazel test //swift/xcode-autobuilder/tests
+    - name: Run codegen tests
+      if : ${{ github.event_name == 'pull_request' }}
+      shell: bash
+      run: |
+        bazel test //swift/codegen/test
+    - name: Run qltest tests
+      if : ${{ github.event_name == 'pull_request' }}
+      shell: bash
+      run: |
+        bazel test //swift/tools/test/qltest
+    - name: Evict bazel cache
+      if: ${{ github.event_name != 'pull_request' }}
+      shell: bash
+      run: |
+        find bazel-repository-cache bazel-disk-cache -atime +0 -type f -delete
+        du -sh bazel-repository-cache bazel-disk-cache

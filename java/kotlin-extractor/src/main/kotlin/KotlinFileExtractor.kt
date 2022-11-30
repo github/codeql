@@ -1507,14 +1507,15 @@ open class KotlinFileExtractor(
                 }
                 is IrFunction -> {
                     if (s.isLocalFunction()) {
-                        val classId = extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType))
+                        val compilerGeneratedKindOverride = if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
+                            CompilerGeneratedKinds.DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS
+                        } else {
+                            null
+                        }
+                        val classId = extractGeneratedClass(s, listOf(pluginContext.irBuiltIns.anyType), compilerGeneratedKindOverride = compilerGeneratedKindOverride)
                         extractLocalTypeDeclStmt(classId, s, callable, parent, idx)
                         val ids = getLocallyVisibleFunctionLabels(s)
                         tw.writeKtLocalFunction(ids.function)
-
-                        if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
-                            tw.writeCompiler_generated(classId, CompilerGeneratedKinds.DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS.kind)
-                        }
                     } else {
                         logger.errorElement("Expected to find local function", s)
                     }
@@ -4685,7 +4686,7 @@ open class KotlinFileExtractor(
                 val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
                     ?: pluginContext.irBuiltIns.anyType
 
-                val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, functionReferenceExpr, declarationParent, { it.valueParameters.size == 1 }) {
+                val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, functionReferenceExpr, declarationParent, null, { it.valueParameters.size == 1 }) {
                     // The argument to FunctionReference's constructor is the function arity.
                     extractConstantInteger(type.arguments.size - 1, locId, it, 0, ids.constructor, it)
                 }
@@ -5389,13 +5390,15 @@ open class KotlinFileExtractor(
         locId: Label<DbLocation>,
         elementToReportOn: IrElement,
         declarationParent: IrDeclarationParent,
+        compilerGeneratedKindOverride: CompilerGeneratedKinds? = null,
         superConstructorSelector: (IrFunction) -> Boolean = { it.valueParameters.isEmpty() },
-        extractSuperconstructorArgs: (Label<DbSuperconstructorinvocationstmt>) -> Unit = {}
+        extractSuperconstructorArgs: (Label<DbSuperconstructorinvocationstmt>) -> Unit = {},
     ): Label<out DbClass> {
         // Write class
         val id = ids.type.javaResult.id.cast<DbClass>()
         val pkgId = extractPackage("")
         tw.writeClasses(id, "", pkgId, id)
+        tw.writeCompiler_generated(id, (compilerGeneratedKindOverride ?: CompilerGeneratedKinds.CALLABLE_CLASS).kind)
         tw.writeHasLocation(id, locId)
 
         // Extract constructor
@@ -5442,11 +5445,15 @@ open class KotlinFileExtractor(
     /**
      * Extracts the class around a local function or a lambda. The superclass must have a no-arg constructor.
      */
-    private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
+    private fun extractGeneratedClass(
+        localFunction: IrFunction,
+        superTypes: List<IrType>,
+        compilerGeneratedKindOverride: CompilerGeneratedKinds? = null
+    ) : Label<out DbClass> {
         with("generated class", localFunction) {
             val ids = getLocallyVisibleFunctionLabels(localFunction)
 
-            val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction, localFunction.parent)
+            val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction, localFunction.parent, compilerGeneratedKindOverride = compilerGeneratedKindOverride)
 
             // Extract local function as a member
             extractFunction(localFunction, id, extractBody = true, extractMethodAndParameterTypeAccesses = true, null, listOf())
@@ -5520,5 +5527,6 @@ open class KotlinFileExtractor(
         DEFAULT_ARGUMENTS_METHOD(10),
         INTERFACE_FORWARDER(11),
         ENUM_CONSTRUCTOR_ARGUMENT(12),
+        CALLABLE_CLASS(13),
     }
 }
