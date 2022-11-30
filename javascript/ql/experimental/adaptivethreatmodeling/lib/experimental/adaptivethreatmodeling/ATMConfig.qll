@@ -7,6 +7,7 @@
 private import javascript as JS
 import EndpointTypes
 import EndpointCharacteristics as EndpointCharacteristics
+import AdaptiveThreatModeling::ATM::ResultsInfo as AtmResultsInfo
 
 /**
  * EXPERIMENTAL. This API may change in the future.
@@ -29,9 +30,22 @@ import EndpointCharacteristics as EndpointCharacteristics
  * `isAdditionalFlowStep` with a more generalised definition of additional edges. See
  * `NosqlInjectionATM.qll` for an example of doing this.
  */
-abstract class AtmConfig extends string {
+abstract class AtmConfig extends JS::TaintTracking::Configuration {
   bindingset[this]
   AtmConfig() { any() }
+
+  /**
+   * Holds if `source` is a relevant taint source. When sources are not boosted, `isSource` is equivalent to
+   * `isKnownSource` (i.e there are no "effective" sources to be classified by an ML model).
+   */
+  override predicate isSource(JS::DataFlow::Node source) { this.isKnownSource(source) }
+
+  /**
+   * Holds if `sink` is a known taint sink or an "effective" sink (a candidate to be classified by an ML model).
+   */
+  override predicate isSink(JS::DataFlow::Node sink) {
+    this.isKnownSink(sink) or this.isEffectiveSink(sink)
+  }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -127,6 +141,17 @@ abstract class AtmConfig extends string {
    * A cut-off value of 1 produces all alerts including those that are likely false-positives.
    */
   float getScoreCutoff() { result = 0.0 }
+
+  /**
+   * Holds if there's an ATM alert (a flow path from `source` to `sink` with ML-determined likelihood `score`) according
+   * to this ML-boosted configuration, whereas the unboosted base query does not contain this source and sink
+   * combination.
+   */
+  predicate getAlerts(JS::DataFlow::PathNode source, JS::DataFlow::PathNode sink, float score) {
+    this.hasFlowPath(source, sink) and
+    not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
+    score = AtmResultsInfo::getScoreForFlow(source.getNode(), sink.getNode())
+  }
 }
 
 /** DEPRECATED: Alias for AtmConfig */
