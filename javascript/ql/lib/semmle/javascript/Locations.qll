@@ -40,6 +40,18 @@ class Location extends @location {
     )
   }
 
+  /** Holds if this location starts before or at the same place as location `that`. */
+  predicate startsBeforeOrWith(Location that) {
+    exists(File f, int sl1, int sc1, int sl2, int sc2 |
+      locations_default(this, f, sl1, sc1, _, _) and
+      locations_default(that, f, sl2, sc2, _, _)
+    |
+      sl1 < sl2
+      or
+      sl1 = sl2 and sc1 <= sc2
+    )
+  }
+
   /** Holds if this location ends after location `that`. */
   pragma[inline]
   predicate endsAfter(Location that) {
@@ -53,11 +65,32 @@ class Location extends @location {
     )
   }
 
+  /** Holds if this location ends after or at the same place as location `that`. */
+  pragma[inline]
+  predicate endsAfterOrWith(Location that) {
+    exists(File f, int el1, int ec1, int el2, int ec2 |
+      locations_default(this, f, _, _, el1, ec1) and
+      locations_default(that, f, _, _, el2, ec2)
+    |
+      el1 > el2
+      or
+      el1 = el2 and ec1 >= ec2
+    )
+  }
+
   /**
    * Holds if this location contains location `that`, meaning that it starts
    * before and ends after it.
    */
   predicate contains(Location that) { this.startsBefore(that) and this.endsAfter(that) }
+
+  /**
+   * Holds if this location contains location `that`, meaning that it starts
+   * before or at the same place and ends after or at the same place.
+   */
+  predicate containsLoosely(Location that) {
+    this.startsBeforeOrWith(that) and this.endsAfterOrWith(that)
+  }
 
   /** Holds if this location is empty. */
   predicate isEmpty() { exists(int l, int c | locations_default(this, _, l, c, l, c - 1)) }

@@ -226,43 +226,12 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
   }
 
   /**
-   * Holds if the location of `node` contains the location of `token`
+   * Gets the reconstructed source code text for a range of locations.
    */
-  cached
-  predicate containsToken(AstNode node, Token token) {
-    exists(
-      string file, int node_start_line, int node_start_column, int node_end_line,
-      int node_end_column, int token_start_line, int token_start_column, int token_end_line,
-      int token_end_column
-    |
-      node.getLocation()
-          .hasLocationInfo(file, node_start_line, node_start_column, node_end_line, node_end_column) and
-      token
-          .getLocation()
-          .hasLocationInfo(file, token_start_line, token_start_column, token_end_line,
-            token_end_column) and
-      (
-        node_start_line < token_start_line
-        or
-        node_start_line = token_start_line and
-        node_start_column <= token_start_column
-      ) and
-      (
-        node_end_line > token_end_line
-        or
-        node_end_line = token_end_line and
-        node_end_column >= token_end_column
-      )
-    )
-  }
-
-  /**
-   * Gets the reconstructed source code text for `node`.
-   */
-  string tokenise(DataFlow::Node node) {
+  string tokenize(Location location) {
     result =
       strictconcat(Token token |
-        containsToken(node.getAstNode(), token)
+        location.containsLoosely(token.getLocation())
       |
         token.getValue(),
           // Use space as the separator, since that is most likely.
@@ -273,6 +242,13 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
         order by
           token.getLocation().getStartLine(), token.getLocation().getStartColumn()
       )
+  }
+
+  /**
+   * Gets the reconstructed source code text for `node`.
+   */
+  string tokenizeEndpoint(DataFlow::Node node) {
+    result = tokenize(node.getAstNode().getLocation())
   }
 }
 
