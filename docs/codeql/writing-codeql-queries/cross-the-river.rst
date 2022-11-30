@@ -264,7 +264,7 @@ Here are some more example queries that solve the river crossing puzzle:
 
    .. container:: name
 
-      *Show/hide eaxmple query - modified path*
+      * Show/hide example query - modified path
 
    .. literalinclude:: river-answer-1-path.ql
       :language: ql
@@ -274,7 +274,7 @@ Here are some more example queries that solve the river crossing puzzle:
 
    .. container:: name
 
-      *Show/hide eaxmple query - abstract class*
+      * Show/hide example query - abstract class
 
    .. literalinclude:: river-answer-2-abstract-class.ql
       :language: ql
@@ -284,7 +284,7 @@ Here are some more example queries that solve the river crossing puzzle:
 
    .. container:: name
 
-      *Show/hide eaxmple query - datatypes*
+      * Show/hide example query - datatypes
 
    .. literalinclude:: river-answer-3-datatypes.ql
       :language: ql
