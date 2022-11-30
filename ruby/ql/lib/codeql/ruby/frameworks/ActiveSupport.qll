@@ -328,7 +328,7 @@ module ActiveSupport {
         override MethodCall getACall() { result = mc }
 
         override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-          input = "Argument[self].Element[0].Element[" + key + "!]" and
+          input = "Argument[self].Element[0].Element[" + key + "]" and
           output = "ReturnValue" and
           preservesValue = true
         }
@@ -361,8 +361,8 @@ module ActiveSupport {
         override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
           exists(string s, int i |
             s = getKeyArgument(mc, i) and
-            input = "Argument[self].Element[0].Element[" + s + "!]" and
-            output = "ReturnValue.Element[" + i + "!]"
+            input = "Argument[self].Element[0].Element[" + s + "]" and
+            output = "ReturnValue.Element[" + i + "]"
           ) and
           preservesValue = true
         }
@@ -382,7 +382,7 @@ module ActiveSupport {
         override MethodCall getACall() { result = mc }
 
         override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-          input = "Argument[self].Element[any].Element[" + key + "!]" and
+          input = "Argument[self].Element[any].Element[" + key + "]" and
           output = "ReturnValue.Element[any]" and
           preservesValue = true
         }
@@ -415,8 +415,8 @@ module ActiveSupport {
         override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
           exists(string s, int i |
             s = getKeyArgument(mc, i) and
-            input = "Argument[self].Element[any].Element[" + s + "!]" and
-            output = "ReturnValue.Element[?].Element[" + i + "!]"
+            input = "Argument[self].Element[any].Element[" + s + "]" and
+            output = "ReturnValue.Element[?].Element[" + i + "]"
           ) and
           preservesValue = true
         }
