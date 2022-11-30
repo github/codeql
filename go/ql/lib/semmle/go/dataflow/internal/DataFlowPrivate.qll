@@ -126,6 +126,8 @@ predicate jumpStep(Node n1, Node n2) {
     n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = sendRead and
     n2 = recvRead
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
 }
 
 /**
