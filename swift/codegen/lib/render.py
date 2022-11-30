@@ -59,8 +59,8 @@ class Renderer:
         log.debug(f"{mnemonic}: generated {output.name}")
 
     def manage(self, generated: typing.Iterable[pathlib.Path], stubs: typing.Iterable[pathlib.Path],
-               registry: pathlib.Path) -> "RenderManager":
-        return RenderManager(self._swift_dir, generated, stubs, registry)
+               registry: pathlib.Path, force: bool = False) -> "RenderManager":
+        return RenderManager(self._swift_dir, generated, stubs, registry, force)
 
 
 class RenderManager(Renderer):
@@ -87,9 +87,10 @@ class RenderManager(Renderer):
 
     def __init__(self, swift_dir: pathlib.Path, generated: typing.Iterable[pathlib.Path],
                  stubs: typing.Iterable[pathlib.Path],
-                 registry: pathlib.Path):
+                 registry: pathlib.Path, force: bool = False):
         super().__init__(swift_dir)
         self._registry_path = registry
+        self._force = force
         self._hashes = {}
         self.written = set()
         self._existing = set()
@@ -132,10 +133,13 @@ class RenderManager(Renderer):
         for f in generated:
             self._existing.add(f)
             rel_path = self._get_path(f)
-            if rel_path not in self._hashes:
+            if self._force:
+                pass
+            elif rel_path not in self._hashes:
                 log.warning(f"{rel_path} marked as generated but absent from the registry")
             elif self._hashes[rel_path].post != self._hash_file(f):
-                raise Error(f"{rel_path} is generated but was modified, please revert the file")
+                raise Error(f"{rel_path} is generated but was modified, please revert the file "
+                            "or pass --force to overwrite")
 
     def _process_stubs(self, stubs: typing.Iterable[pathlib.Path]):
         for f in stubs:
@@ -144,10 +148,13 @@ class RenderManager(Renderer):
                 self._hashes.pop(rel_path, None)
                 continue
             self._existing.add(f)
-            if rel_path not in self._hashes:
+            if self._force:
+                pass
+            elif rel_path not in self._hashes:
                 log.warning(f"{rel_path} marked as stub but absent from the registry")
             elif self._hashes[rel_path].post != self._hash_file(f):
-                raise Error(f"{rel_path} is a stub marked as generated, but it was modified")
+                raise Error(f"{rel_path} is a stub marked as generated, but it was modified, "
+                            "please remove the `// generated` header, revert the file or pass --force to overwrite it")
 
     @staticmethod
     def is_customized_stub(file: pathlib.Path) -> bool:
@@ -171,6 +178,8 @@ class RenderManager(Renderer):
         return h.hexdigest()
 
     def _load_registry(self):
+        if self._force:
+            return
         try:
             with open(self._registry_path) as reg:
                 for line in reg:
