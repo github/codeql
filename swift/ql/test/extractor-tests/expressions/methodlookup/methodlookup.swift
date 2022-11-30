@@ -44,8 +44,8 @@ Task {
     let baz = await Baz()
     _ = await Baz.init()
 
-    await baz.instanceMethod()
-    await Baz.instanceMethod(baz)()
+    await baz.instanceMethod() // DotSyntaxCallExpr
+    await Baz.instanceMethod(baz)() // DotSyntaxBaseIgnoredExpr
 
     await Baz.classMethod()
     await Baz.staticMethod()
