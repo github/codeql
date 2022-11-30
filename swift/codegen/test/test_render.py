@@ -192,6 +192,45 @@ def test_managed_render_with_modified_stub_file_not_marked_as_generated(pystache
     assert_file(registry, "")
 
 
+class MyError(Exception):
+    pass
+
+
+def test_managed_render_exception_drops_written_from_registry(pystache_renderer, sut):
+    data = mock.Mock(spec=("template",))
+    text = "some text"
+    pystache_renderer.render_name.side_effect = (text,)
+    output = paths.swift_dir / "some/output.txt"
+    registry = paths.swift_dir / "a/registry.list"
+    write(output, text)
+    write(registry, "a a a\n"
+                    f"some/output.txt whatever {hash(text)}\n"
+                    "b b b")
+
+    with pytest.raises(MyError):
+        with sut.manage(generated=(), stubs=(), registry=registry) as renderer:
+            renderer.render(data, output)
+            raise MyError
+
+    assert_file(registry, "a a a\nb b b\n")
+
+
+def test_managed_render_exception_does_not_erase(pystache_renderer, sut):
+    output = paths.swift_dir / "some/output.txt"
+    stub = paths.swift_dir / "some/stub.txt"
+    registry = paths.swift_dir / "a/registry.list"
+    write(output)
+    write(stub, "// generated bla bla")
+    write(registry)
+
+    with pytest.raises(MyError):
+        with sut.manage(generated=(output,), stubs=(stub,), registry=registry) as renderer:
+            raise MyError
+
+    assert output.is_file()
+    assert stub.is_file()
+
+
 def test_render_with_extensions(pystache_renderer, sut):
     data = mock.Mock(spec=("template", "extensions"))
     data.template = "test_template"
