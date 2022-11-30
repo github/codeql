@@ -555,7 +555,7 @@ module ModelValidation {
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
       or
-      not name.regexpMatch("[a-zA-Z0-9_]*") and
+      not name.regexpMatch("[a-zA-Z0-9_\\-]*") and
       result = "Dubious name \"" + name + "\" in " + pred + " model."
       or
       not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
