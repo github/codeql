@@ -870,8 +870,7 @@ if_exprs(  //dir=expr
 );
 
 @implicit_conversion_expr =
-  @abi_safe_conversion_expr
-| @any_hashable_erasure_expr
+  @any_hashable_erasure_expr
 | @archetype_to_super_expr
 | @array_to_pointer_expr
 | @bridge_from_obj_c_expr
@@ -1128,10 +1127,6 @@ unresolved_specialize_exprs(  //dir=expr
 vararg_expansion_exprs(  //dir=expr
   unique int id: @vararg_expansion_expr,
   int sub_expr: @expr_or_none ref
-);
-
-abi_safe_conversion_exprs(  //dir=expr
-  unique int id: @abi_safe_conversion_expr
 );
 
 any_hashable_erasure_exprs(  //dir=expr

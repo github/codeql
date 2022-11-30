@@ -215,6 +215,17 @@ class SwiftDispatcher {
   // Emits a Location TRAP entry and attaches it to a `Locatable` trap label
   template <typename Locatable>
   void attachLocation(Locatable* locatable, TrapLabel<LocatableTag> locatableLabel) {
+    // Swift 5.7.1 causing a crash when the Swift compiler uses .back() of and empty
+    // getPatternList() when getting the source location.
+    // So far this only observed with the entities coming from precompiled modules, so they
+    // should not have locations anyway.
+    if constexpr (std::is_base_of<swift::Decl, Locatable>::value) {
+      if (auto* decl = llvm::dyn_cast<swift::PatternBindingDecl>(locatable)) {
+        if (decl->getPatternList().empty()) {
+          return;
+        }
+      }
+    }
     attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
   }
 

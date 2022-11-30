@@ -1040,3 +1040,6 @@ class ParameterizedProtocolType(Type):
     """
     base: ProtocolType
     args: list[Type]
+
+class AbiSafeConversionExpr(ImplicitConversionExpr):
+    pass
