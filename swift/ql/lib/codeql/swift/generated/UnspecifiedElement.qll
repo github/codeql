@@ -5,6 +5,9 @@ import codeql.swift.elements.Element
 import codeql.swift.elements.ErrorElement
 
 module Generated {
+  /**
+   * bla
+   */
   class UnspecifiedElement extends Synth::TUnspecifiedElement, ErrorElement {
     override string getAPrimaryQlClass() { result = "UnspecifiedElement" }
 
