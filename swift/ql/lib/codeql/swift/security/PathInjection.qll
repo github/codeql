@@ -79,7 +79,6 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";FileManager;true;trashItem(at:resultingItemURL:);;;Argument[0];path-injection",
         ";FileManager;true;replaceItem(at:withItemAt:backupItemName:options:resultingItemURL:);;;Argument[0..1];path-injection",
         ";FileManager;true;replaceItemAt(_:withItemAt:backupItemName:options:);;;Argument[0..1];path-injection",
-        ";FileManager;true;replaceItemAt(_:withItemAt:backupItemName:options:resultingItemURL:);;;Argument[0..1];path-injection",
         ";FileManager;true;copyItem(at:to:);;;Argument[0..1];path-injection",
         ";FileManager;true;copyItem(atPath:toPath:);;;Argument[0..1];path-injection",
         ";FileManager;true;moveItem(at:to:);;;Argument[0..1];path-injection",
