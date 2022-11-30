@@ -29,20 +29,20 @@ runs:
       with:
         path: '**/.cache'
         read-only: true
-        key: ${{ inputs.key }}-pr-${{ github.sha }}
+        key: codeql-compile-${{ inputs.key }}-pr-${{ github.sha }}
         restore-keys: |
-          ${{ inputs.key }}-${{ github.base_ref }}-${{ env.merge_base }}
-          ${{ inputs.key }}-${{ github.base_ref }}-
-          ${{ inputs.key }}-main-
+          codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-${{ env.merge_base }}
+          codeql-compile-${{ inputs.key }}-${{ github.base_ref }}-
+          codeql-compile-${{ inputs.key }}-main-
     - name: Fill cache (push)
       if: ${{ github.event_name != 'pull_request' }}
       uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
       with:
         path: '**/.cache'
-        key: ${{ inputs.key }}-${{ github.ref_name }}-${{ github.sha }} # just fill on main
+        key: codeql-compile-${{ inputs.key }}-${{ github.ref_name }}-${{ github.sha }} # just fill on main
         restore-keys: | # restore the latest cache if the exact cache is unavailable, to speed up compilation.
-          ${{ inputs.key }}-${{ github.ref_name }}-
-          ${{ inputs.key }}-main-
+          codeql-compile-${{ inputs.key }}-${{ github.ref_name }}-
+          codeql-compile-${{ inputs.key }}-main-
     - name: Fill compilation cache directory
       id: fill-compilation-dir
       shell: bash
