@@ -261,13 +261,13 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
       this.tokenize(any(Location location |
           location.getFile() = node.getAstNode().getLocation().getFile() and
           location.getStartLine() =
-            min(int line |
+            max(int line |
               line = node.getAstNode().getLocation().getStartLine() - neighborhoodSize or line = 1
             |
               line
             ) and
           location.getEndLine() =
-            max(int line |
+            min(int line |
               line = node.getAstNode().getLocation().getEndLine() + neighborhoodSize + 1 or // Add 1 because the end column is 1
               line = location.getFile().getNumberOfLines()
             |
