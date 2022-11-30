@@ -17,8 +17,8 @@ runs:
     - name: Cache the query compilation caches
       uses: ./.github/actions/incremental-cache
       with:
-        path: '**/.cache'
-        key: codeql-compile-${{ inputs.key }}
+        cached_path: '**/.cache'
+        cached_key: codeql-compile-${{ inputs.key }}
     - name: Fill compilation cache directory
       id: fill-compilation-dir
       shell: bash

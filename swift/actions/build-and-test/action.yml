@@ -10,13 +10,13 @@ runs:
     - name: Mount bazel cache
       uses: ./.github/actions/incremental-cache
       with:
-        path: bazel-repository-cache
-        key: bazel-cache-${{ runner.os }}-${{ runner.arch }}
+        cached_path: bazel-repository-cache
+        cached_key: bazel-cache-${{ runner.os }}-${{ runner.arch }}
     - name: Mount bazel disk cache
       uses: ./.github/actions/incremental-cache
       with:
-        path: bazel-disk-cache
-        key: bazel-disk-cache-${{ runner.os }}-${{ runner.arch }}
+        cached_path: bazel-disk-cache
+        cached_key: bazel-disk-cache-${{ runner.os }}-${{ runner.arch }}
     - name: Configure bazel cache
       shell: bash
       run: |

@@ -3,10 +3,10 @@ description: Special cache wrapper to be run on pull requests and pushes, that w
   a cache as close as possible to the merge base
 
 inputs:
-  path:
+  cached_path:
     description: 'The path to cache'
     required: true
-  key:
+  cached_key:
     description: 'The cache key to use - should be unique to the workflow'
     required: true
 
@@ -22,23 +22,23 @@ runs:
       run: |
         MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
         echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
-    - name: Restore read-only cache (PR)
-      if: ${{ github.event_name == 'pull_request' }}
-      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
-      with:
-        path: ${{ inputs.path }}
-        read-only: true
-        key: ${{ inputs.key }}-pr-${{ github.sha }}
-        restore-keys: |
-          ${{ inputs.key }}-${{ github.base_ref }}-${{ env.merge_base }}
-          ${{ inputs.key }}-${{ github.base_ref }}-
-          ${{ inputs.key }}-main-
+#    - name: Restore read-only cache (PR)
+#      if: ${{ github.event_name == 'pull_request' }}
+#      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
+#      with:
+#        path: ${{ inputs.cached_cached_path }}
+#        read-only: true
+#        key: ${{ inputs.cached_key }}-pr-${{ github.sha }}
+#        restore-keys: |
+#          ${{ inputs.cached_key }}-${{ github.base_ref }}-${{ env.merge_base }}
+#          ${{ inputs.cached_key }}-${{ github.base_ref }}-
+#          ${{ inputs.cached_key }}-main-
     - name: Fill cache (push)
-      if: ${{ github.event_name != 'pull_request' }}
+#      if: ${{ github.event_name != 'pull_request' }}
       uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
       with:
-        path: ${{ inputs.path }}
-        key: ${{ inputs.key }}-${{ github.ref_name }}-${{ github.sha }} # just fill on main
+        path: ${{ inputs.cached_path }}
+        key: ${{ inputs.cached_key }}-${{ github.ref_name }}-${{ github.sha }} # just fill on main
         restore-keys: | # restore the latest cache if the exact cache is unavailable, to speed up compilation.
-          ${{ inputs.key }}-${{ github.ref_name }}-
-          ${{ inputs.key }}-main-
+          ${{ inputs.cached_key }}-${{ github.ref_name }}-
+          ${{ inputs.cached_key }}-main-
