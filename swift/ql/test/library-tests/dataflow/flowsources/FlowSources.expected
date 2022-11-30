@@ -5,6 +5,20 @@
 | customurlschemes.swift:48:9:48:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
 | data.swift:18:20:18:20 | call to init(contentsOf:options:) | external |
 | data.swift:18:20:18:54 | call to init(contentsOf:options:) | external |
+| file://:0:0:0:0 | .source1 | external |
+| file://:0:0:0:0 | .source9 | external |
+| generics.swift:10:9:10:16 | .source1 | external |
+| generics.swift:11:9:11:16 | .source2 | external |
+| generics.swift:12:9:12:24 | call to source3() | external |
+| generics.swift:65:9:65:18 | .source9 | external |
+| generics.swift:66:9:66:18 | .source10 | external |
+| generics.swift:67:9:67:27 | call to source11() | external |
+| generics.swift:68:9:68:18 | .source12 | external |
+| generics.swift:69:9:69:27 | call to source13() | external |
+| generics.swift:88:9:88:15 | .source1 | external |
+| generics.swift:89:9:89:15 | .source2 | external |
+| generics.swift:112:9:112:15 | .source1 | external |
+| generics.swift:113:9:113:15 | .source2 | external |
 | nsdata.swift:18:17:18:17 | call to init(contentsOf:) | external |
 | nsdata.swift:18:17:18:40 | call to init(contentsOf:) | external |
 | nsdata.swift:19:17:19:17 | call to init(contentsOf:options:) | external |
