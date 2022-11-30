@@ -1,2 +1,0 @@
-| data.swift:85:12:85:12 | dataTainted | Fixed missing result:tainted=81 |
-| data.swift:86:12:86:12 | dataTainted2 | Fixed missing result:tainted=81 |
