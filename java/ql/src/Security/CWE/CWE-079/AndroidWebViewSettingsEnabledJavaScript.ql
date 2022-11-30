@@ -5,7 +5,7 @@
  * @id java/android-websettings-javascript-enabled
  * @problem.severity warning
  * @security-severity 6.1
- * @precision high
+ * @precision medium
  * @tags security
  *       external/cwe/cwe-079
  */
