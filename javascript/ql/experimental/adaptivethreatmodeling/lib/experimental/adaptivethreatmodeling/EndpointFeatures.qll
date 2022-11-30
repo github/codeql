@@ -224,6 +224,41 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
     result =
       "# Examples of security vulnerability sinks and non-sinks\n|Dataflow node|Neighborhood|Classification|\n|---|---|---|\n|`m[9] ? m[10] : null`|`                        this.authority = m[5] ? m[6] : null;                    this.path = m[7];                       this.query = m[9] ? m[10] : null;                       this.fragment = m[12] ? m[13] : null;  return this;`|non-sink|\n|`this.flowRunId`|`          variables: {            input: {              flow_run_id: this.flowRunId,              name: e            }`|non-sink|\n|`req.body.firstName`|`    res.json({      firstName: req.body.firstName,      lastName: req.body.lastName,      email: req.body.email`|non-sink|\n|`lang[1]`|`            if (lang) {                document.getElementsByTagName('html')[0].setAttribute('lang', lang[1]);            }`|non-sink|\n|`token`|`    },  });  tokenProvider.saveNewToken(token).then(ok => {    insights.trackEvent({      name: 'ReposCreateTokenFinish',`|non-sink|\n|`filename`|`function sendFile(filename, response) {  response.setHeader('Content-Type', mime.lookup(filename));  response.writeHead(200);  const fileStream = createReadStream(filename);`|non-sink|\n|`year`|`      postsData = await getPostsDateArchive(        postType,        !isNaN(parseInt(year, 10)) ? parseInt(year, 10) : null,        !isNaN(parseInt(month, 10)) ? parseInt(month, 10) : null,        !isNaN(parseInt(day, 10)) ? parseInt(day, 10) : null,`|non-sink|\n|`redirectTo === 'login' ? {redirectTo: to.path,} : to.query`|`    return next({      name: redirectTo,      query: redirectTo === 'login' ? {        redirectTo: to.path,      } : to.query,    });  }`|non-sink|\n"
   }
+
+  /**
+   * Holds if the location of `node` contains the location of `token`:
+   * both are on the same single line of code and
+   * the column range of `node` equals or contains
+   * the column range of `token`.
+   */
+  cached
+  predicate containsToken(AstNode node, Token token) {
+    exists(string file, int line, int sc, int ec, int tsc, int tec |
+      node.getLocation().hasLocationInfo(file, line, sc, line, ec) and
+      token.getLocation().hasLocationInfo(file, line, tsc, line, tec) and
+      sc <= tsc and
+      tec <= ec
+    )
+  }
+
+  /**
+   * Gets the reconstructed source code text for `node`,
+   * assuming it is on a single line of code.
+   */
+  string tokenise(DataFlow::Node node) {
+    result =
+      strictconcat(Token token |
+        containsToken(node.getAstNode(), token)
+      |
+        token.getValue(),
+          // Use space as the separator, since that is most likely.
+          // May not be an exact reconstruction, e.g. if the code
+          // had newlines between successive tokens.
+          " "
+        order by
+          token.getLocation().getStartLine(), token.getLocation().getStartColumn()
+      )
+  }
 }
 
 /**
