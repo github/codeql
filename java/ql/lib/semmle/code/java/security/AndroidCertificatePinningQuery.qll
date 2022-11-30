@@ -128,12 +128,21 @@ private class UntrustedUrlConfig extends TaintTracking::Configuration {
 }
 
 /** Holds if `node` is a network communication call for which certificate pinning is not implemented. */
-predicate missingPinning(DataFlow::Node node) {
+predicate missingPinning(DataFlow::Node node, string domain) {
   isAndroid() and
   node instanceof MissingPinningSink and
   (
-    not exists(string s | trustedDomain(s))
+    not exists(string s | trustedDomain(s)) and
+    domain = ""
     or
-    exists(UntrustedUrlConfig conf | conf.hasFlow(_, node))
+    exists(UntrustedUrlConfig conf, DataFlow::Node src |
+      conf.hasFlow(src, node) and
+      domain = getDomain(src.asExpr())
+    )
   )
+}
+
+/** Gets the domain name from the given string literal */
+private string getDomain(CompileTimeConstantExpr expr) {
+  result = expr.getStringValue().regexpCapture("(https?://)?([^/]*)/?", 2)
 }

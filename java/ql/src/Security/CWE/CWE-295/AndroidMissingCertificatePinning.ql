@@ -13,10 +13,10 @@
 import java
 import semmle.code.java.security.AndroidCertificatePinningQuery
 
-from DataFlow::Node node, string msg
+from DataFlow::Node node, string domain, string msg
 where
-  missingPinning(node) and
-  if exists(string x | trustedDomain(x))
-  then msg = "(untrusted domain)"
-  else msg = "(no trusted domains)"
+  missingPinning(node, domain) and
+  if domain = ""
+  then msg = "(no explicitly trusted domains)"
+  else msg = "(" + domain + " is not trusted by a pin)"
 select node, "This network call does not implement certificate pinning. " + msg
