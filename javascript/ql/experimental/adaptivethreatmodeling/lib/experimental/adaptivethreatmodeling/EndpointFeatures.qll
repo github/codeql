@@ -139,7 +139,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
   override string getName() { result = "codexPrompt" }
 
   override string getValue(DataFlow::Node endpoint) {
-    result = getTrainingSetPrompt() + getCurrentEndpointPrompt(endpoint)
+    result = this.getTrainingSetPrompt() + this.getCurrentEndpointPrompt(endpoint)
   }
 
   /**
@@ -157,7 +157,8 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    * TODO
    */
   private string getCurrentEndpointPrompt(DataFlow::Node endpoint) {
-    result = "|" + tokenizeEndpoint(endpoint) + "|" + tokenizeNeighborhood(endpoint, 2) + "|"
+    result =
+      "|" + this.tokenizeEndpoint(endpoint) + "|" + this.tokenizeNeighborhood(endpoint, 2) + "|"
   }
 
   /**
@@ -210,7 +211,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
   private predicate hardTPExamplesForCodexPrompt(
     int numExamples, DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string reason
   ) {
-    hardTPExamples(endpoint, sinkType, reason)
+    this.hardTPExamples(endpoint, sinkType, reason)
     // and
     // TODO
   }
@@ -247,7 +248,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    * Gets the reconstructed source code text for `node`.
    */
   string tokenizeEndpoint(DataFlow::Node node) {
-    result = tokenize(node.getAstNode().getLocation())
+    result = this.tokenize(node.getAstNode().getLocation())
   }
 
   /**
@@ -257,7 +258,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
   bindingset[neighborhoodSize]
   string tokenizeNeighborhood(DataFlow::Node node, int neighborhoodSize) {
     result =
-      tokenize(any(Location location |
+      this.tokenize(any(Location location |
           location.getFile() = node.getAstNode().getLocation().getFile() and
           location.getStartLine() =
             min(int line |
