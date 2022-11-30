@@ -18,7 +18,7 @@ jobs:
         run: |
           set +eo pipefail
           echo "Testing API calls"
-          gh api -i /repos/github/codeql | grep X-Oauth-Scopes
+          gh api -i /repos/github/codeql
           echo "Checking if user $USERNAME is a member of the CodeQL team"
           if [ "$(gh api "/orgs/github/teams/codeql/memberships/$USERNAME" --jq .state)" == "active" ]; then
               echo "User $USERNAME is a member of the CodeQL team"
