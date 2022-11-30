@@ -70,7 +70,7 @@ abstract class Configuration extends string {
   /**
    * Holds if `sink` is a relevant data flow sink accepting `state`.
    */
-  predicate isSink(Node source, FlowState state) { none() }
+  predicate isSink(Node sink, FlowState state) { none() }
 
   /**
    * Holds if data flow through `node` is prohibited. This completely removes

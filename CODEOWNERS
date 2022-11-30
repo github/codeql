@@ -12,13 +12,6 @@
 # ML-powered queries
 /javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
 
-# Notify members of codeql-go about PRs to the shared data-flow library files
-/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl.qll @github/codeql-java @github/codeql-go
-/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl2.qll @github/codeql-java @github/codeql-go
-/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll @github/codeql-java @github/codeql-go
-/java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll @github/codeql-java @github/codeql-go
-/java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll @github/codeql-java @github/codeql-go
-
 # CodeQL tools and associated docs
 /docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
 /docs/codeql/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers
