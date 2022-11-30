@@ -5,7 +5,7 @@
  *              explicitly.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id go/unhandled-writable-file-close
  * @tags maintainability
  *  correctness
