@@ -3,9 +3,11 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
+<p>
 Certificate pinning is the practice of only trusting a specific set of SSL certificates, rather than those that the device trusts by default.
 In Android applications, it is reccomended to use certificate pinning when communicating over the network, 
 in order to minimize the risk of machine-in-the-middle attacks from a comprimised CA.
+</p>
 </overview>
 
 <recommendation>

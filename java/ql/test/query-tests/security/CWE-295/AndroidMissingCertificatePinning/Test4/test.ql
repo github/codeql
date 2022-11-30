@@ -9,7 +9,7 @@ class Test extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location loc, string el, string tag, string value) {
     exists(DataFlow::Node node |
-      missingPinning(node) and
+      missingPinning(node, _) and
       loc = node.getLocation() and
       el = node.toString() and
       value = "" and

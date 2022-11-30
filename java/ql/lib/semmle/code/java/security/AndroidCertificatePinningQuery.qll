@@ -144,5 +144,5 @@ predicate missingPinning(DataFlow::Node node, string domain) {
 
 /** Gets the domain name from the given string literal */
 private string getDomain(CompileTimeConstantExpr expr) {
-  result = expr.getStringValue().regexpCapture("(https?://)?([^/]*)/?", 2)
+  result = expr.getStringValue().regexpCapture("(https?://)?([^/]*)(/.*)?", 2)
 }
