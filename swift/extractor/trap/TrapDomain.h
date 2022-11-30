@@ -10,21 +10,21 @@ namespace codeql {
 
 // Abstracts a given trap output file, with its own universe of trap labels
 class TrapDomain {
-  TargetFile& out_;
+  TargetFile& out;
 
  public:
-  explicit TrapDomain(TargetFile& out) : out_{out} {}
+  explicit TrapDomain(TargetFile& out) : out{out} {}
 
   template <typename Entry>
   void emit(const Entry& e) {
-    print(e);
+    out << e << '\n';
   }
 
   template <typename... Args>
   void debug(const Args&... args) {
-    print("/* DEBUG:");
-    print(args...);
-    print("*/");
+    out << "/* DEBUG:\n";
+    (out << ... << args);
+    out << "\n*/\n";
   }
 
   template <typename Tag>
@@ -41,36 +41,47 @@ class TrapDomain {
     return ret;
   }
 
+  template <typename Tag, typename... Args>
+  TrapLabel<Tag> createLabelWithImplementationId(const std::string& id, Args&&... args) {
+    auto ret = allocateLabel<Tag>();
+    assignKeyWithImplementationId(ret, id, std::forward<Args>(args)...);
+    return ret;
+  }
+
  private:
-  uint64_t id_{0};
+  uint64_t id{0};
 
   template <typename Tag>
   TrapLabel<Tag> allocateLabel() {
-    return TrapLabel<Tag>::unsafeCreateFromExplicitId(id_++);
-  }
-
-  template <typename... Args>
-  void print(const Args&... args) {
-    (out_ << ... << args) << '\n';
+    return TrapLabel<Tag>::unsafeCreateFromExplicitId(id++);
   }
 
   template <typename Tag>
   void assignStar(TrapLabel<Tag> label) {
-    print(label, "=*");
+    out << label << "=*\n";
   }
 
-  template <typename Tag>
-  void assignKey(TrapLabel<Tag> label, const std::string& key) {
+  template <typename Tag, typename... Args>
+  void assignKeyNoReturn(TrapLabel<Tag> label, const Args&... keyParts) {
+    std::ostringstream oss;
     // prefix the key with the id to guarantee the same key is not used wrongly with different tags
-    auto prefixed = std::string(Tag::prefix) + '_' + key;
-    print(label, "=@", trapQuoted(prefixed));
+    oss << Tag::prefix << '_';
+    (oss << ... << keyParts);
+    out << label << "=@" << trapQuoted(oss.str());
   }
 
   template <typename Tag, typename... Args>
   void assignKey(TrapLabel<Tag> label, const Args&... keyParts) {
-    std::ostringstream oss;
-    (oss << ... << keyParts);
-    assignKey(label, oss.str());
+    assignKeyNoReturn(label, keyParts...);
+    out << '\n';
+  }
+
+  template <typename Tag, typename... Args>
+  void assignKeyWithImplementationId(TrapLabel<Tag> label,
+                                     const std::string& id,
+                                     const Args&... keyParts) {
+    assignKeyNoReturn(label, keyParts...);
+    out << " .implementation " << trapQuoted(id) << '\n';
   }
 };
 
