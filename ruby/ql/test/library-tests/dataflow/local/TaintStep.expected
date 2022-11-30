@@ -23,7 +23,7 @@
 | file://:0:0:0:0 | parameter position 0 of activesupport;;Member[ActionView].Member[SafeBuffer].Method[new] | file://:0:0:0:0 | [summary] to write: return (return) in activesupport;;Member[ActionView].Member[SafeBuffer].Method[new] |
 | file://:0:0:0:0 | parameter position 0 of activesupport;;Member[ActiveSupport].Member[JSON].Method[decode,load] | file://:0:0:0:0 | [summary] to write: return (return) in activesupport;;Member[ActiveSupport].Member[JSON].Method[decode,load] |
 | file://:0:0:0:0 | parameter position 0 of activesupport;;Member[ActiveSupport].Member[JSON].Method[encode,dump] | file://:0:0:0:0 | [summary] to write: return (return) in activesupport;;Member[ActiveSupport].Member[JSON].Method[encode,dump] |
-| file://:0:0:0:0 | parameter position 0 of json;;Member[JSON].Method[generate,fast_generate,dump,unparse,fast_unparse] | file://:0:0:0:0 | [summary] to write: return (return) in json;;Member[JSON].Method[generate,fast_generate,dump,unparse,fast_unparse] |
+| file://:0:0:0:0 | parameter position 0 of json;;Member[JSON].Method[generate,fast_generate,pretty_generate,dump,unparse,fast_unparse] | file://:0:0:0:0 | [summary] to write: return (return) in json;;Member[JSON].Method[generate,fast_generate,pretty_generate,dump,unparse,fast_unparse] |
 | file://:0:0:0:0 | parameter position 0 of json;;Member[JSON].Method[parse,parse!,load,restore] | file://:0:0:0:0 | [summary] to write: return (return) in json;;Member[JSON].Method[parse,parse!,load,restore] |
 | file://:0:0:0:0 | parameter position 0.. of File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
 | file://:0:0:0:0 | parameter self of & | file://:0:0:0:0 | [summary] read: argument self.any element in & |
