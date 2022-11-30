@@ -19,19 +19,19 @@ runs:
       run: |
         MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
         echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
-    - name: Restore read-only cache (PR)
-      if: ${{ github.event_name == 'pull_request' }}
-      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
-      with:
-        path: 'bazel-cache'
-        read-only: true
-        key: bazel-pr-${{ github.sha }}
-        restore-keys: |
-          bazel-${{ github.base_ref }}-${{ env.merge_base }}
-          bazel-${{ github.base_ref }}-
-          bazel-main-
+#    - name: Restore read-only cache (PR)
+#      if: ${{ github.event_name == 'pull_request' }}
+#      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
+#      with:
+#        path: 'bazel-cache'
+#        read-only: true
+#        key: bazel-pr-${{ github.sha }}
+#        restore-keys: |
+#          bazel-${{ github.base_ref }}-${{ env.merge_base }}
+#          bazel-${{ github.base_ref }}-
+#          bazel-main-
     - name: Fill cache (push)
-      if: ${{ github.event_name != 'pull_request' }}
+#      if: ${{ github.event_name != 'pull_request' }}
       uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
       with:
         path: 'bazel-cache'
