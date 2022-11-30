@@ -27,7 +27,7 @@ static std::string originalHashFile(const fs::path& filename) {
 }
 
 static int codeql_open(const char* path, int oflag, ...) {
-  va_list ap = {0};
+  va_list ap;
   mode_t mode = 0;
   if ((oflag & O_CREAT) != 0) {
     // mode only applies to O_CREAT
