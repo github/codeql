@@ -12,7 +12,9 @@
   </overview>
 
   <recommendation>
-    <p>When possible, you should disallow file access by setting the following settings to <code>false</code>:</p>
+    <p>When possible, you should not allow file access. The file access settings
+    are disabled by default. You can explicitly disbale them by setting the
+    following settings to <code>false</code>:</p>
 
     <ul>
       <li><code>setAllowFileAccess</code></li>
