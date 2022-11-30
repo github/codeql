@@ -4,13 +4,12 @@ name: Internal CI Checks
 
 on:
   pull_request_target:
-  
+
 permissions:
   actions: write
   checks: write
   contents: write
   deployments: write
-  id-token: read
   issues: write
   packages: write
   pull-requests: write
