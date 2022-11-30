@@ -40,7 +40,6 @@ class ErrorElement(Locatable):
 
 @use_for_null
 class UnspecifiedElement(ErrorElement):
-    """bla"""
     parent: optional[Element]
     property: string
     index: optional[int]
