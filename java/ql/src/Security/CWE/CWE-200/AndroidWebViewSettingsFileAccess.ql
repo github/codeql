@@ -5,7 +5,7 @@
  * @id java/android-websettings-file-access
  * @problem.severity warning
  * @security-severity 6.5
- * @precision high
+ * @precision medium
  * @tags security
  *       external/cwe/cwe-200
  */
