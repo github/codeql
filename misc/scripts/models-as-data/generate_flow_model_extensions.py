@@ -169,7 +169,7 @@ Requirements: `codeql` should both appear on your path.
             sourceAddsTo = ""
 
         if self.generateNegativeSummaries:
-            negativeSummaryAddsTo = self.getAddsTo("CaptureNegativeSummaryModels.ql", "extNegativeSummaryModel")
+            negativeSummaryAddsTo = self.getAddsTo("CaptureNegativeSummaryModels.ql", helpers.negativeSummaryModelPredicate)
         else:
             negativeSummaryAddsTo = ""
         
