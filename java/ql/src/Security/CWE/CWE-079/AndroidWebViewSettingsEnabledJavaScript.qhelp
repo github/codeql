@@ -22,7 +22,9 @@
   </overview>
 
   <recommendation>
-    <p>If Javascript does not need to be enabled, call <code>setJavaScriptEnabled(false)</code> on the settings of the WebView.</p>
+    <p>JavaScript execution is disabled by default. You can explicitly disable
+    it by calling <code>setJavaScriptEnabled(false)</code> on the settings of
+    the WebView.</p>
 
     <p>If JavaScript is necessary, only load content from trusted servers using encrypted channels, such as HTTPS with certificate verification.</p>
   </recommendation>
