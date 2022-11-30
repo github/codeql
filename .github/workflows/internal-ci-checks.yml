@@ -12,17 +12,17 @@ jobs:
       - name: Set a label to trigger internal CI checks
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.event.pull_request.user.login }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          LABEL: "ready-for-internal-ci"
         run: |
-          USERNAME="${{ github.event.pull_request.user.login }}"
-          LABEL="ready-for-internal-ci"
           set +eo pipefail
           echo "Checking if user $USERNAME is a member of the CodeQL team"
-          gh api -H "Accept: application/vnd.github+json" /orgs/github/teams/codeql/memberships/$USERNAME > /dev/null 2>&1
-          if [ "$?" == 0 ]; then
+          if [ "$(gh api "/orgs/github/teams/codeql/memberships/$USERNAME" --jq .state)" == "active" ]; then
               echo "User $USERNAME is a member of the CodeQL team"
-              echo "Adding 'ready-for-internal-ci' label"
-              gh pr edit "${{ github.event.pull_request.number }}" --repo $GITHUB_REPOSITORY --add-label $LABEL
+              echo "Adding '${LABEL}' label"
+              gh pr edit "${PR_NUMBER}" --repo "$GITHUB_REPOSITORY" --add-label "$LABEL"
           else
             echo "User $USERNAME is not a member of the CodeQL team"
-            echo "To trigger the internal CI, a maintainer needs to add the ready-for-internal-ci label"
+            echo "To trigger the internal CI, a maintainer needs to add the '${LABEL}' label"
           fi
