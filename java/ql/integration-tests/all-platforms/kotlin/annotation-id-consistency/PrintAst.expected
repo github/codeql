@@ -184,7 +184,14 @@ test.kt:
 #    0|               0: [TypeAccess] int
 #    0|         3: [VarAccess] DayOfWeek.MONDAY
 #    0|           -1: [TypeAccess] DayOfWeek
-#   18|       3: [Annotation] GenericAnnotation<>
+#   18|       3: [Annotation] GenericAnnotation
+#    0|         1: [TypeLiteral] String.class
+#    0|           0: [TypeAccess] String
+#    0|         2: [ArrayInit] {...}
+#    0|           1: [TypeLiteral] String.class
+#    0|             0: [TypeAccess] String
+#    0|           2: [TypeLiteral] String.class
+#    0|             0: [TypeAccess] String
 #   24|       4: [Annotation] AnnWithDefaults
 #    0|         1: [IntegerLiteral] 1
 #    0|         2: [StringLiteral] "hello"
@@ -242,7 +249,14 @@ test.kt:
 #    0|               0: [TypeAccess] int
 #    0|         3: [VarAccess] DayOfWeek.MONDAY
 #    0|           -1: [TypeAccess] DayOfWeek
-#   28|       3: [Annotation] GenericAnnotation<>
+#   28|       3: [Annotation] GenericAnnotation
+#    0|         1: [TypeLiteral] String.class
+#    0|           0: [TypeAccess] String
+#    0|         2: [ArrayInit] {...}
+#    0|           1: [TypeLiteral] String.class
+#    0|             0: [TypeAccess] String
+#    0|           2: [TypeLiteral] String.class
+#    0|             0: [TypeAccess] String
 #   34|       4: [Annotation] AnnWithDefaults
 #    0|         1: [IntegerLiteral] 1
 #    0|         2: [StringLiteral] "hello"
@@ -285,17 +299,3 @@ test.kt:
 #   46|       5: [BlockStmt] { ... }
 #   46|         0: [SuperConstructorInvocationStmt] super(...)
 #   47|         1: [BlockStmt] { ... }
-#    0| [TypeLiteral] String.class
-#    0|   0: [TypeAccess] String
-#    0| [ArrayInit] {...}
-#    0|   1: [TypeLiteral] String.class
-#    0|     0: [TypeAccess] String
-#    0|   2: [TypeLiteral] String.class
-#    0|     0: [TypeAccess] String
-#    0| [TypeLiteral] String.class
-#    0|   0: [TypeAccess] String
-#    0| [ArrayInit] {...}
-#    0|   1: [TypeLiteral] String.class
-#    0|     0: [TypeAccess] String
-#    0|   2: [TypeLiteral] String.class
-#    0|     0: [TypeAccess] String

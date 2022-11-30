@@ -37,7 +37,7 @@ class Annotation extends @annotation, Expr {
   }
 
   /** Gets the annotation type declaration for this annotation. */
-  override AnnotationType getType() { result = Expr.super.getType() }
+  override AnnotationType getType() { result = Expr.super.getType().(AnnotationType).getSourceDeclaration() }
 
   /** Gets the annotation element with the specified `name`. */
   AnnotationElement getAnnotationElement(string name) {
