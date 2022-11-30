@@ -128,7 +128,7 @@ private AstNode specialParentOfInclSynth(AstNode n) {
   n =
     [
       result.(Namespace).getScopeExpr(), result.(ClassDeclaration).getSuperclassExpr(),
-      result.(SingletonMethod).getObject()
+      result.(SingletonMethod).getObject(), result.(SingletonClass).getValue()
     ]
 }
 

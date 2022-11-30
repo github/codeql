@@ -151,7 +151,7 @@ module Templating {
 
     /** Gets the data flow node representing the initialization of the given variable in this scope. */
     DataFlow::Node getVariableInit(string name) {
-      result = DataFlow::ssaDefinitionNode(SSA::implicitInit(this.getScope().getVariable(name)))
+      result = DataFlow::ssaDefinitionNode(Ssa::implicitInit(this.getScope().getVariable(name)))
     }
 
     /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */

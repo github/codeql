@@ -141,7 +141,8 @@ class TypeNumber extends RefType {
 
 /** A (reflexive, transitive) subtype of `java.lang.Number`. */
 class NumberType extends RefType {
-  NumberType() { exists(TypeNumber number | hasDescendant(number, this)) }
+  pragma[nomagic]
+  NumberType() { this.getASupertype*() instanceof TypeNumber }
 }
 
 /** An immutable type. */

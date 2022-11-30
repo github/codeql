@@ -4,7 +4,7 @@
  * own.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
@@ -34,9 +34,11 @@ module UrlRedirect {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "URL redirection" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * Additional taint steps for "URL redirection" vulnerabilities.
@@ -48,14 +50,16 @@ module UrlRedirect {
   /**
    * A source of remote user input, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  class HttpRequestInputAccessAsSource extends Source, Http::Server::RequestInputAccess {
+    HttpRequestInputAccessAsSource() { this.isThirdPartyControllable() }
+  }
 
   /**
    * A HTTP redirect response, considered as a flow sink.
    */
   class RedirectLocationAsSink extends Sink {
     RedirectLocationAsSink() {
-      exists(HTTP::Server::HttpRedirectResponse e, MethodBase method |
+      exists(Http::Server::HttpRedirectResponse e, MethodBase method |
         this = e.getRedirectLocation() and
         // We only want handlers for GET requests.
         // Handlers for other HTTP methods are not as vulnerable to URL
@@ -69,7 +73,9 @@ module UrlRedirect {
           // We exclude any handlers with names containing create/update/destroy, as these are not likely to handle GET requests.
           not exists(method.(ActionControllerActionMethod).getARoute()) and
           not method.getName().regexpMatch(".*(create|update|destroy).*")
-        )
+        ) and
+        // If this redirect is an ActionController method call, it is only vulnerable if it allows external redirects.
+        forall(RedirectToCall c | c = e.asExpr().getExpr() | c.allowsExternalRedirect())
       )
     }
   }
@@ -77,7 +83,7 @@ module UrlRedirect {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsSanitizer extends Sanitizer, StringConstCompareBarrier { }
 
   /**
    * Some methods will propagate taint to their return values.

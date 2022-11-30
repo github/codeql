@@ -68,9 +68,9 @@ void test2(bool cond)
 
 	maybe = cond ? global_token : global_other;
 	
-	printf("token = '%s'\n", global_token); // BAD: outputs SECRET_TOKEN environment variable [NOT DETECTED]
+	printf("token = '%s'\n", global_token); // BAD: outputs SECRET_TOKEN environment variable
 	printf("other = '%s'\n", global_other);
-	printf("maybe = '%s'\n", maybe); // BAD: may output SECRET_TOKEN environment variable [NOT DETECTED]
+	printf("maybe = '%s'\n", maybe); // BAD: may output SECRET_TOKEN environment variable
 }
 
 void test3()

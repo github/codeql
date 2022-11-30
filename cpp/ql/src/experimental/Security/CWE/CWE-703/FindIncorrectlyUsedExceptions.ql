@@ -24,7 +24,7 @@ where
         texp.getEnclosingStmt().getParentStmt*() = ts.getStmt() and
         not ts.getACatchClause().isEmpty()
       ) and
-      msg = "DllMain contains an exeption not wrapped in a try..catch block."
+      msg = "DllMain contains an exception not wrapped in a try..catch block."
       or
       texp.getExpr().isParenthesised() and
       texp.getExpr().(CommaExpr).getLeftOperand().isConstant() and

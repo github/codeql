@@ -62,7 +62,7 @@ module Couchbase {
    * A query used in an API function acting on a `Bucket` or `Cluster` struct of v1 of
    * the official Couchbase Go library, gocb.
    */
-  private class CouchbaseV1Query extends NoSQL::Query::Range {
+  private class CouchbaseV1Query extends NoSql::Query::Range {
     CouchbaseV1Query() {
       // func (b *Bucket) ExecuteAnalyticsQuery(q *AnalyticsQuery, params interface{}) (AnalyticsResults, error)
       // func (b *Bucket) ExecuteN1qlQuery(q *N1qlQuery, params interface{}) (QueryResults, error)
@@ -81,7 +81,7 @@ module Couchbase {
    * A query used in an API function acting on a `Bucket` or `Cluster` struct of v1 of
    * the official Couchbase Go library, gocb.
    */
-  private class CouchbaseV2Query extends NoSQL::Query::Range {
+  private class CouchbaseV2Query extends NoSql::Query::Range {
     CouchbaseV2Query() {
       // func (c *Cluster) AnalyticsQuery(statement string, opts *AnalyticsOptions) (*AnalyticsResult, error)
       // func (c *Cluster) Query(statement string, opts *QueryOptions) (*QueryResult, error)

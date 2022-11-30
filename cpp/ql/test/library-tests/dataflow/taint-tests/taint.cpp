@@ -47,14 +47,14 @@ void do_source()
 void do_sink()
 {
 	sink(global1);
-	sink(global2); // $ MISSING: ast,ir
-	sink(global3); // $ MISSING: ast,ir
-	sink(global4); // $ MISSING: ast,ir
+	sink(global2); // $ ir MISSING: ast
+	sink(global3); // $ ir MISSING: ast
+	sink(global4); // $ ir MISSING: ast
 	sink(global5);
 	sink(global6);
-	sink(global7); // $ MISSING: ast,ir
-	sink(global8); // $ MISSING: ast,ir
-	sink(global9); // $ MISSING: ast,ir
+	sink(global7); // $ ir MISSING: ast
+	sink(global8); // $ ir MISSING: ast
+	sink(global9); // $ ir MISSING: ast
 	sink(global10);
 }
 
@@ -574,8 +574,8 @@ void test__mbsncat_l(unsigned char* dest1, unsigned const char* ptr, unsigned ch
 	unsigned char* dest2 = _mbsncat_l(dest1, ptr, n, source);
 	sink(dest1); // $ SPURIOUS: ast,ir
 	sink(*dest1); // $ ast,ir
-	sink(dest2); // $ SPURIOUS: ir
-	sink(*dest2); // $ ir
+	sink(dest2); // $ SPURIOUS: ast,ir
+	sink(*dest2); // $ ast,ir
 
 	unsigned char* dest4 = _mbsncat_l(dest3, ptr, n, clean);
 	sink(dest3);

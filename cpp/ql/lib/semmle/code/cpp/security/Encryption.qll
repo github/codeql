@@ -51,14 +51,14 @@ string getInsecureAlgorithmRegex() {
 
 /**
  * Holds if `name` looks like it might be related to operations with an
- * insecure encyption algorithm.
+ * insecure encryption algorithm.
  */
 bindingset[name]
 predicate isInsecureEncryption(string name) { name.regexpMatch(getInsecureAlgorithmRegex()) }
 
 /**
  * Holds if there is additional evidence that `name` looks like it might be
- * related to operations with an encyption algorithm, besides the name of a
+ * related to operations with an encryption algorithm, besides the name of a
  * specific algorithm. This can be used in conjunction with
  * `isInsecureEncryption` to produce a stronger heuristic.
  */

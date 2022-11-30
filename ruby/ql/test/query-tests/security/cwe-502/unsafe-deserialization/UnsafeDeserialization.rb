@@ -1,3 +1,4 @@
+require "active_job"
 require "base64"
 require "json"
 require "oj"
@@ -72,5 +73,30 @@ class UsersController < ActionController::Base
   def route9
     json_data = params[:key]
     object = Oj.safe_load json_data
+  end
+
+  # BAD - `Hash.from_trusted_xml` will deserialize elements with the
+  # `type="yaml"` attribute as YAML.
+  def route10
+    xml = params[:key]
+    hash = Hash.from_trusted_xml(xml)
+  end
+
+  # BAD
+  def route11
+    yaml_data = params[:key]
+    object = Psych.load yaml_data
+  end
+
+  # BAD - user input determines which class is instantiated
+  def route12
+    klass = Module.const_get(params[:class])
+    object = klass.new
+  end
+
+  # BAD - user input determines which class is instantiated
+  def route13
+    klass = ActiveJob::Serializers.deserialize(params[:class])
+    object = klass.new
   end
 end

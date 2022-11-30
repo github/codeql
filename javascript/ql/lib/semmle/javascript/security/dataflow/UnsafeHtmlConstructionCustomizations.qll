@@ -22,7 +22,7 @@ module UnsafeHtmlConstruction {
   /**
    * A parameter of an exported function, seen as a source for usnafe HTML constructed from input.
    */
-  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+  class ExternalInputSource extends Source {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
       // An AMD-style module sometimes loads the jQuery library in a way which looks like library input.
@@ -34,7 +34,7 @@ module UnsafeHtmlConstruction {
    * A jQuery plugin options object, seen as a source for unsafe HTML constructed from input.
    */
   class JQueryPluginOptionsAsSource extends Source {
-    JQueryPluginOptionsAsSource() { this instanceof UnsafeJQueryPlugin::JQueryPluginOptions }
+    JQueryPluginOptionsAsSource() { this = any(JQuery::JQueryPluginMethod meth).getAParameter() }
   }
 
   /**
@@ -80,7 +80,7 @@ module UnsafeHtmlConstruction {
     t.start() and
     result = sink
     or
-    exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, isUsedInXssSink(t2, sink)))
+    exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, isUsedInXssSink(t2, sink)))
     or
     exists(DataFlow::TypeBackTracker t2 |
       t.continue() = t2 and
@@ -178,6 +178,20 @@ module UnsafeHtmlConstruction {
       )
     }
 
-    override string describe() { result = "Markdown rendering" }
+    override string describe() { result = "markdown rendering" }
+  }
+
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
+  class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    override EqualityTest astNode;
+    Expr operand;
+    boolean polarity;
+
+    TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      polarity = outcome and
+      e = operand
+    }
   }
 }

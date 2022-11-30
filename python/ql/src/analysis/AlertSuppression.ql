@@ -72,7 +72,7 @@ class LgtmSuppressionComment extends LineSuppressionComment {
  * A noqa suppression comment. Both pylint and pyflakes respect this, so lgtm ought to too.
  */
 class NoqaSuppressionComment extends LineSuppressionComment {
-  NoqaSuppressionComment() { this.getContents().toLowerCase().regexpMatch("\\s*noqa\\s*") }
+  NoqaSuppressionComment() { this.getContents().toLowerCase().regexpMatch("\\s*noqa\\s*([^:].*)?") }
 
   override string getAnnotation() { result = "lgtm" }
 }

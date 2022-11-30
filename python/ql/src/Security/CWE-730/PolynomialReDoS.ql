@@ -4,6 +4,7 @@
  *              to match may be vulnerable to denial-of-service attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id py/polynomial-redos
  * @tags security
@@ -13,7 +14,6 @@
  */
 
 import python
-import semmle.python.security.performance.SuperlinearBackTracking
 import semmle.python.security.dataflow.PolynomialReDoSQuery
 import DataFlow::PathGraph
 
@@ -29,6 +29,6 @@ where
 //     regexp.isAtEndLine()
 //   )
 select sinkNode.getHighlight(), source, sink,
-  "This $@ that depends on $@ may run slow on strings " + regexp.getPrefixMessage() +
+  "This $@ that depends on a $@ may run slow on strings " + regexp.getPrefixMessage() +
     "with many repetitions of '" + regexp.getPumpString() + "'.", regexp, "regular expression",
-  source.getNode(), "a user-provided value"
+  source.getNode(), "user-provided value"

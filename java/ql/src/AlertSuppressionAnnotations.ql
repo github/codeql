@@ -23,7 +23,7 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   string text;
 
   SuppressionAnnotation() {
-    text = this.getASuppressedWarningLiteral().getValue() and
+    text = this.getASuppressedWarning() and
     exists(getAnnotationText(text))
   }
 

@@ -5,7 +5,7 @@ import semmle.python.ApiGraphs
 
 private DataFlow::TypeTrackingNode module_tracker(TypeTracker t) {
   t.start() and
-  result = API::moduleImport("module").getAnImmediateUse()
+  result = API::moduleImport("module").asSource()
   or
   exists(TypeTracker t2 | result = module_tracker(t2).track(t2, t))
 }

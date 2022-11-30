@@ -28,6 +28,9 @@ groups, and finally set the target user.</p>
 <references>
 
 <li>CERT C Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/c/POS36-C.+Observe+correct+revocation+order+while+relinquishing+privileges">POS36-C. Observe correct revocation order while relinquishing privileges</a>.
+</li>
+<li>CERT C Coding Standard:
 <a href="https://wiki.sei.cmu.edu/confluence/display/c/POS37-C.+Ensure+that+privilege+relinquishment+is+successful">POS37-C. Ensure that privilege relinquishment is successful</a>.
 </li>
 

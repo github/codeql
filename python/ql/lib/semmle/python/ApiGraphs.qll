@@ -12,76 +12,165 @@ import semmle.python.dataflow.new.DataFlow
 private import semmle.python.internal.CachedStages
 
 /**
- * Provides classes and predicates for working with APIs used in a database.
+ * Provides classes and predicates for working with the API boundary between the current
+ * codebase and external libraries.
+ *
+ * See `API::Node` for more in-depth documentation.
  */
 module API {
   /**
-   * An abstract representation of a definition or use of an API component such as a function
-   * exported by a Python package, or its result.
+   * A node in the API graph, representing a value that has crossed the boundary between this
+   * codebase and an external library (or in general, any external codebase).
+   *
+   * ### Basic usage
+   *
+   * API graphs are typically used to identify "API calls", that is, calls to an external function
+   * whose implementation is not necessarily part of the current codebase.
+   *
+   * The most basic use of API graphs is typically as follows:
+   * 1. Start with `API::moduleImport` for the relevant library.
+   * 2. Follow up with a chain of accessors such as `getMember` describing how to get to the relevant API function.
+   * 3. Map the resulting API graph nodes to data-flow nodes, using `asSource` or `asSink`.
+   *
+   * For example, a simplified way to get the first argument of a call to `json.dumps` would be
+   * ```ql
+   * API::moduleImport("json").getMember("dumps").getParameter(0).asSink()
+   * ```
+   *
+   * The most commonly used accessors are `getMember`, `getParameter`, and `getReturn`.
+   *
+   * ### API graph nodes
+   *
+   * There are two kinds of nodes in the API graphs, distinguished by who is "holding" the value:
+   * - **Use-nodes** represent values held by the current codebase, which came from an external library.
+   *   (The current codebase is "using" a value that came from the library).
+   * - **Def-nodes** represent values held by the external library, which came from this codebase.
+   *   (The current codebase "defines" the value seen by the library).
+   *
+   * API graph nodes are associated with data-flow nodes in the current codebase.
+   * (API graphs are designed to work when external libraries are not part of the database,
+   * so we do not associate with concrete data-flow nodes from the external library).
+   * - **Use-nodes** are associated with data-flow nodes where a value enters the current codebase,
+   *   such as the return value of a call to an external function.
+   * - **Def-nodes** are associated with data-flow nodes where a value leaves the current codebase,
+   *   such as an argument passed in a call to an external function.
+   *
+   *
+   * ### Access paths and edge labels
+   *
+   * Nodes in the API graph are associated with a set of access paths, describing a series of operations
+   * that may be performed to obtain that value.
+   *
+   * For example, the access path `API::moduleImport("json").getMember("dumps")` represents the action of
+   * importing `json` and then accessing the member `dumps` on the resulting object.
+   *
+   * Each edge in the graph is labelled by such an "operation". For an edge `A->B`, the type of the `A` node
+   * determines who is performing the operation, and the type of the `B` node determines who ends up holding
+   * the result:
+   * - An edge starting from a use-node describes what the current codebase is doing to a value that
+   *   came from a library.
+   * - An edge starting from a def-node describes what the external library might do to a value that
+   *   came from the current codebase.
+   * - An edge ending in a use-node means the result ends up in the current codebase (at its associated data-flow node).
+   * - An edge ending in a def-node means the result ends up in external code (its associated data-flow node is
+   *   the place where it was "last seen" in the current codebase before flowing out)
+   *
+   * Because the implementation of the external library is not visible, it is not known exactly what operations
+   * it will perform on values that flow there. Instead, the edges starting from a def-node are operations that would
+   * lead to an observable effect within the current codebase; without knowing for certain if the library will actually perform
+   * those operations. (When constructing these edges, we assume the library is somewhat well-behaved).
+   *
+   * For example, given this snippet:
+   * ```python
+   * import foo
+   * foo.bar(lambda x: doSomething(x))
+   * ```
+   * A callback is passed to the external function `foo.bar`. We can't know if `foo.bar` will actually invoke this callback.
+   * But _if_ the library should decide to invoke the callback, then a value will flow into the current codebase via the `x` parameter.
+   * For that reason, an edge is generated representing the argument-passing operation that might be performed by `foo.bar`.
+   * This edge is going from the def-node associated with the callback to the use-node associated with the parameter `x`.
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a data-flow node corresponding to a use of the API component represented by this node.
+     * Gets a data-flow node where this value may flow after entering the current codebase.
      *
-     * For example, `import re; re.escape` is a use of the `escape` function from the
-     * `re` module, and `import re; re.escape("hello")` is a use of the return of that function.
-     *
-     * This includes indirect uses found via data flow, meaning that in
-     * ```python
-     * def f(x):
-     *     pass
-     *
-     * f(obj.foo)
-     * ```
-     * both `obj.foo` and `x` are uses of the `foo` member from `obj`.
+     * This is similar to `asSource()` but additionally includes nodes that are transitively reachable by data flow.
+     * See `asSource()` for examples.
      */
-    DataFlow::Node getAUse() {
+    DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
       )
     }
 
     /**
-     * Gets a data-flow node corresponding to the right-hand side of a definition of the API
-     * component represented by this node.
+     * Gets a data-flow node where this value leaves the current codebase and flows into an
+     * external library (or in general, any external codebase).
      *
-     * For example, in the property write `foo.bar = x`, variable `x` is the the right-hand side
-     * of a write to the `bar` property of `foo`.
+     * Concretely, this is either an argument passed to a call to external code,
+     * or the right-hand side of an attribute write on an object flowing into such a call.
      *
-     * Note that for parameters, it is the arguments flowing into that parameter that count as
-     * right-hand sides of the definition, not the declaration of the parameter itself.
-     * Consequently, in :
+     * For example:
      * ```python
-     * from mypkg import foo;
+     * import foo
+     *
+     * # 'x' is matched by API::moduleImport("foo").getMember("bar").getParameter(0).asSink()
      * foo.bar(x)
+     *
+     * # 'x' is matched by API::moduleImport("foo").getMember("bar").getParameter(0).getMember("prop").asSink()
+     * obj.prop = x
+     * foo.bar(obj);
      * ```
-     * `x` is the right-hand side of a definition of the first parameter of `bar` from the `mypkg.foo` module.
+     *
+     * This predicate does not include nodes transitively reaching the sink by data flow;
+     * use `getAValueReachingSink` for that.
      */
-    DataFlow::Node getARhs() { Impl::rhs(this, result) }
+    DataFlow::Node asSink() { Impl::rhs(this, result) }
 
     /**
-     * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
-     * of the API component represented by this node.
+     * Gets a data-flow node that transitively flows to an external library (or in general, any external codebase).
+     *
+     * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
+     * See `asSink()` for examples.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
 
     /**
-     * Gets an immediate use of the API component represented by this node.
+     * Gets a data-flow node where this value enters the current codebase.
      *
-     * For example, `import re; re.escape` is a an immediate use of the `escape` member
-     * from the `re` module.
+     * For example:
+     * ```python
+     * # API::moduleImport("re").asSource()
+     * import re
      *
-     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
-     * found via data flow. This means that in `x = re.escape` only `re.escape` is a reference
-     * to the `escape` member of `re`, neither `x` nor any node that `x` flows to is a reference to
-     * this API component.
+     * # API::moduleImport("re").getMember("escape").asSource()
+     * re.escape
+     *
+     * # API::moduleImport("re").getMember("escape").getReturn().asSource()
+     * re.escape()
+     * ```
+     *
+     * This predicate does not include nodes transitively reachable by data flow;
+     * use `getAValueReachableFromSource` for that.
      */
-    DataFlow::LocalSourceNode getAnImmediateUse() { Impl::use(this, result) }
+    DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource()`. */
+    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
+
+    /** DEPRECATED. This predicate has been renamed to `asSource()`. */
+    deprecated DataFlow::LocalSourceNode getAnImmediateUse() { result = this.asSource() }
+
+    /** DEPRECATED. This predicate has been renamed to `asSink()`. */
+    deprecated DataFlow::Node getARhs() { result = this.asSink() }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink()`. */
+    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
 
     /**
      * Gets a call to the function represented by this API component.
      */
-    CallNode getACall() { result = this.getReturn().getAnImmediateUse() }
+    CallNode getACall() { result = this.getReturn().asSource() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -122,7 +211,7 @@ module API {
      * Gets a node representing the `i`th parameter of the function represented by this node.
      *
      * This predicate may have multiple results when there are multiple invocations of this API component.
-     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
+     * Consider using `getAnInvocation()` if there is a need to distinguish between individual calls.
      */
     Node getParameter(int i) { result = this.getASuccessor(Label::parameter(i)) }
 
@@ -130,7 +219,7 @@ module API {
      * Gets the node representing the keyword parameter `name` of the function represented by this node.
      *
      * This predicate may have multiple results when there are multiple invocations of this API component.
-     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
+     * Consider using `getAnInvocation()` if there is a need to distinguish between individual calls.
      */
     Node getKeywordParameter(string name) {
       result = this.getASuccessor(Label::keywordParameter(name))
@@ -153,6 +242,66 @@ module API {
      * Gets a node representing the result from awaiting this node.
      */
     Node getAwaited() { result = this.getASuccessor(Label::await()) }
+
+    /**
+     * Gets a node representing a subscript of this node.
+     * For example `obj[x]` is a subscript of `obj`.
+     */
+    Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
+
+    /**
+     * Gets a node representing an index of a subscript of this node.
+     * For example, in `obj[x]`, `x` is an index of `obj`.
+     */
+    Node getIndex() { result = this.getASuccessor(Label::index()) }
+
+    /**
+     * Gets a node representing a subscript of this node at (string) index `key`.
+     * This requires that the index can be statically determined.
+     *
+     * For example, the subscripts of `a` and `b` below would be found using
+     * the index `foo`:
+     * ```py
+     * a["foo"]
+     * x = "foo" if cond else "bar"
+     * b[x]
+     * ```
+     */
+    Node getSubscript(string key) {
+      exists(API::Node index | result = this.getSubscriptAt(index) |
+        key = index.getAValueReachingSink().asExpr().(PY::StrConst).getText()
+      )
+    }
+
+    /**
+     * Gets a node representing a subscript of this node at index `index`.
+     */
+    Node getSubscriptAt(API::Node index) {
+      result = this.getASubscript() and
+      index = this.getIndex() and
+      (
+        // subscripting
+        exists(PY::SubscriptNode subscript |
+          subscript.getObject() = this.getAValueReachableFromSource().asCfgNode() and
+          subscript.getIndex() = index.asSink().asCfgNode()
+        |
+          // reading
+          subscript = result.asSource().asCfgNode()
+          or
+          // writing
+          subscript.(PY::DefinitionNode).getValue() = result.asSink().asCfgNode()
+        )
+        or
+        // dictionary literals
+        exists(PY::Dict dict, PY::KeyValuePair item |
+          dict = this.getAValueReachingSink().asExpr() and
+          dict.getItem(_) = item and
+          item.getKey() = index.asSink().asExpr()
+        |
+          item.getValue() = result.asSink().asExpr()
+        )
+      )
+    }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
@@ -291,11 +440,26 @@ module API {
     not m.matches("%.%")
   }
 
+  /**
+   * Holds if an import of module `m` exists.
+   *
+   * This is determined without referring to `Node`,
+   * allowing this predicate to be used in a negative
+   * context when constructing new nodes.
+   */
+  predicate moduleImportExists(string m) {
+    Impl::isImported(m) and
+    // restrict `moduleImport` so it will never give results for a dotted name. Note
+    // that we cannot move this logic to the `MkModuleImport` construction, since we
+    // need the intermediate API graph nodes for the prefixes in `import foo.bar.baz`.
+    not m.matches("%.%")
+  }
+
   /** Gets a node corresponding to the built-in with the given name, if any. */
   Node builtin(string n) { result = moduleImport("builtins").getMember(n) }
 
   /**
-   * An `CallCfgNode` that is connected to the API graph.
+   * A `CallCfgNode` that is connected to the API graph.
    *
    * Can be used to reason about calls to an external API in which the correlation between
    * parameters and/or return values must be retained.
@@ -306,7 +470,7 @@ module API {
   class CallNode extends DataFlow::CallCfgNode {
     API::Node callee;
 
-    CallNode() { this = callee.getReturn().getAnImmediateUse() }
+    CallNode() { this = callee.getReturn().asSource() }
 
     /** Gets the API node for the `i`th parameter of this invocation. */
     pragma[nomagic]
@@ -319,14 +483,14 @@ module API {
      * Gets an API node where a RHS of the node is the `i`th argument to this call.
      */
     pragma[noinline]
-    private Node getAParameterCandidate(int i) { result.getARhs() = this.getArg(i) }
+    private Node getAParameterCandidate(int i) { result.asSink() = this.getArg(i) }
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = this.getParameter(_) }
 
     /** Gets the object that this method-call is being called on, if this is a method-call */
     Node getSelfParameter() {
-      result.getARhs() = this.(DataFlow::MethodCallNode).getObject() and
+      result.asSink() = this.(DataFlow::MethodCallNode).getObject() and
       result = callee.getSelfParameter()
     }
 
@@ -346,13 +510,13 @@ module API {
 
     pragma[noinline]
     private Node getAKeywordParameterCandidate(string name) {
-      result.getARhs() = this.getArgByName(name)
+      result.asSink() = this.getArgByName(name)
     }
 
     /** Gets the API node for the return value of this call. */
     Node getReturn() {
       result = callee.getReturn() and
-      result.getAnImmediateUse() = this
+      result.asSource() = this
     }
 
     /**
@@ -362,6 +526,30 @@ module API {
      * including keyword arguments didn't make much sense.
      */
     int getNumArgument() { result = count(this.getArg(_)) }
+  }
+
+  /**
+   * An API entry point.
+   *
+   * By default, API graph nodes are only created for nodes that come from an external
+   * library or escape into an external library. The points where values are cross the boundary
+   * between codebases are called "entry points".
+   *
+   * Anything imported from an external package is considered to be an entry point, but
+   * additional entry points may be added by extending this class.
+   */
+  abstract class EntryPoint extends string {
+    bindingset[this]
+    EntryPoint() { any() }
+
+    /** Gets a data-flow node corresponding to a use-node for this entry point. */
+    DataFlow::LocalSourceNode getASource() { none() }
+
+    /** Gets a data-flow node corresponding to a def-node for this entry point. */
+    DataFlow::Node getASink() { none() }
+
+    /** Gets an API-node for this entry point. */
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
   }
 
   /**
@@ -442,8 +630,6 @@ module API {
      * API graph node for the prefix `foo`), in accordance with the usual semantics of Python.
      */
 
-    private import semmle.python.internal.Awaited
-
     cached
     newtype TApiNode =
       /** The root of the API graph. */
@@ -492,12 +678,36 @@ module API {
      *
      * Ignores relative imports, such as `from ..foo.bar import baz`.
      */
-    private predicate imports(DataFlow::Node imp, string name) {
+    private predicate imports(DataFlow::CfgNode imp, string name) {
       exists(PY::ImportExprNode iexpr |
-        imp.asCfgNode() = iexpr and
+        imp.getNode() = iexpr and
         not iexpr.getNode().isRelative() and
         name = iexpr.getNode().getImportedModuleName()
       )
+    }
+
+    /**
+     * Holds if the module `name` is imported.
+     *
+     * This is determined syntactically.
+     */
+    cached
+    predicate isImported(string name) {
+      // Ignore the following module name for Python 2, as we alias `__builtin__` to `builtins` elsewhere
+      (name != "__builtin__" or PY::major_version() = 3) and
+      (
+        exists(PY::ImportExpr iexpr |
+          not iexpr.isRelative() and
+          name = iexpr.getImportedModuleName()
+        )
+        or
+        // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
+        // `foo` and `foo.bar`:
+        name = any(PY::ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+      )
+      or
+      // The `builtins` module should always be implicitly available
+      name = "builtins"
     }
 
     private import semmle.python.dataflow.new.internal.Builtins
@@ -518,7 +728,7 @@ module API {
      */
     private TApiNode potential_import_star_base(PY::Scope s) {
       exists(DataFlow::Node n |
-        n.asCfgNode() = ImportStar::potentialImportStarBase(s) and
+        n.(DataFlow::CfgNode).getNode() = ImportStar::potentialImportStarBase(s) and
         use(result, n)
       )
     }
@@ -538,19 +748,38 @@ module API {
           rhs = aw.getValue()
         )
         or
-        // TODO: I had expected `DataFlow::AttrWrite` to contain the attribute writes from a dict, that's how JS works.
+        // dictionary literals
         exists(PY::Dict dict, PY::KeyValuePair item |
-          dict = pred.asExpr() and
-          dict.getItem(_) = item and
-          lbl = Label::member(item.getKey().(PY::StrConst).getS()) and
-          rhs.asExpr() = item.getValue()
+          dict = pred.(DataFlow::ExprNode).getNode().getNode() and
+          dict.getItem(_) = item
+        |
+          // from `x` to `{ "key": x }`
+          // TODO: once convenient, this should be done at a higher level than the AST,
+          // at least at the CFG layer, to take splitting into account.
+          rhs.(DataFlow::ExprNode).getNode().getNode() = item.getValue() and
+          lbl = Label::subscript()
+          or
+          // from `"key"` to `{ "key": x }`
+          // TODO: once convenient, this should be done at a higher level than the AST,
+          // at least at the CFG layer, to take splitting into account.
+          rhs.(DataFlow::ExprNode).getNode().getNode() = item.getKey() and
+          lbl = Label::index()
         )
         or
-        exists(PY::CallableExpr fn | fn = pred.asExpr() |
+        // list literals, from `x` to `[x]`
+        // TODO: once convenient, this should be done at a higher level than the AST,
+        // at least at the CFG layer, to take splitting into account.
+        // Also consider `SequenceNode for generality.
+        exists(PY::List list | list = pred.(DataFlow::ExprNode).getNode().getNode() |
+          rhs.(DataFlow::ExprNode).getNode().getNode() = list.getAnElt() and
+          lbl = Label::subscript()
+        )
+        or
+        exists(PY::CallableExpr fn | fn = pred.(DataFlow::ExprNode).getNode().getNode() |
           not fn.getInnerScope().isAsync() and
           lbl = Label::return() and
           exists(PY::Return ret |
-            rhs.asExpr() = ret.getValue() and
+            rhs.(DataFlow::ExprNode).getNode().getNode() = ret.getValue() and
             ret.getScope() = fn.getInnerScope()
           )
         )
@@ -562,6 +791,26 @@ module API {
         use(base, src) and aw = trackUseNode(src).getAnAttributeWrite() and rhs = aw.getValue()
       |
         lbl = Label::memberFromRef(aw)
+      )
+      or
+      // subscripting
+      exists(DataFlow::LocalSourceNode src, DataFlow::Node subscript, DataFlow::Node index |
+        use(base, src) and
+        subscript = trackUseNode(src).getSubscript(index)
+      |
+        // from `x` to a definition of `x[...]`
+        rhs.asCfgNode() = subscript.asCfgNode().(PY::DefinitionNode).getValue() and
+        lbl = Label::subscript()
+        or
+        // from `x` to `"key"` in `x["key"]`
+        rhs = index and
+        lbl = Label::index()
+      )
+      or
+      exists(EntryPoint entry |
+        base = root() and
+        lbl = Label::entryPoint(entry) and
+        rhs = entry.getASink()
       )
     }
 
@@ -589,22 +838,32 @@ module API {
         lbl = Label::return() and
         ref = pred.getACall()
         or
+        // Awaiting a node that is a use of `base`
+        lbl = Label::await() and
+        ref = pred.getAnAwaited()
+        or
+        // Subscripting a node that is a use of `base`
+        lbl = Label::subscript() and
+        ref = pred.getSubscript(_) and
+        ref.asCfgNode().isLoad()
+        or
         // Subclassing a node
         lbl = Label::subclass() and
-        exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
-          ref.asExpr().(PY::ClassExpr).getABase() = superclass.asExpr()
-        )
-        or
-        // awaiting
-        exists(DataFlow::Node awaitedValue |
-          lbl = Label::await() and
-          ref = awaited(awaitedValue) and
-          pred.flowsTo(awaitedValue)
+        exists(PY::ClassExpr clsExpr, DataFlow::Node superclass | pred.flowsTo(superclass) |
+          clsExpr.getABase() = superclass.asExpr() and
+          // Potentially a class decorator could do anything, but we assume they are
+          // "benign" and let subclasses edges flow through anyway.
+          // see example in https://github.com/django/django/blob/c2250cfb80e27cdf8d098428824da2800a18cadf/tests/auth_tests/test_views.py#L40-L46
+          (
+            ref.(DataFlow::ExprNode).getNode().getNode() = clsExpr
+            or
+            ref.(DataFlow::ExprNode).getNode().getNode() = clsExpr.getADecoratorCall()
+          )
         )
       )
       or
       exists(DataFlow::Node def, PY::CallableExpr fn |
-        rhs(base, def) and fn = trackDefNode(def).asExpr()
+        rhs(base, def) and fn = trackDefNode(def).(DataFlow::ExprNode).getNode().getNode()
       |
         exists(int i, int offset |
           if exists(PY::Parameter p | p = fn.getInnerScope().getAnArg() and p.isSelf())
@@ -612,18 +871,19 @@ module API {
           else offset = 0
         |
           lbl = Label::parameter(i - offset) and
-          ref.asExpr() = fn.getInnerScope().getArg(i)
+          ref.(DataFlow::ExprNode).getNode().getNode() = fn.getInnerScope().getArg(i)
         )
         or
         exists(string name, PY::Parameter param |
           lbl = Label::keywordParameter(name) and
           param = fn.getInnerScope().getArgByName(name) and
           not param.isSelf() and
-          ref.asExpr() = param
+          ref.(DataFlow::ExprNode).getNode().getNode() = param
         )
         or
         lbl = Label::selfParameter() and
-        ref.asExpr() = any(PY::Parameter p | p = fn.getInnerScope().getAnArg() and p.isSelf())
+        ref.(DataFlow::ExprNode).getNode().getNode() =
+          any(PY::Parameter p | p = fn.getInnerScope().getAnArg() and p.isSelf())
       )
       or
       // Built-ins, treated as members of the module `builtins`
@@ -635,8 +895,14 @@ module API {
         base = potential_import_star_base(s) and
         lbl =
           Label::member(any(string name |
-              ImportStar::namePossiblyDefinedInImportStar(ref.asCfgNode(), name, s)
+              ImportStar::namePossiblyDefinedInImportStar(ref.(DataFlow::CfgNode).getNode(), name, s)
             ))
+      )
+      or
+      exists(EntryPoint entry |
+        base = root() and
+        lbl = Label::entryPoint(entry) and
+        ref = entry.getASource()
       )
     }
 
@@ -721,7 +987,7 @@ module API {
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
       Stages::TypeTracking::ref() and
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
-      not result instanceof DataFlow::ModuleVariableNode
+      result instanceof DataFlow::ExprNode
     }
 
     /**
@@ -795,8 +1061,7 @@ module API {
           member = any(DataFlow::AttrRef pr).getAttributeName() or
           exists(Builtins::likelyBuiltin(member)) or
           ImportStar::namePossiblyDefinedInImportStar(_, member, _) or
-          Impl::prefix_member(_, member, _) or
-          member = any(PY::Dict d).getAnItem().(PY::KeyValuePair).getKey().(PY::StrConst).getS()
+          Impl::prefix_member(_, member, _)
         } or
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
@@ -812,7 +1077,10 @@ module API {
         MkLabelSelfParameter() or
         MkLabelReturn() or
         MkLabelSubclass() or
-        MkLabelAwait()
+        MkLabelAwait() or
+        MkLabelSubscript() or
+        MkLabelIndex() or
+        MkLabelEntryPoint(EntryPoint ep)
 
       /** A label for a module. */
       class LabelModule extends ApiLabel, MkLabelModule {
@@ -886,6 +1154,25 @@ module API {
       class LabelAwait extends ApiLabel, MkLabelAwait {
         override string toString() { result = "getAwaited()" }
       }
+
+      /** A label that gets the subscript of a sequence/mapping. */
+      class LabelSubscript extends ApiLabel, MkLabelSubscript {
+        override string toString() { result = "getASubscript()" }
+      }
+
+      /** A label that gets the index of a subscript. */
+      class LabelIndex extends ApiLabel, MkLabelIndex {
+        override string toString() { result = "getIndex()" }
+      }
+
+      /** A label for entry points. */
+      class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
+        private EntryPoint entry;
+
+        LabelEntryPoint() { this = MkLabelEntryPoint(entry) }
+
+        override string toString() { result = "entryPoint(\"" + entry + "\")" }
+      }
     }
 
     /** Gets the edge label for the module `m`. */
@@ -901,7 +1188,7 @@ module API {
     ApiLabel memberFromRef(DataFlow::AttrRef ref) {
       result = member(ref.getAttributeName())
       or
-      not exists(ref.getAttributeName()) and
+      ref.unknownAttribute() and
       result = unknownMember()
     }
 
@@ -922,5 +1209,14 @@ module API {
 
     /** Gets the `await` edge label. */
     LabelAwait await() { any() }
+
+    /** Gets the `subscript` edge label. */
+    LabelSubscript subscript() { any() }
+
+    /** Gets the `subscript` edge label. */
+    LabelIndex index() { any() }
+
+    /** Gets the label going from the root node to the nodes associated with the given entry point. */
+    LabelEntryPoint entryPoint(EntryPoint ep) { result = MkLabelEntryPoint(ep) }
   }
 }

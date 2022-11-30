@@ -1,0 +1,215 @@
+value
+| AnnotationValues.java:39:5:39:17 | SingleValues | annotationValue | AnnotationValues.class:0:0:0:0 | CustomAnnotation |
+| AnnotationValues.java:39:5:39:17 | SingleValues | booleanValue | AnnotationValues.class:0:0:0:0 | false |
+| AnnotationValues.java:39:5:39:17 | SingleValues | byteValue | AnnotationValues.class:0:0:0:0 | -1 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | charValue | AnnotationValues.class:0:0:0:0 | \uffff |
+| AnnotationValues.java:39:5:39:17 | SingleValues | classValue | AnnotationValues.class:0:0:0:0 | AnnotationValues.class |
+| AnnotationValues.java:39:5:39:17 | SingleValues | doubleValue | AnnotationValues.class:0:0:0:0 | -1.0 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | enumValue | AnnotationValues.class:0:0:0:0 | DEFAULT |
+| AnnotationValues.java:39:5:39:17 | SingleValues | floatValue | AnnotationValues.class:0:0:0:0 | -1.0 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | intValue | AnnotationValues.class:0:0:0:0 | -1 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | longValue | AnnotationValues.class:0:0:0:0 | -1 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | shortValue | AnnotationValues.class:0:0:0:0 | -1 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | stringValue | AnnotationValues.class:0:0:0:0 | "\u0000" |
+| AnnotationValues.java:42:5:55:5 | SingleValues | annotationValue | AnnotationValues.java:54:27:54:53 | CustomAnnotation |
+| AnnotationValues.java:42:5:55:5 | SingleValues | booleanValue | AnnotationValues.java:49:24:49:27 | true |
+| AnnotationValues.java:42:5:55:5 | SingleValues | byteValue | AnnotationValues.java:43:21:43:21 | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | charValue | AnnotationValues.java:50:21:50:21 | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | classValue | AnnotationValues.java:52:22:52:39 | SingleValues.class |
+| AnnotationValues.java:42:5:55:5 | SingleValues | doubleValue | AnnotationValues.java:48:23:48:23 | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | enumValue | AnnotationValues.java:53:21:53:32 | CustomEnum.A |
+| AnnotationValues.java:42:5:55:5 | SingleValues | floatValue | AnnotationValues.java:47:22:47:22 | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | intValue | AnnotationValues.java:45:20:45:20 | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | longValue | AnnotationValues.java:46:21:46:21 | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | shortValue | AnnotationValues.java:44:22:44:22 | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | stringValue | AnnotationValues.java:51:23:51:25 | "a" |
+| AnnotationValues.java:54:27:54:53 | CustomAnnotation | value | AnnotationValues.java:54:45:54:52 | "single" |
+| AnnotationValues.java:58:5:71:5 | SingleValues | annotationValue | AnnotationValues.java:70:27:70:53 | CustomAnnotation |
+| AnnotationValues.java:58:5:71:5 | SingleValues | booleanValue | AnnotationValues.java:65:24:65:30 | BOOLEAN |
+| AnnotationValues.java:58:5:71:5 | SingleValues | byteValue | AnnotationValues.java:59:21:59:24 | BYTE |
+| AnnotationValues.java:58:5:71:5 | SingleValues | charValue | AnnotationValues.java:66:21:66:24 | CHAR |
+| AnnotationValues.java:58:5:71:5 | SingleValues | classValue | AnnotationValues.java:68:22:68:39 | SingleValues.class |
+| AnnotationValues.java:58:5:71:5 | SingleValues | doubleValue | AnnotationValues.java:64:23:64:28 | DOUBLE |
+| AnnotationValues.java:58:5:71:5 | SingleValues | enumValue | AnnotationValues.java:69:21:69:32 | CustomEnum.A |
+| AnnotationValues.java:58:5:71:5 | SingleValues | floatValue | AnnotationValues.java:63:22:63:26 | FLOAT |
+| AnnotationValues.java:58:5:71:5 | SingleValues | intValue | AnnotationValues.java:61:20:61:22 | INT |
+| AnnotationValues.java:58:5:71:5 | SingleValues | longValue | AnnotationValues.java:62:21:62:24 | LONG |
+| AnnotationValues.java:58:5:71:5 | SingleValues | shortValue | AnnotationValues.java:60:22:60:26 | SHORT |
+| AnnotationValues.java:58:5:71:5 | SingleValues | stringValue | AnnotationValues.java:67:23:67:28 | STRING |
+| AnnotationValues.java:70:27:70:53 | CustomAnnotation | value | AnnotationValues.java:70:45:70:52 | "single" |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | annotationValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | booleanValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | byteValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | charValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | classValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | doubleValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | enumValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | floatValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | intValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | longValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | shortValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | stringValues | AnnotationValues.class:0:0:0:0 | {...} |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | annotationValues | AnnotationValues.java:105:28:105:54 | {...} |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | booleanValues | AnnotationValues.java:100:25:100:28 | true |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | byteValues | AnnotationValues.java:94:22:94:22 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | charValues | AnnotationValues.java:101:22:101:24 | 'a' |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | classValues | AnnotationValues.java:103:23:103:39 | ArrayValues.class |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | doubleValues | AnnotationValues.java:99:24:99:24 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | enumValues | AnnotationValues.java:104:22:104:33 | CustomEnum.A |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | floatValues | AnnotationValues.java:98:23:98:23 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | intValues | AnnotationValues.java:96:21:96:21 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | longValues | AnnotationValues.java:97:22:97:22 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | shortValues | AnnotationValues.java:95:23:95:23 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | stringValues | AnnotationValues.java:102:24:102:26 | "a" |
+| AnnotationValues.java:105:28:105:54 | CustomAnnotation | value | AnnotationValues.java:105:46:105:53 | "single" |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | annotationValues | AnnotationValues.java:121:28:121:84 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | booleanValues | AnnotationValues.java:116:25:116:40 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | byteValues | AnnotationValues.java:110:22:110:30 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | charValues | AnnotationValues.java:117:22:117:32 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | classValues | AnnotationValues.java:119:23:119:61 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | doubleValues | AnnotationValues.java:115:24:115:34 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | enumValues | AnnotationValues.java:120:22:120:49 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | floatValues | AnnotationValues.java:114:23:114:32 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | intValues | AnnotationValues.java:112:21:112:28 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | longValues | AnnotationValues.java:113:22:113:30 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | shortValues | AnnotationValues.java:111:23:111:32 | {...} |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | stringValues | AnnotationValues.java:118:24:118:33 | {...} |
+| AnnotationValues.java:121:29:121:54 | CustomAnnotation | value | AnnotationValues.java:121:47:121:53 | "first" |
+| AnnotationValues.java:121:57:121:83 | CustomAnnotation | value | AnnotationValues.java:121:75:121:82 | "second" |
+enumConstantValue
+| AnnotationValues.java:39:5:39:17 | SingleValues | enumValue | AnnotationValues.java:14:9:14:15 | DEFAULT |
+| AnnotationValues.java:42:5:55:5 | SingleValues | enumValue | AnnotationValues.java:15:9:15:9 | A |
+| AnnotationValues.java:58:5:71:5 | SingleValues | enumValue | AnnotationValues.java:15:9:15:9 | A |
+stringValue
+| AnnotationValues.java:39:5:39:17 | SingleValues | stringValue | \u0000 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | stringValue | a |
+| AnnotationValues.java:54:27:54:53 | CustomAnnotation | value | single |
+| AnnotationValues.java:58:5:71:5 | SingleValues | stringValue | b |
+| AnnotationValues.java:70:27:70:53 | CustomAnnotation | value | single |
+| AnnotationValues.java:105:28:105:54 | CustomAnnotation | value | single |
+| AnnotationValues.java:121:29:121:54 | CustomAnnotation | value | first |
+| AnnotationValues.java:121:57:121:83 | CustomAnnotation | value | second |
+intValue
+| AnnotationValues.java:39:5:39:17 | SingleValues | byteValue | -1 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | charValue | 65535 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | intValue | -1 |
+| AnnotationValues.java:39:5:39:17 | SingleValues | shortValue | -1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | byteValue | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | charValue | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | intValue | 1 |
+| AnnotationValues.java:42:5:55:5 | SingleValues | shortValue | 1 |
+| AnnotationValues.java:58:5:71:5 | SingleValues | byteValue | 2 |
+| AnnotationValues.java:58:5:71:5 | SingleValues | charValue | 98 |
+| AnnotationValues.java:58:5:71:5 | SingleValues | intValue | 2 |
+| AnnotationValues.java:58:5:71:5 | SingleValues | shortValue | 2 |
+booleanValue
+| AnnotationValues.java:39:5:39:17 | SingleValues | booleanValue | false |
+| AnnotationValues.java:42:5:55:5 | SingleValues | booleanValue | true |
+| AnnotationValues.java:58:5:71:5 | SingleValues | booleanValue | true |
+typeValue
+| AnnotationValues.java:39:5:39:17 | SingleValues | classValue | AnnotationValues.java:1:7:1:22 | AnnotationValues |
+| AnnotationValues.java:42:5:55:5 | SingleValues | classValue | AnnotationValues.java:23:16:23:27 | SingleValues |
+| AnnotationValues.java:58:5:71:5 | SingleValues | classValue | AnnotationValues.java:23:16:23:27 | SingleValues |
+arrayValue
+| AnnotationValues.java:90:5:90:16 | ArrayValues | annotationValues | 0 | AnnotationValues.class:0:0:0:0 | CustomAnnotation |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | booleanValues | 0 | AnnotationValues.class:0:0:0:0 | false |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | byteValues | 0 | AnnotationValues.class:0:0:0:0 | -1 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | charValues | 0 | AnnotationValues.class:0:0:0:0 | \uffff |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | classValues | 0 | AnnotationValues.class:0:0:0:0 | AnnotationValues.class |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | doubleValues | 0 | AnnotationValues.class:0:0:0:0 | -1.0 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | enumValues | 0 | AnnotationValues.class:0:0:0:0 | DEFAULT |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | floatValues | 0 | AnnotationValues.class:0:0:0:0 | -1.0 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | intValues | 0 | AnnotationValues.class:0:0:0:0 | -1 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | longValues | 0 | AnnotationValues.class:0:0:0:0 | -1 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | shortValues | 0 | AnnotationValues.class:0:0:0:0 | -1 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | stringValues | 0 | AnnotationValues.class:0:0:0:0 | "\u0000" |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | annotationValues | 0 | AnnotationValues.java:105:28:105:54 | CustomAnnotation |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | booleanValues | 0 | AnnotationValues.java:100:25:100:28 | true |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | byteValues | 0 | AnnotationValues.java:94:22:94:22 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | charValues | 0 | AnnotationValues.java:101:22:101:24 | 'a' |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | classValues | 0 | AnnotationValues.java:103:23:103:39 | ArrayValues.class |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | doubleValues | 0 | AnnotationValues.java:99:24:99:24 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | enumValues | 0 | AnnotationValues.java:104:22:104:33 | CustomEnum.A |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | floatValues | 0 | AnnotationValues.java:98:23:98:23 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | intValues | 0 | AnnotationValues.java:96:21:96:21 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | longValues | 0 | AnnotationValues.java:97:22:97:22 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | shortValues | 0 | AnnotationValues.java:95:23:95:23 | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | stringValues | 0 | AnnotationValues.java:102:24:102:26 | "a" |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | annotationValues | 0 | AnnotationValues.java:121:29:121:54 | CustomAnnotation |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | annotationValues | 1 | AnnotationValues.java:121:57:121:83 | CustomAnnotation |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | booleanValues | 0 | AnnotationValues.class:0:0:0:0 | false |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | booleanValues | 1 | AnnotationValues.class:0:0:0:0 | true |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | booleanValues | -1 | AnnotationValues.java:116:26:116:30 | false |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | booleanValues | -2 | AnnotationValues.java:116:33:116:39 | BOOLEAN |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | byteValues | 0 | AnnotationValues.class:0:0:0:0 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | byteValues | 1 | AnnotationValues.class:0:0:0:0 | 2 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | byteValues | -1 | AnnotationValues.java:110:23:110:23 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | byteValues | -2 | AnnotationValues.java:110:26:110:29 | BYTE |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | charValues | 0 | AnnotationValues.class:0:0:0:0 | a |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | charValues | 1 | AnnotationValues.class:0:0:0:0 | b |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | charValues | -1 | AnnotationValues.java:117:23:117:25 | 'a' |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | charValues | -2 | AnnotationValues.java:117:28:117:31 | CHAR |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | classValues | 0 | AnnotationValues.class:0:0:0:0 | SingleValues.class |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | classValues | 1 | AnnotationValues.class:0:0:0:0 | ArrayValues.class |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | classValues | -1 | AnnotationValues.java:119:24:119:41 | SingleValues.class |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | classValues | -2 | AnnotationValues.java:119:44:119:60 | ArrayValues.class |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | doubleValues | 0 | AnnotationValues.class:0:0:0:0 | 1.0 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | doubleValues | 1 | AnnotationValues.class:0:0:0:0 | 2.0 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | doubleValues | -1 | AnnotationValues.java:115:25:115:25 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | doubleValues | -2 | AnnotationValues.java:115:28:115:33 | DOUBLE |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | enumValues | 0 | AnnotationValues.class:0:0:0:0 | A |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | enumValues | 1 | AnnotationValues.class:0:0:0:0 | B |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | enumValues | -1 | AnnotationValues.java:120:23:120:34 | CustomEnum.A |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | enumValues | -2 | AnnotationValues.java:120:37:120:48 | CustomEnum.B |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | floatValues | 0 | AnnotationValues.class:0:0:0:0 | 1.0 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | floatValues | 1 | AnnotationValues.class:0:0:0:0 | 2.0 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | floatValues | -1 | AnnotationValues.java:114:24:114:24 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | floatValues | -2 | AnnotationValues.java:114:27:114:31 | FLOAT |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | intValues | 0 | AnnotationValues.class:0:0:0:0 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | intValues | 1 | AnnotationValues.class:0:0:0:0 | 2 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | intValues | -1 | AnnotationValues.java:112:22:112:22 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | intValues | -2 | AnnotationValues.java:112:25:112:27 | INT |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | longValues | 0 | AnnotationValues.class:0:0:0:0 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | longValues | 1 | AnnotationValues.class:0:0:0:0 | 2 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | longValues | -1 | AnnotationValues.java:113:23:113:23 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | longValues | -2 | AnnotationValues.java:113:26:113:29 | LONG |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | shortValues | 0 | AnnotationValues.class:0:0:0:0 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | shortValues | 1 | AnnotationValues.class:0:0:0:0 | 2 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | shortValues | -1 | AnnotationValues.java:111:24:111:24 | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | shortValues | -2 | AnnotationValues.java:111:27:111:31 | SHORT |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | stringValues | 0 | AnnotationValues.class:0:0:0:0 | "a" |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | stringValues | 1 | AnnotationValues.class:0:0:0:0 | "b" |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | stringValues | -1 | AnnotationValues.java:118:25:118:27 | "a" |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | stringValues | -2 | AnnotationValues.java:118:30:118:32 | "b" |
+enumConstantArrayValue
+| AnnotationValues.java:90:5:90:16 | ArrayValues | enumValues | AnnotationValues.java:14:9:14:15 | DEFAULT |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | enumValues | AnnotationValues.java:15:9:15:9 | A |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | enumValues | AnnotationValues.java:15:9:15:9 | A |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | enumValues | AnnotationValues.java:16:9:16:9 | B |
+stringArrayValue
+| AnnotationValues.java:90:5:90:16 | ArrayValues | stringValues | \u0000 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | stringValues | a |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | stringValues | a |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | stringValues | b |
+intArrayValue
+| AnnotationValues.java:90:5:90:16 | ArrayValues | byteValues | -1 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | charValues | 65535 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | intValues | -1 |
+| AnnotationValues.java:90:5:90:16 | ArrayValues | shortValues | -1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | byteValues | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | charValues | 97 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | intValues | 1 |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | shortValues | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | byteValues | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | byteValues | 2 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | charValues | 97 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | charValues | 98 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | intValues | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | intValues | 2 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | shortValues | 1 |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | shortValues | 2 |
+typeArrayValue
+| AnnotationValues.java:90:5:90:16 | ArrayValues | classValues | AnnotationValues.java:1:7:1:22 | AnnotationValues |
+| AnnotationValues.java:93:5:106:5 | ArrayValues | classValues | AnnotationValues.java:74:16:74:26 | ArrayValues |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | classValues | AnnotationValues.java:23:16:23:27 | SingleValues |
+| AnnotationValues.java:109:5:122:5 | ArrayValues | classValues | AnnotationValues.java:74:16:74:26 | ArrayValues |

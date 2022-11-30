@@ -152,6 +152,7 @@ class JacksonSerializableField extends SerializableField {
 
 /** A field that may be deserialized using the Jackson JSON framework. */
 class JacksonDeserializableField extends DeserializableField {
+  pragma[assume_small_delta]
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and
@@ -279,20 +280,5 @@ class JacksonMixedInCallable extends Callable {
         // Signatures should match
         result.getSignature() = this.getSignature()
     )
-  }
-}
-
-private class JacksonModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0].MapValue;ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0].MapValue.Element;ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
-      ]
   }
 }

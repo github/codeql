@@ -10,11 +10,13 @@ edition = "2018"
 flate2 = "1.0"
 node-types = { path = "../node-types" }
 tree-sitter = "0.19"
-tree-sitter-embedded-template = "0.19"
-tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "6334d6ab3d04a5672da695d3b155ca3301511f8d" }
+tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "1a538da253d73f896b9f6c0c7d79cda58791ac5c" }
+tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "ad1043283b1f9daf4aad381b6a81f18a5a27fe7e" }
 clap = "3.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
 rayon = "1.5.0"
 num_cpus = "1.13.0"
 regex = "1.5.5"
+encoding = "0.2"
+lazy_static = "1.4.0"

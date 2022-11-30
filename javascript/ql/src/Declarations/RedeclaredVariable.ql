@@ -10,7 +10,7 @@
  */
 
 import javascript
-private import Declarations
+private import Declarations.Declarations
 
 from Variable v, TopLevel tl, VarDecl decl, VarDecl redecl
 where
@@ -24,4 +24,4 @@ where
   // Redeclaring a namespace extends the previous definition.
   not decl = any(NamespaceDeclaration ns).getIdentifier() and
   not redecl = any(NamespaceDeclaration ns).getIdentifier()
-select redecl, "This variable has already been declared $@.", decl, "here"
+select redecl, "This variable has already $@.", decl, "been declared"

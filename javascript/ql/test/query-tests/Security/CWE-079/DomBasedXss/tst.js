@@ -487,4 +487,6 @@ function urlStuff() {
   }
 
   window.open(location.hash.substr(1)); // OK - any JavaScript is executed in another context
+
+  navigation.navigate(location.hash.substr(1)); // NOT OK
 }

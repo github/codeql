@@ -35,4 +35,4 @@ from LocalVariableOrParameter lv, GlobalVariable gv
 where
   lv.getName() = gv.getName() and
   lv.getFile() = gv.getFile()
-select lv, lv.type() + gv.getName() + " hides $@ with the same name.", gv, "a global variable"
+select lv, lv.type() + gv.getName() + " hides a $@ with the same name.", gv, "global variable"

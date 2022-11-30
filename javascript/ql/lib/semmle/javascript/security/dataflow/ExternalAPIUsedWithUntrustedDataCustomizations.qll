@@ -165,7 +165,7 @@ module ExternalApiUsedWithUntrustedData {
       not param = base.getReceiver()
     |
       result = param and
-      name = param.asSource().asExpr().(Parameter).getName()
+      name = param.asSource().(DataFlow::ParameterNode).getName()
       or
       param.asSource().asExpr() instanceof DestructuringPattern and
       result = param.getMember(name)

@@ -41,6 +41,55 @@ enum class Severity(val sev: Int) {
 fun fn1() {
     /**
      * A variable.
-    */
+     */
     val a = 1
 }
+
+/**
+ * A type alias comment
+ */
+typealias MyType = Group
+
+class InitBlock {
+    /**
+     * An init block comment
+     */
+    init { }
+}
+
+open class X {
+    /**
+     * A prop comment
+     */
+    val prop: Int
+        /**
+         * An accessor comment
+         */
+        get() = 5
+
+    val l: Lazy<Int> = lazy(
+        /**
+         * An anonymous function comment
+         */
+        fun(): Int {
+            return 5
+        })
+
+    fun fn() {
+        /**
+         * A local function comment
+         */
+        fun localFn() {}
+    }
+}
+
+class XX {
+    fun f() = object :
+         /**
+         * An anonymous object comment
+         */
+         X() {
+    }
+}
+
+// Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0%

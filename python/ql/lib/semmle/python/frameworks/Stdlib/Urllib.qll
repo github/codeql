@@ -30,7 +30,7 @@ private module Urllib {
      * See
      * - https://docs.python.org/3.9/library/urllib.request.html#urllib.request.Request
      */
-    private class RequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+    private class RequestCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
       RequestCall() {
         this = API::moduleImport("urllib").getMember("request").getMember("Request").getACall()
       }
@@ -52,7 +52,7 @@ private module Urllib {
      * See
      * - https://docs.python.org/3.9/library/urllib.request.html#urllib.request.urlopen
      */
-    private class UrlOpenCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+    private class UrlOpenCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
       UrlOpenCall() {
         this = API::moduleImport("urllib").getMember("request").getMember("urlopen").getACall()
       }

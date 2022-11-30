@@ -7,7 +7,7 @@
  */
 
 import java
-import semmle.code.java.regex.RegexTreeView
+import semmle.code.java.regex.RegexTreeView as RegexTreeView
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
@@ -120,7 +120,7 @@ private newtype TPrintAstNode =
     shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
   TAnnotationsNode(Annotatable ann) {
-    shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
+    shouldPrint(ann, _) and ann.hasDeclaredAnnotation() and not partOfAnnotation(ann)
   } or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
@@ -134,8 +134,10 @@ private newtype TPrintAstNode =
   TImportsNode(CompilationUnit cu) {
     shouldPrint(cu, _) and exists(Import i | i.getCompilationUnit() = cu)
   } or
-  TRegExpTermNode(RegExpTerm term) {
-    exists(StringLiteral str | term.getRootTerm() = getParsedRegExp(str) and shouldPrint(str, _))
+  TRegExpTermNode(RegexTreeView::RegExpTerm term) {
+    exists(StringLiteral str |
+      term.getRootTerm() = RegexTreeView::getParsedRegExp(str) and shouldPrint(str, _)
+    )
   }
 
 /**
@@ -316,7 +318,7 @@ final class StringLiteralNode extends ExprStmtNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
-    result.(RegExpTermNode).getTerm() = getParsedRegExp(element)
+    result.(RegExpTermNode).getTerm() = RegexTreeView::getParsedRegExp(element)
   }
 }
 
@@ -324,12 +326,12 @@ final class StringLiteralNode extends ExprStmtNode {
  * A node representing a regular expression term.
  */
 class RegExpTermNode extends TRegExpTermNode, PrintAstNode {
-  RegExpTerm term;
+  RegexTreeView::RegExpTerm term;
 
   RegExpTermNode() { this = TRegExpTermNode(term) }
 
   /** Gets the `RegExpTerm` for this node. */
-  RegExpTerm getTerm() { result = term }
+  RegexTreeView::RegExpTerm getTerm() { result = term }
 
   override PrintAstNode getChild(int childIndex) {
     result.(RegExpTermNode).getTerm() = term.getChild(childIndex)
@@ -390,12 +392,6 @@ final class LocalTypeDeclStmtNode extends ExprStmtNode {
     result.getElement() = element.(LocalTypeDeclStmt).getLocalType()
   }
 }
-
-/**
- * DEPRECATED: Renamed `LocalTypeDeclStmtNode` to reflect the fact that
- * as of Java 16 interfaces can also be declared locally, not just classes.
- */
-deprecated class LocalClassDeclStmtNode = LocalTypeDeclStmtNode;
 
 /**
  * A node representing a `ForStmt`.
@@ -534,10 +530,17 @@ final class ClassInterfaceNode extends ElementNode {
     or
     childIndex >= 0 and
     result.(ElementNode).getElement() =
-      rank[childIndex](Element e, string file, int line, int column |
-        e = this.getADeclaration() and locationSortKeys(e, file, line, column)
+      rank[childIndex](Element e, string file, int line, int column, string childStr, int argCount |
+        e = this.getADeclaration() and
+        locationSortKeys(e, file, line, column) and
+        childStr = e.toString() and
+        (
+          if e instanceof Callable
+          then argCount = e.(Callable).getNumberOfParameters()
+          else argCount = 0
+        )
       |
-        e order by file, line, column
+        e order by file, line, column, childStr, argCount
       )
   }
 }

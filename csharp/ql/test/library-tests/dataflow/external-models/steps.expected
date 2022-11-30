@@ -19,6 +19,3 @@ summarySetterStep
 | Steps.cs:30:34:30:34 | 0 | Steps.cs:30:13:30:16 | [post] this access | Steps.cs:57:13:57:17 | field Field |
 | Steps.cs:34:37:34:37 | 0 | Steps.cs:34:13:34:16 | [post] this access | Steps.cs:63:13:63:20 | property Property |
 | Steps.cs:38:36:38:36 | 0 | Steps.cs:38:13:38:16 | [post] this access | file://:0:0:0:0 | element |
-clearsContent
-| Steps.cs:61:14:61:28 | StepFieldSetter | file://:0:0:0:0 | element | this |
-| Steps.cs:67:14:67:31 | StepPropertySetter | file://:0:0:0:0 | element | this |

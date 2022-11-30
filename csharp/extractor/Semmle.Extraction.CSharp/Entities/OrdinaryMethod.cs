@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class OrdinaryMethod : Method
     {
-        private OrdinaryMethod(Context cx, IMethodSymbol init)
+        protected OrdinaryMethod(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
         public override string Name => Symbol.GetName();

@@ -6,7 +6,7 @@ namespace Microsoft
     {
         namespace Components
         {
-            // Generated from `Microsoft.AspNetCore.Components.BindInputElementAttribute` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Components.BindInputElementAttribute` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class BindInputElementAttribute : System.Attribute
             {
                 public BindInputElementAttribute(string type, string suffix, string valueAttribute, string changeAttribute, bool isInvariantCulture, string format) => throw null;
@@ -18,13 +18,14 @@ namespace Microsoft
                 public string ValueAttribute { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Components.ElementReferenceExtensions` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Components.ElementReferenceExtensions` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ElementReferenceExtensions
             {
                 public static System.Threading.Tasks.ValueTask FocusAsync(this Microsoft.AspNetCore.Components.ElementReference elementReference) => throw null;
+                public static System.Threading.Tasks.ValueTask FocusAsync(this Microsoft.AspNetCore.Components.ElementReference elementReference, bool preventScroll) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Components.WebElementReferenceContext` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Components.WebElementReferenceContext` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class WebElementReferenceContext : Microsoft.AspNetCore.Components.ElementReferenceContext
             {
                 public WebElementReferenceContext(Microsoft.JSInterop.IJSRuntime jsRuntime) => throw null;
@@ -32,21 +33,21 @@ namespace Microsoft
 
             namespace Forms
             {
-                // Generated from `Microsoft.AspNetCore.Components.Forms.BrowserFileExtensions` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.BrowserFileExtensions` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class BrowserFileExtensions
                 {
-                    public static System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Components.Forms.IBrowserFile> RequestImageFileAsync(this Microsoft.AspNetCore.Components.Forms.IBrowserFile browserFile, string format, int maxWith, int maxHeight) => throw null;
+                    public static System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Components.Forms.IBrowserFile> RequestImageFileAsync(this Microsoft.AspNetCore.Components.Forms.IBrowserFile browserFile, string format, int maxWidth, int maxHeight) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.EditContextFieldClassExtensions` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.EditContextFieldClassExtensions` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class EditContextFieldClassExtensions
                 {
-                    public static string FieldCssClass<TField>(this Microsoft.AspNetCore.Components.Forms.EditContext editContext, System.Linq.Expressions.Expression<System.Func<TField>> accessor) => throw null;
                     public static string FieldCssClass(this Microsoft.AspNetCore.Components.Forms.EditContext editContext, Microsoft.AspNetCore.Components.Forms.FieldIdentifier fieldIdentifier) => throw null;
+                    public static string FieldCssClass<TField>(this Microsoft.AspNetCore.Components.Forms.EditContext editContext, System.Linq.Expressions.Expression<System.Func<TField>> accessor) => throw null;
                     public static void SetFieldCssClassProvider(this Microsoft.AspNetCore.Components.Forms.EditContext editContext, Microsoft.AspNetCore.Components.Forms.FieldCssClassProvider fieldCssClassProvider) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.EditForm` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.EditForm` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EditForm : Microsoft.AspNetCore.Components.ComponentBase
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> AdditionalAttributes { get => throw null; set => throw null; }
@@ -61,14 +62,14 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Forms.EditContext> OnValidSubmit { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.FieldCssClassProvider` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.FieldCssClassProvider` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FieldCssClassProvider
                 {
                     public FieldCssClassProvider() => throw null;
                     public virtual string GetFieldCssClass(Microsoft.AspNetCore.Components.Forms.EditContext editContext, Microsoft.AspNetCore.Components.Forms.FieldIdentifier fieldIdentifier) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.IBrowserFile` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.IBrowserFile` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IBrowserFile
                 {
                     string ContentType { get; }
@@ -78,12 +79,12 @@ namespace Microsoft
                     System.Int64 Size { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.IInputFileJsCallbacks` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.IInputFileJsCallbacks` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 internal interface IInputFileJsCallbacks
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputBase<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputBase<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class InputBase<TValue> : Microsoft.AspNetCore.Components.ComponentBase, System.IDisposable
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> AdditionalAttributes { get => throw null; set => throw null; }
@@ -104,37 +105,51 @@ namespace Microsoft
                     public System.Linq.Expressions.Expression<System.Func<TValue>> ValueExpression { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputCheckbox` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputCheckbox` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputCheckbox : Microsoft.AspNetCore.Components.Forms.InputBase<bool>
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set => throw null; }
                     public InputCheckbox() => throw null;
                     protected override bool TryParseValueFromString(string value, out bool result, out string validationErrorMessage) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputDate<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputDate<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputDate<TValue> : Microsoft.AspNetCore.Components.Forms.InputBase<TValue>
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set => throw null; }
                     protected override string FormatValueAsString(TValue value) => throw null;
                     public InputDate() => throw null;
+                    protected override void OnParametersSet() => throw null;
                     public string ParsingErrorMessage { get => throw null; set => throw null; }
                     protected override bool TryParseValueFromString(string value, out TValue result, out string validationErrorMessage) => throw null;
+                    public Microsoft.AspNetCore.Components.Forms.InputDateType Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputFile` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputDateType` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public enum InputDateType : int
+                {
+                    Date = 0,
+                    DateTimeLocal = 1,
+                    Month = 2,
+                    Time = 3,
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputFile` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputFile : Microsoft.AspNetCore.Components.ComponentBase, System.IDisposable
                 {
                     public System.Collections.Generic.IDictionary<string, object> AdditionalAttributes { get => throw null; set => throw null; }
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
                     void System.IDisposable.Dispose() => throw null;
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set => throw null; }
                     public InputFile() => throw null;
                     protected override System.Threading.Tasks.Task OnAfterRenderAsync(bool firstRender) => throw null;
                     public Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs> OnChange { get => throw null; set => throw null; }
                     protected override void OnInitialized() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputFileChangeEventArgs : System.EventArgs
                 {
                     public Microsoft.AspNetCore.Components.Forms.IBrowserFile File { get => throw null; }
@@ -143,17 +158,18 @@ namespace Microsoft
                     public InputFileChangeEventArgs(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> files) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputNumber<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputNumber<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputNumber<TValue> : Microsoft.AspNetCore.Components.Forms.InputBase<TValue>
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set => throw null; }
                     protected override string FormatValueAsString(TValue value) => throw null;
                     public InputNumber() => throw null;
                     public string ParsingErrorMessage { get => throw null; set => throw null; }
                     protected override bool TryParseValueFromString(string value, out TValue result, out string validationErrorMessage) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputRadio<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputRadio<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputRadio<TValue> : Microsoft.AspNetCore.Components.ComponentBase
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> AdditionalAttributes { get => throw null; set => throw null; }
@@ -164,7 +180,7 @@ namespace Microsoft
                     public TValue Value { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputRadioGroup<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputRadioGroup<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputRadioGroup<TValue> : Microsoft.AspNetCore.Components.Forms.InputBase<TValue>
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
@@ -175,32 +191,36 @@ namespace Microsoft
                     protected override bool TryParseValueFromString(string value, out TValue result, out string validationErrorMessage) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputSelect<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputSelect<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputSelect<TValue> : Microsoft.AspNetCore.Components.Forms.InputBase<TValue>
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
                     public Microsoft.AspNetCore.Components.RenderFragment ChildContent { get => throw null; set => throw null; }
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set => throw null; }
+                    protected override string FormatValueAsString(TValue value) => throw null;
                     public InputSelect() => throw null;
                     protected override bool TryParseValueFromString(string value, out TValue result, out string validationErrorMessage) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputText` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputText` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputText : Microsoft.AspNetCore.Components.Forms.InputBase<string>
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set => throw null; }
                     public InputText() => throw null;
                     protected override bool TryParseValueFromString(string value, out string result, out string validationErrorMessage) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.InputTextArea` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.InputTextArea` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputTextArea : Microsoft.AspNetCore.Components.Forms.InputBase<string>
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set => throw null; }
                     public InputTextArea() => throw null;
                     protected override bool TryParseValueFromString(string value, out string result, out string validationErrorMessage) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.RemoteBrowserFileStreamOptions` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.RemoteBrowserFileStreamOptions` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RemoteBrowserFileStreamOptions
                 {
                     public int MaxBufferSize { get => throw null; set => throw null; }
@@ -209,7 +229,7 @@ namespace Microsoft
                     public System.TimeSpan SegmentFetchTimeout { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.ValidationMessage<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.ValidationMessage<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationMessage<TValue> : Microsoft.AspNetCore.Components.ComponentBase, System.IDisposable
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> AdditionalAttributes { get => throw null; set => throw null; }
@@ -221,7 +241,7 @@ namespace Microsoft
                     public ValidationMessage() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Forms.ValidationSummary` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Forms.ValidationSummary` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationSummary : Microsoft.AspNetCore.Components.ComponentBase, System.IDisposable
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> AdditionalAttributes { get => throw null; set => throw null; }
@@ -236,20 +256,39 @@ namespace Microsoft
             }
             namespace RenderTree
             {
-                // Generated from `Microsoft.AspNetCore.Components.RenderTree.WebEventDescriptor` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.RenderTree.WebEventDescriptor` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class WebEventDescriptor
                 {
-                    public int BrowserRendererId { get => throw null; set => throw null; }
-                    public string EventArgsType { get => throw null; set => throw null; }
                     public Microsoft.AspNetCore.Components.RenderTree.EventFieldInfo EventFieldInfo { get => throw null; set => throw null; }
                     public System.UInt64 EventHandlerId { get => throw null; set => throw null; }
+                    public string EventName { get => throw null; set => throw null; }
                     public WebEventDescriptor() => throw null;
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.RenderTree.WebRenderer` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public abstract class WebRenderer : Microsoft.AspNetCore.Components.RenderTree.Renderer
+                {
+                    protected internal int AddRootComponent(System.Type componentType, string domElementSelector) => throw null;
+                    protected abstract void AttachRootComponentToBrowser(int componentId, string domElementSelector);
+                    protected override void Dispose(bool disposing) => throw null;
+                    protected int RendererId { get => throw null; set => throw null; }
+                    public WebRenderer(System.IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, System.Text.Json.JsonSerializerOptions jsonOptions, Microsoft.AspNetCore.Components.Web.Infrastructure.JSComponentInterop jsComponentInterop) : base(default(System.IServiceProvider), default(Microsoft.Extensions.Logging.ILoggerFactory)) => throw null;
                 }
 
             }
             namespace Routing
             {
-                // Generated from `Microsoft.AspNetCore.Components.Routing.NavLink` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Routing.FocusOnNavigate` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class FocusOnNavigate : Microsoft.AspNetCore.Components.ComponentBase
+                {
+                    public FocusOnNavigate() => throw null;
+                    protected override System.Threading.Tasks.Task OnAfterRenderAsync(bool firstRender) => throw null;
+                    protected override void OnParametersSet() => throw null;
+                    public Microsoft.AspNetCore.Components.RouteData RouteData { get => throw null; set => throw null; }
+                    public string Selector { get => throw null; set => throw null; }
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Routing.NavLink` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NavLink : Microsoft.AspNetCore.Components.ComponentBase, System.IDisposable
                 {
                     public string ActiveClass { get => throw null; set => throw null; }
@@ -264,29 +303,29 @@ namespace Microsoft
                     protected override void OnParametersSet() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Routing.NavLinkMatch` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum NavLinkMatch
+                // Generated from `Microsoft.AspNetCore.Components.Routing.NavLinkMatch` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public enum NavLinkMatch : int
                 {
-                    All,
-                    Prefix,
+                    All = 1,
+                    Prefix = 0,
                 }
 
             }
             namespace Web
             {
-                // Generated from `Microsoft.AspNetCore.Components.Web.BindAttributes` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.BindAttributes` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class BindAttributes
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.ClipboardEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.ClipboardEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ClipboardEventArgs : System.EventArgs
                 {
                     public ClipboardEventArgs() => throw null;
                     public string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.DataTransfer` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.DataTransfer` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DataTransfer
                 {
                     public DataTransfer() => throw null;
@@ -297,7 +336,7 @@ namespace Microsoft
                     public string[] Types { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.DataTransferItem` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.DataTransferItem` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DataTransferItem
                 {
                     public DataTransferItem() => throw null;
@@ -305,14 +344,22 @@ namespace Microsoft
                     public string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.DragEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.DragEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DragEventArgs : Microsoft.AspNetCore.Components.Web.MouseEventArgs
                 {
                     public Microsoft.AspNetCore.Components.Web.DataTransfer DataTransfer { get => throw null; set => throw null; }
                     public DragEventArgs() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.ErrorEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.ErrorBoundary` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class ErrorBoundary : Microsoft.AspNetCore.Components.ErrorBoundaryBase
+                {
+                    protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public ErrorBoundary() => throw null;
+                    protected override System.Threading.Tasks.Task OnErrorAsync(System.Exception exception) => throw null;
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Web.ErrorEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ErrorEventArgs : System.EventArgs
                 {
                     public int Colno { get => throw null; set => throw null; }
@@ -323,19 +370,62 @@ namespace Microsoft
                     public string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.EventHandlers` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.EventHandlers` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class EventHandlers
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.FocusEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.FocusEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FocusEventArgs : System.EventArgs
                 {
                     public FocusEventArgs() => throw null;
                     public string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.KeyboardEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.HeadContent` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class HeadContent : Microsoft.AspNetCore.Components.ComponentBase
+                {
+                    protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public Microsoft.AspNetCore.Components.RenderFragment ChildContent { get => throw null; set => throw null; }
+                    public HeadContent() => throw null;
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Web.HeadOutlet` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class HeadOutlet : Microsoft.AspNetCore.Components.ComponentBase
+                {
+                    protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public HeadOutlet() => throw null;
+                    protected override System.Threading.Tasks.Task OnAfterRenderAsync(bool firstRender) => throw null;
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Web.IErrorBoundaryLogger` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public interface IErrorBoundaryLogger
+                {
+                    System.Threading.Tasks.ValueTask LogErrorAsync(System.Exception exception);
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Web.IJSComponentConfiguration` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public interface IJSComponentConfiguration
+                {
+                    Microsoft.AspNetCore.Components.Web.JSComponentConfigurationStore JSComponents { get; }
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Web.JSComponentConfigurationExtensions` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public static class JSComponentConfigurationExtensions
+                {
+                    public static void RegisterForJavaScript(this Microsoft.AspNetCore.Components.Web.IJSComponentConfiguration configuration, System.Type componentType, string identifier) => throw null;
+                    public static void RegisterForJavaScript(this Microsoft.AspNetCore.Components.Web.IJSComponentConfiguration configuration, System.Type componentType, string identifier, string javaScriptInitializer) => throw null;
+                    public static void RegisterForJavaScript<TComponent>(this Microsoft.AspNetCore.Components.Web.IJSComponentConfiguration configuration, string identifier) where TComponent : Microsoft.AspNetCore.Components.IComponent => throw null;
+                    public static void RegisterForJavaScript<TComponent>(this Microsoft.AspNetCore.Components.Web.IJSComponentConfiguration configuration, string identifier, string javaScriptInitializer) where TComponent : Microsoft.AspNetCore.Components.IComponent => throw null;
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Web.JSComponentConfigurationStore` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class JSComponentConfigurationStore
+                {
+                    public JSComponentConfigurationStore() => throw null;
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Web.KeyboardEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class KeyboardEventArgs : System.EventArgs
                 {
                     public bool AltKey { get => throw null; set => throw null; }
@@ -350,7 +440,7 @@ namespace Microsoft
                     public string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.MouseEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.MouseEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MouseEventArgs : System.EventArgs
                 {
                     public bool AltKey { get => throw null; set => throw null; }
@@ -364,13 +454,23 @@ namespace Microsoft
                     public MouseEventArgs() => throw null;
                     public double OffsetX { get => throw null; set => throw null; }
                     public double OffsetY { get => throw null; set => throw null; }
+                    public double PageX { get => throw null; set => throw null; }
+                    public double PageY { get => throw null; set => throw null; }
                     public double ScreenX { get => throw null; set => throw null; }
                     public double ScreenY { get => throw null; set => throw null; }
                     public bool ShiftKey { get => throw null; set => throw null; }
                     public string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.PointerEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.PageTitle` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class PageTitle : Microsoft.AspNetCore.Components.ComponentBase
+                {
+                    protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public Microsoft.AspNetCore.Components.RenderFragment ChildContent { get => throw null; set => throw null; }
+                    public PageTitle() => throw null;
+                }
+
+                // Generated from `Microsoft.AspNetCore.Components.Web.PointerEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PointerEventArgs : Microsoft.AspNetCore.Components.Web.MouseEventArgs
                 {
                     public float Height { get => throw null; set => throw null; }
@@ -384,7 +484,7 @@ namespace Microsoft
                     public float Width { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.ProgressEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.ProgressEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ProgressEventArgs : System.EventArgs
                 {
                     public bool LengthComputable { get => throw null; set => throw null; }
@@ -394,7 +494,7 @@ namespace Microsoft
                     public string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.TouchEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.TouchEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TouchEventArgs : System.EventArgs
                 {
                     public bool AltKey { get => throw null; set => throw null; }
@@ -409,7 +509,7 @@ namespace Microsoft
                     public string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.TouchPoint` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.TouchPoint` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TouchPoint
                 {
                     public double ClientX { get => throw null; set => throw null; }
@@ -422,39 +522,39 @@ namespace Microsoft
                     public TouchPoint() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.WebEventCallbackFactoryEventArgsExtensions` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.WebEventCallbackFactoryEventArgsExtensions` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class WebEventCallbackFactoryEventArgsExtensions
                 {
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.WheelEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.WheelEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.WheelEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.WheelEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.TouchEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.TouchEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.TouchEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.TouchEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ProgressEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.ProgressEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ProgressEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.ProgressEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.PointerEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.PointerEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.PointerEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.PointerEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.MouseEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.MouseEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.FocusEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.FocusEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ErrorEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.ErrorEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ErrorEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.ErrorEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.DragEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.DragEventArgs, System.Threading.Tasks.Task> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.DragEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.DragEventArgs> callback) => throw null;
-                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ClipboardEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.ClipboardEventArgs, System.Threading.Tasks.Task> callback) => throw null;
                     public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ClipboardEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.ClipboardEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.DragEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.DragEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ErrorEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.ErrorEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.FocusEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.MouseEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.PointerEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.PointerEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ProgressEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.ProgressEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.TouchEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.TouchEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.WheelEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Action<Microsoft.AspNetCore.Components.Web.WheelEventArgs> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ClipboardEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.ClipboardEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.DragEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.DragEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ErrorEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.ErrorEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.FocusEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.MouseEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.PointerEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.PointerEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.ProgressEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.ProgressEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.TouchEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.TouchEventArgs, System.Threading.Tasks.Task> callback) => throw null;
+                    public static Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.WheelEventArgs> Create(this Microsoft.AspNetCore.Components.EventCallbackFactory factory, object receiver, System.Func<Microsoft.AspNetCore.Components.Web.WheelEventArgs, System.Threading.Tasks.Task> callback) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.WebRenderTreeBuilderExtensions` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.WebRenderTreeBuilderExtensions` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class WebRenderTreeBuilderExtensions
                 {
                     public static void AddEventPreventDefaultAttribute(this Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder, int sequence, string eventName, bool value) => throw null;
                     public static void AddEventStopPropagationAttribute(this Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder, int sequence, string eventName, bool value) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Web.WheelEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.Web.WheelEventArgs` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class WheelEventArgs : Microsoft.AspNetCore.Components.Web.MouseEventArgs
                 {
                     public System.Int64 DeltaMode { get => throw null; set => throw null; }
@@ -464,45 +564,57 @@ namespace Microsoft
                     public WheelEventArgs() => throw null;
                 }
 
+                namespace Infrastructure
+                {
+                    // Generated from `Microsoft.AspNetCore.Components.Web.Infrastructure.JSComponentInterop` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    public class JSComponentInterop
+                    {
+                        protected internal virtual int AddRootComponent(string identifier, string domElementSelector) => throw null;
+                        public JSComponentInterop(Microsoft.AspNetCore.Components.Web.JSComponentConfigurationStore configuration) => throw null;
+                        protected internal virtual void RemoveRootComponent(int componentId) => throw null;
+                        protected internal void SetRootComponentParameters(int componentId, int parameterCount, System.Text.Json.JsonElement parametersJson, System.Text.Json.JsonSerializerOptions jsonOptions) => throw null;
+                    }
+
+                }
                 namespace Virtualization
                 {
-                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.IVirtualizeJsCallbacks` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.IVirtualizeJsCallbacks` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     internal interface IVirtualizeJsCallbacks
                     {
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderDelegate<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderDelegate<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public delegate System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderResult<TItem>> ItemsProviderDelegate<TItem>(Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderRequest request);
 
-                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderRequest` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderRequest` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct ItemsProviderRequest
                     {
                         public System.Threading.CancellationToken CancellationToken { get => throw null; }
                         public int Count { get => throw null; }
-                        public ItemsProviderRequest(int startIndex, int count, System.Threading.CancellationToken cancellationToken) => throw null;
                         // Stub generator skipped constructor 
+                        public ItemsProviderRequest(int startIndex, int count, System.Threading.CancellationToken cancellationToken) => throw null;
                         public int StartIndex { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderResult<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderResult<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct ItemsProviderResult<TItem>
                     {
                         public System.Collections.Generic.IEnumerable<TItem> Items { get => throw null; }
-                        public ItemsProviderResult(System.Collections.Generic.IEnumerable<TItem> items, int totalItemCount) => throw null;
                         // Stub generator skipped constructor 
+                        public ItemsProviderResult(System.Collections.Generic.IEnumerable<TItem> items, int totalItemCount) => throw null;
                         public int TotalItemCount { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct PlaceholderContext
                     {
                         public int Index { get => throw null; }
-                        public PlaceholderContext(int index, float size = default(float)) => throw null;
                         // Stub generator skipped constructor 
+                        public PlaceholderContext(int index, float size = default(float)) => throw null;
                         public float Size { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<>` in `Microsoft.AspNetCore.Components.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<>` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class Virtualize<TItem> : Microsoft.AspNetCore.Components.ComponentBase, System.IAsyncDisposable
                     {
                         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;

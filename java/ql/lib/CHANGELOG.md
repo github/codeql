@@ -1,3 +1,161 @@
+## 0.4.4
+
+### New Features
+
+* Kotlin support is now in beta. This means that Java analyses will also include Kotlin code by default. Kotlin support can be disabled by setting `CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN` to `true` in the environment.
+* The new `string Compilation.getInfo(string)` predicate provides access to some information about compilations.
+
+### Minor Analysis Improvements
+
+* The ReDoS libraries in `semmle.code.java.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+* Added data flow summaries for tainted Android intents sent to activities via `Activity.startActivities`.
+
+## 0.4.3
+
+No user-facing changes.
+
+## 0.4.2
+
+### Deprecated APIs
+
+* Deprecated `ContextStartActivityMethod`. Use `StartActivityMethod` instead.
+
+### New Features
+
+* Added a new predicate, `hasIncompletePermissions`, in the `AndroidProviderXmlElement` class. This predicate detects if a provider element does not provide both read and write permissions.
+
+### Minor Analysis Improvements
+
+* Added support for common patterns involving `Stream.collect` and common collectors like `Collectors.toList()`.
+* The class `TypeVariable` now also extends `Modifiable`.
+* Added data flow steps for tainted Android intents that are sent to services and receivers.
+* Improved the data flow step for tainted Android intents that are sent to activities so that more cases are covered.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* Added external flow sources for the intents received in exported Android services.
+
+## 0.4.0
+
+### Breaking Changes
+
+* The `Member.getQualifiedName()` predicate result now includes the qualified name of the declaring type.
+
+### Deprecated APIs
+
+* The predicate `Annotation.getAValue()` has been deprecated because it might lead to obtaining the value of the wrong annotation element by accident. `getValue(string)` (or one of the value type specific predicates) should be used to explicitly specify the name of the annotation element.
+* The predicate `Annotation.getAValue(string)` has been renamed to `getAnArrayValue(string)`.
+* The predicate `SuppressWarningsAnnotation.getASuppressedWarningLiteral()` has been deprecated because it unnecessarily restricts the result type; `getASuppressedWarning()` should be used instead.
+* The predicates `TargetAnnotation.getATargetExpression()` and `RetentionAnnotation.getRetentionPolicyExpression()` have been deprecated because getting the enum constant read expression is rarely useful, instead the corresponding predicates for getting the name of the referenced enum constants should be used.
+
+### New Features
+
+* Added a new predicate, `allowsBackup`, in the `AndroidApplicationXmlElement` class. This predicate detects if the application element does not disable the `android:allowBackup` attribute.
+* The predicates of the CodeQL class `Annotation` have been improved:
+  * Convenience value type specific predicates have been added, such as `getEnumConstantValue(string)` or `getStringValue(string)`.
+  * Convenience predicates for elements with array values have been added, such as `getAnEnumConstantArrayValue(string)`. While the behavior of the existing predicates has not changed, usage of them should be reviewed (or replaced with the newly added predicate) to make sure they work correctly for elements with array values.
+  * Some internal CodeQL usage of the `Annotation` predicates has been adjusted and corrected; this might affect the results of some queries.
+* New predicates have been added to the CodeQL class `Annotatable` to support getting declared and associated annotations. As part of that, `hasAnnotation()` has been changed to also consider inherited annotations, to be consistent with `hasAnnotation(string, string)` and `getAnAnnotation()`. The newly added predicate `hasDeclaredAnnotation()` can be used as replacement for the old functionality.
+* New predicates have been added to the CodeQL class `AnnotationType` to simplify getting information about usage of JDK meta-annotations, such as `@Retention`.
+
+### Major Analysis Improvements
+
+* The virtual dispatch relation used in data flow now favors summary models over source code for dispatch to interface methods from `java.util` unless there is evidence that a specific source implementation is reachable. This should provide increased precision for any projects that include, for example, custom `List` or `Map` implementations.
+
+### Minor Analysis Improvements
+
+* Added new sinks to the query `java/android/implicit-pendingintents` to take into account the classes `androidx.core.app.NotificationManagerCompat` and `androidx.core.app.AlarmManagerCompat`.
+* Added new flow steps for `androidx.core.app.NotificationCompat` and its inner classes.
+* Added flow sinks, sources and summaries for the Kotlin standard library.
+* Added flow summary for `org.springframework.data.repository.CrudRepository.save()`.
+* Added new flow steps for the following Android classes:
+  * `android.content.ContentResolver`
+  * `android.content.ContentProviderClient`
+  * `android.content.ContentProviderOperation`
+  * `android.content.ContentProviderOperation$Builder`
+  * `android.content.ContentProviderResult`
+  * `android.database.Cursor`
+* Added taint flow models for the `java.lang.String.(charAt|getBytes)` methods.
+* Improved taint flow models for the `java.lang.String.(replace|replaceFirst|replaceAll)` methods. Additional results may be found where users do not properly sanitize their inputs.
+
+### Bug Fixes
+
+* Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
+
+## 0.3.5
+
+## 0.3.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* The utility files previously in the `semmle.code.java.security.performance` package have been moved to the `semmle.code.java.security.regexp` package.  
+  The previous files still exist as deprecated aliases.
+
+### New Features
+
+* Added a new predicate, `requiresPermissions`, in the `AndroidComponentXmlElement` and `AndroidApplicationXmlElement` classes to detect if the element has explicitly set a value for its `android:permission` attribute.
+* Added a new predicate, `hasAnIntentFilterElement`, in the `AndroidComponentXmlElement` class to detect if a component contains an intent filter element.
+* Added a new predicate, `hasExportedAttribute`, in the `AndroidComponentXmlElement` class to detect if a component has an `android:exported` attribute.
+* Added a new class, `AndroidCategoryXmlElement`, to represent a category element in an Android manifest file.
+* Added a new predicate, `getACategoryElement`, in the `AndroidIntentFilterXmlElement` class to get a category element of an intent filter.
+* Added a new predicate, `isInBuildDirectory`, in the `AndroidManifestXmlFile` class. This predicate detects if the manifest file is located in a build directory.
+* Added a new predicate, `isDebuggable`, in the `AndroidApplicationXmlElement` class. This predicate detects if the application element has its `android:debuggable` attribute enabled.
+
+### Minor Analysis Improvements
+
+* Added new flow steps for the classes `java.nio.file.Path` and `java.nio.file.Paths`.
+* The class `AndroidFragment` now also models the Android Jetpack version of the `Fragment` class (`androidx.fragment.app.Fragment`).
+* Java 19 builds can now be extracted. There are no non-preview new language features in this release, so the only user-visible change is that the CodeQL extractor will now correctly trace compilations using the JDK 19 release of `javac`.
+* Classes and methods that are seen with several different paths during the extraction process (for example, packaged into different JAR files) now report an arbitrarily selected location via their `getLocation` and `hasLocationInfo` predicates, rather than reporting all of them. This may lead to reduced alert duplication.
+* The query `java/hardcoded-credential-api-call` now recognises methods that consume usernames, passwords and keys from the JSch, Ganymed, Apache SSHD, sshj, Trilead SSH-2, Apache FTPClient and MongoDB projects. 
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* Improved analysis of the Android class `AsyncTask` so that data can properly flow through its methods according to the life-cycle steps described here: https://developer.android.com/reference/android/os/AsyncTask#the-4-steps.
+* Added a data-flow model for the `setProperty` method of `java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
+
+## 0.3.2
+
+### New Features
+
+* The QL predicate `Expr::getUnderlyingExpr` has been added. It can be used to look through casts and not-null expressions and obtain the underlying expression to which they apply.
+
+### Minor Analysis Improvements
+
+* The JUnit5 version of `AssertNotNull` is now recognized, which removes related false positives in the nullness queries.
+* Added data flow models for `java.util.Scanner`.
+
+## 0.3.1
+
+### New Features
+
+* Added an `ErrorType` class. An instance of this class will be used if an extractor is unable to extract a type, or if an up/downgrade script is unable to provide a type.
+
+### Minor Analysis Improvements
+
+* Added data-flow models for `java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
+* Added `Modifier.isInline()`.
+* Removed Kotlin-specific database and QL structures for loops and `break`/`continue` statements. The Kotlin extractor was changed to reuse the Java structures for these constructs.
+* Added additional flow sources for uses of external storage on Android. 
+
+## 0.3.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+### Minor Analysis Improvements
+
+Added a flow step for `String.valueOf` calls on tainted `android.text.Editable` objects. 
+
+## 0.2.3
+
 ## 0.2.2
 
 ### Deprecated APIs
@@ -122,7 +280,7 @@
 
 ### Minor Analysis Improvements
 
-* Added guard preconditon support for assertion methods for popular testing libraries (e.g. Junit 4, Junit 5, TestNG).
+* Added guard precondition support for assertion methods for popular testing libraries (e.g. Junit 4, Junit 5, TestNG).
 
 ## 0.0.13
 

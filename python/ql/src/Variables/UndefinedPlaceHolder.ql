@@ -43,4 +43,4 @@ where
   not initialized_as_local(p) and
   not template_attribute(p) and
   not_a_global(p)
-select p, "This use of place-holder variable '" + p.getId() + "' may be undefined"
+select p, "This use of place-holder variable '" + p.getId() + "' may be undefined."

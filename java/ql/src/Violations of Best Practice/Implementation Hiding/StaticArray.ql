@@ -41,4 +41,4 @@ where
   f.getType() instanceof Array and
   f.fromSource() and
   forall(AssignExpr a | a.getDest() = f.getAnAccess() | nonEmptyArrayLiteralOrNull(a.getSource()))
-select f, "The array constant " + f.getName() + " is vulnerable to mutation."
+select f, "The array constant '" + f.getName() + "' is vulnerable to mutation."

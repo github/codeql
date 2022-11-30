@@ -1,5 +1,4 @@
 import python
-deprecated import semmle.python.objects.ObjectInternal as OI
 private import semmle.python.ApiGraphs
 // Need to import since frameworks can extend the abstract `RegexString`
 private import semmle.python.Frameworks
@@ -75,7 +74,7 @@ private string canonical_name(API::Node flag) {
  */
 private DataFlow::TypeTrackingNode re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
   t.start() and
-  exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.getAnImmediateUse())
+  exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.asSource())
   or
   exists(BinaryExprNode binop, DataFlow::Node operand |
     operand.getALocalSource() = re_flag_tracker(flag_name, t.continue()) and
@@ -97,19 +96,6 @@ private DataFlow::Node re_flag_tracker(string flag_name) {
 
 /** Gets a regular expression mode flag associated with the given data flow node. */
 string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
-
-/**
- * DEPRECATED 2021-02-24 -- use `mode_from_node` instead.
- *
- * Gets a regular expression mode flag associated with the given value.
- */
-deprecated string mode_from_mode_object(Value obj) {
-  result in ["DEBUG", "IGNORECASE", "LOCALE", "MULTILINE", "DOTALL", "UNICODE", "VERBOSE"] and
-  exists(int flag |
-    flag = Value::named("sre_constants.SRE_FLAG_" + result).(OI::ObjectInternal).intValue() and
-    obj.(OI::ObjectInternal).intValue().bitAnd(flag) = flag
-  )
-}
 
 /** A StrConst used as a regular expression */
 abstract class RegexString extends Expr {
@@ -297,7 +283,7 @@ abstract class RegexString extends Expr {
 
   /**
    * Helper predicate for `escapingChar`.
-   * In order to avoid negative recusrion, we return a boolean.
+   * In order to avoid negative recursion, we return a boolean.
    * This way, we can refer to `escaping(pos - 1).booleanNot()`
    * rather than to a negated version of `escaping(pos)`.
    */

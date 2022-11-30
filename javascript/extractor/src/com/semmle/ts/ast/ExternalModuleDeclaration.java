@@ -7,9 +7,10 @@ import com.semmle.js.ast.Visitor;
 import java.util.List;
 
 /** A statement of form <code>declare module "X" {...}</code>. */
-public class ExternalModuleDeclaration extends Statement {
+public class ExternalModuleDeclaration extends Statement implements INodeWithSymbol {
   private final Literal name;
   private final List<Statement> body;
+  private int symbol = -1;
 
   public ExternalModuleDeclaration(SourceLocation loc, Literal name, List<Statement> body) {
     super("ExternalModuleDeclaration", loc);
@@ -28,5 +29,15 @@ public class ExternalModuleDeclaration extends Statement {
 
   public List<Statement> getBody() {
     return body;
+  }
+
+  @Override
+  public int getSymbol() {
+    return this.symbol;
+  }
+
+  @Override
+  public void setSymbol(int symbol) {
+    this.symbol = symbol;
   }
 }

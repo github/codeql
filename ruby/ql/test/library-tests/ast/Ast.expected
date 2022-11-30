@@ -1556,6 +1556,35 @@ constants/constants.rb:
 #   73|       getAnOperand/getLeftOperand: [ClassVariableAccess] @@fourty_six
 #   73|       getAnOperand/getRightOperand: [ConstantReadAccess] FOURTY_SIX
 #   73|         getScopeExpr: [ConstantReadAccess] Mod3
+#   78|   getStmt: [AssignExpr] ... = ...
+#   78|     getAnOperand/getLeftOperand: [LocalVariableAccess] a
+#   78|     getAnOperand/getRightOperand: [ArrayLiteral] [...]
+#   78|       getElement: [IntegerLiteral] 1
+#   78|       getElement: [IntegerLiteral] 2
+#   78|       getElement: [IntegerLiteral] 3
+#   79|   getStmt: [AssignExpr] ... = ...
+#   79|     getAnOperand/getLeftOperand: [ConstantAssignment] A
+#   79|     getAnOperand/getRightOperand: [ArrayLiteral] [...]
+#   79|       getElement: [IntegerLiteral] 1
+#   79|       getElement: [IntegerLiteral] 2
+#   79|       getElement: [IntegerLiteral] 3
+#   80|   getStmt: [AssignExpr] ... = ...
+#   80|     getAnOperand/getLeftOperand: [ConstantAssignment] B
+#   80|     getAnOperand/getRightOperand: [LocalVariableAccess] a
+#   81|   getStmt: [AssignExpr] ... = ...
+#   81|     getAnOperand/getLeftOperand: [ConstantAssignment] C
+#   81|     getAnOperand/getRightOperand: [ConstantReadAccess] A
+#   82|   getStmt: [AssignExpr] ... = ...
+#   82|     getAnOperand/getLeftOperand: [LocalVariableAccess] b
+#   82|     getAnOperand/getRightOperand: [ConstantReadAccess] B
+#   84|   getStmt: [IfExpr] if ...
+#   84|     getCondition: [MethodCall] call to condition
+#   84|       getReceiver: [SelfVariableAccess] self
+#   84|     getBranch/getThen: [StmtSequence] then ...
+#   85|       getStmt: [AssignExpr] ... = ...
+#   85|         getAnOperand/getLeftOperand: [LocalVariableAccess] c
+#   85|         getAnOperand/getRightOperand: [LocalVariableAccess] b
+#   87|   getStmt: [LocalVariableAccess] c
 escape_sequences/escapes.rb:
 #    1| [Toplevel] escapes.rb
 #    6|   getStmt: [StringLiteral] "\'"
@@ -1733,6 +1762,12 @@ escape_sequences/escapes.rb:
 #   93|   getStmt: [SymbolLiteral] :"\C-?"
 #   93|     getComponent: [StringEscapeSequenceComponent] \C
 #   93|     getComponent: [StringTextComponent] -?
+misc/iso-8859-15.rb:
+#    1| [Toplevel] iso-8859-15.rb
+#    4|   getStmt: [MethodCall] call to print
+#    4|     getReceiver: [SelfVariableAccess] self
+#    4|     getArgument: [StringLiteral] "EUR = €"
+#    4|       getComponent: [StringTextComponent] EUR = €
 literals/literals.rb:
 #    1| [Toplevel] literals.rb
 #    2|   getStmt: [NilLiteral] nil
@@ -2225,12 +2260,8 @@ literals/literals.rb:
 #  189|     getAnOperand/getLeftOperand: [LocalVariableAccess] query
 #  189|     getAnOperand/getRightOperand: [HereDoc] <<'DOC'
 #  189|       getComponent: [StringTextComponent] 
-#  189|        text without 
-#  190|       getComponent: [StringInterpolationComponent] #{...}
-#  190|         getStmt: [MethodCall] call to interpolation
-#  190|           getReceiver: [SelfVariableAccess] self
-#  190|       getComponent: [StringTextComponent]  !
-#  190|       
+#  189|        text without #{ interpolation } !
+#  189|       
 #  193|   getStmt: [AssignExpr] ... = ...
 #  193|     getAnOperand/getLeftOperand: [LocalVariableAccess] output
 #  193|     getAnOperand/getRightOperand: [HereDoc] <<`SCRIPT`
@@ -2258,6 +2289,17 @@ literals/literals.rb:
 #  199|       getKey: [SymbolLiteral] :Z
 #  199|         getComponent: [StringTextComponent] Z
 #  199|       getValue: [ConstantReadAccess] Z
+#  201|   getStmt: [StringLiteral] "@foo: #{...} @@bar: #{...} $_..."
+#  201|     getComponent: [StringTextComponent] @foo: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [InstanceVariableAccess] @foo
+#  201|         getReceiver: [SelfVariableAccess] self
+#  201|     getComponent: [StringTextComponent]  @@bar: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [ClassVariableAccess] @@bar
+#  201|     getComponent: [StringTextComponent]  $_: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [GlobalVariableAccess] $_
 control/loops.rb:
 #    1| [Toplevel] loops.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -2791,6 +2833,29 @@ operations/operations.rb:
 #   96|   getStmt: [AssignMulExpr] ... *= ...
 #   96|     getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
 #   96|     getAnOperand/getRightOperand: [IntegerLiteral] 6
+#   98|   getStmt: [AssignExpr] ... = ...
+#   98|     getAnOperand/getLeftOperand: [ConstantAssignment] CONSTANT1
+#   98|     getAnOperand/getRightOperand: [IntegerLiteral] 5
+#   99|   getStmt: [AssignAddExpr] ... += ...
+#   99|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT2
+#   99|     getAnOperand/getRightOperand: [IntegerLiteral] 6
+#  100|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  100|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT3
+#  100|     getAnOperand/getRightOperand: [IntegerLiteral] 7
+#  101|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  101|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] MemberConstant
+#  101|       getScopeExpr: [ConstantReadAccess] Foo
+#  101|     getAnOperand/getRightOperand: [IntegerLiteral] 8
+#  102|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  102|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] OtherConstant
+#  102|       getScopeExpr: [MethodCall] call to bar
+#  102|         getReceiver: [MethodCall] call to foo
+#  102|           getReceiver: [SelfVariableAccess] self
+#  102|           getArgument: [IntegerLiteral] 1
+#  102|     getAnOperand/getRightOperand: [IntegerLiteral] 7
+#  103|   getStmt: [AssignLogicalOrExpr] ... ||= ...
+#  103|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT4
+#  103|     getAnOperand/getRightOperand: [IntegerLiteral] 7
 params/params.rb:
 #    1| [Toplevel] params.rb
 #    4|   getStmt: [Method] identifier_method_params

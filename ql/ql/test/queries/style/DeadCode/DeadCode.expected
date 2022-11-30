@@ -1,2 +1,2 @@
-| Foo.qll:2:11:2:38 | ClasslessPredicate dead1 | Code is dead |
-| Foo.qll:6:3:6:30 | ClasslessPredicate dead2 | Code is dead |
+| Foo.qll:2:21:2:25 | ClasslessPredicate dead1 | This code is never used, and it's not publicly exported. |
+| Foo.qll:6:13:6:17 | ClasslessPredicate dead2 | This code is never used, and it's not publicly exported. |

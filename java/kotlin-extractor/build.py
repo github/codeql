@@ -11,6 +11,8 @@ import os
 import os.path
 import sys
 import shlex
+import distutils
+from distutils import dir_util
 
 
 def parse_args():
@@ -23,6 +25,8 @@ def parse_args():
                         dest='many', help='Build for a single version/kind')
     parser.add_argument('--single-version',
                         help='Build for a specific version/kind')
+    parser.add_argument('--single-version-embeddable', action='store_true',
+                        help='When building a single version, build an embeddable extractor (default is standalone)')
     return parser.parse_args()
 
 
@@ -37,10 +41,11 @@ def is_windows():
         return True
     return False
 
+
 # kotlinc might be kotlinc.bat or kotlinc.cmd on Windows, so we use `which` to find out what it is
 kotlinc = shutil.which('kotlinc')
 if kotlinc is None:
-    print("Cannot build the Kotlin extractor: no kotlinc found on your PATH", file = sys.stderr)
+    print("Cannot build the Kotlin extractor: no kotlinc found on your PATH", file=sys.stderr)
     sys.exit(1)
 
 javac = 'javac'
@@ -83,7 +88,8 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
     run_process([kotlinc,
                  # kotlinc can default to 256M, which isn't enough when we are extracting the build
                  '-J-Xmx2G',
-                 '-Xopt-in=kotlin.RequiresOptIn',
+                 '-Werror',
+                 '-opt-in=kotlin.RequiresOptIn',
                  '-d', output,
                  '-module-name', 'codeql-kotlin-extractor',
                  '-no-reflect', '-no-stdlib',
@@ -97,7 +103,7 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
                  '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] + [s for s in srcs if s.endswith(".java")])
 
 
-def compile_to_jar(build_dir, srcs, classpath, java_classpath, output):
+def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output):
     class_dir = build_dir + '/classes'
 
     if os.path.exists(class_dir):
@@ -108,7 +114,8 @@ def compile_to_jar(build_dir, srcs, classpath, java_classpath, output):
 
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',
-                 '-C', 'src/main/resources', 'META-INF'])
+                 '-C', tmp_src_dir + '/main/resources', 'META-INF',
+                 '-C', tmp_src_dir + '/main/resources', 'com/github/codeql/extractor.name'])
     shutil.rmtree(class_dir)
 
 
@@ -140,18 +147,17 @@ def get_gradle_lib_folder():
     return gradle_home + '/lib'
 
 
-def find_jar(path, pattern):
-    result = glob.glob(path + '/' + pattern + '*.jar')
-    if len(result) == 0:
-        raise Exception('Cannot find jar file %s under path %s' %
-                        (pattern, path))
-    return result
+def find_jar(path, base):
+    fn = path + '/' + base + '.jar'
+    if not os.path.isfile(fn):
+        raise Exception('Cannot find jar file at %s' % fn)
+    return fn
 
 
-def patterns_to_classpath(path, patterns):
+def bases_to_classpath(path, bases):
     result = []
-    for pattern in patterns:
-        result += find_jar(path, pattern)
+    for base in bases:
+        result.append(find_jar(path, base))
     return os.path.pathsep.join(result)
 
 
@@ -166,9 +172,9 @@ def transform_to_embeddable(srcs):
             f.write(content)
 
 
-def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, build_dir, version):
-    classpath = patterns_to_classpath(dependency_folder, jars)
-    java_classpath = patterns_to_classpath(dependency_folder, java_jars)
+def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, build_dir, current_version):
+    classpath = bases_to_classpath(dependency_folder, jars)
+    java_classpath = bases_to_classpath(dependency_folder, java_jars)
 
     tmp_src_dir = build_dir + '/temp_src'
 
@@ -176,16 +182,41 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
         shutil.rmtree(tmp_src_dir)
     shutil.copytree('src', tmp_src_dir)
 
-    for v in kotlin_plugin_versions.many_versions:
-        if v != version:
-            d = tmp_src_dir + '/main/kotlin/utils/versions/v_' + v.replace('.', '_')
+    include_version_folder = tmp_src_dir + '/main/kotlin/utils/versions/to_include'
+    os.makedirs(include_version_folder)
+
+    resource_dir = tmp_src_dir + '/main/resources/com/github/codeql'
+    os.makedirs(resource_dir)
+    with open(resource_dir + '/extractor.name', 'w') as f:
+        f.write(output)
+
+    parsed_current_version = kotlin_plugin_versions.version_string_to_tuple(
+        current_version)
+
+    for version in kotlin_plugin_versions.many_versions:
+        parsed_version = kotlin_plugin_versions.version_string_to_tuple(
+            version)
+        if parsed_version[0] < parsed_current_version[0] or \
+            (parsed_version[0] == parsed_current_version[0] and parsed_version[1] < parsed_current_version[1]) or \
+                (parsed_version[0] == parsed_current_version[0] and parsed_version[1] == parsed_current_version[1] and parsed_version[2] <= parsed_current_version[2]):
+            d = tmp_src_dir + '/main/kotlin/utils/versions/v_' + \
+                version.replace('.', '_')
+            if os.path.exists(d):
+                # copy and overwrite files from the version folder to the include folder
+                distutils.dir_util.copy_tree(d, include_version_folder)
+
+    # remove all version folders:
+    for version in kotlin_plugin_versions.many_versions:
+        d = tmp_src_dir + '/main/kotlin/utils/versions/v_' + \
+            version.replace('.', '_')
+        if os.path.exists(d):
             shutil.rmtree(d)
 
     srcs = find_sources(tmp_src_dir)
 
     transform_to_embeddable(srcs)
 
-    compile_to_jar(build_dir, srcs, classpath, java_classpath, output)
+    compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output)
 
     shutil.rmtree(tmp_src_dir)
 
@@ -209,8 +240,15 @@ def compile_standalone(version):
             'build_standalone_' + version,
             version)
 
+
 if args.single_version:
-    compile_standalone(args.single_version)
+    if args.single_version_embeddable == True:
+        compile_embeddable(args.single_version)
+    else:
+        compile_standalone(args.single_version)
+elif args.single_version_embeddable == True:
+    print("--single-version-embeddable requires --single-version", file=sys.stderr)
+    sys.exit(1)
 elif args.many:
     for version in kotlin_plugin_versions.many_versions:
         compile_standalone(version)

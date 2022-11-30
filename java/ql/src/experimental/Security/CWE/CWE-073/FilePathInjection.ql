@@ -12,11 +12,39 @@
  */
 
 import java
+import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.PathCreation
 import JFinalController
-import experimental.semmle.code.java.PathSanitizer
+import semmle.code.java.security.PathSanitizer
 import DataFlow::PathGraph
+
+private class ActivateModels extends ActiveExperimentalModels {
+  ActivateModels() { this = "file-path-injection" }
+}
+
+/** A complementary sanitizer that protects against path traversal using path normalization. */
+class PathNormalizeSanitizer extends MethodAccess {
+  PathNormalizeSanitizer() {
+    exists(RefType t |
+      t instanceof TypePath or
+      t.hasQualifiedName("kotlin.io", "FilesKt")
+    |
+      this.getMethod().getDeclaringType() = t and
+      this.getMethod().hasName("normalize")
+    )
+    or
+    this.getMethod().getDeclaringType() instanceof TypeFile and
+    this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])
+  }
+}
+
+/** A node with path normalization. */
+class NormalizedPathNode extends DataFlow::Node {
+  NormalizedPathNode() {
+    TaintTracking::localExprTaint(this.asExpr(), any(PathNormalizeSanitizer ma))
+  }
+}
 
 class InjectFilePathConfig extends TaintTracking::Configuration {
   InjectFilePathConfig() { this = "InjectFilePathConfig" }
@@ -30,10 +58,8 @@ class InjectFilePathConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Type t | t = node.getType() | t instanceof BoxedType or t instanceof PrimitiveType)
-  }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof PathTraversalBarrierGuard
+    or
+    node instanceof PathInjectionSanitizer
   }
 }
 

@@ -6,7 +6,7 @@ namespace System
     {
         namespace Serialization
         {
-            // Generated from `System.Runtime.Serialization.DateTimeFormat` in `System.Runtime.Serialization.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.DateTimeFormat` in `System.Runtime.Serialization.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DateTimeFormat
             {
                 public DateTimeFormat(string formatString) => throw null;
@@ -16,17 +16,17 @@ namespace System
                 public string FormatString { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.EmitTypeInformation` in `System.Runtime.Serialization.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum EmitTypeInformation
+            // Generated from `System.Runtime.Serialization.EmitTypeInformation` in `System.Runtime.Serialization.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum EmitTypeInformation : int
             {
-                Always,
-                AsNeeded,
-                Never,
+                Always = 1,
+                AsNeeded = 0,
+                Never = 2,
             }
 
             namespace Json
             {
-                // Generated from `System.Runtime.Serialization.Json.DataContractJsonSerializer` in `System.Runtime.Serialization.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.Serialization.Json.DataContractJsonSerializer` in `System.Runtime.Serialization.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DataContractJsonSerializer : System.Runtime.Serialization.XmlObjectSerializer
                 {
                     public DataContractJsonSerializer(System.Type type) => throw null;
@@ -61,7 +61,7 @@ namespace System
                     public override void WriteStartObject(System.Xml.XmlWriter writer, object graph) => throw null;
                 }
 
-                // Generated from `System.Runtime.Serialization.Json.DataContractJsonSerializerSettings` in `System.Runtime.Serialization.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.Serialization.Json.DataContractJsonSerializerSettings` in `System.Runtime.Serialization.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DataContractJsonSerializerSettings
                 {
                     public DataContractJsonSerializerSettings() => throw null;
@@ -75,20 +75,20 @@ namespace System
                     public bool UseSimpleDictionaryFormat { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Runtime.Serialization.Json.IXmlJsonReaderInitializer` in `System.Runtime.Serialization.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.Serialization.Json.IXmlJsonReaderInitializer` in `System.Runtime.Serialization.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IXmlJsonReaderInitializer
                 {
                     void SetInput(System.Byte[] buffer, int offset, int count, System.Text.Encoding encoding, System.Xml.XmlDictionaryReaderQuotas quotas, System.Xml.OnXmlDictionaryReaderClose onClose);
                     void SetInput(System.IO.Stream stream, System.Text.Encoding encoding, System.Xml.XmlDictionaryReaderQuotas quotas, System.Xml.OnXmlDictionaryReaderClose onClose);
                 }
 
-                // Generated from `System.Runtime.Serialization.Json.IXmlJsonWriterInitializer` in `System.Runtime.Serialization.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.Serialization.Json.IXmlJsonWriterInitializer` in `System.Runtime.Serialization.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IXmlJsonWriterInitializer
                 {
                     void SetOutput(System.IO.Stream stream, System.Text.Encoding encoding, bool ownsStream);
                 }
 
-                // Generated from `System.Runtime.Serialization.Json.JsonReaderWriterFactory` in `System.Runtime.Serialization.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.Serialization.Json.JsonReaderWriterFactory` in `System.Runtime.Serialization.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class JsonReaderWriterFactory
                 {
                     public static System.Xml.XmlDictionaryReader CreateJsonReader(System.Byte[] buffer, System.Xml.XmlDictionaryReaderQuotas quotas) => throw null;

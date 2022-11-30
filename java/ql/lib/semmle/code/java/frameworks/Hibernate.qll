@@ -21,19 +21,3 @@ class HibernateSharedSessionContract extends RefType {
 class HibernateSession extends RefType {
   HibernateSession() { this.hasQualifiedName("org.hibernate", "Session") }
 }
-
-private class SqlSinkCsv extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        //"package;type;overrides;name;signature;ext;spec;kind"
-        "org.hibernate;QueryProducer;true;createQuery;;;Argument[0];sql",
-        "org.hibernate;QueryProducer;true;createNativeQuery;;;Argument[0];sql",
-        "org.hibernate;QueryProducer;true;createSQLQuery;;;Argument[0];sql",
-        "org.hibernate;SharedSessionContract;true;createQuery;;;Argument[0];sql",
-        "org.hibernate;SharedSessionContract;true;createSQLQuery;;;Argument[0];sql",
-        "org.hibernate;Session;true;createQuery;;;Argument[0];sql",
-        "org.hibernate;Session;true;createSQLQuery;;;Argument[0];sql"
-      ]
-  }
-}

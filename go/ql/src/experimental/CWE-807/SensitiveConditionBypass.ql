@@ -20,9 +20,9 @@ from
 where
   // there should be a flow between source and the operand sink
   config.hasFlowPath(source, operand) and
-  // both the operand should belong to the same comparision expression
+  // both the operand should belong to the same comparison expression
   operand.getNode().asExpr() = comp.getAnOperand() and
-  // get the ConditionGuardNode corresponding to the comparision expr.
+  // get the ConditionGuardNode corresponding to the comparison expr.
   guard.getCondition() = comp and
   // the sink `sensitiveSink` should be sensitive,
   isSensitive(sensitiveSink, classification) and

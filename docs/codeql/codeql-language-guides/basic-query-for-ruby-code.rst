@@ -36,7 +36,7 @@ Running the query
 
    .. code-block:: ql
 
-      import ruby
+      import codeql.ruby.AST
 
       from IfExpr ifexpr
       where
@@ -80,7 +80,7 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | Query part                                                    | Purpose                                                                                                           | Details                                                                                                                |
 +===============================================================+===================================================================================================================+========================================================================================================================+
-| ``import ruby``                                               | Imports the standard CodeQL libraries for Ruby.                                                                   | Every query begins with one or more ``import`` statements.                                                             |
+| ``import codeql.ruby.AST``                                    | Imports the standard CodeQL AST libraries for Ruby.                                                               | Every query begins with one or more ``import`` statements.                                                             |
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | ``from IfExpr ifexpr``                                        | Defines the variables for the query.                                                                              | We use: an ``IfExpr`` variable for ``if`` expressions.                                                                 |
 |                                                               | Declarations are of the form:                                                                                     |                                                                                                                        |

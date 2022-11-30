@@ -69,5 +69,5 @@ where
   loginMethod(loginMethod, fromLoginFlow) and
   sessionUse(sessionUse.getElement()) and
   controlStep+(loginCall.getASuccessorByType(fromLoginFlow), sessionUse)
-select sessionUse, "This session has not been invalidated following the call to '$@'.", loginCall,
+select sessionUse, "This session has not been invalidated following the call to $@.", loginCall,
   loginMethod.getName()

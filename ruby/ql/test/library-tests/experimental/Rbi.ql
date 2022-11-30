@@ -15,7 +15,9 @@ query predicate hashTypes(RbiHashType ht, RbiType kt, RbiType vt) {
   kt = ht.getKeyType() and vt = ht.getValueType()
 }
 
-query predicate signatureCalls(SignatureCall c, ReturnType r) { r = c.getReturnType() }
+query predicate signatureCalls(SignatureCall c, ReturnType r) {
+  r = c.getReturnsTypeCall().getReturnType()
+}
 
 query predicate paramsCalls(ParamsCall c) { any() }
 

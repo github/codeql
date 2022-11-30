@@ -20,10 +20,10 @@ namespace codeql {
 template <typename... Ts>
 class TrapLabelStore {
  public:
-  using Handle = std::variant<std::monostate, const Ts*...>;
+  using Handle = std::variant<std::monostate, Ts...>;
 
   template <typename T>
-  std::optional<TrapLabelOf<T>> get(const T* e) {
+  std::optional<TrapLabelOf<T>> get(const T& e) {
     if (auto found = store_.find(e); found != store_.end()) {
       return TrapLabelOf<T>::unsafeCreateFromUntyped(found->second);
     }
@@ -31,7 +31,7 @@ class TrapLabelStore {
   }
 
   template <typename T>
-  void insert(const T* e, TrapLabelOf<T> l) {
+  void insert(const T& e, TrapLabelOf<T> l) {
     auto [_, inserted] = store_.emplace(e, l);
     assert(inserted && "already inserted");
   }

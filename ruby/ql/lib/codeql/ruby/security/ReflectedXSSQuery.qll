@@ -6,7 +6,7 @@
  * `XSS::ReflectedXSS` should be imported instead.
  */
 
-private import ruby
+private import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 
@@ -28,7 +28,7 @@ module ReflectedXss {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }
 

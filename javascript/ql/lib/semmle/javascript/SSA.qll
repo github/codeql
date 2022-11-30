@@ -501,7 +501,7 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   }
 
   /** This SSA definition corresponds to the definition of `v` at `def`. */
-  predicate defines(VarDef d, SsaSourceVariable v) { this = TExplicitDef(_, _, d, v) }
+  predicate defines(VarDef def, SsaSourceVariable v) { this = TExplicitDef(_, _, def, v) }
 
   /** Gets the variable definition wrapped by this SSA definition. */
   VarDef getDef() { this = TExplicitDef(_, _, result, _) }
@@ -737,7 +737,7 @@ class SsaRefinementNode extends SsaPseudoDefinition, TRefinement {
   }
 }
 
-module SSA {
+module Ssa {
   /** Gets the SSA definition corresponding to the implicit initialization of `v`. */
   SsaImplicitInit implicitInit(SsaSourceVariable v) { result.getSourceVariable() = v }
 
@@ -747,3 +747,6 @@ module SSA {
   /** Gets the SSA variable corresponding to `d`. */
   SsaVariable variable(VarDef d) { result.getDefinition() = definition(d) }
 }
+
+/** DEPRECATED: Alias for Ssa */
+deprecated module SSA = Ssa;

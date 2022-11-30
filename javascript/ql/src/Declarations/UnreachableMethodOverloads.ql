@@ -111,7 +111,7 @@ private MethodSignature getMethodSignatureWithFingerprint(
  * Holds if the two method signatures are overloads of each other and have the same parameter types.
  */
 predicate signaturesMatch(MethodSignature method, MethodSignature other) {
-  // the intial search for another overload in a single call for better join-order.
+  // the initial search for another overload in a single call for better join-order.
   other =
     getMethodSignatureWithFingerprint(method.getDeclaringType(), method.getName(),
       method.getBody().getNumParameter(), getKind(method)) and

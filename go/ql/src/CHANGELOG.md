@@ -1,3 +1,51 @@
+## 0.3.4
+
+No user-facing changes.
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* Query `go/clear-text-logging` now excludes `GetX` methods of protobuf `Message` structs, except where taint is specifically known to belong to the right field. This is to avoid FPs where taint is written to one field and then spuriously read from another.
+
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
+
+## 0.3.1
+
+No user-facing changes.
+
+## 0.3.0
+
+### Query Metadata Changes
+
+* Added the `security-severity` tag and CWE tag to the `go/insecure-hostkeycallback` query.
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.2.5
+
+## 0.2.4
+
+## 0.2.3
+
+### Minor Analysis Improvements
+
+* The query `go/path-injection` no longer considers user-controlled numeric or boolean-typed data as potentially dangerous.
+
+## 0.2.2
+
+## 0.2.1
+
+## 0.2.0
+
+## 0.1.4
+
 ## 0.1.3
 
 ## 0.1.2

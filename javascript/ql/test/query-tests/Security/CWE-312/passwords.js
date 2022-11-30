@@ -168,4 +168,10 @@ const debug = require('debug')('test');
 (function () {
     console.log(password.replace(/foo/g, "*")); // NOT OK
     debug(password.replace(/foo/g, "*")); // NOT OK
+
+    const myPassword = foo();
+    console.log(myPassword); // NOT OK
+
+    const myPasscode = foo();
+    console.log(myPasscode); // NOT OK
 });

@@ -18,4 +18,4 @@ where
   f.getMetrics().getNumberOfParameters() > 15
 select f,
   "This function has too many parameters (" + f.getMetrics().getNumberOfParameters().toString() +
-    ")"
+    ")."

@@ -194,7 +194,7 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the function that contains this instruction.
    */
-  final Language::Function getEnclosingFunction() {
+  final Language::Declaration getEnclosingFunction() {
     result = this.getEnclosingIRFunction().getFunction()
   }
 
@@ -742,7 +742,7 @@ class NoOpInstruction extends Instruction {
  * The `ReturnInstruction` for a function will have a control-flow successor edge to a block
  * containing the `ExitFunction` instruction for that function.
  *
- * There are two differet return instructions: `ReturnValueInstruction`, for returning a value from
+ * There are two different return instructions: `ReturnValueInstruction`, for returning a value from
  * a non-`void`-returning function, and `ReturnVoidInstruction`, for returning from a
  * `void`-returning function.
  */
@@ -1331,7 +1331,7 @@ class CheckedConvertOrThrowInstruction extends UnaryInstruction {
  *
  * If the operand holds a null address, the result is a null address.
  *
- * This instruction is used to represent `dyanmic_cast<void*>` in C++, which returns the pointer to
+ * This instruction is used to represent `dynamic_cast<void*>` in C++, which returns the pointer to
  * the most-derived object.
  */
 class CompleteObjectAddressInstruction extends UnaryInstruction {

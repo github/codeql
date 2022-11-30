@@ -138,6 +138,10 @@ open class LoggerBase(val logCounter: LogCounter) {
         fullMsgBuilder.append(suffix)
 
         val fullMsg = fullMsgBuilder.toString()
+        emitDiagnostic(tw, severity, diagnosticLocStr, msg, fullMsg, locationString, mkLocationId)
+    }
+
+    private fun emitDiagnostic(tw: TrapWriter, severity: Severity, diagnosticLocStr: String, msg: String, fullMsg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
         val logMessage = LogMessage(kind, "Diagnostic($diagnosticLocStr): $locStr$fullMsg")
@@ -190,9 +194,10 @@ open class LoggerBase(val logCounter: LogCounter) {
                 // We don't know if this location relates to an error
                 // or a warning, so we just declare hitting the limit
                 // to be an error regardless.
-                val logMessage = LogMessage("ERROR", "Total of $count diagnostics from $caller.")
-                tw.writeComment(logMessage.toText())
-                logStream.write(logMessage.toJsonLine())
+                val message = "Total of $count diagnostics (reached limit of ${logCounter.diagnosticLimit}) from $caller."
+                if (verbosity >= 1) {
+                    emitDiagnostic(tw, Severity.Error, "Limit", message, message)
+                }
             }
         }
     }
@@ -207,20 +212,6 @@ open class LoggerBase(val logCounter: LogCounter) {
 }
 
 open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
-    private fun getDiagnosticLocation(): String? {
-        val st = Exception().stackTrace
-        for(x in st) {
-            when(x.className) {
-                "com.github.codeql.Logger",
-                "com.github.codeql.FileLogger" -> {}
-                else -> {
-                    return x.toString()
-                }
-            }
-        }
-        return null
-    }
-
     fun flush() {
         tw.flush()
         loggerBase.flush()
@@ -240,7 +231,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
         loggerBase.info(tw, msg)
     }
 
-    fun warn(msg: String, extraInfo: String?) {
+    private fun warn(msg: String, extraInfo: String?) {
         loggerBase.warn(tw, msg, extraInfo)
     }
     fun warn(msg: String, exn: Throwable) {
@@ -250,7 +241,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
         warn(msg, null)
     }
 
-    fun error(msg: String, extraInfo: String?) {
+    private fun error(msg: String, extraInfo: String?) {
         loggerBase.error(tw, msg, extraInfo)
     }
     fun error(msg: String) {
@@ -262,15 +253,15 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
 }
 
 class FileLogger(loggerBase: LoggerBase, override val tw: FileTrapWriter): Logger(loggerBase, tw) {
-    fun warnElement(msg: String, element: IrElement) {
+    fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Warn, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Warn, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 
-    fun errorElement(msg: String, element: IrElement) {
+    fun errorElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Error, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Error, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 }

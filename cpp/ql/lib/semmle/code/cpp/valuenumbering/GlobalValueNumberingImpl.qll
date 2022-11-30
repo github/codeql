@@ -1,4 +1,8 @@
 /**
+ * DEPRECATED: This library has been replaced with a newer version which
+ * provides better performance and precision. Use
+ * `semmle.code.cpp.valuenumbering.GlobalValueNumbering` instead.
+ *
  * Provides an implementation of Global Value Numbering.
  * See https://en.wikipedia.org/wiki/Global_value_numbering
  *
@@ -165,7 +169,7 @@ private ControlFlowNode mostRecentSideEffect(ControlFlowNode node) {
 
 /** Used to represent the "global value number" of an expression. */
 cached
-private newtype GVNBase =
+private newtype GvnBase =
   GVN_IntConst(int val, Type t) { mk_IntConst(val, t, _) } or
   GVN_FloatConst(float val, Type t) { mk_FloatConst(val, t, _) } or
   // If the local variable does not have a defining value, then
@@ -221,8 +225,8 @@ private newtype GVNBase =
  * expression with this `GVN` and using its `toString` and `getLocation`
  * methods.
  */
-class GVN extends GVNBase {
-  GVN() { this instanceof GVNBase }
+deprecated class GVN extends GvnBase {
+  GVN() { this instanceof GvnBase }
 
   /** Gets an expression that has this GVN. */
   Expr getAnExpr() { this = globalValueNumber(result) }
@@ -503,7 +507,7 @@ private predicate mk_Deref(GVN p, ControlFlowNode dominator, PointerDereferenceE
 
 /** Gets the global value number of expression `e`. */
 cached
-GVN globalValueNumber(Expr e) {
+deprecated GVN globalValueNumber(Expr e) {
   exists(int val, Type t |
     mk_IntConst(val, t, e) and
     result = GVN_IntConst(val, t)

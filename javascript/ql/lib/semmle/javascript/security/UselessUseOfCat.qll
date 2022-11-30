@@ -127,7 +127,7 @@ class UselessCat extends CommandCall {
         or
         // `exec` can use 3 parameters, `readFile` can only use two, so it is OK to have a third parameter if it is unused,
         func.getNumParameter() = 3 and
-        not exists(SSA::definition(func.getParameter(2).getParameter()))
+        not exists(Ssa::definition(func.getParameter(2).getParameter()))
       )
     ) and
     // The process returned by an async call is unused.

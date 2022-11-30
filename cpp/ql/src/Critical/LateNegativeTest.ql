@@ -49,4 +49,4 @@ where
 select dangerous,
   "Variable '" + v.getName() +
     "' is used as an array-offset before it is tested for being negative (test on line " +
-    check.getLocation().getStartLine().toString() + "). "
+    check.getLocation().getStartLine().toString() + ")."

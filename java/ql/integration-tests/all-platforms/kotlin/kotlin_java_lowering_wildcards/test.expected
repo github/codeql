@@ -1,0 +1,67 @@
+| JavaDefns | JavaDefns | contravar | Comparable<? super CharSequence> |
+| JavaDefns | JavaDefns | invar | Comparable<CharSequence> |
+| JavaDefns | returnsInvariant | return | Comparable<CharSequence> |
+| JavaDefns | returnsWildcard | return | Comparable<? super CharSequence> |
+| JavaDefns | takesArrayOfComparable | contravar | Comparable<? super CharSequence>[] |
+| JavaDefns | takesArrayOfComparable | invar | Comparable<CharSequence>[] |
+| JavaDefns | takesComparable | contravar | Comparable<? super CharSequence> |
+| JavaDefns | takesComparable | invar | Comparable<CharSequence> |
+| JavaDefns | takesNestedComparable | innerContravar | Comparable<Comparable<? super CharSequence>> |
+| JavaDefns | takesNestedComparable | outerContravar | Comparable<? super Comparable<CharSequence>> |
+| JavaDefns2 | JavaDefns2 | p0 | Comparable<CharSequence> |
+| JavaDefns2 | JavaDefns2 | p1 | Comparable<? super CharSequence> |
+| JavaDefns2 | returnsInvariant | return | Comparable<CharSequence> |
+| JavaDefns2 | returnsWildcard | return | Comparable<? super CharSequence> |
+| JavaDefns2 | takesArrayOfComparable | p0 | Comparable<CharSequence>[] |
+| JavaDefns2 | takesArrayOfComparable | p1 | Comparable<? super CharSequence>[] |
+| JavaDefns2 | takesComparable | p0 | Comparable<CharSequence> |
+| JavaDefns2 | takesComparable | p1 | Comparable<? super CharSequence> |
+| JavaDefns2 | takesNestedComparable | p0 | Comparable<Comparable<? super CharSequence>> |
+| JavaDefns2 | takesNestedComparable | p1 | Comparable<? super Comparable<CharSequence>> |
+| KotlinDefns | returnsContravar | return | Comparable<CharSequence> |
+| KotlinDefns | returnsContravarForced | return | Comparable<? super CharSequence> |
+| KotlinDefns | returnsCovar | return | List<CharSequence> |
+| KotlinDefns | returnsCovarForced | return | List<? extends CharSequence> |
+| KotlinDefns | returnsInvar | return | List<CharSequence> |
+| KotlinDefns | takesAnyParameter | contravar | Comparable<Object> |
+| KotlinDefns | takesAnyParameter | covar | List<? extends Object> |
+| KotlinDefns | takesAnyParameter | invar | List<Object> |
+| KotlinDefns | takesAnyParameterForceWildcard | contravar | Comparable<? super Object> |
+| KotlinDefns | takesAnyParameterForceWildcard | covar | List<? extends Object> |
+| KotlinDefns | takesAnyParameterForceWildcard | invar | List<Object> |
+| KotlinDefns | takesAnyQParameter | contravar | Comparable<Object> |
+| KotlinDefns | takesAnyQParameter | covar | List<? extends Object> |
+| KotlinDefns | takesAnyQParameter | invar | List<Object> |
+| KotlinDefns | takesContravariantType | noUseSiteVariance | Comparable<? super CharSequence> |
+| KotlinDefns | takesContravariantType | useSiteContravariant | Comparable<? super CharSequence> |
+| KotlinDefns | takesCovariantType | noUseSiteVariance | List<? extends CharSequence> |
+| KotlinDefns | takesCovariantType | useSiteCovariant | List<? extends CharSequence> |
+| KotlinDefns | takesFinalParameter | contravar | Comparable<? super String> |
+| KotlinDefns | takesFinalParameter | covar | List<String> |
+| KotlinDefns | takesFinalParameter | invar | List<String> |
+| KotlinDefns | takesFinalParameterForceWildcard | contravar | Comparable<? super String> |
+| KotlinDefns | takesFinalParameterForceWildcard | covar | List<? extends String> |
+| KotlinDefns | takesFinalParameterForceWildcard | invar | List<String> |
+| KotlinDefns | takesInvariantType | noUseSiteVariance | List<CharSequence> |
+| KotlinDefns | takesInvariantType | useSiteContravariant | List<? super CharSequence> |
+| KotlinDefns | takesInvariantType | useSiteCovariant | List<? extends CharSequence> |
+| KotlinDefns | takesNestedType | contravar | Comparable<? super Comparable<? super CharSequence>> |
+| KotlinDefns | takesNestedType | covar | List<? extends List<? extends CharSequence>> |
+| KotlinDefns | takesNestedType | invar | List<List<CharSequence>> |
+| KotlinDefns | takesNestedType | mixed1 | List<? extends Comparable<? super CharSequence>> |
+| KotlinDefns | takesNestedType | mixed2 | Comparable<? super List<? extends CharSequence>> |
+| KotlinDefns | takesVariantTypesComplexSuppressionWildcards | covar | List<List<? extends List<? extends CharSequence>>> |
+| KotlinDefns | takesVariantTypesIndirectlySuppressedWildcards | contravar | Comparable<CharSequence> |
+| KotlinDefns | takesVariantTypesIndirectlySuppressedWildcards | covar | List<CharSequence> |
+| KotlinDefns | takesVariantTypesSuppressedWildcards | contravar | Comparable<CharSequence> |
+| KotlinDefns | takesVariantTypesSuppressedWildcards | covar | List<CharSequence> |
+| KotlinDefnsSuppressedFn | outerFn | contravar | Comparable<CharSequence> |
+| KotlinDefnsSuppressedFn | outerFn | covar | List<CharSequence> |
+| KotlinDefnsSuppressedInner | outerFn | contravar | Comparable<? super CharSequence> |
+| KotlinDefnsSuppressedInner | outerFn | covar | List<? extends CharSequence> |
+| KotlinDefnsSuppressedInner$Inner | innerFn | contravar | Comparable<CharSequence> |
+| KotlinDefnsSuppressedInner$Inner | innerFn | covar | List<CharSequence> |
+| KotlinDefnsSuppressedOuter | outerFn | contravar | Comparable<CharSequence> |
+| KotlinDefnsSuppressedOuter | outerFn | covar | List<CharSequence> |
+| KotlinDefnsSuppressedOuter$Inner | innerFn | contravar | Comparable<CharSequence> |
+| KotlinDefnsSuppressedOuter$Inner | innerFn | covar | List<CharSequence> |

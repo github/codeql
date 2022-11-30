@@ -1,7 +1,7 @@
 function RegisterExtractorPack()
     local goExtractor = GetPlatformToolsDirectory() .. 'go-extractor'
     local patterns = {
-        CreatePatternMatcher({'^go-autobuilder$'}, MatchCompilerName, nil,
+        CreatePatternMatcher({'^go%-autobuilder$'}, MatchCompilerName, nil,
                              {trace = false}),
         CreatePatternMatcher({'^go$'}, MatchCompilerName, goExtractor, {
             prepend = {'--mimic', '${compiler}'},
@@ -10,9 +10,9 @@ function RegisterExtractorPack()
 
     }
     if OperatingSystem == 'windows' then
-        goExtractor = goExtractor .. 'go-extractor.exe'
+        goExtractor = goExtractor .. '.exe'
         patterns = {
-            CreatePatternMatcher({'^go-autobuilder%.exe$'}, MatchCompilerName,
+            CreatePatternMatcher({'^go%-autobuilder%.exe$'}, MatchCompilerName,
                                  nil, {trace = false}),
             CreatePatternMatcher({'^go%.exe$'}, MatchCompilerName, goExtractor,
                                  {

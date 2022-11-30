@@ -1,7 +1,7 @@
 /**
  * DEPRECATED: we now use `semmle.code.cpp.ir.dataflow.DefaultTaintTracking`,
  * which is based on the IR but designed to behave similarly to this old
- * libarary.
+ * library.
  *
  * Provides the implementation of `semmle.code.cpp.security.TaintTracking`. Do
  * not import this file directly.

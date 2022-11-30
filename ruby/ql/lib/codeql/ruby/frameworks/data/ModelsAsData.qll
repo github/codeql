@@ -14,18 +14,50 @@
  *   - the name of a type definition from `ModelInput::TypeModelCsv`
  */
 
-private import ruby
+private import codeql.ruby.AST
+private import codeql.ruby.ApiGraphs
 private import internal.ApiGraphModels as Shared
 private import internal.ApiGraphModelsSpecific as Specific
 import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.dataflow.FlowSummary
 
 /**
  * A remote flow source originating from a CSV source row.
  */
 private class RemoteFlowSourceFromCsv extends RemoteFlowSource::Range {
-  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").getAnImmediateUse() }
+  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").asSource() }
 
   override string getSourceType() { result = "Remote flow (from model)" }
+}
+
+private class SummarizedCallableFromModel extends SummarizedCallable {
+  string package;
+  string type;
+  string path;
+
+  SummarizedCallableFromModel() {
+    ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
+    this = package + ";" + type + ";" + path
+  }
+
+  override Call getACall() {
+    exists(API::MethodAccessNode base |
+      ModelOutput::resolvedSummaryBase(package, type, path, base) and
+      result = base.getCallNode().asExpr().getExpr()
+    )
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    exists(string kind |
+      ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
+    |
+      kind = "value" and
+      preservesValue = true
+      or
+      kind = "taint" and
+      preservesValue = false
+    )
+  }
 }

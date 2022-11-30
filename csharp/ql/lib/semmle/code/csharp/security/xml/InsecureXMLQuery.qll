@@ -130,7 +130,7 @@ module XmlSettings {
         |
           not isSafeDtdSetting(dtdVal) and evidence = dtdVal
         ) and
-        reason = "DTD procesing enabled in settings"
+        reason = "DTD processing enabled in settings"
         or
         not exists(getAValueForProp(creation, "ProhibitDtd")) and
         reason = "DTD processing is enabled by default in versions before 4.0" and

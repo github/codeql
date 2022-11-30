@@ -137,7 +137,10 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
 
   final override string toString() { result = "init: " + expr.toString() }
 
-  final override Function getFunction() { result = expr.getEnclosingFunction() }
+  final override Declaration getFunction() {
+    result = expr.getEnclosingFunction() or
+    result = expr.getEnclosingVariable().(GlobalOrNamespaceVariable)
+  }
 
   final override Locatable getAst() { result = expr }
 
@@ -486,7 +489,10 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  final override Function getFunction() { result = ast.getEnclosingFunction() }
+  final override Declaration getFunction() {
+    result = ast.getEnclosingFunction() or
+    result = ast.getEnclosingVariable().(GlobalOrNamespaceVariable)
+  }
 
   final override Instruction getFirstInstruction() { result = getInstruction(getFieldAddressTag()) }
 
@@ -633,7 +639,11 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  final override Function getFunction() { result = initList.getEnclosingFunction() }
+  final override Declaration getFunction() {
+    result = initList.getEnclosingFunction()
+    or
+    result = initList.getEnclosingVariable().(GlobalOrNamespaceVariable)
+  }
 
   final override Instruction getFirstInstruction() { result = getInstruction(getElementIndexTag()) }
 

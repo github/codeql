@@ -1,5 +1,5 @@
 private import codeql.swift.generated.stmt.FallthroughStmt
 
-class FallthroughStmt extends FallthroughStmtBase {
+class FallthroughStmt extends Generated::FallthroughStmt {
   override string toString() { result = "fallthrough" }
 }

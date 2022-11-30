@@ -2,8 +2,6 @@ import python
 
 class KeyValuePair extends KeyValuePair_, DictDisplayItem {
   /* syntax: Expr : Expr */
-  override Location getLocation() { result = KeyValuePair_.super.getLocation() }
-
   override string toString() { result = KeyValuePair_.super.toString() }
 
   /** Gets the value of this dictionary unpacking. */
@@ -20,8 +18,6 @@ class KeyValuePair extends KeyValuePair_, DictDisplayItem {
 
 /** A double-starred expression in a call or dict literal. */
 class DictUnpacking extends DictUnpacking_, DictUnpackingOrKeyword, DictDisplayItem {
-  override Location getLocation() { result = DictUnpacking_.super.getLocation() }
-
   override string toString() { result = DictUnpacking_.super.toString() }
 
   /** Gets the value of this dictionary unpacking. */
@@ -47,8 +43,6 @@ abstract class DictDisplayItem extends DictItem {
 /** A keyword argument in a call. For example `arg=expr` in `foo(0, arg=expr)` */
 class Keyword extends Keyword_, DictUnpackingOrKeyword {
   /* syntax: name = Expr */
-  override Location getLocation() { result = Keyword_.super.getLocation() }
-
   override string toString() { result = Keyword_.super.toString() }
 
   /** Gets the value of this keyword argument. */

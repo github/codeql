@@ -54,7 +54,7 @@ module HardcodedDataInterpretedAsCode {
 
     override DataFlow::FlowLabel getLabel() { result.isTaint() }
 
-    override string getKind() { result = "code" }
+    override string getKind() { result = "Code" }
   }
 
   /**
@@ -65,6 +65,6 @@ module HardcodedDataInterpretedAsCode {
 
     override DataFlow::FlowLabel getLabel() { result.isDataOrTaint() }
 
-    override string getKind() { result = "an import path" }
+    override string getKind() { result = "An import path" }
   }
 }

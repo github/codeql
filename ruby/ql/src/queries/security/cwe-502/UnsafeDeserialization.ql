@@ -11,11 +11,12 @@
  *       external/cwe/cwe-502
  */
 
-import ruby
+import codeql.ruby.AST
 import DataFlow::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.security.UnsafeDeserializationQuery
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Unsafe deserialization of $@.", source.getNode(), "user input"
+select sink.getNode(), source, sink, "Unsafe deserialization depends on a $@.", source.getNode(),
+  "user-provided value"

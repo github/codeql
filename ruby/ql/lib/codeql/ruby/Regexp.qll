@@ -7,11 +7,10 @@
 
 import regexp.RegExpTreeView // re-export
 private import regexp.internal.ParseRegExp
-private import codeql.ruby.ast.Literal as AST
+private import regexp.internal.RegExpConfiguration
+private import codeql.ruby.ast.Literal as Ast
 private import codeql.ruby.DataFlow
-private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.dataflow.internal.tainttrackingforlibraries.TaintTrackingImpl
 
 /**
  * Provides utility predicates related to regular expressions.
@@ -47,7 +46,7 @@ abstract class RegExpPatternSource extends DataFlow::Node {
  * A regular expression literal, viewed as the pattern source for itself.
  */
 private class RegExpLiteralPatternSource extends RegExpPatternSource {
-  private AST::RegExpLiteral astNode;
+  private Ast::RegExpLiteral astNode;
 
   RegExpLiteralPatternSource() { astNode = this.asExpr().getExpr() }
 
@@ -70,7 +69,7 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
   override RegExpTerm getRegExpTerm() { result.getRegExp() = this.asExpr().getExpr() }
 }
 
-private class RegExpLiteralRegExp extends RegExp, AST::RegExpLiteral {
+private class RegExpLiteralRegExp extends RegExp, Ast::RegExpLiteral {
   override predicate isDotAll() { this.hasMultilineFlag() }
 
   override predicate isIgnoreCase() { this.hasCaseInsensitiveFlag() }
@@ -92,43 +91,30 @@ private class ParsedStringRegExp extends RegExp {
   override string getFlags() { none() }
 }
 
-/**
- * Holds if `source` may be interpreted as a regular expression.
- */
-private predicate isInterpretedAsRegExp(DataFlow::Node source) {
-  // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
-  source = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
-  or
-  // The argument of a call that coerces the argument to a regular expression.
-  exists(DataFlow::CallNode mce |
-    mce.getMethodName() = ["match", "match?"] and
-    source = mce.getArgument(0) and
-    // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
-    not mce.getReceiver().asExpr().getExpr() instanceof AST::RegExpLiteral
-  )
+/** Provides a class for modeling regular expression interpretations. */
+module RegExpInterpretation {
+  /**
+   * A node that is not a regular expression literal, but is used in places that
+   * may interpret it as one. Instances of this class are typically strings that
+   * flow to method calls like `RegExp.new`.
+   */
+  abstract class Range extends DataFlow::Node { }
 }
 
-private class RegExpConfiguration extends Configuration {
-  RegExpConfiguration() { this = "RegExpConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() =
-      any(ExprCfgNode e |
-        e.getConstantValue().isString(_) and
-        not e instanceof ExprNodes::VariableReadAccessCfgNode and
-        not e instanceof ExprNodes::ConstantReadAccessCfgNode
-      )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { isInterpretedAsRegExp(sink) }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    // stop flow if `node` is receiver of
-    // https://ruby-doc.org/core-2.4.0/String.html#method-i-match
+/**
+ * A node interpreted as a regular expression.
+ */
+class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
+  StdLibRegExpInterpretation() {
+    // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
+    this = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
+    or
+    // The argument of a call that coerces the argument to a regular expression.
     exists(DataFlow::CallNode mce |
       mce.getMethodName() = ["match", "match?"] and
-      node = mce.getReceiver() and
-      mce.getArgument(0).asExpr().getExpr() instanceof AST::RegExpLiteral
+      this = mce.getArgument(0) and
+      // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
+      not mce.getReceiver() = trackRegexpType()
     )
   }
 }

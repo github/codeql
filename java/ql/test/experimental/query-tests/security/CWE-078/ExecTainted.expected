@@ -1,12 +1,12 @@
 edges
-| JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:26:48:26:64 | ... + ... |
-| JSchOSInjectionTest.java:38:30:38:60 | getParameter(...) : String | JSchOSInjectionTest.java:50:32:50:48 | ... + ... |
+| JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:27:52:27:68 | ... + ... |
+| JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | JSchOSInjectionTest.java:53:36:53:52 | ... + ... |
 nodes
 | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JSchOSInjectionTest.java:26:48:26:64 | ... + ... | semmle.label | ... + ... |
-| JSchOSInjectionTest.java:38:30:38:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JSchOSInjectionTest.java:50:32:50:48 | ... + ... | semmle.label | ... + ... |
+| JSchOSInjectionTest.java:27:52:27:68 | ... + ... | semmle.label | ... + ... |
+| JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JSchOSInjectionTest.java:53:36:53:52 | ... + ... | semmle.label | ... + ... |
 subpaths
 #select
-| JSchOSInjectionTest.java:26:48:26:64 | ... + ... | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:26:48:26:64 | ... + ... | $@ flows to here and is used in a command. | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) | User-provided value |
-| JSchOSInjectionTest.java:50:32:50:48 | ... + ... | JSchOSInjectionTest.java:38:30:38:60 | getParameter(...) : String | JSchOSInjectionTest.java:50:32:50:48 | ... + ... | $@ flows to here and is used in a command. | JSchOSInjectionTest.java:38:30:38:60 | getParameter(...) | User-provided value |
+| JSchOSInjectionTest.java:27:52:27:68 | ... + ... | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | This command line depends on a $@. | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) | user-provided value |
+| JSchOSInjectionTest.java:53:36:53:52 | ... + ... | JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | JSchOSInjectionTest.java:53:36:53:52 | ... + ... | This command line depends on a $@. | JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) | user-provided value |

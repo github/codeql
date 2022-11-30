@@ -26,9 +26,15 @@ public class DefaultTrapCache implements ITrapCache {
    */
   private final String extractorVersion;
 
-  public DefaultTrapCache(String trapCache, Long sizeBound, String extractorVersion) {
+  /**
+  * Whether this cache supports write operations.
+  */
+  private final boolean writeable;
+
+  public DefaultTrapCache(String trapCache, Long sizeBound, String extractorVersion, boolean writeable) {
     this.trapCache = new File(trapCache);
     this.extractorVersion = extractorVersion;
+    this.writeable = writeable;
     try {
       initCache(sizeBound);
     } catch (ResourceError | SecurityException e) {
@@ -135,6 +141,8 @@ public class DefaultTrapCache implements ITrapCache {
     digestor.write(type.toString());
     digestor.write(config);
     digestor.write(source);
-    return new File(trapCache, digestor.getDigest() + ".trap.gz");
+    File result = new File(trapCache, digestor.getDigest() + ".trap.gz");
+    if (!writeable && !result.exists()) return null; // If the cache isn't writable, only return the file if it exists
+    return result;
   }
 }

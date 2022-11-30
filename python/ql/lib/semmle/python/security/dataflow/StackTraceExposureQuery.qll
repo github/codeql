@@ -23,12 +23,12 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof SanitizerGuard
   }
 
   // A stack trace is accessible as the `__traceback__` attribute of a caught exception.
-  //  seehttps://docs.python.org/3/reference/datamodel.html#traceback-objects
+  //  see https://docs.python.org/3/reference/datamodel.html#traceback-objects
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(DataFlow::AttrRead attr | attr.getAttributeName() = "__traceback__" |
       nodeFrom = attr.getObject() and

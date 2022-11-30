@@ -198,7 +198,7 @@ module XML {
     override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
 
     // The result is an XMLDocument (https://developer.mozilla.org/en-US/docs/Web/API/XMLDocument).
-    // The API of the XMLDocument is not modelled.
+    // The API of the XMLDocument is not modeled.
     override DataFlow::Node getAResult() { result.asExpr() = this }
   }
 

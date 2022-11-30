@@ -134,3 +134,29 @@ class C1 {
         }
     }
 }
+
+class Cl0<U0> {
+    fun <U1> func1() {
+        fun <U2> func2() {
+            class Cl1<U3>{
+                fun fn() {
+                    val x = Cl1<U3>()
+                }
+            }
+        }
+    }
+}
+
+class Cl00<U0> {
+    class Cl01<U1>{
+        fun fn() {
+            val x = Cl01<U1>()
+        }
+    }
+}
+
+fun fn1() {
+    class X {}
+}
+
+fun fn2() = object { }

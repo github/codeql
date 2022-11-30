@@ -16,21 +16,10 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import semmle.python.frameworks.Flask
 
-/** Gets a reference to a truthy literal. */
-private DataFlow::TypeTrackingNode truthyLiteral(DataFlow::TypeTracker t) {
-  t.start() and
-  result.asExpr().(ImmutableLiteral).booleanValue() = true
-  or
-  exists(DataFlow::TypeTracker t2 | result = truthyLiteral(t2).track(t2, t))
-}
-
-/** Gets a reference to a truthy literal. */
-DataFlow::Node truthyLiteral() { truthyLiteral(DataFlow::TypeTracker::end()).flowsTo(result) }
-
-from API::CallNode call, DataFlow::Node debugArg
+from API::CallNode call
 where
   call = Flask::FlaskApp::instance().getMember("run").getACall() and
-  debugArg in [call.getArg(2), call.getArgByName("debug")] and
-  debugArg = truthyLiteral()
+  call.getParameter(2, "debug").getAValueReachingSink().asExpr().(ImmutableLiteral).booleanValue() =
+    true
 select call,
   "A Flask app appears to be run in debug mode. This may allow an attacker to run arbitrary code through the debugger."

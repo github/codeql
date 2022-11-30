@@ -17,3 +17,18 @@ def internal():
             pass
 
     int_instance = IntMyView() #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass().getReturn()
+
+# ------------------------------------------------------------------------------
+# Class decorator
+# ------------------------------------------------------------------------------
+
+def my_class_decorator(cls):
+    print("dummy decorator")
+    return cls
+
+@my_class_decorator
+class MyViewWithDecorator(View): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass()
+    pass
+
+class SubclassFromDecorated(MyViewWithDecorator): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getASubclass()
+    pass

@@ -53,22 +53,27 @@ class ParamReturnKind extends ReturnKind, TParamReturnKind {
  * defined in library code.
  */
 class DataFlowCallable extends TDataFlowCallable {
-  CfgScope scope;
-
-  DataFlowCallable() { this = TDataFlowFunc(scope) }
+  /** Gets the location of this callable. */
+  Location getLocation() { none() } // overridden in subclasses
 
   /** Gets a textual representation of this callable. */
-  string toString() { result = scope.toString() }
+  string toString() { none() } // overridden in subclasses
 
-  /** Gets the location of this callable. */
-  Location getLocation() { result = scope.getLocation() }
+  CfgScope asSourceCallable() { this = TDataFlowFunc(result) }
 
-  Callable::TypeRange getUnderlyingCallable() { result = scope }
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
+
+  Callable::TypeRange getUnderlyingCallable() {
+    result = this.asSummarizedCallable() or result = this.asSourceCallable()
+  }
 }
 
 cached
 newtype TDataFlowCall =
   TNormalCall(ApplyExprCfgNode call) or
+  TPropertyGetterCall(PropertyGetterCfgNode getter) or
+  TPropertySetterCall(PropertySetterCfgNode setter) or
+  TPropertyObserverCall(PropertyObserverCfgNode observer) or
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
@@ -83,6 +88,14 @@ class DataFlowCall extends TDataFlowCall {
 
   /** Gets the underlying source code call, if any. */
   ApplyExprCfgNode asCall() { none() }
+
+  /**
+   * Gets the i'th argument of call.class
+   * The qualifier is considered to have index `-1`.
+   */
+  CfgNode getArgument(int i) { none() }
+
+  final CfgNode getAnArgument() { result = this.getArgument(_) }
 
   /** Gets a textual representation of this call. */
   string toString() { none() }
@@ -111,11 +124,90 @@ private class NormalCall extends DataFlowCall, TNormalCall {
 
   override ApplyExprCfgNode asCall() { result = apply }
 
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = apply.getQualifier()
+    or
+    result = apply.getArgument(i)
+  }
+
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(apply.getScope()) }
 
   override string toString() { result = apply.toString() }
 
   override Location getLocation() { result = apply.getLocation() }
+}
+
+class PropertyGetterCall extends DataFlowCall, TPropertyGetterCall {
+  private PropertyGetterCfgNode getter;
+
+  PropertyGetterCall() { this = TPropertyGetterCall(getter) }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = getter.getBase()
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(getter.getScope()) }
+
+  PropertyGetterCfgNode getGetter() { result = getter }
+
+  override string toString() { result = getter.toString() }
+
+  override Location getLocation() { result = getter.getLocation() }
+
+  AccessorDecl getAccessorDecl() { result = getter.getAccessorDecl() }
+}
+
+class PropertySetterCall extends DataFlowCall, TPropertySetterCall {
+  private PropertySetterCfgNode setter;
+
+  PropertySetterCall() { this = TPropertySetterCall(setter) }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = setter.getBase()
+    or
+    i = 0 and
+    result = setter.getSource()
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(setter.getScope()) }
+
+  PropertySetterCfgNode getSetter() { result = setter }
+
+  override string toString() { result = setter.toString() }
+
+  override Location getLocation() { result = setter.getLocation() }
+
+  AccessorDecl getAccessorDecl() { result = setter.getAccessorDecl() }
+}
+
+class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
+  private PropertyObserverCfgNode observer;
+
+  PropertyObserverCall() { this = TPropertyObserverCall(observer) }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = observer.getBase()
+    or
+    // TODO: This is correct for `willSet` (which takes a `newValue` parameter),
+    // but for `didSet` (which takes an `oldValue` parameter) we need an rvalue
+    // for `getBase()`.
+    i = 0 and
+    result = observer.getSource()
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(observer.getScope()) }
+
+  PropertyObserverCfgNode getObserver() { result = observer }
+
+  override string toString() { result = observer.toString() }
+
+  override Location getLocation() { result = observer.getLocation() }
+
+  AccessorDecl getAccessorDecl() { result = observer.getAccessorDecl() }
 }
 
 class SummaryCall extends DataFlowCall, TSummaryCall {
@@ -139,12 +231,42 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 cached
 private module Cached {
   cached
-  newtype TDataFlowCallable = TDataFlowFunc(CfgScope scope)
+  newtype TDataFlowCallable =
+    TDataFlowFunc(CfgScope scope) { not scope instanceof FlowSummary::SummarizedCallable } or
+    TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
   /** Gets a viable run-time target for the call `call`. */
   cached
   DataFlowCallable viableCallable(DataFlowCall call) {
     result = TDataFlowFunc(call.asCall().getStaticTarget())
+    or
+    result = TDataFlowFunc(call.(PropertyGetterCall).getAccessorDecl())
+    or
+    result = TDataFlowFunc(call.(PropertySetterCall).getAccessorDecl())
+    or
+    result = TDataFlowFunc(call.(PropertyObserverCall).getAccessorDecl())
+    or
+    result = TSummarizedCallable(call.asCall().getStaticTarget())
+  }
+
+  private class SourceCallable extends DataFlowCallable, TDataFlowFunc {
+    CfgScope scope;
+
+    SourceCallable() { this = TDataFlowFunc(scope) }
+
+    override string toString() { result = scope.toString() }
+
+    override Location getLocation() { result = scope.getLocation() }
+  }
+
+  private class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
+    FlowSummary::SummarizedCallable sc;
+
+    SummarizedCallable() { this = TSummarizedCallable(sc) }
+
+    override string toString() { result = sc.toString() }
+
+    override Location getLocation() { result = sc.getLocation() }
   }
 
   cached
@@ -181,6 +303,12 @@ class ParameterPosition extends TParameterPosition {
 
 class PositionalParameterPosition extends ParameterPosition, TPositionalParameter {
   int getIndex() { this = TPositionalParameter(result) }
+
+  override string toString() { result = this.getIndex().toString() }
+}
+
+class ThisParameterPosition extends ParameterPosition, TThisParameter {
+  override string toString() { result = "this" }
 }
 
 /** An argument position. */
@@ -191,6 +319,12 @@ class ArgumentPosition extends TArgumentPosition {
 
 class PositionalArgumentPosition extends ArgumentPosition, TPositionalArgument {
   int getIndex() { this = TPositionalArgument(result) }
+
+  override string toString() { result = this.getIndex().toString() }
+}
+
+class ThisArgumentPosition extends ArgumentPosition, TThisArgument {
+  override string toString() { result = "this" }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */

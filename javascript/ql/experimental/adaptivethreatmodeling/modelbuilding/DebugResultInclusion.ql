@@ -11,20 +11,24 @@
 
 import javascript
 import experimental.adaptivethreatmodeling.ATMConfig
-import extraction.ExtractEndpointData
+import extraction.ExtractEndpointDataTraining
+private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
+private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
+private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+private import experimental.adaptivethreatmodeling.XssATM as XssAtm
 
 string getAReasonSinkExcluded(DataFlow::Node sinkCandidate, Query query) {
   query instanceof NosqlInjectionQuery and
-  result = NosqlInjectionATM::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
+  result = any(NosqlInjectionAtm::NosqlInjectionAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof SqlInjectionQuery and
-  result = SqlInjectionATM::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
+  result = any(SqlInjectionAtm::SqlInjectionAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof TaintedPathQuery and
-  result = TaintedPathATM::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
+  result = any(TaintedPathAtm::TaintedPathAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
   or
   query instanceof XssQuery and
-  result = XssATM::SinkEndpointFilter::getAReasonSinkExcluded(sinkCandidate)
+  result = any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
 }
 
 pragma[inline]
@@ -33,7 +37,7 @@ string getDescriptionForAlertCandidate(
 ) {
   result = "excluded[reason=" + getAReasonSinkExcluded(sinkCandidate, query) + "]"
   or
-  getAtmCfg(query).isKnownSink(sinkCandidate) and
+  getDataFlowCfg(query).(AtmConfig).isKnownSink(sinkCandidate) and
   result = "excluded[reason=known-sink]"
   or
   not exists(getAReasonSinkExcluded(sinkCandidate, query)) and

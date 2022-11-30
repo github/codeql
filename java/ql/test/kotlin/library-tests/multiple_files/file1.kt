@@ -11,4 +11,3 @@ class Class1 {
         kotlin.jvm.internal.collectionToArray(listOf(1))
     }
 }
-

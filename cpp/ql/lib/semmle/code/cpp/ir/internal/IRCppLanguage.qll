@@ -50,11 +50,15 @@ class AutomaticVariable = Cpp::StackVariable;
 
 class StaticVariable = Cpp::Variable;
 
+class GlobalVariable = Cpp::GlobalOrNamespaceVariable;
+
 class Parameter = Cpp::Parameter;
 
 class Field = Cpp::Field;
 
 class BuiltInOperation = Cpp::BuiltInOperation;
+
+class Declaration = Cpp::Declaration;
 
 // TODO: Remove necessity for these.
 class Expr = Cpp::Expr;

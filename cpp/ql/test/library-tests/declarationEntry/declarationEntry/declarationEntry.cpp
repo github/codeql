@@ -33,3 +33,11 @@ public:
 
 myTemplateClass<int> mtc_int;
 myTemplateClass<short> mtc_short;
+
+// Class (UserType)
+
+class myClass
+{
+public:
+	int myMemberVariable;
+};

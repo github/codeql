@@ -6,7 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ../../../include/memory.h:68:25:68:33 | CopyValue: (reference to) | Instruction 'CopyValue: (reference to)' has no successors in function '$@'. | ../../../include/memory.h:67:5:67:5 | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -27,6 +26,7 @@ invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
+nonUniqueIRVariable
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

@@ -1,5 +1,5 @@
 /**
- * Provides an extension point for for modeling user-controlled data.
+ * Provides an extension point for modeling user-controlled data.
  * Such data is often used as data-flow sources in security queries.
  */
 

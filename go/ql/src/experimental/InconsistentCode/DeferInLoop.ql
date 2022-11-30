@@ -4,6 +4,8 @@
  *              This can lead to unintentionally holding resources open like file handles or database transactions.
  * @id go/examples/deferinloop
  * @kind problem
+ * @problem.severity warning
+ * @precision high
  * @tags defer
  *       nesting
  */

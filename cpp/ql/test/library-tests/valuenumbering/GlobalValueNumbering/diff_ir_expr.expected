@@ -1,18 +1,16 @@
+WARNING: Predicate globalValueNumber has been deprecated and may be removed in future (diff_ir_expr.ql:8,29-51)
 | test.cpp:5:3:5:13 | ... = ... | test.cpp:5:3:5:13 | ... = ... | AST only |
 | test.cpp:6:3:6:13 | ... = ... | test.cpp:6:3:6:13 | ... = ... | AST only |
 | test.cpp:7:3:7:7 | ... = ... | test.cpp:7:3:7:7 | ... = ... | AST only |
-| test.cpp:10:16:10:16 | 1 | test.cpp:10:16:10:16 | 1 | AST only |
 | test.cpp:16:3:16:24 | ... = ... | test.cpp:16:3:16:24 | ... = ... | AST only |
 | test.cpp:17:3:17:24 | ... = ... | test.cpp:17:3:17:24 | ... = ... | AST only |
 | test.cpp:18:3:18:7 | ... = ... | test.cpp:18:3:18:7 | ... = ... | AST only |
-| test.cpp:21:16:21:16 | 2 | test.cpp:21:16:21:16 | 2 | AST only |
 | test.cpp:29:3:29:3 | x | test.cpp:31:3:31:3 | x | IR only |
 | test.cpp:29:3:29:24 | ... = ... | test.cpp:29:3:29:24 | ... = ... | AST only |
 | test.cpp:30:3:30:17 | call to change_global02 | test.cpp:30:3:30:17 | call to change_global02 | AST only |
 | test.cpp:31:3:31:3 | x | test.cpp:29:3:29:3 | x | IR only |
 | test.cpp:31:3:31:24 | ... = ... | test.cpp:31:3:31:24 | ... = ... | AST only |
 | test.cpp:32:3:32:7 | ... = ... | test.cpp:32:3:32:7 | ... = ... | AST only |
-| test.cpp:35:16:35:16 | 3 | test.cpp:35:16:35:16 | 3 | AST only |
 | test.cpp:43:3:43:3 | x | test.cpp:45:3:45:3 | x | IR only |
 | test.cpp:43:3:43:24 | ... = ... | test.cpp:43:3:43:24 | ... = ... | AST only |
 | test.cpp:43:7:43:24 | ... + ... | test.cpp:45:7:45:24 | ... + ... | IR only |

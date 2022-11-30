@@ -62,7 +62,7 @@ abstract class RegexString extends StringLiteral {
 
   /**
    * Helper predicate for `quote`.
-   * Holds if the char at `pos` is the one-based `index`th occurence of a quote delimiter (`\Q` or `\E`)
+   * Holds if the char at `pos` is the one-based `index`th occurrence of a quote delimiter (`\Q` or `\E`)
    * Result is `true` for `\Q` and `false` for `\E`.
    */
   private boolean quoteDelimiter(int index, int pos) {

@@ -48,5 +48,5 @@ where
   not coordinatePair(iterationVar, innerVar)
 select iterationVar,
   "Iteration variable " + iterationVar.getName() +
-    " for $@ should have a descriptive name, since there is $@.", outer, "this loop", inner,
-  "a nested loop"
+    " for $@ should have a descriptive name, since there is a $@.", outer, "this loop", inner,
+  "nested loop"

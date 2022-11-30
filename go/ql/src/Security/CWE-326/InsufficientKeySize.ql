@@ -28,27 +28,25 @@ class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof ComparisonBarrierGuard
+  override predicate isBarrier(DataFlow::Node node) {
+    node = DataFlow::BarrierGuard<comparisonBarrierGuard/3>::getABarrierNode()
   }
 }
 
 /**
- * A comparison which guarantees that an expression is at least 2048,
+ * Holds if `g` is a comparison which guarantees that `e` is at least 2048 on `branch`,
  * considered as a barrier guard for key sizes.
  */
-class ComparisonBarrierGuard extends DataFlow::BarrierGuard instanceof DataFlow::RelationalComparisonNode {
-  override predicate checks(Expr e, boolean branch) {
-    exists(DataFlow::Node lesser, DataFlow::Node greater, int bias |
-      super.leq(branch, lesser, greater, bias)
-    |
-      // Force join order: find comparisons checking x >= 2048, then take the global value
-      // number of x. Otherwise this can be realised by starting from all pairs of matching value
-      // numbers, which can be huge.
-      pragma[only_bind_into](globalValueNumber(DataFlow::exprNode(e))) = globalValueNumber(greater) and
-      lesser.getIntValue() - bias >= 2048
-    )
-  }
+predicate comparisonBarrierGuard(DataFlow::Node g, Expr e, boolean branch) {
+  exists(DataFlow::Node lesser, DataFlow::Node greater, int bias |
+    g.(DataFlow::RelationalComparisonNode).leq(branch, lesser, greater, bias)
+  |
+    // Force join order: find comparisons checking x >= 2048, then take the global value
+    // number of x. Otherwise this can be realised by starting from all pairs of matching value
+    // numbers, which can be huge.
+    pragma[only_bind_into](globalValueNumber(DataFlow::exprNode(e))) = globalValueNumber(greater) and
+    lesser.getIntValue() - bias >= 2048
+  )
 }
 
 from RsaKeyTrackingConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -4,6 +4,7 @@
  *   without encountering an error in the file.
  * @kind diagnostic
  * @id ql/diagnostics/successfully-extracted-files
+ * @tags successfully-extracted-files
  */
 
 import ql

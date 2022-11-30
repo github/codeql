@@ -45,18 +45,18 @@ generics.kt:
 #   27|             0: [MethodAccess] f2(...)
 #   27|               -2: [TypeAccess] String
 #   27|               -1: [VarAccess] c1
-#   27|               0: [StringLiteral] 
+#   27|               0: [StringLiteral] ""
 #   28|         3: [LocalVariableDeclStmt] var ...;
 #   28|           1: [LocalVariableDeclExpr] c2
 #   28|             0: [ClassInstanceExpr] new C1<String,Integer>(...)
 #   28|               -3: [TypeAccess] C1<String,Integer>
 #   28|                 0: [TypeAccess] String
 #   28|                 1: [TypeAccess] Integer
-#   28|               0: [StringLiteral] 
+#   28|               0: [StringLiteral] ""
 #   29|         4: [ExprStmt] <Expr>;
 #   29|           0: [MethodAccess] f1(...)
 #   29|             -1: [VarAccess] c2
-#   29|             0: [StringLiteral] a
+#   29|             0: [StringLiteral] "a"
 #   30|         5: [LocalVariableDeclStmt] var ...;
 #   30|           1: [LocalVariableDeclExpr] x2
 #   30|             0: [MethodAccess] f2(...)
@@ -98,15 +98,15 @@ generics.kt:
 #   13|           0: [ExprStmt] <Expr>;
 #   13|             0: [KtInitializerAssignExpr] ...=...
 #   13|               0: [VarAccess] t
-#   13|     2: [Method] getT
+#   13|     2: [FieldDeclaration] T t;
+#   13|       -1: [TypeAccess] T
+#   13|       0: [VarAccess] t
+#   13|     3: [Method] getT
 #   13|       3: [TypeAccess] T
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ReturnStmt] return ...
 #   13|           0: [VarAccess] this.t
 #   13|             -1: [ThisAccess] this
-#   13|     2: [FieldDeclaration] T t;
-#   13|       -1: [TypeAccess] T
-#   13|       0: [VarAccess] t
 #   14|     4: [Method] f1
 #   14|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
@@ -256,4 +256,4 @@ generics.kt:
 #   61|               -3: [TypeAccess] Local<Integer>
 #   61|                 0: [TypeAccess] Integer
 #   61|             0: [VarAccess] t
-#   61|             1: [StringLiteral] 
+#   61|             1: [StringLiteral] ""

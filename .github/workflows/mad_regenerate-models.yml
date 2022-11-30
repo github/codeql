@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - ".github/workflows/mad_regenerate-models.yml"
+      - ".github/actions/fetch-codeql/action.yml"
 
 jobs:
   regenerate-models:

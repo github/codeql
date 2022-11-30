@@ -15,5 +15,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from RequestForgeryConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used in a server side web request.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "The URL of this request depends on a $@.", source.getNode(),
+  "user-provided value"

@@ -11,10 +11,10 @@
 import javascript
 import CandidateTracking
 
-from HTTP::RouteSetupCandidate setup
+from Http::RouteSetupCandidate setup
 where
-  not setup.asExpr() instanceof HTTP::RouteSetup and
-  exists(HTTP::RouteHandlerCandidate rh |
+  not setup instanceof Http::RouteSetup and
+  exists(Http::RouteHandlerCandidate rh |
     track(rh, DataFlow::TypeTracker::end()).flowsTo(setup.getARouteHandlerArg())
   )
 select setup,

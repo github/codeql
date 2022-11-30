@@ -17,6 +17,7 @@ private import ast.internal.AST
 private import ast.internal.Scope
 private import ast.internal.Synthesis
 private import ast.internal.TreeSitter
+private import Customizations
 
 cached
 private module Cached {
@@ -34,6 +35,13 @@ private module Cached {
     not s instanceof MethodBase and
     not s instanceof ModuleBase and
     result = getEnclosingMethod(s.getOuterScope())
+  }
+
+  cached
+  Toplevel getEnclosingToplevel(Scope s) {
+    result = s
+    or
+    result = getEnclosingToplevel(s.getOuterScope())
   }
 }
 
@@ -60,10 +68,13 @@ class AstNode extends TAstNode {
   final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   /** Gets the enclosing module, if any. */
-  ModuleBase getEnclosingModule() { result = getEnclosingModule(scopeOfInclSynth(this)) }
+  final ModuleBase getEnclosingModule() { result = getEnclosingModule(scopeOfInclSynth(this)) }
 
   /** Gets the enclosing method, if any. */
-  MethodBase getEnclosingMethod() { result = getEnclosingMethod(scopeOfInclSynth(this)) }
+  final MethodBase getEnclosingMethod() { result = getEnclosingMethod(scopeOfInclSynth(this)) }
+
+  /** Gets the enclosing top-level. */
+  final Toplevel getEnclosingToplevel() { result = getEnclosingToplevel(scopeOfInclSynth(this)) }
 
   /** Gets a textual representation of this node. */
   cached

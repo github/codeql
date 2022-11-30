@@ -33,7 +33,7 @@ def record_calls(code, globals):
 
 def setup_logging(debug):
     # code we run can also set up logging, so we need to set the level directly on our
-    # own pacakge
+    # own package
     sh = logging.StreamHandler(stream=sys.stderr)
 
     pkg_logger = logging.getLogger("cg_trace")

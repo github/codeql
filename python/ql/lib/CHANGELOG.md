@@ -1,3 +1,93 @@
+## 0.6.4
+
+### Minor Analysis Improvements
+
+ * The ReDoS libraries in `semmle.code.python.security.regexp` have been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+
+## 0.6.3
+
+No user-facing changes.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Fixed labels in the API graph pertaining to definitions of subscripts. Previously, these were found by `getMember` rather than `getASubscript`.
+* Added edges for indices of subscripts to the API graph. Now a subscripted API node will have an edge to the API node for the index expression. So if `foo` is matched by API node `A`, then `"key"` in `foo["key"]` will be matched by the API node `A.getIndex()`. This can be used to track the origin of the index.
+* Added member predicate `getSubscriptAt(API::Node index)` to `API::Node`. Like `getASubscript()`, this will return an API node that matches a subscript of the node, but here it will be restricted to subscripts where the index matches the `index` parameter.
+* Added convenience predicate `getSubscript("key")` to obtain a subscript at a specific index, when the index happens to be a statically known string.
+
+## 0.6.1
+
+### Minor Analysis Improvements
+
+* Added the ability to refer to subscript operations in the API graph. It is now possible to write `response().getMember("cookies").getASubscript()` to find code like `resp.cookies["key"]` (assuming `response` returns an API node for response objects).
+* Added modeling of creating Flask responses with `flask.jsonify`.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* Some unused predicates in `SsaDefinitions.qll`, `TObject.qll`, `protocols.qll`, and the `pointsto/` folder have been deprecated.
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### Minor Analysis Improvements
+
+* Changed `CallNode.getArgByName` such that it has results for keyword arguments given after a dictionary unpacking argument, as the `bar=2` argument in `func(foo=1, **kwargs, bar=2)`.
+* `getStarArg` member-predicate on `Call` and `CallNode` has been changed for calls that have multiple `*args` arguments (for example `func(42, *my_args, *other_args)`): Instead of producing no results, it will always have a result for the _first_ such `*args` argument.
+* Reads of global/non-local variables (without annotations) inside functions defined on classes now works properly in the case where the class had an attribute defined with the same name as the non-local variable.
+
+### Bug Fixes
+
+* Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
+
+## 0.5.5
+
+## 0.5.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* The utility files previously in the `semmle.python.security.performance` package have been moved to the `semmle.python.security.regexp` package.  
+  The previous files still exist as deprecated aliases.
+
+### Minor Analysis Improvements
+
+* Most deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+## 0.5.3
+
+### Minor Analysis Improvements
+
+* Change `.getASubclass()` on `API::Node` so it allows to follow subclasses even if the class has a class decorator.
+
+## 0.5.2
+
+## 0.5.1
+
+### Deprecated APIs
+
+- The documentation of API graphs (the `API` module) has been expanded, and some of the members predicates of `API::Node`
+  have been renamed as follows:
+  - `getAnImmediateUse` -> `asSource`
+  - `getARhs` -> `asSink`
+  - `getAUse` -> `getAValueReachableFromSource`
+  - `getAValueReachingRhs` -> `getAValueReachingSink`
+
+### Minor Analysis Improvements
+
+* Improved modeling of sensitive data sources, so common words like `certain` and `secretary` are no longer considered a certificate and a secret (respectively).
+
+## 0.5.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+## 0.4.1
+
 ## 0.4.0
 
 ### Breaking Changes

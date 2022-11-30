@@ -21,4 +21,4 @@ where
   i < j and
   // only report the next duplicate
   not exists(int mid | mid in [i + 1 .. j - 1] | dpid.same(oe.getProperty(mid).getInit()))
-select p, "This property is duplicated $@.", q, "here"
+select p, "This property is duplicated $@.", q, "in a later property"

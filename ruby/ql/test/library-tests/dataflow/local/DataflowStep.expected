@@ -1,6 +1,6 @@
 | local_dataflow.rb:1:1:7:3 | self (foo) | local_dataflow.rb:3:8:3:10 | self |
-| local_dataflow.rb:1:1:7:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |
 | local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:1:1:7:3 | self (foo) |
+| local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
 | local_dataflow.rb:2:3:2:7 | ... = ... | local_dataflow.rb:3:13:3:13 | b |
@@ -26,7 +26,7 @@
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | ... = ... | local_dataflow.rb:12:5:12:5 | x |
-| local_dataflow.rb:10:5:13:3 | <captured> | local_dataflow.rb:11:1:11:2 | self |
+| local_dataflow.rb:10:5:13:3 | <captured> self | local_dataflow.rb:11:1:11:2 | self |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
@@ -65,7 +65,7 @@
 | local_dataflow.rb:45:10:45:10 | 6 | local_dataflow.rb:45:3:45:10 | return |
 | local_dataflow.rb:49:1:53:3 | [post] self | local_dataflow.rb:55:1:55:14 | self |
 | local_dataflow.rb:49:1:53:3 | self | local_dataflow.rb:55:1:55:14 | self |
-| local_dataflow.rb:49:3:53:3 | <captured> | local_dataflow.rb:50:18:50:18 | x |
+| local_dataflow.rb:49:3:53:3 | <captured> x | local_dataflow.rb:50:18:50:18 | x |
 | local_dataflow.rb:50:8:50:13 | "next" | local_dataflow.rb:50:3:50:13 | next |
 | local_dataflow.rb:50:18:50:18 | [post] x | local_dataflow.rb:51:20:51:20 | x |
 | local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:51:20:51:20 | x |
@@ -157,3 +157,232 @@
 | local_dataflow.rb:87:25:87:25 | [post] x | local_dataflow.rb:87:29:87:29 | x |
 | local_dataflow.rb:87:25:87:25 | x | local_dataflow.rb:87:29:87:29 | x |
 | local_dataflow.rb:87:29:87:29 | x | local_dataflow.rb:87:15:87:48 | then ... |
+| local_dataflow.rb:92:1:109:3 | self (and_or) | local_dataflow.rb:93:7:93:15 | self |
+| local_dataflow.rb:92:1:109:3 | self in and_or | local_dataflow.rb:92:1:109:3 | self (and_or) |
+| local_dataflow.rb:93:3:93:28 | ... = ... | local_dataflow.rb:94:8:94:8 | a |
+| local_dataflow.rb:93:7:93:15 | [post] self | local_dataflow.rb:93:20:93:28 | self |
+| local_dataflow.rb:93:7:93:15 | [post] self | local_dataflow.rb:94:3:94:9 | self |
+| local_dataflow.rb:93:7:93:15 | call to source | local_dataflow.rb:93:7:93:28 | ... \|\| ... |
+| local_dataflow.rb:93:7:93:15 | self | local_dataflow.rb:93:20:93:28 | self |
+| local_dataflow.rb:93:7:93:15 | self | local_dataflow.rb:94:3:94:9 | self |
+| local_dataflow.rb:93:7:93:28 | ... \|\| ... | local_dataflow.rb:93:3:93:28 | ... = ... |
+| local_dataflow.rb:93:7:93:28 | ... \|\| ... | local_dataflow.rb:93:3:93:28 | ... = ... |
+| local_dataflow.rb:93:20:93:28 | [post] self | local_dataflow.rb:94:3:94:9 | self |
+| local_dataflow.rb:93:20:93:28 | call to source | local_dataflow.rb:93:7:93:28 | ... \|\| ... |
+| local_dataflow.rb:93:20:93:28 | self | local_dataflow.rb:94:3:94:9 | self |
+| local_dataflow.rb:94:3:94:9 | [post] self | local_dataflow.rb:95:8:95:16 | self |
+| local_dataflow.rb:94:3:94:9 | self | local_dataflow.rb:95:8:95:16 | self |
+| local_dataflow.rb:95:3:95:30 | ... = ... | local_dataflow.rb:96:8:96:8 | b |
+| local_dataflow.rb:95:7:95:30 | ( ... ) | local_dataflow.rb:95:3:95:30 | ... = ... |
+| local_dataflow.rb:95:7:95:30 | ( ... ) | local_dataflow.rb:95:3:95:30 | ... = ... |
+| local_dataflow.rb:95:8:95:16 | [post] self | local_dataflow.rb:95:21:95:29 | self |
+| local_dataflow.rb:95:8:95:16 | [post] self | local_dataflow.rb:96:3:96:9 | self |
+| local_dataflow.rb:95:8:95:16 | call to source | local_dataflow.rb:95:8:95:29 | ... or ... |
+| local_dataflow.rb:95:8:95:16 | self | local_dataflow.rb:95:21:95:29 | self |
+| local_dataflow.rb:95:8:95:16 | self | local_dataflow.rb:96:3:96:9 | self |
+| local_dataflow.rb:95:8:95:29 | ... or ... | local_dataflow.rb:95:7:95:30 | ( ... ) |
+| local_dataflow.rb:95:21:95:29 | [post] self | local_dataflow.rb:96:3:96:9 | self |
+| local_dataflow.rb:95:21:95:29 | call to source | local_dataflow.rb:95:8:95:29 | ... or ... |
+| local_dataflow.rb:95:21:95:29 | self | local_dataflow.rb:96:3:96:9 | self |
+| local_dataflow.rb:96:3:96:9 | [post] self | local_dataflow.rb:98:7:98:15 | self |
+| local_dataflow.rb:96:3:96:9 | self | local_dataflow.rb:98:7:98:15 | self |
+| local_dataflow.rb:98:3:98:28 | ... = ... | local_dataflow.rb:99:8:99:8 | a |
+| local_dataflow.rb:98:7:98:15 | [post] self | local_dataflow.rb:98:20:98:28 | self |
+| local_dataflow.rb:98:7:98:15 | [post] self | local_dataflow.rb:99:3:99:9 | self |
+| local_dataflow.rb:98:7:98:15 | call to source | local_dataflow.rb:98:7:98:28 | ... && ... |
+| local_dataflow.rb:98:7:98:15 | self | local_dataflow.rb:98:20:98:28 | self |
+| local_dataflow.rb:98:7:98:15 | self | local_dataflow.rb:99:3:99:9 | self |
+| local_dataflow.rb:98:7:98:28 | ... && ... | local_dataflow.rb:98:3:98:28 | ... = ... |
+| local_dataflow.rb:98:7:98:28 | ... && ... | local_dataflow.rb:98:3:98:28 | ... = ... |
+| local_dataflow.rb:98:20:98:28 | [post] self | local_dataflow.rb:99:3:99:9 | self |
+| local_dataflow.rb:98:20:98:28 | call to source | local_dataflow.rb:98:7:98:28 | ... && ... |
+| local_dataflow.rb:98:20:98:28 | self | local_dataflow.rb:99:3:99:9 | self |
+| local_dataflow.rb:99:3:99:9 | [post] self | local_dataflow.rb:100:8:100:16 | self |
+| local_dataflow.rb:99:3:99:9 | self | local_dataflow.rb:100:8:100:16 | self |
+| local_dataflow.rb:100:3:100:31 | ... = ... | local_dataflow.rb:101:8:101:8 | b |
+| local_dataflow.rb:100:7:100:31 | ( ... ) | local_dataflow.rb:100:3:100:31 | ... = ... |
+| local_dataflow.rb:100:7:100:31 | ( ... ) | local_dataflow.rb:100:3:100:31 | ... = ... |
+| local_dataflow.rb:100:8:100:16 | [post] self | local_dataflow.rb:100:22:100:30 | self |
+| local_dataflow.rb:100:8:100:16 | [post] self | local_dataflow.rb:101:3:101:9 | self |
+| local_dataflow.rb:100:8:100:16 | call to source | local_dataflow.rb:100:8:100:30 | ... and ... |
+| local_dataflow.rb:100:8:100:16 | self | local_dataflow.rb:100:22:100:30 | self |
+| local_dataflow.rb:100:8:100:16 | self | local_dataflow.rb:101:3:101:9 | self |
+| local_dataflow.rb:100:8:100:30 | ... and ... | local_dataflow.rb:100:7:100:31 | ( ... ) |
+| local_dataflow.rb:100:22:100:30 | [post] self | local_dataflow.rb:101:3:101:9 | self |
+| local_dataflow.rb:100:22:100:30 | call to source | local_dataflow.rb:100:8:100:30 | ... and ... |
+| local_dataflow.rb:100:22:100:30 | self | local_dataflow.rb:101:3:101:9 | self |
+| local_dataflow.rb:101:3:101:9 | [post] self | local_dataflow.rb:103:7:103:15 | self |
+| local_dataflow.rb:101:3:101:9 | self | local_dataflow.rb:103:7:103:15 | self |
+| local_dataflow.rb:103:3:103:15 | ... = ... | local_dataflow.rb:104:3:104:3 | a |
+| local_dataflow.rb:103:7:103:15 | [post] self | local_dataflow.rb:104:9:104:17 | self |
+| local_dataflow.rb:103:7:103:15 | [post] self | local_dataflow.rb:105:3:105:9 | self |
+| local_dataflow.rb:103:7:103:15 | call to source | local_dataflow.rb:103:3:103:15 | ... = ... |
+| local_dataflow.rb:103:7:103:15 | call to source | local_dataflow.rb:103:3:103:15 | ... = ... |
+| local_dataflow.rb:103:7:103:15 | self | local_dataflow.rb:104:9:104:17 | self |
+| local_dataflow.rb:103:7:103:15 | self | local_dataflow.rb:105:3:105:9 | self |
+| local_dataflow.rb:104:3:104:3 | a | local_dataflow.rb:104:5:104:7 | ... \|\| ... |
+| local_dataflow.rb:104:3:104:17 | ... = ... | local_dataflow.rb:105:8:105:8 | a |
+| local_dataflow.rb:104:5:104:7 | ... \|\| ... | local_dataflow.rb:104:3:104:17 | ... = ... |
+| local_dataflow.rb:104:5:104:7 | ... \|\| ... | local_dataflow.rb:104:3:104:17 | ... = ... |
+| local_dataflow.rb:104:9:104:17 | [post] self | local_dataflow.rb:105:3:105:9 | self |
+| local_dataflow.rb:104:9:104:17 | call to source | local_dataflow.rb:104:5:104:7 | ... \|\| ... |
+| local_dataflow.rb:104:9:104:17 | self | local_dataflow.rb:105:3:105:9 | self |
+| local_dataflow.rb:105:3:105:9 | [post] self | local_dataflow.rb:106:7:106:15 | self |
+| local_dataflow.rb:105:3:105:9 | self | local_dataflow.rb:106:7:106:15 | self |
+| local_dataflow.rb:106:3:106:15 | ... = ... | local_dataflow.rb:107:3:107:3 | b |
+| local_dataflow.rb:106:7:106:15 | [post] self | local_dataflow.rb:107:9:107:17 | self |
+| local_dataflow.rb:106:7:106:15 | [post] self | local_dataflow.rb:108:3:108:9 | self |
+| local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:106:3:106:15 | ... = ... |
+| local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:106:3:106:15 | ... = ... |
+| local_dataflow.rb:106:7:106:15 | self | local_dataflow.rb:107:9:107:17 | self |
+| local_dataflow.rb:106:7:106:15 | self | local_dataflow.rb:108:3:108:9 | self |
+| local_dataflow.rb:107:3:107:3 | b | local_dataflow.rb:107:5:107:7 | ... && ... |
+| local_dataflow.rb:107:3:107:17 | ... = ... | local_dataflow.rb:108:8:108:8 | b |
+| local_dataflow.rb:107:5:107:7 | ... && ... | local_dataflow.rb:107:3:107:17 | ... = ... |
+| local_dataflow.rb:107:5:107:7 | ... && ... | local_dataflow.rb:107:3:107:17 | ... = ... |
+| local_dataflow.rb:107:9:107:17 | [post] self | local_dataflow.rb:108:3:108:9 | self |
+| local_dataflow.rb:107:9:107:17 | call to source | local_dataflow.rb:107:5:107:7 | ... && ... |
+| local_dataflow.rb:107:9:107:17 | self | local_dataflow.rb:108:3:108:9 | self |
+| local_dataflow.rb:111:1:114:3 | self (object_dup) | local_dataflow.rb:112:3:112:21 | self |
+| local_dataflow.rb:111:1:114:3 | self in object_dup | local_dataflow.rb:111:1:114:3 | self (object_dup) |
+| local_dataflow.rb:112:3:112:21 | [post] self | local_dataflow.rb:112:8:112:16 | self |
+| local_dataflow.rb:112:3:112:21 | self | local_dataflow.rb:112:8:112:16 | self |
+| local_dataflow.rb:112:8:112:16 | [post] self | local_dataflow.rb:113:3:113:25 | self |
+| local_dataflow.rb:112:8:112:16 | call to source | local_dataflow.rb:112:8:112:20 | call to dup |
+| local_dataflow.rb:112:8:112:16 | self | local_dataflow.rb:113:3:113:25 | self |
+| local_dataflow.rb:113:3:113:25 | [post] self | local_dataflow.rb:113:8:113:16 | self |
+| local_dataflow.rb:113:3:113:25 | self | local_dataflow.rb:113:8:113:16 | self |
+| local_dataflow.rb:113:8:113:16 | call to source | local_dataflow.rb:113:8:113:20 | call to dup |
+| local_dataflow.rb:113:8:113:20 | call to dup | local_dataflow.rb:113:8:113:24 | call to dup |
+| local_dataflow.rb:116:1:120:3 | self (kernel_tap) | local_dataflow.rb:117:3:117:24 | self |
+| local_dataflow.rb:116:1:120:3 | self in kernel_tap | local_dataflow.rb:116:1:120:3 | self (kernel_tap) |
+| local_dataflow.rb:117:3:117:24 | [post] self | local_dataflow.rb:117:8:117:16 | self |
+| local_dataflow.rb:117:3:117:24 | self | local_dataflow.rb:117:8:117:16 | self |
+| local_dataflow.rb:117:8:117:16 | [post] self | local_dataflow.rb:118:3:118:11 | self |
+| local_dataflow.rb:117:8:117:16 | call to source | local_dataflow.rb:117:8:117:23 | call to tap |
+| local_dataflow.rb:117:8:117:16 | self | local_dataflow.rb:118:3:118:11 | self |
+| local_dataflow.rb:118:3:118:11 | [post] self | local_dataflow.rb:119:3:119:31 | self |
+| local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:3:118:31 | call to tap |
+| local_dataflow.rb:118:3:118:11 | self | local_dataflow.rb:119:3:119:31 | self |
+| local_dataflow.rb:118:17:118:31 | <captured> self | local_dataflow.rb:118:23:118:29 | self |
+| local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:20:118:20 | x |
+| local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:28:118:28 | x |
+| local_dataflow.rb:119:3:119:31 | [post] self | local_dataflow.rb:119:8:119:16 | self |
+| local_dataflow.rb:119:3:119:31 | self | local_dataflow.rb:119:8:119:16 | self |
+| local_dataflow.rb:119:8:119:16 | call to source | local_dataflow.rb:119:8:119:23 | call to tap |
+| local_dataflow.rb:119:8:119:23 | call to tap | local_dataflow.rb:119:8:119:30 | call to tap |
+| local_dataflow.rb:122:1:124:3 | self (dup_tap) | local_dataflow.rb:123:3:123:50 | self |
+| local_dataflow.rb:122:1:124:3 | self in dup_tap | local_dataflow.rb:122:1:124:3 | self (dup_tap) |
+| local_dataflow.rb:123:3:123:50 | [post] self | local_dataflow.rb:123:8:123:16 | self |
+| local_dataflow.rb:123:3:123:50 | self | local_dataflow.rb:123:8:123:16 | self |
+| local_dataflow.rb:123:8:123:16 | call to source | local_dataflow.rb:123:8:123:20 | call to dup |
+| local_dataflow.rb:123:8:123:20 | call to dup | local_dataflow.rb:123:8:123:45 | call to tap |
+| local_dataflow.rb:123:8:123:45 | call to tap | local_dataflow.rb:123:8:123:49 | call to dup |
+| local_dataflow.rb:123:26:123:45 | <captured> self | local_dataflow.rb:123:32:123:43 | self |
+| local_dataflow.rb:126:1:128:3 | self (use) | local_dataflow.rb:127:3:127:8 | self |
+| local_dataflow.rb:126:1:128:3 | self in use | local_dataflow.rb:126:1:128:3 | self (use) |
+| local_dataflow.rb:130:1:150:3 | self (use_use_madness) | local_dataflow.rb:132:6:132:11 | self |
+| local_dataflow.rb:130:1:150:3 | self in use_use_madness | local_dataflow.rb:130:1:150:3 | self (use_use_madness) |
+| local_dataflow.rb:131:3:131:8 | ... = ... | local_dataflow.rb:132:10:132:10 | x |
+| local_dataflow.rb:131:7:131:8 | "" | local_dataflow.rb:131:3:131:8 | ... = ... |
+| local_dataflow.rb:131:7:131:8 | "" | local_dataflow.rb:131:3:131:8 | ... = ... |
+| local_dataflow.rb:132:6:132:11 | [post] self | local_dataflow.rb:133:8:133:13 | self |
+| local_dataflow.rb:132:6:132:11 | self | local_dataflow.rb:133:8:133:13 | self |
+| local_dataflow.rb:132:10:132:10 | x | local_dataflow.rb:133:12:133:12 | x |
+| local_dataflow.rb:132:12:148:10 | then ... | local_dataflow.rb:132:3:149:5 | if ... |
+| local_dataflow.rb:133:8:133:13 | [post] self | local_dataflow.rb:133:18:133:23 | self |
+| local_dataflow.rb:133:8:133:13 | [post] self | local_dataflow.rb:134:7:134:12 | self |
+| local_dataflow.rb:133:8:133:13 | call to use | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... |
+| local_dataflow.rb:133:8:133:13 | call to use | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... |
+| local_dataflow.rb:133:8:133:13 | self | local_dataflow.rb:133:18:133:23 | self |
+| local_dataflow.rb:133:8:133:13 | self | local_dataflow.rb:134:7:134:12 | self |
+| local_dataflow.rb:133:12:133:12 | x | local_dataflow.rb:133:22:133:22 | x |
+| local_dataflow.rb:133:12:133:12 | x | local_dataflow.rb:134:11:134:11 | x |
+| local_dataflow.rb:133:18:133:23 | [post] self | local_dataflow.rb:134:7:134:12 | self |
+| local_dataflow.rb:133:18:133:23 | [post] self | local_dataflow.rb:136:7:136:12 | self |
+| local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... |
+| local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... |
+| local_dataflow.rb:133:18:133:23 | self | local_dataflow.rb:134:7:134:12 | self |
+| local_dataflow.rb:133:18:133:23 | self | local_dataflow.rb:136:7:136:12 | self |
+| local_dataflow.rb:133:22:133:22 | x | local_dataflow.rb:134:11:134:11 | x |
+| local_dataflow.rb:133:22:133:22 | x | local_dataflow.rb:136:11:136:11 | x |
+| local_dataflow.rb:133:24:134:12 | then ... | local_dataflow.rb:133:5:139:7 | if ... |
+| local_dataflow.rb:134:7:134:12 | [post] self | local_dataflow.rb:141:9:141:14 | self |
+| local_dataflow.rb:134:7:134:12 | call to use | local_dataflow.rb:133:24:134:12 | then ... |
+| local_dataflow.rb:134:7:134:12 | self | local_dataflow.rb:141:9:141:14 | self |
+| local_dataflow.rb:134:11:134:11 | x | local_dataflow.rb:141:13:141:13 | x |
+| local_dataflow.rb:135:5:138:9 | else ... | local_dataflow.rb:133:5:139:7 | if ... |
+| local_dataflow.rb:136:7:136:12 | [post] self | local_dataflow.rb:137:10:137:15 | self |
+| local_dataflow.rb:136:7:136:12 | self | local_dataflow.rb:137:10:137:15 | self |
+| local_dataflow.rb:136:11:136:11 | x | local_dataflow.rb:137:14:137:14 | x |
+| local_dataflow.rb:137:7:138:9 | if ... | local_dataflow.rb:135:5:138:9 | else ... |
+| local_dataflow.rb:137:10:137:15 | [post] self | local_dataflow.rb:137:21:137:26 | self |
+| local_dataflow.rb:137:10:137:15 | [post] self | local_dataflow.rb:141:9:141:14 | self |
+| local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | [false] ... && ... |
+| local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | [true] ... && ... |
+| local_dataflow.rb:137:10:137:15 | self | local_dataflow.rb:137:21:137:26 | self |
+| local_dataflow.rb:137:10:137:15 | self | local_dataflow.rb:141:9:141:14 | self |
+| local_dataflow.rb:137:14:137:14 | x | local_dataflow.rb:137:25:137:25 | x |
+| local_dataflow.rb:137:14:137:14 | x | local_dataflow.rb:141:13:141:13 | x |
+| local_dataflow.rb:137:20:137:26 | [false] ! ... | local_dataflow.rb:137:10:137:26 | [false] ... && ... |
+| local_dataflow.rb:137:20:137:26 | [true] ! ... | local_dataflow.rb:137:10:137:26 | [true] ... && ... |
+| local_dataflow.rb:137:21:137:26 | [post] self | local_dataflow.rb:141:9:141:14 | self |
+| local_dataflow.rb:137:21:137:26 | self | local_dataflow.rb:141:9:141:14 | self |
+| local_dataflow.rb:137:25:137:25 | x | local_dataflow.rb:141:13:141:13 | x |
+| local_dataflow.rb:141:8:141:14 | [false] ! ... | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... |
+| local_dataflow.rb:141:8:141:14 | [false] ! ... | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... |
+| local_dataflow.rb:141:8:141:14 | [true] ! ... | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... |
+| local_dataflow.rb:141:9:141:14 | [post] self | local_dataflow.rb:141:20:141:25 | self |
+| local_dataflow.rb:141:9:141:14 | [post] self | local_dataflow.rb:147:5:147:10 | self |
+| local_dataflow.rb:141:9:141:14 | self | local_dataflow.rb:141:20:141:25 | self |
+| local_dataflow.rb:141:9:141:14 | self | local_dataflow.rb:147:5:147:10 | self |
+| local_dataflow.rb:141:13:141:13 | x | local_dataflow.rb:141:24:141:24 | x |
+| local_dataflow.rb:141:13:141:13 | x | local_dataflow.rb:147:9:147:9 | x |
+| local_dataflow.rb:141:19:141:37 | [false] ( ... ) | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... |
+| local_dataflow.rb:141:19:141:37 | [true] ( ... ) | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... |
+| local_dataflow.rb:141:20:141:25 | [post] self | local_dataflow.rb:141:31:141:36 | self |
+| local_dataflow.rb:141:20:141:25 | [post] self | local_dataflow.rb:143:11:143:16 | self |
+| local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | [false] ... && ... |
+| local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | [true] ... && ... |
+| local_dataflow.rb:141:20:141:25 | self | local_dataflow.rb:141:31:141:36 | self |
+| local_dataflow.rb:141:20:141:25 | self | local_dataflow.rb:143:11:143:16 | self |
+| local_dataflow.rb:141:20:141:36 | [false] ... && ... | local_dataflow.rb:141:19:141:37 | [false] ( ... ) |
+| local_dataflow.rb:141:20:141:36 | [true] ... && ... | local_dataflow.rb:141:19:141:37 | [true] ( ... ) |
+| local_dataflow.rb:141:24:141:24 | x | local_dataflow.rb:141:35:141:35 | x |
+| local_dataflow.rb:141:24:141:24 | x | local_dataflow.rb:143:15:143:15 | x |
+| local_dataflow.rb:141:30:141:36 | [false] ! ... | local_dataflow.rb:141:20:141:36 | [false] ... && ... |
+| local_dataflow.rb:141:30:141:36 | [true] ! ... | local_dataflow.rb:141:20:141:36 | [true] ... && ... |
+| local_dataflow.rb:141:31:141:36 | [post] self | local_dataflow.rb:143:11:143:16 | self |
+| local_dataflow.rb:141:31:141:36 | [post] self | local_dataflow.rb:147:5:147:10 | self |
+| local_dataflow.rb:141:31:141:36 | self | local_dataflow.rb:143:11:143:16 | self |
+| local_dataflow.rb:141:31:141:36 | self | local_dataflow.rb:147:5:147:10 | self |
+| local_dataflow.rb:141:35:141:35 | x | local_dataflow.rb:143:15:143:15 | x |
+| local_dataflow.rb:141:35:141:35 | x | local_dataflow.rb:147:9:147:9 | x |
+| local_dataflow.rb:141:38:142:9 | then ... | local_dataflow.rb:141:5:145:7 | if ... |
+| local_dataflow.rb:142:7:142:9 | nil | local_dataflow.rb:141:38:142:9 | then ... |
+| local_dataflow.rb:143:5:144:16 | elsif ... | local_dataflow.rb:141:5:145:7 | if ... |
+| local_dataflow.rb:143:11:143:16 | [post] self | local_dataflow.rb:143:21:143:26 | self |
+| local_dataflow.rb:143:11:143:16 | [post] self | local_dataflow.rb:144:11:144:16 | self |
+| local_dataflow.rb:143:11:143:16 | call to use | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... |
+| local_dataflow.rb:143:11:143:16 | call to use | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... |
+| local_dataflow.rb:143:11:143:16 | self | local_dataflow.rb:143:21:143:26 | self |
+| local_dataflow.rb:143:11:143:16 | self | local_dataflow.rb:144:11:144:16 | self |
+| local_dataflow.rb:143:15:143:15 | x | local_dataflow.rb:143:25:143:25 | x |
+| local_dataflow.rb:143:15:143:15 | x | local_dataflow.rb:144:15:144:15 | x |
+| local_dataflow.rb:143:21:143:26 | [post] self | local_dataflow.rb:144:11:144:16 | self |
+| local_dataflow.rb:143:21:143:26 | [post] self | local_dataflow.rb:147:5:147:10 | self |
+| local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... |
+| local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... |
+| local_dataflow.rb:143:21:143:26 | self | local_dataflow.rb:144:11:144:16 | self |
+| local_dataflow.rb:143:21:143:26 | self | local_dataflow.rb:147:5:147:10 | self |
+| local_dataflow.rb:143:25:143:25 | x | local_dataflow.rb:144:15:144:15 | x |
+| local_dataflow.rb:143:25:143:25 | x | local_dataflow.rb:147:9:147:9 | x |
+| local_dataflow.rb:143:27:144:16 | then ... | local_dataflow.rb:143:5:144:16 | elsif ... |
+| local_dataflow.rb:144:11:144:16 | [post] self | local_dataflow.rb:147:5:147:10 | self |
+| local_dataflow.rb:144:11:144:16 | call to use | local_dataflow.rb:143:27:144:16 | then ... |
+| local_dataflow.rb:144:11:144:16 | self | local_dataflow.rb:147:5:147:10 | self |
+| local_dataflow.rb:144:15:144:15 | x | local_dataflow.rb:147:9:147:9 | x |
+| local_dataflow.rb:147:5:147:10 | [post] self | local_dataflow.rb:148:5:148:10 | self |
+| local_dataflow.rb:147:5:147:10 | self | local_dataflow.rb:148:5:148:10 | self |
+| local_dataflow.rb:147:9:147:9 | x | local_dataflow.rb:148:9:148:9 | x |
+| local_dataflow.rb:148:5:148:10 | call to use | local_dataflow.rb:132:12:148:10 | then ... |

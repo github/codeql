@@ -65,7 +65,7 @@ module Pydantic {
      * NOTE: We currently overapproximate, and treat all attributes as containing
      * another pydantic model. For the code below, we _could_ limit this to `main_foo`
      * and members of `other_foos`. IF THIS IS CHANGED, YOU MUST CHANGE THE ADDITIONAL
-     * TAINT STEPS BELOW, SUCH THAT SIMPLE ACCESS OF SOMETHIGN LIKE `str` IS STILL
+     * TAINT STEPS BELOW, SUCH THAT SIMPLE ACCESS OF SOMETHING LIKE `str` IS STILL
      * TAINTED.
      *
      *

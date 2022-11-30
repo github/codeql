@@ -1,4 +1,7 @@
 import java
+import semmle.code.java.Diagnostics
+
+query predicate diag(Diagnostic d) { d.getMessage() = "Unexpected IrVararg" }
 
 query predicate varargsParams(Parameter p, Type t) {
   p.getCallable().fromSource() and

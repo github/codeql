@@ -2,6 +2,7 @@
 
 package android.os;
 
+import android.app.Fragment;
 import android.os.Parcel;
 
 public interface Parcelable
@@ -9,6 +10,10 @@ public interface Parcelable
     int describeContents();
     static int CONTENTS_FILE_DESCRIPTOR = 0;
     static int PARCELABLE_WRITE_RETURN_VALUE = 0;
+    static public interface ClassLoaderCreator<T> extends Parcelable.Creator<T>
+    {
+        T createFromParcel(Parcel p0, ClassLoader p1);
+    }
     static public interface Creator<T>
     {
         T createFromParcel(Parcel p0);

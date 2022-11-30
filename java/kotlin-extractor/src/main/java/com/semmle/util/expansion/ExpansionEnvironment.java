@@ -123,7 +123,7 @@ public class ExpansionEnvironment {
 	}
 
 	/**
-	 * This the old default constructor, which always enables command substutitions.
+	 * This the old default constructor, which always enables command substitutions.
 	 * <b>Doing so is a security risk</b> whenever the string you expand may come
 	 * from an untrusted source, so you should only do that when you explicitly want
 	 * to do it and have decided that it is safe. (And then use the constructor that

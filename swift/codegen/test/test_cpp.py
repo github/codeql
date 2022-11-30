@@ -65,7 +65,7 @@ def test_trap_has_first_field_marked():
 def test_tag_has_first_base_marked():
     bases = ["a", "b", "c"]
     expected = [cpp.TagBase("a", first=True), cpp.TagBase("b"), cpp.TagBase("c")]
-    t = cpp.Tag("name", bases, 0, "id")
+    t = cpp.Tag("name", bases, "id")
     assert t.bases == expected
 
 
@@ -75,7 +75,7 @@ def test_tag_has_first_base_marked():
     (["a", "b"], True)
 ])
 def test_tag_has_bases(bases, expected):
-    t = cpp.Tag("name", bases, 0, "id")
+    t = cpp.Tag("name", bases, "id")
     assert t.has_bases is expected
 
 

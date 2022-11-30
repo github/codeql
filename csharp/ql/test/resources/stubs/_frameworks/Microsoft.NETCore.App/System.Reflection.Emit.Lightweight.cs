@@ -6,7 +6,7 @@ namespace System
     {
         namespace Emit
         {
-            // Generated from `System.Reflection.Emit.DynamicILInfo` in `System.Reflection.Emit.Lightweight, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.DynamicILInfo` in `System.Reflection.Emit.Lightweight, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DynamicILInfo
             {
                 public System.Reflection.Emit.DynamicMethod DynamicMethod { get => throw null; }
@@ -26,7 +26,7 @@ namespace System
                 unsafe public void SetLocalSignature(System.Byte* localSignature, int signatureSize) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.DynamicMethod` in `System.Reflection.Emit.Lightweight, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.DynamicMethod` in `System.Reflection.Emit.Lightweight, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DynamicMethod : System.Reflection.MethodInfo
             {
                 public override System.Reflection.MethodAttributes Attributes { get => throw null; }

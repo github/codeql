@@ -1,4 +1,3 @@
-# name:foo
 def foo():
     print("foo called")
 
@@ -6,22 +5,16 @@ def foo():
 indirect_foo = foo
 
 
-# name:bar
 def bar():
     print("bar called")
 
 
-# name:lam
 lam = lambda: print("lambda called")
 
 
-# calls:foo
-foo()
-# calls:foo
-indirect_foo()
-# calls:bar
-bar()
-# calls:lam
-lam()
+foo() # $ pt=foo
+indirect_foo() # $ pt=foo
+bar() # $ pt=bar
+lam() # $ pt=lambda[simple.py:12:7]
 
 # python -m trace --trackcalls simple.py

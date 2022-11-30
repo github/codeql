@@ -22,4 +22,4 @@ where
     not f.getType().hasName("long")
   ) and
   f.getDeclaringType().getAStrictAncestor() instanceof TypeSerializable
-select f, "serialVersionUID should be final, static, and of type long."
+select f, "'serialVersionUID' should be final, static, and of type long."

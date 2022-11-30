@@ -3,11 +3,13 @@
  * deserialization, as well as extension points for adding your own.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.frameworks.ActiveJob
+private import codeql.ruby.frameworks.core.Module
 
 module UnsafeDeserialization {
   /**
@@ -48,12 +50,13 @@ module UnsafeDeserialization {
   }
 
   /**
-   * An argument in a call to `YAML.load`, considered a sink for unsafe
-   * deserialization.
+   * An argument in a call to `YAML.load`, considered a sink
+   * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
+   * recent versions of Ruby.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
-      this = API::getTopLevelMember("YAML").getAMethodCall("load").getArgument(0)
+      this = API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall("load").getArgument(0)
     }
   }
 
@@ -67,6 +70,16 @@ module UnsafeDeserialization {
     }
   }
 
+  /**
+   * The first argument in a call to `Hash.from_trusted_xml`, considered as a
+   * sink for unsafe deserialization.
+   */
+  class HashFromTrustedXmlArgument extends Sink {
+    HashFromTrustedXmlArgument() {
+      this = API::getTopLevelMember("Hash").getAMethodCall("from_trusted_xml").getArgument(0)
+    }
+  }
+
   private string getAKnownOjModeName(boolean isSafe) {
     result = ["compat", "custom", "json", "null", "rails", "strict", "wab"] and isSafe = true
     or
@@ -75,11 +88,7 @@ module UnsafeDeserialization {
 
   private predicate isOjModePair(CfgNodes::ExprNodes::PairCfgNode p, string modeValue) {
     p.getKey().getConstantValue().isStringlikeValue("mode") and
-    exists(DataFlow::LocalSourceNode symbolLiteral, DataFlow::Node value |
-      symbolLiteral.asExpr().getExpr().getConstantValue().isSymbol(modeValue) and
-      symbolLiteral.flowsTo(value) and
-      value.asExpr() = p.getValue()
-    )
+    DataFlow::exprNode(p.getValue()).getALocalSource().getConstantValue().isSymbol(modeValue)
   }
 
   /**
@@ -187,5 +196,28 @@ module UnsafeDeserialization {
       fromNode = callNode.getArgument(0) and
       toNode = callNode
     )
+  }
+
+  /**
+   * A argument in a call to `Module.const_get`, considered as a sink for unsafe
+   * deserialization.
+   *
+   * Calls to `Module.const_get` can return arbitrary classes which can then be
+   * instantiated.
+   */
+  class ConstGetCallArgument extends Sink {
+    ConstGetCallArgument() { this = any(Module::ModuleConstGetCallCodeExecution c).getCode() }
+  }
+
+  /**
+   * A argument in a call to `ActiveJob::Serializers.deserialize`, considered as
+   * a sink for unsafe deserialization.
+   *
+   * This is roughly equivalent to a call to `Module.const_get`.
+   */
+  class ActiveJobSerializersDeserializeArgument extends Sink {
+    ActiveJobSerializersDeserializeArgument() {
+      this = any(ActiveJob::Serializers::DeserializeCall c).getCode()
+    }
   }
 }

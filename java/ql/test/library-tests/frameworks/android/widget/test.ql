@@ -2,6 +2,6 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineFlowTest
 
-class SourceTaintFlowConf extends DefaultTaintFlowConf {
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+query predicate valueOf(MethodAccess ma) {
+  ma.getMethod().hasQualifiedName("java.lang", "String", "valueOf")
 }

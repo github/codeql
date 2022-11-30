@@ -4,49 +4,49 @@ namespace System
 {
     namespace Xml
     {
-        // Generated from `System.Xml.ConformanceLevel` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ConformanceLevel
+        // Generated from `System.Xml.ConformanceLevel` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ConformanceLevel : int
         {
-            Auto,
-            Document,
-            Fragment,
+            Auto = 0,
+            Document = 2,
+            Fragment = 1,
         }
 
-        // Generated from `System.Xml.DtdProcessing` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DtdProcessing
+        // Generated from `System.Xml.DtdProcessing` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DtdProcessing : int
         {
-            Ignore,
-            Parse,
-            Prohibit,
+            Ignore = 1,
+            Parse = 2,
+            Prohibit = 0,
         }
 
-        // Generated from `System.Xml.EntityHandling` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum EntityHandling
+        // Generated from `System.Xml.EntityHandling` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum EntityHandling : int
         {
-            ExpandCharEntities,
-            ExpandEntities,
+            ExpandCharEntities = 2,
+            ExpandEntities = 1,
         }
 
-        // Generated from `System.Xml.Formatting` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum Formatting
+        // Generated from `System.Xml.Formatting` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum Formatting : int
         {
-            Indented,
-            None,
+            Indented = 1,
+            None = 0,
         }
 
-        // Generated from `System.Xml.IApplicationResourceStreamResolver` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IApplicationResourceStreamResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IApplicationResourceStreamResolver
         {
             System.IO.Stream GetApplicationResourceStream(System.Uri relativeUri);
         }
 
-        // Generated from `System.Xml.IHasXmlNode` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IHasXmlNode` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IHasXmlNode
         {
             System.Xml.XmlNode GetNode();
         }
 
-        // Generated from `System.Xml.IXmlLineInfo` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IXmlLineInfo` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IXmlLineInfo
         {
             bool HasLineInfo();
@@ -54,7 +54,7 @@ namespace System
             int LinePosition { get; }
         }
 
-        // Generated from `System.Xml.IXmlNamespaceResolver` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IXmlNamespaceResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IXmlNamespaceResolver
         {
             System.Collections.Generic.IDictionary<string, string> GetNamespacesInScope(System.Xml.XmlNamespaceScope scope);
@@ -62,7 +62,7 @@ namespace System
             string LookupPrefix(string namespaceName);
         }
 
-        // Generated from `System.Xml.NameTable` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.NameTable` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class NameTable : System.Xml.XmlNameTable
         {
             public override string Add(System.Char[] key, int start, int len) => throw null;
@@ -72,63 +72,63 @@ namespace System
             public NameTable() => throw null;
         }
 
-        // Generated from `System.Xml.NamespaceHandling` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.NamespaceHandling` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum NamespaceHandling
+        public enum NamespaceHandling : int
         {
-            Default,
-            OmitDuplicates,
+            Default = 0,
+            OmitDuplicates = 1,
         }
 
-        // Generated from `System.Xml.NewLineHandling` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum NewLineHandling
+        // Generated from `System.Xml.NewLineHandling` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum NewLineHandling : int
         {
-            Entitize,
-            None,
-            Replace,
+            Entitize = 1,
+            None = 2,
+            Replace = 0,
         }
 
-        // Generated from `System.Xml.ReadState` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ReadState
+        // Generated from `System.Xml.ReadState` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ReadState : int
         {
-            Closed,
-            EndOfFile,
-            Error,
-            Initial,
-            Interactive,
+            Closed = 4,
+            EndOfFile = 3,
+            Error = 2,
+            Initial = 0,
+            Interactive = 1,
         }
 
-        // Generated from `System.Xml.ValidationType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ValidationType
+        // Generated from `System.Xml.ValidationType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ValidationType : int
         {
-            Auto,
-            DTD,
-            None,
-            Schema,
-            XDR,
+            Auto = 1,
+            DTD = 2,
+            None = 0,
+            Schema = 4,
+            XDR = 3,
         }
 
-        // Generated from `System.Xml.WhitespaceHandling` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum WhitespaceHandling
+        // Generated from `System.Xml.WhitespaceHandling` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum WhitespaceHandling : int
         {
-            All,
-            None,
-            Significant,
+            All = 0,
+            None = 2,
+            Significant = 1,
         }
 
-        // Generated from `System.Xml.WriteState` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum WriteState
+        // Generated from `System.Xml.WriteState` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum WriteState : int
         {
-            Attribute,
-            Closed,
-            Content,
-            Element,
-            Error,
-            Prolog,
-            Start,
+            Attribute = 3,
+            Closed = 5,
+            Content = 4,
+            Element = 2,
+            Error = 6,
+            Prolog = 1,
+            Start = 0,
         }
 
-        // Generated from `System.Xml.XmlAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlAttribute : System.Xml.XmlNode
         {
             public override System.Xml.XmlNode AppendChild(System.Xml.XmlNode newChild) => throw null;
@@ -157,7 +157,7 @@ namespace System
             protected internal XmlAttribute(string prefix, string localName, string namespaceURI, System.Xml.XmlDocument doc) => throw null;
         }
 
-        // Generated from `System.Xml.XmlAttributeCollection` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlAttributeCollection` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlAttributeCollection : System.Xml.XmlNamedNodeMap, System.Collections.ICollection, System.Collections.IEnumerable
         {
             public System.Xml.XmlAttribute Append(System.Xml.XmlAttribute node) => throw null;
@@ -181,7 +181,7 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Xml.XmlCDataSection` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlCDataSection` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlCDataSection : System.Xml.XmlCharacterData
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -195,7 +195,7 @@ namespace System
             protected internal XmlCDataSection(string data, System.Xml.XmlDocument doc) : base(default(string), default(System.Xml.XmlDocument)) => throw null;
         }
 
-        // Generated from `System.Xml.XmlCharacterData` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlCharacterData` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlCharacterData : System.Xml.XmlLinkedNode
         {
             public virtual void AppendData(string strData) => throw null;
@@ -210,7 +210,7 @@ namespace System
             protected internal XmlCharacterData(string data, System.Xml.XmlDocument doc) => throw null;
         }
 
-        // Generated from `System.Xml.XmlComment` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlComment` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlComment : System.Xml.XmlCharacterData
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -222,7 +222,7 @@ namespace System
             protected internal XmlComment(string comment, System.Xml.XmlDocument doc) : base(default(string), default(System.Xml.XmlDocument)) => throw null;
         }
 
-        // Generated from `System.Xml.XmlConvert` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlConvert` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlConvert
         {
             public static string DecodeName(string name) => throw null;
@@ -287,16 +287,16 @@ namespace System
             public XmlConvert() => throw null;
         }
 
-        // Generated from `System.Xml.XmlDateTimeSerializationMode` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlDateTimeSerializationMode
+        // Generated from `System.Xml.XmlDateTimeSerializationMode` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlDateTimeSerializationMode : int
         {
-            Local,
-            RoundtripKind,
-            Unspecified,
-            Utc,
+            Local = 0,
+            RoundtripKind = 3,
+            Unspecified = 2,
+            Utc = 1,
         }
 
-        // Generated from `System.Xml.XmlDeclaration` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDeclaration` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlDeclaration : System.Xml.XmlLinkedNode
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -313,7 +313,7 @@ namespace System
             protected internal XmlDeclaration(string version, string encoding, string standalone, System.Xml.XmlDocument doc) => throw null;
         }
 
-        // Generated from `System.Xml.XmlDocument` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDocument` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlDocument : System.Xml.XmlNode
         {
             public override string BaseURI { get => throw null; }
@@ -385,7 +385,7 @@ namespace System
             public virtual System.Xml.XmlResolver XmlResolver { set => throw null; }
         }
 
-        // Generated from `System.Xml.XmlDocumentFragment` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDocumentFragment` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlDocumentFragment : System.Xml.XmlNode
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -400,7 +400,7 @@ namespace System
             protected internal XmlDocumentFragment(System.Xml.XmlDocument ownerDocument) => throw null;
         }
 
-        // Generated from `System.Xml.XmlDocumentType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDocumentType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlDocumentType : System.Xml.XmlLinkedNode
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -418,7 +418,7 @@ namespace System
             protected internal XmlDocumentType(string name, string publicId, string systemId, string internalSubset, System.Xml.XmlDocument doc) => throw null;
         }
 
-        // Generated from `System.Xml.XmlElement` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlElement` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlElement : System.Xml.XmlLinkedNode
         {
             public override System.Xml.XmlAttributeCollection Attributes { get => throw null; }
@@ -460,7 +460,7 @@ namespace System
             protected internal XmlElement(string prefix, string localName, string namespaceURI, System.Xml.XmlDocument doc) => throw null;
         }
 
-        // Generated from `System.Xml.XmlEntity` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlEntity` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlEntity : System.Xml.XmlNode
         {
             public override string BaseURI { get => throw null; }
@@ -479,7 +479,7 @@ namespace System
             public override void WriteTo(System.Xml.XmlWriter w) => throw null;
         }
 
-        // Generated from `System.Xml.XmlEntityReference` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlEntityReference` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlEntityReference : System.Xml.XmlLinkedNode
         {
             public override string BaseURI { get => throw null; }
@@ -494,7 +494,7 @@ namespace System
             protected internal XmlEntityReference(string name, System.Xml.XmlDocument doc) => throw null;
         }
 
-        // Generated from `System.Xml.XmlException` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlException` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlException : System.SystemException
         {
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -509,7 +509,7 @@ namespace System
             public XmlException(string message, System.Exception innerException, int lineNumber, int linePosition) => throw null;
         }
 
-        // Generated from `System.Xml.XmlImplementation` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlImplementation` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlImplementation
         {
             public virtual System.Xml.XmlDocument CreateDocument() => throw null;
@@ -518,7 +518,7 @@ namespace System
             public XmlImplementation(System.Xml.XmlNameTable nt) => throw null;
         }
 
-        // Generated from `System.Xml.XmlLinkedNode` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlLinkedNode` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlLinkedNode : System.Xml.XmlNode
         {
             public override System.Xml.XmlNode NextSibling { get => throw null; }
@@ -526,7 +526,7 @@ namespace System
             internal XmlLinkedNode() => throw null;
         }
 
-        // Generated from `System.Xml.XmlNameTable` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNameTable` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlNameTable
         {
             public abstract string Add(System.Char[] array, int offset, int length);
@@ -536,7 +536,7 @@ namespace System
             protected XmlNameTable() => throw null;
         }
 
-        // Generated from `System.Xml.XmlNamedNodeMap` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNamedNodeMap` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlNamedNodeMap : System.Collections.IEnumerable
         {
             public virtual int Count { get => throw null; }
@@ -550,7 +550,7 @@ namespace System
             internal XmlNamedNodeMap() => throw null;
         }
 
-        // Generated from `System.Xml.XmlNamespaceManager` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNamespaceManager` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlNamespaceManager : System.Collections.IEnumerable, System.Xml.IXmlNamespaceResolver
         {
             public virtual void AddNamespace(string prefix, string uri) => throw null;
@@ -567,15 +567,15 @@ namespace System
             public XmlNamespaceManager(System.Xml.XmlNameTable nameTable) => throw null;
         }
 
-        // Generated from `System.Xml.XmlNamespaceScope` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlNamespaceScope
+        // Generated from `System.Xml.XmlNamespaceScope` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlNamespaceScope : int
         {
-            All,
-            ExcludeXml,
-            Local,
+            All = 0,
+            ExcludeXml = 1,
+            Local = 2,
         }
 
-        // Generated from `System.Xml.XmlNode` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNode` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlNode : System.Collections.IEnumerable, System.ICloneable, System.Xml.XPath.IXPathNavigable
         {
             public virtual System.Xml.XmlNode AppendChild(System.Xml.XmlNode newChild) => throw null;
@@ -628,15 +628,15 @@ namespace System
             internal XmlNode() => throw null;
         }
 
-        // Generated from `System.Xml.XmlNodeChangedAction` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlNodeChangedAction
+        // Generated from `System.Xml.XmlNodeChangedAction` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlNodeChangedAction : int
         {
-            Change,
-            Insert,
-            Remove,
+            Change = 2,
+            Insert = 0,
+            Remove = 1,
         }
 
-        // Generated from `System.Xml.XmlNodeChangedEventArgs` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNodeChangedEventArgs` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlNodeChangedEventArgs : System.EventArgs
         {
             public System.Xml.XmlNodeChangedAction Action { get => throw null; }
@@ -648,10 +648,10 @@ namespace System
             public XmlNodeChangedEventArgs(System.Xml.XmlNode node, System.Xml.XmlNode oldParent, System.Xml.XmlNode newParent, string oldValue, string newValue, System.Xml.XmlNodeChangedAction action) => throw null;
         }
 
-        // Generated from `System.Xml.XmlNodeChangedEventHandler` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNodeChangedEventHandler` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void XmlNodeChangedEventHandler(object sender, System.Xml.XmlNodeChangedEventArgs e);
 
-        // Generated from `System.Xml.XmlNodeList` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNodeList` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlNodeList : System.Collections.IEnumerable, System.IDisposable
         {
             public abstract int Count { get; }
@@ -664,16 +664,16 @@ namespace System
             protected XmlNodeList() => throw null;
         }
 
-        // Generated from `System.Xml.XmlNodeOrder` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlNodeOrder
+        // Generated from `System.Xml.XmlNodeOrder` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlNodeOrder : int
         {
-            After,
-            Before,
-            Same,
-            Unknown,
+            After = 1,
+            Before = 0,
+            Same = 2,
+            Unknown = 3,
         }
 
-        // Generated from `System.Xml.XmlNodeReader` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNodeReader` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlNodeReader : System.Xml.XmlReader, System.Xml.IXmlNamespaceResolver
         {
             public override int AttributeCount { get => throw null; }
@@ -723,30 +723,30 @@ namespace System
             public override System.Xml.XmlSpace XmlSpace { get => throw null; }
         }
 
-        // Generated from `System.Xml.XmlNodeType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlNodeType
+        // Generated from `System.Xml.XmlNodeType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlNodeType : int
         {
-            Attribute,
-            CDATA,
-            Comment,
-            Document,
-            DocumentFragment,
-            DocumentType,
-            Element,
-            EndElement,
-            EndEntity,
-            Entity,
-            EntityReference,
-            None,
-            Notation,
-            ProcessingInstruction,
-            SignificantWhitespace,
-            Text,
-            Whitespace,
-            XmlDeclaration,
+            Attribute = 2,
+            CDATA = 4,
+            Comment = 8,
+            Document = 9,
+            DocumentFragment = 11,
+            DocumentType = 10,
+            Element = 1,
+            EndElement = 15,
+            EndEntity = 16,
+            Entity = 6,
+            EntityReference = 5,
+            None = 0,
+            Notation = 12,
+            ProcessingInstruction = 7,
+            SignificantWhitespace = 14,
+            Text = 3,
+            Whitespace = 13,
+            XmlDeclaration = 17,
         }
 
-        // Generated from `System.Xml.XmlNotation` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlNotation` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlNotation : System.Xml.XmlNode
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -762,16 +762,16 @@ namespace System
             public override void WriteTo(System.Xml.XmlWriter w) => throw null;
         }
 
-        // Generated from `System.Xml.XmlOutputMethod` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlOutputMethod
+        // Generated from `System.Xml.XmlOutputMethod` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlOutputMethod : int
         {
-            AutoDetect,
-            Html,
-            Text,
-            Xml,
+            AutoDetect = 3,
+            Html = 1,
+            Text = 2,
+            Xml = 0,
         }
 
-        // Generated from `System.Xml.XmlParserContext` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlParserContext` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlParserContext
         {
             public string BaseURI { get => throw null; set => throw null; }
@@ -790,7 +790,7 @@ namespace System
             public System.Xml.XmlSpace XmlSpace { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Xml.XmlProcessingInstruction` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlProcessingInstruction` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlProcessingInstruction : System.Xml.XmlLinkedNode
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -806,7 +806,7 @@ namespace System
             protected internal XmlProcessingInstruction(string target, string data, System.Xml.XmlDocument doc) => throw null;
         }
 
-        // Generated from `System.Xml.XmlQualifiedName` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlQualifiedName` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlQualifiedName
         {
             public static bool operator !=(System.Xml.XmlQualifiedName a, System.Xml.XmlQualifiedName b) => throw null;
@@ -824,7 +824,7 @@ namespace System
             public XmlQualifiedName(string name, string ns) => throw null;
         }
 
-        // Generated from `System.Xml.XmlReader` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlReader` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlReader : System.IDisposable
         {
             public abstract int AttributeCount { get; }
@@ -963,7 +963,7 @@ namespace System
             public virtual System.Xml.XmlSpace XmlSpace { get => throw null; }
         }
 
-        // Generated from `System.Xml.XmlReaderSettings` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlReaderSettings` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlReaderSettings
         {
             public bool Async { get => throw null; set => throw null; }
@@ -990,7 +990,7 @@ namespace System
             public System.Xml.XmlResolver XmlResolver { set => throw null; }
         }
 
-        // Generated from `System.Xml.XmlResolver` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlResolver
         {
             public virtual System.Net.ICredentials Credentials { set => throw null; }
@@ -1001,7 +1001,7 @@ namespace System
             protected XmlResolver() => throw null;
         }
 
-        // Generated from `System.Xml.XmlSecureResolver` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlSecureResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlSecureResolver : System.Xml.XmlResolver
         {
             public override System.Net.ICredentials Credentials { set => throw null; }
@@ -1011,7 +1011,7 @@ namespace System
             public XmlSecureResolver(System.Xml.XmlResolver resolver, string securityUrl) => throw null;
         }
 
-        // Generated from `System.Xml.XmlSignificantWhitespace` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlSignificantWhitespace` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlSignificantWhitespace : System.Xml.XmlCharacterData
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -1026,15 +1026,15 @@ namespace System
             protected internal XmlSignificantWhitespace(string strData, System.Xml.XmlDocument doc) : base(default(string), default(System.Xml.XmlDocument)) => throw null;
         }
 
-        // Generated from `System.Xml.XmlSpace` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlSpace
+        // Generated from `System.Xml.XmlSpace` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlSpace : int
         {
-            Default,
-            None,
-            Preserve,
+            Default = 1,
+            None = 0,
+            Preserve = 2,
         }
 
-        // Generated from `System.Xml.XmlText` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlText` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlText : System.Xml.XmlCharacterData
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -1050,7 +1050,7 @@ namespace System
             protected internal XmlText(string strData, System.Xml.XmlDocument doc) : base(default(string), default(System.Xml.XmlDocument)) => throw null;
         }
 
-        // Generated from `System.Xml.XmlTextReader` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlTextReader` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlTextReader : System.Xml.XmlReader, System.Xml.IXmlLineInfo, System.Xml.IXmlNamespaceResolver
         {
             public override int AttributeCount { get => throw null; }
@@ -1130,7 +1130,7 @@ namespace System
             public XmlTextReader(string xmlFragment, System.Xml.XmlNodeType fragType, System.Xml.XmlParserContext context) => throw null;
         }
 
-        // Generated from `System.Xml.XmlTextWriter` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlTextWriter` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlTextWriter : System.Xml.XmlWriter
         {
             public System.IO.Stream BaseStream { get => throw null; }
@@ -1175,25 +1175,25 @@ namespace System
             public XmlTextWriter(string filename, System.Text.Encoding encoding) => throw null;
         }
 
-        // Generated from `System.Xml.XmlTokenizedType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlTokenizedType
+        // Generated from `System.Xml.XmlTokenizedType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlTokenizedType : int
         {
-            CDATA,
-            ENTITIES,
-            ENTITY,
-            ENUMERATION,
-            ID,
-            IDREF,
-            IDREFS,
-            NCName,
-            NMTOKEN,
-            NMTOKENS,
-            NOTATION,
-            None,
-            QName,
+            CDATA = 0,
+            ENTITIES = 5,
+            ENTITY = 4,
+            ENUMERATION = 9,
+            ID = 1,
+            IDREF = 2,
+            IDREFS = 3,
+            NCName = 11,
+            NMTOKEN = 6,
+            NMTOKENS = 7,
+            NOTATION = 8,
+            None = 12,
+            QName = 10,
         }
 
-        // Generated from `System.Xml.XmlUrlResolver` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlUrlResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlUrlResolver : System.Xml.XmlResolver
         {
             public System.Net.Cache.RequestCachePolicy CachePolicy { set => throw null; }
@@ -1205,7 +1205,7 @@ namespace System
             public XmlUrlResolver() => throw null;
         }
 
-        // Generated from `System.Xml.XmlValidatingReader` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlValidatingReader` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlValidatingReader : System.Xml.XmlReader, System.Xml.IXmlLineInfo, System.Xml.IXmlNamespaceResolver
         {
             public override int AttributeCount { get => throw null; }
@@ -1268,7 +1268,7 @@ namespace System
             public XmlValidatingReader(string xmlFragment, System.Xml.XmlNodeType fragType, System.Xml.XmlParserContext context) => throw null;
         }
 
-        // Generated from `System.Xml.XmlWhitespace` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlWhitespace` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlWhitespace : System.Xml.XmlCharacterData
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;
@@ -1283,7 +1283,7 @@ namespace System
             protected internal XmlWhitespace(string strData, System.Xml.XmlDocument doc) : base(default(string), default(System.Xml.XmlDocument)) => throw null;
         }
 
-        // Generated from `System.Xml.XmlWriter` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlWriter` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlWriter : System.IAsyncDisposable, System.IDisposable
         {
             public virtual void Close() => throw null;
@@ -1389,7 +1389,7 @@ namespace System
             protected XmlWriter() => throw null;
         }
 
-        // Generated from `System.Xml.XmlWriterSettings` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlWriterSettings` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlWriterSettings
         {
             public bool Async { get => throw null; set => throw null; }
@@ -1414,17 +1414,17 @@ namespace System
 
         namespace Resolvers
         {
-            // Generated from `System.Xml.Resolvers.XmlKnownDtds` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Resolvers.XmlKnownDtds` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum XmlKnownDtds
+            public enum XmlKnownDtds : int
             {
-                All,
-                None,
-                Rss091,
-                Xhtml10,
+                All = 65535,
+                None = 0,
+                Rss091 = 2,
+                Xhtml10 = 1,
             }
 
-            // Generated from `System.Xml.Resolvers.XmlPreloadedResolver` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Resolvers.XmlPreloadedResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlPreloadedResolver : System.Xml.XmlResolver
             {
                 public void Add(System.Uri uri, System.Byte[] value) => throw null;
@@ -1448,7 +1448,7 @@ namespace System
         }
         namespace Schema
         {
-            // Generated from `System.Xml.Schema.IXmlSchemaInfo` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.IXmlSchemaInfo` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IXmlSchemaInfo
             {
                 bool IsDefault { get; }
@@ -1460,7 +1460,7 @@ namespace System
                 System.Xml.Schema.XmlSchemaValidity Validity { get; }
             }
 
-            // Generated from `System.Xml.Schema.ValidationEventArgs` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.ValidationEventArgs` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ValidationEventArgs : System.EventArgs
             {
                 public System.Xml.Schema.XmlSchemaException Exception { get => throw null; }
@@ -1468,10 +1468,10 @@ namespace System
                 public System.Xml.Schema.XmlSeverityType Severity { get => throw null; }
             }
 
-            // Generated from `System.Xml.Schema.ValidationEventHandler` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.ValidationEventHandler` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void ValidationEventHandler(object sender, System.Xml.Schema.ValidationEventArgs e);
 
-            // Generated from `System.Xml.Schema.XmlAtomicValue` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlAtomicValue` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlAtomicValue : System.Xml.XPath.XPathItem, System.ICloneable
             {
                 public System.Xml.Schema.XmlAtomicValue Clone() => throw null;
@@ -1490,7 +1490,7 @@ namespace System
                 public override System.Xml.Schema.XmlSchemaType XmlType { get => throw null; }
             }
 
-            // Generated from `System.Xml.Schema.XmlSchema` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchema` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchema : System.Xml.Schema.XmlSchemaObject
             {
                 public System.Xml.Schema.XmlSchemaForm AttributeFormDefault { get => throw null; set => throw null; }
@@ -1526,14 +1526,14 @@ namespace System
                 public XmlSchema() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAll` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAll` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAll : System.Xml.Schema.XmlSchemaGroupBase
             {
                 public override System.Xml.Schema.XmlSchemaObjectCollection Items { get => throw null; }
                 public XmlSchemaAll() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAnnotated` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAnnotated` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAnnotated : System.Xml.Schema.XmlSchemaObject
             {
                 public System.Xml.Schema.XmlSchemaAnnotation Annotation { get => throw null; set => throw null; }
@@ -1542,7 +1542,7 @@ namespace System
                 public XmlSchemaAnnotated() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAnnotation` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAnnotation` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAnnotation : System.Xml.Schema.XmlSchemaObject
             {
                 public string Id { get => throw null; set => throw null; }
@@ -1551,7 +1551,7 @@ namespace System
                 public XmlSchemaAnnotation() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAny` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAny` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAny : System.Xml.Schema.XmlSchemaParticle
             {
                 public string Namespace { get => throw null; set => throw null; }
@@ -1559,7 +1559,7 @@ namespace System
                 public XmlSchemaAny() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAnyAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAnyAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAnyAttribute : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public string Namespace { get => throw null; set => throw null; }
@@ -1567,7 +1567,7 @@ namespace System
                 public XmlSchemaAnyAttribute() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAppInfo` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAppInfo` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAppInfo : System.Xml.Schema.XmlSchemaObject
             {
                 public System.Xml.XmlNode[] Markup { get => throw null; set => throw null; }
@@ -1575,7 +1575,7 @@ namespace System
                 public XmlSchemaAppInfo() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAttribute : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public System.Xml.Schema.XmlSchemaSimpleType AttributeSchemaType { get => throw null; }
@@ -1592,7 +1592,7 @@ namespace System
                 public XmlSchemaAttribute() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAttributeGroup` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAttributeGroup` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAttributeGroup : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public System.Xml.Schema.XmlSchemaAnyAttribute AnyAttribute { get => throw null; set => throw null; }
@@ -1603,21 +1603,21 @@ namespace System
                 public XmlSchemaAttributeGroup() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaAttributeGroupRef` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaAttributeGroupRef` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaAttributeGroupRef : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public System.Xml.XmlQualifiedName RefName { get => throw null; set => throw null; }
                 public XmlSchemaAttributeGroupRef() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaChoice` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaChoice` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaChoice : System.Xml.Schema.XmlSchemaGroupBase
             {
                 public override System.Xml.Schema.XmlSchemaObjectCollection Items { get => throw null; }
                 public XmlSchemaChoice() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaCollection` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaCollection` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public System.Xml.Schema.XmlSchema Add(System.Xml.Schema.XmlSchema schema) => throw null;
@@ -1643,7 +1643,7 @@ namespace System
                 public XmlSchemaCollection(System.Xml.XmlNameTable nametable) => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaCollectionEnumerator` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaCollectionEnumerator` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaCollectionEnumerator : System.Collections.IEnumerator
             {
                 public System.Xml.Schema.XmlSchema Current { get => throw null; }
@@ -1653,14 +1653,14 @@ namespace System
                 void System.Collections.IEnumerator.Reset() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaCompilationSettings` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaCompilationSettings` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaCompilationSettings
             {
                 public bool EnableUpaCheck { get => throw null; set => throw null; }
                 public XmlSchemaCompilationSettings() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaComplexContent` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaComplexContent` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaComplexContent : System.Xml.Schema.XmlSchemaContentModel
             {
                 public override System.Xml.Schema.XmlSchemaContent Content { get => throw null; set => throw null; }
@@ -1668,7 +1668,7 @@ namespace System
                 public XmlSchemaComplexContent() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaComplexContentExtension` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaComplexContentExtension` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaComplexContentExtension : System.Xml.Schema.XmlSchemaContent
             {
                 public System.Xml.Schema.XmlSchemaAnyAttribute AnyAttribute { get => throw null; set => throw null; }
@@ -1678,7 +1678,7 @@ namespace System
                 public XmlSchemaComplexContentExtension() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaComplexContentRestriction` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaComplexContentRestriction` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaComplexContentRestriction : System.Xml.Schema.XmlSchemaContent
             {
                 public System.Xml.Schema.XmlSchemaAnyAttribute AnyAttribute { get => throw null; set => throw null; }
@@ -1688,7 +1688,7 @@ namespace System
                 public XmlSchemaComplexContentRestriction() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaComplexType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaComplexType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaComplexType : System.Xml.Schema.XmlSchemaType
             {
                 public System.Xml.Schema.XmlSchemaAnyAttribute AnyAttribute { get => throw null; set => throw null; }
@@ -1706,38 +1706,38 @@ namespace System
                 public XmlSchemaComplexType() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaContent` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaContent` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaContent : System.Xml.Schema.XmlSchemaAnnotated
             {
                 protected XmlSchemaContent() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaContentModel` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaContentModel` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaContentModel : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public abstract System.Xml.Schema.XmlSchemaContent Content { get; set; }
                 protected XmlSchemaContentModel() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaContentProcessing` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaContentProcessing
+            // Generated from `System.Xml.Schema.XmlSchemaContentProcessing` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlSchemaContentProcessing : int
             {
-                Lax,
-                None,
-                Skip,
-                Strict,
+                Lax = 2,
+                None = 0,
+                Skip = 1,
+                Strict = 3,
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaContentType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaContentType
+            // Generated from `System.Xml.Schema.XmlSchemaContentType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlSchemaContentType : int
             {
-                ElementOnly,
-                Empty,
-                Mixed,
-                TextOnly,
+                ElementOnly = 2,
+                Empty = 1,
+                Mixed = 3,
+                TextOnly = 0,
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaDatatype` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaDatatype` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaDatatype
             {
                 public virtual object ChangeType(object value, System.Type targetType) => throw null;
@@ -1750,29 +1750,29 @@ namespace System
                 public virtual System.Xml.Schema.XmlSchemaDatatypeVariety Variety { get => throw null; }
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaDatatypeVariety` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaDatatypeVariety
+            // Generated from `System.Xml.Schema.XmlSchemaDatatypeVariety` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlSchemaDatatypeVariety : int
             {
-                Atomic,
-                List,
-                Union,
+                Atomic = 0,
+                List = 1,
+                Union = 2,
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaDerivationMethod` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaDerivationMethod` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum XmlSchemaDerivationMethod
+            public enum XmlSchemaDerivationMethod : int
             {
-                All,
-                Empty,
-                Extension,
-                List,
-                None,
-                Restriction,
-                Substitution,
-                Union,
+                All = 255,
+                Empty = 0,
+                Extension = 2,
+                List = 8,
+                None = 256,
+                Restriction = 4,
+                Substitution = 1,
+                Union = 16,
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaDocumentation` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaDocumentation` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaDocumentation : System.Xml.Schema.XmlSchemaObject
             {
                 public string Language { get => throw null; set => throw null; }
@@ -1781,7 +1781,7 @@ namespace System
                 public XmlSchemaDocumentation() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaElement` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaElement` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaElement : System.Xml.Schema.XmlSchemaParticle
             {
                 public System.Xml.Schema.XmlSchemaDerivationMethod Block { get => throw null; set => throw null; }
@@ -1805,13 +1805,13 @@ namespace System
                 public XmlSchemaElement() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaEnumerationFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaEnumerationFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaEnumerationFacet : System.Xml.Schema.XmlSchemaFacet
             {
                 public XmlSchemaEnumerationFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaException` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaException` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaException : System.SystemException
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -1827,7 +1827,7 @@ namespace System
                 public XmlSchemaException(string message, System.Exception innerException, int lineNumber, int linePosition) => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaExternal` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaExternal` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaExternal : System.Xml.Schema.XmlSchemaObject
             {
                 public string Id { get => throw null; set => throw null; }
@@ -1837,7 +1837,7 @@ namespace System
                 protected XmlSchemaExternal() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaFacet : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public virtual bool IsFixed { get => throw null; set => throw null; }
@@ -1845,21 +1845,21 @@ namespace System
                 protected XmlSchemaFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaForm` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaForm
+            // Generated from `System.Xml.Schema.XmlSchemaForm` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlSchemaForm : int
             {
-                None,
-                Qualified,
-                Unqualified,
+                None = 0,
+                Qualified = 1,
+                Unqualified = 2,
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaFractionDigitsFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaFractionDigitsFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaFractionDigitsFacet : System.Xml.Schema.XmlSchemaNumericFacet
             {
                 public XmlSchemaFractionDigitsFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaGroup` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaGroup` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaGroup : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public string Name { get => throw null; set => throw null; }
@@ -1868,14 +1868,14 @@ namespace System
                 public XmlSchemaGroup() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaGroupBase` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaGroupBase` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaGroupBase : System.Xml.Schema.XmlSchemaParticle
             {
                 public abstract System.Xml.Schema.XmlSchemaObjectCollection Items { get; }
                 internal XmlSchemaGroupBase() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaGroupRef` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaGroupRef` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaGroupRef : System.Xml.Schema.XmlSchemaParticle
             {
                 public System.Xml.Schema.XmlSchemaGroupBase Particle { get => throw null; }
@@ -1883,7 +1883,7 @@ namespace System
                 public XmlSchemaGroupRef() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaIdentityConstraint` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaIdentityConstraint` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaIdentityConstraint : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public System.Xml.Schema.XmlSchemaObjectCollection Fields { get => throw null; }
@@ -1893,7 +1893,7 @@ namespace System
                 public XmlSchemaIdentityConstraint() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaImport` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaImport` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaImport : System.Xml.Schema.XmlSchemaExternal
             {
                 public System.Xml.Schema.XmlSchemaAnnotation Annotation { get => throw null; set => throw null; }
@@ -1901,21 +1901,21 @@ namespace System
                 public XmlSchemaImport() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaInclude` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaInclude` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaInclude : System.Xml.Schema.XmlSchemaExternal
             {
                 public System.Xml.Schema.XmlSchemaAnnotation Annotation { get => throw null; set => throw null; }
                 public XmlSchemaInclude() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaInference` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaInference` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaInference
             {
-                // Generated from `System.Xml.Schema.XmlSchemaInference+InferenceOption` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum InferenceOption
+                // Generated from `System.Xml.Schema.XmlSchemaInference+InferenceOption` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public enum InferenceOption : int
                 {
-                    Relaxed,
-                    Restricted,
+                    Relaxed = 1,
+                    Restricted = 0,
                 }
 
 
@@ -1926,7 +1926,7 @@ namespace System
                 public XmlSchemaInference() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaInferenceException` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaInferenceException` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaInferenceException : System.Xml.Schema.XmlSchemaException
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -1937,7 +1937,7 @@ namespace System
                 public XmlSchemaInferenceException(string message, System.Exception innerException, int lineNumber, int linePosition) => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaInfo` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaInfo` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaInfo : System.Xml.Schema.IXmlSchemaInfo
             {
                 public System.Xml.Schema.XmlSchemaContentType ContentType { get => throw null; set => throw null; }
@@ -1951,62 +1951,62 @@ namespace System
                 public XmlSchemaInfo() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaKey` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaKey` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaKey : System.Xml.Schema.XmlSchemaIdentityConstraint
             {
                 public XmlSchemaKey() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaKeyref` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaKeyref` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaKeyref : System.Xml.Schema.XmlSchemaIdentityConstraint
             {
                 public System.Xml.XmlQualifiedName Refer { get => throw null; set => throw null; }
                 public XmlSchemaKeyref() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaLengthFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaLengthFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaLengthFacet : System.Xml.Schema.XmlSchemaNumericFacet
             {
                 public XmlSchemaLengthFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaMaxExclusiveFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaMaxExclusiveFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaMaxExclusiveFacet : System.Xml.Schema.XmlSchemaFacet
             {
                 public XmlSchemaMaxExclusiveFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaMaxInclusiveFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaMaxInclusiveFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaMaxInclusiveFacet : System.Xml.Schema.XmlSchemaFacet
             {
                 public XmlSchemaMaxInclusiveFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaMaxLengthFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaMaxLengthFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaMaxLengthFacet : System.Xml.Schema.XmlSchemaNumericFacet
             {
                 public XmlSchemaMaxLengthFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaMinExclusiveFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaMinExclusiveFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaMinExclusiveFacet : System.Xml.Schema.XmlSchemaFacet
             {
                 public XmlSchemaMinExclusiveFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaMinInclusiveFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaMinInclusiveFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaMinInclusiveFacet : System.Xml.Schema.XmlSchemaFacet
             {
                 public XmlSchemaMinInclusiveFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaMinLengthFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaMinLengthFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaMinLengthFacet : System.Xml.Schema.XmlSchemaNumericFacet
             {
                 public XmlSchemaMinLengthFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaNotation` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaNotation` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaNotation : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public string Name { get => throw null; set => throw null; }
@@ -2015,13 +2015,13 @@ namespace System
                 public XmlSchemaNotation() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaNumericFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaNumericFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaNumericFacet : System.Xml.Schema.XmlSchemaFacet
             {
                 protected XmlSchemaNumericFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaObject` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaObject` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaObject
             {
                 public int LineNumber { get => throw null; set => throw null; }
@@ -2032,7 +2032,7 @@ namespace System
                 protected XmlSchemaObject() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaObjectCollection` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaObjectCollection` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaObjectCollection : System.Collections.CollectionBase
             {
                 public int Add(System.Xml.Schema.XmlSchemaObject item) => throw null;
@@ -2051,7 +2051,7 @@ namespace System
                 public XmlSchemaObjectCollection(System.Xml.Schema.XmlSchemaObject parent) => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaObjectEnumerator` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaObjectEnumerator` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaObjectEnumerator : System.Collections.IEnumerator
             {
                 public System.Xml.Schema.XmlSchemaObject Current { get => throw null; }
@@ -2062,7 +2062,7 @@ namespace System
                 void System.Collections.IEnumerator.Reset() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaObjectTable` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaObjectTable` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaObjectTable
             {
                 public bool Contains(System.Xml.XmlQualifiedName name) => throw null;
@@ -2073,7 +2073,7 @@ namespace System
                 public System.Collections.ICollection Values { get => throw null; }
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaParticle` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaParticle` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaParticle : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public System.Decimal MaxOccurs { get => throw null; set => throw null; }
@@ -2083,13 +2083,13 @@ namespace System
                 protected XmlSchemaParticle() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaPatternFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaPatternFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaPatternFacet : System.Xml.Schema.XmlSchemaFacet
             {
                 public XmlSchemaPatternFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaRedefine` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaRedefine` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaRedefine : System.Xml.Schema.XmlSchemaExternal
             {
                 public System.Xml.Schema.XmlSchemaObjectTable AttributeGroups { get => throw null; }
@@ -2099,14 +2099,14 @@ namespace System
                 public XmlSchemaRedefine() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSequence` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSequence` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSequence : System.Xml.Schema.XmlSchemaGroupBase
             {
                 public override System.Xml.Schema.XmlSchemaObjectCollection Items { get => throw null; }
                 public XmlSchemaSequence() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSet
             {
                 public System.Xml.Schema.XmlSchema Add(System.Xml.Schema.XmlSchema schema) => throw null;
@@ -2135,14 +2135,14 @@ namespace System
                 public XmlSchemaSet(System.Xml.XmlNameTable nameTable) => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSimpleContent` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSimpleContent` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSimpleContent : System.Xml.Schema.XmlSchemaContentModel
             {
                 public override System.Xml.Schema.XmlSchemaContent Content { get => throw null; set => throw null; }
                 public XmlSchemaSimpleContent() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSimpleContentExtension` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSimpleContentExtension` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSimpleContentExtension : System.Xml.Schema.XmlSchemaContent
             {
                 public System.Xml.Schema.XmlSchemaAnyAttribute AnyAttribute { get => throw null; set => throw null; }
@@ -2151,7 +2151,7 @@ namespace System
                 public XmlSchemaSimpleContentExtension() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSimpleContentRestriction` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSimpleContentRestriction` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSimpleContentRestriction : System.Xml.Schema.XmlSchemaContent
             {
                 public System.Xml.Schema.XmlSchemaAnyAttribute AnyAttribute { get => throw null; set => throw null; }
@@ -2162,20 +2162,20 @@ namespace System
                 public XmlSchemaSimpleContentRestriction() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSimpleType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSimpleType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSimpleType : System.Xml.Schema.XmlSchemaType
             {
                 public System.Xml.Schema.XmlSchemaSimpleTypeContent Content { get => throw null; set => throw null; }
                 public XmlSchemaSimpleType() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSimpleTypeContent` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSimpleTypeContent` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlSchemaSimpleTypeContent : System.Xml.Schema.XmlSchemaAnnotated
             {
                 protected XmlSchemaSimpleTypeContent() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSimpleTypeList` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSimpleTypeList` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSimpleTypeList : System.Xml.Schema.XmlSchemaSimpleTypeContent
             {
                 public System.Xml.Schema.XmlSchemaSimpleType BaseItemType { get => throw null; set => throw null; }
@@ -2184,7 +2184,7 @@ namespace System
                 public XmlSchemaSimpleTypeList() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSimpleTypeRestriction` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSimpleTypeRestriction` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSimpleTypeRestriction : System.Xml.Schema.XmlSchemaSimpleTypeContent
             {
                 public System.Xml.Schema.XmlSchemaSimpleType BaseType { get => throw null; set => throw null; }
@@ -2193,7 +2193,7 @@ namespace System
                 public XmlSchemaSimpleTypeRestriction() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaSimpleTypeUnion` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaSimpleTypeUnion` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaSimpleTypeUnion : System.Xml.Schema.XmlSchemaSimpleTypeContent
             {
                 public System.Xml.Schema.XmlSchemaSimpleType[] BaseMemberTypes { get => throw null; }
@@ -2202,13 +2202,13 @@ namespace System
                 public XmlSchemaSimpleTypeUnion() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaTotalDigitsFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaTotalDigitsFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaTotalDigitsFacet : System.Xml.Schema.XmlSchemaNumericFacet
             {
                 public XmlSchemaTotalDigitsFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaType : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public object BaseSchemaType { get => throw null; }
@@ -2229,22 +2229,22 @@ namespace System
                 public XmlSchemaType() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaUnique` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaUnique` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaUnique : System.Xml.Schema.XmlSchemaIdentityConstraint
             {
                 public XmlSchemaUnique() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaUse` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaUse
+            // Generated from `System.Xml.Schema.XmlSchemaUse` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlSchemaUse : int
             {
-                None,
-                Optional,
-                Prohibited,
-                Required,
+                None = 0,
+                Optional = 1,
+                Prohibited = 2,
+                Required = 3,
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaValidationException` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaValidationException` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaValidationException : System.Xml.Schema.XmlSchemaException
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -2257,19 +2257,19 @@ namespace System
                 public XmlSchemaValidationException(string message, System.Exception innerException, int lineNumber, int linePosition) => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaValidationFlags` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaValidationFlags` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum XmlSchemaValidationFlags
+            public enum XmlSchemaValidationFlags : int
             {
-                AllowXmlAttributes,
-                None,
-                ProcessIdentityConstraints,
-                ProcessInlineSchema,
-                ProcessSchemaLocation,
-                ReportValidationWarnings,
+                AllowXmlAttributes = 16,
+                None = 0,
+                ProcessIdentityConstraints = 8,
+                ProcessInlineSchema = 1,
+                ProcessSchemaLocation = 2,
+                ReportValidationWarnings = 4,
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaValidator` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaValidator` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaValidator
             {
                 public void AddSchema(System.Xml.Schema.XmlSchema schema) => throw null;
@@ -2299,101 +2299,101 @@ namespace System
                 public XmlSchemaValidator(System.Xml.XmlNameTable nameTable, System.Xml.Schema.XmlSchemaSet schemas, System.Xml.IXmlNamespaceResolver namespaceResolver, System.Xml.Schema.XmlSchemaValidationFlags validationFlags) => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaValidity` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaValidity
+            // Generated from `System.Xml.Schema.XmlSchemaValidity` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlSchemaValidity : int
             {
-                Invalid,
-                NotKnown,
-                Valid,
+                Invalid = 2,
+                NotKnown = 0,
+                Valid = 1,
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaWhiteSpaceFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaWhiteSpaceFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaWhiteSpaceFacet : System.Xml.Schema.XmlSchemaFacet
             {
                 public XmlSchemaWhiteSpaceFacet() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSchemaXPath` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlSchemaXPath` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaXPath : System.Xml.Schema.XmlSchemaAnnotated
             {
                 public string XPath { get => throw null; set => throw null; }
                 public XmlSchemaXPath() => throw null;
             }
 
-            // Generated from `System.Xml.Schema.XmlSeverityType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSeverityType
+            // Generated from `System.Xml.Schema.XmlSeverityType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlSeverityType : int
             {
-                Error,
-                Warning,
+                Error = 0,
+                Warning = 1,
             }
 
-            // Generated from `System.Xml.Schema.XmlTypeCode` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlTypeCode
+            // Generated from `System.Xml.Schema.XmlTypeCode` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlTypeCode : int
             {
-                AnyAtomicType,
-                AnyUri,
-                Attribute,
-                Base64Binary,
-                Boolean,
-                Byte,
-                Comment,
-                Date,
-                DateTime,
-                DayTimeDuration,
-                Decimal,
-                Document,
-                Double,
-                Duration,
-                Element,
-                Entity,
-                Float,
-                GDay,
-                GMonth,
-                GMonthDay,
-                GYear,
-                GYearMonth,
-                HexBinary,
-                Id,
-                Idref,
-                Int,
-                Integer,
-                Item,
-                Language,
-                Long,
-                NCName,
-                Name,
-                Namespace,
-                NegativeInteger,
-                NmToken,
-                Node,
-                NonNegativeInteger,
-                NonPositiveInteger,
-                None,
-                NormalizedString,
-                Notation,
-                PositiveInteger,
-                ProcessingInstruction,
-                QName,
-                Short,
-                String,
-                Text,
-                Time,
-                Token,
-                UnsignedByte,
-                UnsignedInt,
-                UnsignedLong,
-                UnsignedShort,
-                UntypedAtomic,
-                YearMonthDuration,
+                AnyAtomicType = 10,
+                AnyUri = 28,
+                Attribute = 5,
+                Base64Binary = 27,
+                Boolean = 13,
+                Byte = 46,
+                Comment = 8,
+                Date = 20,
+                DateTime = 18,
+                DayTimeDuration = 54,
+                Decimal = 14,
+                Document = 3,
+                Double = 16,
+                Duration = 17,
+                Element = 4,
+                Entity = 39,
+                Float = 15,
+                GDay = 24,
+                GMonth = 25,
+                GMonthDay = 23,
+                GYear = 22,
+                GYearMonth = 21,
+                HexBinary = 26,
+                Id = 37,
+                Idref = 38,
+                Int = 44,
+                Integer = 40,
+                Item = 1,
+                Language = 33,
+                Long = 43,
+                NCName = 36,
+                Name = 35,
+                Namespace = 6,
+                NegativeInteger = 42,
+                NmToken = 34,
+                Node = 2,
+                NonNegativeInteger = 47,
+                NonPositiveInteger = 41,
+                None = 0,
+                NormalizedString = 31,
+                Notation = 30,
+                PositiveInteger = 52,
+                ProcessingInstruction = 7,
+                QName = 29,
+                Short = 45,
+                String = 12,
+                Text = 9,
+                Time = 19,
+                Token = 32,
+                UnsignedByte = 51,
+                UnsignedInt = 49,
+                UnsignedLong = 48,
+                UnsignedShort = 50,
+                UntypedAtomic = 11,
+                YearMonthDuration = 53,
             }
 
-            // Generated from `System.Xml.Schema.XmlValueGetter` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Schema.XmlValueGetter` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate object XmlValueGetter();
 
         }
         namespace Serialization
         {
-            // Generated from `System.Xml.Serialization.IXmlSerializable` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.IXmlSerializable` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IXmlSerializable
             {
                 System.Xml.Schema.XmlSchema GetSchema();
@@ -2401,13 +2401,13 @@ namespace System
                 void WriteXml(System.Xml.XmlWriter writer);
             }
 
-            // Generated from `System.Xml.Serialization.XmlAnyAttributeAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlAnyAttributeAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlAnyAttributeAttribute : System.Attribute
             {
                 public XmlAnyAttributeAttribute() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlAnyElementAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlAnyElementAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlAnyElementAttribute : System.Attribute
             {
                 public string Name { get => throw null; set => throw null; }
@@ -2418,7 +2418,7 @@ namespace System
                 public XmlAnyElementAttribute(string name, string ns) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlAttributeAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlAttributeAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlAttributeAttribute : System.Attribute
             {
                 public string AttributeName { get => throw null; set => throw null; }
@@ -2432,7 +2432,7 @@ namespace System
                 public XmlAttributeAttribute(string attributeName, System.Type type) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlElementAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlElementAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlElementAttribute : System.Attribute
             {
                 public string DataType { get => throw null; set => throw null; }
@@ -2448,7 +2448,7 @@ namespace System
                 public XmlElementAttribute(string elementName, System.Type type) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlEnumAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlEnumAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlEnumAttribute : System.Attribute
             {
                 public string Name { get => throw null; set => throw null; }
@@ -2456,19 +2456,19 @@ namespace System
                 public XmlEnumAttribute(string name) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlIgnoreAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlIgnoreAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlIgnoreAttribute : System.Attribute
             {
                 public XmlIgnoreAttribute() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlNamespaceDeclarationsAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlNamespaceDeclarationsAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlNamespaceDeclarationsAttribute : System.Attribute
             {
                 public XmlNamespaceDeclarationsAttribute() => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlRootAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlRootAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlRootAttribute : System.Attribute
             {
                 public string DataType { get => throw null; set => throw null; }
@@ -2479,7 +2479,7 @@ namespace System
                 public XmlRootAttribute(string elementName) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSchemaProviderAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlSchemaProviderAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSchemaProviderAttribute : System.Attribute
             {
                 public bool IsAny { get => throw null; set => throw null; }
@@ -2487,7 +2487,7 @@ namespace System
                 public XmlSchemaProviderAttribute(string methodName) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlSerializerNamespaces` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlSerializerNamespaces` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlSerializerNamespaces
             {
                 public void Add(string prefix, string ns) => throw null;
@@ -2498,7 +2498,7 @@ namespace System
                 public XmlSerializerNamespaces(System.Xml.Serialization.XmlSerializerNamespaces namespaces) => throw null;
             }
 
-            // Generated from `System.Xml.Serialization.XmlTextAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Serialization.XmlTextAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XmlTextAttribute : System.Attribute
             {
                 public string DataType { get => throw null; set => throw null; }
@@ -2510,13 +2510,13 @@ namespace System
         }
         namespace XPath
         {
-            // Generated from `System.Xml.XPath.IXPathNavigable` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.XPath.IXPathNavigable` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IXPathNavigable
             {
                 System.Xml.XPath.XPathNavigator CreateNavigator();
             }
 
-            // Generated from `System.Xml.XPath.XPathExpression` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.XPath.XPathExpression` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XPathExpression
             {
                 public abstract void AddSort(object expr, System.Collections.IComparer comparer);
@@ -2530,7 +2530,7 @@ namespace System
                 public abstract void SetContext(System.Xml.XmlNamespaceManager nsManager);
             }
 
-            // Generated from `System.Xml.XPath.XPathItem` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.XPath.XPathItem` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XPathItem
             {
                 public abstract bool IsNode { get; }
@@ -2548,15 +2548,15 @@ namespace System
                 public abstract System.Xml.Schema.XmlSchemaType XmlType { get; }
             }
 
-            // Generated from `System.Xml.XPath.XPathNamespaceScope` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XPathNamespaceScope
+            // Generated from `System.Xml.XPath.XPathNamespaceScope` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XPathNamespaceScope : int
             {
-                All,
-                ExcludeXml,
-                Local,
+                All = 0,
+                ExcludeXml = 1,
+                Local = 2,
             }
 
-            // Generated from `System.Xml.XPath.XPathNavigator` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.XPath.XPathNavigator` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XPathNavigator : System.Xml.XPath.XPathItem, System.ICloneable, System.Xml.IXmlNamespaceResolver, System.Xml.XPath.IXPathNavigable
             {
                 public virtual System.Xml.XmlWriter AppendChild() => throw null;
@@ -2677,7 +2677,7 @@ namespace System
                 public override System.Xml.Schema.XmlSchemaType XmlType { get => throw null; }
             }
 
-            // Generated from `System.Xml.XPath.XPathNodeIterator` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.XPath.XPathNodeIterator` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XPathNodeIterator : System.Collections.IEnumerable, System.ICloneable
             {
                 public abstract System.Xml.XPath.XPathNodeIterator Clone();
@@ -2690,59 +2690,59 @@ namespace System
                 protected XPathNodeIterator() => throw null;
             }
 
-            // Generated from `System.Xml.XPath.XPathNodeType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XPathNodeType
+            // Generated from `System.Xml.XPath.XPathNodeType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XPathNodeType : int
             {
-                All,
-                Attribute,
-                Comment,
-                Element,
-                Namespace,
-                ProcessingInstruction,
-                Root,
-                SignificantWhitespace,
-                Text,
-                Whitespace,
+                All = 9,
+                Attribute = 2,
+                Comment = 8,
+                Element = 1,
+                Namespace = 3,
+                ProcessingInstruction = 7,
+                Root = 0,
+                SignificantWhitespace = 5,
+                Text = 4,
+                Whitespace = 6,
             }
 
-            // Generated from `System.Xml.XPath.XPathResultType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XPathResultType
+            // Generated from `System.Xml.XPath.XPathResultType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XPathResultType : int
             {
-                Any,
-                Boolean,
-                Error,
-                Navigator,
-                NodeSet,
-                Number,
-                String,
+                Any = 5,
+                Boolean = 2,
+                Error = 6,
+                Navigator = 1,
+                NodeSet = 3,
+                Number = 0,
+                String = 1,
             }
 
-            // Generated from `System.Xml.XPath.XmlCaseOrder` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlCaseOrder
+            // Generated from `System.Xml.XPath.XmlCaseOrder` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlCaseOrder : int
             {
-                LowerFirst,
-                None,
-                UpperFirst,
+                LowerFirst = 2,
+                None = 0,
+                UpperFirst = 1,
             }
 
-            // Generated from `System.Xml.XPath.XmlDataType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlDataType
+            // Generated from `System.Xml.XPath.XmlDataType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlDataType : int
             {
-                Number,
-                Text,
+                Number = 2,
+                Text = 1,
             }
 
-            // Generated from `System.Xml.XPath.XmlSortOrder` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSortOrder
+            // Generated from `System.Xml.XPath.XmlSortOrder` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum XmlSortOrder : int
             {
-                Ascending,
-                Descending,
+                Ascending = 1,
+                Descending = 2,
             }
 
         }
         namespace Xsl
         {
-            // Generated from `System.Xml.Xsl.IXsltContextFunction` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.IXsltContextFunction` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IXsltContextFunction
             {
                 System.Xml.XPath.XPathResultType[] ArgTypes { get; }
@@ -2752,7 +2752,7 @@ namespace System
                 System.Xml.XPath.XPathResultType ReturnType { get; }
             }
 
-            // Generated from `System.Xml.Xsl.IXsltContextVariable` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.IXsltContextVariable` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IXsltContextVariable
             {
                 object Evaluate(System.Xml.Xsl.XsltContext xsltContext);
@@ -2761,7 +2761,7 @@ namespace System
                 System.Xml.XPath.XPathResultType VariableType { get; }
             }
 
-            // Generated from `System.Xml.Xsl.XslCompiledTransform` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XslCompiledTransform` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XslCompiledTransform
             {
                 public void Load(System.Xml.XPath.IXPathNavigable stylesheet) => throw null;
@@ -2792,7 +2792,7 @@ namespace System
                 public XslCompiledTransform(bool enableDebug) => throw null;
             }
 
-            // Generated from `System.Xml.Xsl.XslTransform` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XslTransform` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XslTransform
             {
                 public void Load(System.Xml.XPath.IXPathNavigable stylesheet) => throw null;
@@ -2825,7 +2825,7 @@ namespace System
                 public XslTransform() => throw null;
             }
 
-            // Generated from `System.Xml.Xsl.XsltArgumentList` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XsltArgumentList` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XsltArgumentList
             {
                 public void AddExtensionObject(string namespaceUri, object extension) => throw null;
@@ -2839,7 +2839,7 @@ namespace System
                 public event System.Xml.Xsl.XsltMessageEncounteredEventHandler XsltMessageEncountered;
             }
 
-            // Generated from `System.Xml.Xsl.XsltCompileException` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XsltCompileException` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XsltCompileException : System.Xml.Xsl.XsltException
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -2850,7 +2850,7 @@ namespace System
                 public XsltCompileException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Xml.Xsl.XsltContext` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XsltContext` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XsltContext : System.Xml.XmlNamespaceManager
             {
                 public abstract int CompareDocument(string baseUri, string nextbaseUri);
@@ -2862,7 +2862,7 @@ namespace System
                 protected XsltContext(System.Xml.NameTable table) : base(default(System.Xml.XmlNameTable)) => throw null;
             }
 
-            // Generated from `System.Xml.Xsl.XsltException` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XsltException` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XsltException : System.SystemException
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -2876,17 +2876,17 @@ namespace System
                 public XsltException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Xml.Xsl.XsltMessageEncounteredEventArgs` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XsltMessageEncounteredEventArgs` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XsltMessageEncounteredEventArgs : System.EventArgs
             {
                 public abstract string Message { get; }
                 protected XsltMessageEncounteredEventArgs() => throw null;
             }
 
-            // Generated from `System.Xml.Xsl.XsltMessageEncounteredEventHandler` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XsltMessageEncounteredEventHandler` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void XsltMessageEncounteredEventHandler(object sender, System.Xml.Xsl.XsltMessageEncounteredEventArgs e);
 
-            // Generated from `System.Xml.Xsl.XsltSettings` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Xml.Xsl.XsltSettings` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XsltSettings
             {
                 public static System.Xml.Xsl.XsltSettings Default { get => throw null; }

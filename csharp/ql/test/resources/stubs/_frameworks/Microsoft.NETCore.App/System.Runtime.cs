@@ -6,46 +6,49 @@ namespace Microsoft
     {
         namespace SafeHandles
         {
-            // Generated from `Microsoft.Win32.SafeHandles.CriticalHandleMinusOneIsInvalid` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.Win32.SafeHandles.CriticalHandleMinusOneIsInvalid` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CriticalHandleMinusOneIsInvalid : System.Runtime.InteropServices.CriticalHandle
             {
                 protected CriticalHandleMinusOneIsInvalid() : base(default(System.IntPtr)) => throw null;
                 public override bool IsInvalid { get => throw null; }
             }
 
-            // Generated from `Microsoft.Win32.SafeHandles.CriticalHandleZeroOrMinusOneIsInvalid` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.Win32.SafeHandles.CriticalHandleZeroOrMinusOneIsInvalid` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CriticalHandleZeroOrMinusOneIsInvalid : System.Runtime.InteropServices.CriticalHandle
             {
                 protected CriticalHandleZeroOrMinusOneIsInvalid() : base(default(System.IntPtr)) => throw null;
                 public override bool IsInvalid { get => throw null; }
             }
 
-            // Generated from `Microsoft.Win32.SafeHandles.SafeFileHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.Win32.SafeHandles.SafeFileHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeFileHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
             {
+                public bool IsAsync { get => throw null; }
                 public override bool IsInvalid { get => throw null; }
                 protected override bool ReleaseHandle() => throw null;
+                public SafeFileHandle() : base(default(bool)) => throw null;
                 public SafeFileHandle(System.IntPtr preexistingHandle, bool ownsHandle) : base(default(bool)) => throw null;
             }
 
-            // Generated from `Microsoft.Win32.SafeHandles.SafeHandleMinusOneIsInvalid` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.Win32.SafeHandles.SafeHandleMinusOneIsInvalid` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SafeHandleMinusOneIsInvalid : System.Runtime.InteropServices.SafeHandle
             {
                 public override bool IsInvalid { get => throw null; }
                 protected SafeHandleMinusOneIsInvalid(bool ownsHandle) : base(default(System.IntPtr), default(bool)) => throw null;
             }
 
-            // Generated from `Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SafeHandleZeroOrMinusOneIsInvalid : System.Runtime.InteropServices.SafeHandle
             {
                 public override bool IsInvalid { get => throw null; }
                 protected SafeHandleZeroOrMinusOneIsInvalid(bool ownsHandle) : base(default(System.IntPtr), default(bool)) => throw null;
             }
 
-            // Generated from `Microsoft.Win32.SafeHandles.SafeWaitHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.Win32.SafeHandles.SafeWaitHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeWaitHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
             {
                 protected override bool ReleaseHandle() => throw null;
+                public SafeWaitHandle() : base(default(bool)) => throw null;
                 public SafeWaitHandle(System.IntPtr existingHandle, bool ownsHandle) : base(default(bool)) => throw null;
             }
 
@@ -54,7 +57,7 @@ namespace Microsoft
 }
 namespace System
 {
-    // Generated from `System.AccessViolationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AccessViolationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AccessViolationException : System.SystemException
     {
         public AccessViolationException() => throw null;
@@ -63,58 +66,58 @@ namespace System
         public AccessViolationException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.Action` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action();
 
-    // Generated from `System.Action<,,,,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16);
 
-    // Generated from `System.Action<,,,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15);
 
-    // Generated from `System.Action<,,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14);
 
-    // Generated from `System.Action<,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13);
 
-    // Generated from `System.Action<,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12);
 
-    // Generated from `System.Action<,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11);
 
-    // Generated from `System.Action<,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10);
 
-    // Generated from `System.Action<,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9);
 
-    // Generated from `System.Action<,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7, T8>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8);
 
-    // Generated from `System.Action<,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6, T7>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
 
-    // Generated from `System.Action<,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5, T6>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
 
-    // Generated from `System.Action<,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
 
-    // Generated from `System.Action<,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
 
-    // Generated from `System.Action<,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3);
 
-    // Generated from `System.Action<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T1, T2>(T1 arg1, T2 arg2);
 
-    // Generated from `System.Action<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Action<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void Action<T>(T obj);
 
-    // Generated from `System.Activator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Activator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Activator
     {
         public static object CreateInstance(System.Type type) => throw null;
@@ -132,7 +135,7 @@ namespace System
         public static System.Runtime.Remoting.ObjectHandle CreateInstanceFrom(string assemblyFile, string typeName, bool ignoreCase, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, object[] args, System.Globalization.CultureInfo culture, object[] activationAttributes) => throw null;
     }
 
-    // Generated from `System.AggregateException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AggregateException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AggregateException : System.Exception
     {
         public AggregateException() => throw null;
@@ -152,7 +155,7 @@ namespace System
         public override string ToString() => throw null;
     }
 
-    // Generated from `System.AppContext` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AppContext` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class AppContext
     {
         public static string BaseDirectory { get => throw null; }
@@ -162,7 +165,7 @@ namespace System
         public static bool TryGetSwitch(string switchName, out bool isEnabled) => throw null;
     }
 
-    // Generated from `System.AppDomain` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AppDomain` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AppDomain : System.MarshalByRefObject
     {
         public void AppendPrivatePath(string path) => throw null;
@@ -235,14 +238,14 @@ namespace System
         public static void Unload(System.AppDomain domain) => throw null;
     }
 
-    // Generated from `System.AppDomainSetup` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AppDomainSetup` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AppDomainSetup
     {
         public string ApplicationBase { get => throw null; }
         public string TargetFrameworkName { get => throw null; }
     }
 
-    // Generated from `System.AppDomainUnloadedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AppDomainUnloadedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AppDomainUnloadedException : System.SystemException
     {
         public AppDomainUnloadedException() => throw null;
@@ -251,7 +254,7 @@ namespace System
         public AppDomainUnloadedException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.ApplicationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ApplicationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ApplicationException : System.Exception
     {
         public ApplicationException() => throw null;
@@ -260,7 +263,7 @@ namespace System
         public ApplicationException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.ApplicationId` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ApplicationId` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ApplicationId
     {
         public ApplicationId(System.Byte[] publicKeyToken, string name, System.Version version, string processorArchitecture, string culture) => throw null;
@@ -275,7 +278,7 @@ namespace System
         public System.Version Version { get => throw null; }
     }
 
-    // Generated from `System.ArgIterator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ArgIterator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ArgIterator
     {
         // Stub generator skipped constructor 
@@ -290,7 +293,7 @@ namespace System
         public int GetRemainingCount() => throw null;
     }
 
-    // Generated from `System.ArgumentException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ArgumentException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArgumentException : System.SystemException
     {
         public ArgumentException() => throw null;
@@ -304,7 +307,7 @@ namespace System
         public virtual string ParamName { get => throw null; }
     }
 
-    // Generated from `System.ArgumentNullException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ArgumentNullException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArgumentNullException : System.ArgumentException
     {
         public ArgumentNullException() => throw null;
@@ -312,9 +315,10 @@ namespace System
         public ArgumentNullException(string paramName) => throw null;
         public ArgumentNullException(string message, System.Exception innerException) => throw null;
         public ArgumentNullException(string paramName, string message) => throw null;
+        public static void ThrowIfNull(object argument, string paramName = default(string)) => throw null;
     }
 
-    // Generated from `System.ArgumentOutOfRangeException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ArgumentOutOfRangeException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArgumentOutOfRangeException : System.ArgumentException
     {
         public virtual object ActualValue { get => throw null; }
@@ -328,7 +332,7 @@ namespace System
         public override string Message { get => throw null; }
     }
 
-    // Generated from `System.ArithmeticException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ArithmeticException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArithmeticException : System.SystemException
     {
         public ArithmeticException() => throw null;
@@ -337,7 +341,7 @@ namespace System
         public ArithmeticException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.Array` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Array` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class Array : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.ICloneable
     {
         int System.Collections.IList.Add(object value) => throw null;
@@ -351,6 +355,7 @@ namespace System
         public static int BinarySearch<T>(T[] array, int index, int length, T value) => throw null;
         public static int BinarySearch<T>(T[] array, int index, int length, T value, System.Collections.Generic.IComparer<T> comparer) => throw null;
         void System.Collections.IList.Clear() => throw null;
+        public static void Clear(System.Array array) => throw null;
         public static void Clear(System.Array array, int index, int length) => throw null;
         public object Clone() => throw null;
         int System.Collections.IStructuralComparable.CompareTo(object other, System.Collections.IComparer comparer) => throw null;
@@ -420,6 +425,7 @@ namespace System
         public static int LastIndexOf<T>(T[] array, T value, int startIndex, int count) => throw null;
         public int Length { get => throw null; }
         public System.Int64 LongLength { get => throw null; }
+        public static int MaxLength { get => throw null; }
         public int Rank { get => throw null; }
         void System.Collections.IList.Remove(object value) => throw null;
         void System.Collections.IList.RemoveAt(int index) => throw null;
@@ -457,10 +463,10 @@ namespace System
         public static bool TrueForAll<T>(T[] array, System.Predicate<T> match) => throw null;
     }
 
-    // Generated from `System.ArraySegment<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ArraySegment<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ArraySegment<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.IEnumerable
     {
-        // Generated from `System.ArraySegment<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ArraySegment<>+Enumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
         {
             public T Current { get => throw null; }
@@ -507,7 +513,7 @@ namespace System
         public static implicit operator System.ArraySegment<T>(T[] array) => throw null;
     }
 
-    // Generated from `System.ArrayTypeMismatchException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ArrayTypeMismatchException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ArrayTypeMismatchException : System.SystemException
     {
         public ArrayTypeMismatchException() => throw null;
@@ -516,20 +522,20 @@ namespace System
         public ArrayTypeMismatchException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.AssemblyLoadEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AssemblyLoadEventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AssemblyLoadEventArgs : System.EventArgs
     {
         public AssemblyLoadEventArgs(System.Reflection.Assembly loadedAssembly) => throw null;
         public System.Reflection.Assembly LoadedAssembly { get => throw null; }
     }
 
-    // Generated from `System.AssemblyLoadEventHandler` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AssemblyLoadEventHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void AssemblyLoadEventHandler(object sender, System.AssemblyLoadEventArgs args);
 
-    // Generated from `System.AsyncCallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AsyncCallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void AsyncCallback(System.IAsyncResult ar);
 
-    // Generated from `System.Attribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Attribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class Attribute
     {
         protected Attribute() => throw null;
@@ -547,8 +553,8 @@ namespace System
         public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element, System.Type attributeType, bool inherit) => throw null;
         public static System.Attribute[] GetCustomAttributes(System.Reflection.Assembly element, bool inherit) => throw null;
         public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, System.Type type) => throw null;
-        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, System.Type type, bool inherit) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, System.Type attributeType) => throw null;
+        public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, System.Type attributeType, bool inherit) => throw null;
         public static System.Attribute[] GetCustomAttributes(System.Reflection.MemberInfo element, bool inherit) => throw null;
         public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element) => throw null;
         public static System.Attribute[] GetCustomAttributes(System.Reflection.Module element, System.Type attributeType) => throw null;
@@ -572,29 +578,29 @@ namespace System
         public virtual object TypeId { get => throw null; }
     }
 
-    // Generated from `System.AttributeTargets` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AttributeTargets` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum AttributeTargets
+    public enum AttributeTargets : int
     {
-        All,
-        Assembly,
-        Class,
-        Constructor,
-        Delegate,
-        Enum,
-        Event,
-        Field,
-        GenericParameter,
-        Interface,
-        Method,
-        Module,
-        Parameter,
-        Property,
-        ReturnValue,
-        Struct,
+        All = 32767,
+        Assembly = 1,
+        Class = 4,
+        Constructor = 32,
+        Delegate = 4096,
+        Enum = 16,
+        Event = 512,
+        Field = 256,
+        GenericParameter = 16384,
+        Interface = 1024,
+        Method = 64,
+        Module = 2,
+        Parameter = 2048,
+        Property = 128,
+        ReturnValue = 8192,
+        Struct = 8,
     }
 
-    // Generated from `System.AttributeUsageAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.AttributeUsageAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class AttributeUsageAttribute : System.Attribute
     {
         public bool AllowMultiple { get => throw null; set => throw null; }
@@ -603,7 +609,7 @@ namespace System
         public System.AttributeTargets ValidOn { get => throw null; }
     }
 
-    // Generated from `System.BadImageFormatException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.BadImageFormatException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class BadImageFormatException : System.SystemException
     {
         public BadImageFormatException() => throw null;
@@ -619,18 +625,20 @@ namespace System
         public override string ToString() => throw null;
     }
 
-    // Generated from `System.Base64FormattingOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Base64FormattingOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum Base64FormattingOptions
+    public enum Base64FormattingOptions : int
     {
-        InsertLineBreaks,
-        None,
+        InsertLineBreaks = 1,
+        None = 0,
     }
 
-    // Generated from `System.BitConverter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.BitConverter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class BitConverter
     {
         public static System.Int64 DoubleToInt64Bits(double value) => throw null;
+        public static System.UInt64 DoubleToUInt64Bits(double value) => throw null;
+        public static System.Byte[] GetBytes(System.Half value) => throw null;
         public static System.Byte[] GetBytes(bool value) => throw null;
         public static System.Byte[] GetBytes(System.Char value) => throw null;
         public static System.Byte[] GetBytes(double value) => throw null;
@@ -641,16 +649,22 @@ namespace System
         public static System.Byte[] GetBytes(System.UInt32 value) => throw null;
         public static System.Byte[] GetBytes(System.UInt64 value) => throw null;
         public static System.Byte[] GetBytes(System.UInt16 value) => throw null;
+        public static System.Int16 HalfToInt16Bits(System.Half value) => throw null;
+        public static System.UInt16 HalfToUInt16Bits(System.Half value) => throw null;
+        public static System.Half Int16BitsToHalf(System.Int16 value) => throw null;
         public static float Int32BitsToSingle(int value) => throw null;
         public static double Int64BitsToDouble(System.Int64 value) => throw null;
         public static bool IsLittleEndian;
         public static int SingleToInt32Bits(float value) => throw null;
+        public static System.UInt32 SingleToUInt32Bits(float value) => throw null;
         public static bool ToBoolean(System.Byte[] value, int startIndex) => throw null;
         public static bool ToBoolean(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static System.Char ToChar(System.Byte[] value, int startIndex) => throw null;
         public static System.Char ToChar(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static double ToDouble(System.Byte[] value, int startIndex) => throw null;
         public static double ToDouble(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static System.Half ToHalf(System.Byte[] value, int startIndex) => throw null;
+        public static System.Half ToHalf(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static System.Int16 ToInt16(System.Byte[] value, int startIndex) => throw null;
         public static System.Int16 ToInt16(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static int ToInt32(System.Byte[] value, int startIndex) => throw null;
@@ -668,6 +682,7 @@ namespace System
         public static System.UInt32 ToUInt32(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static System.UInt64 ToUInt64(System.Byte[] value, int startIndex) => throw null;
         public static System.UInt64 ToUInt64(System.ReadOnlySpan<System.Byte> value) => throw null;
+        public static bool TryWriteBytes(System.Span<System.Byte> destination, System.Half value) => throw null;
         public static bool TryWriteBytes(System.Span<System.Byte> destination, bool value) => throw null;
         public static bool TryWriteBytes(System.Span<System.Byte> destination, System.Char value) => throw null;
         public static bool TryWriteBytes(System.Span<System.Byte> destination, double value) => throw null;
@@ -678,9 +693,12 @@ namespace System
         public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt32 value) => throw null;
         public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt64 value) => throw null;
         public static bool TryWriteBytes(System.Span<System.Byte> destination, System.UInt16 value) => throw null;
+        public static System.Half UInt16BitsToHalf(System.UInt16 value) => throw null;
+        public static float UInt32BitsToSingle(System.UInt32 value) => throw null;
+        public static double UInt64BitsToDouble(System.UInt64 value) => throw null;
     }
 
-    // Generated from `System.Boolean` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Boolean` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct Boolean : System.IComparable, System.IComparable<bool>, System.IConvertible, System.IEquatable<bool>
     {
         // Stub generator skipped constructor 
@@ -716,7 +734,7 @@ namespace System
         public static bool TryParse(string value, out bool result) => throw null;
     }
 
-    // Generated from `System.Buffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Buffer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Buffer
     {
         public static void BlockCopy(System.Array src, int srcOffset, System.Array dst, int dstOffset, int count) => throw null;
@@ -727,8 +745,8 @@ namespace System
         public static void SetByte(System.Array array, int index, System.Byte value) => throw null;
     }
 
-    // Generated from `System.Byte` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Byte : System.IComparable, System.IComparable<System.Byte>, System.IConvertible, System.IEquatable<System.Byte>, System.IFormattable
+    // Generated from `System.Byte` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Byte : System.IComparable, System.IComparable<System.Byte>, System.IConvertible, System.IEquatable<System.Byte>, System.IFormattable, System.ISpanFormattable
     {
         // Stub generator skipped constructor 
         public int CompareTo(System.Byte value) => throw null;
@@ -770,14 +788,14 @@ namespace System
         public static bool TryParse(string s, out System.Byte result) => throw null;
     }
 
-    // Generated from `System.CLSCompliantAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.CLSCompliantAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class CLSCompliantAttribute : System.Attribute
     {
         public CLSCompliantAttribute(bool isCompliant) => throw null;
         public bool IsCompliant { get => throw null; }
     }
 
-    // Generated from `System.CannotUnloadAppDomainException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.CannotUnloadAppDomainException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class CannotUnloadAppDomainException : System.SystemException
     {
         public CannotUnloadAppDomainException() => throw null;
@@ -786,8 +804,8 @@ namespace System
         public CannotUnloadAppDomainException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.Char` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Char : System.IComparable, System.IComparable<System.Char>, System.IConvertible, System.IEquatable<System.Char>
+    // Generated from `System.Char` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Char : System.IComparable, System.IComparable<System.Char>, System.IConvertible, System.IEquatable<System.Char>, System.IFormattable, System.ISpanFormattable
     {
         // Stub generator skipped constructor 
         public int CompareTo(System.Char value) => throw null;
@@ -803,6 +821,7 @@ namespace System
         public System.TypeCode GetTypeCode() => throw null;
         public static System.Globalization.UnicodeCategory GetUnicodeCategory(System.Char c) => throw null;
         public static System.Globalization.UnicodeCategory GetUnicodeCategory(string s, int index) => throw null;
+        public static bool IsAscii(System.Char c) => throw null;
         public static bool IsControl(System.Char c) => throw null;
         public static bool IsControl(string s, int index) => throw null;
         public static bool IsDigit(System.Char c) => throw null;
@@ -853,6 +872,7 @@ namespace System
         public override string ToString() => throw null;
         public string ToString(System.IFormatProvider provider) => throw null;
         public static string ToString(System.Char c) => throw null;
+        string System.IFormattable.ToString(string format, System.IFormatProvider formatProvider) => throw null;
         object System.IConvertible.ToType(System.Type type, System.IFormatProvider provider) => throw null;
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
@@ -860,10 +880,11 @@ namespace System
         public static System.Char ToUpper(System.Char c) => throw null;
         public static System.Char ToUpper(System.Char c, System.Globalization.CultureInfo culture) => throw null;
         public static System.Char ToUpperInvariant(System.Char c) => throw null;
+        bool System.ISpanFormattable.TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider) => throw null;
         public static bool TryParse(string s, out System.Char result) => throw null;
     }
 
-    // Generated from `System.CharEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.CharEnumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class CharEnumerator : System.Collections.Generic.IEnumerator<System.Char>, System.Collections.IEnumerator, System.ICloneable, System.IDisposable
     {
         public object Clone() => throw null;
@@ -874,16 +895,16 @@ namespace System
         public void Reset() => throw null;
     }
 
-    // Generated from `System.Comparison<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Comparison<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate int Comparison<T>(T x, T y);
 
-    // Generated from `System.ContextBoundObject` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ContextBoundObject` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class ContextBoundObject : System.MarshalByRefObject
     {
         protected ContextBoundObject() => throw null;
     }
 
-    // Generated from `System.ContextMarshalException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ContextMarshalException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ContextMarshalException : System.SystemException
     {
         public ContextMarshalException() => throw null;
@@ -892,13 +913,13 @@ namespace System
         public ContextMarshalException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.ContextStaticAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ContextStaticAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ContextStaticAttribute : System.Attribute
     {
         public ContextStaticAttribute() => throw null;
     }
 
-    // Generated from `System.Convert` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Convert` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Convert
     {
         public static object ChangeType(object value, System.Type conversionType) => throw null;
@@ -1223,10 +1244,10 @@ namespace System
         public static bool TryToBase64Chars(System.ReadOnlySpan<System.Byte> bytes, System.Span<System.Char> chars, out int charsWritten, System.Base64FormattingOptions options = default(System.Base64FormattingOptions)) => throw null;
     }
 
-    // Generated from `System.Converter<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Converter<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TOutput Converter<TInput, TOutput>(TInput input);
 
-    // Generated from `System.DBNull` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.DBNull` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DBNull : System.IConvertible, System.Runtime.Serialization.ISerializable
     {
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -1251,8 +1272,71 @@ namespace System
         public static System.DBNull Value;
     }
 
-    // Generated from `System.DateTime` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct DateTime : System.IComparable, System.IComparable<System.DateTime>, System.IConvertible, System.IEquatable<System.DateTime>, System.IFormattable, System.Runtime.Serialization.ISerializable
+    // Generated from `System.DateOnly` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct DateOnly : System.IComparable, System.IComparable<System.DateOnly>, System.IEquatable<System.DateOnly>, System.IFormattable, System.ISpanFormattable
+    {
+        public static bool operator !=(System.DateOnly left, System.DateOnly right) => throw null;
+        public static bool operator <(System.DateOnly left, System.DateOnly right) => throw null;
+        public static bool operator <=(System.DateOnly left, System.DateOnly right) => throw null;
+        public static bool operator ==(System.DateOnly left, System.DateOnly right) => throw null;
+        public static bool operator >(System.DateOnly left, System.DateOnly right) => throw null;
+        public static bool operator >=(System.DateOnly left, System.DateOnly right) => throw null;
+        public System.DateOnly AddDays(int value) => throw null;
+        public System.DateOnly AddMonths(int value) => throw null;
+        public System.DateOnly AddYears(int value) => throw null;
+        public int CompareTo(System.DateOnly value) => throw null;
+        public int CompareTo(object value) => throw null;
+        // Stub generator skipped constructor 
+        public DateOnly(int year, int month, int day) => throw null;
+        public DateOnly(int year, int month, int day, System.Globalization.Calendar calendar) => throw null;
+        public int Day { get => throw null; }
+        public int DayNumber { get => throw null; }
+        public System.DayOfWeek DayOfWeek { get => throw null; }
+        public int DayOfYear { get => throw null; }
+        public bool Equals(System.DateOnly value) => throw null;
+        public override bool Equals(object value) => throw null;
+        public static System.DateOnly FromDateTime(System.DateTime dateTime) => throw null;
+        public static System.DateOnly FromDayNumber(int dayNumber) => throw null;
+        public override int GetHashCode() => throw null;
+        public static System.DateOnly MaxValue { get => throw null; }
+        public static System.DateOnly MinValue { get => throw null; }
+        public int Month { get => throw null; }
+        public static System.DateOnly Parse(System.ReadOnlySpan<System.Char> s, System.IFormatProvider provider = default(System.IFormatProvider), System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateOnly Parse(string s) => throw null;
+        public static System.DateOnly Parse(string s, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateOnly ParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider = default(System.IFormatProvider), System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateOnly ParseExact(System.ReadOnlySpan<System.Char> s, string[] formats) => throw null;
+        public static System.DateOnly ParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateOnly ParseExact(string s, string[] formats) => throw null;
+        public static System.DateOnly ParseExact(string s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.DateOnly ParseExact(string s, string format) => throw null;
+        public static System.DateOnly ParseExact(string s, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public System.DateTime ToDateTime(System.TimeOnly time) => throw null;
+        public System.DateTime ToDateTime(System.TimeOnly time, System.DateTimeKind kind) => throw null;
+        public string ToLongDateString() => throw null;
+        public string ToShortDateString() => throw null;
+        public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
+        public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateOnly result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.DateOnly result) => throw null;
+        public static bool TryParse(string s, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateOnly result) => throw null;
+        public static bool TryParse(string s, out System.DateOnly result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateOnly result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, out System.DateOnly result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateOnly result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, out System.DateOnly result) => throw null;
+        public static bool TryParseExact(string s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateOnly result) => throw null;
+        public static bool TryParseExact(string s, string[] formats, out System.DateOnly result) => throw null;
+        public static bool TryParseExact(string s, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateOnly result) => throw null;
+        public static bool TryParseExact(string s, string format, out System.DateOnly result) => throw null;
+        public int Year { get => throw null; }
+    }
+
+    // Generated from `System.DateTime` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct DateTime : System.IComparable, System.IComparable<System.DateTime>, System.IConvertible, System.IEquatable<System.DateTime>, System.IFormattable, System.ISpanFormattable, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.DateTime d1, System.DateTime d2) => throw null;
         public static System.DateTime operator +(System.DateTime d, System.TimeSpan t) => throw null;
@@ -1375,16 +1459,16 @@ namespace System
         public int Year { get => throw null; }
     }
 
-    // Generated from `System.DateTimeKind` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum DateTimeKind
+    // Generated from `System.DateTimeKind` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum DateTimeKind : int
     {
-        Local,
-        Unspecified,
-        Utc,
+        Local = 2,
+        Unspecified = 0,
+        Utc = 1,
     }
 
-    // Generated from `System.DateTimeOffset` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct DateTimeOffset : System.IComparable, System.IComparable<System.DateTimeOffset>, System.IEquatable<System.DateTimeOffset>, System.IFormattable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+    // Generated from `System.DateTimeOffset` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct DateTimeOffset : System.IComparable, System.IComparable<System.DateTimeOffset>, System.IEquatable<System.DateTimeOffset>, System.IFormattable, System.ISpanFormattable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.DateTimeOffset left, System.DateTimeOffset right) => throw null;
         public static System.DateTimeOffset operator +(System.DateTimeOffset dateTimeOffset, System.TimeSpan timeSpan) => throw null;
@@ -1479,20 +1563,20 @@ namespace System
         public static implicit operator System.DateTimeOffset(System.DateTime dateTime) => throw null;
     }
 
-    // Generated from `System.DayOfWeek` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum DayOfWeek
+    // Generated from `System.DayOfWeek` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum DayOfWeek : int
     {
-        Friday,
-        Monday,
-        Saturday,
-        Sunday,
-        Thursday,
-        Tuesday,
-        Wednesday,
+        Friday = 5,
+        Monday = 1,
+        Saturday = 6,
+        Sunday = 0,
+        Thursday = 4,
+        Tuesday = 2,
+        Wednesday = 3,
     }
 
-    // Generated from `System.Decimal` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Decimal : System.IComparable, System.IComparable<System.Decimal>, System.IConvertible, System.IEquatable<System.Decimal>, System.IFormattable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+    // Generated from `System.Decimal` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Decimal : System.IComparable, System.IComparable<System.Decimal>, System.IConvertible, System.IEquatable<System.Decimal>, System.IFormattable, System.ISpanFormattable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.Decimal d1, System.Decimal d2) => throw null;
         public static System.Decimal operator %(System.Decimal d1, System.Decimal d2) => throw null;
@@ -1615,7 +1699,7 @@ namespace System
         public static implicit operator System.Decimal(System.UInt16 value) => throw null;
     }
 
-    // Generated from `System.Delegate` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Delegate` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class Delegate : System.ICloneable, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.Delegate d1, System.Delegate d2) => throw null;
@@ -1650,7 +1734,7 @@ namespace System
         public object Target { get => throw null; }
     }
 
-    // Generated from `System.DivideByZeroException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.DivideByZeroException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DivideByZeroException : System.ArithmeticException
     {
         public DivideByZeroException() => throw null;
@@ -1659,8 +1743,8 @@ namespace System
         public DivideByZeroException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.Double` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Double : System.IComparable, System.IComparable<double>, System.IConvertible, System.IEquatable<double>, System.IFormattable
+    // Generated from `System.Double` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Double : System.IComparable, System.IComparable<double>, System.IConvertible, System.IEquatable<double>, System.IFormattable, System.ISpanFormattable
     {
         public static bool operator !=(double left, double right) => throw null;
         public static bool operator <(double left, double right) => throw null;
@@ -1720,7 +1804,7 @@ namespace System
         public static bool TryParse(string s, out double result) => throw null;
     }
 
-    // Generated from `System.DuplicateWaitObjectException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.DuplicateWaitObjectException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DuplicateWaitObjectException : System.ArgumentException
     {
         public DuplicateWaitObjectException() => throw null;
@@ -1730,7 +1814,7 @@ namespace System
         public DuplicateWaitObjectException(string parameterName, string message) => throw null;
     }
 
-    // Generated from `System.EntryPointNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.EntryPointNotFoundException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class EntryPointNotFoundException : System.TypeLoadException
     {
         public EntryPointNotFoundException() => throw null;
@@ -1739,7 +1823,7 @@ namespace System
         public EntryPointNotFoundException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.Enum` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Enum` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class Enum : System.IComparable, System.IConvertible, System.IFormattable
     {
         public int CompareTo(object target) => throw null;
@@ -1758,8 +1842,12 @@ namespace System
         public bool HasFlag(System.Enum flag) => throw null;
         public static bool IsDefined(System.Type enumType, object value) => throw null;
         public static bool IsDefined<TEnum>(TEnum value) where TEnum : System.Enum => throw null;
+        public static object Parse(System.Type enumType, System.ReadOnlySpan<System.Char> value) => throw null;
+        public static object Parse(System.Type enumType, System.ReadOnlySpan<System.Char> value, bool ignoreCase) => throw null;
         public static object Parse(System.Type enumType, string value) => throw null;
         public static object Parse(System.Type enumType, string value, bool ignoreCase) => throw null;
+        public static TEnum Parse<TEnum>(System.ReadOnlySpan<System.Char> value) where TEnum : struct => throw null;
+        public static TEnum Parse<TEnum>(System.ReadOnlySpan<System.Char> value, bool ignoreCase) where TEnum : struct => throw null;
         public static TEnum Parse<TEnum>(string value) where TEnum : struct => throw null;
         public static TEnum Parse<TEnum>(string value, bool ignoreCase) where TEnum : struct => throw null;
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) => throw null;
@@ -1790,74 +1878,78 @@ namespace System
         System.UInt16 System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         System.UInt32 System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         System.UInt64 System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
+        public static bool TryParse(System.Type enumType, System.ReadOnlySpan<System.Char> value, bool ignoreCase, out object result) => throw null;
+        public static bool TryParse(System.Type enumType, System.ReadOnlySpan<System.Char> value, out object result) => throw null;
         public static bool TryParse(System.Type enumType, string value, bool ignoreCase, out object result) => throw null;
         public static bool TryParse(System.Type enumType, string value, out object result) => throw null;
+        public static bool TryParse<TEnum>(System.ReadOnlySpan<System.Char> value, bool ignoreCase, out TEnum result) where TEnum : struct => throw null;
+        public static bool TryParse<TEnum>(System.ReadOnlySpan<System.Char> value, out TEnum result) where TEnum : struct => throw null;
         public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum result) where TEnum : struct => throw null;
         public static bool TryParse<TEnum>(string value, out TEnum result) where TEnum : struct => throw null;
     }
 
-    // Generated from `System.Environment` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Environment` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Environment
     {
-        // Generated from `System.Environment+SpecialFolder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SpecialFolder
+        // Generated from `System.Environment+SpecialFolder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SpecialFolder : int
         {
-            AdminTools,
-            ApplicationData,
-            CDBurning,
-            CommonAdminTools,
-            CommonApplicationData,
-            CommonDesktopDirectory,
-            CommonDocuments,
-            CommonMusic,
-            CommonOemLinks,
-            CommonPictures,
-            CommonProgramFiles,
-            CommonProgramFilesX86,
-            CommonPrograms,
-            CommonStartMenu,
-            CommonStartup,
-            CommonTemplates,
-            CommonVideos,
-            Cookies,
-            Desktop,
-            DesktopDirectory,
-            Favorites,
-            Fonts,
-            History,
-            InternetCache,
-            LocalApplicationData,
-            LocalizedResources,
-            MyComputer,
-            MyDocuments,
-            MyMusic,
-            MyPictures,
-            MyVideos,
-            NetworkShortcuts,
-            Personal,
-            PrinterShortcuts,
-            ProgramFiles,
-            ProgramFilesX86,
-            Programs,
-            Recent,
-            Resources,
-            SendTo,
-            StartMenu,
-            Startup,
-            System,
-            SystemX86,
-            Templates,
-            UserProfile,
-            Windows,
+            AdminTools = 48,
+            ApplicationData = 26,
+            CDBurning = 59,
+            CommonAdminTools = 47,
+            CommonApplicationData = 35,
+            CommonDesktopDirectory = 25,
+            CommonDocuments = 46,
+            CommonMusic = 53,
+            CommonOemLinks = 58,
+            CommonPictures = 54,
+            CommonProgramFiles = 43,
+            CommonProgramFilesX86 = 44,
+            CommonPrograms = 23,
+            CommonStartMenu = 22,
+            CommonStartup = 24,
+            CommonTemplates = 45,
+            CommonVideos = 55,
+            Cookies = 33,
+            Desktop = 0,
+            DesktopDirectory = 16,
+            Favorites = 6,
+            Fonts = 20,
+            History = 34,
+            InternetCache = 32,
+            LocalApplicationData = 28,
+            LocalizedResources = 57,
+            MyComputer = 17,
+            MyDocuments = 5,
+            MyMusic = 13,
+            MyPictures = 39,
+            MyVideos = 14,
+            NetworkShortcuts = 19,
+            Personal = 5,
+            PrinterShortcuts = 27,
+            ProgramFiles = 38,
+            ProgramFilesX86 = 42,
+            Programs = 2,
+            Recent = 8,
+            Resources = 56,
+            SendTo = 9,
+            StartMenu = 11,
+            Startup = 7,
+            System = 37,
+            SystemX86 = 41,
+            Templates = 21,
+            UserProfile = 40,
+            Windows = 36,
         }
 
 
-        // Generated from `System.Environment+SpecialFolderOption` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SpecialFolderOption
+        // Generated from `System.Environment+SpecialFolderOption` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SpecialFolderOption : int
         {
-            Create,
-            DoNotVerify,
-            None,
+            Create = 32768,
+            DoNotVerify = 16384,
+            None = 0,
         }
 
 
@@ -1884,6 +1976,7 @@ namespace System
         public static string NewLine { get => throw null; }
         public static System.OperatingSystem OSVersion { get => throw null; }
         public static int ProcessId { get => throw null; }
+        public static string ProcessPath { get => throw null; }
         public static int ProcessorCount { get => throw null; }
         public static void SetEnvironmentVariable(string variable, string value) => throw null;
         public static void SetEnvironmentVariable(string variable, string value, System.EnvironmentVariableTarget target) => throw null;
@@ -1899,28 +1992,28 @@ namespace System
         public static System.Int64 WorkingSet { get => throw null; }
     }
 
-    // Generated from `System.EnvironmentVariableTarget` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum EnvironmentVariableTarget
+    // Generated from `System.EnvironmentVariableTarget` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum EnvironmentVariableTarget : int
     {
-        Machine,
-        Process,
-        User,
+        Machine = 2,
+        Process = 0,
+        User = 1,
     }
 
-    // Generated from `System.EventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.EventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class EventArgs
     {
         public static System.EventArgs Empty;
         public EventArgs() => throw null;
     }
 
-    // Generated from `System.EventHandler` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.EventHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void EventHandler(object sender, System.EventArgs e);
 
-    // Generated from `System.EventHandler<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.EventHandler<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
 
-    // Generated from `System.Exception` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Exception` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Exception : System.Runtime.Serialization.ISerializable
     {
         public virtual System.Collections.IDictionary Data { get => throw null; }
@@ -1942,7 +2035,7 @@ namespace System
         public override string ToString() => throw null;
     }
 
-    // Generated from `System.ExecutionEngineException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ExecutionEngineException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ExecutionEngineException : System.SystemException
     {
         public ExecutionEngineException() => throw null;
@@ -1950,7 +2043,7 @@ namespace System
         public ExecutionEngineException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.FieldAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.FieldAccessException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class FieldAccessException : System.MemberAccessException
     {
         public FieldAccessException() => throw null;
@@ -1959,19 +2052,19 @@ namespace System
         public FieldAccessException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.FileStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.FileStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class FileStyleUriParser : System.UriParser
     {
         public FileStyleUriParser() => throw null;
     }
 
-    // Generated from `System.FlagsAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.FlagsAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class FlagsAttribute : System.Attribute
     {
         public FlagsAttribute() => throw null;
     }
 
-    // Generated from `System.FormatException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.FormatException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class FormatException : System.SystemException
     {
         public FormatException() => throw null;
@@ -1980,7 +2073,7 @@ namespace System
         public FormatException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.FormattableString` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.FormattableString` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class FormattableString : System.IFormattable
     {
         public abstract int ArgumentCount { get; }
@@ -1995,64 +2088,64 @@ namespace System
         string System.IFormattable.ToString(string ignored, System.IFormatProvider formatProvider) => throw null;
     }
 
-    // Generated from `System.FtpStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.FtpStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class FtpStyleUriParser : System.UriParser
     {
         public FtpStyleUriParser() => throw null;
     }
 
-    // Generated from `System.Func<,,,,,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16);
 
-    // Generated from `System.Func<,,,,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15);
 
-    // Generated from `System.Func<,,,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14);
 
-    // Generated from `System.Func<,,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13);
 
-    // Generated from `System.Func<,,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12);
 
-    // Generated from `System.Func<,,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11);
 
-    // Generated from `System.Func<,,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10);
 
-    // Generated from `System.Func<,,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9);
 
-    // Generated from `System.Func<,,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8);
 
-    // Generated from `System.Func<,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, T7, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
 
-    // Generated from `System.Func<,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, T6, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
 
-    // Generated from `System.Func<,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, T5, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
 
-    // Generated from `System.Func<,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, T4, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
 
-    // Generated from `System.Func<,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3);
 
-    // Generated from `System.Func<,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T1, T2, TResult>(T1 arg1, T2 arg2);
 
-    // Generated from `System.Func<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<T, TResult>(T arg);
 
-    // Generated from `System.Func<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Func<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate TResult Func<TResult>();
 
-    // Generated from `System.GC` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.GC` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class GC
     {
         public static void AddMemoryPressure(System.Int64 bytesAllocated) => throw null;
@@ -2090,15 +2183,15 @@ namespace System
         public static void WaitForPendingFinalizers() => throw null;
     }
 
-    // Generated from `System.GCCollectionMode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum GCCollectionMode
+    // Generated from `System.GCCollectionMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum GCCollectionMode : int
     {
-        Default,
-        Forced,
-        Optimized,
+        Default = 0,
+        Forced = 1,
+        Optimized = 2,
     }
 
-    // Generated from `System.GCGenerationInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.GCGenerationInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct GCGenerationInfo
     {
         public System.Int64 FragmentationAfterBytes { get => throw null; }
@@ -2108,16 +2201,16 @@ namespace System
         public System.Int64 SizeBeforeBytes { get => throw null; }
     }
 
-    // Generated from `System.GCKind` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum GCKind
+    // Generated from `System.GCKind` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum GCKind : int
     {
-        Any,
-        Background,
-        Ephemeral,
-        FullBlocking,
+        Any = 0,
+        Background = 3,
+        Ephemeral = 1,
+        FullBlocking = 2,
     }
 
-    // Generated from `System.GCMemoryInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.GCMemoryInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct GCMemoryInfo
     {
         public bool Compacted { get => throw null; }
@@ -2139,48 +2232,48 @@ namespace System
         public System.Int64 TotalCommittedBytes { get => throw null; }
     }
 
-    // Generated from `System.GCNotificationStatus` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum GCNotificationStatus
+    // Generated from `System.GCNotificationStatus` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum GCNotificationStatus : int
     {
-        Canceled,
-        Failed,
-        NotApplicable,
-        Succeeded,
-        Timeout,
+        Canceled = 2,
+        Failed = 1,
+        NotApplicable = 4,
+        Succeeded = 0,
+        Timeout = 3,
     }
 
-    // Generated from `System.GenericUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.GenericUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class GenericUriParser : System.UriParser
     {
         public GenericUriParser(System.GenericUriParserOptions options) => throw null;
     }
 
-    // Generated from `System.GenericUriParserOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.GenericUriParserOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum GenericUriParserOptions
+    public enum GenericUriParserOptions : int
     {
-        AllowEmptyAuthority,
-        Default,
-        DontCompressPath,
-        DontConvertPathBackslashes,
-        DontUnescapePathDotsAndSlashes,
-        GenericAuthority,
-        Idn,
-        IriParsing,
-        NoFragment,
-        NoPort,
-        NoQuery,
-        NoUserInfo,
+        AllowEmptyAuthority = 2,
+        Default = 0,
+        DontCompressPath = 128,
+        DontConvertPathBackslashes = 64,
+        DontUnescapePathDotsAndSlashes = 256,
+        GenericAuthority = 1,
+        Idn = 512,
+        IriParsing = 1024,
+        NoFragment = 32,
+        NoPort = 8,
+        NoQuery = 16,
+        NoUserInfo = 4,
     }
 
-    // Generated from `System.GopherStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.GopherStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class GopherStyleUriParser : System.UriParser
     {
         public GopherStyleUriParser() => throw null;
     }
 
-    // Generated from `System.Guid` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Guid : System.IComparable, System.IComparable<System.Guid>, System.IEquatable<System.Guid>, System.IFormattable
+    // Generated from `System.Guid` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Guid : System.IComparable, System.IComparable<System.Guid>, System.IEquatable<System.Guid>, System.IFormattable, System.ISpanFormattable
     {
         public static bool operator !=(System.Guid a, System.Guid b) => throw null;
         public static bool operator ==(System.Guid a, System.Guid b) => throw null;
@@ -2207,6 +2300,7 @@ namespace System
         public string ToString(string format) => throw null;
         public string ToString(string format, System.IFormatProvider provider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>)) => throw null;
+        bool System.ISpanFormattable.TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> input, out System.Guid result) => throw null;
         public static bool TryParse(string input, out System.Guid result) => throw null;
         public static bool TryParseExact(System.ReadOnlySpan<System.Char> input, System.ReadOnlySpan<System.Char> format, out System.Guid result) => throw null;
@@ -2214,8 +2308,8 @@ namespace System
         public bool TryWriteBytes(System.Span<System.Byte> destination) => throw null;
     }
 
-    // Generated from `System.Half` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Half : System.IComparable, System.IComparable<System.Half>, System.IEquatable<System.Half>, System.IFormattable
+    // Generated from `System.Half` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Half : System.IComparable, System.IComparable<System.Half>, System.IEquatable<System.Half>, System.IFormattable, System.ISpanFormattable
     {
         public static bool operator !=(System.Half left, System.Half right) => throw null;
         public static bool operator <(System.Half left, System.Half right) => throw null;
@@ -2263,11 +2357,12 @@ namespace System
         public static explicit operator System.Half(float value) => throw null;
     }
 
-    // Generated from `System.HashCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.HashCode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct HashCode
     {
         public void Add<T>(T value) => throw null;
         public void Add<T>(T value, System.Collections.Generic.IEqualityComparer<T> comparer) => throw null;
+        public void AddBytes(System.ReadOnlySpan<System.Byte> value) => throw null;
         public static int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8) => throw null;
         public static int Combine<T1, T2, T3, T4, T5, T6, T7>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7) => throw null;
         public static int Combine<T1, T2, T3, T4, T5, T6>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6) => throw null;
@@ -2282,19 +2377,19 @@ namespace System
         public int ToHashCode() => throw null;
     }
 
-    // Generated from `System.HttpStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.HttpStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class HttpStyleUriParser : System.UriParser
     {
         public HttpStyleUriParser() => throw null;
     }
 
-    // Generated from `System.IAsyncDisposable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IAsyncDisposable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IAsyncDisposable
     {
         System.Threading.Tasks.ValueTask DisposeAsync();
     }
 
-    // Generated from `System.IAsyncResult` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IAsyncResult` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IAsyncResult
     {
         object AsyncState { get; }
@@ -2303,25 +2398,25 @@ namespace System
         bool IsCompleted { get; }
     }
 
-    // Generated from `System.ICloneable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ICloneable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface ICloneable
     {
         object Clone();
     }
 
-    // Generated from `System.IComparable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IComparable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IComparable
     {
         int CompareTo(object obj);
     }
 
-    // Generated from `System.IComparable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IComparable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IComparable<T>
     {
         int CompareTo(T other);
     }
 
-    // Generated from `System.IConvertible` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IConvertible` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IConvertible
     {
         System.TypeCode GetTypeCode();
@@ -2343,43 +2438,43 @@ namespace System
         System.UInt64 ToUInt64(System.IFormatProvider provider);
     }
 
-    // Generated from `System.ICustomFormatter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ICustomFormatter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface ICustomFormatter
     {
         string Format(string format, object arg, System.IFormatProvider formatProvider);
     }
 
-    // Generated from `System.IDisposable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IDisposable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IDisposable
     {
         void Dispose();
     }
 
-    // Generated from `System.IEquatable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IEquatable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IEquatable<T>
     {
         bool Equals(T other);
     }
 
-    // Generated from `System.IFormatProvider` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IFormatProvider` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IFormatProvider
     {
         object GetFormat(System.Type formatType);
     }
 
-    // Generated from `System.IFormattable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IFormattable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IFormattable
     {
         string ToString(string format, System.IFormatProvider formatProvider);
     }
 
-    // Generated from `System.IObservable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IObservable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IObservable<T>
     {
         System.IDisposable Subscribe(System.IObserver<T> observer);
     }
 
-    // Generated from `System.IObserver<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IObserver<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IObserver<T>
     {
         void OnCompleted();
@@ -2387,13 +2482,19 @@ namespace System
         void OnNext(T value);
     }
 
-    // Generated from `System.IProgress<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IProgress<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public interface IProgress<T>
     {
         void Report(T value);
     }
 
-    // Generated from `System.Index` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ISpanFormattable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public interface ISpanFormattable : System.IFormattable
+    {
+        bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider);
+    }
+
+    // Generated from `System.Index` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct Index : System.IEquatable<System.Index>
     {
         public static System.Index End { get => throw null; }
@@ -2412,7 +2513,7 @@ namespace System
         public static implicit operator System.Index(int value) => throw null;
     }
 
-    // Generated from `System.IndexOutOfRangeException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.IndexOutOfRangeException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class IndexOutOfRangeException : System.SystemException
     {
         public IndexOutOfRangeException() => throw null;
@@ -2420,7 +2521,7 @@ namespace System
         public IndexOutOfRangeException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.InsufficientExecutionStackException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.InsufficientExecutionStackException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InsufficientExecutionStackException : System.SystemException
     {
         public InsufficientExecutionStackException() => throw null;
@@ -2428,7 +2529,7 @@ namespace System
         public InsufficientExecutionStackException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.InsufficientMemoryException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.InsufficientMemoryException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InsufficientMemoryException : System.OutOfMemoryException
     {
         public InsufficientMemoryException() => throw null;
@@ -2436,8 +2537,8 @@ namespace System
         public InsufficientMemoryException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.Int16` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Int16 : System.IComparable, System.IComparable<System.Int16>, System.IConvertible, System.IEquatable<System.Int16>, System.IFormattable
+    // Generated from `System.Int16` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Int16 : System.IComparable, System.IComparable<System.Int16>, System.IConvertible, System.IEquatable<System.Int16>, System.IFormattable, System.ISpanFormattable
     {
         public int CompareTo(object value) => throw null;
         public int CompareTo(System.Int16 value) => throw null;
@@ -2479,8 +2580,8 @@ namespace System
         public static bool TryParse(string s, out System.Int16 result) => throw null;
     }
 
-    // Generated from `System.Int32` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Int32 : System.IComparable, System.IComparable<int>, System.IConvertible, System.IEquatable<int>, System.IFormattable
+    // Generated from `System.Int32` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Int32 : System.IComparable, System.IComparable<int>, System.IConvertible, System.IEquatable<int>, System.IFormattable, System.ISpanFormattable
     {
         public int CompareTo(int value) => throw null;
         public int CompareTo(object value) => throw null;
@@ -2522,8 +2623,8 @@ namespace System
         public static bool TryParse(string s, out int result) => throw null;
     }
 
-    // Generated from `System.Int64` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Int64 : System.IComparable, System.IComparable<System.Int64>, System.IConvertible, System.IEquatable<System.Int64>, System.IFormattable
+    // Generated from `System.Int64` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Int64 : System.IComparable, System.IComparable<System.Int64>, System.IConvertible, System.IEquatable<System.Int64>, System.IFormattable, System.ISpanFormattable
     {
         public int CompareTo(System.Int64 value) => throw null;
         public int CompareTo(object value) => throw null;
@@ -2565,8 +2666,8 @@ namespace System
         public static bool TryParse(string s, out System.Int64 result) => throw null;
     }
 
-    // Generated from `System.IntPtr` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct IntPtr : System.IComparable, System.IComparable<System.IntPtr>, System.IEquatable<System.IntPtr>, System.IFormattable, System.Runtime.Serialization.ISerializable
+    // Generated from `System.IntPtr` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct IntPtr : System.IComparable, System.IComparable<System.IntPtr>, System.IEquatable<System.IntPtr>, System.IFormattable, System.ISpanFormattable, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.IntPtr value1, System.IntPtr value2) => throw null;
         public static System.IntPtr operator +(System.IntPtr pointer, int offset) => throw null;
@@ -2585,6 +2686,7 @@ namespace System
         public IntPtr(System.Int64 value) => throw null;
         public static System.IntPtr MaxValue { get => throw null; }
         public static System.IntPtr MinValue { get => throw null; }
+        public static System.IntPtr Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
         public static System.IntPtr Parse(string s) => throw null;
         public static System.IntPtr Parse(string s, System.IFormatProvider provider) => throw null;
         public static System.IntPtr Parse(string s, System.Globalization.NumberStyles style) => throw null;
@@ -2598,6 +2700,9 @@ namespace System
         public string ToString(System.IFormatProvider provider) => throw null;
         public string ToString(string format) => throw null;
         public string ToString(string format, System.IFormatProvider provider) => throw null;
+        public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.IntPtr result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.IntPtr result) => throw null;
         public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.IntPtr result) => throw null;
         public static bool TryParse(string s, out System.IntPtr result) => throw null;
         public static System.IntPtr Zero;
@@ -2609,7 +2714,7 @@ namespace System
         public static explicit operator System.IntPtr(System.Int64 value) => throw null;
     }
 
-    // Generated from `System.InvalidCastException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.InvalidCastException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InvalidCastException : System.SystemException
     {
         public InvalidCastException() => throw null;
@@ -2619,7 +2724,7 @@ namespace System
         public InvalidCastException(string message, int errorCode) => throw null;
     }
 
-    // Generated from `System.InvalidOperationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.InvalidOperationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InvalidOperationException : System.SystemException
     {
         public InvalidOperationException() => throw null;
@@ -2628,7 +2733,7 @@ namespace System
         public InvalidOperationException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.InvalidProgramException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.InvalidProgramException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InvalidProgramException : System.SystemException
     {
         public InvalidProgramException() => throw null;
@@ -2636,7 +2741,7 @@ namespace System
         public InvalidProgramException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.InvalidTimeZoneException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.InvalidTimeZoneException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class InvalidTimeZoneException : System.Exception
     {
         public InvalidTimeZoneException() => throw null;
@@ -2645,7 +2750,7 @@ namespace System
         public InvalidTimeZoneException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.Lazy<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Lazy<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Lazy<T, TMetadata> : System.Lazy<T>
     {
         public Lazy(System.Func<T> valueFactory, TMetadata metadata) => throw null;
@@ -2657,7 +2762,7 @@ namespace System
         public TMetadata Metadata { get => throw null; }
     }
 
-    // Generated from `System.Lazy<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Lazy<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Lazy<T>
     {
         public bool IsValueCreated { get => throw null; }
@@ -2672,24 +2777,24 @@ namespace System
         public T Value { get => throw null; }
     }
 
-    // Generated from `System.LdapStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.LdapStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class LdapStyleUriParser : System.UriParser
     {
         public LdapStyleUriParser() => throw null;
     }
 
-    // Generated from `System.LoaderOptimization` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum LoaderOptimization
+    // Generated from `System.LoaderOptimization` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum LoaderOptimization : int
     {
-        DisallowBindings,
-        DomainMask,
-        MultiDomain,
-        MultiDomainHost,
-        NotSpecified,
-        SingleDomain,
+        DisallowBindings = 4,
+        DomainMask = 3,
+        MultiDomain = 2,
+        MultiDomainHost = 3,
+        NotSpecified = 0,
+        SingleDomain = 1,
     }
 
-    // Generated from `System.LoaderOptimizationAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.LoaderOptimizationAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class LoaderOptimizationAttribute : System.Attribute
     {
         public LoaderOptimizationAttribute(System.LoaderOptimization value) => throw null;
@@ -2697,13 +2802,13 @@ namespace System
         public System.LoaderOptimization Value { get => throw null; }
     }
 
-    // Generated from `System.MTAThreadAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MTAThreadAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MTAThreadAttribute : System.Attribute
     {
         public MTAThreadAttribute() => throw null;
     }
 
-    // Generated from `System.MarshalByRefObject` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MarshalByRefObject` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class MarshalByRefObject
     {
         public object GetLifetimeService() => throw null;
@@ -2712,9 +2817,10 @@ namespace System
         protected System.MarshalByRefObject MemberwiseClone(bool cloneIdentity) => throw null;
     }
 
-    // Generated from `System.Math` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Math` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Math
     {
+        public static System.IntPtr Abs(System.IntPtr value) => throw null;
         public static System.Decimal Abs(System.Decimal value) => throw null;
         public static double Abs(double value) => throw null;
         public static float Abs(float value) => throw null;
@@ -2737,6 +2843,8 @@ namespace System
         public static double Cbrt(double d) => throw null;
         public static System.Decimal Ceiling(System.Decimal d) => throw null;
         public static double Ceiling(double a) => throw null;
+        public static System.IntPtr Clamp(System.IntPtr value, System.IntPtr min, System.IntPtr max) => throw null;
+        public static System.UIntPtr Clamp(System.UIntPtr value, System.UIntPtr min, System.UIntPtr max) => throw null;
         public static System.Byte Clamp(System.Byte value, System.Byte min, System.Byte max) => throw null;
         public static System.Decimal Clamp(System.Decimal value, System.Decimal min, System.Decimal max) => throw null;
         public static double Clamp(double value, double min, double max) => throw null;
@@ -2751,8 +2859,18 @@ namespace System
         public static double CopySign(double x, double y) => throw null;
         public static double Cos(double d) => throw null;
         public static double Cosh(double value) => throw null;
+        public static (System.IntPtr, System.IntPtr) DivRem(System.IntPtr left, System.IntPtr right) => throw null;
+        public static (System.UIntPtr, System.UIntPtr) DivRem(System.UIntPtr left, System.UIntPtr right) => throw null;
+        public static (System.Byte, System.Byte) DivRem(System.Byte left, System.Byte right) => throw null;
+        public static (int, int) DivRem(int left, int right) => throw null;
         public static int DivRem(int a, int b, out int result) => throw null;
+        public static (System.Int64, System.Int64) DivRem(System.Int64 left, System.Int64 right) => throw null;
         public static System.Int64 DivRem(System.Int64 a, System.Int64 b, out System.Int64 result) => throw null;
+        public static (System.SByte, System.SByte) DivRem(System.SByte left, System.SByte right) => throw null;
+        public static (System.Int16, System.Int16) DivRem(System.Int16 left, System.Int16 right) => throw null;
+        public static (System.UInt32, System.UInt32) DivRem(System.UInt32 left, System.UInt32 right) => throw null;
+        public static (System.UInt64, System.UInt64) DivRem(System.UInt64 left, System.UInt64 right) => throw null;
+        public static (System.UInt16, System.UInt16) DivRem(System.UInt16 left, System.UInt16 right) => throw null;
         public const double E = default;
         public static double Exp(double d) => throw null;
         public static System.Decimal Floor(System.Decimal d) => throw null;
@@ -2764,6 +2882,8 @@ namespace System
         public static double Log(double a, double newBase) => throw null;
         public static double Log10(double d) => throw null;
         public static double Log2(double x) => throw null;
+        public static System.IntPtr Max(System.IntPtr val1, System.IntPtr val2) => throw null;
+        public static System.UIntPtr Max(System.UIntPtr val1, System.UIntPtr val2) => throw null;
         public static System.Byte Max(System.Byte val1, System.Byte val2) => throw null;
         public static System.Decimal Max(System.Decimal val1, System.Decimal val2) => throw null;
         public static double Max(double val1, double val2) => throw null;
@@ -2776,6 +2896,8 @@ namespace System
         public static System.UInt64 Max(System.UInt64 val1, System.UInt64 val2) => throw null;
         public static System.UInt16 Max(System.UInt16 val1, System.UInt16 val2) => throw null;
         public static double MaxMagnitude(double x, double y) => throw null;
+        public static System.IntPtr Min(System.IntPtr val1, System.IntPtr val2) => throw null;
+        public static System.UIntPtr Min(System.UIntPtr val1, System.UIntPtr val2) => throw null;
         public static System.Byte Min(System.Byte val1, System.Byte val2) => throw null;
         public static System.Decimal Min(System.Decimal val1, System.Decimal val2) => throw null;
         public static double Min(double val1, double val2) => throw null;
@@ -2790,6 +2912,8 @@ namespace System
         public static double MinMagnitude(double x, double y) => throw null;
         public const double PI = default;
         public static double Pow(double x, double y) => throw null;
+        public static double ReciprocalEstimate(double d) => throw null;
+        public static double ReciprocalSqrtEstimate(double d) => throw null;
         public static System.Decimal Round(System.Decimal d) => throw null;
         public static System.Decimal Round(System.Decimal d, System.MidpointRounding mode) => throw null;
         public static System.Decimal Round(System.Decimal d, int decimals) => throw null;
@@ -2799,6 +2923,7 @@ namespace System
         public static double Round(double value, int digits) => throw null;
         public static double Round(double value, int digits, System.MidpointRounding mode) => throw null;
         public static double ScaleB(double x, int n) => throw null;
+        public static int Sign(System.IntPtr value) => throw null;
         public static int Sign(System.Decimal value) => throw null;
         public static int Sign(double value) => throw null;
         public static int Sign(float value) => throw null;
@@ -2807,6 +2932,7 @@ namespace System
         public static int Sign(System.SByte value) => throw null;
         public static int Sign(System.Int16 value) => throw null;
         public static double Sin(double a) => throw null;
+        public static (double, double) SinCos(double x) => throw null;
         public static double Sinh(double value) => throw null;
         public static double Sqrt(double d) => throw null;
         public static double Tan(double a) => throw null;
@@ -2816,7 +2942,7 @@ namespace System
         public static double Truncate(double d) => throw null;
     }
 
-    // Generated from `System.MathF` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MathF` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class MathF
     {
         public static float Abs(float x) => throw null;
@@ -2850,6 +2976,8 @@ namespace System
         public static float MinMagnitude(float x, float y) => throw null;
         public const float PI = default;
         public static float Pow(float x, float y) => throw null;
+        public static float ReciprocalEstimate(float x) => throw null;
+        public static float ReciprocalSqrtEstimate(float x) => throw null;
         public static float Round(float x) => throw null;
         public static float Round(float x, System.MidpointRounding mode) => throw null;
         public static float Round(float x, int digits) => throw null;
@@ -2857,6 +2985,7 @@ namespace System
         public static float ScaleB(float x, int n) => throw null;
         public static int Sign(float x) => throw null;
         public static float Sin(float x) => throw null;
+        public static (float, float) SinCos(float x) => throw null;
         public static float Sinh(float x) => throw null;
         public static float Sqrt(float x) => throw null;
         public static float Tan(float x) => throw null;
@@ -2865,7 +2994,7 @@ namespace System
         public static float Truncate(float x) => throw null;
     }
 
-    // Generated from `System.MemberAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MemberAccessException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MemberAccessException : System.SystemException
     {
         public MemberAccessException() => throw null;
@@ -2874,7 +3003,7 @@ namespace System
         public MemberAccessException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.Memory<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Memory<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct Memory<T> : System.IEquatable<System.Memory<T>>
     {
         public void CopyTo(System.Memory<T> destination) => throw null;
@@ -2899,7 +3028,7 @@ namespace System
         public static implicit operator System.Memory<T>(T[] array) => throw null;
     }
 
-    // Generated from `System.MethodAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MethodAccessException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MethodAccessException : System.MemberAccessException
     {
         public MethodAccessException() => throw null;
@@ -2908,17 +3037,17 @@ namespace System
         public MethodAccessException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.MidpointRounding` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum MidpointRounding
+    // Generated from `System.MidpointRounding` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum MidpointRounding : int
     {
-        AwayFromZero,
-        ToEven,
-        ToNegativeInfinity,
-        ToPositiveInfinity,
-        ToZero,
+        AwayFromZero = 1,
+        ToEven = 0,
+        ToNegativeInfinity = 3,
+        ToPositiveInfinity = 4,
+        ToZero = 2,
     }
 
-    // Generated from `System.MissingFieldException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MissingFieldException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MissingFieldException : System.MissingMemberException, System.Runtime.Serialization.ISerializable
     {
         public override string Message { get => throw null; }
@@ -2929,7 +3058,7 @@ namespace System
         public MissingFieldException(string className, string fieldName) => throw null;
     }
 
-    // Generated from `System.MissingMemberException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MissingMemberException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MissingMemberException : System.MemberAccessException, System.Runtime.Serialization.ISerializable
     {
         protected string ClassName;
@@ -2944,7 +3073,7 @@ namespace System
         protected System.Byte[] Signature;
     }
 
-    // Generated from `System.MissingMethodException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MissingMethodException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MissingMethodException : System.MissingMemberException
     {
         public override string Message { get => throw null; }
@@ -2955,7 +3084,7 @@ namespace System
         public MissingMethodException(string className, string methodName) => throw null;
     }
 
-    // Generated from `System.ModuleHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ModuleHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ModuleHandle
     {
         public static bool operator !=(System.ModuleHandle left, System.ModuleHandle right) => throw null;
@@ -2977,7 +3106,7 @@ namespace System
         public System.RuntimeTypeHandle ResolveTypeHandle(int typeToken, System.RuntimeTypeHandle[] typeInstantiationContext, System.RuntimeTypeHandle[] methodInstantiationContext) => throw null;
     }
 
-    // Generated from `System.MulticastDelegate` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MulticastDelegate` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class MulticastDelegate : System.Delegate
     {
         public static bool operator !=(System.MulticastDelegate d1, System.MulticastDelegate d2) => throw null;
@@ -2993,7 +3122,7 @@ namespace System
         protected override System.Delegate RemoveImpl(System.Delegate value) => throw null;
     }
 
-    // Generated from `System.MulticastNotSupportedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.MulticastNotSupportedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class MulticastNotSupportedException : System.SystemException
     {
         public MulticastNotSupportedException() => throw null;
@@ -3001,31 +3130,31 @@ namespace System
         public MulticastNotSupportedException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.NetPipeStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.NetPipeStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NetPipeStyleUriParser : System.UriParser
     {
         public NetPipeStyleUriParser() => throw null;
     }
 
-    // Generated from `System.NetTcpStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.NetTcpStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NetTcpStyleUriParser : System.UriParser
     {
         public NetTcpStyleUriParser() => throw null;
     }
 
-    // Generated from `System.NewsStyleUriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.NewsStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NewsStyleUriParser : System.UriParser
     {
         public NewsStyleUriParser() => throw null;
     }
 
-    // Generated from `System.NonSerializedAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.NonSerializedAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NonSerializedAttribute : System.Attribute
     {
         public NonSerializedAttribute() => throw null;
     }
 
-    // Generated from `System.NotFiniteNumberException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.NotFiniteNumberException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NotFiniteNumberException : System.ArithmeticException
     {
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -3039,7 +3168,7 @@ namespace System
         public double OffendingNumber { get => throw null; }
     }
 
-    // Generated from `System.NotImplementedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.NotImplementedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NotImplementedException : System.SystemException
     {
         public NotImplementedException() => throw null;
@@ -3048,7 +3177,7 @@ namespace System
         public NotImplementedException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.NotSupportedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.NotSupportedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NotSupportedException : System.SystemException
     {
         public NotSupportedException() => throw null;
@@ -3057,7 +3186,7 @@ namespace System
         public NotSupportedException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.NullReferenceException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.NullReferenceException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class NullReferenceException : System.SystemException
     {
         public NullReferenceException() => throw null;
@@ -3066,7 +3195,7 @@ namespace System
         public NullReferenceException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.Nullable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Nullable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Nullable
     {
         public static int Compare<T>(T? n1, T? n2) where T : struct => throw null;
@@ -3074,7 +3203,7 @@ namespace System
         public static System.Type GetUnderlyingType(System.Type nullableType) => throw null;
     }
 
-    // Generated from `System.Nullable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Nullable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct Nullable<T> where T : struct
     {
         public override bool Equals(object other) => throw null;
@@ -3090,7 +3219,7 @@ namespace System
         public static implicit operator System.Nullable<T>(T value) => throw null;
     }
 
-    // Generated from `System.Object` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Object` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Object
     {
         public virtual bool Equals(object obj) => throw null;
@@ -3104,7 +3233,7 @@ namespace System
         // ERR: Stub generator didn't handle member: ~Object
     }
 
-    // Generated from `System.ObjectDisposedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ObjectDisposedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ObjectDisposedException : System.InvalidOperationException
     {
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -3116,7 +3245,7 @@ namespace System
         public string ObjectName { get => throw null; }
     }
 
-    // Generated from `System.ObsoleteAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ObsoleteAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ObsoleteAttribute : System.Attribute
     {
         public string DiagnosticId { get => throw null; set => throw null; }
@@ -3128,7 +3257,7 @@ namespace System
         public string UrlFormat { get => throw null; set => throw null; }
     }
 
-    // Generated from `System.OperatingSystem` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.OperatingSystem` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class OperatingSystem : System.ICloneable, System.Runtime.Serialization.ISerializable
     {
         public object Clone() => throw null;
@@ -3141,6 +3270,8 @@ namespace System
         public static bool IsIOS() => throw null;
         public static bool IsIOSVersionAtLeast(int major, int minor = default(int), int build = default(int)) => throw null;
         public static bool IsLinux() => throw null;
+        public static bool IsMacCatalyst() => throw null;
+        public static bool IsMacCatalystVersionAtLeast(int major, int minor = default(int), int build = default(int)) => throw null;
         public static bool IsMacOS() => throw null;
         public static bool IsMacOSVersionAtLeast(int major, int minor = default(int), int build = default(int)) => throw null;
         public static bool IsOSPlatform(string platform) => throw null;
@@ -3159,7 +3290,7 @@ namespace System
         public string VersionString { get => throw null; }
     }
 
-    // Generated from `System.OperationCanceledException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.OperationCanceledException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class OperationCanceledException : System.SystemException
     {
         public System.Threading.CancellationToken CancellationToken { get => throw null; }
@@ -3172,7 +3303,7 @@ namespace System
         public OperationCanceledException(string message, System.Exception innerException, System.Threading.CancellationToken token) => throw null;
     }
 
-    // Generated from `System.OutOfMemoryException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.OutOfMemoryException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class OutOfMemoryException : System.SystemException
     {
         public OutOfMemoryException() => throw null;
@@ -3181,7 +3312,7 @@ namespace System
         public OutOfMemoryException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.OverflowException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.OverflowException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class OverflowException : System.ArithmeticException
     {
         public OverflowException() => throw null;
@@ -3190,26 +3321,26 @@ namespace System
         public OverflowException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.ParamArrayAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ParamArrayAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ParamArrayAttribute : System.Attribute
     {
         public ParamArrayAttribute() => throw null;
     }
 
-    // Generated from `System.PlatformID` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum PlatformID
+    // Generated from `System.PlatformID` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum PlatformID : int
     {
-        MacOSX,
-        Other,
-        Unix,
-        Win32NT,
-        Win32S,
-        Win32Windows,
-        WinCE,
-        Xbox,
+        MacOSX = 6,
+        Other = 7,
+        Unix = 4,
+        Win32NT = 2,
+        Win32S = 0,
+        Win32Windows = 1,
+        WinCE = 3,
+        Xbox = 5,
     }
 
-    // Generated from `System.PlatformNotSupportedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.PlatformNotSupportedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class PlatformNotSupportedException : System.NotSupportedException
     {
         public PlatformNotSupportedException() => throw null;
@@ -3218,10 +3349,10 @@ namespace System
         public PlatformNotSupportedException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.Predicate<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Predicate<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate bool Predicate<T>(T obj);
 
-    // Generated from `System.Progress<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Progress<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Progress<T> : System.IProgress<T>
     {
         protected virtual void OnReport(T value) => throw null;
@@ -3231,7 +3362,7 @@ namespace System
         void System.IProgress<T>.Report(T value) => throw null;
     }
 
-    // Generated from `System.Random` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Random` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Random
     {
         public virtual int Next() => throw null;
@@ -3240,12 +3371,17 @@ namespace System
         public virtual void NextBytes(System.Byte[] buffer) => throw null;
         public virtual void NextBytes(System.Span<System.Byte> buffer) => throw null;
         public virtual double NextDouble() => throw null;
+        public virtual System.Int64 NextInt64() => throw null;
+        public virtual System.Int64 NextInt64(System.Int64 maxValue) => throw null;
+        public virtual System.Int64 NextInt64(System.Int64 minValue, System.Int64 maxValue) => throw null;
+        public virtual float NextSingle() => throw null;
         public Random() => throw null;
         public Random(int Seed) => throw null;
         protected virtual double Sample() => throw null;
+        public static System.Random Shared { get => throw null; }
     }
 
-    // Generated from `System.Range` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Range` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct Range : System.IEquatable<System.Range>
     {
         public static System.Range All { get => throw null; }
@@ -3262,7 +3398,7 @@ namespace System
         public override string ToString() => throw null;
     }
 
-    // Generated from `System.RankException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.RankException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class RankException : System.SystemException
     {
         public RankException() => throw null;
@@ -3271,7 +3407,7 @@ namespace System
         public RankException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.ReadOnlyMemory<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ReadOnlyMemory<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ReadOnlyMemory<T> : System.IEquatable<System.ReadOnlyMemory<T>>
     {
         public void CopyTo(System.Memory<T> destination) => throw null;
@@ -3295,10 +3431,10 @@ namespace System
         public static implicit operator System.ReadOnlyMemory<T>(T[] array) => throw null;
     }
 
-    // Generated from `System.ReadOnlySpan<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ReadOnlySpan<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ReadOnlySpan<T>
     {
-        // Generated from `System.ReadOnlySpan<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ReadOnlySpan<>+Enumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Enumerator
         {
             public T Current { get => throw null; }
@@ -3331,7 +3467,7 @@ namespace System
         public static implicit operator System.ReadOnlySpan<T>(T[] array) => throw null;
     }
 
-    // Generated from `System.ResolveEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ResolveEventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ResolveEventArgs : System.EventArgs
     {
         public string Name { get => throw null; }
@@ -3340,16 +3476,16 @@ namespace System
         public ResolveEventArgs(string name, System.Reflection.Assembly requestingAssembly) => throw null;
     }
 
-    // Generated from `System.ResolveEventHandler` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ResolveEventHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate System.Reflection.Assembly ResolveEventHandler(object sender, System.ResolveEventArgs args);
 
-    // Generated from `System.RuntimeArgumentHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.RuntimeArgumentHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct RuntimeArgumentHandle
     {
         // Stub generator skipped constructor 
     }
 
-    // Generated from `System.RuntimeFieldHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.RuntimeFieldHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct RuntimeFieldHandle : System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.RuntimeFieldHandle left, System.RuntimeFieldHandle right) => throw null;
@@ -3362,7 +3498,7 @@ namespace System
         public System.IntPtr Value { get => throw null; }
     }
 
-    // Generated from `System.RuntimeMethodHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.RuntimeMethodHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct RuntimeMethodHandle : System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.RuntimeMethodHandle left, System.RuntimeMethodHandle right) => throw null;
@@ -3376,7 +3512,7 @@ namespace System
         public System.IntPtr Value { get => throw null; }
     }
 
-    // Generated from `System.RuntimeTypeHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.RuntimeTypeHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct RuntimeTypeHandle : System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.RuntimeTypeHandle left, object right) => throw null;
@@ -3392,8 +3528,8 @@ namespace System
         public System.IntPtr Value { get => throw null; }
     }
 
-    // Generated from `System.SByte` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct SByte : System.IComparable, System.IComparable<System.SByte>, System.IConvertible, System.IEquatable<System.SByte>, System.IFormattable
+    // Generated from `System.SByte` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct SByte : System.IComparable, System.IComparable<System.SByte>, System.IConvertible, System.IEquatable<System.SByte>, System.IFormattable, System.ISpanFormattable
     {
         public int CompareTo(object obj) => throw null;
         public int CompareTo(System.SByte value) => throw null;
@@ -3435,20 +3571,20 @@ namespace System
         public static bool TryParse(string s, out System.SByte result) => throw null;
     }
 
-    // Generated from `System.STAThreadAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.STAThreadAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class STAThreadAttribute : System.Attribute
     {
         public STAThreadAttribute() => throw null;
     }
 
-    // Generated from `System.SerializableAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.SerializableAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class SerializableAttribute : System.Attribute
     {
         public SerializableAttribute() => throw null;
     }
 
-    // Generated from `System.Single` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Single : System.IComparable, System.IComparable<float>, System.IConvertible, System.IEquatable<float>, System.IFormattable
+    // Generated from `System.Single` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Single : System.IComparable, System.IComparable<float>, System.IConvertible, System.IEquatable<float>, System.IFormattable, System.ISpanFormattable
     {
         public static bool operator !=(float left, float right) => throw null;
         public static bool operator <(float left, float right) => throw null;
@@ -3508,10 +3644,10 @@ namespace System
         public static bool TryParse(string s, out float result) => throw null;
     }
 
-    // Generated from `System.Span<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Span<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct Span<T>
     {
-        // Generated from `System.Span<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Span<>+Enumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Enumerator
         {
             public T Current { get => throw null; }
@@ -3547,7 +3683,7 @@ namespace System
         public static implicit operator System.Span<T>(T[] array) => throw null;
     }
 
-    // Generated from `System.StackOverflowException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.StackOverflowException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class StackOverflowException : System.SystemException
     {
         public StackOverflowException() => throw null;
@@ -3555,7 +3691,7 @@ namespace System
         public StackOverflowException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.String` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.String` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class String : System.Collections.Generic.IEnumerable<System.Char>, System.Collections.IEnumerable, System.ICloneable, System.IComparable, System.IComparable<string>, System.IConvertible, System.IEquatable<string>
     {
         public static bool operator !=(string a, string b) => throw null;
@@ -3595,7 +3731,10 @@ namespace System
         public bool Contains(string value) => throw null;
         public bool Contains(string value, System.StringComparison comparisonType) => throw null;
         public static string Copy(string str) => throw null;
+        public void CopyTo(System.Span<System.Char> destination) => throw null;
         public void CopyTo(int sourceIndex, System.Char[] destination, int destinationIndex, int count) => throw null;
+        public static string Create(System.IFormatProvider provider, System.Span<System.Char> initialBuffer, ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler handler) => throw null;
+        public static string Create(System.IFormatProvider provider, ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler handler) => throw null;
         public static string Create<TState>(int length, TState state, System.Buffers.SpanAction<System.Char, TState> action) => throw null;
         public static string Empty;
         public bool EndsWith(System.Char value) => throw null;
@@ -3679,6 +3818,8 @@ namespace System
         public string Replace(string oldValue, string newValue) => throw null;
         public string Replace(string oldValue, string newValue, System.StringComparison comparisonType) => throw null;
         public string Replace(string oldValue, string newValue, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
+        public string ReplaceLineEndings() => throw null;
+        public string ReplaceLineEndings(string replacementText) => throw null;
         public string[] Split(System.Char[] separator, System.StringSplitOptions options) => throw null;
         public string[] Split(System.Char[] separator, int count) => throw null;
         public string[] Split(System.Char[] separator, int count, System.StringSplitOptions options) => throw null;
@@ -3738,10 +3879,11 @@ namespace System
         public string TrimStart() => throw null;
         public string TrimStart(System.Char trimChar) => throw null;
         public string TrimStart(params System.Char[] trimChars) => throw null;
+        public bool TryCopyTo(System.Span<System.Char> destination) => throw null;
         public static implicit operator System.ReadOnlySpan<System.Char>(string value) => throw null;
     }
 
-    // Generated from `System.StringComparer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.StringComparer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class StringComparer : System.Collections.Generic.IComparer<string>, System.Collections.Generic.IEqualityComparer<string>, System.Collections.IComparer, System.Collections.IEqualityComparer
     {
         public int Compare(object x, object y) => throw null;
@@ -3757,23 +3899,25 @@ namespace System
         public abstract int GetHashCode(string obj);
         public static System.StringComparer InvariantCulture { get => throw null; }
         public static System.StringComparer InvariantCultureIgnoreCase { get => throw null; }
+        public static bool IsWellKnownCultureAwareComparer(System.Collections.Generic.IEqualityComparer<string> comparer, out System.Globalization.CompareInfo compareInfo, out System.Globalization.CompareOptions compareOptions) => throw null;
+        public static bool IsWellKnownOrdinalComparer(System.Collections.Generic.IEqualityComparer<string> comparer, out bool ignoreCase) => throw null;
         public static System.StringComparer Ordinal { get => throw null; }
         public static System.StringComparer OrdinalIgnoreCase { get => throw null; }
         protected StringComparer() => throw null;
     }
 
-    // Generated from `System.StringComparison` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum StringComparison
+    // Generated from `System.StringComparison` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum StringComparison : int
     {
-        CurrentCulture,
-        CurrentCultureIgnoreCase,
-        InvariantCulture,
-        InvariantCultureIgnoreCase,
-        Ordinal,
-        OrdinalIgnoreCase,
+        CurrentCulture = 0,
+        CurrentCultureIgnoreCase = 1,
+        InvariantCulture = 2,
+        InvariantCultureIgnoreCase = 3,
+        Ordinal = 4,
+        OrdinalIgnoreCase = 5,
     }
 
-    // Generated from `System.StringNormalizationExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.StringNormalizationExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class StringNormalizationExtensions
     {
         public static bool IsNormalized(this string strInput) => throw null;
@@ -3782,16 +3926,16 @@ namespace System
         public static string Normalize(this string strInput, System.Text.NormalizationForm normalizationForm) => throw null;
     }
 
-    // Generated from `System.StringSplitOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.StringSplitOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum StringSplitOptions
+    public enum StringSplitOptions : int
     {
-        None,
-        RemoveEmptyEntries,
-        TrimEntries,
+        None = 0,
+        RemoveEmptyEntries = 1,
+        TrimEntries = 2,
     }
 
-    // Generated from `System.SystemException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.SystemException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class SystemException : System.Exception
     {
         public SystemException() => throw null;
@@ -3800,14 +3944,82 @@ namespace System
         public SystemException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.ThreadStaticAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ThreadStaticAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ThreadStaticAttribute : System.Attribute
     {
         public ThreadStaticAttribute() => throw null;
     }
 
-    // Generated from `System.TimeSpan` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct TimeSpan : System.IComparable, System.IComparable<System.TimeSpan>, System.IEquatable<System.TimeSpan>, System.IFormattable
+    // Generated from `System.TimeOnly` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct TimeOnly : System.IComparable, System.IComparable<System.TimeOnly>, System.IEquatable<System.TimeOnly>, System.IFormattable, System.ISpanFormattable
+    {
+        public static bool operator !=(System.TimeOnly left, System.TimeOnly right) => throw null;
+        public static System.TimeSpan operator -(System.TimeOnly t1, System.TimeOnly t2) => throw null;
+        public static bool operator <(System.TimeOnly left, System.TimeOnly right) => throw null;
+        public static bool operator <=(System.TimeOnly left, System.TimeOnly right) => throw null;
+        public static bool operator ==(System.TimeOnly left, System.TimeOnly right) => throw null;
+        public static bool operator >(System.TimeOnly left, System.TimeOnly right) => throw null;
+        public static bool operator >=(System.TimeOnly left, System.TimeOnly right) => throw null;
+        public System.TimeOnly Add(System.TimeSpan value) => throw null;
+        public System.TimeOnly Add(System.TimeSpan value, out int wrappedDays) => throw null;
+        public System.TimeOnly AddHours(double value) => throw null;
+        public System.TimeOnly AddHours(double value, out int wrappedDays) => throw null;
+        public System.TimeOnly AddMinutes(double value) => throw null;
+        public System.TimeOnly AddMinutes(double value, out int wrappedDays) => throw null;
+        public int CompareTo(System.TimeOnly value) => throw null;
+        public int CompareTo(object value) => throw null;
+        public bool Equals(System.TimeOnly value) => throw null;
+        public override bool Equals(object value) => throw null;
+        public static System.TimeOnly FromDateTime(System.DateTime dateTime) => throw null;
+        public static System.TimeOnly FromTimeSpan(System.TimeSpan timeSpan) => throw null;
+        public override int GetHashCode() => throw null;
+        public int Hour { get => throw null; }
+        public bool IsBetween(System.TimeOnly start, System.TimeOnly end) => throw null;
+        public static System.TimeOnly MaxValue { get => throw null; }
+        public int Millisecond { get => throw null; }
+        public static System.TimeOnly MinValue { get => throw null; }
+        public int Minute { get => throw null; }
+        public static System.TimeOnly Parse(System.ReadOnlySpan<System.Char> s, System.IFormatProvider provider = default(System.IFormatProvider), System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.TimeOnly Parse(string s) => throw null;
+        public static System.TimeOnly Parse(string s, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.TimeOnly ParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider = default(System.IFormatProvider), System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.TimeOnly ParseExact(System.ReadOnlySpan<System.Char> s, string[] formats) => throw null;
+        public static System.TimeOnly ParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.TimeOnly ParseExact(string s, string[] formats) => throw null;
+        public static System.TimeOnly ParseExact(string s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public static System.TimeOnly ParseExact(string s, string format) => throw null;
+        public static System.TimeOnly ParseExact(string s, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style = default(System.Globalization.DateTimeStyles)) => throw null;
+        public int Second { get => throw null; }
+        public System.Int64 Ticks { get => throw null; }
+        // Stub generator skipped constructor 
+        public TimeOnly(int hour, int minute) => throw null;
+        public TimeOnly(int hour, int minute, int second) => throw null;
+        public TimeOnly(int hour, int minute, int second, int millisecond) => throw null;
+        public TimeOnly(System.Int64 ticks) => throw null;
+        public string ToLongTimeString() => throw null;
+        public string ToShortTimeString() => throw null;
+        public override string ToString() => throw null;
+        public string ToString(System.IFormatProvider provider) => throw null;
+        public string ToString(string format) => throw null;
+        public string ToString(string format, System.IFormatProvider provider) => throw null;
+        public System.TimeSpan ToTimeSpan() => throw null;
+        public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.TimeOnly result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.TimeOnly result) => throw null;
+        public static bool TryParse(string s, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.TimeOnly result) => throw null;
+        public static bool TryParse(string s, out System.TimeOnly result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.TimeOnly result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, System.ReadOnlySpan<System.Char> format, out System.TimeOnly result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.TimeOnly result) => throw null;
+        public static bool TryParseExact(System.ReadOnlySpan<System.Char> s, string[] formats, out System.TimeOnly result) => throw null;
+        public static bool TryParseExact(string s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.TimeOnly result) => throw null;
+        public static bool TryParseExact(string s, string[] formats, out System.TimeOnly result) => throw null;
+        public static bool TryParseExact(string s, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.TimeOnly result) => throw null;
+        public static bool TryParseExact(string s, string format, out System.TimeOnly result) => throw null;
+    }
+
+    // Generated from `System.TimeSpan` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct TimeSpan : System.IComparable, System.IComparable<System.TimeSpan>, System.IEquatable<System.TimeSpan>, System.IFormattable, System.ISpanFormattable
     {
         public static bool operator !=(System.TimeSpan t1, System.TimeSpan t2) => throw null;
         public static System.TimeSpan operator *(System.TimeSpan timeSpan, double factor) => throw null;
@@ -3894,7 +4106,7 @@ namespace System
         public static System.TimeSpan Zero;
     }
 
-    // Generated from `System.TimeZone` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TimeZone` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class TimeZone
     {
         public static System.TimeZone CurrentTimeZone { get => throw null; }
@@ -3909,13 +4121,15 @@ namespace System
         public virtual System.DateTime ToUniversalTime(System.DateTime time) => throw null;
     }
 
-    // Generated from `System.TimeZoneInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TimeZoneInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TimeZoneInfo : System.IEquatable<System.TimeZoneInfo>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
     {
-        // Generated from `System.TimeZoneInfo+AdjustmentRule` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.TimeZoneInfo+AdjustmentRule` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AdjustmentRule : System.IEquatable<System.TimeZoneInfo.AdjustmentRule>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
+            public System.TimeSpan BaseUtcOffsetDelta { get => throw null; }
             public static System.TimeZoneInfo.AdjustmentRule CreateAdjustmentRule(System.DateTime dateStart, System.DateTime dateEnd, System.TimeSpan daylightDelta, System.TimeZoneInfo.TransitionTime daylightTransitionStart, System.TimeZoneInfo.TransitionTime daylightTransitionEnd) => throw null;
+            public static System.TimeZoneInfo.AdjustmentRule CreateAdjustmentRule(System.DateTime dateStart, System.DateTime dateEnd, System.TimeSpan daylightDelta, System.TimeZoneInfo.TransitionTime daylightTransitionStart, System.TimeZoneInfo.TransitionTime daylightTransitionEnd, System.TimeSpan baseUtcOffsetDelta) => throw null;
             public System.DateTime DateEnd { get => throw null; }
             public System.DateTime DateStart { get => throw null; }
             public System.TimeSpan DaylightDelta { get => throw null; }
@@ -3928,7 +4142,7 @@ namespace System
         }
 
 
-        // Generated from `System.TimeZoneInfo+TransitionTime` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.TimeZoneInfo+TransitionTime` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct TransitionTime : System.IEquatable<System.TimeZoneInfo.TransitionTime>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
             public static bool operator !=(System.TimeZoneInfo.TransitionTime t1, System.TimeZoneInfo.TransitionTime t2) => throw null;
@@ -3978,6 +4192,7 @@ namespace System
         public static System.Collections.ObjectModel.ReadOnlyCollection<System.TimeZoneInfo> GetSystemTimeZones() => throw null;
         public System.TimeSpan GetUtcOffset(System.DateTime dateTime) => throw null;
         public System.TimeSpan GetUtcOffset(System.DateTimeOffset dateTimeOffset) => throw null;
+        public bool HasIanaId { get => throw null; }
         public bool HasSameRules(System.TimeZoneInfo other) => throw null;
         public string Id { get => throw null; }
         public bool IsAmbiguousTime(System.DateTime dateTime) => throw null;
@@ -3991,10 +4206,13 @@ namespace System
         public bool SupportsDaylightSavingTime { get => throw null; }
         public string ToSerializedString() => throw null;
         public override string ToString() => throw null;
+        public static bool TryConvertIanaIdToWindowsId(string ianaId, out string windowsId) => throw null;
+        public static bool TryConvertWindowsIdToIanaId(string windowsId, out string ianaId) => throw null;
+        public static bool TryConvertWindowsIdToIanaId(string windowsId, string region, out string ianaId) => throw null;
         public static System.TimeZoneInfo Utc { get => throw null; }
     }
 
-    // Generated from `System.TimeZoneNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TimeZoneNotFoundException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TimeZoneNotFoundException : System.Exception
     {
         public TimeZoneNotFoundException() => throw null;
@@ -4003,7 +4221,7 @@ namespace System
         public TimeZoneNotFoundException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.TimeoutException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TimeoutException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TimeoutException : System.SystemException
     {
         public TimeoutException() => throw null;
@@ -4012,7 +4230,7 @@ namespace System
         public TimeoutException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.Tuple` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Tuple
     {
         public static System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8>> Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8) => throw null;
@@ -4025,7 +4243,7 @@ namespace System
         public static System.Tuple<T1> Create<T1>(T1 item1) => throw null;
     }
 
-    // Generated from `System.Tuple<,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple<,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
@@ -4048,7 +4266,7 @@ namespace System
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, TRest rest) => throw null;
     }
 
-    // Generated from `System.Tuple<,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple<,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Tuple<T1, T2, T3, T4, T5, T6, T7> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
@@ -4070,7 +4288,7 @@ namespace System
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7) => throw null;
     }
 
-    // Generated from `System.Tuple<,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple<,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Tuple<T1, T2, T3, T4, T5, T6> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
@@ -4091,7 +4309,7 @@ namespace System
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6) => throw null;
     }
 
-    // Generated from `System.Tuple<,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple<,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Tuple<T1, T2, T3, T4, T5> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
@@ -4111,7 +4329,7 @@ namespace System
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5) => throw null;
     }
 
-    // Generated from `System.Tuple<,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple<,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Tuple<T1, T2, T3, T4> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
@@ -4130,7 +4348,7 @@ namespace System
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4) => throw null;
     }
 
-    // Generated from `System.Tuple<,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple<,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Tuple<T1, T2, T3> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
@@ -4148,7 +4366,7 @@ namespace System
         public Tuple(T1 item1, T2 item2, T3 item3) => throw null;
     }
 
-    // Generated from `System.Tuple<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Tuple<T1, T2> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
@@ -4165,7 +4383,7 @@ namespace System
         public Tuple(T1 item1, T2 item2) => throw null;
     }
 
-    // Generated from `System.Tuple<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Tuple<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Tuple<T1> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.Runtime.CompilerServices.ITuple
     {
         int System.IComparable.CompareTo(object obj) => throw null;
@@ -4181,7 +4399,7 @@ namespace System
         public Tuple(T1 item1) => throw null;
     }
 
-    // Generated from `System.TupleExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TupleExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class TupleExtensions
     {
         public static void Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(this System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10, T11, T12, T13, T14, System.Tuple<T15, T16, T17, T18, T19, T20, T21>>> value, out T1 item1, out T2 item2, out T3 item3, out T4 item4, out T5 item5, out T6 item6, out T7 item7, out T8 item8, out T9 item9, out T10 item10, out T11 item11, out T12 item12, out T13 item13, out T14 item14, out T15 item15, out T16 item16, out T17 item17, out T18 item18, out T19 item19, out T20 item20, out T21 item21) => throw null;
@@ -4249,7 +4467,7 @@ namespace System
         public static System.ValueTuple<T1> ToValueTuple<T1>(this System.Tuple<T1> value) => throw null;
     }
 
-    // Generated from `System.Type` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Type` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class Type : System.Reflection.MemberInfo, System.Reflection.IReflect
     {
         public static bool operator !=(System.Type left, System.Type right) => throw null;
@@ -4280,6 +4498,7 @@ namespace System
         protected abstract System.Reflection.TypeAttributes GetAttributeFlagsImpl();
         public System.Reflection.ConstructorInfo GetConstructor(System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
         public System.Reflection.ConstructorInfo GetConstructor(System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.ConstructorInfo GetConstructor(System.Reflection.BindingFlags bindingAttr, System.Type[] types) => throw null;
         public System.Reflection.ConstructorInfo GetConstructor(System.Type[] types) => throw null;
         protected abstract System.Reflection.ConstructorInfo GetConstructorImpl(System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers);
         public System.Reflection.ConstructorInfo[] GetConstructors() => throw null;
@@ -4309,12 +4528,14 @@ namespace System
         public System.Reflection.MemberInfo[] GetMember(string name) => throw null;
         public virtual System.Reflection.MemberInfo[] GetMember(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
         public virtual System.Reflection.MemberInfo[] GetMember(string name, System.Reflection.MemberTypes type, System.Reflection.BindingFlags bindingAttr) => throw null;
+        public virtual System.Reflection.MemberInfo GetMemberWithSameMetadataDefinitionAs(System.Reflection.MemberInfo member) => throw null;
         public System.Reflection.MemberInfo[] GetMembers() => throw null;
         public abstract System.Reflection.MemberInfo[] GetMembers(System.Reflection.BindingFlags bindingAttr);
         public System.Reflection.MethodInfo GetMethod(string name) => throw null;
         public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
         public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
         public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
+        public System.Reflection.MethodInfo GetMethod(string name, System.Reflection.BindingFlags bindingAttr, System.Type[] types) => throw null;
         public System.Reflection.MethodInfo GetMethod(string name, System.Type[] types) => throw null;
         public System.Reflection.MethodInfo GetMethod(string name, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
         public System.Reflection.MethodInfo GetMethod(string name, int genericParameterCount, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
@@ -4445,7 +4666,7 @@ namespace System
         public abstract System.Type UnderlyingSystemType { get; }
     }
 
-    // Generated from `System.TypeAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TypeAccessException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TypeAccessException : System.TypeLoadException
     {
         public TypeAccessException() => throw null;
@@ -4454,30 +4675,30 @@ namespace System
         public TypeAccessException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.TypeCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum TypeCode
+    // Generated from `System.TypeCode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum TypeCode : int
     {
-        Boolean,
-        Byte,
-        Char,
-        DBNull,
-        DateTime,
-        Decimal,
-        Double,
-        Empty,
-        Int16,
-        Int32,
-        Int64,
-        Object,
-        SByte,
-        Single,
-        String,
-        UInt16,
-        UInt32,
-        UInt64,
+        Boolean = 3,
+        Byte = 6,
+        Char = 4,
+        DBNull = 2,
+        DateTime = 16,
+        Decimal = 15,
+        Double = 14,
+        Empty = 0,
+        Int16 = 7,
+        Int32 = 9,
+        Int64 = 11,
+        Object = 1,
+        SByte = 5,
+        Single = 13,
+        String = 18,
+        UInt16 = 8,
+        UInt32 = 10,
+        UInt64 = 12,
     }
 
-    // Generated from `System.TypeInitializationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TypeInitializationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TypeInitializationException : System.SystemException
     {
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -4485,7 +4706,7 @@ namespace System
         public string TypeName { get => throw null; }
     }
 
-    // Generated from `System.TypeLoadException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TypeLoadException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TypeLoadException : System.SystemException, System.Runtime.Serialization.ISerializable
     {
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -4497,7 +4718,7 @@ namespace System
         public string TypeName { get => throw null; }
     }
 
-    // Generated from `System.TypeUnloadedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TypeUnloadedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TypeUnloadedException : System.SystemException
     {
         public TypeUnloadedException() => throw null;
@@ -4506,7 +4727,7 @@ namespace System
         public TypeUnloadedException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.TypedReference` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.TypedReference` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct TypedReference
     {
         public override bool Equals(object o) => throw null;
@@ -4519,8 +4740,8 @@ namespace System
         // Stub generator skipped constructor 
     }
 
-    // Generated from `System.UInt16` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct UInt16 : System.IComparable, System.IComparable<System.UInt16>, System.IConvertible, System.IEquatable<System.UInt16>, System.IFormattable
+    // Generated from `System.UInt16` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct UInt16 : System.IComparable, System.IComparable<System.UInt16>, System.IConvertible, System.IEquatable<System.UInt16>, System.IFormattable, System.ISpanFormattable
     {
         public int CompareTo(object value) => throw null;
         public int CompareTo(System.UInt16 value) => throw null;
@@ -4562,8 +4783,8 @@ namespace System
         // Stub generator skipped constructor 
     }
 
-    // Generated from `System.UInt32` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct UInt32 : System.IComparable, System.IComparable<System.UInt32>, System.IConvertible, System.IEquatable<System.UInt32>, System.IFormattable
+    // Generated from `System.UInt32` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct UInt32 : System.IComparable, System.IComparable<System.UInt32>, System.IConvertible, System.IEquatable<System.UInt32>, System.IFormattable, System.ISpanFormattable
     {
         public int CompareTo(object value) => throw null;
         public int CompareTo(System.UInt32 value) => throw null;
@@ -4605,8 +4826,8 @@ namespace System
         // Stub generator skipped constructor 
     }
 
-    // Generated from `System.UInt64` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct UInt64 : System.IComparable, System.IComparable<System.UInt64>, System.IConvertible, System.IEquatable<System.UInt64>, System.IFormattable
+    // Generated from `System.UInt64` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct UInt64 : System.IComparable, System.IComparable<System.UInt64>, System.IConvertible, System.IEquatable<System.UInt64>, System.IFormattable, System.ISpanFormattable
     {
         public int CompareTo(object value) => throw null;
         public int CompareTo(System.UInt64 value) => throw null;
@@ -4648,8 +4869,8 @@ namespace System
         // Stub generator skipped constructor 
     }
 
-    // Generated from `System.UIntPtr` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct UIntPtr : System.IComparable, System.IComparable<System.UIntPtr>, System.IEquatable<System.UIntPtr>, System.IFormattable, System.Runtime.Serialization.ISerializable
+    // Generated from `System.UIntPtr` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct UIntPtr : System.IComparable, System.IComparable<System.UIntPtr>, System.IEquatable<System.UIntPtr>, System.IFormattable, System.ISpanFormattable, System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.UIntPtr value1, System.UIntPtr value2) => throw null;
         public static System.UIntPtr operator +(System.UIntPtr pointer, int offset) => throw null;
@@ -4664,6 +4885,7 @@ namespace System
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public static System.UIntPtr MaxValue { get => throw null; }
         public static System.UIntPtr MinValue { get => throw null; }
+        public static System.UIntPtr Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
         public static System.UIntPtr Parse(string s) => throw null;
         public static System.UIntPtr Parse(string s, System.IFormatProvider provider) => throw null;
         public static System.UIntPtr Parse(string s, System.Globalization.NumberStyles style) => throw null;
@@ -4677,6 +4899,9 @@ namespace System
         public string ToString(string format, System.IFormatProvider provider) => throw null;
         public System.UInt32 ToUInt32() => throw null;
         public System.UInt64 ToUInt64() => throw null;
+        public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UIntPtr result) => throw null;
+        public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.UIntPtr result) => throw null;
         public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.UIntPtr result) => throw null;
         public static bool TryParse(string s, out System.UIntPtr result) => throw null;
         // Stub generator skipped constructor 
@@ -4692,7 +4917,7 @@ namespace System
         public static explicit operator System.UIntPtr(System.UInt64 value) => throw null;
     }
 
-    // Generated from `System.UnauthorizedAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.UnauthorizedAccessException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class UnauthorizedAccessException : System.SystemException
     {
         public UnauthorizedAccessException() => throw null;
@@ -4701,7 +4926,7 @@ namespace System
         public UnauthorizedAccessException(string message, System.Exception inner) => throw null;
     }
 
-    // Generated from `System.UnhandledExceptionEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.UnhandledExceptionEventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class UnhandledExceptionEventArgs : System.EventArgs
     {
         public object ExceptionObject { get => throw null; }
@@ -4709,10 +4934,10 @@ namespace System
         public UnhandledExceptionEventArgs(object exception, bool isTerminating) => throw null;
     }
 
-    // Generated from `System.UnhandledExceptionEventHandler` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.UnhandledExceptionEventHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void UnhandledExceptionEventHandler(object sender, System.UnhandledExceptionEventArgs e);
 
-    // Generated from `System.Uri` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Uri` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class Uri : System.Runtime.Serialization.ISerializable
     {
         public static bool operator !=(System.Uri uri1, System.Uri uri2) => throw null;
@@ -4770,6 +4995,7 @@ namespace System
         public override string ToString() => throw null;
         public static bool TryCreate(System.Uri baseUri, System.Uri relativeUri, out System.Uri result) => throw null;
         public static bool TryCreate(System.Uri baseUri, string relativeUri, out System.Uri result) => throw null;
+        public static bool TryCreate(string uriString, System.UriCreationOptions creationOptions, out System.Uri result) => throw null;
         public static bool TryCreate(string uriString, System.UriKind uriKind, out System.Uri result) => throw null;
         protected virtual string Unescape(string path) => throw null;
         public static string UnescapeDataString(string stringToUnescape) => throw null;
@@ -4778,10 +5004,12 @@ namespace System
         public Uri(System.Uri baseUri, string relativeUri) => throw null;
         public Uri(System.Uri baseUri, string relativeUri, bool dontEscape) => throw null;
         public Uri(string uriString) => throw null;
+        public Uri(string uriString, System.UriCreationOptions creationOptions) => throw null;
         public Uri(string uriString, System.UriKind uriKind) => throw null;
         public Uri(string uriString, bool dontEscape) => throw null;
         public static string UriSchemeFile;
         public static string UriSchemeFtp;
+        public static string UriSchemeFtps;
         public static string UriSchemeGopher;
         public static string UriSchemeHttp;
         public static string UriSchemeHttps;
@@ -4790,11 +5018,16 @@ namespace System
         public static string UriSchemeNetTcp;
         public static string UriSchemeNews;
         public static string UriSchemeNntp;
+        public static string UriSchemeSftp;
+        public static string UriSchemeSsh;
+        public static string UriSchemeTelnet;
+        public static string UriSchemeWs;
+        public static string UriSchemeWss;
         public bool UserEscaped { get => throw null; }
         public string UserInfo { get => throw null; }
     }
 
-    // Generated from `System.UriBuilder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.UriBuilder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class UriBuilder
     {
         public override bool Equals(object rparam) => throw null;
@@ -4818,38 +5051,45 @@ namespace System
         public string UserName { get => throw null; set => throw null; }
     }
 
-    // Generated from `System.UriComponents` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.UriComponents` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum UriComponents
+    public enum UriComponents : int
     {
-        AbsoluteUri,
-        Fragment,
-        Host,
-        HostAndPort,
-        HttpRequestUrl,
-        KeepDelimiter,
-        NormalizedHost,
-        Path,
-        PathAndQuery,
-        Port,
-        Query,
-        Scheme,
-        SchemeAndServer,
-        SerializationInfoString,
-        StrongAuthority,
-        StrongPort,
-        UserInfo,
+        AbsoluteUri = 127,
+        Fragment = 64,
+        Host = 4,
+        HostAndPort = 132,
+        HttpRequestUrl = 61,
+        KeepDelimiter = 1073741824,
+        NormalizedHost = 256,
+        Path = 16,
+        PathAndQuery = 48,
+        Port = 8,
+        Query = 32,
+        Scheme = 1,
+        SchemeAndServer = 13,
+        SerializationInfoString = -2147483648,
+        StrongAuthority = 134,
+        StrongPort = 128,
+        UserInfo = 2,
     }
 
-    // Generated from `System.UriFormat` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum UriFormat
+    // Generated from `System.UriCreationOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct UriCreationOptions
     {
-        SafeUnescaped,
-        Unescaped,
-        UriEscaped,
+        public bool DangerousDisablePathAndQueryCanonicalization { get => throw null; set => throw null; }
+        // Stub generator skipped constructor 
     }
 
-    // Generated from `System.UriFormatException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.UriFormat` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum UriFormat : int
+    {
+        SafeUnescaped = 3,
+        Unescaped = 2,
+        UriEscaped = 1,
+    }
+
+    // Generated from `System.UriFormatException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class UriFormatException : System.FormatException, System.Runtime.Serialization.ISerializable
     {
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
@@ -4859,25 +5099,25 @@ namespace System
         public UriFormatException(string textString, System.Exception e) => throw null;
     }
 
-    // Generated from `System.UriHostNameType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum UriHostNameType
+    // Generated from `System.UriHostNameType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum UriHostNameType : int
     {
-        Basic,
-        Dns,
-        IPv4,
-        IPv6,
-        Unknown,
+        Basic = 1,
+        Dns = 2,
+        IPv4 = 3,
+        IPv6 = 4,
+        Unknown = 0,
     }
 
-    // Generated from `System.UriKind` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum UriKind
+    // Generated from `System.UriKind` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum UriKind : int
     {
-        Absolute,
-        Relative,
-        RelativeOrAbsolute,
+        Absolute = 1,
+        Relative = 2,
+        RelativeOrAbsolute = 0,
     }
 
-    // Generated from `System.UriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.UriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class UriParser
     {
         protected virtual string GetComponents(System.Uri uri, System.UriComponents components, System.UriFormat format) => throw null;
@@ -4892,16 +5132,16 @@ namespace System
         protected UriParser() => throw null;
     }
 
-    // Generated from `System.UriPartial` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum UriPartial
+    // Generated from `System.UriPartial` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public enum UriPartial : int
     {
-        Authority,
-        Path,
-        Query,
-        Scheme,
+        Authority = 1,
+        Path = 2,
+        Query = 3,
+        Scheme = 0,
     }
 
-    // Generated from `System.ValueTuple` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<System.ValueTuple>, System.IEquatable<System.ValueTuple>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo(System.ValueTuple other) => throw null;
@@ -4927,7 +5167,7 @@ namespace System
         // Stub generator skipped constructor 
     }
 
-    // Generated from `System.ValueTuple<,,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple<,,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest>>, System.IEquatable<System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest>>, System.Runtime.CompilerServices.ITuple where TRest : struct
     {
         public int CompareTo(System.ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest> other) => throw null;
@@ -4953,7 +5193,7 @@ namespace System
         public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, TRest rest) => throw null;
     }
 
-    // Generated from `System.ValueTuple<,,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple<,,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple<T1, T2, T3, T4, T5, T6, T7> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3, T4, T5, T6, T7)>, System.IEquatable<(T1, T2, T3, T4, T5, T6, T7)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3, T4, T5, T6, T7) other) => throw null;
@@ -4978,7 +5218,7 @@ namespace System
         public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7) => throw null;
     }
 
-    // Generated from `System.ValueTuple<,,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple<,,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple<T1, T2, T3, T4, T5, T6> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3, T4, T5, T6)>, System.IEquatable<(T1, T2, T3, T4, T5, T6)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3, T4, T5, T6) other) => throw null;
@@ -5002,7 +5242,7 @@ namespace System
         public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6) => throw null;
     }
 
-    // Generated from `System.ValueTuple<,,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple<,,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple<T1, T2, T3, T4, T5> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3, T4, T5)>, System.IEquatable<(T1, T2, T3, T4, T5)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3, T4, T5) other) => throw null;
@@ -5025,7 +5265,7 @@ namespace System
         public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5) => throw null;
     }
 
-    // Generated from `System.ValueTuple<,,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple<,,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple<T1, T2, T3, T4> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3, T4)>, System.IEquatable<(T1, T2, T3, T4)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3, T4) other) => throw null;
@@ -5047,7 +5287,7 @@ namespace System
         public ValueTuple(T1 item1, T2 item2, T3 item3, T4 item4) => throw null;
     }
 
-    // Generated from `System.ValueTuple<,,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple<,,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple<T1, T2, T3> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2, T3)>, System.IEquatable<(T1, T2, T3)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2, T3) other) => throw null;
@@ -5068,7 +5308,7 @@ namespace System
         public ValueTuple(T1 item1, T2 item2, T3 item3) => throw null;
     }
 
-    // Generated from `System.ValueTuple<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple<T1, T2> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<(T1, T2)>, System.IEquatable<(T1, T2)>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo((T1, T2) other) => throw null;
@@ -5088,7 +5328,7 @@ namespace System
         public ValueTuple(T1 item1, T2 item2) => throw null;
     }
 
-    // Generated from `System.ValueTuple<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueTuple<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ValueTuple<T1> : System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IComparable, System.IComparable<System.ValueTuple<T1>>, System.IEquatable<System.ValueTuple<T1>>, System.Runtime.CompilerServices.ITuple
     {
         public int CompareTo(System.ValueTuple<T1> other) => throw null;
@@ -5107,7 +5347,7 @@ namespace System
         public ValueTuple(T1 item1) => throw null;
     }
 
-    // Generated from `System.ValueType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.ValueType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public abstract class ValueType
     {
         public override bool Equals(object obj) => throw null;
@@ -5116,8 +5356,8 @@ namespace System
         protected ValueType() => throw null;
     }
 
-    // Generated from `System.Version` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public class Version : System.ICloneable, System.IComparable, System.IComparable<System.Version>, System.IEquatable<System.Version>
+    // Generated from `System.Version` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public class Version : System.ICloneable, System.IComparable, System.IComparable<System.Version>, System.IEquatable<System.Version>, System.IFormattable, System.ISpanFormattable
     {
         public static bool operator !=(System.Version v1, System.Version v2) => throw null;
         public static bool operator <(System.Version v1, System.Version v2) => throw null;
@@ -5141,8 +5381,10 @@ namespace System
         public int Revision { get => throw null; }
         public override string ToString() => throw null;
         public string ToString(int fieldCount) => throw null;
+        string System.IFormattable.ToString(string format, System.IFormatProvider formatProvider) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, int fieldCount, out int charsWritten) => throw null;
         public bool TryFormat(System.Span<System.Char> destination, out int charsWritten) => throw null;
+        bool System.ISpanFormattable.TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> input, out System.Version result) => throw null;
         public static bool TryParse(string input, out System.Version result) => throw null;
         public Version() => throw null;
@@ -5152,12 +5394,12 @@ namespace System
         public Version(string version) => throw null;
     }
 
-    // Generated from `System.Void` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.Void` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct Void
     {
     }
 
-    // Generated from `System.WeakReference` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.WeakReference` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class WeakReference : System.Runtime.Serialization.ISerializable
     {
         public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -5170,7 +5412,7 @@ namespace System
         // ERR: Stub generator didn't handle member: ~WeakReference
     }
 
-    // Generated from `System.WeakReference<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.WeakReference<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class WeakReference<T> : System.Runtime.Serialization.ISerializable where T : class
     {
         public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -5183,7 +5425,7 @@ namespace System
 
     namespace Buffers
     {
-        // Generated from `System.Buffers.ArrayPool<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Buffers.ArrayPool<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class ArrayPool<T>
         {
             protected ArrayPool() => throw null;
@@ -5194,20 +5436,20 @@ namespace System
             public static System.Buffers.ArrayPool<T> Shared { get => throw null; }
         }
 
-        // Generated from `System.Buffers.IMemoryOwner<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Buffers.IMemoryOwner<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IMemoryOwner<T> : System.IDisposable
         {
             System.Memory<T> Memory { get; }
         }
 
-        // Generated from `System.Buffers.IPinnable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Buffers.IPinnable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IPinnable
         {
             System.Buffers.MemoryHandle Pin(int elementIndex);
             void Unpin();
         }
 
-        // Generated from `System.Buffers.MemoryHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Buffers.MemoryHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct MemoryHandle : System.IDisposable
         {
             public void Dispose() => throw null;
@@ -5216,7 +5458,7 @@ namespace System
             unsafe public void* Pointer { get => throw null; }
         }
 
-        // Generated from `System.Buffers.MemoryManager<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Buffers.MemoryManager<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class MemoryManager<T> : System.Buffers.IMemoryOwner<T>, System.Buffers.IPinnable, System.IDisposable
         {
             protected System.Memory<T> CreateMemory(int length) => throw null;
@@ -5231,19 +5473,19 @@ namespace System
             public abstract void Unpin();
         }
 
-        // Generated from `System.Buffers.OperationStatus` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum OperationStatus
+        // Generated from `System.Buffers.OperationStatus` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum OperationStatus : int
         {
-            DestinationTooSmall,
-            Done,
-            InvalidData,
-            NeedMoreData,
+            DestinationTooSmall = 1,
+            Done = 0,
+            InvalidData = 3,
+            NeedMoreData = 2,
         }
 
-        // Generated from `System.Buffers.ReadOnlySpanAction<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Buffers.ReadOnlySpanAction<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ReadOnlySpanAction<T, TArg>(System.ReadOnlySpan<T> span, TArg arg);
 
-        // Generated from `System.Buffers.SpanAction<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Buffers.SpanAction<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void SpanAction<T, TArg>(System.Span<T> span, TArg arg);
 
     }
@@ -5251,7 +5493,7 @@ namespace System
     {
         namespace Compiler
         {
-            // Generated from `System.CodeDom.Compiler.GeneratedCodeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.CodeDom.Compiler.GeneratedCodeAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class GeneratedCodeAttribute : System.Attribute
             {
                 public GeneratedCodeAttribute(string tool, string version) => throw null;
@@ -5259,19 +5501,22 @@ namespace System
                 public string Version { get => throw null; }
             }
 
-            // Generated from `System.CodeDom.Compiler.IndentedTextWriter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.CodeDom.Compiler.IndentedTextWriter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IndentedTextWriter : System.IO.TextWriter
             {
                 public override void Close() => throw null;
                 public const string DefaultTabString = default;
+                public override System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
                 public override System.Text.Encoding Encoding { get => throw null; }
                 public override void Flush() => throw null;
+                public override System.Threading.Tasks.Task FlushAsync() => throw null;
                 public int Indent { get => throw null; set => throw null; }
                 public IndentedTextWriter(System.IO.TextWriter writer) => throw null;
                 public IndentedTextWriter(System.IO.TextWriter writer, string tabString) => throw null;
                 public System.IO.TextWriter InnerWriter { get => throw null; }
                 public override string NewLine { get => throw null; set => throw null; }
                 protected virtual void OutputTabs() => throw null;
+                protected virtual System.Threading.Tasks.Task OutputTabsAsync() => throw null;
                 public override void Write(System.Char[] buffer) => throw null;
                 public override void Write(System.Char[] buffer, int index, int count) => throw null;
                 public override void Write(bool value) => throw null;
@@ -5285,6 +5530,11 @@ namespace System
                 public override void Write(string format, object arg0) => throw null;
                 public override void Write(string format, object arg0, object arg1) => throw null;
                 public override void Write(string format, params object[] arg) => throw null;
+                public override System.Threading.Tasks.Task WriteAsync(System.Char[] buffer, int index, int count) => throw null;
+                public override System.Threading.Tasks.Task WriteAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public override System.Threading.Tasks.Task WriteAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public override System.Threading.Tasks.Task WriteAsync(System.Char value) => throw null;
+                public override System.Threading.Tasks.Task WriteAsync(string value) => throw null;
                 public override void WriteLine() => throw null;
                 public override void WriteLine(System.Char[] buffer) => throw null;
                 public override void WriteLine(System.Char[] buffer, int index, int count) => throw null;
@@ -5300,14 +5550,21 @@ namespace System
                 public override void WriteLine(string format, object arg0, object arg1) => throw null;
                 public override void WriteLine(string format, params object[] arg) => throw null;
                 public override void WriteLine(System.UInt32 value) => throw null;
+                public override System.Threading.Tasks.Task WriteLineAsync() => throw null;
+                public override System.Threading.Tasks.Task WriteLineAsync(System.Char[] buffer, int index, int count) => throw null;
+                public override System.Threading.Tasks.Task WriteLineAsync(System.ReadOnlyMemory<System.Char> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public override System.Threading.Tasks.Task WriteLineAsync(System.Text.StringBuilder value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public override System.Threading.Tasks.Task WriteLineAsync(System.Char value) => throw null;
+                public override System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
                 public void WriteLineNoTabs(string s) => throw null;
+                public System.Threading.Tasks.Task WriteLineNoTabsAsync(string s) => throw null;
             }
 
         }
     }
     namespace Collections
     {
-        // Generated from `System.Collections.ArrayList` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.ArrayList` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ArrayList : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ICloneable
         {
             public static System.Collections.ArrayList Adapter(System.Collections.IList list) => throw null;
@@ -5364,7 +5621,7 @@ namespace System
             public virtual void TrimToSize() => throw null;
         }
 
-        // Generated from `System.Collections.Comparer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.Comparer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Comparer : System.Collections.IComparer, System.Runtime.Serialization.ISerializable
         {
             public int Compare(object a, object b) => throw null;
@@ -5374,7 +5631,7 @@ namespace System
             public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         }
 
-        // Generated from `System.Collections.DictionaryEntry` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.DictionaryEntry` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct DictionaryEntry
         {
             public void Deconstruct(out object key, out object value) => throw null;
@@ -5384,7 +5641,7 @@ namespace System
             public object Value { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Collections.Hashtable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.Hashtable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Hashtable : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.ICloneable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
             public virtual void Add(object key, object value) => throw null;
@@ -5431,7 +5688,7 @@ namespace System
             protected System.Collections.IHashCodeProvider hcp { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Collections.ICollection` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.ICollection` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ICollection : System.Collections.IEnumerable
         {
             void CopyTo(System.Array array, int index);
@@ -5440,13 +5697,13 @@ namespace System
             object SyncRoot { get; }
         }
 
-        // Generated from `System.Collections.IComparer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IComparer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IComparer
         {
             int Compare(object x, object y);
         }
 
-        // Generated from `System.Collections.IDictionary` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IDictionary` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDictionary : System.Collections.ICollection, System.Collections.IEnumerable
         {
             void Add(object key, object value);
@@ -5461,7 +5718,7 @@ namespace System
             System.Collections.ICollection Values { get; }
         }
 
-        // Generated from `System.Collections.IDictionaryEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IDictionaryEnumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDictionaryEnumerator : System.Collections.IEnumerator
         {
             System.Collections.DictionaryEntry Entry { get; }
@@ -5469,13 +5726,13 @@ namespace System
             object Value { get; }
         }
 
-        // Generated from `System.Collections.IEnumerable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IEnumerable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IEnumerable
         {
             System.Collections.IEnumerator GetEnumerator();
         }
 
-        // Generated from `System.Collections.IEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IEnumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IEnumerator
         {
             object Current { get; }
@@ -5483,20 +5740,20 @@ namespace System
             void Reset();
         }
 
-        // Generated from `System.Collections.IEqualityComparer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IEqualityComparer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IEqualityComparer
         {
             bool Equals(object x, object y);
             int GetHashCode(object obj);
         }
 
-        // Generated from `System.Collections.IHashCodeProvider` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IHashCodeProvider` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IHashCodeProvider
         {
             int GetHashCode(object obj);
         }
 
-        // Generated from `System.Collections.IList` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IList` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IList : System.Collections.ICollection, System.Collections.IEnumerable
         {
             int Add(object value);
@@ -5511,13 +5768,13 @@ namespace System
             void RemoveAt(int index);
         }
 
-        // Generated from `System.Collections.IStructuralComparable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IStructuralComparable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IStructuralComparable
         {
             int CompareTo(object other, System.Collections.IComparer comparer);
         }
 
-        // Generated from `System.Collections.IStructuralEquatable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.IStructuralEquatable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IStructuralEquatable
         {
             bool Equals(object other, System.Collections.IEqualityComparer comparer);
@@ -5526,20 +5783,20 @@ namespace System
 
         namespace Generic
         {
-            // Generated from `System.Collections.Generic.IAsyncEnumerable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IAsyncEnumerable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IAsyncEnumerable<T>
             {
                 System.Collections.Generic.IAsyncEnumerator<T> GetAsyncEnumerator(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `System.Collections.Generic.IAsyncEnumerator<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IAsyncEnumerator<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IAsyncEnumerator<T> : System.IAsyncDisposable
             {
                 T Current { get; }
                 System.Threading.Tasks.ValueTask<bool> MoveNextAsync();
             }
 
-            // Generated from `System.Collections.Generic.ICollection<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.ICollection<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 void Add(T item);
@@ -5551,13 +5808,13 @@ namespace System
                 bool Remove(T item);
             }
 
-            // Generated from `System.Collections.Generic.IComparer<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IComparer<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IComparer<T>
             {
                 int Compare(T x, T y);
             }
 
-            // Generated from `System.Collections.Generic.IDictionary<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IDictionary<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable
             {
                 void Add(TKey key, TValue value);
@@ -5569,26 +5826,26 @@ namespace System
                 System.Collections.Generic.ICollection<TValue> Values { get; }
             }
 
-            // Generated from `System.Collections.Generic.IEnumerable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IEnumerable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IEnumerable<T> : System.Collections.IEnumerable
             {
                 System.Collections.Generic.IEnumerator<T> GetEnumerator();
             }
 
-            // Generated from `System.Collections.Generic.IEnumerator<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IEnumerator<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IEnumerator<T> : System.Collections.IEnumerator, System.IDisposable
             {
                 T Current { get; }
             }
 
-            // Generated from `System.Collections.Generic.IEqualityComparer<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IEqualityComparer<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IEqualityComparer<T>
             {
                 bool Equals(T x, T y);
                 int GetHashCode(T obj);
             }
 
-            // Generated from `System.Collections.Generic.IList<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IList<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IList<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 int IndexOf(T item);
@@ -5597,13 +5854,13 @@ namespace System
                 void RemoveAt(int index);
             }
 
-            // Generated from `System.Collections.Generic.IReadOnlyCollection<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IReadOnlyCollection<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IReadOnlyCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 int Count { get; }
             }
 
-            // Generated from `System.Collections.Generic.IReadOnlyDictionary<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IReadOnlyDictionary<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IReadOnlyDictionary<TKey, TValue> : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable
             {
                 bool ContainsKey(TKey key);
@@ -5613,13 +5870,13 @@ namespace System
                 System.Collections.Generic.IEnumerable<TValue> Values { get; }
             }
 
-            // Generated from `System.Collections.Generic.IReadOnlyList<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IReadOnlyList<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IReadOnlyList<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.IEnumerable
             {
                 T this[int index] { get; }
             }
 
-            // Generated from `System.Collections.Generic.IReadOnlySet<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.IReadOnlySet<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IReadOnlySet<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.IEnumerable
             {
                 bool Contains(T item);
@@ -5631,7 +5888,7 @@ namespace System
                 bool SetEquals(System.Collections.Generic.IEnumerable<T> other);
             }
 
-            // Generated from `System.Collections.Generic.ISet<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.ISet<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISet<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 bool Add(T item);
@@ -5647,7 +5904,7 @@ namespace System
                 void UnionWith(System.Collections.Generic.IEnumerable<T> other);
             }
 
-            // Generated from `System.Collections.Generic.KeyNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.KeyNotFoundException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class KeyNotFoundException : System.SystemException
             {
                 public KeyNotFoundException() => throw null;
@@ -5656,13 +5913,13 @@ namespace System
                 public KeyNotFoundException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Collections.Generic.KeyValuePair` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.KeyValuePair` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class KeyValuePair
             {
                 public static System.Collections.Generic.KeyValuePair<TKey, TValue> Create<TKey, TValue>(TKey key, TValue value) => throw null;
             }
 
-            // Generated from `System.Collections.Generic.KeyValuePair<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Generic.KeyValuePair<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct KeyValuePair<TKey, TValue>
             {
                 public void Deconstruct(out TKey key, out TValue value) => throw null;
@@ -5676,7 +5933,7 @@ namespace System
         }
         namespace ObjectModel
         {
-            // Generated from `System.Collections.ObjectModel.Collection<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.ObjectModel.Collection<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Collection<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 public void Add(T item) => throw null;
@@ -5712,7 +5969,7 @@ namespace System
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Collections.ObjectModel.ReadOnlyCollection<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.ObjectModel.ReadOnlyCollection<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ReadOnlyCollection<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 void System.Collections.Generic.ICollection<T>.Add(T value) => throw null;
@@ -5750,7 +6007,7 @@ namespace System
     }
     namespace ComponentModel
     {
-        // Generated from `System.ComponentModel.DefaultValueAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DefaultValueAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DefaultValueAttribute : System.Attribute
         {
             public DefaultValueAttribute(System.Type type, string value) => throw null;
@@ -5774,7 +6031,7 @@ namespace System
             public virtual object Value { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.EditorBrowsableAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.EditorBrowsableAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EditorBrowsableAttribute : System.Attribute
         {
             public EditorBrowsableAttribute() => throw null;
@@ -5784,12 +6041,12 @@ namespace System
             public System.ComponentModel.EditorBrowsableState State { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.EditorBrowsableState` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum EditorBrowsableState
+        // Generated from `System.ComponentModel.EditorBrowsableState` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum EditorBrowsableState : int
         {
-            Advanced,
-            Always,
-            Never,
+            Advanced = 2,
+            Always = 0,
+            Never = 1,
         }
 
     }
@@ -5797,40 +6054,78 @@ namespace System
     {
         namespace Assemblies
         {
-            // Generated from `System.Configuration.Assemblies.AssemblyHashAlgorithm` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AssemblyHashAlgorithm
+            // Generated from `System.Configuration.Assemblies.AssemblyHashAlgorithm` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum AssemblyHashAlgorithm : int
             {
-                MD5,
-                None,
-                SHA1,
-                SHA256,
-                SHA384,
-                SHA512,
+                MD5 = 32771,
+                None = 0,
+                SHA1 = 32772,
+                SHA256 = 32780,
+                SHA384 = 32781,
+                SHA512 = 32782,
             }
 
-            // Generated from `System.Configuration.Assemblies.AssemblyVersionCompatibility` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AssemblyVersionCompatibility
+            // Generated from `System.Configuration.Assemblies.AssemblyVersionCompatibility` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum AssemblyVersionCompatibility : int
             {
-                SameDomain,
-                SameMachine,
-                SameProcess,
+                SameDomain = 3,
+                SameMachine = 1,
+                SameProcess = 2,
             }
 
         }
     }
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.ConditionalAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.ConditionalAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ConditionalAttribute : System.Attribute
         {
             public string ConditionString { get => throw null; }
             public ConditionalAttribute(string conditionString) => throw null;
         }
 
-        // Generated from `System.Diagnostics.Debug` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.Debug` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Debug
         {
+            // Generated from `System.Diagnostics.Debug+AssertInterpolatedStringHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct AssertInterpolatedStringHandler
+            {
+                public void AppendFormatted(System.ReadOnlySpan<System.Char> value) => throw null;
+                public void AppendFormatted(System.ReadOnlySpan<System.Char> value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted(string value) => throw null;
+                public void AppendFormatted(string value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted<T>(T value) => throw null;
+                public void AppendFormatted<T>(T value, int alignment) => throw null;
+                public void AppendFormatted<T>(T value, int alignment, string format) => throw null;
+                public void AppendFormatted<T>(T value, string format) => throw null;
+                public void AppendLiteral(string value) => throw null;
+                // Stub generator skipped constructor 
+                public AssertInterpolatedStringHandler(int literalLength, int formattedCount, bool condition, out bool shouldAppend) => throw null;
+            }
+
+
+            // Generated from `System.Diagnostics.Debug+WriteIfInterpolatedStringHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct WriteIfInterpolatedStringHandler
+            {
+                public void AppendFormatted(System.ReadOnlySpan<System.Char> value) => throw null;
+                public void AppendFormatted(System.ReadOnlySpan<System.Char> value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted(string value) => throw null;
+                public void AppendFormatted(string value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted<T>(T value) => throw null;
+                public void AppendFormatted<T>(T value, int alignment) => throw null;
+                public void AppendFormatted<T>(T value, int alignment, string format) => throw null;
+                public void AppendFormatted<T>(T value, string format) => throw null;
+                public void AppendLiteral(string value) => throw null;
+                // Stub generator skipped constructor 
+                public WriteIfInterpolatedStringHandler(int literalLength, int formattedCount, bool condition, out bool shouldAppend) => throw null;
+            }
+
+
             public static void Assert(bool condition) => throw null;
+            public static void Assert(bool condition, ref System.Diagnostics.Debug.AssertInterpolatedStringHandler message) => throw null;
+            public static void Assert(bool condition, ref System.Diagnostics.Debug.AssertInterpolatedStringHandler message, ref System.Diagnostics.Debug.AssertInterpolatedStringHandler detailMessage) => throw null;
             public static void Assert(bool condition, string message) => throw null;
             public static void Assert(bool condition, string message, string detailMessage) => throw null;
             public static void Assert(bool condition, string message, string detailMessageFormat, params object[] args) => throw null;
@@ -5851,6 +6146,8 @@ namespace System
             public static void Write(string message, string category) => throw null;
             public static void WriteIf(bool condition, object value) => throw null;
             public static void WriteIf(bool condition, object value, string category) => throw null;
+            public static void WriteIf(bool condition, ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message) => throw null;
+            public static void WriteIf(bool condition, ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message, string category) => throw null;
             public static void WriteIf(bool condition, string message) => throw null;
             public static void WriteIf(bool condition, string message, string category) => throw null;
             public static void WriteLine(object value) => throw null;
@@ -5860,22 +6157,24 @@ namespace System
             public static void WriteLine(string message, string category) => throw null;
             public static void WriteLineIf(bool condition, object value) => throw null;
             public static void WriteLineIf(bool condition, object value, string category) => throw null;
+            public static void WriteLineIf(bool condition, ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message) => throw null;
+            public static void WriteLineIf(bool condition, ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message, string category) => throw null;
             public static void WriteLineIf(bool condition, string message) => throw null;
             public static void WriteLineIf(bool condition, string message, string category) => throw null;
         }
 
-        // Generated from `System.Diagnostics.DebuggableAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggableAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggableAttribute : System.Attribute
         {
-            // Generated from `System.Diagnostics.DebuggableAttribute+DebuggingModes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.DebuggableAttribute+DebuggingModes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum DebuggingModes
+            public enum DebuggingModes : int
             {
-                Default,
-                DisableOptimizations,
-                EnableEditAndContinue,
-                IgnoreSymbolStoreSequencePoints,
-                None,
+                Default = 1,
+                DisableOptimizations = 256,
+                EnableEditAndContinue = 4,
+                IgnoreSymbolStoreSequencePoints = 2,
+                None = 0,
             }
 
 
@@ -5886,7 +6185,7 @@ namespace System
             public bool IsJITTrackingEnabled { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.Debugger` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.Debugger` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Debugger
         {
             public static void Break() => throw null;
@@ -5898,22 +6197,22 @@ namespace System
             public static void NotifyOfCrossThreadDependency() => throw null;
         }
 
-        // Generated from `System.Diagnostics.DebuggerBrowsableAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggerBrowsableAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerBrowsableAttribute : System.Attribute
         {
             public DebuggerBrowsableAttribute(System.Diagnostics.DebuggerBrowsableState state) => throw null;
             public System.Diagnostics.DebuggerBrowsableState State { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.DebuggerBrowsableState` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DebuggerBrowsableState
+        // Generated from `System.Diagnostics.DebuggerBrowsableState` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DebuggerBrowsableState : int
         {
-            Collapsed,
-            Never,
-            RootHidden,
+            Collapsed = 2,
+            Never = 0,
+            RootHidden = 3,
         }
 
-        // Generated from `System.Diagnostics.DebuggerDisplayAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggerDisplayAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerDisplayAttribute : System.Attribute
         {
             public DebuggerDisplayAttribute(string value) => throw null;
@@ -5924,31 +6223,31 @@ namespace System
             public string Value { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.DebuggerHiddenAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggerHiddenAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerHiddenAttribute : System.Attribute
         {
             public DebuggerHiddenAttribute() => throw null;
         }
 
-        // Generated from `System.Diagnostics.DebuggerNonUserCodeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggerNonUserCodeAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerNonUserCodeAttribute : System.Attribute
         {
             public DebuggerNonUserCodeAttribute() => throw null;
         }
 
-        // Generated from `System.Diagnostics.DebuggerStepThroughAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggerStepThroughAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerStepThroughAttribute : System.Attribute
         {
             public DebuggerStepThroughAttribute() => throw null;
         }
 
-        // Generated from `System.Diagnostics.DebuggerStepperBoundaryAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggerStepperBoundaryAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerStepperBoundaryAttribute : System.Attribute
         {
             public DebuggerStepperBoundaryAttribute() => throw null;
         }
 
-        // Generated from `System.Diagnostics.DebuggerTypeProxyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggerTypeProxyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerTypeProxyAttribute : System.Attribute
         {
             public DebuggerTypeProxyAttribute(System.Type type) => throw null;
@@ -5958,7 +6257,7 @@ namespace System
             public string TargetTypeName { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.DebuggerVisualizerAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DebuggerVisualizerAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DebuggerVisualizerAttribute : System.Attribute
         {
             public DebuggerVisualizerAttribute(System.Type visualizer) => throw null;
@@ -5974,7 +6273,13 @@ namespace System
             public string VisualizerTypeName { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.Stopwatch` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.StackTraceHiddenAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class StackTraceHiddenAttribute : System.Attribute
+        {
+            public StackTraceHiddenAttribute() => throw null;
+        }
+
+        // Generated from `System.Diagnostics.Stopwatch` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Stopwatch
         {
             public System.TimeSpan Elapsed { get => throw null; }
@@ -5994,32 +6299,32 @@ namespace System
 
         namespace CodeAnalysis
         {
-            // Generated from `System.Diagnostics.CodeAnalysis.AllowNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class AllowNullAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.AllowNullAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class AllowNullAttribute : System.Attribute
             {
                 public AllowNullAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DisallowNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class DisallowNullAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.DisallowNullAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class DisallowNullAttribute : System.Attribute
             {
                 public DisallowNullAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class DoesNotReturnAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class DoesNotReturnAttribute : System.Attribute
             {
                 public DoesNotReturnAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class DoesNotReturnIfAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class DoesNotReturnIfAttribute : System.Attribute
             {
                 public DoesNotReturnIfAttribute(bool parameterValue) => throw null;
                 public bool ParameterValue { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DynamicDependencyAttribute : System.Attribute
             {
                 public string AssemblyName { get => throw null; }
@@ -6035,55 +6340,56 @@ namespace System
                 public string TypeName { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes` in `Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.ConfigurationExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum DynamicallyAccessedMemberTypes
+            public enum DynamicallyAccessedMemberTypes : int
             {
-                All,
-                NonPublicConstructors,
-                NonPublicEvents,
-                NonPublicFields,
-                NonPublicMethods,
-                NonPublicNestedTypes,
-                NonPublicProperties,
-                None,
-                PublicConstructors,
-                PublicEvents,
-                PublicFields,
-                PublicMethods,
-                PublicNestedTypes,
-                PublicParameterlessConstructor,
-                PublicProperties,
+                All = -1,
+                Interfaces = 8192,
+                NonPublicConstructors = 4,
+                NonPublicEvents = 4096,
+                NonPublicFields = 64,
+                NonPublicMethods = 16,
+                NonPublicNestedTypes = 256,
+                NonPublicProperties = 1024,
+                None = 0,
+                PublicConstructors = 3,
+                PublicEvents = 2048,
+                PublicFields = 32,
+                PublicMethods = 8,
+                PublicNestedTypes = 128,
+                PublicParameterlessConstructor = 1,
+                PublicProperties = 512,
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class DynamicallyAccessedMembersAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute` in `Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.ConfigurationExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public partial class DynamicallyAccessedMembersAttribute : System.Attribute
             {
                 public DynamicallyAccessedMembersAttribute(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes memberTypes) => throw null;
                 public System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes MemberTypes { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ExcludeFromCodeCoverageAttribute : System.Attribute
             {
                 public ExcludeFromCodeCoverageAttribute() => throw null;
                 public string Justification { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.MaybeNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class MaybeNullAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.MaybeNullAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class MaybeNullAttribute : System.Attribute
             {
                 public MaybeNullAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class MaybeNullWhenAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class MaybeNullWhenAttribute : System.Attribute
             {
                 public MaybeNullWhenAttribute(bool returnValue) => throw null;
                 public bool ReturnValue { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.MemberNotNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.MemberNotNullAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class MemberNotNullAttribute : System.Attribute
             {
                 public MemberNotNullAttribute(params string[] members) => throw null;
@@ -6091,7 +6397,7 @@ namespace System
                 public string[] Members { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public partial class MemberNotNullWhenAttribute : System.Attribute
             {
                 public MemberNotNullWhenAttribute(bool returnValue, params string[] members) => throw null;
@@ -6100,35 +6406,44 @@ namespace System
                 public bool ReturnValue { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.NotNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class NotNullAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.NotNullAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class NotNullAttribute : System.Attribute
             {
                 public NotNullAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class NotNullIfNotNullAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class NotNullIfNotNullAttribute : System.Attribute
             {
                 public NotNullIfNotNullAttribute(string parameterName) => throw null;
                 public string ParameterName { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.NotNullWhenAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class NotNullWhenAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.NotNullWhenAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class NotNullWhenAttribute : System.Attribute
             {
                 public NotNullWhenAttribute(bool returnValue) => throw null;
                 public bool ReturnValue { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class RequiresUnreferencedCodeAttribute : System.Attribute
+            // Generated from `System.Diagnostics.CodeAnalysis.RequiresAssemblyFilesAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class RequiresAssemblyFilesAttribute : System.Attribute
+            {
+                public string Message { get => throw null; }
+                public RequiresAssemblyFilesAttribute() => throw null;
+                public RequiresAssemblyFilesAttribute(string message) => throw null;
+                public string Url { get => throw null; set => throw null; }
+            }
+
+            // Generated from `System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute` in `Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.ConfigurationExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public partial class RequiresUnreferencedCodeAttribute : System.Attribute
             {
                 public string Message { get => throw null; }
                 public RequiresUnreferencedCodeAttribute(string message) => throw null;
                 public string Url { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.SuppressMessageAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.SuppressMessageAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SuppressMessageAttribute : System.Attribute
             {
                 public string Category { get => throw null; }
@@ -6140,7 +6455,7 @@ namespace System
                 public string Target { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnconditionalSuppressMessageAttribute : System.Attribute
             {
                 public string Category { get => throw null; }
@@ -6156,7 +6471,7 @@ namespace System
     }
     namespace Globalization
     {
-        // Generated from `System.Globalization.Calendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.Calendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Calendar : System.ICloneable
         {
             public virtual System.DateTime AddDays(System.DateTime time, int days) => throw null;
@@ -6208,24 +6523,24 @@ namespace System
             public virtual int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.CalendarAlgorithmType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CalendarAlgorithmType
+        // Generated from `System.Globalization.CalendarAlgorithmType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum CalendarAlgorithmType : int
         {
-            LunarCalendar,
-            LunisolarCalendar,
-            SolarCalendar,
-            Unknown,
+            LunarCalendar = 2,
+            LunisolarCalendar = 3,
+            SolarCalendar = 1,
+            Unknown = 0,
         }
 
-        // Generated from `System.Globalization.CalendarWeekRule` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CalendarWeekRule
+        // Generated from `System.Globalization.CalendarWeekRule` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum CalendarWeekRule : int
         {
-            FirstDay,
-            FirstFourDayWeek,
-            FirstFullWeek,
+            FirstDay = 0,
+            FirstFourDayWeek = 2,
+            FirstFullWeek = 1,
         }
 
-        // Generated from `System.Globalization.CharUnicodeInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.CharUnicodeInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class CharUnicodeInfo
         {
             public static int GetDecimalDigitValue(System.Char ch) => throw null;
@@ -6239,7 +6554,7 @@ namespace System
             public static System.Globalization.UnicodeCategory GetUnicodeCategory(string s, int index) => throw null;
         }
 
-        // Generated from `System.Globalization.ChineseLunisolarCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.ChineseLunisolarCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ChineseLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
         {
             public const int ChineseEra = default;
@@ -6251,7 +6566,7 @@ namespace System
             public override System.DateTime MinSupportedDateTime { get => throw null; }
         }
 
-        // Generated from `System.Globalization.CompareInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.CompareInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CompareInfo : System.Runtime.Serialization.IDeserializationCallback
         {
             public int Compare(System.ReadOnlySpan<System.Char> string1, System.ReadOnlySpan<System.Char> string2, System.Globalization.CompareOptions options = default(System.Globalization.CompareOptions)) => throw null;
@@ -6322,22 +6637,22 @@ namespace System
             public System.Globalization.SortVersion Version { get => throw null; }
         }
 
-        // Generated from `System.Globalization.CompareOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.CompareOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum CompareOptions
+        public enum CompareOptions : int
         {
-            IgnoreCase,
-            IgnoreKanaType,
-            IgnoreNonSpace,
-            IgnoreSymbols,
-            IgnoreWidth,
-            None,
-            Ordinal,
-            OrdinalIgnoreCase,
-            StringSort,
+            IgnoreCase = 1,
+            IgnoreKanaType = 8,
+            IgnoreNonSpace = 2,
+            IgnoreSymbols = 4,
+            IgnoreWidth = 16,
+            None = 0,
+            Ordinal = 1073741824,
+            OrdinalIgnoreCase = 268435456,
+            StringSort = 536870912,
         }
 
-        // Generated from `System.Globalization.CultureInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.CultureInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CultureInfo : System.ICloneable, System.IFormatProvider
         {
             public virtual System.Globalization.Calendar Calendar { get => throw null; }
@@ -6388,7 +6703,7 @@ namespace System
             public bool UseUserOverride { get => throw null; }
         }
 
-        // Generated from `System.Globalization.CultureNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.CultureNotFoundException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CultureNotFoundException : System.ArgumentException
         {
             public CultureNotFoundException() => throw null;
@@ -6406,21 +6721,21 @@ namespace System
             public override string Message { get => throw null; }
         }
 
-        // Generated from `System.Globalization.CultureTypes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.CultureTypes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum CultureTypes
+        public enum CultureTypes : int
         {
-            AllCultures,
-            FrameworkCultures,
-            InstalledWin32Cultures,
-            NeutralCultures,
-            ReplacementCultures,
-            SpecificCultures,
-            UserCustomCulture,
-            WindowsOnlyCultures,
+            AllCultures = 7,
+            FrameworkCultures = 64,
+            InstalledWin32Cultures = 4,
+            NeutralCultures = 1,
+            ReplacementCultures = 16,
+            SpecificCultures = 2,
+            UserCustomCulture = 8,
+            WindowsOnlyCultures = 32,
         }
 
-        // Generated from `System.Globalization.DateTimeFormatInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.DateTimeFormatInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DateTimeFormatInfo : System.ICloneable, System.IFormatProvider
         {
             public string AMDesignator { get => throw null; set => throw null; }
@@ -6469,23 +6784,23 @@ namespace System
             public string YearMonthPattern { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.DateTimeStyles` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.DateTimeStyles` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DateTimeStyles
+        public enum DateTimeStyles : int
         {
-            AdjustToUniversal,
-            AllowInnerWhite,
-            AllowLeadingWhite,
-            AllowTrailingWhite,
-            AllowWhiteSpaces,
-            AssumeLocal,
-            AssumeUniversal,
-            NoCurrentDateDefault,
-            None,
-            RoundtripKind,
+            AdjustToUniversal = 16,
+            AllowInnerWhite = 4,
+            AllowLeadingWhite = 1,
+            AllowTrailingWhite = 2,
+            AllowWhiteSpaces = 7,
+            AssumeLocal = 32,
+            AssumeUniversal = 64,
+            NoCurrentDateDefault = 8,
+            None = 0,
+            RoundtripKind = 128,
         }
 
-        // Generated from `System.Globalization.DaylightTime` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.DaylightTime` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DaylightTime
         {
             public DaylightTime(System.DateTime start, System.DateTime end, System.TimeSpan delta) => throw null;
@@ -6494,15 +6809,15 @@ namespace System
             public System.DateTime Start { get => throw null; }
         }
 
-        // Generated from `System.Globalization.DigitShapes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DigitShapes
+        // Generated from `System.Globalization.DigitShapes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DigitShapes : int
         {
-            Context,
-            NativeNational,
-            None,
+            Context = 0,
+            NativeNational = 2,
+            None = 1,
         }
 
-        // Generated from `System.Globalization.EastAsianLunisolarCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.EastAsianLunisolarCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EastAsianLunisolarCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -6529,13 +6844,13 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.GlobalizationExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.GlobalizationExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class GlobalizationExtensions
         {
             public static System.StringComparer GetStringComparer(this System.Globalization.CompareInfo compareInfo, System.Globalization.CompareOptions options) => throw null;
         }
 
-        // Generated from `System.Globalization.GregorianCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.GregorianCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class GregorianCalendar : System.Globalization.Calendar
         {
             public const int ADEra = default;
@@ -6566,18 +6881,18 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.GregorianCalendarTypes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum GregorianCalendarTypes
+        // Generated from `System.Globalization.GregorianCalendarTypes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum GregorianCalendarTypes : int
         {
-            Arabic,
-            Localized,
-            MiddleEastFrench,
-            TransliteratedEnglish,
-            TransliteratedFrench,
-            USEnglish,
+            Arabic = 10,
+            Localized = 1,
+            MiddleEastFrench = 9,
+            TransliteratedEnglish = 11,
+            TransliteratedFrench = 12,
+            USEnglish = 2,
         }
 
-        // Generated from `System.Globalization.HebrewCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.HebrewCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class HebrewCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -6606,7 +6921,7 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.HijriCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.HijriCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class HijriCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -6637,7 +6952,7 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.ISOWeek` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.ISOWeek` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class ISOWeek
         {
             public static int GetWeekOfYear(System.DateTime date) => throw null;
@@ -6648,7 +6963,7 @@ namespace System
             public static System.DateTime ToDateTime(int year, int week, System.DayOfWeek dayOfWeek) => throw null;
         }
 
-        // Generated from `System.Globalization.IdnMapping` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.IdnMapping` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class IdnMapping
         {
             public bool AllowUnassigned { get => throw null; set => throw null; }
@@ -6664,7 +6979,7 @@ namespace System
             public bool UseStd3AsciiRules { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.JapaneseCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.JapaneseCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class JapaneseCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -6693,7 +7008,7 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.JapaneseLunisolarCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.JapaneseLunisolarCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class JapaneseLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
         {
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
@@ -6705,7 +7020,7 @@ namespace System
             public override System.DateTime MinSupportedDateTime { get => throw null; }
         }
 
-        // Generated from `System.Globalization.JulianCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.JulianCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class JulianCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -6734,7 +7049,7 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.KoreanCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.KoreanCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class KoreanCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -6764,7 +7079,7 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.KoreanLunisolarCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.KoreanLunisolarCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class KoreanLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
         {
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
@@ -6776,7 +7091,7 @@ namespace System
             public override System.DateTime MinSupportedDateTime { get => throw null; }
         }
 
-        // Generated from `System.Globalization.NumberFormatInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.NumberFormatInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class NumberFormatInfo : System.ICloneable, System.IFormatProvider
         {
             public object Clone() => throw null;
@@ -6816,30 +7131,30 @@ namespace System
             public static System.Globalization.NumberFormatInfo ReadOnly(System.Globalization.NumberFormatInfo nfi) => throw null;
         }
 
-        // Generated from `System.Globalization.NumberStyles` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.NumberStyles` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum NumberStyles
+        public enum NumberStyles : int
         {
-            AllowCurrencySymbol,
-            AllowDecimalPoint,
-            AllowExponent,
-            AllowHexSpecifier,
-            AllowLeadingSign,
-            AllowLeadingWhite,
-            AllowParentheses,
-            AllowThousands,
-            AllowTrailingSign,
-            AllowTrailingWhite,
-            Any,
-            Currency,
-            Float,
-            HexNumber,
-            Integer,
-            None,
-            Number,
+            AllowCurrencySymbol = 256,
+            AllowDecimalPoint = 32,
+            AllowExponent = 128,
+            AllowHexSpecifier = 512,
+            AllowLeadingSign = 4,
+            AllowLeadingWhite = 1,
+            AllowParentheses = 16,
+            AllowThousands = 64,
+            AllowTrailingSign = 8,
+            AllowTrailingWhite = 2,
+            Any = 511,
+            Currency = 383,
+            Float = 167,
+            HexNumber = 515,
+            Integer = 7,
+            None = 0,
+            Number = 111,
         }
 
-        // Generated from `System.Globalization.PersianCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.PersianCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PersianCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -6868,7 +7183,7 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.RegionInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.RegionInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RegionInfo
         {
             public virtual string CurrencyEnglishName { get => throw null; }
@@ -6892,7 +7207,7 @@ namespace System
             public virtual string TwoLetterISORegionName { get => throw null; }
         }
 
-        // Generated from `System.Globalization.SortKey` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.SortKey` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SortKey
         {
             public static int Compare(System.Globalization.SortKey sortkey1, System.Globalization.SortKey sortkey2) => throw null;
@@ -6903,7 +7218,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Globalization.SortVersion` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.SortVersion` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SortVersion : System.IEquatable<System.Globalization.SortVersion>
         {
             public static bool operator !=(System.Globalization.SortVersion left, System.Globalization.SortVersion right) => throw null;
@@ -6916,13 +7231,16 @@ namespace System
             public SortVersion(int fullVersion, System.Guid sortId) => throw null;
         }
 
-        // Generated from `System.Globalization.StringInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.StringInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StringInfo
         {
             public override bool Equals(object value) => throw null;
             public override int GetHashCode() => throw null;
             public static string GetNextTextElement(string str) => throw null;
             public static string GetNextTextElement(string str, int index) => throw null;
+            public static int GetNextTextElementLength(System.ReadOnlySpan<System.Char> str) => throw null;
+            public static int GetNextTextElementLength(string str) => throw null;
+            public static int GetNextTextElementLength(string str, int index) => throw null;
             public static System.Globalization.TextElementEnumerator GetTextElementEnumerator(string str) => throw null;
             public static System.Globalization.TextElementEnumerator GetTextElementEnumerator(string str, int index) => throw null;
             public int LengthInTextElements { get => throw null; }
@@ -6934,7 +7252,7 @@ namespace System
             public string SubstringByTextElements(int startingTextElement, int lengthInTextElements) => throw null;
         }
 
-        // Generated from `System.Globalization.TaiwanCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.TaiwanCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TaiwanCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -6963,7 +7281,7 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.TaiwanLunisolarCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.TaiwanLunisolarCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TaiwanLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
         {
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
@@ -6974,7 +7292,7 @@ namespace System
             public TaiwanLunisolarCalendar() => throw null;
         }
 
-        // Generated from `System.Globalization.TextElementEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.TextElementEnumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TextElementEnumerator : System.Collections.IEnumerator
         {
             public object Current { get => throw null; }
@@ -6984,7 +7302,7 @@ namespace System
             public void Reset() => throw null;
         }
 
-        // Generated from `System.Globalization.TextInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.TextInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TextInfo : System.ICloneable, System.Runtime.Serialization.IDeserializationCallback
         {
             public int ANSICodePage { get => throw null; }
@@ -7009,7 +7327,7 @@ namespace System
             public string ToUpper(string str) => throw null;
         }
 
-        // Generated from `System.Globalization.ThaiBuddhistCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.ThaiBuddhistCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ThaiBuddhistCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -7039,15 +7357,15 @@ namespace System
             public override int TwoDigitYearMax { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Globalization.TimeSpanStyles` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.TimeSpanStyles` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum TimeSpanStyles
+        public enum TimeSpanStyles : int
         {
-            AssumeNegative,
-            None,
+            AssumeNegative = 1,
+            None = 0,
         }
 
-        // Generated from `System.Globalization.UmAlQuraCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Globalization.UmAlQuraCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UmAlQuraCalendar : System.Globalization.Calendar
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
@@ -7077,45 +7395,45 @@ namespace System
             public const int UmAlQuraEra = default;
         }
 
-        // Generated from `System.Globalization.UnicodeCategory` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum UnicodeCategory
+        // Generated from `System.Globalization.UnicodeCategory` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum UnicodeCategory : int
         {
-            ClosePunctuation,
-            ConnectorPunctuation,
-            Control,
-            CurrencySymbol,
-            DashPunctuation,
-            DecimalDigitNumber,
-            EnclosingMark,
-            FinalQuotePunctuation,
-            Format,
-            InitialQuotePunctuation,
-            LetterNumber,
-            LineSeparator,
-            LowercaseLetter,
-            MathSymbol,
-            ModifierLetter,
-            ModifierSymbol,
-            NonSpacingMark,
-            OpenPunctuation,
-            OtherLetter,
-            OtherNotAssigned,
-            OtherNumber,
-            OtherPunctuation,
-            OtherSymbol,
-            ParagraphSeparator,
-            PrivateUse,
-            SpaceSeparator,
-            SpacingCombiningMark,
-            Surrogate,
-            TitlecaseLetter,
-            UppercaseLetter,
+            ClosePunctuation = 21,
+            ConnectorPunctuation = 18,
+            Control = 14,
+            CurrencySymbol = 26,
+            DashPunctuation = 19,
+            DecimalDigitNumber = 8,
+            EnclosingMark = 7,
+            FinalQuotePunctuation = 23,
+            Format = 15,
+            InitialQuotePunctuation = 22,
+            LetterNumber = 9,
+            LineSeparator = 12,
+            LowercaseLetter = 1,
+            MathSymbol = 25,
+            ModifierLetter = 3,
+            ModifierSymbol = 27,
+            NonSpacingMark = 5,
+            OpenPunctuation = 20,
+            OtherLetter = 4,
+            OtherNotAssigned = 29,
+            OtherNumber = 10,
+            OtherPunctuation = 24,
+            OtherSymbol = 28,
+            ParagraphSeparator = 13,
+            PrivateUse = 17,
+            SpaceSeparator = 11,
+            SpacingCombiningMark = 6,
+            Surrogate = 16,
+            TitlecaseLetter = 2,
+            UppercaseLetter = 0,
         }
 
     }
     namespace IO
     {
-        // Generated from `System.IO.BinaryReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.BinaryReader` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BinaryReader : System.IDisposable
         {
             public virtual System.IO.Stream BaseStream { get => throw null; }
@@ -7141,6 +7459,7 @@ namespace System
             public virtual System.Char[] ReadChars(int count) => throw null;
             public virtual System.Decimal ReadDecimal() => throw null;
             public virtual double ReadDouble() => throw null;
+            public virtual System.Half ReadHalf() => throw null;
             public virtual System.Int16 ReadInt16() => throw null;
             public virtual int ReadInt32() => throw null;
             public virtual System.Int64 ReadInt64() => throw null;
@@ -7152,7 +7471,7 @@ namespace System
             public virtual System.UInt64 ReadUInt64() => throw null;
         }
 
-        // Generated from `System.IO.BinaryWriter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.BinaryWriter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BinaryWriter : System.IAsyncDisposable, System.IDisposable
         {
             public virtual System.IO.Stream BaseStream { get => throw null; }
@@ -7172,6 +7491,7 @@ namespace System
             public virtual void Write(System.Byte[] buffer, int index, int count) => throw null;
             public virtual void Write(System.Char[] chars) => throw null;
             public virtual void Write(System.Char[] chars, int index, int count) => throw null;
+            public virtual void Write(System.Half value) => throw null;
             public virtual void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public virtual void Write(System.ReadOnlySpan<System.Char> chars) => throw null;
             public virtual void Write(bool value) => throw null;
@@ -7192,7 +7512,7 @@ namespace System
             public void Write7BitEncodedInt64(System.Int64 value) => throw null;
         }
 
-        // Generated from `System.IO.BufferedStream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.BufferedStream` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BufferedStream : System.IO.Stream
         {
             public override System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
@@ -7213,7 +7533,7 @@ namespace System
             public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public override System.Int64 Length { get => throw null; }
             public override System.Int64 Position { get => throw null; set => throw null; }
-            public override int Read(System.Byte[] array, int offset, int count) => throw null;
+            public override int Read(System.Byte[] buffer, int offset, int count) => throw null;
             public override int Read(System.Span<System.Byte> destination) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
             public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -7221,14 +7541,107 @@ namespace System
             public override System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin origin) => throw null;
             public override void SetLength(System.Int64 value) => throw null;
             public System.IO.Stream UnderlyingStream { get => throw null; }
-            public override void Write(System.Byte[] array, int offset, int count) => throw null;
+            public override void Write(System.Byte[] buffer, int offset, int count) => throw null;
             public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
             public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteByte(System.Byte value) => throw null;
         }
 
-        // Generated from `System.IO.DirectoryNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.Directory` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public static class Directory
+        {
+            public static System.IO.DirectoryInfo CreateDirectory(string path) => throw null;
+            public static System.IO.FileSystemInfo CreateSymbolicLink(string path, string pathToTarget) => throw null;
+            public static void Delete(string path) => throw null;
+            public static void Delete(string path, bool recursive) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public static bool Exists(string path) => throw null;
+            public static System.DateTime GetCreationTime(string path) => throw null;
+            public static System.DateTime GetCreationTimeUtc(string path) => throw null;
+            public static string GetCurrentDirectory() => throw null;
+            public static string[] GetDirectories(string path) => throw null;
+            public static string[] GetDirectories(string path, string searchPattern) => throw null;
+            public static string[] GetDirectories(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static string[] GetDirectories(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public static string GetDirectoryRoot(string path) => throw null;
+            public static string[] GetFileSystemEntries(string path) => throw null;
+            public static string[] GetFileSystemEntries(string path, string searchPattern) => throw null;
+            public static string[] GetFileSystemEntries(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static string[] GetFileSystemEntries(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public static string[] GetFiles(string path) => throw null;
+            public static string[] GetFiles(string path, string searchPattern) => throw null;
+            public static string[] GetFiles(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static string[] GetFiles(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public static System.DateTime GetLastAccessTime(string path) => throw null;
+            public static System.DateTime GetLastAccessTimeUtc(string path) => throw null;
+            public static System.DateTime GetLastWriteTime(string path) => throw null;
+            public static System.DateTime GetLastWriteTimeUtc(string path) => throw null;
+            public static string[] GetLogicalDrives() => throw null;
+            public static System.IO.DirectoryInfo GetParent(string path) => throw null;
+            public static void Move(string sourceDirName, string destDirName) => throw null;
+            public static System.IO.FileSystemInfo ResolveLinkTarget(string linkPath, bool returnFinalTarget) => throw null;
+            public static void SetCreationTime(string path, System.DateTime creationTime) => throw null;
+            public static void SetCreationTimeUtc(string path, System.DateTime creationTimeUtc) => throw null;
+            public static void SetCurrentDirectory(string path) => throw null;
+            public static void SetLastAccessTime(string path, System.DateTime lastAccessTime) => throw null;
+            public static void SetLastAccessTimeUtc(string path, System.DateTime lastAccessTimeUtc) => throw null;
+            public static void SetLastWriteTime(string path, System.DateTime lastWriteTime) => throw null;
+            public static void SetLastWriteTimeUtc(string path, System.DateTime lastWriteTimeUtc) => throw null;
+        }
+
+        // Generated from `System.IO.DirectoryInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class DirectoryInfo : System.IO.FileSystemInfo
+        {
+            public void Create() => throw null;
+            public System.IO.DirectoryInfo CreateSubdirectory(string path) => throw null;
+            public override void Delete() => throw null;
+            public void Delete(bool recursive) => throw null;
+            public DirectoryInfo(string path) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories() => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos() => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles() => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public override bool Exists { get => throw null; }
+            public System.IO.DirectoryInfo[] GetDirectories() => throw null;
+            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern) => throw null;
+            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public System.IO.FileSystemInfo[] GetFileSystemInfos() => throw null;
+            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern) => throw null;
+            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public System.IO.FileInfo[] GetFiles() => throw null;
+            public System.IO.FileInfo[] GetFiles(string searchPattern) => throw null;
+            public System.IO.FileInfo[] GetFiles(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.IO.FileInfo[] GetFiles(string searchPattern, System.IO.SearchOption searchOption) => throw null;
+            public void MoveTo(string destDirName) => throw null;
+            public override string Name { get => throw null; }
+            public System.IO.DirectoryInfo Parent { get => throw null; }
+            public System.IO.DirectoryInfo Root { get => throw null; }
+            public override string ToString() => throw null;
+        }
+
+        // Generated from `System.IO.DirectoryNotFoundException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DirectoryNotFoundException : System.IO.IOException
         {
             public DirectoryNotFoundException() => throw null;
@@ -7237,7 +7650,7 @@ namespace System
             public DirectoryNotFoundException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.IO.EndOfStreamException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.EndOfStreamException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EndOfStreamException : System.IO.IOException
         {
             public EndOfStreamException() => throw null;
@@ -7246,38 +7659,160 @@ namespace System
             public EndOfStreamException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.IO.FileAccess` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        [System.Flags]
-        public enum FileAccess
+        // Generated from `System.IO.EnumerationOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class EnumerationOptions
         {
-            Read,
-            ReadWrite,
-            Write,
+            public System.IO.FileAttributes AttributesToSkip { get => throw null; set => throw null; }
+            public int BufferSize { get => throw null; set => throw null; }
+            public EnumerationOptions() => throw null;
+            public bool IgnoreInaccessible { get => throw null; set => throw null; }
+            public System.IO.MatchCasing MatchCasing { get => throw null; set => throw null; }
+            public System.IO.MatchType MatchType { get => throw null; set => throw null; }
+            public int MaxRecursionDepth { get => throw null; set => throw null; }
+            public bool RecurseSubdirectories { get => throw null; set => throw null; }
+            public bool ReturnSpecialDirectories { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.IO.FileAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        [System.Flags]
-        public enum FileAttributes
+        // Generated from `System.IO.File` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public static class File
         {
-            Archive,
-            Compressed,
-            Device,
-            Directory,
-            Encrypted,
-            Hidden,
-            IntegrityStream,
-            NoScrubData,
-            Normal,
-            NotContentIndexed,
-            Offline,
-            ReadOnly,
-            ReparsePoint,
-            SparseFile,
-            System,
-            Temporary,
+            public static void AppendAllLines(string path, System.Collections.Generic.IEnumerable<string> contents) => throw null;
+            public static void AppendAllLines(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding) => throw null;
+            public static System.Threading.Tasks.Task AppendAllLinesAsync(string path, System.Collections.Generic.IEnumerable<string> contents, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Threading.Tasks.Task AppendAllLinesAsync(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static void AppendAllText(string path, string contents) => throw null;
+            public static void AppendAllText(string path, string contents, System.Text.Encoding encoding) => throw null;
+            public static System.Threading.Tasks.Task AppendAllTextAsync(string path, string contents, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Threading.Tasks.Task AppendAllTextAsync(string path, string contents, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.IO.StreamWriter AppendText(string path) => throw null;
+            public static void Copy(string sourceFileName, string destFileName) => throw null;
+            public static void Copy(string sourceFileName, string destFileName, bool overwrite) => throw null;
+            public static System.IO.FileStream Create(string path) => throw null;
+            public static System.IO.FileStream Create(string path, int bufferSize) => throw null;
+            public static System.IO.FileStream Create(string path, int bufferSize, System.IO.FileOptions options) => throw null;
+            public static System.IO.FileSystemInfo CreateSymbolicLink(string path, string pathToTarget) => throw null;
+            public static System.IO.StreamWriter CreateText(string path) => throw null;
+            public static void Decrypt(string path) => throw null;
+            public static void Delete(string path) => throw null;
+            public static void Encrypt(string path) => throw null;
+            public static bool Exists(string path) => throw null;
+            public static System.IO.FileAttributes GetAttributes(string path) => throw null;
+            public static System.DateTime GetCreationTime(string path) => throw null;
+            public static System.DateTime GetCreationTimeUtc(string path) => throw null;
+            public static System.DateTime GetLastAccessTime(string path) => throw null;
+            public static System.DateTime GetLastAccessTimeUtc(string path) => throw null;
+            public static System.DateTime GetLastWriteTime(string path) => throw null;
+            public static System.DateTime GetLastWriteTimeUtc(string path) => throw null;
+            public static void Move(string sourceFileName, string destFileName) => throw null;
+            public static void Move(string sourceFileName, string destFileName, bool overwrite) => throw null;
+            public static System.IO.FileStream Open(string path, System.IO.FileMode mode) => throw null;
+            public static System.IO.FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access) => throw null;
+            public static System.IO.FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) => throw null;
+            public static System.IO.FileStream Open(string path, System.IO.FileStreamOptions options) => throw null;
+            public static Microsoft.Win32.SafeHandles.SafeFileHandle OpenHandle(string path, System.IO.FileMode mode = default(System.IO.FileMode), System.IO.FileAccess access = default(System.IO.FileAccess), System.IO.FileShare share = default(System.IO.FileShare), System.IO.FileOptions options = default(System.IO.FileOptions), System.Int64 preallocationSize = default(System.Int64)) => throw null;
+            public static System.IO.FileStream OpenRead(string path) => throw null;
+            public static System.IO.StreamReader OpenText(string path) => throw null;
+            public static System.IO.FileStream OpenWrite(string path) => throw null;
+            public static System.Byte[] ReadAllBytes(string path) => throw null;
+            public static System.Threading.Tasks.Task<System.Byte[]> ReadAllBytesAsync(string path, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static string[] ReadAllLines(string path) => throw null;
+            public static string[] ReadAllLines(string path, System.Text.Encoding encoding) => throw null;
+            public static System.Threading.Tasks.Task<string[]> ReadAllLinesAsync(string path, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Threading.Tasks.Task<string[]> ReadAllLinesAsync(string path, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static string ReadAllText(string path) => throw null;
+            public static string ReadAllText(string path, System.Text.Encoding encoding) => throw null;
+            public static System.Threading.Tasks.Task<string> ReadAllTextAsync(string path, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Threading.Tasks.Task<string> ReadAllTextAsync(string path, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> ReadLines(string path) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> ReadLines(string path, System.Text.Encoding encoding) => throw null;
+            public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName) => throw null;
+            public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors) => throw null;
+            public static System.IO.FileSystemInfo ResolveLinkTarget(string linkPath, bool returnFinalTarget) => throw null;
+            public static void SetAttributes(string path, System.IO.FileAttributes fileAttributes) => throw null;
+            public static void SetCreationTime(string path, System.DateTime creationTime) => throw null;
+            public static void SetCreationTimeUtc(string path, System.DateTime creationTimeUtc) => throw null;
+            public static void SetLastAccessTime(string path, System.DateTime lastAccessTime) => throw null;
+            public static void SetLastAccessTimeUtc(string path, System.DateTime lastAccessTimeUtc) => throw null;
+            public static void SetLastWriteTime(string path, System.DateTime lastWriteTime) => throw null;
+            public static void SetLastWriteTimeUtc(string path, System.DateTime lastWriteTimeUtc) => throw null;
+            public static void WriteAllBytes(string path, System.Byte[] bytes) => throw null;
+            public static System.Threading.Tasks.Task WriteAllBytesAsync(string path, System.Byte[] bytes, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static void WriteAllLines(string path, System.Collections.Generic.IEnumerable<string> contents) => throw null;
+            public static void WriteAllLines(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding) => throw null;
+            public static void WriteAllLines(string path, string[] contents) => throw null;
+            public static void WriteAllLines(string path, string[] contents, System.Text.Encoding encoding) => throw null;
+            public static System.Threading.Tasks.Task WriteAllLinesAsync(string path, System.Collections.Generic.IEnumerable<string> contents, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Threading.Tasks.Task WriteAllLinesAsync(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static void WriteAllText(string path, string contents) => throw null;
+            public static void WriteAllText(string path, string contents, System.Text.Encoding encoding) => throw null;
+            public static System.Threading.Tasks.Task WriteAllTextAsync(string path, string contents, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Threading.Tasks.Task WriteAllTextAsync(string path, string contents, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
         }
 
-        // Generated from `System.IO.FileLoadException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.FileAccess` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        [System.Flags]
+        public enum FileAccess : int
+        {
+            Read = 1,
+            ReadWrite = 3,
+            Write = 2,
+        }
+
+        // Generated from `System.IO.FileAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        [System.Flags]
+        public enum FileAttributes : int
+        {
+            Archive = 32,
+            Compressed = 2048,
+            Device = 64,
+            Directory = 16,
+            Encrypted = 16384,
+            Hidden = 2,
+            IntegrityStream = 32768,
+            NoScrubData = 131072,
+            Normal = 128,
+            NotContentIndexed = 8192,
+            Offline = 4096,
+            ReadOnly = 1,
+            ReparsePoint = 1024,
+            SparseFile = 512,
+            System = 4,
+            Temporary = 256,
+        }
+
+        // Generated from `System.IO.FileInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class FileInfo : System.IO.FileSystemInfo
+        {
+            public System.IO.StreamWriter AppendText() => throw null;
+            public System.IO.FileInfo CopyTo(string destFileName) => throw null;
+            public System.IO.FileInfo CopyTo(string destFileName, bool overwrite) => throw null;
+            public System.IO.FileStream Create() => throw null;
+            public System.IO.StreamWriter CreateText() => throw null;
+            public void Decrypt() => throw null;
+            public override void Delete() => throw null;
+            public System.IO.DirectoryInfo Directory { get => throw null; }
+            public string DirectoryName { get => throw null; }
+            public void Encrypt() => throw null;
+            public override bool Exists { get => throw null; }
+            public FileInfo(string fileName) => throw null;
+            public bool IsReadOnly { get => throw null; set => throw null; }
+            public System.Int64 Length { get => throw null; }
+            public void MoveTo(string destFileName) => throw null;
+            public void MoveTo(string destFileName, bool overwrite) => throw null;
+            public override string Name { get => throw null; }
+            public System.IO.FileStream Open(System.IO.FileMode mode) => throw null;
+            public System.IO.FileStream Open(System.IO.FileMode mode, System.IO.FileAccess access) => throw null;
+            public System.IO.FileStream Open(System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) => throw null;
+            public System.IO.FileStream Open(System.IO.FileStreamOptions options) => throw null;
+            public System.IO.FileStream OpenRead() => throw null;
+            public System.IO.StreamReader OpenText() => throw null;
+            public System.IO.FileStream OpenWrite() => throw null;
+            public System.IO.FileInfo Replace(string destinationFileName, string destinationBackupFileName) => throw null;
+            public System.IO.FileInfo Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors) => throw null;
+            public override string ToString() => throw null;
+        }
+
+        // Generated from `System.IO.FileLoadException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileLoadException : System.IO.IOException
         {
             public FileLoadException() => throw null;
@@ -7293,18 +7828,18 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.IO.FileMode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum FileMode
+        // Generated from `System.IO.FileMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum FileMode : int
         {
-            Append,
-            Create,
-            CreateNew,
-            Open,
-            OpenOrCreate,
-            Truncate,
+            Append = 6,
+            Create = 2,
+            CreateNew = 1,
+            Open = 3,
+            OpenOrCreate = 4,
+            Truncate = 5,
         }
 
-        // Generated from `System.IO.FileNotFoundException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.FileNotFoundException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileNotFoundException : System.IO.IOException
         {
             public string FileName { get => throw null; }
@@ -7320,36 +7855,36 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.IO.FileOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.FileOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FileOptions
+        public enum FileOptions : int
         {
-            Asynchronous,
-            DeleteOnClose,
-            Encrypted,
-            None,
-            RandomAccess,
-            SequentialScan,
-            WriteThrough,
+            Asynchronous = 1073741824,
+            DeleteOnClose = 67108864,
+            Encrypted = 16384,
+            None = 0,
+            RandomAccess = 268435456,
+            SequentialScan = 134217728,
+            WriteThrough = -2147483648,
         }
 
-        // Generated from `System.IO.FileShare` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.FileShare` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FileShare
+        public enum FileShare : int
         {
-            Delete,
-            Inheritable,
-            None,
-            Read,
-            ReadWrite,
-            Write,
+            Delete = 4,
+            Inheritable = 16,
+            None = 0,
+            Read = 1,
+            ReadWrite = 3,
+            Write = 2,
         }
 
-        // Generated from `System.IO.FileStream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.FileStream` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileStream : System.IO.Stream
         {
-            public override System.IAsyncResult BeginRead(System.Byte[] array, int offset, int numBytes, System.AsyncCallback callback, object state) => throw null;
-            public override System.IAsyncResult BeginWrite(System.Byte[] array, int offset, int numBytes, System.AsyncCallback callback, object state) => throw null;
+            public override System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
+            public override System.IAsyncResult BeginWrite(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
             public override bool CanRead { get => throw null; }
             public override bool CanSeek { get => throw null; }
             public override bool CanWrite { get => throw null; }
@@ -7371,6 +7906,7 @@ namespace System
             public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize) => throw null;
             public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, System.IO.FileOptions options) => throw null;
             public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, int bufferSize, bool useAsync) => throw null;
+            public FileStream(string path, System.IO.FileStreamOptions options) => throw null;
             public override void Flush() => throw null;
             public virtual void Flush(bool flushToDisk) => throw null;
             public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
@@ -7380,7 +7916,7 @@ namespace System
             public virtual void Lock(System.Int64 position, System.Int64 length) => throw null;
             public virtual string Name { get => throw null; }
             public override System.Int64 Position { get => throw null; set => throw null; }
-            public override int Read(System.Byte[] array, int offset, int count) => throw null;
+            public override int Read(System.Byte[] buffer, int offset, int count) => throw null;
             public override int Read(System.Span<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
             public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -7389,7 +7925,7 @@ namespace System
             public override System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin origin) => throw null;
             public override void SetLength(System.Int64 value) => throw null;
             public virtual void Unlock(System.Int64 position, System.Int64 length) => throw null;
-            public override void Write(System.Byte[] array, int offset, int count) => throw null;
+            public override void Write(System.Byte[] buffer, int offset, int count) => throw null;
             public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
             public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -7397,14 +7933,53 @@ namespace System
             // ERR: Stub generator didn't handle member: ~FileStream
         }
 
-        // Generated from `System.IO.HandleInheritability` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum HandleInheritability
+        // Generated from `System.IO.FileStreamOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class FileStreamOptions
         {
-            Inheritable,
-            None,
+            public System.IO.FileAccess Access { get => throw null; set => throw null; }
+            public int BufferSize { get => throw null; set => throw null; }
+            public FileStreamOptions() => throw null;
+            public System.IO.FileMode Mode { get => throw null; set => throw null; }
+            public System.IO.FileOptions Options { get => throw null; set => throw null; }
+            public System.Int64 PreallocationSize { get => throw null; set => throw null; }
+            public System.IO.FileShare Share { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.IO.IOException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.FileSystemInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public abstract class FileSystemInfo : System.MarshalByRefObject, System.Runtime.Serialization.ISerializable
+        {
+            public System.IO.FileAttributes Attributes { get => throw null; set => throw null; }
+            public void CreateAsSymbolicLink(string pathToTarget) => throw null;
+            public System.DateTime CreationTime { get => throw null; set => throw null; }
+            public System.DateTime CreationTimeUtc { get => throw null; set => throw null; }
+            public abstract void Delete();
+            public abstract bool Exists { get; }
+            public string Extension { get => throw null; }
+            protected FileSystemInfo() => throw null;
+            protected FileSystemInfo(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public virtual string FullName { get => throw null; }
+            protected string FullPath;
+            public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public System.DateTime LastAccessTime { get => throw null; set => throw null; }
+            public System.DateTime LastAccessTimeUtc { get => throw null; set => throw null; }
+            public System.DateTime LastWriteTime { get => throw null; set => throw null; }
+            public System.DateTime LastWriteTimeUtc { get => throw null; set => throw null; }
+            public string LinkTarget { get => throw null; }
+            public abstract string Name { get; }
+            protected string OriginalPath;
+            public void Refresh() => throw null;
+            public System.IO.FileSystemInfo ResolveLinkTarget(bool returnFinalTarget) => throw null;
+            public override string ToString() => throw null;
+        }
+
+        // Generated from `System.IO.HandleInheritability` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum HandleInheritability : int
+        {
+            Inheritable = 1,
+            None = 0,
+        }
+
+        // Generated from `System.IO.IOException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class IOException : System.SystemException
         {
             public IOException() => throw null;
@@ -7414,7 +7989,7 @@ namespace System
             public IOException(string message, int hresult) => throw null;
         }
 
-        // Generated from `System.IO.InvalidDataException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.InvalidDataException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InvalidDataException : System.SystemException
         {
             public InvalidDataException() => throw null;
@@ -7422,7 +7997,22 @@ namespace System
             public InvalidDataException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.IO.MemoryStream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.MatchCasing` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum MatchCasing : int
+        {
+            CaseInsensitive = 2,
+            CaseSensitive = 1,
+            PlatformDefault = 0,
+        }
+
+        // Generated from `System.IO.MatchType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum MatchType : int
+        {
+            Simple = 0,
+            Win32 = 1,
+        }
+
+        // Generated from `System.IO.MemoryStream` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MemoryStream : System.IO.Stream
         {
             public override System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
@@ -7449,23 +8039,23 @@ namespace System
             public MemoryStream(int capacity) => throw null;
             public override System.Int64 Position { get => throw null; set => throw null; }
             public override int Read(System.Byte[] buffer, int offset, int count) => throw null;
-            public override int Read(System.Span<System.Byte> destination) => throw null;
+            public override int Read(System.Span<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
-            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override int ReadByte() => throw null;
             public override System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin loc) => throw null;
             public override void SetLength(System.Int64 value) => throw null;
             public virtual System.Byte[] ToArray() => throw null;
             public virtual bool TryGetBuffer(out System.ArraySegment<System.Byte> buffer) => throw null;
             public override void Write(System.Byte[] buffer, int offset, int count) => throw null;
-            public override void Write(System.ReadOnlySpan<System.Byte> source) => throw null;
+            public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
-            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteByte(System.Byte value) => throw null;
             public virtual void WriteTo(System.IO.Stream stream) => throw null;
         }
 
-        // Generated from `System.IO.Path` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.Path` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Path
         {
             public static System.Char AltDirectorySeparatorChar;
@@ -7517,7 +8107,7 @@ namespace System
             public static System.Char VolumeSeparatorChar;
         }
 
-        // Generated from `System.IO.PathTooLongException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.PathTooLongException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PathTooLongException : System.IO.IOException
         {
             public PathTooLongException() => throw null;
@@ -7526,15 +8116,36 @@ namespace System
             public PathTooLongException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.IO.SeekOrigin` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SeekOrigin
+        // Generated from `System.IO.RandomAccess` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public static class RandomAccess
         {
-            Begin,
-            Current,
-            End,
+            public static System.Int64 GetLength(Microsoft.Win32.SafeHandles.SafeFileHandle handle) => throw null;
+            public static System.Int64 Read(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.Collections.Generic.IReadOnlyList<System.Memory<System.Byte>> buffers, System.Int64 fileOffset) => throw null;
+            public static int Read(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.Span<System.Byte> buffer, System.Int64 fileOffset) => throw null;
+            public static System.Threading.Tasks.ValueTask<System.Int64> ReadAsync(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.Collections.Generic.IReadOnlyList<System.Memory<System.Byte>> buffers, System.Int64 fileOffset, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Threading.Tasks.ValueTask<int> ReadAsync(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.Memory<System.Byte> buffer, System.Int64 fileOffset, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static void Write(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.Collections.Generic.IReadOnlyList<System.ReadOnlyMemory<System.Byte>> buffers, System.Int64 fileOffset) => throw null;
+            public static void Write(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.ReadOnlySpan<System.Byte> buffer, System.Int64 fileOffset) => throw null;
+            public static System.Threading.Tasks.ValueTask WriteAsync(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.Collections.Generic.IReadOnlyList<System.ReadOnlyMemory<System.Byte>> buffers, System.Int64 fileOffset, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+            public static System.Threading.Tasks.ValueTask WriteAsync(Microsoft.Win32.SafeHandles.SafeFileHandle handle, System.ReadOnlyMemory<System.Byte> buffer, System.Int64 fileOffset, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
         }
 
-        // Generated from `System.IO.Stream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.SearchOption` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SearchOption : int
+        {
+            AllDirectories = 1,
+            TopDirectoryOnly = 0,
+        }
+
+        // Generated from `System.IO.SeekOrigin` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SeekOrigin : int
+        {
+            Begin = 0,
+            Current = 1,
+            End = 2,
+        }
+
+        // Generated from `System.IO.Stream` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Stream : System.MarshalByRefObject, System.IAsyncDisposable, System.IDisposable
         {
             public virtual System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
@@ -7574,6 +8185,8 @@ namespace System
             public abstract void SetLength(System.Int64 value);
             protected Stream() => throw null;
             public static System.IO.Stream Synchronized(System.IO.Stream stream) => throw null;
+            protected static void ValidateBufferArguments(System.Byte[] buffer, int offset, int count) => throw null;
+            protected static void ValidateCopyToArguments(System.IO.Stream destination, int bufferSize) => throw null;
             public abstract void Write(System.Byte[] buffer, int offset, int count);
             public virtual void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count) => throw null;
@@ -7583,7 +8196,7 @@ namespace System
             public virtual int WriteTimeout { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.IO.StreamReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.StreamReader` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StreamReader : System.IO.TextReader
         {
             public virtual System.IO.Stream BaseStream { get => throw null; }
@@ -7616,11 +8229,13 @@ namespace System
             public StreamReader(string path) => throw null;
             public StreamReader(string path, System.Text.Encoding encoding) => throw null;
             public StreamReader(string path, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks) => throw null;
+            public StreamReader(string path, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks, System.IO.FileStreamOptions options) => throw null;
             public StreamReader(string path, System.Text.Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize) => throw null;
+            public StreamReader(string path, System.IO.FileStreamOptions options) => throw null;
             public StreamReader(string path, bool detectEncodingFromByteOrderMarks) => throw null;
         }
 
-        // Generated from `System.IO.StreamWriter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.StreamWriter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StreamWriter : System.IO.TextWriter
         {
             public virtual bool AutoFlush { get => throw null; set => throw null; }
@@ -7637,6 +8252,8 @@ namespace System
             public StreamWriter(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize) => throw null;
             public StreamWriter(System.IO.Stream stream, System.Text.Encoding encoding = default(System.Text.Encoding), int bufferSize = default(int), bool leaveOpen = default(bool)) => throw null;
             public StreamWriter(string path) => throw null;
+            public StreamWriter(string path, System.Text.Encoding encoding, System.IO.FileStreamOptions options) => throw null;
+            public StreamWriter(string path, System.IO.FileStreamOptions options) => throw null;
             public StreamWriter(string path, bool append) => throw null;
             public StreamWriter(string path, bool append, System.Text.Encoding encoding) => throw null;
             public StreamWriter(string path, bool append, System.Text.Encoding encoding, int bufferSize) => throw null;
@@ -7666,7 +8283,7 @@ namespace System
             public override System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
         }
 
-        // Generated from `System.IO.StringReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.StringReader` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StringReader : System.IO.TextReader
         {
             public override void Close() => throw null;
@@ -7687,7 +8304,7 @@ namespace System
             public StringReader(string s) => throw null;
         }
 
-        // Generated from `System.IO.StringWriter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.StringWriter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StringWriter : System.IO.TextWriter
         {
             public override void Close() => throw null;
@@ -7719,7 +8336,7 @@ namespace System
             public override System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
         }
 
-        // Generated from `System.IO.TextReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.TextReader` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TextReader : System.MarshalByRefObject, System.IDisposable
         {
             public virtual void Close() => throw null;
@@ -7744,7 +8361,7 @@ namespace System
             protected TextReader() => throw null;
         }
 
-        // Generated from `System.IO.TextWriter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.TextWriter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TextWriter : System.MarshalByRefObject, System.IAsyncDisposable, System.IDisposable
         {
             public virtual void Close() => throw null;
@@ -7815,7 +8432,7 @@ namespace System
             public virtual System.Threading.Tasks.Task WriteLineAsync(string value) => throw null;
         }
 
-        // Generated from `System.IO.UnmanagedMemoryStream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.IO.UnmanagedMemoryStream` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UnmanagedMemoryStream : System.IO.Stream
         {
             public override bool CanRead { get => throw null; }
@@ -7831,7 +8448,7 @@ namespace System
             public override System.Int64 Position { get => throw null; set => throw null; }
             unsafe public System.Byte* PositionPointer { get => throw null; set => throw null; }
             public override int Read(System.Byte[] buffer, int offset, int count) => throw null;
-            public override int Read(System.Span<System.Byte> destination) => throw null;
+            public override int Read(System.Span<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
             public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override int ReadByte() => throw null;
@@ -7843,16 +8460,82 @@ namespace System
             unsafe public UnmanagedMemoryStream(System.Byte* pointer, System.Int64 length) => throw null;
             unsafe public UnmanagedMemoryStream(System.Byte* pointer, System.Int64 length, System.Int64 capacity, System.IO.FileAccess access) => throw null;
             public override void Write(System.Byte[] buffer, int offset, int count) => throw null;
-            public override void Write(System.ReadOnlySpan<System.Byte> source) => throw null;
+            public override void Write(System.ReadOnlySpan<System.Byte> buffer) => throw null;
             public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
             public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public override void WriteByte(System.Byte value) => throw null;
         }
 
+        namespace Enumeration
+        {
+            // Generated from `System.IO.Enumeration.FileSystemEntry` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct FileSystemEntry
+            {
+                public System.IO.FileAttributes Attributes { get => throw null; }
+                public System.DateTimeOffset CreationTimeUtc { get => throw null; }
+                public System.ReadOnlySpan<System.Char> Directory { get => throw null; }
+                public System.ReadOnlySpan<System.Char> FileName { get => throw null; }
+                // Stub generator skipped constructor 
+                public bool IsDirectory { get => throw null; }
+                public bool IsHidden { get => throw null; }
+                public System.DateTimeOffset LastAccessTimeUtc { get => throw null; }
+                public System.DateTimeOffset LastWriteTimeUtc { get => throw null; }
+                public System.Int64 Length { get => throw null; }
+                public System.ReadOnlySpan<System.Char> OriginalRootDirectory { get => throw null; }
+                public System.ReadOnlySpan<System.Char> RootDirectory { get => throw null; }
+                public System.IO.FileSystemInfo ToFileSystemInfo() => throw null;
+                public string ToFullPath() => throw null;
+                public string ToSpecifiedFullPath() => throw null;
+            }
+
+            // Generated from `System.IO.Enumeration.FileSystemEnumerable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class FileSystemEnumerable<TResult> : System.Collections.Generic.IEnumerable<TResult>, System.Collections.IEnumerable
+            {
+                // Generated from `System.IO.Enumeration.FileSystemEnumerable<>+FindPredicate` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public delegate bool FindPredicate(ref System.IO.Enumeration.FileSystemEntry entry);
+
+
+                // Generated from `System.IO.Enumeration.FileSystemEnumerable<>+FindTransform` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public delegate TResult FindTransform(ref System.IO.Enumeration.FileSystemEntry entry);
+
+
+                public FileSystemEnumerable(string directory, System.IO.Enumeration.FileSystemEnumerable<TResult>.FindTransform transform, System.IO.EnumerationOptions options = default(System.IO.EnumerationOptions)) => throw null;
+                public System.Collections.Generic.IEnumerator<TResult> GetEnumerator() => throw null;
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                public System.IO.Enumeration.FileSystemEnumerable<TResult>.FindPredicate ShouldIncludePredicate { get => throw null; set => throw null; }
+                public System.IO.Enumeration.FileSystemEnumerable<TResult>.FindPredicate ShouldRecursePredicate { get => throw null; set => throw null; }
+            }
+
+            // Generated from `System.IO.Enumeration.FileSystemEnumerator<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public abstract class FileSystemEnumerator<TResult> : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.Collections.Generic.IEnumerator<TResult>, System.Collections.IEnumerator, System.IDisposable
+            {
+                protected virtual bool ContinueOnError(int error) => throw null;
+                public TResult Current { get => throw null; }
+                object System.Collections.IEnumerator.Current { get => throw null; }
+                public void Dispose() => throw null;
+                protected virtual void Dispose(bool disposing) => throw null;
+                public FileSystemEnumerator(string directory, System.IO.EnumerationOptions options = default(System.IO.EnumerationOptions)) => throw null;
+                public bool MoveNext() => throw null;
+                protected virtual void OnDirectoryFinished(System.ReadOnlySpan<System.Char> directory) => throw null;
+                public void Reset() => throw null;
+                protected virtual bool ShouldIncludeEntry(ref System.IO.Enumeration.FileSystemEntry entry) => throw null;
+                protected virtual bool ShouldRecurseIntoEntry(ref System.IO.Enumeration.FileSystemEntry entry) => throw null;
+                protected abstract TResult TransformEntry(ref System.IO.Enumeration.FileSystemEntry entry);
+            }
+
+            // Generated from `System.IO.Enumeration.FileSystemName` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public static class FileSystemName
+            {
+                public static bool MatchesSimpleExpression(System.ReadOnlySpan<System.Char> expression, System.ReadOnlySpan<System.Char> name, bool ignoreCase = default(bool)) => throw null;
+                public static bool MatchesWin32Expression(System.ReadOnlySpan<System.Char> expression, System.ReadOnlySpan<System.Char> name, bool ignoreCase = default(bool)) => throw null;
+                public static string TranslateWin32Expression(string expression) => throw null;
+            }
+
+        }
     }
     namespace Net
     {
-        // Generated from `System.Net.WebUtility` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.WebUtility` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class WebUtility
         {
             public static string HtmlDecode(string value) => throw null;
@@ -7868,9 +8551,13 @@ namespace System
     }
     namespace Numerics
     {
-        // Generated from `System.Numerics.BitOperations` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Numerics.BitOperations` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class BitOperations
         {
+            public static bool IsPow2(int value) => throw null;
+            public static bool IsPow2(System.Int64 value) => throw null;
+            public static bool IsPow2(System.UInt32 value) => throw null;
+            public static bool IsPow2(System.UInt64 value) => throw null;
             public static int LeadingZeroCount(System.UInt32 value) => throw null;
             public static int LeadingZeroCount(System.UInt64 value) => throw null;
             public static int Log2(System.UInt32 value) => throw null;
@@ -7881,6 +8568,8 @@ namespace System
             public static System.UInt64 RotateLeft(System.UInt64 value, int offset) => throw null;
             public static System.UInt32 RotateRight(System.UInt32 value, int offset) => throw null;
             public static System.UInt64 RotateRight(System.UInt64 value, int offset) => throw null;
+            public static System.UInt32 RoundUpToPowerOf2(System.UInt32 value) => throw null;
+            public static System.UInt64 RoundUpToPowerOf2(System.UInt64 value) => throw null;
             public static int TrailingZeroCount(int value) => throw null;
             public static int TrailingZeroCount(System.Int64 value) => throw null;
             public static int TrailingZeroCount(System.UInt32 value) => throw null;
@@ -7890,7 +8579,7 @@ namespace System
     }
     namespace Reflection
     {
-        // Generated from `System.Reflection.AmbiguousMatchException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AmbiguousMatchException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AmbiguousMatchException : System.SystemException
         {
             public AmbiguousMatchException() => throw null;
@@ -7898,7 +8587,7 @@ namespace System
             public AmbiguousMatchException(string message, System.Exception inner) => throw null;
         }
 
-        // Generated from `System.Reflection.Assembly` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.Assembly` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Assembly : System.Reflection.ICustomAttributeProvider, System.Runtime.Serialization.ISerializable
         {
             public static bool operator !=(System.Reflection.Assembly left, System.Reflection.Assembly right) => throw null;
@@ -7978,7 +8667,7 @@ namespace System
             public static System.Reflection.Assembly UnsafeLoadFrom(string assemblyFile) => throw null;
         }
 
-        // Generated from `System.Reflection.AssemblyAlgorithmIdAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyAlgorithmIdAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyAlgorithmIdAttribute : System.Attribute
         {
             public System.UInt32 AlgorithmId { get => throw null; }
@@ -7986,70 +8675,70 @@ namespace System
             public AssemblyAlgorithmIdAttribute(System.UInt32 algorithmId) => throw null;
         }
 
-        // Generated from `System.Reflection.AssemblyCompanyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyCompanyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyCompanyAttribute : System.Attribute
         {
             public AssemblyCompanyAttribute(string company) => throw null;
             public string Company { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyConfigurationAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyConfigurationAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyConfigurationAttribute : System.Attribute
         {
             public AssemblyConfigurationAttribute(string configuration) => throw null;
             public string Configuration { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyContentType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum AssemblyContentType
+        // Generated from `System.Reflection.AssemblyContentType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum AssemblyContentType : int
         {
-            Default,
-            WindowsRuntime,
+            Default = 0,
+            WindowsRuntime = 1,
         }
 
-        // Generated from `System.Reflection.AssemblyCopyrightAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyCopyrightAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyCopyrightAttribute : System.Attribute
         {
             public AssemblyCopyrightAttribute(string copyright) => throw null;
             public string Copyright { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyCultureAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyCultureAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyCultureAttribute : System.Attribute
         {
             public AssemblyCultureAttribute(string culture) => throw null;
             public string Culture { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyDefaultAliasAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyDefaultAliasAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyDefaultAliasAttribute : System.Attribute
         {
             public AssemblyDefaultAliasAttribute(string defaultAlias) => throw null;
             public string DefaultAlias { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyDelaySignAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyDelaySignAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyDelaySignAttribute : System.Attribute
         {
             public AssemblyDelaySignAttribute(bool delaySign) => throw null;
             public bool DelaySign { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyDescriptionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyDescriptionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyDescriptionAttribute : System.Attribute
         {
             public AssemblyDescriptionAttribute(string description) => throw null;
             public string Description { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyFileVersionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyFileVersionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyFileVersionAttribute : System.Attribute
         {
             public AssemblyFileVersionAttribute(string version) => throw null;
             public string Version { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyFlagsAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyFlagsAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyFlagsAttribute : System.Attribute
         {
             public int AssemblyFlags { get => throw null; }
@@ -8059,28 +8748,28 @@ namespace System
             public System.UInt32 Flags { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyInformationalVersionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyInformationalVersionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyInformationalVersionAttribute : System.Attribute
         {
             public AssemblyInformationalVersionAttribute(string informationalVersion) => throw null;
             public string InformationalVersion { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyKeyFileAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyKeyFileAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyKeyFileAttribute : System.Attribute
         {
             public AssemblyKeyFileAttribute(string keyFile) => throw null;
             public string KeyFile { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyKeyNameAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyKeyNameAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyKeyNameAttribute : System.Attribute
         {
             public AssemblyKeyNameAttribute(string keyName) => throw null;
             public string KeyName { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyMetadataAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyMetadataAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyMetadataAttribute : System.Attribute
         {
             public AssemblyMetadataAttribute(string key, string value) => throw null;
@@ -8088,7 +8777,7 @@ namespace System
             public string Value { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyName` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyName` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyName : System.ICloneable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
             public AssemblyName() => throw null;
@@ -8118,32 +8807,32 @@ namespace System
             public System.Configuration.Assemblies.AssemblyVersionCompatibility VersionCompatibility { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyNameFlags` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyNameFlags` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum AssemblyNameFlags
+        public enum AssemblyNameFlags : int
         {
-            EnableJITcompileOptimizer,
-            EnableJITcompileTracking,
-            None,
-            PublicKey,
-            Retargetable,
+            EnableJITcompileOptimizer = 16384,
+            EnableJITcompileTracking = 32768,
+            None = 0,
+            PublicKey = 1,
+            Retargetable = 256,
         }
 
-        // Generated from `System.Reflection.AssemblyNameProxy` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyNameProxy` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyNameProxy : System.MarshalByRefObject
         {
             public AssemblyNameProxy() => throw null;
             public System.Reflection.AssemblyName GetAssemblyName(string assemblyFile) => throw null;
         }
 
-        // Generated from `System.Reflection.AssemblyProductAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyProductAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyProductAttribute : System.Attribute
         {
             public AssemblyProductAttribute(string product) => throw null;
             public string Product { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblySignatureKeyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblySignatureKeyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblySignatureKeyAttribute : System.Attribute
         {
             public AssemblySignatureKeyAttribute(string publicKey, string countersignature) => throw null;
@@ -8151,28 +8840,28 @@ namespace System
             public string PublicKey { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyTitleAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyTitleAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyTitleAttribute : System.Attribute
         {
             public AssemblyTitleAttribute(string title) => throw null;
             public string Title { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyTrademarkAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyTrademarkAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyTrademarkAttribute : System.Attribute
         {
             public AssemblyTrademarkAttribute(string trademark) => throw null;
             public string Trademark { get => throw null; }
         }
 
-        // Generated from `System.Reflection.AssemblyVersionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyVersionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyVersionAttribute : System.Attribute
         {
             public AssemblyVersionAttribute(string version) => throw null;
             public string Version { get => throw null; }
         }
 
-        // Generated from `System.Reflection.Binder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.Binder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Binder
         {
             public abstract System.Reflection.FieldInfo BindToField(System.Reflection.BindingFlags bindingAttr, System.Reflection.FieldInfo[] match, object value, System.Globalization.CultureInfo culture);
@@ -8184,45 +8873,45 @@ namespace System
             public abstract System.Reflection.PropertyInfo SelectProperty(System.Reflection.BindingFlags bindingAttr, System.Reflection.PropertyInfo[] match, System.Type returnType, System.Type[] indexes, System.Reflection.ParameterModifier[] modifiers);
         }
 
-        // Generated from `System.Reflection.BindingFlags` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.BindingFlags` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum BindingFlags
+        public enum BindingFlags : int
         {
-            CreateInstance,
-            DeclaredOnly,
-            Default,
-            DoNotWrapExceptions,
-            ExactBinding,
-            FlattenHierarchy,
-            GetField,
-            GetProperty,
-            IgnoreCase,
-            IgnoreReturn,
-            Instance,
-            InvokeMethod,
-            NonPublic,
-            OptionalParamBinding,
-            Public,
-            PutDispProperty,
-            PutRefDispProperty,
-            SetField,
-            SetProperty,
-            Static,
-            SuppressChangeType,
+            CreateInstance = 512,
+            DeclaredOnly = 2,
+            Default = 0,
+            DoNotWrapExceptions = 33554432,
+            ExactBinding = 65536,
+            FlattenHierarchy = 64,
+            GetField = 1024,
+            GetProperty = 4096,
+            IgnoreCase = 1,
+            IgnoreReturn = 16777216,
+            Instance = 4,
+            InvokeMethod = 256,
+            NonPublic = 32,
+            OptionalParamBinding = 262144,
+            Public = 16,
+            PutDispProperty = 16384,
+            PutRefDispProperty = 32768,
+            SetField = 2048,
+            SetProperty = 8192,
+            Static = 8,
+            SuppressChangeType = 131072,
         }
 
-        // Generated from `System.Reflection.CallingConventions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.CallingConventions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum CallingConventions
+        public enum CallingConventions : int
         {
-            Any,
-            ExplicitThis,
-            HasThis,
-            Standard,
-            VarArgs,
+            Any = 3,
+            ExplicitThis = 64,
+            HasThis = 32,
+            Standard = 1,
+            VarArgs = 2,
         }
 
-        // Generated from `System.Reflection.ConstructorInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ConstructorInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class ConstructorInfo : System.Reflection.MethodBase
         {
             public static bool operator !=(System.Reflection.ConstructorInfo left, System.Reflection.ConstructorInfo right) => throw null;
@@ -8237,7 +8926,7 @@ namespace System
             public static string TypeConstructorName;
         }
 
-        // Generated from `System.Reflection.CustomAttributeData` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.CustomAttributeData` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CustomAttributeData
         {
             public virtual System.Type AttributeType { get => throw null; }
@@ -8254,7 +8943,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Reflection.CustomAttributeExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.CustomAttributeExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class CustomAttributeExtensions
         {
             public static System.Attribute GetCustomAttribute(this System.Reflection.Assembly element, System.Type attributeType) => throw null;
@@ -8295,7 +8984,7 @@ namespace System
             public static bool IsDefined(this System.Reflection.ParameterInfo element, System.Type attributeType, bool inherit) => throw null;
         }
 
-        // Generated from `System.Reflection.CustomAttributeFormatException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.CustomAttributeFormatException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CustomAttributeFormatException : System.FormatException
         {
             public CustomAttributeFormatException() => throw null;
@@ -8304,7 +8993,7 @@ namespace System
             public CustomAttributeFormatException(string message, System.Exception inner) => throw null;
         }
 
-        // Generated from `System.Reflection.CustomAttributeNamedArgument` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.CustomAttributeNamedArgument` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct CustomAttributeNamedArgument
         {
             public static bool operator !=(System.Reflection.CustomAttributeNamedArgument left, System.Reflection.CustomAttributeNamedArgument right) => throw null;
@@ -8321,7 +9010,7 @@ namespace System
             public System.Reflection.CustomAttributeTypedArgument TypedValue { get => throw null; }
         }
 
-        // Generated from `System.Reflection.CustomAttributeTypedArgument` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.CustomAttributeTypedArgument` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct CustomAttributeTypedArgument
         {
             public static bool operator !=(System.Reflection.CustomAttributeTypedArgument left, System.Reflection.CustomAttributeTypedArgument right) => throw null;
@@ -8336,24 +9025,24 @@ namespace System
             public object Value { get => throw null; }
         }
 
-        // Generated from `System.Reflection.DefaultMemberAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.DefaultMemberAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DefaultMemberAttribute : System.Attribute
         {
             public DefaultMemberAttribute(string memberName) => throw null;
             public string MemberName { get => throw null; }
         }
 
-        // Generated from `System.Reflection.EventAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.EventAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum EventAttributes
+        public enum EventAttributes : int
         {
-            None,
-            RTSpecialName,
-            ReservedMask,
-            SpecialName,
+            None = 0,
+            RTSpecialName = 1024,
+            ReservedMask = 1024,
+            SpecialName = 512,
         }
 
-        // Generated from `System.Reflection.EventInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.EventInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EventInfo : System.Reflection.MemberInfo
         {
             public static bool operator !=(System.Reflection.EventInfo left, System.Reflection.EventInfo right) => throw null;
@@ -8381,7 +9070,7 @@ namespace System
             public virtual System.Reflection.MethodInfo RemoveMethod { get => throw null; }
         }
 
-        // Generated from `System.Reflection.ExceptionHandlingClause` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ExceptionHandlingClause` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ExceptionHandlingClause
         {
             public virtual System.Type CatchType { get => throw null; }
@@ -8395,42 +9084,42 @@ namespace System
             public virtual int TryOffset { get => throw null; }
         }
 
-        // Generated from `System.Reflection.ExceptionHandlingClauseOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ExceptionHandlingClauseOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ExceptionHandlingClauseOptions
+        public enum ExceptionHandlingClauseOptions : int
         {
-            Clause,
-            Fault,
-            Filter,
-            Finally,
+            Clause = 0,
+            Fault = 4,
+            Filter = 1,
+            Finally = 2,
         }
 
-        // Generated from `System.Reflection.FieldAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.FieldAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FieldAttributes
+        public enum FieldAttributes : int
         {
-            Assembly,
-            FamANDAssem,
-            FamORAssem,
-            Family,
-            FieldAccessMask,
-            HasDefault,
-            HasFieldMarshal,
-            HasFieldRVA,
-            InitOnly,
-            Literal,
-            NotSerialized,
-            PinvokeImpl,
-            Private,
-            PrivateScope,
-            Public,
-            RTSpecialName,
-            ReservedMask,
-            SpecialName,
-            Static,
+            Assembly = 3,
+            FamANDAssem = 2,
+            FamORAssem = 5,
+            Family = 4,
+            FieldAccessMask = 7,
+            HasDefault = 32768,
+            HasFieldMarshal = 4096,
+            HasFieldRVA = 256,
+            InitOnly = 32,
+            Literal = 64,
+            NotSerialized = 128,
+            PinvokeImpl = 8192,
+            Private = 1,
+            PrivateScope = 0,
+            Public = 6,
+            RTSpecialName = 1024,
+            ReservedMask = 38144,
+            SpecialName = 512,
+            Static = 16,
         }
 
-        // Generated from `System.Reflection.FieldInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.FieldInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class FieldInfo : System.Reflection.MemberInfo
         {
             public static bool operator !=(System.Reflection.FieldInfo left, System.Reflection.FieldInfo right) => throw null;
@@ -8469,21 +9158,21 @@ namespace System
             public virtual void SetValueDirect(System.TypedReference obj, object value) => throw null;
         }
 
-        // Generated from `System.Reflection.GenericParameterAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.GenericParameterAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum GenericParameterAttributes
+        public enum GenericParameterAttributes : int
         {
-            Contravariant,
-            Covariant,
-            DefaultConstructorConstraint,
-            None,
-            NotNullableValueTypeConstraint,
-            ReferenceTypeConstraint,
-            SpecialConstraintMask,
-            VarianceMask,
+            Contravariant = 2,
+            Covariant = 1,
+            DefaultConstructorConstraint = 16,
+            None = 0,
+            NotNullableValueTypeConstraint = 8,
+            ReferenceTypeConstraint = 4,
+            SpecialConstraintMask = 28,
+            VarianceMask = 3,
         }
 
-        // Generated from `System.Reflection.ICustomAttributeProvider` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ICustomAttributeProvider` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ICustomAttributeProvider
         {
             object[] GetCustomAttributes(System.Type attributeType, bool inherit);
@@ -8491,7 +9180,7 @@ namespace System
             bool IsDefined(System.Type attributeType, bool inherit);
         }
 
-        // Generated from `System.Reflection.IReflect` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.IReflect` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IReflect
         {
             System.Reflection.FieldInfo GetField(string name, System.Reflection.BindingFlags bindingAttr);
@@ -8508,22 +9197,22 @@ namespace System
             System.Type UnderlyingSystemType { get; }
         }
 
-        // Generated from `System.Reflection.IReflectableType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.IReflectableType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IReflectableType
         {
             System.Reflection.TypeInfo GetTypeInfo();
         }
 
-        // Generated from `System.Reflection.ImageFileMachine` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ImageFileMachine
+        // Generated from `System.Reflection.ImageFileMachine` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ImageFileMachine : int
         {
-            AMD64,
-            ARM,
-            I386,
-            IA64,
+            AMD64 = 34404,
+            ARM = 452,
+            I386 = 332,
+            IA64 = 512,
         }
 
-        // Generated from `System.Reflection.InterfaceMapping` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.InterfaceMapping` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct InterfaceMapping
         {
             // Stub generator skipped constructor 
@@ -8533,13 +9222,13 @@ namespace System
             public System.Type TargetType;
         }
 
-        // Generated from `System.Reflection.IntrospectionExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.IntrospectionExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class IntrospectionExtensions
         {
             public static System.Reflection.TypeInfo GetTypeInfo(this System.Type type) => throw null;
         }
 
-        // Generated from `System.Reflection.InvalidFilterCriteriaException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.InvalidFilterCriteriaException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InvalidFilterCriteriaException : System.ApplicationException
         {
             public InvalidFilterCriteriaException() => throw null;
@@ -8548,7 +9237,7 @@ namespace System
             public InvalidFilterCriteriaException(string message, System.Exception inner) => throw null;
         }
 
-        // Generated from `System.Reflection.LocalVariableInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.LocalVariableInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LocalVariableInfo
         {
             public virtual bool IsPinned { get => throw null; }
@@ -8558,7 +9247,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Reflection.ManifestResourceInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ManifestResourceInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ManifestResourceInfo
         {
             public virtual string FileName { get => throw null; }
@@ -8567,10 +9256,10 @@ namespace System
             public virtual System.Reflection.ResourceLocation ResourceLocation { get => throw null; }
         }
 
-        // Generated from `System.Reflection.MemberFilter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MemberFilter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate bool MemberFilter(System.Reflection.MemberInfo m, object filterCriteria);
 
-        // Generated from `System.Reflection.MemberInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MemberInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class MemberInfo : System.Reflection.ICustomAttributeProvider
         {
             public static bool operator !=(System.Reflection.MemberInfo left, System.Reflection.MemberInfo right) => throw null;
@@ -8593,52 +9282,52 @@ namespace System
             public abstract System.Type ReflectedType { get; }
         }
 
-        // Generated from `System.Reflection.MemberTypes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MemberTypes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MemberTypes
+        public enum MemberTypes : int
         {
-            All,
-            Constructor,
-            Custom,
-            Event,
-            Field,
-            Method,
-            NestedType,
-            Property,
-            TypeInfo,
+            All = 191,
+            Constructor = 1,
+            Custom = 64,
+            Event = 2,
+            Field = 4,
+            Method = 8,
+            NestedType = 128,
+            Property = 16,
+            TypeInfo = 32,
         }
 
-        // Generated from `System.Reflection.MethodAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MethodAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MethodAttributes
+        public enum MethodAttributes : int
         {
-            Abstract,
-            Assembly,
-            CheckAccessOnOverride,
-            FamANDAssem,
-            FamORAssem,
-            Family,
-            Final,
-            HasSecurity,
-            HideBySig,
-            MemberAccessMask,
-            NewSlot,
-            PinvokeImpl,
-            Private,
-            PrivateScope,
-            Public,
-            RTSpecialName,
-            RequireSecObject,
-            ReservedMask,
-            ReuseSlot,
-            SpecialName,
-            Static,
-            UnmanagedExport,
-            Virtual,
-            VtableLayoutMask,
+            Abstract = 1024,
+            Assembly = 3,
+            CheckAccessOnOverride = 512,
+            FamANDAssem = 2,
+            FamORAssem = 5,
+            Family = 4,
+            Final = 32,
+            HasSecurity = 16384,
+            HideBySig = 128,
+            MemberAccessMask = 7,
+            NewSlot = 256,
+            PinvokeImpl = 8192,
+            Private = 1,
+            PrivateScope = 0,
+            Public = 6,
+            RTSpecialName = 4096,
+            RequireSecObject = 32768,
+            ReservedMask = 53248,
+            ReuseSlot = 0,
+            SpecialName = 2048,
+            Static = 16,
+            UnmanagedExport = 8,
+            Virtual = 64,
+            VtableLayoutMask = 256,
         }
 
-        // Generated from `System.Reflection.MethodBase` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MethodBase` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class MethodBase : System.Reflection.MemberInfo
         {
             public static bool operator !=(System.Reflection.MethodBase left, System.Reflection.MethodBase right) => throw null;
@@ -8681,7 +9370,7 @@ namespace System
             public virtual System.Reflection.MethodImplAttributes MethodImplementationFlags { get => throw null; }
         }
 
-        // Generated from `System.Reflection.MethodBody` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MethodBody` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MethodBody
         {
             public virtual System.Collections.Generic.IList<System.Reflection.ExceptionHandlingClause> ExceptionHandlingClauses { get => throw null; }
@@ -8693,29 +9382,29 @@ namespace System
             protected MethodBody() => throw null;
         }
 
-        // Generated from `System.Reflection.MethodImplAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MethodImplAttributes
+        // Generated from `System.Reflection.MethodImplAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum MethodImplAttributes : int
         {
-            AggressiveInlining,
-            AggressiveOptimization,
-            CodeTypeMask,
-            ForwardRef,
-            IL,
-            InternalCall,
-            Managed,
-            ManagedMask,
-            MaxMethodImplVal,
-            Native,
-            NoInlining,
-            NoOptimization,
-            OPTIL,
-            PreserveSig,
-            Runtime,
-            Synchronized,
-            Unmanaged,
+            AggressiveInlining = 256,
+            AggressiveOptimization = 512,
+            CodeTypeMask = 3,
+            ForwardRef = 16,
+            IL = 0,
+            InternalCall = 4096,
+            Managed = 0,
+            ManagedMask = 4,
+            MaxMethodImplVal = 65535,
+            Native = 1,
+            NoInlining = 8,
+            NoOptimization = 64,
+            OPTIL = 2,
+            PreserveSig = 128,
+            Runtime = 3,
+            Synchronized = 32,
+            Unmanaged = 4,
         }
 
-        // Generated from `System.Reflection.MethodInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MethodInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class MethodInfo : System.Reflection.MethodBase
         {
             public static bool operator !=(System.Reflection.MethodInfo left, System.Reflection.MethodInfo right) => throw null;
@@ -8737,14 +9426,14 @@ namespace System
             public abstract System.Reflection.ICustomAttributeProvider ReturnTypeCustomAttributes { get; }
         }
 
-        // Generated from `System.Reflection.Missing` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.Missing` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Missing : System.Runtime.Serialization.ISerializable
         {
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public static System.Reflection.Missing Value;
         }
 
-        // Generated from `System.Reflection.Module` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.Module` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Module : System.Reflection.ICustomAttributeProvider, System.Runtime.Serialization.ISerializable
         {
             public static bool operator !=(System.Reflection.Module left, System.Reflection.Module right) => throw null;
@@ -8798,10 +9487,38 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Reflection.ModuleResolveEventHandler` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ModuleResolveEventHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate System.Reflection.Module ModuleResolveEventHandler(object sender, System.ResolveEventArgs e);
 
-        // Generated from `System.Reflection.ObfuscateAssemblyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.NullabilityInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class NullabilityInfo
+        {
+            public System.Reflection.NullabilityInfo ElementType { get => throw null; }
+            public System.Reflection.NullabilityInfo[] GenericTypeArguments { get => throw null; }
+            public System.Reflection.NullabilityState ReadState { get => throw null; }
+            public System.Type Type { get => throw null; }
+            public System.Reflection.NullabilityState WriteState { get => throw null; }
+        }
+
+        // Generated from `System.Reflection.NullabilityInfoContext` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class NullabilityInfoContext
+        {
+            public System.Reflection.NullabilityInfo Create(System.Reflection.EventInfo eventInfo) => throw null;
+            public System.Reflection.NullabilityInfo Create(System.Reflection.FieldInfo fieldInfo) => throw null;
+            public System.Reflection.NullabilityInfo Create(System.Reflection.ParameterInfo parameterInfo) => throw null;
+            public System.Reflection.NullabilityInfo Create(System.Reflection.PropertyInfo propertyInfo) => throw null;
+            public NullabilityInfoContext() => throw null;
+        }
+
+        // Generated from `System.Reflection.NullabilityState` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum NullabilityState : int
+        {
+            NotNull = 1,
+            Nullable = 2,
+            Unknown = 0,
+        }
+
+        // Generated from `System.Reflection.ObfuscateAssemblyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ObfuscateAssemblyAttribute : System.Attribute
         {
             public bool AssemblyIsPrivate { get => throw null; }
@@ -8809,7 +9526,7 @@ namespace System
             public bool StripAfterObfuscation { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Reflection.ObfuscationAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ObfuscationAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ObfuscationAttribute : System.Attribute
         {
             public bool ApplyToMembers { get => throw null; set => throw null; }
@@ -8819,24 +9536,24 @@ namespace System
             public bool StripAfterObfuscation { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Reflection.ParameterAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ParameterAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ParameterAttributes
+        public enum ParameterAttributes : int
         {
-            HasDefault,
-            HasFieldMarshal,
-            In,
-            Lcid,
-            None,
-            Optional,
-            Out,
-            Reserved3,
-            Reserved4,
-            ReservedMask,
-            Retval,
+            HasDefault = 4096,
+            HasFieldMarshal = 8192,
+            In = 1,
+            Lcid = 4,
+            None = 0,
+            Optional = 16,
+            Out = 2,
+            Reserved3 = 16384,
+            Reserved4 = 32768,
+            ReservedMask = 61440,
+            Retval = 8,
         }
 
-        // Generated from `System.Reflection.ParameterInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ParameterInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ParameterInfo : System.Reflection.ICustomAttributeProvider, System.Runtime.Serialization.IObjectReference
         {
             public virtual System.Reflection.ParameterAttributes Attributes { get => throw null; }
@@ -8871,7 +9588,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Reflection.ParameterModifier` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ParameterModifier` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct ParameterModifier
         {
             public bool this[int index] { get => throw null; set => throw null; }
@@ -8879,52 +9596,54 @@ namespace System
             public ParameterModifier(int parameterCount) => throw null;
         }
 
-        // Generated from `System.Reflection.Pointer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.Pointer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Pointer : System.Runtime.Serialization.ISerializable
         {
             unsafe public static object Box(void* ptr, System.Type type) => throw null;
+            public override bool Equals(object obj) => throw null;
+            public override int GetHashCode() => throw null;
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             unsafe public static void* Unbox(object ptr) => throw null;
         }
 
-        // Generated from `System.Reflection.PortableExecutableKinds` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.PortableExecutableKinds` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum PortableExecutableKinds
+        public enum PortableExecutableKinds : int
         {
-            ILOnly,
-            NotAPortableExecutableImage,
-            PE32Plus,
-            Preferred32Bit,
-            Required32Bit,
-            Unmanaged32Bit,
+            ILOnly = 1,
+            NotAPortableExecutableImage = 0,
+            PE32Plus = 4,
+            Preferred32Bit = 16,
+            Required32Bit = 2,
+            Unmanaged32Bit = 8,
         }
 
-        // Generated from `System.Reflection.ProcessorArchitecture` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ProcessorArchitecture
+        // Generated from `System.Reflection.ProcessorArchitecture` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ProcessorArchitecture : int
         {
-            Amd64,
-            Arm,
-            IA64,
-            MSIL,
-            None,
-            X86,
+            Amd64 = 4,
+            Arm = 5,
+            IA64 = 3,
+            MSIL = 1,
+            None = 0,
+            X86 = 2,
         }
 
-        // Generated from `System.Reflection.PropertyAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.PropertyAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum PropertyAttributes
+        public enum PropertyAttributes : int
         {
-            HasDefault,
-            None,
-            RTSpecialName,
-            Reserved2,
-            Reserved3,
-            Reserved4,
-            ReservedMask,
-            SpecialName,
+            HasDefault = 4096,
+            None = 0,
+            RTSpecialName = 1024,
+            Reserved2 = 8192,
+            Reserved3 = 16384,
+            Reserved4 = 32768,
+            ReservedMask = 62464,
+            SpecialName = 512,
         }
 
-        // Generated from `System.Reflection.PropertyInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.PropertyInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class PropertyInfo : System.Reflection.MemberInfo
         {
             public static bool operator !=(System.Reflection.PropertyInfo left, System.Reflection.PropertyInfo right) => throw null;
@@ -8959,7 +9678,7 @@ namespace System
             public virtual void SetValue(object obj, object value, object[] index) => throw null;
         }
 
-        // Generated from `System.Reflection.ReflectionContext` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ReflectionContext` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class ReflectionContext
         {
             public virtual System.Reflection.TypeInfo GetTypeForObject(object value) => throw null;
@@ -8968,7 +9687,7 @@ namespace System
             protected ReflectionContext() => throw null;
         }
 
-        // Generated from `System.Reflection.ReflectionTypeLoadException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ReflectionTypeLoadException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ReflectionTypeLoadException : System.SystemException, System.Runtime.Serialization.ISerializable
         {
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -8980,24 +9699,24 @@ namespace System
             public System.Type[] Types { get => throw null; }
         }
 
-        // Generated from `System.Reflection.ResourceAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ResourceAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ResourceAttributes
+        public enum ResourceAttributes : int
         {
-            Private,
-            Public,
+            Private = 2,
+            Public = 1,
         }
 
-        // Generated from `System.Reflection.ResourceLocation` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ResourceLocation` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ResourceLocation
+        public enum ResourceLocation : int
         {
-            ContainedInAnotherAssembly,
-            ContainedInManifestFile,
-            Embedded,
+            ContainedInAnotherAssembly = 2,
+            ContainedInManifestFile = 4,
+            Embedded = 1,
         }
 
-        // Generated from `System.Reflection.RuntimeReflectionExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.RuntimeReflectionExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class RuntimeReflectionExtensions
         {
             public static System.Reflection.MethodInfo GetMethodInfo(this System.Delegate del) => throw null;
@@ -9013,7 +9732,7 @@ namespace System
             public static System.Reflection.PropertyInfo GetRuntimeProperty(this System.Type type, string name) => throw null;
         }
 
-        // Generated from `System.Reflection.StrongNameKeyPair` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.StrongNameKeyPair` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StrongNameKeyPair : System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
         {
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -9025,7 +9744,7 @@ namespace System
             public StrongNameKeyPair(string keyPairContainer) => throw null;
         }
 
-        // Generated from `System.Reflection.TargetException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.TargetException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TargetException : System.ApplicationException
         {
             public TargetException() => throw null;
@@ -9034,14 +9753,14 @@ namespace System
             public TargetException(string message, System.Exception inner) => throw null;
         }
 
-        // Generated from `System.Reflection.TargetInvocationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.TargetInvocationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TargetInvocationException : System.ApplicationException
         {
             public TargetInvocationException(System.Exception inner) => throw null;
             public TargetInvocationException(string message, System.Exception inner) => throw null;
         }
 
-        // Generated from `System.Reflection.TargetParameterCountException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.TargetParameterCountException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TargetParameterCountException : System.ApplicationException
         {
             public TargetParameterCountException() => throw null;
@@ -9049,45 +9768,45 @@ namespace System
             public TargetParameterCountException(string message, System.Exception inner) => throw null;
         }
 
-        // Generated from `System.Reflection.TypeAttributes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.TypeAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum TypeAttributes
+        public enum TypeAttributes : int
         {
-            Abstract,
-            AnsiClass,
-            AutoClass,
-            AutoLayout,
-            BeforeFieldInit,
-            Class,
-            ClassSemanticsMask,
-            CustomFormatClass,
-            CustomFormatMask,
-            ExplicitLayout,
-            HasSecurity,
-            Import,
-            Interface,
-            LayoutMask,
-            NestedAssembly,
-            NestedFamANDAssem,
-            NestedFamORAssem,
-            NestedFamily,
-            NestedPrivate,
-            NestedPublic,
-            NotPublic,
-            Public,
-            RTSpecialName,
-            ReservedMask,
-            Sealed,
-            SequentialLayout,
-            Serializable,
-            SpecialName,
-            StringFormatMask,
-            UnicodeClass,
-            VisibilityMask,
-            WindowsRuntime,
+            Abstract = 128,
+            AnsiClass = 0,
+            AutoClass = 131072,
+            AutoLayout = 0,
+            BeforeFieldInit = 1048576,
+            Class = 0,
+            ClassSemanticsMask = 32,
+            CustomFormatClass = 196608,
+            CustomFormatMask = 12582912,
+            ExplicitLayout = 16,
+            HasSecurity = 262144,
+            Import = 4096,
+            Interface = 32,
+            LayoutMask = 24,
+            NestedAssembly = 5,
+            NestedFamANDAssem = 6,
+            NestedFamORAssem = 7,
+            NestedFamily = 4,
+            NestedPrivate = 3,
+            NestedPublic = 2,
+            NotPublic = 0,
+            Public = 1,
+            RTSpecialName = 2048,
+            ReservedMask = 264192,
+            Sealed = 256,
+            SequentialLayout = 8,
+            Serializable = 8192,
+            SpecialName = 1024,
+            StringFormatMask = 196608,
+            UnicodeClass = 65536,
+            VisibilityMask = 7,
+            WindowsRuntime = 16384,
         }
 
-        // Generated from `System.Reflection.TypeDelegator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.TypeDelegator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TypeDelegator : System.Reflection.TypeInfo
         {
             public override System.Reflection.Assembly Assembly { get => throw null; }
@@ -9146,10 +9865,10 @@ namespace System
             protected System.Type typeImpl;
         }
 
-        // Generated from `System.Reflection.TypeFilter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.TypeFilter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate bool TypeFilter(System.Type m, object filterCriteria);
 
-        // Generated from `System.Reflection.TypeInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.TypeInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TypeInfo : System.Type, System.Reflection.IReflectableType
         {
             public virtual System.Type AsType() => throw null;
@@ -9176,14 +9895,14 @@ namespace System
     }
     namespace Resources
     {
-        // Generated from `System.Resources.IResourceReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.IResourceReader` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IResourceReader : System.Collections.IEnumerable, System.IDisposable
         {
             void Close();
             System.Collections.IDictionaryEnumerator GetEnumerator();
         }
 
-        // Generated from `System.Resources.MissingManifestResourceException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.MissingManifestResourceException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MissingManifestResourceException : System.SystemException
         {
             public MissingManifestResourceException() => throw null;
@@ -9192,7 +9911,7 @@ namespace System
             public MissingManifestResourceException(string message, System.Exception inner) => throw null;
         }
 
-        // Generated from `System.Resources.MissingSatelliteAssemblyException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.MissingSatelliteAssemblyException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MissingSatelliteAssemblyException : System.SystemException
         {
             public string CultureName { get => throw null; }
@@ -9203,7 +9922,7 @@ namespace System
             public MissingSatelliteAssemblyException(string message, string cultureName) => throw null;
         }
 
-        // Generated from `System.Resources.NeutralResourcesLanguageAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.NeutralResourcesLanguageAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class NeutralResourcesLanguageAttribute : System.Attribute
         {
             public string CultureName { get => throw null; }
@@ -9212,7 +9931,7 @@ namespace System
             public NeutralResourcesLanguageAttribute(string cultureName, System.Resources.UltimateResourceFallbackLocation location) => throw null;
         }
 
-        // Generated from `System.Resources.ResourceManager` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.ResourceManager` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ResourceManager
         {
             public virtual string BaseName { get => throw null; }
@@ -9241,7 +9960,7 @@ namespace System
             public virtual System.Type ResourceSetType { get => throw null; }
         }
 
-        // Generated from `System.Resources.ResourceReader` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.ResourceReader` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ResourceReader : System.Collections.IEnumerable, System.IDisposable, System.Resources.IResourceReader
         {
             public void Close() => throw null;
@@ -9253,7 +9972,7 @@ namespace System
             public ResourceReader(string fileName) => throw null;
         }
 
-        // Generated from `System.Resources.ResourceSet` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.ResourceSet` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ResourceSet : System.Collections.IEnumerable, System.IDisposable
         {
             public virtual void Close() => throw null;
@@ -9274,24 +9993,24 @@ namespace System
             public ResourceSet(string fileName) => throw null;
         }
 
-        // Generated from `System.Resources.SatelliteContractVersionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.SatelliteContractVersionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SatelliteContractVersionAttribute : System.Attribute
         {
             public SatelliteContractVersionAttribute(string version) => throw null;
             public string Version { get => throw null; }
         }
 
-        // Generated from `System.Resources.UltimateResourceFallbackLocation` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum UltimateResourceFallbackLocation
+        // Generated from `System.Resources.UltimateResourceFallbackLocation` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum UltimateResourceFallbackLocation : int
         {
-            MainAssembly,
-            Satellite,
+            MainAssembly = 0,
+            Satellite = 1,
         }
 
     }
     namespace Runtime
     {
-        // Generated from `System.Runtime.AmbiguousImplementationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Runtime.AmbiguousImplementationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AmbiguousImplementationException : System.Exception
         {
             public AmbiguousImplementationException() => throw null;
@@ -9299,31 +10018,43 @@ namespace System
             public AmbiguousImplementationException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Runtime.AssemblyTargetedPatchBandAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Runtime.AssemblyTargetedPatchBandAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AssemblyTargetedPatchBandAttribute : System.Attribute
         {
             public AssemblyTargetedPatchBandAttribute(string targetedPatchBand) => throw null;
             public string TargetedPatchBand { get => throw null; }
         }
 
-        // Generated from `System.Runtime.GCLargeObjectHeapCompactionMode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum GCLargeObjectHeapCompactionMode
+        // Generated from `System.Runtime.DependentHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public struct DependentHandle : System.IDisposable
         {
-            CompactOnce,
-            Default,
+            public object Dependent { get => throw null; set => throw null; }
+            // Stub generator skipped constructor 
+            public DependentHandle(object target, object dependent) => throw null;
+            public void Dispose() => throw null;
+            public bool IsAllocated { get => throw null; }
+            public object Target { get => throw null; set => throw null; }
+            public (object, object) TargetAndDependent { get => throw null; }
         }
 
-        // Generated from `System.Runtime.GCLatencyMode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum GCLatencyMode
+        // Generated from `System.Runtime.GCLargeObjectHeapCompactionMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum GCLargeObjectHeapCompactionMode : int
         {
-            Batch,
-            Interactive,
-            LowLatency,
-            NoGCRegion,
-            SustainedLowLatency,
+            CompactOnce = 2,
+            Default = 1,
         }
 
-        // Generated from `System.Runtime.GCSettings` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Runtime.GCLatencyMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum GCLatencyMode : int
+        {
+            Batch = 0,
+            Interactive = 1,
+            LowLatency = 2,
+            NoGCRegion = 4,
+            SustainedLowLatency = 3,
+        }
+
+        // Generated from `System.Runtime.GCSettings` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class GCSettings
         {
             public static bool IsServerGC { get => throw null; }
@@ -9331,7 +10062,15 @@ namespace System
             public static System.Runtime.GCLatencyMode LatencyMode { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Runtime.MemoryFailPoint` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Runtime.JitInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public static class JitInfo
+        {
+            public static System.TimeSpan GetCompilationTime(bool currentThread = default(bool)) => throw null;
+            public static System.Int64 GetCompiledILBytes(bool currentThread = default(bool)) => throw null;
+            public static System.Int64 GetCompiledMethodCount(bool currentThread = default(bool)) => throw null;
+        }
+
+        // Generated from `System.Runtime.MemoryFailPoint` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MemoryFailPoint : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.IDisposable
         {
             public void Dispose() => throw null;
@@ -9339,14 +10078,14 @@ namespace System
             // ERR: Stub generator didn't handle member: ~MemoryFailPoint
         }
 
-        // Generated from `System.Runtime.ProfileOptimization` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Runtime.ProfileOptimization` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class ProfileOptimization
         {
             public static void SetProfileRoot(string directoryPath) => throw null;
             public static void StartProfile(string profile) => throw null;
         }
 
-        // Generated from `System.Runtime.TargetedPatchingOptOutAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Runtime.TargetedPatchingOptOutAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TargetedPatchingOptOutAttribute : System.Attribute
         {
             public string Reason { get => throw null; }
@@ -9355,14 +10094,14 @@ namespace System
 
         namespace CompilerServices
         {
-            // Generated from `System.Runtime.CompilerServices.AccessedThroughPropertyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AccessedThroughPropertyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AccessedThroughPropertyAttribute : System.Attribute
             {
                 public AccessedThroughPropertyAttribute(string propertyName) => throw null;
                 public string PropertyName { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncIteratorMethodBuilder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncIteratorMethodBuilder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AsyncIteratorMethodBuilder
             {
                 // Stub generator skipped constructor 
@@ -9373,26 +10112,26 @@ namespace System
                 public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AsyncIteratorStateMachineAttribute : System.Runtime.CompilerServices.StateMachineAttribute
             {
                 public AsyncIteratorStateMachineAttribute(System.Type stateMachineType) : base(default(System.Type)) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncMethodBuilderAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncMethodBuilderAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AsyncMethodBuilderAttribute : System.Attribute
             {
                 public AsyncMethodBuilderAttribute(System.Type builderType) => throw null;
                 public System.Type BuilderType { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncStateMachineAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncStateMachineAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AsyncStateMachineAttribute : System.Runtime.CompilerServices.StateMachineAttribute
             {
                 public AsyncStateMachineAttribute(System.Type stateMachineType) : base(default(System.Type)) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncTaskMethodBuilder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncTaskMethodBuilder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AsyncTaskMethodBuilder
             {
                 // Stub generator skipped constructor 
@@ -9406,7 +10145,7 @@ namespace System
                 public System.Threading.Tasks.Task Task { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncTaskMethodBuilder<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncTaskMethodBuilder<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AsyncTaskMethodBuilder<TResult>
             {
                 // Stub generator skipped constructor 
@@ -9420,7 +10159,7 @@ namespace System
                 public System.Threading.Tasks.Task<TResult> Task { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AsyncValueTaskMethodBuilder
             {
                 // Stub generator skipped constructor 
@@ -9434,7 +10173,7 @@ namespace System
                 public System.Threading.Tasks.ValueTask Task { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AsyncValueTaskMethodBuilder<TResult>
             {
                 // Stub generator skipped constructor 
@@ -9448,7 +10187,7 @@ namespace System
                 public System.Threading.Tasks.ValueTask<TResult> Task { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.AsyncVoidMethodBuilder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.AsyncVoidMethodBuilder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AsyncVoidMethodBuilder
             {
                 // Stub generator skipped constructor 
@@ -9461,63 +10200,75 @@ namespace System
                 public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallConvCdecl` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CallConvCdecl` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallConvCdecl
             {
                 public CallConvCdecl() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallConvFastcall` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CallConvFastcall` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallConvFastcall
             {
                 public CallConvFastcall() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallConvStdcall` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CallConvMemberFunction` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class CallConvMemberFunction
+            {
+                public CallConvMemberFunction() => throw null;
+            }
+
+            // Generated from `System.Runtime.CompilerServices.CallConvStdcall` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallConvStdcall
             {
                 public CallConvStdcall() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallConvThiscall` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CallConvSuppressGCTransition` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class CallConvSuppressGCTransition
+            {
+                public CallConvSuppressGCTransition() => throw null;
+            }
+
+            // Generated from `System.Runtime.CompilerServices.CallConvThiscall` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallConvThiscall
             {
                 public CallConvThiscall() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallerArgumentExpressionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CallerArgumentExpressionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallerArgumentExpressionAttribute : System.Attribute
             {
                 public CallerArgumentExpressionAttribute(string parameterName) => throw null;
                 public string ParameterName { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallerFilePathAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CallerFilePathAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallerFilePathAttribute : System.Attribute
             {
                 public CallerFilePathAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallerLineNumberAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CallerLineNumberAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallerLineNumberAttribute : System.Attribute
             {
                 public CallerLineNumberAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CallerMemberNameAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CallerMemberNameAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CallerMemberNameAttribute : System.Attribute
             {
                 public CallerMemberNameAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CompilationRelaxations` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CompilationRelaxations` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CompilationRelaxations
+            public enum CompilationRelaxations : int
             {
-                NoStringInterning,
+                NoStringInterning = 8,
             }
 
-            // Generated from `System.Runtime.CompilerServices.CompilationRelaxationsAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CompilationRelaxationsAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CompilationRelaxationsAttribute : System.Attribute
             {
                 public int CompilationRelaxations { get => throw null; }
@@ -9525,22 +10276,22 @@ namespace System
                 public CompilationRelaxationsAttribute(int relaxations) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CompilerGeneratedAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CompilerGeneratedAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CompilerGeneratedAttribute : System.Attribute
             {
                 public CompilerGeneratedAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CompilerGlobalScopeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CompilerGlobalScopeAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CompilerGlobalScopeAttribute : System.Attribute
             {
                 public CompilerGlobalScopeAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ConditionalWeakTable<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ConditionalWeakTable<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConditionalWeakTable<TKey, TValue> : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable where TKey : class where TValue : class
             {
-                // Generated from `System.Runtime.CompilerServices.ConditionalWeakTable<,>+CreateValueCallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConditionalWeakTable<,>+CreateValueCallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate TValue CreateValueCallback(TKey key);
 
 
@@ -9556,17 +10307,17 @@ namespace System
                 public bool TryGetValue(TKey key, out TValue value) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ConfiguredAsyncDisposable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ConfiguredAsyncDisposable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredAsyncDisposable
             {
                 // Stub generator skipped constructor 
                 public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable DisposeAsync() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredCancelableAsyncEnumerable<T>
             {
-                // Generated from `System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<>+Enumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator
                 {
                     public T Current { get => throw null; }
@@ -9582,10 +10333,10 @@ namespace System
                 public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> WithCancellation(System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredTaskAwaitable
             {
-                // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable+ConfiguredTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable+ConfiguredTaskAwaiter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ConfiguredTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     // Stub generator skipped constructor 
@@ -9600,10 +10351,10 @@ namespace System
                 public System.Runtime.CompilerServices.ConfiguredTaskAwaitable.ConfiguredTaskAwaiter GetAwaiter() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredTaskAwaitable<TResult>
             {
-                // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ConfiguredTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     // Stub generator skipped constructor 
@@ -9618,10 +10369,10 @@ namespace System
                 public System.Runtime.CompilerServices.ConfiguredTaskAwaitable<TResult>.ConfiguredTaskAwaiter GetAwaiter() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredValueTaskAwaitable
             {
-                // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable+ConfiguredValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable+ConfiguredValueTaskAwaiter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ConfiguredValueTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     // Stub generator skipped constructor 
@@ -9636,10 +10387,10 @@ namespace System
                 public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable.ConfiguredValueTaskAwaiter GetAwaiter() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConfiguredValueTaskAwaitable<TResult>
             {
-                // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<>+ConfiguredValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<>+ConfiguredValueTaskAwaiter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ConfiguredValueTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     // Stub generator skipped constructor 
@@ -9654,21 +10405,21 @@ namespace System
                 public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<TResult>.ConfiguredValueTaskAwaiter GetAwaiter() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.CustomConstantAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.CustomConstantAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CustomConstantAttribute : System.Attribute
             {
                 protected CustomConstantAttribute() => throw null;
                 public abstract object Value { get; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.DateTimeConstantAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.DateTimeConstantAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DateTimeConstantAttribute : System.Runtime.CompilerServices.CustomConstantAttribute
             {
                 public DateTimeConstantAttribute(System.Int64 ticks) => throw null;
                 public override object Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.DecimalConstantAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.DecimalConstantAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DecimalConstantAttribute : System.Attribute
             {
                 public DecimalConstantAttribute(System.Byte scale, System.Byte sign, int hi, int mid, int low) => throw null;
@@ -9676,14 +10427,35 @@ namespace System
                 public System.Decimal Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.DefaultDependencyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.DefaultDependencyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DefaultDependencyAttribute : System.Attribute
             {
                 public DefaultDependencyAttribute(System.Runtime.CompilerServices.LoadHint loadHintArgument) => throw null;
                 public System.Runtime.CompilerServices.LoadHint LoadHint { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.DependencyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.DefaultInterpolatedStringHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct DefaultInterpolatedStringHandler
+            {
+                public void AppendFormatted(System.ReadOnlySpan<System.Char> value) => throw null;
+                public void AppendFormatted(System.ReadOnlySpan<System.Char> value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted(string value) => throw null;
+                public void AppendFormatted(string value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted<T>(T value) => throw null;
+                public void AppendFormatted<T>(T value, int alignment) => throw null;
+                public void AppendFormatted<T>(T value, int alignment, string format) => throw null;
+                public void AppendFormatted<T>(T value, string format) => throw null;
+                public void AppendLiteral(string value) => throw null;
+                // Stub generator skipped constructor 
+                public DefaultInterpolatedStringHandler(int literalLength, int formattedCount) => throw null;
+                public DefaultInterpolatedStringHandler(int literalLength, int formattedCount, System.IFormatProvider provider) => throw null;
+                public DefaultInterpolatedStringHandler(int literalLength, int formattedCount, System.IFormatProvider provider, System.Span<System.Char> initialBuffer) => throw null;
+                public override string ToString() => throw null;
+                public string ToStringAndClear() => throw null;
+            }
+
+            // Generated from `System.Runtime.CompilerServices.DependencyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DependencyAttribute : System.Attribute
             {
                 public DependencyAttribute(string dependentAssemblyArgument, System.Runtime.CompilerServices.LoadHint loadHintArgument) => throw null;
@@ -9691,37 +10463,37 @@ namespace System
                 public System.Runtime.CompilerServices.LoadHint LoadHint { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.DisablePrivateReflectionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.DisablePrivateReflectionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DisablePrivateReflectionAttribute : System.Attribute
             {
                 public DisablePrivateReflectionAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.DiscardableAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.DiscardableAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DiscardableAttribute : System.Attribute
             {
                 public DiscardableAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.EnumeratorCancellationAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.EnumeratorCancellationAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EnumeratorCancellationAttribute : System.Attribute
             {
                 public EnumeratorCancellationAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ExtensionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ExtensionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ExtensionAttribute : System.Attribute
             {
                 public ExtensionAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.FixedAddressValueTypeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.FixedAddressValueTypeAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FixedAddressValueTypeAttribute : System.Attribute
             {
                 public FixedAddressValueTypeAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.FixedBufferAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.FixedBufferAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FixedBufferAttribute : System.Attribute
             {
                 public System.Type ElementType { get => throw null; }
@@ -9729,51 +10501,51 @@ namespace System
                 public int Length { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.FormattableStringFactory` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.FormattableStringFactory` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class FormattableStringFactory
             {
                 public static System.FormattableString Create(string format, params object[] arguments) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.IAsyncStateMachine` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.IAsyncStateMachine` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IAsyncStateMachine
             {
                 void MoveNext();
                 void SetStateMachine(System.Runtime.CompilerServices.IAsyncStateMachine stateMachine);
             }
 
-            // Generated from `System.Runtime.CompilerServices.ICriticalNotifyCompletion` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ICriticalNotifyCompletion` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICriticalNotifyCompletion : System.Runtime.CompilerServices.INotifyCompletion
             {
                 void UnsafeOnCompleted(System.Action continuation);
             }
 
-            // Generated from `System.Runtime.CompilerServices.INotifyCompletion` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.INotifyCompletion` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface INotifyCompletion
             {
                 void OnCompleted(System.Action continuation);
             }
 
-            // Generated from `System.Runtime.CompilerServices.IStrongBox` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.IStrongBox` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IStrongBox
             {
                 object Value { get; set; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.ITuple` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ITuple` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ITuple
             {
                 object this[int index] { get; }
                 int Length { get; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.IndexerNameAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.IndexerNameAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IndexerNameAttribute : System.Attribute
             {
                 public IndexerNameAttribute(string indexerName) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.InternalsVisibleToAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.InternalsVisibleToAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InternalsVisibleToAttribute : System.Attribute
             {
                 public bool AllInternalsVisible { get => throw null; set => throw null; }
@@ -9781,57 +10553,71 @@ namespace System
                 public InternalsVisibleToAttribute(string assemblyName) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.IsByRefLikeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.InterpolatedStringHandlerArgumentAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class InterpolatedStringHandlerArgumentAttribute : System.Attribute
+            {
+                public string[] Arguments { get => throw null; }
+                public InterpolatedStringHandlerArgumentAttribute(params string[] arguments) => throw null;
+                public InterpolatedStringHandlerArgumentAttribute(string argument) => throw null;
+            }
+
+            // Generated from `System.Runtime.CompilerServices.InterpolatedStringHandlerAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class InterpolatedStringHandlerAttribute : System.Attribute
+            {
+                public InterpolatedStringHandlerAttribute() => throw null;
+            }
+
+            // Generated from `System.Runtime.CompilerServices.IsByRefLikeAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IsByRefLikeAttribute : System.Attribute
             {
                 public IsByRefLikeAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.IsConst` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.IsConst` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class IsConst
             {
             }
 
-            // Generated from `System.Runtime.CompilerServices.IsExternalInit` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.IsExternalInit` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class IsExternalInit
             {
             }
 
-            // Generated from `System.Runtime.CompilerServices.IsReadOnlyAttribute` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Threading.Tasks.Dataflow, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public partial class IsReadOnlyAttribute : System.Attribute
+            // Generated from `System.Runtime.CompilerServices.IsReadOnlyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class IsReadOnlyAttribute : System.Attribute
             {
                 public IsReadOnlyAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.IsVolatile` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.IsVolatile` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class IsVolatile
             {
             }
 
-            // Generated from `System.Runtime.CompilerServices.IteratorStateMachineAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.IteratorStateMachineAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IteratorStateMachineAttribute : System.Runtime.CompilerServices.StateMachineAttribute
             {
                 public IteratorStateMachineAttribute(System.Type stateMachineType) : base(default(System.Type)) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.LoadHint` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum LoadHint
+            // Generated from `System.Runtime.CompilerServices.LoadHint` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum LoadHint : int
             {
-                Always,
-                Default,
-                Sometimes,
+                Always = 1,
+                Default = 0,
+                Sometimes = 2,
             }
 
-            // Generated from `System.Runtime.CompilerServices.MethodCodeType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum MethodCodeType
+            // Generated from `System.Runtime.CompilerServices.MethodCodeType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum MethodCodeType : int
             {
-                IL,
-                Native,
-                OPTIL,
-                Runtime,
+                IL = 0,
+                Native = 1,
+                OPTIL = 2,
+                Runtime = 3,
             }
 
-            // Generated from `System.Runtime.CompilerServices.MethodImplAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.MethodImplAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MethodImplAttribute : System.Attribute
             {
                 public System.Runtime.CompilerServices.MethodCodeType MethodCodeType;
@@ -9841,34 +10627,62 @@ namespace System
                 public System.Runtime.CompilerServices.MethodImplOptions Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.MethodImplOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.MethodImplOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum MethodImplOptions
+            public enum MethodImplOptions : int
             {
-                AggressiveInlining,
-                AggressiveOptimization,
-                ForwardRef,
-                InternalCall,
-                NoInlining,
-                NoOptimization,
-                PreserveSig,
-                Synchronized,
-                Unmanaged,
+                AggressiveInlining = 256,
+                AggressiveOptimization = 512,
+                ForwardRef = 16,
+                InternalCall = 4096,
+                NoInlining = 8,
+                NoOptimization = 64,
+                PreserveSig = 128,
+                Synchronized = 32,
+                Unmanaged = 4,
             }
 
-            // Generated from `System.Runtime.CompilerServices.ModuleInitializerAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ModuleInitializerAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ModuleInitializerAttribute : System.Attribute
             {
                 public ModuleInitializerAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.PreserveBaseOverridesAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct PoolingAsyncValueTaskMethodBuilder
+            {
+                public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.INotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
+                public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
+                public static System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder Create() => throw null;
+                // Stub generator skipped constructor 
+                public void SetException(System.Exception exception) => throw null;
+                public void SetResult() => throw null;
+                public void SetStateMachine(System.Runtime.CompilerServices.IAsyncStateMachine stateMachine) => throw null;
+                public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
+                public System.Threading.Tasks.ValueTask Task { get => throw null; }
+            }
+
+            // Generated from `System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct PoolingAsyncValueTaskMethodBuilder<TResult>
+            {
+                public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.INotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
+                public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
+                public static System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<TResult> Create() => throw null;
+                // Stub generator skipped constructor 
+                public void SetException(System.Exception exception) => throw null;
+                public void SetResult(TResult result) => throw null;
+                public void SetStateMachine(System.Runtime.CompilerServices.IAsyncStateMachine stateMachine) => throw null;
+                public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
+                public System.Threading.Tasks.ValueTask<TResult> Task { get => throw null; }
+            }
+
+            // Generated from `System.Runtime.CompilerServices.PreserveBaseOverridesAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PreserveBaseOverridesAttribute : System.Attribute
             {
                 public PreserveBaseOverridesAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ReferenceAssemblyAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ReferenceAssemblyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ReferenceAssemblyAttribute : System.Attribute
             {
                 public string Description { get => throw null; }
@@ -9876,14 +10690,14 @@ namespace System
                 public ReferenceAssemblyAttribute(string description) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.RuntimeCompatibilityAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.RuntimeCompatibilityAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RuntimeCompatibilityAttribute : System.Attribute
             {
                 public RuntimeCompatibilityAttribute() => throw null;
                 public bool WrapNonExceptionThrows { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.RuntimeFeature` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.RuntimeFeature` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class RuntimeFeature
             {
                 public const string CovariantReturnsOfClasses = default;
@@ -9893,16 +10707,17 @@ namespace System
                 public static bool IsSupported(string feature) => throw null;
                 public const string PortablePdb = default;
                 public const string UnmanagedSignatureCallingConvention = default;
+                public const string VirtualStaticsInInterfaces = default;
             }
 
-            // Generated from `System.Runtime.CompilerServices.RuntimeHelpers` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.RuntimeHelpers` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class RuntimeHelpers
             {
-                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+CleanupCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+CleanupCode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate void CleanupCode(object userData, bool exceptionThrown);
 
 
-                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+TryCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+TryCode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate void TryCode(object userData);
 
 
@@ -9929,7 +10744,7 @@ namespace System
                 public static bool TryEnsureSufficientExecutionStack() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.RuntimeWrappedException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.RuntimeWrappedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RuntimeWrappedException : System.Exception
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -9937,32 +10752,32 @@ namespace System
                 public object WrappedException { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.SkipLocalsInitAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.SkipLocalsInitAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SkipLocalsInitAttribute : System.Attribute
             {
                 public SkipLocalsInitAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.SpecialNameAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.SpecialNameAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SpecialNameAttribute : System.Attribute
             {
                 public SpecialNameAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.StateMachineAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.StateMachineAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StateMachineAttribute : System.Attribute
             {
                 public StateMachineAttribute(System.Type stateMachineType) => throw null;
                 public System.Type StateMachineType { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.StringFreezingAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.StringFreezingAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StringFreezingAttribute : System.Attribute
             {
                 public StringFreezingAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.StrongBox<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.StrongBox<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StrongBox<T> : System.Runtime.CompilerServices.IStrongBox
             {
                 public StrongBox() => throw null;
@@ -9971,13 +10786,13 @@ namespace System
                 object System.Runtime.CompilerServices.IStrongBox.Value { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.SuppressIldasmAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.SuppressIldasmAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SuppressIldasmAttribute : System.Attribute
             {
                 public SuppressIldasmAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.SwitchExpressionException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.SwitchExpressionException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SwitchExpressionException : System.InvalidOperationException
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -9990,7 +10805,7 @@ namespace System
                 public object UnmatchedValue { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.TaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.TaskAwaiter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
             {
                 public void GetResult() => throw null;
@@ -10000,7 +10815,7 @@ namespace System
                 public void UnsafeOnCompleted(System.Action continuation) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.TaskAwaiter<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.TaskAwaiter<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TaskAwaiter<TResult> : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
             {
                 public TResult GetResult() => throw null;
@@ -10010,34 +10825,34 @@ namespace System
                 public void UnsafeOnCompleted(System.Action continuation) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.TupleElementNamesAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.TupleElementNamesAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TupleElementNamesAttribute : System.Attribute
             {
                 public System.Collections.Generic.IList<string> TransformNames { get => throw null; }
                 public TupleElementNamesAttribute(string[] transformNames) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.TypeForwardedFromAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.TypeForwardedFromAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeForwardedFromAttribute : System.Attribute
             {
                 public string AssemblyFullName { get => throw null; }
                 public TypeForwardedFromAttribute(string assemblyFullName) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.TypeForwardedToAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.TypeForwardedToAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeForwardedToAttribute : System.Attribute
             {
                 public System.Type Destination { get => throw null; }
                 public TypeForwardedToAttribute(System.Type destination) => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.UnsafeValueTypeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.UnsafeValueTypeAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnsafeValueTypeAttribute : System.Attribute
             {
                 public UnsafeValueTypeAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.CompilerServices.ValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ValueTaskAwaiter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ValueTaskAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
             {
                 public void GetResult() => throw null;
@@ -10047,7 +10862,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Runtime.CompilerServices.ValueTaskAwaiter<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.ValueTaskAwaiter<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ValueTaskAwaiter<TResult> : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
             {
                 public TResult GetResult() => throw null;
@@ -10057,10 +10872,10 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Runtime.CompilerServices.YieldAwaitable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.YieldAwaitable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct YieldAwaitable
             {
-                // Generated from `System.Runtime.CompilerServices.YieldAwaitable+YieldAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.YieldAwaitable+YieldAwaiter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct YieldAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, System.Runtime.CompilerServices.INotifyCompletion
                 {
                     public void GetResult() => throw null;
@@ -10078,37 +10893,37 @@ namespace System
         }
         namespace ConstrainedExecution
         {
-            // Generated from `System.Runtime.ConstrainedExecution.Cer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Cer
+            // Generated from `System.Runtime.ConstrainedExecution.Cer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum Cer : int
             {
-                MayFail,
-                None,
-                Success,
+                MayFail = 1,
+                None = 0,
+                Success = 2,
             }
 
-            // Generated from `System.Runtime.ConstrainedExecution.Consistency` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Consistency
+            // Generated from `System.Runtime.ConstrainedExecution.Consistency` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum Consistency : int
             {
-                MayCorruptAppDomain,
-                MayCorruptInstance,
-                MayCorruptProcess,
-                WillNotCorruptState,
+                MayCorruptAppDomain = 1,
+                MayCorruptInstance = 2,
+                MayCorruptProcess = 0,
+                WillNotCorruptState = 3,
             }
 
-            // Generated from `System.Runtime.ConstrainedExecution.CriticalFinalizerObject` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.ConstrainedExecution.CriticalFinalizerObject` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CriticalFinalizerObject
             {
                 protected CriticalFinalizerObject() => throw null;
                 // ERR: Stub generator didn't handle member: ~CriticalFinalizerObject
             }
 
-            // Generated from `System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PrePrepareMethodAttribute : System.Attribute
             {
                 public PrePrepareMethodAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.ConstrainedExecution.ReliabilityContractAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.ConstrainedExecution.ReliabilityContractAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ReliabilityContractAttribute : System.Attribute
             {
                 public System.Runtime.ConstrainedExecution.Cer Cer { get => throw null; }
@@ -10119,24 +10934,25 @@ namespace System
         }
         namespace ExceptionServices
         {
-            // Generated from `System.Runtime.ExceptionServices.ExceptionDispatchInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.ExceptionServices.ExceptionDispatchInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ExceptionDispatchInfo
             {
                 public static System.Runtime.ExceptionServices.ExceptionDispatchInfo Capture(System.Exception source) => throw null;
                 public static System.Exception SetCurrentStackTrace(System.Exception source) => throw null;
+                public static System.Exception SetRemoteStackTrace(System.Exception source, string stackTrace) => throw null;
                 public System.Exception SourceException { get => throw null; }
                 public void Throw() => throw null;
                 public static void Throw(System.Exception source) => throw null;
             }
 
-            // Generated from `System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FirstChanceExceptionEventArgs : System.EventArgs
             {
                 public System.Exception Exception { get => throw null; }
                 public FirstChanceExceptionEventArgs(System.Exception exception) => throw null;
             }
 
-            // Generated from `System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HandleProcessCorruptedStateExceptionsAttribute : System.Attribute
             {
                 public HandleProcessCorruptedStateExceptionsAttribute() => throw null;
@@ -10145,23 +10961,23 @@ namespace System
         }
         namespace InteropServices
         {
-            // Generated from `System.Runtime.InteropServices.CharSet` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CharSet
+            // Generated from `System.Runtime.InteropServices.CharSet` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum CharSet : int
             {
-                Ansi,
-                Auto,
-                None,
-                Unicode,
+                Ansi = 2,
+                Auto = 4,
+                None = 1,
+                Unicode = 3,
             }
 
-            // Generated from `System.Runtime.InteropServices.ComVisibleAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.ComVisibleAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComVisibleAttribute : System.Attribute
             {
                 public ComVisibleAttribute(bool visibility) => throw null;
                 public bool Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.CriticalHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.CriticalHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CriticalHandle : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.IDisposable
             {
                 public void Close() => throw null;
@@ -10177,7 +10993,7 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~CriticalHandle
             }
 
-            // Generated from `System.Runtime.InteropServices.ExternalException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.ExternalException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ExternalException : System.SystemException
             {
                 public virtual int ErrorCode { get => throw null; }
@@ -10189,14 +11005,14 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.FieldOffsetAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.FieldOffsetAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FieldOffsetAttribute : System.Attribute
             {
                 public FieldOffsetAttribute(int offset) => throw null;
                 public int Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.GCHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.GCHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct GCHandle
             {
                 public static bool operator !=(System.Runtime.InteropServices.GCHandle a, System.Runtime.InteropServices.GCHandle b) => throw null;
@@ -10216,36 +11032,36 @@ namespace System
                 public static explicit operator System.Runtime.InteropServices.GCHandle(System.IntPtr value) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.GCHandleType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum GCHandleType
+            // Generated from `System.Runtime.InteropServices.GCHandleType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum GCHandleType : int
             {
-                Normal,
-                Pinned,
-                Weak,
-                WeakTrackResurrection,
+                Normal = 2,
+                Pinned = 3,
+                Weak = 0,
+                WeakTrackResurrection = 1,
             }
 
-            // Generated from `System.Runtime.InteropServices.InAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.InAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InAttribute : System.Attribute
             {
                 public InAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.LayoutKind` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum LayoutKind
+            // Generated from `System.Runtime.InteropServices.LayoutKind` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum LayoutKind : int
             {
-                Auto,
-                Explicit,
-                Sequential,
+                Auto = 3,
+                Explicit = 2,
+                Sequential = 0,
             }
 
-            // Generated from `System.Runtime.InteropServices.OutAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.OutAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OutAttribute : System.Attribute
             {
                 public OutAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.SafeBuffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.SafeBuffer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SafeBuffer : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
             {
                 unsafe public void AcquirePointer(ref System.Byte* pointer) => throw null;
@@ -10255,13 +11071,15 @@ namespace System
                 public void Initialize<T>(System.UInt32 numElements) where T : struct => throw null;
                 public T Read<T>(System.UInt64 byteOffset) where T : struct => throw null;
                 public void ReadArray<T>(System.UInt64 byteOffset, T[] array, int index, int count) where T : struct => throw null;
+                public void ReadSpan<T>(System.UInt64 byteOffset, System.Span<T> buffer) where T : struct => throw null;
                 public void ReleasePointer() => throw null;
                 protected SafeBuffer(bool ownsHandle) : base(default(bool)) => throw null;
                 public void Write<T>(System.UInt64 byteOffset, T value) where T : struct => throw null;
                 public void WriteArray<T>(System.UInt64 byteOffset, T[] array, int index, int count) where T : struct => throw null;
+                public void WriteSpan<T>(System.UInt64 byteOffset, System.ReadOnlySpan<T> data) where T : struct => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.SafeHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.SafeHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SafeHandle : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.IDisposable
             {
                 public void Close() => throw null;
@@ -10280,7 +11098,7 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~SafeHandle
             }
 
-            // Generated from `System.Runtime.InteropServices.StructLayoutAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.StructLayoutAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StructLayoutAttribute : System.Attribute
             {
                 public System.Runtime.InteropServices.CharSet CharSet;
@@ -10291,7 +11109,7 @@ namespace System
                 public System.Runtime.InteropServices.LayoutKind Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.SuppressGCTransitionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.SuppressGCTransitionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SuppressGCTransitionAttribute : System.Attribute
             {
                 public SuppressGCTransitionAttribute() => throw null;
@@ -10300,7 +11118,7 @@ namespace System
         }
         namespace Remoting
         {
-            // Generated from `System.Runtime.Remoting.ObjectHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Remoting.ObjectHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ObjectHandle : System.MarshalByRefObject
             {
                 public ObjectHandle(object o) => throw null;
@@ -10310,13 +11128,13 @@ namespace System
         }
         namespace Serialization
         {
-            // Generated from `System.Runtime.Serialization.IDeserializationCallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.IDeserializationCallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDeserializationCallback
             {
                 void OnDeserialization(object sender);
             }
 
-            // Generated from `System.Runtime.Serialization.IFormatterConverter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.IFormatterConverter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IFormatterConverter
             {
                 object Convert(object value, System.Type type);
@@ -10338,63 +11156,63 @@ namespace System
                 System.UInt64 ToUInt64(object value);
             }
 
-            // Generated from `System.Runtime.Serialization.IObjectReference` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.IObjectReference` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IObjectReference
             {
                 object GetRealObject(System.Runtime.Serialization.StreamingContext context);
             }
 
-            // Generated from `System.Runtime.Serialization.ISafeSerializationData` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.ISafeSerializationData` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISafeSerializationData
             {
                 void CompleteDeserialization(object deserialized);
             }
 
-            // Generated from `System.Runtime.Serialization.ISerializable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.ISerializable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISerializable
             {
                 void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);
             }
 
-            // Generated from `System.Runtime.Serialization.OnDeserializedAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.OnDeserializedAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OnDeserializedAttribute : System.Attribute
             {
                 public OnDeserializedAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.OnDeserializingAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.OnDeserializingAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OnDeserializingAttribute : System.Attribute
             {
                 public OnDeserializingAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.OnSerializedAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.OnSerializedAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OnSerializedAttribute : System.Attribute
             {
                 public OnSerializedAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.OnSerializingAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.OnSerializingAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OnSerializingAttribute : System.Attribute
             {
                 public OnSerializingAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.OptionalFieldAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.OptionalFieldAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OptionalFieldAttribute : System.Attribute
             {
                 public OptionalFieldAttribute() => throw null;
                 public int VersionAdded { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.SafeSerializationEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.SafeSerializationEventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeSerializationEventArgs : System.EventArgs
             {
                 public void AddSerializedState(System.Runtime.Serialization.ISafeSerializationData serializedState) => throw null;
                 public System.Runtime.Serialization.StreamingContext StreamingContext { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.SerializationEntry` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.SerializationEntry` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SerializationEntry
             {
                 public string Name { get => throw null; }
@@ -10403,7 +11221,7 @@ namespace System
                 public object Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.SerializationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.SerializationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SerializationException : System.SystemException
             {
                 public SerializationException() => throw null;
@@ -10412,7 +11230,7 @@ namespace System
                 public SerializationException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.SerializationInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.SerializationInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SerializationInfo
             {
                 public void AddValue(string name, System.DateTime value) => throw null;
@@ -10459,7 +11277,7 @@ namespace System
                 public void SetType(System.Type type) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.SerializationInfoEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.SerializationInfoEnumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SerializationInfoEnumerator : System.Collections.IEnumerator
             {
                 public System.Runtime.Serialization.SerializationEntry Current { get => throw null; }
@@ -10471,7 +11289,7 @@ namespace System
                 public object Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.StreamingContext` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.StreamingContext` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct StreamingContext
             {
                 public object Context { get => throw null; }
@@ -10483,42 +11301,42 @@ namespace System
                 public StreamingContext(System.Runtime.Serialization.StreamingContextStates state, object additional) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.StreamingContextStates` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.StreamingContextStates` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum StreamingContextStates
+            public enum StreamingContextStates : int
             {
-                All,
-                Clone,
-                CrossAppDomain,
-                CrossMachine,
-                CrossProcess,
-                File,
-                Other,
-                Persistence,
-                Remoting,
+                All = 255,
+                Clone = 64,
+                CrossAppDomain = 128,
+                CrossMachine = 2,
+                CrossProcess = 1,
+                File = 4,
+                Other = 32,
+                Persistence = 8,
+                Remoting = 16,
             }
 
         }
         namespace Versioning
         {
-            // Generated from `System.Runtime.Versioning.ComponentGuaranteesAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Versioning.ComponentGuaranteesAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComponentGuaranteesAttribute : System.Attribute
             {
                 public ComponentGuaranteesAttribute(System.Runtime.Versioning.ComponentGuaranteesOptions guarantees) => throw null;
                 public System.Runtime.Versioning.ComponentGuaranteesOptions Guarantees { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Versioning.ComponentGuaranteesOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Versioning.ComponentGuaranteesOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum ComponentGuaranteesOptions
+            public enum ComponentGuaranteesOptions : int
             {
-                Exchange,
-                None,
-                SideBySide,
-                Stable,
+                Exchange = 1,
+                None = 0,
+                SideBySide = 4,
+                Stable = 2,
             }
 
-            // Generated from `System.Runtime.Versioning.FrameworkName` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Versioning.FrameworkName` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FrameworkName : System.IEquatable<System.Runtime.Versioning.FrameworkName>
             {
                 public static bool operator !=(System.Runtime.Versioning.FrameworkName left, System.Runtime.Versioning.FrameworkName right) => throw null;
@@ -10536,14 +11354,23 @@ namespace System
                 public System.Version Version { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Versioning.OSPlatformAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public abstract class OSPlatformAttribute : System.Attribute
+            // Generated from `System.Runtime.Versioning.OSPlatformAttribute` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Drawing.Common, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public abstract partial class OSPlatformAttribute : System.Attribute
             {
                 protected private OSPlatformAttribute(string platformName) => throw null;
                 public string PlatformName { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Versioning.ResourceConsumptionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Versioning.RequiresPreviewFeaturesAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class RequiresPreviewFeaturesAttribute : System.Attribute
+            {
+                public string Message { get => throw null; }
+                public RequiresPreviewFeaturesAttribute() => throw null;
+                public RequiresPreviewFeaturesAttribute(string message) => throw null;
+                public string Url { get => throw null; set => throw null; }
+            }
+
+            // Generated from `System.Runtime.Versioning.ResourceConsumptionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ResourceConsumptionAttribute : System.Attribute
             {
                 public System.Runtime.Versioning.ResourceScope ConsumptionScope { get => throw null; }
@@ -10552,33 +11379,39 @@ namespace System
                 public System.Runtime.Versioning.ResourceScope ResourceScope { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Versioning.ResourceExposureAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Versioning.ResourceExposureAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ResourceExposureAttribute : System.Attribute
             {
                 public ResourceExposureAttribute(System.Runtime.Versioning.ResourceScope exposureLevel) => throw null;
                 public System.Runtime.Versioning.ResourceScope ResourceExposureLevel { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Versioning.ResourceScope` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Versioning.ResourceScope` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum ResourceScope
+            public enum ResourceScope : int
             {
-                AppDomain,
-                Assembly,
-                Library,
-                Machine,
-                None,
-                Private,
-                Process,
+                AppDomain = 4,
+                Assembly = 32,
+                Library = 8,
+                Machine = 1,
+                None = 0,
+                Private = 16,
+                Process = 2,
             }
 
-            // Generated from `System.Runtime.Versioning.SupportedOSPlatformAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class SupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
+            // Generated from `System.Runtime.Versioning.SupportedOSPlatformAttribute` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Drawing.Common, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public partial class SupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public SupportedOSPlatformAttribute(string platformName) : base(default(string)) => throw null;
             }
 
-            // Generated from `System.Runtime.Versioning.TargetFrameworkAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Versioning.SupportedOSPlatformGuardAttribute` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public partial class SupportedOSPlatformGuardAttribute : System.Runtime.Versioning.OSPlatformAttribute
+            {
+                public SupportedOSPlatformGuardAttribute(string platformName) : base(default(string)) => throw null;
+            }
+
+            // Generated from `System.Runtime.Versioning.TargetFrameworkAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TargetFrameworkAttribute : System.Attribute
             {
                 public string FrameworkDisplayName { get => throw null; set => throw null; }
@@ -10586,19 +11419,25 @@ namespace System
                 public TargetFrameworkAttribute(string frameworkName) => throw null;
             }
 
-            // Generated from `System.Runtime.Versioning.TargetPlatformAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class TargetPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
+            // Generated from `System.Runtime.Versioning.TargetPlatformAttribute` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Drawing.Common, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public partial class TargetPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public TargetPlatformAttribute(string platformName) : base(default(string)) => throw null;
             }
 
-            // Generated from `System.Runtime.Versioning.UnsupportedOSPlatformAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class UnsupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
+            // Generated from `System.Runtime.Versioning.UnsupportedOSPlatformAttribute` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Drawing.Common, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public partial class UnsupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public UnsupportedOSPlatformAttribute(string platformName) : base(default(string)) => throw null;
             }
 
-            // Generated from `System.Runtime.Versioning.VersioningHelper` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Versioning.UnsupportedOSPlatformGuardAttribute` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public partial class UnsupportedOSPlatformGuardAttribute : System.Runtime.Versioning.OSPlatformAttribute
+            {
+                public UnsupportedOSPlatformGuardAttribute(string platformName) : base(default(string)) => throw null;
+            }
+
+            // Generated from `System.Runtime.Versioning.VersioningHelper` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class VersioningHelper
             {
                 public static string MakeVersionSafeName(string name, System.Runtime.Versioning.ResourceScope from, System.Runtime.Versioning.ResourceScope to) => throw null;
@@ -10609,14 +11448,14 @@ namespace System
     }
     namespace Security
     {
-        // Generated from `System.Security.AllowPartiallyTrustedCallersAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.AllowPartiallyTrustedCallersAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AllowPartiallyTrustedCallersAttribute : System.Attribute
         {
             public AllowPartiallyTrustedCallersAttribute() => throw null;
             public System.Security.PartialTrustVisibilityLevel PartialTrustVisibilityLevel { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Security.IPermission` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.IPermission` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IPermission : System.Security.ISecurityEncodable
         {
             System.Security.IPermission Copy();
@@ -10626,14 +11465,14 @@ namespace System
             System.Security.IPermission Union(System.Security.IPermission target);
         }
 
-        // Generated from `System.Security.ISecurityEncodable` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.ISecurityEncodable` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ISecurityEncodable
         {
             void FromXml(System.Security.SecurityElement e);
             System.Security.SecurityElement ToXml();
         }
 
-        // Generated from `System.Security.IStackWalk` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.IStackWalk` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IStackWalk
         {
             void Assert();
@@ -10642,14 +11481,14 @@ namespace System
             void PermitOnly();
         }
 
-        // Generated from `System.Security.PartialTrustVisibilityLevel` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum PartialTrustVisibilityLevel
+        // Generated from `System.Security.PartialTrustVisibilityLevel` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum PartialTrustVisibilityLevel : int
         {
-            NotVisibleByDefault,
-            VisibleToAllHosts,
+            NotVisibleByDefault = 1,
+            VisibleToAllHosts = 0,
         }
 
-        // Generated from `System.Security.PermissionSet` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.PermissionSet` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PermissionSet : System.Collections.ICollection, System.Collections.IEnumerable, System.Runtime.Serialization.IDeserializationCallback, System.Security.ISecurityEncodable, System.Security.IStackWalk
         {
             public System.Security.IPermission AddPermission(System.Security.IPermission perm) => throw null;
@@ -10690,7 +11529,7 @@ namespace System
             public System.Security.PermissionSet Union(System.Security.PermissionSet other) => throw null;
         }
 
-        // Generated from `System.Security.SecurityCriticalAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.SecurityCriticalAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SecurityCriticalAttribute : System.Attribute
         {
             public System.Security.SecurityCriticalScope Scope { get => throw null; }
@@ -10698,14 +11537,14 @@ namespace System
             public SecurityCriticalAttribute(System.Security.SecurityCriticalScope scope) => throw null;
         }
 
-        // Generated from `System.Security.SecurityCriticalScope` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SecurityCriticalScope
+        // Generated from `System.Security.SecurityCriticalScope` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SecurityCriticalScope : int
         {
-            Everything,
-            Explicit,
+            Everything = 1,
+            Explicit = 0,
         }
 
-        // Generated from `System.Security.SecurityElement` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.SecurityElement` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SecurityElement
         {
             public void AddAttribute(string name, string value) => throw null;
@@ -10730,7 +11569,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Security.SecurityException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.SecurityException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SecurityException : System.SystemException
         {
             public object Demanded { get => throw null; set => throw null; }
@@ -10753,15 +11592,15 @@ namespace System
             public string Url { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Security.SecurityRuleSet` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SecurityRuleSet
+        // Generated from `System.Security.SecurityRuleSet` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SecurityRuleSet : byte
         {
-            Level1,
-            Level2,
-            None,
+            Level1 = 1,
+            Level2 = 2,
+            None = 0,
         }
 
-        // Generated from `System.Security.SecurityRulesAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.SecurityRulesAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SecurityRulesAttribute : System.Attribute
         {
             public System.Security.SecurityRuleSet RuleSet { get => throw null; }
@@ -10769,37 +11608,37 @@ namespace System
             public bool SkipVerificationInFullTrust { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Security.SecuritySafeCriticalAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.SecuritySafeCriticalAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SecuritySafeCriticalAttribute : System.Attribute
         {
             public SecuritySafeCriticalAttribute() => throw null;
         }
 
-        // Generated from `System.Security.SecurityTransparentAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.SecurityTransparentAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SecurityTransparentAttribute : System.Attribute
         {
             public SecurityTransparentAttribute() => throw null;
         }
 
-        // Generated from `System.Security.SecurityTreatAsSafeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.SecurityTreatAsSafeAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SecurityTreatAsSafeAttribute : System.Attribute
         {
             public SecurityTreatAsSafeAttribute() => throw null;
         }
 
-        // Generated from `System.Security.SuppressUnmanagedCodeSecurityAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.SuppressUnmanagedCodeSecurityAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SuppressUnmanagedCodeSecurityAttribute : System.Attribute
         {
             public SuppressUnmanagedCodeSecurityAttribute() => throw null;
         }
 
-        // Generated from `System.Security.UnverifiableCodeAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.UnverifiableCodeAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UnverifiableCodeAttribute : System.Attribute
         {
             public UnverifiableCodeAttribute() => throw null;
         }
 
-        // Generated from `System.Security.VerificationException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Security.VerificationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class VerificationException : System.SystemException
         {
             public VerificationException() => throw null;
@@ -10810,7 +11649,7 @@ namespace System
 
         namespace Cryptography
         {
-            // Generated from `System.Security.Cryptography.CryptographicException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.CryptographicException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CryptographicException : System.SystemException
             {
                 public CryptographicException() => throw null;
@@ -10824,34 +11663,34 @@ namespace System
         }
         namespace Permissions
         {
-            // Generated from `System.Security.Permissions.CodeAccessSecurityAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Permissions.CodeAccessSecurityAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class CodeAccessSecurityAttribute : System.Security.Permissions.SecurityAttribute
             {
                 protected CodeAccessSecurityAttribute(System.Security.Permissions.SecurityAction action) : base(default(System.Security.Permissions.SecurityAction)) => throw null;
             }
 
-            // Generated from `System.Security.Permissions.PermissionState` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PermissionState
+            // Generated from `System.Security.Permissions.PermissionState` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PermissionState : int
             {
-                None,
-                Unrestricted,
+                None = 0,
+                Unrestricted = 1,
             }
 
-            // Generated from `System.Security.Permissions.SecurityAction` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SecurityAction
+            // Generated from `System.Security.Permissions.SecurityAction` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SecurityAction : int
             {
-                Assert,
-                Demand,
-                Deny,
-                InheritanceDemand,
-                LinkDemand,
-                PermitOnly,
-                RequestMinimum,
-                RequestOptional,
-                RequestRefuse,
+                Assert = 3,
+                Demand = 2,
+                Deny = 4,
+                InheritanceDemand = 7,
+                LinkDemand = 6,
+                PermitOnly = 5,
+                RequestMinimum = 8,
+                RequestOptional = 9,
+                RequestRefuse = 10,
             }
 
-            // Generated from `System.Security.Permissions.SecurityAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Permissions.SecurityAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SecurityAttribute : System.Attribute
             {
                 public System.Security.Permissions.SecurityAction Action { get => throw null; set => throw null; }
@@ -10860,7 +11699,7 @@ namespace System
                 public bool Unrestricted { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Permissions.SecurityPermissionAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Permissions.SecurityPermissionAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SecurityPermissionAttribute : System.Security.Permissions.CodeAccessSecurityAttribute
             {
                 public bool Assertion { get => throw null; set => throw null; }
@@ -10882,32 +11721,32 @@ namespace System
                 public bool UnmanagedCode { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Permissions.SecurityPermissionFlag` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Permissions.SecurityPermissionFlag` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SecurityPermissionFlag
+            public enum SecurityPermissionFlag : int
             {
-                AllFlags,
-                Assertion,
-                BindingRedirects,
-                ControlAppDomain,
-                ControlDomainPolicy,
-                ControlEvidence,
-                ControlPolicy,
-                ControlPrincipal,
-                ControlThread,
-                Execution,
-                Infrastructure,
-                NoFlags,
-                RemotingConfiguration,
-                SerializationFormatter,
-                SkipVerification,
-                UnmanagedCode,
+                AllFlags = 16383,
+                Assertion = 1,
+                BindingRedirects = 8192,
+                ControlAppDomain = 1024,
+                ControlDomainPolicy = 256,
+                ControlEvidence = 32,
+                ControlPolicy = 64,
+                ControlPrincipal = 512,
+                ControlThread = 16,
+                Execution = 8,
+                Infrastructure = 4096,
+                NoFlags = 0,
+                RemotingConfiguration = 2048,
+                SerializationFormatter = 128,
+                SkipVerification = 4,
+                UnmanagedCode = 2,
             }
 
         }
         namespace Principal
         {
-            // Generated from `System.Security.Principal.IIdentity` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Principal.IIdentity` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IIdentity
             {
                 string AuthenticationType { get; }
@@ -10915,36 +11754,36 @@ namespace System
                 string Name { get; }
             }
 
-            // Generated from `System.Security.Principal.IPrincipal` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Principal.IPrincipal` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IPrincipal
             {
                 System.Security.Principal.IIdentity Identity { get; }
                 bool IsInRole(string role);
             }
 
-            // Generated from `System.Security.Principal.PrincipalPolicy` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PrincipalPolicy
+            // Generated from `System.Security.Principal.PrincipalPolicy` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PrincipalPolicy : int
             {
-                NoPrincipal,
-                UnauthenticatedPrincipal,
-                WindowsPrincipal,
+                NoPrincipal = 1,
+                UnauthenticatedPrincipal = 0,
+                WindowsPrincipal = 2,
             }
 
-            // Generated from `System.Security.Principal.TokenImpersonationLevel` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum TokenImpersonationLevel
+            // Generated from `System.Security.Principal.TokenImpersonationLevel` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum TokenImpersonationLevel : int
             {
-                Anonymous,
-                Delegation,
-                Identification,
-                Impersonation,
-                None,
+                Anonymous = 1,
+                Delegation = 4,
+                Identification = 2,
+                Impersonation = 3,
+                None = 0,
             }
 
         }
     }
     namespace Text
     {
-        // Generated from `System.Text.Decoder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.Decoder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Decoder
         {
             public virtual void Convert(System.Byte[] bytes, int byteIndex, int byteCount, System.Char[] chars, int charIndex, int charCount, bool flush, out int bytesUsed, out int charsUsed, out bool completed) => throw null;
@@ -10964,7 +11803,7 @@ namespace System
             public virtual void Reset() => throw null;
         }
 
-        // Generated from `System.Text.DecoderExceptionFallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.DecoderExceptionFallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DecoderExceptionFallback : System.Text.DecoderFallback
         {
             public override System.Text.DecoderFallbackBuffer CreateFallbackBuffer() => throw null;
@@ -10974,7 +11813,7 @@ namespace System
             public override int MaxCharCount { get => throw null; }
         }
 
-        // Generated from `System.Text.DecoderExceptionFallbackBuffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.DecoderExceptionFallbackBuffer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DecoderExceptionFallbackBuffer : System.Text.DecoderFallbackBuffer
         {
             public DecoderExceptionFallbackBuffer() => throw null;
@@ -10984,7 +11823,7 @@ namespace System
             public override int Remaining { get => throw null; }
         }
 
-        // Generated from `System.Text.DecoderFallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.DecoderFallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class DecoderFallback
         {
             public abstract System.Text.DecoderFallbackBuffer CreateFallbackBuffer();
@@ -10994,7 +11833,7 @@ namespace System
             public static System.Text.DecoderFallback ReplacementFallback { get => throw null; }
         }
 
-        // Generated from `System.Text.DecoderFallbackBuffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.DecoderFallbackBuffer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class DecoderFallbackBuffer
         {
             protected DecoderFallbackBuffer() => throw null;
@@ -11005,7 +11844,7 @@ namespace System
             public virtual void Reset() => throw null;
         }
 
-        // Generated from `System.Text.DecoderFallbackException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.DecoderFallbackException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DecoderFallbackException : System.ArgumentException
         {
             public System.Byte[] BytesUnknown { get => throw null; }
@@ -11016,7 +11855,7 @@ namespace System
             public int Index { get => throw null; }
         }
 
-        // Generated from `System.Text.DecoderReplacementFallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.DecoderReplacementFallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DecoderReplacementFallback : System.Text.DecoderFallback
         {
             public override System.Text.DecoderFallbackBuffer CreateFallbackBuffer() => throw null;
@@ -11028,7 +11867,7 @@ namespace System
             public override int MaxCharCount { get => throw null; }
         }
 
-        // Generated from `System.Text.DecoderReplacementFallbackBuffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.DecoderReplacementFallbackBuffer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DecoderReplacementFallbackBuffer : System.Text.DecoderFallbackBuffer
         {
             public DecoderReplacementFallbackBuffer(System.Text.DecoderReplacementFallback fallback) => throw null;
@@ -11039,7 +11878,7 @@ namespace System
             public override void Reset() => throw null;
         }
 
-        // Generated from `System.Text.Encoder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.Encoder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Encoder
         {
             public virtual void Convert(System.Char[] chars, int charIndex, int charCount, System.Byte[] bytes, int byteIndex, int byteCount, bool flush, out int charsUsed, out int bytesUsed, out bool completed) => throw null;
@@ -11057,7 +11896,7 @@ namespace System
             public virtual void Reset() => throw null;
         }
 
-        // Generated from `System.Text.EncoderExceptionFallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncoderExceptionFallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EncoderExceptionFallback : System.Text.EncoderFallback
         {
             public override System.Text.EncoderFallbackBuffer CreateFallbackBuffer() => throw null;
@@ -11067,7 +11906,7 @@ namespace System
             public override int MaxCharCount { get => throw null; }
         }
 
-        // Generated from `System.Text.EncoderExceptionFallbackBuffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncoderExceptionFallbackBuffer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EncoderExceptionFallbackBuffer : System.Text.EncoderFallbackBuffer
         {
             public EncoderExceptionFallbackBuffer() => throw null;
@@ -11078,7 +11917,7 @@ namespace System
             public override int Remaining { get => throw null; }
         }
 
-        // Generated from `System.Text.EncoderFallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncoderFallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EncoderFallback
         {
             public abstract System.Text.EncoderFallbackBuffer CreateFallbackBuffer();
@@ -11088,7 +11927,7 @@ namespace System
             public static System.Text.EncoderFallback ReplacementFallback { get => throw null; }
         }
 
-        // Generated from `System.Text.EncoderFallbackBuffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncoderFallbackBuffer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EncoderFallbackBuffer
         {
             protected EncoderFallbackBuffer() => throw null;
@@ -11100,7 +11939,7 @@ namespace System
             public virtual void Reset() => throw null;
         }
 
-        // Generated from `System.Text.EncoderFallbackException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncoderFallbackException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EncoderFallbackException : System.ArgumentException
         {
             public System.Char CharUnknown { get => throw null; }
@@ -11113,7 +11952,7 @@ namespace System
             public bool IsUnknownSurrogate() => throw null;
         }
 
-        // Generated from `System.Text.EncoderReplacementFallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncoderReplacementFallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EncoderReplacementFallback : System.Text.EncoderFallback
         {
             public override System.Text.EncoderFallbackBuffer CreateFallbackBuffer() => throw null;
@@ -11125,7 +11964,7 @@ namespace System
             public override int MaxCharCount { get => throw null; }
         }
 
-        // Generated from `System.Text.EncoderReplacementFallbackBuffer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncoderReplacementFallbackBuffer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EncoderReplacementFallbackBuffer : System.Text.EncoderFallbackBuffer
         {
             public EncoderReplacementFallbackBuffer(System.Text.EncoderReplacementFallback fallback) => throw null;
@@ -11137,7 +11976,7 @@ namespace System
             public override void Reset() => throw null;
         }
 
-        // Generated from `System.Text.Encoding` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.Encoding` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Encoding : System.ICloneable
         {
             public static System.Text.Encoding ASCII { get => throw null; }
@@ -11214,7 +12053,7 @@ namespace System
             public virtual int WindowsCodePage { get => throw null; }
         }
 
-        // Generated from `System.Text.EncodingInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncodingInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EncodingInfo
         {
             public int CodePage { get => throw null; }
@@ -11226,7 +12065,7 @@ namespace System
             public string Name { get => throw null; }
         }
 
-        // Generated from `System.Text.EncodingProvider` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.EncodingProvider` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EncodingProvider
         {
             public EncodingProvider() => throw null;
@@ -11237,17 +12076,17 @@ namespace System
             public virtual System.Collections.Generic.IEnumerable<System.Text.EncodingInfo> GetEncodings() => throw null;
         }
 
-        // Generated from `System.Text.NormalizationForm` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum NormalizationForm
+        // Generated from `System.Text.NormalizationForm` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum NormalizationForm : int
         {
-            FormC,
-            FormD,
-            FormKC,
-            FormKD,
+            FormC = 1,
+            FormD = 2,
+            FormKC = 5,
+            FormKD = 6,
         }
 
-        // Generated from `System.Text.Rune` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public struct Rune : System.IComparable, System.IComparable<System.Text.Rune>, System.IEquatable<System.Text.Rune>
+        // Generated from `System.Text.Rune` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public struct Rune : System.IComparable, System.IComparable<System.Text.Rune>, System.IEquatable<System.Text.Rune>, System.IFormattable, System.ISpanFormattable
         {
             public static bool operator !=(System.Text.Rune left, System.Text.Rune right) => throw null;
             public static bool operator <(System.Text.Rune left, System.Text.Rune right) => throw null;
@@ -11294,6 +12133,7 @@ namespace System
             public static System.Text.Rune ToLower(System.Text.Rune value, System.Globalization.CultureInfo culture) => throw null;
             public static System.Text.Rune ToLowerInvariant(System.Text.Rune value) => throw null;
             public override string ToString() => throw null;
+            string System.IFormattable.ToString(string format, System.IFormatProvider formatProvider) => throw null;
             public static System.Text.Rune ToUpper(System.Text.Rune value, System.Globalization.CultureInfo culture) => throw null;
             public static System.Text.Rune ToUpperInvariant(System.Text.Rune value) => throw null;
             public static bool TryCreate(System.Char highSurrogate, System.Char lowSurrogate, out System.Text.Rune result) => throw null;
@@ -11302,6 +12142,7 @@ namespace System
             public static bool TryCreate(System.UInt32 value, out System.Text.Rune result) => throw null;
             public bool TryEncodeToUtf16(System.Span<System.Char> destination, out int charsWritten) => throw null;
             public bool TryEncodeToUtf8(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
+            bool System.ISpanFormattable.TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format, System.IFormatProvider provider) => throw null;
             public static bool TryGetRuneAt(string input, int index, out System.Text.Rune value) => throw null;
             public int Utf16SequenceLength { get => throw null; }
             public int Utf8SequenceLength { get => throw null; }
@@ -11311,10 +12152,29 @@ namespace System
             public static explicit operator System.Text.Rune(System.UInt32 value) => throw null;
         }
 
-        // Generated from `System.Text.StringBuilder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.StringBuilder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StringBuilder : System.Runtime.Serialization.ISerializable
         {
-            // Generated from `System.Text.StringBuilder+ChunkEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.StringBuilder+AppendInterpolatedStringHandler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct AppendInterpolatedStringHandler
+            {
+                public void AppendFormatted(System.ReadOnlySpan<System.Char> value) => throw null;
+                public void AppendFormatted(System.ReadOnlySpan<System.Char> value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted(string value) => throw null;
+                public void AppendFormatted(string value, int alignment = default(int), string format = default(string)) => throw null;
+                public void AppendFormatted<T>(T value) => throw null;
+                public void AppendFormatted<T>(T value, int alignment) => throw null;
+                public void AppendFormatted<T>(T value, int alignment, string format) => throw null;
+                public void AppendFormatted<T>(T value, string format) => throw null;
+                // Stub generator skipped constructor 
+                public AppendInterpolatedStringHandler(int literalLength, int formattedCount, System.Text.StringBuilder stringBuilder) => throw null;
+                public AppendInterpolatedStringHandler(int literalLength, int formattedCount, System.Text.StringBuilder stringBuilder, System.IFormatProvider provider) => throw null;
+                public void AppendLiteral(string value) => throw null;
+            }
+
+
+            // Generated from `System.Text.StringBuilder+ChunkEnumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ChunkEnumerator
             {
                 // Stub generator skipped constructor 
@@ -11326,6 +12186,7 @@ namespace System
 
             public System.Text.StringBuilder Append(System.Char[] value) => throw null;
             public System.Text.StringBuilder Append(System.Char[] value, int startIndex, int charCount) => throw null;
+            public System.Text.StringBuilder Append(System.IFormatProvider provider, ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
             public System.Text.StringBuilder Append(System.ReadOnlyMemory<System.Char> value) => throw null;
             public System.Text.StringBuilder Append(System.ReadOnlySpan<System.Char> value) => throw null;
             public System.Text.StringBuilder Append(System.Text.StringBuilder value) => throw null;
@@ -11341,6 +12202,7 @@ namespace System
             public System.Text.StringBuilder Append(int value) => throw null;
             public System.Text.StringBuilder Append(System.Int64 value) => throw null;
             public System.Text.StringBuilder Append(object value) => throw null;
+            public System.Text.StringBuilder Append(ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
             public System.Text.StringBuilder Append(System.SByte value) => throw null;
             public System.Text.StringBuilder Append(System.Int16 value) => throw null;
             public System.Text.StringBuilder Append(string value) => throw null;
@@ -11363,6 +12225,8 @@ namespace System
             public System.Text.StringBuilder AppendJoin<T>(System.Char separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
             public System.Text.StringBuilder AppendJoin<T>(string separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
             public System.Text.StringBuilder AppendLine() => throw null;
+            public System.Text.StringBuilder AppendLine(System.IFormatProvider provider, ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
+            public System.Text.StringBuilder AppendLine(ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
             public System.Text.StringBuilder AppendLine(string value) => throw null;
             public int Capacity { get => throw null; set => throw null; }
             [System.Runtime.CompilerServices.IndexerName("Chars")]
@@ -11411,7 +12275,7 @@ namespace System
             public string ToString(int startIndex, int length) => throw null;
         }
 
-        // Generated from `System.Text.StringRuneEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Text.StringRuneEnumerator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct StringRuneEnumerator : System.Collections.Generic.IEnumerable<System.Text.Rune>, System.Collections.Generic.IEnumerator<System.Text.Rune>, System.Collections.IEnumerable, System.Collections.IEnumerator, System.IDisposable
         {
             public System.Text.Rune Current { get => throw null; }
@@ -11427,7 +12291,7 @@ namespace System
 
         namespace Unicode
         {
-            // Generated from `System.Text.Unicode.Utf8` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.Unicode.Utf8` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Utf8
             {
                 public static System.Buffers.OperationStatus FromUtf16(System.ReadOnlySpan<System.Char> source, System.Span<System.Byte> destination, out int charsRead, out int bytesWritten, bool replaceInvalidSequences = default(bool), bool isFinalBlock = default(bool)) => throw null;
@@ -11438,7 +12302,7 @@ namespace System
     }
     namespace Threading
     {
-        // Generated from `System.Threading.CancellationToken` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.CancellationToken` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct CancellationToken
         {
             public static bool operator !=(System.Threading.CancellationToken left, System.Threading.CancellationToken right) => throw null;
@@ -11453,14 +12317,16 @@ namespace System
             public static System.Threading.CancellationToken None { get => throw null; }
             public System.Threading.CancellationTokenRegistration Register(System.Action callback) => throw null;
             public System.Threading.CancellationTokenRegistration Register(System.Action callback, bool useSynchronizationContext) => throw null;
+            public System.Threading.CancellationTokenRegistration Register(System.Action<object, System.Threading.CancellationToken> callback, object state) => throw null;
             public System.Threading.CancellationTokenRegistration Register(System.Action<object> callback, object state) => throw null;
             public System.Threading.CancellationTokenRegistration Register(System.Action<object> callback, object state, bool useSynchronizationContext) => throw null;
             public void ThrowIfCancellationRequested() => throw null;
+            public System.Threading.CancellationTokenRegistration UnsafeRegister(System.Action<object, System.Threading.CancellationToken> callback, object state) => throw null;
             public System.Threading.CancellationTokenRegistration UnsafeRegister(System.Action<object> callback, object state) => throw null;
             public System.Threading.WaitHandle WaitHandle { get => throw null; }
         }
 
-        // Generated from `System.Threading.CancellationTokenRegistration` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.CancellationTokenRegistration` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct CancellationTokenRegistration : System.IAsyncDisposable, System.IDisposable, System.IEquatable<System.Threading.CancellationTokenRegistration>
         {
             public static bool operator !=(System.Threading.CancellationTokenRegistration left, System.Threading.CancellationTokenRegistration right) => throw null;
@@ -11475,7 +12341,7 @@ namespace System
             public bool Unregister() => throw null;
         }
 
-        // Generated from `System.Threading.CancellationTokenSource` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.CancellationTokenSource` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CancellationTokenSource : System.IDisposable
         {
             public void Cancel() => throw null;
@@ -11492,24 +12358,33 @@ namespace System
             protected virtual void Dispose(bool disposing) => throw null;
             public bool IsCancellationRequested { get => throw null; }
             public System.Threading.CancellationToken Token { get => throw null; }
+            public bool TryReset() => throw null;
         }
 
-        // Generated from `System.Threading.LazyThreadSafetyMode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum LazyThreadSafetyMode
+        // Generated from `System.Threading.LazyThreadSafetyMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum LazyThreadSafetyMode : int
         {
-            ExecutionAndPublication,
-            None,
-            PublicationOnly,
+            ExecutionAndPublication = 2,
+            None = 0,
+            PublicationOnly = 1,
         }
 
-        // Generated from `System.Threading.Timeout` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.PeriodicTimer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class PeriodicTimer : System.IDisposable
+        {
+            public void Dispose() => throw null;
+            public PeriodicTimer(System.TimeSpan period) => throw null;
+            public System.Threading.Tasks.ValueTask<bool> WaitForNextTickAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+        }
+
+        // Generated from `System.Threading.Timeout` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Timeout
         {
             public const int Infinite = default;
             public static System.TimeSpan InfiniteTimeSpan;
         }
 
-        // Generated from `System.Threading.Timer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.Timer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Timer : System.MarshalByRefObject, System.IAsyncDisposable, System.IDisposable
         {
             public static System.Int64 ActiveCount { get => throw null; }
@@ -11527,10 +12402,10 @@ namespace System
             public Timer(System.Threading.TimerCallback callback, object state, System.UInt32 dueTime, System.UInt32 period) => throw null;
         }
 
-        // Generated from `System.Threading.TimerCallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.TimerCallback` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void TimerCallback(object state);
 
-        // Generated from `System.Threading.WaitHandle` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.WaitHandle` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class WaitHandle : System.MarshalByRefObject, System.IDisposable
         {
             public virtual void Close() => throw null;
@@ -11561,7 +12436,7 @@ namespace System
             public const int WaitTimeout = default;
         }
 
-        // Generated from `System.Threading.WaitHandleExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Threading.WaitHandleExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class WaitHandleExtensions
         {
             public static Microsoft.Win32.SafeHandles.SafeWaitHandle GetSafeWaitHandle(this System.Threading.WaitHandle waitHandle) => throw null;
@@ -11570,7 +12445,7 @@ namespace System
 
         namespace Tasks
         {
-            // Generated from `System.Threading.Tasks.ConcurrentExclusiveSchedulerPair` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.ConcurrentExclusiveSchedulerPair` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConcurrentExclusiveSchedulerPair
             {
                 public void Complete() => throw null;
@@ -11583,7 +12458,7 @@ namespace System
                 public System.Threading.Tasks.TaskScheduler ExclusiveScheduler { get => throw null; }
             }
 
-            // Generated from `System.Threading.Tasks.Task` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.Task` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Task : System.IAsyncResult, System.IDisposable
             {
                 public object AsyncState { get => throw null; }
@@ -11668,6 +12543,9 @@ namespace System
                 public static int WaitAny(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout) => throw null;
                 public static int WaitAny(System.Threading.Tasks.Task[] tasks, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
                 public static int WaitAny(params System.Threading.Tasks.Task[] tasks) => throw null;
+                public System.Threading.Tasks.Task WaitAsync(System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task WaitAsync(System.TimeSpan timeout) => throw null;
+                public System.Threading.Tasks.Task WaitAsync(System.TimeSpan timeout, System.Threading.CancellationToken cancellationToken) => throw null;
                 public static System.Threading.Tasks.Task WhenAll(System.Collections.Generic.IEnumerable<System.Threading.Tasks.Task> tasks) => throw null;
                 public static System.Threading.Tasks.Task WhenAll(params System.Threading.Tasks.Task[] tasks) => throw null;
                 public static System.Threading.Tasks.Task<TResult[]> WhenAll<TResult>(System.Collections.Generic.IEnumerable<System.Threading.Tasks.Task<TResult>> tasks) => throw null;
@@ -11681,7 +12559,7 @@ namespace System
                 public static System.Runtime.CompilerServices.YieldAwaitable Yield() => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.Task<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.Task<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Task<TResult> : System.Threading.Tasks.Task
             {
                 public System.Runtime.CompilerServices.ConfiguredTaskAwaitable<TResult> ConfigureAwait(bool continueOnCapturedContext) => throw null;
@@ -11716,9 +12594,12 @@ namespace System
                 public Task(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken) : base(default(System.Action)) => throw null;
                 public Task(System.Func<object, TResult> function, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
                 public Task(System.Func<object, TResult> function, object state, System.Threading.Tasks.TaskCreationOptions creationOptions) : base(default(System.Action)) => throw null;
+                public System.Threading.Tasks.Task<TResult> WaitAsync(System.Threading.CancellationToken cancellationToken) => throw null;
+                public System.Threading.Tasks.Task<TResult> WaitAsync(System.TimeSpan timeout) => throw null;
+                public System.Threading.Tasks.Task<TResult> WaitAsync(System.TimeSpan timeout, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskAsyncEnumerableExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskAsyncEnumerableExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class TaskAsyncEnumerableExtensions
             {
                 public static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw null;
@@ -11726,7 +12607,7 @@ namespace System
                 public static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> WithCancellation<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskCanceledException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskCanceledException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskCanceledException : System.OperationCanceledException
             {
                 public System.Threading.Tasks.Task Task { get => throw null; }
@@ -11738,7 +12619,7 @@ namespace System
                 public TaskCanceledException(string message, System.Exception innerException, System.Threading.CancellationToken token) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskCompletionSource` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskCompletionSource` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskCompletionSource
             {
                 public void SetCanceled() => throw null;
@@ -11758,7 +12639,7 @@ namespace System
                 public bool TrySetResult() => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskCompletionSource<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskCompletionSource<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskCompletionSource<TResult>
             {
                 public void SetCanceled() => throw null;
@@ -11778,48 +12659,48 @@ namespace System
                 public bool TrySetResult(TResult result) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskContinuationOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskContinuationOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TaskContinuationOptions
+            public enum TaskContinuationOptions : int
             {
-                AttachedToParent,
-                DenyChildAttach,
-                ExecuteSynchronously,
-                HideScheduler,
-                LazyCancellation,
-                LongRunning,
-                None,
-                NotOnCanceled,
-                NotOnFaulted,
-                NotOnRanToCompletion,
-                OnlyOnCanceled,
-                OnlyOnFaulted,
-                OnlyOnRanToCompletion,
-                PreferFairness,
-                RunContinuationsAsynchronously,
+                AttachedToParent = 4,
+                DenyChildAttach = 8,
+                ExecuteSynchronously = 524288,
+                HideScheduler = 16,
+                LazyCancellation = 32,
+                LongRunning = 2,
+                None = 0,
+                NotOnCanceled = 262144,
+                NotOnFaulted = 131072,
+                NotOnRanToCompletion = 65536,
+                OnlyOnCanceled = 196608,
+                OnlyOnFaulted = 327680,
+                OnlyOnRanToCompletion = 393216,
+                PreferFairness = 1,
+                RunContinuationsAsynchronously = 64,
             }
 
-            // Generated from `System.Threading.Tasks.TaskCreationOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskCreationOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TaskCreationOptions
+            public enum TaskCreationOptions : int
             {
-                AttachedToParent,
-                DenyChildAttach,
-                HideScheduler,
-                LongRunning,
-                None,
-                PreferFairness,
-                RunContinuationsAsynchronously,
+                AttachedToParent = 4,
+                DenyChildAttach = 8,
+                HideScheduler = 16,
+                LongRunning = 2,
+                None = 0,
+                PreferFairness = 1,
+                RunContinuationsAsynchronously = 64,
             }
 
-            // Generated from `System.Threading.Tasks.TaskExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public static class TaskExtensions
+            // Generated from `System.Threading.Tasks.TaskExtensions` in `Microsoft.AspNetCore.Http.Connections, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public static partial class TaskExtensions
             {
                 public static System.Threading.Tasks.Task Unwrap(this System.Threading.Tasks.Task<System.Threading.Tasks.Task> task) => throw null;
                 public static System.Threading.Tasks.Task<TResult> Unwrap<TResult>(this System.Threading.Tasks.Task<System.Threading.Tasks.Task<TResult>> task) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskFactory` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskFactory` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskFactory
             {
                 public System.Threading.CancellationToken CancellationToken { get => throw null; }
@@ -11903,7 +12784,7 @@ namespace System
                 public TaskFactory(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskFactory<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskFactory<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskFactory<TResult>
             {
                 public System.Threading.CancellationToken CancellationToken { get => throw null; }
@@ -11952,7 +12833,7 @@ namespace System
                 public TaskFactory(System.Threading.Tasks.TaskScheduler scheduler) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskScheduler` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskScheduler` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class TaskScheduler
             {
                 public static System.Threading.Tasks.TaskScheduler Current { get => throw null; }
@@ -11969,7 +12850,7 @@ namespace System
                 public static event System.EventHandler<System.Threading.Tasks.UnobservedTaskExceptionEventArgs> UnobservedTaskException;
             }
 
-            // Generated from `System.Threading.Tasks.TaskSchedulerException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.TaskSchedulerException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TaskSchedulerException : System.Exception
             {
                 public TaskSchedulerException() => throw null;
@@ -11979,20 +12860,20 @@ namespace System
                 public TaskSchedulerException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.TaskStatus` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum TaskStatus
+            // Generated from `System.Threading.Tasks.TaskStatus` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum TaskStatus : int
             {
-                Canceled,
-                Created,
-                Faulted,
-                RanToCompletion,
-                Running,
-                WaitingForActivation,
-                WaitingForChildrenToComplete,
-                WaitingToRun,
+                Canceled = 6,
+                Created = 0,
+                Faulted = 7,
+                RanToCompletion = 5,
+                Running = 3,
+                WaitingForActivation = 1,
+                WaitingForChildrenToComplete = 4,
+                WaitingToRun = 2,
             }
 
-            // Generated from `System.Threading.Tasks.UnobservedTaskExceptionEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.UnobservedTaskExceptionEventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnobservedTaskExceptionEventArgs : System.EventArgs
             {
                 public System.AggregateException Exception { get => throw null; }
@@ -12001,7 +12882,7 @@ namespace System
                 public UnobservedTaskExceptionEventArgs(System.AggregateException exception) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.ValueTask` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.ValueTask` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ValueTask : System.IEquatable<System.Threading.Tasks.ValueTask>
             {
                 public static bool operator !=(System.Threading.Tasks.ValueTask left, System.Threading.Tasks.ValueTask right) => throw null;
@@ -12028,7 +12909,7 @@ namespace System
                 public ValueTask(System.Threading.Tasks.Task task) => throw null;
             }
 
-            // Generated from `System.Threading.Tasks.ValueTask<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Threading.Tasks.ValueTask<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ValueTask<TResult> : System.IEquatable<System.Threading.Tasks.ValueTask<TResult>>
             {
                 public static bool operator !=(System.Threading.Tasks.ValueTask<TResult> left, System.Threading.Tasks.ValueTask<TResult> right) => throw null;
@@ -12054,7 +12935,7 @@ namespace System
 
             namespace Sources
             {
-                // Generated from `System.Threading.Tasks.Sources.IValueTaskSource` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Threading.Tasks.Sources.IValueTaskSource` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IValueTaskSource
                 {
                     void GetResult(System.Int16 token);
@@ -12062,7 +12943,7 @@ namespace System
                     void OnCompleted(System.Action<object> continuation, object state, System.Int16 token, System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags flags);
                 }
 
-                // Generated from `System.Threading.Tasks.Sources.IValueTaskSource<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Threading.Tasks.Sources.IValueTaskSource<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IValueTaskSource<TResult>
                 {
                     TResult GetResult(System.Int16 token);
@@ -12070,7 +12951,7 @@ namespace System
                     void OnCompleted(System.Action<object> continuation, object state, System.Int16 token, System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags flags);
                 }
 
-                // Generated from `System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore<>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ManualResetValueTaskSourceCore<TResult>
                 {
                     public TResult GetResult(System.Int16 token) => throw null;
@@ -12084,22 +12965,22 @@ namespace System
                     public System.Int16 Version { get => throw null; }
                 }
 
-                // Generated from `System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum ValueTaskSourceOnCompletedFlags
+                public enum ValueTaskSourceOnCompletedFlags : int
                 {
-                    FlowExecutionContext,
-                    None,
-                    UseSchedulingContext,
+                    FlowExecutionContext = 2,
+                    None = 0,
+                    UseSchedulingContext = 1,
                 }
 
-                // Generated from `System.Threading.Tasks.Sources.ValueTaskSourceStatus` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum ValueTaskSourceStatus
+                // Generated from `System.Threading.Tasks.Sources.ValueTaskSourceStatus` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public enum ValueTaskSourceStatus : int
                 {
-                    Canceled,
-                    Faulted,
-                    Pending,
-                    Succeeded,
+                    Canceled = 3,
+                    Faulted = 2,
+                    Pending = 0,
+                    Succeeded = 1,
                 }
 
             }

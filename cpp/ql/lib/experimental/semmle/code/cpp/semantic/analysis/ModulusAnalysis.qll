@@ -4,6 +4,12 @@
  * variable), and `v` is an integer in the range `[0 .. m-1]`.
  */
 
+/*
+ * The main recursion has base cases in both `ssaModulus` (for guarded reads) and `semExprModulus`
+ * (for constant values). The most interesting recursive case is `phiModulusRankStep`, which
+ * handles phi inputs.
+ */
+
 private import ModulusAnalysisSpecific::Private
 private import experimental.semmle.code.cpp.semantic.Semantic
 private import ConstantAnalysis
@@ -160,7 +166,13 @@ private predicate phiModulusInit(SemSsaPhiNode phi, SemBound b, int val, int mod
 /**
  * Holds if all inputs to `phi` numbered `1` to `rix` are equal to `b + val` modulo `mod`.
  */
+pragma[nomagic]
 private predicate phiModulusRankStep(SemSsaPhiNode phi, SemBound b, int val, int mod, int rix) {
+  /*
+   * base case. If any phi input is equal to `b + val` modulo `mod`, that's a potential congruence
+   * class for the phi node.
+   */
+
   rix = 0 and
   phiModulusInit(phi, b, val, mod)
   or
@@ -168,13 +180,25 @@ private predicate phiModulusRankStep(SemSsaPhiNode phi, SemBound b, int val, int
     mod != 1 and
     val = remainder(v1, mod)
   |
+    /*
+     * Recursive case. If `inp` = `b + v2` mod `m2`, we combine that with the preceding potential
+     * congruence class `b + v1` mod `m1`. The result will be the congruence class of `v1` modulo
+     * the greatest common denominator of `m1`, `m2`, and `v1 - v2`.
+     */
+
     exists(int v2, int m2 |
-      rankedPhiInput(phi, inp, edge, rix) and
+      rankedPhiInput(pragma[only_bind_out](phi), inp, edge, rix) and
       phiModulusRankStep(phi, b, v1, m1, rix - 1) and
       ssaModulus(inp, edge, b, v2, m2) and
       mod = m1.gcd(m2).gcd(v1 - v2)
     )
     or
+    /*
+     * Recursive case. If `inp` = `phi` mod `m2`, we combine that with the preceding potential
+     * congruence class `b + v1` mod `m1`. The result will be a congruence class modulo the greatest
+     * common denominator of `m1` and `m2`.
+     */
+
     exists(int m2 |
       rankedPhiInput(phi, inp, edge, rix) and
       phiModulusRankStep(phi, b, v1, m1, rix - 1) and

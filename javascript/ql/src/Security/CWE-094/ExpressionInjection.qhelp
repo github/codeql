@@ -23,7 +23,7 @@
 		</p>
         <p>
             It is also recommended to limit the permissions of any tokens used 
-            by a workflow such as the the GITHUB_TOKEN. 
+            by a workflow such as the GITHUB_TOKEN. 
         </p>
 	</recommendation>
 

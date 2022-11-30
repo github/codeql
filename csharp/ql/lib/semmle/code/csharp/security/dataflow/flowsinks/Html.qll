@@ -28,22 +28,6 @@ private class ExternalHtmlSink extends HtmlSink {
 
 /**
  * An expression that is used as an argument to an HTML sink method on
- * `HttpResponse`.
- */
-private class HttpResponseSinkModelCsv extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Web;HttpResponse;false;Write;;;Argument[0];html",
-        "System.Web;HttpResponse;false;WriteFile;;;Argument[0];html",
-        "System.Web;HttpResponse;false;TransmitFile;;;Argument[0];html",
-        "System.Web;HttpResponse;false;BinaryWrite;;;Argument[0];html"
-      ]
-  }
-}
-
-/**
- * An expression that is used as an argument to an HTML sink method on
  * `HtmlTextWriter`.
  */
 class HtmlTextWriterSink extends HtmlSink {

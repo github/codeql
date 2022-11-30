@@ -1,7 +1,7 @@
 /**
  * @name LinuxPrivilegeDroppingOutoforder
  * @description A syscall commonly associated with privilege dropping is being called out of order.
- *                Normally a process drops group ID and sets supplimental groups for the target user
+ *                Normally a process drops group ID and sets supplemental groups for the target user
  *                before setting the target user ID. This can have security impact if the return code
  *                from these methods is not checked.
  * @kind problem

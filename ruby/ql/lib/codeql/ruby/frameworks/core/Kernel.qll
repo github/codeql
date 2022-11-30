@@ -166,5 +166,17 @@ module Kernel {
     SendCallCodeExecution() { this.getMethodName() = "send" }
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
+
+    override predicate runsArbitraryCode() { none() }
+  }
+
+  private class TapSummary extends SimpleSummarizedCallable {
+    TapSummary() { this = "tap" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self]" and
+      output = ["ReturnValue", "Argument[block].Parameter[0]"] and
+      preservesValue = true
+    }
   }
 }

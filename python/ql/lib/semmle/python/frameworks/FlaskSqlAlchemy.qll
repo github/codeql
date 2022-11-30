@@ -35,7 +35,7 @@ private module FlaskSqlAlchemy {
   /** Access on a DB resulting in an Engine */
   private class DbEngine extends SqlAlchemy::Engine::InstanceSource {
     DbEngine() {
-      this = dbInstance().getMember("engine").getAnImmediateUse()
+      this = dbInstance().getMember("engine").asSource()
       or
       this = dbInstance().getMember("get_engine").getACall()
     }
@@ -44,7 +44,7 @@ private module FlaskSqlAlchemy {
   /** Access on a DB resulting in a Session */
   private class DbSession extends SqlAlchemy::Session::InstanceSource {
     DbSession() {
-      this = dbInstance().getMember("session").getAnImmediateUse()
+      this = dbInstance().getMember("session").asSource()
       or
       this = dbInstance().getMember("create_session").getReturn().getACall()
       or

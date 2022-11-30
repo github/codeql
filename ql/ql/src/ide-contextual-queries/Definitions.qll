@@ -28,14 +28,15 @@ class Loc extends TLoc {
   }
 }
 
-private predicate resolveModule(ModuleRef ref, FileOrModule target, string kind) {
+private predicate resolveModule(TypeRef ref, FileOrModule target, string kind) {
   target = ref.getResolvedModule() and
   kind = "module"
 }
 
 private predicate resolveType(TypeExpr ref, AstNode target, string kind) {
   target = ref.getResolvedType().getDeclaration() and
-  kind = "type"
+  kind = "type" and
+  not resolveModule(ref, _, _) // modules are types, so we exclude them here.
 }
 
 private predicate resolvePredicate(PredicateExpr ref, Predicate target, string kind) {

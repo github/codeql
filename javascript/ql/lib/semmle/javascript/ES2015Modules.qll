@@ -54,7 +54,7 @@ private predicate hasNamedExports(ES2015Module mod) {
 }
 
 /**
- * Holds if this module contains a `default` export.
+ * Holds if this module contains a default export.
  */
 private predicate hasDefaultExport(ES2015Module mod) {
   // export default foo;
@@ -337,7 +337,7 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
 }
 
 /**
- * Holds if the given bulk export should not re-export `name` because there is an explicit export
+ * Holds if the given bulk export `reExport` should not re-export `name` because there is an explicit export
  * of that name in the same module.
  *
  * At compile time, shadowing works across declaration spaces.

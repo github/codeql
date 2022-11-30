@@ -8,13 +8,13 @@ private import semmle.javascript.dataflow.internal.StepSummary
 private import semmle.javascript.dataflow.internal.CallGraphs
 private import DataFlow::PseudoProperties as PseudoProperties
 
-module HTTP {
+module Http {
   /**
    * A function invocation that causes a redirect response to be sent.
    */
-  abstract class RedirectInvocation extends InvokeExpr {
+  abstract class RedirectInvocation extends DataFlow::CallNode {
     /** Gets the argument specifying the URL to redirect to. */
-    abstract Expr getUrlArgument();
+    abstract DataFlow::Node getUrlArgument();
 
     /** Gets the route handler this redirect occurs in. */
     abstract RouteHandler getRouteHandler();
@@ -56,24 +56,34 @@ module HTTP {
    * An expression that sets HTTP response headers explicitly.
    */
   abstract class ExplicitHeaderDefinition extends HeaderDefinition {
-    override string getAHeaderName() { this.definesExplicitly(result, _) }
+    override string getAHeaderName() { this.definesHeaderValue(result, _) }
 
     override predicate defines(string headerName, string headerValue) {
-      exists(Expr e |
-        this.definesExplicitly(headerName, e) and
+      exists(DataFlow::Node e |
+        this.definesHeaderValue(headerName, e) and
         headerValue = e.getStringValue()
       )
     }
 
     /**
+     * DEPRECATED: use `definesHeaderValue` instead.
      * Holds if the header with (lower-case) name `headerName` is set to the value of `headerValue`.
      */
-    abstract predicate definesExplicitly(string headerName, Expr headerValue);
+    deprecated predicate definesExplicitly(string headerName, Expr headerValue) {
+      this.definesHeaderValue(headerName, headerValue.flow())
+    }
+
+    /** Holds if the header with (lower-case) name `headerName` is set to the value of `headerValue`. */
+    abstract predicate definesHeaderValue(string headerName, DataFlow::Node headerValue);
 
     /**
+     * DEPRECATED: Use `getNameNode()` instead.
      * Returns the expression used to compute the header name.
      */
-    abstract Expr getNameExpr();
+    deprecated Expr getNameExpr() { result = this.getNameNode().asExpr() }
+
+    /** Returns the expression used to compute the header name. */
+    abstract DataFlow::Node getNameNode();
   }
 
   /**
@@ -107,7 +117,7 @@ module HTTP {
   /**
    * An expression whose value is sent as (part of) the body of an HTTP response.
    */
-  abstract class ResponseBody extends Expr {
+  abstract class ResponseBody extends DataFlow::Node {
     /**
      * Gets the route handler that sends this expression.
      */
@@ -123,21 +133,21 @@ module HTTP {
   /**
    * An expression that sets a cookie in an HTTP response.
    */
-  abstract class CookieDefinition extends Expr {
+  abstract class CookieDefinition extends DataFlow::Node {
     /**
      * Gets the argument, if any, specifying the raw cookie header.
      */
-    Expr getHeaderArgument() { none() }
+    DataFlow::Node getHeaderArgument() { none() }
 
     /**
      * Gets the argument, if any, specifying the cookie name.
      */
-    Expr getNameArgument() { none() }
+    DataFlow::Node getNameArgument() { none() }
 
     /**
      * Gets the argument, if any, specifying the cookie value.
      */
-    Expr getValueArgument() { none() }
+    DataFlow::Node getValueArgument() { none() }
 
     /** Gets the route handler that sets this cookie. */
     abstract RouteHandler getRouteHandler();
@@ -150,12 +160,12 @@ module HTTP {
     HeaderDefinition header;
 
     SetCookieHeader() {
-      this = header.asExpr() and
+      this = header and
       header.getAHeaderName() = "set-cookie"
     }
 
-    override Expr getHeaderArgument() {
-      header.(ExplicitHeaderDefinition).definesExplicitly("set-cookie", result)
+    override DataFlow::Node getHeaderArgument() {
+      header.(ExplicitHeaderDefinition).definesHeaderValue("set-cookie", result)
     }
 
     override RouteHandler getRouteHandler() { result = header.getRouteHandler() }
@@ -164,7 +174,7 @@ module HTTP {
   /**
    * An expression that creates a new server.
    */
-  abstract class ServerDefinition extends Expr {
+  abstract class ServerDefinition extends DataFlow::Node {
     /**
      * Gets a route handler of the server.
      */
@@ -198,16 +208,30 @@ module HTTP {
     final Servers::ResponseSource getAResponseSource() { result.getRouteHandler() = this }
 
     /**
+     * DEPRECATED: Use `getARequestNode()` instead.
      * Gets an expression that contains a request object handled
      * by this handler.
      */
-    RequestExpr getARequestExpr() { result.getRouteHandler() = this }
+    deprecated RequestExpr getARequestExpr() { result.flow() = this.getARequestNode() }
+
+    /**
+     * Gets an expression that contains a request object handled
+     * by this handler.
+     */
+    RequestNode getARequestNode() { result.getRouteHandler() = this }
+
+    /**
+     * DEPRECATED: Use `getAResponseNode()` instead.
+     * Gets an expression that contains a response object provided
+     * by this handler.
+     */
+    deprecated ResponseExpr getAResponseExpr() { result.flow() = this.getAResponseNode() }
 
     /**
      * Gets an expression that contains a response object provided
      * by this handler.
      */
-    ResponseExpr getAResponseExpr() { result.getRouteHandler() = this }
+    ResponseNode getAResponseNode() { result.getRouteHandler() = this }
   }
 
   /**
@@ -218,7 +242,7 @@ module HTTP {
     DataFlow::functionOneWayForwardingStep(pred.getALocalUse(), succ)
     or
     // a container containing route-handlers.
-    exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
+    exists(Http::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
     or
     // (function (req, res) {}).bind(this);
     exists(DataFlow::PartialInvokeNode call |
@@ -232,26 +256,42 @@ module HTTP {
   /**
    * An expression that sets up a route on a server.
    */
-  abstract class RouteSetup extends Expr { }
+  abstract class RouteSetup extends DataFlow::Node { }
 
-  /**
-   * An expression that may contain a request object.
-   */
-  abstract class RequestExpr extends Expr {
-    /**
-     * Gets the route handler that handles this request.
-     */
+  /** A dataflow node that may contain a request object. */
+  abstract class RequestNode extends DataFlow::Node {
+    /** Gets the route handler that handles this request. */
+    abstract RouteHandler getRouteHandler();
+  }
+
+  /** An dataflow node that may contain a response object. */
+  abstract class ResponseNode extends DataFlow::Node {
+    /** Gets the route handler that handles this request. */
     abstract RouteHandler getRouteHandler();
   }
 
   /**
-   * An expression that may contain a response object.
+   * DEPRECATED: Use `RequestNode` instead.
+   * An expression that may contain a request object.
    */
-  abstract class ResponseExpr extends Expr {
+  deprecated class RequestExpr extends Expr {
+    RequestExpr() { this.flow() instanceof ResponseNode }
+
     /**
      * Gets the route handler that handles this request.
      */
-    abstract RouteHandler getRouteHandler();
+    RouteHandler getRouteHandler() { result = this.flow().(ResponseNode).getRouteHandler() }
+  }
+
+  /**
+   * DEPRECATED: Use `ResponseNode` instead.
+   * An expression that may contain a response object.
+   */
+  deprecated class ResponseExpr extends Expr {
+    /**
+     * Gets the route handler that handles this request.
+     */
+    RouteHandler getRouteHandler() { result = this.flow().(ResponseNode).getRouteHandler() }
   }
 
   /**
@@ -267,15 +307,19 @@ module HTTP {
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
-        result = DataFlow::exprNode(this)
+        result = this.getALocalSource()
         or
         exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
       }
 
+      /** Gets a data flow node referring to this server. */
+      DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
+
       /**
+       * DEPRECATED: Use `ref().flowsToExpr()` instead.
        * Holds if `sink` may refer to this server definition.
        */
-      predicate flowsTo(Expr sink) { this.ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
+      deprecated predicate flowsTo(Expr sink) { this.ref().flowsToExpr(sink) }
     }
 
     /**
@@ -290,7 +334,7 @@ module HTTP {
       /**
        * Gets the server this route handler is registered on.
        */
-      Expr getServer() {
+      DataFlow::Node getServer() {
         exists(StandardRouteSetup setup | setup.getARouteHandler() = this |
           result = setup.getServer()
         )
@@ -350,10 +394,10 @@ module HTTP {
     /**
      * A request expression arising from a request source.
      */
-    class StandardRequestExpr extends RequestExpr {
+    class StandardRequestNode extends RequestNode {
       RequestSource src;
 
-      StandardRequestExpr() { src.ref().flowsTo(DataFlow::valueNode(this)) }
+      StandardRequestNode() { src.ref().flowsTo(this) }
 
       override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
     }
@@ -361,26 +405,49 @@ module HTTP {
     /**
      * A response expression arising from a response source.
      */
-    class StandardResponseExpr extends ResponseExpr {
+    class StandardResponseNode extends ResponseNode {
       ResponseSource src;
 
-      StandardResponseExpr() { src.ref().flowsTo(DataFlow::valueNode(this)) }
+      StandardResponseNode() { src.ref().flowsTo(this) }
 
       override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
     }
 
     /**
+     * A request expression arising from a request source.
+     */
+    deprecated class StandardRequestExpr extends RequestExpr {
+      RequestSource src;
+
+      StandardRequestExpr() { src.ref().flowsToExpr(this) }
+
+      override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
+    }
+
+    /**
+     * A response expression arising from a response source.
+     */
+    deprecated class StandardResponseExpr extends ResponseExpr {
+      ResponseSource src;
+
+      StandardResponseExpr() { src.ref().flowsToExpr(this) }
+
+      override RouteHandler getRouteHandler() {
+        result = this.flow().(StandardResponseNode).getRouteHandler()
+      }
+    }
+
+    /**
      * A standard header definition.
      */
-    abstract class StandardHeaderDefinition extends ExplicitHeaderDefinition, DataFlow::ValueNode {
-      override MethodCallExpr astNode;
-
-      override predicate definesExplicitly(string headerName, Expr headerValue) {
-        headerName = this.getNameExpr().getStringValue().toLowerCase() and
-        headerValue = astNode.getArgument(1)
+    abstract class StandardHeaderDefinition extends ExplicitHeaderDefinition,
+      DataFlow::MethodCallNode {
+      override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
+        headerName = this.getNameNode().getStringValue().toLowerCase() and
+        headerValue = this.getArgument(1)
       }
 
-      override Expr getNameExpr() { result = astNode.getArgument(0) }
+      override DataFlow::Node getNameNode() { result = this.getArgument(0) }
     }
 
     /**
@@ -396,7 +463,7 @@ module HTTP {
       /**
        * Gets the server on which this route setup sets up routes.
        */
-      abstract Expr getServer();
+      abstract DataFlow::Node getServer();
     }
 
     /**
@@ -610,7 +677,7 @@ module HTTP {
     /**
      * A collection that contains one or more route potential handlers.
      */
-    private class ContainerCollection extends HTTP::RouteHandlerCandidateContainer::Range,
+    private class ContainerCollection extends Http::RouteHandlerCandidateContainer::Range,
       DataFlow::NewNode {
       ContainerCollection() {
         this = DataFlow::globalVarRef("Map").getAnInstantiation() and // restrict to Map for now
@@ -632,3 +699,6 @@ module HTTP {
     }
   }
 }
+
+/** DEPRECATED: Alias for Http */
+deprecated module HTTP = Http;

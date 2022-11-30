@@ -55,7 +55,15 @@ private predicate isDeeplyConstBelow(Type t) {
   isDeeplyConstBelow(t.(TypedefType).getBaseType())
 }
 
-private predicate isConstPointerLike(Type t) {
+/**
+ * INTERNAL: Do not use.
+ *
+ * Holds if `t` is a pointer-like type (i.e., a pointer,
+ * an array a reference, or a pointer-wrapper such as
+ * `std::unique_ptr`) that is constant and only contains
+ * constant types, excluding the type itself.
+ */
+predicate isConstPointerLike(Type t) {
   (
     t instanceof PointerWrapper
     or

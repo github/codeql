@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// The location which is stored in the database and is used when highlighing source code.
+        /// The location which is stored in the database and is used when highlighting source code.
         /// It's generally short, e.g. a method name.
         /// </summary>
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol.Locations.FirstOrDefault();

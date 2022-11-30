@@ -19,4 +19,4 @@ where
   not call.getLocation().getFile().getAbsolutePath().matches("%/" + ["meta", "test"] + "/%") and
   not call.getLocation().getFile().getBaseName().toLowerCase() =
     ["consistency.ql", "test.ql", "tst.ql", "tests.ql"]
-select call, "Don't use .getAQlClass"
+select call, "Don't use '.getAQlClass()'."

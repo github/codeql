@@ -15,22 +15,17 @@ class CsvInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink = any(CsvWriter cw).getAnInput() }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StartsWithCheck or
-    guard instanceof StringConstCompare
+  override predicate isSanitizer(DataFlow::Node node) {
+    node = DataFlow::BarrierGuard<startsWithCheck/3>::getABarrierNode() or
+    node instanceof StringConstCompareBarrier
   }
 }
 
-private class StartsWithCheck extends DataFlow::BarrierGuard {
-  DataFlow::MethodCallNode mc;
-
-  StartsWithCheck() {
-    this = mc.asCfgNode() and
-    mc.calls(_, "startswith")
-  }
-
-  override predicate checks(ControlFlowNode node, boolean branch) {
+private predicate startsWithCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+  exists(DataFlow::MethodCallNode mc |
+    g = mc.asCfgNode() and
+    mc.calls(_, "startswith") and
     node = mc.getObject().asCfgNode() and
     branch = true
-  }
+  )
 }

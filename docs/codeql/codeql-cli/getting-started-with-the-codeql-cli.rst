@@ -23,11 +23,11 @@ and 4 are slightly different---for further details, see the sections labeled
 **Information for macOS "Catalina" (or newer) users**. If you are using macOS
 on Apple Silicon (e.g. Apple M1), ensure that the `Xcode command-line developer
 tools <https://developer.apple.com/downloads/index.action>`__ and `Rosetta 2
-<https://support.apple.com/en-us/HT211861>`__ are installed. 
+<https://support.apple.com/en-us/HT211861>`__ are installed.
 
 .. pull-quote:: Note
 
-   The CodeQL CLI is currently not compatible with non-glibc Linux 
+   The CodeQL CLI is currently not compatible with non-glibc Linux
    distributions such as (muslc-based) Alpine Linux.
 
 For information about installing the CodeQL CLI in a CI system to create results
@@ -47,22 +47,11 @@ Conditions <https://securitylab.github.com/tools/codeql/license>`__.
 
 .. pull-quote:: Important
 
-   There are several different versions of the CLI available to download, depending
+   There are several versions of the CLI available to download, depending
    on your use case:
 
-   - If you want to use the most up to date CodeQL tools and features, download the
-     version tagged ``latest``.
-
-   - If you want to create CodeQL databases to upload to LGTM Enterprise, download
-     the version that is compatible with the relevant LGTM Enterprise version
-     number. Compatibility information is included in the description for each
-     release on the `CodeQL CLI releases page
-     <https://github.com/github/codeql-cli-binaries/releases>`__ on GitHub. Using the
-     correct version of the CLI ensures that your CodeQL databases are
-     compatible with your version of LGTM Enterprise. For more information,
-     see `Preparing CodeQL databases to upload to LGTM
-     <https://help.semmle.com/lgtm-enterprise/admin/help/prepare-database-upload.html>`__
-     in the LGTM admin help.
+   * If you want to use the most up to date CodeQL tools and features, download the version tagged ``latest``.
+   * If you want to generate code scanning data to upload to GitHub Enterprise server, then download the version that is compatible with the CodeQL CLI used in your CI system. For more information, see "`Installing CodeQL CLI in your CI system <https://docs.github.com/en/enterprise-server/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/installing-codeql-cli-in-your-ci-system#downloading-the-codeql-cli>`__" in the GitHub documentation.
 
 If you use Linux, Windows, or macOS version 10.14 ("Mojave") or earlier, simply
 `download the zip archive
@@ -154,6 +143,7 @@ up to create and analyze databases:
 
       - ``codeql/cpp-queries``
       - ``codeql/csharp-queries``
+      - ``codeql/go-queries``
       - ``codeql/java-queries``
       - ``codeql/javascript-queries``
       - ``codeql/python-queries``
@@ -202,8 +192,6 @@ CLI that you will extract in step 4. If you use git on the command line, you can
 clone and rename the repository in a single step by running
 ``git clone git@github.com:github/codeql.git codeql-repo`` in the ``codeql-home`` folder.
 
-For Go analysis, run ``codeql-repo/go/scripts/install-deps.sh`` to install its dependencies.
-
 .. pull-quote:: Note
 
    The CodeQL libraries and queries for Go analysis used to live in a
@@ -213,37 +201,22 @@ For Go analysis, run ``codeql-repo/go/scripts/install-deps.sh`` to install its d
 
    For more information, see the `Relocation announcement <https://github.com/github/codeql-go/issues/741>`__.
 
-Within this repository, the queries and libraries are organized into QL
-packs. Along with the queries themselves, QL packs contain important metadata
+Within this repository, the queries and libraries are organized into CodeQL
+packs. Along with the queries themselves, CodeQL packs contain important metadata
 that tells the CodeQL CLI how to process the query files. For more information,
-see ":doc:`About QL packs <about-ql-packs>`."
+see ":doc:`About CodeQL packs <about-codeql-packs>`."
 
 .. pull-quote:: Important
 
    There are different versions of the CodeQL queries available for different
    users. Check out the correct version for your use case:
 
-   - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
-     ``lgtm.com`` branch. You should use this branch for databases you've built
-     using the CodeQL CLI, fetched from code scanning on GitHub, or recently downloaded from LGTM.com.
-     The queries on the ``lgtm.com`` branch are more likely to be compatible
-     with the ``latest`` CLI, so you'll be less likely to have to upgrade
-     newly-created databases than if you use the ``main`` branch. Older databases
-     may need to be upgraded before you can analyze them.
+   - For the queries that are intended to be used with the latest CodeQL CLI release, check out the 
+     branch tagged ``codeql-cli/latest``. You should use this branch for databases you've built
+     using the CodeQL CLI, fetched from code scanning on GitHub, or recently downloaded from GitHub.com.
 
    - For the most up to date CodeQL queries, check out the ``main`` branch.
-     This branch represents the very latest version of CodeQL's analysis. Even
-     databases created using the most recent version of the CLI may have to be
-     upgraded before you can analyze them. For more information, see
-     ":doc:`Upgrading CodeQL databases <upgrading-codeql-databases>`."
-
-   - For the queries used in a particular LGTM Enterprise release, check out the
-     branch tagged with the relevant release number. For example, the branch
-     tagged ``v1.27.0`` corresponds to LGTM Enterprise 1.27. You must use this
-     version if you want to upload data to LGTM Enterprise. For further
-     information, see `Preparing CodeQL databases to upload to LGTM
-     <https://help.semmle.com/lgtm-enterprise/admin/help/prepare-database-upload.html>`__
-     in the LGTM admin help.
+     This branch represents the very latest version of CodeQL's analysis.
 
 4. Extract the zip archive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -271,8 +244,8 @@ up to create and analyze databases:
 - Run ``codeql resolve languages`` to show which languages are
   available for database creation. This will list the languages supported by
   default in your CodeQL CLI package.
-- Run ``codeql resolve qlpacks`` to show which QL packs the CLI can find. This
-  will display the names of all the QL packs directly available to the CodeQL CLI.
+- Run ``codeql resolve qlpacks`` to show which CodeQL packs the CLI can find. This
+  will display the names of all the CodeQL packs directly available to the CodeQL CLI.
   This should include:
 
   - Query packs for each supported language, for example, ``codeql/{language}-queries``.
@@ -292,7 +265,7 @@ Using two versions of the CodeQL CLI
 
 If you want to use the latest CodeQL features to execute queries or CodeQL tests,
 but also want to prepare databases that are compatible with a specific version of
-LGTM Enterprise, you may need to install two versions of the CLI. The
+CodeQL code scanning on GitHub Enterprise Server, you may need to install two versions of the CLI. The
 recommended directory setup depends on which versions you want to install:
 
 - If both versions are 2.0.2 (or newer), you can unpack both CLI archives in the

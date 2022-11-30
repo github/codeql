@@ -125,3 +125,39 @@ fun fn2(f: () -> Unit) = f()
 fun adapted() {
     fn2(::fn1)
 }
+
+fun expectsOneParam(f: (Int) -> Int) = f(0)
+
+fun takesOptionalParam(x: Int, y: Int = 0) = x + y
+
+fun adaptedParams() {
+    expectsOneParam(::takesOptionalParam)
+}
+
+fun expectsOneParamAndReceiver(f: (MemberOptionalsTest, Int) -> Int) { }
+
+class MemberOptionalsTest {
+    fun takesOptionalParam(x: Int, y: Int = 0) = x + y
+}
+
+fun memberAdaptedParams(m: MemberOptionalsTest) {
+    expectsOneParam(m::takesOptionalParam)
+    expectsOneParamAndReceiver(MemberOptionalsTest::takesOptionalParam)
+}
+
+fun expectsOneParamAndExtension(f: (String, Int) -> Int) { }
+
+fun String.extTakesOptionalParam(x: Int, y: Int = 0) = x + y
+
+fun extensionAdaptedParams(s: String) {
+    expectsOneParam(s::extTakesOptionalParam)
+    expectsOneParamAndExtension(String::extTakesOptionalParam)
+}
+
+class ConstructorOptional(x: Int, y: Int = 0) { }
+
+fun expectsOneParamCons(f: (Int) -> ConstructorOptional) = f(0)
+
+fun constructorAdaptedParams() {
+    expectsOneParamCons(::ConstructorOptional)
+}

@@ -14,44 +14,57 @@ class Generator:
         self.generateSinks = False
         self.generateSources = False
         self.generateSummaries = False
+        self.generateNegativeSummaries = False
+        self.generateTypeBasedSummaries = False
         self.dryRun = False
 
 
     def printHelp(self):
         print(f"""Usage:
-python3 GenerateFlowModel.py <library-database> <outputQll> [--with-sinks] [--with-sources] [--with-summaries] [--dry-run]
+python3 GenerateFlowModel.py <library-database> <outputQll> [<friendlyFrameworkName>] [--with-sinks] [--with-sources] [--with-summaries] [--with-typebased-summaries] [--dry-run]
 
 This generates summary, source and sink models for the code in the database.
 The files will be placed in `{self.language}/ql/lib/semmle/code/{self.language}/frameworks/<outputQll>` where
 outputQll is the name (and path) of the output QLL file. Usually, models are grouped by their
 respective frameworks.
+If negative summaries are produced a file prefixed with `Negative` will be generated and stored in the same folder.
 
 Which models are generated is controlled by the flags:
     --with-sinks
     --with-sources
     --with-summaries
+    --with-negative-summaries
+    --with-typebased-summaries
 If none of these flags are specified, all models are generated.
 
     --dry-run: Only run the queries, but don't write to file.
 
 Example invocations:
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/Framework.qll"
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/Framework.qll" "Friendly Name of Framework"
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/FrameworkSinks.qll" --with-sinks
 
 Requirements: `codeql` should both appear on your path.
     """)
 
 
-    def setenvironment(self, target, database):
+    def setenvironment(self, target, database, friendlyName):
         self.codeQlRoot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
         if not target.endswith(".qll"):
             target += ".qll"
-        self.filename = os.path.basename(target)
-        self.shortname = self.filename[:-4]
+        filename = os.path.basename(target)
+        dirname = os.path.dirname(target)
+        if friendlyName is not None:
+            self.friendlyname = friendlyName
+        else:
+            self.friendlyname = filename[:-4]
+        self.shortname = filename[:-4]
         self.database = database
         self.generatedFrameworks = os.path.join(
             self.codeQlRoot, f"{self.language}/ql/lib/semmle/code/{self.language}/frameworks/")
-        self.frameworkTarget = os.path.join(self.generatedFrameworks, target)
+        self.frameworkTarget = os.path.join(self.generatedFrameworks, dirname, filename)
+        self.negativeFrameworkTarget = os.path.join(self.generatedFrameworks, dirname, "Negative" + filename)
+        self.typeBasedFrameworkTarget = os.path.join(self.generatedFrameworks, dirname, "TypeBased" + filename)
 
         self.workDir = tempfile.mkdtemp()
         os.makedirs(self.generatedFrameworks, exist_ok=True)
@@ -76,18 +89,30 @@ Requirements: `codeql` should both appear on your path.
             sys.argv.remove("--with-summaries")
             generator.generateSummaries = True
 
+        if "--with-negative-summaries" in sys.argv:
+            sys.argv.remove("--with-negative-summaries")
+            generator.generateNegativeSummaries = True
+
+        if "--with-typebased-summaries" in sys.argv:
+            sys.argv.remove("--with-typebased-summaries")
+            generator.generateTypeBasedSummaries = True
+
         if "--dry-run" in sys.argv:
             sys.argv.remove("--dry-run")
             generator.dryRun = True
 
-        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries:
-            generator.generateSinks = generator.generateSources = generator.generateSummaries = True
+        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNegativeSummaries and not generator.generateTypeBasedSummaries:
+            generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNegativeSummaries = True
 
-        if len(sys.argv) != 3:
+        if len(sys.argv) < 3 or len(sys.argv) > 4:
             generator.printHelp()
             sys.exit(1)
-        
-        generator.setenvironment(sys.argv[2], sys.argv[1])
+
+        friendlyName = None
+        if len(sys.argv) == 4:
+            friendlyName = sys.argv[3]
+
+        generator.setenvironment(sys.argv[2], sys.argv[1], friendlyName)
         return generator
 
 
@@ -169,7 +194,7 @@ private class {0}{1}Csv extends {2} {{
         return f"""
 /** 
  * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
- * Definitions of taint steps in the {self.shortname} framework.
+ * Definitions of taint steps in the {self.friendlyname} framework.
  */
 
 import {self.language}
@@ -181,26 +206,74 @@ private import semmle.code.{self.language}.dataflow.ExternalFlow
 
         """
 
+    def makeNegativeContent(self):
+        if self.generateNegativeSummaries:
+            negativeSummaryRows = self.runQuery("negative summary models", "CaptureNegativeSummaryModels.ql")
+            negativeSummaryCsv = self.asCsvModel("NegativeSummaryModelCsv", "NegativeSummary", negativeSummaryRows)
+        else:
+            negativeSummaryCsv = ""
 
-    def save(self, content):
-        with open(self.frameworkTarget, "w") as frameworkQll:
-            frameworkQll.write(content)
+        return f"""
+/**
+ * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+ * Definitions of negative summaries in the {self.friendlyname} framework.
+ */
 
-        cmd = ['codeql', 'query', 'format', '--in-place', self.frameworkTarget]
+import {self.language}
+private import semmle.code.{self.language}.dataflow.ExternalFlow
+
+{negativeSummaryCsv}
+
+        """
+
+    def makeTypeBasedContent(self):
+        if self.generateTypeBasedSummaries:
+            typeBasedSummaryRows = self.runQuery("type based summary models", "CaptureTypeBasedSummaryModels.ql")
+            typeBasedSummaryCsv = self.asCsvModel("SummaryModelCsv", "TypeBasedSummary", typeBasedSummaryRows)
+        else:
+            typeBasedSummaryCsv = ""
+
+        return f"""
+/**
+ * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+ * Definitions of type based summaries in the {self.friendlyname} framework.
+ */
+
+import {self.language}
+private import semmle.code.{self.language}.dataflow.ExternalFlow
+
+{typeBasedSummaryCsv}
+
+        """
+
+    def save(self, content, target):
+        with open(target, "w") as targetQll:
+            targetQll.write(content)
+
+        cmd = ['codeql', 'query', 'format', '--in-place', target]
         ret = subprocess.call(cmd)
         if ret != 0:
             print("Failed to format query. Failed command was: " + shlex.join(cmd))
             sys.exit(1)
 
         print("")
-        print("CSV model written to " + self.frameworkTarget)
+        print("CSV model written to " + target)
 
 
     def run(self):
         content = self.makeContent()
+        negativeContent = self.makeNegativeContent()
+        typeBasedContent = self.makeTypeBasedContent()
 
         if self.dryRun:
             print("CSV Models generated, but not written to file.")
             sys.exit(0)
         
-        self.save(content)
+        if self.generateSinks or self.generateSinks or self.generateSummaries:
+            self.save(content, self.frameworkTarget)
+
+        if self.generateNegativeSummaries:
+            self.save(negativeContent, self.negativeFrameworkTarget)
+
+        if self.generateTypeBasedSummaries:
+            self.save(typeBasedContent, self.typeBasedFrameworkTarget)

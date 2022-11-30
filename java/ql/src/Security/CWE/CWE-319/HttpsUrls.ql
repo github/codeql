@@ -17,4 +17,4 @@ import DataFlow::PathGraph
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(HttpStringToUrlOpenMethodFlowConfig c).hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "URL may have been constructed with HTTP protocol, using $@.",
-  source.getNode(), "this source"
+  source.getNode(), "this HTTP URL"

@@ -70,10 +70,7 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
   or
   // SSA -> SSA
-  exists(SsaDefinition pred, SsaDefinition succ |
-    succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable() or
-    succ.(SsaPseudoDefinition).getAnInput() = pred
-  |
+  exists(SsaDefinition pred, SsaPseudoDefinition succ | succ.getAnInput() = pred |
     nodeFrom = ssaNode(pred) and
     nodeTo = ssaNode(succ)
   )
@@ -90,6 +87,12 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     any(GlobalFunctionNode fn | fn.getFunction() = nodeTo.asExpr().(FunctionName).getTarget())
 }
 
+pragma[noinline]
+private Field getASparselyUsedChannelTypedField() {
+  result.getType() instanceof ChanType and
+  count(result.getARead()) = 2
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
  * calling context. For example, this would happen with flow through a
@@ -102,6 +105,29 @@ predicate jumpStep(Node n1, Node n2) {
     w.writes(v, n1) and
     n2 = v.getARead()
   )
+  or
+  exists(SsaDefinition pred, SsaDefinition succ |
+    succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable()
+  |
+    n1 = ssaNode(pred) and
+    n2 = ssaNode(succ)
+  )
+  or
+  // If a channel-typed field is referenced exactly once in the context of
+  // a send statement and once in a receive expression, assume the two are linked.
+  exists(
+    Field f, DataFlow::ReadNode recvRead, DataFlow::ReadNode sendRead, RecvExpr re, SendStmt ss
+  |
+    f = getASparselyUsedChannelTypedField() and
+    recvRead = f.getARead() and
+    sendRead = f.getARead() and
+    recvRead.asExpr() = re.getOperand() and
+    sendRead.asExpr() = ss.getChannel() and
+    n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = sendRead and
+    n2 = recvRead
+  )
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
 }
 
 /**
@@ -110,7 +136,7 @@ predicate jumpStep(Node n1, Node n2) {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content c, Node node2) {
-  // a write `(*p).f = rhs` is modelled as two store steps: `rhs` is flows into field `f` of `(*p)`,
+  // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
   // which in turn flows into the pointer content of `p`
   exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
     node1 = rhs and
@@ -162,6 +188,14 @@ predicate clearsContent(Node n, Content c) {
   // FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
   // or
   // FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+}
+
+/**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
 }
 
 /** Gets the type of `n` used for type pruning. */

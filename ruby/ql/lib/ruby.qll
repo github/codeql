@@ -2,5 +2,6 @@
  * Provides classes for working with Ruby programs.
  */
 
-private import Customizations
-import codeql.ruby.AST
+import codeql.ruby.AST as Ast
+import codeql.ruby.CFG as Cfg
+import codeql.ruby.DataFlow // already defines its own wrapper module

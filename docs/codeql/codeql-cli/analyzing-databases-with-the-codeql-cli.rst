@@ -15,11 +15,13 @@ For information about writing queries to run with ``database analyze``, see
 
 Before starting an analysis you must:
 
-- :doc:`Set up the CodeQL CLI <getting-started-with-the-codeql-cli>` so that it can find the queries
-  and libraries included in the CodeQL repository.
+- :doc:`Set up the CodeQL CLI <getting-started-with-the-codeql-cli>` to run commands locally.
 - :doc:`Create a CodeQL database <creating-codeql-databases>` for the source
   code you want to analyze.
 
+The simplest way to run ``codeql database analyze`` is using CodeQL packs. You can also
+run the command using queries from a local checkout of the CodeQL repository,
+which you may want to do if you want to customize the CodeQL core queries.
 
 Running ``codeql database analyze``
 ------------------------------------
@@ -34,7 +36,8 @@ When you run ``database analyze``, it:
 
 You can analyze a database by running the following command::
 
-   codeql database analyze <database> --format=<format> --output=<output> <queries>
+   codeql database analyze <database> --format=<format> --output=<output> <query-specifiers>...
+
 
 You must specify:
 
@@ -51,16 +54,17 @@ You must specify:
 
 You can also specify:
 
-- ``...<query-specifications>``: a list of queries to run over your database. This
-  is a list of arguments. Where each argument can be:
+- ``<query-specifiers>...``: a space-separated list of queries to run over your database. This
+  is a list of arguments, where each argument can be:
 
   - a path to a query file
   - a path to a directory containing query files
   - a path to a query suite file
   - the name of a CodeQL query pack
-    If omitted, the default query suite for the language
-    of the database being analyzed will be used. For more information, see the
-    :ref:`examples <database-analyze-examples>` below.
+     - with an optional version range
+     - with an optional path to a query, directory, or query suite inside the pack
+
+  If omitted, the default query suite for the language of the analyzed database will be used. For the complete syntax of query specifiers, see :ref:`"Specifying which queries to run in a CodeQL pack"<specifying-which-queries>`.
 
 - ``--sarif-category``: an identifying category for the results. Used when
   you want to upload more than one set of results for a commit.
@@ -78,29 +82,92 @@ You can also specify:
 
 - .. include:: ../reusables/threads-query-execution.rst
 
-
 .. pull-quote::
 
    Upgrading databases
 
-   If the CodeQL queries you want to use are newer than the
-   extractor used to create the database, then you may see a message telling you
+   For databases that were created by CodeQL CLI v2.3.3 or earlier, you will need
+   to explicitly upgrade the database before you can run an analysis with a newer
+   version of the CodeQL CLI. If this step is necessary, then you will see a message telling you
    that your database needs to be upgraded when you run ``database analyze``.
-   You can quickly upgrade a database by running the ``database upgrade``
-   command. For more information, see ":doc:`Upgrading CodeQL databases
-   <upgrading-codeql-databases>`."
+
+   For databases that were created by CodeQL CLI v2.3.4 or later, the CLI will implicitly run any
+   required upgrades. Explicitly running the upgrade command is not necessary.
 
 For full details of all the options you can use when analyzing databases, see
 the `database analyze reference documentation <../manual/database-analyze>`__.
 
-.. _database-analyze-examples:
 
-Examples
---------
+.. _specifying-which-queries:
 
-The following examples assume your CodeQL databases have been created in a
-directory that is a sibling of your local copies of the CodeQL and CodeQL for Go
-repositories.
+Specifying which queries to run in a CodeQL pack
+------------------------------------------------
+
+Query specifiers are used by ``codeql database analyze`` and other commands that operate on a set of queries.
+The complete form of a query specifier is``scope/name@range:path``, where:
+
+- ``scope/name`` is the qualified name of a CodeQL pack.
+- ``range`` is a `semver range <https://docs.npmjs.com/cli/v6/using-npm/semver#ranges>`_.
+- ``path`` is a file system path to a single query, a directory containing queries, or a query suite file.
+
+When you specify a ``scope/name``, the ``range`` and ``path`` are
+optional. If you omit a ``range`` then the latest version of the
+specified pack is used. If you omit a ``path`` then the default query suite
+of the specified pack is used.
+
+The ``path`` can be one of: a ``.ql`` query file, a directory
+containing one or more queries, or a ``.qls`` query suite file. If
+you omit a pack name, then you must provide a ``path``,
+which will be interpreted relative to the working directory
+of the current process. Glob patterns are not supported.
+
+If you specify both a ``scope/name`` and ``path``, then the ``path`` cannot
+be absolute. It is considered relative to the root of the CodeQL
+pack.
+
+Example query specifiers
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``codeql/python-queries`` - All the queries in the default query suite of the latest version of the ``codeql/python-queries`` pack.
+* ``codeql/python-queries@1.2.3`` - All the queries in the default query suite of version ``1.2.3`` of the ``codeql/python-queries`` pack.
+* ``codeql/python-queries@~1.2.3`` - All the queries in the default query suite of the latest version of the ``codeql/python-queries`` pack that is >= ``1.2.3`` and < ``1.3.0``.
+* ``codeql/python-queries:Functions`` - All queries in the ``Functions`` directory in the latest version of the ``codeql/python-queries`` pack.
+* ``codeql/python-queries@1.2.3:Functions`` - All queries in the ``Functions`` directory in version 1.2.3 of the ``codeql/python-queries`` pack.
+* ``codeql/python-queries@1.2.3:codeql-suites/python-code-scanning.qls`` - All queries in the ``codeql-suites/python-code-scanning.qls`` directory in version 1.2.3 of the ``codeql/python-queries`` pack.
+* ``suites/my-suite.qls`` - All queries in the ``suites/my-suite.qls`` file relative to the current working directory.
+
+.. pull-quote::
+
+    Tip
+
+    The default query suite of the standard CodeQL query packs are ``codeql-suites/<lang>-code-scanning.qls``. Several other useful query suites can also be found in the ``codeql-suites`` directory of each pack. For example, the ``codeql/cpp-queries`` pack contains the following query suites:
+
+    * ``cpp-code-scanning.qls`` - Standard Code Scanning queries for C++. The default query suite for this pack.
+    * ``cpp-security-extended.qls`` - Queries from the default  ``cpp-code-scanning.qls`` suite for C++, plus lower severity and precision queries.
+    * ``cpp-security-and-quality.qls`` - Queries from ``cpp-security-extended.qls``, plus maintainability and reliability queries.
+
+    You can see the sources for these query suites in the `CodeQL repository <https://github.com/github/codeql/tree/main/cpp/ql/src/codeql-suites>`__. Query suites for other languages are similar.
+
+Examples of running database analyses
+---------------------------------------------
+
+The following examples show how to run ``database analyze`` using CodeQL packs, and how to use a local checkout of the CodeQL repository. These examples assume your CodeQL databases have been created in a directory that is a sibling of your local copies of the CodeQL repository.
+
+.. _run-query-pack:
+
+Running a CodeQL query pack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. include:: ../reusables/beta-note-package-management.rst
+
+To run an existing CodeQL query pack from the GitHub Container registry, you can specify one or more
+pack names::
+
+   codeql database analyze <database> microsoft/coding-standards@1.0.0 github/security-queries --format=sarifv2.1.0 --output=query-results.sarif --download
+
+This command runs the default query suite of two CodeQL query packs: ``microsoft/coding-standards`` version 1.0.0 and the latest version of ``github/security-queries`` on the specified database. For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
+
+The ``--download`` flag is optional. Using it will ensure the query pack is downloaded if it isn't yet available locally.
 
 Running a single query
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -108,65 +175,121 @@ Running a single query
 To run a single query over a CodeQL database for a JavaScript codebase,
 you could use the following command from the directory containing your database::
 
-   codeql database analyze <javascript-database> ../ql/javascript/ql/src/Declarations/UnusedVariable.ql --format=csv --output=js-analysis/js-results.csv
+   codeql database analyze --download <javascript-database> codeql/javascript-queries:Declarations/UnusedVariable.ql --format=csv --output=js-analysis/js-results.csv
 
 This command runs a simple query that finds potential bugs related to unused
 variables, imports, functions, or classes---it is one of the JavaScript
 queries included in the CodeQL repository. You could run more than one query by
 specifying a space-separated list of similar paths.
 
-The analysis generates a CSV file (``js-results.csv``) in a new directory
-(``js-analysis``).
+The analysis generates a CSV file (``js-results.csv``) in a new directory (``js-analysis``).
+
+Alternatively, if you have the CodeQL repository checked out, you can execute the same queries by specifying the path to the query directly::
+
+   codeql database analyze <javascript-database> ../ql/javascript/ql/src/Declarations/UnusedVariable.ql --format=csv --output=js-analysis/js-results.csv
 
 You can also run your own custom queries with the ``database analyze`` command.
 For more information about preparing your queries to use with the CodeQL CLI,
 see ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-the-codeql-cli>`."
 
-Running a CodeQL pack
-~~~~~~~~~~~~~~~~~~~~~
+Running all queries in a directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. include:: ../reusables/beta-note-package-management.rst
+You can run all the queries located in a directory by providing the directory
+path, rather than listing all the individual query files. Paths are searched
+recursively, so any queries contained in subfolders will also be executed.
 
-To run an existing CodeQL query pack from the GitHub Container registry, you can specify one or more
-pack names and use the ``--download`` flag::
+.. pull-quote::
 
-   codeql database analyze <database> microsoft/coding-standards@1.0.0 github/security-queries --format=sarifv2.1.0 --output=query-results.sarif --download
+   Important
 
-The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``github/security-queries`` on the specified database.
-For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
+   You should avoid specifying the root of a :ref:`core CodeQL query pack
+   <standard-codeql-query-packs>` when executing ``database analyze``
+   as it might contain some special queries that aren't designed to be used with
+   the command. Rather, :ref:`run the query pack <run-query-pack>` to include the
+   pack's default queries in the analysis, or run one of the
+   code scanning query suites.
+
+For example, to execute all Python queries contained in the ``Functions`` directory in the
+``codeql/python-queries`` query pack you would run::
+
+   codeql database analyze <python-database> codeql/python-queries:Functions --format=sarif-latest --output=python-analysis/python-results.sarif --download
+
+Alternatively, if you have the CodeQL repository checked out, you can execute the
+same queries by specifying the path to the directory directly::
+
+   codeql database analyze <python-database> ../ql/python/ql/src/Functions/ --format=sarif-latest --output=python-analysis/python-results.sarif
+
+When the analysis has finished, a SARIF results file is generated. Specifying ``--format=sarif-latest`` ensures
+that the results are formatted according to the most recent SARIF specification
+supported by CodeQL.
+
+Running a subset of queries in a CodeQL pack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you are using CodeQL CLI v2.8.1 or later, you can include a path at the end of a pack specification to run a subset of queries inside the pack. This applies to any command that locates or runs queries within a pack.
+
+The complete way to specify a set of queries is in the form ``scope/name@range:path``, where:
+
+- ``scope/name`` is the qualified name of a CodeQL pack.
+- ``range`` is a `semver range <https://docs.npmjs.com/cli/v6/using-npm/semver#ranges>`_.
+- ``path`` is a file system path to a single query, a directory containing queries, or a query suite file.
+
+When you specify a ``scope/name``, the ``range`` and ``path`` are
+optional. If you omit a ``range`` then the latest version of the
+specified pack is used. If you omit a ``path`` then the default query suite
+of the specified pack is used.
+
+The ``path`` can be one of a ``*.ql`` query file, a directory
+containing one or more queries, or a ``.qls`` query suite file. If
+you omit a pack name, then you must provide a ``path``,
+which will be interpreted relative to the working directory
+of the current process.
+
+If you specify a ``scope/name`` and ``path``, then the ``path`` cannot
+be absolute. It is considered relative to the root of the CodeQL
+pack.
+
+To analyze a database using all queries in the `experimental/Security` folder within the `codeql/cpp-queries` CodeQL pack you can use::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        codeql/cpp-queries:experimental/Security
+
+To run the `RedundantNullCheckParam.ql` query in the `codeql/cpp-queries` CodeQL pack use::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        'codeql/cpp-queries:experimental/Likely Bugs/RedundantNullCheckParam.ql'
+
+To analyze your database using the `cpp-security-and-quality.qls` query suite from a version of the `codeql/cpp-queries` CodeQL pack that is >= 0.0.3 and < 0.1.0 (the highest compatible version will be chosen) you can use::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+       'codeql/cpp-queries@~0.0.3:codeql-suites/cpp-security-and-quality.qls'
+
+If you need to reference a query file, directory, or suite whose path contains a literal `@` or `:`, you can prefix the query specification with `path:` like so::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        path:C:/Users/ci/workspace@2/security/query.ql
 
 For more information about CodeQL packs, see :doc:`About CodeQL Packs <about-codeql-packs>`.
 
 Running query suites
 ~~~~~~~~~~~~~~~~~~~~
 
-To run a query suite over a CodeQL database for a C/C++ codebase,
+To run a query suite on a CodeQL database for a C/C++ codebase,
 you could use the following command from the directory containing your database::
 
-   codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-results.sarif
+   codeql database analyze <cpp-database> codeql/cpp-queries:codeql-suites/cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-results.sarif --download
 
-The analysis generates a file in the v2.1.0 SARIF format that is supported by all versions of GitHub.
-This file can be uploaded to GitHub by executing ``codeql github upload-results`` or the code scanning API.
+This command downloads the ``codeql/cpp-queries`` CodeQL query pack, runs the analysis, and generates a file in the SARIF version 2.1.0 format that is supported by all versions of GitHub. This file can be uploaded to GitHub by executing ``codeql github upload-results`` or the code scanning API.
 For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__
 or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`__ in the GitHub documentation.
 
 CodeQL query suites are ``.qls`` files that use directives to select queries to run
-based on certain metadata properties. The standard QL packs have metadata that specify
+based on certain metadata properties. The standard CodeQL packs have metadata that specify
 the location of the query suites used by code scanning, so the CodeQL CLI knows where to find these
 suite files automatically, and you don't have to specify the full path on the command line.
-For more information, see ":ref:`About QL packs <standard-ql-packs>`."
+For more information, see ":ref:`Creating CodeQL query suites <creating-codeql-query-suites>`."
 
-The standard query suites are stored at the following paths in
-the CodeQL repository::
-
-   ql/<language>/ql/src/codeql-suites/<language>-code-scanning.qls
-
-and at the following path in the CodeQL for Go repository::
-
-   ql/src/codeql-suites/go-code-scanning.qls
-
-The repository also includes the query suites used by `LGTM.com <https://lgtm.com>`__.
-These are stored alongside the query suites for code scanning with names of the form: ``<language>-lgtm.qls``.
 
 For information about creating custom query suites, see ":doc:`Creating
 CodeQL query suites <creating-codeql-query-suites>`."
@@ -181,49 +304,20 @@ If the analysis found fewer results for standard queries than you expected, revi
 Integrating a CodeQL pack into a code scanning workflow in GitHub
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. include:: ../reusables/beta-note-package-management.rst
-
 You can use CodeQL query packs in your code scanning setup. This allows you to select query packs published by various sources and use them to analyze your code.
 For more information, see "`Using CodeQL query packs in the CodeQL action <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-codeql-query-packs/>`_" or "`Downloading and using CodeQL query packs in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#downloading-and-using-codeql-query-packs>`_."
-
-
-Running all queries in a directory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can run all the queries located in a directory by providing the directory
-path, rather than listing all the individual query files. Paths are searched
-recursively, so any queries contained in subfolders will also be executed.
-
-.. pull-quote::
-
-   Important
-
-   You shouldn't specify the root of a :doc:`QL pack
-   <about-ql-packs>` when executing ``database analyze``
-   as it contains some special queries that aren't designed to be used with
-   the command. Rather, to run a wide range of useful queries, run one of the
-   LGTM.com query suites.
-
-For example, to execute all Python queries contained in the ``Functions``
-directory you would run::
-
-   codeql database analyze <python-database> ../ql/python/ql/src/Functions/ --format=sarif-latest --output=python-analysis/python-results.sarif
-
-A SARIF results file is generated. Specifying ``--format=sarif-latest`` ensures
-that the results are formatted according to the most recent SARIF specification
-supported by CodeQL.
 
 .. _including-query-help-for-custom-codeql-queries-in-sarif-files:
 
 Including query help for custom CodeQL queries in SARIF files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you use the CodeQL CLI to to run code scanning analyses on third party CI/CD systems,
+If you use the CodeQL CLI to run code scanning analyses on third party CI/CD systems,
 you can include the query help for your custom queries in SARIF files generated during an analysis.
 After uploading the SARIF file to GitHub, the query help is shown in the code scanning UI for any
 alerts generated by the custom queries.
 
-From CodeQL CLI 2.7.1 onwards, you can include markdown-rendered query help in SARIF files
+From CodeQL CLI v2.7.1 onwards, you can include markdown-rendered query help in SARIF files
 by providing the ``--sarif-add-query-help`` option when running
 ``codeql database analyze``.
 For more information, see `Configuring CodeQL CLI in your CI system <https://docs.github.com/en/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__

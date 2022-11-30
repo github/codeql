@@ -13,7 +13,7 @@
 | CharLiterals.java:18:3:18:10 | '\\uDC00' | \ufffd | 56320 |
 | CharLiterals.java:20:3:20:16 | '\\u005C\\u005C' | \\ | 92 |
 | CharLiterals.java:21:3:21:16 | '\\u005C\\u0027' | ' | 39 |
-| CharLiterals.java:22:8:22:15 | 7a\\u0027 | a | 97 |
+| CharLiterals.java:22:3:22:15 | \\u0027a\\u0027 | a | 97 |
 | CharLiterals.java:27:4:27:6 | 'a' | a | 97 |
 | CharLiterals.java:28:4:28:6 | 'a' | a | 97 |
 | CharLiterals.java:33:3:33:5 | 'a' | a | 97 |

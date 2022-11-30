@@ -40,9 +40,11 @@ module StringBreak {
   }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for unsafe-quoting vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** Holds if `l` contains a `quote` (either single or double). */
   private predicate containsQuote(StringOps::ConcatenationLeaf l, Quote quote) {

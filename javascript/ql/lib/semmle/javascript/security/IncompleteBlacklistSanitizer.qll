@@ -80,7 +80,7 @@ module HtmlSanitization {
   }
 
   /**
-   * Gets a HTML-relevant character that is replaced by `chain`.
+   * Gets an HTML-relevant character that is replaced by `chain`.
    */
   private string getALikelyReplacedCharacter(StringReplaceCallSequence chain) {
     result = "\"" and

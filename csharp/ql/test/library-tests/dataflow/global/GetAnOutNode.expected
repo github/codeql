@@ -158,7 +158,18 @@
 | GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait | normal | GlobalDataFlow.cs:475:25:475:50 | call to method ConfigureAwait |
 | GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter | normal | GlobalDataFlow.cs:476:23:476:44 | call to method GetAwaiter |
 | GlobalDataFlow.cs:477:22:477:40 | call to method GetResult | normal | GlobalDataFlow.cs:477:22:477:40 | call to method GetResult |
-| GlobalDataFlow.cs:501:44:501:47 | delegate call | normal | GlobalDataFlow.cs:501:44:501:47 | delegate call |
+| GlobalDataFlow.cs:505:18:505:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:505:18:505:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:506:18:506:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:506:18:506:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:511:18:511:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:511:18:511:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:512:18:512:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:512:18:512:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:513:18:513:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:513:18:513:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:524:17:524:36 | object creation of type SubSimpleClass | normal | GlobalDataFlow.cs:524:17:524:36 | object creation of type SubSimpleClass |
+| GlobalDataFlow.cs:531:17:531:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:531:17:531:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:539:17:539:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:539:17:539:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:540:17:540:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:540:17:540:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:541:17:541:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:541:17:541:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:562:17:562:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:562:17:562:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:575:44:575:47 | delegate call | normal | GlobalDataFlow.cs:575:44:575:47 | delegate call |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> |
 | Splitting.cs:20:22:20:30 | call to method Return<String> | normal | Splitting.cs:20:22:20:30 | call to method Return<String> |

@@ -75,5 +75,6 @@ where
     missingGuardAgainstOverflow(op, va) and effect = "overflow"
   ) and
   causeEffectCorrespond(cause, effect)
-select va, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+select va,
+  "$@ flows to an operand of an arithmetic expression, potentially causing an " + effect + ".",
   origin, "Extreme value"

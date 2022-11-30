@@ -329,24 +329,24 @@ namespace NestedTests {
 namespace FlowThroughGlobals {
   int globalVar;
 
-  int taintGlobal() {
+  void taintGlobal() {
     globalVar = source();
   }
 
-  int f() {
-    sink(globalVar); // tainted or clean? Not sure.
+  void f() {
+    sink(globalVar); // $ ir=333:17 ir=347:17 // tainted or clean? Not sure.
     taintGlobal();
-    sink(globalVar); // $ MISSING: ast,ir
+    sink(globalVar); // $ ir=333:17 ir=347:17 MISSING: ast
   }
 
-  int calledAfterTaint() {
-    sink(globalVar); // $ MISSING: ast,ir
+  void calledAfterTaint() {
+    sink(globalVar); // $ ir=333:17 ir=347:17 MISSING: ast
   }
 
-  int taintAndCall() {
+  void taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast,ir
+    sink(globalVar); // $ ast ir=333:17 ir=347:17
   }
 }
 
@@ -493,4 +493,15 @@ void regression_with_phi_flow(int clean1) {
     sink(x); // clean
     x = source();
   }
+}
+
+int intOutparamSourceMissingReturn(int *p) {
+  *p = source();
+  // return deliberately omitted to test IR dataflow behavior
+}
+
+void viaOutparamMissingReturn() {
+  int x = 0;
+  intOutparamSourceMissingReturn(&x);
+  sink(x); // $ ast,ir
 }

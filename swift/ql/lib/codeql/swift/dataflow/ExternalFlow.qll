@@ -78,7 +78,14 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
-  /* TODO */
+  private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
+  private import codeql.swift.frameworks.StandardLibrary.Data
+  private import codeql.swift.frameworks.StandardLibrary.InputStream
+  private import codeql.swift.frameworks.StandardLibrary.NSData
+  private import codeql.swift.frameworks.StandardLibrary.String
+  private import codeql.swift.frameworks.StandardLibrary.Url
+  private import codeql.swift.frameworks.StandardLibrary.UrlSession
+  private import codeql.swift.frameworks.StandardLibrary.WebView
 }
 
 /**
@@ -111,18 +118,14 @@ class SummaryModelCsv extends Unit {
   abstract predicate row(string row);
 }
 
-private predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
+/** Holds if `row` is a source model. */
+predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
 
-private predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
+/** Holds if `row` is a sink model. */
+predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 
-private predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
-
-bindingset[input]
-private predicate getKind(string input, string kind, boolean generated) {
-  input.splitAt(":", 0) = "generated" and kind = input.splitAt(":", 1) and generated = true
-  or
-  not input.matches("%:%") and kind = input and generated = false
-}
+/** Holds if `row` is a summary model. */
+predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
@@ -139,8 +142,9 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
-  )
+    row.splitAt(";", 7) = kind
+  ) and
+  generated = false
 }
 
 /** Holds if a sink model exists for the given parameters. */
@@ -158,8 +162,9 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
-  )
+    row.splitAt(";", 7) = kind
+  ) and
+  generated = false
 }
 
 /** Holds if a summary model exists for the given parameters. */
@@ -178,8 +183,9 @@ predicate summaryModel(
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = output and
-    exists(string k | row.splitAt(";", 8) = k and getKind(k, kind, generated))
-  )
+    row.splitAt(";", 8) = kind
+  ) and
+  generated = false
 }
 
 private predicate relevantNamespace(string namespace) {
@@ -238,31 +244,7 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
 
 /** Provides a query predicate to check the CSV data for validation errors. */
 module CsvValidation {
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
-  query predicate invalidModelRow(string msg) {
-    exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "source"
-      or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "sink"
-      or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "summary"
-    |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
-      msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
-      or
-      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
-      msg = "Dubious type \"" + type + "\" in " + pred + " model."
-      or
-      not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
-      msg = "Dubious member name \"" + name + "\" in " + pred + " model."
-      or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
-      msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
-      or
-      not ext.regexpMatch("|Attribute") and
-      msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
-    )
-    or
+  private string getInvalidModelInput() {
     exists(string pred, AccessPath input, string part |
       sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
       or
@@ -277,9 +259,11 @@ module CsvValidation {
         part = input.getToken(_) and
         parseParam(part, _)
       ) and
-      msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
+      result = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
-    or
+  }
+
+  private string getInvalidModelOutput() {
     exists(string pred, string output, string part |
       sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
       or
@@ -288,9 +272,35 @@ module CsvValidation {
       invalidSpecComponent(output, part) and
       not part = "" and
       not (part = ["Argument", "Parameter"] and pred = "source") and
-      msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
+      result = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
-    or
+  }
+
+  private string getInvalidModelKind() {
+    exists(string row, string kind | summaryModel(row) |
+      kind = row.splitAt(";", 8) and
+      not kind = ["taint", "value"] and
+      result = "Invalid kind \"" + kind + "\" in summary model."
+    )
+  }
+
+  private string getInvalidModelSubtype() {
+    exists(string pred, string row |
+      sourceModel(row) and pred = "source"
+      or
+      sinkModel(row) and pred = "sink"
+      or
+      summaryModel(row) and pred = "summary"
+    |
+      exists(string b |
+        b = row.splitAt(";", 2) and
+        not b = ["true", "false"] and
+        result = "Invalid boolean \"" + b + "\" in " + pred + " model."
+      )
+    )
+  }
+
+  private string getInvalidModelColumnCount() {
     exists(string pred, string row, int expect |
       sourceModel(row) and expect = 8 and pred = "source"
       or
@@ -301,38 +311,45 @@ module CsvValidation {
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
         cols != expect and
-        msg =
+        result =
           "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
             "."
       )
+    )
+  }
+
+  private string getInvalidModelSignature() {
+    exists(string pred, string namespace, string type, string name, string signature, string ext |
+      sourceModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "source"
       or
-      exists(string b |
-        b = row.splitAt(";", 2) and
-        not b = ["true", "false"] and
-        msg = "Invalid boolean \"" + b + "\" in " + pred + " model."
-      )
+      sinkModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "sink"
+      or
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "summary"
+    |
+      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
+      result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
+      or
+      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
+      result = "Dubious type \"" + type + "\" in " + pred + " model."
+      or
+      not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
+      result = "Dubious member name \"" + name + "\" in " + pred + " model."
+      or
+      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
+      result = "Dubious signature \"" + signature + "\" in " + pred + " model."
+      or
+      not ext.regexpMatch("|Attribute") and
+      result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
     )
-    or
-    exists(string row, string k, string kind | summaryModel(row) |
-      k = row.splitAt(";", 8) and
-      getKind(k, kind, _) and
-      not kind = ["taint", "value"] and
-      msg = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string row, string k, string kind | sinkModel(row) |
-      k = row.splitAt(";", 7) and
-      getKind(k, kind, _) and
-      not kind = ["code", "sql", "xss", "remote", "html"] and
-      msg = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string row, string k, string kind | sourceModel(row) |
-      k = row.splitAt(";", 7) and
-      getKind(k, kind, _) and
-      not kind = "local" and
-      msg = "Invalid kind \"" + kind + "\" in source model."
-    )
+  }
+
+  /** Holds if some row in a CSV-based flow model appears to contain typos. */
+  query predicate invalidModelRow(string msg) {
+    msg =
+      [
+        getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
+        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
+      ]
   }
 }
 
@@ -344,11 +361,103 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
+private string paramsStringPart(AbstractFunctionDecl c, int i) {
+  i = -1 and result = "(" and exists(c)
+  or
+  exists(int n, string p | c.getParam(n).getType().toString() = p |
+    i = 2 * n and result = p
+    or
+    i = 2 * n - 1 and result = "," and n != 0
+  )
+  or
+  i = 2 * c.getNumberOfParams() and result = ")"
+}
+
+/**
+ * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ *
+ * Returns the empty string if the callable has no parameters.
+ * Parameter types are represented by their type erasure.
+ */
+cached
+string paramsString(AbstractFunctionDecl c) {
+  result = concat(int i | | paramsStringPart(c, i) order by i)
+}
+
+bindingset[func]
+predicate matchesSignature(AbstractFunctionDecl func, string signature) {
+  signature = "" or
+  paramsString(func) = signature
+}
+
+private NominalType getDeclType(IterableDeclContext decl) {
+  result = decl.(ClassDecl).getType()
+  or
+  result = decl.(StructDecl).getType()
+  or
+  result = getDeclType(decl.(ExtensionDecl).getExtendedTypeDecl())
+  or
+  result = decl.(EnumDecl).getType()
+  or
+  result = decl.(ProtocolDecl).getType()
+}
+
+/**
+ * Gets the element in module `namespace` that satisfies the following properties:
+ * 1. If the element is a member of a class-like type, then the class-like type has name `type`
+ * 2. If `subtypes = true` and the element is a member of a class-like type, then overrides of the element
+ *    are also returned.
+ * 3. The element has name `name`
+ * 4. If `signature` is non-empty, then the element has a list of parameter types described by `signature`.
+ *
+ * NOTE: `namespace` is currently not used (since we don't properly extract modules yet).
+ */
 pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
-  none() // TODO
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  namespace = "" and // TODO: Fill out when we properly extract modules.
+  (
+    // Non-member functions
+    exists(AbstractFunctionDecl func |
+      func.getName() = name and
+      type = "" and
+      matchesSignature(func, signature) and
+      subtypes = false and
+      not result instanceof MethodDecl and
+      result = func
+    )
+    or
+    // Member functions
+    exists(NominalType nomType, IterableDeclContext decl, MethodDecl method |
+      method.getName() = name and
+      method = decl.getAMember() and
+      nomType.getFullName() = type and
+      matchesSignature(method, signature) and
+      result = method
+    |
+      subtypes = true and
+      getDeclType(decl) = nomType.getADerivedType*()
+      or
+      subtypes = false and
+      getDeclType(decl) = nomType
+    )
+    or
+    signature = "" and
+    exists(NominalType nomType, IterableDeclContext decl, FieldDecl field |
+      field.getName() = name and
+      field = decl.getAMember() and
+      nomType.getFullName() = type and
+      result = field
+    |
+      subtypes = true and
+      getDeclType(decl) = nomType.getADerivedType*()
+      or
+      subtypes = false and
+      getDeclType(decl) = nomType
+    )
+  )
 }
 
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */
@@ -361,11 +470,18 @@ Element interpretElement(
   )
 }
 
-/**
- * Holds if `c` has a `generated` summary.
- */
-predicate hasSummary(SummarizedCallable c, boolean generated) {
-  summaryElement(c, _, _, _, generated)
+private predicate parseField(AccessPathToken c, Content::FieldContent f) {
+  exists(string fieldRegex, string name |
+    c.getName() = "Field" and
+    fieldRegex = "^([^.]+)$" and
+    name = c.getAnArgument().regexpCapture(fieldRegex, 1) and
+    f.getField().getName() = name
+  )
+}
+
+/** Holds if the specification component parses as a `Content`. */
+predicate parseContent(AccessPathToken component, Content content) {
+  parseField(component, content)
 }
 
 cached

@@ -1,0 +1,33 @@
+| customurlschemes.swift:30:44:30:54 | url | external |
+| customurlschemes.swift:34:52:34:68 | url | external |
+| customurlschemes.swift:38:52:38:62 | url | external |
+| customurlschemes.swift:43:9:43:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| customurlschemes.swift:48:9:48:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
+| data.swift:18:20:18:20 | call to init(contentsOf:options:) | external |
+| data.swift:18:20:18:54 | call to init(contentsOf:options:) | external |
+| nsdata.swift:18:17:18:17 | call to init(contentsOf:) | external |
+| nsdata.swift:18:17:18:40 | call to init(contentsOf:) | external |
+| nsdata.swift:19:17:19:17 | call to init(contentsOf:options:) | external |
+| nsdata.swift:19:17:19:53 | call to init(contentsOf:options:) | external |
+| string.swift:56:21:56:21 | call to init(contentsOf:) | external |
+| string.swift:56:21:56:44 | call to init(contentsOf:) | external |
+| string.swift:57:21:57:21 | call to init(contentsOf:encoding:) | external |
+| string.swift:57:21:57:77 | call to init(contentsOf:encoding:) | external |
+| string.swift:59:21:59:21 | call to init(contentsOf:usedEncoding:) | external |
+| string.swift:59:21:59:69 | call to init(contentsOf:usedEncoding:) | external |
+| string.swift:62:21:62:21 | call to init(contentsOfFile:) | external |
+| string.swift:62:21:62:48 | call to init(contentsOfFile:) | external |
+| string.swift:63:21:63:21 | call to init(contentsOfFile:encoding:) | external |
+| string.swift:63:21:63:81 | call to init(contentsOfFile:encoding:) | external |
+| string.swift:64:21:64:21 | call to init(contentsOfFile:usedEncoding:) | external |
+| string.swift:64:21:64:73 | call to init(contentsOfFile:usedEncoding:) | external |
+| url.swift:53:15:53:19 | .resourceBytes | external |
+| url.swift:60:15:60:19 | .lines | external |
+| url.swift:67:16:67:22 | .lines | external |
+| webview.swift:20:82:20:102 | message | external |
+| webview.swift:25:5:25:13 | .globalObject | external |
+| webview.swift:26:5:26:39 | call to objectForKeyedSubscript(_:) | external |
+| webview.swift:39:9:39:9 | .tainted | Member of a type exposed through JSExport |
+| webview.swift:43:10:43:10 | self | Member of a type exposed through JSExport |
+| webview.swift:43:18:43:24 | arg1 | Member of a type exposed through JSExport |
+| webview.swift:43:29:43:35 | arg2 | Member of a type exposed through JSExport |

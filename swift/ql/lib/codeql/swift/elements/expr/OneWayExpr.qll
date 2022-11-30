@@ -1,7 +1,7 @@
 private import codeql.swift.generated.expr.OneWayExpr
 
-class OneWayExpr extends OneWayExprBase {
-  override predicate convertsFrom(Expr e) { one_way_exprs(this, e) }
+class OneWayExpr extends Generated::OneWayExpr {
+  override predicate convertsFrom(Expr e) { e = this.getImmediateSubExpr() }
 
   override string toString() { result = this.getSubExpr().toString() }
 }

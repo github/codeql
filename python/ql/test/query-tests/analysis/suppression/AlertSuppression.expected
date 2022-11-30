@@ -21,6 +21,7 @@
 | test.py:36:21:36:33 | Comment # lgtm method |  lgtm method | lgtm | test.py:36:1:36:33 | suppression range |
 | test.py:39:4:39:8 | Comment #noqa | noqa | lgtm | test.py:39:1:39:8 | suppression range |
 | test.py:40:4:40:9 | Comment # noqa |  noqa | lgtm | test.py:40:1:40:9 | suppression range |
+| test.py:45:4:45:31 | Comment # noqa -- Some extra detail. |  noqa -- Some extra detail. | lgtm | test.py:45:1:45:31 | suppression range |
 | test.py:50:34:50:117 | Comment # noqa: E501; (line too long) pylint: disable=invalid-name; lgtm [py/missing-equals] |  noqa: E501; (line too long) pylint: disable=invalid-name; lgtm [py/missing-equals] | lgtm [py/missing-equals] | test.py:50:1:50:117 | suppression range |
 | test.py:52:4:52:67 | Comment # noqa: E501; (line too long) pylint: disable=invalid-name; lgtm |  noqa: E501; (line too long) pylint: disable=invalid-name; lgtm | lgtm | test.py:52:1:52:67 | suppression range |
 | test.py:53:4:53:78 | Comment # random nonsense lgtm [py/missing-equals] and then some more commentary... |  random nonsense lgtm [py/missing-equals] and then some more commentary... | lgtm [py/missing-equals] | test.py:53:1:53:78 | suppression range |

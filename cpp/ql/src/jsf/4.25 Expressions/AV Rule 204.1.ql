@@ -38,4 +38,4 @@ where
   va != e and
   not e.getParent().(AssignExpr).getLValue() = e
 select c,
-  "AV Rule 204.1: The value of an expression shall be the same under any order of evaluation that the standard permits"
+  "AV Rule 204.1: The value of an expression shall be the same under any order of evaluation that the standard permits."

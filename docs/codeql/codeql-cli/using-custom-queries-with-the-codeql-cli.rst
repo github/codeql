@@ -54,23 +54,20 @@ Packaging custom QL queries
 
 .. include:: ../reusables/beta-note-package-management.rst
 
-When you write your own queries, you should save them in a custom QL pack
-directory. When you are ready to share your queries with other users, you can publish the pack as a CodeQL pack to GitHub Packages - the GitHub Container registry.
+When you write your own queries with the intention to share them with others, you should
+save them in a custom CodeQL pack. You can publish the pack as a CodeQL pack to GitHub
+Packages - the GitHub Container registry. For further information see
+":ref:`About CodeQL packs <about-codeql-packs>`."
 
-QL packs organize the files used in CodeQL analysis and can store queries,
+CodeQL packs organize the files used in CodeQL analysis and can store queries,
 library files, query suites, and important metadata. Their root directory must
 contain a file named ``qlpack.yml``. Your custom queries should be saved in the
-QL pack root, or its subdirectories.
+CodeQL pack root, or its subdirectories.
 
-For each QL pack, the ``qlpack.yml`` file includes information that tells CodeQL
+For each CodeQL pack, the ``qlpack.yml`` file includes information that tells the CodeQL CLI
 how to compile the queries, which other CodeQL packs and libraries the pack
 depends on, and where to find query suite definitions. For more information
-about what to include in this file, see ":ref:`About QL packs <about-ql-packs>`."
-
-CodeQL packages are used to create, share, depend on, and run CodeQL queries and
-libraries. You can publish your own CodeQL packages and download ones created by
-others via the the Container registry. For further information see
-":ref:`About CodeQL packs <about-codeql-packs>`."
+about what to include in this file, see ":ref:`About CodeQL packs <codeqlpack-yml-properties>`."
 
 Contributing to the CodeQL repository
 -------------------------------------

@@ -33,9 +33,11 @@ module RequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for request forgery vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A third-party controllable input, considered as a flow source for request forgery.
@@ -46,7 +48,7 @@ module RequestForgery {
    * The URL of an HTTP request, viewed as a sink for request forgery.
    */
   private class ClientRequestUrlAsSink extends Sink {
-    HTTP::ClientRequest request;
+    Http::ClientRequest request;
 
     ClientRequestUrlAsSink() { this = request.getUrl() }
 
@@ -80,15 +82,14 @@ module RequestForgery {
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier guard.
    */
-  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrierGuard, SanitizerGuard {
-  }
+  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrier, Sanitizer { }
 
   /**
    * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheck, SanitizerGuard { }
+  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Sanitizer { }
 
   /**
    * An equality check comparing a data-flow node against a constant string, considered as
@@ -97,7 +98,7 @@ module RequestForgery {
    * Additionally, a check comparing `url.Hostname()` against a constant string is also
    * considered a barrier guard for `url`.
    */
-  class UrlCheckAsBarrierGuard extends UrlCheck, SanitizerGuard { }
+  class UrlCheckAsBarrierGuard extends UrlCheckBarrier, Sanitizer { }
 }
 
 /** A sink for request forgery, considered as a sink for safe URL flow. */

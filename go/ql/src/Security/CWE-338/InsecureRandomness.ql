@@ -17,9 +17,9 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string kind
 where
   cfg.hasFlowPath(source, sink) and
-  cfg.isSink(sink.getNode(), kind) and
+  cfg.isSinkWithKind(sink.getNode(), kind) and
   (
-    kind != "a password-related function"
+    kind != "A password-related function"
     or
     sink =
       min(DataFlow::PathNode sink2, int line |
@@ -31,5 +31,5 @@ where
       )
   )
 select sink.getNode(), source, sink,
-  "$@ generated with a cryptographically weak RNG is used in $@.", source.getNode(),
-  "A random number", sink.getNode(), kind
+  kind + " depends on a $@ generated with a cryptographically weak RNG.", source.getNode(),
+  "random number"

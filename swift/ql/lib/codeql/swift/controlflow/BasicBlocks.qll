@@ -6,6 +6,8 @@ private import internal.ControlFlowGraphImpl
 private import internal.ControlFlowElements
 private import CfgNodes
 private import SuccessorTypes
+private import codeql.swift.generated.Raw
+private import codeql.swift.generated.Synth
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -195,11 +197,14 @@ class ExitBasicBlock extends BasicBlock {
 }
 
 private module JoinBlockPredecessors {
-  private predicate id(AstNode x, AstNode y) { x = y }
+  private predicate id(Raw::AstNode x, Raw::AstNode y) { x = y }
 
-  private predicate idOf(AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate idOfDbAstNode(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
-  private AstNode projctToAst(ControlFlowElement n) {
+  // TODO does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
+  private predicate idOf(AstNode x, int y) { idOfDbAstNode(Synth::convertAstNodeToRaw(x), y) }
+
+  private AstNode projectToAst(ControlFlowElement n) {
     result = n.asAstNode()
     or
     isPropertyGetterElement(n, _, result)
@@ -214,15 +219,15 @@ private module JoinBlockPredecessors {
   }
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(projctToAst(jbp.getFirstNode().(AstCfgNode).getNode()), result)
+    idOf(projectToAst(jbp.getFirstNode().(CfgNode).getNode()), result)
     or
     idOf(jbp.(EntryBasicBlock).getScope(), result)
   }
 
   string getSplitString(JoinBlockPredecessor jbp) {
-    result = jbp.getFirstNode().(AstCfgNode).getSplitsString()
+    result = jbp.getFirstNode().(CfgNode).getSplitsString()
     or
-    not exists(jbp.getFirstNode().(AstCfgNode).getSplitsString()) and
+    not exists(jbp.getFirstNode().(CfgNode).getSplitsString()) and
     result = ""
   }
 }

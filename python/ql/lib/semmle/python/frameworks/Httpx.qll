@@ -23,11 +23,11 @@ private module HttpxModel {
    *
    * See https://www.python-httpx.org/api/
    */
-  private class RequestCall extends HTTP::Client::Request::Range, API::CallNode {
+  private class RequestCall extends Http::Client::Request::Range, API::CallNode {
     string methodName;
 
     RequestCall() {
-      methodName in [HTTP::httpVerbLower(), "request", "stream"] and
+      methodName in [Http::httpVerbLower(), "request", "stream"] and
       this = API::moduleImport("httpx").getMember(methodName).getACall()
     }
 
@@ -44,8 +44,8 @@ private module HttpxModel {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getKeywordParameter("verify").getARhs() and
-      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingRhs() and
+      disablingNode = this.getKeywordParameter("verify").asSink() and
+      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingSink() and
       // unlike `requests`, httpx treats `None` as turning off verify (and not as the default)
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false
       // TODO: Handling of insecure SSLContext passed to verify argument
@@ -64,11 +64,11 @@ private module HttpxModel {
     }
 
     /** A method call on a Client that sends off a request */
-    private class OutgoingRequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+    private class OutgoingRequestCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
       string methodName;
 
       OutgoingRequestCall() {
-        methodName in [HTTP::httpVerbLower(), "request", "stream"] and
+        methodName in [Http::httpVerbLower(), "request", "stream"] and
         this = classRef().getReturn().getMember(methodName).getACall()
       }
 
@@ -89,8 +89,8 @@ private module HttpxModel {
           constructor = classRef().getACall() and
           this = constructor.getReturn().getMember(methodName).getACall()
         |
-          disablingNode = constructor.getKeywordParameter("verify").getARhs() and
-          argumentOrigin = constructor.getKeywordParameter("verify").getAValueReachingRhs() and
+          disablingNode = constructor.getKeywordParameter("verify").asSink() and
+          argumentOrigin = constructor.getKeywordParameter("verify").getAValueReachingSink() and
           // unlike `requests`, httpx treats `None` as turning off verify (and not as the default)
           argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false
           // TODO: Handling of insecure SSLContext passed to verify argument

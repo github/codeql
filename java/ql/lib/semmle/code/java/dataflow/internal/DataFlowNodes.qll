@@ -13,17 +13,12 @@ newtype TNode =
     not e.getType() instanceof VoidType and
     not e.getParent*() instanceof Annotation
   } or
-  TExplicitParameterNode(Parameter p) {
-    exists(p.getCallable().getBody()) or p.getCallable() instanceof SummarizedCallable
-  } or
+  TExplicitParameterNode(Parameter p) { exists(p.getCallable().getBody()) } or
   TImplicitVarargsArray(Call c) {
     c.getCallee().isVarargs() and
     not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
   } or
-  TInstanceParameterNode(Callable c) {
-    (exists(c.getBody()) or c instanceof SummarizedCallable) and
-    not c.isStatic()
-  } or
+  TInstanceParameterNode(Callable c) { exists(c.getBody()) and not c.isStatic() } or
   TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
   TMallocNode(ClassInstanceExpr cie) or
   TExplicitExprPostUpdate(Expr e) {
@@ -44,6 +39,9 @@ newtype TNode =
   } or
   TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
     FlowSummaryImpl::Private::summaryNodeRange(c, state)
+  } or
+  TSummaryParameterNode(SummarizedCallable c, int pos) {
+    FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
   } or
   TFieldValueNode(Field f)
 
@@ -95,6 +93,8 @@ module Public {
       result = this.(MallocNode).getClassInstanceExpr().getType()
       or
       result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
+      or
+      result = this.(SummaryParameterNode).getTypeImpl()
       or
       result = this.(FieldValueNode).getField().getType()
     }
@@ -155,7 +155,7 @@ module Public {
      * Holds if this node is the parameter of `c` at the specified (zero-based)
      * position. The implicit `this` parameter is considered to have index `-1`.
      */
-    abstract predicate isParameterOf(Callable c, int pos);
+    abstract predicate isParameterOf(DataFlowCallable c, int pos);
   }
 
   /**
@@ -173,7 +173,9 @@ module Public {
     /** Gets the parameter corresponding to this node. */
     Parameter getParameter() { result = param }
 
-    override predicate isParameterOf(Callable c, int pos) { c.getParameter(pos) = param }
+    override predicate isParameterOf(DataFlowCallable c, int pos) {
+      c.asCallable().getParameter(pos) = param
+    }
   }
 
   /** Gets the node corresponding to `p`. */
@@ -213,7 +215,9 @@ module Public {
     /** Gets the callable containing this `this` parameter. */
     Callable getCallable() { result = callable }
 
-    override predicate isParameterOf(Callable c, int pos) { callable = c and pos = -1 }
+    override predicate isParameterOf(DataFlowCallable c, int pos) {
+      callable = c.asCallable() and pos = -1
+    }
   }
 
   /**
@@ -336,13 +340,14 @@ module Private {
     result.asCallable() = n.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
-    n = TSummaryInternalNode(result.asCallable(), _) or
+    n = TSummaryInternalNode(result.asSummarizedCallable(), _) or
+    n = TSummaryParameterNode(result.asSummarizedCallable(), _) or
     result.asFieldScope() = n.(FieldValueNode).getField()
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-    p.isParameterOf(c.asCallable(), pos)
+    p.isParameterOf(c, pos)
   }
 
   /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -373,11 +378,11 @@ module Private {
      */
     predicate argumentOf(DataFlowCall call, int pos) {
       exists(Argument arg | this.asExpr() = arg |
-        call.asCall() = arg.getCall() and pos = arg.getPosition()
+        call.asCall() = arg.getCall() and pos = arg.getParameterPos()
       )
       or
       call.asCall() = this.(ImplicitVarargsArray).getCall() and
-      pos = call.asCall().getCallee().getNumberOfParameters() - 1
+      pos = call.asCall().getCallee().getVaragsParameterIndex()
       or
       pos = -1 and this = getInstanceArgument(call.asCall())
       or
@@ -442,6 +447,23 @@ module Private {
 
   SummaryNode getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
     result = TSummaryInternalNode(c, state)
+  }
+
+  class SummaryParameterNode extends ParameterNode, TSummaryParameterNode {
+    private SummarizedCallable sc;
+    private int pos_;
+
+    SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
+
+    override Location getLocation() { result = sc.getLocation() }
+
+    override string toString() { result = "[summary param] " + pos_ + " in " + sc }
+
+    override predicate isParameterOf(DataFlowCallable c, int pos) {
+      c.asSummarizedCallable() = sc and pos = pos_
+    }
+
+    Type getTypeImpl() { result = sc.getParameterType(pos_) }
   }
 }
 

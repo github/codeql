@@ -61,24 +61,3 @@ private class SetToGetAttributeStep extends AdditionalValueStep {
     )
   }
 }
-
-/** Remote flow source models relating to `JFinal`. */
-private class JFinalControllerSource extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "com.jfinal.core;Controller;true;getCookie" + ["", "Object", "Objects", "ToInt", "ToLong"] +
-          ";;;ReturnValue;remote",
-        "com.jfinal.core;Controller;true;getFile" + ["", "s"] + ";;;ReturnValue;remote",
-        "com.jfinal.core;Controller;true;getHeader;;;ReturnValue;remote",
-        "com.jfinal.core;Controller;true;getKv;;;ReturnValue;remote",
-        "com.jfinal.core;Controller;true;getPara" +
-          [
-            "", "Map", "ToBoolean", "ToDate", "ToInt", "ToLong", "Values", "ValuesToInt",
-            "ValuesToLong"
-          ] + ";;;ReturnValue;remote",
-        "com.jfinal.core;Controller;true;get" + ["", "Int", "Long", "Boolean", "Date"] +
-          ";;;ReturnValue;remote"
-      ]
-  }
-}

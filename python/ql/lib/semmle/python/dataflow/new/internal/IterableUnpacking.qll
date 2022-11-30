@@ -52,14 +52,14 @@
  * Note that an empty access path means that the value we are tracking flows directly to the element.
  *
  *
- * The `TIterableSequence(sequence)` is at this point superflous but becomes useful when handling recursive
+ * The `TIterableSequence(sequence)` is at this point superfluous but becomes useful when handling recursive
  * structures in the LHS, where `sequence` is some internal sequence node. We can have a uniform treatment
  * by always having these two synthetic nodes. So we transfer to (or, in the recursive case, read into)
  * `TIterableSequence(sequence)`, from which we take a read step to `TIterableElement(sequence)` and then a
  * store step to `sequence`.
  *
  * This allows the unknown content from the RHS to be read into `TIterableElement(sequence)` and tuple content
- * to then be stored into `sequence`. If the content is already tuple content, this inderection creates crosstalk
+ * to then be stored into `sequence`. If the content is already tuple content, this indirection creates crosstalk
  * between indices. Therefore, tuple content is never read into `TIterableElement(sequence)`; it is instead
  * transferred directly from `TIterableSequence(sequence)` to `sequence` via a flow step. Such a flow step will
  * also transfer other content, but only tuple content is further read from `sequence` into its elements.
@@ -244,7 +244,7 @@ class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget instan
  */
 predicate iterableUnpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
   exists(AssignmentTarget target |
-    nodeFrom.asExpr() = target.getValue() and
+    nodeFrom.(CfgNode).getNode().getNode() = target.getValue() and
     nodeTo = TIterableSequenceNode(target)
   )
 }
@@ -255,7 +255,7 @@ predicate iterableUnpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
  */
 predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
   exists(ForTarget target |
-    nodeFrom.asExpr() = target.getSource() and
+    nodeFrom.getNode().getNode() = target.getSource() and
     target instanceof SequenceNode and
     nodeTo = TIterableSequenceNode(target)
   ) and
@@ -273,7 +273,7 @@ predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo)
 predicate iterableUnpackingTupleFlowStep(Node nodeFrom, Node nodeTo) {
   exists(UnpackingAssignmentSequenceTarget target |
     nodeFrom = TIterableSequenceNode(target) and
-    nodeTo.asCfgNode() = target
+    nodeTo.(CfgNode).getNode() = target
   )
 }
 
@@ -305,7 +305,7 @@ predicate iterableUnpackingConvertingReadStep(Node nodeFrom, Content c, Node nod
 predicate iterableUnpackingConvertingStoreStep(Node nodeFrom, Content c, Node nodeTo) {
   exists(UnpackingAssignmentSequenceTarget target |
     nodeFrom = TIterableElementNode(target) and
-    nodeTo.asCfgNode() = target and
+    nodeTo.(CfgNode).getNode() = target and
     exists(int index | exists(target.getElement(index)) |
       c.(TupleElementContent).getIndex() = index
     )
@@ -331,7 +331,7 @@ predicate iterableUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo
     not exists(target.getAnElement().(StarredNode)) and
     starIndex = -1
   |
-    nodeFrom.asCfgNode() = target and
+    nodeFrom.(CfgNode).getNode() = target and
     element = target.getElement(index) and
     (
       if starIndex = -1 or index < starIndex

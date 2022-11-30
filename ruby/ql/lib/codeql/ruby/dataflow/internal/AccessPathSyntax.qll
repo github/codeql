@@ -1,5 +1,5 @@
 /**
- * Module for parsing access paths from CSV models, both the identifying access path used
+ * Module for parsing access paths from MaD models, both the identifying access path used
  * by dynamic languages, and the input/output specifications for summary steps.
  *
  * This file is used by the shared data flow library and by the JavaScript libraries

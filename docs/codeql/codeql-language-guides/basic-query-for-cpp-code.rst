@@ -110,7 +110,7 @@ Browsing the results of our basic query shows that it could be improved. Among t
 
    if (...) {
      ...
-   } else if (!strcmp(option, "-verbose") {
+   } else if (!strcmp(option, "-verbose")) {
      // nothing to do - handled earlier
    } else {
      error("unrecognized option");

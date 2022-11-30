@@ -32,5 +32,5 @@ where
   arrayAccess.canThrowOutOfBounds(sink.getNode().asExpr()) and
   any(Conf conf).hasFlowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
-  "$@ flows to here and is used as an index causing an ArrayIndexOutOfBoundsException.",
-  source.getNode(), "User-provided value"
+  "This index depends on a $@ which can cause an ArrayIndexOutOfBoundsException.", source.getNode(),
+  "user-provided value"

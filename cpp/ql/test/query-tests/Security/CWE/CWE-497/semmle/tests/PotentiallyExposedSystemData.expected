@@ -5,6 +5,14 @@ edges
 | tests.cpp:57:18:57:23 | call to getenv | tests.cpp:57:18:57:39 | (const char_type *)... |
 | tests.cpp:58:41:58:46 | call to getenv | tests.cpp:58:41:58:62 | (const char_type *)... |
 | tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:64 | (const char *)... |
+| tests.cpp:62:7:62:18 | global_token | tests.cpp:69:17:69:28 | global_token |
+| tests.cpp:62:7:62:18 | global_token | tests.cpp:71:27:71:38 | global_token |
+| tests.cpp:62:7:62:18 | global_token | tests.cpp:71:27:71:38 | global_token |
+| tests.cpp:62:22:62:27 | Store | tests.cpp:62:7:62:18 | global_token |
+| tests.cpp:62:22:62:27 | call to getenv | tests.cpp:62:22:62:27 | Store |
+| tests.cpp:69:17:69:28 | global_token | tests.cpp:73:27:73:31 | maybe |
+| tests.cpp:71:27:71:38 | global_token | tests.cpp:71:27:71:38 | global_token |
+| tests.cpp:71:27:71:38 | global_token | tests.cpp:71:27:71:38 | global_token |
 | tests.cpp:86:29:86:31 | *msg | tests.cpp:88:15:88:17 | msg |
 | tests.cpp:86:29:86:31 | msg | tests.cpp:88:15:88:17 | msg |
 | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:34 | (const char *)... |
@@ -52,6 +60,13 @@ nodes
 | tests.cpp:59:43:59:48 | call to getenv | semmle.label | call to getenv |
 | tests.cpp:59:43:59:48 | call to getenv | semmle.label | call to getenv |
 | tests.cpp:59:43:59:64 | (const char *)... | semmle.label | (const char *)... |
+| tests.cpp:62:7:62:18 | global_token | semmle.label | global_token |
+| tests.cpp:62:22:62:27 | Store | semmle.label | Store |
+| tests.cpp:62:22:62:27 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:69:17:69:28 | global_token | semmle.label | global_token |
+| tests.cpp:71:27:71:38 | global_token | semmle.label | global_token |
+| tests.cpp:71:27:71:38 | global_token | semmle.label | global_token |
+| tests.cpp:73:27:73:31 | maybe | semmle.label | maybe |
 | tests.cpp:86:29:86:31 | *msg | semmle.label | *msg |
 | tests.cpp:86:29:86:31 | msg | semmle.label | msg |
 | tests.cpp:88:15:88:17 | msg | semmle.label | msg |
@@ -97,6 +112,8 @@ subpaths
 | tests.cpp:58:41:58:62 | (const char_type *)... | tests.cpp:58:41:58:46 | call to getenv | tests.cpp:58:41:58:62 | (const char_type *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:58:41:58:46 | call to getenv | call to getenv |
 | tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:48 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:59:43:59:48 | call to getenv | call to getenv |
 | tests.cpp:59:43:59:64 | (const char *)... | tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:64 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:59:43:59:48 | call to getenv | call to getenv |
+| tests.cpp:71:27:71:38 | global_token | tests.cpp:62:22:62:27 | call to getenv | tests.cpp:71:27:71:38 | global_token | This operation potentially exposes sensitive system data from $@. | tests.cpp:62:22:62:27 | call to getenv | call to getenv |
+| tests.cpp:73:27:73:31 | maybe | tests.cpp:62:22:62:27 | call to getenv | tests.cpp:73:27:73:31 | maybe | This operation potentially exposes sensitive system data from $@. | tests.cpp:62:22:62:27 | call to getenv | call to getenv |
 | tests.cpp:88:15:88:17 | msg | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:88:15:88:17 | msg | This operation potentially exposes sensitive system data from $@. | tests.cpp:97:13:97:18 | call to getenv | call to getenv |
 | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:18 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:97:13:97:18 | call to getenv | call to getenv |
 | tests.cpp:97:13:97:34 | (const char *)... | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:34 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:97:13:97:18 | call to getenv | call to getenv |

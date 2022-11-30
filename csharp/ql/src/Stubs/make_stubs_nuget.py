@@ -77,7 +77,7 @@ run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version,
 
 print("\n* Creating DB")
 run_cmd(['codeql', 'database', 'create', dbDir, '--language=csharp',
-                 '--command', 'dotnet build /t:rebuild /p:UseSharedCompilation=false ' + projectDirIn])
+                 '--command', 'dotnet build /t:rebuild ' + projectDirIn])
 
 if not os.path.isdir(dbDir):
     print("Expected database directory " + dbDir + " not found.")

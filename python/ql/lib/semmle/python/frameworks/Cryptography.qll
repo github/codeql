@@ -14,7 +14,7 @@ private import semmle.python.ApiGraphs
  */
 private module CryptographyModel {
   /**
-   * Provides helper predicates for the eliptic curve cryptography parts in
+   * Provides helper predicates for the elliptic curve cryptography parts in
    * `cryptography.hazmat.primitives.asymmetric.ec`.
    */
   module Ecc {
@@ -144,12 +144,10 @@ private module CryptographyModel {
     DataFlow::Node getCurveArg() { result in [this.getArg(0), this.getArgByName("curve")] }
 
     override int getKeySizeWithOrigin(DataFlow::Node origin) {
-      exists(API::Node n |
-        n = Ecc::predefinedCurveClass(result) and origin = n.getAnImmediateUse()
-      |
-        this.getCurveArg() = n.getAUse()
+      exists(API::Node n | n = Ecc::predefinedCurveClass(result) and origin = n.asSource() |
+        this.getCurveArg() = n.getAValueReachableFromSource()
         or
-        this.getCurveArg() = n.getReturn().getAUse()
+        this.getCurveArg() = n.getReturn().getAValueReachableFromSource()
       )
     }
 
@@ -191,12 +189,12 @@ private module CryptographyModel {
               .getMember("ciphers")
               .getMember("Cipher")
               .getACall() and
-        algorithmClassRef(algorithmName).getReturn().getAUse() in [
+        algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
             call.getArg(0), call.getArgByName("algorithm")
           ] and
         exists(DataFlow::Node modeArg | modeArg in [call.getArg(1), call.getArgByName("mode")] |
-          if modeArg = modeClassRef(_).getReturn().getAUse()
-          then modeArg = modeClassRef(modeName).getReturn().getAUse()
+          if modeArg = modeClassRef(_).getReturn().getAValueReachableFromSource()
+          then modeArg = modeClassRef(modeName).getReturn().getAValueReachableFromSource()
           else modeName = "<None or unknown>"
         )
       )
@@ -254,7 +252,7 @@ private module CryptographyModel {
               .getMember("hashes")
               .getMember("Hash")
               .getACall() and
-        algorithmClassRef(algorithmName).getReturn().getAUse() in [
+        algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
             call.getArg(0), call.getArgByName("algorithm")
           ]
       )

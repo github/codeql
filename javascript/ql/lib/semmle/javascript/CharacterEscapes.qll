@@ -75,7 +75,7 @@ module CharacterEscapes {
   }
 
   /**
-   * Gets a character in `n` that is preceded by a single useless backslash, resulting in a likely regular expression mistake explained by `mistake`.
+   * Gets a character in `src` that is preceded by a single useless backslash, resulting in a likely regular expression mistake explained by `mistake`.
    *
    * The character is the `i`th character of the raw string value of `rawStringNode`.
    */

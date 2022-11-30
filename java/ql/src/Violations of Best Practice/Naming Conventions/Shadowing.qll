@@ -1,9 +1,5 @@
 import java
 
-predicate initializedToField(LocalVariableDecl d, Field f) {
-  exists(LocalVariableDeclExpr e | e.getVariable() = d and f.getAnAccess() = e.getInit())
-}
-
 predicate getterFor(Method m, Field f) {
   m.getName().matches("get%") and
   m.getDeclaringType() = f.getDeclaringType() and
@@ -20,11 +16,19 @@ predicate setterFor(Method m, Field f) {
 predicate shadows(LocalVariableDecl d, Class c, Field f, Callable method) {
   d.getCallable() = method and
   method.getDeclaringType() = c and
-  c.getAField() = f and
-  f.getName() = d.getName() and
-  f.getType() = d.getType() and
-  not d.getCallable().isStatic() and
+  f = getField(c, d.getName(), d.getType()) and
+  not method.isStatic() and
   not f.isStatic()
+}
+
+/**
+ * Gets the field with the given name and type from the given class, if any.
+ */
+pragma[nomagic]
+private Field getField(Class c, string name, Type t) {
+  result.getDeclaringType() = c and
+  result.getName() = name and
+  result.getType() = t
 }
 
 predicate thisAccess(LocalVariableDecl d, Field f) {

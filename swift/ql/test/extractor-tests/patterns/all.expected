@@ -13,7 +13,7 @@
 | patterns.swift:12:14:12:21 | (...) |
 | patterns.swift:12:15:12:15 | xx |
 | patterns.swift:12:19:12:19 | yy |
-| patterns.swift:16:10:16:14 | SequenceExpr |
+| patterns.swift:16:10:16:14 | =~ ... |
 | patterns.swift:17:10:17:10 | _ |
 | patterns.swift:24:9:24:9 | v |
 | patterns.swift:24:9:24:12 | ... as ... |

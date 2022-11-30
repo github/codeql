@@ -16,5 +16,6 @@ class Class {
     private fun privateFun() {}
     internal fun internalFun() {}
     fun noExplicitVisibilityFun() {}
+    inline fun inlineFun() {}
 }
 

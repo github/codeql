@@ -21,5 +21,5 @@ where
     rhsType.getAMember() = m and
     not m.(VirtualFunction).isPure()
   ) // add additional checks for concrete members in in-between supertypes
-select e, "This assignment expression slices from type $@ to $@", rhsType, rhsType.getName(),
+select e, "This assignment expression slices from type $@ to $@.", rhsType, rhsType.getName(),
   lhsType, lhsType.getName()

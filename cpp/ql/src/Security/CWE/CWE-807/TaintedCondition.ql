@@ -37,5 +37,5 @@ from Expr source, Expr condition, Expr raise, PathNode sourceNode, PathNode sink
 where
   taintedWithPath(source, condition, sourceNode, sinkNode) and
   sensitiveCondition(condition, raise)
-select condition, sourceNode, sinkNode, "Reliance on untrusted input $@ to raise privilege at $@",
+select condition, sourceNode, sinkNode, "Reliance on untrusted input $@ to raise privilege at $@.",
   source, source.toString(), raise, raise.toString()

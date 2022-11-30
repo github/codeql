@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate conditionalExprs(
   ConditionalExpr e, string pClass, Expr cond, Expr branch, boolean branchCond

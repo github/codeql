@@ -24,9 +24,8 @@ where
   (
     exists(string kind | kind = sink.getNode().(SharedXss::Sink).getSinkKind() |
       kind = "rawtemplate" and
-      msg =
-        "Cross-site scripting vulnerability due to $@. This template argument is instantiated raw $@." and
-      part = "here"
+      msg = "Cross-site scripting vulnerability due to $@. The value is $@." and
+      part = "instantiated as a raw template"
     )
     or
     not exists(sink.getNode().(SharedXss::Sink).getSinkKind()) and

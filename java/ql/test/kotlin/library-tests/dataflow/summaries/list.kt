@@ -4,17 +4,17 @@ class ListFlowTest {
 
     fun test(l: MutableList<String>) {
         l[0] = taint("a")
-        sink(l)
-        sink(l[0])
+        sink(l)             // $ hasTaintFlow=a
+        sink(l[0])          // $ hasValueFlow=a
         for (s in l) {
-            sink(s)
+            sink(s)         // $ hasValueFlow=a
         }
 
-        val a = arrayOf(taint("a"), "b")
-        sink(a)
-        sink(a[0])
+        val a = arrayOf(taint("b"), "c")
+        sink(a)             // $ hasTaintFlow=b
+        sink(a[0])          // $ hasValueFlow=b
         for (s in a) {
-            sink(s)
+            sink(s)         // $ hasValueFlow=b
         }
     }
 }

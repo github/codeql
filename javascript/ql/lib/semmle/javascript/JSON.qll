@@ -54,7 +54,9 @@ class JsonValue extends @json_value, Locatable {
   int getIntValue() { result = this.(JsonNumber).getValue().toInt() }
 
   /** If this is a boolean constant, gets its boolean value. */
-  boolean getBooleanValue() { result.toString() = this.(JsonBoolean).getValue() }
+  boolean getBooleanValue() {
+    result.toString() = this.(JsonBoolean).getValue() and result = [true, false]
+  }
 
   override string getAPrimaryQlClass() { result = "JsonValue" }
 }

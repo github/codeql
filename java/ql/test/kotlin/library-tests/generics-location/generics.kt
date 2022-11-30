@@ -9,3 +9,4 @@ class B<T> {
         val b1 = B<Any>()
     }
 }
+

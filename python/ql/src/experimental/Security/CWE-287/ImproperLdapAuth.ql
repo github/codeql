@@ -27,4 +27,4 @@ predicate authenticatesImproperly(LdapBind ldapBind) {
 
 from LdapBind ldapBind
 where authenticatesImproperly(ldapBind)
-select ldapBind, "The following LDAP bind operation is executed without authentication"
+select ldapBind, "The following LDAP bind operation is executed without authentication."

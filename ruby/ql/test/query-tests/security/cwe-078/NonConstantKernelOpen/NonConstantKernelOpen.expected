@@ -1,0 +1,4 @@
+| NonConstantKernelOpen.rb:4:5:4:14 | call to open | Call to Kernel.open with a non-constant value. Consider replacing it with File.open. |
+| NonConstantKernelOpen.rb:5:5:5:17 | call to read | Call to IO.read with a non-constant value. Consider replacing it with File.read. |
+| NonConstantKernelOpen.rb:9:5:9:21 | call to open | Call to Kernel.open with a non-constant value. Consider replacing it with File.open. |
+| NonConstantKernelOpen.rb:19:5:19:33 | call to open | Call to Kernel.open with a non-constant value. Consider replacing it with File.open. |

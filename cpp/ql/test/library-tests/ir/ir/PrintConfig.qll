@@ -12,4 +12,11 @@ predicate locationIsInStandardHeaders(Location loc) {
  *
  * This predicate excludes functions defined in standard headers.
  */
-predicate shouldDumpFunction(Function func) { not locationIsInStandardHeaders(func.getLocation()) }
+predicate shouldDumpFunction(Declaration decl) {
+  not locationIsInStandardHeaders(decl.getLocation()) and
+  (
+    decl instanceof Function
+    or
+    decl.(GlobalOrNamespaceVariable).hasInitializer()
+  )
+}

@@ -193,6 +193,18 @@ private class WriteFileAtomic extends FileSystemWriteAccess, DataFlow::CallNode 
 }
 
 /**
+ * A call to the library `chownr`.
+ * The library changes the owner of a file or directory recursively.
+ */
+private class Chownr extends FileSystemWriteAccess, DataFlow::CallNode {
+  Chownr() { this = DataFlow::moduleImport("chownr").getACall() }
+
+  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+
+  override DataFlow::Node getADataNode() { none() }
+}
+
+/**
  * A call to the library `recursive-readdir`.
  */
 private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, API::CallNode {

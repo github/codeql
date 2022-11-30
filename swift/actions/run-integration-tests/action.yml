@@ -1,0 +1,27 @@
+name: Build Swift CodeQL pack
+description: Builds the Swift CodeQL pack
+runs:
+  using: composite
+  steps:
+    - uses: ./swift/actions/share-extractor-pack
+    - name: Get Swift version
+      id: get_swift_version
+      shell: bash
+      run: |
+        VERSION=$(swift/extractor-pack/tools/*/extractor --version | awk '/version/ { print $3 }')
+        echo "version=$VERSION" | tee -a $GITHUB_OUTPUT
+    - uses: actions/setup-python@v4
+      with:
+        python-version-file: 'swift/.python-version'
+    - uses: swift-actions/setup-swift@194625b58a582570f61cc707c3b558086c26b723
+      with:
+        swift-version: "${{steps.get_swift_version.outputs.version}}"
+    - uses: ./.github/actions/fetch-codeql
+    - id: query-cache
+      uses: ./.github/actions/cache-query-compilation
+      with:
+        key: swift-integration
+    - name: Run integration tests
+      shell: bash
+      run: |
+        python swift/integration-tests/runner.py --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"

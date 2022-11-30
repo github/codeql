@@ -1,0 +1,37 @@
+| testAlamofire.swift:150:45:150:45 | password | label:password, type:credential |
+| testAlamofire.swift:152:51:152:51 | password | label:password, type:credential |
+| testAlamofire.swift:154:38:154:38 | email | label:email, type:private information |
+| testAlamofire.swift:159:26:159:26 | email | label:email, type:private information |
+| testAlamofire.swift:171:35:171:35 | email | label:email, type:private information |
+| testAlamofire.swift:177:35:177:35 | email | label:email, type:private information |
+| testAlamofire.swift:187:65:187:65 | password | label:password, type:credential |
+| testAlamofire.swift:195:64:195:64 | password | label:password, type:credential |
+| testAlamofire.swift:205:62:205:62 | password | label:password, type:credential |
+| testAlamofire.swift:213:65:213:65 | password | label:password, type:credential |
+| testCoreData.swift:48:15:48:15 | password | label:password, type:credential |
+| testCoreData.swift:51:24:51:24 | password | label:password, type:credential |
+| testCoreData.swift:58:15:58:15 | password | label:password, type:credential |
+| testCoreData.swift:61:25:61:25 | password | label:password, type:credential |
+| testCoreData.swift:64:16:64:16 | password | label:password, type:credential |
+| testCoreData.swift:77:2:77:25 | call to doSomething(password:) | label:doSomething(password:), type:credential |
+| testCoreData.swift:77:24:77:24 | x | label:password, type:credential |
+| testCoreData.swift:80:10:80:22 | call to getPassword() | label:getPassword(), type:credential |
+| testCoreData.swift:85:15:85:17 | .password | label:password, type:credential |
+| testCoreData.swift:91:10:91:10 | passwd | label:passwd, type:credential |
+| testCoreData.swift:92:10:92:10 | passwd | label:passwd, type:credential |
+| testCoreData.swift:93:10:93:10 | passwd | label:passwd, type:credential |
+| testRealm.swift:34:11:34:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:42:11:42:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:52:12:52:12 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:59:11:59:11 | myPassword | label:myPassword, type:credential |
+| testSend.swift:29:19:29:19 | passwordPlain | label:passwordPlain, type:credential |
+| testSend.swift:33:19:33:19 | passwordPlain | label:passwordPlain, type:credential |
+| testSend.swift:45:13:45:13 | password | label:password, type:credential |
+| testSend.swift:46:13:46:13 | password | label:password, type:credential |
+| testSend.swift:47:17:47:17 | password | label:password, type:credential |
+| testSend.swift:48:23:48:23 | password | label:password, type:credential |
+| testSend.swift:49:27:49:27 | password | label:password, type:credential |
+| testSend.swift:50:27:50:27 | password | label:password, type:credential |
+| testURL.swift:13:54:13:54 | passwd | label:passwd, type:credential |
+| testURL.swift:16:55:16:55 | credit_card_no | label:credit_card_no, type:private information |
+| testURL.swift:20:22:20:22 | passwd | label:passwd, type:credential |

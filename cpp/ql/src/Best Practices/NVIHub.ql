@@ -23,4 +23,4 @@ where
   fclass = f.getDeclaringType() and
   hubIndex = fclass.getMetrics().getAfferentCoupling() * fclass.getMetrics().getEfferentCoupling() and
   hubIndex > 100
-select f, "Avoid having public virtual methods (NVI idiom)"
+select f, "Avoid having public virtual methods (NVI idiom)."

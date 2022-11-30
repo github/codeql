@@ -29,7 +29,8 @@ class Stmt extends StmtParent, ExprParent, @stmt {
    */
   Stmt getEnclosingStmt() {
     result = this.getParent() or
-    result = this.getParent().(SwitchExpr).getEnclosingStmt()
+    result = this.getParent().(SwitchExpr).getEnclosingStmt() or
+    result = this.getParent().(WhenExpr).getEnclosingStmt()
   }
 
   /** Holds if this statement is the child of the specified parent at the specified (zero-based) position. */
@@ -780,12 +781,6 @@ class LocalTypeDeclStmt extends Stmt, @localtypedeclstmt {
   /** Gets the local type declared by this statement. */
   LocalClassOrInterface getLocalType() { isLocalClassOrInterface(result, this) }
 
-  /**
-   * DEPRECATED: Renamed `getLocalType` to reflect the fact that
-   * as of Java 16 interfaces can also be declared locally, not just classes.
-   */
-  deprecated LocalClassOrInterface getLocalClass() { result = this.getLocalType() }
-
   private string getDeclKeyword() {
     result = "class" and this.getLocalType() instanceof Class
     or
@@ -800,12 +795,6 @@ class LocalTypeDeclStmt extends Stmt, @localtypedeclstmt {
 
   override string getAPrimaryQlClass() { result = "LocalTypeDeclStmt" }
 }
-
-/**
- * DEPRECATED: Renamed `LocalTypeDeclStmt` to reflect the fact that
- * as of Java 16 interfaces can also be declared locally, not just classes.
- */
-deprecated class LocalClassDeclStmt = LocalTypeDeclStmt;
 
 /** An explicit `this(...)` constructor invocation. */
 class ThisConstructorInvocationStmt extends Stmt, ConstructorCall, @constructorinvocationstmt {
@@ -887,27 +876,3 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 
   override string getAPrimaryQlClass() { result = "SuperConstructorInvocationStmt" }
 }
-
-/** A Kotlin loop statement. */
-class KtLoopStmt extends Stmt, @ktloopstmt {
-  KtLoopStmt() {
-    this instanceof WhileStmt or
-    this instanceof DoStmt
-  }
-}
-
-/** A Kotlin `break` or `continue` statement. */
-abstract class KtBreakContinueStmt extends Stmt, @breakcontinuestmt {
-  KtLoopStmt loop;
-
-  KtBreakContinueStmt() { ktBreakContinueTargets(this, loop) }
-
-  /** Gets the target loop statement of this `break`. */
-  KtLoopStmt getLoopStmt() { result = loop }
-}
-
-/** A Kotlin `break` statement. */
-class KtBreakStmt extends BreakStmt, KtBreakContinueStmt { }
-
-/** A Kotlin `continue` statement. */
-class KtContinueStmt extends ContinueStmt, KtBreakContinueStmt { }

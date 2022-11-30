@@ -562,7 +562,7 @@ module PrivateDjango {
 
       /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
-        DjangoDbConnection() { this = connection().getAnImmediateUse() }
+        DjangoDbConnection() { this = connection().asSource() }
       }
 
       // -------------------------------------------------------------------------
@@ -869,7 +869,7 @@ module PrivateDjango {
 
           /** Gets the (AST) class of the Django model class `modelClass`. */
           Class getModelClassClass(API::Node modelClass) {
-            result.getParent() = modelClass.getAnImmediateUse().asExpr() and
+            result.getParent() = modelClass.asSource().asExpr() and
             modelClass = Model::subclassRef()
           }
 
@@ -1155,11 +1155,11 @@ module PrivateDjango {
     /** Gets a reference to the `django.http` module. */
     API::Node http() { result = django().getMember("http") }
 
-    /** DEPRECATED: Alias for `Http` */
-    deprecated module http = Http;
+    /** DEPRECATED: Alias for `DjangoHttp` */
+    deprecated module http = DjangoHttp;
 
     /** Provides models for the `django.http` module */
-    module Http {
+    module DjangoHttp {
       // ---------------------------------------------------------------------------
       // django.http.request
       // ---------------------------------------------------------------------------
@@ -1251,7 +1251,7 @@ module PrivateDjango {
               // special handling of the `build_absolute_uri` method, see
               // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri
               exists(DataFlow::AttrRead attr, DataFlow::CallCfgNode call, DataFlow::Node instance |
-                instance = DjangoImpl::Http::Request::HttpRequest::instance() and
+                instance = DjangoImpl::DjangoHttp::Request::HttpRequest::instance() and
                 attr.getObject() = instance
               |
                 attr.getAttributeName() = "build_absolute_uri" and
@@ -1359,7 +1359,7 @@ module PrivateDjango {
            *
            * Use the predicate `HttpResponse::instance()` to get references to instances of `django.http.response.HttpResponse`.
            */
-          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
+          abstract class InstanceSource extends Http::Server::HttpResponse::Range, DataFlow::Node {
           }
 
           /** A direct instantiation of `django.http.response.HttpResponse`. */
@@ -1421,7 +1421,7 @@ module PrivateDjango {
            * Use the predicate `HttpResponseRedirect::instance()` to get references to instances of `django.http.response.HttpResponseRedirect`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource,
-            HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
+            Http::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
@@ -1483,7 +1483,7 @@ module PrivateDjango {
            * Use the predicate `HttpResponsePermanentRedirect::instance()` to get references to instances of `django.http.response.HttpResponsePermanentRedirect`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource,
-            HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
+            Http::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponsePermanentRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
@@ -2066,17 +2066,18 @@ module PrivateDjango {
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
         private DataFlow::TypeTrackingNode write(
-          DjangoImpl::Http::Response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
+          DjangoImpl::DjangoHttp::Response::HttpResponse::InstanceSource instance,
+          DataFlow::TypeTracker t
         ) {
           t.startInAttr("write") and
-          instance = DjangoImpl::Http::Response::HttpResponse::instance() and
+          instance = DjangoImpl::DjangoHttp::Response::HttpResponse::instance() and
           result = instance
           or
           exists(DataFlow::TypeTracker t2 | result = write(instance, t2).track(t2, t))
         }
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
-        DataFlow::Node write(DjangoImpl::Http::Response::HttpResponse::InstanceSource instance) {
+        DataFlow::Node write(DjangoImpl::DjangoHttp::Response::HttpResponse::InstanceSource instance) {
           write(instance, DataFlow::TypeTracker::end()).flowsTo(result)
         }
 
@@ -2085,8 +2086,8 @@ module PrivateDjango {
          *
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.write
          */
-        class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
-          DjangoImpl::Http::Response::HttpResponse::InstanceSource instance;
+        class HttpResponseWriteCall extends Http::Server::HttpResponse::Range, DataFlow::CallCfgNode {
+          DjangoImpl::DjangoHttp::Response::HttpResponse::InstanceSource instance;
 
           HttpResponseWriteCall() { this.getFunction() = write(instance) }
 
@@ -2104,10 +2105,10 @@ module PrivateDjango {
         /**
          * A call to `set_cookie` on a HTTP Response.
          */
-        class DjangoResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
+        class DjangoResponseSetCookieCall extends Http::Server::CookieWrite::Range,
           DataFlow::MethodCallNode {
           DjangoResponseSetCookieCall() {
-            this.calls(DjangoImpl::Http::Response::HttpResponse::instance(), "set_cookie")
+            this.calls(DjangoImpl::DjangoHttp::Response::HttpResponse::instance(), "set_cookie")
           }
 
           override DataFlow::Node getHeaderArg() { none() }
@@ -2124,10 +2125,10 @@ module PrivateDjango {
         /**
          * A call to `delete_cookie` on a HTTP Response.
          */
-        class DjangoResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
+        class DjangoResponseDeleteCookieCall extends Http::Server::CookieWrite::Range,
           DataFlow::MethodCallNode {
           DjangoResponseDeleteCookieCall() {
-            this.calls(DjangoImpl::Http::Response::HttpResponse::instance(), "delete_cookie")
+            this.calls(DjangoImpl::DjangoHttp::Response::HttpResponse::instance(), "delete_cookie")
           }
 
           override DataFlow::Node getHeaderArg() { none() }
@@ -2143,7 +2144,7 @@ module PrivateDjango {
          * A dict-like write to an item of the `cookies` attribute on a HTTP response, such as
          * `response.cookies[name] = value`.
          */
-        class DjangoResponseCookieSubscriptWrite extends HTTP::Server::CookieWrite::Range {
+        class DjangoResponseCookieSubscriptWrite extends Http::Server::CookieWrite::Range {
           DataFlow::Node index;
           DataFlow::Node value;
 
@@ -2154,7 +2155,7 @@ module PrivateDjango {
               this.asCfgNode() = subscript
             |
               cookieLookup.getAttributeName() = "cookies" and
-              cookieLookup.getObject() = DjangoImpl::Http::Response::HttpResponse::instance() and
+              cookieLookup.getObject() = DjangoImpl::DjangoHttp::Response::HttpResponse::instance() and
               exists(DataFlow::Node subscriptObj |
                 subscriptObj.asCfgNode() = subscript.getObject()
               |
@@ -2202,9 +2203,7 @@ module PrivateDjango {
    * thereby handling user input.
    */
   class DjangoFormClass extends Class, SelfRefMixin {
-    DjangoFormClass() {
-      this.getParent() = Django::Forms::Form::subclassRef().getAnImmediateUse().asExpr()
-    }
+    DjangoFormClass() { this.getParent() = Django::Forms::Form::subclassRef().asSource().asExpr() }
   }
 
   /**
@@ -2237,7 +2236,7 @@ module PrivateDjango {
    */
   class DjangoFormFieldClass extends Class {
     DjangoFormFieldClass() {
-      this.getParent() = Django::Forms::Field::subclassRef().getAnImmediateUse().asExpr()
+      this.getParent() = Django::Forms::Field::subclassRef().asSource().asExpr()
     }
   }
 
@@ -2317,7 +2316,7 @@ module PrivateDjango {
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
       (
-        result.getName() = HTTP::httpVerbLower()
+        result.getName() = Http::httpVerbLower()
         or
         result.getName() = "get_redirect_url"
       )
@@ -2340,7 +2339,7 @@ module PrivateDjango {
    */
   class DjangoViewClassFromSuperClass extends DjangoViewClass {
     DjangoViewClassFromSuperClass() {
-      this.getParent() = Django::Views::View::subclassRef().getAnImmediateUse().asExpr()
+      this.getParent() = Django::Views::View::subclassRef().asSource().asExpr()
     }
   }
 
@@ -2412,7 +2411,7 @@ module PrivateDjango {
   }
 
   /** A data-flow node that sets up a route on a server, using the django framework. */
-  abstract class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+  abstract class DjangoRouteSetup extends Http::Server::RouteSetup::Range, DataFlow::CfgNode {
     /** Gets the data-flow node that is used as the argument for the view handler. */
     abstract DataFlow::Node getViewArg();
 
@@ -2429,7 +2428,7 @@ module PrivateDjango {
   }
 
   /** A request handler defined in a django view class, that has no known route. */
-  private class DjangoViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range,
+  private class DjangoViewClassHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range,
     DjangoRouteHandler {
     DjangoViewClassHandlerWithoutKnownRoute() {
       exists(DjangoViewClass vc | vc.getARequestHandler() = this) and
@@ -2588,7 +2587,7 @@ module PrivateDjango {
   // HttpRequest taint modeling
   // ---------------------------------------------------------------------------
   /** A parameter that will receive the django `HttpRequest` instance when a request handler is invoked. */
-  private class DjangoRequestHandlerRequestParam extends DjangoImpl::Http::Request::HttpRequest::InstanceSource,
+  private class DjangoRequestHandlerRequestParam extends DjangoImpl::DjangoHttp::Request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::ParameterNode {
     DjangoRequestHandlerRequestParam() {
       this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
@@ -2605,7 +2604,7 @@ module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
    */
-  private class DjangoViewClassRequestAttributeRead extends DjangoImpl::Http::Request::HttpRequest::InstanceSource,
+  private class DjangoViewClassRequestAttributeRead extends DjangoImpl::DjangoHttp::Request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::Node {
     DjangoViewClassRequestAttributeRead() {
       exists(DataFlow::AttrRead read | this = read |
@@ -2680,7 +2679,7 @@ module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
    */
-  private class DjangoShortcutsRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+  private class DjangoShortcutsRedirectCall extends Http::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
     DjangoShortcutsRedirectCall() { this = DjangoImpl::Shortcuts::redirect().getACall() }
 
@@ -2714,7 +2713,7 @@ module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.1/ref/class-based-views/base/#redirectview
    */
-  private class DjangoRedirectViewGetRedirectUrlReturn extends HTTP::Server::HttpRedirectResponse::Range,
+  private class DjangoRedirectViewGetRedirectUrlReturn extends Http::Server::HttpRedirectResponse::Range,
     DataFlow::CfgNode {
     DjangoRedirectViewGetRedirectUrlReturn() {
       node = any(GetRedirectUrlFunction f).getAReturnValueFlowNode()
@@ -2743,7 +2742,7 @@ module PrivateDjango {
             .getMember("utils")
             .getMember("log")
             .getMember("request_logger")
-            .getAnImmediateUse()
+            .asSource()
     }
   }
 
@@ -2753,7 +2752,7 @@ module PrivateDjango {
   /**
    * A custom middleware stack
    */
-  private class DjangoSettingsMiddlewareStack extends HTTP::Server::CsrfProtectionSetting::Range {
+  private class DjangoSettingsMiddlewareStack extends Http::Server::CsrfProtectionSetting::Range {
     List list;
 
     DjangoSettingsMiddlewareStack() {
@@ -2789,7 +2788,7 @@ module PrivateDjango {
     }
   }
 
-  private class DjangoCsrfDecorator extends HTTP::Server::CsrfLocalProtectionSetting::Range {
+  private class DjangoCsrfDecorator extends Http::Server::CsrfLocalProtectionSetting::Range {
     string decoratorName;
     Function function;
 
@@ -2801,7 +2800,7 @@ module PrivateDjango {
             .getMember("decorators")
             .getMember("csrf")
             .getMember(decoratorName)
-            .getAUse() and
+            .getAValueReachableFromSource() and
       this.asExpr() = function.getADecorator()
     }
 

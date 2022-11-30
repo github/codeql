@@ -11,7 +11,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
-private import semmle.python.RegexTreeView
+private import semmle.python.RegexTreeView::RegexTreeView as TreeView
 private import semmle.python.ApiGraphs
 
 /**
@@ -20,6 +20,9 @@ private import semmle.python.ApiGraphs
  * vulnerabilities, as well as extension points for adding your own.
  */
 module PolynomialReDoS {
+  private import TreeView
+  import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView>
+
   /**
    * A data flow source for "polynomial regular expression denial of service (ReDoS)" vulnerabilities.
    */
@@ -44,9 +47,11 @@ module PolynomialReDoS {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "polynomial regular expression denial of service (ReDoS)" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -74,5 +79,5 @@ module PolynomialReDoS {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
 }

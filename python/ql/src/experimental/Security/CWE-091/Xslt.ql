@@ -17,8 +17,8 @@ import semmle.python.web.HttpRequest
 /* Sinks */
 import experimental.semmle.python.security.injection.XSLT
 
-class XSLTInjectionConfiguration extends TaintTracking::Configuration {
-  XSLTInjectionConfiguration() { this = "XSLT injection configuration" }
+class XsltInjectionConfiguration extends TaintTracking::Configuration {
+  XsltInjectionConfiguration() { this = "XSLT injection configuration" }
 
   deprecated override predicate isSource(TaintTracking::Source source) {
     source instanceof HttpRequestTaintSource
@@ -29,7 +29,7 @@ class XSLTInjectionConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from XSLTInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
+from XsltInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "This XSLT query depends on $@.", src.getSource(),
   "a user-provided value"

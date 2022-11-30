@@ -176,7 +176,7 @@ private class StdSequenceContainerInsert extends TaintFunction {
     ) and
     (
       output.isQualifierObject() or
-      output.isReturnValueDeref()
+      output.isReturnValue()
     )
   }
 }

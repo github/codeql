@@ -1,7 +1,7 @@
 name: codeql/javascript-tests
 groups: [javascript, test]
 dependencies:
-  codeql/javascript-all: "*"
-  codeql/javascript-queries: "*"
+  codeql/javascript-all: ${workspace}
+  codeql/javascript-queries: ${workspace}
 extractor: javascript
 tests: .

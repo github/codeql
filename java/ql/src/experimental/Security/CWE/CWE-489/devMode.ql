@@ -21,4 +21,4 @@ where
   c.getNameValue() = "struts.devMode" and
   c.getValueValue() = "true" and
   not isLikelyDemoProject(c.getFile().getRelativePath())
-select c, "Enabling development mode in production environments is dangerous"
+select c, "Enabling development mode in production environments is dangerous."

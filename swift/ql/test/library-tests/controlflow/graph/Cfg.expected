@@ -1,65 +1,62 @@
 cfg.swift:
-#    5| enter returnZero
-#-----|  -> returnZero
+#    5| enter returnZero()
+#-----|  -> returnZero()
 
-#    5| exit returnZero
+#    5| exit returnZero()
 
-#    5| exit returnZero (normal)
-#-----|  -> exit returnZero
+#    5| exit returnZero() (normal)
+#-----|  -> exit returnZero()
 
-#    5| returnZero
+#    5| returnZero()
 #-----|  -> 0
 
 #    5| return ...
-#-----| return -> exit returnZero (normal)
+#-----| return -> exit returnZero() (normal)
 
 #    5| 0
 #-----|  -> return ...
 
-#   15| enter isZero
-#-----|  -> isZero
+#   15| enter isZero(x:)
+#-----|  -> isZero(x:)
 
-#   15| exit isZero
+#   15| exit isZero(x:)
 
-#   15| exit isZero (normal)
-#-----|  -> exit isZero
+#   15| exit isZero(x:) (normal)
+#-----|  -> exit isZero(x:)
 
-#   15| isZero
+#   15| isZero(x:)
 #-----|  -> x
 
 #   15| x
-#-----|  -> ==
+#-----|  -> .==(_:_:)
 
 #   15| return ...
-#-----| return -> exit isZero (normal)
+#-----| return -> exit isZero(x:) (normal)
 
 #   15| x
 #-----|  -> 0
 
-#   15| ... call to == ...
+#   15| ... .==(_:_:) ...
 #-----|  -> return ...
 
-#   15| ==
+#   15| .==(_:_:)
 #-----|  -> Int.Type
 
 #   15| Int.Type
-#-----|  -> call to ==
-
-#   15| call to ==
 #-----|  -> x
 
 #   15| 0
-#-----|  -> ... call to == ...
+#-----|  -> ... .==(_:_:) ...
 
-#   17| enter mightThrow
-#-----|  -> mightThrow
+#   17| enter mightThrow(x:)
+#-----|  -> mightThrow(x:)
 
-#   17| exit mightThrow
+#   17| exit mightThrow(x:)
 
-#   17| exit mightThrow (normal)
-#-----|  -> exit mightThrow
+#   17| exit mightThrow(x:) (normal)
+#-----|  -> exit mightThrow(x:)
 
-#   17| mightThrow
+#   17| mightThrow(x:)
 #-----|  -> x
 
 #   17| x
@@ -71,38 +68,32 @@ cfg.swift:
 #   18| x
 #-----|  -> 0
 
-#   18| ... call to >= ...
-#-----| false -> error1
+#   18| ... .>=(_:_:) ...
+#-----| false -> .error1
 #-----| true -> guard ... else { ... }
 
 #   18| StmtCondition
-#-----|  -> >=
+#-----|  -> .>=(_:_:)
 
-#   18| >=
+#   18| .>=(_:_:)
 #-----|  -> Int.Type
 
 #   18| Int.Type
-#-----|  -> call to >=
-
-#   18| call to >=
 #-----|  -> x
 
 #   18| 0
-#-----|  -> ... call to >= ...
+#-----|  -> ... .>=(_:_:) ...
 
 #   19| throw ...
-#-----| exception -> exit mightThrow (normal)
+#-----| exception -> exit mightThrow(x:) (normal)
 
 #   19| MyError.Type
-#-----|  -> call to ...
+#-----|  -> (Error) ...
 
 #   19| (Error) ...
 #-----|  -> throw ...
 
-#   19| call to ...
-#-----|  -> (Error) ...
-
-#   19| error1
+#   19| .error1
 #-----|  -> MyError.Type
 
 #   21| guard ... else { ... }
@@ -111,33 +102,30 @@ cfg.swift:
 #   21| x
 #-----|  -> 0
 
-#   21| ... call to <= ...
-#-----| true -> exit mightThrow (normal)
-#-----| false -> error3
+#   21| ... .<=(_:_:) ...
+#-----| true -> exit mightThrow(x:) (normal)
+#-----| false -> .error3
 
 #   21| StmtCondition
-#-----|  -> <=
+#-----|  -> .<=(_:_:)
 
-#   21| <=
+#   21| .<=(_:_:)
 #-----|  -> Int.Type
 
 #   21| Int.Type
-#-----|  -> call to <=
-
-#   21| call to <=
 #-----|  -> x
 
 #   21| 0
-#-----|  -> ... call to <= ...
+#-----|  -> ... .<=(_:_:) ...
 
 #   22| throw ...
-#-----| exception -> exit mightThrow (normal)
+#-----| exception -> exit mightThrow(x:) (normal)
 
 #   22| MyError.Type
-#-----|  -> call to ...
+#-----|  -> .+(_:_:)
 
-#   22| call to ...
-#-----|  -> +
+#   22| .error3
+#-----|  -> MyError.Type
 
 #   22| (Error) ...
 #-----|  -> throw ...
@@ -145,67 +133,62 @@ cfg.swift:
 #   22| call to ...
 #-----|  -> (Error) ...
 
-#   22| error3
-#-----|  -> MyError.Type
-
 #   22| x
 #-----|  -> 1
 
-#   22| ... call to + ...
+#   22| ... .+(_:_:) ...
 #-----|  -> call to ...
 
-#   22| +
+#   22| .+(_:_:)
 #-----|  -> Int.Type
 
 #   22| Int.Type
-#-----|  -> call to +
-
-#   22| call to +
 #-----|  -> x
 
 #   22| 1
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
-#   26| enter tryCatch
-#-----|  -> tryCatch
+#   26| enter tryCatch(x:)
+#-----|  -> tryCatch(x:)
 
-#   26| exit tryCatch
+#   26| exit tryCatch(x:)
 
-#   26| exit tryCatch (normal)
-#-----|  -> exit tryCatch
+#   26| exit tryCatch(x:) (normal)
+#-----|  -> exit tryCatch(x:)
 
-#   26| tryCatch
+#   26| tryCatch(x:)
 #-----|  -> x
 
 #   26| x
 #-----|  -> do { ... } catch { ... }
 
 #   27| do { ... } catch { ... }
-#-----|  -> mightThrow
+#-----|  -> mightThrow(x:)
 
 #   28| try ...
-#-----|  -> print
+#-----|  -> print(_:separator:terminator:)
 
-#   28| mightThrow
+#   28| mightThrow(x:)
 #-----|  -> 0
 
-#   28| call to mightThrow
+#   28| call to mightThrow(x:)
 #-----|  -> try ...
 #-----| exception -> case ...
 
 #   28| 0
-#-----|  -> call to mightThrow
+#-----|  -> call to mightThrow(x:)
 
-#   29| print
+#   29| print(_:separator:terminator:)
 #-----|  -> Did not throw.
 
-#   29| call to print
+#   29| call to print(_:separator:terminator:)
+#-----|  -> mightThrow(x:)
 
 #   29| default separator
 #-----|  -> default terminator
 
 #   29| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #   29| (Any) ...
 #-----|  -> [...]
@@ -214,10 +197,47 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #   29| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #   29| [...]
+#-----|  -> default separator
+
+#   30| try! ...
+#-----|  -> print(_:separator:terminator:)
+
+#   30| mightThrow(x:)
+#-----|  -> 0
+
+#   30| call to mightThrow(x:)
+#-----|  -> try! ...
+#-----| exception -> case ...
+
+#   30| 0
+#-----|  -> call to mightThrow(x:)
+
+#   31| print(_:separator:terminator:)
+#-----|  -> Still did not throw.
+
+#   31| call to print(_:separator:terminator:)
+#-----|  -> 0
+
+#   31| default separator
+#-----|  -> default terminator
+
+#   31| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#   31| (Any) ...
 #-----|  -> [...]
+
+#   31| Still did not throw.
+#-----|  -> (Any) ...
+
+#   31| [...]
+#-----|  -> [...]
+
+#   31| [...]
+#-----|  -> default separator
 
 #   33| case ...
 #-----|  -> ... is ...
@@ -226,24 +246,26 @@ cfg.swift:
 #-----|  -> .error1
 
 #   33| ... is ...
-#-----| no-match -> ... is ...
+#-----| no-match -> ... is ... where ...
 #-----| match -> 0
 
 #   33| .error1
-#-----| no-match -> ... is ...
+#-----| match, no-match -> ... is ...
 
 #   33| ... is ...
-#-----| match -> 0
+#-----| match, no-match -> call to isZero(x:)
 #-----| no-match -> case ...
 
 #   33| .error2
-#-----| no-match -> ... is ...
+#-----| match, no-match -> ... is ...
 
-#   33| ... is ...
+#   33| ... is ... where ...
 #-----|  -> .error2
 
+#   33| call to isZero(x:)
+
 #   34| return ...
-#-----| return -> exit tryCatch (normal)
+#-----| return -> exit tryCatch(x:) (normal)
 
 #   34| 0
 #-----|  -> return ...
@@ -252,11 +274,11 @@ cfg.swift:
 #-----|  -> ... is ...
 
 #   35| ... is ...
-#-----| match -> withParam
-#-----| no-match -> case ...
+#-----|  -> .error3(...)
 
 #   35| ... is ...
-#-----|  -> .error3(...)
+#-----| match -> withParam
+#-----| no-match -> case ...
 
 #   35| .error3(...)
 #-----| no-match -> ... is ...
@@ -272,7 +294,7 @@ cfg.swift:
 #-----| match -> let ...
 
 #   36| return ...
-#-----| return -> exit tryCatch (normal)
+#-----| return -> exit tryCatch(x:) (normal)
 
 #   36| withParam
 #-----|  -> return ...
@@ -281,26 +303,23 @@ cfg.swift:
 #-----|  -> ... is ...
 
 #   37| ... is ...
-#-----|  -> SimpleIdentTypeRepr
-
-#   37| ... is ...
-#-----| match -> print
-#-----| no-match -> case ...
-
-#   37| SimpleIdentTypeRepr
 #-----|  -> ... is ...
 
-#   38| print
+#   37| ... is ...
+#-----| match -> print(_:separator:terminator:)
+#-----| no-match -> case ...
+
+#   38| print(_:separator:terminator:)
 #-----|  -> MyError
 
-#   38| call to print
+#   38| call to print(_:separator:terminator:)
 #-----|  -> 0
 
 #   38| default separator
 #-----|  -> default terminator
 
 #   38| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #   38| (Any) ...
 #-----|  -> [...]
@@ -309,10 +328,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #   38| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #   38| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #   39| case ...
 #-----|  -> let ...
@@ -321,22 +340,21 @@ cfg.swift:
 #-----| match -> let ...
 
 #   39| let ...
-#-----| match -> print
+#-----| match -> print(_:separator:terminator:)
 
 #   39| let ...
 #-----|  -> error
 
-#   40| print
-#-----|  -> "..."
+#   40| print(_:separator:terminator:)
 
-#   40| call to print
+#   40| call to print(_:separator:terminator:)
 #-----|  -> 0
 
 #   40| default separator
 #-----|  -> default terminator
 
 #   40| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #   40| "..."
 #-----|  -> (Any) ...
@@ -344,34 +362,85 @@ cfg.swift:
 #   40| (Any) ...
 #-----|  -> [...]
 
-#   40| [...]
-#-----|  -> default separator
+#   40| OpaqueValueExpr
+#-----|  -> .appendLiteral(_:)
+
+#   40| TapExpr
+#-----|  -> "..."
+
+#   40| Unknown error 
+#-----|  -> call to appendLiteral(_:)
 
 #   40| [...]
 #-----|  -> [...]
 
+#   40| [...]
+#-----|  -> default separator
+
+#   40| call to appendLiteral(_:)
+#-----|  -> .appendInterpolation(_:)
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> Unknown error 
+
+#   40| .appendLiteral(_:)
+#-----|  -> $interpolation
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> error
+
+#   40| .appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#   40| call to appendInterpolation(_:)
+#-----|  -> .appendLiteral(_:)
+
+#   40| error
+#-----|  -> call to appendInterpolation(_:)
+
+#   40| 
+#-----|  -> call to appendLiteral(_:)
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> 
+
+#   40| .appendLiteral(_:)
+#-----|  -> $interpolation
+
+#   40| call to appendLiteral(_:)
+#-----|  -> TapExpr
+
 #   42| return ...
-#-----| return -> exit tryCatch (normal)
+#-----| return -> exit tryCatch(x:) (normal)
 
 #   42| 0
 #-----|  -> return ...
 
-#   45| createClosure1
+#   45| createClosure1(s:)
 #-----|  -> s
 
-#   45| enter createClosure1
-#-----|  -> createClosure1
+#   45| enter createClosure1(s:)
+#-----|  -> createClosure1(s:)
 
-#   45| exit createClosure1
+#   45| exit createClosure1(s:)
 
-#   45| exit createClosure1 (normal)
-#-----|  -> exit createClosure1
+#   45| exit createClosure1(s:) (normal)
+#-----|  -> exit createClosure1(s:)
 
 #   45| s
 #-----|  -> { ... }
 
 #   46| return ...
-#-----| return -> exit createClosure1 (normal)
+#-----| return -> exit createClosure1(s:) (normal)
 
 #   46| enter { ... }
 #-----|  -> { ... }
@@ -382,10 +451,10 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #   46| { ... }
-#-----|  -> return ...
+#-----|  -> .+(_:_:)
 
 #   46| { ... }
-#-----|  -> +
+#-----|  -> return ...
 
 #   47| return ...
 #-----| return -> exit { ... } (normal)
@@ -393,80 +462,89 @@ cfg.swift:
 #   47| s
 #-----|  -> 
 
-#   47| ... call to + ...
+#   47| ... .+(_:_:) ...
 #-----|  -> return ...
 
-#   47| +
+#   47| .+(_:_:)
 #-----|  -> String.Type
 
 #   47| String.Type
-#-----|  -> call to +
-
-#   47| call to +
 #-----|  -> s
 
 #   47| 
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
-#   51| createClosure2
+#   51| createClosure2(x:)
 #-----|  -> x
 
-#   51| enter createClosure2
-#-----|  -> createClosure2
+#   51| enter createClosure2(x:)
+#-----|  -> createClosure2(x:)
+
+#   51| exit createClosure2(x:)
+
+#   51| exit createClosure2(x:) (normal)
+#-----|  -> exit createClosure2(x:)
 
 #   51| x
+#-----|  -> f(y:)
 
-#   52| enter f
-#-----|  -> f
+#   52| enter f(y:)
+#-----|  -> f(y:)
 
-#   52| exit f
+#   52| exit f(y:)
 
-#   52| exit f (normal)
-#-----|  -> exit f
+#   52| exit f(y:) (normal)
+#-----|  -> exit f(y:)
 
-#   52| f
+#   52| f(y:)
 #-----|  -> y
 
+#   52| f(y:)
+#-----|  -> f(y:)
+
 #   52| y
-#-----|  -> +
+#-----|  -> .+(_:_:)
 
 #   53| return ...
-#-----| return -> exit f (normal)
+#-----| return -> exit f(y:) (normal)
 
 #   53| x
 #-----|  -> y
 
-#   53| ... call to + ...
+#   53| ... .+(_:_:) ...
 #-----|  -> return ...
 
-#   53| +
+#   53| .+(_:_:)
 #-----|  -> Int.Type
 
 #   53| Int.Type
-#-----|  -> call to +
-
-#   53| call to +
 #-----|  -> x
 
 #   53| y
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
-#   58| createClosure3
+#   55| return ...
+#-----| return -> exit createClosure2(x:) (normal)
+
+#   55| f(y:)
+#-----|  -> return ...
+
+#   58| createClosure3(x:)
 #-----|  -> x
 
-#   58| enter createClosure3
-#-----|  -> createClosure3
+#   58| enter createClosure3(x:)
+#-----|  -> createClosure3(x:)
 
-#   58| exit createClosure3
+#   58| exit createClosure3(x:)
 
-#   58| exit createClosure3 (normal)
-#-----|  -> exit createClosure3
+#   58| exit createClosure3(x:) (normal)
+#-----|  -> exit createClosure3(x:)
 
 #   58| x
 #-----|  -> { ... }
 
 #   59| return ...
-#-----| return -> exit createClosure3 (normal)
+#-----| return -> exit createClosure3(x:) (normal)
 
 #   59| enter { ... }
 #-----|  -> { ... }
@@ -477,87 +555,84 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #   59| { ... }
-#-----|  -> return ...
-
-#   59| { ... }
 #-----|  -> y
 
+#   59| { ... }
+#-----|  -> return ...
+
 #   60| y
-#-----|  -> +
+#-----|  -> .+(_:_:)
 
 #   60| x
 #-----|  -> y
 
-#   60| ... call to + ...
+#   60| ... .+(_:_:) ...
 #-----|  -> return ...
 
 #   60| return ...
 #-----| return -> exit { ... } (normal)
 
-#   60| +
+#   60| .+(_:_:)
 #-----|  -> Int.Type
 
 #   60| Int.Type
-#-----|  -> call to +
-
-#   60| call to +
 #-----|  -> x
 
 #   60| y
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
-#   64| callClosures
+#   64| callClosures()
 #-----|  -> x1
 
-#   64| enter callClosures
-#-----|  -> callClosures
+#   64| enter callClosures()
+#-----|  -> callClosures()
 
-#   64| exit callClosures
+#   64| exit callClosures()
 
-#   64| exit callClosures (normal)
-#-----|  -> exit callClosures
+#   64| exit callClosures() (normal)
+#-----|  -> exit callClosures()
 
 #   65| var ... = ...
 #-----|  -> x1
 
 #   65| x1
-#-----| match -> createClosure1
-
-#   65| x1
 #-----|  -> x2
 
-#   65| createClosure1
+#   65| x1
+#-----| match -> createClosure1(s:)
+
+#   65| createClosure1(s:)
 #-----|  -> 
 
-#   65| call to createClosure1
+#   65| call to createClosure1(s:)
 #-----|  -> call to ...
 
 #   65| call to ...
 #-----|  -> var ... = ...
 
 #   65| 
-#-----|  -> call to createClosure1
+#-----|  -> call to createClosure1(s:)
 
 #   66| var ... = ...
 #-----|  -> x2
 
 #   66| x2
-#-----| match -> createClosure2
-
-#   66| x2
 #-----|  -> x3
 
-#   66| createClosure2
+#   66| x2
+#-----| match -> createClosure2(x:)
+
+#   66| createClosure2(x:)
 #-----|  -> 0
 
-#   66| call to createClosure2
+#   66| call to createClosure2(x:)
 #-----|  -> 10
 
 #   66| call to ...
 #-----|  -> var ... = ...
 
 #   66| 0
-#-----|  -> call to createClosure2
+#-----|  -> call to createClosure2(x:)
 
 #   66| 10
 #-----|  -> call to ...
@@ -566,35 +641,35 @@ cfg.swift:
 #-----|  -> x3
 
 #   67| x3
-#-----| match -> createClosure3
+#-----|  -> exit callClosures() (normal)
 
 #   67| x3
-#-----|  -> exit callClosures (normal)
+#-----| match -> createClosure3(x:)
 
-#   67| createClosure3
+#   67| createClosure3(x:)
 #-----|  -> 0
 
-#   67| call to createClosure3
+#   67| call to createClosure3(x:)
 #-----|  -> 10
 
 #   67| call to ...
 #-----|  -> var ... = ...
 
 #   67| 0
-#-----|  -> call to createClosure3
+#-----|  -> call to createClosure3(x:)
 
 #   67| 10
 #-----|  -> call to ...
 
-#   70| enter maybeParseInt
-#-----|  -> maybeParseInt
+#   70| enter maybeParseInt(s:)
+#-----|  -> maybeParseInt(s:)
 
-#   70| exit maybeParseInt
+#   70| exit maybeParseInt(s:)
 
-#   70| exit maybeParseInt (normal)
-#-----|  -> exit maybeParseInt
+#   70| exit maybeParseInt(s:) (normal)
+#-----|  -> exit maybeParseInt(s:)
 
-#   70| maybeParseInt
+#   70| maybeParseInt(s:)
 #-----|  -> s
 
 #   70| s
@@ -604,31 +679,31 @@ cfg.swift:
 #-----|  -> n
 
 #   71| n
-#-----| match -> ... as ...
-
-#   71| n
 #-----|  -> n
 
+#   71| n
+#-----| match -> ... as ...
+
 #   71| ... as ...
-#-----| match -> init
+#-----| match -> init(_:)
 
 #   71| Int.Type
-#-----|  -> call to ...
+#-----|  -> call to init(_:)
 
-#   71| call to ...
+#   71| call to init(_:)
 #-----|  -> s
 
-#   71| init
+#   71| init(_:)
 #-----|  -> Int.Type
 
-#   71| call to ...
+#   71| call to init(_:)
 #-----|  -> var ... = ...
 
 #   71| s
-#-----|  -> call to ...
+#-----|  -> call to init(_:)
 
 #   72| return ...
-#-----| return -> exit maybeParseInt (normal)
+#-----| return -> exit maybeParseInt(s:) (normal)
 
 #   72| (Int?) ...
 #-----|  -> return ...
@@ -636,58 +711,58 @@ cfg.swift:
 #   72| n
 #-----|  -> (Int?) ...
 
-#   75| enter forceAndBackToOptional
-#-----|  -> forceAndBackToOptional
+#   75| enter forceAndBackToOptional()
+#-----|  -> forceAndBackToOptional()
 
-#   75| exit forceAndBackToOptional
+#   75| exit forceAndBackToOptional()
 
-#   75| exit forceAndBackToOptional (normal)
-#-----|  -> exit forceAndBackToOptional
+#   75| exit forceAndBackToOptional() (normal)
+#-----|  -> exit forceAndBackToOptional()
 
-#   75| forceAndBackToOptional
+#   75| forceAndBackToOptional()
 #-----|  -> nBang
 
 #   76| var ... = ...
 #-----|  -> nBang
 
 #   76| nBang
-#-----| match -> maybeParseInt
-
-#   76| nBang
 #-----|  -> n
 
-#   76| maybeParseInt
+#   76| nBang
+#-----| match -> maybeParseInt(s:)
+
+#   76| maybeParseInt(s:)
 #-----|  -> 42
 
-#   76| call to maybeParseInt
+#   76| call to maybeParseInt(s:)
 #-----|  -> ...!
 
 #   76| ...!
 #-----|  -> var ... = ...
 
 #   76| 42
-#-----|  -> call to maybeParseInt
+#-----|  -> call to maybeParseInt(s:)
 
 #   77| var ... = ...
 #-----|  -> n
 
 #   77| n
-#-----| match -> maybeParseInt
+#-----|  -> .+(_:_:)
 
 #   77| n
-#-----|  -> +
+#-----| match -> maybeParseInt(s:)
 
-#   77| maybeParseInt
+#   77| maybeParseInt(s:)
 #-----|  -> 42
 
-#   77| call to maybeParseInt
+#   77| call to maybeParseInt(s:)
 #-----|  -> var ... = ...
 
 #   77| 42
-#-----|  -> call to maybeParseInt
+#-----|  -> call to maybeParseInt(s:)
 
 #   78| return ...
-#-----| return -> exit forceAndBackToOptional (normal)
+#-----| return -> exit forceAndBackToOptional() (normal)
 
 #   78| (Int) ...
 #-----|  -> n
@@ -698,16 +773,13 @@ cfg.swift:
 #   78| (Int?) ...
 #-----|  -> return ...
 
-#   78| ... call to + ...
+#   78| ... .+(_:_:) ...
 #-----|  -> (Int?) ...
 
-#   78| +
+#   78| .+(_:_:)
 #-----|  -> Int.Type
 
 #   78| Int.Type
-#-----|  -> call to +
-
-#   78| call to +
 #-----|  -> nBang
 
 #   78| (Int?) ...
@@ -717,44 +789,53 @@ cfg.swift:
 #-----|  -> (Int?) ...
 
 #   78| ...!
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
-#   81| enter testInOut
-#-----|  -> testInOut
+#   81| enter testInOut()
+#-----|  -> testInOut()
 
-#   81| testInOut
+#   81| exit testInOut()
+
+#   81| exit testInOut() (normal)
+#-----|  -> exit testInOut()
+
+#   81| testInOut()
 #-----|  -> temp
 
 #   82| var ... = ...
 #-----|  -> temp
 
 #   82| temp
-#-----| match -> 10
+#-----|  -> add(a:)
 
 #   82| temp
+#-----| match -> 10
 
 #   82| 10
 #-----|  -> var ... = ...
 
-#   84| add
+#   84| add(a:)
 #-----|  -> a
 
-#   84| enter add
-#-----|  -> add
+#   84| add(a:)
+#-----|  -> addOptional(a:)
 
-#   84| exit add
+#   84| enter add(a:)
+#-----|  -> add(a:)
 
-#   84| exit add (normal)
-#-----|  -> exit add
+#   84| exit add(a:)
+
+#   84| exit add(a:) (normal)
+#-----|  -> exit add(a:)
 
 #   84| a
 #-----|  -> a
 
 #   85| a
-#-----|  -> +
+#-----|  -> .+(_:_:)
 
 #   85|  ... = ...
-#-----|  -> exit add (normal)
+#-----|  -> exit add(a:) (normal)
 
 #   85| (Int) ...
 #-----|  -> 1
@@ -762,31 +843,31 @@ cfg.swift:
 #   85| a
 #-----|  -> (Int) ...
 
-#   85| ... call to + ...
+#   85| ... .+(_:_:) ...
 #-----|  ->  ... = ...
 
-#   85| +
+#   85| .+(_:_:)
 #-----|  -> Int.Type
 
 #   85| Int.Type
-#-----|  -> call to +
-
-#   85| call to +
 #-----|  -> a
 
 #   85| 1
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
-#   88| addOptional
+#   88| addOptional(a:)
 #-----|  -> a
 
-#   88| enter addOptional
-#-----|  -> addOptional
+#   88| addOptional(a:)
+#-----|  -> add(a:)
 
-#   88| exit addOptional
+#   88| enter addOptional(a:)
+#-----|  -> addOptional(a:)
 
-#   88| exit addOptional (normal)
-#-----|  -> exit addOptional
+#   88| exit addOptional(a:)
+
+#   88| exit addOptional(a:) (normal)
+#-----|  -> exit addOptional(a:)
 
 #   88| a
 #-----|  -> a
@@ -795,24 +876,96 @@ cfg.swift:
 #-----|  -> nil
 
 #   89|  ... = ...
-#-----|  -> exit addOptional (normal)
+#-----|  -> exit addOptional(a:) (normal)
 
 #   89| nil
 #-----|  ->  ... = ...
 
-#   98| deinit
+#   92| add(a:)
+#-----|  -> temp
+
+#   92| call to add(a:)
+#-----|  -> tempOptional
+
+#   92| &...
+#-----|  -> call to add(a:)
+
+#   92| temp
+#-----|  -> &...
+
+#   93| var ... = ...
+#-----|  -> tempOptional
+
+#   93| tempOptional
+#-----|  -> addOptional(a:)
+
+#   93| tempOptional
+#-----| match -> ... as ...
+
+#   93| ... as ...
+#-----| match -> 10
+
+#   93| (Int?) ...
+#-----|  -> var ... = ...
+
+#   93| 10
+#-----|  -> (Int?) ...
+
+#   94| addOptional(a:)
+#-----|  -> tempOptional
+
+#   94| call to addOptional(a:)
+#-----|  -> .+(_:_:)
+
+#   94| &...
+#-----|  -> call to addOptional(a:)
+
+#   94| tempOptional
+#-----|  -> &...
+
+#   95| return ...
+#-----| return -> exit testInOut() (normal)
+
+#   95| (Int) ...
+#-----|  -> tempOptional
+
+#   95| temp
+#-----|  -> (Int) ...
+
+#   95| ... .+(_:_:) ...
+#-----|  -> return ...
+
+#   95| .+(_:_:)
+#-----|  -> Int.Type
+
+#   95| Int.Type
+#-----|  -> temp
+
+#   95| (Int?) ...
+#-----|  -> ...!
+
+#   95| tempOptional
+#-----|  -> (Int?) ...
+
+#   95| ...!
+#-----|  -> ... .+(_:_:) ...
+
+#   98| deinit()
+#-----|  -> self
+
+#   98| enter deinit()
+#-----|  -> deinit()
+
+#   98| exit deinit()
+
+#   98| exit deinit() (normal)
+#-----|  -> exit deinit()
+
+#   98| self
 #-----|  -> { ... }
 
-#   98| enter deinit
-#-----|  -> deinit
-
-#   98| exit deinit
-
-#   98| exit deinit (normal)
-#-----|  -> exit deinit
-
 #   98| { ... }
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
 #   99| enter get
 #-----|  -> get
@@ -823,17 +976,23 @@ cfg.swift:
 #-----|  -> exit get
 
 #   99| get
+#-----|  -> self
 
-#  100| enter init
-#-----|  -> init
+#   99| self
 
-#  100| exit init
-
-#  100| exit init (normal)
-#-----|  -> exit init
-
-#  100| init
+#  100| self
 #-----|  -> n
+
+#  100| enter init(n:)
+#-----|  -> init(n:)
+
+#  100| exit init(n:)
+
+#  100| exit init(n:) (normal)
+#-----|  -> exit init(n:)
+
+#  100| init(n:)
+#-----|  -> self
 
 #  100| n
 #-----|  -> self
@@ -851,21 +1010,24 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  102| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init(n:) (normal)
 
-#  104| enter getMyInt
-#-----|  -> getMyInt
+#  104| enter getMyInt()
+#-----|  -> getMyInt()
 
-#  104| exit getMyInt
+#  104| exit getMyInt()
 
-#  104| exit getMyInt (normal)
-#-----|  -> exit getMyInt
+#  104| exit getMyInt() (normal)
+#-----|  -> exit getMyInt()
 
-#  104| getMyInt
+#  104| getMyInt()
+#-----|  -> self
+
+#  104| self
 #-----|  -> self
 
 #  105| return ...
-#-----| return -> exit getMyInt (normal)
+#-----| return -> exit getMyInt() (normal)
 
 #  105| getter for .myInt
 #-----|  -> return ...
@@ -873,15 +1035,15 @@ cfg.swift:
 #  105| self
 #-----|  -> getter for .myInt
 
-#  109| enter testMemberRef
-#-----|  -> testMemberRef
+#  109| enter testMemberRef(param:inoutParam:opt:)
+#-----|  -> testMemberRef(param:inoutParam:opt:)
 
-#  109| exit testMemberRef
+#  109| exit testMemberRef(param:inoutParam:opt:)
 
-#  109| exit testMemberRef (normal)
-#-----|  -> exit testMemberRef
+#  109| exit testMemberRef(param:inoutParam:opt:) (normal)
+#-----|  -> exit testMemberRef(param:inoutParam:opt:)
 
-#  109| testMemberRef
+#  109| testMemberRef(param:inoutParam:opt:)
 #-----|  -> param
 
 #  109| param
@@ -897,34 +1059,34 @@ cfg.swift:
 #-----|  -> c
 
 #  110| c
-#-----| match -> init
-
-#  110| c
 #-----|  -> n1
 
-#  110| C.Type
-#-----|  -> call to ...
+#  110| c
+#-----| match -> init(n:)
 
-#  110| call to ...
+#  110| C.Type
+#-----|  -> call to init(n:)
+
+#  110| call to init(n:)
 #-----|  -> 42
 
-#  110| init
+#  110| init(n:)
 #-----|  -> C.Type
 
-#  110| call to ...
+#  110| call to init(n:)
 #-----|  -> var ... = ...
 
 #  110| 42
-#-----|  -> call to ...
+#-----|  -> call to init(n:)
 
 #  111| var ... = ...
 #-----|  -> n1
 
 #  111| n1
-#-----| match -> c
+#-----|  -> n2
 
 #  111| n1
-#-----|  -> n2
+#-----| match -> c
 
 #  111| c
 #-----|  -> getter for .myInt
@@ -936,10 +1098,13 @@ cfg.swift:
 #-----|  -> n2
 
 #  112| n2
-#-----| match -> .self
+#-----|  -> n3
 
 #  112| n2
-#-----|  -> n3
+#-----| match -> c
+
+#  112| c
+#-----|  -> .self
 
 #  112| .self
 #-----|  -> getter for .myInt
@@ -951,52 +1116,49 @@ cfg.swift:
 #-----|  -> n3
 
 #  113| n3
-#-----| match -> getMyInt
-
-#  113| n3
 #-----|  -> n4
 
+#  113| n3
+#-----| match -> .getMyInt()
+
 #  113| c
-#-----|  -> call to getMyInt
+#-----|  -> call to getMyInt()
 
-#  113| call to getMyInt
-#-----|  -> call to ...
-
-#  113| call to ...
-#-----|  -> var ... = ...
-
-#  113| getMyInt
+#  113| .getMyInt()
 #-----|  -> c
+
+#  113| call to getMyInt()
+#-----|  -> var ... = ...
 
 #  114| var ... = ...
 #-----|  -> n4
 
 #  114| n4
-#-----| match -> getMyInt
-
-#  114| n4
 #-----|  -> n5
 
-#  114| .self
-#-----|  -> call to getMyInt
+#  114| n4
+#-----| match -> .getMyInt()
 
-#  114| call to getMyInt
-#-----|  -> call to ...
-
-#  114| call to ...
-#-----|  -> var ... = ...
-
-#  114| getMyInt
+#  114| c
 #-----|  -> .self
+
+#  114| .self
+#-----|  -> call to getMyInt()
+
+#  114| .getMyInt()
+#-----|  -> c
+
+#  114| call to getMyInt()
+#-----|  -> var ... = ...
 
 #  116| var ... = ...
 #-----|  -> n5
 
 #  116| n5
-#-----| match -> param
+#-----|  -> n6
 
 #  116| n5
-#-----|  -> n6
+#-----| match -> param
 
 #  116| param
 #-----|  -> getter for .myInt
@@ -1008,10 +1170,13 @@ cfg.swift:
 #-----|  -> n6
 
 #  117| n6
-#-----| match -> .self
+#-----|  -> n7
 
 #  117| n6
-#-----|  -> n7
+#-----| match -> param
+
+#  117| param
+#-----|  -> .self
 
 #  117| .self
 #-----|  -> getter for .myInt
@@ -1023,52 +1188,49 @@ cfg.swift:
 #-----|  -> n7
 
 #  118| n7
-#-----| match -> getMyInt
-
-#  118| n7
 #-----|  -> n8
 
+#  118| n7
+#-----| match -> .getMyInt()
+
 #  118| param
-#-----|  -> call to getMyInt
+#-----|  -> call to getMyInt()
 
-#  118| call to getMyInt
-#-----|  -> call to ...
-
-#  118| call to ...
-#-----|  -> var ... = ...
-
-#  118| getMyInt
+#  118| .getMyInt()
 #-----|  -> param
+
+#  118| call to getMyInt()
+#-----|  -> var ... = ...
 
 #  119| var ... = ...
 #-----|  -> n8
 
 #  119| n8
-#-----| match -> getMyInt
-
-#  119| n8
 #-----|  -> n9
 
-#  119| .self
-#-----|  -> call to getMyInt
+#  119| n8
+#-----| match -> .getMyInt()
 
-#  119| call to getMyInt
-#-----|  -> call to ...
-
-#  119| call to ...
-#-----|  -> var ... = ...
-
-#  119| getMyInt
+#  119| param
 #-----|  -> .self
+
+#  119| .self
+#-----|  -> call to getMyInt()
+
+#  119| .getMyInt()
+#-----|  -> param
+
+#  119| call to getMyInt()
+#-----|  -> var ... = ...
 
 #  121| var ... = ...
 #-----|  -> n9
 
 #  121| n9
-#-----| match -> inoutParam
+#-----|  -> n10
 
 #  121| n9
-#-----|  -> n10
+#-----| match -> inoutParam
 
 #  121| (C) ...
 #-----|  -> getter for .myInt
@@ -1083,10 +1245,13 @@ cfg.swift:
 #-----|  -> n10
 
 #  122| n10
-#-----| match -> .self
+#-----|  -> n11
 
 #  122| n10
-#-----|  -> n11
+#-----| match -> inoutParam
+
+#  122| inoutParam
+#-----|  -> .self
 
 #  122| (C) ...
 #-----|  -> getter for .myInt
@@ -1101,58 +1266,55 @@ cfg.swift:
 #-----|  -> n11
 
 #  123| n11
-#-----| match -> getMyInt
-
-#  123| n11
 #-----|  -> n12
 
+#  123| n11
+#-----| match -> .getMyInt()
+
 #  123| (C) ...
-#-----|  -> call to getMyInt
+#-----|  -> call to getMyInt()
 
 #  123| inoutParam
 #-----|  -> (C) ...
 
-#  123| call to getMyInt
-#-----|  -> call to ...
-
-#  123| call to ...
-#-----|  -> var ... = ...
-
-#  123| getMyInt
+#  123| .getMyInt()
 #-----|  -> inoutParam
+
+#  123| call to getMyInt()
+#-----|  -> var ... = ...
 
 #  124| var ... = ...
 #-----|  -> n12
 
 #  124| n12
-#-----| match -> getMyInt
-
-#  124| n12
 #-----|  -> n13
 
+#  124| n12
+#-----| match -> .getMyInt()
+
+#  124| inoutParam
+#-----|  -> .self
+
 #  124| (C) ...
-#-----|  -> call to getMyInt
+#-----|  -> call to getMyInt()
 
 #  124| .self
 #-----|  -> (C) ...
 
-#  124| call to getMyInt
-#-----|  -> call to ...
+#  124| .getMyInt()
+#-----|  -> inoutParam
 
-#  124| call to ...
+#  124| call to getMyInt()
 #-----|  -> var ... = ...
-
-#  124| getMyInt
-#-----|  -> .self
 
 #  126| var ... = ...
 #-----|  -> n13
 
 #  126| n13
-#-----| match -> opt
+#-----|  -> n14
 
 #  126| n13
-#-----|  -> n14
+#-----| match -> opt
 
 #  126| opt
 #-----|  -> ...!
@@ -1167,10 +1329,16 @@ cfg.swift:
 #-----|  -> n14
 
 #  127| n14
-#-----| match -> .self
+#-----|  -> n15
 
 #  127| n14
-#-----|  -> n15
+#-----| match -> opt
+
+#  127| opt
+#-----|  -> ...!
+
+#  127| ...!
+#-----|  -> .self
 
 #  127| .self
 #-----|  -> getter for .myInt
@@ -1182,55 +1350,55 @@ cfg.swift:
 #-----|  -> n15
 
 #  128| n15
-#-----| match -> getMyInt
+#-----|  -> n16
 
 #  128| n15
-#-----|  -> n16
+#-----| match -> .getMyInt()
 
 #  128| opt
 #-----|  -> ...!
 
 #  128| ...!
-#-----|  -> call to getMyInt
+#-----|  -> call to getMyInt()
 
-#  128| call to getMyInt
-#-----|  -> call to ...
-
-#  128| call to ...
-#-----|  -> var ... = ...
-
-#  128| getMyInt
+#  128| .getMyInt()
 #-----|  -> opt
+
+#  128| call to getMyInt()
+#-----|  -> var ... = ...
 
 #  129| var ... = ...
 #-----|  -> n16
 
 #  129| n16
-#-----| match -> getMyInt
-
-#  129| n16
 #-----|  -> n17
 
-#  129| .self
-#-----|  -> call to getMyInt
+#  129| n16
+#-----| match -> .getMyInt()
 
-#  129| call to getMyInt
-#-----|  -> call to ...
+#  129| opt
+#-----|  -> ...!
 
-#  129| call to ...
-#-----|  -> var ... = ...
-
-#  129| getMyInt
+#  129| ...!
 #-----|  -> .self
+
+#  129| .self
+#-----|  -> call to getMyInt()
+
+#  129| .getMyInt()
+#-----|  -> opt
+
+#  129| call to getMyInt()
+#-----|  -> var ... = ...
 
 #  131| var ... = ...
 #-----|  -> n17
 
 #  131| n17
-#-----| match -> opt
+#-----|  -> n18
 
 #  131| n17
-#-----|  -> n18
+#-----| match -> opt
 
 #  131| opt
 #-----|  -> ...?
@@ -1251,10 +1419,16 @@ cfg.swift:
 #-----|  -> n18
 
 #  132| n18
-#-----| match -> .self
+#-----|  -> n19
 
 #  132| n18
-#-----|  -> n19
+#-----| match -> opt
+
+#  132| opt
+#-----|  -> ...?
+
+#  132| ...?
+#-----|  -> .self
 
 #  132| .self
 #-----|  -> getter for .myInt
@@ -1272,19 +1446,19 @@ cfg.swift:
 #-----|  -> n19
 
 #  133| n19
-#-----| match -> getMyInt
+#-----|  -> n20
 
 #  133| n19
-#-----|  -> n20
+#-----| match -> .getMyInt()
 
 #  133| opt
 #-----|  -> ...?
 
 #  133| ...?
-#-----|  -> call to getMyInt
+#-----|  -> call to getMyInt()
 
-#  133| call to getMyInt
-#-----|  -> call to ...
+#  133| .getMyInt()
+#-----|  -> opt
 
 #  133| (Int?) ...
 #-----|  -> OptionalEvaluationExpr
@@ -1292,26 +1466,29 @@ cfg.swift:
 #  133| OptionalEvaluationExpr
 #-----|  -> var ... = ...
 
-#  133| call to ...
+#  133| call to getMyInt()
 #-----|  -> (Int?) ...
-
-#  133| getMyInt
-#-----|  -> opt
 
 #  134| var ... = ...
 #-----|  -> n20
 
 #  134| n20
-#-----| match -> getMyInt
+#-----|  -> exit testMemberRef(param:inoutParam:opt:) (normal)
 
 #  134| n20
-#-----|  -> exit testMemberRef (normal)
+#-----| match -> .getMyInt()
+
+#  134| opt
+#-----|  -> ...?
+
+#  134| ...?
+#-----|  -> .self
 
 #  134| .self
-#-----|  -> call to getMyInt
+#-----|  -> call to getMyInt()
 
-#  134| call to getMyInt
-#-----|  -> call to ...
+#  134| .getMyInt()
+#-----|  -> opt
 
 #  134| (Int?) ...
 #-----|  -> OptionalEvaluationExpr
@@ -1319,25 +1496,22 @@ cfg.swift:
 #  134| OptionalEvaluationExpr
 #-----|  -> var ... = ...
 
-#  134| call to ...
+#  134| call to getMyInt()
 #-----|  -> (Int?) ...
 
-#  134| getMyInt
-#-----|  -> .self
+#  137| enter patterns(x:)
+#-----|  -> patterns(x:)
 
-#  137| enter patterns
-#-----|  -> patterns
+#  137| exit patterns(x:)
 
-#  137| exit patterns
+#  137| exit patterns(x:) (normal)
+#-----|  -> exit patterns(x:)
 
-#  137| exit patterns (normal)
-#-----|  -> exit patterns
-
-#  137| patterns
+#  137| patterns(x:)
 #-----|  -> x
 
 #  137| x
-#-----|  -> ...
+#-----|  -> ....(_:_:)
 
 #  138| for ... in ... { ... }
 #-----| non-empty -> _
@@ -1349,20 +1523,17 @@ cfg.swift:
 #  138| 0
 #-----|  -> 10
 
-#  138| ... call to ... ...
+#  138| ... ....(_:_:) ...
 #-----|  -> for ... in ... { ... }
 
-#  138| ...
+#  138| ....(_:_:)
 #-----|  -> Int.Type
 
 #  138| Int.Type
-#-----|  -> call to ...
-
-#  138| call to ...
 #-----|  -> 0
 
 #  138| 10
-#-----|  -> ... call to ... ...
+#-----|  -> ... ....(_:_:) ...
 
 #  138| { ... }
 #-----|  -> for ... in ... { ... }
@@ -1374,77 +1545,73 @@ cfg.swift:
 #-----|  -> case ...
 
 #  141| case ...
-#-----|  -> 0
+#-----|  -> =~ ...
 
 #  141| 0
+#-----|  -> =~ ...
+
+#  141| =~ ...
 #-----|  -> 0
 
-#  141| 0
-#-----| no-match -> 1
+#  141| =~ ...
+#-----| no-match -> =~ ...
 #-----| match -> true
 
-#  141| 0
-#-----|  -> 0
-
 #  141| 1
+#-----|  -> =~ ...
+
+#  141| =~ ...
 #-----|  -> 1
 
-#  141| 1
+#  141| =~ ...
 #-----| match -> true
 #-----| no-match -> case ...
 
-#  141| 1
-#-----|  -> 1
-
 #  142| return ...
-#-----| return -> exit patterns (normal)
+#-----| return -> exit patterns(x:) (normal)
 
 #  142| true
 #-----|  -> return ...
 
 #  144| case ...
-#-----|  -> x
+#-----|  -> =~ ... where ...
 
-#  144| x
-#-----| match -> true
+#  144| =~ ...
+#-----| match, no-match -> ... .&&(_:_:) ...
 #-----| no-match -> case ...
 
 #  144| x
+#-----|  -> =~ ...
+
+#  144| =~ ... where ...
 #-----|  -> x
 
-#  144| x
-#-----|  -> x
-
-#  145| return ...
-#-----| return -> exit patterns (normal)
-
-#  145| true
-#-----|  -> return ...
-
-#  146| _
-#-----|  -> _
+#  144| ... .&&(_:_:) ...
 
 #  146| _
 #-----| match -> false
+
+#  146| _
+#-----|  -> _
 
 #  146| case ...
 #-----|  -> _
 
 #  147| return ...
-#-----| return -> exit patterns (normal)
+#-----| return -> exit patterns(x:) (normal)
 
 #  147| false
 #-----|  -> return ...
 
-#  163| enter testDefer
-#-----|  -> testDefer
+#  163| enter testDefer(x:)
+#-----|  -> testDefer(x:)
 
-#  163| exit testDefer
+#  163| exit testDefer(x:)
 
-#  163| exit testDefer (normal)
-#-----|  -> exit testDefer
+#  163| exit testDefer(x:) (normal)
+#-----|  -> exit testDefer(x:)
 
-#  163| testDefer
+#  163| testDefer(x:)
 #-----|  -> x
 
 #  163| x
@@ -1453,17 +1620,17 @@ cfg.swift:
 #  165| defer { ... }
 #-----|  -> defer { ... }
 
-#  166| print
+#  166| print(_:separator:terminator:)
 #-----|  -> 4
 
-#  166| call to print
-#-----|  -> exit testDefer (normal)
+#  166| call to print(_:separator:terminator:)
+#-----|  -> exit testDefer(x:) (normal)
 
 #  166| default separator
 #-----|  -> default terminator
 
 #  166| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  166| (Any) ...
 #-----|  -> [...]
@@ -1472,25 +1639,25 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  166| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  166| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  169| defer { ... }
 #-----|  -> defer { ... }
 
-#  170| print
+#  170| print(_:separator:terminator:)
 #-----|  -> 3
 
-#  170| call to print
-#-----|  -> print
+#  170| call to print(_:separator:terminator:)
+#-----|  -> print(_:separator:terminator:)
 
 #  170| default separator
 #-----|  -> default terminator
 
 #  170| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  170| (Any) ...
 #-----|  -> [...]
@@ -1499,25 +1666,25 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  170| [...]
-#-----|  -> default separator
-
-#  170| [...]
 #-----|  -> [...]
 
-#  173| defer { ... }
-#-----|  -> print
+#  170| [...]
+#-----|  -> default separator
 
-#  174| print
+#  173| defer { ... }
+#-----|  -> print(_:separator:terminator:)
+
+#  174| print(_:separator:terminator:)
 #-----|  -> 1
 
-#  174| call to print
+#  174| call to print(_:separator:terminator:)
 #-----|  -> defer { ... }
 
 #  174| default separator
 #-----|  -> default terminator
 
 #  174| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  174| (Any) ...
 #-----|  -> [...]
@@ -1526,25 +1693,25 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  174| [...]
-#-----|  -> default separator
-
-#  174| [...]
 #-----|  -> [...]
 
-#  175| defer { ... }
-#-----|  -> print
+#  174| [...]
+#-----|  -> default separator
 
-#  176| print
+#  175| defer { ... }
+#-----|  -> print(_:separator:terminator:)
+
+#  176| print(_:separator:terminator:)
 #-----|  -> 2
 
-#  176| call to print
-#-----|  -> print
+#  176| call to print(_:separator:terminator:)
+#-----|  -> print(_:separator:terminator:)
 
 #  176| default separator
 #-----|  -> default terminator
 
 #  176| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  176| (Any) ...
 #-----|  -> [...]
@@ -1553,20 +1720,20 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  176| [...]
-#-----|  -> default separator
-
-#  176| [...]
 #-----|  -> [...]
 
-#  181| enter m1
-#-----|  -> m1
+#  176| [...]
+#-----|  -> default separator
 
-#  181| exit m1
+#  181| enter m1(x:)
+#-----|  -> m1(x:)
 
-#  181| exit m1 (normal)
-#-----|  -> exit m1
+#  181| exit m1(x:)
 
-#  181| m1
+#  181| exit m1(x:) (normal)
+#-----|  -> exit m1(x:)
+
+#  181| m1(x:)
 #-----|  -> x
 
 #  181| x
@@ -1578,45 +1745,42 @@ cfg.swift:
 #  182| x
 #-----|  -> 2
 
-#  182| ... call to > ...
-#-----| true -> print
+#  182| ... .>(_:_:) ...
+#-----| true -> print(_:separator:terminator:)
 #-----| false -> if ... then { ... } else { ... }
 
 #  182| StmtCondition
-#-----|  -> >
+#-----|  -> .>(_:_:)
 
-#  182| >
+#  182| .>(_:_:)
 #-----|  -> Int.Type
 
 #  182| Int.Type
-#-----|  -> call to >
-
-#  182| call to >
 #-----|  -> x
 
 #  182| 2
-#-----|  -> ... call to > ...
+#-----|  -> ... .>(_:_:) ...
 
-#  183| print
+#  183| print(_:separator:terminator:)
 #-----|  -> x is greater than 2
 
-#  183| call to print
-#-----|  -> exit m1 (normal)
+#  183| call to print(_:separator:terminator:)
+#-----|  -> exit m1(x:) (normal)
 
 #  183| default separator
 #-----|  -> default terminator
 
 #  183| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  183| (Any) ...
 #-----|  -> [...]
 
 #  183| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  183| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  183| x is greater than 2
 #-----|  -> (Any) ...
@@ -1627,132 +1791,123 @@ cfg.swift:
 #  185| x
 #-----|  -> 2
 
-#  185| ... call to <= ...
-#-----| false -> [false] ... call to && ...
+#  185| ... .<=(_:_:) ...
+#-----| false -> [false] ... .&&(_:_:) ...
 #-----| true -> { ... }
 
-#  185| ... call to && ...
-#-----| exception -> exit m1 (normal)
-#-----| false -> [false] ... call to && ...
+#  185| ... .&&(_:_:) ...
+#-----| exception -> exit m1(x:) (normal)
+#-----| false -> [false] ... .&&(_:_:) ...
 #-----| true -> { ... }
 
-#  185| [false] ... call to && ...
-#-----| exception -> exit m1 (normal)
-#-----| false -> [false] ... call to && ...
+#  185| [false] ... .&&(_:_:) ...
+#-----| exception -> exit m1(x:) (normal)
+#-----| false -> [false] ... .&&(_:_:) ...
 
-#  185| ... call to && ...
-#-----| exception -> exit m1 (normal)
-#-----| true -> print
-#-----| false -> print
+#  185| ... .&&(_:_:) ...
+#-----| exception -> exit m1(x:) (normal)
+#-----| true -> print(_:separator:terminator:)
+#-----| false -> print(_:separator:terminator:)
 
 #  185| StmtCondition
-#-----|  -> <=
+#-----|  -> .<=(_:_:)
 
-#  185| [false] ... call to && ...
-#-----| exception -> exit m1 (normal)
-#-----| false -> print
+#  185| [false] ... .&&(_:_:) ...
+#-----| exception -> exit m1(x:) (normal)
+#-----| false -> print(_:separator:terminator:)
 
-#  185| <=
+#  185| .<=(_:_:)
 #-----|  -> Int.Type
 
 #  185| Int.Type
-#-----|  -> call to <=
-
-#  185| call to <=
 #-----|  -> x
 
 #  185| 2
-#-----|  -> ... call to <= ...
+#-----|  -> ... .<=(_:_:) ...
 
 #  185| x
 #-----|  -> 0
 
-#  185| ... call to > ...
+#  185| ... .>(_:_:) ...
 #-----|  -> return ...
 
 #  185| return ...
-#-----|  -> ... call to && ...
+#-----|  -> ... .&&(_:_:) ...
 
 #  185| { ... }
-#-----|  -> >
+#-----|  -> .>(_:_:)
 
-#  185| >
+#  185| .>(_:_:)
 #-----|  -> Int.Type
 
 #  185| Int.Type
-#-----|  -> call to >
-
-#  185| call to >
 #-----|  -> x
 
 #  185| 0
-#-----|  -> ... call to > ...
+#-----|  -> ... .>(_:_:) ...
 
-#  185| call to ...
+#  185| call to !(_:)
 #-----|  -> return ...
 
 #  185| return ...
-#-----|  -> ... call to && ...
+#-----|  -> ... .&&(_:_:) ...
 
 #  185| { ... }
-#-----|  -> ==
+#-----|  -> .==(_:_:)
 
 #  185| (...)
-#-----|  -> call to ...
+#-----|  -> call to !(_:)
 
 #  185| x
 #-----|  -> 5
 
-#  185| ... call to == ...
+#  185| ... .==(_:_:) ...
 #-----|  -> (...)
 
-#  185| ==
+#  185| .==(_:_:)
 #-----|  -> Int.Type
 
 #  185| Int.Type
-#-----|  -> call to ==
-
-#  185| call to ==
 #-----|  -> x
 
 #  185| 5
-#-----|  -> ... call to == ...
+#-----|  -> ... .==(_:_:) ...
 
-#  186| print
+#  186| print(_:separator:terminator:)
 #-----|  -> x is 1
 
-#  186| call to print
-#-----|  -> exit m1 (normal)
+#  186| call to print(_:separator:terminator:)
+#-----|  -> exit m1(x:) (normal)
 
 #  186| default separator
 #-----|  -> default terminator
 
 #  186| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  186| (Any) ...
 #-----|  -> [...]
 
 #  186| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  186| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  186| x is 1
 #-----|  -> (Any) ...
 
-#  189| print
+#  189| print(_:separator:terminator:)
 #-----|  -> I can't guess the number
 
-#  189| call to print
-#-----|  -> exit m1 (normal)
+#  189| call to print(_:separator:terminator:)
+#-----|  -> exit m1(x:) (normal)
 
 #  189| default separator
 #-----|  -> default terminator
 
 #  189| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  189| (Any) ...
 #-----|  -> [...]
@@ -1761,20 +1916,20 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  189| [...]
-#-----|  -> default separator
-
-#  189| [...]
 #-----|  -> [...]
 
-#  193| enter m2
-#-----|  -> m2
+#  189| [...]
+#-----|  -> default separator
 
-#  193| exit m2
+#  193| enter m2(b:)
+#-----|  -> m2(b:)
 
-#  193| exit m2 (normal)
-#-----|  -> exit m2
+#  193| exit m2(b:)
 
-#  193| m2
+#  193| exit m2(b:) (normal)
+#-----|  -> exit m2(b:)
+
+#  193| m2(b:)
 #-----|  -> b
 
 #  193| b
@@ -1791,26 +1946,26 @@ cfg.swift:
 #-----| false -> 1
 
 #  195| return ...
-#-----| return -> exit m2 (normal)
+#-----| return -> exit m2(b:) (normal)
 
 #  195| 0
 #-----|  -> return ...
 
 #  197| return ...
-#-----| return -> exit m2 (normal)
+#-----| return -> exit m2(b:) (normal)
 
 #  197| 1
 #-----|  -> return ...
 
-#  200| enter m3
-#-----|  -> m3
+#  200| enter m3(x:)
+#-----|  -> m3(x:)
 
-#  200| exit m3
+#  200| exit m3(x:)
 
-#  200| exit m3 (normal)
-#-----|  -> exit m3
+#  200| exit m3(x:) (normal)
+#-----|  -> exit m3(x:)
 
-#  200| m3
+#  200| m3(x:)
 #-----|  -> x
 
 #  200| x
@@ -1825,45 +1980,39 @@ cfg.swift:
 #  201| x
 #-----|  -> (Int) ...
 
-#  201| ... call to < ...
+#  201| ... .<(_:_:) ...
 #-----| true -> x
 #-----| false -> x
 
 #  201| StmtCondition
-#-----|  -> <
+#-----|  -> .<(_:_:)
 
-#  201| <
+#  201| .<(_:_:)
 #-----|  -> Int.Type
 
 #  201| Int.Type
-#-----|  -> call to <
-
-#  201| call to <
 #-----|  -> x
 
 #  201| 0
-#-----|  -> ... call to < ...
+#-----|  -> ... .<(_:_:) ...
 
 #  202| x
-#-----|  -> -
+#-----|  -> .-(_:)
 
 #  202|  ... = ...
 #-----|  -> if ... then { ... }
 
-#  202| -
+#  202| .-(_:)
 #-----|  -> Int.Type
 
 #  202| Int.Type
-#-----|  -> call to -
-
-#  202| call to -
 #-----|  -> x
 
-#  202| call to ...
+#  202| call to -(_:)
 #-----|  ->  ... = ...
 
 #  202| (Int) ...
-#-----|  -> call to ...
+#-----|  -> call to -(_:)
 
 #  202| x
 #-----|  -> (Int) ...
@@ -1877,27 +2026,24 @@ cfg.swift:
 #  203| x
 #-----|  -> (Int) ...
 
-#  203| ... call to > ...
+#  203| ... .>(_:_:) ...
 #-----| true -> x
 #-----| false -> x
 
 #  203| StmtCondition
-#-----|  -> >
+#-----|  -> .>(_:_:)
 
-#  203| >
+#  203| .>(_:_:)
 #-----|  -> Int.Type
 
 #  203| Int.Type
-#-----|  -> call to >
-
-#  203| call to >
 #-----|  -> x
 
 #  203| 10
-#-----|  -> ... call to > ...
+#-----|  -> ... .>(_:_:) ...
 
 #  204| x
-#-----|  -> -
+#-----|  -> .-(_:_:)
 
 #  204|  ... = ...
 #-----|  -> x
@@ -1908,23 +2054,20 @@ cfg.swift:
 #  204| x
 #-----|  -> (Int) ...
 
-#  204| ... call to - ...
+#  204| ... .-(_:_:) ...
 #-----|  ->  ... = ...
 
-#  204| -
+#  204| .-(_:_:)
 #-----|  -> Int.Type
 
 #  204| Int.Type
-#-----|  -> call to -
-
-#  204| call to -
 #-----|  -> x
 
 #  204| 1
-#-----|  -> ... call to - ...
+#-----|  -> ... .-(_:_:) ...
 
 #  207| return ...
-#-----| return -> exit m3 (normal)
+#-----| return -> exit m3(x:) (normal)
 
 #  207| (Int) ...
 #-----|  -> return ...
@@ -1932,15 +2075,15 @@ cfg.swift:
 #  207| x
 #-----|  -> (Int) ...
 
-#  210| enter m4
-#-----|  -> m4
+#  210| enter m4(b1:b2:b3:)
+#-----|  -> m4(b1:b2:b3:)
 
-#  210| exit m4
+#  210| exit m4(b1:b2:b3:)
 
-#  210| exit m4 (normal)
-#-----|  -> exit m4
+#  210| exit m4(b1:b2:b3:) (normal)
+#-----|  -> exit m4(b1:b2:b3:)
 
-#  210| m4
+#  210| m4(b1:b2:b3:)
 #-----|  -> b1
 
 #  210| b1
@@ -1953,7 +2096,7 @@ cfg.swift:
 #-----|  -> b1
 
 #  211| return ...
-#-----| return -> exit m4 (normal)
+#-----| return -> exit m4(b1:b2:b3:) (normal)
 
 #  211| [false] (...)
 #-----| false -> !b2 || !b3
@@ -1988,16 +2131,16 @@ cfg.swift:
 #  211| !b2 || !b3
 #-----|  -> ... ? ... : ...
 
-#  214| conversionsInSplitEntry
+#  214| conversionsInSplitEntry(b:)
 #-----|  -> b
 
-#  214| enter conversionsInSplitEntry
-#-----|  -> conversionsInSplitEntry
+#  214| enter conversionsInSplitEntry(b:)
+#-----|  -> conversionsInSplitEntry(b:)
 
-#  214| exit conversionsInSplitEntry
+#  214| exit conversionsInSplitEntry(b:)
 
-#  214| exit conversionsInSplitEntry (normal)
-#-----|  -> exit conversionsInSplitEntry
+#  214| exit conversionsInSplitEntry(b:) (normal)
+#-----|  -> exit conversionsInSplitEntry(b:)
 
 #  214| b
 #-----|  -> if ... then { ... } else { ... }
@@ -2031,27 +2174,27 @@ cfg.swift:
 #-----| false -> [false] (Bool) ...
 
 #  216| return ...
-#-----| return -> exit conversionsInSplitEntry (normal)
+#-----| return -> exit conversionsInSplitEntry(b:) (normal)
 
 #  216| b
 #-----|  -> return ...
 
 #  219| return ...
-#-----| return -> exit conversionsInSplitEntry (normal)
+#-----| return -> exit conversionsInSplitEntry(b:) (normal)
 
 #  219| !b
 #-----|  -> return ...
 
-#  223| constant_condition
+#  223| constant_condition()
 #-----|  -> if ... then { ... }
 
-#  223| enter constant_condition
-#-----|  -> constant_condition
+#  223| enter constant_condition()
+#-----|  -> constant_condition()
 
-#  223| exit constant_condition
+#  223| exit constant_condition()
 
-#  223| exit constant_condition (normal)
-#-----|  -> exit constant_condition
+#  223| exit constant_condition() (normal)
+#-----|  -> exit constant_condition()
 
 #  224| if ... then { ... }
 #-----|  -> StmtCondition
@@ -2059,22 +2202,22 @@ cfg.swift:
 #  224| StmtCondition
 #-----|  -> true
 
-#  224| [false] call to ...
-#-----| false -> exit constant_condition (normal)
+#  224| [false] call to !(_:)
+#-----| false -> exit constant_condition() (normal)
 
 #  224| true
-#-----| true -> [false] call to ...
+#-----| true -> [false] call to !(_:)
 
-#  229| empty_else
+#  229| empty_else(b:)
 #-----|  -> b
 
-#  229| enter empty_else
-#-----|  -> empty_else
+#  229| enter empty_else(b:)
+#-----|  -> empty_else(b:)
 
-#  229| exit empty_else
+#  229| exit empty_else(b:)
 
-#  229| exit empty_else (normal)
-#-----|  -> exit empty_else
+#  229| exit empty_else(b:) (normal)
+#-----|  -> exit empty_else(b:)
 
 #  229| b
 #-----|  -> if ... then { ... } else { ... }
@@ -2086,70 +2229,70 @@ cfg.swift:
 #-----|  -> b
 
 #  230| b
-#-----| true -> print
+#-----| true -> print(_:separator:terminator:)
 #-----| false -> { ... }
 
-#  231| print
+#  231| print(_:separator:terminator:)
 #-----|  -> true
 
-#  231| call to print
-#-----|  -> print
+#  231| call to print(_:separator:terminator:)
+#-----|  -> print(_:separator:terminator:)
 
 #  231| default separator
 #-----|  -> default terminator
 
 #  231| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  231| (Any) ...
 #-----|  -> [...]
 
 #  231| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  231| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  231| true
 #-----|  -> (Any) ...
 
 #  233| { ... }
-#-----|  -> print
+#-----|  -> print(_:separator:terminator:)
 
-#  234| print
+#  234| print(_:separator:terminator:)
 #-----|  -> done
 
-#  234| call to print
-#-----|  -> exit empty_else (normal)
+#  234| call to print(_:separator:terminator:)
+#-----|  -> exit empty_else(b:) (normal)
 
 #  234| default separator
 #-----|  -> default terminator
 
 #  234| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  234| (Any) ...
 #-----|  -> [...]
 
 #  234| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  234| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  234| done
 #-----|  -> (Any) ...
 
-#  237| disjunct
+#  237| disjunct(b1:b2:)
 #-----|  -> b1
 
-#  237| enter disjunct
-#-----|  -> disjunct
+#  237| enter disjunct(b1:b2:)
+#-----|  -> disjunct(b1:b2:)
 
-#  237| exit disjunct
+#  237| exit disjunct(b1:b2:)
 
-#  237| exit disjunct (normal)
-#-----|  -> exit disjunct
+#  237| exit disjunct(b1:b2:) (normal)
+#-----|  -> exit disjunct(b1:b2:)
 
 #  237| b1
 #-----|  -> b2
@@ -2164,67 +2307,67 @@ cfg.swift:
 #-----|  -> b1
 
 #  238| [false] (...)
-#-----| false -> exit disjunct (normal)
+#-----| false -> exit disjunct(b1:b2:) (normal)
 
 #  238| [true] (...)
-#-----| true -> print
+#-----| true -> print(_:separator:terminator:)
 
 #  238| b1
-#-----| true -> [true] ... call to || ...
+#-----| true -> [true] ... .||(_:_:) ...
 #-----| false -> { ... }
 
-#  238| ... call to || ...
-#-----| exception -> exit disjunct (normal)
+#  238| ... .||(_:_:) ...
+#-----| exception -> exit disjunct(b1:b2:) (normal)
 #-----| false -> [false] (...)
 #-----| true -> [true] (...)
 
-#  238| [true] ... call to || ...
-#-----| exception -> exit disjunct (normal)
+#  238| [true] ... .||(_:_:) ...
+#-----| exception -> exit disjunct(b1:b2:) (normal)
 #-----| true -> [true] (...)
 
 #  238| b2
 #-----|  -> return ...
 
 #  238| return ...
-#-----|  -> ... call to || ...
+#-----|  -> ... .||(_:_:) ...
 
 #  238| { ... }
 #-----|  -> b2
 
-#  239| print
+#  239| print(_:separator:terminator:)
 #-----|  -> b1 or b2
 
-#  239| call to print
-#-----|  -> exit disjunct (normal)
+#  239| call to print(_:separator:terminator:)
+#-----|  -> exit disjunct(b1:b2:) (normal)
 
 #  239| default separator
 #-----|  -> default terminator
 
 #  239| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  239| (Any) ...
 #-----|  -> [...]
 
 #  239| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  239| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  239| b1 or b2
 #-----|  -> (Any) ...
 
-#  243| binaryExprs
+#  243| binaryExprs(a:b:)
 #-----|  -> a
 
-#  243| enter binaryExprs
-#-----|  -> binaryExprs
+#  243| enter binaryExprs(a:b:)
+#-----|  -> binaryExprs(a:b:)
 
-#  243| exit binaryExprs
+#  243| exit binaryExprs(a:b:)
 
-#  243| exit binaryExprs (normal)
-#-----|  -> exit binaryExprs
+#  243| exit binaryExprs(a:b:) (normal)
+#-----|  -> exit binaryExprs(a:b:)
 
 #  243| a
 #-----|  -> b
@@ -2236,476 +2379,583 @@ cfg.swift:
 #-----|  -> c
 
 #  244| c
-#-----| match -> +
+#-----|  -> d
 
 #  244| c
-#-----|  -> d
+#-----| match -> .+(_:_:)
 
 #  244| a
 #-----|  -> b
 
-#  244| ... call to + ...
+#  244| ... .+(_:_:) ...
 #-----|  -> var ... = ...
 
-#  244| +
+#  244| .+(_:_:)
 #-----|  -> Int.Type
 
 #  244| Int.Type
-#-----|  -> call to +
-
-#  244| call to +
 #-----|  -> a
 
 #  244| b
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  245| var ... = ...
 #-----|  -> d
 
 #  245| d
-#-----| match -> -
+#-----|  -> e
 
 #  245| d
-#-----|  -> e
+#-----| match -> .-(_:_:)
 
 #  245| a
 #-----|  -> b
 
-#  245| ... call to - ...
+#  245| ... .-(_:_:) ...
 #-----|  -> var ... = ...
 
-#  245| -
+#  245| .-(_:_:)
 #-----|  -> Int.Type
 
 #  245| Int.Type
-#-----|  -> call to -
-
-#  245| call to -
 #-----|  -> a
 
 #  245| b
-#-----|  -> ... call to - ...
+#-----|  -> ... .-(_:_:) ...
 
 #  246| var ... = ...
 #-----|  -> e
 
 #  246| e
-#-----| match -> *
+#-----|  -> f
 
 #  246| e
-#-----|  -> f
+#-----| match -> .*(_:_:)
 
 #  246| a
 #-----|  -> b
 
-#  246| ... call to * ...
+#  246| ... .*(_:_:) ...
 #-----|  -> var ... = ...
 
-#  246| *
+#  246| .*(_:_:)
 #-----|  -> Int.Type
 
 #  246| Int.Type
-#-----|  -> call to *
-
-#  246| call to *
 #-----|  -> a
 
 #  246| b
-#-----|  -> ... call to * ...
+#-----|  -> ... .*(_:_:) ...
 
 #  247| var ... = ...
 #-----|  -> f
 
 #  247| f
-#-----| match -> /
+#-----|  -> g
 
 #  247| f
-#-----|  -> g
+#-----| match -> ./(_:_:)
 
 #  247| a
 #-----|  -> b
 
-#  247| ... call to / ...
+#  247| ... ./(_:_:) ...
 #-----|  -> var ... = ...
 
-#  247| /
+#  247| ./(_:_:)
 #-----|  -> Int.Type
 
 #  247| Int.Type
-#-----|  -> call to /
-
-#  247| call to /
 #-----|  -> a
 
 #  247| b
-#-----|  -> ... call to / ...
+#-----|  -> ... ./(_:_:) ...
 
 #  248| var ... = ...
 #-----|  -> g
 
 #  248| g
-#-----| match -> %
+#-----|  -> h
 
 #  248| g
-#-----|  -> h
+#-----| match -> .%(_:_:)
 
 #  248| a
 #-----|  -> b
 
-#  248| ... call to % ...
+#  248| ... .%(_:_:) ...
 #-----|  -> var ... = ...
 
-#  248| %
+#  248| .%(_:_:)
 #-----|  -> Int.Type
 
 #  248| Int.Type
-#-----|  -> call to %
-
-#  248| call to %
 #-----|  -> a
 
 #  248| b
-#-----|  -> ... call to % ...
+#-----|  -> ... .%(_:_:) ...
 
 #  249| var ... = ...
 #-----|  -> h
 
 #  249| h
-#-----| match -> &
+#-----|  -> i
 
 #  249| h
-#-----|  -> i
+#-----| match -> .&(_:_:)
 
 #  249| a
 #-----|  -> b
 
-#  249| ... call to & ...
+#  249| ... .&(_:_:) ...
 #-----|  -> var ... = ...
 
-#  249| &
+#  249| .&(_:_:)
 #-----|  -> Int.Type
 
 #  249| Int.Type
-#-----|  -> call to &
-
-#  249| call to &
 #-----|  -> a
 
 #  249| b
-#-----|  -> ... call to & ...
+#-----|  -> ... .&(_:_:) ...
 
 #  250| var ... = ...
 #-----|  -> i
 
 #  250| i
-#-----| match -> |
+#-----|  -> j
 
 #  250| i
-#-----|  -> j
+#-----| match -> .|(_:_:)
 
 #  250| a
 #-----|  -> b
 
-#  250| ... call to | ...
+#  250| ... .|(_:_:) ...
 #-----|  -> var ... = ...
 
-#  250| Int.Type
-#-----|  -> call to |
-
-#  250| call to |
-#-----|  -> a
-
-#  250| |
+#  250| .|(_:_:)
 #-----|  -> Int.Type
 
+#  250| Int.Type
+#-----|  -> a
+
 #  250| b
-#-----|  -> ... call to | ...
+#-----|  -> ... .|(_:_:) ...
 
 #  251| var ... = ...
 #-----|  -> j
 
 #  251| j
-#-----| match -> ^
+#-----|  -> k
 
 #  251| j
-#-----|  -> k
+#-----| match -> .^(_:_:)
 
 #  251| a
 #-----|  -> b
 
-#  251| ... call to ^ ...
+#  251| ... .^(_:_:) ...
 #-----|  -> var ... = ...
 
-#  251| Int.Type
-#-----|  -> call to ^
-
-#  251| ^
+#  251| .^(_:_:)
 #-----|  -> Int.Type
 
-#  251| call to ^
+#  251| Int.Type
 #-----|  -> a
 
 #  251| b
-#-----|  -> ... call to ^ ...
+#-----|  -> ... .^(_:_:) ...
 
 #  252| var ... = ...
 #-----|  -> k
 
 #  252| k
-#-----| match -> <<
+#-----|  -> l
 
 #  252| k
-#-----|  -> l
+#-----| match -> .<<(_:_:)
 
 #  252| a
 #-----|  -> b
 
-#  252| ... call to << ...
+#  252| ... .<<(_:_:) ...
 #-----|  -> var ... = ...
 
-#  252| <<
+#  252| .<<(_:_:)
 #-----|  -> Int.Type
 
 #  252| Int.Type
-#-----|  -> call to <<
-
-#  252| call to <<
 #-----|  -> a
 
 #  252| b
-#-----|  -> ... call to << ...
+#-----|  -> ... .<<(_:_:) ...
 
 #  253| var ... = ...
 #-----|  -> l
 
 #  253| l
-#-----| match -> >>
+#-----|  -> o
 
 #  253| l
-#-----|  -> o
+#-----| match -> .>>(_:_:)
 
 #  253| a
 #-----|  -> b
 
-#  253| ... call to >> ...
+#  253| ... .>>(_:_:) ...
 #-----|  -> var ... = ...
 
-#  253| >>
+#  253| .>>(_:_:)
 #-----|  -> Int.Type
 
 #  253| Int.Type
-#-----|  -> call to >>
-
-#  253| call to >>
 #-----|  -> a
 
 #  253| b
-#-----|  -> ... call to >> ...
+#-----|  -> ... .>>(_:_:) ...
 
 #  254| var ... = ...
 #-----|  -> o
 
 #  254| o
-#-----| match -> ==
+#-----|  -> p
 
 #  254| o
-#-----|  -> p
+#-----| match -> .==(_:_:)
 
 #  254| a
 #-----|  -> b
 
-#  254| ... call to == ...
+#  254| ... .==(_:_:) ...
 #-----|  -> var ... = ...
 
-#  254| ==
+#  254| .==(_:_:)
 #-----|  -> Int.Type
 
 #  254| Int.Type
-#-----|  -> call to ==
-
-#  254| call to ==
 #-----|  -> a
 
 #  254| b
-#-----|  -> ... call to == ...
+#-----|  -> ... .==(_:_:) ...
 
 #  255| var ... = ...
 #-----|  -> p
 
 #  255| p
-#-----| match -> !=
+#-----|  -> q
 
 #  255| p
-#-----|  -> q
+#-----| match -> .!=(_:_:)
 
 #  255| a
 #-----|  -> b
 
-#  255| ... call to != ...
+#  255| ... .!=(_:_:) ...
 #-----|  -> var ... = ...
 
-#  255| !=
+#  255| .!=(_:_:)
 #-----|  -> Int.Type
 
 #  255| Int.Type
-#-----|  -> call to !=
-
-#  255| call to !=
 #-----|  -> a
 
 #  255| b
-#-----|  -> ... call to != ...
+#-----|  -> ... .!=(_:_:) ...
 
 #  256| var ... = ...
 #-----|  -> q
 
 #  256| q
-#-----| match -> <
+#-----|  -> r
 
 #  256| q
-#-----|  -> r
+#-----| match -> .<(_:_:)
 
 #  256| a
 #-----|  -> b
 
-#  256| ... call to < ...
+#  256| ... .<(_:_:) ...
 #-----|  -> var ... = ...
 
-#  256| <
+#  256| .<(_:_:)
 #-----|  -> Int.Type
 
 #  256| Int.Type
-#-----|  -> call to <
-
-#  256| call to <
 #-----|  -> a
 
 #  256| b
-#-----|  -> ... call to < ...
+#-----|  -> ... .<(_:_:) ...
 
 #  257| var ... = ...
 #-----|  -> r
 
 #  257| r
-#-----| match -> <=
+#-----|  -> s
 
 #  257| r
-#-----|  -> s
+#-----| match -> .<=(_:_:)
 
 #  257| a
 #-----|  -> b
 
-#  257| ... call to <= ...
+#  257| ... .<=(_:_:) ...
 #-----|  -> var ... = ...
 
-#  257| <=
+#  257| .<=(_:_:)
 #-----|  -> Int.Type
 
 #  257| Int.Type
-#-----|  -> call to <=
-
-#  257| call to <=
 #-----|  -> a
 
 #  257| b
-#-----|  -> ... call to <= ...
+#-----|  -> ... .<=(_:_:) ...
 
 #  258| var ... = ...
 #-----|  -> s
 
 #  258| s
-#-----| match -> >
+#-----|  -> t
 
 #  258| s
-#-----|  -> t
+#-----| match -> .>(_:_:)
 
 #  258| a
 #-----|  -> b
 
-#  258| ... call to > ...
+#  258| ... .>(_:_:) ...
 #-----|  -> var ... = ...
 
-#  258| >
+#  258| .>(_:_:)
 #-----|  -> Int.Type
 
 #  258| Int.Type
-#-----|  -> call to >
-
-#  258| call to >
 #-----|  -> a
 
 #  258| b
-#-----|  -> ... call to > ...
+#-----|  -> ... .>(_:_:) ...
 
 #  259| var ... = ...
 #-----|  -> t
 
 #  259| t
-#-----| match -> >=
+#-----|  -> exit binaryExprs(a:b:) (normal)
 
 #  259| t
-#-----|  -> exit binaryExprs (normal)
+#-----| match -> .>=(_:_:)
 
 #  259| a
 #-----|  -> b
 
-#  259| ... call to >= ...
+#  259| ... .>=(_:_:) ...
 #-----|  -> var ... = ...
 
-#  259| >=
+#  259| .>=(_:_:)
 #-----|  -> Int.Type
 
 #  259| Int.Type
-#-----|  -> call to >=
-
-#  259| call to >=
 #-----|  -> a
 
 #  259| b
-#-----|  -> ... call to >= ...
+#-----|  -> ... .>=(_:_:) ...
 
-#  262| enter interpolatedString
-#-----|  -> interpolatedString
+#  262| enter interpolatedString(x:y:)
+#-----|  -> interpolatedString(x:y:)
 
-#  262| exit interpolatedString
+#  262| exit interpolatedString(x:y:)
 
-#  262| exit interpolatedString (normal)
-#-----|  -> exit interpolatedString
+#  262| exit interpolatedString(x:y:) (normal)
+#-----|  -> exit interpolatedString(x:y:)
 
-#  262| interpolatedString
+#  262| interpolatedString(x:y:)
 #-----|  -> x
 
 #  262| x
 #-----|  -> y
 
 #  262| y
-#-----|  -> "..."
 
 #  263| return ...
-#-----| return -> exit interpolatedString (normal)
+#-----| return -> exit interpolatedString(x:y:) (normal)
+
+#  263| 
+#-----|  -> call to appendLiteral(_:)
 
 #  263| "..."
 #-----|  -> return ...
 
-#  266| enter testSubscriptExpr
-#-----|  -> testSubscriptExpr
+#  263| OpaqueValueExpr
+#-----|  -> .appendLiteral(_:)
 
-#  266| exit testSubscriptExpr
+#  263| TapExpr
+#-----|  -> "..."
 
-#  266| exit testSubscriptExpr (normal)
-#-----|  -> exit testSubscriptExpr
+#  263| call to appendLiteral(_:)
+#-----|  -> .appendInterpolation(_:)
 
-#  266| testSubscriptExpr
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> 
+
+#  263| .appendLiteral(_:)
+#-----|  -> $interpolation
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> x
+
+#  263| .appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> .appendLiteral(_:)
+
+#  263| x
+#-----|  -> call to appendInterpolation(_:)
+
+#  263|  + 
+#-----|  -> call to appendLiteral(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  ->  + 
+
+#  263| .appendLiteral(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendLiteral(_:)
+#-----|  -> .appendInterpolation(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> y
+
+#  263| .appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> .appendLiteral(_:)
+
+#  263| y
+#-----|  -> call to appendInterpolation(_:)
+
+#  263|  is equal to 
+#-----|  -> call to appendLiteral(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  ->  is equal to 
+
+#  263| .appendLiteral(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendLiteral(_:)
+#-----|  -> .appendInterpolation(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> .+(_:_:)
+
+#  263| .appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> .appendLiteral(_:)
+
+#  263| x
+#-----|  -> y
+
+#  263| ... .+(_:_:) ...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| .+(_:_:)
+#-----|  -> Int.Type
+
+#  263| Int.Type
+#-----|  -> x
+
+#  263| y
+#-----|  -> ... .+(_:_:) ...
+
+#  263|  and here is a zero: 
+#-----|  -> call to appendLiteral(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  ->  and here is a zero: 
+
+#  263| .appendLiteral(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendLiteral(_:)
+#-----|  -> .appendInterpolation(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> returnZero()
+
+#  263| .appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> .appendLiteral(_:)
+
+#  263| returnZero()
+#-----|  -> call to returnZero()
+
+#  263| call to returnZero()
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| 
+#-----|  -> call to appendLiteral(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> 
+
+#  263| .appendLiteral(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendLiteral(_:)
+#-----|  -> TapExpr
+
+#  266| enter testSubscriptExpr()
+#-----|  -> testSubscriptExpr()
+
+#  266| exit testSubscriptExpr()
+
+#  266| exit testSubscriptExpr() (normal)
+#-----|  -> exit testSubscriptExpr()
+
+#  266| testSubscriptExpr()
 #-----|  -> a
 
 #  267| var ... = ...
 #-----|  -> a
 
 #  267| a
-#-----| match -> 0
+#-----|  -> a
 
 #  267| a
-#-----|  -> a
+#-----| match -> 0
 
 #  267| [...]
 #-----|  -> var ... = ...
@@ -2753,7 +3003,7 @@ cfg.swift:
 #-----|  -> 0
 
 #  268| setter for  ... = ...
-#-----|  -> +=
+#-----|  -> .+=(_:_:)
 
 #  268| 0
 #-----|  -> ...[...]
@@ -2773,23 +3023,20 @@ cfg.swift:
 #  269| getter for ...[...]
 #-----|  -> &...
 
-#  269| ... call to += ...
-#-----|  -> -=
+#  269| ... .+=(_:_:) ...
+#-----|  -> .-=(_:_:)
 
 #  269| 1
 #-----|  -> getter for ...[...]
 
-#  269| +=
+#  269| .+=(_:_:)
 #-----|  -> Int.Type
 
 #  269| Int.Type
-#-----|  -> call to +=
-
-#  269| call to +=
 #-----|  -> a
 
 #  269| 1
-#-----|  -> ... call to += ...
+#-----|  -> ... .+=(_:_:) ...
 
 #  270| &...
 #-----|  -> 2
@@ -2803,23 +3050,20 @@ cfg.swift:
 #  270| getter for ...[...]
 #-----|  -> &...
 
-#  270| ... call to -= ...
-#-----|  -> *=
+#  270| ... .-=(_:_:) ...
+#-----|  -> .*=(_:_:)
 
 #  270| 2
 #-----|  -> getter for ...[...]
 
-#  270| -=
+#  270| .-=(_:_:)
 #-----|  -> Int.Type
 
 #  270| Int.Type
-#-----|  -> call to -=
-
-#  270| call to -=
 #-----|  -> a
 
 #  270| 1
-#-----|  -> ... call to -= ...
+#-----|  -> ... .-=(_:_:) ...
 
 #  271| &...
 #-----|  -> 3
@@ -2833,23 +3077,20 @@ cfg.swift:
 #  271| getter for ...[...]
 #-----|  -> &...
 
-#  271| ... call to *= ...
-#-----|  -> /=
+#  271| ... .*=(_:_:) ...
+#-----|  -> ./=(_:_:)
 
 #  271| 3
 #-----|  -> getter for ...[...]
 
-#  271| *=
+#  271| .*=(_:_:)
 #-----|  -> Int.Type
 
 #  271| Int.Type
-#-----|  -> call to *=
-
-#  271| call to *=
 #-----|  -> a
 
 #  271| 1
-#-----|  -> ... call to *= ...
+#-----|  -> ... .*=(_:_:) ...
 
 #  272| &...
 #-----|  -> 4
@@ -2863,23 +3104,20 @@ cfg.swift:
 #  272| getter for ...[...]
 #-----|  -> &...
 
-#  272| ... call to /= ...
-#-----|  -> %=
+#  272| ... ./=(_:_:) ...
+#-----|  -> .%=(_:_:)
 
 #  272| 4
 #-----|  -> getter for ...[...]
 
-#  272| /=
+#  272| ./=(_:_:)
 #-----|  -> Int.Type
 
 #  272| Int.Type
-#-----|  -> call to /=
-
-#  272| call to /=
 #-----|  -> a
 
 #  272| 1
-#-----|  -> ... call to /= ...
+#-----|  -> ... ./=(_:_:) ...
 
 #  273| &...
 #-----|  -> 5
@@ -2893,23 +3131,20 @@ cfg.swift:
 #  273| getter for ...[...]
 #-----|  -> &...
 
-#  273| ... call to %= ...
-#-----|  -> &=
+#  273| ... .%=(_:_:) ...
+#-----|  -> .&=(_:_:)
 
 #  273| 5
 #-----|  -> getter for ...[...]
 
-#  273| %=
+#  273| .%=(_:_:)
 #-----|  -> Int.Type
 
 #  273| Int.Type
-#-----|  -> call to %=
-
-#  273| call to %=
 #-----|  -> a
 
 #  273| 1
-#-----|  -> ... call to %= ...
+#-----|  -> ... .%=(_:_:) ...
 
 #  274| &...
 #-----|  -> 6
@@ -2923,23 +3158,20 @@ cfg.swift:
 #  274| getter for ...[...]
 #-----|  -> &...
 
-#  274| ... call to &= ...
-#-----|  -> |=
+#  274| ... .&=(_:_:) ...
+#-----|  -> .|=(_:_:)
 
 #  274| 6
 #-----|  -> getter for ...[...]
 
-#  274| &=
+#  274| .&=(_:_:)
 #-----|  -> Int.Type
 
 #  274| Int.Type
-#-----|  -> call to &=
-
-#  274| call to &=
 #-----|  -> a
 
 #  274| 1
-#-----|  -> ... call to &= ...
+#-----|  -> ... .&=(_:_:) ...
 
 #  275| &...
 #-----|  -> 7
@@ -2953,23 +3185,20 @@ cfg.swift:
 #  275| getter for ...[...]
 #-----|  -> &...
 
-#  275| ... call to |= ...
-#-----|  -> ^=
+#  275| ... .|=(_:_:) ...
+#-----|  -> .^=(_:_:)
 
 #  275| 7
 #-----|  -> getter for ...[...]
 
-#  275| Int.Type
-#-----|  -> call to |=
-
-#  275| call to |=
-#-----|  -> a
-
-#  275| |=
+#  275| .|=(_:_:)
 #-----|  -> Int.Type
 
+#  275| Int.Type
+#-----|  -> a
+
 #  275| 1
-#-----|  -> ... call to |= ...
+#-----|  -> ... .|=(_:_:) ...
 
 #  276| &...
 #-----|  -> 8
@@ -2983,23 +3212,20 @@ cfg.swift:
 #  276| getter for ...[...]
 #-----|  -> &...
 
-#  276| ... call to ^= ...
-#-----|  -> <<=
+#  276| ... .^=(_:_:) ...
+#-----|  -> .<<=(_:_:)
 
 #  276| 8
 #-----|  -> getter for ...[...]
 
-#  276| Int.Type
-#-----|  -> call to ^=
-
-#  276| ^=
+#  276| .^=(_:_:)
 #-----|  -> Int.Type
 
-#  276| call to ^=
+#  276| Int.Type
 #-----|  -> a
 
 #  276| 1
-#-----|  -> ... call to ^= ...
+#-----|  -> ... .^=(_:_:) ...
 
 #  277| &...
 #-----|  -> 9
@@ -3013,23 +3239,20 @@ cfg.swift:
 #  277| getter for ...[...]
 #-----|  -> &...
 
-#  277| ... call to <<= ...
-#-----|  -> >>=
+#  277| ... .<<=(_:_:) ...
+#-----|  -> .>>=(_:_:)
 
 #  277| 9
 #-----|  -> getter for ...[...]
 
-#  277| <<=
+#  277| .<<=(_:_:)
 #-----|  -> Int.Type
 
 #  277| Int.Type
-#-----|  -> call to <<=
-
-#  277| call to <<=
 #-----|  -> a
 
 #  277| 1
-#-----|  -> ... call to <<= ...
+#-----|  -> ... .<<=(_:_:) ...
 
 #  278| &...
 #-----|  -> 10
@@ -3043,32 +3266,29 @@ cfg.swift:
 #  278| getter for ...[...]
 #-----|  -> &...
 
-#  278| ... call to >>= ...
+#  278| ... .>>=(_:_:) ...
 #-----|  -> tupleWithA
 
 #  278| 10
 #-----|  -> getter for ...[...]
 
-#  278| >>=
+#  278| .>>=(_:_:)
 #-----|  -> Int.Type
 
 #  278| Int.Type
-#-----|  -> call to >>=
-
-#  278| call to >>=
 #-----|  -> a
 
 #  278| 1
-#-----|  -> ... call to >>= ...
+#-----|  -> ... .>>=(_:_:) ...
 
 #  280| var ... = ...
 #-----|  -> tupleWithA
 
 #  280| tupleWithA
-#-----| match -> a
+#-----|  -> b
 
 #  280| tupleWithA
-#-----|  -> b
+#-----| match -> a
 
 #  280| (...)
 #-----|  -> var ... = ...
@@ -3152,10 +3372,10 @@ cfg.swift:
 #-----|  -> b
 
 #  282| b
-#-----| match -> 0
+#-----|  -> b
 
 #  282| b
-#-----|  -> b
+#-----| match -> 0
 
 #  282| [...]
 #-----|  -> var ... = ...
@@ -3233,7 +3453,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  284| ...[...]
-#-----|  -> +
+#-----|  -> .+(_:_:)
 
 #  284| setter for  ... = ...
 #-----|  -> b
@@ -3253,23 +3473,20 @@ cfg.swift:
 #  284| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  284| ... call to + ...
+#  284| ... .+(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  284| 0
 #-----|  -> getter for ...[...]
 
-#  284| +
+#  284| .+(_:_:)
 #-----|  -> Int.Type
 
 #  284| Int.Type
-#-----|  -> call to +
-
-#  284| call to +
 #-----|  -> b
 
 #  284| 1
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  285| &...
 #-----|  -> 2
@@ -3278,7 +3495,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  285| ...[...]
-#-----|  -> -
+#-----|  -> .-(_:_:)
 
 #  285| setter for  ... = ...
 #-----|  -> b
@@ -3298,23 +3515,20 @@ cfg.swift:
 #  285| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  285| ... call to - ...
+#  285| ... .-(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  285| 1
 #-----|  -> getter for ...[...]
 
-#  285| -
+#  285| .-(_:_:)
 #-----|  -> Int.Type
 
 #  285| Int.Type
-#-----|  -> call to -
-
-#  285| call to -
 #-----|  -> b
 
 #  285| 1
-#-----|  -> ... call to - ...
+#-----|  -> ... .-(_:_:) ...
 
 #  286| &...
 #-----|  -> 3
@@ -3323,7 +3537,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  286| ...[...]
-#-----|  -> *
+#-----|  -> .*(_:_:)
 
 #  286| setter for  ... = ...
 #-----|  -> b
@@ -3343,23 +3557,20 @@ cfg.swift:
 #  286| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  286| ... call to * ...
+#  286| ... .*(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  286| 2
 #-----|  -> getter for ...[...]
 
-#  286| *
+#  286| .*(_:_:)
 #-----|  -> Int.Type
 
 #  286| Int.Type
-#-----|  -> call to *
-
-#  286| call to *
 #-----|  -> b
 
 #  286| 1
-#-----|  -> ... call to * ...
+#-----|  -> ... .*(_:_:) ...
 
 #  287| &...
 #-----|  -> 4
@@ -3368,7 +3579,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  287| ...[...]
-#-----|  -> /
+#-----|  -> ./(_:_:)
 
 #  287| setter for  ... = ...
 #-----|  -> b
@@ -3388,23 +3599,20 @@ cfg.swift:
 #  287| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  287| ... call to / ...
+#  287| ... ./(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  287| 3
 #-----|  -> getter for ...[...]
 
-#  287| /
+#  287| ./(_:_:)
 #-----|  -> Int.Type
 
 #  287| Int.Type
-#-----|  -> call to /
-
-#  287| call to /
 #-----|  -> b
 
 #  287| 1
-#-----|  -> ... call to / ...
+#-----|  -> ... ./(_:_:) ...
 
 #  288| &...
 #-----|  -> 5
@@ -3413,7 +3621,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  288| ...[...]
-#-----|  -> %
+#-----|  -> .%(_:_:)
 
 #  288| setter for  ... = ...
 #-----|  -> b
@@ -3433,23 +3641,20 @@ cfg.swift:
 #  288| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  288| ... call to % ...
+#  288| ... .%(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  288| 4
 #-----|  -> getter for ...[...]
 
-#  288| %
+#  288| .%(_:_:)
 #-----|  -> Int.Type
 
 #  288| Int.Type
-#-----|  -> call to %
-
-#  288| call to %
 #-----|  -> b
 
 #  288| 1
-#-----|  -> ... call to % ...
+#-----|  -> ... .%(_:_:) ...
 
 #  289| &...
 #-----|  -> 6
@@ -3458,7 +3663,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  289| ...[...]
-#-----|  -> &
+#-----|  -> .&(_:_:)
 
 #  289| setter for  ... = ...
 #-----|  -> b
@@ -3478,23 +3683,20 @@ cfg.swift:
 #  289| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  289| ... call to & ...
+#  289| ... .&(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  289| 5
 #-----|  -> getter for ...[...]
 
-#  289| &
+#  289| .&(_:_:)
 #-----|  -> Int.Type
 
 #  289| Int.Type
-#-----|  -> call to &
-
-#  289| call to &
 #-----|  -> b
 
 #  289| 1
-#-----|  -> ... call to & ...
+#-----|  -> ... .&(_:_:) ...
 
 #  290| &...
 #-----|  -> 7
@@ -3503,7 +3705,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  290| ...[...]
-#-----|  -> |
+#-----|  -> .|(_:_:)
 
 #  290| setter for  ... = ...
 #-----|  -> b
@@ -3523,23 +3725,20 @@ cfg.swift:
 #  290| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  290| ... call to | ...
+#  290| ... .|(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  290| 6
 #-----|  -> getter for ...[...]
 
-#  290| Int.Type
-#-----|  -> call to |
-
-#  290| call to |
-#-----|  -> b
-
-#  290| |
+#  290| .|(_:_:)
 #-----|  -> Int.Type
 
+#  290| Int.Type
+#-----|  -> b
+
 #  290| 1
-#-----|  -> ... call to | ...
+#-----|  -> ... .|(_:_:) ...
 
 #  291| &...
 #-----|  -> 8
@@ -3548,7 +3747,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  291| ...[...]
-#-----|  -> ^
+#-----|  -> .^(_:_:)
 
 #  291| setter for  ... = ...
 #-----|  -> b
@@ -3568,23 +3767,20 @@ cfg.swift:
 #  291| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  291| ... call to ^ ...
+#  291| ... .^(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  291| 7
 #-----|  -> getter for ...[...]
 
-#  291| Int.Type
-#-----|  -> call to ^
-
-#  291| ^
+#  291| .^(_:_:)
 #-----|  -> Int.Type
 
-#  291| call to ^
+#  291| Int.Type
 #-----|  -> b
 
 #  291| 1
-#-----|  -> ... call to ^ ...
+#-----|  -> ... .^(_:_:) ...
 
 #  292| &...
 #-----|  -> 9
@@ -3593,7 +3789,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  292| ...[...]
-#-----|  -> <<
+#-----|  -> .<<(_:_:)
 
 #  292| setter for  ... = ...
 #-----|  -> b
@@ -3613,23 +3809,20 @@ cfg.swift:
 #  292| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  292| ... call to << ...
+#  292| ... .<<(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  292| 8
 #-----|  -> getter for ...[...]
 
-#  292| <<
+#  292| .<<(_:_:)
 #-----|  -> Int.Type
 
 #  292| Int.Type
-#-----|  -> call to <<
-
-#  292| call to <<
 #-----|  -> b
 
 #  292| 1
-#-----|  -> ... call to << ...
+#-----|  -> ... .<<(_:_:) ...
 
 #  293| &...
 #-----|  -> 10
@@ -3638,7 +3831,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  293| ...[...]
-#-----|  -> >>
+#-----|  -> .>>(_:_:)
 
 #  293| setter for  ... = ...
 #-----|  -> (...)
@@ -3658,23 +3851,20 @@ cfg.swift:
 #  293| getter for ...[...]
 #-----|  -> (Int) ...
 
-#  293| ... call to >> ...
+#  293| ... .>>(_:_:) ...
 #-----|  -> setter for  ... = ...
 
 #  293| 9
 #-----|  -> getter for ...[...]
 
-#  293| >>
+#  293| .>>(_:_:)
 #-----|  -> Int.Type
 
 #  293| Int.Type
-#-----|  -> call to >>
-
-#  293| call to >>
 #-----|  -> b
 
 #  293| 1
-#-----|  -> ... call to >> ...
+#-----|  -> ... .>>(_:_:) ...
 
 #  295| var ... = ...
 #-----|  -> a1
@@ -3683,34 +3873,34 @@ cfg.swift:
 #-----|  -> a1
 
 #  295| a1
-#-----| match -> a2
-
-#  295| a1
 #-----|  -> a2
 
-#  295| a2
-#-----| match -> a3
+#  295| a1
+#-----| match -> a2
 
 #  295| a2
 #-----|  -> a3
 
-#  295| a3
-#-----| match -> a4
+#  295| a2
+#-----| match -> a3
 
 #  295| a3
 #-----|  -> a4
 
-#  295| a4
-#-----| match -> a5
+#  295| a3
+#-----| match -> a4
 
 #  295| a4
 #-----|  -> a5
 
-#  295| a5
-#-----| match -> tupleWithA
+#  295| a4
+#-----| match -> a5
 
 #  295| a5
-#-----|  -> +
+#-----|  -> .+(_:_:)
+
+#  295| a5
+#-----| match -> tupleWithA
 
 #  295| ((Int, Int, Int, Int, Int)) ...
 #-----|  -> var ... = ...
@@ -3719,7 +3909,7 @@ cfg.swift:
 #-----|  -> ((Int, Int, Int, Int, Int)) ...
 
 #  296| return ...
-#-----| return -> exit testSubscriptExpr (normal)
+#-----| return -> exit testSubscriptExpr() (normal)
 
 #  296| (...)
 #-----|  -> return ...
@@ -3727,16 +3917,13 @@ cfg.swift:
 #  296| a1
 #-----|  -> b
 
-#  296| ... call to + ...
-#-----|  -> +
+#  296| ... .+(_:_:) ...
+#-----|  -> .+(_:_:)
 
-#  296| +
+#  296| .+(_:_:)
 #-----|  -> Int.Type
 
 #  296| Int.Type
-#-----|  -> call to +
-
-#  296| call to +
 #-----|  -> a1
 
 #  296| &...
@@ -3746,7 +3933,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  296| (Int) ...
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  296| getter for ...[...]
 #-----|  -> (Int) ...
@@ -3757,16 +3944,13 @@ cfg.swift:
 #  296| a2
 #-----|  -> b
 
-#  296| ... call to + ...
-#-----|  -> +
+#  296| ... .+(_:_:) ...
+#-----|  -> .+(_:_:)
 
-#  296| +
+#  296| .+(_:_:)
 #-----|  -> Int.Type
 
 #  296| Int.Type
-#-----|  -> call to +
-
-#  296| call to +
 #-----|  -> a2
 
 #  296| &...
@@ -3776,7 +3960,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  296| (Int) ...
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  296| getter for ...[...]
 #-----|  -> (Int) ...
@@ -3787,16 +3971,13 @@ cfg.swift:
 #  296| a3
 #-----|  -> b
 
-#  296| ... call to + ...
-#-----|  -> +
+#  296| ... .+(_:_:) ...
+#-----|  -> .+(_:_:)
 
-#  296| +
+#  296| .+(_:_:)
 #-----|  -> Int.Type
 
 #  296| Int.Type
-#-----|  -> call to +
-
-#  296| call to +
 #-----|  -> a3
 
 #  296| &...
@@ -3806,7 +3987,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  296| (Int) ...
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  296| getter for ...[...]
 #-----|  -> (Int) ...
@@ -3817,16 +3998,13 @@ cfg.swift:
 #  296| a4
 #-----|  -> b
 
-#  296| ... call to + ...
-#-----|  -> +
+#  296| ... .+(_:_:) ...
+#-----|  -> .+(_:_:)
 
-#  296| +
+#  296| .+(_:_:)
 #-----|  -> Int.Type
 
 #  296| Int.Type
-#-----|  -> call to +
-
-#  296| call to +
 #-----|  -> a4
 
 #  296| &...
@@ -3836,7 +4014,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  296| (Int) ...
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  296| getter for ...[...]
 #-----|  -> (Int) ...
@@ -3847,16 +4025,13 @@ cfg.swift:
 #  296| a5
 #-----|  -> b
 
-#  296| ... call to + ...
+#  296| ... .+(_:_:) ...
 #-----|  -> (...)
 
-#  296| +
+#  296| .+(_:_:)
 #-----|  -> Int.Type
 
 #  296| Int.Type
-#-----|  -> call to +
-
-#  296| call to +
 #-----|  -> a5
 
 #  296| &...
@@ -3866,7 +4041,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  296| (Int) ...
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  296| getter for ...[...]
 #-----|  -> (Int) ...
@@ -3874,15 +4049,15 @@ cfg.swift:
 #  296| 4
 #-----|  -> getter for ...[...]
 
-#  299| enter loop1
-#-----|  -> loop1
+#  299| enter loop1(x:)
+#-----|  -> loop1(x:)
 
-#  299| exit loop1
+#  299| exit loop1(x:)
 
-#  299| exit loop1 (normal)
-#-----|  -> exit loop1
+#  299| exit loop1(x:) (normal)
+#-----|  -> exit loop1(x:)
 
-#  299| loop1
+#  299| loop1(x:)
 #-----|  -> x
 
 #  299| x
@@ -3897,36 +4072,33 @@ cfg.swift:
 #  300| x
 #-----|  -> (Int) ...
 
-#  300| ... call to >= ...
-#-----| false -> exit loop1 (normal)
-#-----| true -> print
+#  300| ... .>=(_:_:) ...
+#-----| false -> exit loop1(x:) (normal)
+#-----| true -> print(_:separator:terminator:)
 
 #  300| StmtCondition
-#-----|  -> >=
+#-----|  -> .>=(_:_:)
 
-#  300| >=
+#  300| .>=(_:_:)
 #-----|  -> Int.Type
 
 #  300| Int.Type
-#-----|  -> call to >=
-
-#  300| call to >=
 #-----|  -> x
 
 #  300| 0
-#-----|  -> ... call to >= ...
+#-----|  -> ... .>=(_:_:) ...
 
-#  301| print
+#  301| print(_:separator:terminator:)
 #-----|  -> x
 
-#  301| call to print
-#-----|  -> -=
+#  301| call to print(_:separator:terminator:)
+#-----|  -> .-=(_:_:)
 
 #  301| default separator
 #-----|  -> default terminator
 
 #  301| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  301| (Any) ...
 #-----|  -> [...]
@@ -3935,10 +4107,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  301| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  301| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  301| x
 #-----|  -> (Int) ...
@@ -3949,30 +4121,27 @@ cfg.swift:
 #  302| x
 #-----|  -> &...
 
-#  302| ... call to -= ...
+#  302| ... .-=(_:_:) ...
 #-----|  -> StmtCondition
 
-#  302| -=
+#  302| .-=(_:_:)
 #-----|  -> Int.Type
 
 #  302| Int.Type
-#-----|  -> call to -=
-
-#  302| call to -=
 #-----|  -> x
 
 #  302| 1
-#-----|  -> ... call to -= ...
+#-----|  -> ... .-=(_:_:) ...
 
-#  306| enter loop2
-#-----|  -> loop2
+#  306| enter loop2(x:)
+#-----|  -> loop2(x:)
 
-#  306| exit loop2
+#  306| exit loop2(x:)
 
-#  306| exit loop2 (normal)
-#-----|  -> exit loop2
+#  306| exit loop2(x:) (normal)
+#-----|  -> exit loop2(x:)
 
-#  306| loop2
+#  306| loop2(x:)
 #-----|  -> x
 
 #  306| x
@@ -3987,36 +4156,33 @@ cfg.swift:
 #  307| x
 #-----|  -> (Int) ...
 
-#  307| ... call to >= ...
-#-----| true -> print
-#-----| false -> print
+#  307| ... .>=(_:_:) ...
+#-----| true -> print(_:separator:terminator:)
+#-----| false -> print(_:separator:terminator:)
 
 #  307| StmtCondition
-#-----|  -> >=
+#-----|  -> .>=(_:_:)
 
-#  307| >=
+#  307| .>=(_:_:)
 #-----|  -> Int.Type
 
 #  307| Int.Type
-#-----|  -> call to >=
-
-#  307| call to >=
 #-----|  -> x
 
 #  307| 0
-#-----|  -> ... call to >= ...
+#-----|  -> ... .>=(_:_:) ...
 
-#  308| print
+#  308| print(_:separator:terminator:)
 #-----|  -> x
 
-#  308| call to print
-#-----|  -> -=
+#  308| call to print(_:separator:terminator:)
+#-----|  -> .-=(_:_:)
 
 #  308| default separator
 #-----|  -> default terminator
 
 #  308| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  308| (Any) ...
 #-----|  -> [...]
@@ -4025,10 +4191,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  308| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  308| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  308| x
 #-----|  -> (Int) ...
@@ -4039,20 +4205,17 @@ cfg.swift:
 #  309| x
 #-----|  -> &...
 
-#  309| ... call to -= ...
+#  309| ... .-=(_:_:) ...
 #-----|  -> if ... then { ... } else { ... }
 
-#  309| -=
+#  309| .-=(_:_:)
 #-----|  -> Int.Type
 
 #  309| Int.Type
-#-----|  -> call to -=
-
-#  309| call to -=
 #-----|  -> x
 
 #  309| 1
-#-----|  -> ... call to -= ...
+#-----|  -> ... .-=(_:_:) ...
 
 #  310| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
@@ -4063,27 +4226,24 @@ cfg.swift:
 #  310| x
 #-----|  -> (Int) ...
 
-#  310| ... call to > ...
+#  310| ... .>(_:_:) ...
 #-----| true -> break
 #-----| false -> if ... then { ... }
 
 #  310| StmtCondition
-#-----|  -> >
+#-----|  -> .>(_:_:)
 
-#  310| >
+#  310| .>(_:_:)
 #-----|  -> Int.Type
 
 #  310| Int.Type
-#-----|  -> call to >
-
-#  310| call to >
 #-----|  -> x
 
 #  310| 100
-#-----|  -> ... call to > ...
+#-----|  -> ... .>(_:_:) ...
 
 #  311| break
-#-----|  -> print
+#-----|  -> print(_:separator:terminator:)
 
 #  313| if ... then { ... }
 #-----|  -> StmtCondition
@@ -4094,39 +4254,36 @@ cfg.swift:
 #  313| x
 #-----|  -> (Int) ...
 
-#  313| ... call to > ...
+#  313| ... .>(_:_:) ...
 #-----| true -> continue
-#-----| false -> print
+#-----| false -> print(_:separator:terminator:)
 
 #  313| StmtCondition
-#-----|  -> >
+#-----|  -> .>(_:_:)
 
-#  313| >
+#  313| .>(_:_:)
 #-----|  -> Int.Type
 
 #  313| Int.Type
-#-----|  -> call to >
-
-#  313| call to >
 #-----|  -> x
 
 #  313| 50
-#-----|  -> ... call to > ...
+#-----|  -> ... .>(_:_:) ...
 
 #  314| continue
 #-----| continue -> StmtCondition
 
-#  316| print
+#  316| print(_:separator:terminator:)
 #-----|  -> Iter
 
-#  316| call to print
+#  316| call to print(_:separator:terminator:)
 #-----|  -> StmtCondition
 
 #  316| default separator
 #-----|  -> default terminator
 
 #  316| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  316| (Any) ...
 #-----|  -> [...]
@@ -4135,22 +4292,22 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  316| [...]
-#-----|  -> default separator
-
-#  316| [...]
 #-----|  -> [...]
 
-#  318| print
+#  316| [...]
+#-----|  -> default separator
+
+#  318| print(_:separator:terminator:)
 #-----|  -> Done
 
-#  318| call to print
-#-----|  -> exit loop2 (normal)
+#  318| call to print(_:separator:terminator:)
+#-----|  -> exit loop2(x:) (normal)
 
 #  318| default separator
 #-----|  -> default terminator
 
 #  318| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  318| (Any) ...
 #-----|  -> [...]
@@ -4159,20 +4316,20 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  318| [...]
-#-----|  -> default separator
-
-#  318| [...]
 #-----|  -> [...]
 
-#  321| enter labeledLoop
-#-----|  -> labeledLoop
+#  318| [...]
+#-----|  -> default separator
 
-#  321| exit labeledLoop
+#  321| enter labeledLoop(x:)
+#-----|  -> labeledLoop(x:)
 
-#  321| exit labeledLoop (normal)
-#-----|  -> exit labeledLoop
+#  321| exit labeledLoop(x:)
 
-#  321| labeledLoop
+#  321| exit labeledLoop(x:) (normal)
+#-----|  -> exit labeledLoop(x:)
+
+#  321| labeledLoop(x:)
 #-----|  -> x
 
 #  321| x
@@ -4187,24 +4344,21 @@ cfg.swift:
 #  322| x
 #-----|  -> (Int) ...
 
-#  322| ... call to >= ...
-#-----| false -> exit labeledLoop (normal)
+#  322| ... .>=(_:_:) ...
+#-----| false -> exit labeledLoop(x:) (normal)
 #-----| true -> while ... { ... }
 
 #  322| StmtCondition
-#-----|  -> >=
+#-----|  -> .>=(_:_:)
 
-#  322| >=
+#  322| .>=(_:_:)
 #-----|  -> Int.Type
 
 #  322| Int.Type
-#-----|  -> call to >=
-
-#  322| call to >=
 #-----|  -> x
 
 #  322| 0
-#-----|  -> ... call to >= ...
+#-----|  -> ... .>=(_:_:) ...
 
 #  323| while ... { ... }
 #-----|  -> StmtCondition
@@ -4215,36 +4369,33 @@ cfg.swift:
 #  323| x
 #-----|  -> (Int) ...
 
-#  323| ... call to >= ...
-#-----| true -> print
-#-----| false -> print
+#  323| ... .>=(_:_:) ...
+#-----| true -> print(_:separator:terminator:)
+#-----| false -> print(_:separator:terminator:)
 
 #  323| StmtCondition
-#-----|  -> >=
+#-----|  -> .>=(_:_:)
 
-#  323| >=
+#  323| .>=(_:_:)
 #-----|  -> Int.Type
 
 #  323| Int.Type
-#-----|  -> call to >=
-
-#  323| call to >=
 #-----|  -> x
 
 #  323| 0
-#-----|  -> ... call to >= ...
+#-----|  -> ... .>=(_:_:) ...
 
-#  324| print
+#  324| print(_:separator:terminator:)
 #-----|  -> x
 
-#  324| call to print
-#-----|  -> -=
+#  324| call to print(_:separator:terminator:)
+#-----|  -> .-=(_:_:)
 
 #  324| default separator
 #-----|  -> default terminator
 
 #  324| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  324| (Any) ...
 #-----|  -> [...]
@@ -4253,10 +4404,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  324| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  324| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  324| x
 #-----|  -> (Int) ...
@@ -4267,20 +4418,17 @@ cfg.swift:
 #  325| x
 #-----|  -> &...
 
-#  325| ... call to -= ...
+#  325| ... .-=(_:_:) ...
 #-----|  -> if ... then { ... } else { ... }
 
-#  325| -=
+#  325| .-=(_:_:)
 #-----|  -> Int.Type
 
 #  325| Int.Type
-#-----|  -> call to -=
-
-#  325| call to -=
 #-----|  -> x
 
 #  325| 1
-#-----|  -> ... call to -= ...
+#-----|  -> ... .-=(_:_:) ...
 
 #  326| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
@@ -4291,27 +4439,24 @@ cfg.swift:
 #  326| x
 #-----|  -> (Int) ...
 
-#  326| ... call to > ...
+#  326| ... .>(_:_:) ...
 #-----| true -> break outer
 #-----| false -> if ... then { ... }
 
 #  326| StmtCondition
-#-----|  -> >
+#-----|  -> .>(_:_:)
 
-#  326| >
+#  326| .>(_:_:)
 #-----|  -> Int.Type
 
 #  326| Int.Type
-#-----|  -> call to >
-
-#  326| call to >
 #-----|  -> x
 
 #  326| 100
-#-----|  -> ... call to > ...
+#-----|  -> ... .>(_:_:) ...
 
 #  327| break outer
-#-----|  -> exit labeledLoop (normal)
+#-----|  -> exit labeledLoop(x:) (normal)
 
 #  329| if ... then { ... }
 #-----|  -> StmtCondition
@@ -4322,39 +4467,36 @@ cfg.swift:
 #  329| x
 #-----|  -> (Int) ...
 
-#  329| ... call to > ...
+#  329| ... .>(_:_:) ...
 #-----| true -> continue inner
-#-----| false -> print
+#-----| false -> print(_:separator:terminator:)
 
 #  329| StmtCondition
-#-----|  -> >
+#-----|  -> .>(_:_:)
 
-#  329| >
+#  329| .>(_:_:)
 #-----|  -> Int.Type
 
 #  329| Int.Type
-#-----|  -> call to >
-
-#  329| call to >
 #-----|  -> x
 
 #  329| 50
-#-----|  -> ... call to > ...
+#-----|  -> ... .>(_:_:) ...
 
 #  330| continue inner
 #-----| continue -> StmtCondition
 
-#  332| print
+#  332| print(_:separator:terminator:)
 #-----|  -> Iter
 
-#  332| call to print
+#  332| call to print(_:separator:terminator:)
 #-----|  -> StmtCondition
 
 #  332| default separator
 #-----|  -> default terminator
 
 #  332| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  332| (Any) ...
 #-----|  -> [...]
@@ -4363,22 +4505,22 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  332| [...]
-#-----|  -> default separator
-
-#  332| [...]
 #-----|  -> [...]
 
-#  334| print
+#  332| [...]
+#-----|  -> default separator
+
+#  334| print(_:separator:terminator:)
 #-----|  -> Done
 
-#  334| call to print
+#  334| call to print(_:separator:terminator:)
 #-----|  -> StmtCondition
 
 #  334| default separator
 #-----|  -> default terminator
 
 #  334| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  334| (Any) ...
 #-----|  -> [...]
@@ -4387,39 +4529,39 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  334| [...]
-#-----|  -> default separator
-
-#  334| [...]
 #-----|  -> [...]
 
-#  338| enter testRepeat
-#-----|  -> testRepeat
+#  334| [...]
+#-----|  -> default separator
 
-#  338| exit testRepeat
+#  338| enter testRepeat(x:)
+#-----|  -> testRepeat(x:)
 
-#  338| exit testRepeat (normal)
-#-----|  -> exit testRepeat
+#  338| exit testRepeat(x:)
 
-#  338| testRepeat
+#  338| exit testRepeat(x:) (normal)
+#-----|  -> exit testRepeat(x:)
+
+#  338| testRepeat(x:)
 #-----|  -> x
 
 #  338| x
 #-----|  -> repeat { ... } while ... 
 
 #  339| repeat { ... } while ... 
-#-----|  -> print
+#-----|  -> print(_:separator:terminator:)
 
-#  340| print
+#  340| print(_:separator:terminator:)
 #-----|  -> x
 
-#  340| call to print
-#-----|  -> -=
+#  340| call to print(_:separator:terminator:)
+#-----|  -> .-=(_:_:)
 
 #  340| default separator
 #-----|  -> default terminator
 
 #  340| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  340| (Any) ...
 #-----|  -> [...]
@@ -4428,10 +4570,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  340| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  340| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  340| x
 #-----|  -> (Int) ...
@@ -4442,20 +4584,17 @@ cfg.swift:
 #  341| x
 #-----|  -> &...
 
-#  341| ... call to -= ...
-#-----|  -> >=
+#  341| ... .-=(_:_:) ...
+#-----|  -> .>=(_:_:)
 
-#  341| -=
+#  341| .-=(_:_:)
 #-----|  -> Int.Type
 
 #  341| Int.Type
-#-----|  -> call to -=
-
-#  341| call to -=
 #-----|  -> x
 
 #  341| 1
-#-----|  -> ... call to -= ...
+#-----|  -> ... .-=(_:_:) ...
 
 #  342| (Int) ...
 #-----|  -> 0
@@ -4463,41 +4602,38 @@ cfg.swift:
 #  342| x
 #-----|  -> (Int) ...
 
-#  342| ... call to >= ...
-#-----| false -> exit testRepeat (normal)
-#-----| true -> print
+#  342| ... .>=(_:_:) ...
+#-----| false -> exit testRepeat(x:) (normal)
+#-----| true -> print(_:separator:terminator:)
 
-#  342| >=
+#  342| .>=(_:_:)
 #-----|  -> Int.Type
 
 #  342| Int.Type
-#-----|  -> call to >=
-
-#  342| call to >=
 #-----|  -> x
 
 #  342| 0
-#-----|  -> ... call to >= ...
+#-----|  -> ... .>=(_:_:) ...
 
-#  345| enter loop_with_identity_expr
-#-----|  -> loop_with_identity_expr
+#  345| enter loop_with_identity_expr()
+#-----|  -> loop_with_identity_expr()
 
-#  345| exit loop_with_identity_expr
+#  345| exit loop_with_identity_expr()
 
-#  345| exit loop_with_identity_expr (normal)
-#-----|  -> exit loop_with_identity_expr
+#  345| exit loop_with_identity_expr() (normal)
+#-----|  -> exit loop_with_identity_expr()
 
-#  345| loop_with_identity_expr
+#  345| loop_with_identity_expr()
 #-----|  -> x
 
 #  346| var ... = ...
 #-----|  -> x
 
 #  346| x
-#-----| match -> 0
+#-----|  -> while ... { ... }
 
 #  346| x
-#-----|  -> while ... { ... }
+#-----| match -> 0
 
 #  346| 0
 #-----|  -> var ... = ...
@@ -4506,13 +4642,13 @@ cfg.swift:
 #-----|  -> StmtCondition
 
 #  347| StmtCondition
-#-----|  -> <
+#-----|  -> .<(_:_:)
 
 #  347| [false] (...)
-#-----| false -> exit loop_with_identity_expr (normal)
+#-----| false -> exit loop_with_identity_expr() (normal)
 
 #  347| [true] (...)
-#-----| true -> +=
+#-----| true -> .+=(_:_:)
 
 #  347| (Int) ...
 #-----|  -> 10
@@ -4520,21 +4656,18 @@ cfg.swift:
 #  347| x
 #-----|  -> (Int) ...
 
-#  347| ... call to < ...
+#  347| ... .<(_:_:) ...
 #-----| false -> [false] (...)
 #-----| true -> [true] (...)
 
-#  347| <
+#  347| .<(_:_:)
 #-----|  -> Int.Type
 
 #  347| Int.Type
-#-----|  -> call to <
-
-#  347| call to <
 #-----|  -> x
 
 #  347| 10
-#-----|  -> ... call to < ...
+#-----|  -> ... .<(_:_:) ...
 
 #  348| &...
 #-----|  -> 1
@@ -4542,34 +4675,34 @@ cfg.swift:
 #  348| x
 #-----|  -> &...
 
-#  348| ... call to += ...
+#  348| ... .+=(_:_:) ...
 #-----|  -> StmtCondition
 
-#  348| +=
+#  348| .+=(_:_:)
 #-----|  -> Int.Type
 
 #  348| Int.Type
-#-----|  -> call to +=
-
-#  348| call to +=
 #-----|  -> x
 
 #  348| 1
-#-----|  -> ... call to += ...
+#-----|  -> ... .+=(_:_:) ...
 
-#  352| deinit
+#  352| deinit()
+#-----|  -> self
+
+#  352| enter deinit()
+#-----|  -> deinit()
+
+#  352| exit deinit()
+
+#  352| exit deinit() (normal)
+#-----|  -> exit deinit()
+
+#  352| self
 #-----|  -> { ... }
 
-#  352| enter deinit
-#-----|  -> deinit
-
-#  352| exit deinit
-
-#  352| exit deinit (normal)
-#-----|  -> exit deinit
-
 #  352| { ... }
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
 #  353| enter get
 #-----|  -> get
@@ -4580,17 +4713,23 @@ cfg.swift:
 #-----|  -> exit get
 
 #  353| get
+#-----|  -> self
 
-#  354| enter init
-#-----|  -> init
+#  353| self
 
-#  354| exit init
-
-#  354| exit init (normal)
-#-----|  -> exit init
-
-#  354| init
+#  354| self
 #-----|  -> arg
+
+#  354| enter init(arg:)
+#-----|  -> init(arg:)
+
+#  354| exit init(arg:)
+
+#  354| exit init(arg:) (normal)
+#-----|  -> exit init(arg:)
+
+#  354| init(arg:)
+#-----|  -> self
 
 #  354| arg
 #-----|  -> self
@@ -4608,21 +4747,24 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  356| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init(arg:) (normal)
 
-#  358| enter getOptional
-#-----|  -> getOptional
+#  358| enter getOptional()
+#-----|  -> getOptional()
 
-#  358| exit getOptional
+#  358| exit getOptional()
 
-#  358| exit getOptional (normal)
-#-----|  -> exit getOptional
+#  358| exit getOptional() (normal)
+#-----|  -> exit getOptional()
 
-#  358| getOptional
+#  358| getOptional()
+#-----|  -> self
+
+#  358| self
 #-----|  -> self
 
 #  359| return ...
-#-----| return -> exit getOptional (normal)
+#-----| return -> exit getOptional() (normal)
 
 #  359| getter for .c
 #-----|  -> return ...
@@ -4630,40 +4772,40 @@ cfg.swift:
 #  359| self
 #-----|  -> getter for .c
 
-#  363| enter testOptional
-#-----|  -> testOptional
+#  363| enter testOptional(c:)
+#-----|  -> testOptional(c:)
 
-#  363| exit testOptional
+#  363| exit testOptional(c:)
 
-#  363| exit testOptional (normal)
-#-----|  -> exit testOptional
+#  363| exit testOptional(c:) (normal)
+#-----|  -> exit testOptional(c:)
 
-#  363| testOptional
+#  363| testOptional(c:)
 #-----|  -> c
 
 #  363| c
-#-----|  -> getMyInt
+#-----|  -> .getMyInt()
 
 #  364| return ...
-#-----| return -> exit testOptional (normal)
+#-----| return -> exit testOptional(c:) (normal)
 
 #  364| c
 #-----|  -> ...?
 
 #  364| ...?
-#-----|  -> call to getOptional
+#-----|  -> call to getOptional()
 
-#  364| call to getOptional
-#-----|  -> call to ...
+#  364| .getOptional()
+#-----|  -> c
 
-#  364| call to ...
+#  364| call to getOptional()
 #-----|  -> ...?
 
 #  364| ...?
-#-----|  -> call to getMyInt
+#-----|  -> call to getMyInt()
 
-#  364| call to getMyInt
-#-----|  -> call to ...
+#  364| .getMyInt()
+#-----|  -> .getOptional()
 
 #  364| (Int?) ...
 #-----|  -> OptionalEvaluationExpr
@@ -4671,24 +4813,18 @@ cfg.swift:
 #  364| OptionalEvaluationExpr
 #-----|  -> return ...
 
-#  364| call to ...
+#  364| call to getMyInt()
 #-----|  -> (Int?) ...
 
-#  364| getOptional
-#-----|  -> c
+#  367| enter testCapture(x:y:)
+#-----|  -> testCapture(x:y:)
 
-#  364| getMyInt
-#-----|  -> getOptional
+#  367| exit testCapture(x:y:)
 
-#  367| enter testCapture
-#-----|  -> testCapture
+#  367| exit testCapture(x:y:) (normal)
+#-----|  -> exit testCapture(x:y:)
 
-#  367| exit testCapture
-
-#  367| exit testCapture (normal)
-#-----|  -> exit testCapture
-
-#  367| testCapture
+#  367| testCapture(x:y:)
 #-----|  -> x
 
 #  367| x
@@ -4698,7 +4834,7 @@ cfg.swift:
 #-----|  -> z
 
 #  368| return ...
-#-----| return -> exit testCapture (normal)
+#-----| return -> exit testCapture(x:y:) (normal)
 
 #  368| enter { ... }
 #-----|  -> { ... }
@@ -4709,16 +4845,16 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #  368| { ... }
+#-----|  -> z
+
+#  368| { ... }
 #-----|  -> return ...
 
 #  368| { ... }
 #-----|  -> { ... }
 
-#  368| { ... }
-#-----|  -> z
-
 #  368| z
-#-----| match -> +
+#-----| match -> .+(_:_:)
 
 #  368| var ... = ...
 #-----|  -> t
@@ -4726,20 +4862,17 @@ cfg.swift:
 #  368| x
 #-----|  -> y
 
-#  368| ... call to + ...
+#  368| ... .+(_:_:) ...
 #-----|  -> var ... = ...
 
-#  368| +
+#  368| .+(_:_:)
 #-----|  -> Int.Type
 
 #  368| Int.Type
-#-----|  -> call to +
-
-#  368| call to +
 #-----|  -> x
 
 #  368| y
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  368| t
 #-----| match -> literal
@@ -4756,22 +4889,22 @@ cfg.swift:
 #  369| z
 #-----|  -> return ...
 
-#  373| enter testTupleElement
-#-----|  -> testTupleElement
+#  373| enter testTupleElement(t:)
+#-----|  -> testTupleElement(t:)
 
-#  373| exit testTupleElement
+#  373| exit testTupleElement(t:)
 
-#  373| exit testTupleElement (normal)
-#-----|  -> exit testTupleElement
+#  373| exit testTupleElement(t:) (normal)
+#-----|  -> exit testTupleElement(t:)
 
-#  373| testTupleElement
+#  373| testTupleElement(t:)
 #-----|  -> t
 
 #  373| t
-#-----|  -> +
+#-----|  -> .+(_:_:)
 
 #  374| return ...
-#-----| return -> exit testTupleElement (normal)
+#-----| return -> exit testTupleElement(t:) (normal)
 
 #  374| t
 #-----|  -> .0
@@ -4779,59 +4912,50 @@ cfg.swift:
 #  374| .0
 #-----|  -> t
 
-#  374| ... call to + ...
+#  374| ... .+(_:_:) ...
 #-----|  -> t
 
-#  374| ... call to + ...
+#  374| ... .+(_:_:) ...
 #-----|  -> 1
 
-#  374| ... call to + ...
+#  374| ... .+(_:_:) ...
 #-----|  -> return ...
 
-#  374| +
+#  374| .+(_:_:)
 #-----|  -> Int.Type
 
 #  374| Int.Type
-#-----|  -> call to +
-
-#  374| call to +
 #-----|  -> t
 
 #  374| t
 #-----|  -> .1
 
 #  374| .1
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
-#  374| +
+#  374| .+(_:_:)
 #-----|  -> Int.Type
 
 #  374| Int.Type
-#-----|  -> call to +
-
-#  374| call to +
-#-----|  -> +
+#-----|  -> .+(_:_:)
 
 #  374| t
 #-----|  -> .2
 
 #  374| .2
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
-#  374| +
+#  374| .+(_:_:)
 #-----|  -> Int.Type
 
 #  374| Int.Type
-#-----|  -> call to +
-
-#  374| call to +
-#-----|  -> +
+#-----|  -> .+(_:_:)
 
 #  374| (...)
 #-----|  -> .0
 
 #  374| .0
-#-----|  -> ... call to + ...
+#-----|  -> ... .+(_:_:) ...
 
 #  374| 1
 #-----|  -> 2
@@ -4852,50 +4976,59 @@ cfg.swift:
 #-----|  -> #...
 
 #  377| #...
-#-----|  -> call to _unimplementedInitializer
+#-----|  -> call to _unimplementedInitializer(className:initName:file:line:column:)
 
-#  377| _unimplementedInitializer
+#  377| _unimplementedInitializer(className:initName:file:line:column:)
 #-----|  -> cfg.Derived
 
-#  377| call to _unimplementedInitializer
+#  377| call to _unimplementedInitializer(className:initName:file:line:column:)
 
 #  377| cfg.Derived
 #-----|  -> #...
 
-#  377| deinit
+#  377| deinit()
+#-----|  -> self
+
+#  377| enter deinit()
+#-----|  -> deinit()
+
+#  377| exit deinit()
+
+#  377| exit deinit() (normal)
+#-----|  -> exit deinit()
+
+#  377| self
 #-----|  -> { ... }
 
-#  377| enter deinit
-#-----|  -> deinit
-
-#  377| exit deinit
-
-#  377| exit deinit (normal)
-#-----|  -> exit deinit
-
 #  377| { ... }
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
-#  377| enter init
-#-----|  -> init
+#  377| enter init(n:)
+#-----|  -> init(n:)
 
-#  377| exit init
+#  377| exit init(n:)
 
-#  377| exit init (normal)
-#-----|  -> exit init
+#  377| exit init(n:) (normal)
+#-----|  -> exit init(n:)
 
-#  377| init
+#  377| init(n:)
+#-----|  -> self
 
-#  378| enter init
-#-----|  -> init
+#  377| self
 
-#  378| exit init
+#  378| self
+#-----|  -> init(n:)
 
-#  378| exit init (normal)
-#-----|  -> exit init
+#  378| enter init()
+#-----|  -> init()
 
-#  378| init
-#-----|  -> call to ...
+#  378| exit init()
+
+#  378| exit init() (normal)
+#-----|  -> exit init()
+
+#  378| init()
+#-----|  -> self
 
 #  379| super
 #-----|  -> call to ...
@@ -4909,55 +5042,56 @@ cfg.swift:
 #  379| self = ...
 #-----|  -> return
 
-#  379| call to ...
+#  379| init(n:)
 #-----|  -> super
 
 #  379| 0
 #-----|  -> call to ...
 
 #  380| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init() (normal)
 
-#  383| doWithoutCatch
+#  383| doWithoutCatch(x:)
 #-----|  -> x
 
-#  383| enter doWithoutCatch
-#-----|  -> doWithoutCatch
+#  383| enter doWithoutCatch(x:)
+#-----|  -> doWithoutCatch(x:)
 
-#  383| exit doWithoutCatch
+#  383| exit doWithoutCatch(x:)
 
-#  383| exit doWithoutCatch (normal)
-#-----|  -> exit doWithoutCatch
+#  383| exit doWithoutCatch(x:) (normal)
+#-----|  -> exit doWithoutCatch(x:)
 
 #  383| x
 #-----|  -> do { ... }
 
 #  384| do { ... }
-#-----|  -> mightThrow
+#-----|  -> mightThrow(x:)
 
 #  385| try ...
-#-----|  -> print
+#-----|  -> print(_:separator:terminator:)
 
-#  385| mightThrow
+#  385| mightThrow(x:)
 #-----|  -> 0
 
-#  385| call to mightThrow
-#-----| exception -> exit doWithoutCatch (normal)
+#  385| call to mightThrow(x:)
+#-----| exception -> exit doWithoutCatch(x:) (normal)
 #-----|  -> try ...
 
 #  385| 0
-#-----|  -> call to mightThrow
+#-----|  -> call to mightThrow(x:)
 
-#  386| print
+#  386| print(_:separator:terminator:)
 #-----|  -> Did not throw.
 
-#  386| call to print
+#  386| call to print(_:separator:terminator:)
+#-----|  -> mightThrow(x:)
 
 #  386| default separator
 #-----|  -> default terminator
 
 #  386| default terminator
-#-----|  -> call to print
+#-----|  -> call to print(_:separator:terminator:)
 
 #  386| (Any) ...
 #-----|  -> [...]
@@ -4966,15 +5100,59 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  386| [...]
-#-----|  -> default separator
-
-#  386| [...]
 #-----|  -> [...]
 
-#  394| (unnamed function decl)
+#  386| [...]
+#-----|  -> default separator
 
-#  394| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  387| try! ...
+#-----|  -> print(_:separator:terminator:)
+
+#  387| mightThrow(x:)
+#-----|  -> 0
+
+#  387| call to mightThrow(x:)
+#-----| exception -> exit doWithoutCatch(x:) (normal)
+#-----|  -> try! ...
+
+#  387| 0
+#-----|  -> call to mightThrow(x:)
+
+#  388| print(_:separator:terminator:)
+#-----|  -> Still did not throw.
+
+#  388| call to print(_:separator:terminator:)
+#-----|  -> 0
+
+#  388| default separator
+#-----|  -> default terminator
+
+#  388| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#  388| (Any) ...
+#-----|  -> [...]
+
+#  388| Still did not throw.
+#-----|  -> (Any) ...
+
+#  388| [...]
+#-----|  -> [...]
+
+#  388| [...]
+#-----|  -> default separator
+
+#  390| return ...
+#-----| return -> exit doWithoutCatch(x:) (normal)
+
+#  390| 0
+#-----|  -> return ...
+
+#  394| _modify
+#-----|  -> self
+
+#  394| enter _modify
+#-----|  -> _modify
 
 #  394| enter get
 #-----|  -> get
@@ -4982,10 +5160,10 @@ cfg.swift:
 #  394| enter set
 #-----|  -> set
 
-#  394| exit (unnamed function decl)
+#  394| exit _modify
 
-#  394| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  394| exit _modify (normal)
+#-----|  -> exit _modify
 
 #  394| exit get
 
@@ -4998,24 +5176,35 @@ cfg.swift:
 #-----|  -> exit set
 
 #  394| get
+#-----|  -> self
+
+#  394| self
+
+#  394| self
+#-----|  -> value
+
+#  394| self
 
 #  394| set
-#-----|  -> value
+#-----|  -> self
 
 #  394| value
 
 #  394| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#-----|  -> exit _modify (normal)
 
-#  395| enter init
-#-----|  -> init
+#  395| self
+#-----|  -> self
 
-#  395| exit init
+#  395| enter init()
+#-----|  -> init()
 
-#  395| exit init (normal)
-#-----|  -> exit init
+#  395| exit init()
 
-#  395| init
+#  395| exit init() (normal)
+#-----|  -> exit init()
+
+#  395| init()
 #-----|  -> self
 
 #  396| .field
@@ -5031,18 +5220,21 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  397| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init() (normal)
 
-#  399| deinit
+#  399| self
 #-----|  -> self
 
-#  399| enter deinit
-#-----|  -> deinit
+#  399| deinit()
+#-----|  -> self
 
-#  399| exit deinit
+#  399| enter deinit()
+#-----|  -> deinit()
 
-#  399| exit deinit (normal)
-#-----|  -> exit deinit
+#  399| exit deinit()
+
+#  399| exit deinit() (normal)
+#-----|  -> exit deinit()
 
 #  400| .field
 #-----|  -> 0
@@ -5051,21 +5243,21 @@ cfg.swift:
 #-----|  -> .field
 
 #  400|  ... = ...
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
 #  400| 0
 #-----|  ->  ... = ...
 
-#  404| dictionaryLiteral
+#  404| dictionaryLiteral(x:y:)
 #-----|  -> x
 
-#  404| enter dictionaryLiteral
-#-----|  -> dictionaryLiteral
+#  404| enter dictionaryLiteral(x:y:)
+#-----|  -> dictionaryLiteral(x:y:)
 
-#  404| exit dictionaryLiteral
+#  404| exit dictionaryLiteral(x:y:)
 
-#  404| exit dictionaryLiteral (normal)
-#-----|  -> exit dictionaryLiteral
+#  404| exit dictionaryLiteral(x:y:) (normal)
+#-----|  -> exit dictionaryLiteral(x:y:)
 
 #  404| x
 #-----|  -> y
@@ -5074,7 +5266,7 @@ cfg.swift:
 #-----|  -> x
 
 #  405| return ...
-#-----| return -> exit dictionaryLiteral (normal)
+#-----| return -> exit dictionaryLiteral(x:y:) (normal)
 
 #  405| [...]
 #-----|  -> return ...
@@ -5097,339 +5289,1048 @@ cfg.swift:
 #  405| y
 #-----|  -> (...)
 
-#  409| (unnamed function decl)
+#  408| enter localDeclarations()
+#-----|  -> localDeclarations()
 
-#  409| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  408| exit localDeclarations()
 
-#  409| enter get
+#  408| exit localDeclarations() (normal)
+#-----|  -> exit localDeclarations()
+
+#  408| localDeclarations()
+#-----|  -> MyLocalClass
+
+#  409| MyLocalClass
+#-----|  -> MyLocalStruct
+
+#  409| deinit()
+#-----|  -> self
+
+#  409| enter deinit()
+#-----|  -> deinit()
+
+#  409| exit deinit()
+
+#  409| exit deinit() (normal)
+#-----|  -> exit deinit()
+
+#  409| self
+#-----|  -> { ... }
+
+#  409| { ... }
+#-----|  -> exit deinit() (normal)
+
+#  410| _modify
+#-----|  -> self
+
+#  410| enter _modify
+#-----|  -> _modify
+
+#  410| enter get
 #-----|  -> get
 
-#  409| enter set
+#  410| enter set
 #-----|  -> set
 
-#  409| exit (unnamed function decl)
+#  410| exit _modify
 
-#  409| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  410| exit _modify (normal)
+#-----|  -> exit _modify
 
-#  409| exit get
+#  410| exit get
 
-#  409| exit get (normal)
+#  410| exit get (normal)
 #-----|  -> exit get
 
-#  409| exit set
+#  410| exit set
 
-#  409| exit set (normal)
+#  410| exit set (normal)
 #-----|  -> exit set
 
-#  409| get
+#  410| get
+#-----|  -> self
 
-#  409| set
+#  410| self
+
+#  410| self
 #-----|  -> value
 
-#  409| value
+#  410| self
 
-#  409| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#  410| set
+#-----|  -> self
 
-#  413| (unnamed function decl)
+#  410| value
 
-#  413| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  410| yield ...
+#-----|  -> exit _modify (normal)
 
-#  413| enter get
+#  411| self
+#-----|  -> self
+
+#  411| enter init()
+#-----|  -> init()
+
+#  411| exit init()
+
+#  411| exit init() (normal)
+#-----|  -> exit init()
+
+#  411| init()
+#-----|  -> self
+
+#  412| .x
+#-----|  -> 10
+
+#  412| self
+#-----|  -> .x
+
+#  412|  ... = ...
+#-----|  -> return
+
+#  412| 10
+#-----|  ->  ... = ...
+
+#  413| return
+#-----| return -> exit init() (normal)
+
+#  416| MyLocalStruct
+#-----|  -> MyLocalEnum
+
+#  417| _modify
+#-----|  -> self
+
+#  417| enter _modify
+#-----|  -> _modify
+
+#  417| enter get
 #-----|  -> get
 
-#  413| enter set
+#  417| enter set
 #-----|  -> set
 
-#  413| exit (unnamed function decl)
+#  417| exit _modify
 
-#  413| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  417| exit _modify (normal)
+#-----|  -> exit _modify
 
-#  413| exit get
+#  417| exit get
 
-#  413| exit get (normal)
+#  417| exit get (normal)
 #-----|  -> exit get
 
-#  413| exit set
+#  417| exit set
 
-#  413| exit set (normal)
+#  417| exit set (normal)
 #-----|  -> exit set
 
-#  413| get
+#  417| get
+#-----|  -> self
 
-#  413| set
+#  417| self
+
+#  417| self
 #-----|  -> value
 
-#  413| value
+#  417| self
 
-#  413| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#  417| set
+#-----|  -> self
 
-#  414| (unnamed function decl)
+#  417| value
 
-#  414| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  417| yield ...
+#-----|  -> exit _modify (normal)
 
-#  414| enter get
+#  418| self
+#-----|  -> self
+
+#  418| enter init()
+#-----|  -> init()
+
+#  418| exit init()
+
+#  418| exit init() (normal)
+#-----|  -> exit init()
+
+#  418| init()
+#-----|  -> self
+
+#  419| .x
+#-----|  -> 10
+
+#  419| self
+#-----|  -> .x
+
+#  419|  ... = ...
+#-----|  -> return
+
+#  419| 10
+#-----|  ->  ... = ...
+
+#  420| return
+#-----| return -> exit init() (normal)
+
+#  423| MyLocalEnum
+#-----|  -> myLocalVar
+
+#  428| var ... = ...
+#-----|  -> myLocalVar
+
+#  428| myLocalVar
+#-----|  -> 0
+
+#  428| myLocalVar
+#-----| match -> ... as ...
+
+#  428| ... as ...
+#-----| match -> var ... = ...
+
+#  442| return ...
+#-----| return -> exit localDeclarations() (normal)
+
+#  442| 0
+#-----|  -> return ...
+
+#  446| _modify
+#-----|  -> self
+
+#  446| enter _modify
+#-----|  -> _modify
+
+#  446| enter get
 #-----|  -> get
 
-#  414| enter set
+#  446| enter set
 #-----|  -> set
 
-#  414| exit (unnamed function decl)
+#  446| exit _modify
 
-#  414| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  446| exit _modify (normal)
+#-----|  -> exit _modify
 
-#  414| exit get
+#  446| exit get
 
-#  414| exit get (normal)
+#  446| exit get (normal)
 #-----|  -> exit get
 
-#  414| exit set
+#  446| exit set
 
-#  414| exit set (normal)
+#  446| exit set (normal)
 #-----|  -> exit set
 
-#  414| get
+#  446| get
+#-----|  -> self
 
-#  414| set
+#  446| self
+
+#  446| self
 #-----|  -> value
 
-#  414| value
+#  446| self
 
-#  414| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#  446| set
+#-----|  -> self
 
-#  415| (unnamed function decl)
+#  446| value
 
-#  415| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  446| yield ...
+#-----|  -> exit _modify (normal)
 
-#  415| enter get
+#  450| _modify
+#-----|  -> self
+
+#  450| enter _modify
+#-----|  -> _modify
+
+#  450| enter get
 #-----|  -> get
 
-#  415| enter set
+#  450| enter set
 #-----|  -> set
 
-#  415| exit (unnamed function decl)
+#  450| exit _modify
 
-#  415| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  450| exit _modify (normal)
+#-----|  -> exit _modify
 
-#  415| exit get
+#  450| exit get
 
-#  415| exit get (normal)
+#  450| exit get (normal)
 #-----|  -> exit get
 
-#  415| exit set
+#  450| exit set
 
-#  415| exit set (normal)
+#  450| exit set (normal)
 #-----|  -> exit set
 
-#  415| get
+#  450| get
+#-----|  -> self
 
-#  415| set
+#  450| self
+
+#  450| self
 #-----|  -> value
 
-#  415| value
+#  450| self
 
-#  415| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#  450| set
+#-----|  -> self
 
-#  418| enter test
-#-----|  -> test
+#  450| value
 
-#  418| exit test
+#  450| yield ...
+#-----|  -> exit _modify (normal)
 
-#  418| exit test (normal)
-#-----|  -> exit test
+#  451| _modify
+#-----|  -> self
 
-#  418| test
+#  451| enter _modify
+#-----|  -> _modify
+
+#  451| enter get
+#-----|  -> get
+
+#  451| enter set
+#-----|  -> set
+
+#  451| exit _modify
+
+#  451| exit _modify (normal)
+#-----|  -> exit _modify
+
+#  451| exit get
+
+#  451| exit get (normal)
+#-----|  -> exit get
+
+#  451| exit set
+
+#  451| exit set (normal)
+#-----|  -> exit set
+
+#  451| get
+#-----|  -> self
+
+#  451| self
+
+#  451| self
+#-----|  -> value
+
+#  451| self
+
+#  451| set
+#-----|  -> self
+
+#  451| value
+
+#  451| yield ...
+#-----|  -> exit _modify (normal)
+
+#  452| _modify
+#-----|  -> self
+
+#  452| enter _modify
+#-----|  -> _modify
+
+#  452| enter get
+#-----|  -> get
+
+#  452| enter set
+#-----|  -> set
+
+#  452| exit _modify
+
+#  452| exit _modify (normal)
+#-----|  -> exit _modify
+
+#  452| exit get
+
+#  452| exit get (normal)
+#-----|  -> exit get
+
+#  452| exit set
+
+#  452| exit set (normal)
+#-----|  -> exit set
+
+#  452| get
+#-----|  -> self
+
+#  452| self
+
+#  452| self
+#-----|  -> value
+
+#  452| self
+
+#  452| set
+#-----|  -> self
+
+#  452| value
+
+#  452| yield ...
+#-----|  -> exit _modify (normal)
+
+#  455| enter test(a:)
+#-----|  -> test(a:)
+
+#  455| exit test(a:)
+
+#  455| exit test(a:) (normal)
+#-----|  -> exit test(a:)
+
+#  455| test(a:)
 #-----|  -> a
 
-#  418| a
+#  455| a
 #-----|  -> kpGet_b_x
 
-#  419| var ... = ...
+#  456| var ... = ...
 #-----|  -> kpGet_b_x
 
-#  419| kpGet_b_x
-#-----| match -> #keyPath(...)
+#  456| var ... = ...
+#-----|  -> kpGet_b_x
 
-#  419| kpGet_b_x
+#  456| kpGet_b_x
 #-----|  -> kpGet_bs_0_x
 
-#  419| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  419| enter #keyPath(...)
-#-----|  -> UnresolvedDotExpr
-
-#  419| exit #keyPath(...)
-
-#  419| exit #keyPath(...) (normal)
-#-----|  -> exit #keyPath(...)
-
-#  419| UnresolvedDotExpr
-#-----|  -> exit #keyPath(...) (normal)
-
-#  420| var ... = ...
+#  456| kpGet_b_x
 #-----|  -> kpGet_bs_0_x
 
-#  420| kpGet_bs_0_x
+#  456| kpGet_b_x
 #-----| match -> #keyPath(...)
 
-#  420| kpGet_bs_0_x
-#-----|  -> kpGet_mayB_force_x
-
-#  420| #keyPath(...)
+#  456| #keyPath(...)
 #-----|  -> var ... = ...
 
-#  420| enter #keyPath(...)
-#-----|  -> UnresolvedDotExpr
-
-#  420| exit #keyPath(...)
-
-#  420| exit #keyPath(...) (normal)
-#-----|  -> exit #keyPath(...)
-
-#  420| UnresolvedDotExpr
+#  456| #keyPath(...)
+#-----|  -> var ... = ...
 #-----|  -> exit #keyPath(...) (normal)
 
-#  421| var ... = ...
+#  456| enter #keyPath(...)
+#-----|  -> #keyPath(...)
+
+#  456| exit #keyPath(...)
+
+#  456| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  457| var ... = ...
+#-----|  -> kpGet_bs_0_x
+
+#  457| var ... = ...
+#-----|  -> kpGet_bs_0_x
+
+#  457| var ... = ...
+#-----|  -> kpGet_bs_0_x
+
+#  457| kpGet_bs_0_x
 #-----|  -> kpGet_mayB_force_x
 
-#  421| kpGet_mayB_force_x
+#  457| kpGet_bs_0_x
+#-----|  -> kpGet_mayB_force_x
+
+#  457| kpGet_bs_0_x
+#-----|  -> kpGet_mayB_force_x
+
+#  457| kpGet_bs_0_x
 #-----| match -> #keyPath(...)
 
-#  421| kpGet_mayB_force_x
-#-----|  -> kpGet_mayB_x
+#  457| kpGet_bs_0_x
+#-----| match -> #keyPath(...)
 
-#  421| #keyPath(...)
+#  457| #keyPath(...)
 #-----|  -> var ... = ...
 
-#  421| enter #keyPath(...)
-#-----|  -> UnresolvedDotExpr
+#  457| #keyPath(...)
+#-----|  -> var ... = ...
 
-#  421| exit #keyPath(...)
-
-#  421| exit #keyPath(...) (normal)
-#-----|  -> exit #keyPath(...)
-
-#  421| UnresolvedDotExpr
+#  457| #keyPath(...)
+#-----|  -> var ... = ...
 #-----|  -> exit #keyPath(...) (normal)
 
-#  422| var ... = ...
+#  457| enter #keyPath(...)
+#-----|  -> #keyPath(...)
+
+#  457| exit #keyPath(...)
+
+#  457| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  458| var ... = ...
+#-----|  -> kpGet_mayB_force_x
+
+#  458| var ... = ...
+#-----|  -> kpGet_mayB_force_x
+
+#  458| var ... = ...
+#-----|  -> kpGet_mayB_force_x
+
+#  458| var ... = ...
+#-----|  -> kpGet_mayB_force_x
+
+#  458| kpGet_mayB_force_x
 #-----|  -> kpGet_mayB_x
 
-#  422| kpGet_mayB_x
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
 #-----| match -> #keyPath(...)
 
-#  422| kpGet_mayB_x
+#  458| kpGet_mayB_force_x
+#-----| match -> #keyPath(...)
+
+#  458| kpGet_mayB_force_x
+#-----| match -> #keyPath(...)
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
+
+#  458| enter #keyPath(...)
+#-----|  -> #keyPath(...)
+
+#  458| exit #keyPath(...)
+
+#  458| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  459| kpGet_mayB_x
 #-----|  -> apply_kpGet_b_x
 
-#  422| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  422| enter #keyPath(...)
-#-----|  -> UnresolvedDotExpr
-
-#  422| exit #keyPath(...)
-
-#  422| exit #keyPath(...) (normal)
-#-----|  -> exit #keyPath(...)
-
-#  422| OptionalEvaluationExpr
-#-----|  -> exit #keyPath(...) (normal)
-
-#  422| UnresolvedDotExpr
-#-----|  -> OptionalEvaluationExpr
-
-#  424| var ... = ...
+#  459| kpGet_mayB_x
 #-----|  -> apply_kpGet_b_x
 
-#  424| apply_kpGet_b_x
-#-----| match -> a
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
 
-#  424| apply_kpGet_b_x
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
+#  459| kpGet_mayB_x
+#-----| match -> #keyPath(...)
+
+#  459| kpGet_mayB_x
+#-----| match -> #keyPath(...)
+
+#  459| kpGet_mayB_x
+#-----| match -> #keyPath(...)
+
+#  459| kpGet_mayB_x
+#-----| match -> #keyPath(...)
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
+
+#  459| enter #keyPath(...)
+#-----|  -> #keyPath(...)
+
+#  459| exit #keyPath(...)
+
+#  459| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  461| apply_kpGet_b_x
 #-----|  -> apply_kpGet_bs_0_x
 
-#  424| a
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| a
 #-----|  -> kpGet_b_x
 
-#  424| \...[...]
+#  461| a
+#-----|  -> kpGet_b_x
+
+#  461| a
+#-----|  -> kpGet_b_x
+
+#  461| a
+#-----|  -> kpGet_b_x
+
+#  461| a
+#-----|  -> kpGet_b_x
+
+#  461| \...[...]
 #-----|  -> var ... = ...
 
-#  424| (WritableKeyPath<A, Int>) ...
+#  461| \...[...]
+#-----|  -> var ... = ...
+
+#  461| \...[...]
+#-----|  -> var ... = ...
+
+#  461| \...[...]
+#-----|  -> var ... = ...
+
+#  461| \...[...]
+#-----|  -> var ... = ...
+
+#  461| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
-#  424| kpGet_b_x
+#  461| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  461| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  461| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  461| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  461| kpGet_b_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
 
-#  425| var ... = ...
+#  461| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  461| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  461| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  461| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| var ... = ...
 #-----|  -> apply_kpGet_bs_0_x
 
-#  425| apply_kpGet_bs_0_x
-#-----| match -> a
+#  462| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
 
-#  425| apply_kpGet_bs_0_x
+#  462| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
+
+#  462| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
+
+#  462| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
+
+#  462| apply_kpGet_bs_0_x
 #-----|  -> apply_kpGet_mayB_force_x
 
-#  425| a
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| a
 #-----|  -> kpGet_bs_0_x
 
-#  425| \...[...]
+#  462| a
+#-----|  -> kpGet_bs_0_x
+
+#  462| a
+#-----|  -> kpGet_bs_0_x
+
+#  462| a
+#-----|  -> kpGet_bs_0_x
+
+#  462| a
+#-----|  -> kpGet_bs_0_x
+
+#  462| \...[...]
 #-----|  -> var ... = ...
 
-#  425| (WritableKeyPath<A, Int>) ...
+#  462| \...[...]
+#-----|  -> var ... = ...
+
+#  462| \...[...]
+#-----|  -> var ... = ...
+
+#  462| \...[...]
+#-----|  -> var ... = ...
+
+#  462| \...[...]
+#-----|  -> var ... = ...
+
+#  462| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
-#  425| kpGet_bs_0_x
+#  462| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  462| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  462| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  462| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  462| kpGet_bs_0_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
 
-#  426| var ... = ...
+#  462| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| var ... = ...
 #-----|  -> apply_kpGet_mayB_force_x
 
-#  426| apply_kpGet_mayB_force_x
-#-----| match -> a
+#  463| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
 
-#  426| apply_kpGet_mayB_force_x
+#  463| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  463| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  463| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  463| apply_kpGet_mayB_force_x
 #-----|  -> apply_kpGet_mayB_x
 
-#  426| a
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| a
 #-----|  -> kpGet_mayB_force_x
 
-#  426| \...[...]
+#  463| a
+#-----|  -> kpGet_mayB_force_x
+
+#  463| a
+#-----|  -> kpGet_mayB_force_x
+
+#  463| a
+#-----|  -> kpGet_mayB_force_x
+
+#  463| a
+#-----|  -> kpGet_mayB_force_x
+
+#  463| \...[...]
 #-----|  -> var ... = ...
 
-#  426| (WritableKeyPath<A, Int>) ...
+#  463| \...[...]
+#-----|  -> var ... = ...
+
+#  463| \...[...]
+#-----|  -> var ... = ...
+
+#  463| \...[...]
+#-----|  -> var ... = ...
+
+#  463| \...[...]
+#-----|  -> var ... = ...
+
+#  463| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
-#  426| kpGet_mayB_force_x
+#  463| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  463| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  463| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  463| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  463| kpGet_mayB_force_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
 
-#  427| var ... = ...
+#  463| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  464| var ... = ...
 #-----|  -> apply_kpGet_mayB_x
 
-#  427| apply_kpGet_mayB_x
+#  464| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
+
+#  464| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
+
+#  464| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
+
+#  464| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+#-----|  -> exit test(a:) (normal)
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
 #-----| match -> a
 
-#  427| apply_kpGet_mayB_x
-#-----|  -> exit test (normal)
+#  464| apply_kpGet_mayB_x
+#-----| match -> a
 
-#  427| a
+#  464| apply_kpGet_mayB_x
+#-----| match -> a
+
+#  464| apply_kpGet_mayB_x
+#-----| match -> a
+
+#  464| apply_kpGet_mayB_x
+#-----| match -> a
+
+#  464| a
 #-----|  -> kpGet_mayB_x
 
-#  427| \...[...]
+#  464| a
+#-----|  -> kpGet_mayB_x
+
+#  464| a
+#-----|  -> kpGet_mayB_x
+
+#  464| a
+#-----|  -> kpGet_mayB_x
+
+#  464| a
+#-----|  -> kpGet_mayB_x
+
+#  464| \...[...]
 #-----|  -> var ... = ...
 
-#  427| (KeyPath<A, Int?>) ...
+#  464| \...[...]
+#-----|  -> var ... = ...
+
+#  464| \...[...]
+#-----|  -> var ... = ...
+
+#  464| \...[...]
+#-----|  -> var ... = ...
+
+#  464| \...[...]
+#-----|  -> var ... = ...
+
+#  464| (KeyPath<A, Int?>) ...
 #-----|  -> \...[...]
 
-#  427| kpGet_mayB_x
+#  464| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  464| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  464| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  464| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  464| kpGet_mayB_x
 #-----|  -> (KeyPath<A, Int?>) ...
+
+#  464| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...
+
+#  464| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...
+
+#  464| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...
+
+#  464| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...
+
+#  467| enter testIfConfig()
+#-----|  -> testIfConfig()
+
+#  467| exit testIfConfig()
+
+#  467| exit testIfConfig() (normal)
+#-----|  -> exit testIfConfig()
+
+#  467| testIfConfig()
+#-----|  -> #if ...
+
+#  468| #if ...
+#-----|  -> 3
+
+#  472| 3
+#-----|  -> 4
+
+#  473| 4
+#-----|  -> 5
+
+#  476| 5
+#-----|  -> #if ...
+
+#  478| #if ...
+#-----|  -> 8
+
+#  483| 8
+#-----|  -> #if ...
+
+#  485| #if ...
+#-----|  -> 11
+
+#  489| 11
+#-----|  -> 12
+
+#  490| 12
+#-----|  -> 13
+
+#  493| 13
+#-----|  -> exit testIfConfig() (normal)

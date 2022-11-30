@@ -42,17 +42,19 @@ predicate isABuiltinEventName(string name) {
  * Holds if user code emits or broadcasts an event named `name`.
  */
 predicate isAUserDefinedEventName(string name) {
-  exists(string methodName, MethodCallExpr mce | methodName = "$emit" or methodName = "$broadcast" |
-    mce.getArgument(0).mayHaveStringValue(name) and
+  exists(string methodName, DataFlow::MethodCallNode mcn |
+    methodName = "$emit" or methodName = "$broadcast"
+  |
+    mcn.getArgument(0).mayHaveStringValue(name) and
     (
       // dataflow based scope resolution
-      mce = any(AngularJS::ScopeServiceReference scope).getAMethodCall(methodName)
+      mcn = any(AngularJS::ScopeServiceReference scope).getAMethodCall(methodName)
       or
       // heuristic scope resolution: assume parameters like `$scope` or `$rootScope` are AngularJS scope objects
-      exists(SimpleParameter param |
+      exists(DataFlow::ParameterNode param |
         param.getName() = any(AngularJS::ScopeServiceReference scope).getName() and
-        mce.getReceiver().mayReferToParameter(param) and
-        mce.getMethodName() = methodName
+        param.getAMethodCall() = mcn and
+        mcn.getMethodName() = methodName
       )
       or
       // a call in an AngularJS expression
@@ -64,7 +66,7 @@ predicate isAUserDefinedEventName(string name) {
   )
 }
 
-from AngularJS::ScopeServiceReference scope, MethodCallExpr mce, string eventName
+from AngularJS::ScopeServiceReference scope, DataFlow::MethodCallNode mce, string eventName
 where
   mce = scope.getAMethodCall("$on") and
   mce.getArgument(0).mayHaveStringValue(eventName) and

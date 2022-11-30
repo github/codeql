@@ -11,11 +11,11 @@ type
 | file://:0:0:0:0 | delegate* default<Void*,Int32*> | int* | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<Void*,Object> | object | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | Void | StdCallCallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | Void | CallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<Int32,PosixSignal,Int32> | int | CallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<IntPtr,Int32> | int | CallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<IntPtr,Void> | Void | CallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<Void> | Void | CallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | Void | UnmanagedCallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<Int32,PosixSignal,Int32> | int | UnmanagedCallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<IntPtr,Int32> | int | UnmanagedCallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<IntPtr,Void> | Void | UnmanagedCallingConvention |
+| file://:0:0:0:0 | delegate* unmanaged<Void> | Void | UnmanagedCallingConvention |
 unmanagedCallingConvention
 parameter
 | file://:0:0:0:0 | delegate* default<A,B> | 0 | file://:0:0:0:0 |  | A |

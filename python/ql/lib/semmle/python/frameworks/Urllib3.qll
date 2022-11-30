@@ -49,7 +49,7 @@ private module Urllib3 {
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.request.html#urllib3.request.RequestMethods
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html#urllib3.HTTPConnectionPool.urlopen
      */
-    private class RequestCall extends HTTP::Client::Request::Range, API::CallNode {
+    private class RequestCall extends Http::Client::Request::Range, API::CallNode {
       RequestCall() {
         this =
           classRef()
@@ -71,14 +71,15 @@ private module Urllib3 {
         |
           // cert_reqs
           // see https://urllib3.readthedocs.io/en/stable/user-guide.html?highlight=cert_reqs#certificate-verification
-          disablingNode = constructor.getKeywordParameter("cert_reqs").getARhs() and
-          argumentOrigin = constructor.getKeywordParameter("cert_reqs").getAValueReachingRhs() and
+          disablingNode = constructor.getKeywordParameter("cert_reqs").asSink() and
+          argumentOrigin = constructor.getKeywordParameter("cert_reqs").getAValueReachingSink() and
           argumentOrigin.asExpr().(StrConst).getText() = "CERT_NONE"
           or
           // assert_hostname
           // see https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html?highlight=assert_hostname#urllib3.HTTPSConnectionPool
-          disablingNode = constructor.getKeywordParameter("assert_hostname").getARhs() and
-          argumentOrigin = constructor.getKeywordParameter("assert_hostname").getAValueReachingRhs() and
+          disablingNode = constructor.getKeywordParameter("assert_hostname").asSink() and
+          argumentOrigin =
+            constructor.getKeywordParameter("assert_hostname").getAValueReachingSink() and
           argumentOrigin.asExpr().(BooleanLiteral).booleanValue() = false
         )
       }

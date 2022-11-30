@@ -17,8 +17,10 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
 class TestLibrary extends RefType {
   TestLibrary() {
     this.getNamespace()
-        .getName()
-        .matches(["NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%"])
+        .getQualifiedName()
+        .matches([
+            "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
+          ])
   }
 }
 
@@ -26,11 +28,16 @@ class TestLibrary extends RefType {
  * An external API from either the C# Standard Library or a 3rd party library.
  */
 class ExternalApi extends DotNet::Callable {
-  ExternalApi() { this.isUnboundDeclaration() and this.fromLibrary() }
+  ExternalApi() {
+    this.isUnboundDeclaration() and
+    this.fromLibrary() and
+    this.(Modifiable).isEffectivelyPublic()
+  }
 
   /**
    * Gets the unbound type, name and parameter types of this API.
    */
+  bindingset[this]
   private string getSignature() {
     result =
       this.getDeclaringType().getUnboundDeclaration() + "." + this.getName() + "(" +
@@ -40,41 +47,33 @@ class ExternalApi extends DotNet::Callable {
   /**
    * Gets the namespace of this API.
    */
-  private string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
+  bindingset[this]
+  string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
 
   /**
-   * Gets the assembly file name containing this API.
+   * Gets the namespace and signature of this API.
    */
-  private string getAssembly() { result = this.getFile().getBaseName() }
-
-  /**
-   * Gets the assembly file name and namespace of this API.
-   */
-  string getInfoPrefix() { result = this.getAssembly() + "#" + this.getNamespace() }
-
-  /**
-   * Gets the assembly file name, namespace and signature of this API.
-   */
-  string getInfo() { result = this.getInfoPrefix() + "#" + this.getSignature() }
-
-  /** Gets a call to this API callable. */
-  DispatchCall getACall() {
-    this = result.getADynamicTarget().getUnboundDeclaration()
-    or
-    this = result.getAStaticTarget().getUnboundDeclaration()
-  }
+  bindingset[this]
+  string getApiName() { result = this.getNamespace() + "#" + this.getSignature() }
 
   /** Gets a node that is an input to a call to this API. */
   private ArgumentNode getAnInput() {
-    result.getCall().(DataFlowDispatch::NonDelegateDataFlowCall).getDispatchCall() = this.getACall()
+    result
+        .getCall()
+        .(DataFlowDispatch::NonDelegateDataFlowCall)
+        .getATarget(_)
+        .getUnboundDeclaration() = this
   }
 
   /** Gets a node that is an output from a call to this API. */
   private DataFlow::Node getAnOutput() {
-    exists(DataFlowDispatch::NonDelegateDataFlowCall call, DataFlowImplCommon::ReturnKindExt ret |
-      result = ret.getAnOutNode(call)
+    exists(
+      Call c, DataFlowDispatch::NonDelegateDataFlowCall dc, DataFlowImplCommon::ReturnKindExt ret
     |
-      this.getACall() = call.getDispatchCall()
+      dc.getDispatchCall().getCall() = c and
+      c.getTarget().getUnboundDeclaration() = this
+    |
+      result = ret.getAnOutNode(dc)
     )
   }
 
@@ -85,7 +84,7 @@ class ExternalApi extends DotNet::Callable {
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is is a constructor without parameters. */
+  /** Holds if this API is a constructor without parameters. */
   private predicate isParameterlessConstructor() {
     this instanceof Constructor and this.getNumberOfParameters() = 0
   }
@@ -106,4 +105,47 @@ class ExternalApi extends DotNet::Callable {
 
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
   predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
+}
+
+/**
+ * Gets the limit for the number of results produced by a telemetry query.
+ */
+int resultLimit() { result = 1000 }
+
+/**
+ * Holds if it is relevant to count usages of `api`.
+ */
+signature predicate relevantApi(ExternalApi api);
+
+/**
+ * Given a predicate to count relevant API usages, this module provides a predicate
+ * for restricting the number or returned results based on a certain limit.
+ */
+module Results<relevantApi/1 getRelevantUsages> {
+  private int getUsages(string apiName) {
+    result =
+      strictcount(Call c, ExternalApi api |
+        c.getTarget().getUnboundDeclaration() = api and
+        apiName = api.getApiName() and
+        getRelevantUsages(api)
+      )
+  }
+
+  private int getOrder(string apiName) {
+    apiName =
+      rank[result](string name, int usages |
+        usages = getUsages(name)
+      |
+        name order by usages desc, name
+      )
+  }
+
+  /**
+   * Holds if there exists an API with `apiName` that is being used `usages` times
+   * and if it is in the top results (guarded by resultLimit).
+   */
+  predicate restrict(string apiName, int usages) {
+    usages = getUsages(apiName) and
+    getOrder(apiName) <= resultLimit()
+  }
 }

@@ -20,5 +20,6 @@ import DataFlow::PathGraph
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(IntentUriPermissionManipulationConf c).hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "This Intent can be set with arbitrary flags from $@, " +
-    "and used to give access to internal content providers.", source.getNode(), "this user input"
+  "This Intent can be set with arbitrary flags from a $@, " +
+    "and used to give access to internal content providers.", source.getNode(),
+  "user-provided value"

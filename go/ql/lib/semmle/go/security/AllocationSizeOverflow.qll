@@ -23,7 +23,7 @@ module AllocationSizeOverflow {
 
     override predicate isSink(DataFlow::Node nd) { nd = Builtin::len().getACall().getArgument(0) }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }
 
@@ -48,11 +48,11 @@ module AllocationSizeOverflow {
      * Holds if `nd` is at a position where overflow might occur, and its result is used to compute
      * allocation size `allocsz`.
      */
-    predicate isSink(DataFlow::Node nd, DataFlow::Node allocsz) {
+    predicate isSinkWithAllocationSize(DataFlow::Node nd, DataFlow::Node allocsz) {
       nd.(Sink).getAllocationSize() = allocsz
     }
 
-    override predicate isSink(DataFlow::Node nd) { isSink(nd, _) }
+    override predicate isSink(DataFlow::Node nd) { isSinkWithAllocationSize(nd, _) }
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
       additionalStep(pred, succ)
@@ -64,7 +64,7 @@ module AllocationSizeOverflow {
       )
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }
 

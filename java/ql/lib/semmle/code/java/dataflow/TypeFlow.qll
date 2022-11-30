@@ -53,6 +53,16 @@ private class TypeFlowNode extends TTypeFlowNode {
   }
 }
 
+private int getNodeKind(TypeFlowNode n) {
+  result = 1 and n instanceof TField
+  or
+  result = 2 and n instanceof TSsa
+  or
+  result = 3 and n instanceof TExpr
+  or
+  result = 4 and n instanceof TMethod
+}
+
 /** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
 private RefType boxIfNeeded(Type t) {
   t.(PrimitiveType).getBoxedType() = result or
@@ -146,46 +156,200 @@ private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
   joinStep0(n1, n2) and not isNull(n1)
 }
 
-private predicate joinStepRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  n1 =
-    rank[r](TypeFlowNode n |
-      joinStep(n, n2)
-    |
-      n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()
+private predicate anyStep(TypeFlowNode n1, TypeFlowNode n2) { joinStep(n1, n2) or step(n1, n2) }
+
+private import SccReduction
+
+/**
+ * SCC reduction.
+ *
+ * This ought to be as easy as `equivalenceRelation(sccEdge/2)(n, scc)`, but
+ * this HOP is not currently supported for newtypes.
+ *
+ * A straightforward implementation would be:
+ * ```ql
+ * predicate sccRepr(TypeFlowNode n, TypeFlowNode scc) {
+ *  scc =
+ *    max(TypeFlowNode n2 |
+ *      sccEdge+(n, n2)
+ *    |
+ *      n2
+ *      order by
+ *        n2.getLocation().getStartLine(), n2.getLocation().getStartColumn(), getNodeKind(n2)
+ *    )
+ * }
+ *
+ * ```
+ * but this is quadratic in the size of the SCCs.
+ *
+ * Instead we find local maxima by following SCC edges and determine the SCC
+ * representatives from those.
+ * (This is still worst-case quadratic in the size of the SCCs, but generally
+ * performs better.)
+ */
+private module SccReduction {
+  private predicate sccEdge(TypeFlowNode n1, TypeFlowNode n2) {
+    anyStep(n1, n2) and anyStep+(n2, n1)
+  }
+
+  private predicate sccEdgeWithMax(TypeFlowNode n1, TypeFlowNode n2, TypeFlowNode m) {
+    sccEdge(n1, n2) and
+    m =
+      max(TypeFlowNode n |
+        n = [n1, n2]
+      |
+        n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn(), getNodeKind(n)
+      )
+  }
+
+  private predicate hasLargerNeighbor(TypeFlowNode n) {
+    exists(TypeFlowNode n2 |
+      sccEdgeWithMax(n, n2, n2) and
+      not sccEdgeWithMax(n, n2, n)
+      or
+      sccEdgeWithMax(n2, n, n2) and
+      not sccEdgeWithMax(n2, n, n)
     )
+  }
+
+  private predicate localMax(TypeFlowNode m) {
+    sccEdgeWithMax(_, _, m) and
+    not hasLargerNeighbor(m)
+  }
+
+  private predicate sccReprFromLocalMax(TypeFlowNode scc) {
+    exists(TypeFlowNode m |
+      localMax(m) and
+      scc =
+        max(TypeFlowNode n2 |
+          sccEdge+(m, n2) and localMax(n2)
+        |
+          n2
+          order by
+            n2.getLocation().getStartLine(), n2.getLocation().getStartColumn(), getNodeKind(n2)
+        )
+    )
+  }
+
+  /** Holds if `n` is part of an SCC of size 2 or more represented by `scc`. */
+  predicate sccRepr(TypeFlowNode n, TypeFlowNode scc) {
+    sccEdge+(n, scc) and sccReprFromLocalMax(scc)
+  }
+
+  predicate sccJoinStep(TypeFlowNode n, TypeFlowNode scc) {
+    exists(TypeFlowNode mid |
+      joinStep(n, mid) and
+      sccRepr(mid, scc) and
+      not sccRepr(n, scc)
+    )
+  }
 }
 
-private predicate joinStepRank2(int r2, int r1, TypeFlowNode n) {
-  r1 = rank[r2](int r | joinStepRank1(r, _, n) | r)
+private signature predicate edgeSig(TypeFlowNode n1, TypeFlowNode n2);
+
+private signature module RankedEdge {
+  predicate edgeRank(int r, TypeFlowNode n1, TypeFlowNode n2);
+
+  int lastRank(TypeFlowNode n);
 }
 
-private predicate joinStepRank(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  exists(int r1 |
-    joinStepRank1(r1, n1, n2) and
-    joinStepRank2(r, r1, n2)
-  )
+private module RankEdge<edgeSig/2 edge> implements RankedEdge {
+  /**
+   * Holds if `r` is a ranking of the incoming edges `(n1,n2)` to `n2`. The used
+   * ordering is not necessarily total, so the ranking may have gaps.
+   */
+  private predicate edgeRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
+    n1 =
+      rank[r](TypeFlowNode n |
+        edge(n, n2)
+      |
+        n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()
+      )
+  }
+
+  /**
+   * Holds if `r2` is a ranking of the ranks from `edgeRank1`. This removes the
+   * gaps from the ranking.
+   */
+  private predicate edgeRank2(int r2, int r1, TypeFlowNode n) {
+    r1 = rank[r2](int r | edgeRank1(r, _, n) | r)
+  }
+
+  /** Holds if `r` is a ranking of the incoming edges `(n1,n2)` to `n2`. */
+  predicate edgeRank(int r, TypeFlowNode n1, TypeFlowNode n2) {
+    exists(int r1 |
+      edgeRank1(r1, n1, n2) and
+      edgeRank2(r, r1, n2)
+    )
+  }
+
+  int lastRank(TypeFlowNode n) { result = max(int r | edgeRank(r, _, n)) }
 }
 
-private int lastRank(TypeFlowNode n) { result = max(int r | joinStepRank(r, _, n)) }
+private signature module TypePropagation {
+  class Typ;
+
+  predicate candType(TypeFlowNode n, Typ t);
+
+  bindingset[t]
+  predicate supportsType(TypeFlowNode n, Typ t);
+}
+
+/** Implements recursion through `forall` by way of edge ranking. */
+private module ForAll<RankedEdge Edge, TypePropagation T> {
+  /**
+   * Holds if `t` is a bound that holds on one of the incoming edges to `n` and
+   * thus is a candidate bound for `n`.
+   */
+  pragma[nomagic]
+  private predicate candJoinType(TypeFlowNode n, T::Typ t) {
+    exists(TypeFlowNode mid |
+      T::candType(mid, t) and
+      Edge::edgeRank(_, mid, n)
+    )
+  }
+
+  /**
+   * Holds if `t` is a candidate bound for `n` that is also valid for data coming
+   * through the edges into `n` ranked from `1` to `r`.
+   */
+  pragma[assume_small_delta]
+  private predicate flowJoin(int r, TypeFlowNode n, T::Typ t) {
+    (
+      r = 1 and candJoinType(n, t)
+      or
+      flowJoin(r - 1, n, t) and Edge::edgeRank(r, _, n)
+    ) and
+    forall(TypeFlowNode mid | Edge::edgeRank(r, mid, n) | T::supportsType(mid, t))
+  }
+
+  /**
+   * Holds if `t` is a candidate bound for `n` that is also valid for data
+   * coming through all the incoming edges, and therefore is a valid bound for
+   * `n`.
+   */
+  predicate flowJoin(TypeFlowNode n, T::Typ t) { flowJoin(Edge::lastRank(n), n, t) }
+}
+
+module RankedJoinStep = RankEdge<joinStep/2>;
+
+module RankedSccJoinStep = RankEdge<sccJoinStep/2>;
 
 private predicate exactTypeBase(TypeFlowNode n, RefType t) {
   exists(ClassInstanceExpr e |
     n.asExpr() = e and
     e.getType() = t and
     not e instanceof FunctionalExpr and
-    exists(RefType sub | sub.getASourceSupertype() = t.getSourceDeclaration())
+    exists(SrcRefType sub | sub.getASourceSupertype() = t.getSourceDeclaration())
   )
 }
 
-private predicate exactTypeRank(int r, TypeFlowNode n, RefType t) {
-  forall(TypeFlowNode mid | joinStepRank(r, mid, n) | exactType(mid, t)) and
-  joinStepRank(r, _, n)
-}
+private module ExactTypePropagation implements TypePropagation {
+  class Typ = RefType;
 
-private predicate exactTypeJoin(int r, TypeFlowNode n, RefType t) {
-  exactTypeRank(1, n, t) and r = 1
-  or
-  exactTypeJoin(r - 1, n, t) and exactTypeRank(r, n, t)
+  predicate candType = exactType/2;
+
+  predicate supportsType = exactType/2;
 }
 
 /**
@@ -199,43 +363,60 @@ private predicate exactType(TypeFlowNode n, RefType t) {
   or
   // The following is an optimized version of
   // `forex(TypeFlowNode mid | joinStep(mid, n) | exactType(mid, t))`
-  exactTypeJoin(lastRank(n), n, t)
+  ForAll<RankedJoinStep, ExactTypePropagation>::flowJoin(n, t)
+  or
+  exists(TypeFlowNode scc |
+    sccRepr(n, scc) and
+    // Optimized version of
+    // `forex(TypeFlowNode mid | sccJoinStep(mid, scc) | exactType(mid, t))`
+    ForAll<RankedSccJoinStep, ExactTypePropagation>::flowJoin(scc, t)
+  )
 }
 
 /**
  * Holds if `n` occurs in a position where type information might be discarded;
- * `t` is the potentially boxed type of `n`, `t1` is the erasure of `t`, and
- * `t2` is the erased type of the implicit or explicit cast.
+ * `t1` is the type of `n`, `t1e` is the erasure of `t1`, `t2` is the type of
+ * the implicit or explicit cast, and `t2e` is the erasure of `t2`.
  */
-pragma[noinline]
-private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) {
-  t = boxIfNeeded(n.getType()) and
-  t.getErasure() = t1 and
-  (
-    exists(Variable v | v.getAnAssignedValue() = n.asExpr() and t2 = v.getType().getErasure())
-    or
-    exists(CastingExpr c | c.getExpr() = n.asExpr() and t2 = c.getType().getErasure())
-    or
-    exists(ReturnStmt ret |
-      ret.getResult() = n.asExpr() and t2 = ret.getEnclosingCallable().getReturnType().getErasure()
-    )
-    or
-    exists(MethodAccess ma | viableImpl_v1(ma) = n.asMethod() and t2 = ma.getType())
-    or
-    exists(Parameter p | privateParamArg(p, n.asExpr()) and t2 = p.getType().getErasure())
-    or
-    exists(ChooseExpr cond |
-      cond.getAResultExpr() = n.asExpr() and
-      t2 = cond.getType().getErasure()
-    )
+pragma[nomagic]
+private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2, RefType t2e) {
+  exists(TypeFlowNode next | step(n, next) or joinStep(n, next) |
+    n.getType() = t1 and
+    next.getType() = t2 and
+    t1.getErasure() = t1e and
+    t2.getErasure() = t2e and
+    t1 != t2
+  )
+}
+
+private predicate unconstrained(BoundedType t) {
+  t.(Wildcard).isUnconstrained()
+  or
+  t.getUpperBoundType() instanceof TypeObject and
+  not t.(Wildcard).hasLowerBound()
+  or
+  unconstrained(t.getUpperBoundType())
+  or
+  unconstrained(t.(Wildcard).getLowerBoundType())
+}
+
+/** Holds if `t` is a raw type or parameterised type with unrestricted type arguments. */
+private predicate unbound(RefType t) {
+  t instanceof RawType
+  or
+  exists(ParameterizedType pt | pt = t |
+    forex(RefType arg | arg = pt.getATypeArgument() | unconstrained(arg))
   )
 }
 
 /** Holds if `n` occurs in a position where type information is discarded. */
-private predicate upcast(TypeFlowNode n, RefType t) {
-  exists(RefType t1, RefType t2 |
-    upcastCand(n, t, t1, t2) and
-    t1.getASourceSupertype+() = t2
+private predicate upcast(TypeFlowNode n, RefType t1) {
+  exists(RefType t1e, RefType t2, RefType t2e | upcastCand(n, t1, t1e, t2, t2e) |
+    t1e.getASourceSupertype+() = t2e
+    or
+    t1e = t2e and
+    unbound(t2) and
+    not unbound(t1)
   )
 }
 
@@ -322,9 +503,10 @@ predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
 
 /**
  * Holds if `n` has type `t` and this information is discarded, such that `t`
- * might be a better type bound for nodes where `n` flows to.
+ * might be a better type bound for nodes where `n` flows to. This might include
+ * multiple bounds for a single node.
  */
-private predicate typeFlowBase(TypeFlowNode n, RefType t) {
+private predicate typeFlowBaseCand(TypeFlowNode n, RefType t) {
   exists(RefType srctype |
     upcast(n, srctype) or
     upcastEnhancedForStmt(n.asSsa(), srctype) or
@@ -340,29 +522,36 @@ private predicate typeFlowBase(TypeFlowNode n, RefType t) {
 }
 
 /**
- * Holds if `t` is a bound that holds on one of the incoming edges to `n` and
- * thus is a candidate bound for `n`.
+ * Holds if `n` has type `t` and this information is discarded, such that `t`
+ * might be a better type bound for nodes where `n` flows to. This only includes
+ * the best such bound for each node.
  */
-pragma[noinline]
-private predicate typeFlowJoinCand(TypeFlowNode n, RefType t) {
-  exists(TypeFlowNode mid | joinStep(mid, n) | typeFlow(mid, t))
+private predicate typeFlowBase(TypeFlowNode n, RefType t) {
+  exists(RefType te |
+    typeFlowBaseCand(n, t) and
+    te = t.getErasure() and
+    not exists(RefType better |
+      typeFlowBaseCand(n, better) and
+      better != t and
+      not t.getASupertype+() = better
+    |
+      better.getASupertype+() = t or
+      better.getErasure().(RefType).getASourceSupertype+() = te
+    )
+  )
 }
 
-/**
- * Holds if `t` is a candidate bound for `n` that is also valid for data coming
- * through the edges into `n` ranked from `1` to `r`.
- */
-private predicate typeFlowJoin(int r, TypeFlowNode n, RefType t) {
-  (
-    r = 1 and typeFlowJoinCand(n, t)
-    or
-    typeFlowJoin(r - 1, n, t) and joinStepRank(r, _, n)
-  ) and
-  forall(TypeFlowNode mid | joinStepRank(r, mid, n) |
+private module TypeFlowPropagation implements TypePropagation {
+  class Typ = RefType;
+
+  predicate candType = typeFlow/2;
+
+  bindingset[t]
+  predicate supportsType(TypeFlowNode mid, RefType t) {
     exists(RefType midtyp | exactType(mid, midtyp) or typeFlow(mid, midtyp) |
       pragma[only_bind_out](midtyp).getAnAncestor() = t
     )
-  )
+  }
 }
 
 /**
@@ -374,7 +563,12 @@ private predicate typeFlow(TypeFlowNode n, RefType t) {
   or
   exists(TypeFlowNode mid | typeFlow(mid, t) and step(mid, n))
   or
-  typeFlowJoin(lastRank(n), n, t)
+  ForAll<RankedJoinStep, TypeFlowPropagation>::flowJoin(n, t)
+  or
+  exists(TypeFlowNode scc |
+    sccRepr(n, scc) and
+    ForAll<RankedSccJoinStep, TypeFlowPropagation>::flowJoin(scc, t)
+  )
 }
 
 pragma[nomagic]
@@ -429,6 +623,175 @@ private predicate bestTypeFlow(TypeFlowNode n, RefType t) {
   not irrelevantBound(n, t)
 }
 
+private predicate bestTypeFlow(TypeFlowNode n, RefType t, boolean exact) {
+  exactType(n, t) and exact = true
+  or
+  not exactType(n, _) and bestTypeFlow(n, t) and exact = false
+}
+
+private predicate bestTypeFlowOrTypeFlowBase(TypeFlowNode n, RefType t, boolean exact) {
+  bestTypeFlow(n, t, exact)
+  or
+  typeFlowBase(n, t) and
+  exact = false and
+  not bestTypeFlow(n, _, _)
+}
+
+/**
+ * Holds if `n` has type `t` and this information is not propagated as a
+ * universal bound to a subsequent node, such that `t` might form the basis for
+ * a union type bound for that node.
+ */
+private predicate unionTypeFlowBaseCand(TypeFlowNode n, RefType t, boolean exact) {
+  exists(TypeFlowNode next |
+    joinStep(n, next) and
+    bestTypeFlowOrTypeFlowBase(n, t, exact) and
+    not bestTypeFlowOrTypeFlowBase(next, t, exact) and
+    not exactType(next, _)
+  )
+}
+
+/**
+ * Holds if `ioe` checks `v`, its true-successor is `bb`, and `bb` has multiple
+ * predecessors.
+ */
+private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, BaseSsaVariable v) {
+  ioe.getExpr() = v.getAUse() and
+  strictcount(bb.getABBPredecessor()) > 1 and
+  exists(ConditionBlock cb | cb.getCondition() = ioe and cb.getTestSuccessor(true) = bb)
+}
+
+/** Holds if `bb` is disjunctively guarded by multiple `instanceof` tests on `v`. */
+private predicate instanceofDisjunction(BasicBlock bb, BaseSsaVariable v) {
+  strictcount(InstanceOfExpr ioe | instanceofDisjunct(ioe, bb, v)) =
+    strictcount(bb.getABBPredecessor())
+}
+
+/**
+ * Holds if `n` is a value that is guarded by a disjunction of
+ * `instanceof t_i` where `t` is one of those `t_i`.
+ */
+private predicate instanceofDisjunctionGuarded(TypeFlowNode n, RefType t) {
+  exists(BasicBlock bb, InstanceOfExpr ioe, BaseSsaVariable v, VarAccess va |
+    instanceofDisjunction(bb, v) and
+    bb.bbDominates(va.getBasicBlock()) and
+    va = v.getAUse() and
+    instanceofDisjunct(ioe, bb, v) and
+    t = ioe.getCheckedType() and
+    n.asExpr() = va
+  )
+}
+
+private module HasUnionTypePropagation implements TypePropagation {
+  class Typ = Unit;
+
+  predicate candType(TypeFlowNode mid, Unit unit) {
+    exists(unit) and
+    (unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))
+  }
+
+  predicate supportsType = candType/2;
+}
+
+/**
+ * Holds if all incoming type flow can be traced back to a
+ * `unionTypeFlowBaseCand`, such that we can compute a union type bound for `n`.
+ * Disregards nodes for which we have an exact bound.
+ */
+private predicate hasUnionTypeFlow(TypeFlowNode n) {
+  not exactType(n, _) and
+  (
+    // Optimized version of
+    // `forex(TypeFlowNode mid | joinStep(mid, n) | unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))`
+    ForAll<RankedJoinStep, HasUnionTypePropagation>::flowJoin(n, _)
+    or
+    exists(TypeFlowNode scc |
+      sccRepr(n, scc) and
+      // Optimized version of
+      // `forex(TypeFlowNode mid | sccJoinStep(mid, scc) | unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))`
+      ForAll<RankedSccJoinStep, HasUnionTypePropagation>::flowJoin(scc, _)
+    )
+    or
+    exists(TypeFlowNode mid | step(mid, n) and hasUnionTypeFlow(mid))
+    or
+    instanceofDisjunctionGuarded(n, _)
+  )
+}
+
+pragma[nomagic]
+private RefType getTypeBound(TypeFlowNode n) {
+  bestTypeFlow(n, result)
+  or
+  not bestTypeFlow(n, _) and result = n.getType()
+}
+
+pragma[nomagic]
+private predicate unionTypeFlow0(TypeFlowNode n, RefType t, boolean exact) {
+  hasUnionTypeFlow(n) and
+  (
+    exists(TypeFlowNode mid | anyStep(mid, n) |
+      unionTypeFlowBaseCand(mid, t, exact) or unionTypeFlow(mid, t, exact)
+    )
+    or
+    instanceofDisjunctionGuarded(n, t) and exact = false
+  )
+}
+
+/** Holds if we have a union type bound for `n` and `t` is one of its parts. */
+private predicate unionTypeFlow(TypeFlowNode n, RefType t, boolean exact) {
+  unionTypeFlow0(n, t, exact) and
+  // filter impossible union parts:
+  if exact = true
+  then t.getErasure().(RefType).getASourceSupertype*() = getTypeBound(n).getErasure()
+  else haveIntersection(getTypeBound(n), t)
+}
+
+/**
+ * Holds if the inferred union type bound for `n` contains the best universal
+ * bound and thus is irrelevant.
+ */
+private predicate irrelevantUnionType(TypeFlowNode n) {
+  exists(RefType t, RefType nt, RefType te, RefType nte |
+    unionTypeFlow(n, t, false) and
+    nt = getTypeBound(n) and
+    te = t.getErasure() and
+    nte = nt.getErasure()
+  |
+    nt.getASupertype*() = t
+    or
+    nte.getASourceSupertype+() = te
+    or
+    nte = te and unbound(t)
+  )
+}
+
+/**
+ * Holds if `t` is an irrelevant part of the union type bound for `n` due to
+ * being contained in another part of the union type bound.
+ */
+private predicate irrelevantUnionTypePart(TypeFlowNode n, RefType t, boolean exact) {
+  unionTypeFlow(n, t, exact) and
+  not irrelevantUnionType(n) and
+  exists(RefType weaker |
+    unionTypeFlow(n, weaker, false) and
+    t.getASupertype*() = weaker
+  |
+    exact = true or not weaker.getASupertype*() = t
+  )
+}
+
+/**
+ * Holds if the runtime type of `n` is bounded by a union type and if this
+ * bound is likely to be better than the static type of `n`. The union type is
+ * made up of the types `t` related to `n` by this predicate, and the flag
+ * `exact` indicates whether `t` is an exact bound or merely an upper bound.
+ */
+private predicate bestUnionType(TypeFlowNode n, RefType t, boolean exact) {
+  unionTypeFlow(n, t, exact) and
+  not irrelevantUnionType(n) and
+  not irrelevantUnionTypePart(n, t, exact)
+}
+
 cached
 private module TypeFlowBounds {
   /**
@@ -440,11 +803,7 @@ private module TypeFlowBounds {
   predicate fieldTypeFlow(Field f, RefType t, boolean exact) {
     exists(TypeFlowNode n |
       n.asField() = f and
-      (
-        exactType(n, t) and exact = true
-        or
-        not exactType(n, _) and bestTypeFlow(n, t) and exact = false
-      )
+      bestTypeFlow(n, t, exact)
     )
   }
 
@@ -457,11 +816,21 @@ private module TypeFlowBounds {
   predicate exprTypeFlow(Expr e, RefType t, boolean exact) {
     exists(TypeFlowNode n |
       n.asExpr() = e and
-      (
-        exactType(n, t) and exact = true
-        or
-        not exactType(n, _) and bestTypeFlow(n, t) and exact = false
-      )
+      bestTypeFlow(n, t, exact)
+    )
+  }
+
+  /**
+   * Holds if the runtime type of `e` is bounded by a union type and if this
+   * bound is likely to be better than the static type of `e`. The union type is
+   * made up of the types `t` related to `e` by this predicate, and the flag
+   * `exact` indicates whether `t` is an exact bound or merely an upper bound.
+   */
+  cached
+  predicate exprUnionTypeFlow(Expr e, RefType t, boolean exact) {
+    exists(TypeFlowNode n |
+      n.asExpr() = e and
+      bestUnionType(n, t, exact)
     )
   }
 }

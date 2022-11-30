@@ -18,4 +18,4 @@ where
   cookie.isSensitive() and
   cookie.isSecure() and // `js/clear-text-cookie` will report it if the cookie is not secure.
   cookie.getSameSite().toLowerCase() = "none"
-select cookie, "Sensitive cookie with SameSite set to 'None'"
+select cookie, "Sensitive cookie with SameSite set to 'None'."

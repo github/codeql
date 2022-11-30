@@ -1,162 +1,69 @@
 name: "Go: Run Tests"
 on:
+  push:
+    paths:
+      - "go/**"
+      - .github/workflows/go-tests.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+    branches:
+      - main
+      - "rc/*"
   pull_request:
     paths:
       - "go/**"
       - .github/workflows/go-tests.yml
+      - .github/actions/**
       - codeql-workspace.yml
 jobs:
-
   test-linux:
     name: Test Linux (Ubuntu)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-xl
     steps:
+      - name: Set up Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+        id: go
 
-    - name: Set up Go 1.18.1
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.18.1
-      id: go
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Set up CodeQL CLI
-      run: |
-        echo "Removing old CodeQL Directory..."
-        rm -rf $HOME/codeql
-        echo "Done"
-        cd $HOME
-        echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
-        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
-        echo "Done"
-        echo "Unpacking CodeQL CLI..."
-        unzip -q codeql-linux64.zip
-        rm -f codeql-linux64.zip
-        echo "Done"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+      - name: Set up CodeQL CLI
+        uses: ./.github/actions/fetch-codeql
 
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Enable problem matchers in repository
+        shell: bash
+        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
 
-    - name: Enable problem matchers in repository
-      shell: bash
-      run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+      - name: Build
+        run: |
+          cd go
+          make
 
-    - name: Build
-      run: |
-        cd go
-        env PATH=$PATH:$HOME/codeql make
+      - name: Check that all Go code is autoformatted
+        run: |
+          cd go
+          make check-formatting
 
-    - name: Check that all QL and Go code is autoformatted
-      run: |
-        cd go
-        env PATH=$PATH:$HOME/codeql make check-formatting
+      - name: Compile qhelp files to markdown
+        run: |
+          cd go
+          env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
 
-    - name: Compile qhelp files to markdown
-      run: |
-        cd go
-        env PATH=$PATH:$HOME/codeql QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+      - name: Upload qhelp markdown
+        uses: actions/upload-artifact@v3
+        with:
+          name: qhelp-markdown
+          path: go/qhelp-out/**/*.md
 
-    - name: Upload qhelp markdown
-      uses: actions/upload-artifact@v2
-      with:
-        name: qhelp-markdown
-        path: go/qhelp-out/**/*.md
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: go-qltest
 
-    - name: Test
-      run: |
-        cd go
-        env PATH=$PATH:$HOME/codeql make test
-
-  test-mac:
-    name: Test MacOS
-    runs-on: macOS-latest
-    steps:
-    - name: Set up Go 1.18.1
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.18.1
-      id: go
-
-    - name: Set up CodeQL CLI
-      run: |
-        echo "Removing old CodeQL Directory..."
-        rm -rf $HOME/codeql
-        echo "Done"
-        cd $HOME
-        echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
-        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-osx64.zip "$LATEST"
-        echo "Done"
-        echo "Unpacking CodeQL CLI..."
-        unzip -q codeql-osx64.zip
-        rm -f codeql-osx64.zip
-        echo "Done"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Enable problem matchers in repository
-      shell: bash
-      run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
-
-    - name: Build
-      run: |
-        cd go
-        env PATH=$PATH:$HOME/codeql make
-
-    - name: Test
-      run: |
-        cd go
-        env PATH=$PATH:$HOME/codeql make test
-
-  test-win:
-    name: Test Windows
-    runs-on: windows-2019
-    steps:
-    - name: Set up Go 1.18.1
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.18.1
-      id: go
-
-    - name: Set up CodeQL CLI
-      run: |
-        echo "Removing old CodeQL Directory..."
-        rm -rf $HOME/codeql
-        echo "Done"
-        cd "$HOME"
-        echo "Downloading CodeQL CLI..."
-        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | grep -v beta | tail -1)
-        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-win64.zip "$LATEST"
-        echo "Done"
-        echo "Unpacking CodeQL CLI..."
-        unzip -q -o codeql-win64.zip
-        unzip -q -o codeql-win64.zip codeql/codeql.exe
-        rm -f codeql-win64.zip
-        echo "Done"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      shell:
-        bash
-
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Enable problem matchers in repository
-      shell: bash
-      run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
-
-    - name: Build
-      run: |
-        $Env:Path += ";$HOME\codeql"
-        cd go
-        make
-
-    - name: Test
-      run: |
-        $Env:Path += ";$HOME\codeql"
-        cd go
-        make test
+      - name: Test
+        run: |
+          cd go
+          make test cache="${{ steps.query-cache.outputs.cache-dir }}"

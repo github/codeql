@@ -48,4 +48,5 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink, source, sink, "$@ flows to here and is inserted as XML.", source, "User-provided value"
+select sink.getNode(), source, sink, "This XML element depends on a $@.", source.getNode(),
+  "user-provided value"

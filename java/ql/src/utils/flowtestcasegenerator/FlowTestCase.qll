@@ -21,6 +21,26 @@ class TargetSummaryModelCsv extends Unit {
   abstract predicate row(string r);
 }
 
+/** Holds if a summary model `row` exists for the given parameters. */
+bindingset[row]
+predicate summaryModelRow(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, string row
+) {
+  summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+  row =
+    package + ";" //
+      + type + ";" //
+      + subtypes.toString() + ";" //
+      + name + ";" //
+      + signature + ";" //
+      + ext + ";" //
+      + input + ";" //
+      + output + ";" //
+      + kind + ";" //
+      + provenance
+}
+
 /**
  * Gets a CSV row for which a test has been requested, but `SummaryModelCsv.row` does not hold of it.
  */
@@ -64,8 +84,8 @@ private newtype TTestCase =
       string inputSpec, string outputSpec
     |
       any(TargetSummaryModelCsv tsmc).row(row) and
-      summaryModel(namespace, type, subtypes, name, signature, ext, inputSpec, outputSpec, kind,
-        false, row) and
+      summaryModelRow(namespace, type, subtypes, name, signature, ext, inputSpec, outputSpec, kind,
+        _, row) and
       callable = interpretElement(namespace, type, subtypes, name, signature, ext) and
       Private::External::interpretSpec(inputSpec, input) and
       Private::External::interpretSpec(outputSpec, output)

@@ -20,9 +20,11 @@ module ReflectedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for reflected XSS vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A shared XSS sanitizer as a sanitizer for reflected XSS. */
   private class SharedXssSanitizer extends Sanitizer {
@@ -30,7 +32,7 @@ module ReflectedXss {
   }
 
   /** A shared XSS sanitizer guard as a sanitizer guard for reflected XSS. */
-  private class SharedXssSanitizerGuard extends SanitizerGuard {
+  deprecated private class SharedXssSanitizerGuard extends SanitizerGuard {
     SharedXss::SanitizerGuard self;
 
     SharedXssSanitizerGuard() { this = self }

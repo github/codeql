@@ -69,9 +69,9 @@ import semmle.go.frameworks.stdlib.TextTemplate
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
   StringMethod() {
-    getName() = "String" and
-    getNumParameter() = 0 and
-    getResultType(0) = Builtin::string_().getType()
+    this.getName() = "String" and
+    this.getNumParameter() = 0 and
+    this.getResultType(0) = Builtin::string_().getType()
   }
 
   override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
@@ -128,11 +128,12 @@ module IntegerParser {
 }
 
 /** Provides models of commonly used functions in the `net/url` package. */
-module URL {
+module Url {
   /** The `PathEscape` or `QueryEscape` function. */
   class Escaper extends TaintTracking::FunctionModel {
     Escaper() {
-      hasQualifiedName("net/url", "PathEscape") or hasQualifiedName("net/url", "QueryEscape")
+      this.hasQualifiedName("net/url", "PathEscape") or
+      this.hasQualifiedName("net/url", "QueryEscape")
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
@@ -143,7 +144,8 @@ module URL {
   /** The `PathUnescape` or `QueryUnescape` function. */
   class Unescaper extends TaintTracking::FunctionModel {
     Unescaper() {
-      hasQualifiedName("net/url", "PathUnescape") or hasQualifiedName("net/url", "QueryUnescape")
+      this.hasQualifiedName("net/url", "PathUnescape") or
+      this.hasQualifiedName("net/url", "QueryUnescape")
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
@@ -154,10 +156,10 @@ module URL {
   /** The `Parse`, `ParseQuery` or `ParseRequestURI` function, or the `URL.Parse` method. */
   class Parser extends TaintTracking::FunctionModel {
     Parser() {
-      hasQualifiedName("net/url", "Parse") or
+      this.hasQualifiedName("net/url", "Parse") or
       this.(Method).hasQualifiedName("net/url", "URL", "Parse") or
-      hasQualifiedName("net/url", "ParseQuery") or
-      hasQualifiedName("net/url", "ParseRequestURI")
+      this.hasQualifiedName("net/url", "ParseQuery") or
+      this.hasQualifiedName("net/url", "ParseRequestURI")
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
@@ -170,10 +172,29 @@ module URL {
     }
   }
 
+  /** The `JoinPath` function. */
+  class JoinPath extends TaintTracking::FunctionModel {
+    JoinPath() { this.hasQualifiedName("net/url", "JoinPath") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isParameter(_) and outp.isResult(0)
+    }
+  }
+
+  /** The method `URL.JoinPath`. */
+  class JoinPathMethod extends TaintTracking::FunctionModel, Method {
+    JoinPathMethod() { this.hasQualifiedName("net/url", "URL", "JoinPath") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      (inp.isReceiver() or inp.isParameter(_)) and
+      outp.isResult(0)
+    }
+  }
+
   /** A method that returns a part of a URL. */
   class UrlGetter extends TaintTracking::FunctionModel, Method {
     UrlGetter() {
-      exists(string m | hasQualifiedName("net/url", "URL", m) |
+      exists(string m | this.hasQualifiedName("net/url", "URL", m) |
         m = ["EscapedPath", "Hostname", "Port", "Query", "RequestURI"]
       )
     }
@@ -185,7 +206,7 @@ module URL {
 
   /** The method `URL.MarshalBinary`. */
   class UrlMarshalBinary extends TaintTracking::FunctionModel, Method {
-    UrlMarshalBinary() { hasQualifiedName("net/url", "URL", "MarshalBinary") }
+    UrlMarshalBinary() { this.hasQualifiedName("net/url", "URL", "MarshalBinary") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult(0)
@@ -194,7 +215,7 @@ module URL {
 
   /** The method `URL.ResolveReference`. */
   class UrlResolveReference extends TaintTracking::FunctionModel, Method {
-    UrlResolveReference() { hasQualifiedName("net/url", "URL", "ResolveReference") }
+    UrlResolveReference() { this.hasQualifiedName("net/url", "URL", "ResolveReference") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       (inp.isReceiver() or inp.isParameter(0)) and
@@ -205,8 +226,8 @@ module URL {
   /** The function `User` or `UserPassword`. */
   class UserinfoConstructor extends TaintTracking::FunctionModel {
     UserinfoConstructor() {
-      hasQualifiedName("net/url", "User") or
-      hasQualifiedName("net/url", "UserPassword")
+      this.hasQualifiedName("net/url", "User") or
+      this.hasQualifiedName("net/url", "UserPassword")
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
@@ -217,7 +238,7 @@ module URL {
   /** A method that returns a part of a Userinfo struct. */
   class UserinfoGetter extends TaintTracking::FunctionModel, Method {
     UserinfoGetter() {
-      exists(string m | hasQualifiedName("net/url", "Userinfo", m) |
+      exists(string m | this.hasQualifiedName("net/url", "Userinfo", m) |
         m = "Password" or
         m = "Username"
       )
@@ -231,7 +252,7 @@ module URL {
   /** A method that returns all or part of a Values map. */
   class ValuesGetter extends TaintTracking::FunctionModel, Method {
     ValuesGetter() {
-      exists(string m | hasQualifiedName("net/url", "Values", m) |
+      exists(string m | this.hasQualifiedName("net/url", "Values", m) |
         m = "Encode" or
         m = "Get"
       )
@@ -242,3 +263,6 @@ module URL {
     }
   }
 }
+
+/** DEPRECATED: Alias for Url */
+deprecated module URL = Url;

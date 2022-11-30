@@ -64,7 +64,7 @@ module InsecureRandomness {
       )
     }
 
-    override string getKind() { result = "this cryptographic algorithm" }
+    override string getKind() { result = "This cryptographic algorithm" }
   }
 
   /**
@@ -75,7 +75,7 @@ module InsecureRandomness {
       this.getRoot().(FuncDef).getName().regexpMatch("(?i).*(gen(erate)?|salt|make|mk)Password.*")
     }
 
-    override string getKind() { result = "a password-related function" }
+    override string getKind() { result = "A password-related function" }
   }
 
   /** Gets a package that implements hash algorithms. */

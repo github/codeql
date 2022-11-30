@@ -7,13 +7,14 @@ newtype TAstNode =
   TTopLevel(QL::Ql file) or
   TQLDoc(QL::Qldoc qldoc) or
   TBlockComment(QL::BlockComment comment) or
+  TLineComment(QL::LineComment comment) or
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
   TFieldDecl(QL::Field field) or
   TClass(QL::Dataclass dc) or
   TCharPred(QL::Charpred pred) or
   TClassPredicate(QL::MemberPredicate pred) or
-  TDBRelation(QL::DbTable table) or
+  TDBRelation(Dbscheme::Table table) or
   TSelect(QL::Select sel) or
   TModule(QL::Module mod) or
   TNewType(QL::Datatype dt) or
@@ -59,11 +60,11 @@ newtype TAstNode =
   TPredicateExpr(QL::PredicateExpr pe) or
   TAnnotation(QL::Annotation annot) or
   TAnnotationArg(QL::AnnotArg arg) or
-  TYamlCommemt(QL::YamlComment yc) or
-  TYamlEntry(QL::YamlEntry ye) or
-  TYamlKey(QL::YamlKey yk) or
-  TYamlListitem(QL::YamlListitem yli) or
-  TYamlValue(QL::YamlValue yv) or
+  TYamlComment(Yaml::Comment yc) or
+  TYamlEntry(Yaml::Entry ye) or
+  TYamlKey(Yaml::Key yk) or
+  TYamlListitem(Yaml::Listitem yli) or
+  TYamlValue(Yaml::Value yv) or
   TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
   TBuiltinMember(string qual, string ret, string name, string args) {
     isBuiltinMember(qual, ret, name, args)
@@ -83,9 +84,13 @@ class TExpr =
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
-class TModuleRef = TImport or TModuleExpr;
+class TTypeRef = TImport or TModuleExpr or TType;
 
-class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+class TYamlNode = TYamlComment or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+
+class TSignatureExpr = TPredicateExpr or TType or TModuleExpr;
+
+class TComment = TQLDoc or TBlockComment or TLineComment;
 
 /** DEPRECATED: Alias for TYamlNode */
 deprecated class TYAMLNode = TYamlNode;
@@ -119,13 +124,15 @@ private QL::AstNode toQLExpr(AST::AstNode n) {
   n = TDontCare(result)
 }
 
-private QL::AstNode toGenerateYaml(AST::AstNode n) {
-  n = TYamlCommemt(result) or
+Yaml::AstNode toGenerateYaml(AST::AstNode n) {
+  n = TYamlComment(result) or
   n = TYamlEntry(result) or
   n = TYamlKey(result) or
   n = TYamlListitem(result) or
   n = TYamlValue(result)
 }
+
+Dbscheme::AstNode toDbscheme(AST::AstNode n) { n = TDBRelation(result) }
 
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
@@ -135,8 +142,6 @@ QL::AstNode toQL(AST::AstNode n) {
   result = toQLExpr(n)
   or
   result = toQLFormula(n)
-  or
-  result = toGenerateYaml(n)
   or
   result.(QL::ParExpr).getChild() = toQL(n)
   or
@@ -152,6 +157,8 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   n = TBlockComment(result)
   or
+  n = TLineComment(result)
+  or
   n = TClasslessPredicate(result)
   or
   n = TVarDecl(result)
@@ -163,8 +170,6 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TCharPred(result)
   or
   n = TClassPredicate(result)
-  or
-  n = TDBRelation(result)
   or
   n = TSelect(result)
   or
@@ -226,7 +231,8 @@ module AstConsistency {
     not exists(node.getParent()) and
     not node.getLocation().getStartColumn() = 1 and // startcolumn = 1 <=> top level in file <=> fine to have no parent
     exists(node.toString()) and // <- there are a few parse errors in "global-data-flow-java-1.ql", this way we filter them out.
-    not node instanceof YAML::YAMLNode and // parents for YAML doens't work
     not (node instanceof QLDoc and node.getLocation().getFile().getExtension() = "dbscheme") // qldoc in dbschemes are not hooked up
   }
+
+  query predicate nonUniqueParent(AstNode node) { count(node.getParent()) >= 2 }
 }

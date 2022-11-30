@@ -31,7 +31,7 @@ module StoredXss {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }
   }

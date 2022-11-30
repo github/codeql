@@ -1,0 +1,102 @@
+name: "Swift"
+
+on:
+  pull_request:
+    paths:
+      - "swift/**"
+      - "misc/bazel/**"
+      - "*.bazel*"
+      - .github/workflows/swift.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+      - .pre-commit-config.yaml
+      - "!**/*.md"
+      - "!**/*.qhelp"
+    branches:
+      - main
+      - rc/*
+  push:
+    paths:
+      - "swift/**"
+      - "misc/bazel/**"
+      - "*.bazel*"
+      - .github/workflows/swift.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+      - "!**/*.md"
+      - "!**/*.qhelp"
+    branches:
+      - main
+      - rc/*
+
+jobs:
+  # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
+  # without waiting for the macOS build
+  build-and-test-macos:
+    runs-on: macos-12-xl
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/build-and-test
+  build-and-test-linux:
+    runs-on: ubuntu-latest-xl
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/build-and-test
+  qltests-linux:
+    needs: build-and-test-linux
+    runs-on: ubuntu-latest-xl
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/run-ql-tests
+  qltests-macos:
+    if : ${{ github.event_name == 'pull_request' }}
+    needs: build-and-test-macos
+    runs-on: macos-12-xl
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/run-ql-tests
+  integration-tests-linux:
+    needs: build-and-test-linux
+    runs-on: ubuntu-latest-xl
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/run-integration-tests
+  integration-tests-macos:
+    if : ${{ github.event_name == 'pull_request' }}
+    needs: build-and-test-macos
+    runs-on: macos-12-xl
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./swift/actions/run-integration-tests
+  codegen:
+    if : ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bazelbuild/setup-bazelisk@v2
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: 'swift/.python-version'
+      - uses: pre-commit/action@v3.0.0
+        name: Check that python code is properly formatted
+        with:
+          extra_args: autopep8 --all-files
+      - uses: ./.github/actions/fetch-codeql
+      - uses: pre-commit/action@v3.0.0
+        name: Check that QL generated code was checked in
+        with:
+          extra_args: swift-codegen --all-files
+      - name: Generate C++ files
+        run: |
+          bazel run //swift/codegen:codegen -- --generate=trap,cpp --cpp-output=$PWD/generated-cpp-files
+      - uses: actions/upload-artifact@v3
+        with:
+          name: swift-generated-cpp-files
+          path: generated-cpp-files/**
+  database-upgrade-scripts:
+    if : ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/fetch-codeql
+      - uses: ./swift/actions/database-upgrade-scripts

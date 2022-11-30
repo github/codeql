@@ -13,4 +13,4 @@ and {{getter}} = x.{{getter}}()
 and if x.{{getter}}() then {{getter}} = "yes" else {{getter}} = "no"
 {{/is_predicate}}
 {{/properties}}
-select x{{#properties}}, "{{getter}}:", {{getter}}{{/properties}}
+select x{{#show_ql_class}}, x.getPrimaryQlClasses(){{/show_ql_class}}{{#properties}}, "{{getter}}:", {{getter}}{{/properties}}

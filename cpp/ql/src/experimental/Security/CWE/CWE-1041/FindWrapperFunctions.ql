@@ -138,4 +138,4 @@ where
     fc.getEnclosingFunction() != fn and
     fc.getEnclosingFunction().getMetrics().getNumberOfCalls() > fn.getMetrics().getNumberOfCalls()
   )
-select fc, "Consider changing the call to $@", fn, fn.getName()
+select fc, "Consider changing the call to $@.", fn, fn.getName()

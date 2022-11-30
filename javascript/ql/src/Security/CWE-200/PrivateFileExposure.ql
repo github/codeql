@@ -72,11 +72,11 @@ pragma[noinline]
 Folder getAPackageJsonFolder() { result = any(PackageJson json).getFile().getParentContainer() }
 
 /**
- * Gets a reference to `dirname`, the home folder, the current working folder, or the root folder.
+ * Gets a reference to a directory that has a `package.json` in the same folder, the home folder,
+ * the current working folder, or the root folder.
  * All of these might cause information to be leaked.
  *
- * For `dirname` that can happen if there is a `package.json` file in the same folder.
- * It is assumed that the presence of a `package.json` file means that a `node_modules` folder can also exist.
+ * For the first case it is assumed that the presence of a `package.json` file means that a "node_modules" folder can also exist.
  *
  * For the root/home/working folder, they contain so much information that they must leak information somehow (e.g. ssh keys in the `~/.ssh` folder).
  */
@@ -108,7 +108,7 @@ DataFlow::Node getALeakingFolder(string description) {
 }
 
 /**
- * Gets a data-flow node that represents a path to the private folder `path`.
+ * Gets a data-flow node that represents the private folder descriped by `description`.
  */
 DataFlow::Node getAPrivateFolderPath(string description) {
   exists(string path |
@@ -119,7 +119,7 @@ DataFlow::Node getAPrivateFolderPath(string description) {
 }
 
 /**
- * Gest a call that serves the folder `path` to the public.
+ * Gest a call that serves the folder descriped by `description` to the public.
  */
 DataFlow::CallNode servesAPrivateFolder(string description) {
   result = DataFlow::moduleMember(["express", "connect"], "static").getACall() and
@@ -135,7 +135,7 @@ DataFlow::CallNode servesAPrivateFolder(string description) {
  */
 Express::RouteSetup getAnExposingExpressSetup(string path) {
   result.isUseCall() and
-  result.getArgument([0 .. 1]) = servesAPrivateFolder(path).getEnclosingExpr()
+  result.getArgument([0 .. 1]) = servesAPrivateFolder(path)
 }
 
 /**
@@ -149,7 +149,7 @@ DataFlow::CallNode getAnExposingServeSetup(string path) {
 
 from DataFlow::Node node, string path
 where
-  node = getAnExposingExpressSetup(path).flow()
+  node = getAnExposingExpressSetup(path)
   or
   node = getAnExposingServeSetup(path)
 select node, "Serves " + path + ", which can contain private information."

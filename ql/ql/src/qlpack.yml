@@ -5,3 +5,5 @@ dbscheme: ql.dbscheme
 suites: codeql-suites
 defaultSuiteFile: codeql-suites/ql-code-scanning.qls
 extractor: ql
+dependencies:
+  codeql/typos: ${workspace}

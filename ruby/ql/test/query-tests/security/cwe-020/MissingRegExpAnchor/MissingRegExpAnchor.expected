@@ -16,3 +16,5 @@
 | missing_regexp_anchor.rb:50:1:50:30 | /^good\\\\\\\\.com\|better\\\\\\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
 | missing_regexp_anchor.rb:52:1:52:15 | /^foo\|bar\|baz$/ | Misleading operator precedence. The subexpression '^foo' is anchored at the beginning, but the other parts of this regular expression are not |
 | missing_regexp_anchor.rb:52:1:52:15 | /^foo\|bar\|baz$/ | Misleading operator precedence. The subexpression 'baz$' is anchored at the end, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:60:20:60:39 | "http://example.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| missing_regexp_anchor.rb:61:19:61:38 | "http://example.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |

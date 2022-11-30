@@ -1,5 +1,4 @@
 import go
-import semmle.go.dataflow.DataFlow
 import semmle.go.dataflow.ExternalFlow
 import CsvValidation
 

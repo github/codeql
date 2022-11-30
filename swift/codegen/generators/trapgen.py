@@ -12,6 +12,7 @@ enforce a type system on trap labels (see `TrapLabel.h`).
 """
 
 import logging
+import pathlib
 
 import inflection
 from toposort import toposort_flatten
@@ -40,10 +41,10 @@ def get_cpp_type(schema_type: str):
 def get_field(c: dbscheme.Column):
     args = {
         "field_name": c.schema_name,
-        "type": c.type,
+        "base_type": c.type,
     }
     args.update(cpp.get_field_override(c.schema_name))
-    args["type"] = get_cpp_type(args["type"])
+    args["base_type"] = get_cpp_type(args["base_type"])
     return cpp.Field(**args)
 
 
@@ -71,24 +72,24 @@ def generate(opts, renderer):
     tag_graph = {}
     out = opts.cpp_output
 
-    traps = []
+    traps = {pathlib.Path(): []}
     for e in dbscheme.iterload(opts.dbscheme):
         if e.is_table:
-            traps.append(get_trap(e))
+            traps.setdefault(e.dir, []).append(get_trap(e))
         elif e.is_union:
             tag_graph.setdefault(e.lhs, set())
             for d in e.rhs:
                 tag_graph.setdefault(d.type, set()).add(e.lhs)
 
-    renderer.render(cpp.TrapList(traps, opts.dbscheme),
-                    out / f"TrapEntries.h")
+    for dir, entries in traps.items():
+        dir = dir or pathlib.Path()
+        renderer.render(cpp.TrapList(entries, opts.dbscheme), out / dir / "TrapEntries")
 
     tags = []
-    for index, tag in enumerate(toposort_flatten(tag_graph)):
+    for tag in toposort_flatten(tag_graph):
         tags.append(cpp.Tag(
             name=get_tag_name(tag),
             bases=[get_tag_name(b) for b in sorted(tag_graph[tag])],
-            index=index,
             id=tag,
         ))
-    renderer.render(cpp.TagList(tags, opts.dbscheme), out / f"TrapTags.h")
+    renderer.render(cpp.TagList(tags, opts.dbscheme), out / "TrapTags")

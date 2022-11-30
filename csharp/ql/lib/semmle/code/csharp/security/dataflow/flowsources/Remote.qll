@@ -19,6 +19,13 @@ abstract class RemoteFlowSource extends DataFlow::Node {
   abstract string getSourceType();
 }
 
+/**
+ * A module for importing frameworks that defines remote flow sources.
+ */
+private module RemoteFlowSources {
+  private import semmle.code.csharp.frameworks.ServiceStack
+}
+
 /** A data flow source of remote user input (ASP.NET). */
 abstract class AspNetRemoteFlowSource extends RemoteFlowSource { }
 
@@ -146,7 +153,7 @@ class MicrosoftOwinRequestRemoteFlowSource extends RemoteFlowSource, DataFlow::E
       p = owinRequest.getQueryStringProperty() or
       p = owinRequest.getRemoteIpAddressProperty() or
       p = owinRequest.getSchemeProperty() or
-      p = owinRequest.getURIProperty()
+      p = owinRequest.getUriProperty()
     )
   }
 
@@ -170,6 +177,52 @@ class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
 
 /** A data flow source of remote user input (ASP.NET Core). */
 abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
+
+private predicate reachesMapGetArg(DataFlow::Node n) {
+  exists(MethodCall mc |
+    mc.getTarget() = any(MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions c).getAMapMethod() and
+    n.asExpr() = mc.getArgument(2)
+  )
+  or
+  exists(DataFlow::Node mid | reachesMapGetArg(mid) |
+    DataFlow::localFlowStep(n, mid) or
+    n.asExpr() = mid.asExpr().(DelegateCreation).getArgument()
+  )
+}
+
+/** A parameter to a routing method delegate. */
+class AspNetCoreRoutingMethodParameter extends AspNetCoreRemoteFlowSource, DataFlow::ParameterNode {
+  AspNetCoreRoutingMethodParameter() {
+    exists(DataFlow::Node n, Callable c |
+      reachesMapGetArg(n) and
+      c.getAParameter() = this.asParameter() and
+      c.isSourceDeclaration()
+    |
+      n.asExpr() = c
+      or
+      n.asExpr().(CallableAccess).getTarget().getUnboundDeclaration() = c
+    )
+  }
+
+  override string getSourceType() { result = "ASP.NET Core routing endpoint." }
+}
+
+/**
+ * Data flow for ASP.NET Core.
+ *
+ * Flow is defined from any ASP.NET Core remote source object to any of its member
+ * properties.
+ */
+private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember, Property {
+  AspNetCoreRemoteFlowSourceMember() {
+    this.getDeclaringType() = any(AspNetCoreRemoteFlowSource source).getType() and
+    this.isPublic() and
+    not this.isStatic() and
+    this.isAutoImplemented() and
+    this.getGetter().isPublic() and
+    this.getSetter().isPublic()
+  }
+}
 
 /** A data flow source of remote user input (ASP.NET query collection). */
 class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFlow::ExprNode {
@@ -196,7 +249,7 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
 }
 
 /** A parameter to a `Mvc` controller action method, viewed as a source of remote user input. */
-class AspNetCoreActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
+class AspNetCoreActionMethodParameter extends AspNetCoreRemoteFlowSource, DataFlow::ParameterNode {
   AspNetCoreActionMethodParameter() {
     exists(Parameter p |
       p = this.getParameter() and

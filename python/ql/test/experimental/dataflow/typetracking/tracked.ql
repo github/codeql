@@ -120,7 +120,7 @@ class TrackedSelfTest extends InlineExpectationsTest {
 /** Gets a reference to `foo` (fictive module). */
 private DataFlow::TypeTrackingNode foo(DataFlow::TypeTracker t) {
   t.start() and
-  result = API::moduleImport("foo").getAnImmediateUse()
+  result = API::moduleImport("foo").asSource()
   or
   exists(DataFlow::TypeTracker t2 | result = foo(t2).track(t2, t))
 }
@@ -131,7 +131,7 @@ DataFlow::Node foo() { foo(DataFlow::TypeTracker::end()).flowsTo(result) }
 /** Gets a reference to `foo.bar` (fictive module). */
 private DataFlow::TypeTrackingNode foo_bar(DataFlow::TypeTracker t) {
   t.start() and
-  result = API::moduleImport("foo").getMember("bar").getAnImmediateUse()
+  result = API::moduleImport("foo").getMember("bar").asSource()
   or
   t.startInAttr("bar") and
   result = foo()
@@ -145,7 +145,7 @@ DataFlow::Node foo_bar() { foo_bar(DataFlow::TypeTracker::end()).flowsTo(result)
 /** Gets a reference to `foo.bar.baz` (fictive attribute on `foo.bar` module). */
 private DataFlow::TypeTrackingNode foo_bar_baz(DataFlow::TypeTracker t) {
   t.start() and
-  result = API::moduleImport("foo").getMember("bar").getMember("baz").getAnImmediateUse()
+  result = API::moduleImport("foo").getMember("bar").getMember("baz").asSource()
   or
   t.startInAttr("baz") and
   result = foo_bar()

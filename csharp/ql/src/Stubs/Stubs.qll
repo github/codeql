@@ -160,7 +160,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
 
   private string stubBaseTypesString() {
     if this instanceof Enum
-    then result = ""
+    then result = " : " + this.(Enum).getUnderlyingType().toStringWithTypes()
     else
       if exists(this.getAnInterestingBaseType())
       then
@@ -502,23 +502,48 @@ private string stubClassName(Type t) {
                       else
                         if t instanceof TupleType
                         then
-                          if t.(TupleType).getArity() < 2
-                          then result = stubClassName(t.(TupleType).getUnderlyingType())
-                          else
-                            result =
-                              "(" +
-                                concat(int i, Type element |
-                                  element = t.(TupleType).getElementType(i)
-                                |
-                                  stubClassName(element), "," order by i
-                                ) + ")"
+                          exists(TupleType tt | tt = t |
+                            if tt.getArity() < 2
+                            then result = stubClassName(tt.getUnderlyingType())
+                            else
+                              result =
+                                "(" +
+                                  concat(int i, Type element |
+                                    element = tt.getElementType(i)
+                                  |
+                                    stubClassName(element), "," order by i
+                                  ) + ")"
+                          )
                         else
-                          if t instanceof ValueOrRefType
+                          if t instanceof FunctionPointerType
                           then
-                            result =
-                              stubQualifiedNamePrefix(t) + t.getUndecoratedName() +
-                                stubGenericArguments(t)
-                          else result = "<error>"
+                            exists(
+                              FunctionPointerType fpt, CallingConvention callconvention,
+                              string calltext
+                            |
+                              fpt = t
+                            |
+                              callconvention = fpt.getCallingConvention() and
+                              (
+                                if callconvention instanceof UnmanagedCallingConvention
+                                then calltext = "unmanaged"
+                                else calltext = ""
+                              ) and
+                              result =
+                                "delegate* " + calltext + "<" +
+                                  concat(int i, Parameter p |
+                                    p = fpt.getParameter(i)
+                                  |
+                                    stubClassName(p.getType()) + "," order by i
+                                  ) + stubClassName(fpt.getReturnType()) + ">"
+                            )
+                          else
+                            if t instanceof ValueOrRefType
+                            then
+                              result =
+                                stubQualifiedNamePrefix(t) + t.getUndecoratedName() +
+                                  stubGenericArguments(t)
+                            else result = "<error>"
 }
 
 language[monotonicAggregates]
@@ -726,7 +751,7 @@ pragma[noinline]
 private string stubEnumConstant(EnumConstant ec, Assembly assembly) {
   ec instanceof GeneratedMember and
   ec.getALocation() = assembly and
-  result = "    " + escapeIfKeyword(ec.getName()) + ",\n"
+  result = "    " + escapeIfKeyword(ec.getName()) + " = " + ec.getValue() + ",\n"
 }
 
 pragma[noinline]

@@ -647,12 +647,12 @@ module TaintedPath {
   /**
    * A path argument to the Express `res.render` method.
    */
-  class ExpressRenderSink extends Sink, DataFlow::ValueNode {
+  class ExpressRenderSink extends Sink {
     ExpressRenderSink() {
-      exists(MethodCallExpr mce |
+      exists(DataFlow::MethodCallNode mce |
         Express::isResponse(mce.getReceiver()) and
         mce.getMethodName() = "render" and
-        astNode = mce.getArgument(0)
+        this = mce.getArgument(0)
       )
     }
   }

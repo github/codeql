@@ -190,5 +190,5 @@ where
     exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getLeftOperand(),
     exp.(BinaryBitwiseOperation).getRightOperand().(BinaryBitwiseOperation).getRightOperand(), exp,
     exp.(BinaryBitwiseOperation).getRightOperand()) and
-  msg = "specify the priority with parentheses."
+  msg = "Specify the priority with parentheses."
 select exp, msg

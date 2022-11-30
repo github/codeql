@@ -2,14 +2,24 @@ package com.github.codeql
 
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.IrElement
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import java.lang.management.*
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 import com.semmle.util.files.FileUtil
 import kotlin.system.exitProcess
 
@@ -65,7 +75,7 @@ class KotlinExtractorExtension(
             // First, if we can find our log directory, then let's try
             // making a log file there:
             val extractorLogDir = System.getenv("CODEQL_EXTRACTOR_JAVA_LOG_DIR")
-            if (extractorLogDir != null || extractorLogDir != "") {
+            if (extractorLogDir != null && extractorLogDir != "") {
                 // We use a slightly different filename pattern compared
                 // to normal logs. Just the existence of a `-top` log is
                 // a sign that something's gone very wrong.
@@ -89,8 +99,29 @@ class KotlinExtractorExtension(
         val startTimeMs = System.currentTimeMillis()
         // This default should be kept in sync with com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
+        val compression_env_var = "CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"
+        val compression_option = System.getenv(compression_env_var)
+        val defaultCompression = Compression.GZIP
+        val (compression, compressionWarning) =
+            if (compression_option == null) {
+                Pair(defaultCompression, null)
+            } else {
+                try {
+                    @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
+                    val requested_compression = Compression.valueOf(compression_option.uppercase())
+                    if (requested_compression == Compression.BROTLI) {
+                      Pair(Compression.GZIP, "Kotlin extractor doesn't support Brotli compression. Using GZip instead.")
+                    } else {
+                      Pair(requested_compression, null)
+                    }
+                } catch (e: IllegalArgumentException) {
+                    Pair(defaultCompression,
+                         "Unsupported compression type (\$$compression_env_var) \"$compression_option\". Supported values are ${Compression.values().joinToString()}")
+                }
+            }
         // The invocation TRAP file will already have been started
-        // before the plugin is run, so we open it in append mode.
+        // before the plugin is run, so we always use no compression
+        // and we open it in append mode.
         FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
             val invocationExtractionProblems = ExtractionProblems()
             val lm = TrapLabelManager()
@@ -100,6 +131,9 @@ class KotlinExtractorExtension(
             // The interceptor has already defined #compilation = *
             val compilation: Label<DbCompilation> = StringLabel("compilation")
             tw.writeCompilation_started(compilation)
+            tw.writeCompilation_info(compilation, "Kotlin Compiler Version", KotlinCompilerVersion.getVersion() ?: "<unknown>")
+            val extractor_name = this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
+            tw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
             if (compilationStartTime != null) {
                 tw.writeCompilation_compiler_times(compilation, -1.0, (System.currentTimeMillis()-compilationStartTime)/1000.0)
             }
@@ -109,10 +143,16 @@ class KotlinExtractorExtension(
             logger.flush()
             logger.info("Extraction for invocation TRAP file $invocationTrapFile")
             logger.flush()
+            logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
+            logger.flush()
             logPeakMemoryUsage(logger, "before extractor")
             if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
                 logger.info("moduleFragment:\n" + moduleFragment.dump())
             }
+            if (compressionWarning != null) {
+                logger.warn(compressionWarning)
+            }
+
             val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
             // FIXME: FileUtil expects a static global logger
             // which should be provided by SLF4J's factory facility. For now we set it here.
@@ -125,7 +165,7 @@ class KotlinExtractorExtension(
                 val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
                 loggerBase.setFileNumber(index)
                 fileTrapWriter.writeCompilation_compiling_files(compilation, index, fileTrapWriter.fileId)
-                doFile(fileExtractionProblems, invocationTrapFile, fileTrapWriter, checkTrapIdentical, loggerBase, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, globalExtensionState)
+                doFile(compression, fileExtractionProblems, invocationTrapFile, fileTrapWriter, checkTrapIdentical, loggerBase, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, globalExtensionState)
                 fileTrapWriter.writeCompilation_compiling_files_completed(compilation, index, fileExtractionProblems.extractionResult())
             }
             loggerBase.printLimitedDiagnosticCounts(tw)
@@ -165,7 +205,7 @@ class KotlinExtractorGlobalState {
     // doesn't have a map as that plugin doesn't generate them. If and when these are used more widely additional maps
     // should be added here.
     val syntheticToRealClassMap = HashMap<IrClass, IrClass?>()
-    val syntheticToRealFunctionMap = HashMap<IrSimpleFunction, IrSimpleFunction?>()
+    val syntheticToRealFunctionMap = HashMap<IrFunction, IrFunction?>()
     val syntheticToRealFieldMap = HashMap<IrField, IrField?>()
 }
 
@@ -218,12 +258,12 @@ This function determines whether 2 TRAP files should be considered to be
 equivalent. It returns `true` iff all of their non-comment lines are
 identical.
 */
-private fun equivalentTrap(f1: File, f2: File): Boolean {
-    f1.bufferedReader().use { bw1 ->
-        f2.bufferedReader().use { bw2 ->
+private fun equivalentTrap(r1: BufferedReader, r2: BufferedReader): Boolean {
+    r1.use { br1 ->
+        r2.use { br2 ->
             while(true) {
-                val l1 = bw1.readLine()
-                val l2 = bw2.readLine()
+                val l1 = br1.readLine()
+                val l2 = br2.readLine()
                 if (l1 == null && l2 == null) {
                     return true
                 } else if (l1 == null || l2 == null) {
@@ -239,6 +279,7 @@ private fun equivalentTrap(f1: File, f2: File): Boolean {
 }
 
 private fun doFile(
+    compression: Compression,
     fileExtractionProblems: FileExtractionProblems,
     invocationTrapFile: String,
     fileTrapWriter: FileTrapWriter,
@@ -261,7 +302,9 @@ private fun doFile(
         context.clear()
     }
 
-    val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFilePath")
+    val srcFileRelativePath = srcFilePath.replace(':', '_')
+
+    val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFileRelativePath")
     val dbSrcDirPath = dbSrcFilePath.parent
     Files.createDirectories(dbSrcDirPath)
     val srcTmpFile = File.createTempFile(dbSrcFilePath.fileName.toString() + ".", ".src.tmp", dbSrcDirPath.toFile())
@@ -270,15 +313,14 @@ private fun doFile(
     }
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
-    val trapFile = File("$dbTrapDir/$srcFilePath.trap")
-    val trapFileDir = trapFile.parentFile
-    trapFileDir.mkdirs()
+    val trapFileName = "$dbTrapDir/$srcFileRelativePath.trap"
+    val trapFileWriter = getTrapFileWriter(compression, logger, trapFileName)
 
-    if (checkTrapIdentical || !trapFile.exists()) {
-        val trapTmpFile = File.createTempFile("$srcFilePath.", ".trap.tmp", trapFileDir)
+    if (checkTrapIdentical || !trapFileWriter.exists()) {
+        trapFileWriter.makeParentDirectory()
 
         try {
-            trapTmpFile.bufferedWriter().use { trapFileBW ->
+            trapFileWriter.getTempWriter().use { trapFileBW ->
                 // We want our comments to be the first thing in the file,
                 // so start off with a mere TrapWriter
                 val tw = TrapWriter(loggerBase, TrapLabelManager(), trapFileBW, fileTrapWriter)
@@ -288,37 +330,126 @@ private fun doFile(
                 // file information
                 val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
                 val externalDeclExtractor = ExternalDeclExtractor(logger, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, globalExtensionState, fileTrapWriter)
-                val fileExtractor = KotlinFileExtractor(logger, sftw, srcFilePath, null, externalDeclExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
+                val linesOfCode = LinesOfCode(logger, sftw, srcFile)
+                val fileExtractor = KotlinFileExtractor(logger, sftw, linesOfCode, srcFilePath, null, externalDeclExtractor, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
 
                 fileExtractor.extractFileContents(srcFile, sftw.fileId)
                 externalDeclExtractor.extractExternalClasses()
             }
 
-            if (checkTrapIdentical && trapFile.exists()) {
-                if (equivalentTrap(trapTmpFile, trapFile)) {
-                    if (!trapTmpFile.delete()) {
-                        logger.warn("Failed to delete $trapTmpFile")
-                    }
+            if (checkTrapIdentical && trapFileWriter.exists()) {
+                if (equivalentTrap(trapFileWriter.getTempReader(), trapFileWriter.getRealReader())) {
+                    trapFileWriter.deleteTemp()
                 } else {
-                    val trapDifferentFile = File.createTempFile("$srcFilePath.", ".trap.different", dbTrapDir)
-                    if (trapTmpFile.renameTo(trapDifferentFile)) {
-                        logger.warn("TRAP difference: $trapFile vs $trapDifferentFile")
-                    } else {
-                        logger.warn("Failed to rename $trapTmpFile to $trapFile")
-                    }
+                    trapFileWriter.renameTempToDifferent()
                 }
             } else {
-                if (!trapTmpFile.renameTo(trapFile)) {
-                    logger.warn("Failed to rename $trapTmpFile to $trapFile")
-                }
+                trapFileWriter.renameTempToReal()
             }
         // We catch Throwable rather than Exception, as we want to
         // continue trying to extract everything else even if we get a
         // stack overflow or an assertion failure in one file.
         } catch (e: Throwable) {
-            logger.error("Failed to extract '$srcFilePath'. Partial TRAP file location is $trapTmpFile", e)
+            logger.error("Failed to extract '$srcFilePath'. " + trapFileWriter.debugInfo(), e)
             context.clear()
             fileExtractionProblems.setNonRecoverableProblem()
         }
+    }
+}
+
+enum class Compression { NONE, GZIP, BROTLI }
+
+private fun getTrapFileWriter(compression: Compression, logger: FileLogger, trapFileName: String): TrapFileWriter {
+    return when (compression) {
+        Compression.NONE -> NonCompressedTrapFileWriter(logger, trapFileName)
+        Compression.GZIP -> GZipCompressedTrapFileWriter(logger, trapFileName)
+        Compression.BROTLI -> {
+            // Brotli should have been replaced with gzip earlier, but
+            // if we somehow manage to get here then keep going
+            logger.error("Impossible Brotli compression requested. Using Gzip instead.")
+            getTrapFileWriter(Compression.GZIP, logger, trapFileName)
+        }
+    }
+}
+
+private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, val extension: String) {
+    private val realFile = File(trapName + extension)
+    private val parentDir = realFile.parentFile
+    lateinit private var tempFile: File
+
+    fun debugInfo(): String {
+        if (this::tempFile.isInitialized) {
+            return "Partial TRAP file location is $tempFile"
+        } else {
+            return "Temporary file not yet created."
+        }
+    }
+
+    fun makeParentDirectory() {
+        parentDir.mkdirs()
+    }
+
+    fun exists(): Boolean {
+        return realFile.exists()
+    }
+
+    abstract protected fun getReader(file: File): BufferedReader
+    abstract protected fun getWriter(file: File): BufferedWriter
+
+    fun getRealReader(): BufferedReader {
+        return getReader(realFile)
+    }
+
+    fun getTempReader(): BufferedReader {
+        return getReader(tempFile)
+    }
+
+    fun getTempWriter(): BufferedWriter {
+        if (this::tempFile.isInitialized) {
+            logger.error("Temp writer reinitialized for $realFile")
+        }
+        tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
+        return getWriter(tempFile)
+    }
+
+    fun deleteTemp() {
+        if (!tempFile.delete()) {
+            logger.warn("Failed to delete $tempFile")
+        }
+    }
+
+    fun renameTempToDifferent() {
+        val trapDifferentFile = File.createTempFile(realFile.getName() + ".", ".trap.different" + extension, parentDir)
+        if (tempFile.renameTo(trapDifferentFile)) {
+            logger.warn("TRAP difference: $realFile vs $trapDifferentFile")
+        } else {
+            logger.warn("Failed to rename $tempFile to $realFile")
+        }
+    }
+
+    fun renameTempToReal() {
+        if (!tempFile.renameTo(realFile)) {
+            logger.warn("Failed to rename $tempFile to $realFile")
+        }
+    }
+}
+
+private class NonCompressedTrapFileWriter(logger: FileLogger, trapName: String): TrapFileWriter(logger, trapName, "") {
+    override protected fun getReader(file: File): BufferedReader {
+        return file.bufferedReader()
+    }
+
+    override protected fun getWriter(file: File): BufferedWriter {
+        return file.bufferedWriter()
+    }
+}
+
+private class GZipCompressedTrapFileWriter(logger: FileLogger, trapName: String): TrapFileWriter(logger, trapName, ".gz") {
+    override protected fun getReader(file: File): BufferedReader {
+        return BufferedReader(InputStreamReader(GZIPInputStream(BufferedInputStream(FileInputStream(file)))))
+    }
+
+    override protected fun getWriter(file: File): BufferedWriter {
+        return BufferedWriter(OutputStreamWriter(GZIPOutputStream(BufferedOutputStream(FileOutputStream(file)))))
     }
 }

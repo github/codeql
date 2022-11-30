@@ -47,7 +47,7 @@ module RemotePropertyInjection {
       exists(DeleteExpr expr | expr.getOperand().(PropAccess).getPropertyNameExpr() = astNode)
     }
 
-    override string getMessage() { result = " a property name to write to." }
+    override string getMessage() { result = "A property name to write to" }
   }
 
   /**
@@ -57,14 +57,14 @@ module RemotePropertyInjection {
    * header names as properties. This case is already handled by
    * `PropertyWriteSink`.
    */
-  class HeaderNameSink extends Sink, DataFlow::ValueNode {
+  class HeaderNameSink extends Sink {
     HeaderNameSink() {
-      exists(HTTP::ExplicitHeaderDefinition hd |
+      exists(Http::ExplicitHeaderDefinition hd |
         not hd instanceof Express::SetMultipleHeaders and
-        astNode = hd.getNameExpr()
+        this = hd.getNameNode()
       )
     }
 
-    override string getMessage() { result = " a header name." }
+    override string getMessage() { result = "A header name" }
   }
 }

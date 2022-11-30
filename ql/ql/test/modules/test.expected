@@ -1,0 +1,7 @@
+| Foo.qll:5:34:5:38 | TypeExpr | Foo.qll:1:26:1:30 | MySig |
+| Foo.qll:9:24:9:28 | TypeExpr | Foo.qll:1:26:1:30 | MySig |
+| Foo.qll:17:1:17:16 | Import | Foo.qll:15:8:15:16 | SimpleMod |
+| Foo.qll:17:8:17:16 | SimpleMod | Foo.qll:15:8:15:16 | SimpleMod |
+| Foo.qll:19:38:19:52 | MkThing | Foo.qll:9:16:9:22 | MkThing |
+| Foo.qll:19:38:19:60 | TypeExpr | Foo.qll:10:20:10:25 | SubMod |
+| Foo.qll:19:46:19:51 | TypeExpr | Foo.qll:5:16:5:21 | MyImpl |

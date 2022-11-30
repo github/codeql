@@ -20,3 +20,15 @@ private class KtExpectationComment extends KtComment, ExpectationComment {
 
   override string getContents() { result = this.getText().suffix(2).trim() }
 }
+
+private class XmlExpectationComment extends ExpectationComment instanceof XmlComment {
+  override string getContents() { result = this.(XmlComment).getText().trim() }
+
+  override Location getLocation() { result = this.(XmlComment).getLocation() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    this.(XmlComment).hasLocationInfo(path, sl, sc, el, ec)
+  }
+
+  override string toString() { result = this.(XmlComment).toString() }
+}

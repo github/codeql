@@ -6,9 +6,11 @@ import com.semmle.extractor.java.OdasaOutput
 import com.semmle.util.data.StringDigestor
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.isFileClass
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
+import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import java.util.ArrayList
 import java.util.HashSet
@@ -16,23 +18,23 @@ import java.util.zip.GZIPOutputStream
 
 class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: String, val sourceFilePath: String, val primitiveTypeMapping: PrimitiveTypeMapping, val pluginContext: IrPluginContext, val globalExtensionState: KotlinExtractorGlobalState, val diagnosticTrapWriter: TrapWriter) {
 
-    val externalDeclsDone = HashSet<IrDeclaration>()
+    val declBinaryNames = HashMap<IrDeclaration, String>()
+    val externalDeclsDone = HashSet<Pair<String, String>>()
     val externalDeclWorkList = ArrayList<Pair<IrDeclaration, String>>()
 
     val propertySignature = ";property"
     val fieldSignature = ";field"
 
-    fun extractLater(d: IrDeclaration, signature: String): Boolean {
+    fun extractLater(d: IrDeclarationWithName, signature: String): Boolean {
         if (d !is IrClass && !isExternalFileClassMember(d)) {
             logger.errorElement("External declaration is neither a class, nor a top-level declaration", d)
             return false
         }
-        val ret = externalDeclsDone.add(d)
+        val declBinaryName = declBinaryNames.getOrPut(d) { getIrDeclBinaryName(d) }
+        val ret = externalDeclsDone.add(Pair(declBinaryName, signature))
         if (ret) externalDeclWorkList.add(Pair(d, signature))
         return ret
     }
-    fun extractLater(p: IrProperty) = extractLater(p, propertySignature)
-    fun extractLater(f: IrField) = extractLater(f, fieldSignature)
     fun extractLater(c: IrClass) = extractLater(c, "")
 
     fun extractExternalClasses() {
@@ -78,9 +80,9 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
                                     }
                                     // Now elevate to a SourceFileTrapWriter, and populate the
                                     // file information if needed:
-                                    val ftw = tw.makeFileTrapWriter(binaryPath, irDecl is IrClass)
+                                    val ftw = tw.makeFileTrapWriter(binaryPath, true)
 
-                                    val fileExtractor = KotlinFileExtractor(logger, ftw, binaryPath, manager, this, primitiveTypeMapping, pluginContext, globalExtensionState)
+                                    val fileExtractor = KotlinFileExtractor(logger, ftw, null, binaryPath, manager, this, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
 
                                     if (irDecl is IrClass) {
                                         // Populate a location and compilation-unit package for the file. This is similar to

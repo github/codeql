@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           languages: javascript # does not matter
       - uses: actions/cache@v3
@@ -36,7 +36,7 @@ jobs:
         run: |
           cd ql;
           codeqlpath=$(dirname ${{ steps.find-codeql.outputs.codeql-path }});
-          env "PATH=$PATH:$codeqlpath" ./create-extractor-pack.sh
+          env "PATH=$PATH:$codeqlpath" ./scripts/create-extractor-pack.sh
       - name: Run QL tests
         run: |
           "${CODEQL}" test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}/ql/extractor-pack" --consistency-queries ql/ql/consistency-queries ql/ql/test
@@ -44,11 +44,6 @@ jobs:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Check QL formatting
         run: |
-          find ql/ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
-        env:
-          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-      - name: Check QL compilation
-        run: |
-          "${CODEQL}" query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}/ql/extractor-pack" "ql/ql/src" "ql/ql/examples"
+          find ql/ql/src "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}

@@ -116,10 +116,6 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
   override Location getALocation() { result = this.getADeclaration().getALocation() }
 
   override string toString() { result = DotNet::Namespace.super.toString() }
-
-  override predicate hasQualifiedName(string a, string b) {
-    DotNet::Namespace.super.hasQualifiedName(a, b)
-  }
 }
 
 /**

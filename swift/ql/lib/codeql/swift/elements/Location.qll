@@ -1,15 +1,28 @@
 private import codeql.swift.generated.Location
 
-class Location extends LocationBase {
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = getFile().getFullName() and
-    sl = getStartLine() and
-    sc = getStartColumn() and
-    el = getEndLine() and
-    ec = getEndColumn()
+/**
+ * A location of a program element.
+ */
+class Location extends Generated::Location {
+  /**
+   * Holds if this location is described by `path`, `startLine`, `startColumn`, `endLine` and `endColumn`.
+   */
+  predicate hasLocationInfo(string path, int startLine, int startColumn, int endLine, int endColumn) {
+    path = this.getFile().getFullName() and
+    startLine = this.getStartLine() and
+    startColumn = this.getStartColumn() and
+    endLine = this.getEndLine() and
+    endColumn = this.getEndColumn()
   }
-}
 
-class UnknownLocation extends Location {
-  UnknownLocation() { hasLocationInfo("", 0, 0, 0, 0) }
+  /**
+   * Gets a textual representation of this location.
+   */
+  override string toString() {
+    exists(string filePath, int startLine, int startColumn, int endLine, int endColumn |
+      this.hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+    |
+      toUrl(filePath, startLine, startColumn, endLine, endColumn, result)
+    )
+  }
 }

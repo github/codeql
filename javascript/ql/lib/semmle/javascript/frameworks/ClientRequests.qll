@@ -112,7 +112,7 @@ module ClientRequest {
   /**
    * Gets the name of an HTTP request method, in all-lowercase.
    */
-  private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
+  private string httpMethodName() { result = any(Http::RequestMethodName m).toLowerCase() }
 
   /**
    * Gets a model of an instance of the `request` library, or one of
@@ -270,16 +270,16 @@ module ClientRequest {
   }
 
   /** An expression that is used as a credential in a request. */
-  private class AuthorizationHeader extends CredentialsExpr {
+  private class AuthorizationHeader extends CredentialsNode {
     AuthorizationHeader() {
       exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
-        this = write.getRhs().asExpr()
+        this = write.getRhs()
       )
       or
       exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
         call.getNumArgument() = 2 and
         call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
-        this = call.getArgument(1).asExpr()
+        this = call.getArgument(1)
       )
     }
 
@@ -671,7 +671,7 @@ module ClientRequest {
     }
 
     /**
-     * Gets the response type corresponding to `getReponse()` but not
+     * Gets the response type corresponding to `getResponse()` but not
      * for explicitly typed calls like `getResponseJson()`.
      */
     string getAssignedResponseType() {

@@ -99,6 +99,7 @@ import semmle.javascript.frameworks.JWT
 import semmle.javascript.frameworks.Handlebars
 import semmle.javascript.frameworks.History
 import semmle.javascript.frameworks.Immutable
+import semmle.javascript.frameworks.ImportGeneratedModels
 import semmle.javascript.frameworks.Knex
 import semmle.javascript.frameworks.LazyCache
 import semmle.javascript.frameworks.LdapJS

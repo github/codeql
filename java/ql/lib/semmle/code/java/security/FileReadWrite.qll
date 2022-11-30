@@ -1,9 +1,9 @@
 import java
 
 /**
- * Holds if `fileAccess` is used in the `fileReadingExpr` to read the represented file.
+ * Holds if `fileAccess` is directly used in the `fileReadingExpr` to read the represented file.
  */
-private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
+private predicate directFileRead(Expr fileAccess, Expr fileReadingExpr) {
   // `fileAccess` used to construct a class that reads a file.
   exists(ClassInstanceExpr cie |
     cie = fileReadingExpr and
@@ -28,6 +28,13 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
             ])
     )
   )
+}
+
+/**
+ * Holds if `fileAccess` is used in the `fileReadingExpr` to read the represented file.
+ */
+private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
+  directFileRead(fileAccess, fileReadingExpr)
   or
   // The `fileAccess` is used in a call which directly or indirectly accesses the file.
   exists(Call call, int parameterPos, VarAccess nestedFileAccess, Expr nestedFileReadingExpr |
@@ -48,4 +55,16 @@ class FileReadExpr extends Expr {
    * Gets the `VarAccess` representing the file that is read.
    */
   VarAccess getFileVarAccess() { fileRead(result, this) }
+}
+
+/**
+ * An expression that directly reads from a file and returns its contents.
+ */
+class DirectFileReadExpr extends Expr {
+  DirectFileReadExpr() { directFileRead(_, this) }
+
+  /**
+   * Gets the `Expr` representing the file that is read.
+   */
+  Expr getFileExpr() { directFileRead(result, this) }
 }

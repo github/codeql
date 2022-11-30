@@ -34,5 +34,5 @@ where
   sizeExpr = sink.getNode().asExpr() and
   any(Conf conf).hasFlowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
-  "The $@ is accessed here, but the array is initialized using $@ which may be zero.",
-  arrayCreation, "array", source.getNode(), "User-provided value"
+  "This accesses the $@, but the array is initialized using a $@ which may be zero.", arrayCreation,
+  "array", source.getNode(), "user-provided value"

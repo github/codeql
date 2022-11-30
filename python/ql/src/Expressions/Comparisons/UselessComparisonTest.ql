@@ -48,4 +48,4 @@ private predicate useless_test_ast(AstNode comp, AstNode previous, boolean isTru
 from Expr test, Expr other, boolean isTrue
 where
   useless_test_ast(test, other, isTrue) and not useless_test_ast(test.getAChildNode+(), other, _)
-select test, "Test is always " + isTrue + ", because of $@", other, "this condition"
+select test, "Test is always " + isTrue + ", because of $@.", other, "this condition"

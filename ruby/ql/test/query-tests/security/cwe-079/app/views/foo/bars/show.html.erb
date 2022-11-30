@@ -69,3 +69,12 @@
   html_escaped_in_template = h params[:text]
   html_escaped_in_template.html_safe
 %>
+
+<%# BAD: simple_format called with sanitize: false %>
+<%= simple_format(params[:comment], sanitize: false) %>
+
+<%# BAD: javasript_include_tag called with remote input %>
+<%= javascript_include_tag params[:url] %>
+
+<%# GOOD: input is sanitized %>
+<%= sanitize(params[:comment]).html_safe %>

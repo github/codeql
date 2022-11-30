@@ -33,7 +33,7 @@ module CommandInjection {
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
 
-    override string getSourceType() { result = "a user-provided value" }
+    override string getSourceType() { result = "user-provided value" }
   }
 
   /**
@@ -49,6 +49,9 @@ module CommandInjection {
   class ShellwordsEscapeAsSanitizer extends Sanitizer {
     ShellwordsEscapeAsSanitizer() {
       this = API::getTopLevelMember("Shellwords").getAMethodCall(["escape", "shellescape"])
+      or
+      // The method is also added as `String#shellescape`.
+      this.(DataFlow::CallNode).getMethodName() = "shellescape"
     }
   }
 }

@@ -35,7 +35,7 @@ predicate isRouteHandlerUsingCookies(Routing::RouteHandler handler) {
  * A router handler following after cookie parsing is assumed to depend on
  * cookies, and thus require CSRF protection.
  */
-predicate hasCookieMiddleware(Routing::Node route, HTTP::CookieMiddlewareInstance cookie) {
+predicate hasCookieMiddleware(Routing::Node route, Http::CookieMiddlewareInstance cookie) {
   route.isGuardedBy(cookie)
 }
 
@@ -112,7 +112,7 @@ private DataFlow::SourceNode nodeLeadingToCsrfWriteOrCheck(DataFlow::TypeBackTra
  * Gets a route handler that sets an CSRF related cookie.
  */
 private Routing::RouteHandler getAHandlerSettingCsrfCookie() {
-  exists(HTTP::CookieDefinition setCookie |
+  exists(Http::CookieDefinition setCookie |
     setCookie.getNameArgument().getStringValue().regexpMatch("(?i).*(csrf|xsrf).*") and
     result = Routing::getRouteHandler(setCookie.getRouteHandler())
   )
@@ -180,7 +180,7 @@ predicate hasCsrfMiddleware(Routing::RouteHandler handler) {
 
 from
   Routing::RouteSetup setup, Routing::Node setupArg, Routing::RouteHandler handler,
-  HTTP::CookieMiddlewareInstance cookie
+  Http::CookieMiddlewareInstance cookie
 where
   // Require that the handler uses cookies and has cookie middleware.
   //
@@ -201,5 +201,5 @@ where
   not handler.getAChild*() = Routing::getNode(authMiddlewareImmuneToCsrf()) and
   // Only warn for dangerous handlers, such as for POST and PUT.
   setup.getOwnHttpMethod().isUnsafe()
-select cookie, "This cookie middleware is serving a request handler $@ without CSRF protection.",
-  setupArg, "here"
+select cookie, "This cookie middleware is serving a $@ without CSRF protection.", setupArg,
+  "request handler"

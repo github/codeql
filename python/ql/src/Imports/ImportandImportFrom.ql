@@ -22,4 +22,4 @@ predicate import_and_import_from(Import i1, Import i2, Module m) {
 
 from Stmt i1, Stmt i2, Module m
 where import_and_import_from(i1, i2, m)
-select i1, "Module '" + m.getName() + "' is imported with both 'import' and 'import from'"
+select i1, "Module '" + m.getName() + "' is imported with both 'import' and 'import from'."

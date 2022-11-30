@@ -22,4 +22,4 @@ predicate shadowsImport(Variable l) {
 
 from Variable l, Name defn
 where shadowsImport(l) and defn.defines(l) and exists(For for | defn = for.getTarget())
-select defn, "Loop variable '" + l.getId() + "' shadows an import"
+select defn, "Loop variable '" + l.getId() + "' shadows an import."

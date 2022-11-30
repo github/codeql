@@ -28,9 +28,11 @@ module ZipSlip {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for zip-slip vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A tar file header, as a source for zip slip.
@@ -107,6 +109,17 @@ module ZipSlip {
     )
   }
 
+  private predicate taintedPathSanitizerGuardAsBacktrackingSanitizerGuard(
+    DataFlow::Node g, Expr e, boolean branch
+  ) {
+    exists(DataFlow::Node source, DataFlow::Node checked |
+      taintedPathGuardChecks(g, checked, branch) and
+      taintFlowsToCheckedNode(source, checked)
+    |
+      e = source.asExpr()
+    )
+  }
+
   /**
    * A sanitizer guard for zip-slip vulnerabilities which backtracks to sanitize expressions
    * that locally flow into a guarded expression. For example, an ordinary sanitizer guard
@@ -120,18 +133,10 @@ module ZipSlip {
    * (e.g. `hdr.Filename` to `hdr`), increasing the chances that a future reference to `hdr.Filename`
    * will also be regarded as clean (though SSA catches some cases of this).
    */
-  class TaintedPathSanitizerGuardAsBacktrackingSanitizerGuard extends SanitizerGuard {
-    TaintedPath::SanitizerGuard taintedPathGuard;
-
-    TaintedPathSanitizerGuardAsBacktrackingSanitizerGuard() { this = taintedPathGuard }
-
-    override predicate checks(Expr e, boolean branch) {
-      exists(DataFlow::Node source, DataFlow::Node checked |
-        taintedPathGuardChecks(taintedPathGuard, checked, branch) and
-        taintFlowsToCheckedNode(source, checked)
-      |
-        e = source.asExpr()
-      )
+  class TaintedPathSanitizerGuardAsBacktrackingSanitizerGuard extends Sanitizer {
+    TaintedPathSanitizerGuardAsBacktrackingSanitizerGuard() {
+      this =
+        DataFlow::BarrierGuard<taintedPathSanitizerGuardAsBacktrackingSanitizerGuard/3>::getABarrierNode()
     }
   }
 }

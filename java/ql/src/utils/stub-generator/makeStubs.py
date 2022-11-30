@@ -99,8 +99,8 @@ else:
 dbDir = os.path.join(workDir, "db")
 
 
-def print_javac_output():
-    logFiles = glob.glob(os.path.join(dbDir, "log", "javac-output*"))
+def print_javac_output(db_dir):
+    logFiles = glob.glob(os.path.join(db_dir, "log", "javac-output*"))
 
     if not(logFiles):
         print("\nNo javac output found.")
@@ -124,7 +124,7 @@ def run(cmd):
 print("Stubbing qltest in", testDir)
 
 if run(['codeql', 'database', 'create', '--language=java', '--source-root='+projectDir, dbDir]):
-    print_javac_output()
+    print_javac_output(dbDir)
     print("codeql database create failed. Please fix up the test before proceeding.")
     exit(1)
 
@@ -167,7 +167,9 @@ for (typ, stub) in results['#select']['tuples']:
 print("Verifying stub correctness")
 
 if run(['codeql', 'test', 'run', testDir]):
-    print_javac_output()
+    test_db_dir = glob.glob(os.path.join(testDir, "*.testproj"))
+    if test_db_dir:
+        print_javac_output(test_db_dir[0])
     print('\nTest failed. You may need to fix up the generated stubs.')
     exit(1)
 

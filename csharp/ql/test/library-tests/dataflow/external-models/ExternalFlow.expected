@@ -56,14 +56,19 @@ edges
 | ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object | ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object |
 | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:111:13:111:13 | [post] access to local variable f [field MyField] : Object |
 | ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp |
-| ExternalFlow.cs:177:21:177:32 | object creation of type Object : Object | ExternalFlow.cs:178:32:178:32 | access to local variable o : Object |
-| ExternalFlow.cs:178:32:178:32 | access to local variable o : Object | ExternalFlow.cs:178:18:178:33 | call to method GeneratedFlow |
-| ExternalFlow.cs:183:22:183:33 | object creation of type Object : Object | ExternalFlow.cs:184:36:184:37 | access to local variable o1 : Object |
-| ExternalFlow.cs:184:36:184:37 | access to local variable o1 : Object | ExternalFlow.cs:184:18:184:44 | call to method GeneratedFlowArgs |
-| ExternalFlow.cs:186:22:186:33 | object creation of type Object : Object | ExternalFlow.cs:187:42:187:43 | access to local variable o2 : Object |
-| ExternalFlow.cs:187:42:187:43 | access to local variable o2 : Object | ExternalFlow.cs:187:18:187:44 | call to method GeneratedFlowArgs |
-| ExternalFlow.cs:195:22:195:33 | object creation of type Object : Object | ExternalFlow.cs:196:38:196:39 | access to local variable o2 : Object |
-| ExternalFlow.cs:196:38:196:39 | access to local variable o2 : Object | ExternalFlow.cs:196:18:196:40 | call to method MixedFlowArgs |
+| ExternalFlow.cs:117:34:117:49 | { ..., ... } [element] : Object | ExternalFlow.cs:118:29:118:29 | access to local variable a [element] : Object |
+| ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | ExternalFlow.cs:117:34:117:49 | { ..., ... } [element] : Object |
+| ExternalFlow.cs:118:21:118:30 | call to method Reverse [element] : Object | ExternalFlow.cs:120:18:120:18 | access to local variable b [element] : Object |
+| ExternalFlow.cs:118:29:118:29 | access to local variable a [element] : Object | ExternalFlow.cs:118:21:118:30 | call to method Reverse [element] : Object |
+| ExternalFlow.cs:120:18:120:18 | access to local variable b [element] : Object | ExternalFlow.cs:120:18:120:21 | access to array element |
+| ExternalFlow.cs:187:21:187:32 | object creation of type Object : Object | ExternalFlow.cs:188:32:188:32 | access to local variable o : Object |
+| ExternalFlow.cs:188:32:188:32 | access to local variable o : Object | ExternalFlow.cs:188:18:188:33 | call to method GeneratedFlow |
+| ExternalFlow.cs:193:22:193:33 | object creation of type Object : Object | ExternalFlow.cs:194:36:194:37 | access to local variable o1 : Object |
+| ExternalFlow.cs:194:36:194:37 | access to local variable o1 : Object | ExternalFlow.cs:194:18:194:44 | call to method GeneratedFlowArgs |
+| ExternalFlow.cs:196:22:196:33 | object creation of type Object : Object | ExternalFlow.cs:197:42:197:43 | access to local variable o2 : Object |
+| ExternalFlow.cs:197:42:197:43 | access to local variable o2 : Object | ExternalFlow.cs:197:18:197:44 | call to method GeneratedFlowArgs |
+| ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object |
+| ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs |
 nodes
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | semmle.label | call to method StepArgRes |
@@ -138,18 +143,24 @@ nodes
 | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:112:18:112:18 | access to local variable f [field MyField] : Object | semmle.label | access to local variable f [field MyField] : Object |
 | ExternalFlow.cs:112:18:112:25 | access to property MyProp | semmle.label | access to property MyProp |
-| ExternalFlow.cs:177:21:177:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| ExternalFlow.cs:178:18:178:33 | call to method GeneratedFlow | semmle.label | call to method GeneratedFlow |
-| ExternalFlow.cs:178:32:178:32 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| ExternalFlow.cs:183:22:183:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| ExternalFlow.cs:184:18:184:44 | call to method GeneratedFlowArgs | semmle.label | call to method GeneratedFlowArgs |
-| ExternalFlow.cs:184:36:184:37 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
-| ExternalFlow.cs:186:22:186:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| ExternalFlow.cs:187:18:187:44 | call to method GeneratedFlowArgs | semmle.label | call to method GeneratedFlowArgs |
-| ExternalFlow.cs:187:42:187:43 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
-| ExternalFlow.cs:195:22:195:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| ExternalFlow.cs:196:18:196:40 | call to method MixedFlowArgs | semmle.label | call to method MixedFlowArgs |
-| ExternalFlow.cs:196:38:196:39 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| ExternalFlow.cs:117:34:117:49 | { ..., ... } [element] : Object | semmle.label | { ..., ... } [element] : Object |
+| ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:118:21:118:30 | call to method Reverse [element] : Object | semmle.label | call to method Reverse [element] : Object |
+| ExternalFlow.cs:118:29:118:29 | access to local variable a [element] : Object | semmle.label | access to local variable a [element] : Object |
+| ExternalFlow.cs:120:18:120:18 | access to local variable b [element] : Object | semmle.label | access to local variable b [element] : Object |
+| ExternalFlow.cs:120:18:120:21 | access to array element | semmle.label | access to array element |
+| ExternalFlow.cs:187:21:187:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:188:18:188:33 | call to method GeneratedFlow | semmle.label | call to method GeneratedFlow |
+| ExternalFlow.cs:188:32:188:32 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| ExternalFlow.cs:193:22:193:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:194:18:194:44 | call to method GeneratedFlowArgs | semmle.label | call to method GeneratedFlowArgs |
+| ExternalFlow.cs:194:36:194:37 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:196:22:196:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:197:18:197:44 | call to method GeneratedFlowArgs | semmle.label | call to method GeneratedFlowArgs |
+| ExternalFlow.cs:197:42:197:43 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | semmle.label | call to method MixedFlowArgs |
+| ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
 subpaths
 invalidModelRow
 #select
@@ -172,7 +183,8 @@ invalidModelRow
 | ExternalFlow.cs:102:22:102:22 | access to parameter d | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:102:22:102:22 | access to parameter d | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:104:18:104:25 | access to field Field | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:104:18:104:25 | access to field Field | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:112:18:112:25 | access to property MyProp | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp | $@ | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:178:18:178:33 | call to method GeneratedFlow | ExternalFlow.cs:177:21:177:32 | object creation of type Object : Object | ExternalFlow.cs:178:18:178:33 | call to method GeneratedFlow | $@ | ExternalFlow.cs:177:21:177:32 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:184:18:184:44 | call to method GeneratedFlowArgs | ExternalFlow.cs:183:22:183:33 | object creation of type Object : Object | ExternalFlow.cs:184:18:184:44 | call to method GeneratedFlowArgs | $@ | ExternalFlow.cs:183:22:183:33 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:187:18:187:44 | call to method GeneratedFlowArgs | ExternalFlow.cs:186:22:186:33 | object creation of type Object : Object | ExternalFlow.cs:187:18:187:44 | call to method GeneratedFlowArgs | $@ | ExternalFlow.cs:186:22:186:33 | object creation of type Object : Object | object creation of type Object : Object |
-| ExternalFlow.cs:196:18:196:40 | call to method MixedFlowArgs | ExternalFlow.cs:195:22:195:33 | object creation of type Object : Object | ExternalFlow.cs:196:18:196:40 | call to method MixedFlowArgs | $@ | ExternalFlow.cs:195:22:195:33 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:120:18:120:21 | access to array element | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | ExternalFlow.cs:120:18:120:21 | access to array element | $@ | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:188:18:188:33 | call to method GeneratedFlow | ExternalFlow.cs:187:21:187:32 | object creation of type Object : Object | ExternalFlow.cs:188:18:188:33 | call to method GeneratedFlow | $@ | ExternalFlow.cs:187:21:187:32 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:194:18:194:44 | call to method GeneratedFlowArgs | ExternalFlow.cs:193:22:193:33 | object creation of type Object : Object | ExternalFlow.cs:194:18:194:44 | call to method GeneratedFlowArgs | $@ | ExternalFlow.cs:193:22:193:33 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:197:18:197:44 | call to method GeneratedFlowArgs | ExternalFlow.cs:196:22:196:33 | object creation of type Object : Object | ExternalFlow.cs:197:18:197:44 | call to method GeneratedFlowArgs | $@ | ExternalFlow.cs:196:22:196:33 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | $@ | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | object creation of type Object : Object |

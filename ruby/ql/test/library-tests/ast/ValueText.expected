@@ -109,6 +109,12 @@ exprValue
 | constants/constants.rb:63:19:63:20 | 45 | 45 | int |
 | constants/constants.rb:65:19:65:35 | FOURTY_FIVE | 45 | int |
 | constants/constants.rb:71:18:71:19 | 46 | 46 | int |
+| constants/constants.rb:78:6:78:6 | 1 | 1 | int |
+| constants/constants.rb:78:9:78:9 | 2 | 2 | int |
+| constants/constants.rb:78:12:78:12 | 3 | 3 | int |
+| constants/constants.rb:79:6:79:6 | 1 | 1 | int |
+| constants/constants.rb:79:9:79:9 | 2 | 2 | int |
+| constants/constants.rb:79:12:79:12 | 3 | 3 | int |
 | control/cases.rb:2:5:2:5 | 0 | 0 | int |
 | control/cases.rb:3:5:3:5 | 0 | 0 | int |
 | control/cases.rb:4:5:4:5 | 0 | 0 | int |
@@ -703,6 +709,7 @@ exprValue
 | literals/literals.rb:168:9:168:13 | <<SQL | \nselect * from table\n | string |
 | literals/literals.rb:175:11:175:16 | <<-BLA | \nsome text\nand some more\n   | string |
 | literals/literals.rb:180:9:180:19 | <<~SQUIGGLY | \n   indented stuff\n | string |
+| literals/literals.rb:189:9:189:15 | <<'DOC' | \n text without #{ interpolation } !\n | string |
 | literals/literals.rb:193:10:193:19 | <<`SCRIPT` | \n cat file.txt\n | string |
 | literals/literals.rb:197:5:197:6 | 42 | 42 | int |
 | literals/literals.rb:198:2:198:2 | :x | :x | symbol |
@@ -711,6 +718,7 @@ exprValue
 | literals/literals.rb:198:8:198:8 | 5 | 5 | int |
 | literals/literals.rb:199:2:199:2 | :y | :y | symbol |
 | literals/literals.rb:199:7:199:7 | :Z | :Z | symbol |
+| misc/iso-8859-15.rb:4:7:4:17 | "EUR = \u20ac" | EUR = \u20ac | string |
 | misc/misc.erb:2:15:2:37 | "main_include_admin.js" | main_include_admin.js | string |
 | misc/misc.rb:1:7:1:11 | "bar" | bar | string |
 | misc/misc.rb:3:7:3:9 | foo | foo | string |
@@ -880,6 +888,13 @@ exprValue
 | operations/operations.rb:92:10:92:10 | 4 | 4 | int |
 | operations/operations.rb:95:15:95:15 | 5 | 5 | int |
 | operations/operations.rb:96:16:96:16 | 6 | 6 | int |
+| operations/operations.rb:98:13:98:13 | 5 | 5 | int |
+| operations/operations.rb:99:14:99:14 | 6 | 6 | int |
+| operations/operations.rb:100:15:100:15 | 7 | 7 | int |
+| operations/operations.rb:101:25:101:25 | 8 | 8 | int |
+| operations/operations.rb:102:5:102:5 | 1 | 1 | int |
+| operations/operations.rb:102:31:102:31 | 7 | 7 | int |
+| operations/operations.rb:103:17:103:17 | 7 | 7 | int |
 | params/params.rb:41:46:41:46 | 7 | 7 | int |
 | params/params.rb:47:19:47:21 | :bar | :bar | symbol |
 | params/params.rb:47:24:47:24 | 2 | 2 | int |
@@ -1004,6 +1019,12 @@ exprCfgNodeValue
 | constants/constants.rb:63:19:63:20 | 45 | 45 | int |
 | constants/constants.rb:65:19:65:35 | FOURTY_FIVE | 45 | int |
 | constants/constants.rb:71:18:71:19 | 46 | 46 | int |
+| constants/constants.rb:78:6:78:6 | 1 | 1 | int |
+| constants/constants.rb:78:9:78:9 | 2 | 2 | int |
+| constants/constants.rb:78:12:78:12 | 3 | 3 | int |
+| constants/constants.rb:79:6:79:6 | 1 | 1 | int |
+| constants/constants.rb:79:9:79:9 | 2 | 2 | int |
+| constants/constants.rb:79:12:79:12 | 3 | 3 | int |
 | control/cases.rb:2:5:2:5 | 0 | 0 | int |
 | control/cases.rb:3:5:3:5 | 0 | 0 | int |
 | control/cases.rb:4:5:4:5 | 0 | 0 | int |
@@ -1572,6 +1593,7 @@ exprCfgNodeValue
 | literals/literals.rb:168:9:168:13 | <<SQL | \nselect * from table\n | string |
 | literals/literals.rb:175:11:175:16 | <<-BLA | \nsome text\nand some more\n   | string |
 | literals/literals.rb:180:9:180:19 | <<~SQUIGGLY | \n   indented stuff\n | string |
+| literals/literals.rb:189:9:189:15 | <<'DOC' | \n text without #{ interpolation } !\n | string |
 | literals/literals.rb:193:10:193:19 | <<`SCRIPT` | \n cat file.txt\n | string |
 | literals/literals.rb:197:5:197:6 | 42 | 42 | int |
 | literals/literals.rb:198:2:198:2 | :x | :x | symbol |
@@ -1580,6 +1602,7 @@ exprCfgNodeValue
 | literals/literals.rb:198:8:198:8 | 5 | 5 | int |
 | literals/literals.rb:199:2:199:2 | :y | :y | symbol |
 | literals/literals.rb:199:7:199:7 | :Z | :Z | symbol |
+| misc/iso-8859-15.rb:4:7:4:17 | "EUR = \u20ac" | EUR = \u20ac | string |
 | misc/misc.erb:2:15:2:37 | "main_include_admin.js" | main_include_admin.js | string |
 | misc/misc.rb:1:7:1:11 | "bar" | bar | string |
 | misc/misc.rb:3:7:3:9 | foo | foo | string |
@@ -1748,6 +1771,13 @@ exprCfgNodeValue
 | operations/operations.rb:92:10:92:10 | 4 | 4 | int |
 | operations/operations.rb:95:15:95:15 | 5 | 5 | int |
 | operations/operations.rb:96:16:96:16 | 6 | 6 | int |
+| operations/operations.rb:98:13:98:13 | 5 | 5 | int |
+| operations/operations.rb:99:14:99:14 | 6 | 6 | int |
+| operations/operations.rb:100:15:100:15 | 7 | 7 | int |
+| operations/operations.rb:101:25:101:25 | 8 | 8 | int |
+| operations/operations.rb:102:5:102:5 | 1 | 1 | int |
+| operations/operations.rb:102:31:102:31 | 7 | 7 | int |
+| operations/operations.rb:103:17:103:17 | 7 | 7 | int |
 | params/params.rb:41:46:41:46 | 7 | 7 | int |
 | params/params.rb:47:19:47:21 | :bar | :bar | symbol |
 | params/params.rb:47:24:47:24 | 2 | 2 | int |

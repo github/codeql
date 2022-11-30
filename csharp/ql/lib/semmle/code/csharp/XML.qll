@@ -8,7 +8,7 @@ private class TXmlLocatable =
   @xmldtd or @xmlelement or @xmlattribute or @xmlnamespace or @xmlcomment or @xmlcharacters;
 
 /** An XML element that has a location. */
-class XMLLocatable extends @xmllocatable, TXmlLocatable {
+class XmlLocatable extends @xmllocatable, TXmlLocatable {
   /** Gets the source location for this element. */
   Location getLocation() { xmllocations(this, result) }
 
@@ -32,13 +32,16 @@ class XMLLocatable extends @xmllocatable, TXmlLocatable {
   string toString() { none() } // overridden in subclasses
 }
 
+/** DEPRECATED: Alias for XmlLocatable */
+deprecated class XMLLocatable = XmlLocatable;
+
 /**
- * An `XMLParent` is either an `XMLElement` or an `XMLFile`,
+ * An `XmlParent` is either an `XmlElement` or an `XmlFile`,
  * both of which can contain other elements.
  */
-class XMLParent extends @xmlparent {
-  XMLParent() {
-    // explicitly restrict `this` to be either an `XMLElement` or an `XMLFile`;
+class XmlParent extends @xmlparent {
+  XmlParent() {
+    // explicitly restrict `this` to be either an `XmlElement` or an `XmlFile`;
     // the type `@xmlparent` currently also includes non-XML files
     this instanceof @xmlelement or xmlEncoding(this, _)
   }
@@ -50,28 +53,28 @@ class XMLParent extends @xmlparent {
   string getName() { none() } // overridden in subclasses
 
   /** Gets the file to which this XML parent belongs. */
-  XMLFile getFile() { result = this or xmlElements(this, _, _, _, result) }
+  XmlFile getFile() { result = this or xmlElements(this, _, _, _, result) }
 
   /** Gets the child element at a specified index of this XML parent. */
-  XMLElement getChild(int index) { xmlElements(result, _, this, index, _) }
+  XmlElement getChild(int index) { xmlElements(result, _, this, index, _) }
 
   /** Gets a child element of this XML parent. */
-  XMLElement getAChild() { xmlElements(result, _, this, _, _) }
+  XmlElement getAChild() { xmlElements(result, _, this, _, _) }
 
   /** Gets a child element of this XML parent with the given `name`. */
-  XMLElement getAChild(string name) { xmlElements(result, _, this, _, _) and result.hasName(name) }
+  XmlElement getAChild(string name) { xmlElements(result, _, this, _, _) and result.hasName(name) }
 
   /** Gets a comment that is a child of this XML parent. */
-  XMLComment getAComment() { xmlComments(result, _, this, _) }
+  XmlComment getAComment() { xmlComments(result, _, this, _) }
 
   /** Gets a character sequence that is a child of this XML parent. */
-  XMLCharacters getACharactersSet() { xmlChars(result, _, this, _, _, _) }
+  XmlCharacters getACharactersSet() { xmlChars(result, _, this, _, _, _) }
 
-  /** Gets the depth in the tree. (Overridden in XMLElement.) */
+  /** Gets the depth in the tree. (Overridden in XmlElement.) */
   int getDepth() { result = 0 }
 
   /** Gets the number of child XML elements of this XML parent. */
-  int getNumberOfChildren() { result = count(XMLElement e | xmlElements(e, _, this, _, _)) }
+  int getNumberOfChildren() { result = count(XmlElement e | xmlElements(e, _, this, _, _)) }
 
   /** Gets the number of places in the body of this XML parent where text occurs. */
   int getNumberOfCharacterSets() { result = count(int pos | xmlChars(_, _, this, pos, _, _)) }
@@ -92,9 +95,12 @@ class XMLParent extends @xmlparent {
   string toString() { result = this.getName() }
 }
 
+/** DEPRECATED: Alias for XmlParent */
+deprecated class XMLParent = XmlParent;
+
 /** An XML file. */
-class XMLFile extends XMLParent, File {
-  XMLFile() { xmlEncoding(this, _) }
+class XmlFile extends XmlParent, File {
+  XmlFile() { xmlEncoding(this, _) }
 
   /** Gets a printable representation of this XML file. */
   override string toString() { result = this.getName() }
@@ -120,14 +126,20 @@ class XMLFile extends XMLParent, File {
   string getEncoding() { xmlEncoding(this, result) }
 
   /** Gets the XML file itself. */
-  override XMLFile getFile() { result = this }
+  override XmlFile getFile() { result = this }
 
   /** Gets a top-most element in an XML file. */
-  XMLElement getARootElement() { result = this.getAChild() }
+  XmlElement getARootElement() { result = this.getAChild() }
 
   /** Gets a DTD associated with this XML file. */
-  XMLDTD getADTD() { xmlDTDs(result, _, _, _, this) }
+  XmlDtd getADtd() { xmlDTDs(result, _, _, _, this) }
+
+  /** DEPRECATED: Alias for getADtd */
+  deprecated XmlDtd getADTD() { result = this.getADtd() }
 }
+
+/** DEPRECATED: Alias for XmlFile */
+deprecated class XMLFile = XmlFile;
 
 /**
  * An XML document type definition (DTD).
@@ -140,7 +152,7 @@ class XMLFile extends XMLParent, File {
  * <!ELEMENT lastName (#PCDATA)>
  * ```
  */
-class XMLDTD extends XMLLocatable, @xmldtd {
+class XmlDtd extends XmlLocatable, @xmldtd {
   /** Gets the name of the root element of this DTD. */
   string getRoot() { xmlDTDs(this, result, _, _, _) }
 
@@ -154,7 +166,7 @@ class XMLDTD extends XMLLocatable, @xmldtd {
   predicate isPublic() { not xmlDTDs(this, _, "", _, _) }
 
   /** Gets the parent of this DTD. */
-  XMLParent getParent() { xmlDTDs(this, _, _, _, result) }
+  XmlParent getParent() { xmlDTDs(this, _, _, _, result) }
 
   override string toString() {
     this.isPublic() and
@@ -164,6 +176,9 @@ class XMLDTD extends XMLLocatable, @xmldtd {
     result = this.getRoot() + " SYSTEM '" + this.getSystemId() + "'"
   }
 }
+
+/** DEPRECATED: Alias for XmlDtd */
+deprecated class XMLDTD = XmlDtd;
 
 /**
  * An XML element in an XML file.
@@ -176,7 +191,7 @@ class XMLDTD extends XMLLocatable, @xmldtd {
  * </manifest>
  * ```
  */
-class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
+class XmlElement extends @xmlelement, XmlParent, XmlLocatable {
   /** Holds if this XML element has the given `name`. */
   predicate hasName(string name) { name = this.getName() }
 
@@ -184,10 +199,10 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   override string getName() { xmlElements(this, result, _, _, _) }
 
   /** Gets the XML file in which this XML element occurs. */
-  override XMLFile getFile() { xmlElements(this, _, _, _, result) }
+  override XmlFile getFile() { xmlElements(this, _, _, _, result) }
 
   /** Gets the parent of this XML element. */
-  XMLParent getParent() { xmlElements(this, _, result, _, _) }
+  XmlParent getParent() { xmlElements(this, _, result, _, _) }
 
   /** Gets the index of this XML element among its parent's children. */
   int getIndex() { xmlElements(this, _, _, result, _) }
@@ -196,7 +211,7 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   predicate hasNamespace() { xmlHasNs(this, _, _) }
 
   /** Gets the namespace of this XML element, if any. */
-  XMLNamespace getNamespace() { xmlHasNs(this, result, _) }
+  XmlNamespace getNamespace() { xmlHasNs(this, result, _) }
 
   /** Gets the index of this XML element among its parent's children. */
   int getElementPositionIndex() { xmlElements(this, _, _, result, _) }
@@ -205,10 +220,10 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   override int getDepth() { result = this.getParent().getDepth() + 1 }
 
   /** Gets an XML attribute of this XML element. */
-  XMLAttribute getAnAttribute() { result.getElement() = this }
+  XmlAttribute getAnAttribute() { result.getElement() = this }
 
   /** Gets the attribute with the specified `name`, if any. */
-  XMLAttribute getAttribute(string name) { result.getElement() = this and result.getName() = name }
+  XmlAttribute getAttribute(string name) { result.getElement() = this and result.getName() = name }
 
   /** Holds if this XML element has an attribute with the specified `name`. */
   predicate hasAttribute(string name) { exists(this.getAttribute(name)) }
@@ -220,6 +235,9 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   override string toString() { result = this.getName() }
 }
 
+/** DEPRECATED: Alias for XmlElement */
+deprecated class XMLElement = XmlElement;
+
 /**
  * An attribute that occurs inside an XML element.
  *
@@ -230,18 +248,18 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
  * android:versionCode="1"
  * ```
  */
-class XMLAttribute extends @xmlattribute, XMLLocatable {
+class XmlAttribute extends @xmlattribute, XmlLocatable {
   /** Gets the name of this attribute. */
   string getName() { xmlAttrs(this, _, result, _, _, _) }
 
   /** Gets the XML element to which this attribute belongs. */
-  XMLElement getElement() { xmlAttrs(this, result, _, _, _, _) }
+  XmlElement getElement() { xmlAttrs(this, result, _, _, _, _) }
 
   /** Holds if this attribute has a namespace. */
   predicate hasNamespace() { xmlHasNs(this, _, _) }
 
   /** Gets the namespace of this attribute, if any. */
-  XMLNamespace getNamespace() { xmlHasNs(this, result, _) }
+  XmlNamespace getNamespace() { xmlHasNs(this, result, _) }
 
   /** Gets the value of this attribute. */
   string getValue() { xmlAttrs(this, _, _, result, _, _) }
@@ -249,6 +267,9 @@ class XMLAttribute extends @xmlattribute, XMLLocatable {
   /** Gets a printable representation of this XML attribute. */
   override string toString() { result = this.getName() + "=" + this.getValue() }
 }
+
+/** DEPRECATED: Alias for XmlAttribute */
+deprecated class XMLAttribute = XmlAttribute;
 
 /**
  * A namespace used in an XML file.
@@ -259,22 +280,28 @@ class XMLAttribute extends @xmlattribute, XMLLocatable {
  * xmlns:android="http://schemas.android.com/apk/res/android"
  * ```
  */
-class XMLNamespace extends XMLLocatable, @xmlnamespace {
+class XmlNamespace extends XmlLocatable, @xmlnamespace {
   /** Gets the prefix of this namespace. */
   string getPrefix() { xmlNs(this, result, _, _) }
 
   /** Gets the URI of this namespace. */
-  string getURI() { xmlNs(this, _, result, _) }
+  string getUri() { xmlNs(this, _, result, _) }
+
+  /** DEPRECATED: Alias for getUri */
+  deprecated string getURI() { result = this.getUri() }
 
   /** Holds if this namespace has no prefix. */
   predicate isDefault() { this.getPrefix() = "" }
 
   override string toString() {
-    this.isDefault() and result = this.getURI()
+    this.isDefault() and result = this.getUri()
     or
-    not this.isDefault() and result = this.getPrefix() + ":" + this.getURI()
+    not this.isDefault() and result = this.getPrefix() + ":" + this.getUri()
   }
 }
+
+/** DEPRECATED: Alias for XmlNamespace */
+deprecated class XMLNamespace = XmlNamespace;
 
 /**
  * A comment in an XML file.
@@ -285,16 +312,19 @@ class XMLNamespace extends XMLLocatable, @xmlnamespace {
  * <!-- This is a comment. -->
  * ```
  */
-class XMLComment extends @xmlcomment, XMLLocatable {
+class XmlComment extends @xmlcomment, XmlLocatable {
   /** Gets the text content of this XML comment. */
   string getText() { xmlComments(this, result, _, _) }
 
   /** Gets the parent of this XML comment. */
-  XMLParent getParent() { xmlComments(this, _, result, _) }
+  XmlParent getParent() { xmlComments(this, _, result, _) }
 
   /** Gets a printable representation of this XML comment. */
   override string toString() { result = this.getText() }
 }
+
+/** DEPRECATED: Alias for XmlComment */
+deprecated class XMLComment = XmlComment;
 
 /**
  * A sequence of characters that occurs between opening and
@@ -306,12 +336,12 @@ class XMLComment extends @xmlcomment, XMLLocatable {
  * <content>This is a sequence of characters.</content>
  * ```
  */
-class XMLCharacters extends @xmlcharacters, XMLLocatable {
+class XmlCharacters extends @xmlcharacters, XmlLocatable {
   /** Gets the content of this character sequence. */
   string getCharacters() { xmlChars(this, result, _, _, _, _) }
 
   /** Gets the parent of this character sequence. */
-  XMLParent getParent() { xmlChars(this, _, result, _, _, _) }
+  XmlParent getParent() { xmlChars(this, _, result, _, _, _) }
 
   /** Holds if this character sequence is CDATA. */
   predicate isCDATA() { xmlChars(this, _, _, _, 1, _) }
@@ -319,3 +349,6 @@ class XMLCharacters extends @xmlcharacters, XMLLocatable {
   /** Gets a printable representation of this XML character sequence. */
   override string toString() { result = this.getCharacters() }
 }
+
+/** DEPRECATED: Alias for XmlCharacters */
+deprecated class XMLCharacters = XmlCharacters;

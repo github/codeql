@@ -20,5 +20,5 @@ where
   c.fromSource() and
   exists(sc.getBody()) and
   not exists(CloneMethod ssc | sc.callsSuper(ssc))
-select sc, "This clone method does not call super.clone(), but is " + "overridden and called $@.",
-  c, "in a subclass"
+select sc, "This clone method does not call super.clone(), but is overridden and called $@.", c,
+  "in a subclass"

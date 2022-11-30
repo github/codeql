@@ -4,6 +4,7 @@
 // label tags
 
 #include <type_traits>
+#include "swift/extractor/trap/TrapLabel.h"
 
 namespace codeql {
 
@@ -19,15 +20,23 @@ struct ToTagOverride : ToTagFunctor<T> {};
 // must be instantiated to map trap labels to the corresponding generated binding trap entry
 template <typename Label>
 struct ToBindingTrapFunctor;
+
+// must be instantiated to map trap tags to the corresponding generated trap class
+template <typename Tag>
+struct ToTrapClassFunctor;
 }  // namespace detail
 
 template <typename T>
-using TrapTagOf = typename detail::ToTagOverride<std::remove_const_t<T>>::type;
+using TrapTagOf =
+    typename detail::ToTagOverride<std::remove_const_t<std::remove_pointer_t<T>>>::type;
 
 template <typename T>
 using TrapLabelOf = TrapLabel<TrapTagOf<T>>;
 
 template <typename T>
 using BindingTrapOf = typename detail::ToBindingTrapFunctor<TrapLabelOf<T>>::type;
+
+template <typename T>
+using TrapClassOf = typename detail::ToTrapClassFunctor<TrapTagOf<T>>::type;
 
 }  // namespace codeql

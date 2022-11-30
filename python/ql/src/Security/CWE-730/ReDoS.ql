@@ -5,6 +5,7 @@
  *              attacks.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id py/redos
  * @tags security
@@ -13,10 +14,10 @@
  *       external/cwe/cwe-400
  */
 
-import python
-import semmle.python.security.performance.ExponentialBackTracking
+private import semmle.python.RegexTreeView::RegexTreeView as TreeView
+import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
 
-from RegExpTerm t, string pump, State s, string prefixMsg
+from TreeView::RegExpTerm t, string pump, State s, string prefixMsg
 where
   hasReDoSResult(t, pump, s, prefixMsg) and
   // exclude verbose mode regexes for now

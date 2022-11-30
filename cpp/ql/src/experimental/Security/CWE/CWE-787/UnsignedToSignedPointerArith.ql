@@ -26,5 +26,5 @@ where
   DataFlow::localFlow(DataFlow::parameterNode(p), sink) and
   p.getUnspecifiedType().getSize() < 8
 select call,
-  "This call: $@  passes an unsigned int to a function that requires a signed int: $@. And then used in pointer arithmetic: $@",
-  call, call.toString(), f, f.toString(), sink, sink.toString()
+  "This call passes an unsigned int to a function that requires a signed int: $@. It's then used in pointer arithmetic: $@.",
+  f, f.toString(), sink, sink.toString()

@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If <code>Kernel.open</code> is given a file name that starts with a <code>|</code>
+character, it will execute the remaining string as a shell command. If a
+malicious user can control the file name, they can execute arbitrary code.
+The same vulnerability applies to <code>IO.read</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Use <code>File.open</code> instead of <code>Kernel.open</code>, as the former
+does not have this vulnerability. Similarly, use <code>File.read</code> instead
+of <code>IO.read</code>.</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows code that calls <code>Kernel.open</code> on a
+user-supplied file path.
+</p>
+
+<sample src="examples/kernel_open.rb" />
+
+<p>Instead, <code>File.open</code> should be used, as in the following example.</p>
+
+<sample src="examples/file_open.rb" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+</li>
+
+<li>
+Example CVE: <a href="https://www.ruby-lang.org/en/news/2021/05/02/os-command-injection-in-rdoc/">Command Injection in RDoc</a>.
+</li>
+
+</references>
+</qhelp>

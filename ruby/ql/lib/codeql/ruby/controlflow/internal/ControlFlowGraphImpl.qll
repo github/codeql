@@ -32,7 +32,7 @@
  */
 
 private import codeql.ruby.AST
-private import codeql.ruby.ast.internal.AST as ASTInternal
+private import codeql.ruby.ast.internal.AST as AstInternal
 private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.ast.Scope
 private import codeql.ruby.ast.internal.TreeSitter
@@ -66,7 +66,7 @@ private class EndBlockScope extends CfgScopeImpl, EndBlock {
   }
 }
 
-private class BodyStmtCallableScope extends CfgScopeImpl, ASTInternal::TBodyStmt, Callable {
+private class BodyStmtCallableScope extends CfgScopeImpl, AstInternal::TBodyStmt, Callable {
   final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
 
   final override predicate exit(AstNode last, Completion c) {
@@ -139,10 +139,16 @@ module Trees {
   abstract private class NonDefaultValueParameterTree extends ControlFlowTree, NamedParameter {
     final override predicate first(AstNode first) {
       this.getDefiningAccess().(ControlFlowTree).first(first)
+      or
+      not exists(this.getDefiningAccess()) and first = this
     }
 
     final override predicate last(AstNode last, Completion c) {
       this.getDefiningAccess().(ControlFlowTree).last(last, c)
+      or
+      not exists(this.getDefiningAccess()) and
+      last = this and
+      c.isValidFor(this)
     }
 
     override predicate propagatesAbnormal(AstNode child) {
@@ -377,7 +383,7 @@ module Trees {
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
   }
 
-  private class CaseTree extends PostOrderTree, CaseExpr, ASTInternal::TCaseExpr {
+  private class CaseTree extends PostOrderTree, CaseExpr, AstInternal::TCaseExpr {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
@@ -394,8 +400,9 @@ module Trees {
       c instanceof SimpleCompletion
       or
       exists(int i, WhenTree branch | branch = this.getBranch(i) |
-        last(branch.getLastPattern(), pred, c) and
+        pred = branch and
         first(this.getBranch(i + 1), succ) and
+        c.isValidFor(branch) and
         c.(ConditionalCompletion).getValue() = false
       )
       or
@@ -415,7 +422,7 @@ module Trees {
     }
   }
 
-  private class CaseMatchTree extends PostOrderTree, CaseExpr, ASTInternal::TCaseMatch {
+  private class CaseMatchTree extends PostOrderTree, CaseExpr, AstInternal::TCaseMatch {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
     }
@@ -884,7 +891,12 @@ module Trees {
   private class ConstantAccessTree extends PostOrderTree, ConstantAccess {
     ConstantAccessTree() {
       not this instanceof ClassDeclaration and
-      not this instanceof ModuleDeclaration
+      not this instanceof ModuleDeclaration and
+      // constant accesses with scope expression in compound assignments are desugared
+      not (
+        this = any(AssignOperation op).getLeftOperand() and
+        exists(this.getScopeExpr())
+      )
     }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getScopeExpr() }
@@ -1089,7 +1101,7 @@ module Trees {
     }
   }
 
-  private class MethodNameTree extends LeafTree, MethodName, ASTInternal::TTokenMethodName { }
+  private class MethodNameTree extends LeafTree, MethodName, AstInternal::TTokenMethodName { }
 
   private class MethodTree extends BodyStmtTree, Method {
     final override predicate propagatesAbnormal(AstNode child) { none() }
@@ -1380,18 +1392,16 @@ module Trees {
     final override predicate first(AstNode first) { this.firstInner(first) }
 
     final override predicate last(AstNode last, Completion c) { this.lastInner(last, c) }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      BodyStmtTree.super.succ(pred, succ, c)
-    }
   }
 
   private class UndefStmtTree extends StandardPreOrderTree, UndefStmt {
     final override ControlFlowTree getChildElement(int i) { result = this.getMethodName(i) }
   }
 
-  private class WhenTree extends PreOrderTree, WhenClause {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAPattern() }
+  private class WhenTree extends ControlFlowTree, WhenClause {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = [this.getAPattern(), this.getBody()]
+    }
 
     final Expr getLastPattern() {
       exists(int i |
@@ -1400,8 +1410,11 @@ module Trees {
       )
     }
 
+    final override predicate first(AstNode first) { first(this.getPattern(0), first) }
+
     final override predicate last(AstNode last, Completion c) {
-      last(this.getLastPattern(), last, c) and
+      last = this and
+      c.isValidFor(this) and
       c.(ConditionalCompletion).getValue() = false
       or
       last(this.getBody(), last, c)
@@ -1409,8 +1422,9 @@ module Trees {
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       pred = this and
-      first(this.getPattern(0), succ) and
-      c instanceof SimpleCompletion
+      c.isValidFor(this) and
+      c.(ConditionalCompletion).getValue() = true and
+      first(this.getBody(), succ)
       or
       exists(int i, Expr p, boolean b |
         p = this.getPattern(i) and
@@ -1418,10 +1432,13 @@ module Trees {
         b = c.(ConditionalCompletion).getValue()
       |
         b = true and
-        first(this.getBody(), succ)
+        succ = this
         or
         b = false and
         first(this.getPattern(i + 1), succ)
+        or
+        not exists(this.getPattern(i + 1)) and
+        succ = this
       )
     }
   }

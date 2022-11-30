@@ -1,0 +1,1 @@
+let Atext = "Hello, A"

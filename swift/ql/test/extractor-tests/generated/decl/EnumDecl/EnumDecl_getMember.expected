@@ -5,9 +5,9 @@
 | enums.swift:1:1:4:1 | EnumValues | 4 | enums.swift:3:10:3:10 | value3 |
 | enums.swift:1:1:4:1 | EnumValues | 5 | enums.swift:3:18:3:18 | value4 |
 | enums.swift:1:1:4:1 | EnumValues | 6 | enums.swift:3:26:3:26 | value5 |
-| enums.swift:1:1:4:1 | EnumValues | 7 | file://:0:0:0:0 | __derived_enum_equals |
+| enums.swift:1:1:4:1 | EnumValues | 7 | file://:0:0:0:0 | __derived_enum_equals(_:_:) |
 | enums.swift:1:1:4:1 | EnumValues | 8 | file://:0:0:0:0 | var ... = ... |
-| enums.swift:1:1:4:1 | EnumValues | 9 | file://:0:0:0:0 | hash |
+| enums.swift:1:1:4:1 | EnumValues | 9 | file://:0:0:0:0 | hash(into:) |
 | enums.swift:1:1:4:1 | EnumValues | 10 | file://:0:0:0:0 | hashValue |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 0 | enums.swift:8:5:8:18 | case ... |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 1 | enums.swift:8:10:8:10 | value1 |
@@ -16,7 +16,7 @@
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 4 | enums.swift:9:10:9:10 | value3 |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 5 | enums.swift:9:18:9:18 | value4 |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 6 | enums.swift:9:26:9:26 | value5 |
-| enums.swift:7:1:10:1 | EnumValuesWithBase | 7 | file://:0:0:0:0 | init |
+| enums.swift:7:1:10:1 | EnumValuesWithBase | 7 | file://:0:0:0:0 | init(rawValue:) |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 8 | file://:0:0:0:0 | var ... = ... |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 9 | file://:0:0:0:0 | RawValue |
 | enums.swift:7:1:10:1 | EnumValuesWithBase | 10 | file://:0:0:0:0 | rawValue |

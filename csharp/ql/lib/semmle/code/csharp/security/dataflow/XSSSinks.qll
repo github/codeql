@@ -246,15 +246,6 @@ private class HttpResponseBaseSink extends Sink {
   }
 }
 
-/**
- * An expression passed as the `content` argument to the constructor of `StringContent`.
- */
-private class StringContentSinkModelCsv extends SinkModelCsv {
-  override predicate row(string row) {
-    row = "System.Net.Http;StringContent;false;StringContent;;;Argument[0];xss"
-  }
-}
-
 private Type getMemberType(Member m) {
   result = m.(Property).getType() or
   result = m.(Field).getType() or

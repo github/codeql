@@ -34,6 +34,7 @@ from Locatable loc, File f, int l, string name, string msg
 where
   expected(loc, f, l, name) and
   not actual(_, f, l, name) and
+  name != "none" and
   msg = "Failed to track " + name + " here."
   or
   actual(loc, f, l, name) and

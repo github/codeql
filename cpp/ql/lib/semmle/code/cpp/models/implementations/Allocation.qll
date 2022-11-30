@@ -205,57 +205,149 @@ private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof
   sizeof = 1
 }
 
+/** A `Function` that is a call target of an allocation. */
+private signature class CallAllocationExprTarget extends Function;
+
 /**
- * An allocation expression that is a function call, such as call to `malloc`.
+ * This module abstracts over the type of allocation call-targets and provides a
+ * class `CallAllocationExprImpl` which contains the implementation of the various
+ * predicates required by the `Allocation` class.
+ *
+ * This module is then instantiated for two types of allocation call-targets:
+ * - `AllocationFunction`: Functions that we've explicitly modeled as functions that
+ * perform allocations (i.e., `malloc`).
+ * - `HeuristicAllocationFunction`: Functions that we deduce as behaving like an allocation
+ * function using various heuristics.
  */
-private class CallAllocationExpr extends AllocationExpr, FunctionCall {
-  AllocationFunction target;
+private module CallAllocationExprBase<CallAllocationExprTarget Target> {
+  /** A module that contains the collection of member-predicates required on `Target`. */
+  signature module Param {
+    /**
+     * Gets the index of the input pointer argument to be reallocated, if
+     * this is a `realloc` function.
+     */
+    int getReallocPtrArg(Target target);
 
-  CallAllocationExpr() {
-    target = this.getTarget() and
-    // realloc(ptr, 0) only frees the pointer
-    not (
-      exists(target.getReallocPtrArg()) and
-      this.getArgument(target.getSizeArg()).getValue().toInt() = 0
-    ) and
-    // these are modelled directly (and more accurately), avoid duplication
-    not exists(NewOrNewArrayExpr new | new.getAllocatorCall() = this)
+    /**
+     * Gets the index of the argument for the allocation size, if any. The actual
+     * allocation size is the value of this argument multiplied by the result of
+     * `getSizeMult()`, in bytes.
+     */
+    int getSizeArg(Target target);
+
+    /**
+     * Gets the index of an argument that multiplies the allocation size given
+     * by `getSizeArg`, if any.
+     */
+    int getSizeMult(Target target);
+
+    /**
+     * Holds if this allocation requires a
+     * corresponding deallocation of some sort (most do, but `alloca` for example
+     * does not). If it is unclear, we default to no (for example a placement `new`
+     * allocation may or may not require a corresponding `delete`).
+     */
+    predicate requiresDealloc(Target target);
   }
 
-  override Expr getSizeExpr() {
-    exists(Expr sizeExpr | sizeExpr = this.getArgument(target.getSizeArg()) |
-      if exists(target.getSizeMult())
-      then result = sizeExpr
-      else
-        exists(Expr lengthExpr |
-          deconstructSizeExpr(sizeExpr, lengthExpr, _) and
-          result = lengthExpr
+  /**
+   * A module that abstracts over a collection of predicates in
+   * the `Param` module). This should really be member-predicates
+   * on `CallAllocationExprTarget`, but we cannot yet write this in QL.
+   */
+  module With<Param P> {
+    private import P
+
+    /**
+     * An allocation expression that is a function call, such as call to `malloc`.
+     */
+    class CallAllocationExprImpl instanceof FunctionCall {
+      Target target;
+
+      CallAllocationExprImpl() {
+        target = this.getTarget() and
+        // realloc(ptr, 0) only frees the pointer
+        not (
+          exists(getReallocPtrArg(target)) and
+          this.getArgument(getSizeArg(target)).getValue().toInt() = 0
+        ) and
+        // these are modeled directly (and more accurately), avoid duplication
+        not exists(NewOrNewArrayExpr new | new.getAllocatorCall() = this)
+      }
+
+      string toString() { result = super.toString() }
+
+      Expr getSizeExprImpl() {
+        exists(Expr sizeExpr | sizeExpr = super.getArgument(getSizeArg(target)) |
+          if exists(getSizeMult(target))
+          then result = sizeExpr
+          else
+            exists(Expr lengthExpr |
+              deconstructSizeExpr(sizeExpr, lengthExpr, _) and
+              result = lengthExpr
+            )
         )
-    )
+      }
+
+      int getSizeMultImpl() {
+        // malloc with multiplier argument that is a constant
+        result = super.getArgument(getSizeMult(target)).getValue().toInt()
+        or
+        // malloc with no multiplier argument
+        not exists(getSizeMult(target)) and
+        deconstructSizeExpr(super.getArgument(getSizeArg(target)), _, result)
+      }
+
+      int getSizeBytesImpl() {
+        result = this.getSizeExprImpl().getValue().toInt() * this.getSizeMultImpl()
+      }
+
+      Expr getReallocPtrImpl() { result = super.getArgument(getReallocPtrArg(target)) }
+
+      Type getAllocatedElementTypeImpl() {
+        result =
+          super.getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType() and
+        not result instanceof VoidType
+      }
+
+      predicate requiresDeallocImpl() { requiresDealloc(target) }
+    }
+  }
+}
+
+private module CallAllocationExpr {
+  private module Param implements CallAllocationExprBase<AllocationFunction>::Param {
+    int getReallocPtrArg(AllocationFunction f) { result = f.getReallocPtrArg() }
+
+    int getSizeArg(AllocationFunction f) { result = f.getSizeArg() }
+
+    int getSizeMult(AllocationFunction f) { result = f.getSizeMult() }
+
+    predicate requiresDealloc(AllocationFunction f) { f.requiresDealloc() }
   }
 
-  override int getSizeMult() {
-    // malloc with multiplier argument that is a constant
-    result = this.getArgument(target.getSizeMult()).getValue().toInt()
-    or
-    // malloc with no multiplier argument
-    not exists(target.getSizeMult()) and
-    deconstructSizeExpr(this.getArgument(target.getSizeArg()), _, result)
+  /**
+   * A class that provides the implementation of `AllocationExpr` for an allocation
+   * that calls an `AllocationFunction`.
+   */
+  private class Base =
+    CallAllocationExprBase<AllocationFunction>::With<Param>::CallAllocationExprImpl;
+
+  class CallAllocationExpr extends AllocationExpr, Base {
+    override Expr getSizeExpr() { result = super.getSizeExprImpl() }
+
+    override int getSizeMult() { result = super.getSizeMultImpl() }
+
+    override Type getAllocatedElementType() { result = super.getAllocatedElementTypeImpl() }
+
+    override predicate requiresDealloc() { super.requiresDeallocImpl() }
+
+    override int getSizeBytes() { result = super.getSizeBytesImpl() }
+
+    override Expr getReallocPtr() { result = super.getReallocPtrImpl() }
+
+    override string toString() { result = AllocationExpr.super.toString() }
   }
-
-  override int getSizeBytes() {
-    result = this.getSizeExpr().getValue().toInt() * this.getSizeMult()
-  }
-
-  override Expr getReallocPtr() { result = this.getArgument(target.getReallocPtrArg()) }
-
-  override Type getAllocatedElementType() {
-    result =
-      this.getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType() and
-    not result instanceof VoidType
-  }
-
-  override predicate requiresDealloc() { target.requiresDealloc() }
 }
 
 /**
@@ -293,4 +385,100 @@ private class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
   override int getSizeBytes() { result = this.getAllocatedType().getSize() }
 
   override predicate requiresDealloc() { not exists(this.getPlacementPointer()) }
+}
+
+private module HeuristicAllocation {
+  /** A class that maps an `AllocationExpr` to an `HeuristicAllocationExpr`. */
+  private class HeuristicAllocationModeled extends HeuristicAllocationExpr instanceof AllocationExpr {
+    override Expr getSizeExpr() { result = AllocationExpr.super.getSizeExpr() }
+
+    override int getSizeMult() { result = AllocationExpr.super.getSizeMult() }
+
+    override int getSizeBytes() { result = AllocationExpr.super.getSizeBytes() }
+
+    override Expr getReallocPtr() { result = AllocationExpr.super.getReallocPtr() }
+
+    override Type getAllocatedElementType() {
+      result = AllocationExpr.super.getAllocatedElementType()
+    }
+
+    override predicate requiresDealloc() { AllocationExpr.super.requiresDealloc() }
+  }
+
+  /** A class that maps an `AllocationFunction` to an `HeuristicAllocationFunction`. */
+  private class HeuristicAllocationFunctionModeled extends HeuristicAllocationFunction instanceof AllocationFunction {
+    override int getSizeArg() { result = AllocationFunction.super.getSizeArg() }
+
+    override int getSizeMult() { result = AllocationFunction.super.getSizeMult() }
+
+    override int getReallocPtrArg() { result = AllocationFunction.super.getReallocPtrArg() }
+
+    override predicate requiresDealloc() { AllocationFunction.super.requiresDealloc() }
+  }
+
+  private int getAnUnsignedParameter(Function f) {
+    f.getParameter(result).getUnspecifiedType().(IntegralType).isUnsigned()
+  }
+
+  private int getAPointerParameter(Function f) {
+    f.getParameter(result).getUnspecifiedType() instanceof PointerType
+  }
+
+  /**
+   * A class that uses heuristics to find additional allocation functions. The required are as follows:
+   * 1. The word `alloc` must appear in the function name
+   * 2. The function must return a pointer type
+   * 3. There must be a unique parameter of unsigned integral type.
+   */
+  private class HeuristicAllocationFunctionByName extends HeuristicAllocationFunction instanceof Function {
+    int sizeArg;
+
+    HeuristicAllocationFunctionByName() {
+      Function.super.getName().matches("%alloc%") and
+      Function.super.getUnspecifiedType() instanceof PointerType and
+      sizeArg = unique( | | getAnUnsignedParameter(this))
+    }
+
+    override int getSizeArg() { result = sizeArg }
+
+    override int getReallocPtrArg() {
+      Function.super.getName().matches("%realloc%") and
+      result = unique( | | getAPointerParameter(this))
+    }
+
+    override predicate requiresDealloc() { none() }
+  }
+
+  private module Param implements CallAllocationExprBase<HeuristicAllocationFunction>::Param {
+    int getReallocPtrArg(HeuristicAllocationFunction f) { result = f.getReallocPtrArg() }
+
+    int getSizeArg(HeuristicAllocationFunction f) { result = f.getSizeArg() }
+
+    int getSizeMult(HeuristicAllocationFunction f) { result = f.getSizeMult() }
+
+    predicate requiresDealloc(HeuristicAllocationFunction f) { f.requiresDealloc() }
+  }
+
+  /**
+   * A class that provides the implementation of `AllocationExpr` for an allocation
+   * that calls an `HeuristicAllocationFunction`.
+   */
+  private class Base =
+    CallAllocationExprBase<HeuristicAllocationFunction>::With<Param>::CallAllocationExprImpl;
+
+  private class CallAllocationExpr extends HeuristicAllocationExpr, Base {
+    override Expr getSizeExpr() { result = super.getSizeExprImpl() }
+
+    override int getSizeMult() { result = super.getSizeMultImpl() }
+
+    override Type getAllocatedElementType() { result = super.getAllocatedElementTypeImpl() }
+
+    override predicate requiresDealloc() { super.requiresDeallocImpl() }
+
+    override int getSizeBytes() { result = super.getSizeBytesImpl() }
+
+    override Expr getReallocPtr() { result = super.getReallocPtrImpl() }
+
+    override string toString() { result = HeuristicAllocationExpr.super.toString() }
+  }
 }

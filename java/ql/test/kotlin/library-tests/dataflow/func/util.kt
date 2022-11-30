@@ -7,6 +7,10 @@ class Processor {
         return f(arg)
     }
 
+    suspend fun <T, R2> processSusp(f: suspend (T) -> R2, arg: T) : R2 {
+        return f(arg)
+    }
+
     fun <T0, T1, R3> process(f: (T0, T1) -> R3, arg0: T0, arg1: T1) : R3 {
         return f(arg0, arg1)
     }

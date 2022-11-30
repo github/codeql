@@ -2,10 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-from AssociatedTypeDecl x, Type getInterfaceType, string getName
+from AssociatedTypeDecl x, ModuleDecl getModule, Type getInterfaceType, string getName
 where
   toBeTested(x) and
   not x.isUnknown() and
+  getModule = x.getModule() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName()
-select x, "getInterfaceType:", getInterfaceType, "getName:", getName
+select x, "getModule:", getModule, "getInterfaceType:", getInterfaceType, "getName:", getName

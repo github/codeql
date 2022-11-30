@@ -56,7 +56,7 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       dotnet build csharp /p:UseSharedCompilation=false
+       dotnet build csharp
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@main

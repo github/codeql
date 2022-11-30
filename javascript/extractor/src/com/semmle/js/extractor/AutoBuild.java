@@ -86,8 +86,6 @@ import com.semmle.util.trap.TrapWriter;
  *       <code>XML</code> is also supported
  *   <li><code>LGTM_INDEX_XML_MODE</code>: whether to extract XML files
  *   <li><code>LGTM_THREADS</code>: the maximum number of files to extract in parallel
- *   <li><code>LGTM_TRAP_CACHE</code>: the path of a directory to use for trap caching
- *   <li><code>LGTM_TRAP_CACHE_BOUND</code>: the size to bound the trap cache to
  * </ul>
  *
  * <p>It extracts the following:
@@ -143,7 +141,7 @@ import com.semmle.util.trap.TrapWriter;
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
  *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
- *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue").
+ *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
  *       FileType#YAML} (currently ".raml", ".yaml", ".yml").
  *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
@@ -220,7 +218,7 @@ public class AutoBuild {
     this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
     this.SEMMLE_DIST = Paths.get(EnvironmentVariables.getExtractorRoot());
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
-    this.trapCache = mkTrapCache();
+    this.trapCache = ITrapCache.fromExtractorOptions();
     this.typeScriptMode =
         getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
@@ -279,28 +277,6 @@ public class AutoBuild {
     } catch (IOException e) {
       throw new ResourceError("Could not compute real path for " + p + ".", e);
     }
-  }
-
-  /**
-   * Set up TRAP cache based on environment variables <code>LGTM_TRAP_CACHE</code> and <code>
-   * LGTM_TRAP_CACHE_BOUND</code>.
-   */
-  private ITrapCache mkTrapCache() {
-    ITrapCache trapCache;
-    String trapCachePath = getEnvVar("LGTM_TRAP_CACHE");
-    if (trapCachePath != null) {
-      Long sizeBound = null;
-      String trapCacheBound = getEnvVar("LGTM_TRAP_CACHE_BOUND");
-      if (trapCacheBound != null) {
-        sizeBound = DefaultTrapCache.asFileSize(trapCacheBound);
-        if (sizeBound == null)
-          throw new UserError("Invalid TRAP cache size bound: " + trapCacheBound);
-      }
-      trapCache = new DefaultTrapCache(trapCachePath, sizeBound, Main.EXTRACTOR_VERSION);
-    } else {
-      trapCache = new DummyTrapCache();
-    }
-    return trapCache;
   }
 
   private void setupFileTypes() {
@@ -513,14 +489,13 @@ public class AutoBuild {
           SEMMLE_DIST.resolve(".cache").resolve("trap-cache").resolve("javascript");
       if (Files.isDirectory(trapCachePath)) {
         trapCache =
-            new DefaultTrapCache(trapCachePath.toString(), null, Main.EXTRACTOR_VERSION) {
+            new DefaultTrapCache(trapCachePath.toString(), null, Main.EXTRACTOR_VERSION, false) {
               boolean warnedAboutCacheMiss = false;
 
               @Override
               public File lookup(String source, ExtractorConfig config, FileType type) {
                 File f = super.lookup(source, config, type);
-                // only return `f` if it exists; this has the effect of making the cache read-only
-                if (f.exists()) return f;
+                if (f != null) return f;
                 // warn on first failed lookup
                 if (!warnedAboutCacheMiss) {
                   warn("Trap cache lookup for externs failed.");

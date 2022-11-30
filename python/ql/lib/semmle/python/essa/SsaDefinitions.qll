@@ -78,7 +78,9 @@ module SsaSource {
 
   /** Holds if `v` is defined by a `for` statement, the definition being `defn` */
   cached
-  predicate iteration_defined_variable(Variable v, ControlFlowNode defn, ControlFlowNode sequence) {
+  deprecated predicate iteration_defined_variable(
+    Variable v, ControlFlowNode defn, ControlFlowNode sequence
+  ) {
     exists(ForNode for | for.iterates(defn, sequence)) and
     defn.(NameNode).defines(v)
   }

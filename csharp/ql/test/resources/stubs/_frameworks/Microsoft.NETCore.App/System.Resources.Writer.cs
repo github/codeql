@@ -4,7 +4,7 @@ namespace System
 {
     namespace Resources
     {
-        // Generated from `System.Resources.IResourceWriter` in `System.Resources.Writer, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.IResourceWriter` in `System.Resources.Writer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IResourceWriter : System.IDisposable
         {
             void AddResource(string name, System.Byte[] value);
@@ -14,7 +14,7 @@ namespace System
             void Generate();
         }
 
-        // Generated from `System.Resources.ResourceWriter` in `System.Resources.Writer, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Resources.ResourceWriter` in `System.Resources.Writer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ResourceWriter : System.IDisposable, System.Resources.IResourceWriter
         {
             public void AddResource(string name, System.Byte[] value) => throw null;

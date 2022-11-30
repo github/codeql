@@ -1,7 +1,12 @@
 name: codeql/csharp-all
-version: 0.2.3-dev
+version: 0.4.5-dev
 groups: csharp
 dbscheme: semmlecode.csharp.dbscheme
 extractor: csharp
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/ssa: ${workspace}
+dataExtensions:
+  - ext/*.model.yml
+  - ext/generated/*.model.yml

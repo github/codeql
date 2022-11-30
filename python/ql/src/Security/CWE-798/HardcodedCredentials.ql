@@ -116,7 +116,7 @@ private string getACredentialRegex() {
 }
 
 class HardcodedCredentialsConfiguration extends TaintTracking::Configuration {
-  HardcodedCredentialsConfiguration() { this = "Hardcoded coredentials configuration" }
+  HardcodedCredentialsConfiguration() { this = "Hardcoded credentials configuration" }
 
   override predicate isSource(TaintTracking::Source source) {
     source instanceof HardcodedValueSource
@@ -129,4 +129,5 @@ from HardcodedCredentialsConfiguration config, TaintedPathSource src, TaintedPat
 where
   config.hasFlowPath(src, sink) and
   not any(TestScope test).contains(src.getAstNode())
-select sink.getSink(), src, sink, "Use of $@.", src.getSource(), "hardcoded credentials"
+select src.getSource(), src, sink, "This hardcoded value is $@.", sink.getNode(),
+  "used as credentials"

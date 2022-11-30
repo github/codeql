@@ -189,6 +189,13 @@ module Promises {
    * Gets the pseudo-field used to describe rejected values in a promise.
    */
   string errorProp() { result = "$PromiseRejectField$" }
+
+  /** A property set containing the pseudo-properites of a promise object. */
+  class PromiseProps extends DataFlow::PropertySet {
+    PromiseProps() { this = "PromiseProps" }
+
+    override string getAProperty() { result = [valueProp(), errorProp()] }
+  }
 }
 
 /**
@@ -271,6 +278,24 @@ private class PromiseStep extends PreCallGraphStep {
 
   override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
     PromiseFlow::loadStoreStep(pred, succ, prop)
+  }
+}
+
+/**
+ * A step from `p -> await p` for the case where `p` is not a promise.
+ *
+ * In this case, `await p` just returns `p` itself. We block flow of the promise-related
+ * pseudo properties through this edge.
+ */
+private class RawAwaitStep extends DataFlow::SharedTypeTrackingStep {
+  override predicate withoutPropStep(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::PropertySet props
+  ) {
+    exists(AwaitExpr await |
+      pred = await.getOperand().flow() and
+      succ = await.flow() and
+      props instanceof Promises::PromiseProps
+    )
   }
 }
 

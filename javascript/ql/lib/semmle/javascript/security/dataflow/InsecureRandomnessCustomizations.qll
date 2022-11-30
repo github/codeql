@@ -104,6 +104,12 @@ module InsecureRandomness {
       pred = mc.getAnArgument() and
       succ = mc
     )
+    or
+    // selecting a random element.
+    exists(DataFlow::PropRead read | read = succ |
+      read.getPropertyNameExpr() = pred.asExpr() and
+      not exists(read.getPropertyName())
+    )
   }
 
   /**

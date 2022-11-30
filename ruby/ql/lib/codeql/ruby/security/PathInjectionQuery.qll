@@ -23,9 +23,11 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof PathInjection::Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Path::PathSanitization }
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof Path::PathSanitization or node instanceof PathInjection::Sanitizer
+  }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof PathInjection::SanitizerGuard
   }
 }

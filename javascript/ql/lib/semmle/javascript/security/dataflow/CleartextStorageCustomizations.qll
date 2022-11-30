@@ -30,15 +30,13 @@ module CleartextStorage {
    * A sensitive expression, viewed as a data flow source for cleartext storage
    * of sensitive information.
    */
-  class SensitiveExprSource extends Source, DataFlow::ValueNode {
-    override SensitiveExpr astNode;
-
+  class SensitiveExprSource extends Source instanceof SensitiveNode {
     SensitiveExprSource() {
       // storing user names or account names in plaintext isn't usually a problem
-      astNode.getClassification() != SensitiveDataClassification::id()
+      super.getClassification() != SensitiveDataClassification::id()
     }
 
-    override string describe() { result = astNode.describe() }
+    override string describe() { result = SensitiveNode.super.describe() }
   }
 
   /** A call to any function whose name suggests that it encodes or encrypts its arguments. */
@@ -51,9 +49,9 @@ module CleartextStorage {
    */
   class CookieStorageSink extends Sink {
     CookieStorageSink() {
-      exists(HTTP::CookieDefinition cookieDef |
-        this.asExpr() = cookieDef.getValueArgument() or
-        this.asExpr() = cookieDef.getHeaderArgument()
+      exists(Http::CookieDefinition cookieDef |
+        this = cookieDef.getValueArgument() or
+        this = cookieDef.getHeaderArgument()
       )
     }
   }
@@ -61,16 +59,12 @@ module CleartextStorage {
   /**
    * An expression set as a value of localStorage or sessionStorage.
    */
-  class WebStorageSink extends Sink {
-    WebStorageSink() { this.asExpr() instanceof WebStorageWrite }
-  }
+  class WebStorageSink extends Sink instanceof WebStorageWrite { }
 
   /**
    * An expression stored by AngularJS.
    */
   class AngularJSStorageSink extends Sink {
-    AngularJSStorageSink() {
-      any(AngularJS::AngularJSCall call).storesArgumentGlobally(this.asExpr())
-    }
+    AngularJSStorageSink() { any(AngularJS::AngularJSCallNode call).storesArgumentGlobally(this) }
   }
 }

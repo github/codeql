@@ -143,6 +143,28 @@ class ScanfFunctionCall extends FunctionCall {
    * (rather than a `char*`).
    */
   predicate isWideCharDefault() { this.getScanfFunction().isWideCharDefault() }
+
+  /**
+   * Gets the output argument at position `n` in the vararg list of this call.
+   *
+   * The range of `n` is from `0` to `this.getNumberOfOutputArguments() - 1`.
+   */
+  Expr getOutputArgument(int n) {
+    result = this.getArgument(this.getTarget().getNumberOfParameters() + n) and
+    n >= 0
+  }
+
+  /**
+   * Gets an output argument given to this call in vararg position.
+   */
+  Expr getAnOutputArgument() { result = this.getOutputArgument(_) }
+
+  /**
+   * Gets the number of output arguments present in this call.
+   */
+  int getNumberOfOutputArguments() {
+    result = this.getNumberOfArguments() - this.getTarget().getNumberOfParameters()
+  }
 }
 
 /**

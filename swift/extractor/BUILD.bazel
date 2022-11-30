@@ -1,26 +1,24 @@
 load("//swift:rules.bzl", "swift_cc_binary")
+load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
 
 swift_cc_binary(
     name = "extractor",
-    srcs = [
-        "SwiftDispatcher.h",
-        "SwiftExtractor.cpp",
-        "SwiftExtractor.h",
-        "SwiftExtractorConfiguration.h",
-        "SwiftTagTraits.h",
-        "SwiftVisitor.h",
-        "main.cpp",
-        "visitors/DeclVisitor.h",
-        "visitors/ExprVisitor.h",
-        "visitors/PatternVisitor.h",
-        "visitors/StmtVisitor.h",
-        "visitors/TypeReprVisitor.h",
-        "visitors/TypeVisitor.h",
-        "visitors/VisitorBase.h",
-    ],
+    srcs = glob([
+        "*.h",
+        "*.cpp",
+    ]),
     visibility = ["//swift:__pkg__"],
     deps = [
-        "//swift/extractor/trap",
-        "//swift/tools/prebuilt:swift-llvm-support",
+        "//swift/extractor/infra",
+        "//swift/extractor/invocation",
+        "//swift/extractor/remapping",
+        "//swift/extractor/translators",
+        "//swift/third_party/swift-llvm-support",
     ],
+)
+
+generate_cmake(
+    name = "cmake",
+    targets = [":extractor"],
+    visibility = ["//visibility:public"],
 )

@@ -1,9 +1,9 @@
-private import ruby as RB
+private import codeql.ruby.AST as RB
 private import ControlFlowGraphImpl as Impl
 private import Completion as Comp
 private import codeql.ruby.ast.internal.Synthesis
 private import Splitting as Splitting
-private import codeql.ruby.CFG as CFG
+private import codeql.ruby.CFG as Cfg
 
 /** The base class for `ControlFlowTree`. */
 class ControlFlowTreeBase extends RB::AstNode {
@@ -29,7 +29,7 @@ predicate completionIsSimple(Completion c) { c instanceof Comp::SimpleCompletion
 /** Holds if `c` is a valid completion for `e`. */
 predicate completionIsValidFor(Completion c, ControlFlowElement e) { c.isValidFor(e) }
 
-class CfgScope = CFG::CfgScope;
+class CfgScope = Cfg::CfgScope;
 
 predicate getCfgScope = Impl::getCfgScope/1;
 
@@ -50,7 +50,7 @@ class SplitKindBase = Splitting::TSplitKind;
 
 class Split = Splitting::Split;
 
-class SuccessorType = CFG::SuccessorType;
+class SuccessorType = Cfg::SuccessorType;
 
 /** Gets a successor type that matches completion `c`. */
 SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
@@ -60,15 +60,15 @@ SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingS
  * expression.
  */
 predicate successorTypeIsSimple(SuccessorType t) {
-  t instanceof CFG::SuccessorTypes::NormalSuccessor
+  t instanceof Cfg::SuccessorTypes::NormalSuccessor
 }
 
 /** Holds if `t` is an abnormal exit type out of a CFG scope. */
 predicate isAbnormalExitType(SuccessorType t) {
-  t instanceof CFG::SuccessorTypes::RaiseSuccessor or
-  t instanceof CFG::SuccessorTypes::ExitSuccessor
+  t instanceof Cfg::SuccessorTypes::RaiseSuccessor or
+  t instanceof Cfg::SuccessorTypes::ExitSuccessor
 }
 
 class Location = RB::Location;
 
-class Node = CFG::CfgNode;
+class Node = Cfg::CfgNode;

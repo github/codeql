@@ -1,0 +1,7 @@
+| MiniStdLib.kt:12:1:15:1 | Any |
+| MiniStdLib.kt:17:1:19:1 | String |
+| MiniStdLib.kt:21:1:23:1 | Boolean |
+| MiniStdLib.kt:25:1:29:1 | Int |
+| MiniStdLib.kt:31:1:32:1 | Unit |
+| MyClass.kt:1:1:1:16 | MyClass |
+| file://:0:0:0:0 | FakeKotlinClass |

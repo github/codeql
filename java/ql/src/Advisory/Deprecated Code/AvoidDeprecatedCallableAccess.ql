@@ -20,7 +20,7 @@ private predicate isDeprecatedCallable(Callable c) {
 
 from Call ca, Callable c
 where
-  ca.getCallee() = c and
+  ca.getCallee().getSourceDeclaration() = c and
   isDeprecatedCallable(c) and
   // Exclude deprecated calls from within deprecated code.
   not isDeprecatedCallable(ca.getCaller())

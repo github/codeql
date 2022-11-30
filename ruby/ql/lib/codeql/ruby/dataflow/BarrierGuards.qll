@@ -1,8 +1,60 @@
 /** Provides commonly used barriers to dataflow. */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.CFG
+private import codeql.ruby.controlflow.CfgNodes
+private import codeql.ruby.dataflow.SSA
+private import codeql.ruby.ast.internal.Constant
+private import codeql.ruby.InclusionTests
+private import codeql.ruby.ast.internal.Literal
+
+cached
+private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
+  exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
+    c = guard and
+    exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
+      // Only consider strings without any interpolations
+      not strLitNode.getExpr().getComponent(_) instanceof StringInterpolationComponent and
+      c.getExpr() instanceof EqExpr and
+      branch = true
+      or
+      c.getExpr() instanceof CaseEqExpr and branch = true
+      or
+      c.getExpr() instanceof NEExpr and branch = false
+    |
+      c.getLeftOperand() = strLitNode and c.getRightOperand() = testedNode
+      or
+      c.getLeftOperand() = testedNode and c.getRightOperand() = strLitNode
+    )
+  )
+  or
+  stringConstCaseCompare(guard, testedNode, branch)
+  or
+  exists(CfgNodes::ExprNodes::BinaryOperationCfgNode g |
+    g = guard and
+    stringConstCompareOr(guard, branch) and
+    stringConstCompare(g.getLeftOperand(), testedNode, _)
+  )
+}
+
+/**
+ * Holds if `guard` is an `or` expression whose operands are string comparison guards.
+ * For example:
+ *
+ * ```rb
+ * x == "foo" or x == "bar"
+ * ```
+ */
+private predicate stringConstCompareOr(
+  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, boolean branch
+) {
+  guard.getExpr() instanceof LogicalOrExpr and
+  branch = true and
+  forall(CfgNode innerGuard | innerGuard = guard.getAnOperand() |
+    stringConstCompare(innerGuard, any(Ssa::Definition def).getARead(), branch)
+  )
+}
 
 /**
  * A validation of value by comparing with a constant string value, for example
@@ -17,29 +69,57 @@ private import codeql.ruby.CFG
  * the equality operation guards against `dir` taking arbitrary values when used
  * in the `order` call.
  */
-class StringConstCompare extends DataFlow::BarrierGuard,
+class StringConstCompareBarrier extends DataFlow::Node {
+  StringConstCompareBarrier() {
+    this = DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode()
+  }
+}
+
+/**
+ * DEPRECATED: Use `StringConstCompareBarrier` instead.
+ *
+ * A validation of value by comparing with a constant string value, for example
+ * in:
+ *
+ * ```rb
+ * dir = params[:order]
+ * dir = "DESC" unless dir == "ASC"
+ * User.order("name #{dir}")
+ * ```
+ *
+ * the equality operation guards against `dir` taking arbitrary values when used
+ * in the `order` call.
+ */
+deprecated class StringConstCompare extends DataFlow::BarrierGuard,
   CfgNodes::ExprNodes::ComparisonOperationCfgNode {
   private CfgNode checkedNode;
   // The value of the condition that results in the node being validated.
   private boolean checkedBranch;
 
-  StringConstCompare() {
-    exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
-      this.getExpr() instanceof EqExpr and checkedBranch = true
-      or
-      this.getExpr() instanceof CaseEqExpr and checkedBranch = true
-      or
-      this.getExpr() instanceof NEExpr and checkedBranch = false
-    |
-      this.getLeftOperand() = strLitNode and this.getRightOperand() = checkedNode
-      or
-      this.getLeftOperand() = checkedNode and this.getRightOperand() = strLitNode
-    )
-  }
+  StringConstCompare() { stringConstCompare(this, checkedNode, checkedBranch) }
 
   override predicate checks(CfgNode expr, boolean branch) {
     expr = checkedNode and branch = checkedBranch
   }
+}
+
+cached
+private predicate stringConstArrayInclusionCall(
+  CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch
+) {
+  exists(InclusionTest t |
+    t.asExpr() = guard and
+    testedNode = t.getContainedNode().asExpr() and
+    branch = t.getPolarity()
+  |
+    exists(ExprNodes::ArrayLiteralCfgNode arr |
+      isArrayConstant(t.getContainerNode().asExpr(), arr)
+    |
+      forall(ExprCfgNode elem | elem = arr.getAnArgument() |
+        elem instanceof ExprNodes::StringLiteralCfgNode
+      )
+    )
+  )
 }
 
 /**
@@ -56,21 +136,98 @@ class StringConstCompare extends DataFlow::BarrierGuard,
  * the `include?` call guards against `name` taking arbitrary values when used
  * in the `find_by` call.
  */
-//
-class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
+class StringConstArrayInclusionCallBarrier extends DataFlow::Node {
+  StringConstArrayInclusionCallBarrier() {
+    this = DataFlow::BarrierGuard<stringConstArrayInclusionCall/3>::getABarrierNode()
+  }
+}
+
+/**
+ * DEPRECATED: Use `StringConstArrayInclusionCallBarrier` instead.
+ *
+ * A validation of a value by checking for inclusion in an array of string
+ * literal values, for example in:
+ *
+ * ```rb
+ * name = params[:user_name]
+ * if %w(alice bob charlie).include? name
+ *   User.find_by("username = #{name}")
+ * end
+ * ```
+ *
+ * the `include?` call guards against `name` taking arbitrary values when used
+ * in the `find_by` call.
+ */
+deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
   CfgNodes::ExprNodes::MethodCallCfgNode {
   private CfgNode checkedNode;
 
-  StringConstArrayInclusionCall() {
-    exists(ArrayLiteral aLit |
-      this.getExpr().getMethodName() = "include?" and
-      [this.getExpr().getReceiver(), this.getExpr().getReceiver().(ConstantReadAccess).getValue()] =
-        aLit
-    |
-      forall(Expr elem | elem = aLit.getAnElement() | elem instanceof StringLiteral) and
-      this.getArgument(0) = checkedNode
-    )
-  }
+  StringConstArrayInclusionCall() { stringConstArrayInclusionCall(this, checkedNode, true) }
 
   override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
+}
+
+/**
+ * A validation of a value by comparing with a constant string via a `case`
+ * expression. For example:
+ *
+ * ```rb
+ * name = params[:user_name]
+ * case name
+ * when "alice"
+ *   User.find_by("username = #{name}")
+ * when *["bob", "charlie"]
+ *   User.find_by("username = #{name}")
+ * when "dave", "eve" # this is not yet recognised as a barrier guard
+ *   User.find_by("username = #{name}")
+ * end
+ * ```
+ */
+private predicate stringConstCaseCompare(
+  CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch
+) {
+  branch = true and
+  exists(CfgNodes::ExprNodes::CaseExprCfgNode case |
+    case.getValue() = testedNode and
+    (
+      guard =
+        any(CfgNodes::ExprNodes::WhenClauseCfgNode branchNode |
+          branchNode = case.getBranch(_) and
+          // For simplicity, consider patterns that contain only string literals or arrays of string literals
+          forall(ExprCfgNode pattern | pattern = branchNode.getPattern(_) |
+            // when "foo"
+            // when "foo", "bar"
+            pattern instanceof ExprNodes::StringLiteralCfgNode
+            or
+            pattern =
+              any(CfgNodes::ExprNodes::SplatExprCfgNode splat |
+                // when *["foo", "bar"]
+                forex(ExprCfgNode elem |
+                  elem = splat.getOperand().(ExprNodes::ArrayLiteralCfgNode).getAnArgument()
+                |
+                  elem instanceof ExprNodes::StringLiteralCfgNode
+                )
+                or
+                // when *some_var
+                // when *SOME_CONST
+                exists(ExprNodes::ArrayLiteralCfgNode arr |
+                  isArrayConstant(splat.getOperand(), arr) and
+                  forall(ExprCfgNode elem | elem = arr.getAnArgument() |
+                    elem instanceof ExprNodes::StringLiteralCfgNode
+                  )
+                )
+              )
+          )
+        )
+      or
+      // in "foo"
+      exists(
+        CfgNodes::ExprNodes::InClauseCfgNode branchNode, ExprNodes::StringLiteralCfgNode pattern
+      |
+        branchNode = case.getBranch(_) and
+        pattern = branchNode.getPattern() and
+        guard = pattern
+      )
+    )
+  )
 }

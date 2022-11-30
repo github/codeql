@@ -125,7 +125,7 @@ class Version extends string {
 
   /**
    * Gets the minor version, for example `3` in `1.2.3.4`.
-   * If the minor version is unspecifed, then the result is `0`.
+   * If the minor version is unspecified, then the result is `0`.
    */
   bindingset[this]
   int getMinor() { result = this.getField(3) }

@@ -6,10 +6,10 @@
  * @tags model-generator
  */
 
-private import semmle.code.csharp.dataflow.ExternalFlow
-private import internal.CaptureModels
-private import internal.CaptureFlow
+import semmle.code.csharp.dataflow.ExternalFlow
+import utils.modelgenerator.internal.CaptureModels
+import utils.modelgenerator.internal.CaptureSummaryFlow
 
-from TargetApi api, string flow
+from DataFlowTargetApi api, string flow
 where flow = captureFlow(api) and not hasSummary(api, false)
 select flow order by flow

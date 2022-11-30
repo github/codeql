@@ -192,7 +192,7 @@ class Operation extends Expr, @op_expr {
 }
 
 /**
- * A unary operation. Either a unary arithemtic operation
+ * A unary operation. Either a unary arithmetic operation
  * (`UnaryArithmeticOperation`), a unary bitwise operation
  * (`UnaryBitwiseOperation`), a `sizeof` operation (`SizeofExpr`), a pointer
  * indirection operation (`PointerIndirectionExpr`), an address-of operation
@@ -206,7 +206,7 @@ class UnaryOperation extends Operation, @un_op {
 }
 
 /**
- * A binary operation. Either a binary arithemtic operation
+ * A binary operation. Either a binary arithmetic operation
  * (`BinaryArithmeticOperation`), a binary bitwise operation
  * (`BinaryBitwiseOperation`), a comparison operation (`ComparisonOperation`),
  * or a binary logical operation (`BinaryLogicalOperation`).
@@ -776,7 +776,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  * struct A {
  *   public void M() { }
  *
- *   unsafe int DirectDerefence() {
+ *   unsafe int DirectDereference() {
  *     int n = 10;
  *     int *pn = &n;
  *     return *pn;
@@ -788,7 +788,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  *     pa->M();
  *   }
  *
- *   unsafe void ArrayDerefence() {
+ *   unsafe void ArrayDereference() {
  *     char* cp = stackalloc char[10];
  *     cp[1] = 'a';
  *   }
@@ -813,7 +813,7 @@ class PointerIndirectionExpr extends UnaryOperation, @pointer_indirection_expr {
  *
  * ```csharp
  * class A {
- *   unsafe int DirectDerefence() {
+ *   unsafe int DirectDereference() {
  *     int n = 10;
  *     int *pn = &n;
  *     return *pn;
@@ -1035,9 +1035,6 @@ class TupleExpr extends Expr, @tuple_expr {
 
   /** Gets an argument of this tuple. */
   Expr getAnArgument() { result = this.getArgument(_) }
-
-  /** Holds if this tuple is a read access. */
-  deprecated predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
 
   /** Holds if this expression is a tuple construction. */
   predicate isConstruction() {

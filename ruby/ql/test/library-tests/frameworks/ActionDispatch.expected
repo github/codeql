@@ -34,15 +34,26 @@ actionDispatchRoutes
 | app/config/routes.rb:49:5:49:95 | call to delete | delete | users/:user/notifications | users/notifications | destroy |
 | app/config/routes.rb:50:5:50:94 | call to post | post | users/:user/notifications/:notification_id/mark_as_read | users/notifications | mark_as_read |
 actionDispatchControllerMethods
+| app/config/routes.rb:2:3:8:5 | call to resources | action_controller/controllers/posts_controller.rb:2:3:3:5 | index |
+| app/config/routes.rb:2:3:8:5 | call to resources | action_controller/controllers/posts_controller.rb:5:3:6:5 | show |
 | app/config/routes.rb:2:3:8:5 | call to resources | app/controllers/posts_controller.rb:2:3:3:5 | index |
 | app/config/routes.rb:2:3:8:5 | call to resources | app/controllers/posts_controller.rb:5:3:6:5 | show |
-| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:2:3:3:5 | index |
-| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:5:3:6:5 | show |
+| app/config/routes.rb:3:5:6:7 | call to resources | action_controller/controllers/comments_controller.rb:2:3:36:5 | index |
+| app/config/routes.rb:3:5:6:7 | call to resources | action_controller/controllers/comments_controller.rb:38:3:44:5 | show |
+| app/config/routes.rb:3:5:6:7 | call to resources | action_controller/controllers/comments_controller.rb:50:3:52:5 | destroy |
+| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:2:3:36:5 | index |
+| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:38:3:39:5 | show |
+| app/config/routes.rb:7:5:7:37 | call to post | action_controller/controllers/posts_controller.rb:8:3:9:5 | upvote |
 | app/config/routes.rb:7:5:7:37 | call to post | app/controllers/posts_controller.rb:8:3:9:5 | upvote |
+| app/config/routes.rb:27:3:27:48 | call to match | action_controller/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:27:3:27:48 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:28:3:28:50 | call to match | action_controller/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:28:3:28:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:29:3:29:69 | call to match | action_controller/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:29:3:29:69 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:30:3:30:50 | call to match | action_controller/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:30:3:30:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:50:5:50:94 | call to post | action_controller/controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
 | app/config/routes.rb:50:5:50:94 | call to post | app/controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
 underscore
 | Foo | foo |
@@ -54,3 +65,15 @@ underscore
 | HTTPServerRequest | httpserver_request |
 | LotsOfCapitalLetters | lots_of_capital_letters |
 | invalid | invalid |
+mimeTypeInstances
+| action_dispatch/mime_type.rb:2:6:2:28 | Use getMember("Mime").getContent(element_text/html) |
+| action_dispatch/mime_type.rb:3:6:3:32 | Use getMember("Mime").getMember("Type").getMethod("new").getReturn() |
+| action_dispatch/mime_type.rb:4:6:4:35 | Use getMember("Mime").getMember("Type").getMethod("lookup").getReturn() |
+| action_dispatch/mime_type.rb:5:6:5:43 | Use getMember("Mime").getMember("Type").getMethod("lookup_by_extension").getReturn() |
+| action_dispatch/mime_type.rb:6:6:6:47 | Use getMember("Mime").getMember("Type").getMethod("register").getReturn() |
+| action_dispatch/mime_type.rb:7:6:7:64 | Use getMember("Mime").getMember("Type").getMethod("register_alias").getReturn() |
+mimeTypeMatchRegExpInterpretations
+| action_dispatch/mime_type.rb:11:11:11:19 | "foo/bar" |
+| action_dispatch/mime_type.rb:12:7:12:15 | "foo/bar" |
+| action_dispatch/mime_type.rb:13:11:13:11 | s |
+| action_dispatch/mime_type.rb:14:7:14:7 | s |

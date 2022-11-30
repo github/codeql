@@ -33,10 +33,10 @@ where
     or
     c instanceof Socket and type = "socket"
   ) and
-  not c instanceof SSLClass and
+  not c instanceof SslClass and
   not exists(RefType t |
     exprTypeFlow(m.getQualifier(), t, _) and
-    t instanceof SSLClass
+    t instanceof SslClass
   ) and
   (
     m.getMethod().getName() = "getInputStream" or

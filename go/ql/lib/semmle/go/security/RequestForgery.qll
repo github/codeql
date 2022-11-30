@@ -43,7 +43,7 @@ module RequestForgery {
       node instanceof SanitizerEdge
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       super.isSanitizerGuard(guard) or guard instanceof SanitizerGuard
     }
   }

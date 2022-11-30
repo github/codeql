@@ -61,7 +61,7 @@ private module Asyncpg {
         this = ModelOutput::getATypeNode("asyncpg", "Connection").getMember("cursor").getACall()
       }
 
-      override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }
+      override DataFlow::Node getSql() { result = this.getParameter(0, "query").asSink() }
     }
 
     /** The creation of a `Cursor` executes the associated query. */
@@ -71,14 +71,14 @@ private module Asyncpg {
       CursorCreation() {
         exists(CursorConstruction c |
           sql = c.getSql() and
-          this = c.getReturn().getAwaited().getAnImmediateUse()
+          this = c.getReturn().getAwaited().asSource()
         )
         or
         exists(API::CallNode prepareCall |
           prepareCall =
             ModelOutput::getATypeNode("asyncpg", "Connection").getMember("prepare").getACall()
         |
-          sql = prepareCall.getParameter(0, "query").getARhs() and
+          sql = prepareCall.getParameter(0, "query").asSink() and
           this =
             prepareCall
                 .getReturn()
@@ -86,7 +86,7 @@ private module Asyncpg {
                 .getMember("cursor")
                 .getReturn()
                 .getAwaited()
-                .getAnImmediateUse()
+                .asSource()
         )
       }
 

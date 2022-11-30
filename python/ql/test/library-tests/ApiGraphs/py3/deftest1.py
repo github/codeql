@@ -5,12 +5,12 @@ def callback(x): #$ use=moduleImport("mypkg").getMember("foo").getMember("bar").
 
 foo.bar(callback) #$ def=moduleImport("mypkg").getMember("foo").getMember("bar").getParameter(0) use=moduleImport("mypkg").getMember("foo").getMember("bar").getReturn()
 
-def callback2(x): #$ use=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0).getMember("c").getParameter(0)
-    x.baz2() #$ use=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0).getMember("c").getParameter(0).getMember("baz2").getReturn()
+def callback2(x): #$ use=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0).getASubscript().getParameter(0)
+    x.baz2() #$ use=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0).getASubscript().getParameter(0).getMember("baz2").getReturn()
 
 mydict = {
-  "c": callback2, #$ def=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0).getMember("c")
-  "other": "whatever" #$ def=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0).getMember("other")
+  "c": callback2, #$ def=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0).getASubscript()
+  "other": "whatever" #$ def=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0).getASubscript()
 }
 
 foo.baz(mydict) #$ def=moduleImport("mypkg").getMember("foo").getMember("baz").getParameter(0) use=moduleImport("mypkg").getMember("foo").getMember("baz").getReturn()
@@ -34,11 +34,11 @@ otherDict.fourth = callback4
 
 foo.quack(otherDict.fourth) #$ def=moduleImport("mypkg").getMember("foo").getMember("quack").getParameter(0) use=moduleImport("mypkg").getMember("foo").getMember("quack").getReturn()
 
-def namedCallback(myName, otherName): 
-    # Using named parameters: 
+def namedCallback(myName, otherName):
+    # Using named parameters:
     myName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getKeywordParameter("myName").getReturn()
     otherName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getKeywordParameter("otherName").getReturn()
-    # Using numbered parameters: 
+    # Using numbered parameters:
     myName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getParameter(0).getReturn()
     otherName() #$ use=moduleImport("mypkg").getMember("foo").getMember("blob").getParameter(0).getParameter(1).getReturn()
 

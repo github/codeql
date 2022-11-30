@@ -114,7 +114,7 @@ private predicate entryNode(ControlFlow::Node node) { node.isEntryNode() }
  * graph so that we can use the dominator tree to find the most recent
  * side-effect.
  */
-private predicate sideEffectCFG(ControlFlow::Node src, ControlFlow::Node dst) {
+private predicate sideEffectCfg(ControlFlow::Node src, ControlFlow::Node dst) {
   src.getASuccessor() = dst
   or
   // Add an edge from the entry point to any node that might have a side
@@ -128,7 +128,7 @@ private predicate sideEffectCFG(ControlFlow::Node src, ControlFlow::Node dst) {
  * the side-effect CFG.
  */
 private predicate iDomEffect(ControlFlow::Node dominator, ControlFlow::Node node) =
-  idominance(entryNode/1, sideEffectCFG/2)(_, dominator, node)
+  idominance(entryNode/1, sideEffectCfg/2)(_, dominator, node)
 
 /**
  * Gets the most recent side effect. To be more precise, `result` is a
@@ -190,7 +190,7 @@ private ControlFlow::Node mostRecentSideEffect(ControlFlow::Node node) {
 
 /** Used to represent the "global value number" of an expression. */
 cached
-private newtype GVNBase =
+private newtype GvnBase =
   MkNumericConst(string val) { mkNumericConst(_, val) } or
   MkStringConst(string val) { mkStringConst(_, val) } or
   MkBoolConst(boolean val) { mkBoolConst(_, val) } or
@@ -204,7 +204,7 @@ private newtype GVNBase =
   MkOtherVariable(ValueEntity x, ControlFlow::Node dominator) { mkOtherVariable(_, x, dominator) } or
   MkMethodAccess(GVN base, Function m) { mkMethodAccess(_, base, m) } or
   MkFieldRead(GVN base, Field f, ControlFlow::Node dominator) { mkFieldRead(_, base, f, dominator) } or
-  MkPureCall(Function f, GVN callee, GVNList args) { mkPureCall(_, f, callee, args) } or
+  MkPureCall(Function f, GVN callee, GvnList args) { mkPureCall(_, f, callee, args) } or
   MkIndex(GVN base, GVN index, ControlFlow::Node dominator) { mkIndex(_, base, index, dominator) } or
   // Dereference a pointer. The value might have changed since the last
   // time the pointer was dereferenced, so we need to include a definition
@@ -217,22 +217,22 @@ private newtype GVNBase =
   // given a unique number based on the expression itself.
   MkUnanalyzable(DataFlow::Node e) { not analyzableExpr(e) }
 
-private newtype GVNList =
+private newtype GvnList =
   MkNil() or
-  MkCons(GVN head, GVNList tail) { globalValueNumbers(_, _, head, tail) }
+  MkCons(GVN head, GvnList tail) { globalValueNumbers(_, _, head, tail) }
 
-private GVNList globalValueNumbers(DataFlow::CallNode ce, int start) {
+private GvnList globalValueNumbers(DataFlow::CallNode ce, int start) {
   analyzableCall(ce, _) and
   start = ce.getNumArgument() and
   result = MkNil()
   or
-  exists(GVN head, GVNList tail |
+  exists(GVN head, GvnList tail |
     globalValueNumbers(ce, start, head, tail) and
     result = MkCons(head, tail)
   )
 }
 
-private predicate globalValueNumbers(DataFlow::CallNode ce, int start, GVN head, GVNList tail) {
+private predicate globalValueNumbers(DataFlow::CallNode ce, int start, GVN head, GvnList tail) {
   analyzableCall(ce, _) and
   head = globalValueNumber(ce.getArgument(start)) and
   tail = globalValueNumbers(ce, start + 1)
@@ -254,8 +254,8 @@ private predicate globalValueNumbers(DataFlow::CallNode ce, int start, GVN head,
  * expression with this `GVN` and using its `toString` and `getLocation`
  * methods.
  */
-class GVN extends GVNBase {
-  GVN() { this instanceof GVNBase }
+class GVN extends GvnBase {
+  GVN() { this instanceof GvnBase }
 
   /** Gets a data-flow node that has this GVN. */
   DataFlow::Node getANode() { this = globalValueNumber(result) }
@@ -386,7 +386,7 @@ private predicate analyzableCall(DataFlow::CallNode ce, Function f) {
   not ce.isConst()
 }
 
-private predicate mkPureCall(DataFlow::CallNode ce, Function f, GVN callee, GVNList args) {
+private predicate mkPureCall(DataFlow::CallNode ce, Function f, GVN callee, GvnList args) {
   analyzableCall(ce, f) and
   callee = globalValueNumber(ce.getCalleeNode()) and
   args = globalValueNumbers(ce, 0)
@@ -523,7 +523,7 @@ GVN globalValueNumber(DataFlow::Node nd) {
     result = MkFieldRead(qualifier, target, dominator)
   )
   or
-  exists(Function f, GVN callee, GVNList args |
+  exists(Function f, GVN callee, GvnList args |
     mkPureCall(nd, f, callee, args) and
     result = MkPureCall(f, callee, args)
   )

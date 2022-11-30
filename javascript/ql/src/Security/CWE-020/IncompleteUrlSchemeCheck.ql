@@ -109,8 +109,8 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
 }
 
 /** Gets a data-flow node that checks an instance of `ap` against the given `scheme`. */
-DataFlow::Node schemeCheckOn(DataFlow::SourceNode root, string path, DangerousScheme scheme) {
-  result = schemeCheck(AccessPath::getAReferenceTo(root, path), scheme)
+DataFlow::Node schemeCheckOn(DataFlow::SourceNode root, string ap, DangerousScheme scheme) {
+  result = schemeCheck(AccessPath::getAReferenceTo(root, ap), scheme)
 }
 
 from DataFlow::SourceNode root, string path, int n

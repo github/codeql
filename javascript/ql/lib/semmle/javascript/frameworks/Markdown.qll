@@ -78,6 +78,32 @@ module Markdown {
     }
   }
 
+  /** A taint step for the `mermaid` library. */
+  private class MermaidStep extends MarkdownStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode call |
+        call =
+          [API::moduleImport("mermaid"), API::moduleImport("mermaid").getMember("mermaidAPI")]
+              .getMember("render")
+              .getACall()
+      |
+        succ = [call, call.getParameter(2).getParameter(0).asSource()] and
+        pred = call.getArgument(1)
+      )
+      or
+      exists(DataFlow::CallNode call |
+        call =
+          [
+            DataFlow::globalVarRef("mermaid"),
+            DataFlow::globalVarRef("mermaid").getAPropertyRead("mermaidAPI")
+          ].getAMemberCall("render")
+      |
+        succ = [call.(DataFlow::Node), call.getABoundCallbackParameter(2, 0)] and
+        pred = call.getArgument(1)
+      )
+    }
+  }
+
   /**
    * Classes and predicates for modeling taint steps in `unified` and `remark`.
    */

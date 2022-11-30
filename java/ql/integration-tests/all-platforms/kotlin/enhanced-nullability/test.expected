@@ -1,0 +1,14 @@
+exprs
+| Test.java:5:19:5:25 | Integer | Integer |
+| Test.java:5:38:5:44 | Integer | Integer |
+| Test.java:5:58:5:58 | p | Integer |
+| user.kt:2:7:2:7 | x | int |
+| user.kt:2:11:2:11 | t | Test |
+| user.kt:2:11:2:16 | f(...) | Integer |
+| user.kt:2:13:2:16 | <implicit not null> | int |
+| user.kt:2:13:2:16 | int | int |
+| user.kt:2:15:2:15 | 5 | int |
+| user.kt:3:10:3:10 | x | int |
+#select
+| Test.java:5:27:5:27 | f | Integer |
+| user.kt:1:1:4:1 | f | Test |

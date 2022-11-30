@@ -53,7 +53,7 @@ predicate matchesBeginningOfString(RegExpTerm term) {
 }
 
 /**
- * Holds if the given sequence contains top-level domain preceded by a dot, such as `.com`,
+ * Holds if the given sequence `seq` contains top-level domain preceded by a dot, such as `.com`,
  * excluding cases where this is at the very beginning of the regexp.
  *
  * `i` is bound to the index of the last child in the top-level domain part.

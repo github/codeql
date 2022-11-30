@@ -7,6 +7,9 @@ class Generic<T>(init: T) {
   fun getter(): T = stored
   fun setter(param: T) { stored = param }
 
+  private fun privateid(param: T) = param
+  fun callPrivateId(gs: Generic<String>) = gs.privateid("hello world")
+
 }
 
 fun user() {
@@ -23,5 +26,3 @@ fun user() {
   projectedIn.getter()
 
 }
-
-

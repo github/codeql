@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate caseValues(CaseExpr c, Expr value) { value = c.getValue() }
 

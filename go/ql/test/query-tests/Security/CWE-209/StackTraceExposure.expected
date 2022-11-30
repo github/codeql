@@ -5,4 +5,4 @@ nodes
 | test.go:17:10:17:12 | buf | semmle.label | buf |
 subpaths
 #select
-| test.go:14:2:14:4 | definition of buf | test.go:14:2:14:4 | definition of buf : slice type | test.go:17:10:17:12 | buf | This stack trace is exposed to a remote user $@. | test.go:17:10:17:12 | buf | here |
+| test.go:17:10:17:12 | buf | test.go:14:2:14:4 | definition of buf : slice type | test.go:17:10:17:12 | buf | HTTP response depends on $@ and may be exposed to an external user. | test.go:14:2:14:4 | definition of buf | stack trace information |

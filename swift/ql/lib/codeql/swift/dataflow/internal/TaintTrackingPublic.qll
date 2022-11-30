@@ -20,3 +20,10 @@ predicate localExprTaint(DataFlowExpr e1, DataFlowExpr e2) {
 }
 
 predicate localTaintStep = localTaintStepCached/2;
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }

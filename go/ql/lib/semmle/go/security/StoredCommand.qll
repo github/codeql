@@ -35,7 +35,7 @@ module StoredCommand {
       node instanceof CommandInjection::Sanitizer
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof CommandInjection::SanitizerGuard
     }
   }

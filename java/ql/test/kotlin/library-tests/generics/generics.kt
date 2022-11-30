@@ -61,3 +61,5 @@ class Class1<T1> {
         Local<Int>().fn2(t, "")
     }
 }
+
+// Diagnostic Matches: % Found more type arguments than parameters: foo.bar.Class1  ...while extracting a enclosing class (fn1) at %generics.kt:57:5:62:5%

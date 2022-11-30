@@ -8,7 +8,7 @@ class HttpHandler extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "handler" and
-    exists(HTTP::RequestHandler h, DataFlow::Node check |
+    exists(Http::RequestHandler h, DataFlow::Node check |
       element = h.toString() and value = check.toString()
     |
       h.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),

@@ -71,6 +71,20 @@ class FormatMethod extends Method {
   }
 }
 
+pragma[nomagic]
+private predicate parameterReadPostDominatesEntry(ParameterRead pr) {
+  pr.getAControlFlowNode().postDominates(pr.getEnclosingCallable().getEntryPoint()) and
+  getParameterType(pr.getTarget()) instanceof ObjectType
+}
+
+pragma[nomagic]
+private predicate alwaysPassedToFormatItemParameter(ParameterRead pr) {
+  pr = any(StringFormatItemParameter other).getAnAssignedArgument() and
+  parameterReadPostDominatesEntry(pr)
+  or
+  alwaysPassedToFormatItemParameter(pr.getANextRead())
+}
+
 /**
  * A parameter that is used as a format item for `string.Format()`. Either a
  * format item parameter of `string.Format()`, or a parameter of a method that
@@ -85,15 +99,9 @@ class StringFormatItemParameter extends Parameter {
     )
     or
     // Parameter of a source method that forwards to `string.Format()`
-    exists(
-      AssignableDefinitions::ImplicitParameterDefinition def, ParameterRead pr,
-      StringFormatItemParameter other
-    |
+    exists(AssignableDefinitions::ImplicitParameterDefinition def |
       def.getParameter() = this and
-      pr = def.getAReachableRead() and
-      pr.getAControlFlowNode().postDominates(this.getCallable().getEntryPoint()) and
-      other.getAnAssignedArgument() = pr and
-      getParameterType(this) instanceof ObjectType
+      alwaysPassedToFormatItemParameter(def.getAFirstRead())
     )
   }
 }

@@ -65,7 +65,7 @@ newtype TInstructionTag =
   PointerAddTag(int index) { index in [0 .. 255] } or
   ElementsAddressTag(int index) { index in [0 .. 255] } or
   ConvertTag() or
-  GeneratedNEQTag() or
+  GeneratedNeqTag() or
   GeneratedConstantTag() or
   GeneratedBranchTag()
 
@@ -181,7 +181,7 @@ string getInstructionTagId(TInstructionTag tag) {
   or
   tag = ConvertTag() and result = "Convert"
   or
-  tag = GeneratedNEQTag() and result = "GeneratedNEQTag"
+  tag = GeneratedNeqTag() and result = "GeneratedNEQTag"
   or
   tag = GeneratedConstantTag() and result = "GeneratedConstantTag"
   or

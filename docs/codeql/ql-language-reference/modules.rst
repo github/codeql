@@ -133,6 +133,92 @@ defined :ref:`above <library-modules>`:
 This defines an explicit module named ``M``. The body of this module defines
 the class ``OneTwo``.
 
+.. _parameterized-modules:
+
+Parameterized modules
+=====================
+
+Parameterized modules are QL's approach to generic programming.
+Similar to explicit modules, parameterized modules are defined within other modules using the keywork ``module``.
+In addition to the module name, parameterized modules declare one or more parameters between the name and the module body.
+
+For example, consider the module ``M``, which takes two predicate parameters and defines a new predicate
+that applies them one after the other:
+
+.. code-block:: ql
+
+    module M<transformer/1 first, transformer/1 second> {
+      bindingset[x]
+      int applyBoth(int x) {
+        result = second(first(x))
+      }
+    }
+
+Parameterized modules cannot be directly referenced.
+Instead, you instantiate a parameterized module by passing arguments enclosed in angle brackets (``<`` and ``>``) to the module.
+Instantiated parameterized modules can be used as a :ref:`module expression <name-resolution>`, identical to explicit module references.
+
+For example, we can instantiate ``M`` with two identical arguments ``increment``, creating a module
+containing a predicate that adds 2:
+
+.. code-block:: ql
+
+    bindingset[result] bindingset[x]
+    int increment(int x) { result = x + 1 }
+
+    module IncrementTwice = M<increment/1, increment/1>;
+
+    select IncrementTwice::applyBoth(40) // 42
+
+The parameters of a parameterized module are (meta-)typed with :ref:`signatures <signatures>`.
+
+For example, in the previous two snippets, we relied on the predicate signature ``transformer``:
+
+.. code-block:: ql
+
+    bindingset[x]
+    signature int transformer(int x);
+
+The instantiation of parameterized modules is applicative.
+That is, if you instantiate a parameterized module twice with identical arguments, the resulting object is the same.
+This is particularly relevant for type definitions inside parameterized modules as :ref:`classes <classes>`
+or via :ref:`newtype <algebraic-datatypes>`, because the duplication of such type definitions would result in
+incompatible types.
+
+The following example instantiates module ``M`` inside calls to predicate ``foo`` twice.
+The first call is valid but the second call generates an error.
+
+.. code-block:: ql
+
+    bindingset[this]
+    signature class TSig;
+
+    module M<TSig T> {
+      newtype A = B() or C()
+    }
+
+    string foo(M<int>::A a) { ... }
+
+    select foo(M<int>::B()),  // valid: repeated identical instantiation of M does not duplicate A, B, C
+           foo(M<float>::B()) // ERROR: M<float>::B is not compatible with M<int>::A
+
+Module parameters are dependently typed, meaning that signature expressions in parameter definitions can reference
+preceding parameters.
+
+For example, we can declare the signature for ``T2`` dependent on ``T1``, enforcing a subtyping relationship
+between the two parameters:
+
+.. code-block:: ql
+
+    signature class TSig;
+
+    module Extends<TSig T> { signature class Type extends T; }
+
+    module ParameterizedModule<TSig T1, Extends<T1>::Type T2> { ... }
+
+Dependently typed parameters are particularly useful in combination with
+:ref:`parameterized module signatures <parameterized-module-signatures>`.
+
 .. _module-bodies:
 
 Module bodies
@@ -188,3 +274,70 @@ reference. For more information, see ":ref:`name-resolution`."
 
 For information about how import statements are looked up, see "`Module resolution <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#module-resolution>`__"
 in the QL language specification. 
+
+Built-in modules
+****************
+
+QL defines a ``QlBuiltins`` module that is always in scope.
+Currently, it defines a single parameterized sub-module
+``EquivalenceRelation``, that provides an efficient abstraction for working with
+(partial) equivalence relations in QL.
+
+Equivalence relations
+=====================
+
+The built-in ``EquivalenceRelation`` module is parameterized by a type ``T`` and a
+binary base relation ``base`` on ``T``. The symmetric and transitive closure of ``base``
+induces a partial equivalence relation on ``T``. If every value of ``T`` appears in
+``base``, then the induced relation is an equivalence relation on ``T``.
+
+The ``EquivalenceRelation`` module exports a ``getEquivalenceClass`` predicate that
+gets the equivalence class, if any, associated with a given ``T`` element by the
+(partial) equivalence relation induced by ``base``.
+
+The following example illustrates an application of the ``EquivalenceRelation``
+module to generate a custom equivalence relation:
+
+.. code-block:: ql
+
+  class Node extends int {
+    Node() { this in [1 .. 6] }
+  }
+
+  predicate base(Node x, Node y) {
+    x = 1 and y = 2
+    or
+    x = 3 and y = 4
+  }
+
+  module Equiv = QlBuiltins::EquivalenceRelation<Node, base/2>;
+
+  from int x, int y
+  where Equiv::getEquivalenceClass(x) = Equiv::getEquivalenceClass(y)
+  select x, y
+
+Since ``base`` does not relate ``5`` or ``6`` to any nodes, the induced
+relation is a partial equivalence relation on ``Node`` and does not relate ``5``
+or ``6`` to any nodes either.
+
+The above select clause returns the following partial equivalence relation:
+
++---+---+
+| x | y |
++===+===+
+| 1 | 1 |
++---+---+
+| 1 | 2 |
++---+---+
+| 2 | 1 |
++---+---+
+| 2 | 2 |
++---+---+
+| 3 | 3 |
++---+---+
+| 3 | 4 |
++---+---+
+| 4 | 3 |
++---+---+
+| 4 | 4 |
++---+---+

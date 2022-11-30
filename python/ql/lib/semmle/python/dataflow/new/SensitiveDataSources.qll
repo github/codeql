@@ -1,5 +1,5 @@
 /**
- * Provides an extension point for for modeling sensitive data, such as secrets, certificates, or passwords.
+ * Provides an extension point for modeling sensitive data, such as secrets, certificates, or passwords.
  * Sensitive data can be interesting to use as data-flow sources in security queries.
  */
 
@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 // Need to import `semmle.python.Frameworks` since frameworks can extend `SensitiveDataSource::Range`
 private import semmle.python.Frameworks
 private import semmle.python.security.internal.SensitiveDataHeuristics as SensitiveDataHeuristics
+private import semmle.python.ApiGraphs
 
 // We export these explicitly, so we don't also export the `HeuristicNames` module.
 class SensitiveDataClassification = SensitiveDataHeuristics::SensitiveDataClassification;
@@ -23,7 +24,17 @@ module SensitiveDataClassification = SensitiveDataHeuristics::SensitiveDataClass
 class SensitiveDataSource extends DataFlow::Node {
   SensitiveDataSource::Range range;
 
-  SensitiveDataSource() { this = range }
+  SensitiveDataSource() {
+    this = range and
+    // ignore sensitive password sources in getpass.py, that can escape through `getpass.getpass()` return value,
+    // since `getpass.getpass()` is considered a source itself.
+    not exists(Module getpass |
+      getpass.getName() = "getpass" and
+      this.getScope().getEnclosingModule() = getpass and
+      // do allow this call if we're analyzing getpass.py as part of CPython though
+      not exists(getpass.getFile().getRelativePath())
+    )
+  }
 
   /**
    * Gets the classification of the sensitive data.
@@ -311,6 +322,17 @@ private module SensitiveDataModeling {
     SensitiveParameter() { this.getParameter().getName() = sensitiveString(classification) }
 
     override SensitiveDataClassification getClassification() { result = classification }
+  }
+
+  /**
+   * A call to `getpass.getpass`, see https://docs.python.org/3.10/library/getpass.html#getpass.getpass
+   */
+  class GetPassCall extends SensitiveDataSource::Range, API::CallNode {
+    GetPassCall() { this = API::moduleImport("getpass").getMember("getpass").getACall() }
+
+    override SensitiveDataClassification getClassification() {
+      result = SensitiveDataClassification::password()
+    }
   }
 }
 

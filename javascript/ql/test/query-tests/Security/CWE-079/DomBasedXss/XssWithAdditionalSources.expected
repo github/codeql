@@ -116,6 +116,11 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:48:17:64 | clsx(window.name) |
+| classnames.js:17:53:17:63 | window.name |
+| classnames.js:17:53:17:63 | window.name |
 | clipboard.ts:8:11:8:51 | html |
 | clipboard.ts:8:11:8:51 | html |
 | clipboard.ts:8:18:8:51 | clipboa ... /html') |
@@ -426,6 +431,22 @@ nodes
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:13:34:16 | hash |
+| json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") |
+| json-stringify.jsx:11:16:11:58 | `https: ... ocale}` |
+| json-stringify.jsx:11:51:11:56 | locale |
+| json-stringify.jsx:19:16:19:63 | `https: ... ocale}` |
+| json-stringify.jsx:19:56:19:61 | locale |
+| json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:55:31:60 | locale |
+| json-stringify.jsx:31:55:31:60 | locale |
+| json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
 | jwt-server.js:7:9:7:35 | taint |
 | jwt-server.js:7:9:7:35 | taint |
 | jwt-server.js:7:17:7:35 | req.param("wobble") |
@@ -495,6 +516,38 @@ nodes
 | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
 | optionalSanitizer.js:45:41:45:46 | target |
 | optionalSanitizer.js:45:51:45:56 | target |
+| pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:9:5:29 | id |
+| pages/[id].jsx:5:9:5:29 | id |
+| pages/[id].jsx:5:11:5:12 | id |
+| pages/[id].jsx:5:11:5:12 | id |
+| pages/[id].jsx:5:18:5:29 | router.query |
+| pages/[id].jsx:5:18:5:29 | router.query |
+| pages/[id].jsx:5:18:5:29 | router.query |
+| pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:25:11:25:24 | context.params |
+| pages/[id].jsx:25:11:25:24 | context.params |
+| pages/[id].jsx:25:11:25:24 | context.params |
+| pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" |
+| pages/[id].jsx:26:10:26:22 | context.query |
+| pages/[id].jsx:26:10:26:22 | context.query |
+| pages/[id].jsx:26:10:26:22 | context.query |
+| pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -1038,6 +1091,10 @@ nodes
 | tst.js:476:20:476:22 | url |
 | tst.js:486:22:486:24 | url |
 | tst.js:486:22:486:24 | url |
+| tst.js:491:23:491:35 | location.hash |
+| tst.js:491:23:491:35 | location.hash |
+| tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:491:23:491:45 | locatio ... bstr(1) |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
@@ -1233,6 +1290,10 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| classnames.js:17:48:17:64 | clsx(window.name) | classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:48:17:64 | clsx(window.name) | classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:53:17:63 | window.name | classnames.js:17:48:17:64 | clsx(window.name) |
+| classnames.js:17:53:17:63 | window.name | classnames.js:17:48:17:64 | clsx(window.name) |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
@@ -1546,6 +1607,24 @@ edges
 | jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') |
 | jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
+| json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:11:51:11:56 | locale |
+| json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:19:56:19:61 | locale |
+| json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:31:55:31:60 | locale |
+| json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:31:55:31:60 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:11:16:11:58 | `https: ... ocale}` | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:11:16:11:58 | `https: ... ocale}` | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:11:51:11:56 | locale | json-stringify.jsx:11:16:11:58 | `https: ... ocale}` |
+| json-stringify.jsx:19:16:19:63 | `https: ... ocale}` | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:19:16:19:63 | `https: ... ocale}` | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:19:56:19:61 | locale | json-stringify.jsx:19:16:19:63 | `https: ... ocale}` |
+| json-stringify.jsx:31:55:31:60 | locale | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:55:31:60 | locale | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:55:31:60 | locale | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:55:31:60 | locale | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
 | jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
 | jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
 | jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
@@ -1619,6 +1698,38 @@ edges
 | optionalSanitizer.js:45:41:45:46 | target | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
 | optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
 | optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| pages/[id].jsx:5:9:5:14 | { id } | pages/[id].jsx:5:11:5:12 | id |
+| pages/[id].jsx:5:9:5:14 | { id } | pages/[id].jsx:5:11:5:12 | id |
+| pages/[id].jsx:5:9:5:29 | id | pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:5:9:5:29 | id | pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:5:9:5:29 | id | pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:5:9:5:29 | id | pages/[id].jsx:10:44:10:45 | id |
+| pages/[id].jsx:5:11:5:12 | id | pages/[id].jsx:5:9:5:29 | id |
+| pages/[id].jsx:5:11:5:12 | id | pages/[id].jsx:5:9:5:29 | id |
+| pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } |
+| pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:27 | context.params.id |
+| pages/[id].jsx:25:11:25:27 | context.params.id | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" |
+| pages/[id].jsx:25:11:25:27 | context.params.id | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:13:44:13:52 | params.id |
+| pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:30 | context ... .foobar |
+| pages/[id].jsx:26:10:26:30 | context ... .foobar | pages/[id].jsx:26:10:26:36 | context ... r \|\| "" |
+| pages/[id].jsx:26:10:26:30 | context ... .foobar | pages/[id].jsx:26:10:26:36 | context ... r \|\| "" |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:16:44:16:51 | params.q |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:16:44:16:51 | params.q |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
@@ -2143,6 +2254,10 @@ edges
 | tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) |
 | tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) |
 | tst.js:471:13:471:46 | documen ... bstr(1) | tst.js:471:7:471:46 | url |
+| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
