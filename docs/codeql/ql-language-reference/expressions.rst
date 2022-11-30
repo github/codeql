@@ -602,6 +602,7 @@ the distance of a node in a graph from the leaves as follows:
 
 .. code-block:: ql
 
+   language[monotonicAggregates]
    int depth(Node n) {
      if not exists(n.getAChild())
      then result = 0

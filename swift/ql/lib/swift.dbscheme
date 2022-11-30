@@ -524,6 +524,26 @@ accessor_decl_is_did_set(  //dir=decl
   int id: @accessor_decl ref
 );
 
+#keyset[id]
+accessor_decl_is_read(  //dir=decl
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_modify(  //dir=decl
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_unsafe_address(  //dir=decl
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_unsafe_mutable_address(  //dir=decl
+  int id: @accessor_decl ref
+);
+
 associated_type_decls(  //dir=decl
   unique int id: @associated_type_decl
 );
@@ -771,6 +791,11 @@ decl_ref_expr_has_ordinary_semantics(  //dir=expr
   int id: @decl_ref_expr ref
 );
 
+#keyset[id]
+decl_ref_expr_has_distributed_thunk_semantics(  //dir=expr
+  int id: @decl_ref_expr ref
+);
+
 default_argument_exprs(  //dir=expr
   unique int id: @default_argument_expr,
   int param_decl: @param_decl_or_none ref,
@@ -845,7 +870,8 @@ if_exprs(  //dir=expr
 );
 
 @implicit_conversion_expr =
-  @any_hashable_erasure_expr
+  @abi_safe_conversion_expr
+| @any_hashable_erasure_expr
 | @archetype_to_super_expr
 | @array_to_pointer_expr
 | @bridge_from_obj_c_expr
@@ -1104,6 +1130,10 @@ vararg_expansion_exprs(  //dir=expr
   int sub_expr: @expr_or_none ref
 );
 
+abi_safe_conversion_exprs(  //dir=expr
+  unique int id: @abi_safe_conversion_expr
+);
+
 any_hashable_erasure_exprs(  //dir=expr
   unique int id: @any_hashable_erasure_expr
 );
@@ -1319,6 +1349,11 @@ member_ref_expr_has_ordinary_semantics(  //dir=expr
   int id: @member_ref_expr ref
 );
 
+#keyset[id]
+member_ref_expr_has_distributed_thunk_semantics(  //dir=expr
+  int id: @member_ref_expr ref
+);
+
 metatype_conversion_exprs(  //dir=expr
   unique int id: @metatype_conversion_expr
 );
@@ -1405,6 +1440,11 @@ subscript_expr_has_direct_to_implementation_semantics(  //dir=expr
 
 #keyset[id]
 subscript_expr_has_ordinary_semantics(  //dir=expr
+  int id: @subscript_expr ref
+);
+
+#keyset[id]
+subscript_expr_has_distributed_thunk_semantics(  //dir=expr
   int id: @subscript_expr ref
 );
 
