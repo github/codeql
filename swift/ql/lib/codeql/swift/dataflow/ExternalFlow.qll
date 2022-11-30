@@ -444,6 +444,7 @@ private Element interpretElement0(
       getDeclType(decl) = nomType
     )
     or
+    // Fields
     signature = "" and
     exists(NominalType nomType, IterableDeclContext decl, FieldDecl field |
       field.getName() = name and
