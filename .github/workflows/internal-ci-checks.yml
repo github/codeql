@@ -17,8 +17,8 @@ jobs:
           LABEL: "ready-for-internal-ci"
         run: |
           set +eo pipefail
-          echo "Checking user scope"
-          gh api -i /user | grep X-Oauth-Scopes
+          echo "Testing API calls"
+          gh api -i /repos/github/codeql | grep X-Oauth-Scopes
           echo "Checking if user $USERNAME is a member of the CodeQL team"
           if [ "$(gh api "/orgs/github/teams/codeql/memberships/$USERNAME" --jq .state)" == "active" ]; then
               echo "User $USERNAME is a member of the CodeQL team"
