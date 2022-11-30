@@ -8,7 +8,6 @@
 
 import java
 import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-import semmle.code.java.dataflow.internal.NegativeSummary
 import ExternalApi
 
 private predicate relevant(ExternalApi api) {
