@@ -1,7 +1,18 @@
 app/src/main/kotlin/testProject/App.kt:
 #    0| [CompilationUnit] App
 #    7|   1: [Class] Project
+#-----|     -3: (Annotations)
+#    7|       1: [Annotation] Serializable
 #    0|     1: [Constructor] Project
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] Deprecated
+#    0|           1: [StringLiteral] "This synthesized declaration should not be used directly"
+#    0|           2: [Annotation] ReplaceWith
+#    0|             1: [StringLiteral] ""
+#    0|             2: [ArrayInit] {...}
+#    0|           3: [VarAccess] DeprecationLevel.HIDDEN
+#    0|             -1: [TypeAccess] DeprecationLevel
+#    0|         2: [Annotation] NotNull
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] seen1
 #    0|           0: [TypeAccess] int
@@ -41,6 +52,8 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|                 0: [TypeAccess] Project
 #    7|             1: [VarAccess] language
 #    0|     2: [Method] component1
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] NotNull
 #    0|       3: [TypeAccess] String
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
@@ -53,9 +66,13 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|           0: [VarAccess] this.language
 #    0|             -1: [ThisAccess] this
 #    0|     4: [Method] copy
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] NotNull
 #    0|       3: [TypeAccess] Project
 #-----|       4: (Parameters)
 #    8|         0: [Parameter] name
+#-----|           -1: (Annotations)
+#    0|             1: [Annotation] NotNull
 #    8|           0: [TypeAccess] String
 #    8|         1: [Parameter] language
 #    8|           0: [TypeAccess] int
@@ -176,6 +193,8 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|         2: [ReturnStmt] return ...
 #    0|           0: [VarAccess] result
 #    0|     8: [Method] toString
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] NotNull
 #    0|       3: [TypeAccess] String
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
@@ -190,13 +209,21 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|               -1: [ThisAccess] this
 #    0|             6: [StringLiteral] ")"
 #    0|     9: [Method] write$Self
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] JvmStatic
 #    0|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] self
+#-----|           -1: (Annotations)
+#    0|             1: [Annotation] NotNull
 #    0|           0: [TypeAccess] Project
 #    0|         1: [Parameter] output
+#-----|           -1: (Annotations)
+#    0|             1: [Annotation] NotNull
 #    0|           0: [TypeAccess] CompositeEncoder
 #    0|         2: [Parameter] serialDesc
+#-----|           -1: (Annotations)
+#    0|             1: [Annotation] NotNull
 #    0|           0: [TypeAccess] SerialDescriptor
 #    7|       5: [BlockStmt] { ... }
 #    7|         0: [ExprStmt] <Expr>;
@@ -214,9 +241,19 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|             2: [MethodAccess] getLanguage(...)
 #    7|               -1: [VarAccess] self
 #    7|     10: [Class] $serializer
+#-----|       -3: (Annotations)
+#    0|         1: [Annotation] Deprecated
+#    0|           1: [StringLiteral] "This synthesized declaration should not be used directly"
+#    0|           2: [Annotation] ReplaceWith
+#    0|             1: [StringLiteral] ""
+#    0|             2: [ArrayInit] {...}
+#    0|           3: [VarAccess] DeprecationLevel.HIDDEN
+#    0|             -1: [TypeAccess] DeprecationLevel
 #    0|       1: [FieldDeclaration] SerialDescriptor descriptor;
 #    0|         -1: [TypeAccess] SerialDescriptor
 #    0|       2: [Method] childSerializers
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] KSerializer<?>[]
 #    0|           0: [TypeAccess] KSerializer<?>
 #    0|             0: [WildcardTypeAccess] ? ...
@@ -227,9 +264,13 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|               -1: [TypeAccess] KSerializer<?>
 #    7|               0: [IntegerLiteral] 2
 #    0|       3: [Method] deserialize
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] Project
 #-----|         4: (Parameters)
 #    0|           0: [Parameter] decoder
+#-----|             -1: (Annotations)
+#    0|               1: [Annotation] NotNull
 #    0|             0: [TypeAccess] Decoder
 #    7|         5: [BlockStmt] { ... }
 #    7|           0: [LocalVariableDeclStmt] var ...;
@@ -365,6 +406,8 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|               2: [VarAccess] tmp5_local1
 #    7|               3: [NullLiteral] null
 #    0|       4: [Method] getDescriptor
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] SerialDescriptor
 #    0|         5: [BlockStmt] { ... }
 #    0|           0: [ReturnStmt] return ...
@@ -374,8 +417,12 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #    0|           0: [Parameter] encoder
+#-----|             -1: (Annotations)
+#    0|               1: [Annotation] NotNull
 #    0|             0: [TypeAccess] Encoder
 #    0|           1: [Parameter] value
+#-----|             -1: (Annotations)
+#    0|               1: [Annotation] NotNull
 #    0|             0: [TypeAccess] Project
 #    7|         5: [BlockStmt] { ... }
 #    7|           0: [LocalVariableDeclStmt] var ...;
@@ -398,6 +445,8 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|               -1: [VarAccess] tmp1_output
 #    7|               0: [VarAccess] tmp0_desc
 #    7|       6: [Constructor] $serializer
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    7|         5: [BlockStmt] { ... }
 #    7|           0: [SuperConstructorInvocationStmt] super(...)
 #    7|           1: [BlockStmt] { ... }
@@ -436,18 +485,26 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|                 0: [TypeAccess] GeneratedSerializer
 #    7|     11: [Class] Companion
 #    0|       1: [Method] serializer
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] KSerializer<Project>
 #    0|           0: [TypeAccess] Project
 #    7|         5: [BlockStmt] { ... }
 #    7|           0: [ReturnStmt] return ...
 #    7|             0: [VarAccess] INSTANCE
 #    7|       2: [Constructor] Companion
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    7|         5: [BlockStmt] { ... }
 #    7|           0: [SuperConstructorInvocationStmt] super(...)
 #    7|           1: [BlockStmt] { ... }
 #    8|     12: [Constructor] Project
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] NotNull
 #-----|       4: (Parameters)
 #    8|         0: [Parameter] name
+#-----|           -1: (Annotations)
+#    0|             1: [Annotation] NotNull
 #    8|           0: [TypeAccess] String
 #    8|         1: [Parameter] language
 #    8|           0: [TypeAccess] int
@@ -464,6 +521,8 @@ app/src/main/kotlin/testProject/App.kt:
 #    8|       -1: [TypeAccess] String
 #    8|       0: [VarAccess] name
 #    8|     14: [Method] getName
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] NotNull
 #    8|       3: [TypeAccess] String
 #    8|       5: [BlockStmt] { ... }
 #    8|         0: [ReturnStmt] return ...
@@ -480,9 +539,22 @@ app/src/main/kotlin/testProject/App.kt:
 #    8|       0: [VarAccess] language
 #   10|   2: [Interface] Base
 #   11|     1: [Method] getId
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] NotNull
 #   11|       3: [TypeAccess] String
 #   14|   3: [Class] X
+#-----|     -3: (Annotations)
+#   14|       1: [Annotation] Serializable
 #    0|     1: [Constructor] X
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] Deprecated
+#    0|           1: [StringLiteral] "This synthesized declaration should not be used directly"
+#    0|           2: [Annotation] ReplaceWith
+#    0|             1: [StringLiteral] ""
+#    0|             2: [ArrayInit] {...}
+#    0|           3: [VarAccess] DeprecationLevel.HIDDEN
+#    0|             -1: [TypeAccess] DeprecationLevel
+#    0|         2: [Annotation] NotNull
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] seen1
 #    0|           0: [TypeAccess] int
@@ -530,13 +602,21 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|                       0: [TypeAccess] X
 #   14|                   1: [VarAccess] id
 #    0|     2: [Method] write$Self
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] JvmStatic
 #    0|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] self
+#-----|           -1: (Annotations)
+#    0|             1: [Annotation] NotNull
 #    0|           0: [TypeAccess] X
 #    0|         1: [Parameter] output
+#-----|           -1: (Annotations)
+#    0|             1: [Annotation] NotNull
 #    0|           0: [TypeAccess] CompositeEncoder
 #    0|         2: [Parameter] serialDesc
+#-----|           -1: (Annotations)
+#    0|             1: [Annotation] NotNull
 #    0|           0: [TypeAccess] SerialDescriptor
 #   14|       5: [BlockStmt] { ... }
 #   14|         0: [ExprStmt] <Expr>;
@@ -565,9 +645,19 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|                   2: [MethodAccess] getId(...)
 #   14|                     -1: [VarAccess] self
 #   14|     3: [Class] $serializer
+#-----|       -3: (Annotations)
+#    0|         1: [Annotation] Deprecated
+#    0|           1: [StringLiteral] "This synthesized declaration should not be used directly"
+#    0|           2: [Annotation] ReplaceWith
+#    0|             1: [StringLiteral] ""
+#    0|             2: [ArrayInit] {...}
+#    0|           3: [VarAccess] DeprecationLevel.HIDDEN
+#    0|             -1: [TypeAccess] DeprecationLevel
 #    0|       1: [FieldDeclaration] SerialDescriptor descriptor;
 #    0|         -1: [TypeAccess] SerialDescriptor
 #    0|       2: [Method] childSerializers
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] KSerializer<?>[]
 #    0|           0: [TypeAccess] KSerializer<?>
 #    0|             0: [WildcardTypeAccess] ? ...
@@ -578,9 +668,13 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|               -1: [TypeAccess] KSerializer<?>
 #   14|               0: [IntegerLiteral] 1
 #    0|       3: [Method] deserialize
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] X
 #-----|         4: (Parameters)
 #    0|           0: [Parameter] decoder
+#-----|             -1: (Annotations)
+#    0|               1: [Annotation] NotNull
 #    0|             0: [TypeAccess] Decoder
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [LocalVariableDeclStmt] var ...;
@@ -680,6 +774,8 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|               1: [VarAccess] tmp4_local0
 #   14|               2: [NullLiteral] null
 #    0|       4: [Method] getDescriptor
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] SerialDescriptor
 #    0|         5: [BlockStmt] { ... }
 #    0|           0: [ReturnStmt] return ...
@@ -689,8 +785,12 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #    0|           0: [Parameter] encoder
+#-----|             -1: (Annotations)
+#    0|               1: [Annotation] NotNull
 #    0|             0: [TypeAccess] Encoder
 #    0|           1: [Parameter] value
+#-----|             -1: (Annotations)
+#    0|               1: [Annotation] NotNull
 #    0|             0: [TypeAccess] X
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [LocalVariableDeclStmt] var ...;
@@ -713,6 +813,8 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|               -1: [VarAccess] tmp1_output
 #   14|               0: [VarAccess] tmp0_desc
 #   14|       6: [Constructor] $serializer
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [SuperConstructorInvocationStmt] super(...)
 #   14|           1: [BlockStmt] { ... }
@@ -746,16 +848,22 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|                 0: [TypeAccess] GeneratedSerializer
 #   14|     4: [Class] Companion
 #    0|       1: [Method] serializer
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] KSerializer<X>
 #    0|           0: [TypeAccess] X
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [ReturnStmt] return ...
 #   14|             0: [VarAccess] INSTANCE
 #   14|       2: [Constructor] Companion
+#-----|         1: (Annotations)
+#    0|           1: [Annotation] NotNull
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [SuperConstructorInvocationStmt] super(...)
 #   14|           1: [BlockStmt] { ... }
 #   15|     5: [Constructor] X
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] NotNull
 #   14|       5: [BlockStmt] { ... }
 #   14|         0: [SuperConstructorInvocationStmt] super(...)
 #   15|         1: [BlockStmt] { ... }
@@ -766,6 +874,8 @@ app/src/main/kotlin/testProject/App.kt:
 #   16|       -1: [TypeAccess] String
 #   16|       0: [StringLiteral] "X"
 #   16|     7: [Method] getId
+#-----|       1: (Annotations)
+#    0|         1: [Annotation] NotNull
 #   16|       3: [TypeAccess] String
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
