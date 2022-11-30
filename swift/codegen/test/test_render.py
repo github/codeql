@@ -75,6 +75,23 @@ def test_managed_render(pystache_renderer, sut):
         mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.swift_dir)),
     ]
 
+def test_managed_render_with_no_registry(pystache_renderer, sut):
+    data = mock.Mock(spec=("template",))
+    text = "some text"
+    pystache_renderer.render_name.side_effect = (text,)
+    output = paths.swift_dir / "some/output.txt"
+    registry = paths.swift_dir / "a/registry.list"
+
+    with sut.manage(generated=(), stubs=(), registry=registry) as renderer:
+        renderer.render(data, output)
+        assert renderer.written == {output}
+        assert_file(output, text)
+
+    assert_file(registry, f"some/output.txt {hash(text)} {hash(text)}\n")
+    assert pystache_renderer.mock_calls == [
+        mock.call.render_name(data.template, data, generator=paths.exe_file.relative_to(paths.swift_dir)),
+    ]
+
 
 def test_managed_render_with_post_processing(pystache_renderer, sut):
     data = mock.Mock(spec=("template",))

@@ -171,12 +171,16 @@ class RenderManager(Renderer):
         return h.hexdigest()
 
     def _load_registry(self):
-        with open(self._registry_path) as reg:
-            for line in reg:
-                filename, prehash, posthash = line.split()
-                self._hashes[pathlib.Path(filename)] = self.Hashes(prehash, posthash)
+        try:
+            with open(self._registry_path) as reg:
+                for line in reg:
+                    filename, prehash, posthash = line.split()
+                    self._hashes[pathlib.Path(filename)] = self.Hashes(prehash, posthash)
+        except FileNotFoundError:
+            pass
 
     def _dump_registry(self):
+        self._registry_path.parent.mkdir(parents=True, exist_ok=True)
         with open(self._registry_path, 'w') as out:
             for f, hashes in sorted(self._hashes.items()):
                 print(f, hashes.pre, hashes.post, file=out)
