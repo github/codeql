@@ -1,0 +1,30 @@
+name: Internal CI Checks
+# This workflows checks if the author of a PR is a member of the CodeQL team
+# and adds `ready-for-internal-ci` label to trigger the internal CI
+
+on:
+  pull_request_target:
+
+jobs:
+  set-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set a label to trigger internal CI checks
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.event.pull_request.user.login }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          LABEL: "ready-for-internal-ci"
+        run: |
+          set +eo pipefail
+          echo "Checking user scope"
+          gh api -i /user | grep X-Oauth-Scopes
+          echo "Checking if user $USERNAME is a member of the CodeQL team"
+          if [ "$(gh api "/orgs/github/teams/codeql/memberships/$USERNAME" --jq .state)" == "active" ]; then
+              echo "User $USERNAME is a member of the CodeQL team"
+              echo "Adding '${LABEL}' label"
+              gh pr edit "${PR_NUMBER}" --repo "$GITHUB_REPOSITORY" --add-label "$LABEL"
+          else
+            echo "User $USERNAME is not a member of the CodeQL team"
+            echo "To trigger the internal CI, a maintainer needs to add the '${LABEL}' label"
+          fi
