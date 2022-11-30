@@ -7,21 +7,43 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version-file: 'swift/.python-version'
-    - name: Mount bazel cache
-      uses: ./.github/actions/incremental-cache
+    # FIXME: this is copy-pasted from .github/actions/cache-query-compilation, but we cannot factor it out to a common
+    # composite action because of https://github.com/actions/runner/issues/2009 (cache fails to save in the post action
+    # phase because its inputs were lost in the meantime)
+    # calculate the merge-base with main, in a way that works both on PRs and pushes to main.
+    - name: Calculate merge-base
+      shell: bash
+      if: ${{ github.event_name == 'pull_request' }}
+      env:
+        BASE_BRANCH: ${{ github.base_ref }}
+      run: |
+        MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
+        echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
+    - name: Restore read-only cache (PR)
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
       with:
-        path: bazel-repository-cache
-        key: bazel-cache-${{ runner.os }}-${{ runner.arch }}
-    - name: Mount bazel disk cache
-      uses: ./.github/actions/incremental-cache
+        path: 'bazel-cache'
+        read-only: true
+        key: bazel-pr-${{ github.sha }}
+        restore-keys: |
+          bazel-${{ github.base_ref }}-${{ env.merge_base }}
+          bazel-${{ github.base_ref }}-
+          bazel-main-
+    - name: Fill cache (push)
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
       with:
-        path: bazel-disk-cache
-        key: bazel-disk-cache-${{ runner.os }}-${{ runner.arch }}
-    - name: Configure bazel cache
+        path: 'bazel-cache'
+        key: bazel-${{ github.ref_name }}-${{ github.sha }} # just fill on main
+        restore-keys: | # restore the latest cache if the exact cache is unavailable, to speed up compilation.
+          bazel-${{ github.ref_name }}-
+          bazel-main-
+    - name: Configure bazel
       shell: bash
       run: |
-        mkdir bazel-repository-cache bazel-disk-cache
-        echo build --repository_cache=bazel-repository-cache --disk_cache=bazel-disk-cache > local.bazelrc
+        mkdir -p bazel-cache/{repository,disk}
+        echo build --repository_cache=bazel-cache/repository --disk_cache=bazel-cache/disk > local.bazelrc
         echo test --test_output=errors >> local.bazelrc
     - name: Print unextracted entities
       shell: bash
@@ -51,5 +73,6 @@ runs:
       if: ${{ github.event_name != 'pull_request' }}
       shell: bash
       run: |
-        find bazel-repository-cache bazel-disk-cache -atime +0 -type f -delete
-        du -sh bazel-repository-cache bazel-disk-cache
+        du -sh bazel-cache/*
+        find bazel-cache -atime +0 -type f -delete
+        du -sh bazel-cache/*
