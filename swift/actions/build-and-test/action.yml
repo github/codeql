@@ -10,18 +10,19 @@ runs:
     - name: Mount bazel cache
       uses: ./.github/actions/incremental-cache
       with:
-        path: "~/.cache/bazel-repository-cache"
+        path: bazel-repository-cache
         key: bazel-cache-${{ runner.os }}-${{ runner.arch }}
     - name: Mount bazel disk cache
       uses: ./.github/actions/incremental-cache
       with:
-        path: "~/.cache/bazel-disk-cache"
+        path: bazel-disk-cache
         key: bazel-disk-cache-${{ runner.os }}-${{ runner.arch }}
     - name: Configure bazel cache
       shell: bash
       run: |
-        echo build --repository_cache=~/.cache/bazel-repository-cache --disk_cache=~/.cache/bazel-disk-cache > ~/.bazelrc
-        echo test --test_output=errors >> ~/.bazelrc
+        mkdir bazel-repository-cache bazel-disk-cache
+        echo build --repository_cache=bazel-repository-cache --disk_cache=bazel-disk-cache > local.bazelrc
+        echo test --test_output=errors >> local.bazelrc
     - name: Print unextracted entities
       shell: bash
       run: |
@@ -50,5 +51,5 @@ runs:
       if: ${{ github.event_name != 'pull_request' }}
       shell: bash
       run: |
-        find "~/.cache/bazel-repository-cache" "~/.cache/bazel-disk-cache" -atime +0 -type f -delete || : # ignore errors if the cache is empty
-        du -sh "~/.cache/bazel-repository-cache" "~/.cache/bazel-disk-cache" || : # ignore errors if the cache is empty
+        find bazel-repository-cache bazel-disk-cache -atime +0 -type f -delete
+        du -sh bazel-repository-cache bazel-disk-cache
