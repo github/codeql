@@ -148,7 +148,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    */
   private string getTrainingSetPrompt() {
     result =
-      "# Examples of security vulnerability sinks and non-sinks\n|Dataflow node|Neighborhood|Classification|\n|---|---|---|\n|`refStr`|`    const refStr =      pageRef.gen === 0 ? ${pageRef.num}R : ${pageRef.num}R${pageRef.gen};    this.#pagesRefCache.set(refStr, pageNum);  }`|non-sink|\n|`name`|`      return res.redirect(back);    }    const ndb = req.mainClient.client.db(name);    ndb.createCollection(delete_me, function (err) {`|sql injection sink|\n|`It took  + (t1 - t0) +  msec to create  + count +  +className+ instances programmatically.`|`                         }                               var t1 = new Date().getTime();                          dojo.byId(results).innerHTML = It took  + (t1 - t0) +  msec to create  + count +  +className+ instances programmatically.;                   }                       dojo.ready(makeEm);`|non-sink|\n|`contents`|`  const contents = fileData.buffer.toString();  res.json({message: contents});});`|non-sink|\n|`{ _id }`|`    // If an ObjectID was correctly created from passed id param, try getting the ObjID first else falling back to try getting the string id    // If not valid ObjectID created, try getting string id    req.collection.findOne({ _id }, function (err, doc) {      if (err) {        req.session.error = Error:  + err;`|nosql injection sink|\n|`bid`|`  const body =   <a href=https://ampbyexample.com target=_blank>    <amp-img alt=AMP Ad height=250 src=//localhost:9876/amp4test/request-bank/${bid}/deposit/image width=300></amp-img>  </a>  <amp-pixel src=//localhost:9876/amp4test/request-bank/${bid}/deposit/pixel/foo?cid=CLIENT_ID(a)></amp-pixel>`|xss sink|\n|`nick`|`       irc.me = nick;  irc.nick(nick); irc.user(username, realname);`|non-sink|\n|`{where: {name: req.body.type}}`|`    if(req.is(json)) {        models.VisualizationType.find({            where: {                name: req.body.type            }        }).then(function(vizType) {            if(!vizType) {                throw new Error(Unknown Viztype);`|nosql injection sink|\n|`sql`|`        var callback = cb;        var dbService = this.getService(connectionName);        dbService.execute(sql, params, function(err, result) {            if (err) {                return callback(err);`|sql injection sink|\n|`filename`|`      const writeStream = gfs.createWriteStream({        _id: newFileID,        filename,        mode: w,        content_type: mimetype,`|path injection sink|\n|`req.url.substr(7)`|`          <html style=width:100%; height:100%;>            <body style=width:98%; height:98%;>              <iframe src=${req.url.substr(7)}                  style=width:100%; height:100%;>              </iframe>`|xss sink|\n|`assets/images/ + req.files.upload_file.name`|`            res.send({                success: true,                file_path: assets/images/ + req.files.upload_file.name            });        });`|path injection sink|\n|`path`|`async function handleListingRequest({query: {path, search}}, res) {  try {    assert(path);    const fileSet = await getListing(root, path);`|non-sink|\n|`{ lastLoginIp: lastLoginIp }`|`      }      models.User.findByPk(loggedInUser.data.id).then(user => {        user.update({ lastLoginIp: lastLoginIp }).then(user => {          res.json(user)        }).catch(error => {`|non-sink|\n|`uploadId`|`      Bucket: config.bucket,      Key: key,      UploadId: uploadId,      MultipartUpload: {        Parts: parts,`|non-sink|\n|`hash`|`  componentDidMount() {    const [, hash] = location.href.split(#)    this.setState({ hash })  }`|non-sink|"
+      "# Examples of security vulnerability sinks and non-sinks\n|Dataflow node|Neighborhood|Classification|\n|---|---|---|\n|`refStr`|`    const refStr =      pageRef.gen === 0 ? ${pageRef.num}R : ${pageRef.num}R${pageRef.gen};    this.#pagesRefCache.set(refStr, pageNum);  }`|non-sink|\n|`name`|`      return res.redirect(back);    }    const ndb = req.mainClient.client.db(name);    ndb.createCollection(delete_me, function (err) {`|sql injection sink|\n|`It took  + (t1 - t0) +  msec to create  + count +  +className+ instances programmatically.`|`                         }                               var t1 = new Date().getTime();                          dojo.byId(results).innerHTML = It took  + (t1 - t0) +  msec to create  + count +  +className+ instances programmatically.;                   }                       dojo.ready(makeEm);`|non-sink|\n|`contents`|`  const contents = fileData.buffer.toString();  res.json({message: contents});});`|non-sink|\n|`{ _id }`|`    // If an ObjectID was correctly created from passed id param, try getting the ObjID first else falling back to try getting the string id    // If not valid ObjectID created, try getting string id    req.collection.findOne({ _id }, function (err, doc) {      if (err) {        req.session.error = Error:  + err;`|nosql injection sink|\n|`bid`|`  const body =   <a href=https://ampbyexample.com target=_blank>    <amp-img alt=AMP Ad height=250 src=//localhost:9876/amp4test/request-bank/${bid}/deposit/image width=300></amp-img>  </a>  <amp-pixel src=//localhost:9876/amp4test/request-bank/${bid}/deposit/pixel/foo?cid=CLIENT_ID(a)></amp-pixel>`|xss sink|\n|`nick`|`       irc.me = nick;  irc.nick(nick); irc.user(username, realname);`|non-sink|\n|`{where: {name: req.body.type}}`|`    if(req.is(json)) {        models.VisualizationType.find({            where: {                name: req.body.type            }        }).then(function(vizType) {            if(!vizType) {                throw new Error(Unknown Viztype);`|nosql injection sink|\n|`sql`|`        var callback = cb;        var dbService = this.getService(connectionName);        dbService.execute(sql, params, function(err, result) {            if (err) {                return callback(err);`|sql injection sink|\n|`filename`|`      const writeStream = gfs.createWriteStream({        _id: newFileID,        filename,        mode: w,        content_type: mimetype,`|path injection sink|\n|`req.url.substr(7)`|`          <html style=width:100%; height:100%;>            <body style=width:98%; height:98%;>              <iframe src=${req.url.substr(7)}                  style=width:100%; height:100%;>              </iframe>`|xss sink|\n|`assets/images/ + req.files.upload_file.name`|`            res.send({                success: true,                file_path: assets/images/ + req.files.upload_file.name            });        });`|path injection sink|\n|`path`|`async function handleListingRequest({query: {path, search}}, res) {  try {    assert(path);    const fileSet = await getListing(root, path);`|non-sink|\n|`{ lastLoginIp: lastLoginIp }`|`      }      models.User.findByPk(loggedInUser.data.id).then(user => {        user.update({ lastLoginIp: lastLoginIp }).then(user => {          res.json(user)        }).catch(error => {`|non-sink|\n|`uploadId`|`      Bucket: config.bucket,      Key: key,      UploadId: uploadId,      MultipartUpload: {        Parts: parts,`|non-sink|\n|`hash`|`  componentDidMount() {    const [, hash] = location.href.split(#)    this.setState({ hash })  }`|non-sink|\n"
     //hardFPExamplesForCodexPrompt() + hardTPExamplesForCodexPrompt(2, )
   }
 
@@ -157,8 +157,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    * TODO
    */
   private string getCurrentEndpointPrompt(DataFlow::Node endpoint) {
-    result = "|" + endpoint.asExpr().toString() + "|"
-    // TODO + getNeighborhood(endpoint) + "|"
+    result = "|" + tokenizeEndpoint(endpoint) + "|" + tokenizeNeighborhood(endpoint, 2) + "|"
   }
 
   /**
@@ -249,6 +248,33 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    */
   string tokenizeEndpoint(DataFlow::Node node) {
     result = tokenize(node.getAstNode().getLocation())
+  }
+
+  /**
+   * Gets the reconstructed source code text for the neighborhood around `node`, including `neighborhoodSize` lines
+   * before and `neighborhoodSize` lines after `node`.
+   */
+  bindingset[neighborhoodSize]
+  string tokenizeNeighborhood(DataFlow::Node node, int neighborhoodSize) {
+    result =
+      tokenize(any(Location location |
+          location.getFile() = node.getAstNode().getLocation().getFile() and
+          location.getStartLine() =
+            min(int line |
+              line = node.getAstNode().getLocation().getStartLine() - neighborhoodSize or line = 1
+            |
+              line
+            ) and
+          location.getEndLine() =
+            max(int line |
+              line = node.getAstNode().getLocation().getEndLine() + neighborhoodSize + 1 or // Add 1 because the end column is 1
+              line = location.getFile().getNumberOfLines()
+            |
+              line
+            ) and
+          location.getStartColumn() = 1 and
+          location.getEndColumn() = 1
+        ))
   }
 }
 
