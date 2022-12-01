@@ -1,10 +1,10 @@
 /**
  * @name Uncontrolled format string
- * @description TODO
+ * @description Using external input in format strings can lead to exceptions or information leaks.
  * @kind path-problem
- * @problem.severity TODO
+ * @problem.severity error
  * @security-severity TODO
- * @precision TODO
+ * @precision high
  * @id swift/uncontrolled-format-string
  * @tags security
  *       external/cwe/cwe-134
