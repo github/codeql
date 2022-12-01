@@ -1,10 +1,10 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-_swift_prebuilt_version = "swift-5.7.1-RELEASE.44356.85"
+_swift_prebuilt_version = "swift-5.7.1-RELEASE.44428.89"
 _swift_sha_map = {
-    "Linux-X64": "c9f17e13cac89f097aaaa65b1bc32aac566c8e4f3b68fc18e970cc3ee31f4913",
-    "macOS-X64": "638ac0552e9e1ccee9e276525d1ea9454256feec20bc778efa8856fd6e506987",
+    "Linux-X64": "1fa0b62b3a87c6528bd21b3f3fa1b32ad00e2b6ff04c20652c93c7d00c4cf517",
+    "macOS-X64": "6e1239335874cbde635ae9ca9eeb215efee4988888a75f4eda1abbcf97e4d038",
 }
 
 _swift_arch_map = {
@@ -22,10 +22,6 @@ def codeql_workspace(repository_name = "codeql"):
                 _swift_prebuilt_version,
                 repo_arch,
             ),
-            patches = [
-                "@%s//swift/third_party/swift-llvm-support:patches/remove_getFallthrougDest_assert.patch" % repository_name,
-            ],
-            patch_args = ["-p1"],
             build_file = "@%s//swift/third_party/swift-llvm-support:BUILD.swift-prebuilt.bazel" % repository_name,
             sha256 = sha256,
         )
