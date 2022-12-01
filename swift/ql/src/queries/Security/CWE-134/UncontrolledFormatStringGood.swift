@@ -1,2 +1,2 @@
 
-print(String(format: "User input: %s", inputString)) // fixed
+print(String(format: "User input: %@", inputString)) // fixed

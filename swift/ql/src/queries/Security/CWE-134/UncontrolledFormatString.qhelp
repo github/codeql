@@ -13,7 +13,7 @@ Passing untrusted format strings to functions that use <code>printf</code> style
 <p>Use a string literal for the format string to prevent the possibility of data flow from
 an untrusted source. This also helps to prevent errors where the format arguments do not match the format string.</p>
 
-<p>If the format string cannot be constant, ensure that it comes from a secure data source or is compiled into the source code. If you need to include a value from the user, use the <code>%s</code> specifier in the format string and include that value as a format argument.
+<p>If the format string cannot be constant, ensure that it comes from a secure data source or is compiled into the source code. If you need to include a value from the user, use the <code>%@</code> specifier in the format string and include that value as a format argument.
 </p>
 
 </recommendation>
