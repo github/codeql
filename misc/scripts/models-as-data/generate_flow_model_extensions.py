@@ -180,8 +180,7 @@ extensions:
 {sinkAddsTo}
 {sourceAddsTo}
 {summaryAddsTo}
-{negativeSummaryAddsTo}
-        """
+{negativeSummaryAddsTo}"""
 
     def makeTypeBasedContent(self):
         if self.generateTypeBasedSummaries:
@@ -189,13 +188,11 @@ extensions:
         else:
             typeBasedSummaryAddsTo = ""
 
-        return f"""
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+        return f"""# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 # Definitions of type based summaries in the {self.friendlyname} framework.
 
 extensions:
-{typeBasedSummaryAddsTo}
-        """
+{typeBasedSummaryAddsTo}"""
 
     def save(self, content, target):
         with open(target, "w") as targetYml:
