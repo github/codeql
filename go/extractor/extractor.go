@@ -186,8 +186,12 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 			extraction.extractPackage(pkg)
 
-			if pkgInfo.ModDir != "" {
-				modPath := filepath.Join(pkgInfo.ModDir, "go.mod")
+			modDir := pkgInfo.ModDir
+			if modDir == "" {
+				modDir = pkgInfo.PkgDir
+			}
+			if modDir != "" {
+				modPath := filepath.Join(modDir, "go.mod")
 				if util.FileExists(modPath) {
 					log.Printf("Extracting %s", modPath)
 					start := time.Now()
