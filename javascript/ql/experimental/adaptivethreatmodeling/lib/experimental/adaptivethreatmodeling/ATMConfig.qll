@@ -147,7 +147,9 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
    * to this ML-boosted configuration, whereas the unboosted base query does not contain this source and sink
    * combination.
    */
-  predicate hasAlert(JS::DataFlow::PathNode source, JS::DataFlow::PathNode sink, float score) {
+  predicate hasBoostedFlowPath(
+    JS::DataFlow::PathNode source, JS::DataFlow::PathNode sink, float score
+  ) {
     this.hasFlowPath(source, sink) and
     not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
     score = AtmResultsInfo::getScoreForFlow(source.getNode(), sink.getNode())
