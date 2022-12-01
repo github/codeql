@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.io.File;
 import java.io.FileWriter;
+import org.apache.commons.io.FileUtils;
 
 class SupportedExternalApis {
 	public static void main(String[] args) throws Exception {
@@ -22,5 +23,7 @@ class SupportedExternalApis {
 
 		new FileWriter(new File("foo")); // supported sink (FileWriter), supported summary (File)
 		new URL("http://foo").openStream(); // supported sink (openStream), supported summary (URL)
+
+		FileUtils.deleteDirectory(new File("foo")); // supported negative summary (deleteDirectory), supported summary (File)
 	}
 }
