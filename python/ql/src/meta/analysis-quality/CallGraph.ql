@@ -16,5 +16,5 @@ from DataFlowCall c, DataFlowCallableValue f
 where
   c.getCallable() = f and
   not c.getLocation().getFile() instanceof IgnoredFile and
-  not f.getLocation().getFile() instanceof IgnoredFile
+  not f.getScope().getLocation().getFile() instanceof IgnoredFile
 select c, "Call to $@", f.getScope(), f.toString()
