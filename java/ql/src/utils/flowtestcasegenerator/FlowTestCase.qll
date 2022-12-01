@@ -12,7 +12,7 @@ private import FlowTestCaseSupportMethods
 
 /**
  * A CSV row to generate tests for. Users should extend this to define which
- * tests to generate. Rows specified here should also satisfy `SummaryModelCsv.row`.
+ * tests to generate. There should already exist a summaries for the rows specified here.
  */
 class TargetSummaryModelCsv extends Unit {
   /**
@@ -44,7 +44,7 @@ predicate summaryModelRow(
 /**
  * Gets a CSV row for which a test has been requested, but where a summary has not already been defined.
  */
-query string missingSummaryModelCsv() {
+query string missingSummaryModel() {
   any(TargetSummaryModelCsv target).row(result) and
   not summaryModelRow(_, _, _, _, _, _, _, _, _, _, result)
 }

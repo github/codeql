@@ -13,13 +13,13 @@ private import FlowTestCaseSupportMethods
 private import FlowTestCaseUtils
 
 /**
- * Gets a CSV row for which a test has been requested, and `SummaryModelCsv.row` does hold, but
+ * Gets a CSV row for which a test has been requested, and where there exist a summary, but
  * nonetheless we can't generate a test case for it, indicating we cannot resolve either the callable
  * spec or an input or output spec.
  */
 query string getAParseFailure(string reason) {
   any(TargetSummaryModelCsv target).row(result) and
-  any(SummaryModelCsv model).row(result) and
+  summaryModelRow(_, _, _, _, _, _, _, _, _, _, result) and
   (
     not summaryModelRow(_, _, _, _, _, _, _, _, _, _, result) and
     reason = "row could not be parsed"
@@ -52,7 +52,7 @@ query string getAParseFailure(string reason) {
  */
 query string noTestCaseGenerated() {
   any(TargetSummaryModelCsv target).row(result) and
-  any(SummaryModelCsv model).row(result) and
+  summaryModelRow(_, _, _, _, _, _, _, _, _, _, result) and
   not exists(getAParseFailure(_)) and
   not exists(any(TestCase tc).getATestSnippetForRow(result))
 }

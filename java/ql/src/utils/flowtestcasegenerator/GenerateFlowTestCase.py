@@ -173,9 +173,9 @@ def getTuples(queryName, jsonResult, fname):
 with open(generatedJson, "r") as f:
     generateOutput = json.load(f)
     expectedTables = ("getTestCase", "getASupportMethodModel",
-                      "missingSummaryModelCsv", "getAParseFailure", "noTestCaseGenerated")
+                      "missingSummaryModel", "getAParseFailure", "noTestCaseGenerated")
 
-    testCaseRows, supportModelRows, missingSummaryModelCsvRows, parseFailureRows, noTestCaseGeneratedRows = \
+    testCaseRows, supportModelRows, missingSummaryModelRows, parseFailureRows, noTestCaseGeneratedRows = \
         tuple([getTuples(k, generateOutput, generatedJson)
                for k in expectedTables])
 
@@ -192,9 +192,9 @@ with open(generatedJson, "r") as f:
         print("Expected exactly one column in noTestCaseGenerated relation (got: %s)" %
               json.dumps(noTestCaseGeneratedRows), file=sys.stderr)
 
-    if len(missingSummaryModelCsvRows) != 0:
-        print("Tests for some CSV rows were requested that were not in scope (SummaryModelCsv.row does not hold):\n" +
-              "\n".join(r[0] for r in missingSummaryModelCsvRows))
+    if len(missingSummaryModelRows) != 0:
+        print("Tests for some CSV rows were requested that were not in scope (a summary doesn't already exist):\n" +
+              "\n".join(r[0] for r in missingSummaryModelRows))
         sys.exit(1)
     if len(parseFailureRows) != 0:
         print("The following rows failed to generate any test case. Check package, class and method name spelling, and argument and result specifications:\n%s" %
