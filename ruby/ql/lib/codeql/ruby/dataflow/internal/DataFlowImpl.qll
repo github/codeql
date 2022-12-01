@@ -1929,6 +1929,37 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
+    /** Holds if there is flow into parameter `p` (and possibly through) via the call `call`. */
+    pragma[nomagic]
+    additional predicate flowIn(DataFlowCall call, ParamNodeEx p, Configuration config) {
+      exists(FlowState state, Ap ap |
+        fwdFlowIn(call, p, state, _, _, _, _, ap, config) and
+        revFlow(p, state, _, _, ap, config)
+      )
+    }
+
+    /** Holds if there is flow out of (and possibly through) the call `call` via the return node `ret`. */
+    pragma[nomagic]
+    additional predicate flowOut(DataFlowCall call, RetNodeEx ret, Configuration config) {
+      exists(
+        FlowState state, Ap ap, Cc innercc, ParamNodeOption summaryCtx, DataFlowCallable inner,
+        boolean allowsFieldFlow
+      |
+        fwdFlow(ret, state, innercc, summaryCtx, _, ap, pragma[only_bind_into](config)) and
+        flowOutOfCall(call, ret, _, _, allowsFieldFlow, pragma[only_bind_into](config)) and
+        inner = ret.getEnclosingCallable() and
+        (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
+        revFlow(ret, state, _, _, ap, pragma[only_bind_into](config))
+      |
+        exists(ParamNodeEx p |
+          flowIn(call, p, pragma[only_bind_into](config)) and
+          summaryCtx = TParamNodeSome(p.asNode())
+        )
+        or
+        exists(getCallContextReturn(inner, call, innercc))
+      )
+    }
+
     /** Provides statistics predicates that are usefull for debugging. */
     module Stats {
       private int fwdCallEdgesIn(Configuration config) {
@@ -2242,8 +2273,8 @@ private predicate flowOutOfCallNodeCand2(
   Configuration config
 ) {
   flowOutOfCallNodeCand1(call, node1, kind, node2, allowsFieldFlow, config) and
-  Stage2::revFlow(node2, pragma[only_bind_into](config)) and
-  Stage2::revFlowAlias(node1, pragma[only_bind_into](config))
+  Stage2::flowOut(call, node1, pragma[only_bind_into](config)) and
+  Stage2::revFlow(node2, pragma[only_bind_into](config))
 }
 
 pragma[nomagic]
@@ -2252,8 +2283,8 @@ private predicate flowIntoCallNodeCand2(
   Configuration config
 ) {
   flowIntoCallNodeCand1(call, node1, node2, allowsFieldFlow, config) and
-  Stage2::revFlow(node2, pragma[only_bind_into](config)) and
-  Stage2::revFlowAlias(node1, pragma[only_bind_into](config))
+  Stage2::revFlow(node1, pragma[only_bind_into](config)) and
+  Stage2::flowIn(call, node2, pragma[only_bind_into](config))
 }
 
 private module LocalFlowBigStep {
