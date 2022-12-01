@@ -446,7 +446,8 @@ public class AutoBuild {
   public int run() throws IOException {
     startThreadPool();
     try {
-      extractSource();
+      CompletableFuture<?> sourceFuture = extractSource();
+      sourceFuture.join(); // wait for source extraction to complete
       if (hasSeenCode()) { // don't bother with the externs if no code was seen
         extractExterns();
       }
@@ -589,7 +590,7 @@ public class AutoBuild {
   }
 
   /** Extract all supported candidate files that pass the filters. */
-  private void extractSource() throws IOException {
+  private CompletableFuture<?> extractSource() throws IOException {
     // default extractor
     FileExtractor defaultExtractor =
         new FileExtractor(mkExtractorConfig(), outputConfig, trapCache);
@@ -636,7 +637,7 @@ public class AutoBuild {
     boolean hasTypeScriptFiles = extractedFiles.size() > 0;
 
     // extract remaining files
-    extractFiles(
+    return extractFiles(
         filesToExtract, extractedFiles, extractors,
         f -> !(hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)));
   }
