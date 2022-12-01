@@ -390,14 +390,6 @@ predicate matchesSignature(AbstractFunctionDecl func, string signature) {
   paramsString(func) = signature
 }
 
-private NominalTypeDecl resolveExtensions(IterableDeclContext decl) {
-  // TODO: this should be a method on IterableDeclContext
-  result = decl.(NominalTypeDecl)
-  or
-  result = decl.(ExtensionDecl).getExtendedTypeDecl()
-  // TODO: or a protocol added by the extension
-}
-
 /**
  * Gets the element in module `namespace` that satisfies the following properties:
  * 1. If the element is a member of a class-like type, then the class-like type has name `type`
@@ -434,10 +426,10 @@ private Element interpretElement0(
       result = method
     |
       subtypes = true and
-      resolveExtensions(decl) = nomTypeDecl.getADerivedTypeDecl*()
+      decl.resolveExtensions() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      resolveExtensions(decl) = nomTypeDecl
+      decl.resolveExtensions() = nomTypeDecl
     )
     or
     // Fields
@@ -449,10 +441,10 @@ private Element interpretElement0(
       result = field
     |
       subtypes = true and
-      resolveExtensions(decl) = nomTypeDecl.getADerivedTypeDecl*()
+      decl.resolveExtensions() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      resolveExtensions(decl) = nomTypeDecl
+      decl.resolveExtensions() = nomTypeDecl
     )
   )
 }
