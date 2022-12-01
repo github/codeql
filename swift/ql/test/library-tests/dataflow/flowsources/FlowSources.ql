@@ -3,9 +3,9 @@ import codeql.swift.dataflow.FlowSources
 import codeql.swift.dataflow.ExternalFlow
 
 /**
- * Custom flow sources for this test. These cases ensure that MaD source
- * definitions are able to successfully match a range of class fields and
- * member functions.
+ * A models-as-data class expressing custom flow sources for this test. These
+ * cases ensure that MaD source definitions are able to successfully match a
+ * range of class fields and member functions.
  */
 class CustomTestSourcesCsv extends SourceModelCsv {
   override predicate row(string row) {
