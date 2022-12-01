@@ -137,7 +137,7 @@ Further reading
 
 .. |language-code| replace:: ``java``
 
-.. |example-url| replace:: hhttps://github.com/apache/activemq
+.. |example-url| replace:: https://github.com/apache/activemq
 
 .. |image-quick-query| image:: ../images/codeql-for-visual-studio-code/quick-query-tab-java.png
 
