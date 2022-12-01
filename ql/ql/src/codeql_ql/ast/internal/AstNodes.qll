@@ -10,7 +10,7 @@ newtype TAstNode =
   TBlockComment(QL::BlockComment comment) or
   TLineComment(QL::LineComment comment) or
   TClasslessPredicate(Mocks::ClasslessPredicateOrMock pred) or
-  TVarDecl(QL::VarDecl decl) or
+  TVarDecl(Mocks::VarDeclOrMock decl) or
   TFieldDecl(QL::Field field) or
   TClass(Mocks::ClassOrMock cls) or
   TCharPred(QL::Charpred pred) or
@@ -162,7 +162,7 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   n = TClasslessPredicate(any(Mocks::ClasslessPredicateOrMock m | m.asLeft() = result))
   or
-  n = TVarDecl(result)
+  n = TVarDecl(any(Mocks::VarDeclOrMock m | m.asLeft() = result))
   or
   n = TFieldDecl(result)
   or
@@ -215,6 +215,8 @@ Mocks::MockAst toMock(AST::AstNode n) {
   n = TType(any(Mocks::TypeExprOrMock m | m.asRight() = result))
   or
   n = TClasslessPredicate(any(Mocks::ClasslessPredicateOrMock m | m.asRight() = result))
+  or
+  n = TVarDecl(any(Mocks::VarDeclOrMock m | m.asRight() = result))
 }
 
 class TPredicate =

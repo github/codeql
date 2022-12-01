@@ -18,7 +18,8 @@ newtype TMockAst =
   TMockModule(string id) { id instanceof MockModule::Range } or
   TMockClass(string id) { id instanceof MockClass::Range } or
   TMockTypeExpr(string id) { id instanceof MockTypeExpr::Range } or
-  TMockClasslessPredicate(string id) { id instanceof MockClasslessPredicate::Range }
+  TMockClasslessPredicate(string id) { id instanceof MockClasslessPredicate::Range } or
+  TMockVarDecl(string id) { id instanceof MockVarDecl::Range }
 
 /** Gets a mocked Ast node from the string ID that represents it. */
 MockAst fromId(string id) {
@@ -29,6 +30,8 @@ MockAst fromId(string id) {
   result = TMockTypeExpr(id)
   or
   result = TMockClasslessPredicate(id)
+  or
+  result = TMockVarDecl(id)
   // TODO: Other nodes.
 }
 
@@ -171,3 +174,31 @@ module MockClasslessPredicate {
 }
 
 class ClasslessPredicateOrMock = Either<QL::ClasslessPredicate, MockClasslessPredicate>::Either;
+
+/**
+ * A mocked `VarDecl`.
+ */
+class MockVarDecl extends MockAst, TMockVarDecl {
+  MockVarDecl::Range range;
+
+  MockVarDecl() { this = TMockVarDecl(range) }
+
+  final string getName() { result = range.getName() }
+
+  final MockTypeExpr getType() { result.getId() = range.getType() }
+}
+
+module MockVarDecl {
+  abstract class Range extends string {
+    bindingset[this]
+    Range() { this = this }
+
+    /** Gets the name of the variable. */
+    abstract string getName();
+
+    /** Gets the type of the variable. */
+    abstract MockTypeExpr::Range getType();
+  }
+}
+
+class VarDeclOrMock = Either<QL::VarDecl, MockVarDecl>::Either;

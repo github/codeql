@@ -125,7 +125,7 @@ module QlBuiltinsMocks {
    * module QlBuiltins {
    *  signature class T;
    *  module EdgeSig<T MyT> {
-   *    signature predicate edgeSig(MyT a, MyT b); //
+   *    signature predicate edgeSig(MyT a, MyT b);
    *  }
    *  module EquivalenceRelation<T MyT, EdgeSig<MyT>::edgeSig/2 edge> { //
    *    class EquivalenceClass; //
@@ -164,9 +164,25 @@ module QlBuiltinsMocks {
 
         override string getName() { result = "edgeSig" }
 
-        override string getParameter(int i) {
-          none() // TODO:
+        override EdgeSigPredParam getParameter(int i) {
+          i = 0 and
+          result.getName() = "a"
+          or
+          i = 1 and
+          result.getName() = "b"
         }
+      }
+
+      class EdgeSigPredParam extends MockVarDecl::Range {
+        string name;
+
+        EdgeSigPredParam() {
+          this = "Mock: QlBuiltins::EdgeSig::edgeSig::" + name and name = ["a", "b"]
+        }
+
+        override string getName() { result = name }
+
+        override MockTypeExpr::Range getType() { result instanceof EdgeSigType } // TODO: I'm just using one typeexpr for everything, that might break the parent relation.
       }
     }
 

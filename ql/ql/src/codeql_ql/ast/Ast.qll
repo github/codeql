@@ -658,11 +658,15 @@ class VarDef extends TVarDef, AstNode {
  * A variable declaration, with a type and a name.
  */
 class VarDecl extends TVarDecl, VarDef, Declaration {
-  QL::VarDecl var;
+  Mocks::VarDeclOrMock var;
 
   VarDecl() { this = TVarDecl(var) }
 
-  override string getName() { result = var.getChild(1).(QL::VarName).getChild().getValue() }
+  override string getName() {
+    result = var.asLeft().getChild(1).(QL::VarName).getChild().getValue()
+    or
+    result = var.asRight().getName()
+  }
 
   override Type getType() { result = this.getTypeExpr().getResolvedType() }
 
@@ -671,14 +675,18 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
   /**
    * Gets the type part of this variable declaration.
    */
-  TypeExpr getTypeExpr() { toQL(result) = var.getChild(0) }
+  TypeExpr getTypeExpr() {
+    toQL(result) = var.asLeft().getChild(0)
+    or
+    toMock(result) = var.asRight().getType()
+  }
 
   /**
    * Holds if this variable declaration is a private field on a class.
    */
   predicate isPrivate() {
     exists(QL::ClassMember member |
-      var = member.getChild(_).(QL::Field).getChild() and
+      var.asLeft() = member.getChild(_).(QL::Field).getChild() and
       member.getAFieldOrChild().(QL::Annotation).getName().getValue() = "private"
     )
   }
