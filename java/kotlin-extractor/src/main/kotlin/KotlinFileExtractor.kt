@@ -1484,7 +1484,11 @@ open class KotlinFileExtractor(
                 linesOfCode?.linesOfCodeInDeclaration(f, id)
 
                 if (extractAnnotations) {
-                    val extraAnnotations = listOfNotNull(getNullabilityAnnotation(f.returnType, f.origin, f.annotations, getJavaCallable(f)?.annotations))
+                    val extraAnnotations =
+                        if (f.symbol is IrConstructorSymbol)
+                            listOf()
+                        else
+                            listOfNotNull(getNullabilityAnnotation(f.returnType, f.origin, f.annotations, getJavaCallable(f)?.annotations))
                     extractAnnotations(f, f.annotations + extraAnnotations, id, extractMethodAndParameterTypeAccesses)
                 }
 
