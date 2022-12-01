@@ -16,13 +16,16 @@ private import codeql.util.Either
 // 3: The Either type gets a type without bindingset on the charpred/toString.
 newtype TMockAst =
   TMockModule(string id) { id instanceof MockModule::Range } or
-  TMockClass(string id) { id instanceof MockClass::Range }
+  TMockClass(string id) { id instanceof MockClass::Range } or
+  TMockTypeExpr(string id) { id instanceof MockTypeExpr::Range }
 
 /** Gets a mocked Ast node from the string ID that represents it. */
 MockAst fromId(string id) {
   result = TMockModule(id)
   or
   result = TMockClass(id)
+  or
+  result = TMockTypeExpr(id)
   // TODO: Other nodes.
 }
 
@@ -95,3 +98,44 @@ module MockClass {
 }
 
 class ClassOrMock = Either<QL::Dataclass, MockClass>::Either;
+
+/**
+ * A mocked `SignatureExpr`.
+ * This is special because it is either a `PredicateExpr`, a `TypeExpr`, or a `ModuleExpr`.
+ * // TODO: `PredicateExpr` and `ModuleExpr` are not implemented yet.
+ */
+class MockSignatureExpr extends MockAst {
+  string range;
+
+  MockSignatureExpr() {
+    this = TMockTypeExpr(range)
+    // TODO: or this = TMockPredicateExpr(range)
+    // TODO: or this = TMockModuleExpr(range)
+  }
+}
+
+/**
+ * A mocked `TypeExpr`.
+ * Extend `MockTypeExpr::Range` to add new mocked type expressions.
+ */
+class MockTypeExpr extends MockSignatureExpr, TMockTypeExpr {
+  override MockTypeExpr::Range range;
+
+  MockTypeExpr() { this = TMockTypeExpr(range) }
+
+  final string getClassName() { result = range.getClassName() }
+}
+
+module MockTypeExpr {
+  abstract class Range extends string {
+    bindingset[this]
+    Range() { this = this }
+
+    /** Gets the name of the type. */
+    abstract string getClassName();
+  }
+}
+
+class TypeExprOrMock = Either<QL::TypeExpr, MockTypeExpr>::Either;
+
+class SignatureExprOrMock = Either<QL::SignatureExpr, MockSignatureExpr>::Either;

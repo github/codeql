@@ -724,7 +724,7 @@ class FieldDecl extends TFieldDecl, AstNode {
  * A type reference, such as `DataFlow::Node`.
  */
 class TypeExpr extends TType, TypeRef {
-  QL::TypeExpr type;
+  Mocks::TypeExprOrMock type;
 
   TypeExpr() { this = TType(type) }
 
@@ -737,28 +737,30 @@ class TypeExpr extends TType, TypeRef {
    * or db-types such as `@locateable`.
    */
   string getClassName() {
-    result = type.getName().getValue()
+    result = type.asLeft().getName().getValue()
     or
-    result = type.getChild().(QL::PrimitiveType).getValue()
+    result = type.asLeft().getChild().(QL::PrimitiveType).getValue()
     or
-    result = type.getChild().(QL::Dbtype).getValue()
+    result = type.asLeft().getChild().(QL::Dbtype).getValue()
+    or
+    result = type.asRight().getClassName()
   }
 
   /**
    * Holds if this type is a primitive such as `string` or `int`.
    */
-  predicate isPrimitive() { type.getChild() instanceof QL::PrimitiveType }
+  predicate isPrimitive() { type.asLeft().getChild() instanceof QL::PrimitiveType }
 
   /**
    * Holds if this type is a db-type.
    */
-  predicate isDBType() { type.getChild() instanceof QL::Dbtype }
+  predicate isDBType() { type.asLeft().getChild() instanceof QL::Dbtype }
 
   /**
    * Gets the module of the type, if it exists.
    * E.g. `DataFlow` in `DataFlow::Node`.
    */
-  ModuleExpr getModule() { toQL(result) = type.getQualifier() }
+  ModuleExpr getModule() { toQL(result) = type.asLeft().getQualifier() }
 
   /** Gets the type that this type reference refers to. */
   override Type getResolvedType() {
@@ -2400,18 +2402,20 @@ class ModuleExpr extends TModuleExpr, TypeRef {
 
 /** A signature expression, either a `PredicateExpr`, a `TypeExpr`, or a `ModuleExpr`. */
 class SignatureExpr extends TSignatureExpr, AstNode {
-  QL::SignatureExpr sig;
+  Mocks::SignatureExprOrMock sig;
 
   SignatureExpr() {
-    toQL(this) = sig.getPredicate()
+    toQL(this) = sig.asLeft().getPredicate()
     or
-    toQL(this) = sig.getTypeExpr()
+    toQL(this) = sig.asLeft().getTypeExpr()
     or
-    toQL(this) = sig.getModExpr()
+    toMock(this) = sig.asRight()
+    or
+    toQL(this) = sig.asLeft().getModExpr()
   }
 
   /** Gets the generated AST node that contains this signature expression. */
-  QL::SignatureExpr toQL() { result = sig }
+  QL::SignatureExpr toQL() { result = sig.asLeft() }
 
   /** Gets this signature expression if it represents a predicate expression. */
   PredicateExpr asPredicate() { result = this }

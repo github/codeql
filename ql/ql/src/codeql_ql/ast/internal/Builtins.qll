@@ -107,9 +107,11 @@ module QlBuiltinsMocks {
     override string getName() { result = "QlBuiltins" }
 
     override string getMember(int i) {
-      // TODO: InstSig
       i = 0 and
       result instanceof EquivalenceRelation::SigClass
+      or
+      i = 1 and
+      result instanceof EquivalenceRelation::EdgeSig::EdgeSigModule
       or
       i = 2 and
       result instanceof EquivalenceRelation::EquivalenceRelationModule
@@ -122,10 +124,10 @@ module QlBuiltinsMocks {
    * ```CodeQL
    * module QlBuiltins {
    *  signature class T;
-   *  module InstSig<T MyT> { //
+   *  module EdgeSig<T MyT> {
    *    signature predicate edgeSig(MyT a, MyT b); //
    *  }
-   *  module EquivalenceRelation<T MyT, InstSig<MyT>::edgeSig/2 edge> { //
+   *  module EquivalenceRelation<T MyT, EdgeSig<MyT>::edgeSig/2 edge> { //
    *    class EquivalenceClass; //
    *    EquivalenceClass getEquivalenceClass(MyT a); //
    *  }
@@ -136,6 +138,30 @@ module QlBuiltinsMocks {
       SigClass() { this = "Mock: QlBuiltins::T" }
 
       override string getName() { result = "T" }
+    }
+
+    module EdgeSig {
+      class EdgeSigModule extends MockModule::Range {
+        EdgeSigModule() { this = "Mock: QlBuiltins::EdgeSig" }
+
+        override string getName() { result = "EdgeSig" }
+
+        override predicate hasTypeParam(int i, string type, string name) {
+          i = 0 and name = "MyT" and type instanceof EdgeSigType
+        }
+
+        override string getMember(int i) {
+          // i = 0 and
+          // result instanceof EdgeSig::EdgeSigPredicate
+          none() // TODO:
+        }
+      }
+
+      class EdgeSigType extends MockTypeExpr::Range {
+        EdgeSigType() { this = "Mock: QlBuiltins::EdgeSig::MyT" }
+
+        override string getClassName() { result = "MyT" }
+      }
     }
 
     class EquivalenceRelationModule extends MockModule::Range {

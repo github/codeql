@@ -21,7 +21,7 @@ newtype TAstNode =
   TNewType(QL::Datatype dt) or
   TNewTypeBranch(QL::DatatypeBranch branch) or
   TImport(QL::ImportDirective imp) or
-  TType(QL::TypeExpr type) or
+  TType(Mocks::TypeExprOrMock type) or
   TDisjunction(QL::Disjunction disj) or
   TConjunction(QL::Conjunction conj) or
   TComparisonFormula(QL::CompTerm comp) or
@@ -182,7 +182,7 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   n = TImport(result)
   or
-  n = TType(result)
+  n = TType(any(Mocks::TypeExprOrMock m | m.asLeft() = result))
   or
   n = TAsExpr(result)
   or
@@ -212,7 +212,7 @@ Mocks::MockAst toMock(AST::AstNode n) {
   or
   n = TClass(any(Mocks::ClassOrMock m | m.asRight() = result))
   or
-  none() // TODO: Remove, this is to loosen the type of `toMock` to avoid type-errors in WIP code.
+  n = TType(any(Mocks::TypeExprOrMock m | m.asRight() = result))
 }
 
 class TPredicate =
