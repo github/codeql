@@ -240,10 +240,10 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
  *
  * the SSA definition for `c` is introduced by matching on `C`.
  */
-private predicate asModulePattern(SsaDefinitionNode def, Module m) {
+private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinition().(Ssa::WriteDefinition).getWriteAccess() = ap.getVariableAccess()
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess() = ap.getVariableAccess()
   )
 }
 
@@ -985,15 +985,15 @@ private DataFlow::Node trackSingletonMethodOnInstance(MethodBase method, string 
  */
 pragma[nomagic]
 private predicate argMustFlowToReceiver(
-  RelevantCall ctx, DataFlow::LocalSourceNode source, ArgumentNode arg, SsaDefinitionNode paramDef,
-  RelevantCall call, Callable encl, string name
+  RelevantCall ctx, DataFlow::LocalSourceNode source, ArgumentNode arg,
+  SsaDefinitionExtNode paramDef, RelevantCall call, Callable encl, string name
 ) {
   exists(ParameterNodeImpl p, ParameterPosition ppos, ArgumentPosition apos |
     // the receiver of `call` references `p`
     exists(DataFlow::Node receiver |
       LocalFlow::localFlowSsaParamInput(p, paramDef) and
       methodCall(pragma[only_bind_into](call), receiver, pragma[only_bind_into](name)) and
-      receiver.asExpr() = paramDef.getDefinition().getARead()
+      receiver.asExpr() = paramDef.getDefinitionExt().(Ssa::Definition).getARead()
     ) and
     // `p` is a parameter of `encl`,
     encl = call.getScope() and
