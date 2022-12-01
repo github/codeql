@@ -55,6 +55,8 @@ string nonSerialReason(RefType t) {
 predicate exceptions(Class c, Field f) {
   f.getDeclaringType() = c and
   (
+    c.isCompilerGenerated()
+    or
     // `Serializable` objects with custom `readObject` or `writeObject` methods
     // may write out the "non-serializable" fields in a different way.
     c.declaresMethod("readObject")
@@ -90,7 +92,7 @@ predicate exceptions(Class c, Field f) {
 
 from Class c, Field f, string reason
 where
-  c.getFile().isJavaSourceFile() and
+  c.fromSource() and
   c.getAStrictAncestor() instanceof TypeSerializable and
   f.getDeclaringType() = c and
   not exceptions(c, f) and
