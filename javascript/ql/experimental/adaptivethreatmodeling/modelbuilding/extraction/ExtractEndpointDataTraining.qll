@@ -53,7 +53,7 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
 query predicate trainingEndpoints(
   DataFlow::Node endpoint, EndpointType endpointClass, EndpointCharacteristic characteristic
 ) {
-  characteristic.getEndpoints(endpoint) and
+  characteristic.appliesToEndpoint(endpoint) and
   // Only consider the source code for the project being analyzed.
   exists(endpoint.getFile().getRelativePath()) and
   // Only select endpoints that can be part of a tainted flow: Constant expressions always evaluate to a constant
@@ -69,7 +69,7 @@ query predicate trainingEndpoints(
   not (
     endpointClass instanceof NegativeType and
     exists(EndpointCharacteristic c |
-      c.getEndpoints(endpoint) and
+      c.appliesToEndpoint(endpoint) and
       c instanceof LikelyNotASinkCharacteristic
     )
   ) and
@@ -81,8 +81,8 @@ query predicate trainingEndpoints(
     // If the list of characteristics includes positive indicators with high confidence for this class, select this as a
     // training sample belonging to the class.
     exists(EndpointCharacteristic characteristic2, float confidence |
-      characteristic2.getEndpoints(endpoint) and
-      characteristic2.getImplications(endpointClass, true, confidence) and
+      characteristic2.appliesToEndpoint(endpoint) and
+      characteristic2.hasImplications(endpointClass, true, confidence) and
       confidence >= characteristic2.getHighConfidenceThreshold()
     ) and
     (
@@ -93,8 +93,8 @@ query predicate trainingEndpoints(
       not endpointClass instanceof NegativeType
       or
       not exists(EndpointCharacteristic characteristic3, float confidence3, EndpointType posClass |
-        characteristic3.getEndpoints(endpoint) and
-        characteristic3.getImplications(posClass, true, confidence3) and
+        characteristic3.appliesToEndpoint(endpoint) and
+        characteristic3.hasImplications(posClass, true, confidence3) and
         confidence3 >= characteristic3.getHighConfidenceThreshold() and
         not posClass instanceof NegativeType
       )
@@ -106,8 +106,8 @@ query predicate trainingEndpoints(
     endpointClass instanceof NegativeType and
     forall(EndpointType otherClass | not otherClass instanceof NegativeType |
       exists(EndpointCharacteristic characteristic2, float confidence |
-        characteristic2.getEndpoints(endpoint) and
-        characteristic2.getImplications(otherClass, false, confidence) and
+        characteristic2.appliesToEndpoint(endpoint) and
+        characteristic2.hasImplications(otherClass, false, confidence) and
         confidence >= characteristic2.getHighConfidenceThreshold()
       )
     )
@@ -180,15 +180,15 @@ query predicate reformattedTrainingEndpoints(
       // The reason, or reasons, why the endpoint was labeled NotASink for this query, only for negative examples.
       key = "notASinkReason" and
       exists(EndpointCharacteristic characteristic, EndpointType endpointClass |
-        characteristic.getEndpoints(endpoint) and
-        characteristic.getImplications(endpointClass, true, _) and
+        characteristic.appliesToEndpoint(endpoint) and
+        characteristic.hasImplications(endpointClass, true, _) and
         endpointClass instanceof NegativeType and
         value = characteristic
       ) and
       // Don't include a notASinkReason for endpoints that are also known sinks.
       not exists(EndpointCharacteristic characteristic3, float confidence3, EndpointType posClass |
-        characteristic3.getEndpoints(endpoint) and
-        characteristic3.getImplications(posClass, true, confidence3) and
+        characteristic3.appliesToEndpoint(endpoint) and
+        characteristic3.hasImplications(posClass, true, confidence3) and
         confidence3 >= characteristic3.getHighConfidenceThreshold() and
         not posClass instanceof NegativeType
       ) and
