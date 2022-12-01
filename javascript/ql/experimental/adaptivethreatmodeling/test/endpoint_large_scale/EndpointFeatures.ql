@@ -22,7 +22,7 @@ query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, strin
     not exists(any(TaintedPathAtm::TaintedPathAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
     not exists(any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(endpoint)) or
     any(EndpointCharacteristics::IsArgumentToModeledFunctionCharacteristic characteristic)
-        .getEndpoints(endpoint)
+        .appliesToEndpoint(endpoint)
   ) and
   EndpointFeatures::tokenFeatures(endpoint, featureName, featureValue)
 }
