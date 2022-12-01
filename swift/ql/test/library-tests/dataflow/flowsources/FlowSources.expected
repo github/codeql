@@ -1,9 +1,25 @@
+| alamofire.swift:91:27:91:27 | .result | external |
+| alamofire.swift:99:27:99:27 | .result | external |
+| alamofire.swift:342:23:342:32 | .data | external |
+| alamofire.swift:349:22:349:31 | .value | external |
+| alamofire.swift:356:23:356:32 | .value | external |
+| alamofire.swift:363:22:363:31 | .value | external |
+| alamofire.swift:370:23:370:32 | .value | external |
+| alamofire.swift:377:28:377:37 | .value | external |
 | alamofire.swift:387:28:387:28 | call to init(contentsOfFile:) | external |
 | alamofire.swift:387:28:387:55 | call to init(contentsOfFile:) | external |
+| alamofire.swift:394:22:394:31 | .value | external |
+| alamofire.swift:401:22:401:31 | .value | external |
 | alamofire.swift:402:28:402:28 | call to init(contentsOf:) | external |
 | alamofire.swift:402:28:402:50 | call to init(contentsOf:) | external |
+| alamofire.swift:409:23:409:32 | .value | external |
+| alamofire.swift:416:22:416:31 | .value | external |
+| alamofire.swift:423:23:423:32 | .value | external |
+| alamofire.swift:429:28:429:37 | .value | external |
 | alamofire.swift:446:20:446:20 | call to init(contentsOfFile:) | external |
 | alamofire.swift:446:20:446:49 | call to init(contentsOfFile:) | external |
+| alamofire.swift:453:23:453:32 | .data | external |
+| alamofire.swift:459:23:459:32 | .data | external |
 | customurlschemes.swift:30:44:30:54 | url | external |
 | customurlschemes.swift:34:52:34:68 | url | external |
 | customurlschemes.swift:38:52:38:62 | url | external |
@@ -11,6 +27,9 @@
 | customurlschemes.swift:48:9:48:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
 | data.swift:18:20:18:20 | call to init(contentsOf:options:) | external |
 | data.swift:18:20:18:54 | call to init(contentsOf:options:) | external |
+| file://:0:0:0:0 | .data | external |
+| file://:0:0:0:0 | .result | external |
+| file://:0:0:0:0 | .result | external |
 | file://:0:0:0:0 | .source1 | external |
 | file://:0:0:0:0 | .source1 | external |
 | file://:0:0:0:0 | .source4 | external |
