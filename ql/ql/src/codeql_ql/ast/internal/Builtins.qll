@@ -106,8 +106,11 @@ module QlBuiltinsMocks {
 
     override string getName() { result = "QlBuiltins" }
 
-    override MockModule::Range getMember(int i) {
-      // TODO: T, InstSig
+    override string getMember(int i) {
+      // TODO: InstSig
+      i = 0 and
+      result instanceof EquivalenceRelation::SigClass
+      or
       i = 2 and
       result instanceof EquivalenceRelation::EquivalenceRelationModule
     }
@@ -118,7 +121,7 @@ module QlBuiltinsMocks {
    * The equivalent to the following is implemented: (TODO: WIP, MISSING THE LINES WITH //)
    * ```CodeQL
    * module QlBuiltins {
-   *  signature class T; //
+   *  signature class T;
    *  module InstSig<T MyT> { //
    *    signature predicate edgeSig(MyT a, MyT b); //
    *  }
@@ -129,6 +132,12 @@ module QlBuiltinsMocks {
    *}
    */
   module EquivalenceRelation {
+    class SigClass extends MockClass::Range {
+      SigClass() { this = "Mock: QlBuiltins::T" }
+
+      override string getName() { result = "T" }
+    }
+
     class EquivalenceRelationModule extends MockModule::Range {
       EquivalenceRelationModule() { this = "Mock: QlBuiltins::EquivalenceRelation" }
 

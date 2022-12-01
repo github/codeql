@@ -12,7 +12,7 @@ newtype TAstNode =
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
   TFieldDecl(QL::Field field) or
-  TClass(QL::Dataclass dc) or
+  TClass(Mocks::ClassOrMock cls) or
   TCharPred(QL::Charpred pred) or
   TClassPredicate(QL::MemberPredicate pred) or
   TDBRelation(Dbscheme::Table table) or
@@ -166,7 +166,7 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   n = TFieldDecl(result)
   or
-  n = TClass(result)
+  n = TClass(any(Mocks::ClassOrMock m | m.asLeft() = result))
   or
   n = TCharPred(result)
   or
@@ -209,6 +209,8 @@ QL::AstNode toQL(AST::AstNode n) {
 
 Mocks::MockAst toMock(AST::AstNode n) {
   n = TModule(any(Mocks::ModuleOrMock m | m.asRight() = result))
+  or
+  n = TClass(any(Mocks::ClassOrMock m | m.asRight() = result))
   or
   none() // TODO: Remove, this is to loosen the type of `toMock` to avoid type-errors in WIP code.
 }

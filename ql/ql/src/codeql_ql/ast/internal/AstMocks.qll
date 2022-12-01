@@ -14,11 +14,15 @@ private import codeql.util.Either
 // 1: Better type checking with distinct types.
 // 2: We don't get all the methods defined on strings, to confuse us.
 // 3: The Either type gets a type without bindingset on the charpred/toString.
-newtype TMockAst = TMockModule(string id) { id instanceof MockModule::Range }
+newtype TMockAst =
+  TMockModule(string id) { id instanceof MockModule::Range } or
+  TMockClass(string id) { id instanceof MockClass::Range }
 
 /** Gets a mocked Ast node from the string ID that represents it. */
 MockAst fromId(string id) {
   result = TMockModule(id)
+  or
+  result = TMockClass(id)
   // TODO: Other nodes.
 }
 
@@ -67,3 +71,27 @@ module MockModule {
 }
 
 class ModuleOrMock = Either<QL::Module, MockModule>::Either;
+
+/**
+ * A mocked class.
+ * Extend `MockClass::Range` to add new mocked classes.
+ */
+class MockClass extends MockAst, TMockClass {
+  MockClass::Range range;
+
+  MockClass() { this = TMockClass(range) }
+
+  final string getName() { result = range.getName() }
+}
+
+module MockClass {
+  abstract class Range extends string {
+    bindingset[this]
+    Range() { this = this }
+
+    /** Gets the name of this mocked class. */
+    abstract string getName();
+  }
+}
+
+class ClassOrMock = Either<QL::Dataclass, MockClass>::Either;

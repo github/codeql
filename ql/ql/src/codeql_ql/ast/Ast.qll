@@ -877,22 +877,26 @@ class TypeDeclaration extends TTypeDeclaration, Declaration { }
  * A QL class.
  */
 class Class extends TClass, TypeDeclaration, ModuleDeclaration {
-  QL::Dataclass cls;
+  Mocks::ClassOrMock cls;
 
   Class() { this = TClass(cls) }
 
-  override Location getLocation() { result = cls.getName().getLocation() }
+  override Location getLocation() { result = cls.asLeft().getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Class" }
 
-  override string getName() { result = cls.getName().getValue() }
+  override string getName() {
+    result = cls.asLeft().getName().getValue()
+    or
+    result = cls.asRight().getName()
+  }
 
   /**
    * Gets the characteristic predicate for this class.
    */
-  CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
+  CharPred getCharPred() { toQL(result) = cls.asLeft().getChild(_).(QL::ClassMember).getChild(_) }
 
-  AstNode getMember(int i) { toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_) }
+  AstNode getMember(int i) { toQL(result) = cls.asLeft().getChild(i).(QL::ClassMember).getChild(_) }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
@@ -902,7 +906,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    * Gets a predicate in this class.
    */
   ClassPredicate getAClassPredicate() {
-    toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_)
+    toQL(result) = cls.asLeft().getChild(_).(QL::ClassMember).getChild(_)
   }
 
   /**
@@ -921,18 +925,20 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets a super-type referenced in the `extends` part of the class declaration.
    */
-  TypeExpr getASuperType() { toQL(result) = cls.getExtends(_) }
+  TypeExpr getASuperType() { toQL(result) = cls.asLeft().getExtends(_) }
 
   /**
    * Gets a type referenced in the `instanceof` part of the class declaration.
    */
-  TypeExpr getAnInstanceofType() { toQL(result) = cls.getInstanceof(_) }
+  TypeExpr getAnInstanceofType() { toQL(result) = cls.asLeft().getInstanceof(_) }
 
   /** Gets the type that this class is defined to be an alias of. */
-  TypeExpr getAliasType() { toQL(result) = cls.getChild(_).(QL::TypeAliasBody).getChild() }
+  TypeExpr getAliasType() { toQL(result) = cls.asLeft().getChild(_).(QL::TypeAliasBody).getChild() }
 
   /** Gets the type of one of the members that this class is defined to be a union of. */
-  TypeExpr getUnionMember() { toQL(result) = cls.getChild(_).(QL::TypeUnionBody).getChild(_) }
+  TypeExpr getUnionMember() {
+    toQL(result) = cls.asLeft().getChild(_).(QL::TypeUnionBody).getChild(_)
+  }
 
   /** Gets the class type defined by this class declaration. */
   Type getType() { result.getDeclaration() = this }
