@@ -17,7 +17,8 @@ private import codeql.util.Either
 newtype TMockAst =
   TMockModule(string id) { id instanceof MockModule::Range } or
   TMockClass(string id) { id instanceof MockClass::Range } or
-  TMockTypeExpr(string id) { id instanceof MockTypeExpr::Range }
+  TMockTypeExpr(string id) { id instanceof MockTypeExpr::Range } or
+  TMockClasslessPredicate(string id) { id instanceof MockClasslessPredicate::Range }
 
 /** Gets a mocked Ast node from the string ID that represents it. */
 MockAst fromId(string id) {
@@ -26,6 +27,8 @@ MockAst fromId(string id) {
   result = TMockClass(id)
   or
   result = TMockTypeExpr(id)
+  or
+  result = TMockClasslessPredicate(id)
   // TODO: Other nodes.
 }
 
@@ -51,7 +54,7 @@ class MockModule extends MockAst, TMockModule {
   final MockAst getMember(int i) { result = fromId(range.getMember(i)) }
 
   final predicate hasTypeParam(int i, MockAst type, string name) {
-    range.hasTypeParam(i, type.toString(), name)
+    range.hasTypeParam(i, type.getId(), name)
   }
 }
 
@@ -139,3 +142,32 @@ module MockTypeExpr {
 class TypeExprOrMock = Either<QL::TypeExpr, MockTypeExpr>::Either;
 
 class SignatureExprOrMock = Either<QL::SignatureExpr, MockSignatureExpr>::Either;
+
+/**
+ * A mocked `ClasslessPredicate`.
+ */
+class MockClasslessPredicate extends MockAst {
+  MockClasslessPredicate::Range range;
+
+  MockClasslessPredicate() { this = TMockClasslessPredicate(range) }
+
+  final string getName() { result = range.getName() }
+
+  // TODO: VarDecl.
+  final MockAst getParameter(int i) { result.getId() = range.getParameter(i) }
+}
+
+module MockClasslessPredicate {
+  abstract class Range extends string {
+    bindingset[this]
+    Range() { this = this }
+
+    /** Gets the name of the predicate. */
+    abstract string getName();
+
+    /** Gets the `i`th parameter of the predicate. */
+    abstract string getParameter(int i);
+  }
+}
+
+class ClasslessPredicateOrMock = Either<QL::ClasslessPredicate, MockClasslessPredicate>::Either;

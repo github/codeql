@@ -150,17 +150,23 @@ module QlBuiltinsMocks {
           i = 0 and name = "MyT" and type instanceof EdgeSigType
         }
 
-        override string getMember(int i) {
-          // i = 0 and
-          // result instanceof EdgeSig::EdgeSigPredicate
-          none() // TODO:
-        }
+        override string getMember(int i) { i = 0 and result instanceof EdgeSigPred }
       }
 
       class EdgeSigType extends MockTypeExpr::Range {
         EdgeSigType() { this = "Mock: QlBuiltins::EdgeSig::MyT" }
 
         override string getClassName() { result = "MyT" }
+      }
+
+      class EdgeSigPred extends MockClasslessPredicate::Range {
+        EdgeSigPred() { this = "Mock: QlBuiltins::EdgeSig::edgeSig" }
+
+        override string getName() { result = "edgeSig" }
+
+        override string getParameter(int i) {
+          none() // TODO:
+        }
       }
     }
 

@@ -500,11 +500,11 @@ class PredicateExpr extends TPredicateExpr, AstNode {
  * A classless predicate.
  */
 class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclaration {
-  QL::ClasslessPredicate pred;
+  Mocks::ClasslessPredicateOrMock pred;
 
   ClasslessPredicate() { this = TClasslessPredicate(pred) }
 
-  override Location getLocation() { result = pred.getName().getLocation() }
+  override Location getLocation() { result = pred.asLeft().getName().getLocation() }
 
   /**
    * Gets the aliased value if this predicate is an alias
@@ -513,25 +513,33 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
    */
   final AstNode getAlias() {
     exists(QL::PredicateAliasBody alias |
-      alias.getParent() = pred and
+      alias.getParent() = pred.asLeft() and
       toQL(result).getParent() = alias
     )
     or
-    toQL(result) = pred.getChild(_).(QL::HigherOrderTerm)
+    toQL(result) = pred.asLeft().getChild(_).(QL::HigherOrderTerm)
   }
 
   override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
 
-  override Formula getBody() { toQL(result) = pred.getChild(_).(QL::Body).getChild() }
+  override Formula getBody() { toQL(result) = pred.asLeft().getChild(_).(QL::Body).getChild() }
 
-  override string getName() { result = pred.getName().getValue() }
+  override string getName() {
+    result = pred.asLeft().getName().getValue()
+    or
+    result = pred.asRight().getName()
+  }
 
   override VarDecl getParameter(int i) {
     toQL(result) =
-      rank[i + 1](QL::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
+      rank[i + 1](QL::VarDecl decl, int index |
+        decl = pred.asLeft().getChild(index)
+      |
+        decl order by index
+      )
   }
 
-  override TypeExpr getReturnTypeExpr() { toQL(result) = pred.getReturnType() }
+  override TypeExpr getReturnTypeExpr() { toQL(result) = pred.asLeft().getReturnType() }
 
   override AstNode getAChild(string pred_name) {
     result = Predicate.super.getAChild(pred_name)
