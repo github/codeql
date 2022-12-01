@@ -63,9 +63,9 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
     exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
-      characteristic.getEndpoints(sink) and
+      characteristic.appliesToEndpoint(sink) and
       characteristic
-          .getImplications(this.getASinkEndpointType(), true, characteristic.maximalConfidence())
+          .hasImplications(this.getASinkEndpointType(), true, characteristic.maximalConfidence())
     )
   }
 
@@ -99,7 +99,7 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
     // have given the endpoint filter characteristics medium confidence, and we exclude endpoints that have a
     // medium-confidence characteristic that indicates that they are not sinks, either in general or for this sink type.
     exists(EndpointCharacteristics::EndpointCharacteristic filter, float confidence |
-      filter.getEndpoints(candidateSink) and
+      filter.appliesToEndpoint(candidateSink) and
       confidence >= filter.mediumConfidence() and
       // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that
       // implies they're not sinks, rather than using only medium-confidence characteristics, by deleting the following
@@ -107,10 +107,10 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
       confidence < filter.highConfidence() and
       (
         // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
-        filter.getImplications(any(NegativeType negative), true, confidence)
+        filter.hasImplications(any(NegativeType negative), true, confidence)
         or
         // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
-        filter.getImplications(this.getASinkEndpointType(), false, confidence)
+        filter.hasImplications(this.getASinkEndpointType(), false, confidence)
       ) and
       result = filter
     )
@@ -147,7 +147,9 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
    * to this ML-boosted configuration, whereas the unboosted base query does not contain this source and sink
    * combination.
    */
-  predicate getAlerts(JS::DataFlow::PathNode source, JS::DataFlow::PathNode sink, float score) {
+  predicate hasBoostedFlowPath(
+    JS::DataFlow::PathNode source, JS::DataFlow::PathNode sink, float score
+  ) {
     this.hasFlowPath(source, sink) and
     not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
     score = AtmResultsInfo::getScoreForFlow(source.getNode(), sink.getNode())
