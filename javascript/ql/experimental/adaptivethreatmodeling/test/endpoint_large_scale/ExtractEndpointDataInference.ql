@@ -5,7 +5,7 @@
  * and are therefore used as candidates for scoring at inference time.
  *
  * This is equivalent to ExtractEndpointDataTraining.qlref, but testing the inference endpoints rather than the training
- * endpoints. It ensures that CodeQL changes don't inadvertently change the endpoints that get scored at inferece time.
+ * endpoints. It detects CodeQL changes that impact the endpoints that get scored at inference time.
  *
  * This test does not actually score the endpoints and test for changes in the model predictions: that gets done in the
  * integration tests.

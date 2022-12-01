@@ -206,7 +206,7 @@ query predicate reformattedTrainingEndpoints(
  * Gets the ATM data flow configuration for the specified query.
  * TODO: Delete this once we are no longer surfacing `hasFlowFromSource`.
  */
-DataFlow::Configuration getDataFlowCfg(Query query) {
+private DataFlow::Configuration getDataFlowCfg(Query query) {
   query instanceof NosqlInjectionQuery and
   result instanceof NosqlInjectionAtm::NosqlInjectionAtmConfig
   or
