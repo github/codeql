@@ -4,7 +4,7 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.LookupExpr
 
 module Generated {
-  class MethodRefExpr extends Synth::TMethodRefExpr, LookupExpr {
-    override string getAPrimaryQlClass() { result = "MethodRefExpr" }
+  class MethodLookupExpr extends Synth::TMethodLookupExpr, LookupExpr {
+    override string getAPrimaryQlClass() { result = "MethodLookupExpr" }
   }
 }

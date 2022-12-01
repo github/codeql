@@ -2566,8 +2566,8 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfMethodRefExpr(
-    MethodRefExpr e, int index, string partialPredicateCall
+  private Element getImmediateChildOfMethodLookupExpr(
+    MethodLookupExpr e, int index, string partialPredicateCall
   ) {
     exists(int b, int bLookupExpr, int n |
       b = 0 and
@@ -4978,7 +4978,7 @@ private module Impl {
     or
     result = getImmediateChildOfMetatypeConversionExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfMethodRefExpr(e, index, partialAccessor)
+    result = getImmediateChildOfMethodLookupExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfNilLiteralExpr(e, index, partialAccessor)
     or

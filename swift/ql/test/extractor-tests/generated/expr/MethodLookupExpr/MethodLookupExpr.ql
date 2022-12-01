@@ -2,7 +2,7 @@
 import codeql.swift.elements
 import TestUtils
 
-from MethodRefExpr x, string hasType, Expr getBase, string hasMember
+from MethodLookupExpr x, string hasType, Expr getBase, string hasMember
 where
   toBeTested(x) and
   not x.isUnknown() and
