@@ -94,3 +94,49 @@ class FloatClass extends PrimitiveType {
 class BooleanClass extends PrimitiveType {
   BooleanClass() { this.getName() = "boolean" }
 }
+
+/**
+ * Implements mocks for the built-in modules inside the `QlBuiltins` module.
+ */
+module QlBuiltinsMocks {
+  private import AstMocks
+
+  class QlBuiltinsModule extends MockModule::Range {
+    QlBuiltinsModule() { this = "Mock: QlBuiltins" }
+
+    override string getName() { result = "QlBuiltins" }
+
+    override MockModule::Range getMember(int i) {
+      // TODO: T, InstSig
+      i = 2 and
+      result instanceof EquivalenceRelation::EquivalenceRelationModule
+    }
+  }
+
+  /**
+   * A mock that implements the `EquivalenceRelation` module.
+   * The equivalent to the following is implemented: (TODO: WIP, MISSING THE LINES WITH //)
+   * ```CodeQL
+   * module QlBuiltins {
+   *  signature class T; //
+   *  module InstSig<T MyT> { //
+   *    signature predicate edgeSig(MyT a, MyT b); //
+   *  }
+   *  module EquivalenceRelation<T MyT, InstSig<MyT>::edgeSig/2 edge> { //
+   *    class EquivalenceClass; //
+   *    EquivalenceClass getEquivalenceClass(MyT a); //
+   *  }
+   *}
+   */
+  module EquivalenceRelation {
+    class EquivalenceRelationModule extends MockModule::Range {
+      EquivalenceRelationModule() { this = "Mock: QlBuiltins::EquivalenceRelation" }
+
+      override string getName() { result = "EquivalenceRelation" }
+
+      override MockModule::Range getMember(int i) {
+        none() // TODO: EquivalenceClass/getEquivalenceClass
+      }
+    }
+  }
+}

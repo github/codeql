@@ -5,6 +5,7 @@ private import codeql_ql.ast.internal.Predicate
 import codeql_ql.ast.internal.Type
 private import codeql_ql.ast.internal.Variable
 private import codeql_ql.ast.internal.Builtins
+private import internal.AstMocks as Mocks
 
 bindingset[name]
 private string directMember(string name) { result = name + "()" }
@@ -779,22 +780,30 @@ class TypeExpr extends TType, TypeRef {
  * A QL module.
  */
 class Module extends TModule, ModuleDeclaration {
-  QL::Module mod;
+  Mocks::ModuleOrMock mod;
 
   Module() { this = TModule(mod) }
 
-  override Location getLocation() { result = mod.getName().getLocation() }
+  override Location getLocation() { result = mod.asLeft().getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Module" }
 
-  override string getName() { result = mod.getName().getChild().getValue() }
+  override string getName() {
+    result = mod.asLeft().getName().getChild().getValue()
+    or
+    result = mod.asRight().getName()
+  }
 
   /**
    * Gets a member of the module.
    */
-  AstNode getAMember() { toQL(result) = mod.getChild(_).(QL::ModuleMember).getChild(_) }
+  AstNode getAMember() { result = getMember(_) }
 
-  AstNode getMember(int i) { toQL(result) = mod.getChild(i).(QL::ModuleMember).getChild(_) }
+  AstNode getMember(int i) {
+    toQL(result) = mod.asLeft().getChild(i).(QL::ModuleMember).getChild(_)
+    or
+    toMock(result) = mod.asRight().getMember(i)
+  }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
@@ -802,11 +811,13 @@ class Module extends TModule, ModuleDeclaration {
 
   /** Gets a ref to the module that this module implements. */
   TypeRef getImplements(int i) {
-    exists(SignatureExpr sig | sig.toQL() = mod.getImplements(i) | result = sig.asType())
+    exists(SignatureExpr sig | sig.toQL() = mod.asLeft().getImplements(i) | result = sig.asType())
   }
 
   /** Gets the module expression that this module is an alias for, if any. */
-  ModuleExpr getAlias() { toQL(result) = mod.getAFieldOrChild().(QL::ModuleAliasBody).getChild() }
+  ModuleExpr getAlias() {
+    toQL(result) = mod.asLeft().getAFieldOrChild().(QL::ModuleAliasBody).getChild()
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -823,10 +834,12 @@ class Module extends TModule, ModuleDeclaration {
   /** Holds if the `i`th parameter of this module has `name` and type `sig`. */
   predicate hasParameter(int i, string name, SignatureExpr sig) {
     exists(QL::ModuleParam param |
-      param = mod.getParameter(i) and
+      param = mod.asLeft().getParameter(i) and
       name = param.getParameter().getValue() and
       sig.toQL() = param.getSignature()
     )
+    or
+    mod.asRight().hasTypeParam(i, toMock(sig), name)
   }
 }
 

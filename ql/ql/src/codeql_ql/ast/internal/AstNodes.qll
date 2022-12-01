@@ -1,6 +1,7 @@
 import codeql_ql.ast.Ast as AST
 import TreeSitter
 private import Builtins
+private import AstMocks as Mocks
 
 cached
 newtype TAstNode =
@@ -16,7 +17,7 @@ newtype TAstNode =
   TClassPredicate(QL::MemberPredicate pred) or
   TDBRelation(Dbscheme::Table table) or
   TSelect(QL::Select sel) or
-  TModule(QL::Module mod) or
+  TModule(Mocks::ModuleOrMock mod) or
   TNewType(QL::Datatype dt) or
   TNewTypeBranch(QL::DatatypeBranch branch) or
   TImport(QL::ImportDirective imp) or
@@ -173,7 +174,7 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   n = TSelect(result)
   or
-  n = TModule(result)
+  n = TModule(any(Mocks::ModuleOrMock m | m.asLeft() = result))
   or
   n = TNewType(result)
   or
@@ -204,6 +205,12 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TAnnotation(result)
   or
   n = TAnnotationArg(result)
+}
+
+Mocks::MockAst toMock(AST::AstNode n) {
+  n = TModule(any(Mocks::ModuleOrMock m | m.asRight() = result))
+  or
+  none() // TODO: Remove, this is to loosen the type of `toMock` to avoid type-errors in WIP code.
 }
 
 class TPredicate =

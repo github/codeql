@@ -161,6 +161,8 @@ nodes
 | Foo.qll:30:10:30:27 | assume_small_delta | semmle.order | 80 |
 | Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.label | [NewTypeBranch] NewTypeBranch TPathNodeMid |
 | Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.order | 81 |
+| file://:0:0:0:0 | Module EquivalenceRelation | semmle.label | [Module] Module EquivalenceRelation |
+| file://:0:0:0:0 | Module QlBuiltins | semmle.label | [Module] Module QlBuiltins |
 | file://:0:0:0:0 | abs | semmle.label | [BuiltinPredicate] abs |
 | file://:0:0:0:0 | abs | semmle.label | [BuiltinPredicate] abs |
 | file://:0:0:0:0 | acos | semmle.label | [BuiltinPredicate] acos |
@@ -409,6 +411,7 @@ edges
 | Foo.qll:30:3:30:28 | annotation | Foo.qll:30:10:30:27 | assume_small_delta | semmle.order | 80 |
 | Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | Foo.qll:30:3:30:28 | annotation | semmle.label | getAnAnnotation() |
 | Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | Foo.qll:30:3:30:28 | annotation | semmle.order | 79 |
+| file://:0:0:0:0 | Module QlBuiltins | file://:0:0:0:0 | Module EquivalenceRelation | semmle.label | getAMember() |
 | printAst.ql:1:1:1:28 | Import | printAst.ql:1:18:1:28 | printAstAst | semmle.label | getModuleExpr() |
 | printAst.ql:1:1:1:28 | Import | printAst.ql:1:18:1:28 | printAstAst | semmle.order | 84 |
 | printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.label | getAnImport() |

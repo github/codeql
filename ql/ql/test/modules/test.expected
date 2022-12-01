@@ -8,8 +8,12 @@ getTarget
 | Foo.qll:19:38:19:52 | MkThing | Foo.qll:9:16:9:22 | MkThing |
 | Foo.qll:19:38:19:60 | TypeExpr | Foo.qll:10:20:10:25 | SubMod |
 | Foo.qll:19:46:19:51 | TypeExpr | Foo.qll:5:16:5:21 | MyImpl |
+| Foo.qll:29:22:29:31 | QlBuiltins | file://:0:0:0:0 | QlBuiltins |
+| Foo.qll:29:22:29:69 | EquivalenceRelation | file://:0:0:0:0 | EquivalenceRelation |
 | Foo.qll:31:29:31:31 | Scc | Foo.qll:29:16:29:18 | Scc |
+| Foo.qll:31:29:31:31 | Scc | file://:0:0:0:0 | EquivalenceRelation |
 | Foo.qll:34:52:34:54 | Scc | Foo.qll:29:16:29:18 | Scc |
+| Foo.qll:34:52:34:54 | Scc | file://:0:0:0:0 | EquivalenceRelation |
 getTargetType
 | ClassSig.qll:3:23:3:28 | TypeExpr | file://:0:0:0:0 | string |
 | ClassSig.qll:7:12:7:17 | TypeExpr | ClassSig.qll:1:17:1:22 | FooSig |
@@ -28,8 +32,12 @@ getTargetType
 | Foo.qll:23:20:23:22 | TypeExpr | file://:0:0:0:0 | int |
 | Foo.qll:27:19:27:22 | TypeExpr | Foo.qll:23:7:23:10 | Node |
 | Foo.qll:27:27:27:30 | TypeExpr | Foo.qll:23:7:23:10 | Node |
+| Foo.qll:29:22:29:31 | QlBuiltins | file://:0:0:0:0 | QlBuiltins |
+| Foo.qll:29:22:29:69 | EquivalenceRelation | file://:0:0:0:0 | EquivalenceRelation |
 | Foo.qll:29:54:29:57 | TypeExpr | Foo.qll:23:7:23:10 | Node |
 | Foo.qll:31:29:31:31 | Scc | Foo.qll:29:16:29:18 | Scc |
+| Foo.qll:31:29:31:31 | Scc | file://:0:0:0:0 | EquivalenceRelation |
 | Foo.qll:34:19:34:22 | TypeExpr | Foo.qll:23:7:23:10 | Node |
 | Foo.qll:34:52:34:54 | Scc | Foo.qll:29:16:29:18 | Scc |
+| Foo.qll:34:52:34:54 | Scc | file://:0:0:0:0 | EquivalenceRelation |
 | Foo.qll:36:23:36:26 | TypeExpr | Foo.qll:23:7:23:10 | Node |
