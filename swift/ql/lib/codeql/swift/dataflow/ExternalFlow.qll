@@ -426,10 +426,10 @@ private Element interpretElement0(
       result = method
     |
       subtypes = true and
-      decl.resolveExtensions() = nomTypeDecl.getADerivedTypeDecl*()
+      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      decl.resolveExtensions() = nomTypeDecl
+      decl.getNominalTypeDecl() = nomTypeDecl
     )
     or
     // Fields
@@ -441,10 +441,10 @@ private Element interpretElement0(
       result = field
     |
       subtypes = true and
-      decl.resolveExtensions() = nomTypeDecl.getADerivedTypeDecl*()
+      decl.getNominalTypeDecl() = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      decl.resolveExtensions() = nomTypeDecl
+      decl.getNominalTypeDecl() = nomTypeDecl
     )
   )
 }

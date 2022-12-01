@@ -10,7 +10,7 @@ class IterableDeclContext extends Generated::IterableDeclContext {
    * Gets the `NominalTypeDecl` corresponding to this `IterableDeclContext`
    * resolving an extension to the extended type declaration.
    */
-  NominalTypeDecl resolveExtensions() {
+  NominalTypeDecl getNominalTypeDecl() {
     result = this.(NominalTypeDecl)
     or
     result = this.(ExtensionDecl).getExtendedTypeDecl()
