@@ -2,7 +2,6 @@
 
 import java
 private import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * The method `isEmpty` in either `org.apache.commons.collections.CollectionUtils`

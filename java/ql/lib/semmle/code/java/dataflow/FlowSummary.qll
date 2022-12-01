@@ -6,11 +6,6 @@ import java
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
 
-// import all instances of SummarizedCallable below
-private module Summaries {
-  private import semmle.code.java.dataflow.ExternalFlow
-}
-
 class SummaryComponent = Impl::Public::SummaryComponent;
 
 /** Provides predicates for constructing summary components. */
