@@ -158,7 +158,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
    */
   private string getCurrentEndpointPrompt(DataFlow::Node endpoint) {
     result =
-      "|" + this.tokenizeEndpoint(endpoint) + "|" + this.tokenizeNeighborhood(endpoint, 2) + "|"
+      "|`" + this.tokenizeEndpoint(endpoint) + "`|`" + this.tokenizeNeighborhood(endpoint, 2) + "`|"
   }
 
   /**
