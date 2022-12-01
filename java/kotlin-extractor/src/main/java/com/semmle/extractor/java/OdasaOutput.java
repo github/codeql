@@ -422,7 +422,7 @@ public class OdasaOutput {
 	 * previously set by a call to {@link OdasaOutput#setCurrentSourceFile(File)}.
 	 */
 	public TrapLocker getTrapLockerForCurrentSourceFile() {
-		return new TrapLocker((IrClass)null, null);
+		return new TrapLocker((IrClass)null, null, true);
 	}
 
 	/**
@@ -460,8 +460,8 @@ public class OdasaOutput {
 	 *
 	 * @return  a {@link TrapLocker} for the trap file corresponding to the given class symbol.
 	 */
-	public TrapLocker getTrapLockerForDecl(IrDeclaration sym, String signature) {
-		return new TrapLocker(sym, signature);
+	public TrapLocker getTrapLockerForDecl(IrDeclaration sym, String signature, boolean fromSource) {
+		return new TrapLocker(sym, signature, fromSource);
 	}
 
 	public class TrapLocker implements AutoCloseable {
@@ -472,7 +472,7 @@ public class OdasaOutput {
 		private File trapFileBase = null;
 		private TrapClassVersion trapFileVersion = null;
 		private final String signature;
-		private TrapLocker(IrDeclaration decl, String signature) {
+		private TrapLocker(IrDeclaration decl, String signature, boolean fromSource) {
 			this.sym = decl;
 			this.signature = signature;
 			if (sym==null) {
@@ -485,7 +485,10 @@ public class OdasaOutput {
 				} else {
 					// We encode the metadata into the filename, so that the
 					// TRAP filenames for different metadatas don't overlap.
-					trapFileVersion = TrapClassVersion.fromSymbol(sym, log);
+					if (fromSource)
+						trapFileVersion = new TrapClassVersion(0, 0, 0, "kotlin");
+					else
+						trapFileVersion = TrapClassVersion.fromSymbol(sym, log);
 					String baseName = normalTrapFile.getName().replace(".trap.gz", "");
 					// If a class has lots of inner classes, then we get lots of files
 					// in a single directory. This makes our directory listings later slow.
