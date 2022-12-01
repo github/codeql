@@ -32,9 +32,9 @@ module Either<TypeWithToString Left, TypeWithToString Right> {
     Right asRight() { this = TRight(result) }
   }
 
-  /** Makes an `Either` from an instanceof of `Left` */
+  /** Makes an `Either` from an instance of `Left` */
   Left left(Left c) { result = c }
 
-  /** Makes an `Either` from an instanceof of `Right` */
+  /** Makes an `Either` from an instance of `Right` */
   Right right(Right c) { result = c }
 }
