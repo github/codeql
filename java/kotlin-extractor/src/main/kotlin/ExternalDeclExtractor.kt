@@ -1,16 +1,13 @@
 package com.github.codeql
 
-import com.github.codeql.utils.isExternalDeclaration
 import com.github.codeql.utils.isExternalFileClassMember
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.util.data.StringDigestor
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.isFileClass
 import org.jetbrains.kotlin.ir.util.packageFqName
-import org.jetbrains.kotlin.ir.util.parentClassOrNull
-import org.jetbrains.kotlin.name.FqName
 import java.io.BufferedWriter
 import java.io.File
 import java.util.ArrayList
@@ -35,30 +32,30 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
             logger.errorElement("External declaration is neither a class, nor a top-level declaration", d)
             return false
         }
-        val declBinaryName = declBinaryNames.getOrPut(d) { getIrDeclBinaryName(d) }
+        val declBinaryName = declBinaryNames.getOrPut(d) { getIrElementBinaryName(d) }
         val ret = externalDeclsDone.add(Pair(declBinaryName, signature))
         if (ret) externalDeclWorkList.add(Pair(d, signature))
         return ret
     }
     fun extractLater(c: IrClass) = extractLater(c, "")
 
-    fun noteClassSourceExtractedTo(c: IrClass, sourceFile: String) {
-        extractDecl(c, "", true) { trapFileBW, _, _ ->
-            trapFileBW.write("// .class trap file stubbed because this class was extracted from source in $sourceFile\n")
+    fun noteElementExtractedFromSource(e: IrElement, signature: String = "") {
+        extractElement(e, signature, true) { trapFileBW, _, _ ->
+            trapFileBW.write("// Trap file stubbed because this declaration was extracted from source in $sourceFilePath\n")
             trapFileBW.write("// Part of invocation $invocationTrapFile\n")
         }
     }
 
-    private fun extractDecl(irDecl: IrDeclaration, possiblyLongSignature: String, fromSource: Boolean, extractorFn: (BufferedWriter, String, OdasaOutput.TrapFileManager) -> Unit) {
+    private fun extractElement(element: IrElement, possiblyLongSignature: String, fromSource: Boolean, extractorFn: (BufferedWriter, String, OdasaOutput.TrapFileManager) -> Unit) {
         // In order to avoid excessively long signatures which can lead to trap file names longer than the filesystem
         // limit, we truncate and add a hash to preserve uniqueness if necessary.
         val signature = if (possiblyLongSignature.length > 100) {
             possiblyLongSignature.substring(0, 92) + "#" + StringDigestor.digest(possiblyLongSignature).substring(0, 8)
         } else { possiblyLongSignature }
-        output.getTrapLockerForDecl(irDecl, signature, fromSource).useAC { locker ->
+        output.getTrapLockerForDecl(element, signature, fromSource).useAC { locker ->
             locker.trapFileManager.useAC { manager ->
-                val shortName = when(irDecl) {
-                    is IrDeclarationWithName -> irDecl.name.asString()
+                val shortName = when(element) {
+                    is IrDeclarationWithName -> element.name.asString()
                     else -> "(unknown name)"
                 }
                 if (manager == null) {
@@ -89,7 +86,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
             externalDeclWorkList.clear()
             nextBatch.forEach { workPair ->
                 val (irDecl, possiblyLongSignature) = workPair
-                extractDecl(irDecl, possiblyLongSignature, false) { trapFileBW, signature, manager ->
+                extractElement(irDecl, possiblyLongSignature, false) { trapFileBW, signature, manager ->
                     val containingClass = getContainingClassOrSelf(irDecl)
                     if (containingClass == null) {
                         logger.errorElement("Unable to get containing class", irDecl)

@@ -90,7 +90,12 @@ open class KotlinFileExtractor(
                 }
             }
 
-            file.declarations.forEach { extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true) }
+            file.declarations.forEach {
+                extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true)
+                if (it !is IrClass) {
+                    externalClassExtractor.noteElementExtractedFromSource(it, getTrapFileSignature(it))
+                }
+            }
             extractStaticInitializer(file, { extractFileClass(file) })
             CommentExtractor(this, file, tw.fileId).extract()
 
@@ -99,6 +104,8 @@ open class KotlinFileExtractor(
             }
 
             linesOfCode?.linesOfCodeInFile(id)
+
+            externalClassExtractor.noteElementExtractedFromSource(file)
         }
     }
 
@@ -517,7 +524,7 @@ open class KotlinFileExtractor(
                 linesOfCode?.linesOfCodeInDeclaration(c, id)
 
                 if (extractFunctionBodies)
-                    externalClassExtractor.noteClassSourceExtractedTo(c, tw.filePath)
+                    externalClassExtractor.noteElementExtractedFromSource(c)
 
                 return id
             }
