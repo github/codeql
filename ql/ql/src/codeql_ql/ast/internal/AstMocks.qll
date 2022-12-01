@@ -156,8 +156,9 @@ class MockClasslessPredicate extends MockAst {
 
   final string getName() { result = range.getName() }
 
-  // TODO: VarDecl.
-  final MockAst getParameter(int i) { result.getId() = range.getParameter(i) }
+  final MockVarDecl getParameter(int i) { result.getId() = range.getParameter(i) }
+
+  final MockTypeExpr getReturnTypeExpr() { result.getId() = range.getReturnTypeExpr() }
 }
 
 module MockClasslessPredicate {
@@ -170,6 +171,10 @@ module MockClasslessPredicate {
 
     /** Gets the `i`th parameter of the predicate. */
     abstract string getParameter(int i);
+
+    MockTypeExpr::Range getReturnTypeExpr() {
+      none() // may be overridden in subclasses
+    }
   }
 }
 

@@ -120,16 +120,16 @@ module QlBuiltinsMocks {
 
   /**
    * A mock that implements the `EquivalenceRelation` module.
-   * The equivalent to the following is implemented: (TODO: WIP, MISSING THE LINES WITH //)
+   * The equivalent to the following is implemented:
    * ```CodeQL
    * module QlBuiltins {
    *  signature class T;
-   *  module EdgeSig<T MyT> {
+   *  module EdgeSig<T MyT> { // This might not be needed.
    *    signature predicate edgeSig(MyT a, MyT b);
    *  }
-   *  module EquivalenceRelation<T MyT, EdgeSig<MyT>::edgeSig/2 edge> { //
-   *    class EquivalenceClass; //
-   *    EquivalenceClass getEquivalenceClass(MyT a); //
+   *  module EquivalenceRelation<T MyT, EdgeSig<MyT>::edgeSig/2 edge> { // the `edge` parameter is not modeled
+   *    class EquivalenceClass;
+   *    EquivalenceClass getEquivalenceClass(MyT a);
    *  }
    *}
    */
@@ -140,6 +140,13 @@ module QlBuiltinsMocks {
       override string getName() { result = "T" }
     }
 
+    /** A mock TypeExpr with classname `T`. */
+    class DummyTTypeExpr extends MockTypeExpr::Range {
+      DummyTTypeExpr() { this = "Mock: QlBuiltins::T" }
+
+      override string getClassName() { result = "T" }
+    }
+
     module EdgeSig {
       class EdgeSigModule extends MockModule::Range {
         EdgeSigModule() { this = "Mock: QlBuiltins::EdgeSig" }
@@ -147,16 +154,10 @@ module QlBuiltinsMocks {
         override string getName() { result = "EdgeSig" }
 
         override predicate hasTypeParam(int i, string type, string name) {
-          i = 0 and name = "MyT" and type instanceof EdgeSigType
+          i = 0 and name = "MyT" and type instanceof DummyTTypeExpr
         }
 
         override string getMember(int i) { i = 0 and result instanceof EdgeSigPred }
-      }
-
-      class EdgeSigType extends MockTypeExpr::Range {
-        EdgeSigType() { this = "Mock: QlBuiltins::EdgeSig::MyT" }
-
-        override string getClassName() { result = "MyT" }
       }
 
       class EdgeSigPred extends MockClasslessPredicate::Range {
@@ -182,7 +183,7 @@ module QlBuiltinsMocks {
 
         override string getName() { result = name }
 
-        override MockTypeExpr::Range getType() { result instanceof EdgeSigType } // TODO: I'm just using one typeexpr for everything, that might break the parent relation.
+        override MockTypeExpr::Range getType() { result instanceof DummyTTypeExpr }
       }
     }
 
@@ -191,9 +192,50 @@ module QlBuiltinsMocks {
 
       override string getName() { result = "EquivalenceRelation" }
 
-      override MockModule::Range getMember(int i) {
-        none() // TODO: EquivalenceClass/getEquivalenceClass
+      override string getMember(int i) {
+        i = 0 and result instanceof EquivalenceClassClass
+        or
+        i = 1 and result instanceof GetEquivalenceClassPredicate
       }
+
+      override predicate hasTypeParam(int i, string type, string name) {
+        i = 0 and name = "MyT" and type instanceof DummyTTypeExpr
+        or
+        none() // TODO: `EdgeSig<MyT>::edgeSig/2 edge` is not implemented.
+      }
+    }
+
+    class GetEquivalenceClassPredicate extends MockClasslessPredicate::Range {
+      GetEquivalenceClassPredicate() {
+        this = "Mock: QlBuiltins::EquivalenceRelation::getEquivalenceClass"
+      }
+
+      override string getName() { result = "getEquivalenceClass" }
+
+      override MockVarDecl::Range getParameter(int i) {
+        result.(EdgeSig::EdgeSigPredParam).getName() = "a" and // just reusing another mock node that has the right name and type.
+        i = 0
+      }
+
+      override MockTypeExpr::Range getReturnTypeExpr() {
+        result instanceof EquivalenceClassTypeExpr
+      }
+    }
+
+    class EquivalenceClassClass extends MockClass::Range {
+      EquivalenceClassClass() {
+        this = "Mock: QlBuiltins::EquivalenceRelation::EquivalenceClass(Class)"
+      }
+
+      override string getName() { result = "EquivalenceClass" }
+    }
+
+    class EquivalenceClassTypeExpr extends MockTypeExpr::Range {
+      EquivalenceClassTypeExpr() {
+        this = "Mock: QlBuiltins::EquivalenceRelation::EquivalenceClass(TypeExpr)"
+      }
+
+      override string getClassName() { result = "EquivalenceClass" }
     }
   }
 }

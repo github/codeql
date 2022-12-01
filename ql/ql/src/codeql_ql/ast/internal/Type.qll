@@ -322,6 +322,9 @@ predicate resolveTypeExpr2(TypeExpr te, Type t) {
       or
       // e.g. alias for primitives.
       not exists(t.getDeclaration())
+      or
+      // mocks are fine.
+      exists(AstNode decl | decl = t.getDeclaration() | exists(AstNodes::toMock(decl)))
     )
   )
 }

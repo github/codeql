@@ -15,6 +15,7 @@ import codeql_ql.ast.internal.Builtins::BuiltinsConsistency as BuiltinsConsisten
 import codeql_ql.ast.internal.Module::ModConsistency as ModConsistency
 import codeql_ql.ast.internal.Variable::VarConsistency as VarConsistency
 import codeql_ql.ast.internal.AstNodes::AstConsistency as AstConsistency
+import codeql_ql.ast.internal.AstNodes as AstNodes
 
 from AstNode node, string msg
 where
@@ -42,7 +43,9 @@ where
     or
     AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent"
     or
-    AstConsistency::nonUniqueParent(node) and msg = "AstConsistency::nonUniqueParent"
+    AstConsistency::nonUniqueParent(node) and
+    msg = "AstConsistency::nonUniqueParent" and
+    not exists(AstNodes::toMock(node)) // we don't care about the mocks, they are nasty by design.
     or
     TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
     or

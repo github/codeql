@@ -537,9 +537,15 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
       |
         decl order by index
       )
+    or
+    toMock(result) = pred.asRight().getParameter(i)
   }
 
-  override TypeExpr getReturnTypeExpr() { toQL(result) = pred.asLeft().getReturnType() }
+  override TypeExpr getReturnTypeExpr() {
+    toQL(result) = pred.asLeft().getReturnType()
+    or
+    toMock(result) = pred.asRight().getReturnTypeExpr()
+  }
 
   override AstNode getAChild(string pred_name) {
     result = Predicate.super.getAChild(pred_name)
