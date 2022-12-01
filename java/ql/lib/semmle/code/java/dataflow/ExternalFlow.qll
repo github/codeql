@@ -134,7 +134,7 @@ private module Frameworks {
  *
  * Extend this class to add additional source definitions.
  */
-class SourceModelCsv = SourceModelCsvInternal;
+deprecated class SourceModelCsv = SourceModelCsvInternal;
 
 private class SourceModelCsvInternal extends Unit {
   /** Holds if `row` specifies a source definition. */
@@ -148,7 +148,7 @@ private class SourceModelCsvInternal extends Unit {
  *
  * Extend this class to add additional sink definitions.
  */
-class SinkModelCsv = SinkModelCsvInternal;
+deprecated class SinkModelCsv = SinkModelCsvInternal;
 
 private class SinkModelCsvInternal extends Unit {
   /** Holds if `row` specifies a sink definition. */
@@ -162,7 +162,7 @@ private class SinkModelCsvInternal extends Unit {
  *
  * Extend this class to add additional flow summary definitions.
  */
-class SummaryModelCsv = SummaryModelCsvInternal;
+deprecated class SummaryModelCsv = SummaryModelCsvInternal;
 
 private class SummaryModelCsvInternal extends Unit {
   /** Holds if `row` specifies a summary definition. */
@@ -176,7 +176,7 @@ private class SummaryModelCsvInternal extends Unit {
  *
  * Extend this class to add additional negative summary definitions.
  */
-class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
+deprecated class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
 
 private class NegativeSummaryModelCsvInternal extends Unit {
   /** Holds if `row` specifies a negative summary definition. */
