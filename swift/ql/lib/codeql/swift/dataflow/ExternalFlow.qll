@@ -390,18 +390,6 @@ predicate matchesSignature(AbstractFunctionDecl func, string signature) {
   paramsString(func) = signature
 }
 
-private NominalType getDeclType(IterableDeclContext decl) {
-  result = decl.(ClassDecl).getType()
-  or
-  result = decl.(StructDecl).getType()
-  or
-  result = getDeclType(decl.(ExtensionDecl).getExtendedTypeDecl())
-  or
-  result = decl.(EnumDecl).getType()
-  or
-  result = decl.(ProtocolDecl).getType()
-}
-
 private NominalTypeDecl resolveExtensions(IterableDeclContext decl) {
   // TODO: this should be a method on IterableDeclContext
   result = decl.(NominalTypeDecl)
