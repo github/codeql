@@ -438,18 +438,18 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(NominalType nomType, IterableDeclContext decl, MethodDecl method |
+    exists(NominalTypeDecl nomTypeDecl, IterableDeclContext decl, MethodDecl method |
       method.getName() = name and
       method = decl.getAMember() and
-      nomType.getFullName() = type and
+      nomTypeDecl.getFullName() = type and
       matchesSignature(method, signature) and
       result = method
     |
       subtypes = true and
-      getDeclType(decl) = nomType.getADerivedType*()
+      resolveExtensions(decl) = nomTypeDecl.getADerivedTypeDecl*()
       or
       subtypes = false and
-      getDeclType(decl) = nomType
+      resolveExtensions(decl) = nomTypeDecl
     )
     or
     // Fields

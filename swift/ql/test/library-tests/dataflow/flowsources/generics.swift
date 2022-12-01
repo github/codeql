@@ -47,21 +47,21 @@ extension MyDerived2
 func useDerived(generic: MyGeneric<Int>, generic2: MyGeneric<Any>, derived: MyDerived<Int>, derived2: MyDerived2) {
     _ = generic.source1 // SOURCE
     _ = generic.source2 // SOURCE
-    _ = generic.source3() // SOURCE [NOT DETECTED]
+    _ = generic.source3() // SOURCE
     _ = generic2.source1 // SOURCE
     _ = generic2.source2 // SOURCE
-    _ = generic2.source3() // SOURCE [NOT DETECTED]
+    _ = generic2.source3() // SOURCE
     _ = derived.source1 // SOURCE
     _ = derived.source2 // SOURCE
-    _ = derived.source3() // SOURCE [NOT DETECTED]
+    _ = derived.source3() // SOURCE
     _ = derived.source4 // SOURCE
     _ = derived.source5 // SOURCE
-    _ = derived.source6() // SOURCE [NOT DETECTED]
+    _ = derived.source6() // SOURCE
     _ = derived.source7 // SOURCE
-    _ = derived.source8() // SOURCE [NOT DETECTED]
+    _ = derived.source8() // SOURCE
     _ = derived2.source1 // SOURCE
     _ = derived2.source2 // SOURCE
-    _ = derived2.source3() // SOURCE [NOT DETECTED]
+    _ = derived2.source3() // SOURCE
     _ = derived2.source9 // SOURCE
     _ = derived2.source10 // SOURCE
     _ = derived2.source11() // SOURCE
