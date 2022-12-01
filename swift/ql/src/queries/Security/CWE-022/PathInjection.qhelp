@@ -4,12 +4,10 @@
 <qhelp>
 
 <overview>
-<p>Accessing paths controlled by users can allow an attacker to access unexpected resources. This 
-can result in sensitive information being revealed or deleted, or an attacker being able to influence
-behavior by modifying unexpected files.</p>
+<p>Accessing paths controlled by users can expose resources to attackers.</p>
 
 <p>Paths that are naively constructed from data controlled by a user may contain unexpected special characters,
-such as "..". Such a path may potentially point to any directory on the file system.</p>
+such as <code>..</code>. Such a path could point to any directory on the file system.</p>
 </overview>
 
 <recommendation>
@@ -17,11 +15,11 @@ such as "..". Such a path may potentially point to any directory on the file sys
 <p>Validate user input before using it to construct a file path. Ideally, follow these rules:</p>
 
 <ul>
-<li>Do not allow more than a single "." character.</li>
-<li>Do not allow directory separators such as "/" or "\" (depending on the file system).</li>
-<li>Do not rely on simply replacing problematic sequences such as "../". For example, after applying this filter to
+<li>Do not allow more than a single <code>.</code> character.</li>
+<li>Do not allow directory separators such as <code>/</code> or <code>\</code> (depending on the file system).</li>
+<li>Do not rely on simply replacing problematic sequences such as <code>../</code>. For example, after applying this filter to
 ".../...//" the resulting string would still be "../".</li>
-<li>Ideally use a whitelist of known good patterns.</li>
+<li>Use a whitelist of known good patterns.</li>
 </ul>
 
 </recommendation>
