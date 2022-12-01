@@ -674,8 +674,8 @@ class ConstructorRefCallExpr(SelfApplyExpr):
 class DotSyntaxCallExpr(SelfApplyExpr):
     pass
 
-@synth.from_class(DotSyntaxCallExpr)
-class MethodRefExpr(LookupExpr):
+@synth.from_class(SelfApplyExpr)
+class MethodLookupExpr(LookupExpr):
     pass
 
 class DynamicMemberRefExpr(DynamicLookupExpr):

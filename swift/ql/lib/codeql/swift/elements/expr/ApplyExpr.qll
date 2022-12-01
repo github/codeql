@@ -1,17 +1,18 @@
 private import codeql.swift.generated.expr.ApplyExpr
-private import codeql.swift.elements.decl.AbstractFunctionDecl
+private import codeql.swift.elements.Callable
 private import codeql.swift.elements.expr.DeclRefExpr
-private import codeql.swift.elements.expr.MethodRefExpr
+private import codeql.swift.elements.expr.MethodLookupExpr
 private import codeql.swift.elements.expr.ConstructorRefCallExpr
+private import codeql.swift.elements.decl.MethodDecl
 
 class ApplyExpr extends Generated::ApplyExpr {
-  AbstractFunctionDecl getStaticTarget() {
+  Callable getStaticTarget() {
     exists(Expr f |
       f = this.getFunction() and
       (
         result = f.(DeclRefExpr).getDecl()
         or
-        result = f.(ConstructorRefCallExpr).getFunction().(DeclRefExpr).getDecl()
+        result = f.(ConstructorRefCallExpr).getFunction().(DeclRefExpr).getDecl() // TODO: fix this
       )
     )
   }
@@ -36,11 +37,11 @@ class ApplyExpr extends Generated::ApplyExpr {
 }
 
 class MethodApplyExpr extends ApplyExpr {
-  private MethodRefExpr method;
+  private MethodLookupExpr method;
 
   MethodApplyExpr() { method = this.getFunction() }
 
-  override AbstractFunctionDecl getStaticTarget() { result = method.getMethod() }
+  override MethodDecl getStaticTarget() { result = method.getMethod() }
 
   override Expr getQualifier() { result = method.getBase() }
 }

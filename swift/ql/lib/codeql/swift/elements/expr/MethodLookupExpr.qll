@@ -1,11 +1,11 @@
-private import codeql.swift.generated.expr.MethodRefExpr
+private import codeql.swift.generated.expr.MethodLookupExpr
 private import codeql.swift.elements.expr.Expr
 private import codeql.swift.elements.decl.Decl
-private import codeql.swift.elements.decl.AbstractFunctionDecl
+private import codeql.swift.elements.decl.MethodDecl
 private import codeql.swift.generated.Raw
 private import codeql.swift.generated.Synth
 
-class MethodRefExpr extends Generated::MethodRefExpr {
+class MethodLookupExpr extends Generated::MethodLookupExpr {
   override string toString() { result = "." + this.getMember().toString() }
 
   override Expr getImmediateBase() {
@@ -14,11 +14,11 @@ class MethodRefExpr extends Generated::MethodRefExpr {
 
   override Decl getImmediateMember() {
     result =
-      Synth::convertDeclFromRaw(this.getUnderlying().getFunction().(Raw::DeclRefExpr).getDecl())
+      Synth::convertDeclFromRaw(this.getUnderlying().getFunction().(Raw::DeclRefExpr).getDecl()) // TODO: FIX THIS
   }
 
-  AbstractFunctionDecl getMethod() { result = this.getMember() }
+  MethodDecl getMethod() { result = this.getMember() }
 
   cached
-  private Raw::DotSyntaxCallExpr getUnderlying() { this = Synth::TMethodRefExpr(result) }
+  private Raw::SelfApplyExpr getUnderlying() { this = Synth::TMethodLookupExpr(result) }
 }
