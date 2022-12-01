@@ -1049,8 +1049,6 @@ open class KotlinFileExtractor(
     private val jvmOverloadsFqName = FqName("kotlin.jvm.JvmOverloads")
 
     private fun extractGeneratedOverloads(f: IrFunction, parentId: Label<out DbReftype>, maybeSourceParentId: Label<out DbReftype>?, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
-        if (!f.hasAnnotation(jvmOverloadsFqName))
-            return
 
         fun extractGeneratedOverload(paramList: List<IrValueParameter?>) {
             val overloadParameters = paramList.filterNotNull()
@@ -1094,6 +1092,15 @@ open class KotlinFileExtractor(
                     }
                 }
             }
+        }
+
+        if (!f.hasAnnotation(jvmOverloadsFqName)) {
+            if (f is IrConstructor && f.valueParameters.isNotEmpty() && f.valueParameters.all { it.defaultValue != null }) {
+                // Per https://kotlinlang.org/docs/classes.html#creating-instances-of-classes, a single default overload gets created specifically
+                // when we have all default parameters, regardless of `@JvmOverloads`.
+                extractGeneratedOverload(f.valueParameters.map { _ -> null })
+            }
+            return
         }
 
         val paramList: MutableList<IrValueParameter?> = f.valueParameters.toMutableList()
