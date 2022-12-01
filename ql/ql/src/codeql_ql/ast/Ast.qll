@@ -821,7 +821,7 @@ class Module extends TModule, ModuleDeclaration {
   /**
    * Gets a member of the module.
    */
-  AstNode getAMember() { result = getMember(_) }
+  AstNode getAMember() { result = this.getMember(_) }
 
   AstNode getMember(int i) {
     toQL(result) = mod.asLeft().getChild(i).(QL::ModuleMember).getChild(_)
