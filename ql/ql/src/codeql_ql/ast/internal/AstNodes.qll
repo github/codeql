@@ -238,6 +238,7 @@ class TVarDef = TVarDecl or TAsExpr;
 
 module AstConsistency {
   import ql
+  import codeql_ql.ast.internal.AstNodes as AstNodes
 
   query predicate nonTotalGetParent(AstNode node) {
     exists(toQL(node).getParent()) and
@@ -247,5 +248,8 @@ module AstConsistency {
     not (node instanceof QLDoc and node.getLocation().getFile().getExtension() = "dbscheme") // qldoc in dbschemes are not hooked up
   }
 
-  query predicate nonUniqueParent(AstNode node) { count(node.getParent()) >= 2 }
+  query predicate nonUniqueParent(AstNode node) {
+    count(node.getParent()) >= 2 and
+    not exists(AstNodes::toMock(node)) // we don't care about the mocks, they are nasty by design.
+  }
 }
