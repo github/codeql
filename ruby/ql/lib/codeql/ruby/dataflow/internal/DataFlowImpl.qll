@@ -1036,22 +1036,119 @@ private module Stage1 implements StageSig {
     )
   }
 
-  additional predicate stats(
-    boolean fwd, int nodes, int fields, int conscand, int states, int tuples, Configuration config
-  ) {
-    fwd = true and
-    nodes = count(NodeEx node | fwdFlow(node, config)) and
-    fields = count(Content f0 | fwdFlowConsCand(f0, config)) and
-    conscand = -1 and
-    states = count(FlowState state | fwdFlowState(state, config)) and
-    tuples = count(NodeEx n, boolean b | fwdFlow(n, b, config))
-    or
-    fwd = false and
-    nodes = count(NodeEx node | revFlow(node, _, config)) and
-    fields = count(Content f0 | revFlowConsCand(f0, config)) and
-    conscand = -1 and
-    states = count(FlowState state | revFlowState(state, config)) and
-    tuples = count(NodeEx n, boolean b | revFlow(n, b, config))
+  /** Provides statistics predicates that are usefull for debugging. */
+  module Stats {
+    private int fwdCallEdgesIn(Configuration config) {
+      result =
+        count(DataFlowCall call, ParamNodeEx p |
+          exists(ArgNodeEx arg |
+            fwdFlow(arg, _, config) and
+            viableParamArgEx(call, p, arg)
+          )
+        )
+    }
+
+    // Same as `fwdFlowOut`, but exposes the underlying return position
+    pragma[nomagic]
+    private predicate fwdFlowOutForStats(
+      DataFlowCall call, ReturnPosition pos, DataFlowCallable c, Cc cc, Configuration config
+    ) {
+      exists(NodeEx out |
+        fwdFlowReturnPosition(pos, cc, config) and
+        viableReturnPosOutEx(call, pos, out) and
+        not fullBarrier(out, config) and
+        c = pos.getCallable()
+      )
+    }
+
+    private int callEdgesThrough(Configuration config) {
+      result =
+        count(DataFlowCall call, ParamNodeEx p |
+          exists(DataFlowCallable c |
+            fwdFlowOutForStats(call, _, pragma[only_bind_into](c), true,
+              pragma[only_bind_into](config)) and
+            exists(ArgNodeEx arg |
+              fwdFlow(arg, _, pragma[only_bind_into](config)) and
+              viableParamArgEx(call, p, arg)
+            ) and
+            p.isParameterOf(c, _)
+          )
+        )
+    }
+
+    private int fwdCallEdgesOut(Configuration config) {
+      result =
+        count(DataFlowCall call, ReturnPosition pos |
+          fwdFlowOutForStats(call, pos, _, false, config)
+        )
+    }
+
+    // Same as `revFlowIn`, but exposes the underlying parameter node, and
+    // removes some unused nodes
+    pragma[nomagic]
+    private predicate revFlowInForStats(
+      DataFlowCall call, ParamNodeEx p, DataFlowCallable c, boolean toReturn, Configuration config
+    ) {
+      revFlow(p, toReturn, config) and
+      viableParamArgNodeCandFwd1(call, p, _, config) and
+      c = p.getEnclosingCallable()
+    }
+
+    private int revCallEdgesIn(Configuration config) {
+      result =
+        count(DataFlowCall call, DataFlowCallable c, ParameterPosition pos |
+          exists(ParamNodeEx p |
+            revFlowInForStats(call, p, _, false, config) and
+            p.isParameterOf(c, pos)
+          )
+        )
+    }
+
+    private int revcallEdgesThrough(Configuration config) {
+      result =
+        count(DataFlowCall call, ReturnPosition pos |
+          exists(ParamNodeEx p, DataFlowCallable c |
+            revFlowInForStats(call, pragma[only_bind_into](p), pragma[only_bind_into](c), true,
+              pragma[only_bind_into](config)) and
+            revFlowIsReturned(call, _, pragma[only_bind_into](config)) and
+            revFlowOut(pos, pragma[only_bind_into](config)) and
+            pos = TReturnPosition0(c, _)
+          )
+        )
+    }
+
+    private int revOutFlow(Configuration config) {
+      result =
+        count(DataFlowCall call, ReturnPosition pos |
+          exists(NodeEx out |
+            revFlow(out, _, config) and
+            viableReturnPosOutNodeCandFwd1(call, pos, out, config)
+          )
+        )
+    }
+
+    predicate stats(
+      boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int callEdgesInOut,
+      int callEdgesThrough, Configuration config
+    ) {
+      fwd = true and
+      nodes = count(NodeEx node | fwdFlow(node, config)) and
+      fields = count(Content f0 | fwdFlowConsCand(f0, config)) and
+      conscand = -1 and
+      states = count(FlowState state | fwdFlowState(state, config)) and
+      tuples = count(NodeEx n, boolean b | fwdFlow(n, b, config)) and
+      callEdgesInOut = fwdCallEdgesIn(config) + fwdCallEdgesOut(config) - callEdgesThrough(config) and
+      callEdgesThrough = callEdgesThrough(config)
+      or
+      fwd = false and
+      nodes = count(NodeEx node | revFlow(node, _, config)) and
+      fields = count(Content f0 | revFlowConsCand(f0, config)) and
+      conscand = -1 and
+      states = count(FlowState state | revFlowState(state, config)) and
+      tuples = count(NodeEx n, boolean b | revFlow(n, b, config)) and
+      callEdgesInOut = revCallEdgesIn(config) + revOutFlow(config) - revcallEdgesThrough(config) and
+      callEdgesThrough = revcallEdgesThrough(config)
+    }
   }
   /* End: Stage 1 logic. */
 }
@@ -1820,27 +1917,136 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    additional predicate stats(
-      boolean fwd, int nodes, int fields, int conscand, int states, int tuples, Configuration config
-    ) {
-      fwd = true and
-      nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _, config)) and
-      fields = count(TypedContent f0 | fwdConsCand(f0, _, config)) and
-      conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap, config)) and
-      states = count(FlowState state | fwdFlow(_, state, _, _, _, _, config)) and
-      tuples =
-        count(NodeEx n, FlowState state, Cc cc, ParameterPositionOption summaryCtx, ApOption argAp,
-          Ap ap | fwdFlow(n, state, cc, summaryCtx, argAp, ap, config))
-      or
-      fwd = false and
-      nodes = count(NodeEx node | revFlow(node, _, _, _, _, config)) and
-      fields = count(TypedContent f0 | consCand(f0, _, config)) and
-      conscand = count(TypedContent f0, Ap ap | consCand(f0, ap, config)) and
-      states = count(FlowState state | revFlow(_, state, _, _, _, config)) and
-      tuples =
-        count(NodeEx n, FlowState state, ReturnCtx returnCtx, ApOption retAp, Ap ap |
-          revFlow(n, state, returnCtx, retAp, ap, config)
+    /** Provides statistics predicates that are usefull for debugging. */
+    module Stats {
+      private int fwdCallEdgesIn(Configuration config) {
+        result =
+          count(DataFlowCall call, DataFlowCallable c, ParameterPosition pos |
+            exists(ParamNodeEx p |
+              fwdFlowIn(call, p, _, _, _, _, _, _, config) and
+              p.isParameterOf(c, pos)
+            )
+          )
+      }
+
+      // Same as `fwdFlowOutFromArg`, but exposes the underlying return node, and
+      // removes some unused nodes
+      pragma[nomagic]
+      private predicate fwdFlowOutFromArgForStats(
+        DataFlowCall call, RetNodeEx ret, DataFlowCallable c, ParameterPosition summaryCtx,
+        Ap argAp, Ap ap, Configuration config
+      ) {
+        exists(ReturnKindExt kind, boolean allowsFieldFlow, CcCall ccc |
+          fwdFlow(pragma[only_bind_into](ret), _, pragma[only_bind_into](ccc),
+            TParameterPositionSome(pragma[only_bind_into](summaryCtx)), apSome(argAp), ap, config) and
+          flowThroughOutOfCall(call, pragma[only_bind_into](c), ccc, ret, kind, _, allowsFieldFlow,
+            config) and
+          (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
+          parameterFlowThroughAllowed(c, pragma[only_bind_into](summaryCtx), kind)
         )
+      }
+
+      private int fwdCallEdgesThrough(Configuration config) {
+        result =
+          count(DataFlowCall call, DataFlowCallable c, ParameterPosition p |
+            exists(RetNodeEx ret, Ap ap, Ap argAp0 |
+              fwdFlowOutFromArgForStats(call, ret, c, p, argAp0, ap, config) and
+              fwdFlowIsEntered(call, _, _, _, p, argAp0, config)
+            )
+          )
+      }
+
+      private int fwdCallEdgesOut(Configuration config) {
+        result =
+          count(DataFlowCall call, DataFlowCallable c, ReturnKindExt kind |
+            exists(RetNodeEx ret, Ap ap, boolean allowsFieldFlow, CcNoCall innercc |
+              fwdFlow(ret, _, innercc, _, _, ap, config) and
+              flowOutOfCall(call, ret, _, _, allowsFieldFlow, config) and
+              c = ret.getEnclosingCallable() and
+              exists(getCallContextReturn(c, call, innercc)) and
+              kind = ret.getKind() and
+              if allowsFieldFlow = false then ap instanceof ApNil else any()
+            )
+          )
+      }
+
+      private int revCallEdgesIn(Configuration config) {
+        result =
+          count(DataFlowCall call, DataFlowCallable c, ParameterPosition pos |
+            exists(ParamNodeEx p, Ap ap, boolean allowsFieldFlow |
+              revFlow(p, _, TReturnCtxNone(), _, ap, config) and
+              flowIntoCall(call, _, p, allowsFieldFlow, config) and
+              (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
+              p.isParameterOf(c, pos)
+            )
+          )
+      }
+
+      // Same as `revFlowInToReturn`, but exposes the underlying parameter node, and
+      // removes some unused nodes
+      pragma[nomagic]
+      private predicate revFlowInToReturnForStats(
+        DataFlowCall call, ParamNodeEx p, ReturnKindExt kind, Ap returnAp, Configuration config
+      ) {
+        exists(boolean allowsFieldFlow, Ap ap |
+          revFlow(pragma[only_bind_into](p), _,
+            TReturnCtxMaybeFlowThrough(pragma[only_bind_into](kind)), apSome(returnAp), ap, config) and
+          flowThroughIntoCall(call, _, p, allowsFieldFlow, config) and
+          (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
+          parameterFlowThroughAllowed(p, kind)
+        )
+      }
+
+      private int revCallEdgesThrough(Configuration config) {
+        result =
+          count(DataFlowCall call, DataFlowCallable c, ReturnKindExt kind |
+            exists(ParamNodeEx p, Ap returnAp0 |
+              revFlowInToReturnForStats(call, p, kind, returnAp0, config) and
+              revFlowIsReturned(call, _, _, kind, returnAp0, config) and
+              c = p.getEnclosingCallable()
+            )
+          )
+      }
+
+      private int revCallEdgesOut(Configuration config) {
+        result =
+          count(DataFlowCall call, DataFlowCallable c, ReturnKindExt kind |
+            exists(RetNodeEx ret |
+              revFlowOut(call, ret, kind, _, _, _, _, config) and
+              c = ret.getEnclosingCallable()
+            )
+          )
+      }
+
+      predicate stats(
+        boolean fwd, int nodes, int fields, int conscand, int states, int tuples,
+        int callEdgesInOut, int callEdgesThrough, Configuration config
+      ) {
+        fwd = true and
+        nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _, config)) and
+        fields = count(TypedContent f0 | fwdConsCand(f0, _, config)) and
+        conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap, config)) and
+        states = count(FlowState state | fwdFlow(_, state, _, _, _, _, config)) and
+        tuples =
+          count(NodeEx n, FlowState state, Cc cc, ParameterPositionOption summaryCtx,
+            ApOption argAp, Ap ap | fwdFlow(n, state, cc, summaryCtx, argAp, ap, config)) and
+        callEdgesInOut =
+          fwdCallEdgesIn(config) + fwdCallEdgesOut(config) - fwdCallEdgesThrough(config) and
+        callEdgesThrough = fwdCallEdgesThrough(config)
+        or
+        fwd = false and
+        nodes = count(NodeEx node | revFlow(node, _, _, _, _, config)) and
+        fields = count(TypedContent f0 | consCand(f0, _, config)) and
+        conscand = count(TypedContent f0, Ap ap | consCand(f0, ap, config)) and
+        states = count(FlowState state | revFlow(_, state, _, _, _, config)) and
+        tuples =
+          count(NodeEx n, FlowState state, ReturnCtx returnCtx, ApOption retAp, Ap ap |
+            revFlow(n, state, returnCtx, retAp, ap, config)
+          ) and
+        callEdgesInOut =
+          revCallEdgesIn(config) + revCallEdgesOut(config) - revCallEdgesThrough(config) and
+        callEdgesThrough = revCallEdgesThrough(config)
+      }
     }
     /* End: Stage logic. */
   }
@@ -3717,43 +3923,59 @@ private predicate finalStats(
  */
 predicate stageStats(
   int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
-  Configuration config
+  int callEdgesInOut, int callEdgesThrough, Configuration config
 ) {
   stage = "1 Fwd" and
   n = 10 and
-  Stage1::stats(true, nodes, fields, conscand, states, tuples, config)
+  Stage1::Stats::stats(true, nodes, fields, conscand, states, tuples, callEdgesInOut,
+    callEdgesThrough, config)
   or
   stage = "1 Rev" and
   n = 15 and
-  Stage1::stats(false, nodes, fields, conscand, states, tuples, config)
+  Stage1::Stats::stats(false, nodes, fields, conscand, states, tuples, callEdgesInOut,
+    callEdgesThrough, config)
   or
   stage = "2 Fwd" and
   n = 20 and
-  Stage2::stats(true, nodes, fields, conscand, states, tuples, config)
+  Stage2::Stats::stats(true, nodes, fields, conscand, states, tuples, callEdgesInOut,
+    callEdgesThrough, config)
   or
   stage = "2 Rev" and
   n = 25 and
-  Stage2::stats(false, nodes, fields, conscand, states, tuples, config)
+  Stage2::Stats::stats(false, nodes, fields, conscand, states, tuples, callEdgesInOut,
+    callEdgesThrough, config)
   or
   stage = "3 Fwd" and
   n = 30 and
-  Stage3::stats(true, nodes, fields, conscand, states, tuples, config)
+  Stage3::Stats::stats(true, nodes, fields, conscand, states, tuples, callEdgesInOut,
+    callEdgesThrough, config)
   or
   stage = "3 Rev" and
   n = 35 and
-  Stage3::stats(false, nodes, fields, conscand, states, tuples, config)
+  Stage3::Stats::stats(false, nodes, fields, conscand, states, tuples, callEdgesInOut,
+    callEdgesThrough, config)
   or
   stage = "4 Fwd" and
   n = 40 and
-  Stage4::stats(true, nodes, fields, conscand, states, tuples, config)
+  Stage4::Stats::stats(true, nodes, fields, conscand, states, tuples, callEdgesInOut,
+    callEdgesThrough, config)
   or
   stage = "4 Rev" and
   n = 45 and
-  Stage4::stats(false, nodes, fields, conscand, states, tuples, config)
+  Stage4::Stats::stats(false, nodes, fields, conscand, states, tuples, callEdgesInOut,
+    callEdgesThrough, config)
   or
-  stage = "5 Fwd" and n = 50 and finalStats(true, nodes, fields, conscand, states, tuples)
+  stage = "5 Fwd" and
+  n = 50 and
+  finalStats(true, nodes, fields, conscand, states, tuples) and
+  callEdgesInOut = -1 and
+  callEdgesThrough = -1
   or
-  stage = "5 Rev" and n = 55 and finalStats(false, nodes, fields, conscand, states, tuples)
+  stage = "5 Rev" and
+  n = 55 and
+  finalStats(false, nodes, fields, conscand, states, tuples) and
+  callEdgesInOut = -1 and
+  callEdgesThrough = -1
 }
 
 private module FlowExploration {
