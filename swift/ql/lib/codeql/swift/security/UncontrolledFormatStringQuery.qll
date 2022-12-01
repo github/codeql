@@ -1,8 +1,8 @@
 /**
- * Provides a taint-tracking configuration for reasoning about uncontrolled format string
- * vulnerabilities.
+ * Provides a taint-tracking configuration for reasoning about uncontrolled
+ * format string vulnerabilities.
  */
- 
+
 import swift
 import codeql.swift.StringFormat
 import codeql.swift.dataflow.DataFlow

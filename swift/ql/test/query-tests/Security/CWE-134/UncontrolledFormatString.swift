@@ -3,7 +3,7 @@
 
 struct URL
 {
-	init?(string: String) {}
+    init?(string: String) {}
 }
 
 struct Locale {
@@ -12,7 +12,7 @@ struct Locale {
 extension String : CVarArg {
     public var _cVarArgEncoding: [Int] { get { return [] } }
 
-	init(contentsOf: URL) throws { self.init() }
+    init(contentsOf: URL) throws { self.init() }
     init(format: String, _ arguments: CVarArg...) { self.init() }
     init(format: String, arguments: [CVarArg]) { self.init() }
     init(format: String, locale: Locale?, _ args: CVarArg...) { self.init() }

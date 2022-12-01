@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from TaintedFormatConfiguration config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
-select sinkNode.getNode(), sourceNode, sinkNode, "This format string is derived from a $@.",
-  sourceNode.getNode(), "user-provided value"
+select sinkNode.getNode(), sourceNode, sinkNode, "This format string depends on $@.",
+  sourceNode.getNode(), "a user-provided value"
