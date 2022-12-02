@@ -30,6 +30,13 @@ private module Cached {
   }
 
   /**
+   * Like `defaultAdditionalTaintStep`, but these steps are only applied when a transitive closure
+   * of such steps can reach a sink.
+   */
+  cached
+  predicate defaultAdditionalTaintStepAtSink(DataFlow::Node node1, DataFlow::Node node2) { none() }
+
+  /**
    * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
    * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
    * different objects.
