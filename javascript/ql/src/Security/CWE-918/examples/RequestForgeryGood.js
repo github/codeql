@@ -3,7 +3,7 @@ import http from 'http';
 const server = http.createServer(function(req, res) {
     const target = new URL(req.url).searchParams.get("target");
 
-    const subdomain;
+    let subdomain;
     if (target === 'EU') {
         subdomain = "europe"
     } else {
