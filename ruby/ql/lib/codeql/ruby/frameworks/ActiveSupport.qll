@@ -392,8 +392,8 @@ module ActiveSupport {
       override predicate row(string row) {
         row =
           [
-            "activesupport;;Member[ActiveSupport].Member[JSON].Method[encode,dump];Argument[0];ReturnValue;taint",
-            "activesupport;;Member[ActiveSupport].Member[JSON].Method[decode,load];Argument[0];ReturnValue;taint",
+            "ActiveSupport::JSON!;Method[encode,dump];Argument[0];ReturnValue;taint",
+            "ActiveSupport::JSON!;Method[decode,load];Argument[0];ReturnValue;taint",
           ]
       }
     }
