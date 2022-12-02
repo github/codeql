@@ -44,13 +44,18 @@ fun getIrElementBinaryName(that: IrElement): String {
         is IrDeclarationWithName -> getName(that)
         else -> "(unknown-name)"
     }
+
     val internalName = StringBuilder(shortName)
+    if (that !is IrClass) {
+        val parent = that.parent
+        if (parent is IrFile) {
+            // Note we'll fall through and do the IrPackageFragment case as well, since IrFile <: IrPackageFragment
+            internalName.insert(0, getFileClassName(parent) + "$")
+        }
+    }
+
     generateSequence(that.parent) { (it as? IrDeclaration)?.parent }
         .forEach {
-            if (it is IrFile) {
-                // Note we'll fall through and do the IrPackageFragment case as well, since IrFile <: IrPackageFragment
-                internalName.insert(0, getFileClassName(it) + "$")
-            }
             when (it) {
                 is IrClass -> internalName.insert(0, getName(it) + "$")
                 is IrPackageFragment -> it.fqName.asString().takeIf { fqName -> fqName.isNotEmpty() }?.let { fqName -> internalName.insert(0, "$fqName.") }
