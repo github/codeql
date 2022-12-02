@@ -164,8 +164,8 @@ private class DefaultGetMethod extends GetMethod {
 
   override string getCsvModel() {
     result =
-      "generatedtest;Test;false;" + this.getName() + ";(Object);;" +
-        getComponentSpec(SummaryComponent::content(c)) + "Argument[0].;ReturnValue;value;manual"
+      "generatedtest;Test;false;" + this.getName() + ";(Object);;Argument[0]." +
+        getComponentSpec(SummaryComponent::content(c)) + ";ReturnValue;value;manual"
   }
 }
 
@@ -360,8 +360,8 @@ private class DefaultGenMethod extends GenMethod {
 
   override string getCsvModel() {
     result =
-      "generatedtest;Test;false;" + this.getName() + ";(Object);;Argument[0];" +
-        getComponentSpec(SummaryComponent::content(c)) + "ReturnValue.;value;manual"
+      "generatedtest;Test;false;" + this.getName() + ";(Object);;Argument[0];ReturnValue." +
+        getComponentSpec(SummaryComponent::content(c)) + ";value;manual"
   }
 }
 

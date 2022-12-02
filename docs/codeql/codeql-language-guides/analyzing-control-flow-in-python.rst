@@ -47,7 +47,7 @@ Example finding unreachable AST nodes
    where not exists(node.getAFlowNode())
    select node
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/669220024/>`__. The demo projects on LGTM.com all have some code that has no control flow node, and is therefore unreachable. However, since the ``Module`` class is also a subclass of the ``AstNode`` class, the query also finds any modules implemented in C or with no source code. Therefore, it is better to find all unreachable statements.
+Many codebases have some code that has no control flow node, and is therefore unreachable. However, since the ``Module`` class is also a subclass of the ``AstNode`` class, the query also finds any modules implemented in C or with no source code. Therefore, it is better to find all unreachable statements.
 
 Example finding unreachable statements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -60,7 +60,7 @@ Example finding unreachable statements
    where not exists(s.getAFlowNode())
    select s
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/670720181/>`__. This query gives fewer results, but most of the projects have some unreachable nodes. These are also highlighted by the standard "Unreachable code" query. For more information, see `Unreachable code <https://lgtm.com/rules/3980095>`__ on LGTM.com.
+This query should give fewer results. You can also find unreachable code using the standard "Unreachable code" query. For more information, see `Unreachable code <https://codeql.github.com/codeql-query-help/python/py-unreachable-statement/>`__.
 
 The ``BasicBlock`` class
 ------------------------
@@ -114,7 +114,7 @@ Example finding mutually exclusive blocks within the same function
    )
    select b1, b2
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/671000028/>`__. This typically gives a very large number of results, because it is a common occurrence in normal control flow. It is, however, an example of the sort of control-flow analysis that is possible. Control-flow analyses such as this are an important aid to data flow analysis. For more information, see ":doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`."
+This typically gives a very large number of results, because it is a common occurrence in normal control flow. It is, however, an example of the sort of control-flow analysis that is possible. Control-flow analyses such as this are an important aid to data flow analysis. For more information, see ":doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`."
 
 Further reading
 ---------------

@@ -39,6 +39,11 @@ def print_password():
     sys.stdout.write(get_password()) # NOT OK
     sys.stderr.write(get_password()) # NOT OK
 
+    import getpass
+
+    x = getpass.getpass()
+    print(x) # NOT OK
+
 
 def FPs(account, account_id):
     # we assume that any account parameter is sensitive (id/username)

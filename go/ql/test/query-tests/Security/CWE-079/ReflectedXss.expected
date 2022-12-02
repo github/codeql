@@ -9,9 +9,6 @@ edges
 | reflectedxsstest.go:27:2:27:38 | ... := ...[0] : pointer type | reflectedxsstest.go:28:10:28:57 | type conversion |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] : File | reflectedxsstest.go:33:10:33:57 | type conversion |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] : pointer type | reflectedxsstest.go:34:10:34:62 | type conversion |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[1] : pointer type | reflectedxsstest.go:34:46:34:51 | implicit dereference : FileHeader |
-| reflectedxsstest.go:34:46:34:51 | implicit dereference : FileHeader | reflectedxsstest.go:34:10:34:62 | type conversion |
-| reflectedxsstest.go:34:46:34:51 | implicit dereference : FileHeader | reflectedxsstest.go:34:46:34:51 | implicit dereference : FileHeader |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] : pointer type | reflectedxsstest.go:44:10:44:55 | type conversion |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] : pointer type | reflectedxsstest.go:45:10:45:18 | byteSlice |
 | reflectedxsstest.go:51:14:51:18 | selection of URL : pointer type | reflectedxsstest.go:54:11:54:21 | type conversion |
@@ -44,7 +41,6 @@ nodes
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] : pointer type | semmle.label | ... := ...[1] : pointer type |
 | reflectedxsstest.go:33:10:33:57 | type conversion | semmle.label | type conversion |
 | reflectedxsstest.go:34:10:34:62 | type conversion | semmle.label | type conversion |
-| reflectedxsstest.go:34:46:34:51 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
 | reflectedxsstest.go:44:10:44:55 | type conversion | semmle.label | type conversion |
 | reflectedxsstest.go:45:10:45:18 | byteSlice | semmle.label | byteSlice |

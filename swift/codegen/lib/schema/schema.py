@@ -9,6 +9,7 @@ from enum import Enum, auto
 import functools
 import importlib.util
 from toposort import toposort_flatten
+import inflection
 
 
 class Error(Exception):
@@ -210,8 +211,12 @@ class _PropertyNamer(PropertyModifier):
 def _get_class(cls: type) -> Class:
     if not isinstance(cls, type):
         raise Error(f"Only class definitions allowed in schema, found {cls}")
-    if cls.__name__[0].islower():
-        raise Error(f"Class name must be capitalized, found {cls.__name__}")
+    # we must check that going to dbscheme names and back is preserved
+    # In particular this will not happen if uppercase acronyms are included in the name
+    to_underscore_and_back = inflection.camelize(inflection.underscore(cls.__name__), uppercase_first_letter=True)
+    if cls.__name__ != to_underscore_and_back:
+        raise Error(f"Class name must be upper camel-case, without capitalized acronyms, found {cls.__name__} "
+                    f"instead of {to_underscore_and_back}")
     if len({b._group for b in cls.__bases__ if hasattr(b, "_group")}) > 1:
         raise Error(f"Bases with mixed groups for {cls.__name__}")
     if any(getattr(b, "_null", False) for b in cls.__bases__):

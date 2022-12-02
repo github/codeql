@@ -126,6 +126,8 @@ predicate jumpStep(Node n1, Node n2) {
     n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = sendRead and
     n2 = recvRead
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
 }
 
 /**
@@ -186,6 +188,14 @@ predicate clearsContent(Node n, Content c) {
   // FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
   // or
   // FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+}
+
+/**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
 }
 
 /** Gets the type of `n` used for type pruning. */

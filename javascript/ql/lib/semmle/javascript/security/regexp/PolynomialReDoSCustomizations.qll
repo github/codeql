@@ -90,7 +90,8 @@ module PolynomialReDoS {
         isCharClassLike(root)
       )
       or
-      this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName()
+      this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName() and
+      not this.(DataFlow::MethodCallNode).getNumArgument() = 1 // with one argument it just slices off the beginning
     }
   }
 

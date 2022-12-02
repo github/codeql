@@ -74,7 +74,13 @@ private module Cached {
    */
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    DataFlow::localFlowStep(nodeFrom, nodeTo)
+    or
     defaultAdditionalTaintStep(nodeFrom, nodeTo)
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
   }
 }
 

@@ -82,8 +82,48 @@ func taintThroughStringOperations() {
   sink(arg: String(repeating: tainted, count: 2)) // $ MISSING: tainted=74
 
   sink(arg: clean.description)
-  sink(arg: tainted.description) // $ MISSING: tainted=74
+  sink(arg: tainted.description) // $ tainted=74
 
   sink(arg: clean.debugDescription)
-  sink(arg: tainted.debugDescription) // $ MISSING: tainted=74
+  sink(arg: tainted.debugDescription) // $ tainted=74
+}
+
+class Data
+{
+    init<S>(_ elements: S) {}
+}
+
+extension String {
+	struct Encoding {
+		static let utf8 = Encoding()
+	}
+
+	init?(data: Data, encoding: Encoding) { self.init() }
+}
+
+
+func source3() -> Data { return Data("") }
+
+func taintThroughData() {
+  let stringClean = String(data: Data(""), encoding: String.Encoding.utf8)
+  let stringTainted = String(data: source3(), encoding: String.Encoding.utf8)
+
+	sink(arg: stringClean!)
+	sink(arg: stringTainted!) // $ MISSING: tainted=100
+}
+
+func sink(arg: String.UTF8View) {}
+func sink(arg: ContiguousArray<CChar>) {}
+func sink(arg: String.UnicodeScalarView) {}
+
+func taintThroughStringFields() {
+  let clean = ""
+  let tainted = source2().utf8
+  let taintedCString = source2().utf8CString
+  let taintedUnicodeScalars = source2().unicodeScalars
+
+  sink(arg: clean)
+  sink(arg: tainted) // $ tainted=121
+  sink(arg: taintedCString) // $ tainted=122
+  sink(arg: taintedUnicodeScalars) // $ tainted=123
 }

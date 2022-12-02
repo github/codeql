@@ -104,6 +104,17 @@ module ActiveSupport {
 
         override predicate runsArbitraryCode() { none() }
       }
+
+      /** Flow summary for `Object#to_json`, which serializes the receiver as a JSON string. */
+      private class ToJsonSummary extends SimpleSummarizedCallable {
+        ToJsonSummary() { this = "to_json" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = ["Argument[self]", "Argument[self].Element[any]"] and
+          output = "ReturnValue" and
+          preservesValue = false
+        }
+      }
     }
 
     /**
@@ -313,6 +324,26 @@ module ActiveSupport {
   }
 
   /**
+   * `ActiveSupport::ERB`
+   */
+  module Erb {
+    /**
+     * `ActiveSupport::ERB::Util`
+     */
+    module Util {
+      private class JsonEscapeSummary extends SimpleSummarizedCallable {
+        JsonEscapeSummary() { this = "json_escape" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[0]" and
+          output = "ReturnValue" and
+          preservesValue = false
+        }
+      }
+    }
+  }
+
+  /**
    * Type summaries for extensions to the `Pathname` module.
    */
   private class PathnameTypeSummary extends ModelInput::TypeModelCsv {
@@ -352,6 +383,19 @@ module ActiveSupport {
           // These methods preserve taint in self
           "ActionView::SafeBuffer;Method[concat,insert,prepend,to_s,to_param];Argument[self];ReturnValue;taint",
         ]
+    }
+  }
+
+  /** `ActiveSupport::JSON` */
+  module Json {
+    private class JsonSummary extends ModelInput::SummaryModelCsv {
+      override predicate row(string row) {
+        row =
+          [
+            "activesupport;;Member[ActiveSupport].Member[JSON].Method[encode,dump];Argument[0];ReturnValue;taint",
+            "activesupport;;Member[ActiveSupport].Member[JSON].Method[decode,load];Argument[0];ReturnValue;taint",
+          ]
+      }
     }
   }
 }
