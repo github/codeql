@@ -17,8 +17,6 @@ static bool shouldCanonicalize() {
 }
 
 std::filesystem::path getCodeQLPath(std::string_view path) {
-  // TODO: this needs more testing
-  // TODO: check canonicalization of names on a case insensitive filesystems
   std::error_code ec;
   std::filesystem::path ret = {};
   static const auto canonicalize = shouldCanonicalize();
