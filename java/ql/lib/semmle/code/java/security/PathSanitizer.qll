@@ -5,6 +5,8 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.frameworks.kotlin.IO
+private import semmle.code.java.frameworks.kotlin.Text
 
 /** A sanitizer that protects against path injection vulnerabilities. */
 abstract class PathInjectionSanitizer extends DataFlow::Node { }
@@ -47,16 +49,25 @@ private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
  */
 private predicate exactPathMatchGuard(Guard g, Expr e, boolean branch) {
   exists(MethodAccess ma, RefType t |
-    t instanceof TypeString or
-    t instanceof TypeUri or
-    t instanceof TypePath or
-    t instanceof TypeFile or
-    t.hasQualifiedName("android.net", "Uri")
+    (
+      t instanceof TypeString or
+      t instanceof TypeUri or
+      t instanceof TypePath or
+      t instanceof TypeFile or
+      t.hasQualifiedName("android.net", "Uri")
+    ) and
+    e = ma.getQualifier().getUnderlyingExpr()
+    or
+    (
+      ma.getMethod().getDeclaringType() instanceof StringsKt
+      or
+      ma.getMethod().getDeclaringType() instanceof FilesKt
+    ) and
+    e = ma.getArgument(0).getUnderlyingExpr()
   |
     ma.getMethod().getDeclaringType() = t and
     ma = g and
-    ma.getMethod().getName() = ["equals", "equalsIgnoreCase"] and
-    e = ma.getQualifier() and
+    ma.getMethod().getName() = ["equals", "equalsIgnoreCase"] + ["", "$default"] and
     branch = true
   )
 }
@@ -82,12 +93,18 @@ private predicate localTaintFlowToPathGuard(Expr e, PathGuard g) {
 }
 
 private class AllowedPrefixGuard extends PathGuard instanceof MethodAccess {
+  Expr checkedExpr;
+
   AllowedPrefixGuard() {
-    (isStringPrefixMatch(this) or isPathPrefixMatch(this)) and
+    (
+      isStringPrefixMatch(this, checkedExpr)
+      or
+      isPathPrefixMatch(this, checkedExpr)
+    ) and
     not isDisallowedWord(super.getAnArgument())
   }
 
-  override Expr getCheckedExpr() { result = super.getQualifier() }
+  override Expr getCheckedExpr() { result = checkedExpr }
 }
 
 /**
@@ -149,12 +166,18 @@ private class DotDotCheckSanitizer extends PathInjectionSanitizer {
 }
 
 private class BlockListGuard extends PathGuard instanceof MethodAccess {
+  Expr checkedExpr;
+
   BlockListGuard() {
-    (isStringPartialMatch(this) or isPathPrefixMatch(this)) and
+    (
+      isStringPartialMatch(this, checkedExpr)
+      or
+      isPathPrefixMatch(this, checkedExpr)
+    ) and
     isDisallowedWord(super.getAnArgument())
   }
 
-  override Expr getCheckedExpr() { result = super.getQualifier() }
+  override Expr getCheckedExpr() { result = checkedExpr }
 }
 
 /**
@@ -188,70 +211,109 @@ private class BlockListSanitizer extends PathInjectionSanitizer {
   }
 }
 
-private predicate isStringPrefixMatch(MethodAccess ma) {
-  exists(Method m | m = ma.getMethod() and m.getDeclaringType() instanceof TypeString |
-    m.hasName("startsWith")
+private class ConstantOrRegex extends Expr {
+  ConstantOrRegex() {
+    this instanceof CompileTimeConstantExpr or
+    this instanceof KtToRegex
+  }
+
+  string getStringValue() {
+    result = this.(CompileTimeConstantExpr).getStringValue() or
+    result = this.(KtToRegex).getExpressionString()
+  }
+}
+
+private predicate isStringPrefixMatch(MethodAccess ma, Expr checkedExpr) {
+  exists(Method m |
+    m = ma.getMethod() and
+    (
+      m.getDeclaringType() instanceof TypeString and
+      checkedExpr = ma.getQualifier().getUnderlyingExpr()
+      or
+      m.getDeclaringType() instanceof StringsKt and
+      checkedExpr = ma.getArgument(0).getUnderlyingExpr()
+    )
+  |
+    m.hasName("startsWith" + ["", "$default"])
     or
-    m.hasName("regionMatches") and
-    ma.getArgument(0).(CompileTimeConstantExpr).getIntValue() = 0
-    or
-    m.hasName("matches") and
-    not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().matches(".*%")
+    exists(int argPos |
+      m.getDeclaringType() instanceof TypeString and argPos = 0
+      or
+      m.getDeclaringType() instanceof StringsKt and argPos = 1
+    |
+      m.hasName("regionMatches" + ["", "$default"]) and
+      ma.getArgument(argPos).(CompileTimeConstantExpr).getIntValue() = 0
+      or
+      m.hasName("matches") and
+      not ma.getArgument(argPos).(ConstantOrRegex).getStringValue().matches(".*%")
+    )
   )
 }
 
 /**
- * Holds if `ma` is a call to a method that checks a partial string match.
+ * Holds if `ma` is a call to a method that checks a partial string match on `checkedExpr`.
  */
-private predicate isStringPartialMatch(MethodAccess ma) {
-  isStringPrefixMatch(ma)
+private predicate isStringPartialMatch(MethodAccess ma, Expr checkedExpr) {
+  isStringPrefixMatch(ma, checkedExpr)
   or
-  ma.getMethod().getDeclaringType() instanceof TypeString and
-  ma.getMethod().hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"])
+  (
+    ma.getMethod().getDeclaringType() instanceof TypeString and
+    checkedExpr = ma.getQualifier().getUnderlyingExpr()
+    or
+    ma.getMethod().getDeclaringType() instanceof StringsKt and
+    checkedExpr = ma.getArgument(0).getUnderlyingExpr()
+  ) and
+  ma.getMethod()
+      .hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"] + ["", "$default"])
 }
 
 /**
- * Holds if `ma` is a call to a method that checks whether a path starts with a prefix.
+ * Holds if `ma` is a call to a method that checks whether `checkedExpr` starts with a prefix.
  */
-private predicate isPathPrefixMatch(MethodAccess ma) {
+private predicate isPathPrefixMatch(MethodAccess ma, Expr checkedExpr) {
   exists(RefType t |
-    t instanceof TypePath
+    t instanceof TypePath and checkedExpr = ma.getQualifier().getUnderlyingExpr()
     or
-    t.hasQualifiedName("kotlin.io", "FilesKt")
+    t instanceof FilesKt and
+    checkedExpr = ma.getArgument(0).getUnderlyingExpr()
   |
     t = ma.getMethod().getDeclaringType() and
-    ma.getMethod().hasName("startsWith")
+    ma.getMethod().hasName("startsWith" + ["", "$default"])
   )
 }
 
-private predicate isDisallowedWord(CompileTimeConstantExpr word) {
+private predicate isDisallowedWord(ConstantOrRegex word) {
   word.getStringValue().matches(["/", "\\", "%WEB-INF%", "%/data%"])
 }
 
 /** A complementary guard that protects against path traversal, by looking for the literal `..`. */
 private class PathTraversalGuard extends PathGuard {
+  Expr checkedExpr;
+
   PathTraversalGuard() {
     exists(MethodAccess ma |
-      ma.getMethod().getDeclaringType() instanceof TypeString and
+      (
+        ma.getMethod().getDeclaringType() instanceof TypeString and
+        checkedExpr = ma.getQualifier().getUnderlyingExpr()
+        or
+        ma.getMethod().getDeclaringType() instanceof StringsKt and
+        checkedExpr = ma.getArgument(0).getUnderlyingExpr()
+      ) and
       ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
     |
       this = ma and
-      ma.getMethod().hasName("contains")
+      ma.getMethod().hasName("contains" + ["", "$default"])
       or
       exists(EqualityTest eq |
         this = eq and
-        ma.getMethod().hasName(["indexOf", "lastIndexOf"]) and
+        ma.getMethod().hasName(["indexOf", "lastIndexOf"] + ["", "$default"]) and
         eq.getAnOperand() = ma and
         eq.getAnOperand().(CompileTimeConstantExpr).getIntValue() = -1
       )
     )
   }
 
-  override Expr getCheckedExpr() {
-    exists(MethodAccess ma | ma = this.(EqualityTest).getAnOperand() or ma = this |
-      result = ma.getQualifier()
-    )
-  }
+  override Expr getCheckedExpr() { result = checkedExpr }
 
   boolean getBranch() {
     this instanceof MethodAccess and result = false
@@ -265,7 +327,7 @@ private class PathNormalizeSanitizer extends MethodAccess {
   PathNormalizeSanitizer() {
     exists(RefType t |
       t instanceof TypePath or
-      t.hasQualifiedName("kotlin.io", "FilesKt")
+      t instanceof FilesKt
     |
       this.getMethod().getDeclaringType() = t and
       this.getMethod().hasName("normalize")
