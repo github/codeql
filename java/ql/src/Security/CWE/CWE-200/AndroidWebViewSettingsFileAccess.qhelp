@@ -38,6 +38,12 @@
 
     <sample src="WebViewFileAccessSafe.java"/>
 
+    <p>
+      In the following example, an asset loader is configured so that assets can
+      be access over <code>https</code>, and not require file system access.
+    </p>
+
+    <sample src="AssetLoaderExample.java"/>
   </example>
 
   <references>
