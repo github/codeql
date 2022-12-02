@@ -18,6 +18,7 @@ private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInj
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 private import experimental.adaptivethreatmodeling.XssATM as XssAtm
+private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
 
 query predicate isSinkCandidateForQuery(
   AtmConfig::AtmConfig queryConfig, JS::DataFlow::PathNode sink
