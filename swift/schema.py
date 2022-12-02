@@ -232,6 +232,10 @@ class AccessorDecl(FuncDecl):
     is_setter: predicate | doc('this accessor is a setter')
     is_will_set: predicate | doc('this accessor is a `willSet`, called before the property is set')
     is_did_set: predicate | doc('this accessor is a `didSet`, called after the property is set')
+    is_read: predicate | doc('this accessor is a `_read` coroutine, yielding a borrowed value of the property')
+    is_modify: predicate | doc('this accessor is a `_modify` coroutine, yielding an inout value of the property')
+    is_unsafe_address: predicate | doc('this accessor is an `unsafeAddress` immutable addressor')
+    is_unsafe_mutable_address: predicate | doc('this accessor is an `unsafeMutableAddress` mutable addressor')
 
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass
@@ -322,6 +326,7 @@ class DeclRefExpr(Expr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class DefaultArgumentExpr(Expr):
     param_decl: ParamDecl
@@ -589,6 +594,7 @@ class MemberRefExpr(LookupExpr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class MetatypeConversionExpr(ImplicitConversionExpr):
     pass
@@ -642,6 +648,7 @@ class SubscriptExpr(LookupExpr):
     has_direct_to_storage_semantics: predicate
     has_direct_to_implementation_semantics: predicate
     has_ordinary_semantics: predicate
+    has_distributed_thunk_semantics: predicate
 
 class TryExpr(AnyTryExpr):
     pass
@@ -1033,3 +1040,6 @@ class ParameterizedProtocolType(Type):
     """
     base: ProtocolType
     args: list[Type]
+
+class AbiSafeConversionExpr(ImplicitConversionExpr):
+    pass

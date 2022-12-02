@@ -302,7 +302,8 @@ def generate(opts, renderer):
 
     imports = {}
 
-    with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry) as renderer:
+    with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry,
+                         force=opts.force) as renderer:
 
         db_classes = [cls for cls in classes.values() if not cls.ipa]
         renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")

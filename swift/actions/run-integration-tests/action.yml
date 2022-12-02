@@ -13,11 +13,15 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version-file: 'swift/.python-version'
-    - uses: swift-actions/setup-swift@v1
+    - uses: swift-actions/setup-swift@194625b58a582570f61cc707c3b558086c26b723
       with:
         swift-version: "${{steps.get_swift_version.outputs.version}}"
     - uses: ./.github/actions/fetch-codeql
+    - id: query-cache
+      uses: ./.github/actions/cache-query-compilation
+      with:
+        key: swift-integration
     - name: Run integration tests
       shell: bash
       run: |
-        python swift/integration-tests/runner.py
+        python swift/integration-tests/runner.py --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"

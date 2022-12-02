@@ -916,6 +916,17 @@ private module Cached {
     TDataFlowCallSome(DataFlowCall call)
 
   cached
+  newtype TParameterPositionOption =
+    TParameterPositionNone() or
+    TParameterPositionSome(ParameterPosition pos)
+
+  cached
+  newtype TReturnCtx =
+    TReturnCtxNone() or
+    TReturnCtxNoFlowThrough() or
+    TReturnCtxMaybeFlowThrough(ReturnKindExt kind)
+
+  cached
   newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
 
   cached
@@ -1300,6 +1311,44 @@ class DataFlowCallOption extends TDataFlowCallOption {
     exists(DataFlowCall call |
       this = TDataFlowCallSome(call) and
       result = call.toString()
+    )
+  }
+}
+
+/** An optional `ParameterPosition`. */
+class ParameterPositionOption extends TParameterPositionOption {
+  string toString() {
+    this = TParameterPositionNone() and
+    result = "(none)"
+    or
+    exists(ParameterPosition pos |
+      this = TParameterPositionSome(pos) and
+      result = pos.toString()
+    )
+  }
+}
+
+/**
+ * A return context used to calculate flow summaries in reverse flow.
+ *
+ * The possible values are:
+ *
+ * - `TReturnCtxNone()`: no return flow.
+ * - `TReturnCtxNoFlowThrough()`: return flow, but flow through is not possible.
+ * - `TReturnCtxMaybeFlowThrough(ReturnKindExt kind)`: return flow, of kind `kind`, and
+ *    flow through may be possible.
+ */
+class ReturnCtx extends TReturnCtx {
+  string toString() {
+    this = TReturnCtxNone() and
+    result = "(none)"
+    or
+    this = TReturnCtxNoFlowThrough() and
+    result = "(no flow through)"
+    or
+    exists(ReturnKindExt kind |
+      this = TReturnCtxMaybeFlowThrough(kind) and
+      result = kind.toString()
     )
   }
 }

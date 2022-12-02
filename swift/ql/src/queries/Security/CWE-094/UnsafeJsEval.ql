@@ -20,9 +20,8 @@ import DataFlow::PathGraph
 
 /**
  * A source of untrusted, user-controlled data.
- * TODO: Extend to more (non-remote) sources in the future.
  */
-class Source = RemoteFlowSource;
+class Source = FlowSource;
 
 /**
  * A sink that evaluates a string of JavaScript code.
@@ -97,17 +96,6 @@ class UnsafeJsEvalConfig extends TaintTracking::Configuration {
   // TODO: convert to new taint flow models
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(Argument arg |
-      arg =
-        any(CallExpr ce |
-          ce.getStaticTarget()
-              .(MethodDecl)
-              .hasQualifiedName("WKUserScript",
-                [
-                  "init(source:injectionTime:forMainFrameOnly:)",
-                  "init(source:injectionTime:forMainFrameOnly:in:)"
-                ])
-        ).getArgument(0)
-      or
       arg =
         any(CallExpr ce |
           ce.getStaticTarget().(MethodDecl).hasQualifiedName("String", "init(decoding:as:)")

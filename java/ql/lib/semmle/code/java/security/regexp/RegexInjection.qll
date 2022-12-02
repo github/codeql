@@ -2,8 +2,8 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.frameworks.Regex
-private import semmle.code.java.regex.RegexFlowModels
 
 /** A data flow sink for untrusted user input used to construct regular expressions. */
 abstract class RegexInjectionSink extends DataFlow::ExprNode { }

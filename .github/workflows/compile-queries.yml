@@ -35,5 +35,3 @@ jobs:
         if : ${{ github.event_name != 'pull_request' }}
         shell: bash
         run: codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-        env: 
-          COMBINED_CACHE_DIR: ${{ github.workspace }}/compilation-dir

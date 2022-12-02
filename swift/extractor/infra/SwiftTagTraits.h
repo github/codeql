@@ -163,6 +163,7 @@ MAP(swift::Expr, ExprTag)
     MAP(swift::LinearFunctionExtractOriginalExpr, LinearFunctionExtractOriginalExprTag)
     MAP(swift::LinearToDifferentiableFunctionExpr, LinearToDifferentiableFunctionExprTag)
     MAP(swift::ReifyPackExpr, void)  // experimental variadic generics
+    MAP(swift::ABISafeConversionExpr, AbiSafeConversionExprTag)  // different acronym convention
   MAP(swift::ExplicitCastExpr, ExplicitCastExprTag)
     MAP(swift::CheckedCastExpr, CheckedCastExprTag)
       MAP(swift::ForcedCheckedCastExpr, ForcedCheckedCastExprTag)

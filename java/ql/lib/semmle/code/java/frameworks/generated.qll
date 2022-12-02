@@ -5,6 +5,5 @@
 import java
 
 private module GeneratedFrameworks {
-  private import apache.IOGenerated
   private import kotlin.StdLibGenerated
 }

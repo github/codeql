@@ -10,7 +10,11 @@
 
 import python
 import semmle.python.dataflow.new.internal.DataFlowPrivate
+import meta.MetaMetrics
 
 from DataFlowCall c, DataFlowCallableValue f
-where c.getCallable() = f
+where
+  c.getCallable() = f and
+  not c.getLocation().getFile() instanceof IgnoredFile and
+  not f.getScope().getLocation().getFile() instanceof IgnoredFile
 select c, "Call to $@", f.getScope(), f.toString()
