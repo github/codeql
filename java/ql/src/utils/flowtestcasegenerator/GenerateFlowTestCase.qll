@@ -13,7 +13,7 @@ private import FlowTestCaseSupportMethods
 private import FlowTestCaseUtils
 
 /**
- * Gets a CSV row for which a test has been requested, and where there exist a summary, but
+ * Gets a CSV row for which a test has been requested, and where there exists a summary, but
  * nonetheless we can't generate a test case for it, indicating we cannot resolve either the callable
  * spec or an input or output spec.
  */
