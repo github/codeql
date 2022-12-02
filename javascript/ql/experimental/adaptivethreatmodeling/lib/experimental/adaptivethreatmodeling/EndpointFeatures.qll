@@ -162,71 +162,9 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
   }
 
   /**
-   * We can find hard TP examples for the codex prompt by extracting sinks that are found by the classical queries but
-   * filtered by the endpoint filters.
-   */
-  private predicate hardTPExamples(
-    DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string reason
-  ) {
-    sinkType instanceof EndpointTypes::NosqlInjectionSinkType and
-    endpoint instanceof NosqlInjectionCustomizations::NosqlInjection::Sink and
-    reason = NosqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)
-    or
-    sinkType instanceof EndpointTypes::SqlInjectionSinkType and
-    endpoint instanceof SqlInjectionCustomizations::SqlInjection::Sink and
-    reason = SqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)
-    or
-    sinkType instanceof EndpointTypes::TaintedPathSinkType and
-    endpoint instanceof TaintedPathCustomizations::TaintedPath::Sink and
-    reason = TaintedPathAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)
-    or
-    sinkType instanceof EndpointTypes::XssSinkType and
-    endpoint instanceof DomBasedXssCustomizations::DomBasedXss::Sink and
-    reason = XssAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)
-  }
-
-  /**
-   * Hardcode some hard FP examples for each query from the manual triage of the model shipped in 0.4.0.
-   */
-  private predicate hardFPExamples(DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType) {
-    sinkType instanceof EndpointTypes::NosqlInjectionSinkType
-    or
-    // and
-    // TODO: How do I hardcode a dataflow node?
-    sinkType instanceof EndpointTypes::SqlInjectionSinkType
-    or
-    // and
-    sinkType instanceof EndpointTypes::TaintedPathSinkType
-    or
-    // and
-    sinkType instanceof EndpointTypes::XssSinkType
-    // and
-  }
-
-  /**
-   * Select the specified number of hard TP examples for the codex prompt for each query, using only one example per
-   * reason.
-   */
-  bindingset[numExamples]
-  private predicate hardTPExamplesForCodexPrompt(
-    int numExamples, DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string reason
-  ) {
-    this.hardTPExamples(endpoint, sinkType, reason)
-    // and
-    // TODO
-  }
-
-  /**
-   * Select the specified number of hard FP examples for the codex prompt for each query.
-   * TODO
-   */
-  private string hardFPExamplesForCodexPrompt() {
-    result =
-      "# Examples of security vulnerability sinks and non-sinks\n|Dataflow node|Neighborhood|Classification|\n|---|---|---|\n|`m[9] ? m[10] : null`|`                        this.authority = m[5] ? m[6] : null;                    this.path = m[7];                       this.query = m[9] ? m[10] : null;                       this.fragment = m[12] ? m[13] : null;  return this;`|non-sink|\n|`this.flowRunId`|`          variables: {            input: {              flow_run_id: this.flowRunId,              name: e            }`|non-sink|\n|`req.body.firstName`|`    res.json({      firstName: req.body.firstName,      lastName: req.body.lastName,      email: req.body.email`|non-sink|\n|`lang[1]`|`            if (lang) {                document.getElementsByTagName('html')[0].setAttribute('lang', lang[1]);            }`|non-sink|\n|`token`|`    },  });  tokenProvider.saveNewToken(token).then(ok => {    insights.trackEvent({      name: 'ReposCreateTokenFinish',`|non-sink|\n|`filename`|`function sendFile(filename, response) {  response.setHeader('Content-Type', mime.lookup(filename));  response.writeHead(200);  const fileStream = createReadStream(filename);`|non-sink|\n|`year`|`      postsData = await getPostsDateArchive(        postType,        !isNaN(parseInt(year, 10)) ? parseInt(year, 10) : null,        !isNaN(parseInt(month, 10)) ? parseInt(month, 10) : null,        !isNaN(parseInt(day, 10)) ? parseInt(day, 10) : null,`|non-sink|\n|`redirectTo === 'login' ? {redirectTo: to.path,} : to.query`|`    return next({      name: redirectTo,      query: redirectTo === 'login' ? {        redirectTo: to.path,      } : to.query,    });  }`|non-sink|\n"
-  }
-
-  /**
    * Gets the reconstructed source code text for a range of locations.
+   * TODO: This excludes comments
+   * TODO: Don't add a space if the current or previous token is a period.
    */
   string tokenize(Location location) {
     result =
@@ -237,7 +175,6 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
           // Use space as the separator, since that is most likely.
           // May not be an exact reconstruction, e.g. if the code
           // had newlines between successive tokens.
-          // TODO: Don't add a space if the current or previous token is a period.
           " "
         order by
           token.getLocation().getStartLine(), token.getLocation().getStartColumn()
