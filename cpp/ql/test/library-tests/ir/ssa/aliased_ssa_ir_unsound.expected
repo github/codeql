@@ -2080,3 +2080,38 @@ ssa.cpp:
 #  417|     v417_5(void)             = ReturnVoid         : 
 #  417|     v417_6(void)             = AliasedUse         : m417_3
 #  417|     v417_7(void)             = ExitFunction       : 
+
+#  423| int noreturnTest(int)
+#  423|   Block 0
+#  423|     v423_1(void)       = EnterFunction          : 
+#  423|     m423_2(unknown)    = AliasedDefinition      : 
+#  423|     m423_3(unknown)    = InitializeNonLocal     : 
+#  423|     m423_4(unknown)    = Chi                    : total:m423_2, partial:m423_3
+#  423|     r423_5(glval<int>) = VariableAddress[x]     : 
+#  423|     m423_6(int)        = InitializeParameter[x] : &:r423_5
+#  424|     r424_1(glval<int>) = VariableAddress[x]     : 
+#  424|     r424_2(int)        = Load[x]                : &:r424_1, m423_6
+#  424|     r424_3(int)        = Constant[10]           : 
+#  424|     r424_4(bool)       = CompareLT              : r424_2, r424_3
+#  424|     v424_5(void)       = ConditionalBranch      : r424_4
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  425|   Block 1
+#  425|     r425_1(glval<int>) = VariableAddress[#return] : 
+#  425|     r425_2(glval<int>) = VariableAddress[x]       : 
+#  425|     r425_3(int)        = Load[x]                  : &:r425_2, m423_6
+#  425|     m425_4(int)        = Store[#return]           : &:r425_1, r425_3
+#  423|     r423_7(glval<int>) = VariableAddress[#return] : 
+#  423|     v423_8(void)       = ReturnValue              : &:r423_7, m425_4
+#  423|     v423_9(void)       = AliasedUse               : m423_3
+#  423|     v423_10(void)      = ExitFunction             : 
+
+#  427|   Block 2
+#  427|     r427_1(glval<unknown>) = FunctionAddress[noreturnFunc] : 
+#  427|     v427_2(void)           = Call[noreturnFunc]            : func:r427_1
+#  427|     m427_3(unknown)        = ^CallSideEffect               : ~m423_4
+#  427|     m427_4(unknown)        = Chi                           : total:m423_4, partial:m427_3
+
+#  423|   Block 3
+#  423|     v423_11(void) = Unreached : 

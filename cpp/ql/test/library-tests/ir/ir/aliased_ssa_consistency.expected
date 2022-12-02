@@ -6,6 +6,8 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:1754:41:1754:42 | Chi: call to CopyConstructorTestVirtualClass | Instruction 'Chi: call to CopyConstructorTestVirtualClass' has no successors in function '$@'. | ir.cpp:1750:5:1750:34 | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) |
+| ir.cpp:1903:9:1903:20 | Chi: call to noreturnFunc | Instruction 'Chi: call to noreturnFunc' has no successors in function '$@'. | ir.cpp:1899:5:1899:16 | int noreturnTest(int) | int noreturnTest(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

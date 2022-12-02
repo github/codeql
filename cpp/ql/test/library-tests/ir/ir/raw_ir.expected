@@ -10105,6 +10105,37 @@ ir.cpp:
 # 1891|     v1891_6(void)        = AliasedUse                       : ~m?
 # 1891|     v1891_7(void)        = ExitFunction                     : 
 
+# 1899| int noreturnTest(int)
+# 1899|   Block 0
+# 1899|     v1899_1(void)       = EnterFunction          : 
+# 1899|     mu1899_2(unknown)   = AliasedDefinition      : 
+# 1899|     mu1899_3(unknown)   = InitializeNonLocal     : 
+# 1899|     r1899_4(glval<int>) = VariableAddress[x]     : 
+# 1899|     mu1899_5(int)       = InitializeParameter[x] : &:r1899_4
+# 1900|     r1900_1(glval<int>) = VariableAddress[x]     : 
+# 1900|     r1900_2(int)        = Load[x]                : &:r1900_1, ~m?
+# 1900|     r1900_3(int)        = Constant[10]           : 
+# 1900|     r1900_4(bool)       = CompareLT              : r1900_2, r1900_3
+# 1900|     v1900_5(void)       = ConditionalBranch      : r1900_4
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 1901|   Block 1
+# 1901|     r1901_1(glval<int>) = VariableAddress[#return] : 
+# 1901|     r1901_2(glval<int>) = VariableAddress[x]       : 
+# 1901|     r1901_3(int)        = Load[x]                  : &:r1901_2, ~m?
+# 1901|     mu1901_4(int)       = Store[#return]           : &:r1901_1, r1901_3
+# 1899|     r1899_6(glval<int>) = VariableAddress[#return] : 
+# 1899|     v1899_7(void)       = ReturnValue              : &:r1899_6, ~m?
+# 1899|     v1899_8(void)       = AliasedUse               : ~m?
+# 1899|     v1899_9(void)       = ExitFunction             : 
+
+# 1903|   Block 2
+# 1903|     r1903_1(glval<unknown>) = FunctionAddress[noreturnFunc] : 
+# 1903|     v1903_2(void)           = Call[noreturnFunc]            : func:r1903_1
+# 1903|     mu1903_3(unknown)       = ^CallSideEffect               : ~m?
+# 1905|     v1905_1(void)           = Unreached                     : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

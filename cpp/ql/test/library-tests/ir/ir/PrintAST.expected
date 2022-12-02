@@ -14408,6 +14408,35 @@ ir.cpp:
 # 1894|             Conversion = [IntegralConversion] integral conversion
 # 1894|             Type = [IntType] int
 # 1894|             ValueCategory = prvalue
+# 1897| [TopLevelFunction] void noreturnFunc()
+# 1897|   <params>: 
+# 1899| [TopLevelFunction] int noreturnTest(int)
+# 1899|   <params>: 
+# 1899|     getParameter(0): [Parameter] x
+# 1899|         Type = [IntType] int
+# 1899|   getEntryPoint(): [BlockStmt] { ... }
+# 1900|     getStmt(0): [IfStmt] if (...) ... 
+# 1900|       getCondition(): [LTExpr] ... < ...
+# 1900|           Type = [BoolType] bool
+# 1900|           ValueCategory = prvalue
+# 1900|         getLesserOperand(): [VariableAccess] x
+# 1900|             Type = [IntType] int
+# 1900|             ValueCategory = prvalue(load)
+# 1900|         getGreaterOperand(): [Literal] 10
+# 1900|             Type = [IntType] int
+# 1900|             Value = [Literal] 10
+# 1900|             ValueCategory = prvalue
+# 1900|       getThen(): [BlockStmt] { ... }
+# 1901|         getStmt(0): [ReturnStmt] return ...
+# 1901|           getExpr(): [VariableAccess] x
+# 1901|               Type = [IntType] int
+# 1901|               ValueCategory = prvalue(load)
+# 1902|       getElse(): [BlockStmt] { ... }
+# 1903|         getStmt(0): [ExprStmt] ExprStmt
+# 1903|           getExpr(): [FunctionCall] call to noreturnFunc
+# 1903|               Type = [VoidType] void
+# 1903|               ValueCategory = prvalue
+# 1905|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
