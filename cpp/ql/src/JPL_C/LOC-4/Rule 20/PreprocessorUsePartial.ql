@@ -12,7 +12,7 @@
 import cpp
 
 predicate incomplete(Macro m) {
-  exists(string body | body = m.getBody() and not m.getBody().matches("%\\") |
+  exists(string body | body = m.getBody() and not m.getBody().matches("%\\\\") |
     body.regexpMatch("[^(]*\\).*") or
     body.regexpMatch("[^\\[]*].*") or
     body.regexpMatch("[^{]*}.*") or
