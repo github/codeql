@@ -19,12 +19,6 @@ private module SourceVariables {
     )
   }
 
-  class BaseSourceVariable = SsaInternals0::BaseSourceVariable;
-
-  class BaseIRVariable = SsaInternals0::BaseIRVariable;
-
-  class BaseCallVariable = SsaInternals0::BaseCallVariable;
-
   cached
   private newtype TSourceVariable =
     TSourceIRVariable(BaseIRVariable baseVar, int ind) {
@@ -159,15 +153,10 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
    * Gets the instruction that computes the base of this definition or use.
    * This is always a `VariableAddressInstruction` or an `AllocationInstruction`.
    */
-  abstract Instruction getBase();
+  abstract BaseSourceVariableInstruction getBase();
 
   final BaseSourceVariable getBaseSourceVariable() {
-    exists(IRVariable var |
-      result.(BaseIRVariable).getIRVariable() = var and
-      instructionHasIRVariable(this.getBase(), var)
-    )
-    or
-    result.(BaseCallVariable).getCallInstruction() = this.getBase()
+    this.getBase().getBaseSourceVariable() = result
   }
 
   /** Gets the variable that is defined or used. */
@@ -177,11 +166,6 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
       defOrUseHasSourceVariable(this, v, ind)
     )
   }
-}
-
-pragma[noinline]
-private predicate instructionHasIRVariable(VariableAddressInstruction vai, IRVariable var) {
-  vai.getIRVariable() = var
 }
 
 private predicate defOrUseHasSourceVariable(DefOrUseImpl defOrUse, BaseSourceVariable bv, int ind) {
@@ -214,7 +198,7 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
 
   DefImpl() { this = TDefImpl(address, ind) }
 
-  override Instruction getBase() { isDef(_, _, address, result, _, _) }
+  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
 
   Operand getAddressOperand() { result = address }
 
@@ -259,7 +243,7 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
 
   override int getIndirectionIndex() { result = ind }
 
-  override Instruction getBase() { isUse(_, operand, result, _, ind) }
+  override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
 
   predicate isCertain() { isUse(true, operand, _, _, ind) }
 }
@@ -415,14 +399,6 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
   )
 }
 
-private SsaInternals0::SourceVariable getOldSourceVariable(SourceVariable v) {
-  v.getBaseVariable().(BaseIRVariable).getIRVariable() =
-    result.getBaseVariable().(SsaInternals0::BaseIRVariable).getIRVariable()
-  or
-  v.getBaseVariable().(BaseCallVariable).getCallInstruction() =
-    result.getBaseVariable().(SsaInternals0::BaseCallVariable).getCallInstruction()
-}
-
 /**
  * Holds if there is a write at index `i` in basic block `bb` to variable `v` that's
  * subsequently read (as determined by the SSA pruning stage).
@@ -430,7 +406,7 @@ private SsaInternals0::SourceVariable getOldSourceVariable(SourceVariable v) {
 private predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
   exists(SsaInternals0::Def def, SsaInternals0::SourceVariable v0 |
     def.asDefOrUse().hasIndexInBlock(bb, i, v0) and
-    v0 = getOldSourceVariable(v)
+    v0 = v.getBaseVariable()
   )
 }
 
