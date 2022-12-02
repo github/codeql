@@ -69,21 +69,8 @@ class Top extends @top {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.hasLocationInfoAux(filepath, startline, startcolumn, endline, endcolumn)
-    or
-    exists(string outFilepath, int outStartline, int outEndline |
-      this.hasLocationInfoAux(outFilepath, outStartline, _, outEndline, _) and
-      hasSmapLocationInfo(filepath, startline, startcolumn, endline, endcolumn, outFilepath,
-        outStartline, outEndline)
-    )
-  }
-
-  private predicate hasLocationInfoAux(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    exists(File f, Location l | fixedHasLocation(this, l, f) |
-      locations_default(l, f, startline, startcolumn, endline, endcolumn) and
-      filepath = f.getAbsolutePath()
+    exists(Location l | fixedHasLocation(this, l, _) |
+      l.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     )
   }
 
@@ -128,16 +115,16 @@ class Top extends @top {
 /** A location maps language elements to positions in source files. */
 class Location extends @location {
   /** Gets the 1-based line number (inclusive) where this location starts. */
-  int getStartLine() { locations_default(this, _, result, _, _, _) }
+  int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
 
   /** Gets the 1-based column number (inclusive) where this location starts. */
-  int getStartColumn() { locations_default(this, _, _, result, _, _) }
+  int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
 
   /** Gets the 1-based line number (inclusive) where this location ends. */
-  int getEndLine() { locations_default(this, _, _, _, result, _) }
+  int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
 
   /** Gets the 1-based column number (inclusive) where this location ends. */
-  int getEndColumn() { locations_default(this, _, _, _, _, result) }
+  int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
 
   /**
    * Gets the total number of lines that this location ranges over,
@@ -193,6 +180,17 @@ class Location extends @location {
   ) {
     exists(File f | locations_default(this, f, startline, startcolumn, endline, endcolumn) |
       filepath = f.getAbsolutePath()
+    ) and
+    // No line mapping for this file
+    not hasSmapLocationInfo(_, _, _, _, _, filepath, startline, endline)
+    or
+    // If there exists a line mapping for this file, then use that
+    exists(string outFilepath, int outStartline, int outEndline |
+      exists(File f | locations_default(this, f, outStartline, _, outEndline, _) |
+        outFilepath = f.getAbsolutePath()
+      ) and
+      hasSmapLocationInfo(filepath, startline, startcolumn, endline, endcolumn, outFilepath,
+        outStartline, outEndline)
     )
   }
 }
