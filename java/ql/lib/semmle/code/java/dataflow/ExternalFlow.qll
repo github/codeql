@@ -98,7 +98,6 @@ private module Frameworks {
   private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.Flexjson
-  private import semmle.code.java.frameworks.generated
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
@@ -135,7 +134,7 @@ private module Frameworks {
  *
  * Extend this class to add additional source definitions.
  */
-class SourceModelCsv = SourceModelCsvInternal;
+deprecated class SourceModelCsv = SourceModelCsvInternal;
 
 private class SourceModelCsvInternal extends Unit {
   /** Holds if `row` specifies a source definition. */
@@ -149,7 +148,7 @@ private class SourceModelCsvInternal extends Unit {
  *
  * Extend this class to add additional sink definitions.
  */
-class SinkModelCsv = SinkModelCsvInternal;
+deprecated class SinkModelCsv = SinkModelCsvInternal;
 
 private class SinkModelCsvInternal extends Unit {
   /** Holds if `row` specifies a sink definition. */
@@ -163,7 +162,7 @@ private class SinkModelCsvInternal extends Unit {
  *
  * Extend this class to add additional flow summary definitions.
  */
-class SummaryModelCsv = SummaryModelCsvInternal;
+deprecated class SummaryModelCsv = SummaryModelCsvInternal;
 
 private class SummaryModelCsvInternal extends Unit {
   /** Holds if `row` specifies a summary definition. */
@@ -177,7 +176,7 @@ private class SummaryModelCsvInternal extends Unit {
  *
  * Extend this class to add additional negative summary definitions.
  */
-class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
+deprecated class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
 
 private class NegativeSummaryModelCsvInternal extends Unit {
   /** Holds if `row` specifies a negative summary definition. */
@@ -555,7 +554,7 @@ module ModelValidation {
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
       or
-      not name.regexpMatch("[a-zA-Z0-9_]*") and
+      not name.regexpMatch("[a-zA-Z0-9_\\-]*") and
       result = "Dubious name \"" + name + "\" in " + pred + " model."
       or
       not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
