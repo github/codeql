@@ -160,6 +160,13 @@ private module Cached {
     or
     nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
   }
+
+  /**
+   * Like `defaultAdditionalTaintStep`, but these steps are only applied when a transitive closure
+   * of such steps can reach a sink.
+   */
+  cached
+  predicate defaultAdditionalTaintStepAtSink(DataFlow::Node node1, DataFlow::Node node2) { none() }
 }
 
 import Cached
