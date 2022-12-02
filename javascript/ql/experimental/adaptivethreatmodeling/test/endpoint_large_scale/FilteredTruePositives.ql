@@ -20,6 +20,7 @@ import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAt
 import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 import experimental.adaptivethreatmodeling.XssATM as XssAtm
+import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
 
 query predicate nosqlFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof NosqlInjection::Sink and
@@ -42,5 +43,11 @@ query predicate taintedPathFilteredTruePositives(DataFlow::Node endpoint, string
 query predicate xssFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof DomBasedXss::Sink and
   reason = any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(endpoint) and
+  reason != "argument to modeled function"
+}
+
+query predicate xssThroughDomFilteredTruePositives(DataFlow::Node endpoint, string reason) {
+  endpoint instanceof DomBasedXss::Sink and
+  reason = any(XssThroughDomAtm::XssThroughDomAtmConfig cfg).getAReasonSinkExcluded(endpoint) and
   reason != "argument to modeled function"
 }
