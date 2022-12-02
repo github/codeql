@@ -34,9 +34,13 @@ private module Cached {
 
   cached
   predicate hasUnreachedInstructionCached(IRFunction irFunc) {
-    exists(OldInstruction oldInstruction |
+    exists(OldIR::Instruction oldInstruction |
       irFunc = oldInstruction.getEnclosingIRFunction() and
-      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+      (
+        Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+        or
+        oldInstruction.getOpcode() instanceof Opcode::Unreached
+      )
     )
   }
 

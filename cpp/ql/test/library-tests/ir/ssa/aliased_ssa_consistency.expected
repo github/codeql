@@ -6,6 +6,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ssa.cpp:427:9:427:20 | Chi: call to noreturnFunc | Instruction 'Chi: call to noreturnFunc' has no successors in function '$@'. | ssa.cpp:423:5:423:16 | int noreturnTest(int) | int noreturnTest(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

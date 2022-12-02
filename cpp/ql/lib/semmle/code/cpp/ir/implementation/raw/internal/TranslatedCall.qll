@@ -66,7 +66,9 @@ abstract class TranslatedCall extends TranslatedExpr {
     )
     or
     child = getSideEffects() and
-    result = getParent().getChildSuccessor(this)
+    if this.isNoReturn()
+    then result = any(UnreachedInstruction instr | this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction())
+    else result = getParent().getChildSuccessor(this)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -160,6 +162,10 @@ abstract class TranslatedCall extends TranslatedExpr {
    * Holds if the call has any arguments, not counting the `this` argument.
    */
   abstract predicate hasArguments();
+
+  predicate isNoReturn() {
+    none()
+  }
 
   final TranslatedSideEffects getSideEffects() { result.getExpr() = expr }
 }
