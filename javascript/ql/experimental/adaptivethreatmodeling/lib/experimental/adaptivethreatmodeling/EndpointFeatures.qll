@@ -16,6 +16,7 @@ private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInj
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 private import experimental.adaptivethreatmodeling.XssATM as XssAtm
+private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 
 /**
  * Gets the value of the token-based feature named `featureName` for the endpoint `endpoint`.
@@ -149,7 +150,7 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
   private string getTrainingSetPrompt() {
     result =
       "# Examples of security vulnerability sinks and non-sinks\n|Dataflow node|Neighborhood|Classification|\n|---|---|---|\n|`refStr`|`    const refStr =      pageRef.gen === 0 ? ${pageRef.num}R : ${pageRef.num}R${pageRef.gen};    this.#pagesRefCache.set(refStr, pageNum);  }`|non-sink|\n|`name`|`      return res.redirect(back);    }    const ndb = req.mainClient.client.db(name);    ndb.createCollection(delete_me, function (err) {`|sql injection sink|\n|`It took  + (t1 - t0) +  msec to create  + count +  +className+ instances programmatically.`|`                         }                               var t1 = new Date().getTime();                          dojo.byId(results).innerHTML = It took  + (t1 - t0) +  msec to create  + count +  +className+ instances programmatically.;                   }                       dojo.ready(makeEm);`|non-sink|\n|`contents`|`  const contents = fileData.buffer.toString();  res.json({message: contents});});`|non-sink|\n|`{ _id }`|`    // If an ObjectID was correctly created from passed id param, try getting the ObjID first else falling back to try getting the string id    // If not valid ObjectID created, try getting string id    req.collection.findOne({ _id }, function (err, doc) {      if (err) {        req.session.error = Error:  + err;`|nosql injection sink|\n|`bid`|`  const body =   <a href=https://ampbyexample.com target=_blank>    <amp-img alt=AMP Ad height=250 src=//localhost:9876/amp4test/request-bank/${bid}/deposit/image width=300></amp-img>  </a>  <amp-pixel src=//localhost:9876/amp4test/request-bank/${bid}/deposit/pixel/foo?cid=CLIENT_ID(a)></amp-pixel>`|xss sink|\n|`nick`|`       irc.me = nick;  irc.nick(nick); irc.user(username, realname);`|non-sink|\n|`{where: {name: req.body.type}}`|`    if(req.is(json)) {        models.VisualizationType.find({            where: {                name: req.body.type            }        }).then(function(vizType) {            if(!vizType) {                throw new Error(Unknown Viztype);`|nosql injection sink|\n|`sql`|`        var callback = cb;        var dbService = this.getService(connectionName);        dbService.execute(sql, params, function(err, result) {            if (err) {                return callback(err);`|sql injection sink|\n|`filename`|`      const writeStream = gfs.createWriteStream({        _id: newFileID,        filename,        mode: w,        content_type: mimetype,`|path injection sink|\n|`req.url.substr(7)`|`          <html style=width:100%; height:100%;>            <body style=width:98%; height:98%;>              <iframe src=${req.url.substr(7)}                  style=width:100%; height:100%;>              </iframe>`|xss sink|\n|`assets/images/ + req.files.upload_file.name`|`            res.send({                success: true,                file_path: assets/images/ + req.files.upload_file.name            });        });`|path injection sink|\n|`path`|`async function handleListingRequest({query: {path, search}}, res) {  try {    assert(path);    const fileSet = await getListing(root, path);`|non-sink|\n|`{ lastLoginIp: lastLoginIp }`|`      }      models.User.findByPk(loggedInUser.data.id).then(user => {        user.update({ lastLoginIp: lastLoginIp }).then(user => {          res.json(user)        }).catch(error => {`|non-sink|\n|`uploadId`|`      Bucket: config.bucket,      Key: key,      UploadId: uploadId,      MultipartUpload: {        Parts: parts,`|non-sink|\n|`hash`|`  componentDidMount() {    const [, hash] = location.href.split(#)    this.setState({ hash })  }`|non-sink|\n"
-    //hardFPExamplesForCodexPrompt() + hardTPExamplesForCodexPrompt(2, )
+    //hardNegativeExamplesForCodexPrompt() + hardPositiveExamplesForCodexPrompt(2, )
   }
 
   /**
@@ -162,65 +163,106 @@ class CodexPrompt extends EndpointFeature, TCodexPrompt {
   }
 
   /**
-   * We can find hard TP examples for the codex prompt by extracting sinks that are found by the classical queries but
-   * filtered by the endpoint filters.
+   * Holds if `endpoint` is a sink for a security vulnerability of type `sinkType`, where the string used to label this
+   * sink type is `sinkName`.
    */
-  private predicate hardTPExamples(
-    DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string reason
+  private predicate isPositiveExampleFromCurrentRepo(
+    DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string sinkName
   ) {
     sinkType instanceof EndpointTypes::NosqlInjectionSinkType and
     endpoint instanceof NosqlInjectionCustomizations::NosqlInjection::Sink and
-    reason = NosqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)
+    sinkName = "nosql injection sink"
     or
     sinkType instanceof EndpointTypes::SqlInjectionSinkType and
     endpoint instanceof SqlInjectionCustomizations::SqlInjection::Sink and
-    reason = SqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)
+    sinkName = "sql injection sink"
     or
     sinkType instanceof EndpointTypes::TaintedPathSinkType and
     endpoint instanceof TaintedPathCustomizations::TaintedPath::Sink and
-    reason = TaintedPathAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)
+    sinkName = "path injection sink"
     or
     sinkType instanceof EndpointTypes::XssSinkType and
     endpoint instanceof DomBasedXssCustomizations::DomBasedXss::Sink and
-    reason = XssAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)
+    sinkName = "xss sink"
   }
 
   /**
-   * Hardcode some hard FP examples for each query from the manual triage of the model shipped in 0.4.0.
+   * Holds if `endpoint` is a not a sink for any type of security vulnerability for the reason specified by
+   * `characteristic`.
    */
-  private predicate hardFPExamples(DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType) {
-    sinkType instanceof EndpointTypes::NosqlInjectionSinkType
-    or
-    // and
-    // TODO: How do I hardcode a dataflow node?
-    sinkType instanceof EndpointTypes::SqlInjectionSinkType
-    or
-    // and
-    sinkType instanceof EndpointTypes::TaintedPathSinkType
-    or
-    // and
-    sinkType instanceof EndpointTypes::XssSinkType
-    // and
+  private predicate isNegativeExampleFromCurrentRepo(
+    DataFlow::Node endpoint, EndpointCharacteristics::EndpointCharacteristic characteristic
+  ) {
+    characteristic.appliesToEndpoint(endpoint) and
+    exists(float confidence |
+      characteristic
+          .hasImplications(any(EndpointTypes::NegativeType negativeClass), true, confidence) and
+      confidence >= characteristic.highConfidence()
+    )
+  }
+
+  private predicate selectTwoPositiveExamples(
+    DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string sinkName, File file
+  ) {
+    this.positiveExamplesForCodexPrompt(2, endpoint, sinkType, sinkName) and
+    file = endpoint.getFile()
   }
 
   /**
-   * Select the specified number of hard TP examples for the codex prompt for each query, using only one example per
-   * reason.
+   * Select `numExamples` positive examples for the codex prompt for each query, selecting from a diverse set
+   * of files.
    */
   bindingset[numExamples]
-  private predicate hardTPExamplesForCodexPrompt(
-    int numExamples, DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string reason
+  private predicate positiveExamplesForCodexPrompt(
+    int numExamples, DataFlow::Node endpoint, EndpointTypes::EndpointType sinkType, string sinkName
   ) {
-    this.hardTPExamples(endpoint, sinkType, reason)
+    this.isPositiveExampleFromCurrentRepo(endpoint, sinkType, sinkName) and
+    // There is no previous positive example of the same type in the same file.
+    not exists(DataFlow::Node endpoint2 |
+      this.isPositiveExampleFromCurrentRepo(endpoint2, sinkType, sinkName) and
+      endpoint.getFile() = endpoint2.getFile() and
+      (
+        endpoint.getStartLine() > endpoint2.getStartLine()
+        or
+        endpoint.getStartLine() = endpoint2.getStartLine() and
+        endpoint.getStartColumn() > endpoint2.getStartColumn()
+      )
+    )
     // and
-    // TODO
+    //   exists(int rankIndex, File file |
+    //     rankIndex <= numExamples and rankIndex > 0 and
+    //     file = endpoint.asExpr().getLocation().getFile() and not exists(int lowerRankIndex |  | )
+    //     endpoint = rank[rankIndex](string file, int a, int b, int c, int d |
+    //   |
+    //     endpoint order by sinkName, file
+    //   )
+    // //    and
+    // // r % (1 / rate).ceil() = 0
+    // )
+    //   exists(int r | r <= numExamples and endpoint = rank[r](string file, int a, int b, int c, int d |
+    //         endpoint.asExpr().getLocation().hasLocationInfo(file, a, b, c, d)
+    //       |
+    //         endpoint order by sinkName, file, a, b, c, d
+    //       )
+    //     //    and
+    //     // r % (1 / rate).ceil() = 0
+    //     )
+    // // select `numExamples` examples for each query
+    // count( | | 1) <= numExamples and
+    // // select examples from a diverse set of files
+    // not exists(string file |
+    //   file = endpoint.getLocation().getFile().getRelativePath() and
+    //   file = any(EndpointTypes::EndpointType t).getAFileWithPositiveExample(t)
+    // )
+    // // and
+    // // TODO
   }
 
   /**
-   * Select the specified number of hard FP examples for the codex prompt for each query.
+   * Select `numExamples` negative examples for the codex prompt, selecting from a diverse set of characteristics.
    * TODO
    */
-  private string hardFPExamplesForCodexPrompt() {
+  private string hardNegativeExamplesForCodexPrompt() {
     result =
       "# Examples of security vulnerability sinks and non-sinks\n|Dataflow node|Neighborhood|Classification|\n|---|---|---|\n|`m[9] ? m[10] : null`|`                        this.authority = m[5] ? m[6] : null;                    this.path = m[7];                       this.query = m[9] ? m[10] : null;                       this.fragment = m[12] ? m[13] : null;  return this;`|non-sink|\n|`this.flowRunId`|`          variables: {            input: {              flow_run_id: this.flowRunId,              name: e            }`|non-sink|\n|`req.body.firstName`|`    res.json({      firstName: req.body.firstName,      lastName: req.body.lastName,      email: req.body.email`|non-sink|\n|`lang[1]`|`            if (lang) {                document.getElementsByTagName('html')[0].setAttribute('lang', lang[1]);            }`|non-sink|\n|`token`|`    },  });  tokenProvider.saveNewToken(token).then(ok => {    insights.trackEvent({      name: 'ReposCreateTokenFinish',`|non-sink|\n|`filename`|`function sendFile(filename, response) {  response.setHeader('Content-Type', mime.lookup(filename));  response.writeHead(200);  const fileStream = createReadStream(filename);`|non-sink|\n|`year`|`      postsData = await getPostsDateArchive(        postType,        !isNaN(parseInt(year, 10)) ? parseInt(year, 10) : null,        !isNaN(parseInt(month, 10)) ? parseInt(month, 10) : null,        !isNaN(parseInt(day, 10)) ? parseInt(day, 10) : null,`|non-sink|\n|`redirectTo === 'login' ? {redirectTo: to.path,} : to.query`|`    return next({      name: redirectTo,      query: redirectTo === 'login' ? {        redirectTo: to.path,      } : to.query,    });  }`|non-sink|\n"
   }
