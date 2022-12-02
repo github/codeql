@@ -332,7 +332,9 @@ struct MyStreamSerializer: DataStreamSerializer {
 struct MyDecodable: Decodable {
 }
 
-func doSomething(_ p: Any) {}
+func doSomethingWith(_ param: Any) {
+    // ...
+}
 
 func testAlamofire() {
     // requests
@@ -469,11 +471,11 @@ func testAlamofire() {
         case let .stream(result):
             switch result {
             case let .success(data): // SOURCE [NOT DETECTED]
-                doSomething(data)
+                doSomethingWith(data)
                 // ...
             }
         case let .complete(completion):
-            doSomething(completion)
+            doSomethingWith(completion)
             // ...
         }
     }
@@ -484,11 +486,11 @@ func testAlamofire() {
         case let .stream(result):
             switch result {
             case let .success(value): // SOURCE [NOT DETECTED]
-                doSomething(value)
+                doSomethingWith(value)
                 // ...
             }
         case let .complete(completion):
-            doSomething(completion)
+            doSomethingWith(completion)
             // ...
         }
     }
@@ -499,11 +501,11 @@ func testAlamofire() {
         case let .stream(result):
             switch result {
             case let .success(value): // SOURCE [NOT DETECTED]
-                doSomething(value)
+                doSomethingWith(value)
                 // ...
             }
         case let .complete(completion):
-            doSomething(completion)
+            doSomethingWith(completion)
             // ...
         }
     }
@@ -514,11 +516,11 @@ func testAlamofire() {
         case let .stream(result):
             switch result {
             case let .success(value): // SOURCE [NOT DETECTED]
-                doSomething(value)
+                doSomethingWith(value)
                 // ...
             }
         case let .complete(completion):
-            doSomething(completion)
+            doSomethingWith(completion)
             // ...
         }
     }
@@ -529,7 +531,7 @@ func testAlamofire() {
         stream in
         if case let .stream(myResult) = stream.event {
             if case let .success(myData) = myResult { // SOURCE [NOT DETECTED]
-                doSomething(myData)
+                doSomethingWith(myData)
             }
         }
     }
@@ -537,7 +539,7 @@ func testAlamofire() {
     AF.streamRequest("http://example.com/").responseStream {
         stream in
         if case let .stream(myResult) = stream.event {
-           doSomething(myResult.success!) // SOURCE [NOT DETECTED]
+           doSomethingWith(myResult.success!) // SOURCE [NOT DETECTED]
         }
     }
 
@@ -546,6 +548,6 @@ func testAlamofire() {
     let myResult = Result<String, Error>.success("data")
 
     if case let .success(myString) = myResult {
-        doSomething(myString)
+        doSomethingWith(myString)
     }
 }
