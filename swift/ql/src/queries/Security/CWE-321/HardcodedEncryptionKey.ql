@@ -3,7 +3,7 @@
  * @description Using hardcoded keys for encryption is not secure, because potential attackers can easily guess them.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.7
+ * @security-severity 8.1
  * @precision high
  * @id swift/hardcoded-key
  * @tags security
