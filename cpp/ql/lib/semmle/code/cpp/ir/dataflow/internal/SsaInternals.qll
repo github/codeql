@@ -292,9 +292,8 @@ predicate outNodeHasAddressAndIndex(
 }
 
 private predicate defToNode(Node nodeFrom, Def def) {
-  // TODO: This is not yet needed (and in fact, the compiler rejects it because `exists(def.getValue().asOperand())` never holds).
-  // nodeHasOperand(nodeFrom, def.getValue().asOperand(), def.getIndirectionIndex())
-  // or
+  nodeHasOperand(nodeFrom, def.getValue().asOperand(), def.getIndirectionIndex())
+  or
   nodeHasInstruction(nodeFrom, def.getValue().asInstruction(), def.getIndirectionIndex())
 }
 
