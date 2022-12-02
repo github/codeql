@@ -390,7 +390,7 @@ Some of our standard security queries use flow labels. You can look at their imp
 to get a feeling for how to use flow labels in practice.
 
 In particular, both of the examples mentioned in the section on limitations of basic data flow above
-are from standard security queries that use flow labels. The `Prototype-pollutiing merge call
+are from standard security queries that use flow labels. The `Prototype-polluting merge call
 <https://codeql.github.com/codeql-query-help/javascript/js-prototype-pollution/>`_ query uses two flow labels to distinguish completely
 tainted objects from partially tainted objects. The `Uncontrolled data used in path expression
 <https://codeql.github.com/codeql-query-help/javascript/js-path-injection/>`_ query uses four flow labels to track whether a user-controlled
