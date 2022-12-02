@@ -217,6 +217,12 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
+ * Like `defaultAdditionalTaintStep`, but these steps are only applied when a transitive closure
+ * of such steps can reach a sink.
+ */
+predicate defaultAdditionalTaintStepAtSink(DataFlow::Node node1, DataFlow::Node node2) { none() }
+
+/**
  * A sanitizer in all global taint flow configurations but not in local taint.
  */
 abstract class DefaultTaintSanitizer extends DataFlow::Node { }
