@@ -21,6 +21,8 @@ private module Frameworks {
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.ratpack.RatpackExec
+  private import semmle.code.java.frameworks.android.Slice
 }
 
 /**

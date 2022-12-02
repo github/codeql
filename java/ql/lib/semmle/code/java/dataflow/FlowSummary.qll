@@ -97,6 +97,14 @@ abstract class SyntheticCallable extends string {
   Type getReturnType() { none() }
 }
 
+/**
+ * A module for importing frameworks that define synthetic callables.
+ */
+private module SyntheticCallables {
+  private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.Stream
+}
+
 private newtype TSummarizedCallableBase =
   TSimpleCallable(Callable c) { c.isSourceDeclaration() } or
   TSyntheticCallable(SyntheticCallable c)
