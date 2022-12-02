@@ -131,7 +131,7 @@ queryDir = os.path.join(workDir, "query")
 os.makedirs(queryDir)
 qlFile = os.path.join(queryDir, "gen.ql")
 with open(os.path.join(queryDir, "qlpack.yml"), "w") as f:
-    f.write(f"""name: test-generation-query
+    f.write("""name: test-generation-query
 version: 0.0.0
 dependencies:
   codeql/java-all: '*'
@@ -233,7 +233,7 @@ if len(supportModelRows) != 0:
         f.write(dataextensions)
     # Make a qlpack file such that the extension will be picked up
     with open(resultPack, "w") as f:
-        f.write(f"""name: example-test-pack
+        f.write("""name: example-test-pack
 version: 0.0.0
 extractor: java
 dependencies:
