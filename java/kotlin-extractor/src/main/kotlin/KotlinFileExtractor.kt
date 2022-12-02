@@ -92,7 +92,7 @@ open class KotlinFileExtractor(
 
             file.declarations.forEach {
                 extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true)
-                if (it !is IrClass) {
+                if (it is IrProperty || it is IrField || it is IrFunction) {
                     externalClassExtractor.noteElementExtractedFromSource(it, getTrapFileSignature(it))
                 }
             }
@@ -523,7 +523,7 @@ open class KotlinFileExtractor(
 
                 linesOfCode?.linesOfCodeInDeclaration(c, id)
 
-                if (extractFunctionBodies)
+                if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
                     externalClassExtractor.noteElementExtractedFromSource(c)
 
                 return id
