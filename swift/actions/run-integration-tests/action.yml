@@ -25,3 +25,12 @@ runs:
       shell: bash
       run: |
         python swift/integration-tests/runner.py --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+      env:
+        SEMMLE_DEBUG_TRACER: 10000
+    - name: Upload test logs
+      uses: actions/upload-artifact@v3
+      with:
+        name: swift-integration-tests-logs-${{ runner.os }}
+        path: |
+          swift/integration-tests/**/db/log
+        retention-days: 1
