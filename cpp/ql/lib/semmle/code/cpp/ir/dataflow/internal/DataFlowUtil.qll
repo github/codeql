@@ -86,6 +86,8 @@ predicate conversionFlow(Operand opFrom, Instruction instrTo, boolean isPointerA
     instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
     or
     instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+    or
+    Ssa::isAdditionalConversionFlow(opFrom, instrTo)
   )
   or
   isPointerArith = true and
@@ -382,11 +384,11 @@ class OperandNode extends Node, Node0 {
  * For example, `stripPointers(int*&)` is `int*` and `stripPointers(int*)` is `int`.
  */
 private Type stripPointer(Type t) {
-  result = t.(PointerType).getBaseType()
+  result = any(Ssa::Indirection ind | ind.getType() = t).getBaseType()
   or
+  // These types have a sensible base type, but don't receive additional
+  // dataflow nodes representing their indirections. So for now we special case them.
   result = t.(ArrayType).getBaseType()
-  or
-  result = t.(ReferenceType).getBaseType()
   or
   result = t.(PointerToMemberType).getBaseType()
   or
@@ -1140,8 +1142,9 @@ predicate localFlowStep = simpleLocalFlowStep/2;
 
 private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
   // Reduce the indirection count by 1 if we're passing through a `LoadInstruction`.
-  exists(int ind, LoadInstruction load |
-    hasOperandAndIndex(nodeFrom, load.getSourceAddressOperand(), ind) and
+  exists(int ind, Instruction load, Operand address |
+    Ssa::isDereference(load, address) and
+    hasOperandAndIndex(nodeFrom, address, ind) and
     nodeHasInstruction(nodeTo, load, ind - 1)
   )
   or
