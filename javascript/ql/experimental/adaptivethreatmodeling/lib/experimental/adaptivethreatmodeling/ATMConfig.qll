@@ -154,6 +154,17 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
     not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
     score = AtmResultsInfo::getScoreForFlow(source.getNode(), sink.getNode())
   }
+
+  /**
+   * Holds if if `sink` is an effective sink with flow from `source` which gets used as a sink candidate for scoring
+   * with the ML model.
+   */
+  predicate isSinkCandidateWithFlow(JS::DataFlow::PathNode sink) {
+    exists(JS::DataFlow::PathNode source |
+      this.hasFlowPath(source, sink) and
+      not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode())
+    )
+  }
 }
 
 /** DEPRECATED: Alias for AtmConfig */
