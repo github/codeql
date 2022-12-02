@@ -16,7 +16,7 @@ module ContentDataFlow {
 
   class ContentSet = DF::ContentSet;
 
-  predicate stageStats = DF::stageStats/8;
+  predicate stageStats = DF::stageStats/10;
 
   /**
    * A configuration of interprocedural data flow analysis. This defines
