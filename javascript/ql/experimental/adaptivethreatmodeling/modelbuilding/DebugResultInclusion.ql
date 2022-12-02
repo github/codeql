@@ -16,6 +16,7 @@ private import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInj
 private import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
 private import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
 private import experimental.adaptivethreatmodeling.XssATM as XssAtm
+private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomAtm
 
 string getAReasonSinkExcluded(DataFlow::Node sinkCandidate, Query query) {
   query instanceof NosqlInjectionQuery and
@@ -29,6 +30,9 @@ string getAReasonSinkExcluded(DataFlow::Node sinkCandidate, Query query) {
   or
   query instanceof XssQuery and
   result = any(XssAtm::DomBasedXssAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
+  or
+  query instanceof XssThroughDomQuery and
+  result = any(XssThroughDomAtm::XssThroughDomAtmConfig cfg).getAReasonSinkExcluded(sinkCandidate)
 }
 
 pragma[inline]
