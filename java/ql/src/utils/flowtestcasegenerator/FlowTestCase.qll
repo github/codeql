@@ -12,7 +12,7 @@ private import FlowTestCaseSupportMethods
 
 /**
  * A CSV row to generate tests for. Users should extend this to define which
- * tests to generate. There should already exist a summaries for the rows specified here.
+ * tests to generate. There should already exist summaries for the rows specified here.
  */
 class TargetSummaryModelCsv extends Unit {
   /**
