@@ -3,8 +3,12 @@
  */
 
 private import codeql.ruby.AST
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.FlowSteps
+private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.frameworks.ActionController as ActionController
 private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActiveStorage
 private import codeql.ruby.frameworks.internal.Rails
@@ -287,5 +291,156 @@ private class CookiesSameSiteProtectionSetting extends Settings::NillableStringl
     result = "Unsetting 'SameSite' can disable same-site cookie restrictions in some browsers."
   }
 }
+
 // TODO: initialization hooks, e.g. before_configuration, after_initialize...
 // TODO: initializers
+// TODO: rename XSS stuff
+/**
+ * Holds if `call` is a method call in ERB file `erb`, targeting a method
+ * named `name`.
+ */
+pragma[noinline]
+private predicate isMethodCall(MethodCall call, string name, ErbFile erb) {
+  name = call.getMethodName() and
+  erb = call.getLocation().getFile()
+}
+
+/**
+ * Holds if `helperMethod` is a helper method named `name` that is associated
+ * with ERB file `erb`.
+ */
+pragma[noinline]
+private predicate isHelperMethod(
+  ActionController::ActionControllerHelperMethod helperMethod, string name, ErbFile erb
+) {
+  helperMethod.getName() = name and
+  helperMethod.getControllerClass() = ActionController::getAssociatedControllerClass(erb)
+}
+
+private class FlowIntoHelperMethod extends AdditionalFlowStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    // flow from template into controller helper method
+    exists(
+      ErbFile template, ActionController::ActionControllerHelperMethod helperMethod, string name,
+      CfgNodes::ExprNodes::MethodCallCfgNode helperMethodCall, int argIdx
+    |
+      isHelperMethod(helperMethod, name, template) and
+      isMethodCall(helperMethodCall.getExpr(), name, template) and
+      helperMethodCall.getArgument(pragma[only_bind_into](argIdx)) = node1.asExpr() and
+      helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asParameter()
+    )
+  }
+}
+
+private class FlowFromHelperMethod extends AdditionalFlowStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    // flow out of controller helper method into template
+    exists(
+      ErbFile template, ActionController::ActionControllerHelperMethod helperMethod, string name
+    |
+      // `node1` is an expr node that may be returned by the helper method
+      exprNodeReturnedFrom(node1, helperMethod) and
+      // `node2` is a call to the helper method
+      isHelperMethod(helperMethod, name, template) and
+      isMethodCall(node2.asExpr().getExpr(), name, template)
+    )
+  }
+}
+
+/**
+ * Holds if some render call passes `value` for `hashKey` in the `locals`
+ * argument, in ERB file `erb`.
+ */
+pragma[noinline]
+private predicate renderCallLocals(string hashKey, Expr value, ErbFile erb) {
+  exists(Rails::RenderCall call, Pair kvPair |
+    call.getLocals().getAKeyValuePair() = kvPair and
+    kvPair.getValue() = value and
+    kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
+    call.getTemplateFile() = erb
+  )
+}
+
+pragma[noinline]
+private predicate isFlowFromLocals0(
+  CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, string hashKey, ErbFile erb
+) {
+  exists(DataFlow::Node argNode |
+    argNode.asExpr() = refNode.getArgument(0) and
+    refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
+    argNode.getALocalSource().getConstantValue().isStringlikeValue(hashKey) and
+    erb = refNode.getFile()
+  )
+}
+
+private class FlowFromLocals extends AdditionalFlowStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(string hashKey, ErbFile erb |
+      // node1 is a `locals` argument to a render call...
+      renderCallLocals(hashKey, node1.asExpr().getExpr(), erb)
+    |
+      // node2 is an element reference against `local_assigns`
+      isFlowFromLocals0(node2.asExpr(), hashKey, erb)
+      or
+      // ...node2 is a "method call" to a "method" with `hashKey` as its name
+      // TODO: This may be a variable read in reality that we interpret as a method call
+      isMethodCall(node2.asExpr().getExpr(), hashKey, erb)
+    )
+  }
+}
+
+/**
+ * A `VariableWriteAccessCfgNode` that is not succeeded (locally) by another
+ * write to that variable.
+ */
+private class FinalInstanceVarWrite extends CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode {
+  private InstanceVariable var;
+
+  FinalInstanceVarWrite() {
+    var = this.getExpr().getVariable() and
+    not exists(CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode succWrite |
+      succWrite.getExpr().getVariable() = var
+    |
+      succWrite = this.getASuccessor+()
+    )
+  }
+
+  InstanceVariable getVariable() { result = var }
+
+  AssignExpr getAnAssignExpr() { result.getLeftOperand() = this.getExpr() }
+}
+
+/**
+ * Holds if `action` contains an assignment of `value` to an instance
+ * variable named `name`, in ERB file `erb`.
+ */
+pragma[noinline]
+private predicate actionAssigns(
+  ActionController::ActionControllerActionMethod action, string name, Expr value, ErbFile erb
+) {
+  exists(AssignExpr ae, FinalInstanceVarWrite controllerVarWrite |
+    action.getDefaultTemplateFile() = erb and
+    ae.getParent+() = action and
+    ae = controllerVarWrite.getAnAssignExpr() and
+    name = controllerVarWrite.getVariable().getName() and
+    value = ae.getRightOperand()
+  )
+}
+
+pragma[noinline]
+private predicate isVariableReadAccess(VariableReadAccess viewVarRead, string name, ErbFile erb) {
+  erb = viewVarRead.getLocation().getFile() and
+  viewVarRead.getVariable().getName() = name
+}
+
+private class FlowFromControllerInstanceVariable extends AdditionalFlowStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    // instance variables in the controller
+    exists(ActionController::ActionControllerActionMethod action, string name, ErbFile template |
+      // match read to write on variable name
+      actionAssigns(action, name, node1.asExpr().getExpr(), template) and
+      // propagate taint from assignment RHS expr to variable read access in view
+      isVariableReadAccess(node2.asExpr().getExpr(), name, template)
+    )
+  }
+}
