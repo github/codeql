@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.2.1-2022-09-16-10h39m46s.zen-battery-ldhd2w7t.bab7d2161aa3c825e717f58141cc72b9d1555d2fad1a7a3c96811135a277de97
