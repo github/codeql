@@ -16,18 +16,6 @@ private class StdBasicString extends ClassTemplateInstantiation {
 }
 
 /**
- * The `std::basic_string::iterator` declaration.
- */
-private class StdBasicStringIterator extends Type instanceof Iterator {
-  StdBasicStringIterator() {
-    exists(Type unspecified |
-      unspecified.getEnclosingElement() = any(StdBasicString s).getTemplate() and
-      unspecified.getUnspecifiedType() = this
-    )
-  }
-}
-
-/**
  * A `std::string` function for which taint should be propagated.
  */
 abstract private class StdStringTaintFunction extends TaintFunction {
