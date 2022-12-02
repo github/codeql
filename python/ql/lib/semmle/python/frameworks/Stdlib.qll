@@ -1169,7 +1169,9 @@ private module StdlibPrivate {
   private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     SubprocessPopenCall() {
       exists(string name |
-        name in ["Popen", "call", "check_call", "check_output", "run"] and
+        name in [
+            "Popen", "call", "check_call", "check_output", "run", "getoutput", "getstatusoutput"
+          ] and
         this = subprocess().getMember(name).getACall()
       )
     }
