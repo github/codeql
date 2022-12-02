@@ -1886,4 +1886,14 @@ namespace missing_declaration_entries {
     }
 }
 
+[[noreturn]] void noreturnFunc();
+
+int noreturnTest(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        noreturnFunc();
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang

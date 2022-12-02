@@ -171,7 +171,7 @@ module Raw {
   }
 }
 
-class TStageInstruction = TRawInstruction;
+class TStageInstruction = TRawInstruction or TRawUnreachedInstruction;
 
 predicate hasInstruction(TRawInstruction instr) { any() }
 
@@ -384,6 +384,16 @@ Instruction getPrimaryInstructionForSideEffect(SideEffectInstruction instruction
   result =
     getInstructionTranslatedElement(instruction)
         .getPrimaryInstructionForSideEffect(getInstructionTag(instruction))
+}
+
+predicate hasUnreachedInstruction(IRFunction func) {
+  exists(Call c | 
+    c.getEnclosingFunction() = func.getFunction() and
+    (
+      c.getTarget().hasSpecifier("_Noreturn") or
+      c.getTarget().getAnAttribute().hasName("noreturn")
+    )
+  )
 }
 
 import CachedForDebugging

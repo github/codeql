@@ -1804,3 +1804,36 @@ ssa.cpp:
 
 #  383|   Block 5
 #  383|     v383_17(void) = Unreached : 
+
+#  403| int noreturnTest(int)
+#  403|   Block 0
+#  403|     v403_1(void)       = EnterFunction          : 
+#  403|     m403_2(unknown)    = AliasedDefinition      : 
+#  403|     m403_3(unknown)    = InitializeNonLocal     : 
+#  403|     m403_4(unknown)    = Chi                    : total:m403_2, partial:m403_3
+#  403|     r403_5(glval<int>) = VariableAddress[x]     : 
+#  403|     m403_6(int)        = InitializeParameter[x] : &:r403_5
+#  404|     r404_1(glval<int>) = VariableAddress[x]     : 
+#  404|     r404_2(int)        = Load[x]                : &:r404_1, m403_6
+#  404|     r404_3(int)        = Constant[10]           : 
+#  404|     r404_4(bool)       = CompareLT              : r404_2, r404_3
+#  404|     v404_5(void)       = ConditionalBranch      : r404_4
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  405|   Block 1
+#  405|     r405_1(glval<int>) = VariableAddress[#return] : 
+#  405|     r405_2(glval<int>) = VariableAddress[x]       : 
+#  405|     r405_3(int)        = Load[x]                  : &:r405_2, m403_6
+#  405|     m405_4(int)        = Store[#return]           : &:r405_1, r405_3
+#  403|     r403_7(glval<int>) = VariableAddress[#return] : 
+#  403|     v403_8(void)       = ReturnValue              : &:r403_7, m405_4
+#  403|     v403_9(void)       = AliasedUse               : m403_3
+#  403|     v403_10(void)      = ExitFunction             : 
+
+#  407|   Block 2
+#  407|     r407_1(glval<unknown>) = FunctionAddress[noreturnFunc] : 
+#  407|     v407_2(void)           = Call[noreturnFunc]            : func:r407_1
+#  407|     m407_3(unknown)        = ^CallSideEffect               : ~m403_4
+#  407|     m407_4(unknown)        = Chi                           : total:m403_4, partial:m407_3
+#  403|     v403_11(void)          = Unreached                     : 

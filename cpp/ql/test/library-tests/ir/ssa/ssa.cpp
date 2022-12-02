@@ -397,3 +397,13 @@ int FusedBlockPhiOperand(int x, int y, int z, bool b1) {
 
   return ret;
 }
+
+[[noreturn]] void noreturnFunc();
+
+int noreturnTest(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        noreturnFunc();
+    }
+}

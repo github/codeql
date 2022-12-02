@@ -14376,6 +14376,35 @@ ir.cpp:
 # 1885|             Type = [ClassTemplateInstantiation,Struct] Bar2<int>
 # 1885|             ValueCategory = lvalue
 # 1886|     getStmt(2): [ReturnStmt] return ...
+# 1889| [TopLevelFunction] void noreturnFunc()
+# 1889|   <params>: 
+# 1891| [TopLevelFunction] int noreturnTest(int)
+# 1891|   <params>: 
+# 1891|     getParameter(0): [Parameter] x
+# 1891|         Type = [IntType] int
+# 1891|   getEntryPoint(): [BlockStmt] { ... }
+# 1892|     getStmt(0): [IfStmt] if (...) ... 
+# 1892|       getCondition(): [LTExpr] ... < ...
+# 1892|           Type = [BoolType] bool
+# 1892|           ValueCategory = prvalue
+# 1892|         getLesserOperand(): [VariableAccess] x
+# 1892|             Type = [IntType] int
+# 1892|             ValueCategory = prvalue(load)
+# 1892|         getGreaterOperand(): [Literal] 10
+# 1892|             Type = [IntType] int
+# 1892|             Value = [Literal] 10
+# 1892|             ValueCategory = prvalue
+# 1892|       getThen(): [BlockStmt] { ... }
+# 1893|         getStmt(0): [ReturnStmt] return ...
+# 1893|           getExpr(): [VariableAccess] x
+# 1893|               Type = [IntType] int
+# 1893|               ValueCategory = prvalue(load)
+# 1894|       getElse(): [BlockStmt] { ... }
+# 1895|         getStmt(0): [ExprStmt] ExprStmt
+# 1895|           getExpr(): [FunctionCall] call to noreturnFunc
+# 1895|               Type = [VoidType] void
+# 1895|               ValueCategory = prvalue
+# 1897|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
