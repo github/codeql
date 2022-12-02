@@ -17,17 +17,20 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>`, or you can run them in the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query on LGTM.com, you need to select a language and project to query (for these logic examples, any language and project will do).
+You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>`, or you can run them in GitHub Codespaces using the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codeql-codespaces-template>`__. To access the template, click on the link then click **Use this template**. This will open a GitHub Codespaces environment that is preconfigured to run CodeQL queries.
 
-Once you have selected a language, the query console is populated with the query:
+Once you open the GitHub Codespaces template, follow the instructions in the ReadMe to take a code tour and learn how to run queries in the workspace.
+
+The first query in the `tutorial.ql` file is populated with the query:
 
 .. code-block:: ql
 
-   import <language>
+   import tutorial
 
-   select "hello world"
+   from Person p
+   select p
 
-This query returns the string ``"hello world"``.
+This query returns .
 
 More complicated queries typically look like this:
 
@@ -57,7 +60,7 @@ Exercise 1
 
 Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
 
-➤ `See answer in the query console on LGTM.com <https://lgtm.com/query/2103060623/>`__
+➤ `Check your answer <#exercise-1>`__
 
 There is often more than one way to define a query. For example, we can also write the above query in the shorter form:
 
@@ -70,21 +73,21 @@ Exercise 2
 
 Write a query which returns the sine of the minimum of ``3^5`` (``3`` raised to the power ``5``) and ``245.6``.
 
-➤ `See answer in the query console on LGTM.com <https://lgtm.com/query/2093780343/>`__
+➤ `Check your answer <#exercise-2>`__
 
 Exercise 3
 ~~~~~~~~~~
 
 Write a query which returns the opposite of the boolean ``false``.
 
-➤ `See answer in the query console on LGTM.com <https://lgtm.com/query/2093780344/>`__
+➤ `Check your answer <#exercise-3>`__
 
 Exercise 4
 ~~~~~~~~~~
 
 Write a query which computes the number of days between June 10 and September 28, 2017.
 
-➤ `See answer in the query console on LGTM.com <https://lgtm.com/query/2100260596/>`__
+➤ `Check your answer <#exercise-4>`__
 
 Example query with multiple results
 -----------------------------------
@@ -98,7 +101,7 @@ The exercises above all show queries with exactly one result, but in fact many q
          x*x + y*y = z*z
    select x, y, z
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2100790036/>`__
+.. include:: ../reusables/run-query-in-template.rst
 
 To simplify the query, we can introduce a class ``SmallInt`` representing the integers between 1 and 10. We can also define a predicate ``square()`` on integers in that class. Defining classes and predicates in this way makes it easy to reuse code without having to repeat it every time.
 
@@ -113,7 +116,7 @@ To simplify the query, we can introduce a class ``SmallInt`` representing the in
    where x.square() + y.square() = z.square()
    select x, y, z
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2101340747/>`__
+.. include:: ../reusables/run-query-in-template.rst
 
 Example CodeQL queries
 ----------------------
@@ -134,7 +137,9 @@ To import the CodeQL library for a specific programming language, type ``import 
    where count(f.getAnArg()) > 7
    select f
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2096810474/>`__. The ``from`` clause defines a variable ``f`` representing a Python function. The ``where`` part limits the functions ``f`` to those with more than 7 arguments. Finally, the ``select`` clause lists these functions.
+➤ The ``from`` clause defines a variable ``f`` representing a Python function. The ``where`` part limits the functions ``f`` to those with more than 7 arguments. Finally, the ``select`` clause lists these functions.
+
+.. include:: ../reusables/run-query-in-template.rst
 
 .. code-block:: ql
 
@@ -144,7 +149,9 @@ To import the CodeQL library for a specific programming language, type ``import 
    where c.getText().regexpMatch("(?si).*\\bTODO\\b.*")
    select c
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2101530483/>`__. The ``from`` clause defines a variable ``c`` representing a JavaScript comment. The ``where`` part limits the comments ``c`` to those containing the word ``"TODO"``. The ``select`` clause lists these comments.
+➤ The ``from`` clause defines a variable ``c`` representing a JavaScript comment. The ``where`` part limits the comments ``c`` to those containing the word ``"TODO"``. The ``select`` clause lists these comments.
+
+.. include:: ../reusables/run-query-in-template.rst
 
 .. code-block:: ql
 
@@ -154,9 +161,54 @@ To import the CodeQL library for a specific programming language, type ``import 
    where not exists(p.getAnAccess())
    select p
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2098670762/>`__. The ``from`` clause defines a variable ``p`` representing a Java parameter. The ``where`` clause finds unused parameters by limiting the parameters ``p`` to those which are not accessed. Finally, the ``select`` clause lists these parameters.
+➤ The ``from`` clause defines a variable ``p`` representing a Java parameter. The ``where`` clause finds unused parameters by limiting the parameters ``p`` to those which are not accessed. Finally, the ``select`` clause lists these parameters.
+
+.. include:: ../reusables/run-query-in-template.rst
 
 Further reading
 ---------------
 
 -  For a more technical description of the underlying language, see the ":ref:`QL language reference <ql-language-reference>`."
+
+--------------
+
+Answers
+-------
+
+In these answers, we use ``/*`` and ``*/`` to label the different parts of the query. Any text surrounded by ``/*`` and ``*/`` is not evaluated as part of the QL code, but is treated as a *comment*.
+
+Exercise 1
+~~~~~~~~~~
+
+.. code-block:: ql
+
+   from string s
+   where s = "lgtm"
+   select s.length()
+
+Exercise 2
+~~~~~~~~~~
+
+.. code-block:: ql
+
+   from float x, float y
+   where x = 3.pow(5) and y = 245.6
+   select x.minimum(y).sin()
+
+Exercise 3
+~~~~~~~~~~
+
+.. code-block:: ql
+
+   from boolean b
+   where b = false
+   select b.booleanNot()
+
+Exercise 4
+~~~~~~~~~~
+
+.. code-block:: ql
+
+   from date start, date end
+   where start = "10/06/2017".toDate() and end = "28/09/2017".toDate()
+   select start.daysTo(end)

@@ -1,0 +1,1 @@
+You can copy this query and run it in your GitHub Codespaces workspace to see the results.
