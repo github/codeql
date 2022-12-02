@@ -28,6 +28,7 @@ runs:
       env:
         SEMMLE_DEBUG_TRACER: 10000
     - name: Upload test logs
+      if: ${{ !cancelled() }}
       uses: actions/upload-artifact@v3
       with:
         name: swift-integration-tests-logs-${{ runner.os }}
