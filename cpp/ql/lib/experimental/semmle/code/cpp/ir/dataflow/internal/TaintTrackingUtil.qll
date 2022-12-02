@@ -120,6 +120,12 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
+ * Like `defaultAdditionalTaintStep`, but these steps are only applied when a transitive closure
+ * of such steps can reach a sink.
+ */
+predicate defaultAdditionalTaintStepAtSink(DataFlow::Node node1, DataFlow::Node node2) { none() }
+
+/**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
  * of `c` at sinks and inputs to additional taint steps.
  */
