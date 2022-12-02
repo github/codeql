@@ -116,7 +116,7 @@ private predicate stringConstArrayInclusionCall(
       isArrayConstant(t.getContainerNode().asExpr(), arr)
     |
       forall(ExprCfgNode elem | elem = arr.getAnArgument() |
-        elem instanceof ExprNodes::StringLiteralCfgNode
+        elem.getConstantValue().isStringlikeValue(_)
       )
     )
   )

@@ -19,6 +19,8 @@ oldStyleBarrierGuards
 | barrier-guards.rb:232:6:232:17 | ... == ... | barrier-guards.rb:233:5:233:7 | foo | barrier-guards.rb:232:6:232:8 | foo | true |
 | barrier-guards.rb:237:6:237:17 | ... == ... | barrier-guards.rb:237:24:237:26 | foo | barrier-guards.rb:237:6:237:8 | foo | true |
 | barrier-guards.rb:268:1:268:12 | ... == ... | barrier-guards.rb:268:17:268:19 | foo | barrier-guards.rb:268:1:268:3 | foo | true |
+| barrier-guards.rb:271:4:271:19 | call to include? | barrier-guards.rb:272:5:272:7 | foo | barrier-guards.rb:271:17:271:19 | foo | true |
+| barrier-guards.rb:277:4:277:20 | call to include? | barrier-guards.rb:278:5:278:7 | foo | barrier-guards.rb:277:18:277:20 | foo | true |
 newStyleBarrierGuards
 | barrier-guards.rb:4:5:4:7 | foo |
 | barrier-guards.rb:10:5:10:7 | foo |
@@ -50,6 +52,8 @@ newStyleBarrierGuards
 | barrier-guards.rb:237:24:237:26 | foo |
 | barrier-guards.rb:244:5:244:7 | foo |
 | barrier-guards.rb:268:17:268:19 | foo |
+| barrier-guards.rb:272:5:272:7 | foo |
+| barrier-guards.rb:278:5:278:7 | foo |
 controls
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | true |
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:6:5:6:7 | foo | false |
@@ -317,8 +321,14 @@ controls
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:268:17:268:19 | foo | match |
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:269:1:269:19 | ... && ... | match |
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:269:8:269:10 | foo | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:271:1:273:3 | if ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:272:5:272:7 | foo | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:277:1:279:3 | if ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:278:5:278:7 | foo | match |
 | barrier-guards.rb:254:4:254:28 | ... == ... | barrier-guards.rb:255:5:255:7 | foo | true |
 | barrier-guards.rb:259:4:259:16 | ... == ... | barrier-guards.rb:260:5:260:7 | foo | true |
 | barrier-guards.rb:264:4:264:16 | ... == ... | barrier-guards.rb:265:5:265:7 | foo | true |
 | barrier-guards.rb:268:1:268:12 | ... == ... | barrier-guards.rb:268:17:268:19 | foo | true |
 | barrier-guards.rb:269:1:269:3 | foo | barrier-guards.rb:269:8:269:10 | foo | true |
+| barrier-guards.rb:271:4:271:19 | call to include? | barrier-guards.rb:272:5:272:7 | foo | true |
+| barrier-guards.rb:277:4:277:20 | call to include? | barrier-guards.rb:278:5:278:7 | foo | true |

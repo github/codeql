@@ -267,3 +267,13 @@ end
 
 foo == "foo" && foo # $ guarded
 foo && foo == "foo"
+
+if [f].include? foo
+    foo # $ guarded
+end
+
+g = "g"
+foos = [f, g]
+if foos.include? foo
+    foo # $ guarded
+end
