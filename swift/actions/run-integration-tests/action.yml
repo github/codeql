@@ -33,4 +33,5 @@ runs:
         name: swift-integration-tests-logs-${{ runner.os }}
         path: |
           swift/integration-tests/**/db/log
+          swift/integration-tests/osx-only/hello-xcode/db/trap
         retention-days: 1
