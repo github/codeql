@@ -1,5 +1,5 @@
 name: codeql/cpp-queries
-version: 0.4.5-dev
+version: 0.4.5
 groups: 
   - cpp
   - queries
