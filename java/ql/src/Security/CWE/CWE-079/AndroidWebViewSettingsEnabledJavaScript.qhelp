@@ -10,13 +10,13 @@
     </p>
 
     <p>
-      For example, if your application's WebView allows for visitng web pages
-      which you do not trust, it is possible for an attacker to lead the user to
+      For example, if your application's WebView allows for visiting web pages
+      that you do not trust, it is possible for an attacker to lead the user to
       a page which loads malicious JavaScript.
     </p>
 
     <p>
-      You can enable or disbale Javascript execution using
+      You can enable or disable Javascript execution using
       the <code>setJavaScriptEnabled</code> method of the settings of a WebView.
     </p>
   </overview>
@@ -30,11 +30,11 @@
   </recommendation>
 
   <example>
-    <p>In the following (bad) example, a WebView has JavaScript enabled in its settings.</p>
+    <p>In the following (bad) example, a WebView has JavaScript enabled in its settings:</p>
 
     <sample src="WebSettingsEnableJavascript.java"/>
 
-    <p>In the following (good) example, a WebView explicitly disallows JavaScript execution.</p>
+    <p>In the following (good) example, a WebView explicitly disallows JavaScript execution:</p>
 
     <sample src="WebSettingsDisableJavascript.java"/>
 
