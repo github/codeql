@@ -793,7 +793,7 @@ class CharacterLiteral extends Literal, @characterliteral {
    * the character to an `int`.
    */
   int getCodePointValue() {
-    if this.getLiteral().matches("'\\u____'")
+    if this.getLiteral().matches("'\\\\u____'")
     then result = fromHex(this.getLiteral().substring(3, 7))
     else result.toUnicode() = this.getValue()
   }
