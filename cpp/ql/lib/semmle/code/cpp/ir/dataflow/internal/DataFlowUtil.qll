@@ -327,7 +327,10 @@ private string toExprString(Node n) {
   result = n.asIndirectExpr().toString() + " indirection"
 }
 
-class Node0 extends Node, TNode0 {
+/**
+ * A class that lifts pre-SSA dataflow nodes to regular dataflow nodes.
+ */
+private class Node0 extends Node, TNode0 {
   Node0Impl node;
 
   Node0() { this = TNode0(node) }
