@@ -173,9 +173,8 @@ Requirements: `codeql` should both appear on your path.
         else:
             negativeSummaryAddsTo = ""
         
-        return f""" 
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Definitions of taint steps in the {self.friendlyname} framework.
+        return f"""# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Definitions of models for the {self.friendlyname} framework.
 
 extensions:
 {sinkAddsTo}

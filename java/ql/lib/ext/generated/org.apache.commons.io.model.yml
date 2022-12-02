@@ -1,6 +1,5 @@
- 
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Definitions of taint steps in the org.apache.commons.io framework.
+# Definitions of models for the org.apache.commons.io framework.
 
 extensions:
   - addsTo:
