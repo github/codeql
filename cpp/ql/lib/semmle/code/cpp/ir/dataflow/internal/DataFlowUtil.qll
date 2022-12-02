@@ -33,15 +33,7 @@ private module Cached {
    */
   cached
   newtype TIRDataFlowNode =
-    TInstructionNode(Instruction i) {
-      not Ssa::ignoreInstruction(i) and
-      // We exclude `void`-typed instructions because they cannot contain data.
-      // However, if the instruction is a glvalue, and their type is `void`, then the result
-      // type of the instruction is really `void*`, and thus we still want to have a dataflow
-      // node for it.
-      (not i.getResultType() instanceof VoidType or i.isGLValue())
-    } or
-    TOperandNode(Operand op) { not Ssa::ignoreOperand(op) } or
+    TNode0(Node0Impl node) or
     TVariableNode(Variable var) or
     TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
       indirectionIndex =
@@ -335,52 +327,50 @@ private string toExprString(Node n) {
   result = n.asIndirectExpr().toString() + " indirection"
 }
 
-/**
- * An instruction, viewed as a node in a data flow graph.
- */
-class InstructionNode extends Node, TInstructionNode {
-  Instruction instr;
+class Node0 extends Node, TNode0 {
+  Node0Impl node;
 
-  InstructionNode() { this = TInstructionNode(instr) }
+  Node0() { this = TNode0(node) }
 
-  /** Gets the instruction corresponding to this node. */
-  Instruction getInstruction() { result = instr }
+  override Declaration getEnclosingCallable() { result = node.getEnclosingCallable() }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override Declaration getFunction() { result = node.getFunction() }
 
-  override Declaration getFunction() { result = instr.getEnclosingFunction() }
+  override DataFlowType getType() { result = node.getType() }
 
-  override DataFlowType getType() { result = instr.getResultType() }
-
-  final override Location getLocationImpl() { result = instr.getLocation() }
+  final override Location getLocationImpl() { result = node.getLocationImpl() }
 
   override string toStringImpl() {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
-    result = this.getInstruction().getOpcode().toString()
+    result = node.toStringImpl()
   }
+}
+
+/**
+ * An instruction, viewed as a node in a data flow graph.
+ */
+class InstructionNode extends Node0 {
+  override InstructionNode0 node;
+  Instruction instr;
+
+  InstructionNode() { instr = node.getInstruction() }
+
+  /** Gets the instruction corresponding to this node. */
+  Instruction getInstruction() { result = instr }
 }
 
 /**
  * An operand, viewed as a node in a data flow graph.
  */
-class OperandNode extends Node, TOperandNode {
+class OperandNode extends Node, Node0 {
+  override OperandNode0 node;
   Operand op;
 
-  OperandNode() { this = TOperandNode(op) }
+  OperandNode() { op = node.getOperand() }
 
   /** Gets the operand corresponding to this node. */
-  Operand getOperand() { result = op }
-
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
-
-  override DataFlowType getType() { result = op.getType() }
-
-  final override Location getLocationImpl() { result = op.getLocation() }
-
-  override string toStringImpl() { result = this.getOperand().toString() }
+  Operand getOperand() { result = node.getOperand() }
 }
 
 /**
@@ -681,7 +671,7 @@ class UninitializedNode extends Node {
 
   UninitializedNode() {
     exists(Ssa::Def def |
-      def.getDefiningInstruction() instanceof UninitializedInstruction and
+      def.getValue().asInstruction() instanceof UninitializedInstruction and
       Ssa::nodeToDefOrUse(this, def) and
       v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()
     )

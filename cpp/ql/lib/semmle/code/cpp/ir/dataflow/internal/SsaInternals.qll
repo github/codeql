@@ -222,16 +222,16 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
 
   override int getIndirectionIndex() { result = ind }
 
-  Instruction getDefiningInstruction() { isDef(_, result, address, _, _, _) }
+  Node0Impl getValue() { isDef(_, result, address, _, _, _) }
 
   override string toString() { result = "DefImpl" }
 
-  override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
+  override IRBlock getBlock() { result = this.getAddressOperand().getUse().getBlock() }
 
-  override Cpp::Location getLocation() { result = this.getDefiningInstruction().getLocation() }
+  override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    this.getDefiningInstruction() = block.getInstruction(index)
+    this.getAddressOperand().getUse() = block.getInstruction(index)
   }
 
   predicate isCertain() { isDef(true, _, address, _, _, ind) }
@@ -308,7 +308,10 @@ predicate outNodeHasAddressAndIndex(
 }
 
 private predicate defToNode(Node nodeFrom, Def def) {
-  nodeHasInstruction(nodeFrom, def.getDefiningInstruction(), def.getIndirectionIndex())
+  // TODO: This is not yet needed (and in fact, the compiler rejects it because `exists(def.getValue().asOperand())` never holds).
+  // nodeHasOperand(nodeFrom, def.getValue().asOperand(), def.getIndirectionIndex())
+  // or
+  nodeHasInstruction(nodeFrom, def.getValue().asInstruction(), def.getIndirectionIndex())
 }
 
 /**
@@ -562,7 +565,7 @@ class Def extends DefOrUse {
     pragma[only_bind_into](result) = pragma[only_bind_out](defOrUse).getIndirectionIndex()
   }
 
-  Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
+  Node0Impl getValue() { result = defOrUse.getValue() }
 }
 
 private module SsaImpl = SsaImplCommon::Make<SsaInput>;

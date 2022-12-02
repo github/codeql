@@ -168,16 +168,16 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
 
   Operand getAddressOperand() { result = address }
 
-  Instruction getDefiningInstruction() { isDef(_, result, address, _, _, _) }
+  Node0Impl getValue() { isDef(_, result, address, _, _, _) }
 
   override string toString() { result = address.toString() }
 
-  override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
+  override IRBlock getBlock() { result = this.getAddressOperand().getDef().getBlock() }
 
-  override Cpp::Location getLocation() { result = this.getDefiningInstruction().getLocation() }
+  override Cpp::Location getLocation() { result = this.getAddressOperand().getLocation() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    this.getDefiningInstruction() = block.getInstruction(index)
+    this.getAddressOperand().getUse() = block.getInstruction(index)
   }
 
   predicate isCertain() { isDef(true, _, address, _, _, _) }
@@ -302,9 +302,9 @@ class Def extends DefOrUse {
 
   Instruction getAddress() { result = this.getAddressOperand().getDef() }
 
-  Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
+  Node0Impl getValue() { result = defOrUse.getValue() }
 
-  override string toString() { result = this.asDefOrUse().toString() + " (def)" }
+  override string toString() { result = this.asDefOrUse().toString() }
 }
 
 private module SsaImpl = SsaImplCommon::Make<SsaInput>;
