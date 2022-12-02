@@ -120,6 +120,11 @@ public class AutoBuildTests {
         }
 
         @Override
+        protected boolean hasSeenCode() {
+          return true;
+        }
+
+        @Override
         public void verifyTypeScriptInstallation(ExtractorState state) {}
 
         @Override
