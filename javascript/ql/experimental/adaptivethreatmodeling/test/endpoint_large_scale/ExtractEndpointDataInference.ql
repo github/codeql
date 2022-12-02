@@ -23,5 +23,5 @@ private import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroug
 query predicate isSinkCandidateForQuery(
   AtmConfig::AtmConfig queryConfig, JS::DataFlow::PathNode sink
 ) {
-  queryConfig.isSinkCandidate(sink)
+  queryConfig.isSinkCandidateWithFlow(sink)
 }
