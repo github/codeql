@@ -26,11 +26,19 @@ predicate isSafeSecureCookieSetting(Expr e) {
   )
 }
 
-from MethodAccess add
+class SecureCookieConfiguration extends DataFlow::Configuration {
+  SecureCookieConfiguration() { this = "SecureCookieConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { any() }
+
+  override predicate isSink(DataFlow::Node sink) { any() }
+}
+
+from MethodAccess add, SecureCookieConfiguration df
 where
   add.getMethod() instanceof ResponseAddCookieMethod and
   not exists(Variable cookie, MethodAccess m |
-    add.getArgument(0) = cookie.getAnAccess() and
+    df.hasFlow(DataFlow::exprNode(cookie.getAnAccess()), DataFlow::exprNode(add.getArgument(0))) and
     m.getMethod().getName() = "setSecure" and
     forex(DataFlow::Node argSource |
       DataFlow::localFlow(argSource, DataFlow::exprNode(m.getArgument(0))) and
