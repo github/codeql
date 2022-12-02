@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 // for `that`.
 private fun getName(d: IrDeclarationWithName) = (d as? IrAnnotationContainer)?.let { getJvmName(it) } ?: d.name.asString()
 
+@OptIn(ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
 fun getFileClassName(f: IrFile) =
     getJvmName(f) ?:
         ((f.fileEntry.name.replaceFirst(Regex(""".*[/\\]"""), "")
