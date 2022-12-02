@@ -69,6 +69,13 @@ private module Cached {
   }
 
   /**
+   * Like `defaultAdditionalTaintStep`, but these steps are only applied when a transitive closure
+   * of such steps can reach a sink.
+   */
+  cached
+  predicate defaultAdditionalTaintStepAtSink(DataFlow::Node node1, DataFlow::Node node2) { none() }
+
+  /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.
    */
