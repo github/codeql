@@ -18,9 +18,12 @@ private class StdBasicString extends ClassTemplateInstantiation {
 /**
  * The `std::basic_string::iterator` declaration.
  */
-private class StdBasicStringIterator extends Iterator, Type {
+private class StdBasicStringIterator extends Type instanceof Iterator {
   StdBasicStringIterator() {
-    this.getEnclosingElement() instanceof StdBasicString and this.hasName("iterator")
+    exists(Type unspecified |
+      unspecified.getEnclosingElement() = any(StdBasicString s).getTemplate() and
+      unspecified.getUnspecifiedType() = this
+    )
   }
 }
 
