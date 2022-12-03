@@ -55,3 +55,50 @@ private class TaintStepFromSummary extends TaintTracking::SharedTaintStep {
     summaryStepNodes(pred, succ, "taint")
   }
 }
+
+private predicate relevantNamespace(string namespace) {
+  Shared::sourceModel(namespace, _, _, _) or
+  Shared::sinkModel(namespace, _, _, _) or
+  Shared::summaryModel(namespace, _, _, _, _, _)
+}
+
+private predicate namespaceLink(string shortns, string longns) {
+  relevantNamespace(shortns) and
+  relevantNamespace(longns) and
+  longns.prefix(longns.indexOf(".")) = shortns
+}
+
+private predicate canonicalNamespace(string namespace) {
+  relevantNamespace(namespace) and not namespaceLink(_, namespace)
+}
+
+private predicate canonicalNamespaceLink(string namespace, string subns) {
+  canonicalNamespace(namespace) and
+  (subns = namespace or namespaceLink(namespace, subns))
+}
+
+predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
+  namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
+  (
+    part = "source" and
+    n =
+      strictcount(string subns, string type |
+        canonicalNamespaceLink(namespace, subns) and
+        Shared::sourceModel(subns, type, _, kind)
+      )
+    or
+    part = "sink" and
+    n =
+      strictcount(string subns, string type |
+        canonicalNamespaceLink(namespace, subns) and
+        Shared::sinkModel(subns, type, _, kind)
+      )
+    or
+    part = "summary" and
+    n =
+      strictcount(string subns, string type |
+        canonicalNamespaceLink(namespace, subns) and
+        Shared::summaryModel(subns, type, _, _, _, kind)
+      )
+  )
+}
