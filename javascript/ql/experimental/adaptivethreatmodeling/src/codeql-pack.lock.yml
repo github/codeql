@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.1-2022-09-06-08h55m54s.bubbly-basin-xpztl8fh.f3c3c9360a727959e428ecc6932257e6a546dc65d8a9baac525a49247123822d
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-12-03-04h14m11s.salmon-octopus-2p2tcm8p.34b42ae61739294a9ebf8a91b34a68e15a3bf0ad12ee3de4ea39e9daeaaefeae
+compiled: false
