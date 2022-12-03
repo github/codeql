@@ -1163,8 +1163,9 @@ private module StdlibPrivate {
   API::Node subprocess() { result = API::moduleImport("subprocess") }
 
   /**
-   * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run)
+   * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run, getoutput, getstatusoutput)
    * See https://docs.python.org/3.8/library/subprocess.html#subprocess.Popen
+   * ref: https://docs.python.org/3/library/subprocess.html#legacy-shell-invocation-functions
    */
   private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     SubprocessPopenCall() {
