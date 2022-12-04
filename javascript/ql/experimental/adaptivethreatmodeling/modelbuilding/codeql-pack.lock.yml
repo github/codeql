@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-12-03-04h14m01s.epic-boniato-rngrc73t.634420fd7d8bd5b5c5024bdafc3ee67026afa8988babbbbcedc7e86baf2c3ab1
+compiled: false

@@ -6,4 +6,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: "*"
-    codeql/javascript-experimental-atm-model: "0.2.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-12-03-04h14m01s.epic-boniato-rngrc73t.634420fd7d8bd5b5c5024bdafc3ee67026afa8988babbbbcedc7e86baf2c3ab1
