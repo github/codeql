@@ -95,7 +95,7 @@ class TestKt {
         // PathTraversalSanitizer + allowListGuard
         run {
             val source: File? = source() as File?
-            val normalized: String = source!!.getCanonicalPath()
+            val normalized: String = source!!.canonicalPath
             if (normalized.startsWith("/safe")) {
                 sink(source) // Safe
                 sink(normalized) // Safe
@@ -106,7 +106,7 @@ class TestKt {
         }
         run {
             val source: File? = source() as File?
-            val normalized: String = source!!.getCanonicalFile().toString()
+            val normalized: File = source!!.canonicalFile.toString()
             if (normalized.startsWith("/safe")) {
                 sink(source) // Safe
                 sink(normalized) // Safe
@@ -328,7 +328,7 @@ class TestKt {
         // PathTraversalSanitizer + blockListGuard
         run {
             val source: File? = source() as File?
-            val normalized: String = source!!.getCanonicalPath()
+            val normalized: String = source!!.canonicalPath
             if (!normalized.startsWith("/data")) {
                 sink(source) // Safe
                 sink(normalized) // Safe
@@ -339,7 +339,7 @@ class TestKt {
         }
         run {
             val source: File? = source() as File?
-            val normalized: String = source!!.getCanonicalFile().toString()
+            val normalized: String = source!!.canonicalFile.toString()
             if (!normalized.startsWith("/data")) {
                 sink(source) // Safe
                 sink(normalized) // Safe
