@@ -344,7 +344,7 @@ module TypeTracking<TypeTrackingInput I> {
   }
 
   pragma[nomagic]
-  private predicate storeStepIntoSource(Node nodeFrom, Node nodeTo, Content f) {
+  private predicate storeStepIntoSource(Node nodeFrom, LocalSourceNode nodeTo, Content f) {
     if hasFeatureBacktrackStoreTarget()
     then
       exists(Node obj |
@@ -355,7 +355,9 @@ module TypeTracking<TypeTrackingInput I> {
   }
 
   pragma[nomagic]
-  private predicate loadStoreStepIntoSource(Node nodeFrom, Node nodeTo, Content f1, Content f2) {
+  private predicate loadStoreStepIntoSource(
+    Node nodeFrom, LocalSourceNode nodeTo, Content f1, Content f2
+  ) {
     if hasFeatureBacktrackStoreTarget()
     then
       exists(Node obj |
@@ -366,7 +368,7 @@ module TypeTracking<TypeTrackingInput I> {
   }
 
   pragma[nomagic]
-  private predicate smallStepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  private predicate smallStepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     levelStepNoCall(nodeFrom, nodeTo) and summary = LevelStep()
     or
     exists(Content content |
@@ -398,7 +400,7 @@ module TypeTracking<TypeTrackingInput I> {
   }
 
   pragma[nomagic]
-  private predicate smallStepCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  private predicate smallStepCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     levelStepCall(nodeFrom, nodeTo) and summary = LevelStep()
     or
     callStep(nodeFrom, nodeTo) and summary = CallStep()
@@ -407,32 +409,32 @@ module TypeTracking<TypeTrackingInput I> {
   }
 
   pragma[nomagic]
-  private predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  private predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     exists(Node mid | flowsTo(nodeFrom, mid) and smallStepNoCall(mid, nodeTo, summary))
   }
 
   pragma[nomagic]
-  private predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  private predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     exists(Node mid | flowsTo(nodeFrom, mid) and smallStepCall(mid, nodeTo, summary))
   }
 
   pragma[inline]
-  private predicate smallStepSplit(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  private predicate smallStepSplit(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     smallStepCall(nodeFrom, nodeTo, summary) or smallStepNoCall(nodeFrom, nodeTo, summary)
   }
 
   pragma[inline]
-  private predicate stepSplit(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  private predicate stepSplit(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     stepNoCall(nodeFrom, nodeTo, summary) or stepCall(nodeFrom, nodeTo, summary)
   }
 
   pragma[nomagic]
-  private predicate smallStep(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  private predicate smallStep(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     smallStepSplit(nodeFrom, nodeTo, summary)
   }
 
   pragma[nomagic]
-  private predicate step(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  private predicate step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     stepSplit(nodeFrom, nodeTo, summary)
   }
 
@@ -528,7 +530,7 @@ module TypeTracking<TypeTrackingInput I> {
      * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
      */
     bindingset[nodeFrom, this]
-    TypeTracker step(Node nodeFrom, Node nodeTo) {
+    TypeTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
       exists(StepSummary summary |
         step(pragma[only_bind_out](nodeFrom), _, pragma[only_bind_into](summary)) and
         result = pragma[only_bind_into](pragma[only_bind_out](this)).append(summary) and
@@ -655,7 +657,7 @@ module TypeTracking<TypeTrackingInput I> {
      * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
      */
     bindingset[nodeTo, this]
-    TypeBackTracker step(Node nodeFrom, Node nodeTo) {
+    TypeBackTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
       exists(StepSummary summary |
         step(_, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
         result = pragma[only_bind_into](pragma[only_bind_out](this)).prepend(summary) and
