@@ -11,7 +11,7 @@ on:
     branches:
       - main
     paths:
-      - "java/ql/src/utils/model-generator/**/*.*"
+      # - "java/ql/src/utils/model-generator/**/*.*"
       - ".github/workflows/mad_modelDiff.yml"
 
 permissions:
