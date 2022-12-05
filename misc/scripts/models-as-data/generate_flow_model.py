@@ -38,7 +38,7 @@ class Generator:
 
     def printHelp(self):
         print(f"""Usage:
-python3 GenerateFlowModelExtensions.py <library-database> <outputYml> [<friendlyFrameworkName>] [--with-sinks] [--with-sources] [--with-summaries] [--with-typebased-summaries] [--dry-run]
+python3 GenerateFlowModel.py <library-database> <outputYml> [<friendlyFrameworkName>] [--with-sinks] [--with-sources] [--with-summaries] [--with-typebased-summaries] [--dry-run]
 
 This generates summary, source and sink models for the code in the database.
 The files will be placed in `{self.language}/ql/lib/ext/generated/<outputYml>.model.yml` where
@@ -50,15 +50,15 @@ Which models are generated is controlled by the flags:
     --with-sources
     --with-summaries
     --with-negative-summaries
-    --with-typebased-summaries (Experimental - only for C#)
+    --with-typebased-summaries (Experimental)
 If none of these flags are specified, all models are generated except for the type based models.
 
     --dry-run: Only run the queries, but don't write to file.
 
 Example invocations:
-$ python3 GenerateFlowModelExtensions.py /tmp/dbs/my_library_db mylibrary
-$ python3 GenerateFlowModelExtensions.py /tmp/dbs/my_library_db mylibrary "Friendly Name of Framework"
-$ python3 GenerateFlowModelExtensions.py /tmp/dbs/my_library_db --with-sinks
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db mylibrary
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db mylibrary "Friendly Name of Framework"
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks
 
 Requirements: `codeql` should both appear on your path.
     """)
