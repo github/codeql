@@ -47,7 +47,7 @@ jobs:
         run: |
           codeql query compile \
             --check-only \
-            --ram 52000 \
+            --ram 50000 \
             --additional-packs "${{ github.workspace }}" \
             --threads=0 \
             --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" \
@@ -58,7 +58,7 @@ jobs:
         run: |
           codeql test run \
             --threads=0 \
-            --ram 52000 \
+            --ram 50000 \
             --additional-packs "${{ github.workspace }}" \
             --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" \
             -- \
