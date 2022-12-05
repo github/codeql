@@ -389,10 +389,7 @@ Instruction getPrimaryInstructionForSideEffect(SideEffectInstruction instruction
 predicate hasUnreachedInstruction(IRFunction func) {
   exists(Call c | 
     c.getEnclosingFunction() = func.getFunction() and
-    (
-      c.getTarget().hasSpecifier("_Noreturn") or
-      c.getTarget().getAnAttribute().hasName("noreturn")
-    )
+    any(Options opt).exits(c.getTarget())
   )
 }
 
