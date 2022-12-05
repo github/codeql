@@ -29,9 +29,18 @@ predicate isSafeSecureCookieSetting(Expr e) {
 class SecureCookieConfiguration extends DataFlow::Configuration {
   SecureCookieConfiguration() { this = "SecureCookieConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { any() }
+  override predicate isSource(DataFlow::Node source) {
+    exists(Variable cookie, MethodAccess m |
+      source.asExpr() = cookie.getAnAccess() and
+      cookie.getAnAccess() = m.getQualifier() and
+      m.getMethod().getName() = "setSecure"
+    )
+  }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() =
+      any(MethodAccess add | add.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
+  }
 }
 
 from MethodAccess add, SecureCookieConfiguration df
