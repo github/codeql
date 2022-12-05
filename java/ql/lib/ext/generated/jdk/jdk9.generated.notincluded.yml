@@ -1,6 +1,5 @@
-
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Definitions of taint steps in the Java JDK 9 framework.
+# Definitions of models for the Java JDK 9 framework.
 
 extensions:
   - addsTo:
@@ -62,7 +61,6 @@ extensions:
       - ["javax.xml.bind", "JAXB", false, "marshal", "(Object,URL)", "", "Argument[1]", "open-url", "generated"]
       - ["javax.xml.stream", "XMLResolver", true, "resolveEntity", "(String,String,String,String)", "", "Argument[1]", "open-url", "generated"]
       - ["javax.xml.ws.wsaddressing", "W3CEndpointReferenceBuilder", false, "build", "()", "", "Argument[-1]", "open-url", "generated"]
-
 
 
 

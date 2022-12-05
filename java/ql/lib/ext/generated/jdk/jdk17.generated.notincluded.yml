@@ -1,6 +1,5 @@
-
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Definitions of taint steps in the Java JDK 17 framework.
+# Definitions of models for the Java JDK 17 framework.
 
 extensions:
   - addsTo:
@@ -57,7 +56,6 @@ extensions:
       - ["javax.sound.sampled", "AudioSystem", true, "getAudioInputStream", "(URL)", "", "Argument[0]", "open-url", "generated"]
       - ["javax.sql.rowset.spi", "SyncFactory", true, "setJNDIContext", "(Context)", "", "Argument[0]", "jndi-injection", "generated"]
       - ["javax.xml.stream", "XMLResolver", true, "resolveEntity", "(String,String,String,String)", "", "Argument[1]", "open-url", "generated"]
-
 
 
 
