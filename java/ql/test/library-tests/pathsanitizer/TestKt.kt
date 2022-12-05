@@ -106,7 +106,18 @@ class TestKt {
         }
         run {
             val source: File? = source() as File?
-            val normalized: File = source!!.canonicalFile.toString()
+            val normalized: File = source!!.canonicalFile
+            if (normalized.startsWith("/safe")) {
+                sink(source) // Safe
+                sink(normalized) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(normalized) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source: File? = source() as File?
+            val normalized: String = source!!.canonicalFile.toString()
             if (normalized.startsWith("/safe")) {
                 sink(source) // Safe
                 sink(normalized) // Safe
@@ -329,6 +340,17 @@ class TestKt {
         run {
             val source: File? = source() as File?
             val normalized: String = source!!.canonicalPath
+            if (!normalized.startsWith("/data")) {
+                sink(source) // Safe
+                sink(normalized) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(normalized) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source: File? = source() as File?
+            val normalized: File = source!!.canonicalFile
             if (!normalized.startsWith("/data")) {
                 sink(source) // Safe
                 sink(normalized) // Safe
