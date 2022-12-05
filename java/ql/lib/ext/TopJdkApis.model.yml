@@ -117,7 +117,7 @@ extensions:
       - ["java.lang", "String", "isEmpty", "()", "manual"]                # UNSUPPORTED: type as sanitizer
       - ["java.lang", "String", "contains", "(CharSequence)", "manual"]   # UNSUPPORTED: type as sanitizer
       - ["java.lang", "String", "startsWith", "(String)", "manual"]       # UNSUPPORTED: type as sanitizer
-      - ["java.lang", "StringBuilder", "toString", "()", "manual"]        # **SUPPORTED**: shouldn't model due to causing problems with dataflow?, unless it's fine with StringBuilder? (Note: no obvious MaD row...look into further, has the model been removed recently?)
+      - ["java.lang", "StringBuilder", "toString", "()", "manual"]        # **SUPPORTED**: shouldn't model due to causing problems with dataflow?, unless it's fine with StringBuilder? (Note: modelled in java.lang.model.yml at line 34 through AbstractStringBuilder.toString subtyping)
       - ["java.lang", "Enum", "equals", "(Object)", "manual"]             # UNSUPPORTED: type as sanitizer
       - ["java.lang", "Enum", "toString", "()", "manual"]                 # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
       - ["java.lang", "System", "currentTimeMillis", "()", "manual"]      # UNSUPPORTED: just gives current time
