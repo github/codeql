@@ -14,6 +14,7 @@ class KtToRegex extends MethodAccess {
     this.getMethod().hasName("toRegex")
   }
 
+  /** Gets the constant string value being converted to a regex by this call. */
   string getExpressionString() {
     result = this.getArgument(0).(CompileTimeConstantExpr).getStringValue()
   }
