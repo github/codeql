@@ -580,5 +580,9 @@
   "IncompleteMultiCharacterSanitization JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitizationQuery.qll",
     "ruby/ql/lib/codeql/ruby/security/IncompleteMultiCharacterSanitizationQuery.qll"
+  ],
+  "ThreadResourceAbuse help": [
+    "java/ql/src/experimental/Security/CWE/CWE-400/LocalThreadResourceAbuse.qhelp",
+    "java/ql/src/experimental/Security/CWE/CWE-400/ThreadResourceAbuse.qhelp"
   ]
 }
