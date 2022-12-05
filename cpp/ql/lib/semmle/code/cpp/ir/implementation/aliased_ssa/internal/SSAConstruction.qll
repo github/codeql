@@ -34,9 +34,13 @@ private module Cached {
 
   cached
   predicate hasUnreachedInstructionCached(IRFunction irFunc) {
-    exists(OldInstruction oldInstruction |
+    exists(OldIR::Instruction oldInstruction |
       irFunc = oldInstruction.getEnclosingIRFunction() and
-      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+      (
+        Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+        or
+        oldInstruction.getOpcode() instanceof Opcode::Unreached
+      )
     )
   }
 
@@ -368,17 +372,17 @@ private module Cached {
       kind instanceof GotoEdge
     else (
       exists(OldInstruction oldInstruction |
-        oldInstruction = getOldInstruction(instruction) and
+        (
+          oldInstruction = getOldInstruction(instruction) 
+          or
+          instruction = getChi(oldInstruction)
+        )
+        and
         (
           if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
           then result = unreachedInstruction(instruction.getEnclosingIRFunction())
           else result = getNewInstruction(oldInstruction.getSuccessor(kind))
         )
-      )
-      or
-      exists(OldInstruction oldInstruction |
-        instruction = getChi(oldInstruction) and
-        result = getNewInstruction(oldInstruction.getSuccessor(kind))
       )
     )
   }

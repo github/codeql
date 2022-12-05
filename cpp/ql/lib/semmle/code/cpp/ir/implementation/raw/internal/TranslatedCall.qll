@@ -8,6 +8,7 @@ private import SideEffects
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
+private import DefaultOptions as DefaultOptions
 
 /**
  * Gets the `CallInstruction` from the `TranslatedCallExpr` for the specified expression.
@@ -68,7 +69,7 @@ abstract class TranslatedCall extends TranslatedExpr {
     child = getSideEffects() and
     if this.isNoReturn()
     then result = any(UnreachedInstruction instr | this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction())
-    else result = getParent().getChildSuccessor(this)
+    else result = this.getParent().getChildSuccessor(this)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -272,6 +273,10 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   }
 
   final override int getNumberOfArguments() { result = expr.getNumberOfArguments() }
+
+  final override predicate isNoReturn() {
+    any(Options opt).exits(expr.getTarget())
+  }
 }
 
 /**
