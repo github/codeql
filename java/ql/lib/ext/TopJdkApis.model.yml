@@ -1,0 +1,133 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extSummaryModel
+    data:
+      # namespace; type; subtypes; name; signature; ext; input; output; kind; provenance (10)
+      - ["java.util", "Objects", False, "requireNonNull", "(Object,String)", "", "Argument[0]", "ReturnValue", "value", "manual"]                # SUPPORTED: already modelled in java.util.model.yml at line 255, but no signature specified in existing model
+      - ["java.util", "Collection", True, "stream", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]                  # SUPPORTED: already modelled in java.util.model.yml at line 50
+      - ["java.util", "Collections", False, "singletonList", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]            # SUPPORTED: already modelled in java.util.model.yml at line 74
+      - ["java.util", "Iterator", True, "next", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]                              # SUPPORTED: already modelled in java.util.model.yml at line 135, but no signature specified in existing model
+      - ["java.util", "Set", True, "add", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]                              # SUPPORTED: no MaD row, modelled by Collection.add() in java.util.model.yml at line 47 through subtyping
+      - ["java.util", "List", True, "get", "(int)", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]                                # SUPPORTED: already modelled in java.util.model.yml at line 143
+      - ["java.util", "List", False, "of", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]                              # SUPPORTED: already modelled in java.util.model.yml at line 145
+      - ["java.util", "List", True, "add", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]                             # SUPPORTED: no MaD row, modelled by Collection.add() in java.util.model.yml at line 47 through subtyping. Note: List.add(int,Object) is modelled in java.util.model.yml at line 140, seems unnecessary if Collection.add() is modelled
+      - ["java.util", "List", True, "addAll", "(Collection)", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]              # SUPPORTED: no MaD row, modelled by Collection.addAll() in java.util.model.yml at line 48 through subtyping. Note: List.addAll(int,Collection) is modelled in java.util.model.yml at line 141, seems unnecessary if Collection.addAll() is modelled
+      - ["java.util", "ArrayList", True, "add", "(Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]                        # SUPPORTED: no MaD row, modelled by Collection.add() in java.util.model.yml at line 47 through subtyping
+      - ["java.util", "ArrayList", False, "ArrayList", "(Collection)", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]     # SUPPORTED: already modelled in java.util.model.yml at line 15
+      - ["java.util", "Arrays", False, "asList", "(Object[])", "", "Argument[0].ArrayElement", "ReturnValue.Element", "value", "manual"]         # SUPPORTED: already modelled in java.util.model.yml at line 16, but no signature specified in existing model
+      - ["java.util", "Map", True, "put", "(Object,Object)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]                      # SUPPORTED: already modelled in java.util.model.yml at line 201
+      - ["java.util", "Map", True, "put", "(Object,Object)", "", "Argument[0]", "Argument[-1].MapKey", "value", "manual"]                        # SUPPORTED: already modelled in java.util.model.yml at lines 202
+      - ["java.util", "Map", True, "put", "(Object,Object)", "", "Argument[1]", "Argument[-1].MapValue", "value", "manual"]                      # SUPPORTED: already modelled in java.util.model.yml at lines 203
+      - ["java.util", "Map", True, "get", "(Object)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]                             # SUPPORTED: already modelled in java.util.model.yml at line 174, but no signature specified in existing model
+      - ["java.util", "Map", True, "entrySet", "()", "", "Argument[-1].MapKey", "ReturnValue.Element.MapKey", "value", "manual"]                 # SUPPORTED: already modelled in java.util.model.yml at line 170, but no signature specified in existing model
+      - ["java.util", "Map", True, "entrySet", "()", "", "Argument[-1].MapValue", "ReturnValue.Element.MapValue", "value", "manual"]             # SUPPORTED: already modelled in java.util.model.yml at line 171, but no signature specified in existing model
+      - ["java.util", "Map", True, "values", "()", "", "Argument[-1].MapValue", "ReturnValue.Element", "value", "manual"]                        # SUPPORTED: already modelled in java.util.model.yml at line 215
+      - ["java.util", "Map", True, "keySet", "()", "", "Argument[-1].MapKey", "ReturnValue.Element", "value", "manual"]                          # SUPPORTED: already modelled in java.util.model.yml at line 177
+      - ["java.util", "Map", True, "remove", "(Object)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]                          # SUPPORTED: already modelled in java.util.model.yml at line 209
+      - ["java.util", "Map$Entry", True, "getKey", "()", "", "Argument[-1].MapKey", "ReturnValue", "value", "manual"]                            # SUPPORTED: already modelled in java.util.model.yml at line 216, but no signature specified in existing model
+      - ["java.util", "Map$Entry", True, "getValue", "()", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]                        # SUPPORTED: already modelled in java.util.model.yml at line 217, but no signature specified in existing model
+      - ["java.util", "HashMap", True, "put", "(Object,Object)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]                  # SUPPORTED: no MaD row, modelled by Map.put() above through subtyping
+      - ["java.util", "HashMap", True, "put", "(Object,Object)", "", "Argument[0]", "Argument[-1].MapKey", "value", "manual"]                    # SUPPORTED: no MaD row, modelled by Map.put() above through subtyping
+      - ["java.util", "HashMap", True, "put", "(Object,Object)", "", "Argument[1]", "Argument[-1].MapValue", "value", "manual"]                  # SUPPORTED: no MaD row, modelled by Map.put() above through subtyping
+      - ["java.util", "HashMap", True, "get", "(Object)", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]                         # SUPPORTED: no MaD row, modelled by Map.get() above through subtyping
+      - ["java.util", "Optional", False, "orElse", "(Object)", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]                     # SUPPORTED: already modelled in java.util.model.yml at line 273, but no signature specified in existing model
+      - ["java.util", "Optional", False, "orElse", "(Object)", "", "Argument[0]", "ReturnValue", "value", "manual"]                              # SUPPORTED: already modelled in java.util.model.yml at line 274, but no signature specified in existing model
+      - ["java.util", "Optional", False, "of", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]                          # SUPPORTED: already modelled in java.util.model.yml at line 269, but no signature specified in existing model
+      - ["java.util", "Optional", False, "ofNullable", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]                  # SUPPORTED: already modelled in java.util.model.yml at line 270, but no signature specified in existing model
+      - ["java.util", "Optional", False, "get", "()", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]                              # SUPPORTED: already modelled in java.util.model.yml at line 264, but no signature specified in existing model
+      - ["java.util", "Optional", False, "ifPresent", "(Consumer)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]   # SUPPORTED: already modelled in java.util.model.yml at line 265, but no signature specified in existing model
+      - ["java.util", "Optional", False, "map", "(Function)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]         # SUPPORTED: already modelled in java.util.model.yml at line 267, but no signature specified in existing model
+      - ["java.util", "Optional", False, "map", "(Function)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]           # SUPPORTED: already modelled in java.util.model.yml at line 268, but no signature specified in existing model
+      - ["java.util.stream", "Stream", True, "filter", "(Predicate)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"] # SUPPORTED: already modelled in java.util.stream.model.yml at line 24
+      - ["java.util.stream", "Stream", True, "filter", "(Predicate)", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]      # SUPPORTED: already modelled in java.util.stream.model.yml at line 25
+      - ["java.util.stream", "Stream", True, "findFirst", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]            # SUPPORTED: already modelled in java.util.stream.model.yml at line 27
+      - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]     # SUPPORTED: already modelled in java.util.stream.model.yml at line 45
+      - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]       # SUPPORTED: already modelled in java.util.stream.model.yml at line 46
+      - ["java.util.stream", "Stream", True, "forEach", "(Consumer)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"] # SUPPORTED (extra one from Michael's list): already modelled in java.util.stream.model.yml at line 33
+      # - ["java.util.stream", "Stream", True, "collect", "(Collector)", "", "", "", "value", "manual"]                                          # **UNSUPPORTED**: noted in java.util.stream.model.yml at line 19 that "collect(Collector<T,A,R> collector) is handled separately on a case-by-case basis as it is too complex for MaD" (Note: look into if/how this is ever handled)
+      - ["java.lang", "Iterable", True, "forEach", "(Consumer)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]      # SUPPORTED: already modelled in java.lang.model.yml at line 40
+      - ["java.lang", "String", False, "trim", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                                       # SUPPORTED: already modelled in java.lang.model.yml at line 81, but no signature specified in existing model
+      - ["java.lang", "String", False, "substring", "(int,int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                           # SUPPORTED: already modelled in java.lang.model.yml at line 75, but no signature specified in existing model
+      - ["java.lang", "String", False, "substring", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                               # SUPPORTED: already modelled in java.lang.model.yml at line 75, but no signature specified in existing model
+      - ["java.lang", "String", False, "replace", "(CharSequence,CharSequence)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]           # SUPPORTED: already modelled in java.lang.model.yml at line 64, but no signature specified in existing model
+      - ["java.lang", "String", False, "replace", "(CharSequence,CharSequence)", "", "Argument[1]", "ReturnValue", "taint", "manual"]            # SUPPORTED: already modelled in java.lang.model.yml at line 65, but no signature specified in existing model
+      - ["java.lang", "String", False, "split", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                                # SUPPORTED: already modelled in java.lang.model.yml at line 70, but no signature specified in existing model
+      - ["java.lang", "String", False, "toLowerCase", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                                # SUPPORTED: already modelled in java.lang.model.yml at line 77, but no signature specified in existing model
+      - ["java.lang", "String", False, "format", "(String,Object[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]                       # SUPPORTED: already modelled in java.lang.model.yml at line 53
+      - ["java.lang", "String", False, "format", "(String,Object[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]          # SUPPORTED: already modelled in java.lang.model.yml at line 54
+      - ["java.lang", "StringBuilder", False, "append", "(String)", "", "Argument[-1]", "ReturnValue", "value", "manual"]                        # SUPPORTED: already modelled in java.lang.model.yml at line 24 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuilder", False, "append", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                        # SUPPORTED: already modelled in java.lang.model.yml at line 25 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuilder", False, "append", "(char)", "", "Argument[-1]", "ReturnValue", "value", "manual"]                          # SUPPORTED: already modelled in java.lang.model.yml at line 24 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuilder", False, "append", "(char)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                          # SUPPORTED: already modelled in java.lang.model.yml at line 25 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuilder", False, "append", "(Object)", "", "Argument[-1]", "ReturnValue", "value", "manual"]                        # SUPPORTED: already modelled in java.lang.model.yml at line 24 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuilder", False, "append", "(Object)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                        # SUPPORTED: already modelled in java.lang.model.yml at line 25 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuilder", False, "append", "(int)", "", "Argument[-1]", "ReturnValue", "value", "manual"]                           # SUPPORTED: already modelled in java.lang.model.yml at line 24 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuilder", False, "append", "(int)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                           # SUPPORTED: already modelled in java.lang.model.yml at line 25 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuffer", False, "append", "(String)", "", "Argument[-1]", "ReturnValue", "value", "manual"]                         # SUPPORTED: already modelled in java.lang.model.yml at line 24 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "StringBuffer", False, "append", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                         # SUPPORTED: already modelled in java.lang.model.yml at line 25 through AbstractStringBuilder.append subtyping
+      - ["java.lang", "Integer", False, "parseInt", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                             # SUPPORTED: no MaD row or regular CodeQL model that I can find... (Note: check for existing model again)
+      - ["java.io", "File", False, "File", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                                     # SUPPORTED: already modelled in java.io.model.yml at line 60, but no signature specified in existing model
+      - ["java.io", "PrintWriter", False, "write", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                             # SUPPORTED: no MaD row, modelled by Writer.write in java.io.model.yml at line 86 through subtyping
+      - ["java.nio.file", "Path", True, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                              # **COLLISION** (both supported and unsupported per initial telemetry query): already modelled in java.nio.file.model.yml at line 29, but no signature specified in existing model
+      - ["java.math", "BigDecimal", False, "BigDecimal", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                       # SUPPORTED: no MaD row or regular CodeQL model that I can find... (Note: check for existing model again)
+
+      # MAYBE Positive models (not sure about these):
+      - ["java.lang", "String", False, "valueOf", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                                               # **UNSUPPORTED**: already modelled in java.lang.model.yml at lines 82-84 for other signatures, this exact signature is not modelled, is there a reason to exclude it?
+      - ["java.lang", "String", False, "valueOf", "(int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                                                  # **UNSUPPORTED**: already modelled in java.lang.model.yml at lines 82-84 for other signatures, this exact signature is not modelled, is there a reason to exclude it?
+      - ["java.lang", "String", False, "charAt", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                                                  # **UNSUPPORTED**: flow from String to returned char value?, is only getting a char back not considered interesting flow?
+      - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                                      # **UNSUPPORTED**: flow from Throwable arg to new Throwable object?
+      - ["java.lang", "RuntimeException", False, "RuntimeException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                           # **UNSUPPORTED**: flow from arg to new RuntimeException object?
+      - ["java.lang", "RuntimeException", False, "RuntimeException", "(Throwable)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                        # **UNSUPPORTED**: flow from arg to new RuntimeException object?
+      - ["java.lang", "IllegalArgumentException", False, "IllegalArgumentException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]           # **UNSUPPORTED**: flow from arg to new IllegalArgumentException object?
+      - ["java.lang", "IllegalStateException", False, "IllegalStateException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                 # **UNSUPPORTED**: flow from arg to new IllegalStateException object?
+      - ["java.lang", "UnsupportedOperationException", False, "UnsupportedOperationException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"] # **UNSUPPORTED**: flow from arg to new UnsupportedOperationException object?
+      - ["java.util.stream", "Collectors", False, "toList", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]                          # **UNSUPPORTED**: seems to have flow from input elements into a Collector->List?, is this too complex for MaD like Stream.collect(Collector)?
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extNegativeSummaryModel
+    data:
+      # namespace; type; name; signature; provenance (5)
+      - ["java.util", "Objects", "equals", "(Object,Object)", "manual"]   # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Collection", "size", "()", "manual"]               # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Collections", "emptyList", "()", "manual"]         # UNSUPPORTED: just gives an emptylist
+      - ["java.util", "Iterator", "hasNext", "()", "manual"]              # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Set", "contains", "(Object)", "manual"]            # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Set", "size", "()", "manual"]                      # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Set", "isEmpty", "()", "manual"]                   # UNSUPPORTED: type as sanitizer
+      - ["java.util", "List", "size", "()", "manual"]                     # UNSUPPORTED: type as sanitizer
+      - ["java.util", "List", "contains", "(Object)", "manual"]           # UNSUPPORTED: type as sanitizer
+      - ["java.util", "List", "isEmpty", "()", "manual"]                  # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Map", "containsKey", "(Object)", "manual"]         # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Map", "size", "()", "manual"]                      # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Map", "isEmpty", "()", "manual"]                   # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Optional", "isPresent", "()", "manual"]            # UNSUPPORTED: type as sanitizer
+      - ["java.util", "Optional", "empty", "()", "manual"]                # UNSUPPORTED: just gives empty Optional instance
+      - ["java.util", "UUID", "randomUUID", "()", "manual"]               # UNSUPPORTED: just gives UUID, no flow
+      - ["java.util", "UUID", "toString", "()", "manual"]                 # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
+      - ["java.lang", "Object", "toString", "()", "manual"]               # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
+      - ["java.lang", "Object", "equals", "(Object)", "manual"]           # **COLLISION** (both supported and unsupported per initial telemetry query): type as sanitizer
+      - ["java.lang", "Object", "getClass", "()", "manual"]               # UNSUPPORTED: only returns the class of the object, no dataflow?
+      - ["java.lang", "Class", "getName", "()", "manual"]                 # UNSUPPORTED: just returns class name, no flow as far as I can tell
+      - ["java.lang", "Class", "getSimpleName", "()", "manual"]           # UNSUPPORTED: just returns class name, no flow as far as I can tell
+      - ["java.lang", "String", "equals", "(Object)", "manual"]           # **SUPPORTED**: should be negative per Michael, but "supported" according to telemetry results (Note: no obvious MaD row... look into further, has the model been removed recently?)
+      - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"] # UNSUPPORTED: type as sanitizer
+      - ["java.lang", "String", "length", "()", "manual"]                 # UNSUPPORTED: negative per Michael
+      - ["java.lang", "String", "isEmpty", "()", "manual"]                # UNSUPPORTED: type as sanitizer
+      - ["java.lang", "String", "contains", "(CharSequence)", "manual"]   # UNSUPPORTED: type as sanitizer
+      - ["java.lang", "String", "startsWith", "(String)", "manual"]       # UNSUPPORTED: type as sanitizer
+      - ["java.lang", "StringBuilder", "toString", "()", "manual"]        # **SUPPORTED**: shouldn't model due to causing problems with dataflow?, unless it's fine with StringBuilder? (Note: no obvious MaD row...look into further, has the model been removed recently?)
+      - ["java.lang", "Enum", "equals", "(Object)", "manual"]             # UNSUPPORTED: type as sanitizer
+      - ["java.lang", "Enum", "toString", "()", "manual"]                 # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
+      - ["java.lang", "System", "currentTimeMillis", "()", "manual"]      # UNSUPPORTED: just gives current time
+      - ["java.lang", "Enum", "Enum", "(String,int)", "", "manual"]       # UNSUPPORTED: per Javadocs, "Programmers cannot invoke this constructor."
+      - ["java.lang", "Enum", "name", "()", "", "manual"]                 # UNSUPPORTED: just gets name, no flow?, similar usage to toString() per Javadocs
+
+      # MAYBE Negative models (not sure about these):
+      - ["java.util", "Objects", "hash", "(Object[])", "manual"]          # UNSUPPORTED: do we care about controlling the hashcode value?
+      - ["java.lang", "Object", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value?
+      - ["java.lang", "String", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value?
+      - ["java.lang", "Throwable", "printStackTrace", "()", "manual"]     # UNSUPPORTED: only print stacktrace, no flow? (or flow from Throwable to its printed stacktrace??)
+      - ["java.lang", "Throwable", "getMessage", "()", "", "manual"]      # UNSUPPORTED: only get message, no flow? (or flow from Throwable to its message??)
+      - ["java.sql", "ResultSet", "getString", "(String)", "", "manual"]  # UNSUPPORTED: similar to toString()?
