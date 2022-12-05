@@ -18,7 +18,7 @@ such as <code>..</code>. Such a path could point to any directory on the file sy
 <li>Do not allow more than a single <code>.</code> character.</li>
 <li>Do not allow directory separators such as <code>/</code> or <code>\</code> (depending on the file system).</li>
 <li>Do not rely on simply replacing problematic sequences such as <code>../</code>. For example, after applying this filter to
-".../...//" the resulting string would still be "../".</li>
+<code>.../...//</code> the resulting string would still be <code>../</code>.</li>
 <li>Use a whitelist of known good patterns.</li>
 </ul>
 
