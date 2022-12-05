@@ -1,0 +1,10 @@
+edges
+| UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath |
+nodes
+| UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | semmle.label | ControlFlowNode for tarpath |
+subpaths
+#select
+| UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball, is used in a $@ | PathNode | during archive unpacking. |
