@@ -1,12 +1,12 @@
 /**
  * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
- * Definitions of taint steps in the Java JDK framework.
+ * Definitions of taint steps in the Java JDK 17 framework.
  */
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 
-private class JdkGeneratedSinksCsv extends SinkModelCsv {
+private class Jdk17GeneratedSinksCsv extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -14,6 +14,7 @@ private class JdkGeneratedSinksCsv extends SinkModelCsv {
         "java.applet;Applet;true;getImage;(URL);;Argument[0];open-url;generated",
         "java.applet;Applet;true;newAudioClip;(URL);;Argument[0];open-url;generated",
         "java.applet;Applet;true;play;(URL);;Argument[0];open-url;generated",
+        "java.applet;Applet;true;play;(URL,String);;Argument[1];open-url;generated",
         "java.applet;AppletContext;true;getAudioClip;(URL);;Argument[0];open-url;generated",
         "java.applet;AppletContext;true;getImage;(URL);;Argument[0];open-url;generated",
         "java.net;URL;false;getContent;();;Argument[-1];open-url;generated",
@@ -21,7 +22,6 @@ private class JdkGeneratedSinksCsv extends SinkModelCsv {
         "java.rmi.server;RMIClassLoader;true;getClassLoader;(String);;Argument[0];open-url;generated",
         "java.rmi.server;RMIClassLoader;true;loadClass;(String,String);;Argument[0];open-url;generated",
         "java.rmi.server;RMIClassLoader;true;loadClass;(String,String,ClassLoader);;Argument[0];open-url;generated",
-        "java.rmi.server;RMIClassLoader;true;loadClass;(URL,String);;Argument[0];open-url;generated",
         "java.rmi.server;RMIClassLoader;true;loadProxyClass;(String,String[],ClassLoader);;Argument[0];open-url;generated",
         "java.rmi.server;RMIClassLoaderSpi;true;getClassLoader;(String);;Argument[0];open-url;generated",
         "java.rmi.server;RMIClassLoaderSpi;true;loadClass;(String,String,ClassLoader);;Argument[0];open-url;generated",
@@ -35,7 +35,6 @@ private class JdkGeneratedSinksCsv extends SinkModelCsv {
         "javax.management.loading;MLet;true;MLet;(URL[],ClassLoader,boolean);;Argument[0];open-url;generated",
         "javax.management.loading;MLet;true;MLet;(URL[],boolean);;Argument[0];open-url;generated",
         "javax.management.loading;MLetMBean;true;getMBeansFromURL;(String);;Argument[0];open-url;generated",
-        "javax.management.loading;MLetMBean;true;getMBeansFromURL;(URL);;Argument[0];open-url;generated",
         "javax.management.loading;PrivateMLet;true;PrivateMLet;(URL[],ClassLoader,URLStreamHandlerFactory,boolean);;Argument[0];open-url;generated",
         "javax.management.loading;PrivateMLet;true;PrivateMLet;(URL[],ClassLoader,boolean);;Argument[0];open-url;generated",
         "javax.management.loading;PrivateMLet;true;PrivateMLet;(URL[],boolean);;Argument[0];open-url;generated",
@@ -53,9 +52,6 @@ private class JdkGeneratedSinksCsv extends SinkModelCsv {
         "javax.management.remote.rmi;RMIConnection;true;setAttributes;(ObjectName,MarshalledObject,Subject);;Argument[1];open-url;generated",
         "javax.naming.spi;DirectoryManager;true;getObjectInstance;(Object,Name,Context,Hashtable,Attributes);;Argument[0];jndi-injection;generated",
         "javax.naming.spi;NamingManager;true;getObjectInstance;(Object,Name,Context,Hashtable);;Argument[0];jndi-injection;generated",
-        "javax.naming;Context;true;addToEnvironment;(String,Object);;Argument[1];jndi-injection;generated",
-        "javax.naming;Context;true;list;(Name);;Argument[0];ldap;generated",
-        "javax.naming;Context;true;listBindings;(Name);;Argument[0];ldap;generated",
         "javax.sound.midi;MidiSystem;true;getMidiFileFormat;(URL);;Argument[0];open-url;generated",
         "javax.sound.midi;MidiSystem;true;getSequence;(URL);;Argument[0];open-url;generated",
         "javax.sound.midi;MidiSystem;true;getSoundbank;(File);;Argument[0];open-url;generated",

@@ -35,7 +35,7 @@ predicate isRelevantSinkKind(string kind) {
 
 from
   PropagateToSinkConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string kind,
-  CaptureModels::DataFlowTargetApi api
+  Callable api
 where
   cfg.hasFlowPath(source, sink) and
   not ExternalFlow::hasSink(api, kind, false) and
@@ -43,5 +43,4 @@ where
   kind = sink.toString() and
   api = source.getNode().getEnclosingCallable()
 select source.getNode(), source, sink, "$@", source.getNode(),
-  CaptureModels::asSinkModel(api.(Callable),
-    CaptureModelsSpecific::asInputArgument(source.getNode()), kind)
+  CaptureModels::asSinkModel(api, CaptureModelsSpecific::asInputArgument(source.getNode()), kind)
