@@ -524,6 +524,7 @@ import Cached
 predicate nodeIsHidden(Node n) {
   exists(SsaImpl::DefinitionExt def | def = n.(SsaDefinitionExtNode).getDefinitionExt() |
     def instanceof Ssa::PhiNode or
+    def instanceof SsaImpl::PhiReadNode or
     def instanceof Ssa::CapturedEntryDefinition or
     def instanceof Ssa::CapturedCallDefinition
   )
