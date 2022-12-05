@@ -27,9 +27,11 @@ such as <code>..</code>. Such a path could point to any directory on the file sy
 <example>
 <p>
 The following code shows two bad examples. 
+</p>
 
 <sample src="PathInjectionBad.swift" />
 
+<p>
 In the first, a file name is read from an HTTP request and then used to access a file. In this case, a malicious response could include a file name that is an absolute path, such as
 <code>"/Applications/(current_application)/Documents/sensitive.data"</code>.
 </p>
@@ -48,7 +50,6 @@ known prefix. This ensures that regardless of the user input, the resulting path
 </p>
 
 <sample src="PathInjectionGood.swift" />
-```suggestion
 </example>
 
 <references>
