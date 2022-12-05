@@ -2,7 +2,7 @@ exprs
 | Test.java:5:19:5:25 | Integer | Integer |
 | Test.java:5:38:5:44 | Integer | Integer |
 | Test.java:5:58:5:58 | p | Integer |
-| user.kt:2:3:2:16 | x | int |
+| user.kt:2:7:2:7 | x | int |
 | user.kt:2:11:2:11 | t | Test |
 | user.kt:2:11:2:16 | f(...) | Integer |
 | user.kt:2:13:2:16 | <implicit not null> | int |

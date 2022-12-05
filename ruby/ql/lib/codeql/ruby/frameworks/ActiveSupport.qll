@@ -104,6 +104,17 @@ module ActiveSupport {
 
         override predicate runsArbitraryCode() { none() }
       }
+
+      /** Flow summary for `Object#to_json`, which serializes the receiver as a JSON string. */
+      private class ToJsonSummary extends SimpleSummarizedCallable {
+        ToJsonSummary() { this = "to_json" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = ["Argument[self]", "Argument[self].Element[any]"] and
+          output = "ReturnValue" and
+          preservesValue = false
+        }
+      }
     }
 
     /**
@@ -294,7 +305,143 @@ module ActiveSupport {
           preservesValue = true
         }
       }
-      // TODO: index_with, pick, pluck (they require Hash dataflow)
+
+      private class IndexWithSummary extends SimpleSummarizedCallable {
+        IndexWithSummary() { this = "index_with" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[any]" and
+          output = "Argument[block].Parameter[0]" and
+          preservesValue = true
+          or
+          input = ["Argument[0]", "Argument[block].ReturnValue"] and
+          output = "ReturnValue.Element[?]" and
+          preservesValue = true
+        }
+      }
+
+      private string getKeyArgument(MethodCall mc, int i) {
+        mc.getMethodName() = ["pick", "pluck"] and
+        result = DataFlow::Content::getKnownElementIndex(mc.getArgument(i)).serialize()
+      }
+
+      private class PickSingleSummary extends SummarizedCallable {
+        private MethodCall mc;
+        private string key;
+
+        PickSingleSummary() {
+          key = getKeyArgument(mc, 0) and
+          this = "Enumerable.pick(" + key + ")" and
+          mc.getMethodName() = "pick" and
+          mc.getNumberOfArguments() = 1
+        }
+
+        override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[0].Element[" + key + "]" and
+          output = "ReturnValue" and
+          preservesValue = true
+        }
+      }
+
+      private class PickMultipleSummary extends SummarizedCallable {
+        private MethodCall mc;
+
+        PickMultipleSummary() {
+          mc.getMethodName() = "pick" and
+          mc.getNumberOfArguments() > 1 and
+          exists(int maxKey |
+            maxKey = max(int j | exists(getKeyArgument(mc, j))) and
+            this =
+              "Enumerable.pick(" +
+                concat(int i, string key |
+                  key = getKeyArgument(mc, i)
+                  or
+                  key = "_" and
+                  not exists(getKeyArgument(mc, i)) and
+                  i in [0 .. maxKey]
+                |
+                  key, "," order by i
+                ) + ")"
+          )
+        }
+
+        override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          exists(string s, int i |
+            s = getKeyArgument(mc, i) and
+            input = "Argument[self].Element[0].Element[" + s + "]" and
+            output = "ReturnValue.Element[" + i + "]"
+          ) and
+          preservesValue = true
+        }
+      }
+
+      private class PluckSingleSummary extends SummarizedCallable {
+        private MethodCall mc;
+        private string key;
+
+        PluckSingleSummary() {
+          key = getKeyArgument(mc, 0) and
+          this = "Enumerable.pluck(" + key + ")" and
+          mc.getMethodName() = "pluck" and
+          mc.getNumberOfArguments() = 1
+        }
+
+        override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[any].Element[" + key + "]" and
+          output = "ReturnValue.Element[any]" and
+          preservesValue = true
+        }
+      }
+
+      private class PluckMultipleSummary extends SummarizedCallable {
+        private MethodCall mc;
+
+        PluckMultipleSummary() {
+          mc.getMethodName() = "pluck" and
+          mc.getNumberOfArguments() > 1 and
+          exists(int maxKey |
+            maxKey = max(int j | exists(getKeyArgument(mc, j))) and
+            this =
+              "Enumerable.pluck(" +
+                concat(int i, string key |
+                  key = getKeyArgument(mc, i)
+                  or
+                  key = "_" and
+                  not exists(getKeyArgument(mc, i)) and
+                  i in [0 .. maxKey]
+                |
+                  key, "," order by i
+                ) + ")"
+          )
+        }
+
+        override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          exists(string s, int i |
+            s = getKeyArgument(mc, i) and
+            input = "Argument[self].Element[any].Element[" + s + "]" and
+            output = "ReturnValue.Element[?].Element[" + i + "]"
+          ) and
+          preservesValue = true
+        }
+      }
+
+      private class SoleSummary extends SimpleSummarizedCallable {
+        SoleSummary() { this = "sole" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[0]" and
+          output = "ReturnValue" and
+          preservesValue = true
+        }
+      }
     }
   }
 
@@ -313,13 +460,33 @@ module ActiveSupport {
   }
 
   /**
+   * `ActiveSupport::ERB`
+   */
+  module Erb {
+    /**
+     * `ActiveSupport::ERB::Util`
+     */
+    module Util {
+      private class JsonEscapeSummary extends SimpleSummarizedCallable {
+        JsonEscapeSummary() { this = "json_escape" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[0]" and
+          output = "ReturnValue" and
+          preservesValue = false
+        }
+      }
+    }
+  }
+
+  /**
    * Type summaries for extensions to the `Pathname` module.
    */
   private class PathnameTypeSummary extends ModelInput::TypeModelCsv {
     override predicate row(string row) {
-      // package1;type1;package2;type2;path
+      // type1;type2;path
       // Pathname#existence : Pathname
-      row = ";Pathname;;Pathname;Method[existence].ReturnValue"
+      row = "Pathname;Pathname;Method[existence].ReturnValue"
     }
   }
 
@@ -327,7 +494,7 @@ module ActiveSupport {
   private class PathnameTaintSummary extends ModelInput::SummaryModelCsv {
     override predicate row(string row) {
       // Pathname#existence
-      row = ";Pathname;Method[existence];Argument[self];ReturnValue;taint"
+      row = "Pathname;Method[existence];Argument[self];ReturnValue;taint"
     }
   }
 
@@ -345,13 +512,26 @@ module ActiveSupport {
       row =
         [
           // SafeBuffer.new(x) does not sanitize x
-          "activesupport;;Member[ActionView].Member[SafeBuffer].Method[new];Argument[0];ReturnValue;taint",
+          "ActionView::SafeBuffer!;Method[new];Argument[0];ReturnValue;taint",
           // SafeBuffer#safe_concat(x) does not sanitize x
-          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat];Argument[0];ReturnValue;taint",
-          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat];Argument[0];Argument[self];taint",
+          "ActionView::SafeBuffer;Method[safe_concat];Argument[0];ReturnValue;taint",
+          "ActionView::SafeBuffer;Method[safe_concat];Argument[0];Argument[self];taint",
           // These methods preserve taint in self
-          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[concat,insert,prepend,to_s,to_param];Argument[self];ReturnValue;taint",
+          "ActionView::SafeBuffer;Method[concat,insert,prepend,to_s,to_param];Argument[self];ReturnValue;taint",
         ]
+    }
+  }
+
+  /** `ActiveSupport::JSON` */
+  module Json {
+    private class JsonSummary extends ModelInput::SummaryModelCsv {
+      override predicate row(string row) {
+        row =
+          [
+            "ActiveSupport::JSON!;Method[encode,dump];Argument[0];ReturnValue;taint",
+            "ActiveSupport::JSON!;Method[decode,load];Argument[0];ReturnValue;taint",
+          ]
+      }
     }
   }
 }

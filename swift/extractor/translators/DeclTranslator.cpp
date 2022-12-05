@@ -231,6 +231,18 @@ std::optional<codeql::AccessorDecl> DeclTranslator::translateAccessorDecl(
     case swift::AccessorKind::DidSet:
       entry->is_did_set = true;
       break;
+    case swift::AccessorKind::Read:
+      entry->is_read = true;
+      break;
+    case swift::AccessorKind::Modify:
+      entry->is_modify = true;
+      break;
+    case swift::AccessorKind::Address:
+      entry->is_unsafe_address = true;
+      break;
+    case swift::AccessorKind::MutableAddress:
+      entry->is_unsafe_mutable_address = true;
+      break;
   }
   fillAbstractFunctionDecl(decl, *entry);
   return entry;

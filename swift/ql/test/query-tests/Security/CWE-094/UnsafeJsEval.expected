@@ -1,4 +1,6 @@
 edges
+| UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  |
+| UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  |
 | UnsafeJsEval.swift:124:21:124:42 | string :  | UnsafeJsEval.swift:124:70:124:70 | string :  |
 | UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  |
 | UnsafeJsEval.swift:165:10:165:37 | try ... :  | UnsafeJsEval.swift:201:21:201:35 | call to getRemoteData() :  |
@@ -34,8 +36,12 @@ edges
 | UnsafeJsEval.swift:214:7:214:49 | call to init(decoding:as:) :  | UnsafeJsEval.swift:279:13:279:13 | string :  |
 | UnsafeJsEval.swift:214:7:214:49 | call to init(decoding:as:) :  | UnsafeJsEval.swift:285:13:285:13 | string :  |
 | UnsafeJsEval.swift:214:7:214:49 | call to init(decoding:as:) :  | UnsafeJsEval.swift:299:13:299:13 | string :  |
-| UnsafeJsEval.swift:265:13:265:13 | string :  | UnsafeJsEval.swift:266:22:266:107 | call to init(source:injectionTime:forMainFrameOnly:) |
-| UnsafeJsEval.swift:268:13:268:13 | string :  | UnsafeJsEval.swift:269:22:269:124 | call to init(source:injectionTime:forMainFrameOnly:in:) |
+| UnsafeJsEval.swift:265:13:265:13 | string :  | UnsafeJsEval.swift:266:43:266:43 | string :  |
+| UnsafeJsEval.swift:266:43:266:43 | string :  | UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  |
+| UnsafeJsEval.swift:266:43:266:43 | string :  | UnsafeJsEval.swift:266:22:266:107 | call to init(source:injectionTime:forMainFrameOnly:) |
+| UnsafeJsEval.swift:268:13:268:13 | string :  | UnsafeJsEval.swift:269:43:269:43 | string :  |
+| UnsafeJsEval.swift:269:43:269:43 | string :  | UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  |
+| UnsafeJsEval.swift:269:43:269:43 | string :  | UnsafeJsEval.swift:269:22:269:124 | call to init(source:injectionTime:forMainFrameOnly:in:) |
 | UnsafeJsEval.swift:276:13:276:13 | string :  | UnsafeJsEval.swift:277:26:277:26 | string |
 | UnsafeJsEval.swift:279:13:279:13 | string :  | UnsafeJsEval.swift:280:26:280:26 | string |
 | UnsafeJsEval.swift:285:13:285:13 | string :  | UnsafeJsEval.swift:286:3:286:10 | .utf16 :  |
@@ -55,6 +61,8 @@ edges
 | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) :  |
 | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | UnsafeJsEval.swift:305:17:305:17 | jsstr |
 nodes
+| UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  |
+| UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  |
 | UnsafeJsEval.swift:124:21:124:42 | string :  | semmle.label | string :  |
 | UnsafeJsEval.swift:124:70:124:70 | string :  | semmle.label | string :  |
 | UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in init(_:) :  | semmle.label | [summary param] 0 in init(_:) :  |
@@ -70,8 +78,10 @@ nodes
 | UnsafeJsEval.swift:214:7:214:49 | call to init(decoding:as:) :  | semmle.label | call to init(decoding:as:) :  |
 | UnsafeJsEval.swift:265:13:265:13 | string :  | semmle.label | string :  |
 | UnsafeJsEval.swift:266:22:266:107 | call to init(source:injectionTime:forMainFrameOnly:) | semmle.label | call to init(source:injectionTime:forMainFrameOnly:) |
+| UnsafeJsEval.swift:266:43:266:43 | string :  | semmle.label | string :  |
 | UnsafeJsEval.swift:268:13:268:13 | string :  | semmle.label | string :  |
 | UnsafeJsEval.swift:269:22:269:124 | call to init(source:injectionTime:forMainFrameOnly:in:) | semmle.label | call to init(source:injectionTime:forMainFrameOnly:in:) |
+| UnsafeJsEval.swift:269:43:269:43 | string :  | semmle.label | string :  |
 | UnsafeJsEval.swift:276:13:276:13 | string :  | semmle.label | string :  |
 | UnsafeJsEval.swift:277:26:277:26 | string | semmle.label | string |
 | UnsafeJsEval.swift:279:13:279:13 | string :  | semmle.label | string :  |
@@ -89,8 +99,12 @@ nodes
 | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | semmle.label | call to JSStringCreateWithUTF8CString(_:) :  |
 | UnsafeJsEval.swift:305:17:305:17 | jsstr | semmle.label | jsstr |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  | semmle.label | [summary] to write: return (return) in init(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  |
 subpaths
 | UnsafeJsEval.swift:211:24:211:37 | .utf8 :  | UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(_:) :  | UnsafeJsEval.swift:211:19:211:41 | call to init(_:) :  |
+| UnsafeJsEval.swift:266:43:266:43 | string :  | UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:) :  | UnsafeJsEval.swift:266:22:266:107 | call to init(source:injectionTime:forMainFrameOnly:) |
+| UnsafeJsEval.swift:269:43:269:43 | string :  | UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in init(source:injectionTime:forMainFrameOnly:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(source:injectionTime:forMainFrameOnly:in:) :  | UnsafeJsEval.swift:269:22:269:124 | call to init(source:injectionTime:forMainFrameOnly:in:) |
 | UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) :  | UnsafeJsEval.swift:124:21:124:42 | string :  | UnsafeJsEval.swift:124:70:124:70 | string :  | UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) :  |
 | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | UnsafeJsEval.swift:124:21:124:42 | string :  | UnsafeJsEval.swift:124:70:124:70 | string :  | UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) :  |
 #select

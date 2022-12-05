@@ -52,6 +52,7 @@ import com.semmle.util.exception.ResourceError;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.extraction.ExtractorOutputConfig;
 import com.semmle.util.files.FileUtil;
+import com.semmle.util.files.FileUtil8;
 import com.semmle.util.io.WholeIO;
 import com.semmle.util.io.csv.CSVReader;
 import com.semmle.util.language.LegacyLanguage;
@@ -433,23 +434,41 @@ public class AutoBuild {
     return true;
   }
 
+  /**
+   * Returns whether the autobuilder has seen code. 
+   * This is overridden in tests. 
+   */
+  protected boolean hasSeenCode() {
+    return seenCode;
+  }
+
   /** Perform extraction. */
   public int run() throws IOException {
     startThreadPool();
     try {
-      extractSource();
-      extractExterns();
+      CompletableFuture<?> sourceFuture = extractSource();
+      sourceFuture.join(); // wait for source extraction to complete
+      if (hasSeenCode()) { // don't bother with the externs if no code was seen
+        extractExterns();
+      }
       extractXml();
     } finally {
       shutdownThreadPool();
     }
-    if (!seenCode) {
+    if (!hasSeenCode()) {
       if (seenFiles) {
         warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
       } else {
         warn("No JavaScript or TypeScript code found.");
       }
-      return -1;
+      // ensuring that the finalize steps detects that no code was seen. 
+      Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase(), "src");
+      // check that the srcFolder is empty
+      if (Files.list(srcFolder).count() == 0) {
+        // Non-recursive delete because "src/" should be empty.
+        FileUtil8.delete(srcFolder);
+      }
+      return 0;
     }
     return 0;
   }
@@ -571,7 +590,7 @@ public class AutoBuild {
   }
 
   /** Extract all supported candidate files that pass the filters. */
-  private void extractSource() throws IOException {
+  private CompletableFuture<?> extractSource() throws IOException {
     // default extractor
     FileExtractor defaultExtractor =
         new FileExtractor(mkExtractorConfig(), outputConfig, trapCache);
@@ -618,7 +637,7 @@ public class AutoBuild {
     boolean hasTypeScriptFiles = extractedFiles.size() > 0;
 
     // extract remaining files
-    extractFiles(
+    return extractFiles(
         filesToExtract, extractedFiles, extractors,
         f -> !(hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)));
   }

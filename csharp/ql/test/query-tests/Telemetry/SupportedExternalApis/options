@@ -1,0 +1,2 @@
+semmle-extractor-options: /r:System.Collections.Specialized.dll
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs

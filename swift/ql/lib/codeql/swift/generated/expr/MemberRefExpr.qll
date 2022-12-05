@@ -29,5 +29,12 @@ module Generated {
     predicate hasOrdinarySemantics() {
       Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasOrdinarySemantics()
     }
+
+    /**
+     * Holds if this member ref expression has distributed thunk semantics.
+     */
+    predicate hasDistributedThunkSemantics() {
+      Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDistributedThunkSemantics()
+    }
   }
 }

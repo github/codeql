@@ -17,7 +17,7 @@ class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-int instanceParameterPosition() { result = -1 }
+ArgumentPosition instanceParameterPosition() { result = -1 }
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
