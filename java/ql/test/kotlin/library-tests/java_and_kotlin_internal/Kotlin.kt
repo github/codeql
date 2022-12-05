@@ -3,3 +3,4 @@ public class Kotlin {
 	}
 }
 
+internal fun topLevelKotlinFun() { }
