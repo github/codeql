@@ -5,3 +5,11 @@ public class Test {
 }
 
 public class AllDefaultsConstructor(val x: Int = 1, val y: Int = 2) { }
+
+public annotation class AllDefaultsAnnotation(val x: Int = 1, val y: Int = 2) { }
+
+public class AllDefaultsExplicitNoargConstructor(val x: Int = 1, val y: Int = 2) {
+
+  constructor() : this(3, 4) { }
+
+}

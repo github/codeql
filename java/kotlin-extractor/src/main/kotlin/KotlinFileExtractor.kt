@@ -1095,7 +1095,14 @@ open class KotlinFileExtractor(
         }
 
         if (!f.hasAnnotation(jvmOverloadsFqName)) {
-            if (f is IrConstructor && f.valueParameters.isNotEmpty() && f.valueParameters.all { it.defaultValue != null }) {
+            if (f is IrConstructor &&
+                f.valueParameters.isNotEmpty() &&
+                f.valueParameters.all { it.defaultValue != null } &&
+                f.parentClassOrNull?.let {
+                    // Don't create a default constructor for an annotation class, or a class that explicitly declares a no-arg constructor.
+                    !it.isAnnotationClass &&
+                    it.declarations.none { d -> d is IrConstructor && d.valueParameters.isEmpty() }
+                } == true) {
                 // Per https://kotlinlang.org/docs/classes.html#creating-instances-of-classes, a single default overload gets created specifically
                 // when we have all default parameters, regardless of `@JvmOverloads`.
                 extractGeneratedOverload(f.valueParameters.map { _ -> null })
