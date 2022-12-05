@@ -1,21 +1,18 @@
 /**
  * For internal use only.
  *
- * @name NoSQL database query built from user-controlled sources (experimental)
- * @description Building a database query from user-controlled sources is vulnerable to insertion of
- *              malicious code by the user.
  * @kind path-problem
  * @scored
  * @problem.severity error
  * @security-severity 8.8
- * @id js/ml-powered/nosql-injection
- * @tags experimental security
- *       external/cwe/cwe-943
+ * @id js/ml-powered/silliness
  */
 
+import javascript
+import experimental.adaptivethreatmodeling.SqlInjectionATM
+import experimental.adaptivethreatmodeling.PromptConfiguration
 import ATM::ResultsInfo
 import DataFlow::PathGraph
-import experimental.adaptivethreatmodeling.NosqlInjectionATM
 
 from AtmConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink, float score
 where cfg.hasBoostedFlowPath(source, sink, score)
