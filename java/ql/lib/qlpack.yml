@@ -10,4 +10,5 @@ dependencies:
 dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml
+  - ext/generated/jdk/*.model.yml
   - ext/experimental/*.model.yml

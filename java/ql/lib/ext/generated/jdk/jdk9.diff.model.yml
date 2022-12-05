@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Definitions of taint steps in the Java JDK 9 framework.
+
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extSinkModel
+    data:
+      - ["javax.xml.stream", "XMLResolver", true, "resolveEntity", "(String,String,String,String)", "", "Argument[1]", "open-url", "generated"]

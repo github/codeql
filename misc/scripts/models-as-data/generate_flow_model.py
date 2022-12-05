@@ -64,21 +64,21 @@ Requirements: `codeql` should both appear on your path.
     """)
 
 
-    def setenvironment(self, target, database, friendlyName):
+    def setenvironment(self, outputYml, database, friendlyName):
         self.codeQlRoot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
-        if not target.endswith(".model.yml"):
-            target += ".model.yml"
-        filename = os.path.basename(target)
+        defaultSuffix = ".model.yml"
+        if not outputYml.endswith(defaultSuffix) and not outputYml.endswith(".yml"):
+            outputYml += defaultSuffix
+
         if friendlyName is not None:
             self.friendlyname = friendlyName
         else:
-            self.friendlyname = filename[:-10]
-        self.shortname = filename[:-10]
+            self.friendlyname = outputYml.replace("/", "_").replace(defaultSuffix, "").replace(".yml", "")
+
         self.database = database
-        self.generatedFrameworks = os.path.join(
-            self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/")
-        self.frameworkTarget = os.path.join(self.generatedFrameworks, filename)
-        self.typeBasedFrameworkTarget = os.path.join(self.generatedFrameworks, "TypeBased" + filename)
+        self.generatedFrameworks = os.path.join(self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/")
+        self.frameworkTarget = os.path.join(self.generatedFrameworks, outputYml)
+        self.typeBasedFrameworkTarget = os.path.join(os.path.dirname(self.frameworkTarget), "TypeBased" + os.path.basename(self.frameworkTarget))
         self.workDir = tempfile.mkdtemp()
         os.makedirs(self.generatedFrameworks, exist_ok=True)
 
@@ -127,7 +127,7 @@ Requirements: `codeql` should both appear on your path.
 
         generator.setenvironment(sys.argv[2], sys.argv[1], friendlyName)
         return generator
-    
+
 
     def runQuery(self, query):
         print("########## Querying " + query + "...")
@@ -172,10 +172,9 @@ Requirements: `codeql` should both appear on your path.
             negativeSummaryAddsTo = self.getAddsTo("CaptureNegativeSummaryModels.ql", "extNegativeSummaryModel")
         else:
             negativeSummaryAddsTo = ""
-        
-        return f""" 
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Definitions of taint steps in the {self.friendlyname} framework.
+
+        return f"""# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Definitions of models for the {self.friendlyname} framework.
 
 extensions:
 {sinkAddsTo}
@@ -211,7 +210,7 @@ extensions:
         if self.dryRun:
             print("Models as data extensions generated, but not written to file.")
             sys.exit(0)
-        
+
         if self.generateSinks or self.generateSinks or self.generateSummaries:
             self.save(content, self.frameworkTarget)
 
