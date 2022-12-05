@@ -10,7 +10,7 @@ About query results
 
 The information contained in the results of a query is controlled by the ``select`` statement. Part of the process of developing a useful query is to make the results clear and easy for other users to understand.
 When you write your own queries in the query console or in the CodeQL :ref:`extension for VS Code <codeql-for-visual-studio-code>` there are no constraints on what can be selected.
-However, if you want to use a query to create alerts for Code Scanning or generate valid analysis results using the :ref:`CodeQL CLI <codeql-cli>`, you'll need to make the ``select`` statement report results in the required format. 
+However, if you want to use a query to create alerts for code scanning or generate valid analysis results using the :ref:`CodeQL CLI <codeql-cli>`, you'll need to make the ``select`` statement report results in the required format. 
 You must also ensure that the query has the appropriate metadata properties defined. 
 This topic explains how to write your select statement to generate helpful analysis results. 
 
@@ -63,7 +63,7 @@ This basic select statement has two columns:
 Including the name of the superclass
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The alert message defined by the basic select statement is constant and doesn't give users much information. Since the query identifies the superclas, it's easy to include its name in the string message. For example:
+The alert message defined by the basic select statement is constant and doesn't give users much information. Since the query identifies the superclass, it's easy to include its name in the string message. For example:
 
 .. code-block:: ql
 
@@ -81,7 +81,7 @@ While this is more informative than the original select statement, the user stil
 Adding a link to the superclass
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can use placeholders in the text of alert messages to insert additional information, such as links to the similar file. Placeholders are defined using ``$@``, and filled using the information in the next two columns of the select statement. For example, this select statement returns four columns:
+You can use placeholders in the text of alert messages to insert additional information, such as links to the superclass. Placeholders are defined using ``$@``, and filled using the information in the next two columns of the select statement. For example, this select statement returns four columns:
 
 .. code-block:: ql
 
@@ -92,7 +92,7 @@ You can use placeholders in the text of alert messages to insert additional info
 #. Element for placeholder: the ``superclass``.
 #. String text for placeholder: the class name returned by ``superclass.getBaseName()``.
 
-When the alert message is displayed, the ``$@`` placeholder is replaced by a link created from the contents of the third and fourth columns defined by the ``select`` statement. In this example, the link target will be the location of the superclass's definition, and the link text will be its name. Note that some superclasses, such as `Object``, will not be in the database, since they are built in to the Java language. Clicking those links will have no effect.
+When the alert message is displayed, the ``$@`` placeholder is replaced by a link created from the contents of the third and fourth columns defined by the ``select`` statement. In this example, the link target will be the location of the superclass's definition, and the link text will be its name. Note that some superclasses, such as ``Object``, will not be in the database, since they are built in to the Java language. Clicking those links will have no effect.
 
 If you use the ``$@`` placeholder marker multiple times in the description text, then the ``N``\ th use is replaced by a link formed from columns ``2N+2`` and ``2N+3``. If there are more pairs of additional columns than there are placeholder markers, then the trailing columns are ignored. Conversely, if there are fewer pairs of additional columns than there are placeholder markers, then the trailing markers are treated as normal text rather than placeholder markers.
 
