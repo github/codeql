@@ -25,4 +25,22 @@ struct Foo {
 
         didSet { }
     }
+
+    var borrowedProp: Int {
+        _read {
+            yield x
+        }
+        _modify {
+            yield &x
+        }
+    }
+
+    var unsafeProp: Int {
+        unsafeAddress {
+            return UnsafePointer<Int>(bitPattern: 0)!
+        }
+        unsafeMutableAddress {
+            return UnsafeMutablePointer<Int>(bitPattern: 0)!
+        }
+    }
 }

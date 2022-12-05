@@ -13,7 +13,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    abstract-syntax-tree-classes-for-working-with-go-programs
    modeling-data-flow-in-go-libraries
 
--  :doc:`Basic query for Go code <basic-query-for-go-code>`: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for Go code <basic-query-for-go-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for Go <codeql-library-for-go>`: When you're analyzing a Go program, you can make use of the large collection of classes in the CodeQL library for Go.
 

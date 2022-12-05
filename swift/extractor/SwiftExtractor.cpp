@@ -12,14 +12,11 @@
 #include "swift/extractor/translators/SwiftVisitor.h"
 #include "swift/extractor/TargetTrapFile.h"
 #include "swift/extractor/SwiftBuiltinSymbols.h"
+#include "swift/extractor/infra/Path.h"
 
 using namespace codeql;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
-
-static fs::path toPath(llvm::StringRef s) {
-  return {static_cast<std::string_view>(s)};
-}
 
 static void ensureDirectory(const char* label, const fs::path& dir) {
   std::error_code ec;
@@ -34,7 +31,7 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   ensureDirectory("TRAP", config.trapDir);
   ensureDirectory("source archive", config.sourceArchiveDir);
 
-  fs::path srcFilePath = fs::absolute(toPath(file.getFilename()));
+  fs::path srcFilePath = codeql::getCodeQLPath(file.getFilename());
   auto dstFilePath = config.sourceArchiveDir;
   dstFilePath += srcFilePath;
 
@@ -60,7 +57,7 @@ static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primar
     // Moreover, pcm files may come from caches located in different directories, but are
     // unambiguously identified by the base file name, so we can discard the absolute directory
     fs::path filename = "/pcms";
-    filename /= toPath(module.getModuleFilename()).filename();
+    filename /= getCodeQLPath(module.getModuleFilename()).filename();
     filename += "-";
     filename += module.getName().str();
     return filename;
@@ -69,7 +66,7 @@ static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primar
     // The Builtin module has an empty filename, let's fix that
     return "/__Builtin__";
   }
-  auto filename = toPath(module.getModuleFilename());
+  auto filename = getCodeQLPath(module.getModuleFilename());
   // there is a special case of a module without an actual filename reporting `<imports>`: in this
   // case we want to avoid the `<>` characters, in case a dirty DB is imported on Windows
   if (filename == "<imports>") {

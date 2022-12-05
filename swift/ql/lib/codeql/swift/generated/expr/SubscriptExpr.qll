@@ -58,5 +58,12 @@ module Generated {
     predicate hasOrdinarySemantics() {
       Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasOrdinarySemantics()
     }
+
+    /**
+     * Holds if this subscript expression has distributed thunk semantics.
+     */
+    predicate hasDistributedThunkSemantics() {
+      Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasDistributedThunkSemantics()
+    }
   }
 }

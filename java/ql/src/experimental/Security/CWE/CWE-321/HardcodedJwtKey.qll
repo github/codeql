@@ -6,6 +6,10 @@ import java
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 
+private class ActivateModels extends ActiveExperimentalModels {
+  ActivateModels() { this = "hardcoded-jwt-key" }
+}
+
 /** The class `com.auth0.jwt.JWT`. */
 class Jwt extends RefType {
   Jwt() { this.hasQualifiedName("com.auth0.jwt", "JWT") }
@@ -123,23 +127,5 @@ class HardcodedJwtKeyConfiguration extends TaintTracking::Configuration {
       prev.asExpr() = ma.getArgument(0) and
       succ.asExpr() = ma
     )
-  }
-}
-
-/** Taint model related to verifying JWT tokens. */
-private class VerificationFlowStep extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "com.auth0.jwt.interfaces;Verification;true;build;;;Argument[-1];ReturnValue;taint;manual",
-        "com.auth0.jwt.interfaces;Verification;true;" +
-          ["acceptLeeway", "acceptExpiresAt", "acceptNotBefore", "acceptIssuedAt", "ignoreIssuedAt"]
-          + ";;;Argument[-1];ReturnValue;value;manual",
-        "com.auth0.jwt.interfaces;Verification;true;with" +
-          [
-            "Issuer", "Subject", "Audience", "AnyOfAudience", "ClaimPresence", "Claim",
-            "ArrayClaim", "JWTId"
-          ] + ";;;Argument[-1];ReturnValue;value;manual"
-      ]
   }
 }

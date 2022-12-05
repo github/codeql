@@ -23,6 +23,11 @@ endpoints
 | index.js:15:17:15:32 | req.body.isAdmin | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:15:17:15:32 | req.body.isAdmin | Xss | notASinkReason | LoggerMethod | string |
 | index.js:15:17:15:32 | req.body.isAdmin | Xss | sinkLabel | NotASink | string |
+| index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | isConstantExpression | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | notASinkReason | LoggerMethod | string |
+| index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | sinkLabel | NotASink | string |
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | hasFlowFromSource | false | boolean |
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
@@ -55,6 +60,12 @@ endpoints
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | notASinkReason | ClientRequest | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | notASinkReason | JQueryArgument | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | sinkLabel | NotASink | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | isConstantExpression | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | notASinkReason | ClientRequest | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | notASinkReason | JQueryArgument | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | sinkLabel | NotASink | string |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | hasFlowFromSource | false | boolean |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
@@ -75,6 +86,11 @@ endpoints
 | index.js:84:12:84:18 | foo.bar | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | Xss | sinkLabel | NotASink | string |
+| index.js:84:12:84:18 | foo.bar | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | XssThroughDom | isConstantExpression | false | boolean |
+| index.js:84:12:84:18 | foo.bar | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:84:12:84:18 | foo.bar | XssThroughDom | notASinkReason | ClientRequest | string |
+| index.js:84:12:84:18 | foo.bar | XssThroughDom | sinkLabel | NotASink | string |
 tokenFeatures
 | index.js:9:15:9:45 | { 'isAd ... Admin } | CalleeFlexibleAccessPath | User.find |
 | index.js:9:15:9:45 | { 'isAd ... Admin } | InputAccessPathFromCallee |  |

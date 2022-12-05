@@ -65,9 +65,9 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
                                codeql::AbstractStorageDecl& entry);
 
   template <typename D>
-  std::optional<TrapClassOf<D>> createNamedEntry(const D& decl) {
-    auto id = dispatcher.assignNewLabel(decl, mangledName(decl));
+  auto createNamedEntry(const D& decl) {
     std::optional<TrapClassOf<D>> entry;
+    auto id = dispatcher.assignNewLabel(decl, mangledName(decl));
     if (dispatcher.shouldEmitDeclBody(decl)) {
       entry.emplace(id);
       fillDecl(decl, *entry);
@@ -76,7 +76,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   }
 
   template <typename D>
-  TrapClassOf<D> createEntry(const D& decl) {
+  auto createEntry(const D& decl) {
     TrapClassOf<D> entry{dispatcher.template assignNewLabel(decl)};
     fillDecl(decl, entry);
     return entry;

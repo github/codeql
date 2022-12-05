@@ -179,16 +179,16 @@ class SwiftDispatcher {
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
   template <typename E, typename... Args, std::enable_if_t<IsStorable<E>>* = nullptr>
-  TrapLabelOf<E> assignNewLabel(const E& e, Args&&... args) {
+  TrapLabel<ConcreteTrapTagOf<E>> assignNewLabel(const E& e, Args&&... args) {
     assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
-    auto label = trap.createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
+    auto label = trap.createLabel<ConcreteTrapTagOf<E>>(std::forward<Args>(args)...);
     store.insert(e, label);
     waitingForNewLabel = std::monostate{};
     return label;
   }
 
   template <typename E, typename... Args, std::enable_if_t<IsStorable<E*>>* = nullptr>
-  TrapLabelOf<E> assignNewLabel(const E& e, Args&&... args) {
+  TrapLabel<ConcreteTrapTagOf<E>> assignNewLabel(const E& e, Args&&... args) {
     return assignNewLabel(&e, std::forward<Args>(args)...);
   }
 
