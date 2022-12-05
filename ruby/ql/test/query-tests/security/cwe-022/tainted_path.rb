@@ -78,4 +78,11 @@ class FooController < ActionController::Base
     bla (Dir.glob path)
     bla (Dir[path])
   end
+
+  # BAD
+  def route13
+    path = ActiveStorage::Filename.new(params[:path])
+    load(path)
+    autoload(:MyModule, path)
+  end
 end

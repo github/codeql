@@ -179,4 +179,19 @@ module Kernel {
       preservesValue = true
     }
   }
+
+  /** A call to e.g. `Kernel.load` that accesses a file. */
+  private class KernelFileAccess extends FileSystemAccess::Range instanceof KernelMethodCall {
+    KernelFileAccess() {
+      super.getMethodName() = ["load", "require", "require_relative", "autoload", "autoload?"]
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getArgument(0) and
+      super.getMethodName() = ["load", "require", "require_relative"]
+      or
+      result = super.getArgument(1) and
+      super.getMethodName() = ["autoload", "autoload?"]
+    }
+  }
 }
