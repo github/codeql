@@ -11,11 +11,6 @@ std::optional<TargetFile> createTargetTrapFile(const SwiftExtractorConfiguration
     for (const auto& opt : configuration.frontendOptions) {
       *ret << "  " << std::quoted(opt) << " \\\n";
     }
-    *ret << "\n*/\n"
-            "/* swift-frontend-args:\n";
-    for (const auto& opt : configuration.patchedFrontendOptions) {
-      *ret << "  " << std::quoted(opt) << " \\\n";
-    }
     *ret << "\n*/\n";
   }
   return ret;

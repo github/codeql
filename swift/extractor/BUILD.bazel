@@ -9,6 +9,7 @@ swift_cc_binary(
     ]),
     visibility = ["//swift:__pkg__"],
     deps = [
+        "//swift/extractor/config",
         "//swift/extractor/infra",
         "//swift/extractor/invocation",
         "//swift/extractor/remapping",

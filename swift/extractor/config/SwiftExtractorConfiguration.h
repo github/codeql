@@ -17,9 +17,7 @@ struct SwiftExtractorConfiguration {
   std::filesystem::path scratchDir;
 
   // The original arguments passed to the extractor. Used for debugging.
-  std::vector<std::string> frontendOptions;
-  // The patched arguments passed to the swift::performFrontend/ Used for debugging.
-  std::vector<std::string> patchedFrontendOptions;
+  std::vector<const char*> frontendOptions;
 
   // A temporary directory that contains TRAP files before they are moved into their final
   // destination.
