@@ -120,11 +120,13 @@
 | data.swift:80:6:80:6 | SSA def(dataClean) | data.swift:84:12:84:12 | dataClean |
 | data.swift:80:18:80:18 | Data.Type | data.swift:80:18:80:18 | call to init(_:) |
 | data.swift:80:18:80:36 | call to init(_:) | data.swift:80:6:80:6 | SSA def(dataClean) |
+| data.swift:80:23:80:23 | 123456 | data.swift:80:23:80:32 | .utf8 |
 | data.swift:80:23:80:32 | .utf8 | data.swift:80:18:80:36 | call to init(_:) |
 | data.swift:81:6:81:6 | SSA def(dataTainted) | data.swift:82:26:82:26 | dataTainted |
 | data.swift:81:20:81:20 | Data.Type | data.swift:81:20:81:20 | call to init(_:) |
 | data.swift:81:20:81:51 | call to init(_:) | data.swift:81:6:81:6 | SSA def(dataTainted) |
 | data.swift:81:25:81:47 | .utf8 | data.swift:81:20:81:51 | call to init(_:) |
+| data.swift:81:26:81:33 | call to source() | data.swift:81:25:81:47 | .utf8 |
 | data.swift:82:6:82:6 | SSA def(dataTainted2) | data.swift:86:12:86:12 | dataTainted2 |
 | data.swift:82:21:82:21 | Data.Type | data.swift:82:21:82:21 | call to init(_:) |
 | data.swift:82:21:82:37 | call to init(_:) | data.swift:82:6:82:6 | SSA def(dataTainted2) |
@@ -898,9 +900,13 @@
 | string.swift:81:31:81:31 | clean | string.swift:84:13:84:13 | clean |
 | string.swift:82:31:82:31 | tainted | string.swift:85:13:85:13 | tainted |
 | string.swift:84:13:84:13 | [post] clean | string.swift:87:13:87:13 | clean |
+| string.swift:84:13:84:13 | clean | string.swift:84:13:84:19 | .description |
 | string.swift:84:13:84:13 | clean | string.swift:87:13:87:13 | clean |
 | string.swift:85:13:85:13 | [post] tainted | string.swift:88:13:88:13 | tainted |
+| string.swift:85:13:85:13 | tainted | string.swift:85:13:85:21 | .description |
 | string.swift:85:13:85:13 | tainted | string.swift:88:13:88:13 | tainted |
+| string.swift:87:13:87:13 | clean | string.swift:87:13:87:19 | .debugDescription |
+| string.swift:88:13:88:13 | tainted | string.swift:88:13:88:21 | .debugDescription |
 | string.swift:91:7:91:7 | SSA def(self) | string.swift:91:7:91:7 | self[return] |
 | string.swift:91:7:91:7 | self | string.swift:91:7:91:7 | SSA def(self) |
 | string.swift:93:5:93:5 | SSA def(self) | string.swift:93:5:93:29 | self[return] |
@@ -923,6 +929,17 @@
 | string.swift:109:23:109:77 | call to init(data:encoding:) | string.swift:109:7:109:7 | SSA def(stringTainted) |
 | string.swift:111:12:111:12 | stringClean | string.swift:111:12:111:23 | ...! |
 | string.swift:112:12:112:12 | stringTainted | string.swift:112:12:112:25 | ...! |
+| string.swift:120:7:120:7 | SSA def(clean) | string.swift:125:13:125:13 | clean |
+| string.swift:120:15:120:15 |  | string.swift:120:7:120:7 | SSA def(clean) |
+| string.swift:121:7:121:7 | SSA def(tainted) | string.swift:126:13:126:13 | tainted |
+| string.swift:121:17:121:25 | call to source2() | string.swift:121:17:121:27 | .utf8 |
+| string.swift:121:17:121:27 | .utf8 | string.swift:121:7:121:7 | SSA def(tainted) |
+| string.swift:122:7:122:7 | SSA def(taintedCString) | string.swift:127:13:127:13 | taintedCString |
+| string.swift:122:24:122:32 | call to source2() | string.swift:122:24:122:34 | .utf8CString |
+| string.swift:122:24:122:34 | .utf8CString | string.swift:122:7:122:7 | SSA def(taintedCString) |
+| string.swift:123:7:123:7 | SSA def(taintedUnicodeScalars) | string.swift:128:13:128:13 | taintedUnicodeScalars |
+| string.swift:123:31:123:39 | call to source2() | string.swift:123:31:123:41 | .unicodeScalars |
+| string.swift:123:31:123:41 | .unicodeScalars | string.swift:123:7:123:7 | SSA def(taintedUnicodeScalars) |
 | subscript.swift:1:7:1:7 | SSA def(self) | subscript.swift:1:7:1:7 | self[return] |
 | subscript.swift:1:7:1:7 | SSA def(self) | subscript.swift:1:7:1:7 | self[return] |
 | subscript.swift:1:7:1:7 | self | subscript.swift:1:7:1:7 | SSA def(self) |
