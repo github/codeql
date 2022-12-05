@@ -30,10 +30,16 @@ class SecureCookieConfiguration extends DataFlow::Configuration {
   SecureCookieConfiguration() { this = "SecureCookieConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(Variable cookie, MethodAccess m |
-      source.asExpr() = cookie.getAnAccess() and
-      cookie.getAnAccess() = m.getQualifier() and
-      m.getMethod().getName() = "setSecure"
+    exists(MethodAccess ma, Method m | ma.getMethod() = m |
+      m.getDeclaringType() instanceof TypeCookie and
+      m.getName() = "setSecure" and
+      source.asExpr() = ma.getQualifier() and
+      forex(DataFlow::Node argSource |
+        DataFlow::localFlow(argSource, DataFlow::exprNode(ma.getArgument(0))) and
+        not DataFlow::localFlowStep(_, argSource)
+      |
+        isSafeSecureCookieSetting(argSource.asExpr())
+      )
     )
   }
 
@@ -43,18 +49,8 @@ class SecureCookieConfiguration extends DataFlow::Configuration {
   }
 }
 
-from MethodAccess add, SecureCookieConfiguration df
+from MethodAccess add
 where
   add.getMethod() instanceof ResponseAddCookieMethod and
-  not exists(Variable cookie, MethodAccess m |
-    df.hasFlow(DataFlow::exprNode(cookie.getAnAccess()), DataFlow::exprNode(add.getArgument(0))) and
-    m.getMethod().getName() = "setSecure" and
-    forex(DataFlow::Node argSource |
-      DataFlow::localFlow(argSource, DataFlow::exprNode(m.getArgument(0))) and
-      not DataFlow::localFlowStep(_, argSource)
-    |
-      isSafeSecureCookieSetting(argSource.asExpr())
-    ) and
-    m.getQualifier() = cookie.getAnAccess()
-  )
+  not any(SecureCookieConfiguration df).hasFlowToExpr(add.getArgument(0))
 select add, "Cookie is added to response without the 'secure' flag being set."
