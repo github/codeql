@@ -54,8 +54,6 @@ Expr asSourceExpr(DataFlow::Node node) {
 }
 
 Expr asSinkExpr(DataFlow::Node node) {
-  result = node.asConvertedExpr()
-  or
   result =
     node.asOperand()
         .(SideEffectOperand)
@@ -113,14 +111,11 @@ class TaintedPathConfiguration extends TaintTracking::Configuration {
 
   predicate hasFilteredFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
     this.hasFlowPath(source, sink) and
-    not exists(DataFlow::PathNode source2, DataFlow::PathNode sink2 |
-      this.hasFlowPath(source2, sink2) and
-      asSourceExpr(source.getNode()) = asSourceExpr(source2.getNode()) and
-      asSinkExpr(sink.getNode()) = asSinkExpr(sink2.getNode())
+    not exists(DataFlow::PathNode source2 |
+      this.hasFlowPath(source2, sink) and
+      asSourceExpr(source.getNode()) = asSourceExpr(source2.getNode())
     |
       not exists(source.getNode().asConvertedExpr()) and exists(source2.getNode().asConvertedExpr())
-      or
-      not exists(sink.getNode().asConvertedExpr()) and exists(sink2.getNode().asConvertedExpr())
     )
   }
 }
