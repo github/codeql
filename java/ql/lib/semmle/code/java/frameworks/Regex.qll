@@ -1,6 +1,6 @@
 /** Definitions related to `java.util.regex`. */
 
-private import java
+import java
 
 /** The class `java.util.regex.Pattern`. */
 class TypeRegexPattern extends Class {

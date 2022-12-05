@@ -2,7 +2,7 @@
  * Provides classes and predicates for working with the Java JDBC API.
  */
 
-private import java
+import java
 
 /*--- Types ---*/
 /** The interface `java.sql.Connection`. */

@@ -41,7 +41,6 @@ abstract class RemoteFlowSource extends DataFlow::Node {
  */
 private module RemoteFlowSources {
   private import semmle.code.java.frameworks.android.Widget
-  private import semmle.code.java.security.TemplateInjection
 }
 
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
