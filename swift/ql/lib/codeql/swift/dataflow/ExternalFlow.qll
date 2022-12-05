@@ -86,6 +86,7 @@ private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.Url
   private import codeql.swift.frameworks.StandardLibrary.UrlSession
   private import codeql.swift.frameworks.StandardLibrary.WebView
+  private import codeql.swift.frameworks.Alamofire.Alamofire
 }
 
 /**
