@@ -241,6 +241,10 @@ private class Argument extends CfgNodes::ExprCfgNode {
     this = call.getAnArgument() and
     this.getExpr() instanceof HashSplatExpr and
     arg.isHashSplat()
+    or
+    this = call.getArgument(0) and
+    this.getExpr() instanceof SplatExpr and
+    arg.isSplatAll()
   }
 
   /** Holds if this expression is the `i`th argument of `c`. */
@@ -276,7 +280,8 @@ private module Cached {
       p instanceof SimpleParameter or
       p instanceof OptionalParameter or
       p instanceof KeywordParameter or
-      p instanceof HashSplatParameter
+      p instanceof HashSplatParameter or
+      p instanceof SplatParameter
     } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
@@ -474,7 +479,7 @@ private module Cached {
       // external model data. This, unfortunately, does not included any field names used
       // in models defined in QL code.
       exists(string input, string output |
-        ModelOutput::relevantSummaryModel(_, _, _, input, output, _)
+        ModelOutput::relevantSummaryModel(_, _, input, output, _)
       |
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
@@ -616,6 +621,9 @@ private module ParameterNodes {
         or
         parameter = callable.getAParameter().(HashSplatParameter) and
         pos.isHashSplat()
+        or
+        parameter = callable.getParameter(0).(SplatParameter) and
+        pos.isSplatAll()
       )
     }
 

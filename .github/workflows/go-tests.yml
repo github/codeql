@@ -4,8 +4,7 @@ on:
     paths:
       - "go/**"
       - .github/workflows/go-tests.yml
-      - .github/actions/fetch-codeql/action.yml
-      - .github/actions/cache-query-compilation/action.yml
+      - .github/actions/**
       - codeql-workspace.yml
     branches:
       - main
@@ -14,8 +13,7 @@ on:
     paths:
       - "go/**"
       - .github/workflows/go-tests.yml
-      - .github/actions/fetch-codeql/action.yml
-      - .github/actions/cache-query-compilation/action.yml
+      - .github/actions/**
       - codeql-workspace.yml
 jobs:
   test-linux:
@@ -64,7 +62,7 @@ jobs:
         uses: ./.github/actions/cache-query-compilation
         with:
           key: go-qltest
-    
+
       - name: Test
         run: |
           cd go
