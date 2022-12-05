@@ -10,7 +10,9 @@ System requirements for running the latest version of CodeQL.
 Supported platforms
 #######################
 
-.. include:: ../support/reusables/platforms.rst
+.. include:: ../reusables/supported-platforms.rst
+
+.. include:: ../reusables/kotlin-beta-note.rst
 
 Additional software requirements
 ################################

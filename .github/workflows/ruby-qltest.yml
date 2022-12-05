@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "ruby/**"
-      - .github/workflows/ruby-qltest.yml
+      - .github/workflows/ruby-build.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
     branches:
@@ -28,16 +28,6 @@ defaults:
     working-directory: ruby
 
 jobs:
-  qlcompile:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/fetch-codeql
-      - name: Check QL compilation
-        run: |
-          codeql query compile --check-only --threads=0 --ram 5000 --warnings=error "ql/src" "ql/examples"
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
   qlupgrade:
     runs-on: ubuntu-latest
     steps:
@@ -58,17 +48,20 @@ jobs:
            xargs codeql execute upgrades testdb
           diff -q testdb/ruby.dbscheme downgrades/initial/ruby.dbscheme
   qltest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-xl
     strategy:
       fail-fast: false
-      matrix:
-        slice: ["1/2", "2/2"]
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - uses: ./ruby/actions/create-extractor-pack
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with: 
+          key: ruby-qltest
       - name: Run QL tests
         run: |
-          codeql test run --threads=0 --ram 5000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}/ruby/extractor-pack" --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test
+          codeql test run --threads=0 --ram 50000 --search-path "${{ github.workspace }}/ruby/extractor-pack" --check-databases --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}

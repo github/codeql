@@ -3,6 +3,17 @@ private import DataFlowImplSpecific::Public
 import Cached
 
 module DataFlowImplCommonPublic {
+  /** A state value to track during data flow. */
+  class FlowState = string;
+
+  /**
+   * The default state, which is used when the state is unspecified for a source
+   * or a sink.
+   */
+  class FlowStateEmpty extends FlowState {
+    FlowStateEmpty() { this = "" }
+  }
+
   private newtype TFlowFeature =
     TFeatureHasSourceCallContext() or
     TFeatureHasSinkCallContext() or
@@ -63,6 +74,18 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
 }
 
 /**
+ * Holds if `arg` is an argument of `call` with an argument position that matches
+ * parameter position `ppos`.
+ */
+pragma[noinline]
+predicate argumentPositionMatch(DataFlowCall call, ArgNode arg, ParameterPosition ppos) {
+  exists(ArgumentPosition apos |
+    arg.argumentOf(call, apos) and
+    parameterMatch(ppos, apos)
+  )
+}
+
+/**
  * Provides a simple data-flow analysis for resolving lambda calls. The analysis
  * currently excludes read-steps, store-steps, and flow-through.
  *
@@ -71,25 +94,27 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
  * calls. For this reason, we cannot reuse the code from `DataFlowImpl.qll` directly.
  */
 private module LambdaFlow {
-  private predicate viableParamNonLambda(DataFlowCall call, int i, ParamNode p) {
-    p.isParameterOf(viableCallable(call), i)
+  pragma[noinline]
+  private predicate viableParamNonLambda(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
+    p.isParameterOf(viableCallable(call), ppos)
   }
 
-  private predicate viableParamLambda(DataFlowCall call, int i, ParamNode p) {
-    p.isParameterOf(viableCallableLambda(call, _), i)
+  pragma[noinline]
+  private predicate viableParamLambda(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
+    p.isParameterOf(viableCallableLambda(call, _), ppos)
   }
 
   private predicate viableParamArgNonLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(int i |
-      viableParamNonLambda(call, i, p) and
-      arg.argumentOf(call, i)
+    exists(ParameterPosition ppos |
+      viableParamNonLambda(call, ppos, p) and
+      argumentPositionMatch(call, arg, ppos)
     )
   }
 
   private predicate viableParamArgLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(int i |
-      viableParamLambda(call, i, p) and
-      arg.argumentOf(call, i)
+    exists(ParameterPosition ppos |
+      viableParamLambda(call, ppos, p) and
+      argumentPositionMatch(call, arg, ppos)
     )
   }
 
@@ -191,10 +216,9 @@ private module LambdaFlow {
     or
     // jump step
     exists(Node mid, DataFlowType t0 |
-      revLambdaFlow(lambdaCall, kind, mid, t0, _, _, _) and
+      revLambdaFlow(lambdaCall, kind, mid, t0, _, _, lastCall) and
       toReturn = false and
-      toJump = true and
-      lastCall = TDataFlowCallNone()
+      toJump = true
     |
       jumpStepCached(node, mid) and
       t = t0
@@ -301,7 +325,10 @@ private module Cached {
   predicate jumpStepCached(Node node1, Node node2) { jumpStep(node1, node2) }
 
   cached
-  predicate clearsContentCached(Node n, Content c) { clearsContent(n, c) }
+  predicate clearsContentCached(Node n, ContentSet c) { clearsContent(n, c) }
+
+  cached
+  predicate expectsContentCached(Node n, ContentSet c) { expectsContent(n, c) }
 
   cached
   predicate isUnreachableInCallCached(Node n, DataFlowCall call) { isUnreachableInCall(n, call) }
@@ -322,7 +349,7 @@ private module Cached {
     or
     exists(ArgNode arg |
       result.(PostUpdateNode).getPreUpdateNode() = arg and
-      arg.argumentOf(call, k.(ParamUpdateReturnKind).getPosition())
+      arg.argumentOf(call, k.(ParamUpdateReturnKind).getAMatchingArgumentPosition())
     )
   }
 
@@ -330,7 +357,7 @@ private module Cached {
   predicate returnNodeExt(Node n, ReturnKindExt k) {
     k = TValueReturn(n.(ReturnNode).getKind())
     or
-    exists(ParamNode p, int pos |
+    exists(ParamNode p, ParameterPosition pos |
       parameterValueFlowsToPreUpdate(p, n) and
       p.isParameterOf(_, pos) and
       k = TParamUpdate(pos)
@@ -348,15 +375,17 @@ private module Cached {
     // For reads, `x.f`, we want to check that the tracked type after the read (which
     // is obtained by popping the head of the access path stack) is compatible with
     // the type of `x.f`.
-    read(_, _, n)
+    readSet(_, _, n)
   }
 
   cached
-  predicate parameterNode(Node p, DataFlowCallable c, int pos) { isParameterNode(p, c, pos) }
+  predicate parameterNode(Node p, DataFlowCallable c, ParameterPosition pos) {
+    isParameterNode(p, c, pos)
+  }
 
   cached
-  predicate argumentNode(Node n, DataFlowCall call, int pos) {
-    n.(ArgumentNode).argumentOf(call, pos)
+  predicate argumentNode(Node n, DataFlowCall call, ArgumentPosition pos) {
+    isArgumentNode(n, call, pos)
   }
 
   /**
@@ -374,12 +403,12 @@ private module Cached {
   }
 
   /**
-   * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
-   * The instance parameter is considered to have index `-1`.
+   * Holds if `p` is the parameter of a viable dispatch target of `call`,
+   * and `p` has position `ppos`.
    */
   pragma[nomagic]
-  private predicate viableParam(DataFlowCall call, int i, ParamNode p) {
-    p.isParameterOf(viableCallableExt(call), i)
+  private predicate viableParam(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
+    p.isParameterOf(viableCallableExt(call), ppos)
   }
 
   /**
@@ -388,9 +417,9 @@ private module Cached {
    */
   cached
   predicate viableParamArg(DataFlowCall call, ParamNode p, ArgNode arg) {
-    exists(int i |
-      viableParam(call, i, p) and
-      arg.argumentOf(call, i) and
+    exists(ParameterPosition ppos |
+      viableParam(call, ppos, p) and
+      argumentPositionMatch(call, arg, ppos) and
       compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p))
     )
   }
@@ -442,7 +471,7 @@ private module Cached {
         // read
         exists(Node mid |
           parameterValueFlowCand(p, mid, false) and
-          read(mid, _, node) and
+          readSet(mid, _, node) and
           read = true
         )
         or
@@ -630,8 +659,10 @@ private module Cached {
        * Holds if `arg` flows to `out` through a call using only
        * value-preserving steps and a single read step, not taking call
        * contexts into account, thus representing a getter-step.
+       *
+       * This predicate is exposed for testing only.
        */
-      predicate getterStep(ArgNode arg, Content c, Node out) {
+      predicate getterStep(ArgNode arg, ContentSet c, Node out) {
         argumentValueFlowsThrough(arg, TReadStepTypesSome(_, c, _), out)
       }
 
@@ -678,7 +709,8 @@ private module Cached {
      */
     pragma[nomagic]
     private DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
-      result = viableImplInCallContext(call, ctx)
+      result = viableImplInCallContext(call, ctx) and
+      result = viableCallable(call)
       or
       result = viableCallableLambda(call, TDataFlowCallSome(ctx))
       or
@@ -754,8 +786,12 @@ private module Cached {
     parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone())
   }
 
-  private predicate store(
-    Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
+  cached
+  predicate readSet(Node node1, ContentSet c, Node node2) { readStep(node1, c, node2) }
+
+  cached
+  predicate storeSet(
+    Node node1, ContentSet c, Node node2, DataFlowType contentType, DataFlowType containerType
   ) {
     storeStep(node1, c, node2) and
     contentType = getNodeDataFlowType(node1) and
@@ -767,14 +803,19 @@ private module Cached {
     |
       argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
       or
-      read(n2, c, n1) and
+      readSet(n2, c, n1) and
       contentType = getNodeDataFlowType(n1) and
       containerType = getNodeDataFlowType(n2)
     )
   }
 
-  cached
-  predicate read(Node node1, Content c, Node node2) { readStep(node1, c, node2) }
+  private predicate store(
+    Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
+  ) {
+    exists(ContentSet cs |
+      c = cs.getAStoreContent() and storeSet(node1, cs, node2, contentType, containerType)
+    )
+  }
 
   /**
    * Holds if data can flow from `node1` to `node2` via a direct assignment to
@@ -862,7 +903,7 @@ private module Cached {
   cached
   newtype TReturnKindExt =
     TValueReturn(ReturnKind kind) or
-    TParamUpdate(int pos) { exists(ParamNode p | p.isParameterOf(_, pos)) }
+    TParamUpdate(ParameterPosition pos) { exists(ParamNode p | p.isParameterOf(_, pos)) }
 
   cached
   newtype TBooleanOption =
@@ -873,6 +914,17 @@ private module Cached {
   newtype TDataFlowCallOption =
     TDataFlowCallNone() or
     TDataFlowCallSome(DataFlowCall call)
+
+  cached
+  newtype TParameterPositionOption =
+    TParameterPositionNone() or
+    TParameterPositionSome(ParameterPosition pos)
+
+  cached
+  newtype TReturnCtx =
+    TReturnCtxNone() or
+    TReturnCtxNoFlowThrough() or
+    TReturnCtxMaybeFlowThrough(ReturnKindExt kind)
 
   cached
   newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
@@ -905,16 +957,16 @@ class CastingNode extends Node {
 }
 
 private predicate readStepWithTypes(
-  Node n1, DataFlowType container, Content c, Node n2, DataFlowType content
+  Node n1, DataFlowType container, ContentSet c, Node n2, DataFlowType content
 ) {
-  read(n1, c, n2) and
+  readSet(n1, c, n2) and
   container = getNodeDataFlowType(n1) and
   content = getNodeDataFlowType(n2)
 }
 
 private newtype TReadStepTypesOption =
   TReadStepTypesNone() or
-  TReadStepTypesSome(DataFlowType container, Content c, DataFlowType content) {
+  TReadStepTypesSome(DataFlowType container, ContentSet c, DataFlowType content) {
     readStepWithTypes(_, container, c, _, content)
   }
 
@@ -923,7 +975,7 @@ private class ReadStepTypesOption extends TReadStepTypesOption {
 
   DataFlowType getContainerType() { this = TReadStepTypesSome(result, _, _) }
 
-  Content getContent() { this = TReadStepTypesSome(_, result, _) }
+  ContentSet getContent() { this = TReadStepTypesSome(_, result, _) }
 
   DataFlowType getContentType() { this = TReadStepTypesSome(_, _, result) }
 
@@ -1054,9 +1106,9 @@ class ParamNode extends Node {
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
-   * (zero-based) position.
+   * position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { parameterNode(this, c, i) }
+  predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { parameterNode(this, c, pos) }
 }
 
 /** A data-flow node that represents a call argument. */
@@ -1064,7 +1116,9 @@ class ArgNode extends Node {
   ArgNode() { argumentNode(this, _, _) }
 
   /** Holds if this argument occurs at the given position in the given call. */
-  final predicate argumentOf(DataFlowCall call, int pos) { argumentNode(this, call, pos) }
+  final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    argumentNode(this, call, pos)
+  }
 }
 
 /**
@@ -1110,11 +1164,14 @@ class ValueReturnKind extends ReturnKindExt, TValueReturn {
 }
 
 class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
-  private int pos;
+  private ParameterPosition pos;
 
   ParamUpdateReturnKind() { this = TParamUpdate(pos) }
 
-  int getPosition() { result = pos }
+  ParameterPosition getPosition() { result = pos }
+
+  pragma[nomagic]
+  ArgumentPosition getAMatchingArgumentPosition() { parameterMatch(pos, result) }
 
   override string toString() { result = "param update " + pos }
 }
@@ -1258,7 +1315,45 @@ class DataFlowCallOption extends TDataFlowCallOption {
   }
 }
 
-/** Content tagged with the type of a containing object. */
+/** An optional `ParameterPosition`. */
+class ParameterPositionOption extends TParameterPositionOption {
+  string toString() {
+    this = TParameterPositionNone() and
+    result = "(none)"
+    or
+    exists(ParameterPosition pos |
+      this = TParameterPositionSome(pos) and
+      result = pos.toString()
+    )
+  }
+}
+
+/**
+ * A return context used to calculate flow summaries in reverse flow.
+ *
+ * The possible values are:
+ *
+ * - `TReturnCtxNone()`: no return flow.
+ * - `TReturnCtxNoFlowThrough()`: return flow, but flow through is not possible.
+ * - `TReturnCtxMaybeFlowThrough(ReturnKindExt kind)`: return flow, of kind `kind`, and
+ *    flow through may be possible.
+ */
+class ReturnCtx extends TReturnCtx {
+  string toString() {
+    this = TReturnCtxNone() and
+    result = "(none)"
+    or
+    this = TReturnCtxNoFlowThrough() and
+    result = "(no flow through)"
+    or
+    exists(ReturnKindExt kind |
+      this = TReturnCtxMaybeFlowThrough(kind) and
+      result = kind.toString()
+    )
+  }
+}
+
+/** A `Content` tagged with the type of a containing object. */
 class TypedContent extends MkTypedContent {
   private Content c;
   private DataFlowType t;
@@ -1293,8 +1388,6 @@ abstract class AccessPathFront extends TAccessPathFront {
   abstract boolean toBoolNonEmpty();
 
   TypedContent getHead() { this = TFrontHead(result) }
-
-  predicate isClearedAt(Node n) { clearsContentCached(n, this.getHead().getContent()) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {

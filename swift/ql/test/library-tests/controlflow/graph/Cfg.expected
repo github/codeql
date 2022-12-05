@@ -250,14 +250,14 @@ cfg.swift:
 #-----| match -> 0
 
 #   33| .error1
-#-----| no-match -> ... is ...
+#-----| match, no-match -> ... is ...
 
 #   33| ... is ...
-#-----| no-match -> call to isZero(x:)
+#-----| match, no-match -> call to isZero(x:)
 #-----| no-match -> case ...
 
 #   33| .error2
-#-----| no-match -> ... is ...
+#-----| match, no-match -> ... is ...
 
 #   33| ... is ... where ...
 #-----|  -> .error2
@@ -1577,7 +1577,7 @@ cfg.swift:
 #-----|  -> =~ ... where ...
 
 #  144| =~ ...
-#-----| no-match -> ... .&&(_:_:) ...
+#-----| match, no-match -> ... .&&(_:_:) ...
 #-----| no-match -> case ...
 
 #  144| x
@@ -5148,11 +5148,11 @@ cfg.swift:
 #  390| 0
 #-----|  -> return ...
 
-#  394| (unnamed function decl)
+#  394| _modify
 #-----|  -> self
 
-#  394| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  394| enter _modify
+#-----|  -> _modify
 
 #  394| enter get
 #-----|  -> get
@@ -5160,10 +5160,10 @@ cfg.swift:
 #  394| enter set
 #-----|  -> set
 
-#  394| exit (unnamed function decl)
+#  394| exit _modify
 
-#  394| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  394| exit _modify (normal)
+#-----|  -> exit _modify
 
 #  394| exit get
 
@@ -5191,7 +5191,7 @@ cfg.swift:
 #  394| value
 
 #  394| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#-----|  -> exit _modify (normal)
 
 #  395| self
 #-----|  -> self
@@ -5320,11 +5320,11 @@ cfg.swift:
 #  409| { ... }
 #-----|  -> exit deinit() (normal)
 
-#  410| (unnamed function decl)
+#  410| _modify
 #-----|  -> self
 
-#  410| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  410| enter _modify
+#-----|  -> _modify
 
 #  410| enter get
 #-----|  -> get
@@ -5332,10 +5332,10 @@ cfg.swift:
 #  410| enter set
 #-----|  -> set
 
-#  410| exit (unnamed function decl)
+#  410| exit _modify
 
-#  410| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  410| exit _modify (normal)
+#-----|  -> exit _modify
 
 #  410| exit get
 
@@ -5363,7 +5363,7 @@ cfg.swift:
 #  410| value
 
 #  410| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#-----|  -> exit _modify (normal)
 
 #  411| self
 #-----|  -> self
@@ -5397,11 +5397,11 @@ cfg.swift:
 #  416| MyLocalStruct
 #-----|  -> MyLocalEnum
 
-#  417| (unnamed function decl)
+#  417| _modify
 #-----|  -> self
 
-#  417| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  417| enter _modify
+#-----|  -> _modify
 
 #  417| enter get
 #-----|  -> get
@@ -5409,10 +5409,10 @@ cfg.swift:
 #  417| enter set
 #-----|  -> set
 
-#  417| exit (unnamed function decl)
+#  417| exit _modify
 
-#  417| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  417| exit _modify (normal)
+#-----|  -> exit _modify
 
 #  417| exit get
 
@@ -5440,7 +5440,7 @@ cfg.swift:
 #  417| value
 
 #  417| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#-----|  -> exit _modify (normal)
 
 #  418| self
 #-----|  -> self
@@ -5492,11 +5492,11 @@ cfg.swift:
 #  442| 0
 #-----|  -> return ...
 
-#  446| (unnamed function decl)
+#  446| _modify
 #-----|  -> self
 
-#  446| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  446| enter _modify
+#-----|  -> _modify
 
 #  446| enter get
 #-----|  -> get
@@ -5504,10 +5504,10 @@ cfg.swift:
 #  446| enter set
 #-----|  -> set
 
-#  446| exit (unnamed function decl)
+#  446| exit _modify
 
-#  446| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  446| exit _modify (normal)
+#-----|  -> exit _modify
 
 #  446| exit get
 
@@ -5535,13 +5535,13 @@ cfg.swift:
 #  446| value
 
 #  446| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#-----|  -> exit _modify (normal)
 
-#  450| (unnamed function decl)
+#  450| _modify
 #-----|  -> self
 
-#  450| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  450| enter _modify
+#-----|  -> _modify
 
 #  450| enter get
 #-----|  -> get
@@ -5549,10 +5549,10 @@ cfg.swift:
 #  450| enter set
 #-----|  -> set
 
-#  450| exit (unnamed function decl)
+#  450| exit _modify
 
-#  450| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  450| exit _modify (normal)
+#-----|  -> exit _modify
 
 #  450| exit get
 
@@ -5580,13 +5580,13 @@ cfg.swift:
 #  450| value
 
 #  450| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#-----|  -> exit _modify (normal)
 
-#  451| (unnamed function decl)
+#  451| _modify
 #-----|  -> self
 
-#  451| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  451| enter _modify
+#-----|  -> _modify
 
 #  451| enter get
 #-----|  -> get
@@ -5594,10 +5594,10 @@ cfg.swift:
 #  451| enter set
 #-----|  -> set
 
-#  451| exit (unnamed function decl)
+#  451| exit _modify
 
-#  451| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  451| exit _modify (normal)
+#-----|  -> exit _modify
 
 #  451| exit get
 
@@ -5625,13 +5625,13 @@ cfg.swift:
 #  451| value
 
 #  451| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#-----|  -> exit _modify (normal)
 
-#  452| (unnamed function decl)
+#  452| _modify
 #-----|  -> self
 
-#  452| enter (unnamed function decl)
-#-----|  -> (unnamed function decl)
+#  452| enter _modify
+#-----|  -> _modify
 
 #  452| enter get
 #-----|  -> get
@@ -5639,10 +5639,10 @@ cfg.swift:
 #  452| enter set
 #-----|  -> set
 
-#  452| exit (unnamed function decl)
+#  452| exit _modify
 
-#  452| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
+#  452| exit _modify (normal)
+#-----|  -> exit _modify
 
 #  452| exit get
 
@@ -5670,7 +5670,7 @@ cfg.swift:
 #  452| value
 
 #  452| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
+#-----|  -> exit _modify (normal)
 
 #  455| enter test(a:)
 #-----|  -> test(a:)

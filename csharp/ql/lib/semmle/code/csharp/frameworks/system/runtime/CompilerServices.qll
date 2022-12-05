@@ -3,7 +3,6 @@
 import csharp
 private import semmle.code.csharp.frameworks.system.Runtime
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Runtime.CompilerServices` namespace. */
 class SystemRuntimeCompilerServicesNamespace extends Namespace {

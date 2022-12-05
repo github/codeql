@@ -33,6 +33,8 @@
 | lib/lib.js:8:3:8:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/lib.js:28:3:28:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/lib.js:36:3:36:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
+| lib/lib.js:42:29:42:30 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
+| lib/lib.js:45:29:45:30 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/moduleLib/moduleLib.js:2:3:2:4 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
 | lib/otherLib/js/src/index.js:2:3:2:4 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
 | lib/snapdragon.js:7:28:7:29 | a* | Strings starting with 'a' and with many repetitions of 'a' can start matching anywhere after the start of the preceeding aa*$ |

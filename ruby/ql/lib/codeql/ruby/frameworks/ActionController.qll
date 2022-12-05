@@ -12,6 +12,7 @@ private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.frameworks.internal.Rails
+private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 /**
  * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
@@ -295,7 +296,7 @@ private module Request {
 
   /** A method call on `request` which returns the request body. */
   private class BodyCall extends RequestInputAccess {
-    BodyCall() { this.getMethodName() = ["body", "raw_post"] }
+    BodyCall() { this.getMethodName() = ["body", "raw_post", "body_stream"] }
 
     override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
   }
@@ -538,12 +539,34 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
 /**
  * A call to `send_file`, which sends the file at the given path to the client.
  */
-private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
+private class SendFile extends FileSystemAccess::Range, Http::Server::HttpResponse::Range,
+  DataFlow::CallNode {
   SendFile() {
     this = [actionControllerInstance(), Response::response()].getAMethodCall("send_file")
   }
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+
+  override DataFlow::Node getBody() { result = this.getArgument(0) }
+
+  override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+  override string getMimetypeDefault() { result = "application/octet-stream" }
+}
+
+/**
+ * A call to `send_data`, which sends the given data to the client.
+ */
+class SendDataCall extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
+  SendDataCall() {
+    this = [actionControllerInstance(), Response::response()].getAMethodCall("send_data")
+  }
+
+  override DataFlow::Node getBody() { result = this.getArgument(0) }
+
+  override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+  override string getMimetypeDefault() { result = "application/octet-stream" }
 }
 
 private module ParamsSummaries {
@@ -731,5 +754,30 @@ private module Response {
     }
 
     override DataFlow::Node getValue() { result = this.getArgument(0) }
+  }
+}
+
+private class ActionControllerLoggerInstance extends DataFlow::Node {
+  ActionControllerLoggerInstance() {
+    this = actionControllerInstance().getAMethodCall("logger")
+    or
+    any(ActionControllerLoggerInstance i).(DataFlow::LocalSourceNode).flowsTo(this)
+  }
+}
+
+private class ActionControllerLoggingCall extends DataFlow::CallNode, Logging::Range {
+  ActionControllerLoggingCall() {
+    this.getReceiver() instanceof ActionControllerLoggerInstance and
+    this.getMethodName() = ["debug", "error", "fatal", "info", "unknown", "warn"]
+  }
+
+  // Note: this is identical to the definition `stdlib.Logger.LoggerInfoStyleCall`.
+  override DataFlow::Node getAnInput() {
+    // `msg` from `Logger#info(msg)`,
+    // or `progname` from `Logger#info(progname) <block>`
+    result = this.getArgument(0)
+    or
+    // a return value from the block in `Logger#info(progname) <block>`
+    exprNodeReturnedFrom(result, this.getBlock().asExpr().getExpr())
   }
 }

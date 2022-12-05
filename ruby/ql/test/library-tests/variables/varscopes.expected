@@ -57,7 +57,7 @@
 | scopes.rb:37:1:39:3 | foo |
 | scopes.rb:41:1:49:3 | M |
 | ssa.rb:1:1:16:3 | m |
-| ssa.rb:1:1:88:3 | ssa.rb |
+| ssa.rb:1:1:103:3 | ssa.rb |
 | ssa.rb:18:1:23:3 | m1 |
 | ssa.rb:25:1:30:3 | m2 |
 | ssa.rb:26:3:28:5 | { ... } |
@@ -75,3 +75,4 @@
 | ssa.rb:81:1:88:3 | m11 |
 | ssa.rb:83:7:87:5 | do ... end |
 | ssa.rb:84:10:86:8 | do ... end |
+| ssa.rb:90:1:103:3 | m12 |

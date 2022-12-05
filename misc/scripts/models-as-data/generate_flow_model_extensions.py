@@ -169,20 +169,18 @@ Requirements: `codeql` should both appear on your path.
             sourceAddsTo = ""
 
         if self.generateNegativeSummaries:
-            negativeSummaryAddsTo = self.getAddsTo("CaptureNegativeSummaryModels.ql", "extNegativeSummaryModel")
+            negativeSummaryAddsTo = self.getAddsTo("CaptureNegativeSummaryModels.ql", helpers.negativeSummaryModelPredicate)
         else:
             negativeSummaryAddsTo = ""
         
-        return f""" 
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Definitions of taint steps in the {self.friendlyname} framework.
+        return f"""# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Definitions of models for the {self.friendlyname} framework.
 
 extensions:
 {sinkAddsTo}
 {sourceAddsTo}
 {summaryAddsTo}
-{negativeSummaryAddsTo}
-        """
+{negativeSummaryAddsTo}"""
 
     def makeTypeBasedContent(self):
         if self.generateTypeBasedSummaries:
@@ -190,13 +188,11 @@ extensions:
         else:
             typeBasedSummaryAddsTo = ""
 
-        return f"""
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+        return f"""# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 # Definitions of type based summaries in the {self.friendlyname} framework.
 
 extensions:
-{typeBasedSummaryAddsTo}
-        """
+{typeBasedSummaryAddsTo}"""
 
     def save(self, content, target):
         with open(target, "w") as targetYml:

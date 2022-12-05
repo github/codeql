@@ -69,7 +69,7 @@ class SQLiteSwiftSqlSink extends SqlSink {
 class SqlInjectionConfig extends TaintTracking::Configuration {
   SqlInjectionConfig() { this = "SqlInjectionConfig" }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
   override predicate isSink(DataFlow::Node node) { node instanceof SqlSink }
 }

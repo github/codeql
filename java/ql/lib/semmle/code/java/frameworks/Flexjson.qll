@@ -33,9 +33,3 @@ class FlexjsonDeserializerUseMethod extends Method {
     this.hasName("use")
   }
 }
-
-private class FluentUseMethodModel extends SummaryModelCsv {
-  override predicate row(string r) {
-    r = "flexjson;JSONDeserializer;true;use;;;Argument[-1];ReturnValue;value;manual"
-  }
-}

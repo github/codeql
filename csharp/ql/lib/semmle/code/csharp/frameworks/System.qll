@@ -2,7 +2,6 @@
 
 import csharp
 private import system.Reflection
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System` namespace. */
 class SystemNamespace extends Namespace {

@@ -3,7 +3,6 @@
 import csharp
 private import semmle.code.csharp.frameworks.system.Threading
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Threading.Tasks` namespace. */
 class SystemThreadingTasksNamespace extends Namespace {

@@ -781,12 +781,6 @@ class LocalTypeDeclStmt extends Stmt, @localtypedeclstmt {
   /** Gets the local type declared by this statement. */
   LocalClassOrInterface getLocalType() { isLocalClassOrInterface(result, this) }
 
-  /**
-   * DEPRECATED: Renamed `getLocalType` to reflect the fact that
-   * as of Java 16 interfaces can also be declared locally, not just classes.
-   */
-  deprecated LocalClassOrInterface getLocalClass() { result = this.getLocalType() }
-
   private string getDeclKeyword() {
     result = "class" and this.getLocalType() instanceof Class
     or
@@ -801,12 +795,6 @@ class LocalTypeDeclStmt extends Stmt, @localtypedeclstmt {
 
   override string getAPrimaryQlClass() { result = "LocalTypeDeclStmt" }
 }
-
-/**
- * DEPRECATED: Renamed `LocalTypeDeclStmt` to reflect the fact that
- * as of Java 16 interfaces can also be declared locally, not just classes.
- */
-deprecated class LocalClassDeclStmt = LocalTypeDeclStmt;
 
 /** An explicit `this(...)` constructor invocation. */
 class ThisConstructorInvocationStmt extends Stmt, ConstructorCall, @constructorinvocationstmt {
