@@ -92,14 +92,14 @@ module Kernel {
    * ```
    * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-system
    */
-  class KernelSystemCall extends SystemCommandExecution::Range, KernelMethodCall {
+  class KernelSystemCall extends SystemCommandExecution::Range instanceof KernelMethodCall {
     KernelSystemCall() { this.getMethodName() = "system" }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.system invokes a subshell if you provide a single string as argument
-      this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+      super.getNumberOfArguments() = 1 and arg = this.getAnArgument()
     }
   }
 
@@ -108,14 +108,14 @@ module Kernel {
    * `Kernel.exec` takes the same argument forms as `Kernel.system`. See `KernelSystemCall` for details.
    * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-exec
    */
-  class KernelExecCall extends SystemCommandExecution::Range, KernelMethodCall {
+  class KernelExecCall extends SystemCommandExecution::Range instanceof KernelMethodCall {
     KernelExecCall() { this.getMethodName() = "exec" }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.exec invokes a subshell if you provide a single string as argument
-      this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+      super.getNumberOfArguments() = 1 and arg = this.getAnArgument()
     }
   }
 
@@ -129,14 +129,14 @@ module Kernel {
    * spawn([env,] command... [,options]) -> pid
    * ```
    */
-  class KernelSpawnCall extends SystemCommandExecution::Range, KernelMethodCall {
+  class KernelSpawnCall extends SystemCommandExecution::Range instanceof KernelMethodCall {
     KernelSpawnCall() { this.getMethodName() = "spawn" }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // Kernel.spawn invokes a subshell if you provide a single string as argument
-      this.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+      super.getNumberOfArguments() = 1 and arg = this.getAnArgument()
     }
   }
 
