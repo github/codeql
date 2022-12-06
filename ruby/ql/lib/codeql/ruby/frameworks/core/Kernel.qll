@@ -18,17 +18,26 @@ module Kernel {
    * providing a specific receiver as in `Kernel.exit`.
    */
   class KernelMethodCall extends DataFlow::CallNode {
+    string methodName;
+
     KernelMethodCall() {
-      this = API::getTopLevelMember("Kernel").getAMethodCall(_)
+      this = API::getTopLevelMember("Kernel").getAMethodCall(methodName)
       or
       this.asExpr().getExpr() instanceof UnknownMethodCall and
+      methodName = super.getMethodName() and
       (
         this.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
-        isPrivateKernelMethod(this.getMethodName())
+        isPrivateKernelMethod(methodName)
         or
-        isPublicKernelMethod(this.getMethodName())
+        isPublicKernelMethod(methodName)
       )
     }
+
+    /**
+     * Gets which method of `Kernel` is called.
+     * Works even when the call is a `super(...)` call.
+     */
+    string getKernelMethod() { result = methodName }
   }
 
   /**
@@ -93,7 +102,7 @@ module Kernel {
    * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-system
    */
   class KernelSystemCall extends SystemCommandExecution::Range instanceof KernelMethodCall {
-    KernelSystemCall() { this.getMethodName() = "system" }
+    KernelSystemCall() { this.getKernelMethod() = "system" }
 
     override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 
@@ -109,7 +118,7 @@ module Kernel {
    * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-exec
    */
   class KernelExecCall extends SystemCommandExecution::Range instanceof KernelMethodCall {
-    KernelExecCall() { this.getMethodName() = "exec" }
+    KernelExecCall() { this.getKernelMethod() = "exec" }
 
     override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 
@@ -130,7 +139,7 @@ module Kernel {
    * ```
    */
   class KernelSpawnCall extends SystemCommandExecution::Range instanceof KernelMethodCall {
-    KernelSpawnCall() { this.getMethodName() = "spawn" }
+    KernelSpawnCall() { this.getKernelMethod() = "spawn" }
 
     override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 
@@ -149,7 +158,7 @@ module Kernel {
    * ```
    */
   class EvalCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
-    EvalCallCodeExecution() { this.getMethodName() = "eval" }
+    EvalCallCodeExecution() { this.getKernelMethod() = "eval" }
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
   }
@@ -163,7 +172,7 @@ module Kernel {
    * ```
    */
   class SendCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
-    SendCallCodeExecution() { this.getMethodName() = "send" }
+    SendCallCodeExecution() { this.getKernelMethod() = "send" }
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
 
@@ -183,15 +192,15 @@ module Kernel {
   /** A call to e.g. `Kernel.load` that accesses a file. */
   private class KernelFileAccess extends FileSystemAccess::Range instanceof KernelMethodCall {
     KernelFileAccess() {
-      super.getMethodName() = ["load", "require", "require_relative", "autoload", "autoload?"]
+      super.getKernelMethod() = ["load", "require", "require_relative", "autoload", "autoload?"]
     }
 
     override DataFlow::Node getAPathArgument() {
       result = super.getArgument(0) and
-      super.getMethodName() = ["load", "require", "require_relative"]
+      super.getKernelMethod() = ["load", "require", "require_relative"]
       or
       result = super.getArgument(1) and
-      super.getMethodName() = ["autoload", "autoload?"]
+      super.getKernelMethod() = ["autoload", "autoload?"]
     }
   }
 }
