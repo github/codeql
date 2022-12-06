@@ -118,7 +118,7 @@ class MicrosoftOwinIOwinRequestClass extends Class {
     result.hasName("Scheme")
   }
 
-  /** Gets the `URI` property. */
+  /** Gets the `Uri` property. */
   Property getUriProperty() {
     result = this.getAProperty() and
     result.hasName("Uri")
