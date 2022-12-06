@@ -18,6 +18,7 @@ import semmle.python.dataflow.new.internal.DataFlowPublic
 import semmle.python.ApiGraphs
 import DataFlow::PathGraph
 import semmle.python.dataflow.new.TaintTracking
+import semmle.python.frameworks.Stdlib
 
 class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   UnsafeUnpackingConfig() { this = "UnsafeUnpackingConfig" }
@@ -34,24 +35,25 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // Writing the response data to the archive
-    (exists(API::CallNode call, MethodCallNode mc, Node f |
-      mc.getMethodName() = "write" and
-      f = mc.getObject() and
-      nodeTo = mc.getArg(0) and
-      call = API::builtin("open").getACall() and
-      call.flowsTo(f) and
-      nodeFrom = call.getArg(0) 
+    (
+      exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
+        is.flowsTo(f) and
+        mc.getMethodName() = "write" and
+        f = mc.getObject() and
+        nodeFrom = mc.getArg(0) and
+        nodeTo = is.(CallCfgNode).getArg(0)
+      )
+      or
+      // Reading the response
+      exists(MethodCallNode mc |
+        nodeFrom = mc.getObject() and
+        mc.getMethodName() = "read" and
+        nodeTo = mc
+      )
+      or
+      // Accessing the name
+      exists(AttrRead ar | ar.accesses(nodeFrom, "name") and nodeTo = ar)
     )
-    or 
-    // Reading the response
-    exists(MethodCallNode mc |
-      nodeFrom = mc.getObject() and
-      mc.getMethodName() = "read" and
-      nodeTo = mc
-    )
-    or
-    // Accessing the name 
-    exists(AttrRead ar | ar.accesses(nodeFrom, "name") and nodeTo = ar))
   }
 }
 
