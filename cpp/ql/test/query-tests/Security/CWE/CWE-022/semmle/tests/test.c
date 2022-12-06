@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
   }
 
   {
-    char *fileName = malloc(20 * sizeof(char));
+    char *fileName = (char*)malloc(20 * sizeof(char));
     scanf("%s", fileName);
     fopen(fileName, "wb+"); // BAD
   }
@@ -51,4 +51,13 @@ int main(int argc, char** argv) {
     sprintf(fileName, "/foo/%f", number);
     fopen(fileName, "wb+"); // GOOD
   }
+
+  {
+    void read(const char *fileName);
+    read(argv[1]); // BAD [NOT DETECTED]
+  }
+}
+
+void read(char *fileName) {
+  fopen(fileName, "wb+");
 }
