@@ -56,6 +56,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
             locker.trapFileManager.useAC { manager ->
                 val shortName = when(element) {
                     is IrDeclarationWithName -> element.name.asString()
+                    is IrFile -> element.name
                     else -> "(unknown name)"
                 }
                 if (manager == null) {
