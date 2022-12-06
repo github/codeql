@@ -140,6 +140,7 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
     )
     or
     // MyBatis default parameter sql injection vulnerabilities.the default parameter form of the method is arg[0...n] or param[1...n].
+    // When compiled with '-parameters' compiler option, the parameter can be reflected in SQL statement as named in method signature.
     // e.g.
     //
     // ```java
@@ -152,6 +153,8 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
         unsafeExpression.matches("${param" + (i + 1) + "%}")
         or
         unsafeExpression.matches("${arg" + i + "%}")
+        or
+        unsafeExpression.matches("${" + ma.getMethod().getParameter(i).getName() + "}")
       ) and
       ma.getArgument(i) = node.asExpr()
     )
@@ -184,22 +187,6 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
       not ma.getMethod().getAParameter().getAnAnnotation().getType() instanceof TypeParam and
       unsafeExpression.matches("${%}") and
       ma.getAnArgument() = node.asExpr()
-    )
-    or
-    // Some of method parameters are not annotated with `@Param`, which named in the SQL statement as their name.
-    // Improper use of these parameters has a SQL injection vulnerability.
-    // e.g.
-    //
-    // ```java
-    //    @Select(select id,name from test where id = #{id} or name = '${name}')
-    //    Test test(Integer id, String name);
-    // ```
-    exists(Parameter param, int idx |
-      param = ma.getMethod().getParameter(idx)
-    |
-      not param.getAnAnnotation().getType() instanceof TypeParam and
-      unsafeExpression.matches("${" + param.getName() + "}") and
-      ma.getArgument(idx) = node.asExpr()
     )
   )
 }
