@@ -63,6 +63,11 @@ public class MybatisSqlInjection {
 		mybatisSqlInjectionService.bad9(name);
 	}
 
+	@GetMapping(value = "msi10")
+	public void bad10(@RequestParam Integer id, @RequestParam String name) {
+		mybatisSqlInjectionService.bad10(id, name);
+	}
+
 	@GetMapping(value = "good1")
 	public List<Test> good1(Integer id) {
 		List<Test> result = mybatisSqlInjectionService.good1(id);
@@ -98,5 +103,10 @@ public class MybatisSqlInjection {
 	@GetMapping(value = "good3")
 	public void good3(@RequestParam String age) {
 		mybatisSqlInjectionService.good3(age);
+	}
+
+	@GetMapping(value = "good4")
+	public void bad10(@RequestParam Integer id, @RequestParam String name) {
+		mybatisSqlInjectionService.good4(id, name);
 	}
 }

@@ -185,5 +185,21 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
       unsafeExpression.matches("${%}") and
       ma.getAnArgument() = node.asExpr()
     )
+    or
+    // Some of method parameters are not annotated with `@Param`, which named in the SQL statement as their name.
+    // Improper use of these parameters has a SQL injection vulnerability.
+    // e.g.
+    //
+    // ```java
+    //    @Select(select id,name from test where id = #{id} or name = '${name}')
+    //    Test test(Integer id, String name);
+    // ```
+    exists(Parameter param, int idx |
+      param = ma.getMethod().getParameter(idx)
+    |
+      not param.getAnAnnotation().getType() instanceof TypeParam and
+      unsafeExpression.matches("${" + param.getName() + "}") and
+      ma.getArgument(idx) = node.asExpr()
+    )
   )
 }
