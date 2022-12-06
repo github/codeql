@@ -39,7 +39,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
     }
     fun extractLater(c: IrClass) = extractLater(c, "")
 
-    fun noteElementExtractedFromSource(e: IrElement, signature: String = "") {
+    fun writeStubTrapFile(e: IrElement, signature: String = "") {
         extractElement(e, signature, true) { trapFileBW, _, _ ->
             trapFileBW.write("// Trap file stubbed because this declaration was extracted from source in $sourceFilePath\n")
             trapFileBW.write("// Part of invocation $invocationTrapFile\n")

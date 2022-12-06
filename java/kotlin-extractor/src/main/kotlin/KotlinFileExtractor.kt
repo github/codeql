@@ -93,7 +93,7 @@ open class KotlinFileExtractor(
             file.declarations.forEach {
                 extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true)
                 if (it is IrProperty || it is IrField || it is IrFunction) {
-                    externalClassExtractor.noteElementExtractedFromSource(it, getTrapFileSignature(it))
+                    externalClassExtractor.writeStubTrapFile(it, getTrapFileSignature(it))
                 }
             }
             extractStaticInitializer(file, { extractFileClass(file) })
@@ -105,7 +105,7 @@ open class KotlinFileExtractor(
 
             linesOfCode?.linesOfCodeInFile(id)
 
-            externalClassExtractor.noteElementExtractedFromSource(file)
+            externalClassExtractor.writeStubTrapFile(file)
         }
     }
 
@@ -527,7 +527,7 @@ open class KotlinFileExtractor(
                 linesOfCode?.linesOfCodeInDeclaration(c, id)
 
                 if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
-                    externalClassExtractor.noteElementExtractedFromSource(c)
+                    externalClassExtractor.writeStubTrapFile(c)
 
                 return id
             }
