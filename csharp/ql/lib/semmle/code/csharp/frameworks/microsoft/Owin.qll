@@ -121,7 +121,7 @@ class MicrosoftOwinIOwinRequestClass extends Class {
   /** Gets the `URI` property. */
   Property getUriProperty() {
     result = this.getAProperty() and
-    result.hasName("URI")
+    result.hasName("Uri")
   }
 
   /** DEPRECATED: Alias for getUriProperty */
