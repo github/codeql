@@ -99,4 +99,20 @@ class UsersController < ActionController::Base
     klass = ActiveJob::Serializers.deserialize(params[:class])
     object = klass.new
   end
+
+  def stdin
+    object = YAML.load $stdin.read
+
+    # STDIN
+    object = YAML.load STDIN.gets
+
+    # ARGF
+    object = YAML.load ARGF.read
+
+    # Kernel.gets
+    object = YAML.load gets
+
+    # Kernel.readlines
+    object = YAML.load readlines
+  end
 end

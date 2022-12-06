@@ -53,6 +53,11 @@ nodes
 | UnsafeDeserialization.rb:93:30:93:43 | ...[...] | semmle.label | ...[...] |
 | UnsafeDeserialization.rb:99:48:99:53 | call to params :  | semmle.label | call to params :  |
 | UnsafeDeserialization.rb:99:48:99:61 | ...[...] | semmle.label | ...[...] |
+| UnsafeDeserialization.rb:104:24:104:34 | call to read | semmle.label | call to read |
+| UnsafeDeserialization.rb:107:24:107:33 | call to gets | semmle.label | call to gets |
+| UnsafeDeserialization.rb:110:24:110:32 | call to read | semmle.label | call to read |
+| UnsafeDeserialization.rb:113:24:113:27 | call to gets | semmle.label | call to gets |
+| UnsafeDeserialization.rb:116:24:116:32 | call to readlines | semmle.label | call to readlines |
 subpaths
 #select
 | UnsafeDeserialization.rb:11:27:11:41 | serialized_data | UnsafeDeserialization.rb:10:39:10:44 | call to params :  | UnsafeDeserialization.rb:11:27:11:41 | serialized_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:10:39:10:44 | call to params | user-provided value |
@@ -67,3 +72,8 @@ subpaths
 | UnsafeDeserialization.rb:88:25:88:33 | yaml_data | UnsafeDeserialization.rb:87:17:87:22 | call to params :  | UnsafeDeserialization.rb:88:25:88:33 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:87:17:87:22 | call to params | user-provided value |
 | UnsafeDeserialization.rb:93:30:93:43 | ...[...] | UnsafeDeserialization.rb:93:30:93:35 | call to params :  | UnsafeDeserialization.rb:93:30:93:43 | ...[...] | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:93:30:93:35 | call to params | user-provided value |
 | UnsafeDeserialization.rb:99:48:99:61 | ...[...] | UnsafeDeserialization.rb:99:48:99:53 | call to params :  | UnsafeDeserialization.rb:99:48:99:61 | ...[...] | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:99:48:99:53 | call to params | user-provided value |
+| UnsafeDeserialization.rb:104:24:104:34 | call to read | UnsafeDeserialization.rb:104:24:104:34 | call to read | UnsafeDeserialization.rb:104:24:104:34 | call to read | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:104:24:104:34 | call to read | value from stdin |
+| UnsafeDeserialization.rb:107:24:107:33 | call to gets | UnsafeDeserialization.rb:107:24:107:33 | call to gets | UnsafeDeserialization.rb:107:24:107:33 | call to gets | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:107:24:107:33 | call to gets | value from stdin |
+| UnsafeDeserialization.rb:110:24:110:32 | call to read | UnsafeDeserialization.rb:110:24:110:32 | call to read | UnsafeDeserialization.rb:110:24:110:32 | call to read | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:110:24:110:32 | call to read | value from stdin |
+| UnsafeDeserialization.rb:113:24:113:27 | call to gets | UnsafeDeserialization.rb:113:24:113:27 | call to gets | UnsafeDeserialization.rb:113:24:113:27 | call to gets | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:113:24:113:27 | call to gets | value from stdin |
+| UnsafeDeserialization.rb:116:24:116:32 | call to readlines | UnsafeDeserialization.rb:116:24:116:32 | call to readlines | UnsafeDeserialization.rb:116:24:116:32 | call to readlines | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:116:24:116:32 | call to readlines | value from stdin |

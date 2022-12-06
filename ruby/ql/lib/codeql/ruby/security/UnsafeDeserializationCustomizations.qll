@@ -10,12 +10,16 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.frameworks.ActiveJob
 private import codeql.ruby.frameworks.core.Module
+private import codeql.ruby.frameworks.core.Kernel
 
 module UnsafeDeserialization {
   /**
    * A data flow source for unsafe deserialization vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a string that describes the source. */
+    string describe() { result = "user-provided value" }
+  }
 
   /**
    * A data flow sink for unsafe deserialization vulnerabilities.
@@ -36,6 +40,36 @@ module UnsafeDeserialization {
 
   /** A source of remote user input, considered as a flow source for unsafe deserialization. */
   class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+
+  /** A read of data from `STDIN`/`ARGV`, considered as a flow source for unsafe deserialization. */
+  class StdInSource extends UnsafeDeserialization::Source {
+    boolean stdin;
+
+    StdInSource() {
+      this = API::getTopLevelMember(["STDIN", "ARGF"]).getAMethodCall(["gets", "read"]) and
+      stdin = true
+      or
+      // > $stdin == STDIN
+      // => true
+      // but $stdin is special in that it is a global variable and not a constant. `API::getTopLevelMember` only gets constants.
+      exists(DataFlow::Node dollarStdin |
+        dollarStdin.asExpr().getExpr().(GlobalVariableReadAccess).getVariable().getName() = "$stdin" and
+        this = dollarStdin.getALocalSource().getAMethodCall(["gets", "read"])
+      ) and
+      stdin = true
+      or
+      // ARGV.
+      this.asExpr().getExpr().(GlobalVariableReadAccess).getVariable().getName() = "ARGV" and
+      stdin = false
+      or
+      this.(Kernel::KernelMethodCall).getMethodName() = ["gets", "readline", "readlines"] and
+      stdin = true
+    }
+
+    override string describe() {
+      if stdin = true then result = "value from stdin" else result = "value from ARGV"
+    }
+  }
 
   /**
    * An argument in a call to `Marshal.load` or `Marshal.restore`, considered a
