@@ -7,38 +7,60 @@
 private import javascript
 private import BaseScoring
 private import EndpointFeatures as EndpointFeatures
-private import FeaturizationConfig
+private import PromptConfiguration
 private import EndpointTypes
 
 private string getACompatibleModelChecksum() {
   availableMlModels(result, "javascript", _, "atm-endpoint-scoring")
 }
 
+// class RelevantFeaturizationConfig extends FeaturizationConfig {
+//   RelevantFeaturizationConfig() { this = "RelevantFeaturization" }
+//   override DataFlow::Node getAnEndpointToFeaturize() {
+//     getCfg().isEffectiveSource(result) and any(DataFlow::Configuration cfg).hasFlow(result, _)
+//     or
+//     getCfg().isEffectiveSink(result) and any(DataFlow::Configuration cfg).hasFlow(_, result)
+//   }
+// }
 module ModelScoring {
-  /**
-   * A featurization config that only featurizes new candidate endpoints that are part of a flow
-   * path.
-   */
-  class RelevantFeaturizationConfig extends FeaturizationConfig {
-    RelevantFeaturizationConfig() { this = "RelevantFeaturization" }
-
-    override DataFlow::Node getAnEndpointToFeaturize() {
-      getCfg().isEffectiveSource(result) and any(DataFlow::Configuration cfg).hasFlow(result, _)
-      or
-      getCfg().isEffectiveSink(result) and any(DataFlow::Configuration cfg).hasFlow(_, result)
-    }
+  predicate getARequestedEndpoint(DataFlow::Node node, string prompt) {
+    exists(PromptConfiguration cfg |
+      cfg.getPrompt(node) = prompt and cfg.getAnEndpointToFeaturize() = node
+    )
   }
 
-  DataFlow::Node getARequestedEndpoint() {
-    result = any(FeaturizationConfig cfg).getAnEndpointToFeaturize()
+  predicate endpointScores(DataFlow::Node endpoint, int encodedEndpointType, float score) {
+    internalEnpointScores(endpoint, mapEndpointType(encodedEndpointType)) and
+    mapScore(score, mapEndpointType(encodedEndpointType))
   }
 
-  private int getARequestedEndpointType() { result = any(EndpointType type).getEncoding() }
+  predicate internalEnpointScores(DataFlow::Node endpoint, string endpointType) =
+    remoteScoreEndpoints(getARequestedEndpoint/2)(endpoint, endpointType)
 
-  predicate endpointScores(DataFlow::Node endpoint, int encodedEndpointType, float score) =
-    scoreEndpoints(getARequestedEndpoint/0, EndpointFeatures::tokenFeatures/3,
-      EndpointFeatures::getASupportedFeatureName/0, getARequestedEndpointType/0,
-      getACompatibleModelChecksum/0)(endpoint, encodedEndpointType, score)
+  private string mapEndpointType(int encodedEndpointType) {
+    result = "no sink" and encodedEndpointType = 0
+    or
+    result = "xss sink" and encodedEndpointType = 1
+    or
+    result = "nosql sink" and encodedEndpointType = 2
+    or
+    result = "sql sink" and encodedEndpointType = 3
+    or
+    result = "tainted path sink" and encodedEndpointType = 4
+  }
+
+  private predicate mapScore(float score, string endpointType) {
+    (
+      (
+        endpointType = "xss sink" or
+        endpointType = "nosql sink" or
+        endpointType = "sql sink" or
+        endpointType = "tainted path sink"
+      ) and
+      score = 1.0
+    )
+    /*or (score = 0.0 and any(endpointType)) */
+  }
 }
 
 /**
@@ -138,16 +160,13 @@ class EndpointScoringResults extends ScoringResults {
     )
   }
 }
-
-module Debugging {
-  query predicate hopInputEndpoints(DataFlow::Node endpoint) {
-    endpoint = ModelScoring::getARequestedEndpoint()
-  }
-
-  query predicate endpointScores = ModelScoring::endpointScores/3;
-
-  query predicate shouldResultBeIncluded(DataFlow::Node source, DataFlow::Node sink) {
-    any(ScoringResults scoringResults).shouldResultBeIncluded(source, sink) and
-    any(DataFlow::Configuration cfg).hasFlow(source, sink)
-  }
-}
+// module Debugging {
+//   query predicate hopInputEndpoints(DataFlow::Node endpoint) {
+//     endpoint = ModelScoring::getARequestedEndpoint()
+//   }
+//   query predicate endpointScores = ModelScoring::endpointScores/3;
+//   query predicate shouldResultBeIncluded(DataFlow::Node source, DataFlow::Node sink) {
+//     any(ScoringResults scoringResults).shouldResultBeIncluded(source, sink) and
+//     any(DataFlow::Configuration cfg).hasFlow(source, sink)
+//   }
+// }
