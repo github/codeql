@@ -111,6 +111,10 @@ class TaintedPathConfiguration extends TaintTracking::Configuration {
 
   predicate hasFilteredFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
     this.hasFlowPath(source, sink) and
+    // The use of `isUserInput` in `isSink` in combination with `asSourceExpr` causes
+    // duplicate results. Filter these duplicates. The proper solution is to switch to
+    // using `LocalFlowSource` and `RemoteFlowSource`, but this currently only supports
+    // a subset of the cases supported by `isUserInput`.
     not exists(DataFlow::PathNode source2 |
       this.hasFlowPath(source2, sink) and
       asSourceExpr(source.getNode()) = asSourceExpr(source2.getNode())
