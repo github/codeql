@@ -16,7 +16,7 @@ def generateSinkModels():
         db = f'{dbRootPath}jdk{i}'
         output = f'jdk/jdk{i}.generated.notincluded.yml'
         print(f'Generating {output} from {db}')
-        subprocess.call([f'{gitroot}/java/ql/src/utils/model-generator/GenerateFlowModelExtensions.py', db, output, f'Java JDK {i}', '--with-sinks'])
+        subprocess.call([f'{gitroot}/java/ql/src/utils/model-generator/GenerateFlowModel.py', db, output, f'Java JDK {i}', '--with-sinks'])
 
 
 def generateDiffs():

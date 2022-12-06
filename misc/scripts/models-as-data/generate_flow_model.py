@@ -181,7 +181,7 @@ extensions:
 {sourceAddsTo}
 {summaryAddsTo}
 {negativeSummaryAddsTo}
-        """
+"""
 
     def makeTypeBasedContent(self):
         if self.generateTypeBasedSummaries:
@@ -195,7 +195,7 @@ extensions:
 
 extensions:
 {typeBasedSummaryAddsTo}
-        """
+"""
 
     def save(self, content, target):
         with open(target, "w") as targetYml:
