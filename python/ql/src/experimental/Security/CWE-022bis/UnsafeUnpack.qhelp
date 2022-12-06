@@ -40,7 +40,7 @@ In this example an archive is extracted without validating file paths.
 <sample src="examples/HIT_UnsafeUnpack.py" />
 
 <p>To fix this vulnerability, we need to call the function <code>tarfile.extract()</code> 
-  on each <code>member</code> after verifying that it does not contain either `..` or startswith `/`.
+  on each <code>member</code> after verifying that it does not contain either <code>..</code> or startswith <code>/</code>.
 </p>
 
 <sample src="examples/NoHIT_UnsafeUnpack.py" />
