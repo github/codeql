@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-12-05-14h40m32s.coral-cheetah-22v067g2.21d1691d19a5ff8971169d2b7fba265cdf082ec90f202ae033792f30683f868c
+compiled: false
