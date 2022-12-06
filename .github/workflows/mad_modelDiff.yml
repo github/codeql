@@ -61,8 +61,8 @@ jobs:
             DATABASE=$2
             cd codeql-$QL_VARIANT
             SHORTNAME=`basename $DATABASE`
-            python java/ql/src/utils/model-generator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE $MODELS/${SHORTNAME}.model.yml
-            mv $MODELS/${SHORTNAME}.model.yml $MODELS/${SHORTNAME}Generated_${QL_VARIANT}.model.yml
+            python java/ql/src/utils/model-generator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE ${SHORTNAME}.temp.model.yml
+            mv java/ql/lib/ext/generated/${SHORTNAME}.temp.model.yml $MODELS/${SHORTNAME}Generated_${QL_VARIANT}.model.yml
             cd ..
           }
 
