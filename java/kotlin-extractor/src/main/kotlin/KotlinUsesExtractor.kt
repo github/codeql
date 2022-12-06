@@ -1649,7 +1649,7 @@ open class KotlinUsesExtractor(
     fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
         tw.getLabelFor(getValueParameterLabel(vp, parent))
 
-    private fun isDirectlyExposedCompanionObjectField(f: IrField) =
+    private fun isDirectlyExposableCompanionObjectField(f: IrField) =
         f.hasAnnotation(FqName("kotlin.jvm.JvmField")) ||
         f.correspondingPropertySymbol?.owner?.let {
             it.isConst || it.isLateinit
@@ -1657,11 +1657,13 @@ open class KotlinUsesExtractor(
 
     fun getFieldParent(f: IrField) =
         f.parentClassOrNull?.let {
-            if (it.isCompanion && isDirectlyExposedCompanionObjectField(f))
+            if (it.isCompanion && isDirectlyExposableCompanionObjectField(f))
                 it.parent
             else
                 null
         } ?: f.parent
+
+    fun isDirectlyExposedCompanionObjectField(f: IrField) = getFieldParent(f) != f.parent
 
     // Gets a field's corresponding property's extension receiver type, if any
     fun getExtensionReceiverType(f: IrField) =
