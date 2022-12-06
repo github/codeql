@@ -9,7 +9,7 @@
  * @security-severity 7.5
  * @precision high
  * @tags security
- *       external/cwe/cwe-022bis
+ *       external/cwe/cwe-022
  */
 
 import python
