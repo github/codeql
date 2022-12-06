@@ -29,7 +29,7 @@ class Variable extends DotNet::Variable, Declaration, DataFlowNode, @cil_variabl
 
 /** A stack variable. Either a local variable (`LocalVariable`) or a parameter (`Parameter`). */
 class StackVariable extends Variable, @cil_stack_variable {
-  override predicate hasQualifiedName(string namespace, string name) { none() }
+  override predicate hasQualifiedName(string qualifier, string name) { none() }
 }
 
 /**

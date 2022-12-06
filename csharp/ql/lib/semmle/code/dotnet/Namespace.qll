@@ -20,15 +20,15 @@ class Namespace extends Declaration, @namespace {
   Namespace getAChildNamespace() { result.getParentNamespace() = this }
 
   /**
-   * Holds if this namespace has the qualified name `namespace`.`name`.
+   * Holds if this namespace has the qualified name `qualifier`.`name`.
    *
    * For example if the qualified name is `System.Collections.Generic`, then
-   * `namespace`=`System.Collections` and `name`=`Generic`.
+   * `qualifier`=`System.Collections` and `name`=`Generic`.
    */
-  override predicate hasQualifiedName(string namespace, string name) {
-    exists(string pnamespace, string pname |
-      this.getParentNamespace().hasQualifiedName(pnamespace, pname) and
-      namespace = getQualifiedName(pnamespace, pname)
+  override predicate hasQualifiedName(string qualifier, string name) {
+    exists(string pqualifier, string pname |
+      this.getParentNamespace().hasQualifiedName(pqualifier, pname) and
+      qualifier = getQualifiedName(pqualifier, pname)
     ) and
     name = this.getName()
   }
@@ -61,7 +61,7 @@ class Namespace extends Declaration, @namespace {
 class GlobalNamespace extends Namespace {
   GlobalNamespace() { this.getName() = "" }
 
-  override predicate hasQualifiedName(string namespace, string name) {
-    namespace = "" and name = ""
+  override predicate hasQualifiedName(string qualifier, string name) {
+    qualifier = "" and name = ""
   }
 }

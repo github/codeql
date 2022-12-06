@@ -16,10 +16,10 @@ import DataFlow::PathGraph
 
 from
   UntrustedDataToExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  string namespace, string name
+  string qualifier, string name
 where
   config.hasFlowPath(source, sink) and
-  sink.getNode().(ExternalApiDataNode).hasQualifiedName(namespace, name)
+  sink.getNode().(ExternalApiDataNode).hasQualifiedName(qualifier, name)
 select sink, source, sink,
-  "Call to " + getQualifiedName(namespace, name) + " with untrusted data from $@.", source,
+  "Call to " + getQualifiedName(qualifier, name) + " with untrusted data from $@.", source,
   source.toString()

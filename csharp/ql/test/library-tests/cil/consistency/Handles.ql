@@ -12,10 +12,10 @@ class MetadataEntity extends DotNet::NamedElement, @metadata_entity {
 }
 
 query predicate tooManyHandles(string s) {
-  exists(MetadataEntity e, Assembly a, string namespace, string name |
+  exists(MetadataEntity e, Assembly a, string qualifier, string name |
     strictcount(int handle | metadata_handle(e, a, handle)) > 1 and
-    e.hasQualifiedName(namespace, name) and
-    s = getQualifiedName(namespace, name)
+    e.hasQualifiedName(qualifier, name) and
+    s = getQualifiedName(qualifier, name)
   )
 }
 
@@ -31,11 +31,11 @@ private class UniqueMetadataEntity extends MetadataEntity {
 }
 
 query predicate tooManyMatchingHandles(string s) {
-  exists(UniqueMetadataEntity e, Assembly a, int handle, string namespace, string name |
+  exists(UniqueMetadataEntity e, Assembly a, int handle, string qualifier, string name |
     metadata_handle(e, a, handle) and
     strictcount(UniqueMetadataEntity e2 | metadata_handle(e2, a, handle)) > 2 and
-    e.hasQualifiedName(namespace, name) and
-    s = getQualifiedName(namespace, name)
+    e.hasQualifiedName(qualifier, name) and
+    s = getQualifiedName(qualifier, name)
   )
 }
 

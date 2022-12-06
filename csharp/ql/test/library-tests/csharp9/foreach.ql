@@ -10,12 +10,12 @@ private string getIsAsync(ForeachStmt f) {
 }
 
 from
-  ForeachStmt f, string namespace1, string type1, string namespace2, string type2,
-  string namespace3, string type3
+  ForeachStmt f, string qualifier1, string type1, string qualifier2, string type2,
+  string qualifier3, string type3
 where
-  f.getGetEnumerator().getDeclaringType().hasQualifiedName(namespace1, type1) and
-  f.getCurrent().getDeclaringType().hasQualifiedName(namespace2, type2) and
-  f.getMoveNext().getDeclaringType().hasQualifiedName(namespace3, type3)
-select f, f.getElementType().toString(), getIsAsync(f), getQualifiedName(namespace1, type1),
-  getLocation(f.getGetEnumerator()), getQualifiedName(namespace2, type2),
-  getLocation(f.getCurrent()), getQualifiedName(namespace3, type3), getLocation(f.getMoveNext())
+  f.getGetEnumerator().getDeclaringType().hasQualifiedName(qualifier1, type1) and
+  f.getCurrent().getDeclaringType().hasQualifiedName(qualifier2, type2) and
+  f.getMoveNext().getDeclaringType().hasQualifiedName(qualifier3, type3)
+select f, f.getElementType().toString(), getIsAsync(f), getQualifiedName(qualifier1, type1),
+  getLocation(f.getGetEnumerator()), getQualifiedName(qualifier2, type2),
+  getLocation(f.getCurrent()), getQualifiedName(qualifier3, type3), getLocation(f.getMoveNext())

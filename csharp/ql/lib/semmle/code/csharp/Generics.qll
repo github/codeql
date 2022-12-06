@@ -100,9 +100,9 @@ private string getTypeArgumentsNames(ConstructedGeneric cg) {
 
 bindingset[t]
 private string getFullName(Type t) {
-  exists(string namespace, string name |
-    t.hasQualifiedName(namespace, name) and
-    result = getQualifiedName(namespace, name)
+  exists(string qualifier, string name |
+    t.hasQualifiedName(qualifier, name) and
+    result = getQualifiedName(qualifier, name)
   )
 }
 
@@ -159,15 +159,15 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
     result = this.getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
   }
 
-  final override predicate hasQualifiedName(string namespace, string name) {
+  final override predicate hasQualifiedName(string qualifier, string name) {
     exists(string name0 | name = name0 + "<" + getTypeParameterCommas(this) + ">" |
       exists(string enclosing |
-        this.getDeclaringType().hasQualifiedName(namespace, enclosing) and
+        this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
         name0 = enclosing + "+" + this.getUndecoratedName()
       )
       or
       not exists(this.getDeclaringType()) and
-      namespace = this.getNamespace().getFullName() and
+      qualifier = this.getNamespace().getFullName() and
       name0 = this.getUndecoratedName()
     )
   }
@@ -237,8 +237,8 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   /** Gets the generic that defines this type parameter. */
   UnboundGeneric getGeneric() { type_parameters(this, _, result, _) }
 
-  final override predicate hasQualifiedName(string namespace, string name) {
-    namespace = "" and
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    qualifier = "" and
     name = this.getName()
   }
 
@@ -424,15 +424,15 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
-  final override predicate hasQualifiedName(string namespace, string name) {
+  final override predicate hasQualifiedName(string qualifier, string name) {
     exists(string name0 | name = name0 + "<" + getTypeArgumentsQualifiedNames(this) + ">" |
       exists(string enclosing |
-        this.getDeclaringType().hasQualifiedName(namespace, enclosing) and
+        this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
         name0 = enclosing + "+" + this.getUndecoratedName()
       )
       or
       not exists(this.getDeclaringType()) and
-      namespace = this.getNamespace().getFullName() and
+      qualifier = this.getNamespace().getFullName() and
       name0 = this.getUndecoratedName()
     )
   }

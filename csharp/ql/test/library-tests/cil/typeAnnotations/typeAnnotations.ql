@@ -13,10 +13,10 @@ private string elementType(Element e, string toString) {
   or
   e =
     any(Parameter p |
-      exists(string namespace, string name |
-        p.getDeclaringElement().hasQualifiedName(namespace, name)
+      exists(string qualifier, string name |
+        p.getDeclaringElement().hasQualifiedName(qualifier, name)
       |
-        toString = "Parameter " + p.getIndex() + " of " + getQualifiedName(namespace, name)
+        toString = "Parameter " + p.getIndex() + " of " + getQualifiedName(qualifier, name)
       )
     ) and
   result = "parameter"
@@ -32,8 +32,8 @@ private string elementType(Element e, string toString) {
     ) and
   result = "local"
   or
-  exists(string namespace, string name | e.(FunctionPointerType).hasQualifiedName(namespace, name) |
-    toString = getQualifiedName(namespace, name)
+  exists(string qualifier, string name | e.(FunctionPointerType).hasQualifiedName(qualifier, name) |
+    toString = getQualifiedName(qualifier, name)
   ) and
   result = "fnptr"
   or

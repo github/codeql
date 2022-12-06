@@ -1,8 +1,8 @@
 import semmle.code.cil.Types
 import semmle.code.csharp.commons.QualifiedName
 
-from Enum e, string namespace, string name
+from Enum e, string qualifier, string name
 where
-  e.hasQualifiedName(namespace, name) and
-  not (namespace = "Interop.Sys" and name = "LockType") // doesn't exist on osx
-select getQualifiedName(namespace, name), e.getUnderlyingType().toStringWithTypes()
+  e.hasQualifiedName(qualifier, name) and
+  not (qualifier = "Interop.Sys" and name = "LockType") // doesn't exist on osx
+select getQualifiedName(qualifier, name), e.getUnderlyingType().toStringWithTypes()

@@ -5,20 +5,20 @@
 import csharp
 
 /**
- * Holds if the object creation `oc` is the creation of the reference type with the specified `namespace` and `type`, or a class derived from
- * the class with the specified `namespace` and `type`.
+ * Holds if the object creation `oc` is the creation of the reference type with the specified `qualifier` and `type`, or a class derived from
+ * the class with the specified `qualifier` and `type`.
  */
-private predicate isCreatingObject(ObjectCreation oc, string namespace, string type) {
-  exists(RefType t | t = oc.getType() | t.getBaseClass*().hasQualifiedName(namespace, type))
+private predicate isCreatingObject(ObjectCreation oc, string qualifier, string type) {
+  exists(RefType t | t = oc.getType() | t.getBaseClass*().hasQualifiedName(qualifier, type))
 }
 
 /**
- * Holds if the method call `mc` is returning the reference type with the specified `namespace` and `type`.
+ * Holds if the method call `mc` is returning the reference type with the specified `qualifier` and `type`.
  * and the target of the method call is a library method.
  */
-private predicate isReturningObject(MethodCall mc, string namespace, string type) {
+private predicate isReturningObject(MethodCall mc, string qualifier, string type) {
   mc.getTarget().fromLibrary() and
-  exists(RefType t | t = mc.getType() | t.hasQualifiedName(namespace, type))
+  exists(RefType t | t = mc.getType() | t.hasQualifiedName(qualifier, type))
 }
 
 /**

@@ -8,10 +8,10 @@ private import semmle.code.csharp.commons.QualifiedName
 
 /** A declaration. */
 class Declaration extends NamedElement, @dotnet_declaration {
-  override predicate hasQualifiedName(string namespace, string name) {
-    exists(string dnamespace, string dname |
-      this.getDeclaringType().hasQualifiedName(dnamespace, dname) and
-      namespace = getQualifiedName(dnamespace, dname)
+  override predicate hasQualifiedName(string qualifier, string name) {
+    exists(string dqualifier, string dname |
+      this.getDeclaringType().hasQualifiedName(dqualifier, dname) and
+      qualifier = getQualifiedName(dqualifier, dname)
     ) and
     name = this.getName()
   }
@@ -82,7 +82,7 @@ class Member extends Declaration, @dotnet_member {
 
   /**
    * Holds if this member has name `name` and is defined in type `type`
-   * with qualifier `qualifier`
+   * with namespace `namespace`.
    */
   cached
   predicate hasQualifiedName(string namespace, string type, string name) {

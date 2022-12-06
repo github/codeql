@@ -185,9 +185,9 @@ class PageDirective extends AspDirective {
    * Gets the 'CodeBehind' class from which this page inherits.
    */
   ValueOrRefType getInheritedType() {
-    exists(string namespace, string type |
-      result.hasQualifiedName(namespace, type) and
-      splitQualifiedName(this.getInheritedTypeQualifiedName(), namespace, type)
+    exists(string qualifier, string type |
+      result.hasQualifiedName(qualifier, type) and
+      splitQualifiedName(this.getInheritedTypeQualifiedName(), qualifier, type)
     )
   }
 

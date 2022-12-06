@@ -8,8 +8,8 @@ query predicate records(RecordClass t, string i, RecordCloneMethod clone) {
 }
 
 private string getMemberName(Member m) {
-  exists(string namespace, string name | m.getDeclaringType().hasQualifiedName(namespace, name) |
-    result = getQualifiedName(namespace, name) + "." + m.toStringWithTypes()
+  exists(string qualifier, string name | m.getDeclaringType().hasQualifiedName(qualifier, name) |
+    result = getQualifiedName(qualifier, name) + "." + m.toStringWithTypes()
   )
 }
 

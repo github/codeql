@@ -24,9 +24,9 @@ where
     (
       throwBaseType.hasName(exceptionName)
       or
-      exists(string namespace, string type |
-        splitQualifiedName(exceptionName, namespace, type) and
-        throwBaseType.hasQualifiedName(namespace, type)
+      exists(string qualifier, string type |
+        splitQualifiedName(exceptionName, qualifier, type) and
+        throwBaseType.hasQualifiedName(qualifier, type)
       )
       // and comment.hasBody(offset) // Too slow
     )

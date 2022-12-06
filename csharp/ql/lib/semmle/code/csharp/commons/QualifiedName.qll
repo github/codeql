@@ -3,11 +3,11 @@
  */
 
 /**
- * Returns the concatenation of `namespace` and `name`, separated by a dot.
+ * Returns the concatenation of `qualifier` and `name`, separated by a dot.
  */
-bindingset[namespace, name]
-string getQualifiedName(string namespace, string name) {
-  if namespace = "" then result = name else result = namespace + "." + name
+bindingset[qualifier, name]
+string getQualifiedName(string qualifier, string name) {
+  if qualifier = "" then result = name else result = qualifier + "." + name
 }
 
 /**

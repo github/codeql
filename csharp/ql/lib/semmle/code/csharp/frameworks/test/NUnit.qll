@@ -40,9 +40,9 @@ class NUnitTestMethod extends TestMethod {
     |
       if expected.getArgument(0).getType() instanceof StringType
       then
-        exists(string namespace, string type |
-          result.hasQualifiedName(namespace, type) and
-          splitQualifiedName(expected.getArgument(0).getValue(), namespace, type)
+        exists(string qualifier, string type |
+          result.hasQualifiedName(qualifier, type) and
+          splitQualifiedName(expected.getArgument(0).getValue(), qualifier, type)
         )
       else result = expected.getArgument(0).(TypeofExpr).getTypeAccess().getTarget()
     )

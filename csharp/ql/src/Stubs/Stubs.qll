@@ -121,10 +121,10 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   }
 
   private string stubComment() {
-    exists(string namespace, string name |
-      this.hasQualifiedName(namespace, name) and
+    exists(string qualifier, string name |
+      this.hasQualifiedName(qualifier, name) and
       result =
-        "// Generated from `" + getQualifiedName(namespace, name) + "` in `" +
+        "// Generated from `" + getQualifiedName(qualifier, name) + "` in `" +
           concat(this.getALocation().toString(), "; ") + "`\n"
     )
   }

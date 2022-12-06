@@ -456,8 +456,8 @@ class Operator extends Callable, Member, Attributable, @operator {
 
   override Parameter getRawParameter(int i) { result = this.getParameter(i) }
 
-  override predicate hasQualifiedName(string namespace, string name) {
-    super.hasQualifiedName(namespace, _) and
+  override predicate hasQualifiedName(string qualifier, string name) {
+    super.hasQualifiedName(qualifier, _) and
     name = this.getFunctionName()
   }
 
@@ -1001,10 +1001,10 @@ class LocalFunction extends Callable, Modifiable, Attributable, @local_function 
 
   override Callable getEnclosingCallable() { result = this.getStatement().getEnclosingCallable() }
 
-  override predicate hasQualifiedName(string namespace, string name) {
-    exists(string cnamespace, string type |
-      this.getEnclosingCallable().hasQualifiedName(cnamespace, type) and
-      namespace = getQualifiedName(cnamespace, type)
+  override predicate hasQualifiedName(string qualifier, string name) {
+    exists(string cqualifier, string type |
+      this.getEnclosingCallable().hasQualifiedName(cqualifier, type) and
+      qualifier = getQualifiedName(cqualifier, type)
     ) and
     name = this.getName()
   }

@@ -6,10 +6,10 @@ private string getKind(int kind) { if kind = 1 then result = "modreq" else resul
 
 from string receiver, string modifier, int kind
 where
-  exists(Type modType, CustomModifierReceiver cmr, string namespace, string name |
+  exists(Type modType, CustomModifierReceiver cmr, string qualifier, string name |
     receiver = cmr.toString() and
     cil_custom_modifiers(cmr, modType, kind) and
-    modType.hasQualifiedName(namespace, name) and
-    modifier = getQualifiedName(namespace, name)
+    modType.hasQualifiedName(qualifier, name) and
+    modifier = getQualifiedName(qualifier, name)
   )
 select receiver, modifier, getKind(kind)

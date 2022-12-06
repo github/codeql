@@ -51,10 +51,10 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
    */
   Type getUnboundType() { cil_type(this, _, _, _, result) }
 
-  override predicate hasQualifiedName(string namespace, string name) {
+  override predicate hasQualifiedName(string qualifier, string name) {
     name = this.getName() and
-    exists(string pnamespace, string pname | this.getParent().hasQualifiedName(pnamespace, pname) |
-      namespace = getQualifiedName(pnamespace, pname)
+    exists(string pqualifier, string pname | this.getParent().hasQualifiedName(pqualifier, pname) |
+      qualifier = getQualifiedName(pqualifier, pname)
     )
   }
 

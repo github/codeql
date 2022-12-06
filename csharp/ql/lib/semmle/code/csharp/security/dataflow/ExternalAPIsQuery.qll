@@ -71,9 +71,9 @@ class ExternalApiDataNode extends DataFlow::Node {
   /** Gets the index which is passed untrusted data (where -1 indicates the qualifier). */
   int getIndex() { result = i }
 
-  /** Holds if the callable being use has name `name` and is defined in namespace `namespace`. */
-  predicate hasQualifiedName(string namespace, string name) {
-    this.getCallable().hasQualifiedName(namespace, name)
+  /** Holds if the callable being use has name `name` and has qualifier `qualifier`. */
+  predicate hasQualifiedName(string qualifier, string name) {
+    this.getCallable().hasQualifiedName(qualifier, name)
   }
 
   /**
@@ -82,8 +82,8 @@ class ExternalApiDataNode extends DataFlow::Node {
    * Gets the description of the callable being called.
    */
   deprecated string getCallableDescription() {
-    exists(string namespace, string name |
-      this.hasQualifiedName(namespace, name) and result = getQualifiedName(namespace, name)
+    exists(string qualifier, string name |
+      this.hasQualifiedName(qualifier, name) and result = getQualifiedName(qualifier, name)
     )
   }
 }

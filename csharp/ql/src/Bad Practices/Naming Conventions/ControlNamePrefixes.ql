@@ -11,8 +11,8 @@
 
 import csharp
 
-string prefix(string namespace, string typename) {
-  namespace = "System.Web.UI.WebControls" and
+string prefix(string qualifier, string typename) {
+  qualifier = "System.Web.UI.WebControls" and
   (
     typename = "Label" and result = "lbl"
     or
@@ -75,7 +75,7 @@ string prefix(string namespace, string typename) {
     typename = "CrystalReportViewer" and result = "crvr"
   )
   or
-  namespace = "System.Web.UI.HtmlControls" and
+  qualifier = "System.Web.UI.HtmlControls" and
   (
     typename = "TextArea" and result = "txa"
     or
@@ -95,11 +95,11 @@ string prefix(string namespace, string typename) {
   )
 }
 
-from Field f, RefType t, string name, string prefix, string namespace, string type
+from Field f, RefType t, string name, string prefix, string qualifier, string type
 where
   f.getType() = t and
   f.getName() = name and
-  t.hasQualifiedName(namespace, type) and
-  prefix = prefix(namespace, type) and
+  t.hasQualifiedName(qualifier, type) and
+  prefix = prefix(qualifier, type) and
   not name.matches(prefix + "%")
 select f, "This field should have the prefix '" + prefix + "' to match its types."

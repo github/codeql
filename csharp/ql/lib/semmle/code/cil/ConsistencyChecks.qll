@@ -485,11 +485,11 @@ class InvalidOverride extends MethodViolation {
   }
 
   override string getMessage() {
-    exists(string namespace, string type |
-      base.getDeclaringType().hasQualifiedName(namespace, type)
+    exists(string qualifier, string type |
+      base.getDeclaringType().hasQualifiedName(qualifier, type)
     |
       result =
-        "Overridden method from " + getQualifiedName(namespace, type) + " is not in a base type"
+        "Overridden method from " + getQualifiedName(qualifier, type) + " is not in a base type"
     )
   }
 }
