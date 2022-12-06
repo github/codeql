@@ -8,7 +8,7 @@
  * @problem.severity error
  * @security-severity 7.5
  * @precision high
- * @tags securityimport semmle.python.dataflow.TaintTracking
+ * @tags security
  *       external/cwe/cwe-022bis
  */
 
