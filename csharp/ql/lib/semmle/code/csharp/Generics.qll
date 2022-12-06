@@ -102,7 +102,7 @@ bindingset[t]
 private string getFullName(Type t) {
   exists(string namespace, string name |
     t.hasQualifiedName(namespace, name) and
-    result = printQualifiedName(namespace, name)
+    result = getQualifiedName(namespace, name)
   )
 }
 

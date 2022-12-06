@@ -21,5 +21,5 @@ where
   config.hasFlowPath(source, sink) and
   sink.getNode().(ExternalApiDataNode).hasQualifiedName(namespace, name)
 select sink, source, sink,
-  "Call to " + printQualifiedName(namespace, name) + " with untrusted data from $@.", source,
+  "Call to " + getQualifiedName(namespace, name) + " with untrusted data from $@.", source,
   source.toString()

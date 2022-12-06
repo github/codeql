@@ -1004,7 +1004,7 @@ class LocalFunction extends Callable, Modifiable, Attributable, @local_function 
   override predicate hasQualifiedName(string namespace, string name) {
     exists(string cnamespace, string type |
       this.getEnclosingCallable().hasQualifiedName(cnamespace, type) and
-      namespace = printQualifiedName(cnamespace, type)
+      namespace = getQualifiedName(cnamespace, type)
     ) and
     name = this.getName()
   }

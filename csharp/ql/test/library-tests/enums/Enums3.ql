@@ -12,4 +12,4 @@ where
   c.getType() = c.getDeclaringType() and
   c.getValue() = "1" and
   c.getDeclaringType().getBaseClass().hasQualifiedName(namespace, name)
-select c, printQualifiedName(namespace, name)
+select c, getQualifiedName(namespace, name)

@@ -23,4 +23,4 @@ where
   sink.asExpr() = pw.getAnAssignedValue() and
   pw.hasQualifiedName(namespace, name)
 select sink, "The security sensitive property $@ is being disabled by the following value: $@.", pw,
-  printQualifiedName(namespace, name), source, "false"
+  getQualifiedName(namespace, name), source, "false"

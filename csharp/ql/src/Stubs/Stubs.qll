@@ -124,7 +124,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
     exists(string namespace, string name |
       this.hasQualifiedName(namespace, name) and
       result =
-        "// Generated from `" + printQualifiedName(namespace, name) + "` in `" +
+        "// Generated from `" + getQualifiedName(namespace, name) + "` in `" +
           concat(this.getALocation().toString(), "; ") + "`\n"
     )
   }

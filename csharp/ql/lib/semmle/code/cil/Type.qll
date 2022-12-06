@@ -54,7 +54,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   override predicate hasQualifiedName(string namespace, string name) {
     name = this.getName() and
     exists(string pnamespace, string pname | this.getParent().hasQualifiedName(pnamespace, pname) |
-      namespace = printQualifiedName(pnamespace, pname)
+      namespace = getQualifiedName(pnamespace, pname)
     )
   }
 

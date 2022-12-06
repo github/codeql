@@ -12,4 +12,4 @@ where
     namespace = "Dataflow" and type = "Properties"
   ) and
   prop.hasQualifiedName(namespace, type, name)
-select printQualifiedName(namespace, type, name)
+select getQualifiedName(namespace, type, name)

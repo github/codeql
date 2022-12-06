@@ -16,6 +16,6 @@ where
   f.getGetEnumerator().getDeclaringType().hasQualifiedName(namespace1, type1) and
   f.getCurrent().getDeclaringType().hasQualifiedName(namespace2, type2) and
   f.getMoveNext().getDeclaringType().hasQualifiedName(namespace3, type3)
-select f, f.getElementType().toString(), getIsAsync(f), printQualifiedName(namespace1, type1),
-  getLocation(f.getGetEnumerator()), printQualifiedName(namespace2, type2),
-  getLocation(f.getCurrent()), printQualifiedName(namespace3, type3), getLocation(f.getMoveNext())
+select f, f.getElementType().toString(), getIsAsync(f), getQualifiedName(namespace1, type1),
+  getLocation(f.getGetEnumerator()), getQualifiedName(namespace2, type2),
+  getLocation(f.getCurrent()), getQualifiedName(namespace3, type3), getLocation(f.getMoveNext())

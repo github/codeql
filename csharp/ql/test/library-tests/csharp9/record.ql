@@ -9,7 +9,7 @@ query predicate records(RecordClass t, string i, RecordCloneMethod clone) {
 
 private string getMemberName(Member m) {
   exists(string namespace, string name | m.getDeclaringType().hasQualifiedName(namespace, name) |
-    result = printQualifiedName(namespace, name) + "." + m.toStringWithTypes()
+    result = getQualifiedName(namespace, name) + "." + m.toStringWithTypes()
   )
 }
 

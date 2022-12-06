@@ -32,7 +32,7 @@ query predicate modifiers(string fnptr, string modifier, string sKind) {
   |
     cil_custom_modifiers(fn, modType, kind) and
     modType.hasQualifiedName(namespace, name) and
-    modifier = printQualifiedName(namespace, name) and
+    modifier = getQualifiedName(namespace, name) and
     sKind = getKind(kind)
   )
 }

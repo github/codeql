@@ -43,4 +43,4 @@ where
   nonOverridingMethod(m, vm) and
   vm.hasQualifiedName(namespace, type, name)
 select m, "Method '" + m.getName() + "' looks like it should override $@ but does not do so.",
-  vm.getUnboundDeclaration(), printQualifiedName(namespace, type, name)
+  vm.getUnboundDeclaration(), getQualifiedName(namespace, type, name)

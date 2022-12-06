@@ -7,4 +7,4 @@ where
   mayBeDisposed(field) and
   field.getDeclaringType().hasQualifiedName("DisposalTests", "Class1") and
   field.hasQualifiedName(namespace, name)
-select printQualifiedName(namespace, name)
+select getQualifiedName(namespace, name)

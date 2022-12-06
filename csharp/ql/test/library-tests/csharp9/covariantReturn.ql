@@ -9,5 +9,5 @@ where
   m.getFile().getStem() = "CovariantReturn" and
   m.hasQualifiedName(mnamespace, mtype, mname) and
   overrider.hasQualifiedName(onamespace, otype, oname)
-select printQualifiedName(mnamespace, mtype, mname), m.getReturnType().toString(),
-  printQualifiedName(onamespace, otype, oname), overrider.getReturnType().toString()
+select getQualifiedName(mnamespace, mtype, mname), m.getReturnType().toString(),
+  getQualifiedName(onamespace, otype, oname), overrider.getReturnType().toString()

@@ -28,7 +28,7 @@ class Namespace extends Declaration, @namespace {
   override predicate hasQualifiedName(string namespace, string name) {
     exists(string pnamespace, string pname |
       this.getParentNamespace().hasQualifiedName(pnamespace, pname) and
-      namespace = printQualifiedName(pnamespace, pname)
+      namespace = getQualifiedName(pnamespace, pname)
     ) and
     name = this.getName()
   }
@@ -52,7 +52,7 @@ class Namespace extends Declaration, @namespace {
   string getFullName() {
     exists(string namespace, string name |
       this.hasQualifiedName(namespace, name) and
-      result = printQualifiedName(namespace, name)
+      result = getQualifiedName(namespace, name)
     )
   }
 }

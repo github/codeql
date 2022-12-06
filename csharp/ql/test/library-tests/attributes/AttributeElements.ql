@@ -6,4 +6,4 @@ where
   attribute = element.getAnAttribute() and
   (attribute.fromSource() or element.(Assembly).getName() in ["attributes", "Assembly1"]) and
   attribute.getType().hasQualifiedName(namespace, name)
-select element, attribute, printQualifiedName(namespace, name)
+select element, attribute, getQualifiedName(namespace, name)

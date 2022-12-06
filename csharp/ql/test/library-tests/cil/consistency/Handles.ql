@@ -15,7 +15,7 @@ query predicate tooManyHandles(string s) {
   exists(MetadataEntity e, Assembly a, string namespace, string name |
     strictcount(int handle | metadata_handle(e, a, handle)) > 1 and
     e.hasQualifiedName(namespace, name) and
-    s = printQualifiedName(namespace, name)
+    s = getQualifiedName(namespace, name)
   )
 }
 
@@ -35,7 +35,7 @@ query predicate tooManyMatchingHandles(string s) {
     metadata_handle(e, a, handle) and
     strictcount(UniqueMetadataEntity e2 | metadata_handle(e2, a, handle)) > 2 and
     e.hasQualifiedName(namespace, name) and
-    s = printQualifiedName(namespace, name)
+    s = getQualifiedName(namespace, name)
   )
 }
 

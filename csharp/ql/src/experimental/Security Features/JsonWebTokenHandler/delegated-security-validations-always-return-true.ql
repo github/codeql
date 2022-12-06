@@ -22,4 +22,4 @@ from
 where e = p.getAnAssignedValue() and p.hasQualifiedName(namespace, name)
 select e,
   "JsonWebTokenHandler security-sensitive property $@ is being delegated to this callable that always returns \"true\".",
-  p, printQualifiedName(namespace, name)
+  p, getQualifiedName(namespace, name)

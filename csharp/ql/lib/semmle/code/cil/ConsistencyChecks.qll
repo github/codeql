@@ -489,7 +489,7 @@ class InvalidOverride extends MethodViolation {
       base.getDeclaringType().hasQualifiedName(namespace, type)
     |
       result =
-        "Overridden method from " + printQualifiedName(namespace, type) + " is not in a base type"
+        "Overridden method from " + getQualifiedName(namespace, type) + " is not in a base type"
     )
   }
 }

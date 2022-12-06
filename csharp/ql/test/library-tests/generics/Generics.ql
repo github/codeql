@@ -261,7 +261,7 @@ query predicate test32(ConstructedGeneric cg, string s1, string s2) {
 query predicate test33(ConstructedMethod cm, string s1, string s2) {
   cm.fromSource() and
   exists(string namespace, string type, string name |
-    cm.hasQualifiedName(namespace, type, name) and s1 = printQualifiedName(namespace, type, name)
+    cm.hasQualifiedName(namespace, type, name) and s1 = getQualifiedName(namespace, type, name)
   ) and
   cm.getQualifiedNameWithTypes() = s2
 }
@@ -269,7 +269,7 @@ query predicate test33(ConstructedMethod cm, string s1, string s2) {
 query predicate test34(UnboundGeneric ug, string s1, string s2) {
   ug.fromSource() and
   exists(string namespace, string name |
-    ug.hasQualifiedName(namespace, name) and s1 = printQualifiedName(namespace, name)
+    ug.hasQualifiedName(namespace, name) and s1 = getQualifiedName(namespace, name)
   ) and
   ug.getQualifiedNameWithTypes() = s2
 }
@@ -277,7 +277,7 @@ query predicate test34(UnboundGeneric ug, string s1, string s2) {
 query predicate test35(UnboundGenericMethod gm, string s1, string s2) {
   gm.fromSource() and
   exists(string namespace, string type, string name |
-    gm.hasQualifiedName(namespace, type, name) and s1 = printQualifiedName(namespace, type, name)
+    gm.hasQualifiedName(namespace, type, name) and s1 = getQualifiedName(namespace, type, name)
   ) and
   gm.getQualifiedNameWithTypes() = s2
 }

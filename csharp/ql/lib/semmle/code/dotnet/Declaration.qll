@@ -11,7 +11,7 @@ class Declaration extends NamedElement, @dotnet_declaration {
   override predicate hasQualifiedName(string namespace, string name) {
     exists(string dnamespace, string dname |
       this.getDeclaringType().hasQualifiedName(dnamespace, dname) and
-      namespace = printQualifiedName(dnamespace, dname)
+      namespace = getQualifiedName(dnamespace, dname)
     ) and
     name = this.getName()
   }

@@ -83,7 +83,7 @@ class ExternalApiDataNode extends DataFlow::Node {
    */
   deprecated string getCallableDescription() {
     exists(string namespace, string name |
-      this.hasQualifiedName(namespace, name) and result = printQualifiedName(namespace, name)
+      this.hasQualifiedName(namespace, name) and result = getQualifiedName(namespace, name)
     )
   }
 }

@@ -3,7 +3,7 @@ import semmle.code.csharp.commons.QualifiedName
 
 private string getSignature(Method m) {
   exists(string namespace, string name | m.getDeclaringType().hasQualifiedName(namespace, name) |
-    result = printQualifiedName(namespace, name) + "." + m.toStringWithTypes()
+    result = getQualifiedName(namespace, name) + "." + m.toStringWithTypes()
   )
 }
 

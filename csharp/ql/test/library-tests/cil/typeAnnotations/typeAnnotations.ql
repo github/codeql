@@ -4,7 +4,7 @@ import semmle.code.cil.Type
 
 private string elementType(Element e, string toString) {
   exists(string namespace, string type, string name |
-    toString = printQualifiedName(namespace, type, name)
+    toString = getQualifiedName(namespace, type, name)
   |
     e.(Method).hasQualifiedName(namespace, type, name) and result = "method"
     or
@@ -16,7 +16,7 @@ private string elementType(Element e, string toString) {
       exists(string namespace, string name |
         p.getDeclaringElement().hasQualifiedName(namespace, name)
       |
-        toString = "Parameter " + p.getIndex() + " of " + printQualifiedName(namespace, name)
+        toString = "Parameter " + p.getIndex() + " of " + getQualifiedName(namespace, name)
       )
     ) and
   result = "parameter"
@@ -27,14 +27,13 @@ private string elementType(Element e, string toString) {
         v.getImplementation().getMethod().hasQualifiedName(namespace, type, name)
       |
         toString =
-          "Local variable " + v.getIndex() + " of method " +
-            printQualifiedName(namespace, type, name)
+          "Local variable " + v.getIndex() + " of method " + getQualifiedName(namespace, type, name)
       )
     ) and
   result = "local"
   or
   exists(string namespace, string name | e.(FunctionPointerType).hasQualifiedName(namespace, name) |
-    toString = printQualifiedName(namespace, name)
+    toString = getQualifiedName(namespace, name)
   ) and
   result = "fnptr"
   or

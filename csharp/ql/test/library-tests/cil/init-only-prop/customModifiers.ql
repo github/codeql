@@ -10,6 +10,6 @@ where
     receiver = cmr.toString() and
     cil_custom_modifiers(cmr, modType, kind) and
     modType.hasQualifiedName(namespace, name) and
-    modifier = printQualifiedName(namespace, name)
+    modifier = getQualifiedName(namespace, name)
   )
 select receiver, modifier, getKind(kind)
