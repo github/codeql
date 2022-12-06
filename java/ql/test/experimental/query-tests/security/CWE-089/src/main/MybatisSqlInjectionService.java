@@ -51,7 +51,7 @@ public class MybatisSqlInjectionService {
 		sqlInjectionMapper.bad9(hashMap);
 	}
 
-	public void bad9(Integer id, String name) {
+	public void bad10(Integer id, String name) {
 		sqlInjectionMapper.bad10(id, name);
 	}
 

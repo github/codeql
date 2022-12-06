@@ -106,7 +106,7 @@ public class MybatisSqlInjection {
 	}
 
 	@GetMapping(value = "good4")
-	public void bad10(@RequestParam Integer id, @RequestParam String name) {
+	public void good4(@RequestParam Integer id, @RequestParam String name) {
 		mybatisSqlInjectionService.good4(id, name);
 	}
 }
