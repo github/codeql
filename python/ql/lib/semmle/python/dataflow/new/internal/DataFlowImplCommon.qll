@@ -707,8 +707,8 @@ private module Cached {
      * Gets a viable dispatch target of `call` in the context `ctx`. This is
      * restricted to those `call`s for which a context might make a difference.
      */
-    pragma[nomagic]
-    private DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
+    cached
+    DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
       result = viableImplInCallContext(call, ctx) and
       result = viableCallable(call)
       or
@@ -916,9 +916,9 @@ private module Cached {
     TDataFlowCallSome(DataFlowCall call)
 
   cached
-  newtype TParameterPositionOption =
-    TParameterPositionNone() or
-    TParameterPositionSome(ParameterPosition pos)
+  newtype TParamNodeOption =
+    TParamNodeNone() or
+    TParamNodeSome(ParamNode p)
 
   cached
   newtype TReturnCtx =
@@ -1315,15 +1315,15 @@ class DataFlowCallOption extends TDataFlowCallOption {
   }
 }
 
-/** An optional `ParameterPosition`. */
-class ParameterPositionOption extends TParameterPositionOption {
+/** An optional `ParamNode`. */
+class ParamNodeOption extends TParamNodeOption {
   string toString() {
-    this = TParameterPositionNone() and
+    this = TParamNodeNone() and
     result = "(none)"
     or
-    exists(ParameterPosition pos |
-      this = TParameterPositionSome(pos) and
-      result = pos.toString()
+    exists(ParamNode p |
+      this = TParamNodeSome(p) and
+      result = p.toString()
     )
   }
 }
