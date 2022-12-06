@@ -154,7 +154,7 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
         or
         unsafeExpression.matches("${arg" + i + "%}")
         or
-        unsafeExpression.matches("${" + ma.getMethod().getParameter(i).getName() + "}")
+        unsafeExpression.regexpMatch("\\$\\{\\s*" + ma.getMethod().getParameter(i).getName() + "\\s*(,.*?)?\\s*\\}")
       ) and
       ma.getArgument(i) = node.asExpr()
     )
