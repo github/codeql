@@ -5,7 +5,7 @@
 
 <overview>
 <p>Extracting files from a malicious tarball without validating that the destination file path
-is within the destination directory using `shutil.unpack_archive()` can cause files outside the 
+is within the destination directory using <code>shutil.unpack_archive()</code> can cause files outside the 
 destination directory to be overwritten, due to the possible presence of directory traversal elements
  (<code>..</code>) in archive path names.</p>
 
