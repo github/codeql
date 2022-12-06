@@ -1,8 +1,8 @@
 /**
- * @name Capture negative summary models.
- * @description Finds negative summary models to be used by other queries.
+ * @name Capture neutral models.
+ * @description Finds neutral models to be used by other queries.
  * @kind diagnostic
- * @id cs/utils/model-generator/negative-summary-models
+ * @id cs/utils/model-generator/neutral-models
  * @tags model-generator
  */
 

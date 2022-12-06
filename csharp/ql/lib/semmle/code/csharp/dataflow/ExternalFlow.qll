@@ -11,9 +11,9 @@
  *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
- * - Negative Summaries:
+ * - Neutrals:
  *   `namespace; type; name; signature; provenance`
- *   A negative summary is used to indicate that there is no flow via a callable.
+ *   A neutral is used to indicate that there is no flow via a callable.
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -133,16 +133,16 @@ private class SummaryModelCsvInternal extends Unit {
 }
 
 /**
- * DEPRECATED: Define negative summary models as data extensions instead.
+ * DEPRECATED: Define neutral models as data extensions instead.
  *
- * A unit class for adding additional negative summary model rows.
+ * A unit class for adding additional neutral model rows.
  *
- * Extend this class to add additional negative summary definitions.
+ * Extend this class to add additional neutral definitions.
  */
-deprecated class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
+deprecated class NeutralModelCsv = NeutralModelCsvInternal;
 
-private class NegativeSummaryModelCsvInternal extends Unit {
-  /** Holds if `row` specifies a negative summary definition. */
+private class NeutralModelCsvInternal extends Unit {
+  /** Holds if `row` specifies a neutral definition. */
   abstract predicate row(string row);
 }
 
@@ -152,9 +152,7 @@ private predicate summaryModelInternal(string row) { any(SummaryModelCsvInternal
 
 private predicate sinkModelInternal(string row) { any(SinkModelCsvInternal s).row(row) }
 
-private predicate negativeSummaryModelInternal(string row) {
-  any(NegativeSummaryModelCsvInternal s).row(row)
-}
+private predicate neutralModelInternal(string row) { any(NeutralModelCsvInternal s).row(row) }
 
 /**
  * Holds if a source model exists for the given parameters.
@@ -243,17 +241,17 @@ predicate summaryModel(
   extSummaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
 
-/** Holds if a summary model exists indicating there is no flow for the given parameters. */
-extensible predicate extNegativeSummaryModel(
+/** Holds if a model exists indicating there is no flow for the given parameters. */
+extensible predicate extNeutralModel(
   string namespace, string type, string name, string signature, string provenance
 );
 
-/** Holds if a summary model exists indicating there is no flow for the given parameters. */
-predicate negativeSummaryModel(
+/** Holds if a model exists indicating there is no flow for the given parameters. */
+predicate neutralModel(
   string namespace, string type, string name, string signature, string provenance
 ) {
   exists(string row |
-    negativeSummaryModelInternal(row) and
+    neutralModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = name and
@@ -261,7 +259,7 @@ predicate negativeSummaryModel(
     row.splitAt(";", 4) = provenance
   )
   or
-  extNegativeSummaryModel(namespace, type, name, signature, provenance)
+  extNeutralModel(namespace, type, name, signature, provenance)
 }
 
 private predicate relevantNamespace(string namespace) {
@@ -394,7 +392,7 @@ module ModelValidation {
       or
       summaryModelInternal(row) and expect = 10 and pred = "summary"
       or
-      negativeSummaryModelInternal(row) and expect = 5 and pred = "negative summary"
+      neutralModelInternal(row) and expect = 5 and pred = "neutral"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
@@ -418,9 +416,9 @@ module ModelValidation {
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
       pred = "summary"
       or
-      negativeSummaryModel(namespace, type, name, signature, provenance) and
+      neutralModel(namespace, type, name, signature, provenance) and
       ext = "" and
-      pred = "negative summary"
+      pred = "neutral"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -461,7 +459,7 @@ private predicate elementSpec(
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  negativeSummaryModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
+  neutralModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
 }
 
 private predicate elementSpec(
@@ -595,7 +593,7 @@ private Element interpretElement0(
   )
 }
 
-/** Gets the source/sink/summary/negativesummary element corresponding to the supplied parameters. */
+/** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
