@@ -17,9 +17,9 @@ the file may be written to an unexpected location. This can result in sensitive 
 revealed or deleted, or an attacker being able to influence behavior by modifying unexpected
 files.</p>
 
-<p>For example, if a tarball contains a file entry <code>../sim4n6.txt</code>, and the tarball
+<p>For example, if a tarball contains a file entry <code>../sneaky-file.txt</code>, and the tarball
 is extracted to the directory <code>/tmp/tmp123</code>, then naively combining the paths would result
-in an output file path of <code>/tmp/tmp123/../sim4n6.txt</code>, which would cause the file to be
+in an output file path of <code>/tmp/tmp123/../sneaky-file.txt</code>, which would cause the file to be
 written to <code>/tmp/</code>.</p>
 
 </overview>
