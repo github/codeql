@@ -4,9 +4,9 @@
 <qhelp>
   <overview>
     <p>
-      Enabling JavaScript in an Android WebView allows for the running of JavaScript
-      code in the context of the running application. This opens the possibility for
-      cross-site scripting if the attacker can inject arbitrary JavaScript.
+      Enabling JavaScript in an Android WebView allows the execution of
+      JavaScript code in the context of the running application. This creates a
+      cross-site scripting vulnerability.
     </p>
 
     <p>
