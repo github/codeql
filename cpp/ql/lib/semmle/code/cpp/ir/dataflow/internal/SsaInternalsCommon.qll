@@ -4,6 +4,7 @@ import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.implementation.raw.internal.SideEffects as SideEffects
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
+private import DataFlowPrivate
 
 /**
  * Holds if `operand` is an operand that is not used by the dataflow library.
@@ -126,15 +127,29 @@ class AllocationInstruction extends CallInstruction {
   AllocationInstruction() { this.getStaticCallTarget() instanceof Cpp::AllocationFunction }
 }
 
-/**
- * Holds if `i` is a base instruction that starts a sequence of uses
- * of some variable that SSA can handle.
- *
- * This is either when `i` is a `VariableAddressInstruction` or when
- * `i` is a fresh allocation produced by an `AllocationInstruction`.
- */
-private predicate isSourceVariableBase(Instruction i) {
-  i instanceof VariableAddressInstruction or i instanceof AllocationInstruction
+predicate isWrite(Node0Impl value, Operand address, boolean certain) {
+  certain = true and
+  (
+    exists(StoreInstruction store |
+      value.asInstruction() = store and
+      address = store.getDestinationAddressOperand()
+    )
+    or
+    exists(InitializeParameterInstruction init |
+      value.asInstruction() = init and
+      address = init.getAnOperand()
+    )
+    or
+    exists(InitializeDynamicAllocationInstruction init |
+      value.asInstruction() = init and
+      address = init.getAllocationAddressOperand()
+    )
+    or
+    exists(UninitializedInstruction uninitialized |
+      value.asInstruction() = uninitialized and
+      address = uninitialized.getAnOperand()
+    )
+  )
 }
 
 /**
@@ -264,6 +279,17 @@ private module Cached {
   }
 
   /**
+   * Holds if `i` is a base instruction that starts a sequence of uses
+   * of some variable that SSA can handle.
+   *
+   * This is either when `i` is a `VariableAddressInstruction` or when
+   * `i` is a fresh allocation produced by an `AllocationInstruction`.
+   */
+  private predicate isSourceVariableBase(Instruction i) {
+    i instanceof VariableAddressInstruction or i instanceof AllocationInstruction
+  }
+
+  /**
    * Holds if `address` is an address of an SSA variable rooted at `base`,
    * and `instr` is a definition of the SSA variable with `ind` number of indirections.
    *
@@ -273,25 +299,17 @@ private module Cached {
    */
   cached
   predicate isDef(
-    boolean certain, Instruction instr, Operand address, Instruction base, int ind,
+    boolean certain, Node0Impl value, Operand address, Instruction base, int ind,
     int indirectionIndex
   ) {
-    certain = true and
     exists(int ind0, CppType type, int lower, int upper |
-      address =
-        [
-          instr.(StoreInstruction).getDestinationAddressOperand(),
-          instr.(InitializeParameterInstruction).getAnOperand(),
-          instr.(InitializeDynamicAllocationInstruction).getAllocationAddressOperand(),
-          instr.(UninitializedInstruction).getAnOperand()
-        ]
-    |
+      isWrite(value, address, certain) and
       isDefImpl(address, base, ind0) and
       type = getLanguageType(address) and
       upper = countIndirectionsForCppType(type) and
       ind = ind0 + [lower .. upper] and
       indirectionIndex = ind - (ind0 + lower) and
-      if type.hasType(any(Cpp::ArrayType arrayType), true) then lower = 0 else lower = 1
+      (if type.hasType(any(Cpp::ArrayType arrayType), true) then lower = 0 else lower = 1)
     )
   }
 

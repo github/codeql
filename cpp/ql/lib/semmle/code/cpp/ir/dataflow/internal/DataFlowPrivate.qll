@@ -6,6 +6,111 @@ private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 
+cached
+private module Cached {
+  cached
+  newtype TIRDataFlowNode0 =
+    TInstructionNode0(Instruction i) {
+      not Ssa::ignoreInstruction(i) and
+      // We exclude `void`-typed instructions because they cannot contain data.
+      // However, if the instruction is a glvalue, and their type is `void`, then the result
+      // type of the instruction is really `void*`, and thus we still want to have a dataflow
+      // node for it.
+      (not i.getResultType() instanceof VoidType or i.isGLValue())
+    } or
+    TOperandNode0(Operand op) { not Ssa::ignoreOperand(op) }
+}
+
+private import Cached
+
+class Node0Impl extends TIRDataFlowNode0 {
+  /**
+   * INTERNAL: Do not use.
+   */
+  Declaration getEnclosingCallable() { none() } // overridden in subclasses
+
+  /** Gets the function to which this node belongs, if any. */
+  Declaration getFunction() { none() } // overridden in subclasses
+
+  /**
+   * Gets the type of this node.
+   *
+   * If `asInstruction().isGLValue()` holds, then the type of this node
+   * should be thought of as "pointer to `getType()`".
+   */
+  DataFlowType getType() { none() } // overridden in subclasses
+
+  /** Gets the instruction corresponding to this node, if any. */
+  Instruction asInstruction() { result = this.(InstructionNode0).getInstruction() }
+
+  /** Gets the operands corresponding to this node, if any. */
+  Operand asOperand() { result = this.(OperandNode0).getOperand() }
+
+  /** INTERNAL: Do not use. */
+  Location getLocationImpl() {
+    none() // overridden by subclasses
+  }
+
+  /** INTERNAL: Do not use. */
+  string toStringImpl() {
+    none() // overridden by subclasses
+  }
+
+  /** Gets the location of this node. */
+  final Location getLocation() { result = this.getLocationImpl() }
+
+  /** Gets a textual representation of this node. */
+  final string toString() { result = this.toStringImpl() }
+}
+
+/**
+ * An instruction, viewed as a node in a data flow graph.
+ */
+class InstructionNode0 extends Node0Impl, TInstructionNode0 {
+  Instruction instr;
+
+  InstructionNode0() { this = TInstructionNode0(instr) }
+
+  /** Gets the instruction corresponding to this node. */
+  Instruction getInstruction() { result = instr }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = instr.getEnclosingFunction() }
+
+  override DataFlowType getType() { result = instr.getResultType() }
+
+  final override Location getLocationImpl() { result = instr.getLocation() }
+
+  override string toStringImpl() {
+    // This predicate is overridden in subclasses. This default implementation
+    // does not use `Instruction.toString` because that's expensive to compute.
+    result = this.getInstruction().getOpcode().toString()
+  }
+}
+
+/**
+ * An operand, viewed as a node in a data flow graph.
+ */
+class OperandNode0 extends Node0Impl, TOperandNode0 {
+  Operand op;
+
+  OperandNode0() { this = TOperandNode0(op) }
+
+  /** Gets the operand corresponding to this node. */
+  Operand getOperand() { result = op }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
+
+  override DataFlowType getType() { result = op.getType() }
+
+  final override Location getLocationImpl() { result = op.getLocation() }
+
+  override string toStringImpl() { result = this.getOperand().toString() }
+}
+
 /**
  * INTERNAL: Do not use.
  *
@@ -251,7 +356,7 @@ class ReturnNode extends Node instanceof IndirectReturnNode {
  */
 private predicate hasNonInitializeParameterDef(IRVariable v) {
   exists(Ssa::Def def |
-    not def.getDefiningInstruction() instanceof InitializeParameterInstruction and
+    not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
     v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable()
   )
 }
