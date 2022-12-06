@@ -19,3 +19,5 @@ reverseRead
 argHasPostUpdate
 postWithInFlow
 viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+uniqueParameterNodePosition
