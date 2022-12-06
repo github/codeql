@@ -24,9 +24,17 @@ module Kernel {
       this = API::getTopLevelMember("Kernel").getAMethodCall(methodName)
       or
       this.asExpr().getExpr() instanceof UnknownMethodCall and
-      methodName = super.getMethodName() and
+      (
+        methodName = super.getMethodName()
+        or
+        this.asExpr().getExpr() instanceof SuperCall and
+        methodName = this.asExpr().getExpr().getEnclosingCallable().(MethodBase).getName()
+      ) and
       (
         this.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
+        isPrivateKernelMethod(methodName)
+        or
+        this.asExpr().getExpr() instanceof SuperCall and
         isPrivateKernelMethod(methodName)
         or
         isPublicKernelMethod(methodName)
