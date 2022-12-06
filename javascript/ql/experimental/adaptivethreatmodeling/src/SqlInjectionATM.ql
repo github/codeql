@@ -16,7 +16,6 @@
 import experimental.adaptivethreatmodeling.SqlInjectionATM
 import ATM::ResultsInfo
 import DataFlow::PathGraph
-import experimental.adaptivethreatmodeling.PromptConfiguration
 
 from AtmConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink, float score
 where cfg.hasBoostedFlowPath(source, sink, score)
