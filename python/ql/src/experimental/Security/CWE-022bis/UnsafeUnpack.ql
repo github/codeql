@@ -8,49 +8,54 @@
  * @problem.severity error
  * @security-severity 7.5
  * @precision high
- * @tags security
+ * @tags securityimport semmle.python.dataflow.TaintTracking
  *       external/cwe/cwe-022bis
  */
 
 import python
-import experimental.semmle.python.Concepts
-import DataFlow::PathGraph
-import semmle.python.ApiGraphs
-import semmle.python.dataflow.new.internal.Attributes
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.ApiGraphs
-import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Concepts
+import semmle.python.dataflow.new.internal.DataFlowPublic
+import semmle.python.ApiGraphs
+import DataFlow::PathGraph
+import semmle.python.dataflow.new.TaintTracking
 
 class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   UnsafeUnpackingConfig() { this = "UnsafeUnpackingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     // A source coming from a remote location
-    exists(Http::Client::Request request | source = request) and
-    not source.getScope().getLocation().getFile().inStdlib()
+    exists(Http::Client::Request request | source = request)
   }
 
   override predicate isSink(DataFlow::Node sink) {
     // A sink capturing method calls to `unpack_archive`.
-    sink =
-      API::moduleImport("shutil").getMember("unpack_archive").getACall().getParameter(0).asSink() and
-    not sink.getScope().getLocation().getFile().inStdlib()
+    sink = API::moduleImport("shutil").getMember("unpack_archive").getACall().getArg(0)
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // Writing the response data to the archive
-    exists(API::CallNode call, MethodCallNode w |
-      nodeTo = call.getArg(0) and
+    (exists(API::CallNode call, MethodCallNode mc, Node f |
+      mc.getMethodName() = "write" and
+      f = mc.getObject() and
+      nodeTo = mc.getArg(0) and
       call = API::builtin("open").getACall() and
-      w.getMethodName() = "write" and
-      w.getObject() = call.getReturn().getAValueReachableFromSource() and
-      nodeFrom = w.getArg(0)
+      call.flowsTo(f) and
+      nodeFrom = call.getArg(0) 
     )
+    or 
+    // Reading the response
+    exists(MethodCallNode mc |
+      nodeFrom = mc.getObject() and
+      mc.getMethodName() = "read" and
+      nodeTo = mc
+    )
+    or
+    // Accessing the name 
+    exists(AttrRead ar | ar.accesses(nodeFrom, "name") and nodeTo = ar))
   }
 }
 
 from UnsafeUnpackingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "Unsafe extraction from a malicious tarball, is used in a $@",
-  source.getAQlClass(), "during archive unpacking."
+select sink.getNode(), source, sink,
+  "Unsafe extraction from a malicious tarball retrieved from a remote location."
