@@ -514,6 +514,9 @@ open class KotlinFileExtractor(
                     addModifiers(instance.id, "public", "static", "final")
                     tw.writeClass_object(id.cast<DbClass>(), instance.id)
                 }
+                if (c.isObject) {
+                    addModifiers(id, "static")
+                }
                 if (extractFunctionBodies && needsObinitFunction(c)) {
                     extractObinitFunction(c, id)
                 }
