@@ -14,7 +14,7 @@ private predicate relevant(ExternalApi api) {
   not api.isUninteresting() and
   (
     api.isSupported() or
-    api = any(FlowSummaryImpl::Public::NegativeSummarizedCallable nsc).asCallable()
+    api = any(FlowSummaryImpl::Public::NeutralCallable nsc).asCallable()
   )
 }
 

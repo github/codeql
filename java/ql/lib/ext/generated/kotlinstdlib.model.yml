@@ -1861,7 +1861,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extNegativeSummaryModel
+      extensible: extNeutralModel
     data:
       - ["kotlin.annotation", "AnnotationRetention", "valueOf", "(String)", "generated"]
       - ["kotlin.annotation", "AnnotationRetention", "values", "()", "generated"]
