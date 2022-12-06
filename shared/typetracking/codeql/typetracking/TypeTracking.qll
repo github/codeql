@@ -3,12 +3,16 @@
  * for tracking types.
  */
 
-import codeql.util.Boolean
-import codeql.util.Option
+private import codeql.util.Boolean
+private import codeql.util.Option
 
+/**
+ * The step relations for type tracking.
+ */
 signature module TypeTrackingInput {
   /** A node that is used by the type-trackers. */
   class Node {
+    /** Gets a textual representation of this node. */
     string toString();
   }
 
@@ -21,6 +25,7 @@ signature module TypeTrackingInput {
 
   /** A type of content to be used with the store and read steps. */
   class Content {
+    /** Gets a textual representation of this content. */
     string toString();
   }
 
@@ -70,21 +75,21 @@ signature module TypeTrackingInput {
   predicate returnStep(Node nodeFrom, LocalSourceNode nodeTo);
 
   /**
-   * Holds if `nodeFrom` is being written to the content `f` of the object in
+   * Holds if `nodeFrom` is being written to the content `c` of the object in
    * `nodeTo`.
    */
-  predicate storeStep(Node nodeFrom, Node nodeTo, Content f);
+  predicate storeStep(Node nodeFrom, Node nodeTo, Content c);
 
   /**
-   * Holds if `nodeTo` is the result of accessing the content `f` of `nodeFrom`.
+   * Holds if `nodeTo` is the result of accessing the content `c` of `nodeFrom`.
    */
-  predicate loadStep(Node nodeFrom, LocalSourceNode nodeTo, Content f);
+  predicate loadStep(Node nodeFrom, LocalSourceNode nodeTo, Content c);
 
   /**
-   * Holds if the content `f1` of `nodeFrom` is stored in the content `f2` of
+   * Holds if the content `c1` of `nodeFrom` is stored in the content `c2` of
    * `nodeTo`.
    */
-  predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2);
+  predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content c1, Content c2);
 
   /**
    * Holds if type-tracking should step from `nodeFrom` to `nodeTo` if inside a
@@ -113,9 +118,14 @@ signature module TypeTrackingInput {
   predicate hasFeatureBacktrackStoreTarget();
 }
 
+/**
+ * Given a set of step relations, this module provides classes and predicates
+ * for simple data-flow reachability suitable for tracking types.
+ */
 module TypeTracking<TypeTrackingInput I> {
   private import I
 
+  /** Provides consistency checks for the type-tracker step relations. */
   module ConsistencyChecks {
     private predicate stepEntry(Node n, string kind) {
       simpleLocalSmallStep(n, _) and kind = "simpleLocalSmallStep"
@@ -329,12 +339,17 @@ module TypeTracking<TypeTrackingInput I> {
     )
   }
 
+  pragma[inline]
+  private predicate isLocalSourceNode(LocalSourceNode n) { any() }
+
   /**
    * Holds if there is flow from `localSource` to `dst` using zero or more
    * `simpleLocalSmallStep`s.
    */
   pragma[nomagic]
   predicate flowsTo(LocalSourceNode localSource, Node dst) {
+    // explicit type check in base case to avoid repeated type tests in recursive case
+    isLocalSourceNode(localSource) and
     dst = localSource
     or
     exists(Node mid |
@@ -344,27 +359,27 @@ module TypeTracking<TypeTrackingInput I> {
   }
 
   pragma[nomagic]
-  private predicate storeStepIntoSource(Node nodeFrom, LocalSourceNode nodeTo, Content f) {
+  private predicate storeStepIntoSource(Node nodeFrom, LocalSourceNode nodeTo, Content c) {
     if hasFeatureBacktrackStoreTarget()
     then
       exists(Node obj |
         flowsTo(nodeTo, obj) and
-        storeStep(nodeFrom, obj, f)
+        storeStep(nodeFrom, obj, c)
       )
-    else storeStep(nodeFrom, nodeTo, f)
+    else storeStep(nodeFrom, nodeTo, c)
   }
 
   pragma[nomagic]
   private predicate loadStoreStepIntoSource(
-    Node nodeFrom, LocalSourceNode nodeTo, Content f1, Content f2
+    Node nodeFrom, LocalSourceNode nodeTo, Content c1, Content c2
   ) {
     if hasFeatureBacktrackStoreTarget()
     then
       exists(Node obj |
         flowsTo(nodeTo, obj) and
-        loadStoreStep(nodeFrom, obj, f1, f2)
+        loadStoreStep(nodeFrom, obj, c1, c2)
       )
-    else loadStoreStep(nodeFrom, nodeTo, f1, f2)
+    else loadStoreStep(nodeFrom, nodeTo, c1, c2)
   }
 
   pragma[nomagic]
@@ -465,8 +480,8 @@ module TypeTracking<TypeTrackingInput I> {
    * instead of `tt2.step`.
    */
   class TypeTracker extends TTypeTracker {
-    Boolean hasCall;
-    ContentOption content;
+    private Boolean hasCall;
+    private ContentOption content;
 
     TypeTracker() { this = MkTypeTracker(hasCall, content) }
 
@@ -478,9 +493,10 @@ module TypeTracking<TypeTrackingInput I> {
       exists(string withCall, string withContent |
         (if hasCall = true then withCall = "with" else withCall = "without") and
         (
-          if content instanceof ContentOption::Some
-          then withContent = " with content " + content.asSome()
-          else withContent = ""
+          withContent = " with content " + content.asSome()
+          or
+          content instanceof ContentOption::None and
+          withContent = ""
         ) and
         result = "type tracker " + withCall + " call steps" + withContent
       )
@@ -613,8 +629,8 @@ module TypeTracking<TypeTrackingInput I> {
    * instead of `t2.step`.
    */
   class TypeBackTracker extends TTypeBackTracker {
-    Boolean hasReturn;
-    ContentOption content;
+    private Boolean hasReturn;
+    private ContentOption content;
 
     TypeBackTracker() { this = MkTypeBackTracker(hasReturn, content) }
 
@@ -626,9 +642,10 @@ module TypeTracking<TypeTrackingInput I> {
       exists(string withReturn, string withContent |
         (if hasReturn = true then withReturn = "with" else withReturn = "without") and
         (
-          if content instanceof ContentOption::Some
-          then withContent = " with content " + content
-          else withContent = ""
+          withContent = " with content " + content.asSome()
+          or
+          content instanceof ContentOption::None and
+          withContent = ""
         ) and
         result = "type back-tracker " + withReturn + " return steps" + withContent
       )
@@ -753,7 +770,7 @@ module TypeTracking<TypeTrackingInput I> {
        * A node on a path that is reachable from a source. This is a pair of a
        * `Node` and a `TypeTracker`.
        */
-      class PathNode extends TPathNode {
+      class PathNodeFwd extends TPathNode {
         /** Gets the node of this `PathNode`. */
         Node getNode() { this = MkPathNode(result, _) }
 
@@ -762,14 +779,15 @@ module TypeTracking<TypeTrackingInput I> {
 
         private string ppContent() {
           exists(ContentOption c | this.getTypeTracker() = MkTypeTracker(_, c) |
-            if c instanceof ContentOption::Some
-            then result = " with content " + c.asSome()
-            else result = ""
+            result = " with content " + c.asSome()
+            or
+            c instanceof ContentOption::None and
+            result = ""
           )
         }
 
         /** Gets a textual representation of this node. */
-        string toString() { result = this.getNode().toString() + " " + this.ppContent() }
+        string toString() { result = this.getNode().toString() + this.ppContent() }
 
         /** Holds if this is a source. */
         predicate isSource() { source(this.getNode()) and this.getTypeTracker().start() }
@@ -783,26 +801,34 @@ module TypeTracking<TypeTrackingInput I> {
         tt2 = tt1.step(n1, n2)
       }
 
-      private predicate edgeCand(PathNode n1, PathNode n2) {
+      private predicate edgeCand(PathNodeFwd n1, PathNodeFwd n2) {
         edgeCand(n1.getNode(), n1.getTypeTracker(), n2.getNode(), n2.getTypeTracker())
       }
 
-      private predicate reachRev(PathNode n) {
+      private predicate reachRev(PathNodeFwd n) {
         n.isSink()
         or
-        exists(PathNode mid |
+        exists(PathNodeFwd mid |
           edgeCand(n, mid) and
           reachRev(mid)
         )
       }
 
+      /**
+       * A node on a path that is reachable from a source and can reach a sink.
+       * This is a pair of a `Node` and a `TypeTracker`.
+       */
+      class PathNode extends PathNodeFwd {
+        PathNode() { reachRev(this) }
+      }
+
       /** Holds if `(p1, p2)` is an edge in a path between a source and a sink. */
-      query predicate edges(PathNode n1, PathNode n2) { edgeCand(n1, n2) and reachRev(n2) }
+      query predicate edges(PathNode n1, PathNode n2) { edgeCand(n1, n2) }
 
       private predicate stepPlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
 
       /** Holds if there is a path between `source` and `sink`. */
-      predicate flowPair(PathNode source, PathNode sink) {
+      predicate hasFlow(PathNode source, PathNode sink) {
         source.isSource() and
         sink.isSink() and
         (source = sink or stepPlus(source, sink))
