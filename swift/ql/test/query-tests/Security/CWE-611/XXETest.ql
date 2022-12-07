@@ -1,6 +1,13 @@
 import swift
+import codeql.swift.dataflow.FlowSources
 import codeql.swift.security.XXEQuery
 import TestUtilities.InlineExpectationsTest
+
+class TestRemoteSource extends RemoteFlowSource {
+  TestRemoteSource() { this.asExpr().(ApplyExpr).getStaticTarget().getName().matches("source%") }
+
+  override string getSourceType() { result = "Test source" }
+}
 
 class XxeTest extends InlineExpectationsTest {
   XxeTest() { this = "XxeTest" }

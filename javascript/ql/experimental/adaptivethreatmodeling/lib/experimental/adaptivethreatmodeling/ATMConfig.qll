@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Configures boosting for adaptive threat modeling (ATM).
@@ -6,7 +6,8 @@
 
 private import javascript as JS
 import EndpointTypes
-import EndpointCharacteristics
+import EndpointCharacteristics as EndpointCharacteristics
+import AdaptiveThreatModeling::ATM::ResultsInfo as AtmResultsInfo
 
 /**
  * EXPERIMENTAL. This API may change in the future.
@@ -29,9 +30,22 @@ import EndpointCharacteristics
  * `isAdditionalFlowStep` with a more generalised definition of additional edges. See
  * `NosqlInjectionATM.qll` for an example of doing this.
  */
-abstract class AtmConfig extends string {
+abstract class AtmConfig extends JS::TaintTracking::Configuration {
   bindingset[this]
   AtmConfig() { any() }
+
+  /**
+   * Holds if `source` is a relevant taint source. When sources are not boosted, `isSource` is equivalent to
+   * `isKnownSource` (i.e there are no "effective" sources to be classified by an ML model).
+   */
+  override predicate isSource(JS::DataFlow::Node source) { this.isKnownSource(source) }
+
+  /**
+   * Holds if `sink` is a known taint sink or an "effective" sink (a candidate to be classified by an ML model).
+   */
+  override predicate isSink(JS::DataFlow::Node sink) {
+    this.isKnownSink(sink) or this.isEffectiveSink(sink)
+  }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -48,10 +62,10 @@ abstract class AtmConfig extends string {
   final predicate isKnownSink(JS::DataFlow::Node sink) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
-    exists(EndpointCharacteristic characteristic |
-      characteristic.getEndpoints(sink) and
+    exists(EndpointCharacteristics::EndpointCharacteristic characteristic |
+      characteristic.appliesToEndpoint(sink) and
       characteristic
-          .getImplications(this.getASinkEndpointType(), true, characteristic.maximalConfidence())
+          .hasImplications(this.getASinkEndpointType(), true, characteristic.maximalConfidence())
     )
   }
 
@@ -69,7 +83,38 @@ abstract class AtmConfig extends string {
    * Holds if the candidate sink `candidateSink` predicted by the machine learning model should be
    * an effective sink, i.e. one considered as a possible sink of flow in the boosted query.
    */
-  predicate isEffectiveSink(JS::DataFlow::Node candidateSink) { none() }
+  predicate isEffectiveSink(JS::DataFlow::Node candidateSink) {
+    not exists(this.getAReasonSinkExcluded(candidateSink))
+  }
+
+  /**
+   * Gets the list of characteristics that cause `candidateSink` to be excluded as an effective sink.
+   */
+  final EndpointCharacteristics::EndpointCharacteristic getAReasonSinkExcluded(
+    JS::DataFlow::Node candidateSink
+  ) {
+    // An endpoint is an effective sink (sink candidate) if none of its characteristics give much indication whether or
+    // not it is a sink. Historically, we used endpoint filters, and scored endpoints that are filtered out neither by
+    // a standard endpoint filter nor by an endpoint filter specific to this sink type. To replicate this behavior, we
+    // have given the endpoint filter characteristics medium confidence, and we exclude endpoints that have a
+    // medium-confidence characteristic that indicates that they are not sinks, either in general or for this sink type.
+    exists(EndpointCharacteristics::EndpointCharacteristic filter, float confidence |
+      filter.appliesToEndpoint(candidateSink) and
+      confidence >= filter.mediumConfidence() and
+      // TODO: Experiment with excluding all endpoints that have a medium- or high-confidence characteristic that
+      // implies they're not sinks, rather than using only medium-confidence characteristics, by deleting the following
+      // line.
+      confidence < filter.highConfidence() and
+      (
+        // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
+        filter.hasImplications(any(NegativeType negative), true, confidence)
+        or
+        // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
+        filter.hasImplications(this.getASinkEndpointType(), false, confidence)
+      ) and
+      result = filter
+    )
+  }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -85,7 +130,7 @@ abstract class AtmConfig extends string {
    * Get an endpoint type for the sinks of this query. A query may have multiple applicable
    * endpoint types for its sinks.
    */
-  EndpointType getASinkEndpointType() { none() }
+  abstract EndpointType getASinkEndpointType();
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -96,6 +141,30 @@ abstract class AtmConfig extends string {
    * A cut-off value of 1 produces all alerts including those that are likely false-positives.
    */
   float getScoreCutoff() { result = 0.0 }
+
+  /**
+   * Holds if there's an ATM alert (a flow path from `source` to `sink` with ML-determined likelihood `score`) according
+   * to this ML-boosted configuration, whereas the unboosted base query does not contain this source and sink
+   * combination.
+   */
+  predicate hasBoostedFlowPath(
+    JS::DataFlow::PathNode source, JS::DataFlow::PathNode sink, float score
+  ) {
+    this.hasFlowPath(source, sink) and
+    not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
+    score = AtmResultsInfo::getScoreForFlow(source.getNode(), sink.getNode())
+  }
+
+  /**
+   * Holds if if `sink` is an effective sink with flow from `source` which gets used as a sink candidate for scoring
+   * with the ML model.
+   */
+  predicate isSinkCandidateWithFlow(JS::DataFlow::PathNode sink) {
+    exists(JS::DataFlow::PathNode source |
+      this.hasFlowPath(source, sink) and
+      not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode())
+    )
+  }
 }
 
 /** DEPRECATED: Alias for AtmConfig */

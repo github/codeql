@@ -15,6 +15,7 @@
 
 import Location
 import Namespace
+private import commons.QualifiedName
 private import dotnet
 private import TypeRef
 
@@ -97,11 +98,18 @@ private string getTypeArgumentsNames(ConstructedGeneric cg) {
   result = strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.getName(), "," order by i)
 }
 
-/** Gets the concatenation of the `getQualifiedName()` of type arguments. */
+bindingset[t]
+private string getFullName(Type t) {
+  exists(string qualifier, string name |
+    t.hasQualifiedName(qualifier, name) and
+    result = getQualifiedName(qualifier, name)
+  )
+}
+
+/** Gets the concatenation of the `getFullName` of type arguments. */
 language[monotonicAggregates]
 private string getTypeArgumentsQualifiedNames(ConstructedGeneric cg) {
-  result =
-    strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.getQualifiedName(), "," order by i)
+  result = strictconcat(Type t, int i | t = cg.getTypeArgument(i) | getFullName(t), "," order by i)
 }
 
 /**
@@ -159,7 +167,7 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
       )
       or
       not exists(this.getDeclaringType()) and
-      qualifier = this.getNamespace().getQualifiedName() and
+      qualifier = this.getNamespace().getFullName() and
       name0 = this.getUndecoratedName()
     )
   }
@@ -424,7 +432,7 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
       )
       or
       not exists(this.getDeclaringType()) and
-      qualifier = this.getNamespace().getQualifiedName() and
+      qualifier = this.getNamespace().getFullName() and
       name0 = this.getUndecoratedName()
     )
   }
@@ -594,8 +602,8 @@ class ConstructedMethod extends Method, ConstructedGeneric {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
-  override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = this.getDeclaringType().getQualifiedName() and
+  override predicate hasQualifiedName(string namespace, string type, string name) {
+    this.getDeclaringType().hasQualifiedName(namespace, type) and
     name = this.getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(this) + ">"
   }
 

@@ -9,7 +9,6 @@ private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.FlowSummary
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
@@ -21,7 +20,7 @@ module DataAnnotations {
   class NotMappedAttribute extends Attribute {
     NotMappedAttribute() {
       this.getType()
-          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema.NotMappedAttribute")
+          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema", "NotMappedAttribute")
     }
   }
 }
@@ -38,11 +37,7 @@ private predicate isNotMapped(Attributable a) {
 module EntityFramework {
   /** An EF6 or EFCore namespace. */
   class EFNamespace extends Namespace {
-    EFNamespace() {
-      this.getQualifiedName() = "Microsoft.EntityFrameworkCore"
-      or
-      this.getQualifiedName() = "System.Data.Entity"
-    }
+    EFNamespace() { this.getFullName() = ["Microsoft.EntityFrameworkCore", "System.Data.Entity"] }
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */
@@ -163,7 +158,7 @@ module EntityFramework {
 
   /** The struct `Microsoft.EntityFrameworkCore.RawSqlString`. */
   private class RawSqlStringStruct extends Struct {
-    RawSqlStringStruct() { this.getQualifiedName() = "Microsoft.EntityFrameworkCore.RawSqlString" }
+    RawSqlStringStruct() { this.hasQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString") }
 
     /** Gets a conversion operator from `string` to `RawSqlString`. */
     ConversionOperator getAConversionTo() {

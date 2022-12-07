@@ -1,3 +1,13 @@
+## 0.4.4
+
+### New Queries
+
+* Added a new query, `rb/shell-command-constructed-from-input`, to detect libraries that unsafely construct shell commands from their inputs.
+
+### Minor Analysis Improvements
+
+* The `rb/sql-injection` query now considers consider SQL constructions, such as calls to `Arel.sql`, as sinks.
+
 ## 0.4.3
 
 ### Minor Analysis Improvements

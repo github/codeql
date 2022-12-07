@@ -259,14 +259,39 @@ func optionalSource() -> Int? {
     return source()
 }
 
-func test_optionals() {
+func test_optionals(y: Int?) {
     let x = optionalSource()
+
+    sink(opt: x) // $ flow=259
+    sink(opt: y)
     sink(arg: x!) // $ flow=259
-    sink(arg: source().signum()) // $ flow=265
+    sink(arg: y!)
+
+    sink(arg: source().signum()) // $ flow=270
     sink(opt: x?.signum()) // $ flow=259
-    sink(arg: x ?? 0) // $ MISSING: flow=259
-    if let y = x {
-        sink(arg: y) // $ MISSING: flow=259
+    sink(opt: y?.signum())
+
+    sink(arg: x ?? 0) // $ flow=259
+    sink(arg: x ?? source()) // $ flow=259 MISSING: flow=276
+    sink(arg: y ?? 0)
+    sink(arg: y ?? source()) // $ MISSING: flow=278
+
+    sink(arg: x != nil ? x! : 0) // $ flow=259
+    sink(arg: x != nil ? x! : source()) // $ flow=259 flow=280
+    sink(arg: y != nil ? y! : 0)
+    sink(arg: y != nil ? y! : source()) // $ flow=282
+
+    if let z = x {
+        sink(arg: z) // $ MISSING: flow=259
+    }
+    if let z = y {
+        sink(arg: z)
+    }
+    if let z = x?.signum() { // $ MISSING: flow=259
+        sink(arg: z)
+    }
+    if let z = y?.signum() {
+        sink(arg: z)
     }
 }
 
@@ -278,7 +303,7 @@ func testTuples() {
 
     sink(arg: t1)
     sink(arg: t1.0)
-    sink(arg: t1.1) // $ flow=277
+    sink(arg: t1.1) // $ flow=302
 
     t1.1 = 2
 
@@ -289,7 +314,7 @@ func testTuples() {
     t1.0 = source()
 
     sink(arg: t1)
-    sink(arg: t1.0) // $ flow=289
+    sink(arg: t1.0) // $ flow=314
     sink(arg: t1.1)
 }
 
@@ -299,14 +324,14 @@ func testTuples2() {
     let (a, b, c) = t1
 
     sink(arg: t1)
-    sink(arg: t1.x) // $ flow=297
-    sink(arg: t1.y) // $ flow=297
+    sink(arg: t1.x) // $ flow=322
+    sink(arg: t1.y) // $ flow=322
     sink(arg: t1.z)
     sink(arg: t2)
-    sink(arg: t2.x) // $ flow=297
-    sink(arg: t2.y) // $ flow=297
+    sink(arg: t2.x) // $ flow=322
+    sink(arg: t2.y) // $ flow=322
     sink(arg: t2.z)
-    sink(arg: a) // $ MISSING: flow=297
-    sink(arg: b) // $ MISSING: flow=297
+    sink(arg: a) // $ MISSING: flow=322
+    sink(arg: b) // $ MISSING: flow=322
     sink(arg: c)
 }

@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Net` namespace. */
 class SystemNetNamespace extends Namespace {

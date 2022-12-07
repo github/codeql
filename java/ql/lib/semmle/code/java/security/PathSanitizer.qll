@@ -2,7 +2,6 @@
 
 import java
 private import semmle.code.java.controlflow.Guards
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.SSA
 

@@ -454,7 +454,7 @@ module Impl implements RegexTreeViewSig {
     override string getPrimaryQLClass() { result = "RegExpAlt" }
   }
 
-  class RegExpCharEscape = RegExpEscape;
+  additional class RegExpCharEscape = RegExpEscape;
 
   /**
    * An escaped regular expression term, that is, a regular expression
@@ -684,7 +684,7 @@ module Impl implements RegexTreeViewSig {
    * \t
    * ```
    */
-  class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
+  additional class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
     RegExpNormalChar() { this = TRegExpNormalChar(re, start, end) }
 
     /**
@@ -792,7 +792,7 @@ module Impl implements RegexTreeViewSig {
    * .
    * ```
    */
-  class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
+  additional class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
     string char;
 
     RegExpSpecialChar() {
@@ -868,7 +868,7 @@ module Impl implements RegexTreeViewSig {
    * (?=\w)
    * ```
    */
-  class RegExpZeroWidthMatch extends RegExpGroup {
+  additional class RegExpZeroWidthMatch extends RegExpGroup {
     RegExpZeroWidthMatch() { re.zeroWidthMatch(start, end) }
 
     override RegExpTerm getChild(int i) { none() }
@@ -937,7 +937,7 @@ module Impl implements RegexTreeViewSig {
    * (?!\n)
    * ```
    */
-  class RegExpNegativeLookahead extends RegExpLookahead {
+  additional class RegExpNegativeLookahead extends RegExpLookahead {
     RegExpNegativeLookahead() { re.negativeLookaheadAssertionGroup(start, end) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookahead" }
@@ -979,7 +979,7 @@ module Impl implements RegexTreeViewSig {
    * (?<!\\)
    * ```
    */
-  class RegExpNegativeLookbehind extends RegExpLookbehind {
+  additional class RegExpNegativeLookbehind extends RegExpLookbehind {
     RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookbehind" }

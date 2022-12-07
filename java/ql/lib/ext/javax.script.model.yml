@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extSinkModel
+    data:
+      - ["javax.script", "CompiledScript", False, "eval", "", "", "Argument[-1]", "mvel", "manual"]

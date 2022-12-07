@@ -14,58 +14,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      # calculate the merge-base with main, in a way that works both on PRs and pushes to main. 
-      - name: Calculate merge-base
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          BASE_BRANCH: ${{ github.base_ref }}
-        run: |
-          MERGE_BASE=$(git cat-file commit $GITHUB_SHA | grep '^parent ' | head -1 | cut -f 2 -d " ")
-          echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
-      - name: Read CodeQL query compilation - PR
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/cache@v3
-        with:
-          path: '*/ql/src/.cache'
-          key: codeql-compile-pr-${{ github.sha }} # deliberately not using the `compile-compile-main` keys here.
-          restore-keys: |
-            codeql-compile-${{ github.base_ref }}-${{ env.merge-base }}
-            codeql-compile-${{ github.base_ref }}-
-            codeql-compile-main-
-      - name: Fill CodeQL query compilation cache - main
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/cache@v3
-        with:
-          path: '*/ql/src/.cache'
-          key: codeql-compile-${{ github.ref_name }}-${{ github.sha }} # just fill on main
-          restore-keys: | # restore from another random commit, to speed up compilation.
-            codeql-compile-${{ github.ref_name }}- 
-            codeql-compile-main-
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
         with:
           channel: 'release'
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with: 
+          key: all-queries
       - name: check formatting
         run: find */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 codeql query format --check-only
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.event_name == 'pull_request' }}
         shell: bash
-        run: codeql query compile -j0 */ql/src --keep-going --warnings=error --check-only
+        run: codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --check-only --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
       - name: compile queries - full
         # do full compile if running on main - this populates the cache
         if : ${{ github.event_name != 'pull_request' }}
         shell: bash
-        run: |
-          # Move all the existing cache into another folder, so we only preserve the cache for the current queries.
-          mkdir -p ${COMBINED_CACHE_DIR}
-          rm */ql/src/.cache/{lock,size}
-          # copy the contents of the .cache folders into the combined cache folder.
-          cp -r */ql/src/.cache/* ${COMBINED_CACHE_DIR}/
-          # clean up the .cache folders
-          rm -rf */ql/src/.cache/*
-
-          # compile the queries
-          codeql query compile -j0 */ql/src --keep-going --warnings=error --compilation-cache ${COMBINED_CACHE_DIR}
-        env: 
-          COMBINED_CACHE_DIR: ${{ github.workspace }}/compilation-dir
+        run: codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"

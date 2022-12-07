@@ -569,7 +569,7 @@ class ReturnStmt extends @returnstmt, Stmt {
   /** Gets the unique returned expression, if there is only one. */
   Expr getExpr() { getNumChild() = 1 and result = getExpr(0) }
 
-  override predicate mayHaveSideEffects() { getExpr().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { getAnExpr().mayHaveSideEffects() }
 
   override string toString() { result = "return statement" }
 

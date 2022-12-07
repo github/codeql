@@ -1,4 +1,5 @@
 name: codeql/javascript-experimental-atm-model-building
+description: CodeQL libraries for building machine learning models for the experimental ML-powered queries
 extractor: javascript
 library: false
 groups:

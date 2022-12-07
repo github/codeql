@@ -134,7 +134,9 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
           .matches("${" + annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
               "%}") and
       annotation.getType() instanceof TypeParam and
-      ma.getAnArgument() = node.asExpr()
+      ma.getAnArgument() = node.asExpr() and
+      annotation.getTarget() =
+        ma.getMethod().getParameter(node.asExpr().(Argument).getParameterPos())
     )
     or
     // MyBatis default parameter sql injection vulnerabilities.the default parameter form of the method is arg[0...n] or param[1...n].
