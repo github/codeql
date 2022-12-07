@@ -49,25 +49,18 @@ private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
  */
 private predicate exactPathMatchGuard(Guard g, Expr e, boolean branch) {
   exists(MethodAccess ma, RefType t |
-    (
-      t instanceof TypeString or
-      t instanceof TypeUri or
-      t instanceof TypePath or
-      t instanceof TypeFile or
-      t.hasQualifiedName("android.net", "Uri")
-    ) and
-    e = ma.getQualifier().getUnderlyingExpr()
-    or
-    (
-      ma.getMethod().getDeclaringType() instanceof StringsKt
-      or
-      ma.getMethod().getDeclaringType() instanceof FilesKt
-    ) and
-    e = ma.getArgument(0).getUnderlyingExpr()
+    t instanceof TypeString or
+    t instanceof TypeUri or
+    t instanceof TypePath or
+    t instanceof TypeFile or
+    t.hasQualifiedName("android.net", "Uri") or
+    t instanceof StringsKt or
+    t instanceof FilesKt
   |
+    e = getVisualQualifier(ma).getUnderlyingExpr() and
     ma.getMethod().getDeclaringType() = t and
     ma = g and
-    ma.getMethod().getName() = ["equals", "equalsIgnoreCase"] + ["", "$default"] and
+    getSourceMethod(ma.getMethod()).hasName(["equals", "equalsIgnoreCase"]) and
     branch = true
   )
 }
@@ -224,29 +217,19 @@ private class ConstantOrRegex extends Expr {
 }
 
 private predicate isStringPrefixMatch(MethodAccess ma, Expr checkedExpr) {
-  exists(Method m |
+  exists(Method m, RefType t |
+    m.getDeclaringType() = t and
+    (t instanceof TypeString or t instanceof StringsKt) and
     m = ma.getMethod() and
-    (
-      m.getDeclaringType() instanceof TypeString and
-      checkedExpr = ma.getQualifier().getUnderlyingExpr()
-      or
-      m.getDeclaringType() instanceof StringsKt and
-      checkedExpr = ma.getArgument(0).getUnderlyingExpr()
-    )
+    checkedExpr = getVisualQualifier(ma).getUnderlyingExpr()
   |
-    m.hasName("startsWith" + ["", "$default"])
+    getSourceMethod(m).hasName("startsWith")
     or
-    exists(int argPos |
-      m.getDeclaringType() instanceof TypeString and argPos = 0
-      or
-      m.getDeclaringType() instanceof StringsKt and argPos = 1
-    |
-      m.hasName("regionMatches" + ["", "$default"]) and
-      ma.getArgument(argPos).(CompileTimeConstantExpr).getIntValue() = 0
-      or
-      m.hasName("matches") and
-      not ma.getArgument(argPos).(ConstantOrRegex).getStringValue().matches(".*%")
-    )
+    getSourceMethod(m).hasName("regionMatches") and
+    getVisualArgument(ma, 0).(CompileTimeConstantExpr).getIntValue() = 0
+    or
+    m.hasName("matches") and
+    not getVisualArgument(ma, 0).(ConstantOrRegex).getStringValue().matches(".*%")
   )
 }
 
@@ -256,30 +239,23 @@ private predicate isStringPrefixMatch(MethodAccess ma, Expr checkedExpr) {
 private predicate isStringPartialMatch(MethodAccess ma, Expr checkedExpr) {
   isStringPrefixMatch(ma, checkedExpr)
   or
-  (
-    ma.getMethod().getDeclaringType() instanceof TypeString and
-    checkedExpr = ma.getQualifier().getUnderlyingExpr()
-    or
-    ma.getMethod().getDeclaringType() instanceof StringsKt and
-    checkedExpr = ma.getArgument(0).getUnderlyingExpr()
+  exists(RefType t | t = ma.getMethod().getDeclaringType() |
+    t instanceof TypeString or t instanceof StringsKt
   ) and
-  ma.getMethod()
-      .hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"] + ["", "$default"])
+  getSourceMethod(ma.getMethod())
+      .hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"]) and
+  checkedExpr = getVisualQualifier(ma).getUnderlyingExpr()
 }
 
 /**
  * Holds if `ma` is a call to a method that checks whether `checkedExpr` starts with a prefix.
  */
 private predicate isPathPrefixMatch(MethodAccess ma, Expr checkedExpr) {
-  exists(RefType t |
-    t instanceof TypePath and checkedExpr = ma.getQualifier().getUnderlyingExpr()
-    or
-    t instanceof FilesKt and
-    checkedExpr = ma.getArgument(0).getUnderlyingExpr()
-  |
-    t = ma.getMethod().getDeclaringType() and
-    ma.getMethod().hasName("startsWith" + ["", "$default"])
-  )
+  exists(RefType t | t = ma.getMethod().getDeclaringType() |
+    t instanceof TypePath or t instanceof FilesKt
+  ) and
+  getSourceMethod(ma.getMethod()).hasName("startsWith") and
+  checkedExpr = getVisualQualifier(ma)
 }
 
 private predicate isDisallowedWord(ConstantOrRegex word) {
@@ -291,22 +267,19 @@ private class PathTraversalGuard extends PathGuard {
   Expr checkedExpr;
 
   PathTraversalGuard() {
-    exists(MethodAccess ma |
-      (
-        ma.getMethod().getDeclaringType() instanceof TypeString and
-        checkedExpr = ma.getQualifier().getUnderlyingExpr()
-        or
-        ma.getMethod().getDeclaringType() instanceof StringsKt and
-        checkedExpr = ma.getArgument(0).getUnderlyingExpr()
-      ) and
+    exists(MethodAccess ma, Method m, RefType t |
+      m = ma.getMethod() and
+      t = m.getDeclaringType() and
+      (t instanceof TypeString or t instanceof StringsKt) and
+      checkedExpr = getVisualQualifier(ma).getUnderlyingExpr() and
       ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
     |
       this = ma and
-      ma.getMethod().hasName("contains" + ["", "$default"])
+      getSourceMethod(m).hasName("contains")
       or
       exists(EqualityTest eq |
         this = eq and
-        ma.getMethod().hasName(["indexOf", "lastIndexOf"] + ["", "$default"]) and
+        getSourceMethod(m).hasName(["indexOf", "lastIndexOf"]) and
         eq.getAnOperand() = ma and
         eq.getAnOperand().(CompileTimeConstantExpr).getIntValue() = -1
       )
@@ -325,15 +298,46 @@ private class PathTraversalGuard extends PathGuard {
 /** A complementary sanitizer that protects against path traversal using path normalization. */
 private class PathNormalizeSanitizer extends MethodAccess {
   PathNormalizeSanitizer() {
-    exists(RefType t |
-      t instanceof TypePath or
-      t instanceof FilesKt
-    |
-      this.getMethod().getDeclaringType() = t and
+    exists(RefType t | this.getMethod().getDeclaringType() = t |
+      (t instanceof TypePath or t instanceof FilesKt) and
       this.getMethod().hasName("normalize")
+      or
+      t instanceof TypeFile and
+      this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])
     )
-    or
-    this.getMethod().getDeclaringType() instanceof TypeFile and
-    this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])
   }
+}
+
+/**
+ * Gets the qualifier of `ma` as seen in the source code.
+ * This is a helper predicate to solve discrepancies between
+ * what `getQualifier` actually gets in Java and Kotlin.
+ */
+private Expr getVisualQualifier(MethodAccess ma) {
+  if getSourceMethod(ma.getMethod()) instanceof ExtensionMethod
+  then result = ma.getArgument(0)
+  else result = ma.getQualifier()
+}
+
+/**
+ * Gets the argument of `ma` at position `argPos` as seen in the source code.
+ * This is a helper predicate to solve discrepancies between
+ * what `getArgument` actually gets in Java and Kotlin.
+ */
+bindingset[argPos]
+private Argument getVisualArgument(MethodAccess ma, int argPos) {
+  if getSourceMethod(ma.getMethod()) instanceof ExtensionMethod
+  then result = ma.getArgument(argPos + 1)
+  else result = ma.getArgument(argPos)
+}
+
+/**
+ * Gets the proxied method if `m` is a Kotlin proxy that supplies default parameter values,
+ * Otherwise, just gets `m`.
+ */
+private Method getSourceMethod(Method m) {
+  m = result.getKotlinParameterDefaultsProxy()
+  or
+  not exists(Method src | m = src.getKotlinParameterDefaultsProxy()) and
+  result = m
 }
