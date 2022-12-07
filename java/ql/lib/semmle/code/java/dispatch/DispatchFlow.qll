@@ -9,8 +9,8 @@
 import java
 private import VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
-private import semmle.code.java.dataflow.internal.DataFlowUtil
-private import semmle.code.java.dataflow.internal.DataFlowPrivate
+private import semmle.code.java.dataflow.internal.DataFlowUtil as DataFlow
+private import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
@@ -122,7 +122,7 @@ private predicate relevant(RefType t) {
 }
 
 /** A node with a type that is relevant for dispatch flow. */
-private class RelevantNode extends Node {
+private class RelevantNode extends DataFlow::Node {
   RelevantNode() { relevant(this.getType()) }
 }
 
@@ -131,8 +131,8 @@ private class RelevantNode extends Node {
  * The instance parameter is considered to have index `-1`.
  */
 pragma[nomagic]
-private predicate viableParamCand(Call call, int i, ParameterNode p) {
-  exists(DataFlowCallable callable |
+private predicate viableParamCand(Call call, int i, DataFlow::ParameterNode p) {
+  exists(DataFlowPrivate::DataFlowCallable callable |
     callable.asCallable() = dispatchCand(call) and
     p.isParameterOf(callable, i) and
     p instanceof RelevantNode
@@ -142,8 +142,8 @@ private predicate viableParamCand(Call call, int i, ParameterNode p) {
 /**
  * Holds if `arg` is a possible argument to `p` taking virtual dispatch into account.
  */
-private predicate viableArgParamCand(ArgumentNode arg, ParameterNode p) {
-  exists(int i, DataFlowCall call |
+private predicate viableArgParamCand(DataFlowPrivate::ArgumentNode arg, DataFlow::ParameterNode p) {
+  exists(int i, DataFlowPrivate::DataFlowCall call |
     viableParamCand(call.asCall(), i, p) and
     arg.argumentOf(call, i)
   )
@@ -182,17 +182,20 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
     v.getAUse() = n2.asExpr()
   )
   or
-  exists(Callable c | n1.(InstanceParameterNode).getCallable() = c |
+  exists(Callable c | n1.(DataFlow::InstanceParameterNode).getCallable() = c |
     exists(InstanceAccess ia |
       ia = n2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()
     )
     or
-    n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
+    n2.(DataFlow::ImplicitInstanceAccess)
+        .getInstanceAccess()
+        .(OwnInstanceAccess)
+        .getEnclosingCallable() = c
   )
   or
-  n2.(FieldValueNode).getField().getAnAssignedValue() = n1.asExpr()
+  n2.(DataFlow::FieldValueNode).getField().getAnAssignedValue() = n1.asExpr()
   or
-  n2.asExpr().(FieldRead).getField() = n1.(FieldValueNode).getField()
+  n2.asExpr().(FieldRead).getField() = n1.(DataFlow::FieldValueNode).getField()
   or
   exists(EnumType enum, Method getValue |
     enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
@@ -214,7 +217,9 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
   n2.asExpr().(ArrayAccess).getArray() = n1.asExpr()
   or
   exists(Argument arg |
-    n1.asExpr() = arg and arg.isVararg() and n2.(ImplicitVarargsArray).getCall() = arg.getCall()
+    n1.asExpr() = arg and
+    arg.isVararg() and
+    n2.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
   )
   or
   exists(AssignExpr a, Variable v |
@@ -255,37 +260,37 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
 /**
  * Holds if `n` is forward-reachable from a relevant `ClassInstanceExpr`.
  */
-private predicate nodeCandFwd(Node n) {
+private predicate nodeCandFwd(DataFlow::Node n) {
   dispatchOrigin(n.asExpr(), _, _)
   or
-  exists(Node mid | nodeCandFwd(mid) | flowStep(mid, n) or callFlowStepCand(mid, n))
+  exists(DataFlow::Node mid | nodeCandFwd(mid) | flowStep(mid, n) or callFlowStepCand(mid, n))
 }
 
 /**
  * Holds if `n` may occur on a dispatch flow path. That is, a path from a
  * relevant `ClassInstanceExpr` to a qualifier of a relevant `MethodAccess`.
  */
-private predicate nodeCand(Node n) {
+private predicate nodeCand(DataFlow::Node n) {
   exists(MethodAccess ma |
     dispatchOrigin(_, ma, _) and
-    n = getInstanceArgument(ma) and
+    n = DataFlow::getInstanceArgument(ma) and
     nodeCandFwd(n)
   )
   or
-  exists(Node mid | nodeCand(mid) | flowStep(n, mid) or callFlowStepCand(n, mid)) and
+  exists(DataFlow::Node mid | nodeCand(mid) | flowStep(n, mid) or callFlowStepCand(n, mid)) and
   nodeCandFwd(n)
 }
 
 /**
  * Holds if `n1 -> n2` is a relevant dispatch flow step.
  */
-private predicate step(Node n1, Node n2) {
+private predicate step(DataFlow::Node n1, DataFlow::Node n2) {
   (flowStep(n1, n2) or callFlowStepCand(n1, n2)) and
   nodeCand(n1) and
   nodeCand(n2)
 }
 
-private predicate stepPlus(Node n1, Node n2) = fastTC(step/2)(n1, n2)
+private predicate stepPlus(DataFlow::Node n1, DataFlow::Node n2) = fastTC(step/2)(n1, n2)
 
 /**
  * Holds if there is flow from a `ClassInstanceExpr` instantiating a type that
@@ -296,7 +301,7 @@ pragma[inline]
 private predicate hasDispatchFlow(MethodAccess ma, Method m) {
   exists(ClassInstanceExpr cie |
     dispatchOrigin(cie, ma, m) and
-    stepPlus(exprNode(cie), getInstanceArgument(ma))
+    stepPlus(DataFlow::exprNode(cie), DataFlow::getInstanceArgument(ma))
   )
 }
 
