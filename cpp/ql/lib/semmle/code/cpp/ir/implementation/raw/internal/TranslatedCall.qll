@@ -68,7 +68,11 @@ abstract class TranslatedCall extends TranslatedExpr {
     or
     child = getSideEffects() and
     if this.isNoReturn()
-    then result = any(UnreachedInstruction instr | this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction())
+    then
+      result =
+        any(UnreachedInstruction instr |
+          this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
+        )
     else result = this.getParent().getChildSuccessor(this)
   }
 
@@ -164,9 +168,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    */
   abstract predicate hasArguments();
 
-  predicate isNoReturn() {
-    none()
-  }
+  predicate isNoReturn() { none() }
 
   final TranslatedSideEffects getSideEffects() { result.getExpr() = expr }
 }
@@ -274,9 +276,7 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
 
   final override int getNumberOfArguments() { result = expr.getNumberOfArguments() }
 
-  final override predicate isNoReturn() {
-    any(Options opt).exits(expr.getTarget())
-  }
+  final override predicate isNoReturn() { any(Options opt).exits(expr.getTarget()) }
 }
 
 /**
