@@ -1894,18 +1894,16 @@ class VarAccess extends Expr, @varaccess {
  * An access to an extension receiver parameter. This is a parameter access that takes the form of `this` in Kotlin.
  */
 class ExtensionReceiverAccess extends VarAccess {
-  Parameter p;
-
   ExtensionReceiverAccess() {
-    this.getVariable() = p and
-    p.isExtensionParameter()
+    exists(Parameter p |
+      this.getVariable() = p and
+      p.isExtensionParameter()
+    )
   }
 
   override string getAPrimaryQlClass() { result = "ExtensionReceiverAccess" }
 
-  override string toString() {
-    if p.getName() = "<this>" then result = "this" else result = p.getName()
-  }
+  override string toString() { result = "this" }
 }
 
 /**

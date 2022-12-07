@@ -566,7 +566,7 @@ test.kt:
 #   19|         2: [ReturnStmt] return ...
 #   19|           0: [MethodAccess] f(...)
 #   19|             -1: [VarAccess] p0
-#   19|             0: [ExtensionReceiverAccess] p1
+#   19|             0: [ExtensionReceiverAccess] this
 #   19|             1: [VarAccess] p2
 #   19|             2: [VarAccess] p3
 #   19|             3: [VarAccess] p4
@@ -774,7 +774,7 @@ test.kt:
 #   56|         2: [ReturnStmt] return ...
 #   56|           0: [MethodAccess] test(...)
 #   56|             -1: [VarAccess] p0
-#   56|             0: [ExtensionReceiverAccess] p1
+#   56|             0: [ExtensionReceiverAccess] this
 #   56|             1: [VarAccess] p2
 #   56|             2: [VarAccess] p3
 #   56|             3: [VarAccess] p4
