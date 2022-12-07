@@ -957,7 +957,7 @@ open class KotlinFileExtractor(
         val locId = getLocation(f, null)
         val extReceiver = f.extensionReceiverParameter
         val dispatchReceiver = if (f.shouldExtractAsStatic) null else f.dispatchReceiverParameter
-        val parameterTypes = listOfNotNull(extReceiver?.let { erase(it.type) }) + getDefaultsMethodArgTypes(f)
+        val parameterTypes = getDefaultsMethodArgTypes(f)
         val allParamTypeResults = parameterTypes.mapIndexed { i, paramType ->
             val paramId = tw.getLabelFor<DbParam>(getValueParameterLabel(id, i))
             extractValueParameter(paramId, paramType, "p$i", locId, id, i, paramId, isVararg = false, syntheticParameterNames = true, isCrossinline = false, isNoinline = false).also {
@@ -976,7 +976,8 @@ open class KotlinFileExtractor(
             extractMethod(methodId, locId, shortName, erase(f.returnType), paramsSignature, parentId, methodId, origin = null, extractTypeAccess = extractMethodAndParameterTypeAccesses)
             addModifiers(id, "static")
             if (extReceiver != null) {
-                val extendedType = allParamTypeResults[0] // TODO: this is not correct for member extension methods, where the dispatch receiver is the first parameter
+                val idx = if (dispatchReceiver != null) 1 else 0
+                val extendedType = allParamTypeResults[idx]
                 tw.writeKtExtensionFunctions(methodId, extendedType.javaResult.id, extendedType.kotlinResult.id)
             }
         }
@@ -1044,8 +1045,8 @@ open class KotlinFileExtractor(
                                 val realFnIdxOffset = if (f.extensionReceiverParameter != null) 1 else 0
                                 val paramMappings = f.valueParameters.mapIndexed { idx, param -> Triple(param.type, idx + paramIdxOffset, idx + realFnIdxOffset) } +
                                     listOfNotNull(
-                                        dispatchReceiver?.let { Triple(it.type, realFnIdxOffset, -1) },
-                                        extReceiver?.let { Triple(it.type, 0, 0) }
+                                        dispatchReceiver?.let { Triple(it.type, 0, -1) },
+                                        extReceiver?.let { Triple(it.type, if (dispatchReceiver != null) 1 else 0, 0) }
                                     )
                                 paramMappings.forEach { (type, fromIdx, toIdx) ->
                                     extractVariableAccess(tw.getLabelFor<DbParam>(getValueParameterLabel(id, fromIdx)), type, locId, thisCallId, toIdx, id, returnId)
@@ -1188,6 +1189,7 @@ open class KotlinFileExtractor(
                             id
 
                 val extReceiver = f.extensionReceiverParameter
+                // The following parameter order is correct, because member $default methods (where the order would be [dispatchParam], [extensionParam], normalParams) are not extracted here
                 val fParameters = listOfNotNull(extReceiver) + (overriddenAttributes?.valueParameters ?: f.valueParameters)
                 val paramTypes = fParameters.mapIndexed { i, vp ->
                     extractValueParameter(vp, id, i, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
@@ -1797,11 +1799,12 @@ open class KotlinFileExtractor(
         ) ?: pluginContext.irBuiltIns.anyType
 
     private fun getDefaultsMethodArgTypes(f: IrFunction) =
-        // The $default method has type ([extensionReceiver], [dispatchReceiver], paramTypes..., int, Object)
+        // The $default method has type ([dispatchReceiver], [extensionReceiver], paramTypes..., int, Object)
         // All parameter types are erased. The trailing int is a mask indicating which parameter values are real
         // and which should be replaced by defaults. The final Object parameter is apparently always null.
         (
             listOfNotNull(if (f.shouldExtractAsStatic) null else f.dispatchReceiverParameter?.type) +
+            listOfNotNull(f.extensionReceiverParameter?.type) +
             f.valueParameters.map { it.type } +
             listOf(pluginContext.irBuiltIns.intType, getDefaultsMethodLastArgType(f))
         ).map { erase(it) }
@@ -1820,17 +1823,16 @@ open class KotlinFileExtractor(
 
     private fun getDefaultsMethodLabel(f: IrFunction): Label<out DbCallable> {
         val defaultsMethodName = if (f is IrConstructor) "<init>" else getDefaultsMethodName(f)
-        val normalArgTypes = getDefaultsMethodArgTypes(f)
-        val extensionParamType = f.extensionReceiverParameter?.let { erase(it.type) }
+        val argTypes = getDefaultsMethodArgTypes(f)
 
         val defaultMethodLabelStr = getFunctionLabel(
             f.parent,
             maybeParentId = null,
             defaultsMethodName,
-            normalArgTypes,
+            argTypes,
             erase(f.returnType),
-            extensionParamType,
-            listOf(),
+            extensionParamType = null, // if there's any, that's included already in argTypes
+            functionTypeParameters = listOf(),
             classTypeArgsIncludingOuterClasses = null,
             overridesCollectionsMethod = false,
             javaSignature = null,
@@ -1890,11 +1892,12 @@ open class KotlinFileExtractor(
         extensionReceiver: IrExpression?
     ) {
         var nextIdx = 0
-        if (extensionReceiver != null) {
-            extractExpressionExpr(extensionReceiver, enclosingCallable, id, nextIdx++, enclosingStmt)
-        }
         if (dispatchReceiver != null && !callTarget.shouldExtractAsStatic) {
             extractExpressionExpr(dispatchReceiver, enclosingCallable, id, nextIdx++, enclosingStmt)
+        }
+
+        if (extensionReceiver != null) {
+            extractExpressionExpr(extensionReceiver, enclosingCallable, id, nextIdx++, enclosingStmt)
         }
 
         val valueArgsWithDummies = valueArguments.zip(callTarget.valueParameters).map {
@@ -4050,8 +4053,7 @@ open class KotlinFileExtractor(
                     // Use of 'this' in a function where the dispatch receiver is passed like an ordinary parameter,
                     // such as a `$default` static function that substitutes in default arguments as needed.
                     val paramDeclarerId = overriddenAttributes.id ?: useDeclarationParent(thisParamParent, false)
-                    val extensionParamOffset = if (thisParamParent.extensionReceiverParameter != null) 1 else 0
-                    val replacementParamId = tw.getLabelFor<DbParam>(getValueParameterLabel(paramDeclarerId, replaceWithParamIdx + extensionParamOffset))
+                    val replacementParamId = tw.getLabelFor<DbParam>(getValueParameterLabel(paramDeclarerId, replaceWithParamIdx))
                     extractVariableAccess(replacementParamId, e.type, locId, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                     return
                 }

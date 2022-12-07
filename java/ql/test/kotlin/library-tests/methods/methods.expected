@@ -41,7 +41,7 @@ methods
 | methods3.kt:0:0:0:0 | Methods3Kt | methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt | fooBarTopLevelMethodExt(java.lang.String,int) | final, public, static |  |
 | methods3.kt:0:0:0:0 | Methods3Kt | methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt$default | fooBarTopLevelMethodExt$default(java.lang.String,int,int,java.lang.Object) | public, static | Compiler generated |
 | methods3.kt:5:1:7:1 | Class3 | methods3.kt:6:5:6:45 | fooBarMethodExt | fooBarMethodExt(java.lang.String,int) | final, public |  |
-| methods3.kt:5:1:7:1 | Class3 | methods3.kt:6:5:6:45 | fooBarMethodExt$default | fooBarMethodExt$default(java.lang.String,foo.bar.Class3,int,int,java.lang.Object) | public, static | Compiler generated |
+| methods3.kt:5:1:7:1 | Class3 | methods3.kt:6:5:6:45 | fooBarMethodExt$default | fooBarMethodExt$default(foo.bar.Class3,java.lang.String,int,int,java.lang.Object) | public, static | Compiler generated |
 | methods4.kt:5:3:9:3 | InsideNestedTest | methods4.kt:7:5:7:34 | m | m(foo.bar.NestedTest.InsideNestedTest) | final, public |  |
 | methods5.kt:0:0:0:0 | Methods5Kt | methods5.kt:3:1:11:1 | x | x() | final, public, static |  |
 | methods5.kt:5:3:5:27 |  | methods5.kt:5:3:5:27 | a | a(int) | final, public |  |
@@ -82,3 +82,9 @@ extensions
 | methods3.kt:6:5:6:45 | fooBarMethodExt$default | file:///modules/java.base/java/lang/String.class:0:0:0:0 | String |
 | methods5.kt:9:3:9:32 | f1 | file:///!unknown-binary-location/foo/bar/C1.class:0:0:0:0 | C1<T1> |
 extensionsMismatch
+extensionIndex
+| methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt | 0 | file:///modules/java.base/java/lang/String.class:0:0:0:0 | String |
+| methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt$default | 0 | file:///modules/java.base/java/lang/String.class:0:0:0:0 | String |
+| methods3.kt:6:5:6:45 | fooBarMethodExt | 0 | file:///modules/java.base/java/lang/String.class:0:0:0:0 | String |
+| methods3.kt:6:5:6:45 | fooBarMethodExt$default | 1 | file:///modules/java.base/java/lang/String.class:0:0:0:0 | String |
+| methods5.kt:9:3:9:32 | f1 | 0 | file:///!unknown-binary-location/foo/bar/C1.class:0:0:0:0 | C1<T1> |
