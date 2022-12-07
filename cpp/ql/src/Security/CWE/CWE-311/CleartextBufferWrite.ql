@@ -21,23 +21,18 @@ import DataFlow::PathGraph
 /**
  * A buffer write into a sensitive expression.
  */
-class SensitiveBufferWrite extends Expr {
-  BufferWrite::BufferWrite write;
-
-  SensitiveBufferWrite() {
-    this = write and
-    write.getDest() instanceof SensitiveExpr
-  }
+class SensitiveBufferWrite extends Expr instanceof BufferWrite::BufferWrite {
+  SensitiveBufferWrite() { super.getDest() instanceof SensitiveExpr }
 
   /**
    * Gets a data source of this operation.
    */
-  Expr getASource() { result = write.getASource() }
+  Expr getASource() { result = super.getASource() }
 
   /**
    * Gets the destination buffer of this operation.
    */
-  Expr getDest() { result = write.getDest() }
+  Expr getDest() { result = super.getDest() }
 }
 
 /**
