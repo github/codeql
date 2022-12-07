@@ -86,18 +86,12 @@ private predicate localTaintFlowToPathGuard(Expr e, PathGuard g) {
 }
 
 private class AllowedPrefixGuard extends PathGuard instanceof MethodAccess {
-  Expr checkedExpr;
-
   AllowedPrefixGuard() {
-    (
-      isStringPrefixMatch(this, checkedExpr)
-      or
-      isPathPrefixMatch(this, checkedExpr)
-    ) and
+    (isStringPrefixMatch(this) or isPathPrefixMatch(this)) and
     not isDisallowedWord(super.getAnArgument())
   }
 
-  override Expr getCheckedExpr() { result = checkedExpr }
+  override Expr getCheckedExpr() { result = getVisualQualifier(this).getUnderlyingExpr() }
 }
 
 /**
@@ -159,18 +153,12 @@ private class DotDotCheckSanitizer extends PathInjectionSanitizer {
 }
 
 private class BlockListGuard extends PathGuard instanceof MethodAccess {
-  Expr checkedExpr;
-
   BlockListGuard() {
-    (
-      isStringPartialMatch(this, checkedExpr)
-      or
-      isPathPrefixMatch(this, checkedExpr)
-    ) and
+    (isStringPartialMatch(this) or isPathPrefixMatch(this)) and
     isDisallowedWord(super.getAnArgument())
   }
 
-  override Expr getCheckedExpr() { result = checkedExpr }
+  override Expr getCheckedExpr() { result = getVisualQualifier(this).getUnderlyingExpr() }
 }
 
 /**
@@ -216,12 +204,11 @@ private class ConstantOrRegex extends Expr {
   }
 }
 
-private predicate isStringPrefixMatch(MethodAccess ma, Expr checkedExpr) {
+private predicate isStringPrefixMatch(MethodAccess ma) {
   exists(Method m, RefType t |
     m.getDeclaringType() = t and
     (t instanceof TypeString or t instanceof StringsKt) and
-    m = ma.getMethod() and
-    checkedExpr = getVisualQualifier(ma).getUnderlyingExpr()
+    m = ma.getMethod()
   |
     getSourceMethod(m).hasName("startsWith")
     or
@@ -234,28 +221,26 @@ private predicate isStringPrefixMatch(MethodAccess ma, Expr checkedExpr) {
 }
 
 /**
- * Holds if `ma` is a call to a method that checks a partial string match on `checkedExpr`.
+ * Holds if `ma` is a call to a method that checks a partial string match.
  */
-private predicate isStringPartialMatch(MethodAccess ma, Expr checkedExpr) {
-  isStringPrefixMatch(ma, checkedExpr)
+private predicate isStringPartialMatch(MethodAccess ma) {
+  isStringPrefixMatch(ma)
   or
   exists(RefType t | t = ma.getMethod().getDeclaringType() |
     t instanceof TypeString or t instanceof StringsKt
   ) and
   getSourceMethod(ma.getMethod())
-      .hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"]) and
-  checkedExpr = getVisualQualifier(ma).getUnderlyingExpr()
+      .hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"])
 }
 
 /**
- * Holds if `ma` is a call to a method that checks whether `checkedExpr` starts with a prefix.
+ * Holds if `ma` is a call to a method that checks whether a path starts with a prefix.
  */
-private predicate isPathPrefixMatch(MethodAccess ma, Expr checkedExpr) {
+private predicate isPathPrefixMatch(MethodAccess ma) {
   exists(RefType t | t = ma.getMethod().getDeclaringType() |
     t instanceof TypePath or t instanceof FilesKt
   ) and
-  getSourceMethod(ma.getMethod()).hasName("startsWith") and
-  checkedExpr = getVisualQualifier(ma)
+  getSourceMethod(ma.getMethod()).hasName("startsWith")
 }
 
 private predicate isDisallowedWord(ConstantOrRegex word) {
