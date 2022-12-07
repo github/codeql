@@ -33,7 +33,7 @@ public interface SqlInjectionMapper {
 	@Select({"select * from test", "where id = ${name}"})
 	public Test bad9(HashMap<String, Object> map);
 
-	@Select({"select * from test where id = #{id} and name = '${name}'"})
+	@Select({"select * from test where id = #{id} and name = '${ name }'"})
 	String bad10(Integer id, String name);
 
 	List<Test> good1(Integer id);
