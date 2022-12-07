@@ -306,10 +306,10 @@
 | methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt(...) | MethodAccess |
 | methods3.kt:3:1:3:49 | int | TypeAccess |
 | methods3.kt:3:1:3:49 | int | TypeAccess |
+| methods3.kt:3:1:3:49 | p0 | ExtensionReceiverAccess |
 | methods3.kt:3:1:3:49 | p1 | VarAccess |
 | methods3.kt:3:1:3:49 | p1 | VarAccess |
 | methods3.kt:3:1:3:49 | p2 | VarAccess |
-| methods3.kt:3:1:3:49 | this | ExtensionReceiverAccess |
 | methods3.kt:3:5:3:10 | String | TypeAccess |
 | methods3.kt:3:36:3:45 | int | TypeAccess |
 | methods3.kt:3:45:3:45 | 1 | IntegerLiteral |
@@ -327,10 +327,10 @@
 | methods3.kt:6:5:6:45 | int | TypeAccess |
 | methods3.kt:6:5:6:45 | int | TypeAccess |
 | methods3.kt:6:5:6:45 | p0 | VarAccess |
+| methods3.kt:6:5:6:45 | p1 | ExtensionReceiverAccess |
 | methods3.kt:6:5:6:45 | p2 | VarAccess |
 | methods3.kt:6:5:6:45 | p2 | VarAccess |
 | methods3.kt:6:5:6:45 | p3 | VarAccess |
-| methods3.kt:6:5:6:45 | this | ExtensionReceiverAccess |
 | methods3.kt:6:9:6:14 | String | TypeAccess |
 | methods3.kt:6:32:6:41 | int | TypeAccess |
 | methods3.kt:6:41:6:41 | 1 | IntegerLiteral |
