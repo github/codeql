@@ -496,30 +496,30 @@ calls/calls.rb:
 #  279|         getReceiver: [ConstantReadAccess] X
 #  284|   getStmt: [ClassDeclaration] MyClass
 #  285|     getStmt: [Method] my_method
-#  286|       getStmt: [SuperCall] call to super
-#  287|       getStmt: [SuperCall] call to super
-#  288|       getStmt: [SuperCall] call to super
+#  286|       getStmt: [SuperCall] super call to my_method
+#  287|       getStmt: [SuperCall] super call to my_method
+#  288|       getStmt: [SuperCall] super call to my_method
 #  288|         getArgument: [StringLiteral] "blah"
 #  288|           getComponent: [StringTextComponent] blah
-#  289|       getStmt: [SuperCall] call to super
+#  289|       getStmt: [SuperCall] super call to my_method
 #  289|         getArgument: [IntegerLiteral] 1
 #  289|         getArgument: [IntegerLiteral] 2
 #  289|         getArgument: [IntegerLiteral] 3
-#  290|       getStmt: [SuperCall] call to super
+#  290|       getStmt: [SuperCall] super call to my_method
 #  290|         getBlock: [BraceBlock] { ... }
 #  290|           getParameter: [SimpleParameter] x
 #  290|             getDefiningAccess: [LocalVariableAccess] x
 #  290|           getStmt: [AddExpr] ... + ...
 #  290|             getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
 #  290|             getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
-#  291|       getStmt: [SuperCall] call to super
+#  291|       getStmt: [SuperCall] super call to my_method
 #  291|         getBlock: [DoBlock] do ... end
 #  291|           getParameter: [SimpleParameter] x
 #  291|             getDefiningAccess: [LocalVariableAccess] x
 #  291|           getStmt: [MulExpr] ... * ...
 #  291|             getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
 #  291|             getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
-#  292|       getStmt: [SuperCall] call to super
+#  292|       getStmt: [SuperCall] super call to my_method
 #  292|         getArgument: [IntegerLiteral] 4
 #  292|         getArgument: [IntegerLiteral] 5
 #  292|         getBlock: [BraceBlock] { ... }
@@ -528,7 +528,7 @@ calls/calls.rb:
 #  292|           getStmt: [AddExpr] ... + ...
 #  292|             getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
 #  292|             getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 100
-#  293|       getStmt: [SuperCall] call to super
+#  293|       getStmt: [SuperCall] super call to my_method
 #  293|         getArgument: [IntegerLiteral] 6
 #  293|         getArgument: [IntegerLiteral] 7
 #  293|         getBlock: [DoBlock] do ... end
@@ -545,7 +545,7 @@ calls/calls.rb:
 #  304|       getStmt: [MethodCall] call to super
 #  304|         getReceiver: [SelfVariableAccess] self
 #  305|       getStmt: [MethodCall] call to super
-#  305|         getReceiver: [SuperCall] call to super
+#  305|         getReceiver: [SuperCall] super call to another_method
 #  310|   getStmt: [MethodCall] call to call
 #  310|     getReceiver: [MethodCall] call to foo
 #  310|       getReceiver: [SelfVariableAccess] self
@@ -646,7 +646,7 @@ calls/calls.rb:
 #  328|             getComponent: [StringTextComponent] error
 #  331|   getStmt: [Method] foo
 #  331|     getParameter: [ForwardParameter] ...
-#  332|     getStmt: [SuperCall] call to super
+#  332|     getStmt: [SuperCall] super call to foo
 #  332|       getArgument: [ForwardedArguments] ...
 #  335|   getStmt: [Method] foo
 #  335|     getParameter: [SimpleParameter] a
@@ -1293,7 +1293,7 @@ modules/classes.rb:
 #   42|     getStmt: [Method] length
 #   43|       getStmt: [MulExpr] ... * ...
 #   43|         getAnOperand/getLeftOperand/getReceiver: [IntegerLiteral] 100
-#   43|         getAnOperand/getArgument/getRightOperand: [SuperCall] call to super
+#   43|         getAnOperand/getArgument/getRightOperand: [SuperCall] super call to length
 #   46|     getStmt: [Method] wibble
 #   47|       getStmt: [MethodCall] call to puts
 #   47|         getReceiver: [SelfVariableAccess] self
