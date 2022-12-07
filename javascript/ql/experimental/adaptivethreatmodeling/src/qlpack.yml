@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-12-07-00h56m24s.loyal-shampoo-82y8dy7h.3bbf4a7dd98880e0ad5f2d279a2b633bcc89af3828391ae92d4fc04f940fdccf
