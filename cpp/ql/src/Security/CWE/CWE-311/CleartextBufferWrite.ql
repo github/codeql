@@ -19,7 +19,30 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * A taint flow configuration for flow from user input to a buffer write.
+ * A buffer write into a sensitive expression.
+ */
+class SensitiveBufferWrite extends Expr {
+  BufferWrite::BufferWrite write;
+
+  SensitiveBufferWrite() {
+    this = write and
+    write.getDest() instanceof SensitiveExpr
+  }
+
+  /**
+   * Gets a data source of this operation.
+   */
+  Expr getASource() { result = write.getASource() }
+
+  /**
+   * Gets the destination buffer of this operation.
+   */
+  Expr getDest() { result = write.getDest() }
+}
+
+/**
+ * A taint flow configuration for flow from user input to a buffer write
+ * into a sensitive expression.
  */
 class ToBufferConfiguration extends TaintTracking::Configuration {
   ToBufferConfiguration() { this = "ToBufferConfiguration" }
@@ -31,12 +54,12 @@ class ToBufferConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(BufferWrite::BufferWrite w | w.getASource() = sink.asExpr())
+    exists(SensitiveBufferWrite w | w.getASource() = sink.asExpr())
   }
 }
 
 from
-  ToBufferConfiguration config, BufferWrite::BufferWrite w, DataFlow::PathNode sourceNode,
+  ToBufferConfiguration config, SensitiveBufferWrite w, DataFlow::PathNode sourceNode,
   DataFlow::PathNode sinkNode, FlowSource source, SensitiveExpr dest
 where
   config.hasFlowPath(sourceNode, sinkNode) and
