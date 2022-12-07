@@ -285,7 +285,7 @@ module Spife {
       result = this.getAHeaderSource().getAPropertyWrite().getPropertyNameExpr().flow()
     }
 
-    override RouteHandler getRouteHandler() { result = super.getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
   }
 
   /**
@@ -313,7 +313,7 @@ module Spife {
 
     override DataFlow::Node getValueArgument() { result = super.getArgument(2) }
 
-    override RouteHandler getRouteHandler() { result = super.getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
   }
 
   /**
@@ -407,6 +407,6 @@ module Spife {
 
     override DataFlow::Node getUrlArgument() { result = this.getAnArgument() }
 
-    override RouteHandler getRouteHandler() { result = super.getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
   }
 }
