@@ -29,15 +29,51 @@ private class DefaultCleartextLoggingSink extends CleartextLoggingSink {
   DefaultCleartextLoggingSink() { sinkNode(this, "logging") }
 }
 
-// TODO: Remove this. It shouldn't be necessary.
-private class EncryptionCleartextLoggingSanitizer extends CleartextLoggingSanitizer {
-  EncryptionCleartextLoggingSanitizer() { this.asExpr() instanceof EncryptedExpr }
+/**
+ * A sanitizer for `OSLogMessage`s configured with the appropriate privacy option.
+ * Numeric and boolean arguments aren't redacted unless the `public` option is used.
+ * Arguments of other types are always redacted unless the `private` or `sensitive` options are used.
+ */
+private class OsLogPrivacyCleartextLoggingSanitizer extends CleartextLoggingSanitizer {
+  OsLogPrivacyCleartextLoggingSanitizer() {
+    exists(CallExpr c, AutoClosureExpr e |
+      c.getStaticTarget().getName().matches("appendInterpolation(_:%privacy:%)") and
+      c.getArgument(0).getExpr() = e and
+      this.asExpr() = e
+    |
+      e.getExpr().getType() instanceof OsLogNonRedactedType and
+      c.getArgumentWithLabel("privacy").getExpr().(OsLogPrivacyRef).isSafe()
+      or
+      not e.getExpr().getType() instanceof OsLogNonRedactedType and
+      not c.getArgumentWithLabel("privacy").getExpr().(OsLogPrivacyRef).isPublic()
+    )
+  }
 }
 
-/*
- * TODO: Add a sanitizer for the OsLogMessage interpolation with .private/.sensitive privacy options,
- * or restrict the sinks to require .public interpolation depending on what the default behavior is.
- */
+/** A type that isn't redacted by default in an `OSLogMessage`. */
+private class OsLogNonRedactedType extends Type {
+  OsLogNonRedactedType() {
+    this.getName() = [["", "U"] + "Int" + ["", "16", "32", "64"], "Double", "Float", "Bool"]
+  }
+}
+
+/** A reference to a field of `OsLogPrivacy`. */
+private class OsLogPrivacyRef extends MemberRefExpr {
+  string optionName;
+
+  OsLogPrivacyRef() {
+    exists(FieldDecl f | this.getMember() = f |
+      f.getEnclosingDecl().(NominalTypeDecl).getName() = "OSLogPrivacy" and
+      optionName = f.getName()
+    )
+  }
+
+  /** Holds if this is a safe privacy option (private or sensitive). */
+  predicate isSafe() { optionName = ["private", "sensitive"] }
+
+  /** Holds if this is a public (that is, unsafe) privacy option. */
+  predicate isPublic() { optionName = "public" }
+}
 
 private class LoggingSinks extends SinkModelCsv {
   override predicate row(string row) {

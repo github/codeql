@@ -13,10 +13,16 @@ struct OSLogStringAlignment {
     static var none = OSLogStringAlignment()
 }
 
+enum OSLogIntegerFormatting { case decimal }
+enum OSLogInt32ExtendedFormat { case none }
+enum OSLogFloatFormatting { case fixed }
+enum OSLogBoolFormat { case truth }
+
 struct OSLogPrivacy {
     enum Mask { case none }
     static var auto = OSLogPrivacy()
     static var `private` = OSLogPrivacy()
+    static var `public` = OSLogPrivacy()
     static var sensitive = OSLogPrivacy()
 
     static func auto(mask: OSLogPrivacy.Mask) -> OSLogPrivacy { return .auto }
@@ -30,6 +36,23 @@ struct OSLogInterpolation : StringInterpolationProtocol {
     func appendLiteral(_: Self.StringLiteralType) {}
     mutating func appendInterpolation(_ argumentString: @autoclosure @escaping () -> String, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
     mutating func appendInterpolation(_ argumentString: @autoclosure @escaping () -> String, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto, attributes: String) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Int, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Int8, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Int16, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Int32, format: OSLogInt32ExtendedFormat, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Int32, format: OSLogInt32ExtendedFormat, privacy: OSLogPrivacy = .auto, attributes: String) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Int32, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Int64, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> UInt, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> UInt8, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> UInt16, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> UInt32, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> UInt64, format: OSLogIntegerFormatting = .decimal, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Double, format: OSLogFloatFormatting = .fixed, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Double, format: OSLogFloatFormatting = .fixed, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto, attributes: String) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Float,format: OSLogFloatFormatting = .fixed, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto) {}
+    mutating func appendInterpolation(_ number: @autoclosure @escaping () -> Float, format: OSLogFloatFormatting = .fixed, align: OSLogStringAlignment = .none, privacy: OSLogPrivacy = .auto, attributes: String) {}
+    mutating func appendInterpolation(_ boolean: @autoclosure @escaping () -> Bool, format: OSLogBoolFormat = .truth, privacy: OSLogPrivacy = .auto) {}
 }
 
 struct OSLogMessage : ExpressibleByStringInterpolation {
@@ -60,32 +83,42 @@ struct Logger {
 // --- tests ---
 
 func test1(password: String, passwordHash : String) {
-	print(password) // $ MISSING: hasCleartextLogging=63
-	print(password, separator: "") // $ MISSING: $ hasCleartextLogging=64
-	print("", separator: password) // $ hasCleartextLogging=65
-	print(password, separator: "", terminator: "") // $ MISSING: hasCleartextLogging=66
-	print("", separator: password, terminator: "") // $ hasCleartextLogging=67
-	print("", separator: "", terminator: password) // $ hasCleartextLogging=68
+	print(password) // $ MISSING: hasCleartextLogging=86
+	print(password, separator: "") // $ MISSING: $ hasCleartextLogging=97
+	print("", separator: password) // $ hasCleartextLogging=88
+	print(password, separator: "", terminator: "") // $ MISSING: hasCleartextLogging=89
+	print("", separator: password, terminator: "") // $ hasCleartextLogging=90
+	print("", separator: "", terminator: password) // $ hasCleartextLogging=91
 
-    NSLog(password) // $ hasCleartextLogging=70
-    NSLog("%@", password as! CVarArg) // $ MISSING: hasCleartextLogging=71
-    NSLog("%@ %@", "" as! CVarArg, password as! CVarArg) // $ MISSING: hasCleartextLogging=72
-    NSLog("\(password)") // $ hasCleartextLogging=73
-    NSLogv("%@", getVaList([password as! CVarArg])) // $ MISSING: hasCleartextLogging=74
-    NSLogv("%@ %@", getVaList(["" as! CVarArg, password as! CVarArg])) // $ MISSING: hasCleartextLogging=75
+    NSLog(password) // $ hasCleartextLogging=93
+    NSLog("%@", password as! CVarArg) // $ MISSING: hasCleartextLogging=94
+    NSLog("%@ %@", "" as! CVarArg, password as! CVarArg) // $ MISSING: hasCleartextLogging=95
+    NSLog("\(password)") // $ hasCleartextLogging=96
+    NSLogv("%@", getVaList([password as! CVarArg])) // $ MISSING: hasCleartextLogging=97
+    NSLogv("%@ %@", getVaList(["" as! CVarArg, password as! CVarArg])) // $ MISSING: hasCleartextLogging=98
 
+    let bankAccount: Int = 0
     let log = Logger()
-    log.log("\(password)") // $ hasCleartextLogging=78
+    // These MISSING test cases will be fixed when we properly generate the CFG around autoclosures.
+    log.log("\(password)") // Safe
+    log.log("\(password, privacy: .auto)") // Safe
     log.log("\(password, privacy: .private)") // Safe
-    log.log(level: .default, "\(password)") // $ hasCleartextLogging=80
-    log.trace("\(password)") // $ hasCleartextLogging=81
-    log.debug("\(password)") // $ hasCleartextLogging=82
-    log.info("\(password)") // $ hasCleartextLogging=83
-    log.notice("\(password)") // $ hasCleartextLogging=84
-    log.warning("\(password)") // $ hasCleartextLogging=85
-    log.error("\(password)") // $ hasCleartextLogging=86
-    log.critical("\(password)") // $ hasCleartextLogging=87
-    log.fault("\(password)") // $ hasCleartextLogging=88
+    log.log("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=106
+    log.log("\(password, privacy: .sensitive)") // Safe
+    log.log("\(bankAccount)") // $ MISSING: hasCleartextLogging=108
+    log.log("\(bankAccount, privacy: .auto)") // $ MISSING: hasCleartextLogging=109
+    log.log("\(bankAccount, privacy: .private)") // Safe
+    log.log("\(bankAccount, privacy: .public)") // $ MISSING: hasCleartextLogging=111
+    log.log("\(bankAccount, privacy: .sensitive)") // Safe
+    log.log(level: .default, "\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=113
+    log.trace("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=114
+    log.debug("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=115
+    log.info("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=116
+    log.notice("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=117
+    log.warning("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=118
+    log.error("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=119
+    log.critical("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=120
+    log.fault("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=121
 }
 /*
 class MyClass {
