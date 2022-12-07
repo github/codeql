@@ -2,7 +2,6 @@
 
 # Tool to regenerate existing framework CSV models.
 
-from pathlib import Path
 import json
 import os
 import shutil
