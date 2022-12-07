@@ -1134,6 +1134,9 @@ case @expr.kind of
 | 128 = @or_pattern_expr
 | 129 = @function_pointer_invocation_expr
 | 130 = @with_expr
+/* C# 11.0 */
+| 131 = @list_pattern_expr
+| 132 = @slice_pattern_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
