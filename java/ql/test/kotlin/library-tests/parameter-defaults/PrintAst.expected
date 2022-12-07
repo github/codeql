@@ -609,6 +609,8 @@ test.kt:
 #   32|         0: [SuperConstructorInvocationStmt] super(...)
 #   32|         1: [BlockStmt] { ... }
 #   34|     2: [Method] f
+#-----|       1: (Annotations)
+#   34|         1: [Annotation] JvmStatic
 #   34|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   34|         0: [Parameter] x

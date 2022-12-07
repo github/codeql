@@ -55,6 +55,8 @@ test.kt:
 #    1|             6: [IntegerLiteral] 23
 #    1|             7: [NullLiteral] null
 #   45|     4: [ExtensionMethod] testExtensionFunction
+#-----|       1: (Annotations)
+#   44|         1: [Annotation] JvmOverloads
 #   45|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   45|         0: [Parameter] <this>
@@ -170,6 +172,9 @@ test.kt:
 #    1|             5: [IntegerLiteral] 23
 #    1|             6: [NullLiteral] null
 #    6|     4: [Method] testStaticFunction
+#-----|       1: (Annotations)
+#    5|         1: [Annotation] JvmOverloads
+#    5|         2: [Annotation] JvmStatic
 #    6|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #    6|         0: [Parameter] a
@@ -277,6 +282,8 @@ test.kt:
 #    1|             6: [IntegerLiteral] 23
 #    1|             7: [NullLiteral] null
 #    9|     8: [Method] testMemberFunction
+#-----|       1: (Annotations)
+#    8|         1: [Annotation] JvmOverloads
 #    9|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #    9|         0: [Parameter] a
@@ -394,6 +401,8 @@ test.kt:
 #    1|             7: [IntegerLiteral] 23
 #    1|             8: [NullLiteral] null
 #   12|     12: [ExtensionMethod] testMemberExtensionFunction
+#-----|       1: (Annotations)
+#   11|         1: [Annotation] JvmOverloads
 #   12|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   12|         0: [Parameter] <this>
@@ -501,6 +510,8 @@ test.kt:
 #    1|           5: [IntegerLiteral] 23
 #    1|           6: [NullLiteral] null
 #   16|     3: [Constructor] Test2
+#-----|       1: (Annotations)
+#   16|         1: [Annotation] JvmOverloads
 #-----|       4: (Parameters)
 #   16|         0: [Parameter] a
 #   16|           0: [TypeAccess] int
@@ -609,6 +620,8 @@ test.kt:
 #    1|               6: [IntegerLiteral] 23
 #    1|               7: [NullLiteral] null
 #   21|       4: [Method] testCompanionFunction
+#-----|         1: (Annotations)
+#   20|           1: [Annotation] JvmOverloads
 #   21|         3: [TypeAccess] int
 #-----|         4: (Parameters)
 #   21|           0: [Parameter] a
@@ -718,6 +731,9 @@ test.kt:
 #    1|               6: [IntegerLiteral] 23
 #    1|               7: [NullLiteral] null
 #   24|       8: [Method] testStaticCompanionFunction
+#-----|         1: (Annotations)
+#   23|           1: [Annotation] JvmOverloads
+#   23|           2: [Annotation] JvmStatic
 #   24|         3: [TypeAccess] int
 #-----|         4: (Parameters)
 #   24|           0: [Parameter] a
@@ -883,6 +899,8 @@ test.kt:
 #    1|           4: [IntegerLiteral] 11
 #    1|           5: [NullLiteral] null
 #   30|     3: [Constructor] GenericTest
+#-----|       1: (Annotations)
+#   30|         1: [Annotation] JvmOverloads
 #-----|       4: (Parameters)
 #   30|         0: [Parameter] a
 #   30|           0: [TypeAccess] int
@@ -974,6 +992,8 @@ test.kt:
 #    1|             5: [IntegerLiteral] 11
 #    1|             6: [NullLiteral] null
 #   33|     7: [Method] testMemberFunction
+#-----|       1: (Annotations)
+#   32|         1: [Annotation] JvmOverloads
 #   33|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   33|         0: [Parameter] a
