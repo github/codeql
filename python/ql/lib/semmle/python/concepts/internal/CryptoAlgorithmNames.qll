@@ -8,6 +8,24 @@
  * The classification into strong and weak are based on Wikipedia, OWASP and Google (2021).
  */
 
+
+ /**
+  * Returns a string to represent generally unknown algorithms. 
+  * To be used in place of hardcoded strings representing 'unknown' to maintain consistency.
+  */
+ string unknownAlgorithmStub()
+ {
+  result = "<None or Unknown>"
+ }
+
+ /**
+  * Holds if `name` is a known hashing algorithm in the model/library.
+  */
+ predicate isKnownHashingAlgorithm(string name)
+ {
+  isStrongHashingAlgorithm(name) or isWeakHashingAlgorithm(name)
+ }
+
 /**
  * Holds if `name` corresponds to a strong hashing algorithm.
  */
@@ -15,7 +33,8 @@ predicate isStrongHashingAlgorithm(string name) {
   name =
     [
       "DSA", "ED25519", "ES256", "ECDSA256", "ES384", "ECDSA384", "ES512", "ECDSA512", "SHA2",
-      "SHA224", "SHA256", "SHA384", "SHA512", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512"
+      "SHA224", "SHA256", "SHA384", "SHA512", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512", 
+      "SHAKE128", "SHAKE256"
     ]
 }
 
@@ -29,6 +48,15 @@ predicate isWeakHashingAlgorithm(string name) {
       "RIPEMD320", "SHA0", "SHA1"
     ]
 }
+
+ /**
+  * Holds if `name` is a known encryption algorithm in the model/library.
+  */
+ predicate isKnownEncryptionAlgorithm(string name)
+ {
+  isStrongEncryptionAlgorithm(name) or isWeakEncryptionAlgorithm(name)
+ }
+
 
 /**
  * Holds if `name` corresponds to a strong encryption algorithm.
@@ -54,6 +82,15 @@ predicate isWeakEncryptionAlgorithm(string name) {
     ]
 }
 
+ /**
+  * Holds if `name` is a known password hashing algorithm in the model/library.
+  */
+ predicate isKnownPasswordHashingAlgorithm(string name)
+ {
+  isStrongPasswordHashingAlgorithm(name) or isWeakPasswordHashingAlgorithm(name)
+ }
+
+
 /**
  * Holds if `name` corresponds to a strong password hashing algorithm.
  */
@@ -64,7 +101,35 @@ predicate isStrongPasswordHashingAlgorithm(string name) {
 /**
  * Holds if `name` corresponds to a weak password hashing algorithm.
  */
-predicate isWeakPasswordHashingAlgorithm(string name) { name = "EVPKDF" }
+predicate isWeakPasswordHashingAlgorithm(string name) { 
+  name = "EVPKDF" 
+}
+
+ /**
+  * Holds if `name` is a known cipher block mode algorithm in the model/library.
+  */
+ predicate isKnownCipherBlockModeAlgorithm(string name)
+ {
+  isStrongCipherBlockModeAlgorithm(name) or isWeakCipherBlockModeAlgorithm(name)
+ }
+
+
+/**
+ * Holds if `name` corresponds to a strong cipher block mode
+ */
+predicate isStrongCipherBlockModeAlgorithm(string name)
+{
+  name = ["CBC", "GCM", "CCM", "CFB", "OFB", "CFB8", "CTR", "OPENPGP", "XTS"]
+}
+
+/**
+ * Holds if `name` corresponds to a weak cipher block mode
+ */
+predicate isWeakCipherBlockModeAlgorithm(string name)
+{
+  name = ["ECB"]
+}
+
 
 /**
  * Holds if `name` corresponds to a stream cipher.
