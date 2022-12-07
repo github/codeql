@@ -38,8 +38,10 @@ methods
 | enumClass.kt:8:3:11:4 | VAL | enumClass.kt:10:14:10:42 | g | g(int) | override, public |  |
 | methods2.kt:0:0:0:0 | Methods2Kt | methods2.kt:4:1:5:1 | fooBarTopLevelMethod | fooBarTopLevelMethod(int,int) | final, public, static |  |
 | methods2.kt:7:1:10:1 | Class2 | methods2.kt:8:5:9:5 | fooBarClassMethod | fooBarClassMethod(int,int) | final, public |  |
-| methods3.kt:0:0:0:0 | Methods3Kt | methods3.kt:3:1:3:42 | fooBarTopLevelMethodExt | fooBarTopLevelMethodExt(int,int) | final, public, static |  |
-| methods3.kt:5:1:7:1 | Class3 | methods3.kt:6:5:6:46 | fooBarTopLevelMethodExt | fooBarTopLevelMethodExt(int,int) | final, public |  |
+| methods3.kt:0:0:0:0 | Methods3Kt | methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt | fooBarTopLevelMethodExt(java.lang.String,int) | final, public, static |  |
+| methods3.kt:0:0:0:0 | Methods3Kt | methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt$default | fooBarTopLevelMethodExt$default(java.lang.String,int,int,java.lang.Object) | public, static | Compiler generated |
+| methods3.kt:5:1:7:1 | Class3 | methods3.kt:6:5:6:45 | fooBarMethodExt | fooBarMethodExt(java.lang.String,int) | final, public |  |
+| methods3.kt:5:1:7:1 | Class3 | methods3.kt:6:5:6:45 | fooBarMethodExt$default | fooBarMethodExt$default(java.lang.String,foo.bar.Class3,int,int,java.lang.Object) | public, static | Compiler generated |
 | methods4.kt:5:3:9:3 | InsideNestedTest | methods4.kt:7:5:7:34 | m | m(foo.bar.NestedTest.InsideNestedTest) | final, public |  |
 | methods5.kt:0:0:0:0 | Methods5Kt | methods5.kt:3:1:11:1 | x | x() | final, public, static |  |
 | methods5.kt:5:3:5:27 |  | methods5.kt:5:3:5:27 | a | a(int) | final, public |  |
@@ -74,6 +76,9 @@ constructors
 | methods5.kt:13:1:13:14 | C1 | methods5.kt:13:1:13:14 | C1 | C1() |
 | methods.kt:5:1:20:1 | Class | methods.kt:5:1:20:1 | Class | Class() |
 extensions
-| methods3.kt:3:1:3:42 | fooBarTopLevelMethodExt | file://:0:0:0:0 | int |
-| methods3.kt:6:5:6:46 | fooBarTopLevelMethodExt | file://:0:0:0:0 | int |
+| methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt | file:///modules/java.base/java/lang/String.class:0:0:0:0 | String |
+| methods3.kt:6:5:6:45 | fooBarMethodExt | file:///modules/java.base/java/lang/String.class:0:0:0:0 | String |
 | methods5.kt:9:3:9:32 | f1 | file:///!unknown-binary-location/foo/bar/C1.class:0:0:0:0 | C1<T1> |
+extensionsMismatch
+| methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt | methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt$default |
+| methods3.kt:6:5:6:45 | fooBarMethodExt | methods3.kt:6:5:6:45 | fooBarMethodExt$default |

@@ -293,12 +293,47 @@
 | methods2.kt:8:5:9:5 | Unit | TypeAccess |
 | methods2.kt:8:27:8:32 | int | TypeAccess |
 | methods2.kt:8:35:8:40 | int | TypeAccess |
-| methods3.kt:3:1:3:42 | Unit | TypeAccess |
-| methods3.kt:3:5:3:7 | int | TypeAccess |
-| methods3.kt:3:33:3:38 | int | TypeAccess |
-| methods3.kt:6:5:6:46 | Unit | TypeAccess |
-| methods3.kt:6:9:6:11 | int | TypeAccess |
-| methods3.kt:6:37:6:42 | int | TypeAccess |
+| methods3.kt:3:1:3:49 | 0 | IntegerLiteral |
+| methods3.kt:3:1:3:49 | 1 | IntegerLiteral |
+| methods3.kt:3:1:3:49 | ... & ... | AndBitwiseExpr |
+| methods3.kt:3:1:3:49 | ... == ... | EQExpr |
+| methods3.kt:3:1:3:49 | ...=... | AssignExpr |
+| methods3.kt:3:1:3:49 | Methods3Kt | TypeAccess |
+| methods3.kt:3:1:3:49 | Object | TypeAccess |
+| methods3.kt:3:1:3:49 | String | TypeAccess |
+| methods3.kt:3:1:3:49 | Unit | TypeAccess |
+| methods3.kt:3:1:3:49 | Unit | TypeAccess |
+| methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt(...) | MethodAccess |
+| methods3.kt:3:1:3:49 | int | TypeAccess |
+| methods3.kt:3:1:3:49 | int | TypeAccess |
+| methods3.kt:3:1:3:49 | p0 | VarAccess |
+| methods3.kt:3:1:3:49 | p1 | VarAccess |
+| methods3.kt:3:1:3:49 | p1 | VarAccess |
+| methods3.kt:3:1:3:49 | p2 | VarAccess |
+| methods3.kt:3:5:3:10 | String | TypeAccess |
+| methods3.kt:3:36:3:45 | int | TypeAccess |
+| methods3.kt:3:45:3:45 | 1 | IntegerLiteral |
+| methods3.kt:6:5:6:45 | 0 | IntegerLiteral |
+| methods3.kt:6:5:6:45 | 1 | IntegerLiteral |
+| methods3.kt:6:5:6:45 | ... & ... | AndBitwiseExpr |
+| methods3.kt:6:5:6:45 | ... == ... | EQExpr |
+| methods3.kt:6:5:6:45 | ...=... | AssignExpr |
+| methods3.kt:6:5:6:45 | Class3 | TypeAccess |
+| methods3.kt:6:5:6:45 | Object | TypeAccess |
+| methods3.kt:6:5:6:45 | String | TypeAccess |
+| methods3.kt:6:5:6:45 | Unit | TypeAccess |
+| methods3.kt:6:5:6:45 | Unit | TypeAccess |
+| methods3.kt:6:5:6:45 | fooBarMethodExt(...) | MethodAccess |
+| methods3.kt:6:5:6:45 | int | TypeAccess |
+| methods3.kt:6:5:6:45 | int | TypeAccess |
+| methods3.kt:6:5:6:45 | p0 | VarAccess |
+| methods3.kt:6:5:6:45 | p1 | VarAccess |
+| methods3.kt:6:5:6:45 | p2 | VarAccess |
+| methods3.kt:6:5:6:45 | p2 | VarAccess |
+| methods3.kt:6:5:6:45 | p3 | VarAccess |
+| methods3.kt:6:9:6:14 | String | TypeAccess |
+| methods3.kt:6:32:6:41 | int | TypeAccess |
+| methods3.kt:6:41:6:41 | 1 | IntegerLiteral |
 | methods4.kt:7:5:7:34 | Unit | TypeAccess |
 | methods4.kt:7:11:7:29 | InsideNestedTest | TypeAccess |
 | methods5.kt:3:1:11:1 | Unit | TypeAccess |
