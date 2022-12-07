@@ -134,6 +134,8 @@ class AllocationInstruction extends CallInstruction {
  * purposes of dataflow.
  */
 abstract class Indirection extends Type {
+  Type baseType;
+
   /** Gets the type of this indirection. */
   final Type getType() { result = super.getUnspecifiedType() }
 
@@ -159,11 +161,12 @@ abstract class Indirection extends Type {
   predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
 
   /**
-   * Gets the base type of this indirection.
+   * Gets the base type of this indirection, after specifiers have been deeply
+   * stripped and typedefs have been resolved.
    *
    * For example, the base type of `int*&` is `int*`, and the base type of `int*` is `int`.
    */
-  abstract Type getBaseType();
+  final Type getBaseType() { result = baseType.getUnspecifiedType() }
 
   /** Holds if there should be an additional taint step from `node1` to `node2`. */
   predicate isAdditionalTaintStep(Node node1, Node node2) { none() }
@@ -181,14 +184,14 @@ abstract class Indirection extends Type {
   predicate ignoreSourceVariableBase(BaseSourceVariableInstruction base, Node0Impl value) { none() }
 }
 
-private class PointerOrReferenceTypeIndirection extends Indirection, PointerOrReferenceType {
+private class PointerOrReferenceTypeIndirection extends Indirection instanceof PointerOrReferenceType {
+  PointerOrReferenceTypeIndirection() { baseType = PointerOrReferenceType.super.getBaseType() }
+
   override int getNumberOfIndirections() { result = 1 + countIndirections(this.getBaseType()) }
 
   override predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
 
   override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
-
-  override Type getBaseType() { result = PointerOrReferenceType.super.getBaseType() }
 }
 
 predicate isDereference(Instruction deref, Operand address) {
