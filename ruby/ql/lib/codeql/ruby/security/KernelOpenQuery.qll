@@ -13,7 +13,7 @@ class AmbiguousPathCall extends DataFlow::CallNode {
   string name;
 
   AmbiguousPathCall() {
-    this.(KernelMethodCall).getMethodName() = "open" and
+    this.(KernelMethodCall).getKernelMethod() = "open" and
     name = "Kernel.open"
     or
     this = API::getTopLevelMember("IO").getAMethodCall("read") and

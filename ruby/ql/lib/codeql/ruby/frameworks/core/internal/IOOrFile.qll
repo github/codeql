@@ -29,7 +29,7 @@ DataFlow::Node fileInstanceInstantiation() {
   result = API::getTopLevelMember("File").getAMethodCall(["open", "try_convert"])
   or
   // Calls to `Kernel.open` can yield `File` instances
-  result.(KernelMethodCall).getMethodName() = "open" and
+  result.(KernelMethodCall).getKernelMethod() = "open" and
   // Assume that calls that don't invoke shell commands will instead open
   // a file.
   not pathArgSpawnsSubprocess(result.(KernelMethodCall).getArgument(0).asExpr().getExpr())
