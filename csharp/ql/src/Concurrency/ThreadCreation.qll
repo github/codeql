@@ -9,14 +9,18 @@ import Concurrency
  */
 class ThreadStartingCallable extends Callable {
   ThreadStartingCallable() {
-    this.(Constructor).getDeclaringType().getQualifiedName() = "System.Threading.Tasks.Task" or
-    this.(Method).getQualifiedName() = "System.Threading.Tasks.Task.Run" or
-    this.(Constructor).getDeclaringType().getQualifiedName() = "System.Threading.Thread" or
-    this.(Method).getQualifiedName() = "System.Threading.Thread.Start" or
-    this.(Constructor)
-        .getDeclaringType()
-        .getQualifiedName()
-        .matches("System.Threading.Tasks.Task<%>")
+    this.(Constructor).getDeclaringType().hasQualifiedName("System.Threading.Tasks", "Task")
+    or
+    this.(Method).hasQualifiedName("System.Threading.Tasks", "Task", "Run")
+    or
+    this.(Constructor).getDeclaringType().hasQualifiedName("System.Threading", "Thread")
+    or
+    this.(Method).hasQualifiedName("System.Threading", "Thread", "Start")
+    or
+    exists(string name |
+      this.(Constructor).getDeclaringType().hasQualifiedName("System.Threading.Tasks", name) and
+      name.matches("Task<%>")
+    )
   }
 }
 

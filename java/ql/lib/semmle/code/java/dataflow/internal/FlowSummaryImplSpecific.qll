@@ -14,6 +14,13 @@ private import semmle.code.java.dataflow.internal.AccessPathSyntax as AccessPath
 
 class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 
+/**
+ * A module for importing frameworks that define synthetic globals.
+ */
+private module SyntheticGlobals {
+  private import semmle.code.java.frameworks.android.Intent
+}
+
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */

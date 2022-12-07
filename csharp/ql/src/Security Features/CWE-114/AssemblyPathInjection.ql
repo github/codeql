@@ -34,7 +34,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
       mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Reflection.Assembly") and
+          .hasQualifiedName("System.Reflection", "Assembly") and
       mc.getArgument(arg) = sink.asExpr()
     |
       name = "LoadFrom" and arg = 0 and mc.getNumberOfArguments() = [1 .. 2]

@@ -17,7 +17,7 @@
 import cpp
 import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 
 predicate isMaxValue(Expr mie) {
   exists(MacroInvocation mi |

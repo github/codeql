@@ -150,9 +150,9 @@ private module Impl {
   /**
    * Holds if property `p` matches `property` in `baseClass` or any overrides.
    */
-  predicate propertyOverrides(Property p, string baseClass, string property) {
+  predicate propertyOverrides(Property p, string namespace, string baseClass, string property) {
     exists(Property p2 |
-      p2.getUnboundDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
+      p2.getUnboundDeclaration().getDeclaringType().hasQualifiedName(namespace, baseClass) and
       p2.hasName(property)
     |
       p.overridesOrImplementsOrEquals(p2)

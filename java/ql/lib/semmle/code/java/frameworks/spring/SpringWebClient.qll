@@ -4,7 +4,6 @@
 
 import java
 import SpringHttp
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `org.springframework.web.client.RestTemplate`. */
 class SpringRestTemplate extends Class {

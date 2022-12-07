@@ -4,7 +4,6 @@
  */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.XSS
 
 /**
