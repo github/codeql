@@ -48,6 +48,6 @@ module Generated {
     /**
      * Gets the number of arguments passed to the applied function.
      */
-    final int getNumberOfArguments() { result = count(getAnArgument()) }
+    final int getNumberOfArguments() { result = count(int i | exists(getArgument(i))) }
   }
 }
