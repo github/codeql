@@ -228,15 +228,23 @@ Here's see an example of what this can handle now:
 
 Tracking in the whole model
 ---------------------------
-We applied this pattern to ``firebaseDatabase()`` in the previous section, and it
-can just as easily apply to the other predicates.
-For reference, here's our simple Firebase model with type tracking on every predicate:
+We applied this pattern to ``firebaseDatabase()`` in the previous section, and we can
+apply the model just as easily to other  predicates.
+This example query uses the model to find `set` calls.
+It's been modified slightly to handle a bit more of the API, which is beyond the scope of this tutorial.
 
 .. code-block:: ql
 
+  import javascript
+  import DataFlow
+
   SourceNode firebase(TypeTracker t) {
     t.start() and
-    result = globalVarRef("firebase")
+    (
+      result = globalVarRef("firebase")
+      or
+      result = moduleImport("firebase/app")
+    )
     or
     exists(TypeTracker t2 |
       result = firebase(t2).track(t2, t)
@@ -277,8 +285,7 @@ For reference, here's our simple Firebase model with type tracking on every pred
     result = firebaseRef().getAMethodCall("set")
   }
 
-`Here <https://lgtm.com/query/1053770500827789481>`__ is a run of an example query using the model to find `set` calls on one of the Firebase sample projects.
-It's been modified slightly to handle a bit more of the API, which is beyond the scope of this tutorial.
+  select firebaseSetterCall()
 
 Tracking associated data
 ------------------------
@@ -392,7 +399,98 @@ Based on that we can track the ``snapshot`` value and find the ``val()`` call it
 
 With this addition, ``firebaseDatabaseRead("forecast")`` finds the call to ``snapshot.val()`` that contains the value of the forecast.
 
-`Here <https://lgtm.com/query/8761360814276109092>`__ is a run of an example query using the model to find `val` calls.
+.. code-block:: ql
+
+  import javascript
+  import DataFlow
+
+  SourceNode firebase(TypeTracker t) {
+    t.start() and
+    (
+      result = globalVarRef("firebase")
+      or
+      result = moduleImport("firebase/app")
+    )
+    or
+    exists(TypeTracker t2 |
+      result = firebase(t2).track(t2, t)
+    )
+  }
+
+  SourceNode firebase() {
+    result = firebase(TypeTracker::end())
+  }
+
+  SourceNode firebaseDatabase(TypeTracker t) {
+    t.start() and
+    result = firebase().getAMethodCall("database")
+    or
+    exists(TypeTracker t2 |
+      result = firebaseDatabase(t2).track(t2, t)
+    )
+  }
+
+  SourceNode firebaseDatabase() {
+    result = firebaseDatabase(TypeTracker::end())
+  }
+
+  SourceNode firebaseRef(Node name, TypeTracker t) {
+    t.start() and
+    exists(CallNode call |
+      call = firebaseDatabase().getAMethodCall("ref") and
+      name = call.getArgument(0) and
+      result = call
+    )
+    or
+    exists(TypeTracker t2 |
+      result = firebaseRef(name, t2).track(t2, t)
+    )
+  }
+
+  SourceNode firebaseRef(Node name) {
+    result = firebaseRef(name, TypeTracker::end())
+  }
+
+  MethodCallNode firebaseSetterCall(Node name) {
+    result = firebaseRef(name).getAMethodCall("set")
+  }
+
+  SourceNode firebaseSnapshotCallback(Node refName, TypeBackTracker t) {
+    t.start() and
+    (
+      result = firebaseRef(refName).getAMethodCall("once").getArgument(1).getALocalSource()
+      or
+      result = firebaseRef(refName).getAMethodCall("once").getAMethodCall("then").getArgument(0).getALocalSource()
+    )
+    or
+    exists(TypeBackTracker t2 |
+      result = firebaseSnapshotCallback(refName, t2).backtrack(t2, t)
+    )
+  }
+
+  FunctionNode firebaseSnapshotCallback(Node refName) {
+    result = firebaseSnapshotCallback(refName, TypeBackTracker::end())
+  }
+
+  SourceNode firebaseSnapshot(Node refName, TypeTracker t) {
+    t.start() and
+    result = firebaseSnapshotCallback(refName).getParameter(0)
+    or
+    exists(TypeTracker t2 |
+      result = firebaseSnapshot(refName, t2).track(t2, t)
+    )
+  }
+
+  SourceNode firebaseSnapshot(Node refName) {
+    result = firebaseSnapshot(refName, TypeTracker::end())
+  }
+
+  MethodCallNode firebaseDatabaseRead(Node refName) {
+    result = firebaseSnapshot(refName).getAMethodCall("val")
+  }
+
+  from Node name
+  select name, firebaseDatabaseRead(name)
 
 Summary
 -------
