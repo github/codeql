@@ -1,4 +1,5 @@
 edges
+| ArgumentInjection.go:9:10:9:16 | selection of URL : pointer type | ArgumentInjection.go:10:31:10:34 | path |
 | CommandInjection.go:9:13:9:19 | selection of URL : pointer type | CommandInjection.go:10:22:10:28 | cmdName |
 | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:12:31:12:37 | tainted |
 | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:13:31:13:37 | tainted |
@@ -25,6 +26,8 @@ edges
 | SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] : string | SanitizingDoubleDash.go:106:24:106:31 | arrayLit |
 | SanitizingDoubleDash.go:105:30:105:36 | tainted : string | SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] : string |
 nodes
+| ArgumentInjection.go:9:10:9:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| ArgumentInjection.go:10:31:10:34 | path | semmle.label | path |
 | CommandInjection.go:9:13:9:19 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | CommandInjection.go:10:22:10:28 | cmdName | semmle.label | cmdName |
 | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
@@ -55,6 +58,7 @@ nodes
 | SanitizingDoubleDash.go:152:24:152:30 | tainted | semmle.label | tainted |
 subpaths
 #select
+| ArgumentInjection.go:10:31:10:34 | path | ArgumentInjection.go:9:10:9:16 | selection of URL : pointer type | ArgumentInjection.go:10:31:10:34 | path | This command depends on a $@. | ArgumentInjection.go:9:10:9:16 | selection of URL | user-provided value |
 | CommandInjection.go:10:22:10:28 | cmdName | CommandInjection.go:9:13:9:19 | selection of URL : pointer type | CommandInjection.go:10:22:10:28 | cmdName | This command depends on a $@. | CommandInjection.go:9:13:9:19 | selection of URL | user-provided value |
 | GitSubcommands.go:12:31:12:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:12:31:12:37 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
 | GitSubcommands.go:13:31:13:37 | tainted | GitSubcommands.go:10:13:10:19 | selection of URL : pointer type | GitSubcommands.go:13:31:13:37 | tainted | This command depends on a $@. | GitSubcommands.go:10:13:10:19 | selection of URL | user-provided value |
