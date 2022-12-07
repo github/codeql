@@ -35,11 +35,18 @@ module ModelPrompt {
       strictconcat(Token token |
         location.containsLoosely(token.getLocation())
       |
-        token.getValue(),
-          // Use space as the separator, since that is most likely.
-          // May not be an exact reconstruction, e.g. if the code
-          // had newlines between successive tokens.
-          " "
+        token
+                .getValue()
+                .replaceAll("\"", " ")
+                .replaceAll("\\", " ")
+                .replaceAll("\n", " ")
+                .replaceAll("\r", " ")
+                .replaceAll("|", " ")
+                .replaceAll("`", " ") +
+            // Use space as the separator, since that is most likely.
+            // May not be an exact reconstruction, e.g. if the code
+            // had newlines between successive tokens.
+            " "
         order by
           token.getLocation().getStartLine(), token.getLocation().getStartColumn()
       )
