@@ -20,10 +20,8 @@ class TestKt {
     fun exactPathMatchGuard() {
         run {
             val source = source() as String?
-            // This gets extracted as Object.equals, which makes the definitions in exactPathMatchGuard not catch it.
-            // Note that it gets correctly extracted in Java.
             if (source!!.equals("/safe/path"))
-                sink(source) // $SPURIOUS: $ hasTaintFlow
+                sink(source) // Safe
             else
                 sink(source) // $ hasTaintFlow
         }
