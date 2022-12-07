@@ -471,68 +471,6 @@ private module Cached {
     )
   }
 
-  private predicate captureContentFlowOut(
-    CallCfgNode call, Definition outer, Cfg::BasicBlock bb, int i,
-    LocalVariableReadAccessCfgNode inner, LocalVariable v
-  ) {
-    exists(Cfg::CfgScope scope |
-      isCapturedRead(inner, v, scope) and
-      hasCapturedExitReadInOuterScope(call, outer, bb, i, v, scope)
-    |
-      not scope instanceof Block
-      or
-      scope = call.getExpr().(MethodCall).getBlock()
-    )
-    or
-    exists(Cfg::BasicBlock bb0, int i0 |
-      captureContentFlowOut(call, outer, bb0, i0, inner, v) and
-      Impl::adjacentDefRead(outer, bb0, i0, bb, i) and
-      SsaInput::variableRead(bb0, i0, v, false)
-    )
-  }
-
-  /**
-   * Holds if `inner` is reading a captured variable inside some method `m`, and
-   * `call` may ultimately invoke `m`, such that any data stored inside contents
-   * of `inner` may read at `outer` after the call.
-   *
-   * For example, in
-   * ```rb
-   * foo = C.new
-   * bar {
-   *   foo.set_field(10)
-   * }
-   * puts(foo.get_field)
-   * ```
-   *
-   * the side-effect of setting the field of `foo` inside the block passed to
-   * `bar` may reach the outer read in `foo.get_field`.
-   */
-  cached
-  predicate captureContentFlowOut(
-    CallCfgNode call, LocalVariableReadAccessCfgNode inner, LocalVariableReadAccessCfgNode outer
-  ) {
-    exists(Cfg::BasicBlock bb, int i, LocalVariable v |
-      captureContentFlowOut(call, _, bb, i, inner, v) and
-      variableReadActual(bb, i, v) and
-      outer = bb.getNode(i)
-    )
-  }
-
-  /**
-   * Same as `captureContentFlowOut`, but where flow is out to a `phi` node
-   * instead of a direct read.
-   */
-  cached
-  predicate captureContentFlowOutPhi(
-    CallCfgNode call, LocalVariableReadAccessCfgNode inner, PhiNode outer
-  ) {
-    exists(Definition def, Cfg::BasicBlock bb, int i, LocalVariable v |
-      captureContentFlowOut(call, def, bb, i, inner, v) and
-      Impl::lastRefRedef(def, bb, i, outer)
-    )
-  }
-
   cached
   Definition phiHasInputFromBlock(PhiNode phi, Cfg::BasicBlock bb) {
     Impl::phiHasInputFromBlock(phi, result, bb)

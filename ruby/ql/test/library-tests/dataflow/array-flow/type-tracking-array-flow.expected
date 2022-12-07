@@ -13,7 +13,6 @@
 | array_flow.rb:376:10:376:13 | ...[...] | Unexpected result: hasValueFlow=42.3 |
 | array_flow.rb:377:10:377:13 | ...[...] | Unexpected result: hasValueFlow=42.3 |
 | array_flow.rb:378:10:378:13 | ...[...] | Unexpected result: hasValueFlow=42.3 |
-| array_flow.rb:407:12:407:30 | # $ hasValueFlow=45 | Missing result:hasValueFlow=45 |
 | array_flow.rb:484:10:484:13 | ...[...] | Unexpected result: hasValueFlow=54.3 |
 | array_flow.rb:484:10:484:13 | ...[...] | Unexpected result: hasValueFlow=54.4 |
 | array_flow.rb:484:10:484:13 | ...[...] | Unexpected result: hasValueFlow=54.5 |

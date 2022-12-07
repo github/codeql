@@ -404,7 +404,7 @@ def m45
     b = for x in a # desugars to an `each` call
         sink x # $ hasValueFlow=45
     end
-    sink x # $ hasValueFlow=45
+    sink x # $ MISSING: hasValueFlow=45
     sink(b[2]) # $ hasValueFlow=45
 end
 

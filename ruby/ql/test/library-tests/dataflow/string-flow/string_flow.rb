@@ -247,7 +247,7 @@ def m_scrub
     sink a.scrub("b") # $ hasTaintFlow=a
     sink "b".scrub(a) # $ hasTaintFlow=a
     a.scrub { |x| sink x } # $ hasTaintFlow=a
-    sink("b".scrub { |x| a }) # $ hasTaintFlow=a
+    sink("b".scrub { |x| source "a" }) # $ hasTaintFlow=a
 
     sink a.scrub!("b") # $ hasTaintFlow=a
     sink "b".scrub!(a) # $ hasTaintFlow=a
@@ -255,7 +255,7 @@ def m_scrub
     a = source "a"
     a.scrub! { |x| sink x } # $ hasTaintFlow=a
 
-    sink("b".scrub! { |x| a }) # $ hasTaintFlow=a
+    sink("b".scrub! { |x| source "a" }) # $ hasTaintFlow=a
 end
 
 def m_shellescape

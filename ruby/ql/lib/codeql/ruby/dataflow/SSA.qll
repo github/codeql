@@ -178,6 +178,9 @@ module Ssa {
 
     /** Gets the location of this SSA definition. */
     Location getLocation() { result = this.getControlFlowNode().getLocation() }
+
+    /** Gets the scope of this SSA definition. */
+    CfgScope getScope() { result = this.getBasicBlock().getScope() }
   }
 
   /**
@@ -289,7 +292,7 @@ module Ssa {
       )
     }
 
-    final override string toString() { result = "<captured> " + this.getSourceVariable() }
+    final override string toString() { result = "<captured entry> " + this.getSourceVariable() }
 
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }
@@ -324,7 +327,7 @@ module Ssa {
      */
     final Definition getPriorDefinition() { result = SsaImpl::uncertainWriteDefinitionInput(this) }
 
-    override string toString() { result = this.getControlFlowNode().toString() }
+    override string toString() { result = "<captured exit> " + this.getSourceVariable() }
   }
 
   /**

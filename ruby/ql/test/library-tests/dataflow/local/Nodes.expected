@@ -30,6 +30,7 @@ arg
 | local_dataflow.rb:9:10:9:10 | 1 | local_dataflow.rb:9:9:9:15 | call to [] | position 0 |
 | local_dataflow.rb:9:12:9:12 | 2 | local_dataflow.rb:9:9:9:15 | call to [] | position 1 |
 | local_dataflow.rb:9:14:9:14 | 3 | local_dataflow.rb:9:9:9:15 | call to [] | position 2 |
+| local_dataflow.rb:10:5:13:3 | captured argument self | local_dataflow.rb:10:5:13:3 | <captured> call to each | captured self |
 | local_dataflow.rb:10:5:13:3 | { ... } | local_dataflow.rb:10:5:13:3 | call to each | block |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:10:5:13:3 | call to each | self |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:11:1:11:2 | call to do | self |
@@ -45,6 +46,7 @@ arg
 | local_dataflow.rb:35:11:35:11 | 4 | local_dataflow.rb:35:6:35:11 | ... == ... | position 0 |
 | local_dataflow.rb:42:6:42:6 | x | local_dataflow.rb:42:6:42:11 | ... == ... | self |
 | local_dataflow.rb:42:11:42:11 | 4 | local_dataflow.rb:42:6:42:11 | ... == ... | position 0 |
+| local_dataflow.rb:49:1:53:3 | captured argument x | local_dataflow.rb:49:1:53:3 | <captured> call to m | captured x |
 | local_dataflow.rb:49:1:53:3 | self | local_dataflow.rb:49:1:53:3 | call to m | self |
 | local_dataflow.rb:49:3:53:3 | do ... end | local_dataflow.rb:49:1:53:3 | call to m | block |
 | local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:50:18:50:22 | ... < ... | self |
@@ -150,6 +152,7 @@ arg
 | local_dataflow.rb:117:22:117:23 | { ... } | local_dataflow.rb:117:8:117:23 | call to tap | block |
 | local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:3:118:31 | call to tap | self |
 | local_dataflow.rb:118:3:118:11 | self | local_dataflow.rb:118:3:118:11 | call to source | self |
+| local_dataflow.rb:118:3:118:31 | captured argument self | local_dataflow.rb:118:3:118:31 | <captured> call to tap | captured self |
 | local_dataflow.rb:118:10:118:10 | 1 | local_dataflow.rb:118:3:118:11 | call to source | position 0 |
 | local_dataflow.rb:118:17:118:31 | { ... } | local_dataflow.rb:118:3:118:31 | call to tap | block |
 | local_dataflow.rb:118:23:118:29 | self | local_dataflow.rb:118:23:118:29 | call to sink | self |
@@ -167,6 +170,7 @@ arg
 | local_dataflow.rb:123:8:123:16 | self | local_dataflow.rb:123:8:123:16 | call to source | self |
 | local_dataflow.rb:123:8:123:20 | call to dup | local_dataflow.rb:123:8:123:45 | call to tap | self |
 | local_dataflow.rb:123:8:123:45 | call to tap | local_dataflow.rb:123:8:123:49 | call to dup | self |
+| local_dataflow.rb:123:8:123:45 | captured argument self | local_dataflow.rb:123:8:123:45 | <captured> call to tap | captured self |
 | local_dataflow.rb:123:8:123:49 | call to dup | local_dataflow.rb:123:3:123:50 | call to sink | position 0 |
 | local_dataflow.rb:123:15:123:15 | 1 | local_dataflow.rb:123:8:123:16 | call to source | position 0 |
 | local_dataflow.rb:123:26:123:45 | { ... } | local_dataflow.rb:123:8:123:45 | call to tap | block |

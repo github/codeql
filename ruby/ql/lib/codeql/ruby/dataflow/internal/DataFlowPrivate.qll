@@ -71,22 +71,6 @@ CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
   not exists(getALastEvalNode(result))
 }
 
-/**
- * Gets the data-flow node referencing SSA definition `def` at index `i` in basic
- * block `bb`. The node is either the definition itself, or a read of the
- * definition.
- */
-Node getSsaRefNode(Ssa::Definition def, BasicBlock bb, int i) {
-  def = result.(SsaDefinitionNode).getDefinition() and
-  def.definesAt(_, bb, i)
-  or
-  exists(CfgNodes::ExprCfgNode e |
-    e = result.asExpr() and
-    e = bb.getNode(i) and
-    e = def.getARead()
-  )
-}
-
 /** Provides predicates related to local data flow. */
 module LocalFlow {
   private import codeql.ruby.dataflow.internal.SsaImpl
@@ -108,7 +92,7 @@ module LocalFlow {
    * Holds if `exprFrom` is a last read of SSA definition `def`, which
    * can reach `next`.
    */
-  predicate localFlowSsaInputFromExpr(
+  predicate localFlowSsaInputFromRead(
     CfgNodes::ExprCfgNode exprFrom, Ssa::Definition def, Ssa::Definition next
   ) {
     exists(BasicBlock bb, int i |
@@ -143,10 +127,15 @@ module LocalFlow {
   /**
    * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
    */
-  predicate localFlowSsaParamInput(Node nodeFrom, Node nodeTo) {
-    nodeTo = getParameterDefNode(nodeFrom.(ParameterNodeImpl).getParameter())
+  predicate localFlowSsaParamInput(ParameterNodeImpl nodeFrom, Node nodeTo) {
+    nodeTo = getParameterDefNode(nodeFrom.getParameter())
     or
     nodeTo = getSelfParameterDefNode(nodeFrom.(SelfParameterNode).getMethod())
+    or
+    exists(Ssa::CapturedEntryDefinition entry |
+      entry = nodeTo.(SsaDefinitionNode).getDefinition() and
+      nodeFrom = TCapturedParameterNode(entry.getScope(), entry.getSourceVariable())
+    )
   }
 
   /**
@@ -247,6 +236,8 @@ module LocalFlow {
         op.getExpr() instanceof BinaryLogicalOperation and
         nodeFrom.asExpr() = op.getAnOperand()
       )
+    or
+    nodeFrom = nodeTo.(CapturedArgumentNode).getAnInput()
   }
 }
 
@@ -344,6 +335,23 @@ private module Cached {
       exists(Argument arg | arg.isArgumentOf(c, any(ArgumentPosition pos | pos.isKeyword(_))))
       or
       c.getAnArgument() instanceof CfgNodes::ExprNodes::PairCfgNode
+    } or
+    TCapturedArgumentNode(CfgNodes::ExprNodes::CallCfgNode c, LocalVariable v, boolean post) {
+      exists(Ssa::Definition def | v = def.getSourceVariable() |
+        SsaImpl::captureFlowIn(c, def, _, _, _) and post = [false, true]
+        or
+        SsaImpl::captureFlowOut(c, _, def) and post = false
+      )
+    } or
+    TCapturedParameterNode(Callable c, LocalVariable v) {
+      exists(Ssa::Definition def |
+        v = def.getSourceVariable() and
+        c = def.getScope()
+      |
+        SsaImpl::captureFlowIn(_, _, _, _, def)
+        or
+        SsaImpl::captureFlowOut(_, def, _)
+      )
     }
 
   class TParameterNode =
@@ -375,7 +383,7 @@ private module Cached {
     or
     // Flow into phi node from read
     exists(Ssa::Definition def, Ssa::PhiNode phi, CfgNodes::ExprCfgNode exprFrom |
-      LocalFlow::localFlowSsaInputFromExpr(exprFrom, def, phi) and
+      LocalFlow::localFlowSsaInputFromRead(exprFrom, def, phi) and
       phi = nodeTo.(SsaDefinitionNode).getDefinition() and
       def = phi.getAnInput()
     |
@@ -386,6 +394,12 @@ private module Cached {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+    or
+    exists(CapturedArgumentNode arg |
+      arg = nodeFrom.(CapturedArgumentPostUpdateNode).getPreUpdateNode() and
+      simpleLocalFlowStep(arg.getAnInput(), nodeTo) and
+      nodeTo != arg
+    )
   }
 
   /** This is the local flow predicate that is exposed. */
@@ -402,6 +416,12 @@ private module Cached {
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
+    or
+    exists(CapturedArgumentNode arg |
+      arg = nodeFrom.(CapturedArgumentPostUpdateNode).getPreUpdateNode() and
+      localFlowStepImpl(arg.getAnInput(), nodeTo) and
+      nodeTo != arg
+    )
   }
 
   /**
@@ -423,10 +443,16 @@ private module Cached {
     or
     // Flow into phi node from read
     exists(Ssa::Definition def, Ssa::PhiNode phi, CfgNodes::ExprCfgNode exprFrom |
-      LocalFlow::localFlowSsaInputFromExpr(exprFrom, def, phi) and
+      LocalFlow::localFlowSsaInputFromRead(exprFrom, def, phi) and
       phi = nodeTo.(SsaDefinitionNode).getDefinition() and
       def = phi.getAnInput() and
       exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()]
+    )
+    or
+    exists(CapturedArgumentNode arg |
+      arg = nodeFrom.(CapturedArgumentPostUpdateNode).getPreUpdateNode() and
+      localFlowStepTypeTracker(arg.getAnInput(), nodeTo) and
+      nodeTo != arg
     )
   }
 
@@ -471,6 +497,10 @@ private module Cached {
     or
     // Needed for stores in type tracking
     TypeTrackerSpecific::storeStepIntoSourceNode(_, n, _)
+    or
+    n instanceof CapturedParameterNode
+    or
+    n instanceof CapturedArgumentPostUpdateNode
   }
 
   cached
@@ -561,6 +591,10 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthHashSplatParameterNode
   or
   n instanceof SynthHashSplatArgumentNode
+  or
+  n instanceof TCapturedArgumentNode
+  or
+  n instanceof CapturedParameterNode
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -828,6 +862,29 @@ private module ParameterNodes {
 
     override string toStringImpl() { result = "parameter " + pos_ + " of " + sc }
   }
+
+  /** A parameter representing a captured variable. */
+  class CapturedParameterNode extends ParameterNodeImpl, TCapturedParameterNode {
+    private Callable c_;
+    private LocalVariable v;
+
+    CapturedParameterNode() { this = TCapturedParameterNode(c_, v) }
+
+    override Parameter getParameter() { none() }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.asCallable() = c_ and
+      pos.isCapturedVariable(v)
+    }
+
+    override CfgScope getCfgScope() { result = c_ }
+
+    override DataFlowCallable getEnclosingCallable() { result.asCallable() = c_ }
+
+    override Location getLocationImpl() { result = c_.getLocation() }
+
+    override string toStringImpl() { result = "captured parameter " + v + " of " + c_ }
+  }
 }
 
 import ParameterNodes
@@ -953,6 +1010,48 @@ private module ArgumentNodes {
 
     override string toStringImpl() { result = "**" }
   }
+
+  /**
+   * An implicit argument that represents the value of a captured variable.
+   */
+  class CapturedArgumentNode extends ArgumentNode, NodeImpl, TCapturedArgumentNode {
+    CfgNodes::ExprNodes::CallCfgNode c;
+    LocalVariable v;
+
+    CapturedArgumentNode() { this = TCapturedArgumentNode(c, v, false) }
+
+    /** Gets a node that flows into this implicit argument. */
+    Node getAnInput() {
+      exists(Ssa::Definition def, BasicBlock bb, int i |
+        SsaImpl::captureFlowIn(c, def, bb, i, _) and
+        def.getSourceVariable() = v
+      |
+        def = result.(SsaDefinitionNode).getDefinition() and
+        def.definesAt(_, bb, i)
+        or
+        exists(CfgNodes::ExprCfgNode e |
+          e = [result, result.(PostUpdateNode).getPreUpdateNode()].asExpr() and
+          e = bb.getNode(i) and
+          e = def.getARead()
+        )
+      )
+    }
+
+    override CfgScope getCfgScope() { result = c.getScope() }
+
+    override Location getLocationImpl() { result = c.getLocation() }
+
+    override string toStringImpl() { result = "captured argument " + v }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call = TCapturedCall(c) and
+      pos = TCapturedArgumentPosition(v)
+    }
+
+    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
+      none()
+    }
+  }
 }
 
 import ArgumentNodes
@@ -1062,6 +1161,16 @@ private module ReturnNodes {
 
     override ReturnKind getKind() { result = rk }
   }
+
+  /**
+   * A data-flow node that represents an updated value of a captured variable,
+   * which is being returned out of the capturing callable.
+   */
+  class CapturedReturnNode extends ReturningNode, SsaDefinitionNode {
+    CapturedReturnNode() { SsaImpl::captureFlowOut(_, def, _) }
+
+    override CapturedReturnKind getKind() { result.getVariable() = def.getSourceVariable() }
+  }
 }
 
 import ReturnNodes
@@ -1095,45 +1204,29 @@ private module OutNodes {
       FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
     }
   }
+
+  /**
+   * A data-flow node that reads a value returned implicitly by a callable
+   * using a captured variable.
+   */
+  class CapturedOutNode extends OutNode, SsaDefinitionNode {
+    private CfgNodes::ExprNodes::CallCfgNode call;
+
+    CapturedOutNode() { SsaImpl::captureFlowOut(call, _, this.getDefinition()) }
+
+    override CapturedCall getCall(ReturnKind kind) {
+      result = TCapturedCall(call) and
+      kind = TCapturedReturnKind(this.getDefinition().getSourceVariable())
+    }
+  }
 }
 
 import OutNodes
 
-private predicate jumpStepCommon(Node pred, Node succ) {
-  // Flow out of a method directly via a captured variable
-  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionNode).getDefinition(),
-    succ.(SsaDefinitionNode).getDefinition())
-  or
+predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
-}
-
-predicate jumpStep(Node pred, Node succ) {
-  jumpStepCommon(pred, succ)
-  or
-  // Flow into a method via a captured variable
-  exists(Ssa::Definition def, BasicBlock bb, int i |
-    SsaImpl::captureFlowIn(_, def, bb, i, succ.(SsaDefinitionNode).getDefinition()) and
-    [pred, pred.(PostUpdateNode).getPreUpdateNode()] = getSsaRefNode(def, bb, i)
-  )
-  or
-  // Flow out of a method via content on a captured variable
-  exists(CfgNodes::ExprNodes::LocalVariableReadAccessCfgNode inner |
-    inner = pred.(PostUpdateNode).getPreUpdateNode().asExpr()
-  |
-    SsaImpl::captureContentFlowOut(_, inner, succ.asExpr())
-    or
-    SsaImpl::captureContentFlowOutPhi(_, inner, succ.(SsaDefinitionNode).getDefinition())
-  )
-}
-
-predicate jumpStepTypeTracker(Node nodeFrom, Node nodeTo) {
-  jumpStepCommon(nodeFrom, nodeTo)
-  or
-  // Flow into a method directly via a captured variable
-  SsaImpl::captureFlowIn(_, nodeFrom.(SsaDefinitionNode).getDefinition(), _, _,
-    nodeTo.(SsaDefinitionNode).getDefinition())
 }
 
 private ContentSet getKeywordContent(string name) {
@@ -1321,6 +1414,25 @@ private module PostUpdateNodes {
     SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
 
     override Node getPreUpdateNode() { result = pre }
+  }
+
+  /**
+   * A post-update node for an implicit argument that represents the value of a
+   * captured variable.
+   */
+  class CapturedArgumentPostUpdateNode extends NodeImpl, PostUpdateNodeImpl, TCapturedArgumentNode {
+    CfgNodes::ExprNodes::CallCfgNode c;
+    LocalVariable v;
+
+    CapturedArgumentPostUpdateNode() { this = TCapturedArgumentNode(c, v, true) }
+
+    override CfgScope getCfgScope() { result = c.getScope() }
+
+    override Location getLocationImpl() { result = c.getLocation() }
+
+    override string toStringImpl() { result = "[post] captured argument " + v }
+
+    override CapturedArgumentNode getPreUpdateNode() { result = TCapturedArgumentNode(c, v, false) }
   }
 }
 

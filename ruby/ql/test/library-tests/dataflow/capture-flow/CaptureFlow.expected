@@ -1,9 +1,7 @@
 failures
 edges
-| capture_flow.rb:9:1:9:12 | ... = ... :  | capture_flow.rb:11:10:11:10 | x |
-| capture_flow.rb:9:1:9:12 | ... = ... :  | capture_flow.rb:11:10:11:10 | x |
-| capture_flow.rb:9:5:9:12 | call to taint :  | capture_flow.rb:9:1:9:12 | ... = ... :  |
-| capture_flow.rb:9:5:9:12 | call to taint :  | capture_flow.rb:9:1:9:12 | ... = ... :  |
+| capture_flow.rb:9:5:9:12 | call to taint :  | capture_flow.rb:11:10:11:10 | x |
+| capture_flow.rb:9:5:9:12 | call to taint :  | capture_flow.rb:11:10:11:10 | x |
 | capture_flow.rb:12:5:12:16 | ... = ... :  | capture_flow.rb:15:6:15:6 | x |
 | capture_flow.rb:12:5:12:16 | ... = ... :  | capture_flow.rb:15:6:15:6 | x |
 | capture_flow.rb:12:9:12:16 | call to taint :  | capture_flow.rb:12:5:12:16 | ... = ... :  |
@@ -51,8 +49,6 @@ edges
 | capture_flow.rb:44:6:44:8 | foo [@field] :  | capture_flow.rb:44:6:44:18 | call to get_field |
 | capture_flow.rb:44:6:44:8 | foo [@field] :  | capture_flow.rb:44:6:44:18 | call to get_field |
 nodes
-| capture_flow.rb:9:1:9:12 | ... = ... :  | semmle.label | ... = ... :  |
-| capture_flow.rb:9:1:9:12 | ... = ... :  | semmle.label | ... = ... :  |
 | capture_flow.rb:9:5:9:12 | call to taint :  | semmle.label | call to taint :  |
 | capture_flow.rb:9:5:9:12 | call to taint :  | semmle.label | call to taint :  |
 | capture_flow.rb:11:10:11:10 | x | semmle.label | x |

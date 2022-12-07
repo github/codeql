@@ -8,10 +8,17 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.SSA
+private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
 
 newtype TReturnKind =
   TNormalReturnKind() or
-  TBreakReturnKind()
+  TBreakReturnKind() or
+  TCapturedReturnKind(LocalVariable v) {
+    exists(Ssa::Definition def |
+      SsaImpl::captureFlowOut(_, def, _) and
+      v = def.getSourceVariable()
+    )
+  }
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
@@ -41,6 +48,19 @@ class NormalReturnKind extends ReturnKind, TNormalReturnKind {
  */
 class BreakReturnKind extends ReturnKind, TBreakReturnKind {
   override string toString() { result = "break" }
+}
+
+/**
+ * A value implicitly returned by updating a captured variable.
+ */
+class CapturedReturnKind extends ReturnKind, TCapturedReturnKind {
+  LocalVariable v;
+
+  CapturedReturnKind() { this = TCapturedReturnKind(v) }
+
+  LocalVariable getVariable() { result = v }
+
+  override string toString() { result = "captured write to " + v }
 }
 
 /** A callable defined in library code, identified by a unique string. */
@@ -147,6 +167,33 @@ private class NormalCall extends DataFlowCall, TNormalCall {
   override DataFlowCallable getEnclosingCallable() { result = TCfgScope(c.getScope()) }
 
   override string toString() { result = c.toString() }
+
+  override Location getLocation() { result = c.getLocation() }
+}
+
+/**
+ * A call that may ultimately reach a callable, which reads or updates
+ * (contents of) a captured variable.
+ */
+class CapturedCall extends DataFlowCall, TCapturedCall {
+  private CfgNodes::ExprNodes::CallCfgNode c;
+
+  CapturedCall() { this = TCapturedCall(c) }
+
+  /** Gets a target, in which a captured variable is referenced. */
+  Callable getATarget() {
+    exists(Ssa::Definition def | result = def.getScope() |
+      SsaImpl::captureFlowIn(c, _, _, _, def)
+      or
+      SsaImpl::captureFlowOut(c, def, _)
+    )
+  }
+
+  override CfgNodes::ExprNodes::CallCfgNode asCall() { none() }
+
+  override DataFlowCallable getEnclosingCallable() { result = TCfgScope(c.getScope()) }
+
+  override string toString() { result = "<captured> " + c.toString() }
 
   override Location getLocation() { result = c.getLocation() }
 }
@@ -341,6 +388,11 @@ private module Cached {
     TNormalCall(CfgNodes::ExprNodes::CallCfgNode c) or
     TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, DataFlow::Node receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+    } or
+    TCapturedCall(CfgNodes::ExprNodes::CallCfgNode c) {
+      SsaImpl::captureFlowIn(c, _, _, _, _)
+      or
+      SsaImpl::captureFlowOut(c, _, _)
     }
 
   pragma[nomagic]
@@ -478,6 +530,8 @@ private module Cached {
     result = viableSourceCallable(call)
     or
     result = viableLibraryCallable(call)
+    or
+    result.asCallable() = call.(CapturedCall).getATarget()
   }
 
   cached
@@ -499,7 +553,13 @@ private module Cached {
     THashSplatArgumentPosition() or
     TSplatAllArgumentPosition() or
     TAnyArgumentPosition() or
-    TAnyKeywordArgumentPosition()
+    TAnyKeywordArgumentPosition() or
+    TCapturedArgumentPosition(LocalVariable v) {
+      exists(Ssa::Definition def |
+        SsaImpl::captureFlowIn(_, _, _, _, def) and
+        v = def.getSourceVariable()
+      )
+    }
 
   cached
   newtype TParameterPosition =
@@ -521,7 +581,13 @@ private module Cached {
     THashSplatParameterPosition() or
     TSplatAllParameterPosition() or
     TAnyParameterPosition() or
-    TAnyKeywordParameterPosition()
+    TAnyKeywordParameterPosition() or
+    TCapturedParameterPosition(LocalVariable v) {
+      exists(Ssa::Definition def |
+        SsaImpl::captureFlowIn(_, _, _, _, def) and
+        v = def.getSourceVariable()
+      )
+    }
 }
 
 import Cached
@@ -921,7 +987,7 @@ private predicate paramReturnFlow(
   DataFlow::Node nodeFrom, DataFlow::PostUpdateNode nodeTo, StepSummary summary
 ) {
   exists(RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p, Expr nodeFromPreExpr |
-    TypeTrackerSpecific::callStep(call, arg, p) and
+    TypeTrackerSpecific::callStep(TNormalCall(call), arg, p) and
     nodeTo.getPreUpdateNode() = arg and
     summary.toString() = "return" and
     (
@@ -1151,6 +1217,9 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents any positional parameter. */
   predicate isAnyNamed() { this = TAnyKeywordParameterPosition() }
 
+  /** Holds if this position represents a captured variable `v`. */
+  predicate isCapturedVariable(LocalVariable v) { this = TCapturedParameterPosition(v) }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
@@ -1170,6 +1239,8 @@ class ParameterPosition extends TParameterPosition {
     this.isAny() and result = "any"
     or
     this.isAnyNamed() and result = "any-named"
+    or
+    exists(LocalVariable v | this.isCapturedVariable(v) and result = "captured " + v)
   }
 }
 
@@ -1196,6 +1267,9 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents any positional parameter. */
   predicate isAnyNamed() { this = TAnyKeywordArgumentPosition() }
 
+  /** Holds if this position represents a captured variable `v`. */
+  predicate isCapturedVariable(LocalVariable v) { this = TCapturedArgumentPosition(v) }
+
   /**
    * Holds if this position represents a synthesized argument containing all keyword
    * arguments wrapped in a hash.
@@ -1221,6 +1295,8 @@ class ArgumentPosition extends TArgumentPosition {
     this.isHashSplat() and result = "**"
     or
     this.isSplatAll() and result = "*"
+    or
+    exists(LocalVariable v | this.isCapturedVariable(v) and result = "captured " + v)
   }
 }
 
@@ -1256,4 +1332,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isAnyNamed() and apos.isKeyword(_)
   or
   apos.isAnyNamed() and ppos.isKeyword(_)
+  or
+  exists(LocalVariable v | apos.isCapturedVariable(v) and ppos.isCapturedVariable(v))
 }

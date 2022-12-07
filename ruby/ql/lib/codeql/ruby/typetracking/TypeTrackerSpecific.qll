@@ -74,7 +74,7 @@ predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 /**
  * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
  */
-predicate jumpStep = DataFlowPrivate::jumpStepTypeTracker/2;
+predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
@@ -89,9 +89,10 @@ private predicate flowThrough(DataFlowPublic::ParameterNode param) {
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
 pragma[nomagic]
 predicate levelStepCall(Node nodeFrom, Node nodeTo) {
-  exists(DataFlowPublic::ParameterNode param |
+  exists(DataFlowPublic::ParameterNode param, DataFlowDispatch::DataFlowCall call |
     flowThrough(param) and
-    callStep(nodeTo.asExpr(), nodeFrom, param)
+    callStep(call, nodeFrom, param) and
+    nodeTo.asExpr() = call.asCall()
   )
 }
 
@@ -169,29 +170,38 @@ private predicate localFieldStep(Node pred, Node succ) {
 
 pragma[noinline]
 private predicate argumentPositionMatch(
-  ExprNodes::CallCfgNode call, DataFlowPrivate::ArgumentNode arg,
+  DataFlowDispatch::DataFlowCall call, DataFlowPrivate::ArgumentNode arg,
   DataFlowDispatch::ParameterPosition ppos
 ) {
   exists(DataFlowDispatch::ArgumentPosition apos |
-    arg.sourceArgumentOf(call, apos) and
+    arg.argumentOf(call, apos) and
     DataFlowDispatch::parameterMatch(ppos, apos)
   )
 }
 
 pragma[noinline]
+private Cfg::CfgScope getTarget(DataFlowDispatch::DataFlowCall call) {
+  result = DataFlowDispatch::getTarget(call.asCall())
+  or
+  result = call.(DataFlowDispatch::CapturedCall).getATarget()
+}
+
+pragma[noinline]
 private predicate viableParam(
-  ExprNodes::CallCfgNode call, DataFlowPrivate::ParameterNodeImpl p,
+  DataFlowDispatch::DataFlowCall call, DataFlowPrivate::ParameterNodeImpl p,
   DataFlowDispatch::ParameterPosition ppos
 ) {
   exists(Cfg::CfgScope callable |
-    DataFlowDispatch::getTarget(call) = callable and
-    p.isSourceParameterOf(callable, ppos)
+    p.isSourceParameterOf(callable, ppos) and
+    callable = getTarget(call)
   )
 }
 
 /** Holds if there is flow from `arg` to `p` via the call `call`. */
 pragma[nomagic]
-predicate callStep(ExprNodes::CallCfgNode call, Node arg, DataFlowPrivate::ParameterNodeImpl p) {
+predicate callStep(
+  DataFlowDispatch::DataFlowCall call, Node arg, DataFlowPrivate::ParameterNodeImpl p
+) {
   exists(DataFlowDispatch::ParameterPosition pos |
     argumentPositionMatch(call, arg, pos) and
     viableParam(call, p, pos)
@@ -223,10 +233,12 @@ predicate callStep(Node nodeFrom, Node nodeTo) {
  * methods is done using API graphs (which uses type tracking).
  */
 predicate returnStep(Node nodeFrom, Node nodeTo) {
-  exists(ExprNodes::CallCfgNode call |
-    nodeFrom instanceof DataFlowPrivate::ReturnNode and
-    nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
-    nodeTo.asExpr().getNode() = call.getNode()
+  exists(DataFlowDispatch::DataFlowCall call |
+    nodeFrom =
+      any(DataFlowPrivate::SynthReturnNode ret |
+        ret.getCfgScope() = getTarget(call) and
+        nodeTo = DataFlowDispatch::getAnOutNode(call, ret.getKind())
+      )
   )
   or
   // In normal data-flow, this will be a local flow step. But for type tracking
@@ -510,9 +522,10 @@ bindingset[call, component]
 private DataFlow::Node evaluateSummaryComponentLocal(
   DataFlow::CallNode call, SummaryComponent component
 ) {
-  exists(DataFlowDispatch::ParameterPosition pos |
+  exists(DataFlowDispatch::ParameterPosition pos, DataFlowDispatch::DataFlowCall call0 |
     component = SummaryComponent::argument(pos) and
-    argumentPositionMatch(call.asExpr(), result, pos)
+    argumentPositionMatch(call0, result, pos) and
+    call.asExpr() = call0.asCall()
   )
   or
   component = SummaryComponent::return() and
