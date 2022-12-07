@@ -975,6 +975,10 @@ open class KotlinFileExtractor(
             val methodId = id.cast<DbMethod>()
             extractMethod(methodId, locId, shortName, erase(f.returnType), paramsSignature, parentId, methodId, origin = null, extractTypeAccess = extractMethodAndParameterTypeAccesses)
             addModifiers(id, "static")
+            if (extReceiver != null) {
+                val extendedType = allParamTypeResults[0] // TODO: this is not correct for member extension methods, where the dispatch receiver is the first parameter
+                tw.writeKtExtensionFunctions(methodId, extendedType.javaResult.id, extendedType.kotlinResult.id)
+            }
         }
         tw.writeHasLocation(id, locId)
         if (f.visibility != DescriptorVisibilities.PRIVATE && f.visibility != DescriptorVisibilities.PRIVATE_TO_THIS) {
