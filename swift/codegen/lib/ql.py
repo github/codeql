@@ -165,9 +165,8 @@ class GetParentImplementation:
 @dataclass
 class PropertyForTest:
     getter: str
+    is_total: bool = True
     type: Optional[str] = None
-    is_single: bool = False
-    is_predicate: bool = False
     is_repeated: bool = False
 
 

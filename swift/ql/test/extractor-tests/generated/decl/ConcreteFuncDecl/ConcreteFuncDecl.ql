@@ -2,11 +2,19 @@
 import codeql.swift.elements
 import TestUtils
 
-from ConcreteFuncDecl x, ModuleDecl getModule, Type getInterfaceType, string getName
+from
+  ConcreteFuncDecl x, string hasSelfParam, int getNumberOfParams, string hasBody,
+  int getNumberOfGenericTypeParams, ModuleDecl getModule, Type getInterfaceType, string getName
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasSelfParam() then hasSelfParam = "yes" else hasSelfParam = "no") and
+  getNumberOfParams = x.getNumberOfParams() and
+  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
+  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule = x.getModule() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName()
-select x, "getModule:", getModule, "getInterfaceType:", getInterfaceType, "getName:", getName
+select x, "hasSelfParam:", hasSelfParam, "getNumberOfParams:", getNumberOfParams, "hasBody:",
+  hasBody, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
+  "getInterfaceType:", getInterfaceType, "getName:", getName
