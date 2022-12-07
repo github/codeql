@@ -209,26 +209,25 @@ module Spife {
    * route handler.
    */
   private class ReplyCall extends API::CallNode {
+    boolean isDirectReplyCall;
+
     ReplyCall() {
       // reply(resp)
-      this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getACall()
+      this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getACall() and
+      isDirectReplyCall = true
       or
       // reply.header(resp, 'foo', 'bar')
-      this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getAMember().getACall()
+      this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getAMember().getACall() and
+      isDirectReplyCall = false
     }
 
-    predicate isDirectReplyCall() {
-      this = API::moduleImport(["@npm/spife/reply", "spife/reply"]).getACall()
-    }
+    predicate isDirectReplyCall() { isDirectReplyCall = true }
 
     /**
      * Gets the route handler that provides this response.
      */
     RouteHandler getRouteHandler() {
-      exists(RouteHandler handler |
-        handler.getAReturn() = this.getReturn().getAValueReachableFromSource() and
-        result = handler
-      )
+      result.getAReturn() = this.getReturn().getAValueReachableFromSource()
     }
   }
 
@@ -248,9 +247,7 @@ module Spife {
       headerValue = super.getArgument(2)
     }
 
-    override DataFlow::Node getNameNode() {
-      result = super.getArgument(1)
-    }
+    override DataFlow::Node getNameNode() { result = super.getArgument(1) }
 
     override RouteHandler getRouteHandler() { result = ReplyCall.super.getRouteHandler() }
   }
@@ -380,14 +377,14 @@ module Spife {
    * An object passed to the `template` method of the reply object.
    */
   private class TemplateObjectInput extends DataFlow::Node {
-    TemplateCall call;
+    ReplyCall call;
 
-    TemplateObjectInput() { this = call.(ReplyCall).getArgument(1) }
+    TemplateObjectInput() { this = call.getArgument(1) }
 
     /**
      * Gets the route handler that uses this object.
      */
-    RouteHandler getRouteHandler() { result = call.(ReplyCall).getRouteHandler() }
+    RouteHandler getRouteHandler() { result = call.getRouteHandler() }
   }
 
   /**
