@@ -42,7 +42,7 @@ module StackTraceExposure {
    * A call to `Kernel#caller`, considered as a flow source.
    */
   class KernelCallerCall extends Source instanceof Kernel::KernelMethodCall {
-    KernelCallerCall() { super.getKernelMethod() = "caller" }
+    KernelCallerCall() { super.getMethodName() = "caller" }
   }
 
   /**
