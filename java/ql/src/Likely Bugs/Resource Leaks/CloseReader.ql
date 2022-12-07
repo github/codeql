@@ -33,6 +33,7 @@ predicate safeReaderType(RefType t) {
 
 from ClassInstanceExpr cie, RefType t
 where
+  cie.getFile().isJavaSourceFile() and
   badCloseableInit(cie) and
   cie.getType() = t and
   readerType(t) and

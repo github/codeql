@@ -278,7 +278,7 @@ module.exports.Foo = class Foo {
 		this.opts = {};
 		this.opts.bla = opts.bla
 
-		cp.exec("rm -rf " + this.opts.bla); // NOT OK - but FN [INCONSISTENCY]
+		cp.exec("rm -rf " + this.opts.bla); // NOT OK
 	}
 }
 

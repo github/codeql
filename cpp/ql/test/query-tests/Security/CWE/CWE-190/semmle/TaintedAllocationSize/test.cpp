@@ -333,3 +333,12 @@ void ptr_diff_case() {
 	int offset = admin_begin_pos ? user - admin_begin_pos : 0; 
 	malloc(offset); // GOOD
 }
+
+void equality_barrier() {
+	int size1 = atoi(getenv("USER"));
+	int size2 = atoi(getenv("USER"));
+
+	if (size1 == size2) {
+		int* a = (int*)malloc(size1 * sizeof(int)); // GOOD
+	}
+}

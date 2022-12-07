@@ -29,9 +29,7 @@ query predicate underscore(string input, string output) {
     ]
 }
 
-query predicate mimeTypeInstances(API::Node n) {
-  n = ModelOutput::getATypeNode("actiondispatch", "Mime::Type")
-}
+query predicate mimeTypeInstances(API::Node n) { n = ModelOutput::getATypeNode("Mime::Type") }
 
 query predicate mimeTypeMatchRegExpInterpretations(
   ActionDispatch::MimeTypeMatchRegExpInterpretation s

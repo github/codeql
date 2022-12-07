@@ -4,11 +4,15 @@
 
 import Element
 import Type
+private import semmle.code.csharp.commons.QualifiedName
 
 /** A declaration. */
 class Declaration extends NamedElement, @dotnet_declaration {
   override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = this.getDeclaringType().getQualifiedName() and
+    exists(string dqualifier, string dname |
+      this.getDeclaringType().hasQualifiedName(dqualifier, dname) and
+      qualifier = getQualifiedName(dqualifier, dname)
+    ) and
     name = this.getName()
   }
 
@@ -75,6 +79,16 @@ class Member extends Declaration, @dotnet_member {
 
   /** Holds if this member is `static`. */
   predicate isStatic() { none() }
+
+  /**
+   * Holds if this member has name `name` and is defined in type `type`
+   * with namespace `namespace`.
+   */
+  cached
+  predicate hasQualifiedName(string namespace, string type, string name) {
+    this.getDeclaringType().hasQualifiedName(namespace, type) and
+    name = this.getName()
+  }
 }
 
 /** A property. */

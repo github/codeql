@@ -1,4 +1,5 @@
-/* Model of RAML specifications. */
+/** Model of RAML specifications. */
+
 import javascript
 import HTTP
 

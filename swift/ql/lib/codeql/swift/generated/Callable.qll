@@ -56,7 +56,7 @@ module Generated {
     /**
      * Gets the number of parameters of this callable.
      */
-    final int getNumberOfParams() { result = count(getAParam()) }
+    final int getNumberOfParams() { result = count(int i | exists(getParam(i))) }
 
     /**
      * Gets the body of this callable, if it exists.

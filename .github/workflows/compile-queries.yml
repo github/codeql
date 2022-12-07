@@ -2,11 +2,11 @@ name: "Compile all queries using the latest stable CodeQL CLI"
 
 on:
   push:
-    branches: [main] # makes sure the cache gets populated
-  pull_request:
-    branches:
+    branches:  # makes sure the cache gets populated - running on the branches people tend to merge into.
       - main
       - "rc/*"
+      - "codeql-cli-*"
+  pull_request:
 
 jobs:
   compile-queries:
@@ -14,44 +14,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      # calculate the merge-base with main, in a way that works both on PRs and pushes to main. 
-      - name: Calculate merge-base
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          BASE_BRANCH: ${{ github.base_ref }}
-        run: |
-          MERGE_BASE=$(git merge-base --fork-point origin/$BASE_BRANCH)
-          echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
-      - name: Calculate merge-base - branch
-        if: ${{ github.event_name != 'pull_request' }}
-        # using github.sha instead, since we're directly on a branch, and not in a PR
-        run: |
-          MERGE_BASE=${{ github.sha }}
-          echo "merge-base=$MERGE_BASE" >> $GITHUB_ENV
-      - name: Cache CodeQL query compilation
-        uses: actions/cache@v3
-        with:
-          path: '*/ql/src/.cache'
-          # current GH HEAD first, merge-base second, generic third
-          key: codeql-stable-compile-${{ github.sha }}
-          restore-keys: |
-            codeql-stable-compile-${{ env.merge-base }}
-            codeql-stable-compile-
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
         with:
           channel: 'release'
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with: 
+          key: all-queries
       - name: check formatting
-        run: codeql query format */ql/{src,lib,test}/**/*.{qll,ql} --check-only
+        run: find */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 codeql query format --check-only
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.event_name == 'pull_request' }}
         shell: bash
-        run: codeql query compile -j0 */ql/src --keep-going --warnings=error --check-only
+        run: codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --check-only --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
       - name: compile queries - full
         # do full compile if running on main - this populates the cache
         if : ${{ github.event_name != 'pull_request' }}
         shell: bash
-        run: codeql query compile -j0 */ql/src --keep-going --warnings=error
+        run: codeql query compile -j0 */ql/{src,examples} --keep-going --warnings=error --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"

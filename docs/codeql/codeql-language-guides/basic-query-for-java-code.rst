@@ -1,18 +1,33 @@
 .. _basic-query-for-java-code:
 
-Basic query for Java code
-=========================
+Basic query for Java and Kotlin code
+====================================
 
 Learn to write and run a simple CodeQL query using LGTM.
 
 About the query
 ---------------
 
-The query we're going to run performs a basic search of the code for ``if`` statements that are redundant, in the sense that they have an empty then branch. For example, code such as:
+The query we're going to run searches for inefficient tests for empty strings. For example, Java code such as:
 
 .. code-block:: java
 
-   if (error) { }
+    public class TestJava {
+        void myJavaFun(String s) {
+            boolean b = s.equals("");
+        }
+    }
+
+or Kotlin code such as:
+
+.. code-block:: kotlin
+
+    void myKotlinFun(s: String) {
+        var b = s.equals("")
+    }
+
+In either case, replacing ``s.equals("")`` with ``s.isEmpty()``
+would be more efficient.
 
 Running the query
 -----------------
@@ -37,10 +52,13 @@ Running the query
 
       import java
 
-      from IfStmt ifstmt, Block block
-      where ifstmt.getThen() = block and
-        block.getNumStmt() = 0
-      select ifstmt, "This 'if' statement is redundant." 
+      from MethodAccess ma
+      where
+        ma.getMethod().hasName("equals") and
+        ma.getArgument(0).(StringLiteral).getValue() = ""
+      select ma, "This comparison to empty string is inefficient, use isEmpty() instead."
+
+   Note that CodeQL treats Java and Kotlin as part of the same language, so even though this query starts with ``import java``, it will work for both Java and Kotlin code.
 
    LGTM checks whether your query compiles and, if all is well, the **Run** button changes to green to indicate that you can go ahead and run the query.
 
@@ -57,9 +75,9 @@ Running the query
 
       Your query is always run against the most recently analyzed commit to the selected project.
 
-   The query will take a few moments to return results. When the query completes, the results are displayed below the project name. The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ifstmt`` and is linked to the location in the source code of the project where ``ifstmt`` occurs. The second column is the alert message.
+   The query will take a few moments to return results. When the query completes, the results are displayed below the project name. The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ma`` and is linked to the location in the source code of the project where ``ma`` occurs. The second column is the alert message.
 
-   ➤ `Example query results <https://lgtm.com/query/3235645104630320782/>`__
+   ➤ `Example query results <https://lgtm.com/query/6863787472564633674/>`__
 
    .. pull-quote::
 
@@ -67,34 +85,33 @@ Running the query
 
       An ellipsis (…) at the bottom of the table indicates that the entire list is not displayed—click it to show more results.
 
-#. If any matching code is found, click a link in the ``ifstmt`` column to view the ``if`` statement in the code viewer.
+#. If any matching code is found, click a link in the ``ma`` column to view the ``.equals`` expression in the code viewer.
 
-   The matching ``if`` statement is highlighted with a yellow background in the code viewer. If any code in the file also matches a query from the standard query library for that language, you will see a red alert message at the appropriate point within the code.
+   The matching ``.equals`` expression is highlighted with a yellow background in the code viewer. If any code in the file also matches a query from the standard query library for that language, you will see a red alert message at the appropriate point within the code.
 
 About the query structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After the initial ``import`` statement, this simple query comprises three parts that serve similar purposes to the FROM, WHERE, and SELECT parts of an SQL query.
 
-+---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
-| Query part                                                    | Purpose                                                                                                           | Details                                                                                                                |
-+===============================================================+===================================================================================================================+========================================================================================================================+
-| ``import java``                                               | Imports the standard CodeQL libraries for Java.                                                                   | Every query begins with one or more ``import`` statements.                                                             |
-+---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
-| ``from IfStmt ifstmt, Block block``                           | Defines the variables for the query.                                                                              | We use:                                                                                                                |
-|                                                               | Declarations are of the form:                                                                                     |                                                                                                                        |
-|                                                               | ``<type> <variable name>``                                                                                        | - an ``IfStmt`` variable for ``if`` statements                                                                         |
-|                                                               |                                                                                                                   | - a ``Block`` variable for the then block                                                                              |
-+---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
-| ``where ifstmt.getThen() = block and block.getNumStmt() = 0`` | Defines a condition on the variables.                                                                             | ``ifstmt.getThen() = block`` relates the two variables. The block must be the ``then`` branch of the ``if`` statement. |
-|                                                               |                                                                                                                   |                                                                                                                        |
-|                                                               |                                                                                                                   | ``block.getNumStmt() = 0`` states that the block must be empty (that is, it contains no statements).                   |
-+---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
-| ``select ifstmt, "This 'if' statement is redundant."``        | Defines what to report for each match.                                                                            | Reports the resulting ``if`` statement with a string that explains the problem.                                        |
-|                                                               |                                                                                                                   |                                                                                                                        |
-|                                                               | ``select`` statements for queries that are used to find instances of poor coding practice are always in the form: |                                                                                                                        |
-|                                                               | ``select <program element>, "<alert message>"``                                                                   |                                                                                                                        |
-+---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
+| Query part                                                                                       | Purpose                                                                                                           | Details                                                                                           |
++==================================================================================================+===================================================================================================================+===================================================================================================+
+| ``import java``                                                                                  | Imports the standard CodeQL libraries for Java and Kotlin.                                                        | Every query begins with one or more ``import`` statements.                                        |
++--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
+| ``from MethodAccess ma``                                                                         | Defines the variables for the query.                                                                              | We use:                                                                                           |
+|                                                                                                  | Declarations are of the form:                                                                                     |                                                                                                   |
+|                                                                                                  | ``<type> <variable name>``                                                                                        | - a ``MethodAccess`` variable for call expressions                                                |
++--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
+| ``where ma.getMethod().hasName("equals") and ma.getArgument(0).(StringLiteral).getValue() = ""`` | Defines a condition on the variables.                                                                             | ``ma.getMethod().hasName("equals")`` restricts ``ma`` to only calls to methods call ``equals``.   |
+|                                                                                                  |                                                                                                                   |                                                                                                   |
+|                                                                                                  |                                                                                                                   | ``ma.getArgument(0).(StringLiteral).getValue() = ""`` says the argument must be literal ``""``.   |
++--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
+| ``select ma, "This comparison to empty string is inefficient, use isEmpty() instead."``          | Defines what to report for each match.                                                                            | Reports the resulting ``.equals`` expression with a string that explains the problem.             |
+|                                                                                                  |                                                                                                                   |                                                                                                   |
+|                                                                                                  | ``select`` statements for queries that are used to find instances of poor coding practice are always in the form: |                                                                                                   |
+|                                                                                                  | ``select <program element>, "<alert message>"``                                                                   |                                                                                                   |
++--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
 
 Extend the query
 ----------------
@@ -104,41 +121,38 @@ Query writing is an inherently iterative process. You write a simple query and t
 Remove false positive results
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Browsing the results of our basic query shows that it could be improved. Among the results you are likely to find examples of ``if`` statements with an ``else`` branch, where an empty ``then`` branch does serve a purpose. For example:
+Browsing the results of our basic query shows that it could be improved. For example, you may find results for code like:
 
 .. code-block:: java
 
-   if (...) {
-     ...
-   } else if ("-verbose".equals(option)) {
-     // nothing to do - handled earlier
-   } else {
-     error("unrecognized option");
-   }
+    public class TestJava {
+        void myJavaFun(Object o) {
+            boolean b = o.equals("");
+        }
+    }
 
-In this case, identifying the ``if`` statement with the empty ``then`` branch as redundant is a false positive. One solution to this is to modify the query to ignore empty ``then`` branches if the ``if`` statement has an ``else`` branch.
-
-To exclude ``if`` statements that have an ``else`` branch:
+In this case, it is not possible to simply use ``o.isEmpty()`` instead, as ``o`` has type ``Object`` rather than ``String``. One solution to this is to modify the query to only return results where the expression being tested has type ``String``:
 
 #. Extend the where clause to include the following extra condition:
 
    .. code-block:: ql
 
-      and not exists(ifstmt.getElse())
+    ma.getQualifier().getType() instanceof TypeString
 
    The ``where`` clause is now:
 
    .. code-block:: ql
 
-      where ifstmt.getThen() = block and
-        block.getNumStmt() = 0 and
-        not exists(ifstmt.getElse())
+      where
+        ma.getQualifier().getType() instanceof TypeString and
+        ma.getMethod().hasName("equals") and
+        ma.getArgument(0).(StringLiteral).getValue() = ""
 
 #. Click **Run**.
 
-   There are now fewer results because ``if`` statements with an ``else`` branch are no longer included.
+   There are now fewer results because ``.equals`` expressions with different types are no longer included.
 
-➤ `See this in the query console <https://lgtm.com/query/6382189874776576029/>`__
+➤ `See this in the query console <https://lgtm.com/query/3716567543394265485/>`__
 
 Further reading
 ---------------

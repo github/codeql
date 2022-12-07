@@ -23,3 +23,5 @@ private import codeql.ruby.frameworks.HttpClients
 private import codeql.ruby.frameworks.XmlParsing
 private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.PosixSpawn
+private import codeql.ruby.frameworks.StringFormatters
+private import codeql.ruby.frameworks.Json

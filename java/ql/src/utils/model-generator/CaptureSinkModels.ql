@@ -6,7 +6,11 @@
  * @tags model-generator
  */
 
-import internal.CaptureModels
+import utils.modelgenerator.internal.CaptureModels
+
+class Activate extends ActiveConfiguration {
+  override predicate activateToSinkConfig() { any() }
+}
 
 from DataFlowTargetApi api, string sink
 where sink = captureSink(api)

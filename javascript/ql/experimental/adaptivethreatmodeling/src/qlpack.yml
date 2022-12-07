@@ -1,4 +1,5 @@
 name: codeql/javascript-experimental-atm-queries
+description: Experimental ML-powered queries for JavaScript
 language: javascript
 version: 0.4.4
 suites: codeql-suites

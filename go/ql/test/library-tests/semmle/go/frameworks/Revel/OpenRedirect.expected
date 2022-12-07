@@ -1,12 +1,6 @@
 edges
-| EndToEnd.go:94:20:94:27 | implicit dereference : Params | EndToEnd.go:94:20:94:27 | implicit dereference : Params |
-| EndToEnd.go:94:20:94:27 | implicit dereference : Params | EndToEnd.go:94:20:94:27 | selection of Params : pointer type |
-| EndToEnd.go:94:20:94:27 | implicit dereference : Params | EndToEnd.go:94:20:94:49 | call to Get |
-| EndToEnd.go:94:20:94:27 | selection of Params : pointer type | EndToEnd.go:94:20:94:27 | implicit dereference : Params |
-| EndToEnd.go:94:20:94:27 | selection of Params : pointer type | EndToEnd.go:94:20:94:27 | selection of Params : pointer type |
 | EndToEnd.go:94:20:94:27 | selection of Params : pointer type | EndToEnd.go:94:20:94:49 | call to Get |
 nodes
-| EndToEnd.go:94:20:94:27 | implicit dereference : Params | semmle.label | implicit dereference : Params |
 | EndToEnd.go:94:20:94:27 | selection of Params : pointer type | semmle.label | selection of Params : pointer type |
 | EndToEnd.go:94:20:94:49 | call to Get | semmle.label | call to Get |
 subpaths

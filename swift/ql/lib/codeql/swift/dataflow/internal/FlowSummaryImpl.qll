@@ -520,7 +520,8 @@ module Private {
   predicate summaryParameterNodeRange(SummarizedCallable c, ParameterPosition pos) {
     parameterReadState(c, _, pos)
     or
-    isParameterPostUpdate(_, c, pos)
+    // Same as `isParameterPostUpdate(_, c, pos)`, but can be used in a negative context
+    any(SummaryNodeState state).isOutputState(c, SummaryComponentStack::argument(pos))
   }
 
   private predicate callbackOutput(
@@ -892,7 +893,7 @@ module Private {
   }
 
   /**
-   * Provides a means of translating externally (e.g., CSV) defined flow
+   * Provides a means of translating externally (e.g., MaD) defined flow
    * summaries into a `SummarizedCallable`s.
    */
   module External {
@@ -1121,7 +1122,7 @@ module Private {
     }
 
     /**
-     * Holds if `node` is specified as a source with the given kind in a CSV flow
+     * Holds if `node` is specified as a source with the given kind in a MaD flow
      * model.
      */
     predicate isSourceNode(InterpretNode node, string kind) {
@@ -1132,7 +1133,7 @@ module Private {
     }
 
     /**
-     * Holds if `node` is specified as a sink with the given kind in a CSV flow
+     * Holds if `node` is specified as a sink with the given kind in a MaD flow
      * model.
      */
     predicate isSinkNode(InterpretNode node, string kind) {

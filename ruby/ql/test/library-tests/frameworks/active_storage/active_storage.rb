@@ -36,7 +36,7 @@ ActiveStorage.video_preview_arguments = custom_preview_args
 
 ActiveStorage.variant_processor = custom_processor
 
-class PostsController < ActionController::Base
+class PostsController2 < ActionController::Base
   def create
     post = Post.new(params[:post])
     post.images.attach(params[:images])

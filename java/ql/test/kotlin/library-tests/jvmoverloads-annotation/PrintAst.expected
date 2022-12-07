@@ -5,7 +5,7 @@ test.kt:
 #    1|       3: [TypeAccess] String
 #    1|       5: [BlockStmt] { ... }
 #    1|         0: [ReturnStmt] return ...
-#    1|           0: [StringLiteral] Hello world
+#    1|           0: [StringLiteral] "Hello world"
 #   45|     2: [ExtensionMethod] testExtensionFunction
 #   45|       3: [TypeAccess] int
 #-----|       4: (Parameters)
@@ -929,7 +929,7 @@ test.kt:
 #   30|           1: [ExprStmt] <Expr>;
 #   30|             0: [AssignExpr] ...=...
 #   30|               0: [VarAccess] p2
-#   30|               1: [StringLiteral] Hello world
+#   30|               1: [StringLiteral] "Hello world"
 #   30|         2: [ThisConstructorInvocationStmt] this(...)
 #   30|           0: [VarAccess] p0
 #   30|           1: [VarAccess] p1
@@ -1024,7 +1024,7 @@ test.kt:
 #   33|           1: [ExprStmt] <Expr>;
 #   33|             0: [AssignExpr] ...=...
 #   33|               0: [VarAccess] p3
-#   33|               1: [StringLiteral] Hello world
+#   33|               1: [StringLiteral] "Hello world"
 #   33|         2: [ReturnStmt] return ...
 #   33|           0: [MethodAccess] testMemberFunction(...)
 #   33|             -1: [VarAccess] p0
@@ -1049,7 +1049,7 @@ test.kt:
 #   37|               -1: [VarAccess] spec1
 #   37|               0: [IntegerLiteral] 1
 #   37|               1: [FloatLiteral] 1.0
-#   37|               2: [StringLiteral] Hello world
+#   37|               2: [StringLiteral] "Hello world"
 #   37|               3: [FloatLiteral] 2.0
 #   38|         1: [ExprStmt] <Expr>;
 #   38|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -1058,5 +1058,5 @@ test.kt:
 #   38|               -1: [VarAccess] spec2
 #   38|               0: [IntegerLiteral] 1
 #   38|               1: [DoubleLiteral] 1.0
-#   38|               2: [StringLiteral] Hello world
+#   38|               2: [StringLiteral] "Hello world"
 #   38|               3: [DoubleLiteral] 2.0

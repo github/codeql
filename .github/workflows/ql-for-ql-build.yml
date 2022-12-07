@@ -22,15 +22,19 @@ jobs:
     steps:
       ### Build the queries ###
       - uses: actions/checkout@v3
+      - name: Find latest bundle
+        id: find-latest-bundle
+        uses: ./.github/actions/find-latest-bundle
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
+        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           languages: javascript # does not matter
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Get CodeQL version
         id: get-codeql-version
         run: |
-          echo "::set-output name=version::$("${CODEQL}" --version | head -n 1 | rev | cut -d " " -f 1 | rev)"
+          echo "version=$("${CODEQL}" --version | head -n 1 | rev | cut -d " " -f 1 | rev)" >> $GITHUB_OUTPUT
         shell: bash
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
@@ -133,11 +137,12 @@ jobs:
         env:
           CONF: ./ql-for-ql-config.yml
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
+        uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Move pack cache
         run: |
           cp -r ${PACK}/.cache ql/ql/src/.cache
@@ -145,7 +150,7 @@ jobs:
           PACK: ${{ runner.temp }}/pack
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
+        uses: github/codeql-action/analyze@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           category: "ql-for-ql"
       - name: Copy sarif file to CWD

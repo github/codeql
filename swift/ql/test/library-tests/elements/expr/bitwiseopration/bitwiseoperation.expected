@@ -1,0 +1,6 @@
+| bitwiseoperation.swift:2:7:2:8 | call to ~(_:) | NotBitwiseExpr, UnaryBitwiseOperation |
+| bitwiseoperation.swift:3:7:3:11 | ... .&(_:_:) ... | AndBitwiseExpr, BinaryBitwiseOperation |
+| bitwiseoperation.swift:4:7:4:11 | ... .\|(_:_:) ... | BinaryBitwiseOperation, OrBitwiseExpr |
+| bitwiseoperation.swift:5:7:5:11 | ... .^(_:_:) ... | BinaryBitwiseOperation, XorBitwiseExpr |
+| bitwiseoperation.swift:6:7:6:12 | ... .<<(_:_:) ... | BinaryBitwiseOperation, ShiftLeftBitwiseExpr |
+| bitwiseoperation.swift:7:7:7:12 | ... .>>(_:_:) ... | BinaryBitwiseOperation, ShiftRightBitwiseExpr |

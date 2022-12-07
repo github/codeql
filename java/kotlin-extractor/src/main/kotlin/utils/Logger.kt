@@ -138,6 +138,10 @@ open class LoggerBase(val logCounter: LogCounter) {
         fullMsgBuilder.append(suffix)
 
         val fullMsg = fullMsgBuilder.toString()
+        emitDiagnostic(tw, severity, diagnosticLocStr, msg, fullMsg, locationString, mkLocationId)
+    }
+
+    private fun emitDiagnostic(tw: TrapWriter, severity: Severity, diagnosticLocStr: String, msg: String, fullMsg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
         val logMessage = LogMessage(kind, "Diagnostic($diagnosticLocStr): $locStr$fullMsg")
@@ -190,9 +194,10 @@ open class LoggerBase(val logCounter: LogCounter) {
                 // We don't know if this location relates to an error
                 // or a warning, so we just declare hitting the limit
                 // to be an error regardless.
-                val logMessage = LogMessage("ERROR", "Total of $count diagnostics from $caller.")
-                tw.writeComment(logMessage.toText())
-                logStream.write(logMessage.toJsonLine())
+                val message = "Total of $count diagnostics (reached limit of ${logCounter.diagnosticLimit}) from $caller."
+                if (verbosity >= 1) {
+                    emitDiagnostic(tw, Severity.Error, "Limit", message, message)
+                }
             }
         }
     }

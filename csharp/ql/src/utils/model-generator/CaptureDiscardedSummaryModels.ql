@@ -5,8 +5,8 @@
  */
 
 import semmle.code.csharp.dataflow.ExternalFlow
-import internal.CaptureModels
-import internal.CaptureSummaryFlow
+import utils.modelgenerator.internal.CaptureModels
+import utils.modelgenerator.internal.CaptureSummaryFlow
 
 from DataFlowTargetApi api, string flow
 where flow = captureFlow(api) and hasSummary(api, false)

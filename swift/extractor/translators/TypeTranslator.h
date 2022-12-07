@@ -69,6 +69,12 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   codeql::BuiltinIntegerType translateBuiltinIntegerType(const swift::BuiltinIntegerType& type);
   codeql::OpenedArchetypeType translateOpenedArchetypeType(const swift::OpenedArchetypeType& type);
   codeql::ModuleType translateModuleType(const swift::ModuleType& type);
+  codeql::OpaqueTypeArchetypeType translateOpaqueTypeArchetypeType(
+      const swift::OpaqueTypeArchetypeType& type);
+  codeql::ErrorType translateErrorType(const swift::ErrorType& type);
+  codeql::UnresolvedType translateUnresolvedType(const swift::UnresolvedType& type);
+  codeql::ParameterizedProtocolType translateParameterizedProtocolType(
+      const swift::ParameterizedProtocolType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);

@@ -9,3 +9,5 @@
 | accessors.swift:19:9:19:9 | set | 0 | accessors.swift:19:9:19:9 | value |
 | accessors.swift:23:9:23:9 | set | 0 | accessors.swift:23:9:23:9 | value |
 | accessors.swift:24:9:24:19 | willSet | 0 | accessors.swift:24:9:24:9 | newValue |
+| accessors.swift:29:9:29:9 | set | 0 | accessors.swift:29:9:29:9 | value |
+| accessors.swift:38:9:38:9 | set | 0 | accessors.swift:38:9:38:9 | value |

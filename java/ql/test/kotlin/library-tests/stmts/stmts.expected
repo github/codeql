@@ -15,17 +15,17 @@ enclosing
 | stmts.kt:12:5:14:18 | { ... } | stmts.kt:2:41:20:1 | { ... } |
 | stmts.kt:12:8:14:5 | { ... } | stmts.kt:12:5:14:18 | do ... while (...) |
 | stmts.kt:13:9:13:16 | return ... | stmts.kt:12:8:14:5 | { ... } |
-| stmts.kt:15:5:15:13 | var ...; | stmts.kt:2:41:20:1 | { ... } |
-| stmts.kt:17:5:17:58 | var ...; | stmts.kt:2:41:20:1 | { ... } |
-| stmts.kt:17:26:17:58 | ... -> ... | stmts.kt:17:5:17:58 | var ...; |
-| stmts.kt:17:26:17:58 | ... -> ... | stmts.kt:17:5:17:58 | var ...; |
+| stmts.kt:15:9:15:9 | var ...; | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:17:9:17:10 | var ...; | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:17:26:17:58 | ... -> ... | stmts.kt:17:9:17:10 | var ...; |
+| stmts.kt:17:26:17:58 | ... -> ... | stmts.kt:17:9:17:10 | var ...; |
 | stmts.kt:17:35:17:43 | { ... } | stmts.kt:17:26:17:58 | ... -> ... |
 | stmts.kt:17:37:17:37 | <Expr>; | stmts.kt:17:35:17:43 | { ... } |
 | stmts.kt:17:50:17:58 | { ... } | stmts.kt:17:26:17:58 | ... -> ... |
 | stmts.kt:17:52:17:52 | <Expr>; | stmts.kt:17:50:17:58 | { ... } |
-| stmts.kt:18:5:18:56 | var ...; | stmts.kt:2:41:20:1 | { ... } |
-| stmts.kt:18:26:18:56 | ... -> ... | stmts.kt:18:5:18:56 | var ...; |
-| stmts.kt:18:26:18:56 | ... -> ... | stmts.kt:18:5:18:56 | var ...; |
+| stmts.kt:18:9:18:10 | var ...; | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:18:26:18:56 | ... -> ... | stmts.kt:18:9:18:10 | var ...; |
+| stmts.kt:18:26:18:56 | ... -> ... | stmts.kt:18:9:18:10 | var ...; |
 | stmts.kt:18:37:18:37 | <Expr>; | stmts.kt:18:26:18:56 | ... -> ... |
 | stmts.kt:18:52:18:52 | <Expr>; | stmts.kt:18:26:18:56 | ... -> ... |
 | stmts.kt:19:5:19:16 | return ... | stmts.kt:2:41:20:1 | { ... } |
@@ -88,15 +88,15 @@ enclosing
 | stmts.kt:12:5:14:18 | { ... } | BlockStmt |
 | stmts.kt:12:8:14:5 | { ... } | BlockStmt |
 | stmts.kt:13:9:13:16 | return ... | ReturnStmt |
-| stmts.kt:15:5:15:13 | var ...; | LocalVariableDeclStmt |
-| stmts.kt:17:5:17:58 | var ...; | LocalVariableDeclStmt |
+| stmts.kt:15:9:15:9 | var ...; | LocalVariableDeclStmt |
+| stmts.kt:17:9:17:10 | var ...; | LocalVariableDeclStmt |
 | stmts.kt:17:26:17:58 | ... -> ... | WhenBranch |
 | stmts.kt:17:26:17:58 | ... -> ... | WhenBranch |
 | stmts.kt:17:35:17:43 | { ... } | BlockStmt |
 | stmts.kt:17:37:17:37 | <Expr>; | ExprStmt |
 | stmts.kt:17:50:17:58 | { ... } | BlockStmt |
 | stmts.kt:17:52:17:52 | <Expr>; | ExprStmt |
-| stmts.kt:18:5:18:56 | var ...; | LocalVariableDeclStmt |
+| stmts.kt:18:9:18:10 | var ...; | LocalVariableDeclStmt |
 | stmts.kt:18:26:18:56 | ... -> ... | WhenBranch |
 | stmts.kt:18:26:18:56 | ... -> ... | WhenBranch |
 | stmts.kt:18:37:18:37 | <Expr>; | ExprStmt |

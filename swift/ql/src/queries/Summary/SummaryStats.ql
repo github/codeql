@@ -15,6 +15,8 @@ predicate statistic(string what, int value) {
   or
   what = "Expressions" and value = count(Expr e | not e.getFile() instanceof UnknownFile)
   or
+  what = "Local flow sources" and value = count(LocalFlowSource s)
+  or
   what = "Remote flow sources" and value = count(RemoteFlowSource s)
   or
   what = "Sensitive expressions" and value = count(SensitiveExpr e)

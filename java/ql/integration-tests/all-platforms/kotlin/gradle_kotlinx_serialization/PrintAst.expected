@@ -180,15 +180,15 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
 #    0|           0: [StringTemplateExpr] "..."
-#    0|             0: [StringLiteral] Project(
-#    0|             1: [StringLiteral] name=
+#    0|             0: [StringLiteral] "Project("
+#    0|             1: [StringLiteral] "name="
 #    0|             2: [VarAccess] this.name
 #    0|               -1: [ThisAccess] this
-#    0|             3: [StringLiteral] , 
-#    0|             4: [StringLiteral] language=
+#    0|             3: [StringLiteral] ", "
+#    0|             4: [StringLiteral] "language="
 #    0|             5: [VarAccess] this.language
 #    0|               -1: [ThisAccess] this
-#    0|             6: [StringLiteral] )
+#    0|             6: [StringLiteral] ")"
 #    0|     9: [Method] write$Self
 #    0|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
@@ -405,19 +405,19 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|               1: [LocalVariableDeclExpr] tmp0_serialDesc
 #    7|                 0: [ClassInstanceExpr] new PluginGeneratedSerialDescriptor(...)
 #    7|                   -3: [TypeAccess] PluginGeneratedSerialDescriptor
-#    7|                   0: [StringLiteral] testProject.Project
+#    7|                   0: [StringLiteral] "testProject.Project"
 #    7|                   1: [ThisAccess] $serializer.this
 #    7|                     0: [TypeAccess] $serializer
 #    7|                   2: [IntegerLiteral] 2
 #    7|             1: [ExprStmt] <Expr>;
 #    7|               0: [MethodAccess] addElement(...)
 #    7|                 -1: [VarAccess] tmp0_serialDesc
-#    7|                 0: [StringLiteral] name
+#    7|                 0: [StringLiteral] "name"
 #    7|                 1: [BooleanLiteral] false
 #    7|             2: [ExprStmt] <Expr>;
 #    7|               0: [MethodAccess] addElement(...)
 #    7|                 -1: [VarAccess] tmp0_serialDesc
-#    7|                 0: [StringLiteral] language
+#    7|                 0: [StringLiteral] "language"
 #    7|                 1: [BooleanLiteral] false
 #    7|             3: [ExprStmt] <Expr>;
 #    7|               0: [AssignExpr] ...=...
@@ -520,7 +520,7 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|                   0: [VarAccess] X.this.id
 #   14|                     -1: [ThisAccess] X.this
 #   14|                       0: [TypeAccess] X
-#   16|                   1: [StringLiteral] X
+#   16|                   1: [StringLiteral] "X"
 #   14|             1: [WhenBranch] ... -> ...
 #   14|               0: [BooleanLiteral] true
 #   14|               1: [ExprStmt] <Expr>;
@@ -556,7 +556,7 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|                     0: [ValueNEExpr] ... (value not-equals) ...
 #   14|                       0: [MethodAccess] getId(...)
 #   14|                         -1: [VarAccess] self
-#   16|                       1: [StringLiteral] X
+#   16|                       1: [StringLiteral] "X"
 #   14|               1: [ExprStmt] <Expr>;
 #   14|                 0: [MethodAccess] encodeStringElement(...)
 #   14|                   -1: [VarAccess] output
@@ -720,14 +720,14 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|               1: [LocalVariableDeclExpr] tmp0_serialDesc
 #   14|                 0: [ClassInstanceExpr] new PluginGeneratedSerialDescriptor(...)
 #   14|                   -3: [TypeAccess] PluginGeneratedSerialDescriptor
-#   14|                   0: [StringLiteral] testProject.X
+#   14|                   0: [StringLiteral] "testProject.X"
 #   14|                   1: [ThisAccess] $serializer.this
 #   14|                     0: [TypeAccess] $serializer
 #   14|                   2: [IntegerLiteral] 1
 #   14|             1: [ExprStmt] <Expr>;
 #   14|               0: [MethodAccess] addElement(...)
 #   14|                 -1: [VarAccess] tmp0_serialDesc
-#   14|                 0: [StringLiteral] id
+#   14|                 0: [StringLiteral] "id"
 #   14|                 1: [BooleanLiteral] true
 #   14|             2: [ExprStmt] <Expr>;
 #   14|               0: [AssignExpr] ...=...
@@ -764,7 +764,7 @@ app/src/main/kotlin/testProject/App.kt:
 #   16|               0: [VarAccess] id
 #   16|     6: [FieldDeclaration] String id;
 #   16|       -1: [TypeAccess] String
-#   16|       0: [StringLiteral] X
+#   16|       0: [StringLiteral] "X"
 #   16|     7: [Method] getId
 #   16|       3: [TypeAccess] String
 #   16|       5: [BlockStmt] { ... }

@@ -99,7 +99,7 @@ nodes
 | protos/query/query.pb.go:119:10:119:22 | selection of Description : string | semmle.label | selection of Description : string |
 | util.go:16:9:16:18 | selection of password : string | semmle.label | selection of password : string |
 subpaths
-| protobuf.go:14:14:14:18 | query [pointer, Description] : string | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] : string | protos/query/query.pb.go:119:10:119:22 | selection of Description : string | protobuf.go:14:14:14:35 | call to GetDescription : string |
+| protobuf.go:14:14:14:18 | query [pointer, Description] : string | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] : string | protos/query/query.pb.go:119:10:119:22 | selection of Description : string | protobuf.go:14:14:14:35 | call to GetDescription |
 #select
 | klog.go:22:15:22:20 | header | klog.go:20:30:20:37 | selection of Header : Header | klog.go:22:15:22:20 | header | $@ flows to a logging call. | klog.go:20:30:20:37 | selection of Header | Sensitive data returned by HTTP request headers |
 | klog.go:28:13:28:41 | call to Get | klog.go:28:13:28:20 | selection of Header : Header | klog.go:28:13:28:41 | call to Get | $@ flows to a logging call. | klog.go:28:13:28:20 | selection of Header | Sensitive data returned by HTTP request headers |

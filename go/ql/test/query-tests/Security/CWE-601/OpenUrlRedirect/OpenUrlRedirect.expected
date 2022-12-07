@@ -47,19 +47,13 @@ edges
 | stdlib.go:113:24:113:28 | selection of URL : pointer type | stdlib.go:113:24:113:37 | call to String |
 | stdlib.go:113:24:113:28 | selection of URL : pointer type | stdlib.go:113:24:113:37 | call to String |
 | stdlib.go:146:13:146:18 | selection of Form : Values | stdlib.go:152:23:152:28 | target |
-| stdlib.go:159:11:159:15 | selection of URL : pointer type | stdlib.go:159:11:159:15 | selection of URL : pointer type |
-| stdlib.go:159:11:159:15 | selection of URL : pointer type | stdlib.go:159:11:159:15 | selection of URL : pointer type |
 | stdlib.go:159:11:159:15 | selection of URL : pointer type | stdlib.go:162:24:162:35 | call to String |
 | stdlib.go:159:11:159:15 | selection of URL : pointer type | stdlib.go:162:24:162:35 | call to String |
 | stdlib.go:173:35:173:39 | selection of URL : pointer type | stdlib.go:173:24:173:52 | ...+... |
 | stdlib.go:173:35:173:39 | selection of URL : pointer type | stdlib.go:173:24:173:52 | ...+... |
 | stdlib.go:182:13:182:33 | call to FormValue : string | stdlib.go:184:23:184:28 | target |
-| stdlib.go:190:36:190:56 | call to FormValue : string | stdlib.go:192:23:192:28 | implicit dereference : URL |
 | stdlib.go:190:36:190:56 | call to FormValue : string | stdlib.go:192:23:192:33 | selection of Path |
 | stdlib.go:190:36:190:56 | call to FormValue : string | stdlib.go:194:23:194:42 | call to EscapedPath |
-| stdlib.go:192:23:192:28 | implicit dereference : URL | stdlib.go:192:23:192:28 | implicit dereference : URL |
-| stdlib.go:192:23:192:28 | implicit dereference : URL | stdlib.go:192:23:192:33 | selection of Path |
-| stdlib.go:192:23:192:28 | implicit dereference : URL | stdlib.go:194:23:194:42 | call to EscapedPath |
 nodes
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form : Values | semmle.label | selection of Form : Values |
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | semmle.label | call to Get |
@@ -114,7 +108,6 @@ nodes
 | stdlib.go:182:13:182:33 | call to FormValue : string | semmle.label | call to FormValue : string |
 | stdlib.go:184:23:184:28 | target | semmle.label | target |
 | stdlib.go:190:36:190:56 | call to FormValue : string | semmle.label | call to FormValue : string |
-| stdlib.go:192:23:192:28 | implicit dereference : URL | semmle.label | implicit dereference : URL |
 | stdlib.go:192:23:192:33 | selection of Path | semmle.label | selection of Path |
 | stdlib.go:194:23:194:42 | call to EscapedPath | semmle.label | call to EscapedPath |
 subpaths

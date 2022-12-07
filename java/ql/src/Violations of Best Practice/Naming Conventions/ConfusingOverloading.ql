@@ -57,6 +57,8 @@ private predicate candidateMethod(RefType t, Method m, string name, int numParam
   m.getNumberOfParameters() = numParam and
   m = m.getSourceDeclaration() and
   not m.getAnAnnotation() instanceof DeprecatedAnnotation and
+  // Exclude compiler generated methods, such as Kotlin `$default` methods:
+  not m.isCompilerGenerated() and
   not whitelist(name)
 }
 

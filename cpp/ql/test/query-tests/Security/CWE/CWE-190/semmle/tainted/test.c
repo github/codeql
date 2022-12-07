@@ -95,5 +95,12 @@ int main(int argc, char** argv) {
     }
   }
 
+  // GOOD: check the user input first
+  int maxConnections3 = atoi(argv[1]);
+  int maxConnections4 = atoi(argv[1]);
+  if (maxConnections3 == maxConnections4) {
+    startServer(maxConnections3 * 1000);
+  }
+
   return 0;
 }

@@ -24,7 +24,7 @@ private module MongoDB {
     override predicate row(string row) {
       // In Mongo version 2.x, a client and a database handle were the same concept, but in 3.x
       // they were separated. To handle everything with a single model, we treat them as the same here.
-      row = "mongodb;Db;mongodb;MongoClient;"
+      row = "mongodb.Db;mongodb.MongoClient;"
     }
   }
 
@@ -42,11 +42,11 @@ private module MongoDB {
   /** A call to a MongoDB query method. */
   private class QueryCall extends DatabaseAccess, API::CallNode {
     QueryCall() {
-      this = ModelOutput::getATypeNode("mongodb", "Collection").getAMember().getACall() and
+      this = ModelOutput::getATypeNode("mongodb.Collection").getAMember().getACall() and
       not this.getCalleeName() = ["toString", "valueOf", "getLogger"]
       or
       this =
-        ModelOutput::getATypeNode("mongodb", ["Db", "MongoClient"])
+        ModelOutput::getATypeNode(["mongodb.Db", "mongodb.MongoClient"])
             .getMember(["watch", "aggregate"])
             .getACall()
     }
@@ -63,7 +63,7 @@ private module MongoDB {
 
   private class Insertion extends DatabaseAccess, API::CallNode {
     Insertion() {
-      this = ModelOutput::getATypeNode("mongodb", "Collection").getAMember().getACall() and
+      this = ModelOutput::getATypeNode("mongodb.Collection").getAMember().getACall() and
       this.getCalleeName().matches("insert%")
     }
 
@@ -105,9 +105,7 @@ private module Mongoose {
   private class QueryCall extends DatabaseAccess, API::CallNode {
     QueryCall() {
       this =
-        ModelOutput::getATypeNode("mongoose", "Query")
-            .getMember(["exec", "then", "catch"])
-            .getACall()
+        ModelOutput::getATypeNode("mongoose.Query").getMember(["exec", "then", "catch"]).getACall()
     }
 
     override DataFlow::Node getAQueryArgument() { result = this.getReceiver() }
@@ -132,10 +130,10 @@ private module Mongoose {
   private class QueryWithCallback extends DatabaseAccess, API::CallNode {
     QueryWithCallback() {
       this =
-        ModelOutput::getATypeNode("mongoose", ["Document", "Model", "Query"])
+        ModelOutput::getATypeNode(["mongoose.Document", "mongoose.Model", "mongoose.Query"])
             .getAMember()
             .getACall() and
-      this.getReturn() = ModelOutput::getATypeNode("mongoose", "Query") and
+      this.getReturn() = ModelOutput::getATypeNode("mongoose.Query") and
       exists(this.getLastArgument().getABoundFunctionValue(_))
     }
 
@@ -152,7 +150,7 @@ private module Mongoose {
 
     QueryAwait() {
       astNode.getOperand().flow() =
-        ModelOutput::getATypeNode("mongoose", "Query").getAValueReachableFromSource()
+        ModelOutput::getATypeNode("mongoose.Query").getAValueReachableFromSource()
     }
 
     override DataFlow::Node getAQueryArgument() { result = astNode.getOperand().flow() }
@@ -162,7 +160,7 @@ private module Mongoose {
 
   class Insertion extends DatabaseAccess, API::CallNode {
     Insertion() {
-      this = ModelOutput::getATypeNode("mongoose", "Model").getAMember().getACall() and
+      this = ModelOutput::getATypeNode("mongoose.Model").getAMember().getACall() and
       this.getCalleeName().matches("insert%")
     }
 
@@ -180,9 +178,9 @@ private module MarsDB {
     override predicate row(string row) {
       row =
         [
-          "mongoose;Query;marsdb;;Member[Collection].Instance",
-          "mongoose;Model;marsdb;;Member[Collection].Instance",
-          "mongoose;Query;mongoose;Query;Member[sortFunc].ReturnValue",
+          "mongoose.Query;marsdb;Member[Collection].Instance",
+          "mongoose.Model;marsdb;Member[Collection].Instance",
+          "mongoose.Query;mongoose.Query;Member[sortFunc].ReturnValue",
         ]
     }
   }
@@ -251,7 +249,7 @@ private module Redis {
           "set", "publish", "append", "bitfield", "decrby", "getset", "hincrby", "hincrbyfloat",
           "hset", "hsetnx", "incrby", "incrbyfloat", "linsert", "lpush", "lpushx", "lset", "ltrim",
           "rename", "renamenx", "rpushx", "setbit", "setex", "smove", "zincrby", "zinterstore",
-          "hdel", "lpush", "pfadd", "rpush", "sadd", "sdiffstore", "srem"
+          "hdel", "pfadd", "rpush", "sadd", "sdiffstore", "srem"
         ] and
       argIndex = 0
       or
