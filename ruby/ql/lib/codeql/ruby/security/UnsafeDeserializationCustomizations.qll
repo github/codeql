@@ -229,27 +229,4 @@ module UnsafeDeserialization {
       toNode = callNode
     )
   }
-
-  /**
-   * A argument in a call to `Module.const_get`, considered as a sink for unsafe
-   * deserialization.
-   *
-   * Calls to `Module.const_get` can return arbitrary classes which can then be
-   * instantiated.
-   */
-  class ConstGetCallArgument extends Sink {
-    ConstGetCallArgument() { this = any(Module::ModuleConstGetCallCodeExecution c).getCode() }
-  }
-
-  /**
-   * A argument in a call to `ActiveJob::Serializers.deserialize`, considered as
-   * a sink for unsafe deserialization.
-   *
-   * This is roughly equivalent to a call to `Module.const_get`.
-   */
-  class ActiveJobSerializersDeserializeArgument extends Sink {
-    ActiveJobSerializersDeserializeArgument() {
-      this = any(ActiveJob::Serializers::DeserializeCall c).getCode()
-    }
-  }
 }
