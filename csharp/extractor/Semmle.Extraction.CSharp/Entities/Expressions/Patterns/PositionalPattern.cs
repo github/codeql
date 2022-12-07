@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -12,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             child = 0;
             foreach (var sub in posPc.Subpatterns)
             {
-                Expressions.Pattern.Create(cx, sub.Pattern, this, child++);
+                Pattern.Create(cx, sub.Pattern, this, child++);
             }
         }
     }

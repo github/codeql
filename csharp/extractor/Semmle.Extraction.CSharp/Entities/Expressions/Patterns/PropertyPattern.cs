@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -27,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private class AccessStepPack
         {
-            public readonly List<AccessStep> Prefix = new List<AccessStep>();
+            public readonly List<AccessStep> Prefix = new();
             public AccessStep Last { get; private set; }
 
             public AccessStepPack Add(string identifier, Microsoft.CodeAnalysis.Location location)
