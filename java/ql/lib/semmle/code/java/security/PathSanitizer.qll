@@ -332,7 +332,7 @@ private Argument getVisualArgument(MethodAccess ma, int argPos) {
 }
 
 /**
- * Gets the proxied method if `m` is a Kotlin proxy that supplies default parameter values,
+ * Gets the proxied method if `m` is a Kotlin proxy that supplies default parameter values.
  * Otherwise, just gets `m`.
  */
 private Method getSourceMethod(Method m) {
