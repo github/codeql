@@ -85,6 +85,18 @@ private class StdIterator extends Iterator, Class {
 }
 
 /**
+ * An iterator class that ensures that iterators hidden behind specifiers
+ * and typedefs are also recognized as iterators.
+ */
+private class SpecifiedTypeIterator extends Iterator {
+  Iterator unspecified;
+
+  SpecifiedTypeIterator() { unspecified = this.getUnspecifiedType() }
+
+  override Type getValueType() { result = unspecified.getValueType() }
+}
+
+/**
  * Gets the `FunctionInput` corresponding to an iterator parameter to
  * user-defined operator `op`, at `index`.
  */
