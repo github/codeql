@@ -370,21 +370,19 @@ private module Cached {
     then
       result = getChi(getOldInstruction(instruction)) and
       kind instanceof GotoEdge
-    else (
+    else
       exists(OldInstruction oldInstruction |
         (
-          oldInstruction = getOldInstruction(instruction) 
+          oldInstruction = getOldInstruction(instruction)
           or
           instruction = getChi(oldInstruction)
-        )
-        and
+        ) and
         (
           if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
           then result = unreachedInstruction(instruction.getEnclosingIRFunction())
           else result = getNewInstruction(oldInstruction.getSuccessor(kind))
         )
       )
-    )
   }
 
   cached

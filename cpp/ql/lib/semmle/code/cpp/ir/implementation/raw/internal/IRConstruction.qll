@@ -387,7 +387,7 @@ Instruction getPrimaryInstructionForSideEffect(SideEffectInstruction instruction
 }
 
 predicate hasUnreachedInstruction(IRFunction func) {
-  exists(Call c | 
+  exists(Call c |
     c.getEnclosingFunction() = func.getFunction() and
     any(Options opt).exits(c.getTarget())
   )

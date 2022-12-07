@@ -19,6 +19,9 @@ newtype TInstruction =
   ) {
     IRConstruction::Raw::hasInstruction(tag1, tag2)
   } or
+  TRawUnreachedInstruction(IRFunctionBase irFunc) {
+    IRConstruction::hasUnreachedInstruction(irFunc)
+  } or
   TUnaliasedSsaPhiInstruction(
     TRawInstruction blockStartInstr, UnaliasedSsa::Ssa::MemoryLocation memoryLocation
   ) {
