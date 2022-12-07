@@ -78,12 +78,9 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
   }
 
   final override string getMethodNameImpl() {
-    isRegularMethodCall(g) and
-    (
-      result = "call" and not exists(g.getMethod())
-      or
-      result = g.getMethod().(Ruby::Token).getValue()
-    )
+    result = "call" and not exists(g.getMethod())
+    or
+    result = g.getMethod().(Ruby::Token).getValue()
   }
 
   final override Expr getArgumentImpl(int n) { toGenerated(result) = g.getArguments().getChild(n) }
