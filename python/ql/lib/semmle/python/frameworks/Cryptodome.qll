@@ -9,6 +9,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+import semmle.python.concepts.internal.CryptoAlgorithmNames
 
 /**
  * Provides models for
@@ -158,15 +159,28 @@ private module CryptodomeModel {
 
     override Cryptography::BlockMode getBlockMode() {
       // `modeName` is of the form "MODE_<BlockMode>"
-      exists(string modeName |
+      exists(string foundMode |
         newCall.getArg(1) =
           API::moduleImport(["Crypto", "Cryptodome"])
               .getMember("Cipher")
               .getMember(cipherName)
-              .getMember(modeName)
+              .getMember(foundMode)
               .getAValueReachableFromSource()
       |
-        result = modeName.splitAt("_", 1)
+        if isKnownCipherBlockModeAlgorithm(foundMode)
+        then result = foundMode.splitAt("_", 1)
+        else result = unknownAlgorithmStub()
+      )
+      or
+      (
+        not exists(string modeName |
+          newCall.getArg(1) =
+            API::moduleImport(["Crypto", "Cryptodome"])
+                .getMember("Cipher")
+                .getMember(cipherName)
+                .getMember(modeName)
+                .getAValueReachableFromSource())
+        and result = unknownAlgorithmStub()
       )
     }
   }

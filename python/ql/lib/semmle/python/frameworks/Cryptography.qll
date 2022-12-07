@@ -7,6 +7,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+import semmle.python.concepts.internal.CryptoAlgorithmNames
 
 /**
  * Provides models for the `cryptography` PyPI package.
@@ -180,7 +181,7 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
-    API::Node cipherInstance(string algorithmName, string modeName) {
+    API::Node symmetricCipherInstance(string algorithmName, string modeName) {
       exists(API::CallNode call | result = call.getReturn() |
         call =
           API::moduleImport("cryptography")
@@ -192,11 +193,22 @@ private module CryptographyModel {
         algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
             call.getArg(0), call.getArgByName("algorithm")
           ] and
-        exists(DataFlow::Node modeArg | modeArg in [call.getArg(1), call.getArgByName("mode")] |
-          if modeArg = modeClassRef(_).getReturn().getAValueReachableFromSource()
-          then modeArg = modeClassRef(modeName).getReturn().getAValueReachableFromSource()
-          else modeName = "<None or unknown>"
+        exists(DataFlow::Node modeArg, string foundMode | modeArg in [call.getArg(1), call.getArgByName("mode")] |
+          (
+            // Find the used mode name
+            if modeArg = modeClassRef(_).getReturn().getAValueReachableFromSource()
+            then modeArg = modeClassRef(foundMode).getReturn().getAValueReachableFromSource()
+            else foundMode = unknownAlgorithmStub()
+          )
+          and
+          (
+            // check the found mode name, setting modeName to the unknown stub if not a known algorithm
+            if isKnownCipherBlockModeAlgorithm(foundMode)
+            then modeName = foundMode
+            else modeName = unknownAlgorithmStub()
+          )
         )
+
       )
     }
 
@@ -210,7 +222,7 @@ private module CryptographyModel {
 
       CryptographyGenericCipherOperation() {
         this =
-          cipherInstance(algorithmName, modeName)
+          symmetricCipherInstance(algorithmName, modeName)
               .getMember(["decryptor", "encryptor"])
               .getReturn()
               .getMember(["update", "update_into"])
