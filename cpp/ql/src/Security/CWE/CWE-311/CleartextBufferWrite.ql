@@ -60,12 +60,11 @@ class ToBufferConfiguration extends TaintTracking::Configuration {
 
 from
   ToBufferConfiguration config, SensitiveBufferWrite w, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode, FlowSource source, SensitiveExpr dest
+  DataFlow::PathNode sinkNode, FlowSource source
 where
   config.hasFlowPath(sourceNode, sinkNode) and
   sourceNode.getNode() = source and
-  w.getASource() = sinkNode.getNode().asExpr() and
-  dest = w.getDest()
+  w.getASource() = sinkNode.getNode().asExpr()
 select w, sourceNode, sinkNode,
-  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@.", source,
-  "user input (" + source.getSourceType() + ")"
+  "This write into buffer '" + w.getDest().toString() + "' may contain unencrypted data from $@.",
+  source, "user input (" + source.getSourceType() + ")"
