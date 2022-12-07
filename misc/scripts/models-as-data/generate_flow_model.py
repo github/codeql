@@ -173,16 +173,10 @@ Requirements: `codeql` should both appear on your path.
         else:
             neutralAddsTo = ""
         
-        return f""" 
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Definitions of taint steps in the {self.friendlyname} framework.
-
+        return f"""# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Definitions of models for the {self.friendlyname} framework.
 extensions:
-{sinkAddsTo}
-{sourceAddsTo}
-{summaryAddsTo}
-{neutralAddsTo}
-        """
+{sinkAddsTo}{sourceAddsTo}{summaryAddsTo}{neutralAddsTo}"""
 
     def makeTypeBasedContent(self):
         if self.generateTypeBasedSummaries:
@@ -190,13 +184,10 @@ extensions:
         else:
             typeBasedSummaryAddsTo = ""
 
-        return f"""
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+        return f"""# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 # Definitions of type based summaries in the {self.friendlyname} framework.
-
 extensions:
-{typeBasedSummaryAddsTo}
-        """
+{typeBasedSummaryAddsTo}"""
 
     def save(self, content, target):
         with open(target, "w") as targetYml:
