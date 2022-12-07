@@ -10,7 +10,9 @@
  * `ConceptsShared.qll` ASAP.
  */
 
+import semmle.python.concepts.internal.CryptoAlgorithmNames
 private import ConceptsImports
+
 
 /**
  * Provides models for cryptographic concepts.
@@ -81,10 +83,18 @@ module Cryptography {
    * data of arbitrary length using a block encryption algorithm.
    */
   class BlockMode extends string {
-    BlockMode() { this = ["ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR", "OPENPGP"] }
+    BlockMode() { isKnownCipherBlockModeAlgorithm(this) or this = unknownAlgorithmStub()}
 
-    /** Holds if this block mode is considered to be insecure. */
-    predicate isWeak() { this = "ECB" }
+    /** 
+     * Holds if this block mode is considered to be insecure. 
+     * Assumed weak if the mode is not known.
+    */
+    predicate isWeak() {isWeakCipherBlockModeAlgorithm(this) or not isKnownCipherBlockModeAlgorithm(this)}
+
+    /**
+     * Holds if this block mode is a known block mode
+     */
+    predicate isKnown() {isKnownCipherBlockModeAlgorithm(this)}
   }
 }
 
