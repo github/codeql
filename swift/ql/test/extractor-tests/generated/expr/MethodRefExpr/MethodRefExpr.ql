@@ -2,9 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-from MethodRefExpr x, Expr getBase
+from MethodRefExpr x, string hasType, Expr getBase, string hasMember
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getBase = x.getBase()
-select x, "getBase:", getBase
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
+  getBase = x.getBase() and
+  if x.hasMember() then hasMember = "yes" else hasMember = "no"
+select x, "hasType:", hasType, "getBase:", getBase, "hasMember:", hasMember

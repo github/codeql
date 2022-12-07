@@ -1,3 +1,25 @@
+| alamofire.swift:91:27:91:27 | .result | external |
+| alamofire.swift:99:27:99:27 | .result | external |
+| alamofire.swift:344:23:344:32 | .data | external |
+| alamofire.swift:351:22:351:31 | .value | external |
+| alamofire.swift:358:23:358:32 | .value | external |
+| alamofire.swift:365:22:365:31 | .value | external |
+| alamofire.swift:372:23:372:32 | .value | external |
+| alamofire.swift:379:28:379:37 | .value | external |
+| alamofire.swift:389:28:389:28 | call to init(contentsOfFile:) | external |
+| alamofire.swift:389:28:389:55 | call to init(contentsOfFile:) | external |
+| alamofire.swift:396:22:396:31 | .value | external |
+| alamofire.swift:403:22:403:31 | .value | external |
+| alamofire.swift:404:28:404:28 | call to init(contentsOf:) | external |
+| alamofire.swift:404:28:404:50 | call to init(contentsOf:) | external |
+| alamofire.swift:411:23:411:32 | .value | external |
+| alamofire.swift:418:22:418:31 | .value | external |
+| alamofire.swift:425:23:425:32 | .value | external |
+| alamofire.swift:431:28:431:37 | .value | external |
+| alamofire.swift:448:20:448:20 | call to init(contentsOfFile:) | external |
+| alamofire.swift:448:20:448:49 | call to init(contentsOfFile:) | external |
+| alamofire.swift:455:23:455:32 | .data | external |
+| alamofire.swift:461:23:461:32 | .data | external |
 | customurlschemes.swift:30:44:30:54 | url | external |
 | customurlschemes.swift:34:52:34:68 | url | external |
 | customurlschemes.swift:38:52:38:62 | url | external |
@@ -5,6 +27,9 @@
 | customurlschemes.swift:48:9:48:28 | ...[...] | Remote URL in UIApplicationDelegate.application.launchOptions |
 | data.swift:18:20:18:20 | call to init(contentsOf:options:) | external |
 | data.swift:18:20:18:54 | call to init(contentsOf:options:) | external |
+| file://:0:0:0:0 | .data | external |
+| file://:0:0:0:0 | .result | external |
+| file://:0:0:0:0 | .result | external |
 | file://:0:0:0:0 | .source1 | external |
 | file://:0:0:0:0 | .source1 | external |
 | file://:0:0:0:0 | .source4 | external |

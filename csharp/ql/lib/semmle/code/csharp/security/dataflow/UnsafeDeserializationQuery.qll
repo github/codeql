@@ -162,7 +162,7 @@ class TaintToObjectTypeTrackingConfig extends TaintTracking2::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
-      m.getDeclaringType().hasQualifiedName("System.Type") and
+      m.getDeclaringType().hasQualifiedName("System", "Type") and
       m.hasName("GetType") and
       m.isStatic() and
       n1.asExpr() = mc.getArgument(0) and

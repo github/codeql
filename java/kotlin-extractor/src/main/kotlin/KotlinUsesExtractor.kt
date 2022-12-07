@@ -67,15 +67,12 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
-    @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
     fun extractFileClass(f: IrFile): Label<out DbClass> {
-        val fileName = f.fileEntry.name
         val pkg = f.fqName.asString()
-        val defaultName = fileName.replaceFirst(Regex(""".*[/\\]"""), "").replaceFirst(Regex("""\.kt$"""), "").replaceFirstChar({ it.uppercase() }) + "Kt"
-        var jvmName = getJvmName(f) ?: defaultName
+        val jvmName = getFileClassName(f)
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
-        val id: Label<DbClass> = tw.getLabelFor(label, {
+        val id: Label<DbClass> = tw.getLabelFor(label) {
             val fileId = tw.mkFileId(f.path, false)
             val locId = tw.getWholeFileLocation(fileId)
             val pkgId = extractPackage(pkg)
@@ -84,7 +81,7 @@ open class KotlinUsesExtractor(
             tw.writeHasLocation(it, locId)
 
             addModifiers(it, "public", "final")
-        })
+        }
         return id
     }
 
@@ -258,10 +255,26 @@ open class KotlinUsesExtractor(
     private fun propertySignature(p: IrProperty) =
         ((p.getter ?: p.setter)?.extensionReceiverParameter?.let { useType(erase(it.type)).javaResult.signature } ?: "")
 
+    fun getTrapFileSignature(d: IrDeclaration) =
+        when(d) {
+            is IrFunction ->
+                // Note we erase the parameter types before calling useType even though the signature should be the same
+                // in order to prevent an infinite loop through useTypeParameter -> useDeclarationParent -> useFunction
+                // -> extractFunctionLaterIfExternalFileMember, which would result for `fun <T> f(t: T) { ... }` for example.
+                (listOfNotNull(d.extensionReceiverParameter) + d.valueParameters)
+                    .map { useType(erase(it.type)).javaResult.signature }
+                    .joinToString(separator = ",", prefix = "(", postfix = ")")
+            is IrProperty -> propertySignature(d) + externalClassExtractor.propertySignature
+            is IrField -> (d.correspondingPropertySymbol?.let { propertySignature(it.owner) } ?: "") + externalClassExtractor.fieldSignature
+            else -> "unknown signature".also {
+                logger.warn("Trap file signature requested for unexpected element $d")
+            }
+        }
+
     private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
             extractExternalClassLater(p.parentAsClass)
-            val signature = propertySignature(p) + externalClassExtractor.propertySignature
+            val signature = getTrapFileSignature(p)
             dependencyCollector?.addDependency(p, signature)
             externalClassExtractor.extractLater(p, signature)
         }
@@ -270,7 +283,7 @@ open class KotlinUsesExtractor(
     private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
             extractExternalClassLater(f.parentAsClass)
-            val signature = (f.correspondingPropertySymbol?.let { propertySignature(it.owner) } ?: "") + externalClassExtractor.fieldSignature
+            val signature = getTrapFileSignature(f)
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
         }
@@ -285,18 +298,7 @@ open class KotlinUsesExtractor(
                 // getters and setters are extracted alongside it
                 return
             }
-            // Note we erase the parameter types before calling useType even though the signature should be the same
-            // in order to prevent an infinite loop through useTypeParameter -> useDeclarationParent -> useFunction
-            // -> extractFunctionLaterIfExternalFileMember, which would result for `fun <T> f(t: T) { ... }` for example.
-            val ext = f.extensionReceiverParameter
-            val parameters = if (ext != null) {
-                listOf(ext) + f.valueParameters
-            } else {
-                f.valueParameters
-            }
-
-            val paramSigs = parameters.map { useType(erase(it.type)).javaResult.signature }
-            val signature = paramSigs.joinToString(separator = ",", prefix = "(", postfix = ")")
+            val signature = getTrapFileSignature(f)
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
         }
@@ -821,7 +823,7 @@ open class KotlinUsesExtractor(
                 OperatorNameConventions.INVOKE.asString())
 
         fun getSuffixIfInternal() =
-            if (f.visibility == DescriptorVisibilities.INTERNAL && f !is IrConstructor) {
+            if (f.visibility == DescriptorVisibilities.INTERNAL && f !is IrConstructor && !(f.parent is IrFile || isExternalFileClassMember(f))) {
                 "\$" + getJvmModuleName(f)
             } else {
                 ""
@@ -1647,7 +1649,7 @@ open class KotlinUsesExtractor(
     fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
         tw.getLabelFor(getValueParameterLabel(vp, parent))
 
-    private fun isDirectlyExposedCompanionObjectField(f: IrField) =
+    private fun isDirectlyExposableCompanionObjectField(f: IrField) =
         f.hasAnnotation(FqName("kotlin.jvm.JvmField")) ||
         f.correspondingPropertySymbol?.owner?.let {
             it.isConst || it.isLateinit
@@ -1655,11 +1657,13 @@ open class KotlinUsesExtractor(
 
     fun getFieldParent(f: IrField) =
         f.parentClassOrNull?.let {
-            if (it.isCompanion && isDirectlyExposedCompanionObjectField(f))
+            if (it.isCompanion && isDirectlyExposableCompanionObjectField(f))
                 it.parent
             else
                 null
         } ?: f.parent
+
+    fun isDirectlyExposedCompanionObjectField(f: IrField) = getFieldParent(f) != f.parent
 
     // Gets a field's corresponding property's extension receiver type, if any
     fun getExtensionReceiverType(f: IrField) =
