@@ -245,14 +245,14 @@ module Spife {
     override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
       // reply.header(RESPONSE, 'Cache-Control', 'no-cache')
       this.getNameNode().mayHaveStringValue(headerName) and
-      headerValue = this.(DataFlow::MethodCallNode).getArgument(2)
+      headerValue = super.getArgument(2)
     }
 
     override DataFlow::Node getNameNode() {
-      result = this.(DataFlow::MethodCallNode).getArgument(1)
+      result = super.getArgument(1)
     }
 
-    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = ReplyCall.super.getRouteHandler() }
   }
 
   /**
@@ -274,7 +274,7 @@ module Spife {
      * Gets a reference to the multiple headers object that is to be set.
      */
     DataFlow::ObjectLiteralNode getAHeaderSource() {
-      result = this.(DataFlow::CallNode).getAnArgument().getALocalSource()
+      result = super.getAnArgument().getALocalSource()
     }
 
     override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
@@ -288,7 +288,7 @@ module Spife {
       result = this.getAHeaderSource().getAPropertyWrite().getPropertyNameExpr().flow()
     }
 
-    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = super.getRouteHandler() }
   }
 
   /**
@@ -312,11 +312,11 @@ module Spife {
     }
 
     //  this = any(ReplyCall r).ref().getAMethodCall("cookie")
-    override DataFlow::Node getNameArgument() { result = this.(ReplyCall).getArgument(1) }
+    override DataFlow::Node getNameArgument() { result = super.getArgument(1) }
 
-    override DataFlow::Node getValueArgument() { result = this.(ReplyCall).getArgument(2) }
+    override DataFlow::Node getValueArgument() { result = super.getArgument(2) }
 
-    override RouteHandler getRouteHandler() { result = this.(ReplyCall).getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = super.getRouteHandler() }
   }
 
   /**
@@ -371,9 +371,9 @@ module Spife {
 
     override DataFlow::SourceNode getOutput() { result = this }
 
-    override DataFlow::Node getTemplateFileNode() { result = this.(ReplyCall).getArgument(0) }
+    override DataFlow::Node getTemplateFileNode() { result = super.getArgument(0) }
 
-    override DataFlow::Node getTemplateParamsNode() { result = this.(ReplyCall).getArgument(1) }
+    override DataFlow::Node getTemplateParamsNode() { result = super.getArgument(1) }
   }
 
   /**
@@ -410,6 +410,6 @@ module Spife {
 
     override DataFlow::Node getUrlArgument() { result = this.getAnArgument() }
 
-    override RouteHandler getRouteHandler() { result = this.getRouteHandler() }
+    override RouteHandler getRouteHandler() { result = super.getRouteHandler() }
   }
 }
