@@ -15,6 +15,7 @@
 
 import cpp
 
+bindingset[v, before]
 predicate beforeArrayAccess(Variable v, ArrayExpr access, Expr before) {
   exists(LogicalAndExpr andexpr |
     access.getArrayOffset() = v.getAnAccess() and
@@ -23,6 +24,7 @@ predicate beforeArrayAccess(Variable v, ArrayExpr access, Expr before) {
   )
 }
 
+bindingset[v, after]
 predicate afterArrayAccess(Variable v, ArrayExpr access, Expr after) {
   exists(LogicalAndExpr andexpr |
     access.getArrayOffset() = v.getAnAccess() and
