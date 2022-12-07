@@ -31,13 +31,6 @@ module UnsafeDeserialization {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * Additional taint steps for "unsafe deserialization" vulnerabilities.
-   */
-  predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    base64DecodeTaintStep(fromNode, toNode)
-  }
-
   /** A source of remote user input, considered as a flow source for unsafe deserialization. */
   class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
@@ -214,19 +207,5 @@ module UnsafeDeserialization {
         )
       )
     }
-  }
-
-  /**
-   * `Base64.decode64` propagates taint from its argument to its return value.
-   */
-  predicate base64DecodeTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(DataFlow::CallNode callNode |
-      callNode =
-        API::getTopLevelMember("Base64")
-            .getAMethodCall(["decode64", "strict_decode64", "urlsafe_decode64"])
-    |
-      fromNode = callNode.getArgument(0) and
-      toNode = callNode
-    )
   }
 }
