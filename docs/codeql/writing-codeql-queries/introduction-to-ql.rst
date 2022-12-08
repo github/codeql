@@ -29,7 +29,7 @@ Here is an example of a basic query:
 
    select "hello world"
 
-This query returns the string `"hello world"`.
+This query returns the string ``"hello world"``.
 
 More complicated queries typically look like this:
 
