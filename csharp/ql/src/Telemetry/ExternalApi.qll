@@ -24,6 +24,17 @@ class TestLibrary extends RefType {
   }
 }
 
+/** Holds if the given callable is a constructor without parameters. */
+private predicate isParameterlessConstructor(DotNet::Callable c) {
+  c instanceof Constructor and c.getNumberOfParameters() = 0
+}
+
+/** Holds if this API is part of a common testing library or framework. */
+private predicate isTestLibrary(DotNet::Callable c) { c.getDeclaringType() instanceof TestLibrary }
+
+/** Holds if this API is not worth supporting. */
+predicate isUninteresting(DotNet::Callable c) { isTestLibrary(c) or isParameterlessConstructor(c) }
+
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
@@ -31,7 +42,8 @@ class ExternalApi extends DotNet::Callable {
   ExternalApi() {
     this.isUnboundDeclaration() and
     this.fromLibrary() and
-    this.(Modifiable).isEffectivelyPublic()
+    this.(Modifiable).isEffectivelyPublic() and
+    not isUninteresting(this)
   }
 
   /**
@@ -83,17 +95,6 @@ class ExternalApi extends DotNet::Callable {
     or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
-
-  /** Holds if this API is a constructor without parameters. */
-  private predicate isParameterlessConstructor() {
-    this instanceof Constructor and this.getNumberOfParameters() = 0
-  }
-
-  /** Holds if this API is part of a common testing library or framework. */
-  private predicate isTestLibrary() { this.getDeclaringType() instanceof TestLibrary }
-
-  /** Holds if this API is not worth supporting. */
-  predicate isUninteresting() { this.isTestLibrary() or this.isParameterlessConstructor() }
 
   /** Holds if this API is a known source. */
   predicate isSource() {
