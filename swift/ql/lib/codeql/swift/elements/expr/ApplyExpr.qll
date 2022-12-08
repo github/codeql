@@ -2,20 +2,12 @@ private import codeql.swift.generated.expr.ApplyExpr
 private import codeql.swift.elements.Callable
 private import codeql.swift.elements.expr.DeclRefExpr
 private import codeql.swift.elements.expr.MethodLookupExpr
-private import codeql.swift.elements.expr.ConstructorRefCallExpr
+private import codeql.swift.elements.expr.DotSyntaxBaseIgnoredExpr
+private import codeql.swift.elements.expr.AutoClosureExpr
 private import codeql.swift.elements.decl.MethodDecl
 
 class ApplyExpr extends Generated::ApplyExpr {
-  Callable getStaticTarget() {
-    exists(Expr f |
-      f = this.getFunction() and
-      (
-        result = f.(DeclRefExpr).getDecl()
-        or
-        result = f.(ConstructorRefCallExpr).getFunction().(DeclRefExpr).getDecl() // TODO: fix this
-      )
-    )
-  }
+  Callable getStaticTarget() { result = this.getFunction().(DeclRefExpr).getDecl() }
 
   /** Gets the method qualifier, if this is applying a method */
   Expr getQualifier() { none() }
@@ -44,4 +36,26 @@ class MethodApplyExpr extends ApplyExpr {
   override MethodDecl getStaticTarget() { result = method.getMethod() }
 
   override Expr getQualifier() { result = method.getBase() }
+}
+
+private class PartialDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {
+  private DotSyntaxBaseIgnoredExpr expr;
+
+  PartialDotSyntaxBaseIgnoredApplyExpr() { expr = this.getFunction() }
+
+  override AutoClosureExpr getStaticTarget() { result = expr.getSubExpr() }
+
+  override Expr getQualifier() { result = expr.getQualifier() }
+
+  override string toString() { result = "call to " + expr }
+}
+
+private class FullDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {
+  private PartialDotSyntaxBaseIgnoredApplyExpr expr;
+
+  FullDotSyntaxBaseIgnoredApplyExpr() { expr = this.getFunction() }
+
+  override AutoClosureExpr getStaticTarget() { result = expr.getStaticTarget().getExpr() }
+
+  override string toString() { result = "call to " + expr }
 }
