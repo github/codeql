@@ -121,7 +121,7 @@ private Ruby::AstNode getSuperParent(Ruby::Super sup) {
 
 private string getSuperMethodName(Ruby::Super sup) {
   exists(Ruby::Method meth |
-    meth = getSuperParent(sup).getParent().(Ruby::Method) and
+    meth = getSuperParent(sup).getParent() and
     result = any(Method c | toGenerated(c) = meth).getName()
   )
 }
