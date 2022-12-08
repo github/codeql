@@ -6,10 +6,7 @@
 /** A possible cargo item. */
 class Cargo extends string {
     Cargo() {
-      this = "Nothing" or
-      this = "Goat" or
-      this = "Cabbage" or
-      this = "Wolf"
+      this = ["Nothing", "Goat", "Cabbage", "Wolf"]
     }
   }
   
