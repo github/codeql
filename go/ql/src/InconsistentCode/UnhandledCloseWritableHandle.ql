@@ -56,6 +56,7 @@ class SyncFileFun extends Method {
 /**
  * Determines whether a call to a function is "unhandled". That is, it is either
  * deferred or its result is not assigned to anything.
+ *
  * TODO: maybe we should check that something is actually done with the result
  */
 predicate unhandledCall(DataFlow::CallNode call) {
