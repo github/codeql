@@ -23,6 +23,6 @@ int readv(int, const struct iovec*, int);
 int writev(int, const struct iovec*, int);
 
 void test_readv_and_writev(iovec* iovs) {
-  readv(0, iovs, 16); // $ remote_source
+  readv(0, iovs, 16); // $ MISSING: remote_source
   writev(0, iovs, 16); // $ remote_sink
 }
