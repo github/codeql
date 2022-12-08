@@ -29,10 +29,10 @@ private predicate isParameterlessConstructor(DotNet::Callable c) {
   c instanceof Constructor and c.getNumberOfParameters() = 0
 }
 
-/** Holds if this API is part of a common testing library or framework. */
+/** Holds if the given callable is part of a common testing library or framework. */
 private predicate isTestLibrary(DotNet::Callable c) { c.getDeclaringType() instanceof TestLibrary }
 
-/** Holds if this API is not worth supporting. */
+/** Holds if the given callable is not worth supporting. */
 predicate isUninteresting(DotNet::Callable c) { isTestLibrary(c) or isParameterlessConstructor(c) }
 
 /**
