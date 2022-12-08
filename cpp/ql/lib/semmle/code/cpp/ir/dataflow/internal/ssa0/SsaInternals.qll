@@ -208,11 +208,24 @@ class Phi extends TPhi, SsaDefOrUse {
   final override PhiNode asPhi() { result = phi }
 
   final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
+
+  Definition getAnInput() { Cached::lastRefRedef(result, _, _, phi) }
+}
+
+private Node0Impl getAnUltimateValueForDef(Definition def) {
+  exists(IRBlock bb, int i, SourceVariable sv | def.definesAt(sv, bb, i) |
+    result = getAnUltimateValueForDef(any(Phi phi | phi.asPhi() = def).getAnInput())
+    or
+    exists(DefOrUse defOrUse |
+      defOrUse.asDefOrUse().hasIndexInBlock(bb, i, sv) and
+      result = defOrUse.asDefOrUse().(DirectDef).getValue()
+    )
+  )
 }
 
 class UseOrPhi extends SsaDefOrUse {
   UseOrPhi() {
-    this.asDefOrUse() instanceof UseImpl
+    this.asDefOrUse() instanceof DirectUse
     or
     this instanceof Phi
   }
@@ -226,6 +239,38 @@ class UseOrPhi extends SsaDefOrUse {
     or
     this instanceof Phi and
     result = "Phi"
+  }
+
+  /**
+   * Gets a value of this use by recursively traversing phi edges in the SSA graph.
+   */
+  cached
+  Node0Impl getAnUltimateValue() {
+    // Use case
+    exists(Definition def, IRBlock bb1, int i1, IRBlock bb2, int i2 |
+      Cached::adjacentDefRead(def, bb1, i1, bb2, i2) and
+      this.asDefOrUse().hasIndexInBlock(bb2, i2, def.getSourceVariable())
+    |
+      result = getAnUltimateValueForDef(def)
+    )
+    or
+    // Phi case
+    result = getAnUltimateValueForDef(this.asPhi())
+  }
+}
+
+class Use extends DefOrUse {
+  override DirectUse defOrUse;
+
+  Operand getOperand() { result = defOrUse.getOperand() }
+
+  Node0Impl getAnUltimateValue() {
+    exists(Definition def, IRBlock bb1, int i1, IRBlock bb2, int i2 |
+      Cached::adjacentDefRead(def, bb1, i1, bb2, i2) and
+      defOrUse.hasIndexInBlock(bb2, i2, def.getSourceVariable())
+    |
+      result = getAnUltimateValueForDef(def)
+    )
   }
 }
 
@@ -254,3 +299,23 @@ private module SsaImpl = SsaImplCommon::Make<SsaInput>;
 class PhiNode = SsaImpl::PhiNode;
 
 class Definition = SsaImpl::Definition;
+
+cached
+private module Cached {
+  cached
+  predicate adjacentDefRead(Definition def, IRBlock bb1, int i1, IRBlock bb2, int i2) {
+    SsaImpl::adjacentDefRead(def, bb1, i1, bb2, i2)
+  }
+
+  /**
+   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
+   * `def`. The reference is last because it can reach another write `next`,
+   * without passing through another read or write.
+   */
+  cached
+  predicate lastRefRedef(Definition def, IRBlock bb, int i, Definition next) {
+    SsaImpl::lastRefRedef(def, bb, i, next)
+  }
+}
+
+private import Cached
