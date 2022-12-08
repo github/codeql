@@ -128,13 +128,14 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
     // ```java
     //    @Select(select id,name from test order by ${orderby,jdbcType=VARCHAR})
     //    void test(@Param("orderby") String name);
-    //    
+    //
     //    @Select(select id,name from test where name = ${ user . name })
     //    void test(@Param("user") User u);
     // ```
     exists(Annotation annotation |
       unsafeExpression
-          .regexpMatch("\\$\\{\\s*" + annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
+          .regexpMatch("\\$\\{\\s*" +
+              annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
               "\\b[^}]*\\}") and
       annotation.getType() instanceof TypeParam and
       ma.getAnArgument() = node.asExpr() and
@@ -157,7 +158,8 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
         or
         unsafeExpression.regexpMatch("\\$\\{\\s*arg" + i + "\\b[^}]*\\}")
         or
-        unsafeExpression.regexpMatch("\\$\\{\\s*" + ma.getMethod().getParameter(i).getName() + "\\b[^}]*\\}")
+        unsafeExpression
+            .regexpMatch("\\$\\{\\s*" + ma.getMethod().getParameter(i).getName() + "\\b[^}]*\\}")
       ) and
       ma.getArgument(i) = node.asExpr()
     )
