@@ -1,5 +1,5 @@
 /**
- * @name Writable file handled closed without error handling
+ * @name Writable file handle closed without error handling
  * @description Errors which occur when closing a writable file handle may result in data loss
  *              if the data could not be successfully flushed. Such errors should be handled
  *              explicitly.
