@@ -16,7 +16,7 @@
 import go
 
 /**
- * Determines whether a flag for use with `os.OpenFile` implies that the resulting
+ * Holds if a flag for use with `os.OpenFile` implies that the resulting
  * file handle will be writable.
  */
 predicate isWritable(Entity flag) {
@@ -25,7 +25,7 @@ predicate isWritable(Entity flag) {
 }
 
 /**
- * Recursively extracts constant names from an expression.
+ * Gets constant names from an expression.
  */
 QualifiedName getConstants(ValueExpr expr) {
   result = expr or
