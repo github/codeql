@@ -25,7 +25,7 @@ class TaintReachConfig extends TaintTracking::Configuration {
 
 float taintReach() {
   exists(TaintReachConfig config, int tainted, int total |
-    tainted = count(DataFlow::Node n | config.hasFlow(_, n)) and
+    tainted = count(DataFlow::Node n | config.hasFlowTo(n)) and
     total = count(DataFlow::Node n) and
     result = (tainted * 1000000.0) / total
   )
