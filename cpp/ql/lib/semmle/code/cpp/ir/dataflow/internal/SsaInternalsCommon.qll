@@ -188,6 +188,93 @@ private class PointerOrReferenceTypeIndirection extends Indirection instanceof P
   override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
 }
 
+private module IteratorIndirections {
+  import semmle.code.cpp.models.interfaces.Iterator as Interfaces
+  import semmle.code.cpp.models.implementations.Iterator as Iterator
+  import semmle.code.cpp.models.implementations.StdContainer as StdContainer
+
+  class IteratorIndirection extends Indirection instanceof Interfaces::Iterator {
+    IteratorIndirection() {
+      not this instanceof PointerOrReferenceTypeIndirection and baseType = super.getValueType()
+    }
+
+    override int getNumberOfIndirections() { result = 1 + countIndirections(this.getBaseType()) }
+
+    override predicate isAdditionalDereference(Instruction deref, Operand address) {
+      exists(CallInstruction call |
+        operandForfullyConvertedCall(deref.getAUse(), call) and
+        this = call.getStaticCallTarget().getClassAndName("operator*") and
+        address = call.getThisArgumentOperand()
+      )
+    }
+
+    override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) {
+      exists(CallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
+        this = call.getStaticCallTarget().getClassAndName("operator=") and
+        address = call.getThisArgumentOperand() and
+        certain = false
+      )
+    }
+
+    override predicate isAdditionalTaintStep(Node node1, Node node2) {
+      exists(CallInstruction call |
+        // Taint through `operator+=` and `operator-=` on iterators.
+        call.getStaticCallTarget() instanceof Iterator::IteratorAssignArithmeticOperator and
+        node2.(IndirectArgumentOutNode).getPreUpdateNode() = node1 and
+        node1.(IndirectOperand).getOperand() = call.getArgumentOperand(0) and
+        node1.getType().getUnspecifiedType() = this
+      )
+    }
+
+    override predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
+      // This is a bit annoying: Consider the following snippet:
+      // ```
+      // struct MyIterator {
+      //       ...
+      //       insert_iterator_by_trait operator*();
+      //       insert_iterator_by_trait operator=(int x);
+      //   };
+      // ...
+      // MyIterator it;
+      // ...
+      // *it = source();
+      // ```
+      // The qualifier to `operator*` will undergo prvalue-to-xvalue conversion and a
+      // temporary object will be created. Thus, the IR for the call to `operator=` will
+      // look like (simplified):
+      // ```
+      // r1(glval<MyIterator>) = VariableAddress[it]        :
+      // r2(glval<unknown>)    = FunctionAddress[operator*] :
+      // r3(MyIterator)        = Call[operator*]            : func:r2, this:r1
+      // r4(glval<MyIterator>) = VariableAddress[#temp]     :
+      // m1(MyIterator)        = Store[#temp]               : &:r4, r3
+      // r5(glval<unknown>)    = FunctionAddress[operator=] :
+      // r6(glval<unknown>)    = FunctionAddress[source]    :
+      // r7(int)               = Call[source]               : func:r6
+      // r8(MyIterator)        = Call[operator=]            : func:r5, this:r4, 0:r7
+      // ```
+      // in order to properly recognize that the qualifier to the call to `operator=` accesses
+      // `it` we look for the store that writes to the temporary object, and use the source value
+      // of that store as the "address" to continue searching for the base variable `it`.
+      exists(StoreInstruction store, VariableInstruction var |
+        var = instrTo and
+        var.getIRVariable() instanceof IRTempVariable and
+        opFrom.getType() = this and
+        store.getSourceValueOperand() = opFrom and
+        store.getDestinationAddress() = var
+      )
+      or
+      // A call to `operator++` or `operator--` is the iterator equivalent version of a
+      // pointer arithmetic instruction.
+      exists(CallInstruction call |
+        instrTo = call and
+        call.getStaticCallTarget() instanceof Iterator::IteratorCrementMemberOperator and
+        opFrom = call.getThisArgumentOperand()
+      )
+    }
+  }
+}
+
 predicate isDereference(Instruction deref, Operand address) {
   any(Indirection ind).isAdditionalDereference(deref, address)
   or
