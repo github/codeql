@@ -28,35 +28,35 @@ abstract class EndpointType extends TEndpointType {
 
 /** The `Negative` class that can be predicted by endpoint scoring models. */
 class NegativeType extends EndpointType, TNegativeType {
-  override string getDescription() { result = "Negative" }
+  override string getDescription() { result = "non-sink" }
 
   override int getEncoding() { result = 0 }
 }
 
 /** The `XssSink` class that can be predicted by endpoint scoring models. */
 class XssSinkType extends EndpointType, TXssSinkType {
-  override string getDescription() { result = "XssSink" }
+  override string getDescription() { result = "xss sink" }
 
   override int getEncoding() { result = 1 }
 }
 
 /** The `NosqlInjectionSink` class that can be predicted by endpoint scoring models. */
 class NosqlInjectionSinkType extends EndpointType, TNosqlInjectionSinkType {
-  override string getDescription() { result = "NosqlInjectionSink" }
+  override string getDescription() { result = "nosql injection sink" }
 
   override int getEncoding() { result = 2 }
 }
 
 /** The `SqlInjectionSink` class that can be predicted by endpoint scoring models. */
 class SqlInjectionSinkType extends EndpointType, TSqlInjectionSinkType {
-  override string getDescription() { result = "SqlInjectionSink" }
+  override string getDescription() { result = "sql injection sink" }
 
   override int getEncoding() { result = 3 }
 }
 
 /** The `TaintedPathSink` class that can be predicted by endpoint scoring models. */
 class TaintedPathSinkType extends EndpointType, TTaintedPathSinkType {
-  override string getDescription() { result = "TaintedPathSink" }
+  override string getDescription() { result = "path injection sink" }
 
   override int getEncoding() { result = 4 }
 }
