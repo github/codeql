@@ -12,7 +12,7 @@
  *       external/cwe/cwe-290
  */
 
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 import TaintedWithPath
 
 predicate hardCodedAddressOrIP(StringLiteral txt) {

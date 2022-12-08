@@ -2,9 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-from ObjectLiteralExpr x, int getKind
+from ObjectLiteralExpr x, string hasType, int getKind, int getNumberOfArguments
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getKind = x.getKind()
-select x, "getKind:", getKind
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
+  getKind = x.getKind() and
+  getNumberOfArguments = x.getNumberOfArguments()
+select x, "hasType:", hasType, "getKind:", getKind, "getNumberOfArguments:", getNumberOfArguments

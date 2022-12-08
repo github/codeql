@@ -5,7 +5,6 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `org.apache.ibatis.jdbc.SqlRunner`. */
 class MyBatisSqlRunner extends RefType {

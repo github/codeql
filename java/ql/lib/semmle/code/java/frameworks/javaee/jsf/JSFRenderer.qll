@@ -1,7 +1,6 @@
 /** Provides classes and predicates for working with JavaServer Faces renderer. */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * The JSF class `FacesContext` for processing HTTP requests.

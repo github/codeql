@@ -3,7 +3,6 @@
  */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `android.content.ContentValues`. */
 class ContentValues extends Class {

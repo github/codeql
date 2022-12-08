@@ -244,4 +244,20 @@ module Consistency {
     not callable = viableCallable(call) and
     not any(ConsistencyConfiguration c).viableImplInCallContextTooLargeExclude(call, ctx, callable)
   }
+
+  query predicate uniqueParameterNodeAtPosition(
+    DataFlowCallable c, ParameterPosition pos, Node p, string msg
+  ) {
+    isParameterNode(p, c, pos) and
+    not exists(unique(Node p0 | isParameterNode(p0, c, pos))) and
+    msg = "Parameters with overlapping positions."
+  }
+
+  query predicate uniqueParameterNodePosition(
+    DataFlowCallable c, ParameterPosition pos, Node p, string msg
+  ) {
+    isParameterNode(p, c, pos) and
+    not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
+    msg = "Parameter node with multiple positions."
+  }
 }

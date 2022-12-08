@@ -3,7 +3,6 @@ import semmle.code.java.Collections
 import semmle.code.java.Maps
 private import semmle.code.java.dataflow.SSA
 private import DataFlowUtil
-private import semmle.code.java.dataflow.ExternalFlow
 
 private class EntryType extends RefType {
   EntryType() {

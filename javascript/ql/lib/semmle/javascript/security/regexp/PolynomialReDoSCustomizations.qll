@@ -5,10 +5,12 @@
  */
 
 import javascript
-import SuperlinearBackTracking
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
 
 /** Module containing sources, sinks, and sanitizers for polynomial regular expression denial-of-service attacks. */
 module PolynomialReDoS {
+  import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView>
+
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
    */

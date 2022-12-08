@@ -1,7 +1,6 @@
 /** Provides classes and predicates for working with SQLite databases. */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.frameworks.android.Android
 
