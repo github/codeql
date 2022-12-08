@@ -90,14 +90,12 @@ predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
  * Determines whether `os.File.Close` is called on `sink`.
  */
 predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode call) {
-  exists(CloseFileFun f |
-    // find calls to the os.File.Close function
-    f.getACall() = call and
-    // that are deferred
-    unhandledCall(call) and
-    // where the function is called on the sink
-    call.getReceiver() = sink
-  )
+  // find calls to the os.File.Close function
+  call = any(CloseFileFun f).getACall() and
+  // that are deferred
+  unhandledCall(call) and
+  // where the function is called on the sink
+  call.getReceiver() = sink
 }
 
 /**
