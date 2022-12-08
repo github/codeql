@@ -13,7 +13,7 @@ class Cargo extends string {
     }
   }
   
-  /** One of two shores. */
+  /** A shore, named either `Left` or `Right`. */
   class Shore extends string {
     Shore() {
       this = "Left" or
@@ -93,7 +93,7 @@ class Cargo extends string {
       // Reachable by first following pathSoFar and then ferrying cargo
       exists(string pathSoFar, string visitedStatesSoFar, Cargo cargo |
         result = this.reachesVia(pathSoFar, visitedStatesSoFar).safeFerry(cargo) and
-        not exists(int i | i = visitedStatesSoFar.indexOf(result)) and // resulting state is not visited yet
+        not exists(visitedStatesSoFar.indexOf(result)) and // resulting state is not visited yet
         visitedStates = visitedStatesSoFar + "_" + result and
         path = pathSoFar + ",\nthen " + cargo + " is ferried " + result.towards()
       )

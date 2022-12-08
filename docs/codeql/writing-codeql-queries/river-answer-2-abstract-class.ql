@@ -154,7 +154,7 @@ class Shore extends string {
     State reachesVia(string path) {
       exists(string pathSoFar |
         result = this.reachesVia(pathSoFar).transition() and
-        not exists(int i | i = pathSoFar.indexOf(result.toString())) and
+        not exists(pathSoFar.indexOf(result.toString())) and
         path = pathSoFar + "\n↓\n" + result
       )
     }
@@ -169,7 +169,7 @@ class Shore extends string {
     }
   
     override State reachesVia(string path) {
-      path = this + "\n↓\n" + result and result = transition()
+      path = this + "\n↓\n" + result and result = this.transition()
       or
       result = super.reachesVia(path)
     }

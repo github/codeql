@@ -118,7 +118,7 @@ class State extends TState {
   State reachesVia(string path) {
     exists(string pathSoFar |
       result = this.reachesVia(pathSoFar).transition() and
-      not exists(int i | i = pathSoFar.indexOf(result.toString())) and
+      not exists(pathSoFar.indexOf(result.toString())) and
       path = pathSoFar + "\n" + result
     )
   }
@@ -133,7 +133,7 @@ class InitialState extends State {
   }
 
   override State reachesVia(string path) {
-    path = this + "\n" + result and result = transition()
+    path = this + "\n" + result and result = this.transition()
     or
     result = super.reachesVia(path)
   }
