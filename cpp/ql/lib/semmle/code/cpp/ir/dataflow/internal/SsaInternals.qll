@@ -110,15 +110,15 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
 
 cached
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address, int indirectionIndex) {
+  TDirectDef(Operand address, int indirectionIndex) {
     isDef(_, _, address, _, _, indirectionIndex) and
     // We only include the definition if the SSA pruning stage
     // concluded that the definition is live after the write.
     any(SsaInternals0::Def def).getAddressOperand() = address
   } or
-  TUseImpl(Operand operand, int indirectionIndex) {
+  TDirectUse(Operand operand, int indirectionIndex) {
     isUse(_, operand, _, _, indirectionIndex) and
-    not isDef(_, _, operand, _, _, _)
+    not isDef(true, _, operand, _, _, _)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -138,6 +138,12 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
 
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
+
+  /**
+   * Gets the number of loads between this definition or use and
+   * its base source variable instruction.
+   */
+  abstract int getIndirection();
 
   /**
    * Gets the index (i.e., the number of loads required) of this
@@ -192,19 +198,16 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
   v.getIndirection() = ind
 }
 
-class DefImpl extends DefOrUseImpl, TDefImpl {
+abstract class DefImpl extends DefOrUseImpl {
   Operand address;
   int ind;
 
-  DefImpl() { this = TDefImpl(address, ind) }
+  bindingset[ind]
+  DefImpl() { any() }
 
   override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
 
   Operand getAddressOperand() { result = address }
-
-  int getIndirection() { isDef(_, _, address, _, result, ind) }
-
-  override int getIndirectionIndex() { result = ind }
 
   Node0Impl getValue() { isDef(_, result, address, _, _, _) }
 
@@ -219,17 +222,35 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
   }
 
   predicate isCertain() { isDef(true, _, address, _, _, ind) }
+
+  /**
+   * Holds if this definition not having a use does not imply that it
+   * will be removed from the SSA def-use relation.
+   */
+  predicate cannotBePruned() { none() }
+
+  /** Gets the definition from the SSA pruning stage that corresponds to this definition. */
+  SsaInternals0::Def getPruningDef() { result.getAddressOperand() = address }
 }
 
-class UseImpl extends DefOrUseImpl, TUseImpl {
+private class DirectDef extends DefImpl, TDirectDef {
+  DirectDef() { this = TDirectDef(address, ind) }
+
+  override int getIndirection() { isDef(_, _, address, _, result, ind) }
+
+  override string toString() { result = "DefImpl" }
+
+  override int getIndirectionIndex() { result = ind }
+}
+
+abstract class UseImpl extends DefOrUseImpl {
   Operand operand;
   int ind;
 
-  UseImpl() { this = TUseImpl(operand, ind) }
+  bindingset[ind]
+  UseImpl() { any() }
 
   Operand getOperand() { result = operand }
-
-  override string toString() { result = "UseImpl" }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     operand.getUse() = block.getInstruction(index)
@@ -239,13 +260,26 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 
-  final int getIndirection() { isUse(_, operand, _, result, ind) }
-
   override int getIndirectionIndex() { result = ind }
 
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
 
   predicate isCertain() { isUse(true, operand, _, _, ind) }
+
+  /** Gets the use from the SSA pruning stage that corresponds to this use. */
+  SsaInternals0::Use getPruningUse() { result.getOperand() = operand }
+}
+
+private class DirectUse extends UseImpl, TDirectUse {
+  DirectUse() { this = TDirectUse(operand, ind) }
+
+  override string toString() { result = "DirectUse" }
+
+  override int getIndirection() { isUse(_, operand, _, result, ind) }
+
+  override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
+
+  override predicate isCertain() { isUse(true, operand, _, _, ind) }
 }
 
 /**
@@ -419,8 +453,11 @@ private module SsaInput implements SsaImplCommon::InputSig {
    */
   predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
-    variableWriteCand(bb, i, v) and
-    exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+    exists(DefImpl def |
+      variableWriteCand(bb, i, v) or
+      def.cannotBePruned()
+    |
+      def.hasIndexInBlock(bb, i, v) and
       if def.isCertain() then certain = true else certain = false
     )
   }
@@ -468,10 +505,15 @@ private newtype TSsaDefOrUse =
     defOrUse instanceof UseImpl
     or
     // Like in the pruning stage, we only include definition that's live after the
-    // write as the final definitions computed by SSA.
-    exists(Definition def, SourceVariable sv, IRBlock bb, int i |
-      def.definesAt(sv, bb, i) and
-      defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)
+    // write as the final definitions computed by SSA, and we only do so if we're
+    // allowed to prune it away.
+    exists(DefImpl def | def = defOrUse |
+      def.cannotBePruned()
+      or
+      exists(Definition definition, SourceVariable sv, IRBlock bb, int i |
+        definition.definesAt(sv, bb, i) and
+        def.hasIndexInBlock(bb, i, sv)
+      )
     )
   } or
   TPhi(PhiNode phi)
