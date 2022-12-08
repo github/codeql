@@ -286,7 +286,7 @@ private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
 /**
  * A characteristic that is an indicator of not being a sink of any type, because it's a modeled argument.
  */
-abstract class OtherModeledArgumentCharacteristic extends EndpointCharacteristic {
+abstract private class OtherModeledArgumentCharacteristic extends EndpointCharacteristic {
   bindingset[this]
   OtherModeledArgumentCharacteristic() { any() }
 }
