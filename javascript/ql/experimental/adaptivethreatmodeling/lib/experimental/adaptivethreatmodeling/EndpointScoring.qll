@@ -88,9 +88,7 @@ private float getScoreForSink(DataFlow::Node sink) {
 }
 
 class EndpointScoringResults extends ScoringResults {
-  EndpointScoringResults() {
-    this = "EndpointScoringResults" and exists(getACompatibleModelChecksum())
-  }
+  EndpointScoringResults() { this = "EndpointScoringResults" }
 
   /**
    * Get ATM's confidence that a path between `source` and `sink` represents a security
@@ -143,15 +141,7 @@ class EndpointScoringResults extends ScoringResults {
       // This restriction on `sink` has no semantic effect but improves performance.
       getCfg().isEffectiveSink(sink) and
       exists(float sinkScore |
-        ModelScoring::endpointScores(sink, getCfg().getASinkEndpointType().getEncoding(), sinkScore) and
-        // Include the endpoint if (a) the query endpoint type scores higher than all other
-        // endpoint types, or (b) the query endpoint type scores at least
-        // 0.5 - (getCfg().getScoreCutoff() / 2).
-        sinkScore >=
-          [
-            max(float s | ModelScoring::endpointScores(sink, _, s)),
-            0.5 - getCfg().getScoreCutoff() / 2
-          ]
+        ModelScoring::endpointScores(sink, getCfg().getASinkEndpointType().getEncoding(), sinkScore)
       )
     )
   }
