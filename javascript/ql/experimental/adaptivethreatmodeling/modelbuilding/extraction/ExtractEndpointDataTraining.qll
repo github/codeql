@@ -140,14 +140,8 @@ query predicate reformattedTrainingEndpoints(
       )
     ) and
     (
-      // NOTE: We don't use hasFlowFromSource in training, so we could just hardcode it to be false.
-      key = "hasFlowFromSource" and
-      (
-        if FlowFromSource::hasFlowFromSource(endpoint, query)
-        then value = "true"
-        else value = "false"
-      ) and
-      valueType = "boolean"
+      // NOTE: We don't use hasFlowFromSource in training, so we hardcode it.
+      key = "hasFlowFromSource" and value = "true" and valueType = "boolean"
       or
       // Constant expressions always evaluate to a constant primitive value. Therefore they can't ever
       // appear in an alert, making them less interesting training examples.
@@ -217,34 +211,4 @@ DataFlow::Configuration getDataFlowCfg(Query query) {
   query instanceof XssQuery and result instanceof XssAtm::DomBasedXssAtmConfig
   or
   query instanceof XssThroughDomQuery and result instanceof XssThroughDomAtm::XssThroughDomAtmConfig
-}
-
-// TODO: Delete this once we are no longer surfacing `hasFlowFromSource`.
-private module FlowFromSource {
-  predicate hasFlowFromSource(DataFlow::Node endpoint, Query q) {
-    exists(Configuration cfg | cfg.getQuery() = q | cfg.hasFlow(_, endpoint))
-  }
-
-  /**
-   * A data flow configuration that replicates the data flow configuration for a specific query, but
-   * replaces the set of sinks with the set of endpoints we're extracting.
-   *
-   * We use this to find out when there is flow to a particular endpoint from a known source.
-   *
-   * This configuration behaves in a very similar way to the `ForwardExploringConfiguration` class
-   * from the CodeQL standard libraries for JavaScript.
-   */
-  private class Configuration extends DataFlow::Configuration {
-    Query q;
-
-    Configuration() { this = getDataFlowCfg(q) }
-
-    Query getQuery() { result = q }
-
-    /** Holds if `sink` is an endpoint we're extracting. */
-    override predicate isSink(DataFlow::Node sink) { any() }
-
-    /** Holds if `sink` is an endpoint we're extracting. */
-    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) { exists(lbl) }
-  }
 }

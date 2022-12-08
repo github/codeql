@@ -23,70 +23,70 @@ endpoints
 | index.js:15:17:15:32 | req.body.isAdmin | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:15:17:15:32 | req.body.isAdmin | Xss | notASinkReason | LoggerMethod | string |
 | index.js:15:17:15:32 | req.body.isAdmin | Xss | sinkLabel | NotASink | string |
-| index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | hasFlowFromSource | true | boolean |
 | index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | isConstantExpression | false | boolean |
 | index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | notASinkReason | LoggerMethod | string |
 | index.js:15:17:15:32 | req.body.isAdmin | XssThroughDom | sinkLabel | NotASink | string |
-| index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | hasFlowFromSource | true | boolean |
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | sinkLabel | Sink | string |
-| index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | hasFlowFromSource | true | boolean |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | sinkLabel | Sink | string |
-| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | hasFlowFromSource | true | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | notASinkReason | ClientRequest | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | notASinkReason | JQueryArgument | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | sinkLabel | NotASink | string |
-| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | hasFlowFromSource | true | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | isConstantExpression | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | notASinkReason | ClientRequest | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | notASinkReason | JQueryArgument | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | sinkLabel | NotASink | string |
-| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | hasFlowFromSource | true | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | isConstantExpression | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | notASinkReason | ClientRequest | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | notASinkReason | JQueryArgument | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | sinkLabel | NotASink | string |
-| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | hasFlowFromSource | true | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | isConstantExpression | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | notASinkReason | ClientRequest | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | notASinkReason | JQueryArgument | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | sinkLabel | NotASink | string |
-| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | hasFlowFromSource | true | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | isConstantExpression | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | notASinkReason | ClientRequest | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | notASinkReason | JQueryArgument | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | XssThroughDom | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | NosqlInjection | hasFlowFromSource | true | boolean |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | NosqlInjection | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | SqlInjection | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | SqlInjection | hasFlowFromSource | true | boolean |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | SqlInjection | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | TaintedPath | hasFlowFromSource | true | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | TaintedPath | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | Xss | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | Xss | hasFlowFromSource | true | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | Xss | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | Xss | sinkLabel | NotASink | string |
-| index.js:84:12:84:18 | foo.bar | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | XssThroughDom | hasFlowFromSource | true | boolean |
 | index.js:84:12:84:18 | foo.bar | XssThroughDom | isConstantExpression | false | boolean |
 | index.js:84:12:84:18 | foo.bar | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:84:12:84:18 | foo.bar | XssThroughDom | notASinkReason | ClientRequest | string |
