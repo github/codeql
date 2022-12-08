@@ -16,7 +16,7 @@
 import go
 
 /**
- * Holds if a flag for use with `os.OpenFile` implies that the resulting
+ * Holds if a `flag` for use with `os.OpenFile` implies that the resulting
  * file handle will be writable.
  */
 predicate isWritable(Entity flag) {
@@ -25,7 +25,7 @@ predicate isWritable(Entity flag) {
 }
 
 /**
- * Gets constant names from an expression.
+ * Gets constant names from `expr`.
  */
 QualifiedName getConstants(ValueExpr expr) {
   result = expr or
@@ -54,7 +54,7 @@ class SyncFileFun extends Method {
 }
 
 /**
- * Determines whether a call to a function is "unhandled". That is, it is either
+ * Holds if a `call` to a function is "unhandled". That is, it is either
  * deferred or its result is not assigned to anything.
  *
  * TODO: maybe we should check that something is actually done with the result
@@ -65,7 +65,7 @@ predicate unhandledCall(DataFlow::CallNode call) {
 }
 
 /**
- * Determines whether `source` is a writable file handle returned by a `call` to the
+ * Holds if `source` is a writable file handle returned by a `call` to the
  * `os.OpenFile` function.
  */
 predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
@@ -87,7 +87,7 @@ predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
 }
 
 /**
- * Determines whether `os.File.Close` is called on `sink`.
+ * Holds if `os.File.Close` is called on `sink`.
  */
 predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode call) {
   // find calls to the os.File.Close function
@@ -99,7 +99,7 @@ predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode call) {
 }
 
 /**
- * Determines whether `os.File.Sync` is called on `sink` and the result of the call is neither
+ * Holds if `os.File.Sync` is called on `sink` and the result of the call is neither
  * deferred nor discarded.
  */
 predicate isHandledSync(DataFlow::Node sink, DataFlow::CallNode syncCall) {
@@ -124,7 +124,7 @@ class UnhandledFileCloseDataFlowConfiguration extends DataFlow::Configuration {
 }
 
 /**
- * Determines whether a `DataFlow::CallNode` is preceded by a call to `os.File.Sync`.
+ * Holds if a `DataFlow::CallNode` is preceded by a call to `os.File.Sync`.
  */
 predicate precededBySync(DataFlow::Node close, DataFlow::CallNode closeCall) {
   // using the control flow graph, try to find a call to a handled call to `os.File.Sync`
