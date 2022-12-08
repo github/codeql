@@ -1,6 +1,7 @@
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.ArrayFunction
+import semmle.code.cpp.models.interfaces.FlowSource
 
 private class InetNtoa extends TaintFunction {
   InetNtoa() { hasGlobalName("inet_ntoa") }
@@ -141,4 +142,22 @@ private class Gethostbyaddr extends TaintFunction, ArrayFunction {
   override predicate hasArrayInput(int bufParam) { bufParam = 0 }
 
   override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 }
+}
+
+private class Getaddrinfo extends TaintFunction, ArrayFunction, RemoteFlowSourceFunction {
+  Getaddrinfo() { hasGlobalName("getaddrinfo") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref([0 .. 2]) and
+    output.isParameterDeref(3)
+  }
+
+  override predicate hasArrayInput(int bufParam) { bufParam in [0, 1] }
+
+  override predicate hasArrayWithNullTerminator(int bufParam) { bufParam in [0, 1] }
+
+  override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
+    output.isParameterDeref(3) and
+    description = "Address returned by " + this.getName()
+  }
 }
