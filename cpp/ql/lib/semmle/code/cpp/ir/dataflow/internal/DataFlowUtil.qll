@@ -597,9 +597,32 @@ predicate indirectReturnOutNodeInstruction0(
 }
 
 /**
+ * Holds if `node` is an indirect operand with columns `(operand, indirectionIndex)`, and
+ * `operand` represents a use of the fully converted value of `call`.
+ */
+private predicate hasOperand(Node node, CallInstruction call, int indirectionIndex, Operand operand) {
+  indirectReturnOutNodeOperand0(call, operand, indirectionIndex) and
+  hasOperandAndIndex(node, operand, indirectionIndex)
+}
+
+/**
+ * Holds if `node` is an indirect instruction with columns `(instr, indirectionIndex)`, and
+ * `instr` represents a use of the fully converted value of `call`.
+ *
+ * Note that `hasOperand(node, _, _, _)` implies `not hasInstruction(node, _, _, _)`.
+ */
+private predicate hasInstruction(
+  Node node, CallInstruction call, int indirectionIndex, Instruction instr
+) {
+  indirectReturnOutNodeInstruction0(call, instr, indirectionIndex) and
+  hasInstructionAndIndex(node, instr, indirectionIndex)
+}
+
+/**
  * INTERNAL: do not use.
  *
- * A node representing the value of a function call.
+ * A node representing the indirect value of a function call (i.e., a value hidden
+ * behind a number of indirections).
  */
 class IndirectReturnOutNode extends Node {
   CallInstruction call;
@@ -608,20 +631,43 @@ class IndirectReturnOutNode extends Node {
   IndirectReturnOutNode() {
     // Annoyingly, we need to pick the fully converted value as the output of the function to
     // make flow through in the shared dataflow library work correctly.
-    exists(Operand operand |
-      indirectReturnOutNodeOperand0(call, operand, indirectionIndex) and
-      hasOperandAndIndex(this, operand, indirectionIndex)
-    )
+    hasOperand(this, call, indirectionIndex, _)
     or
-    exists(Instruction instr |
-      indirectReturnOutNodeInstruction0(call, instr, indirectionIndex) and
-      hasInstructionAndIndex(this, instr, indirectionIndex)
-    )
+    hasInstruction(this, call, indirectionIndex, _)
   }
 
   CallInstruction getCallInstruction() { result = call }
 
   int getIndirectionIndex() { result = indirectionIndex }
+
+  /** Gets the operand associated with this node, if any. */
+  Operand getOperand() { hasOperand(this, call, indirectionIndex, result) }
+
+  /** Gets the instruction associated with this node, if any. */
+  Instruction getInstruction() { hasInstruction(this, call, indirectionIndex, result) }
+}
+
+/**
+ * An `IndirectReturnOutNode` which is used as a destination of a store operation.
+ * When it's used for a store operation it's useful to have this be a `PostUpdateNode` for
+ * the shared dataflow library's flow-through mechanism to detect flow in cases such as:
+ * ```cpp
+ * struct MyInt {
+ *   int i;
+ *   int& getRef() { return i; }
+ * };
+ * ...
+ * MyInt mi;
+ * mi.getRef() = source(); // this is detected as a store to `i` via flow-through.
+ * sink(mi.i);
+ * ```
+ */
+private class PostIndirectReturnOutNode extends IndirectReturnOutNode, PostUpdateNode {
+  PostIndirectReturnOutNode() {
+    any(StoreInstruction store).getDestinationAddressOperand() = this.getOperand()
+  }
+
+  override Node getPreUpdateNode() { result = this }
 }
 
 private Type getTypeImpl(Type t, int indirectionIndex) {
