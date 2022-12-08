@@ -17,20 +17,19 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>`, or you can run them in GitHub Codespaces using the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codeql-codespaces-template>`__. To access the template, click on the link then click **Use this template**. This will open a GitHub Codespaces environment that is preconfigured to run CodeQL queries.
+You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>`, or you can run them in GitHub Codespaces using the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codeql-codespaces-template>`__. This will open a GitHub Codespaces environment preconfigured to run CodeQL queries.
 
-Once you open the GitHub Codespaces template, follow the instructions in the ReadMe to take a code tour and learn how to run queries in the workspace.
+Once you open the GitHub Codespaces template, follow the instructions in the README to take a code tour and learn how to run queries in the workspace.
 
-The first query in the `tutorial.ql` file is populated with the query:
+Here is an example of a basic query:
 
 .. code-block:: ql
 
    import tutorial
 
-   from Person p
-   select p
+   select "hello world"
 
-This query returns a list of people in the tutorial's database.
+This query returns the string `"hello world"`.
 
 More complicated queries typically look like this:
 
@@ -60,7 +59,7 @@ Exercise 1
 
 Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
 
-➤ `Check your answer <#exercise-1>`__
+➤ `Check your answer <#answer:-exercise-1>`__
 
 There is often more than one way to define a query. For example, we can also write the above query in the shorter form:
 
@@ -73,21 +72,21 @@ Exercise 2
 
 Write a query which returns the sine of the minimum of ``3^5`` (``3`` raised to the power ``5``) and ``245.6``.
 
-➤ `Check your answer <#exercise-2>`__
+➤ `Check your answer <#answer:-exercise-2>`__
 
 Exercise 3
 ~~~~~~~~~~
 
 Write a query which returns the opposite of the boolean ``false``.
 
-➤ `Check your answer <#exercise-3>`__
+➤ `Check your answer <#answer:-exercise-3>`__
 
 Exercise 4
 ~~~~~~~~~~
 
 Write a query which computes the number of days between June 10 and September 28, 2017.
 
-➤ `Check your answer <#exercise-4>`__
+➤ `Check your answer <#answer:-exercise-4>`__
 
 Example query with multiple results
 -----------------------------------
@@ -175,9 +174,7 @@ Further reading
 Answers
 -------
 
-In these answers, we use ``/*`` and ``*/`` to label the different parts of the query. Any text surrounded by ``/*`` and ``*/`` is not evaluated as part of the QL code, but is treated as a *comment*.
-
-Exercise 1
+Answer: Exercise 1
 ~~~~~~~~~~
 
 .. code-block:: ql
@@ -186,7 +183,7 @@ Exercise 1
    where s = "lgtm"
    select s.length()
 
-Exercise 2
+Answer: Exercise 2
 ~~~~~~~~~~
 
 .. code-block:: ql
@@ -195,7 +192,7 @@ Exercise 2
    where x = 3.pow(5) and y = 245.6
    select x.minimum(y).sin()
 
-Exercise 3
+Answer: Exercise 3
 ~~~~~~~~~~
 
 .. code-block:: ql
@@ -204,7 +201,7 @@ Exercise 3
    where b = false
    select b.booleanNot()
 
-Exercise 4
+Answer: Exercise 4
 ~~~~~~~~~~
 
 .. code-block:: ql
