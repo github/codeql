@@ -30,7 +30,7 @@ The first query in the `tutorial.ql` file is populated with the query:
    from Person p
    select p
 
-This query returns .
+This query returns a list of people in the tutorial's database.
 
 More complicated queries typically look like this:
 
