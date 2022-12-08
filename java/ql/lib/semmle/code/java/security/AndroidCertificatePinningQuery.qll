@@ -61,10 +61,8 @@ predicate trustedDomain(string domainName) {
  */
 private predicate trustedSocketFactory(MethodAccess setSocketFactory, boolean default) {
   exists(MethodAccess getSocketFactory, MethodAccess initSslContext |
-    exists(Method m | setSocketFactory.getMethod().getASourceOverriddenMethod*() = m |
-      default = true and
-      m.getDeclaringType() instanceof HttpsUrlConnection and
-      m.hasName("setDefaultSSLSocketFactory")
+    exists(Method m | setSocketFactory.getMethod() = m |
+      default = true and m instanceof SetDefaultConnectionFactoryMethod
       or
       default = false and m instanceof SetConnectionFactoryMethod
     ) and

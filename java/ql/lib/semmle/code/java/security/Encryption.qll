@@ -150,6 +150,13 @@ class SetConnectionFactoryMethod extends Method {
   }
 }
 
+class SetDefaultConnectionFactoryMethod extends Method {
+  SetDefaultConnectionFactoryMethod() {
+    this.hasName("setDefaultSSLSocketFactory") and
+    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
+  }
+}
+
 class SetHostnameVerifierMethod extends Method {
   SetHostnameVerifierMethod() {
     this.hasName("setHostnameVerifier") and
