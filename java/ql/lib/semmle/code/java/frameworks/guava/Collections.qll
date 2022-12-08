@@ -3,7 +3,6 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.Collections
 
 private string guavaCollectPackage() { result = "com.google.common.collect" }

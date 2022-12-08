@@ -5,7 +5,6 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** A reference type that extends a parameterization the Promise type. */
 private class RatpackPromise extends RefType {

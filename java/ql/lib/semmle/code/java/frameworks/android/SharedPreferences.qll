@@ -1,7 +1,6 @@
 /** Provides classes related to `android.content.SharedPreferences`. */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The interface `android.content.SharedPreferences`. */
 class SharedPreferences extends Interface {

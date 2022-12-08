@@ -90,7 +90,12 @@ open class KotlinFileExtractor(
                 }
             }
 
-            file.declarations.forEach { extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true) }
+            file.declarations.forEach {
+                extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true)
+                if (it is IrProperty || it is IrField || it is IrFunction) {
+                    externalClassExtractor.writeStubTrapFile(it, getTrapFileSignature(it))
+                }
+            }
             extractStaticInitializer(file, { extractFileClass(file) })
             CommentExtractor(this, file, tw.fileId).extract()
 
@@ -99,6 +104,8 @@ open class KotlinFileExtractor(
             }
 
             linesOfCode?.linesOfCodeInFile(id)
+
+            externalClassExtractor.writeStubTrapFile(file)
         }
     }
 
@@ -507,6 +514,9 @@ open class KotlinFileExtractor(
                     addModifiers(instance.id, "public", "static", "final")
                     tw.writeClass_object(id.cast<DbClass>(), instance.id)
                 }
+                if (c.isObject) {
+                    addModifiers(id, "static")
+                }
                 if (extractFunctionBodies && needsObinitFunction(c)) {
                     extractObinitFunction(c, id)
                 }
@@ -515,6 +525,9 @@ open class KotlinFileExtractor(
                 extractClassSupertypes(c, id, inReceiverContext = true) // inReceiverContext = true is specified to force extraction of member prototypes of base types
 
                 linesOfCode?.linesOfCodeInDeclaration(c, id)
+
+                if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
+                    externalClassExtractor.writeStubTrapFile(c)
 
                 return id
             }
@@ -1249,13 +1262,13 @@ open class KotlinFileExtractor(
            DeclarationStackAdjuster(f).use {
                val fNameSuffix = getExtensionReceiverType(f)?.let { it.classFqName?.asString()?.replace(".", "$$") } ?: ""
                val extractType = if (isAnnotationClassField(f)) kClassToJavaClass(f.type) else f.type
-               return extractField(useField(f), "${f.name.asString()}$fNameSuffix", extractType, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal)
+               return extractField(useField(f), "${f.name.asString()}$fNameSuffix", extractType, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal, isDirectlyExposedCompanionObjectField(f))
            }
         }
     }
 
 
-    private fun extractField(id: Label<out DbField>, name: String, type: IrType, parentId: Label<out DbReftype>, locId: Label<DbLocation>, visibility: DescriptorVisibility, errorElement: IrElement, isExternalDeclaration: Boolean, isFinal: Boolean): Label<out DbField> {
+    private fun extractField(id: Label<out DbField>, name: String, type: IrType, parentId: Label<out DbReftype>, locId: Label<DbLocation>, visibility: DescriptorVisibility, errorElement: IrElement, isExternalDeclaration: Boolean, isFinal: Boolean, isStatic: Boolean): Label<out DbField> {
         val t = useType(type)
         tw.writeFields(id, name, t.javaResult.id, parentId, id)
         tw.writeFieldsKotlinType(id, t.kotlinResult.id)
@@ -1264,6 +1277,9 @@ open class KotlinFileExtractor(
         extractVisibility(errorElement, id, visibility)
         if (isFinal) {
             addModifiers(id, "final")
+        }
+        if (isStatic) {
+            addModifiers(id, "static")
         }
 
         if (!isExternalDeclaration) {
@@ -4196,12 +4212,12 @@ open class KotlinFileExtractor(
             val firstAssignmentStmtIdx = 1
 
             if (dispatchReceiverInfo != null) {
-                extractField(dispatchReceiverInfo.field, "<dispatchReceiver>", dispatchReceiverInfo.type, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true)
+                extractField(dispatchReceiverInfo.field, "<dispatchReceiver>", dispatchReceiverInfo.type, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true, isStatic = false)
                 extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiverInfo.type, dispatchReceiverInfo.field, 0 + dispatchReceiverInfo.indexOffset, firstAssignmentStmtIdx + dispatchReceiverInfo.indexOffset)
             }
 
             if (extensionReceiverInfo != null) {
-                extractField(extensionReceiverInfo.field, "<extensionReceiver>", extensionReceiverInfo.type, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true)
+                extractField(extensionReceiverInfo.field, "<extensionReceiver>", extensionReceiverInfo.type, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true, isStatic = false)
                 extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiverInfo.type, extensionReceiverInfo.field, 0 + extensionReceiverInfo.indexOffset, firstAssignmentStmtIdx + extensionReceiverInfo.indexOffset)
             }
         }
@@ -5269,7 +5285,7 @@ open class KotlinFileExtractor(
 
                     // add field
                     val fieldId = tw.getFreshIdLabel<DbField>()
-                    extractField(fieldId, "<fn>", functionType, classId, locId, DescriptorVisibilities.PRIVATE, e, isExternalDeclaration = false, isFinal = true)
+                    extractField(fieldId, "<fn>", functionType, classId, locId, DescriptorVisibilities.PRIVATE, e, isExternalDeclaration = false, isFinal = true, isStatic = false)
 
                     // adjust constructor
                     helper.extractParameterToFieldAssignmentInConstructor("<fn>", functionType, fieldId, 0, 1)

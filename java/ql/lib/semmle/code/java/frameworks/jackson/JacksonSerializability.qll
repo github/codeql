@@ -9,7 +9,6 @@ import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.internal.DataFlowForSerializability
 import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.

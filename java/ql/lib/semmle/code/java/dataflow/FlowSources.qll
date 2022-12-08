@@ -36,6 +36,13 @@ abstract class RemoteFlowSource extends DataFlow::Node {
   abstract string getSourceType();
 }
 
+/**
+ * A module for importing frameworks that define remote flow sources.
+ */
+private module RemoteFlowSources {
+  private import semmle.code.java.frameworks.android.Widget
+}
+
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
   ExternalRemoteFlowSource() { sourceNode(this, "remote") }
 

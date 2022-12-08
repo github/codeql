@@ -4,6 +4,7 @@ private import TaintTrackingPublic
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.ruby.dataflow.SSA
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -77,7 +78,7 @@ private module Cached {
     exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
       nodeFrom.asExpr() = case.getValue() and
       clause = case.getBranch(_) and
-      nodeTo.(SsaDefinitionNode).getDefinition().getControlFlowNode() =
+      nodeTo.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::Definition).getControlFlowNode() =
         variablesInPattern(clause.getPattern())
     )
     or

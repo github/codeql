@@ -1,9 +1,11 @@
 | test.swift:6:9:6:13 | SSA def(t1) | test.swift:7:15:7:15 | t1 |
 | test.swift:6:19:6:26 | call to source() | test.swift:6:9:6:13 | SSA def(t1) |
+| test.swift:7:15:7:15 | [post] t1 | test.swift:8:10:8:10 | t1 |
 | test.swift:7:15:7:15 | t1 | test.swift:8:10:8:10 | t1 |
 | test.swift:8:5:8:10 | SSA def(t2) | test.swift:10:15:10:15 | t2 |
 | test.swift:8:10:8:10 | t1 | test.swift:8:5:8:10 | SSA def(t2) |
 | test.swift:8:10:8:10 | t1 | test.swift:9:15:9:15 | t1 |
+| test.swift:9:15:9:15 | [post] t1 | test.swift:11:8:11:8 | t1 |
 | test.swift:9:15:9:15 | t1 | test.swift:11:8:11:8 | t1 |
 | test.swift:12:9:12:14 | SSA def(t2) | test.swift:13:19:13:19 | t2 |
 | test.swift:12:14:12:14 | 0 | test.swift:12:9:12:14 | SSA def(t2) |
@@ -27,6 +29,7 @@
 | test.swift:54:11:54:18 | call to source() | test.swift:54:5:54:18 | SSA def(arg) |
 | test.swift:59:9:59:12 | SSA def(x) | test.swift:60:15:60:15 | x |
 | test.swift:59:18:59:18 | 0 | test.swift:59:9:59:12 | SSA def(x) |
+| test.swift:60:15:60:15 | [post] x | test.swift:61:23:61:23 | x |
 | test.swift:60:15:60:15 | x | test.swift:61:23:61:23 | x |
 | test.swift:61:22:61:23 | &... | test.swift:62:15:62:15 | x |
 | test.swift:61:22:61:23 | [post] &... | test.swift:62:15:62:15 | x |
@@ -64,12 +67,14 @@
 | test.swift:93:17:93:23 | bool | test.swift:93:17:93:23 | SSA def(bool) |
 | test.swift:95:13:95:16 | SSA def(x) | test.swift:96:19:96:19 | x |
 | test.swift:95:22:95:22 | 0 | test.swift:95:13:95:16 | SSA def(x) |
+| test.swift:96:19:96:19 | [post] x | test.swift:97:40:97:40 | x |
 | test.swift:96:19:96:19 | x | test.swift:97:40:97:40 | x |
 | test.swift:97:39:97:40 | &... | test.swift:98:19:98:19 | x |
 | test.swift:97:39:97:40 | [post] &... | test.swift:98:19:98:19 | x |
 | test.swift:97:40:97:40 | x | test.swift:97:39:97:40 | &... |
 | test.swift:102:13:102:16 | SSA def(x) | test.swift:103:19:103:19 | x |
 | test.swift:102:22:102:22 | 0 | test.swift:102:13:102:16 | SSA def(x) |
+| test.swift:103:19:103:19 | [post] x | test.swift:104:41:104:41 | x |
 | test.swift:103:19:103:19 | x | test.swift:104:41:104:41 | x |
 | test.swift:104:40:104:41 | &... | test.swift:105:19:105:19 | x |
 | test.swift:104:40:104:41 | [post] &... | test.swift:105:19:105:19 | x |

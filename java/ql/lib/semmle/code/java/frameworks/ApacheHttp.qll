@@ -4,7 +4,6 @@
 
 import java
 private import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.ExternalFlow
 
 class ApacheHttpGetParams extends Method {
   ApacheHttpGetParams() {

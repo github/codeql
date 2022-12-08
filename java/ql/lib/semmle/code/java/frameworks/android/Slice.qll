@@ -3,7 +3,6 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `androidx.slice.SliceProvider`. */
 class SliceProvider extends Class {

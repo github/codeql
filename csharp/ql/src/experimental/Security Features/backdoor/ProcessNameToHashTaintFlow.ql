@@ -44,7 +44,7 @@ predicate isGetHash(Expr arg) {
 }
 
 predicate isSuspiciousPropertyName(PropertyRead pr) {
-  pr.getTarget().getQualifiedName() = "System.Diagnostics.Process.ProcessName"
+  pr.getTarget().hasQualifiedName("System.Diagnostics", "Process", "ProcessName")
 }
 
 from DataFlow::PathNode src, DataFlow::PathNode sink, DataFlowFromMethodToHash conf

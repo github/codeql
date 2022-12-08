@@ -580,5 +580,9 @@
   "IncompleteMultiCharacterSanitization JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitizationQuery.qll",
     "ruby/ql/lib/codeql/ruby/security/IncompleteMultiCharacterSanitizationQuery.qll"
+  ],
+  "EncryptionKeySizes Python/Java": [
+    "python/ql/lib/semmle/python/security/internal/EncryptionKeySizes.qll",
+    "java/ql/lib/semmle/code/java/security/internal/EncryptionKeySizes.qll"
   ]
 }

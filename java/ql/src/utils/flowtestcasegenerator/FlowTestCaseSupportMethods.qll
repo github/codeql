@@ -4,7 +4,6 @@
 
 import java
 private import semmle.code.java.dataflow.internal.DataFlowUtil
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl
 private import FlowTestCaseUtils
