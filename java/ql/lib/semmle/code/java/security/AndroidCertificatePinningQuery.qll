@@ -3,6 +3,8 @@
 import java
 import semmle.code.xml.AndroidManifest
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.frameworks.Networking
+import semmle.code.java.security.Encryption
 import HttpsUrls
 
 /** An Android Network Security Configuration XML file. */
@@ -58,21 +60,17 @@ predicate trustedDomain(string domainName) {
  * `default` is true if the default SSL socket factory for all URLs is being set.
  */
 private predicate trustedSocketFactory(MethodAccess setSocketFactory, boolean default) {
-  exists(MethodAccess getSocketFactory, MethodAccess initSslContext, string methodName |
-    setSocketFactory
-        .getMethod()
-        .getASourceOverriddenMethod*()
-        .hasQualifiedName("javax.net.ssl", "HttpsURLConnection", methodName) and
-    (
-      default = true and methodName = "setDefaultSSLSocketFactory"
+   exists(MethodAccess getSocketFactory, MethodAccess initSslContext |
+    exists(Method m | setSocketFactory.getMethod().getASourceOverriddenMethod*() = m |
+      default = true and
+      m.getDeclaringType() instanceof HttpsUrlConnection and
+      m.hasName("setDefaultSSLSocketFactory")
       or
-      default = false and methodName = "setSSLSocketFactory"
+      default = false and m instanceof SetConnectionFactoryMethod
     ) and
-    initSslContext.getMethod().hasQualifiedName("javax.net.ssl", "SSLContext", "init") and
-    getSocketFactory
-        .getMethod()
-        .getASourceOverriddenMethod*()
-        .hasQualifiedName("javax.net.ssl", "SSLContext", "getSocketFactory") and
+    initSslContext.getMethod().getDeclaringType() instanceof SslContext and
+    initSslContext.getMethod().hasName("init") and
+    getSocketFactory.getMethod().getASourceOverriddenMethod*() instanceof GetSocketFactory and
     not initSslContext.getArgument(1) instanceof NullLiteral and
     DataFlow::localExprFlow(initSslContext.getQualifier(), getSocketFactory.getQualifier()) and
     DataFlow::localExprFlow(getSocketFactory, setSocketFactory.getArgument(0))
@@ -85,10 +83,7 @@ private predicate trustedSocketFactory(MethodAccess setSocketFactory, boolean de
  */
 private predicate trustedUrlConnection(Expr url) {
   exists(MethodAccess openCon |
-    openCon
-        .getMethod()
-        .getASourceOverriddenMethod*()
-        .hasQualifiedName("java.net", "URL", "openConnection") and
+    openCon.getMethod().getASourceOverriddenMethod*() instanceof UrlOpenConnectionMethod and
     url = openCon.getQualifier() and
     exists(MethodAccess setSocketFactory |
       trustedSocketFactory(setSocketFactory, false) and
@@ -97,10 +92,10 @@ private predicate trustedUrlConnection(Expr url) {
   )
   or
   trustedSocketFactory(_, true) and
-  exists(MethodAccess open |
-    open.getMethod()
-        .getASourceOverriddenMethod*()
-        .hasQualifiedName("java.net", "URL", ["openConnection", "openStream"]) and
+  exists(MethodAccess open, Method m |
+    m instanceof UrlOpenConnectionMethod or m instanceof UrlOpenStreamMethod
+  |
+    open.getMethod().getASourceOverriddenMethod*() = m and
     url = open.getQualifier()
   )
 }
