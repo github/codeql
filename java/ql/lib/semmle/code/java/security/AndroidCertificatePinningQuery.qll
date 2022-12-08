@@ -5,7 +5,7 @@ import semmle.code.xml.AndroidManifest
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.Encryption
-import HttpsUrls
+import semmle.code.java.security.HttpsUrls
 
 /** An Android Network Security Configuration XML file. */
 class AndroidNetworkSecurityConfigFile extends XmlFile {
@@ -47,7 +47,7 @@ private predicate trustedDomainViaOkHttp(string domainName) {
   )
 }
 
-/** Holds if the given domain name is trusted by some certifiacte pinning implementation. */
+/** Holds if the given domain name is trusted by some certificate pinning implementation. */
 predicate trustedDomain(string domainName) {
   trustedDomainViaXml(domainName)
   or
@@ -56,11 +56,11 @@ predicate trustedDomain(string domainName) {
 
 /**
  * Holds if `setSocketFactory` is a call to `HttpsURLConnection.setSSLSocketFactory` or `HttpsURLConnection.setDefaultSSLSocketFactory`
- * that uses a socket factory derrived from a `TrustManager`.
+ * that uses a socket factory derived from a `TrustManager`.
  * `default` is true if the default SSL socket factory for all URLs is being set.
  */
 private predicate trustedSocketFactory(MethodAccess setSocketFactory, boolean default) {
-   exists(MethodAccess getSocketFactory, MethodAccess initSslContext |
+  exists(MethodAccess getSocketFactory, MethodAccess initSslContext |
     exists(Method m | setSocketFactory.getMethod().getASourceOverriddenMethod*() = m |
       default = true and
       m.getDeclaringType() instanceof HttpsUrlConnection and
