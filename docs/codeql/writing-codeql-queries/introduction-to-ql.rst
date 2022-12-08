@@ -54,12 +54,12 @@ Simple exercises
 
 You can write simple queries using the some of the basic functions that are available for the ``int``, ``date``, ``float``, ``boolean`` and ``string`` types. To apply a function, append it to the argument. For example, ``1.toString()`` converts the value ``1`` to a string. Notice that as you start typing a function, a pop-up is displayed making it easy to select the function that you want. Also note that you can apply multiple functions in succession. For example, ``100.log().sqrt()`` first takes the natural logarithm of 100 and then computes the square root of the result.
 
-Exercise 1
-~~~~~~~~~~
+Exercise 1 - Strings
+~~~~~~~~~~~~~~~~~~~~
 
 Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
 
-➤ `Check your answer <#answer:-exercise-1>`__
+➤ `Check your answer <#exercise-1>`__
 
 There is often more than one way to define a query. For example, we can also write the above query in the shorter form:
 
@@ -67,26 +67,26 @@ There is often more than one way to define a query. For example, we can also wri
 
    select "lgtm".length()
 
-Exercise 2
-~~~~~~~~~~
+Exercise 2 - Numbers
+~~~~~~~~~~~~~~~~~~~~
 
 Write a query which returns the sine of the minimum of ``3^5`` (``3`` raised to the power ``5``) and ``245.6``.
 
-➤ `Check your answer <#answer:-exercise-2>`__
+➤ `Check your answer <#exercise-2>`__
 
-Exercise 3
-~~~~~~~~~~
+Exercise 3 - Booleans
+~~~~~~~~~~~~~~~~~~~~~
 
 Write a query which returns the opposite of the boolean ``false``.
 
-➤ `Check your answer <#answer:-exercise-3>`__
+➤ `Check your answer <#exercise-3>`__
 
-Exercise 4
-~~~~~~~~~~
+Exercise 4 - Dates
+~~~~~~~~~~~~~~~~~~
 
 Write a query which computes the number of days between June 10 and September 28, 2017.
 
-➤ `Check your answer <#answer:-exercise-4>`__
+➤ `Check your answer <#exercise-4>`__
 
 Example query with multiple results
 -----------------------------------
@@ -174,7 +174,7 @@ Further reading
 Answers
 -------
 
-Answer: Exercise 1
+Exercise 1
 ~~~~~~~~~~
 
 .. code-block:: ql
@@ -183,7 +183,7 @@ Answer: Exercise 1
    where s = "lgtm"
    select s.length()
 
-Answer: Exercise 2
+Exercise 2
 ~~~~~~~~~~
 
 .. code-block:: ql
@@ -192,7 +192,7 @@ Answer: Exercise 2
    where x = 3.pow(5) and y = 245.6
    select x.minimum(y).sin()
 
-Answer: Exercise 3
+Exercise 3
 ~~~~~~~~~~
 
 .. code-block:: ql
@@ -201,7 +201,7 @@ Answer: Exercise 3
    where b = false
    select b.booleanNot()
 
-Answer: Exercise 4
+Exercise 4
 ~~~~~~~~~~
 
 .. code-block:: ql
