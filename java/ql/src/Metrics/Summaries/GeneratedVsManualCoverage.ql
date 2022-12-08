@@ -91,7 +91,8 @@ float getNumApisWithoutMadModel(string package) {
       count(DataFlowTargetApi d |
         package = d.getDeclaringType().getPackage().toString() and
         not exists(FunctionalExpr funcExpr | d = funcExpr.asMethod()) and // remove lambdas // ! remove this if DataFlowTargetApi itself is adjusted to exclude FunctionalExpr (see static-team slack thread)
-        not exists(SummarizedCallable sc | d = sc.asCallable()) // set minus with SummarizedCallables
+        not exists(SummarizedCallable sc | d = sc.asCallable()) and
+        not exists(FlowSummaryImpl::Public::NegativeSummarizedCallable nc | d = nc.asCallable())
       )
   )
 }
