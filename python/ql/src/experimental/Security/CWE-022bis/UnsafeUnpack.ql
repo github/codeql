@@ -34,8 +34,8 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // Writing the response data to the archive
     (
+      // Writing the response data to the archive
       exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
         is.flowsTo(f) and
         mc.getMethodName() = "write" and
@@ -48,11 +48,18 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       exists(MethodCallNode mc |
         nodeFrom = mc.getObject() and
         mc.getMethodName() = "read" and
-        nodeTo = mc
+        mc.flowsTo(nodeTo)
       )
       or
       // Accessing the name
       exists(AttrRead ar | ar.accesses(nodeFrom, "name") and nodeTo = ar)
+      or
+      // Considering closing use
+      exists(API::Node closing |
+        closing = API::moduleImport("contextlib").getMember("closing") and
+        closing.getACall().flowsTo(nodeTo) and
+        nodeFrom = closing.getACall().getArg(0)
+      )
     )
   }
 }

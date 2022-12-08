@@ -1,10 +1,14 @@
 edges
 | UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute |
 | UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath |
+| UnsafeUnpack.py:36:24:36:43 | ControlFlowNode for Attribute() | UnsafeUnpack.py:55:31:55:37 | ControlFlowNode for to_path |
 nodes
 | UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | UnsafeUnpack.py:9:15:9:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | semmle.label | ControlFlowNode for tarpath |
+| UnsafeUnpack.py:36:24:36:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| UnsafeUnpack.py:55:31:55:37 | ControlFlowNode for to_path | semmle.label | ControlFlowNode for to_path |
 subpaths
 #select
-| UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball, is used in a $@ | PathNode | during archive unpacking. |
+| UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | UnsafeUnpack.py:5:12:5:41 | ControlFlowNode for Attribute() | UnsafeUnpack.py:12:23:12:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:55:31:55:37 | ControlFlowNode for to_path | UnsafeUnpack.py:36:24:36:43 | ControlFlowNode for Attribute() | UnsafeUnpack.py:55:31:55:37 | ControlFlowNode for to_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
