@@ -1,6 +1,7 @@
 <!DOCTYPE qhelp PUBLIC
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
+<!-- Disabled since it refers to examples which do not exist. -->
 <qhelp>
 
 <overview>

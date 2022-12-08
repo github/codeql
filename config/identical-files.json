@@ -470,6 +470,10 @@
     "javascript/ql/src/Comments/CommentedOutCodeReferences.inc.qhelp",
     "python/ql/src/Lexical/CommentedOutCodeReferences.inc.qhelp"
   ],
+  "ThreadResourceAbuse qhelp": [
+    "java/ql/src/experimental/Security/CWE/CWE-400/LocalThreadResourceAbuse.qhelp",
+    "java/ql/src/experimental/Security/CWE/CWE-400/ThreadResourceAbuse.qhelp"
+  ],
   "IDE Contextual Queries": [
     "cpp/ql/lib/IDEContextual.qll",
     "csharp/ql/lib/IDEContextual.qll",
