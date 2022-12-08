@@ -224,8 +224,7 @@ predicate callStep(Node nodeFrom, Node nodeTo) {
  */
 predicate returnStep(Node nodeFrom, Node nodeTo) {
   exists(ExprNodes::CallCfgNode call |
-    nodeFrom instanceof DataFlowPrivate::ReturnNode and
-    nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
+    nodeFrom.(DataFlowPrivate::SynthReturnNode).getCfgScope() = DataFlowDispatch::getTarget(call) and
     nodeTo.asExpr().getNode() = call.getNode()
   )
   or
