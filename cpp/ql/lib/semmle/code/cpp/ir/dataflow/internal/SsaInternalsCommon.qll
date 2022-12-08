@@ -84,7 +84,7 @@ int getMaxIndirectionsForType(Type type) {
   result = countIndirectionsForCppType(getTypeForGLValue(type))
 }
 
-private class PointerOrReferenceType extends Cpp::DerivedType {
+class PointerOrReferenceType extends Cpp::DerivedType {
   PointerOrReferenceType() {
     this instanceof Cpp::PointerType
     or

@@ -29,8 +29,8 @@ private module SourceVariables {
 import SourceVariables
 
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address) { isDef(_, _, address, _, _, _) } or
-  TUseImpl(Operand operand) {
+  TDirectDef(Operand address) { isDef(_, _, address, _, _, _) } or
+  TDirectUse(Operand operand) {
     isUse(_, operand, _, _, _) and
     not isDef(_, _, operand, _, _, _)
   }
@@ -65,10 +65,10 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   }
 }
 
-class DefImpl extends DefOrUseImpl, TDefImpl {
+class DirectDef extends DefOrUseImpl, TDirectDef {
   Operand address;
 
-  DefImpl() { this = TDefImpl(address) }
+  DirectDef() { this = TDirectDef(address) }
 
   override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
 
@@ -87,12 +87,35 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
   }
 
   predicate isCertain() { isDef(true, _, address, _, _, _) }
+
+  /**
+   * Holds if this definition not having a use does not imply that it
+   * will be removed from the SSA def-use relation.
+   */
+  predicate cannotBePruned() { none() }
 }
 
-class UseImpl extends DefOrUseImpl, TUseImpl {
+private module IteratorDefUse {
+  import semmle.code.cpp.models.interfaces.Iterator as Interfaces
+  import semmle.code.cpp.models.implementations.Iterator as Iterator
+  import semmle.code.cpp.models.implementations.StdContainer as StdContainer
+
+  class IteratorDef extends DirectDef {
+    IteratorDef() {
+      exists(Type t | t = this.getBaseSourceVariable().getType().getUnspecifiedType() |
+        t instanceof Iterator::Iterator and
+        not t instanceof PointerOrReferenceType
+      )
+    }
+
+    override predicate cannotBePruned() { any() }
+  }
+}
+
+class DirectUse extends DefOrUseImpl, TDirectUse {
   Operand operand;
 
-  UseImpl() { this = TUseImpl(operand) }
+  DirectUse() { this = TDirectUse(operand) }
 
   Operand getOperand() { result = operand }
 
@@ -121,7 +144,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
    */
   predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
-    exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+    exists(DirectDef def | def.hasIndexInBlock(bb, i, v) |
       if def.isCertain() then certain = true else certain = false
     )
   }
@@ -131,7 +154,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
    * `certain` is `true` if the read is guaranteed.
    */
   predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
-    exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
+    exists(DirectUse use | use.hasIndexInBlock(bb, i, v) |
       if use.isCertain() then certain = true else certain = false
     )
   }
@@ -139,13 +162,18 @@ private module SsaInput implements SsaImplCommon::InputSig {
 
 private newtype TSsaDefOrUse =
   TDefOrUse(DefOrUseImpl defOrUse) {
-    defOrUse instanceof UseImpl
+    defOrUse instanceof DirectUse
     or
     // If `defOrUse` is a definition we only include it if the
-    // SSA library concludes that it's live after the write.
-    exists(Definition def, SourceVariable sv, IRBlock bb, int i |
-      def.definesAt(sv, bb, i) and
-      defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)
+    // SSA library concludes that it's live after the write, or if
+    // it's an unprunable definition.
+    exists(DirectDef def | def = defOrUse |
+      def.cannotBePruned()
+      or
+      exists(Definition definition, SourceVariable sv, IRBlock bb, int i |
+        definition.definesAt(sv, bb, i) and
+        def.hasIndexInBlock(bb, i, sv)
+      )
     )
   } or
   TPhi(PhiNode phi)
@@ -202,7 +230,7 @@ class UseOrPhi extends SsaDefOrUse {
 }
 
 class Def extends DefOrUse {
-  override DefImpl defOrUse;
+  override DirectDef defOrUse;
 
   Operand getAddressOperand() { result = defOrUse.getAddressOperand() }
 
@@ -211,6 +239,12 @@ class Def extends DefOrUse {
   Node0Impl getValue() { result = defOrUse.getValue() }
 
   override string toString() { result = this.asDefOrUse().toString() }
+
+  /**
+   * Holds if this definition not having a use does not imply that it
+   * will be removed from the SSA def-use relation.
+   */
+  predicate cannotBePruned() { defOrUse.cannotBePruned() }
 
   BaseSourceVariableInstruction getBase() { result = defOrUse.getBase() }
 }
