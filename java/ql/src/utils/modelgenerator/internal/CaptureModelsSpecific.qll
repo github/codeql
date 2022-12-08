@@ -52,6 +52,11 @@ private predicate isJdkInternal(J::CompilationUnit cu) {
   cu.getPackage().getName() = ""
 }
 
+/** Holds if the given API is a constructor without parameters. */
+private predicate isParameterlessConstructor(J::Callable api) {
+  api instanceof J::Constructor and api.getNumberOfParameters() = 0
+}
+
 /**
  * Holds if it is relevant to generate models for `api`.
  */
@@ -59,7 +64,8 @@ private predicate isRelevantForModels(J::Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and
   not api instanceof J::MainMethod and
-  not api instanceof J::StaticInitializer
+  not api instanceof J::StaticInitializer and
+  not isParameterlessConstructor(api)
 }
 
 /**
