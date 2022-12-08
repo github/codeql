@@ -143,17 +143,17 @@ predicate precededBySync(DataFlow::Node node, DataFlow::CallNode call) {
 
 from
   UnhandledFileCloseDataFlowConfiguration cfg, DataFlow::Node source, DataFlow::CallNode openCall,
-  DataFlow::Node close, DataFlow::CallNode closeCall
+  DataFlow::Node sink, DataFlow::CallNode closeCall
 where
   // find data flow from an `os.OpenFile` call to an `os.File.Close` call
   // where the handle is writable
-  cfg.hasFlow(source, close) and
+  cfg.hasFlow(source, sink) and
   isWritableFileHandle(source, openCall) and
   // get the `CallNode` corresponding to the sink
-  isCloseSink(close, closeCall) and
+  isCloseSink(sink, closeCall) and
   // check that the call to `os.File.Close` is not preceded by a checked call to
   // `os.File.Sync`
-  not precededBySync(close, closeCall)
-select close,
+  not precededBySync(sink, closeCall)
+select sink,
   "File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly.",
   openCall, openCall.toString()
