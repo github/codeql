@@ -123,8 +123,6 @@ Select expressions that cast a value to a type parameter:
    where assertion.getTypeAnnotation() = param.getLocalTypeName().getAnAccess()
    select assertion, "Cast to type parameter."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505979606441/>`__.
-
 Classes and interfaces
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -179,7 +177,7 @@ Ambient nodes are mostly ignored by control flow and data flow analysis. The out
 Static type information
 -----------------------
 
-Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default for projects on LGTM.com and when you create databases with the :ref:`CodeQL CLI <codeql-cli>`.
+Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default when you create databases with the :ref:`CodeQL CLI <codeql-cli>`.
 
 Basic usage
 ~~~~~~~~~~~
@@ -403,8 +401,6 @@ It is best to use `TypeName <https://codeql.github.com/codeql-standard-libraries
      and not access.hasTypeArguments()
    select access, "Type arguments are omitted"
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505985316500/>`__.
-
 Find imported names that are used as both a type and a value:
 
 .. code-block:: ql
@@ -415,8 +411,6 @@ Find imported names that are used as both a type and a value:
    where exists (LocalTypeAccess access | access.getLocalTypeName().getADeclaration() = spec.getLocal())
      and exists (VarAccess access | access.getVariable().getADeclaration() = spec.getLocal())
    select spec, "Used as both variable and type"
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505975787348/>`__.
 
 Namespace names
 ~~~~~~~~~~~~~~~

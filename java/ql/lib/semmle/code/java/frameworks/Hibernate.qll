@@ -3,7 +3,6 @@
  */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** The interface `org.hibernate.query.QueryProducer`. */
 class HibernateQueryProducer extends RefType {

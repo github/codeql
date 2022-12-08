@@ -10,6 +10,7 @@
  */
 
 import Documentation
+import semmle.code.csharp.commons.QualifiedName
 
 from SourceMethodOrConstructor m, ThrowElement throw, RefType throwType
 where
@@ -20,8 +21,15 @@ where
     comment = getADeclarationXmlComment(m) and
     exceptionName = comment.getCref(offset) and
     throwType.getABaseType*() = throwBaseType and
-    (throwBaseType.hasName(exceptionName) or throwBaseType.hasQualifiedName(exceptionName))
-    // and comment.hasBody(offset) // Too slow
+    (
+      throwBaseType.hasName(exceptionName)
+      or
+      exists(string qualifier, string type |
+        splitQualifiedName(exceptionName, qualifier, type) and
+        throwBaseType.hasQualifiedName(qualifier, type)
+      )
+      // and comment.hasBody(offset) // Too slow
+    )
   ) and
   not getADeclarationXmlComment(m) instanceof InheritDocXmlComment
 select m, "Exception $@ should be documented.", throw, throw.getExpr().getType().getName()

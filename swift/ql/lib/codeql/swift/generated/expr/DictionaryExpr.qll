@@ -34,6 +34,6 @@ module Generated {
     /**
      * Gets the number of elements of this dictionary expression.
      */
-    final int getNumberOfElements() { result = count(getAnElement()) }
+    final int getNumberOfElements() { result = count(int i | exists(getElement(i))) }
   }
 }
