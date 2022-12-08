@@ -1243,6 +1243,13 @@ open class KotlinFileExtractor(
                 if (f.isSuspend) {
                     addModifiers(id, "suspend")
                 }
+                if (f.symbol !is IrConstructorSymbol) {
+                    when((f as? IrSimpleFunction)?.modality) {
+                        Modality.ABSTRACT -> addModifiers(id, "abstract")
+                        Modality.FINAL -> addModifiers(id, "final")
+                        else -> Unit
+                    }
+                }
 
                 linesOfCode?.linesOfCodeInDeclaration(f, id)
 
