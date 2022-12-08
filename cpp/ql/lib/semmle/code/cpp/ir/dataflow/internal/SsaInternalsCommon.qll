@@ -176,12 +176,6 @@ abstract class Indirection extends Type {
    * from `opFrom` to `instrTo`.
    */
   predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) { none() }
-
-  /**
-   * Holds if writing the value `value` to an address with base `base` should
-   * be ignored.
-   */
-  predicate ignoreSourceVariableBase(BaseSourceVariableInstruction base, Node0Impl value) { none() }
 }
 
 private class PointerOrReferenceTypeIndirection extends Indirection instanceof PointerOrReferenceType {
@@ -229,10 +223,6 @@ predicate isWrite(Node0Impl value, Operand address, boolean certain) {
 
 predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
   any(Indirection ind).isAdditionalConversionFlow(opFrom, instrTo)
-}
-
-predicate ignoreSourceVariableBase(BaseSourceVariableInstruction base, Node0Impl value) {
-  any(Indirection ind).ignoreSourceVariableBase(base, value)
 }
 
 newtype TBaseSourceVariable =
