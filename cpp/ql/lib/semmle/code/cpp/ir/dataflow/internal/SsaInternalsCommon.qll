@@ -99,9 +99,9 @@ private class PointerOrReferenceType extends Cpp::DerivedType {
  * (i.e., `countIndirections(e.getUnspecifiedType())`).
  */
 private int countIndirections(Type t) {
-  result = 1 + countIndirections(t.(PointerOrReferenceType).getBaseType())
+  result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
   or
-  not t instanceof PointerOrReferenceType and
+  not exists(Indirection ind | ind.getType() = t) and
   result = 0
 }
 
@@ -127,7 +127,82 @@ class AllocationInstruction extends CallInstruction {
   AllocationInstruction() { this.getStaticCallTarget() instanceof Cpp::AllocationFunction }
 }
 
+/**
+ * An abstract class for handling indirections.
+ *
+ * Extend this class to make a type behave as a pointer for the
+ * purposes of dataflow.
+ */
+abstract class Indirection extends Type {
+  Type baseType;
+
+  /** Gets the type of this indirection. */
+  final Type getType() { result = super.getUnspecifiedType() }
+
+  /**
+   * Gets the number of indirections supported by this type.
+   *
+   * For example, the number of indirections of a variable `p` of type
+   * `int**` is `3` (i.e., `p`, `*p` and `**p`).
+   */
+  abstract int getNumberOfIndirections();
+
+  /**
+   * Holds if `deref` is an instruction that behaves as a `LoadInstruction`
+   * that loads the value computed by `addres`.
+   */
+  predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
+
+  /**
+   * Holds if `value` is written to the address computed by `address`.
+   *
+   * `certain` is `true` if this write is guarenteed to write to the address.
+   */
+  predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
+
+  /**
+   * Gets the base type of this indirection, after specifiers have been deeply
+   * stripped and typedefs have been resolved.
+   *
+   * For example, the base type of `int*&` is `int*`, and the base type of `int*` is `int`.
+   */
+  final Type getBaseType() { result = baseType.getUnspecifiedType() }
+
+  /** Holds if there should be an additional taint step from `node1` to `node2`. */
+  predicate isAdditionalTaintStep(Node node1, Node node2) { none() }
+
+  /**
+   * Holds if the step from `opFrom` to `instrTo` should be considered a conversion
+   * from `opFrom` to `instrTo`.
+   */
+  predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) { none() }
+
+  /**
+   * Holds if writing the value `value` to an address with base `base` should
+   * be ignored.
+   */
+  predicate ignoreSourceVariableBase(BaseSourceVariableInstruction base, Node0Impl value) { none() }
+}
+
+private class PointerOrReferenceTypeIndirection extends Indirection instanceof PointerOrReferenceType {
+  PointerOrReferenceTypeIndirection() { baseType = PointerOrReferenceType.super.getBaseType() }
+
+  override int getNumberOfIndirections() { result = 1 + countIndirections(this.getBaseType()) }
+
+  override predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
+
+  override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
+}
+
+predicate isDereference(Instruction deref, Operand address) {
+  any(Indirection ind).isAdditionalDereference(deref, address)
+  or
+  deref.(LoadInstruction).getSourceAddressOperand() = address
+}
+
 predicate isWrite(Node0Impl value, Operand address, boolean certain) {
+  any(Indirection ind).isAdditionalWrite(value, address, certain)
+  or
   certain = true and
   (
     exists(StoreInstruction store |
@@ -150,6 +225,50 @@ predicate isWrite(Node0Impl value, Operand address, boolean certain) {
       address = uninitialized.getAnOperand()
     )
   )
+}
+
+predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
+  any(Indirection ind).isAdditionalConversionFlow(opFrom, instrTo)
+}
+
+predicate ignoreSourceVariableBase(BaseSourceVariableInstruction base, Node0Impl value) {
+  any(Indirection ind).ignoreSourceVariableBase(base, value)
+}
+
+newtype TBaseSourceVariable =
+  // Each IR variable gets its own source variable
+  TBaseIRVariable(IRVariable var) or
+  // Each allocation gets its own source variable
+  TBaseCallVariable(AllocationInstruction call)
+
+abstract class BaseSourceVariable extends TBaseSourceVariable {
+  abstract string toString();
+
+  abstract DataFlowType getType();
+}
+
+class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
+  IRVariable var;
+
+  IRVariable getIRVariable() { result = var }
+
+  BaseIRVariable() { this = TBaseIRVariable(var) }
+
+  override string toString() { result = var.toString() }
+
+  override DataFlowType getType() { result = var.getType() }
+}
+
+class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
+  AllocationInstruction call;
+
+  BaseCallVariable() { this = TBaseCallVariable(call) }
+
+  AllocationInstruction getCallInstruction() { result = call }
+
+  override string toString() { result = call.toString() }
+
+  override DataFlowType getType() { result = call.getResultType() }
 }
 
 /**
@@ -199,6 +318,19 @@ predicate isModifiableByCall(ArgumentOperand operand) {
   )
 }
 
+abstract class BaseSourceVariableInstruction extends Instruction {
+  abstract BaseSourceVariable getBaseSourceVariable();
+}
+
+private class BaseIRVariableInstruction extends BaseSourceVariableInstruction,
+  VariableAddressInstruction {
+  override BaseIRVariable getBaseSourceVariable() { result.getIRVariable() = this.getIRVariable() }
+}
+
+private class BaseAllocationInstruction extends BaseSourceVariableInstruction, AllocationInstruction {
+  override BaseCallVariable getBaseSourceVariable() { result.getCallInstruction() = this }
+}
+
 cached
 private module Cached {
   /**
@@ -209,7 +341,9 @@ private module Cached {
    * `indirectionIndex` specifies the number of loads required to read the variable.
    */
   cached
-  predicate isUse(boolean certain, Operand op, Instruction base, int ind, int indirectionIndex) {
+  predicate isUse(
+    boolean certain, Operand op, BaseSourceVariableInstruction base, int ind, int indirectionIndex
+  ) {
     not ignoreOperand(op) and
     certain = true and
     exists(LanguageType type, int upper, int ind0 |
@@ -230,8 +364,8 @@ private module Cached {
    */
   cached
   Operand getIRRepresentationOfIndirectOperand(Operand operand, int indirectionIndex) {
-    exists(LoadInstruction load |
-      operand = load.getSourceAddressOperand() and
+    exists(Instruction load |
+      isDereference(load, operand) and
       result = unique( | | load.getAUse()) and
       isUseImpl(operand, _, indirectionIndex - 1)
     )
@@ -246,9 +380,10 @@ private module Cached {
    */
   cached
   Instruction getIRRepresentationOfIndirectInstruction(Instruction instr, int indirectionIndex) {
-    exists(LoadInstruction load |
-      load.getSourceAddress() = instr and
-      isUseImpl(load.getSourceAddressOperand(), _, indirectionIndex - 1) and
+    exists(Instruction load, Operand address |
+      address.getDef() = instr and
+      isDereference(load, address) and
+      isUseImpl(address, _, indirectionIndex - 1) and
       result = instr
     )
   }
@@ -257,11 +392,10 @@ private module Cached {
    * Holds if `operand` is a use of an SSA variable rooted at `base`, and the
    * path from `base` to `operand` passes through `ind` load-like instructions.
    */
-  private predicate isUseImpl(Operand operand, Instruction base, int ind) {
+  private predicate isUseImpl(Operand operand, BaseSourceVariableInstruction base, int ind) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
-    operand.getDef() = base and
-    isSourceVariableBase(base)
+    operand = base.getAUse()
     or
     exists(Operand mid, Instruction instr |
       isUseImpl(mid, base, ind) and
@@ -270,23 +404,15 @@ private module Cached {
     )
     or
     exists(int ind0 |
-      isUseImpl(operand.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
+      exists(Operand address |
+        isDereference(operand.getDef(), address) and
+        isUseImpl(address, base, ind0)
+      )
       or
       isUseImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
     |
       ind0 = ind - 1
     )
-  }
-
-  /**
-   * Holds if `i` is a base instruction that starts a sequence of uses
-   * of some variable that SSA can handle.
-   *
-   * This is either when `i` is a `VariableAddressInstruction` or when
-   * `i` is a fresh allocation produced by an `AllocationInstruction`.
-   */
-  private predicate isSourceVariableBase(Instruction i) {
-    i instanceof VariableAddressInstruction or i instanceof AllocationInstruction
   }
 
   /**
@@ -299,7 +425,7 @@ private module Cached {
    */
   cached
   predicate isDef(
-    boolean certain, Node0Impl value, Operand address, Instruction base, int ind,
+    boolean certain, Node0Impl value, Operand address, BaseSourceVariableInstruction base, int ind,
     int indirectionIndex
   ) {
     exists(int ind0, CppType type, int lower, int upper |
@@ -320,11 +446,10 @@ private module Cached {
    * Note: Unlike `isUseImpl`, this predicate recurses through pointer-arithmetic
    * instructions.
    */
-  private predicate isDefImpl(Operand address, Instruction base, int ind) {
+  private predicate isDefImpl(Operand address, BaseSourceVariableInstruction base, int ind) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
-    address.getDef() = base and
-    isSourceVariableBase(base)
+    address = base.getAUse()
     or
     exists(Operand mid, Instruction instr |
       isDefImpl(mid, base, ind) and
@@ -333,7 +458,10 @@ private module Cached {
     )
     or
     exists(int ind0 |
-      isDefImpl(address.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
+      exists(Operand operand |
+        isDereference(address.getDef(), operand) and
+        isDefImpl(operand, base, ind - 1)
+      )
       or
       isDefImpl(address.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
     |
