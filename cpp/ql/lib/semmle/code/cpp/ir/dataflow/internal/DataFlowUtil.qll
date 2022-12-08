@@ -1191,12 +1191,49 @@ predicate hasInstructionAndIndex(
 
 cached
 private module Cached {
+  private module FieldFlow {
+    private import DataFlowImplCommon
+    private import DataFlowImplLocal
+    private import DataFlowPrivate
+
+    /**
+     * A configuration for finding local-only flow through fields. This uses the
+     * `Configuration` class in the dedicated `DataFlowImplLocal` copy of the
+     * shared library that's not user-exposed directly.
+     */
+    private class FieldConfiguration extends Configuration {
+      FieldConfiguration() { this = "FieldConfiguration" }
+
+      override predicate isSource(Node source) {
+        storeStep(source, _, _)
+        or
+        // Also mark `foo(a.b);` as a source when `a.b` may be overwritten by `foo`.
+        readStep(_, _, any(Node node | node.asExpr() = source.asDefiningArgument()))
+      }
+
+      override predicate isSink(Node sink) { readStep(_, _, sink) }
+
+      override FlowFeature getAFeature() { result instanceof FeatureEqualSourceSinkCallContext }
+    }
+
+    predicate fieldFlow(Node node1, Node node2) {
+      any(FieldConfiguration cfg).hasFlow(node1, node2)
+    }
+  }
+
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.
    */
   cached
-  predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+  predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStep(nodeFrom, nodeTo)
+    or
+    // Field flow is not strictly a "step" but covers the whole function
+    // transitively. There's no way to get a step-like relation out of the global
+    // data flow library, so we just have to accept some big steps here.
+    FieldFlow::fieldFlow(nodeFrom, nodeTo)
+  }
 
   private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
     // Reduce the indirection count by 1 if we're passing through a `LoadInstruction`.

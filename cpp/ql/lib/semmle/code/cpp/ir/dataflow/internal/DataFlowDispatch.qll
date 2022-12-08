@@ -79,8 +79,9 @@ private module VirtualDispatch {
         ) and
         allowFromArg = false
         or
-        // Local flow
-        DataFlow::localFlowStep(src, other) and
+        // Local flow. We cannot use `DataFlow::localFlowStep` because the local field-flow case
+        // results in non-monotonic recursion.
+        DataFlow::simpleLocalFlowStep(src, other) and
         allowFromArg = allowOtherFromArg
         or
         // Flow from global variable to load.
