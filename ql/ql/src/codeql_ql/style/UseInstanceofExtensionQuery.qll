@@ -17,19 +17,6 @@ predicate instanceofThisInCharPred(Class c, Type type) {
   )
 }
 
-/**
- * Holds if `c` uses the casting based range pattern, which could be replaced with `instanceof type`.
- */
-predicate usesCastingBasedInstanceof(Class c, Type type) {
-  instanceofThisInCharPred(c, type) and
-  // require that there is a call to the range class that matches the name of the enclosing predicate
-  exists(InlineCast cast, MemberCall call |
-    cast = getAThisCast(c, type) and
-    call.getBase() = cast and
-    cast.getEnclosingPredicate().getName() = call.getMemberName()
-  )
-}
-
 /** Gets an inline cast that cases `this` to `type` inside a class predicate for `c`. */
 InlineCast getAThisCast(Class c, Type type) {
   exists(MemberCall call |
@@ -51,12 +38,6 @@ predicate usesFieldBasedInstanceof(Class c, TypeExpr type, FieldDecl field, Comp
     comp.getAnOperand() = fieldAccess and
     fieldAccess.getDeclaration() = field and
     field.getVarDecl().getTypeExpr() = type
-  ) and
-  // require that there is a call to the range field that matches the name of the enclosing predicate
-  exists(FieldAccess access, MemberCall call |
-    access = getARangeFieldAccess(c, field, _) and
-    call.getBase() = access and
-    access.getEnclosingPredicate().getName() = call.getMemberName()
   )
 }
 
