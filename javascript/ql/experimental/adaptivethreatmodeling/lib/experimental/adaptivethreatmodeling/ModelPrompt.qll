@@ -98,23 +98,18 @@ module ModelPrompt {
   bindingset[neighborhoodSize]
   string tokenizeNeighborhood(DataFlow::Node node, int neighborhoodSize) {
     result =
-      tokenize(any(Location location |
-          location.getFile() = node.getAstNode().getLocation().getFile() and
-          location.getStartLine() =
-            max(int line |
-              line = node.getAstNode().getLocation().getStartLine() - neighborhoodSize or line = 1
+      tokenize(max(Location loc |
+          // Select the largest neighborhood that contains `node` and at most `neighborhoodSize` lines before and after
+          // `node`.
+          loc.getFile() = node.getAstNode().getLocation().getFile() and
+          loc.containsLoosely(node.getAstNode().getLocation()) and
+          loc.getStartLine() >= node.getAstNode().getLocation().getStartLine() - neighborhoodSize and
+          loc.getEndLine() <= node.getAstNode().getLocation().getEndLine() + neighborhoodSize
             |
-              line
-            ) and
-          location.getEndLine() =
-            min(int line |
-              line = node.getAstNode().getLocation().getEndLine() + neighborhoodSize + 1 or // Add 1 because the end column is 1
-              line = location.getFile().getNumberOfLines()
-            |
-              line
-            ) and
-          location.getStartColumn() = 1 and
-          location.getEndColumn() = 1
+          loc
+          order by
+            loc.getNumLines(), loc.getEndColumn() - loc.getStartColumn(), loc.getEndColumn(),
+            loc.getStartColumn() desc
         ))
   }
 }
