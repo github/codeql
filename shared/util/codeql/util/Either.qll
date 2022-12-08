@@ -33,8 +33,8 @@ module Either<TypeWithToString Left, TypeWithToString Right> {
   }
 
   /** Makes an `Either` from an instance of `Left` */
-  Left left(Left c) { result = c }
+  Either left(Left c) { result.asLeft() = c }
 
   /** Makes an `Either` from an instance of `Right` */
-  Right right(Right c) { result = c }
+  Either right(Right c) { result.asRight() = c }
 }
