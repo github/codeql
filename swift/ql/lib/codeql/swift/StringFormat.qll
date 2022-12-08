@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for reasoning about string formatting.
  */
- 
+
 import swift
 
 /**
