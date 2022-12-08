@@ -12,11 +12,8 @@ private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSumma
 private import ExternalApi
 
 private predicate relevant(ExternalApi api) {
-  not api.isUninteresting() and
-  (
-    api.isSupported() or
-    api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
-  )
+  api.isSupported() or
+  api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
 }
 
 from string info, int usages
