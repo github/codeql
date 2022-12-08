@@ -4,7 +4,6 @@
 
 import default
 import semmle.code.csharp.frameworks.system.Text
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Text.RegularExpressions` namespace. */
 class SystemTextRegularExpressionsNamespace extends Namespace {
@@ -37,7 +36,7 @@ class SystemTextRegularExpressionsRegexClass extends SystemTextRegularExpression
  */
 class RegexGlobalTimeout extends MethodCall {
   RegexGlobalTimeout() {
-    this.getTarget().hasQualifiedName("System.AppDomain.SetData") and
+    this.getTarget().hasQualifiedName("System.AppDomain", "SetData") and
     this.getArgumentForName("name").getValue() = "REGEX_DEFAULT_MATCH_TIMEOUT"
   }
 }

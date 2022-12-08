@@ -3,6 +3,7 @@
  */
 
 private import Declaration
+private import semmle.code.csharp.commons.QualifiedName
 
 /** A namespace. */
 class Namespace extends Declaration, @namespace {
@@ -25,12 +26,15 @@ class Namespace extends Declaration, @namespace {
    * `qualifier`=`System.Collections` and `name`=`Generic`.
    */
   override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = this.getParentNamespace().getQualifiedName() and
+    exists(string pqualifier, string pname |
+      this.getParentNamespace().hasQualifiedName(pqualifier, pname) and
+      qualifier = getQualifiedName(pqualifier, pname)
+    ) and
     name = this.getName()
   }
 
   /** Gets a textual representation of this namespace. */
-  override string toString() { result = this.getQualifiedName() }
+  override string toString() { result = this.getFullName() }
 
   /** Holds if this is the global namespace. */
   final predicate isGlobalNamespace() { this.getName() = "" }
@@ -41,6 +45,16 @@ class Namespace extends Declaration, @namespace {
   final override string getUndecoratedName() { namespaces(this, result) }
 
   override string getAPrimaryQlClass() { result = "Namespace" }
+
+  /**
+   * Get the fully qualified name of this namespace.
+   */
+  string getFullName() {
+    exists(string namespace, string name |
+      this.hasQualifiedName(namespace, name) and
+      result = getQualifiedName(namespace, name)
+    )
+  }
 }
 
 /** The global namespace. */

@@ -12,8 +12,9 @@
  *       external/cwe/cwe-020
  */
 
-import semmle.javascript.security.OverlyLargeRangeQuery
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
+import codeql.regex.OverlyLargeRangeQuery::Make<TreeView>
 
-from RegExpCharacterRange range, string reason
+from TreeView::RegExpCharacterRange range, string reason
 where problem(range, reason)
 select range, "Suspicious character range that " + reason + "."

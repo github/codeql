@@ -41,6 +41,8 @@ module Generated {
     /**
      * Gets the number of possible declarations of this overloaded declaration ref expression.
      */
-    final int getNumberOfPossibleDeclarations() { result = count(getAPossibleDeclaration()) }
+    final int getNumberOfPossibleDeclarations() {
+      result = count(int i | exists(getPossibleDeclaration(i)))
+    }
   }
 }

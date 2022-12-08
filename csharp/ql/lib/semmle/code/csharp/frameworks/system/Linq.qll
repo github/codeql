@@ -4,7 +4,6 @@
 
 private import csharp as CSharp
 private import semmle.code.csharp.frameworks.System as System
-private import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 
 /** Definitions relating to the `System.Linq` namespace. */
 module SystemLinq {

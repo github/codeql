@@ -7,7 +7,6 @@ private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Dapper
 private import semmle.code.csharp.dataflow.DataFlow4
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** An expression containing a SQL command. */
 abstract class SqlExpr extends Expr {
@@ -35,13 +34,14 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
     exists(InstanceConstructor ic | ic = this.getTarget() |
       ic.getDeclaringType().getABaseType*() instanceof SystemDataIDbCommandInterface and
       ic.getParameter(0).getType() instanceof StringType and
-      not ic.getDeclaringType()
-          .hasQualifiedName([
-              // Known sealed classes:
-              "System.Data.SqlClient.SqlCommand", "System.Data.Odbc.OdbcCommand",
-              "System.Data.OleDb.OleDbCommand", "System.Data.EntityClient.EntityCommand",
-              "System.Data.SQLite.SQLiteCommand"
-            ])
+      not exists(Type t | t = ic.getDeclaringType() |
+        // Known sealed classes:
+        t.hasQualifiedName("System.Data.SqlClient", "SqlCommand") or
+        t.hasQualifiedName("System.Data.Odbc", "OdbcCommand") or
+        t.hasQualifiedName("System.Data.OleDb", "OleDbCommand") or
+        t.hasQualifiedName("System.Data.EntityClient", "EntityCommand") or
+        t.hasQualifiedName("System.Data.SQLite", "SQLiteCommand")
+      )
     )
   }
 

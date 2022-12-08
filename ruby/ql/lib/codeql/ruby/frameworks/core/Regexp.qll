@@ -13,7 +13,7 @@ module Regexp {
   /** A flow summary for `Regexp.escape` and its alias, `Regexp.quote`. */
   class RegexpEscapeSummary extends ModelInput::SummaryModelCsv {
     override predicate row(string row) {
-      row = ";;Member[Regexp].Method[escape,quote];Argument[0];ReturnValue;taint"
+      row = "Regexp!;Method[escape,quote];Argument[0];ReturnValue;taint"
     }
   }
 }

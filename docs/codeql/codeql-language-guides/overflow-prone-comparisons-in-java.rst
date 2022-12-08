@@ -44,7 +44,7 @@ We'll start by writing a query that finds less-than expressions (CodeQL class ``
        expr.getRightOperand().getType().hasName("long")
    select expr
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/490866529746563234/>`__. This query usually finds results on most projects.
+This query usually finds results on most codebases.
 
 Notice that we use the predicate ``getType`` (available on all subclasses of ``Expr``) to determine the type of the operands. Types, in turn, define the ``hasName`` predicate, which allows us to identify the primitive types ``int`` and ``long``. As it stands, this query finds *all* less-than expressions comparing ``int`` and ``long``, but in fact we are only interested in comparisons that are part of a loop condition. Also, we want to filter out comparisons where either operand is constant, since these are less likely to be real bugs. The revised query looks like this:
 
@@ -59,7 +59,7 @@ Notice that we use the predicate ``getType`` (available on all subclasses of ``E
        not expr.getAnOperand().isCompileTimeConstant()
    select expr
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/4315986481180063825/>`__. Notice that fewer results are found.
+Notice that fewer results are found.
 
 The class ``LoopStmt`` is a common superclass of all loops, including, in particular, ``for`` loops as in our example above. While different kinds of loops have different syntax, they all have a loop condition, which can be accessed through predicate ``getCondition``. We use the reflexive transitive closure operator ``*`` applied to the ``getAChildExpr`` predicate to express the requirement that ``expr`` should be nested inside the loop condition. In particular, it can be the loop condition itself.
 
@@ -113,16 +113,44 @@ Now we rewrite our query to make use of these new classes:
 
 .. code-block:: ql
 
-   import Java
+    import java
 
-   // Insert the class definitions from above
+    // Return the width (in bits) of a given integral type 
+    int width(PrimitiveType pt) {
+    (pt.hasName("byte") and result=8) or
+    (pt.hasName("short") and result=16) or
+    (pt.hasName("char") and result=16) or
+    (pt.hasName("int") and result=32) or
+    (pt.hasName("long") and result=64)
+    }
 
-   from OverflowProneComparison expr
-   where exists(LoopStmt l | l.getCondition().getAChildExpr*() = expr) and
-   not expr.getAnOperand().isCompileTimeConstant()
-   select expr
+    // Find any comparison where the width of the type on the smaller end of 
+    // the comparison is less than the width of the type on the greater end
+    abstract class OverflowProneComparison extends ComparisonExpr {
+    Expr getLesserOperand() { none() }
+    Expr getGreaterOperand() { none() }
+    }
 
-➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/506868054626167462/>`__.
+    // Return `<=` and `<` comparisons
+    class LTOverflowProneComparison extends OverflowProneComparison {
+    LTOverflowProneComparison() {
+        (this instanceof LEExpr or this instanceof LTExpr) and
+        width(this.getLeftOperand().getType()) < width(this.getRightOperand().getType())
+    }
+    }
+
+    // Return `>=` and `>` comparisons
+    class GTOverflowProneComparison extends OverflowProneComparison {
+    GTOverflowProneComparison() {
+        (this instanceof GEExpr or this instanceof GTExpr) and
+        width(this.getRightOperand().getType()) < width(this.getLeftOperand().getType())
+    }
+    }
+
+    from OverflowProneComparison expr
+    where exists(LoopStmt l | l.getCondition().getAChildExpr*() = expr) and
+        not expr.getAnOperand().isCompileTimeConstant()
+    select expr
 
 Further reading
 ---------------

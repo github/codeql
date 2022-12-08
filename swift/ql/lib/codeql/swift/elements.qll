@@ -55,6 +55,7 @@ import codeql.swift.elements.decl.TypeAliasDecl
 import codeql.swift.elements.decl.TypeDecl
 import codeql.swift.elements.decl.ValueDecl
 import codeql.swift.elements.decl.VarDecl
+import codeql.swift.elements.expr.AbiSafeConversionExpr
 import codeql.swift.elements.expr.AbstractClosureExpr
 import codeql.swift.elements.expr.AnyHashableErasureExpr
 import codeql.swift.elements.expr.AnyTryExpr

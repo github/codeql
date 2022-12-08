@@ -34,30 +34,73 @@ private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSumm
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl::Public
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
-/**
- * Holds if models describing `package` may be relevant for the analysis of this database.
- *
- * In the context of Ruby, this is the name of a Ruby gem.
- */
-bindingset[package]
-predicate isPackageUsed(string package) {
-  // For now everything is modeled as an access path starting at any top-level, so the package name has no effect.
-  //
-  // We allow an arbitrary package name so that the model can record the name of the package in case it's needed in the future.
-  //
-  // In principle we should consider a package to be "used" if there is a transitive dependency on it, but we can only
-  // reliably see the direct dependencies.
-  //
-  // In practice, packages try to use unique top-level module names, which mitigates the precision loss of not checking
-  // the package name.
-  any()
+pragma[nomagic]
+private predicate isUsedTopLevelConstant(string name) {
+  exists(ConstantAccess access |
+    access.getName() = name and
+    not exists(access.getScopeExpr())
+  )
 }
 
-/** Gets a Ruby-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
-bindingset[package, type, path]
-API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
-  // A row of form `;any;Method[foo]` should match any method named `foo`.
-  exists(package) and
+bindingset[rawType]
+predicate isTypeUsed(string rawType) {
+  exists(string consts |
+    parseType(rawType, consts, _) and
+    isUsedTopLevelConstant(consts.splitAt("::", 0))
+  )
+  or
+  rawType = ["", "any"]
+}
+
+bindingset[rawType]
+private predicate parseType(string rawType, string consts, string suffix) {
+  exists(string regexp |
+    regexp = "([^!]+)(!|)" and
+    consts = rawType.regexpCapture(regexp, 1) and
+    suffix = rawType.regexpCapture(regexp, 2)
+  )
+}
+
+/**
+ * Holds if `type` can be obtained from an instance of `otherType` due to
+ * language semantics modeled by `getExtraNodeFromType`.
+ */
+bindingset[otherType]
+predicate hasImplicitTypeModel(string type, string otherType) {
+  // A::B! can be used to obtain A::B
+  parseType(otherType, type, _)
+}
+
+private predicate parseRelevantType(string rawType, string consts, string suffix) {
+  isRelevantType(rawType) and
+  parseType(rawType, consts, suffix)
+}
+
+pragma[nomagic]
+private string getConstComponent(string consts, int n) {
+  parseRelevantType(_, consts, _) and
+  result = consts.splitAt("::", n)
+}
+
+private int getNumConstComponents(string consts) {
+  result = strictcount(int n | exists(getConstComponent(consts, n)))
+}
+
+private DataFlow::ConstRef getConstantFromConstPath(string consts, int n) {
+  n = 1 and
+  result = DataFlow::getConstant(getConstComponent(consts, 0))
+  or
+  result = getConstantFromConstPath(consts, n - 1).getConstant(getConstComponent(consts, n - 1))
+}
+
+private DataFlow::ConstRef getConstantFromConstPath(string consts) {
+  result = getConstantFromConstPath(consts, getNumConstComponents(consts))
+}
+
+/** Gets a Ruby-specific interpretation of the `(type, path)` tuple after resolving the first `n` access path tokens. */
+bindingset[type, path]
+API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
+  // A row of form `any;Method[foo]` should match any method named `foo`.
   type = "any" and
   n = 1 and
   exists(EntryPointFromAnyType entry |
@@ -66,9 +109,27 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
   )
 }
 
-/** Gets a Ruby-specific interpretation of the `(package, type)` tuple. */
-API::Node getExtraNodeFromType(string package, string type) {
-  isRelevantFullPath(package, type, _) and // Allow any package name, see `isPackageUsed`.
+/** Gets a Ruby-specific interpretation of the given `type`. */
+API::Node getExtraNodeFromType(string type) {
+  exists(string consts, string suffix, DataFlow::ConstRef constRef |
+    parseRelevantType(type, consts, suffix) and
+    constRef = getConstantFromConstPath(consts)
+  |
+    suffix = "!" and
+    (
+      result.asSource() = constRef
+      or
+      result.asSource() = constRef.getADescendentModule().getAnOwnModuleSelf()
+    )
+    or
+    suffix = "" and
+    (
+      result.asSource() = constRef.getAMethodCall("new")
+      or
+      result.asSource() = constRef.getADescendentModule().getAnInstanceSelf()
+    )
+  )
+  or
   type = "" and
   result = API::root()
 }
@@ -78,7 +139,7 @@ API::Node getExtraNodeFromType(string package, string type) {
  * matching anywhere, and the path begins with `Method[methodName]`.
  */
 private predicate methodMatchedByName(AccessPath path, string methodName) {
-  isRelevantFullPath(_, "any", path) and
+  isRelevantFullPath("any", path) and
   exists(AccessPathToken token |
     token = path.getToken(0) and
     token.getName() = "Method" and
@@ -190,3 +251,5 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
     argument.regexpMatch("\\w+:") // keyword argument
   )
 }
+
+module ModelOutputSpecific { }

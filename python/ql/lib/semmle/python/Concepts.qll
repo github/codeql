@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
+private import semmle.python.security.internal.EncryptionKeySizes
 
 /**
  * A data-flow node that executes an operating system command,
@@ -1141,21 +1142,21 @@ module Cryptography {
       abstract class RsaRange extends Range {
         final override string getName() { result = "RSA" }
 
-        final override int minimumSecureKeySize() { result = 2048 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeRsa() }
       }
 
       /** A data-flow node that generates a new DSA key-pair. */
       abstract class DsaRange extends Range {
         final override string getName() { result = "DSA" }
 
-        final override int minimumSecureKeySize() { result = 2048 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeDsa() }
       }
 
       /** A data-flow node that generates a new ECC key-pair. */
       abstract class EccRange extends Range {
         final override string getName() { result = "ECC" }
 
-        final override int minimumSecureKeySize() { result = 224 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeEcc() }
       }
     }
   }

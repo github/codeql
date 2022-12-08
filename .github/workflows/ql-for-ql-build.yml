@@ -22,11 +22,15 @@ jobs:
     steps:
       ### Build the queries ###
       - uses: actions/checkout@v3
+      - name: Find latest bundle
+        id: find-latest-bundle
+        uses: ./.github/actions/find-latest-bundle
       - name: Find codeql
         id: find-codeql
         uses: github/codeql-action/init@77a8d2d10c0b403a8b4aadbd223dc489ecd22683
         with:
           languages: javascript # does not matter
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Get CodeQL version
         id: get-codeql-version
         run: |
@@ -138,6 +142,7 @@ jobs:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
+          tools: ${{ steps.find-latest-bundle.outputs.url }}
       - name: Move pack cache
         run: |
           cp -r ${PACK}/.cache ql/ql/src/.cache
