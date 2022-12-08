@@ -61,10 +61,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
 
   /** Gets the variable that is defined or used. */
   final SourceVariable getSourceVariable() {
-    exists(BaseSourceVariable v |
-      result.getBaseVariable() = v and
-      this.getBaseSourceVariable() = v
-    )
+    result.getBaseVariable() = this.getBaseSourceVariable()
   }
 }
 
