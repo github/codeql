@@ -17,6 +17,7 @@
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl3.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl4.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplLocal.qll",
     "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl3.qll",
