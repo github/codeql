@@ -49,6 +49,14 @@ module ModelScoring {
 
   predicate internalEnpointScores(DataFlow::Node endpoint, string prediction) =
     remoteScoreEndpoints(getEndpointPrompt/2)(endpoint, prediction)
+
+  // For debugging queries, don't limit these to effective sinks:
+  predicate getEndpointPromptForAnyEndpoint(DataFlow::Node node, string prompt) {
+    prompt = ModelPrompt::ModelPrompt::getPrompt(node)
+  }
+
+  predicate internalEnpointScoresForAnyEndpoint(DataFlow::Node endpoint, string prediction) =
+    remoteScoreEndpoints(getEndpointPromptForAnyEndpoint/2)(endpoint, prediction)
 }
 
 /**
