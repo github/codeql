@@ -42,14 +42,14 @@ class OpenFileFun extends Function {
 /**
  * The `os.File.Close` function.
  */
-class CloseFileFun extends Function {
+class CloseFileFun extends Method {
   CloseFileFun() { this.hasQualifiedName("os.File", "Close") }
 }
 
 /**
  * The `os.File.Sync` function.
  */
-class SyncFileFun extends Function {
+class SyncFileFun extends Method {
   SyncFileFun() { this.hasQualifiedName("os.File", "Sync") }
 }
 
