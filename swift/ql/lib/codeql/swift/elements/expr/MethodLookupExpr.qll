@@ -14,7 +14,16 @@ class MethodLookupExpr extends Generated::MethodLookupExpr {
 
   override Decl getImmediateMember() {
     result =
-      Synth::convertDeclFromRaw(this.getUnderlying().getFunction().(Raw::DeclRefExpr).getDecl()) // TODO: FIX THIS
+      Synth::convertDeclFromRaw([
+          this.getUnderlying().getFunction().(Raw::DeclRefExpr).getDecl(),
+          this.getUnderlying()
+              .getFunction()
+              .(Raw::FunctionConversionExpr)
+              .getSubExpr()
+              .(Raw::DeclRefExpr)
+              .getDecl(),
+          this.getUnderlying().getFunction().(Raw::OtherConstructorDeclRefExpr).getConstructorDecl()
+        ])
   }
 
   MethodDecl getMethod() { result = this.getMember() }
