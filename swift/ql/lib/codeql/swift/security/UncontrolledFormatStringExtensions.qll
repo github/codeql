@@ -4,9 +4,10 @@
  */
 
 import swift
-import codeql.swift.StringFormat
-import codeql.swift.dataflow.DataFlow
-import codeql.swift.dataflow.TaintTracking
+private import codeql.swift.StringFormat
+private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.TaintTracking
+private import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for uncontrolled format string vulnerabilities.
@@ -26,11 +27,14 @@ class UncontrolledFormatStringAdditionalTaintStep extends Unit {
 }
 
 /**
- * A default uncontrolled format string sink, that is, the format argument to
- * a `FormattingFunctionCall`.
+ * A default uncontrolled format string sink.
  */
 private class DefaultUncontrolledFormatStringSink extends UncontrolledFormatStringSink {
   DefaultUncontrolledFormatStringSink() {
+    // the format argument to a `FormattingFunctionCall`.
     this.asExpr() = any(FormattingFunctionCall fc).getFormat()
+    or
+    // a sink defined in a Csv model.
+    sinkNode(this, "uncontrolled-format-string")
   }
 }
