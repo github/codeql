@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-12-08-07h55m56s.affable-night-zb71dp9t.3672f6569105cb743c8170ae26d5c53e4a19041f407e5fa718e9f2dfdc6b590e
