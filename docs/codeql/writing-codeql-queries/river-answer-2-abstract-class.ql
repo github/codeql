@@ -119,18 +119,16 @@ string onRight(Man man, Goat goat, Cabbage cabbage, Wolf wolf) {
 
 /** Renders the state as a string, using unicode symbols. */
 string render(Man man, Goat goat, Cabbage cabbage, Wolf wolf) {
-  result = onLeft(man, goat, cabbage, wolf) + "___🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊___" +
+  result =
+    onLeft(man, goat, cabbage, wolf) + "___🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊___" +
       onRight(man, goat, cabbage, wolf)
 }
 
 /** A record of where everything is. */
 class State extends string {
   Man man;
-
   Goat goat;
-
   Cabbage cabbage;
-
   Wolf wolf;
 
   State() { this = render(man, goat, cabbage, wolf) }

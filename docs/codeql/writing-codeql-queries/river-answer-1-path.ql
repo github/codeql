@@ -5,9 +5,7 @@
 
 /** A possible cargo item. */
 class Cargo extends string {
-  Cargo() {
-    this = ["Nothing", "Goat", "Cabbage", "Wolf"]
-  }
+  Cargo() { this = ["Nothing", "Goat", "Cabbage", "Wolf"] }
 }
 
 /** A shore, named either `Left` or `Right`. */
