@@ -124,20 +124,20 @@ class UnhandledFileCloseDataFlowConfiguration extends DataFlow::Configuration {
 }
 
 /**
- * Holds if a `DataFlow::CallNode` is preceded by a call to `os.File.Sync`.
+ * Holds if a `node` is preceded by a call to `os.File.Sync`.
  */
-predicate precededBySync(DataFlow::Node close, DataFlow::CallNode closeCall) {
+predicate precededBySync(DataFlow::Node node, DataFlow::CallNode call) {
   // using the control flow graph, try to find a call to a handled call to `os.File.Sync`
   // which precedes `closeCall`.
   exists(IR::Instruction instr, DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
     // find a predecessor to `closeCall` in the control flow graph
-    instr = closeCall.asInstruction().getAPredecessor*() and
+    instr = call.asInstruction().getAPredecessor*() and
     // match the instruction corresponding to an `os.File.Sync` call with the predecessor
     syncCall.asInstruction() = instr and
     // check that the call to `os.File.Sync` is handled
     isHandledSync(syncReceiver, syncCall) and
     // check that `os.File.Sync` is called on the same object as `os.File.Close`
-    exists(DataFlow::SsaNode ssa | ssa.getAUse() = close and ssa.getAUse() = syncReceiver)
+    exists(DataFlow::SsaNode ssa | ssa.getAUse() = node and ssa.getAUse() = syncReceiver)
   )
 }
 
