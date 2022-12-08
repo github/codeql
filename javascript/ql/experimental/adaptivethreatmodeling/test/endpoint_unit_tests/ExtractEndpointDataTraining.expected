@@ -1,4 +1,12 @@
 endpoints
+| index.js:1:25:1:33 | "express" | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:1:25:1:33 | "express" | TaintedPath | isConstantExpression | true | boolean |
+| index.js:1:25:1:33 | "express" | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:1:25:1:33 | "express" | TaintedPath | sinkLabel | Sink | string |
+| index.js:2:26:2:35 | 'mongoose' | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:2:26:2:35 | 'mongoose' | TaintedPath | isConstantExpression | true | boolean |
+| index.js:2:26:2:35 | 'mongoose' | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:2:26:2:35 | 'mongoose' | TaintedPath | sinkLabel | Sink | string |
 | index.js:9:15:9:45 | { 'isAd ... Admin } | NosqlInjection | hasFlowFromSource | true | boolean |
 | index.js:9:15:9:45 | { 'isAd ... Admin } | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:9:15:9:45 | { 'isAd ... Admin } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
@@ -32,10 +40,98 @@ endpoints
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:20:13:20:31 | { 'isAdmin': true } | NosqlInjection | sinkLabel | Sink | string |
+| index.js:24:13:24:22 | "constant" | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:24:13:24:22 | "constant" | NosqlInjection | isConstantExpression | true | boolean |
+| index.js:24:13:24:22 | "constant" | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:24:13:24:22 | "constant" | NosqlInjection | sinkLabel | Sink | string |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | hasFlowFromSource | false | boolean |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | NosqlInjection | sinkLabel | Sink | string |
+| index.js:32:15:32:24 | "someData" | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:32:15:32:24 | "someData" | NosqlInjection | isConstantExpression | true | boolean |
+| index.js:32:15:32:24 | "someData" | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:32:15:32:24 | "someData" | NosqlInjection | notASinkReason | LoggerMethod | string |
+| index.js:32:15:32:24 | "someData" | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:32:15:32:24 | "someData" | SqlInjection | hasFlowFromSource | false | boolean |
+| index.js:32:15:32:24 | "someData" | SqlInjection | isConstantExpression | true | boolean |
+| index.js:32:15:32:24 | "someData" | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:32:15:32:24 | "someData" | SqlInjection | notASinkReason | LoggerMethod | string |
+| index.js:32:15:32:24 | "someData" | SqlInjection | sinkLabel | NotASink | string |
+| index.js:32:15:32:24 | "someData" | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:32:15:32:24 | "someData" | TaintedPath | isConstantExpression | true | boolean |
+| index.js:32:15:32:24 | "someData" | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:32:15:32:24 | "someData" | TaintedPath | notASinkReason | LoggerMethod | string |
+| index.js:32:15:32:24 | "someData" | TaintedPath | sinkLabel | NotASink | string |
+| index.js:32:15:32:24 | "someData" | Xss | hasFlowFromSource | false | boolean |
+| index.js:32:15:32:24 | "someData" | Xss | isConstantExpression | true | boolean |
+| index.js:32:15:32:24 | "someData" | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:32:15:32:24 | "someData" | Xss | notASinkReason | LoggerMethod | string |
+| index.js:32:15:32:24 | "someData" | Xss | sinkLabel | NotASink | string |
+| index.js:32:15:32:24 | "someData" | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:32:15:32:24 | "someData" | XssThroughDom | isConstantExpression | true | boolean |
+| index.js:32:15:32:24 | "someData" | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:32:15:32:24 | "someData" | XssThroughDom | notASinkReason | LoggerMethod | string |
+| index.js:32:15:32:24 | "someData" | XssThroughDom | sinkLabel | NotASink | string |
+| index.js:36:20:36:22 | "a" | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:36:20:36:22 | "a" | NosqlInjection | isConstantExpression | true | boolean |
+| index.js:36:20:36:22 | "a" | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:36:20:36:22 | "a" | NosqlInjection | notASinkReason | ConstantReceiver | string |
+| index.js:36:20:36:22 | "a" | NosqlInjection | notASinkReason | StringStartsWith | string |
+| index.js:36:20:36:22 | "a" | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:36:20:36:22 | "a" | SqlInjection | hasFlowFromSource | false | boolean |
+| index.js:36:20:36:22 | "a" | SqlInjection | isConstantExpression | true | boolean |
+| index.js:36:20:36:22 | "a" | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:36:20:36:22 | "a" | SqlInjection | notASinkReason | ConstantReceiver | string |
+| index.js:36:20:36:22 | "a" | SqlInjection | notASinkReason | StringStartsWith | string |
+| index.js:36:20:36:22 | "a" | SqlInjection | sinkLabel | NotASink | string |
+| index.js:36:20:36:22 | "a" | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:36:20:36:22 | "a" | TaintedPath | isConstantExpression | true | boolean |
+| index.js:36:20:36:22 | "a" | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:36:20:36:22 | "a" | TaintedPath | notASinkReason | ConstantReceiver | string |
+| index.js:36:20:36:22 | "a" | TaintedPath | notASinkReason | StringStartsWith | string |
+| index.js:36:20:36:22 | "a" | TaintedPath | sinkLabel | NotASink | string |
+| index.js:36:20:36:22 | "a" | Xss | hasFlowFromSource | false | boolean |
+| index.js:36:20:36:22 | "a" | Xss | isConstantExpression | true | boolean |
+| index.js:36:20:36:22 | "a" | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:36:20:36:22 | "a" | Xss | notASinkReason | ConstantReceiver | string |
+| index.js:36:20:36:22 | "a" | Xss | notASinkReason | StringStartsWith | string |
+| index.js:36:20:36:22 | "a" | Xss | sinkLabel | NotASink | string |
+| index.js:36:20:36:22 | "a" | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:36:20:36:22 | "a" | XssThroughDom | isConstantExpression | true | boolean |
+| index.js:36:20:36:22 | "a" | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:36:20:36:22 | "a" | XssThroughDom | notASinkReason | ConstantReceiver | string |
+| index.js:36:20:36:22 | "a" | XssThroughDom | notASinkReason | StringStartsWith | string |
+| index.js:36:20:36:22 | "a" | XssThroughDom | sinkLabel | NotASink | string |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | NosqlInjection | isConstantExpression | true | boolean |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | NosqlInjection | sinkLabel | Sink | string |
+| index.js:78:30:78:39 | "someData" | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:78:30:78:39 | "someData" | NosqlInjection | isConstantExpression | true | boolean |
+| index.js:78:30:78:39 | "someData" | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:78:30:78:39 | "someData" | NosqlInjection | notASinkReason | LoggerMethod | string |
+| index.js:78:30:78:39 | "someData" | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:78:30:78:39 | "someData" | SqlInjection | hasFlowFromSource | false | boolean |
+| index.js:78:30:78:39 | "someData" | SqlInjection | isConstantExpression | true | boolean |
+| index.js:78:30:78:39 | "someData" | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:78:30:78:39 | "someData" | SqlInjection | notASinkReason | LoggerMethod | string |
+| index.js:78:30:78:39 | "someData" | SqlInjection | sinkLabel | NotASink | string |
+| index.js:78:30:78:39 | "someData" | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:78:30:78:39 | "someData" | TaintedPath | isConstantExpression | true | boolean |
+| index.js:78:30:78:39 | "someData" | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:78:30:78:39 | "someData" | TaintedPath | notASinkReason | LoggerMethod | string |
+| index.js:78:30:78:39 | "someData" | TaintedPath | sinkLabel | NotASink | string |
+| index.js:78:30:78:39 | "someData" | Xss | hasFlowFromSource | false | boolean |
+| index.js:78:30:78:39 | "someData" | Xss | isConstantExpression | true | boolean |
+| index.js:78:30:78:39 | "someData" | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:78:30:78:39 | "someData" | Xss | notASinkReason | LoggerMethod | string |
+| index.js:78:30:78:39 | "someData" | Xss | sinkLabel | NotASink | string |
+| index.js:78:30:78:39 | "someData" | XssThroughDom | hasFlowFromSource | false | boolean |
+| index.js:78:30:78:39 | "someData" | XssThroughDom | isConstantExpression | true | boolean |
+| index.js:78:30:78:39 | "someData" | XssThroughDom | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:78:30:78:39 | "someData" | XssThroughDom | notASinkReason | LoggerMethod | string |
+| index.js:78:30:78:39 | "someData" | XssThroughDom | sinkLabel | NotASink | string |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | hasFlowFromSource | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | isConstantExpression | false | boolean |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
@@ -92,6 +188,30 @@ endpoints
 | index.js:84:12:84:18 | foo.bar | XssThroughDom | notASinkReason | ClientRequest | string |
 | index.js:84:12:84:18 | foo.bar | XssThroughDom | sinkLabel | NotASink | string |
 tokenFeatures
+| index.js:1:25:1:33 | "express" | CalleeFlexibleAccessPath | require |
+| index.js:1:25:1:33 | "express" | InputAccessPathFromCallee |  |
+| index.js:1:25:1:33 | "express" | InputArgumentIndex | 0 |
+| index.js:1:25:1:33 | "express" | assignedToPropName |  |
+| index.js:1:25:1:33 | "express" | calleeImports |  |
+| index.js:1:25:1:33 | "express" | contextFunctionInterfaces | constantExpression()\neffectiveSinkAndNotASink(foo)\nflowFromSourceToNotASink()\nflowFromSourceToSink()\nidentity(x)\nnotASink()\nnotASinkMultipleReasons()\nnotConstantExpression()\nnotFlowFromSource()\nveryLongFunctionBody() |
+| index.js:1:25:1:33 | "express" | contextSurroundingFunctionParameters |  |
+| index.js:1:25:1:33 | "express" | enclosingFunctionBody |  |
+| index.js:1:25:1:33 | "express" | enclosingFunctionName |  |
+| index.js:1:25:1:33 | "express" | fileImports | express mongoose |
+| index.js:1:25:1:33 | "express" | receiverName |  |
+| index.js:1:25:1:33 | "express" | stringConcatenatedWith |  |
+| index.js:2:26:2:35 | 'mongoose' | CalleeFlexibleAccessPath | require |
+| index.js:2:26:2:35 | 'mongoose' | InputAccessPathFromCallee |  |
+| index.js:2:26:2:35 | 'mongoose' | InputArgumentIndex | 0 |
+| index.js:2:26:2:35 | 'mongoose' | assignedToPropName |  |
+| index.js:2:26:2:35 | 'mongoose' | calleeImports |  |
+| index.js:2:26:2:35 | 'mongoose' | contextFunctionInterfaces | constantExpression()\neffectiveSinkAndNotASink(foo)\nflowFromSourceToNotASink()\nflowFromSourceToSink()\nidentity(x)\nnotASink()\nnotASinkMultipleReasons()\nnotConstantExpression()\nnotFlowFromSource()\nveryLongFunctionBody() |
+| index.js:2:26:2:35 | 'mongoose' | contextSurroundingFunctionParameters |  |
+| index.js:2:26:2:35 | 'mongoose' | enclosingFunctionBody |  |
+| index.js:2:26:2:35 | 'mongoose' | enclosingFunctionName |  |
+| index.js:2:26:2:35 | 'mongoose' | fileImports | express mongoose |
+| index.js:2:26:2:35 | 'mongoose' | receiverName |  |
+| index.js:2:26:2:35 | 'mongoose' | stringConcatenatedWith |  |
 | index.js:9:15:9:45 | { 'isAd ... Admin } | CalleeFlexibleAccessPath | User.find |
 | index.js:9:15:9:45 | { 'isAd ... Admin } | InputAccessPathFromCallee |  |
 | index.js:9:15:9:45 | { 'isAd ... Admin } | InputArgumentIndex | 0 |
@@ -128,6 +248,18 @@ tokenFeatures
 | index.js:20:13:20:31 | { 'isAdmin': true } | fileImports | express mongoose |
 | index.js:20:13:20:31 | { 'isAdmin': true } | receiverName | User |
 | index.js:20:13:20:31 | { 'isAdmin': true } | stringConcatenatedWith |  |
+| index.js:24:13:24:22 | "constant" | CalleeFlexibleAccessPath | User.find |
+| index.js:24:13:24:22 | "constant" | InputAccessPathFromCallee |  |
+| index.js:24:13:24:22 | "constant" | InputArgumentIndex | 0 |
+| index.js:24:13:24:22 | "constant" | assignedToPropName |  |
+| index.js:24:13:24:22 | "constant" | calleeImports | mongoose |
+| index.js:24:13:24:22 | "constant" | contextFunctionInterfaces | constantExpression()\neffectiveSinkAndNotASink(foo)\nflowFromSourceToNotASink()\nflowFromSourceToSink()\nidentity(x)\nnotASink()\nnotASinkMultipleReasons()\nnotConstantExpression()\nnotFlowFromSource()\nveryLongFunctionBody() |
+| index.js:24:13:24:22 | "constant" | contextSurroundingFunctionParameters | () |
+| index.js:24:13:24:22 | "constant" | enclosingFunctionBody | User find constant |
+| index.js:24:13:24:22 | "constant" | enclosingFunctionName | constantExpression |
+| index.js:24:13:24:22 | "constant" | fileImports | express mongoose |
+| index.js:24:13:24:22 | "constant" | receiverName | User |
+| index.js:24:13:24:22 | "constant" | stringConcatenatedWith |  |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | CalleeFlexibleAccessPath | User.find |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | InputAccessPathFromCallee |  |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | InputArgumentIndex | 0 |
@@ -140,6 +272,54 @@ tokenFeatures
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | fileImports | express mongoose |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | receiverName | User |
 | index.js:28:13:28:28 | UNDEFINED_GLOBAL | stringConcatenatedWith |  |
+| index.js:32:15:32:24 | "someData" | CalleeFlexibleAccessPath | console.log |
+| index.js:32:15:32:24 | "someData" | InputAccessPathFromCallee |  |
+| index.js:32:15:32:24 | "someData" | InputArgumentIndex | 0 |
+| index.js:32:15:32:24 | "someData" | assignedToPropName |  |
+| index.js:32:15:32:24 | "someData" | calleeImports |  |
+| index.js:32:15:32:24 | "someData" | contextFunctionInterfaces | constantExpression()\neffectiveSinkAndNotASink(foo)\nflowFromSourceToNotASink()\nflowFromSourceToSink()\nidentity(x)\nnotASink()\nnotASinkMultipleReasons()\nnotConstantExpression()\nnotFlowFromSource()\nveryLongFunctionBody() |
+| index.js:32:15:32:24 | "someData" | contextSurroundingFunctionParameters | () |
+| index.js:32:15:32:24 | "someData" | enclosingFunctionBody | console log someData |
+| index.js:32:15:32:24 | "someData" | enclosingFunctionName | notASink |
+| index.js:32:15:32:24 | "someData" | fileImports | express mongoose |
+| index.js:32:15:32:24 | "someData" | receiverName | console |
+| index.js:32:15:32:24 | "someData" | stringConcatenatedWith |  |
+| index.js:36:20:36:22 | "a" | CalleeFlexibleAccessPath | ?.startsWith |
+| index.js:36:20:36:22 | "a" | InputAccessPathFromCallee |  |
+| index.js:36:20:36:22 | "a" | InputArgumentIndex | 0 |
+| index.js:36:20:36:22 | "a" | assignedToPropName |  |
+| index.js:36:20:36:22 | "a" | calleeImports |  |
+| index.js:36:20:36:22 | "a" | contextFunctionInterfaces | constantExpression()\neffectiveSinkAndNotASink(foo)\nflowFromSourceToNotASink()\nflowFromSourceToSink()\nidentity(x)\nnotASink()\nnotASinkMultipleReasons()\nnotConstantExpression()\nnotFlowFromSource()\nveryLongFunctionBody() |
+| index.js:36:20:36:22 | "a" | contextSurroundingFunctionParameters | () |
+| index.js:36:20:36:22 | "a" | enclosingFunctionBody | abc startsWith a |
+| index.js:36:20:36:22 | "a" | enclosingFunctionName | notASinkMultipleReasons |
+| index.js:36:20:36:22 | "a" | fileImports | express mongoose |
+| index.js:36:20:36:22 | "a" | receiverName |  |
+| index.js:36:20:36:22 | "a" | stringConcatenatedWith |  |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | CalleeFlexibleAccessPath | User.find |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | InputAccessPathFromCallee |  |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | InputArgumentIndex | 0 |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | assignedToPropName |  |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | calleeImports | mongoose |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | contextFunctionInterfaces | constantExpression()\neffectiveSinkAndNotASink(foo)\nflowFromSourceToNotASink()\nflowFromSourceToSink()\nidentity(x)\nnotASink()\nnotASinkMultipleReasons()\nnotConstantExpression()\nnotFlowFromSource()\nveryLongFunctionBody() |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | contextSurroundingFunctionParameters | () |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | enclosingFunctionBody |  |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | enclosingFunctionName | veryLongFunctionBody |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | fileImports | express mongoose |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | receiverName | User |
+| index.js:41:13:68:61 | "a" + " ... " + "a" | stringConcatenatedWith |  |
+| index.js:78:30:78:39 | "someData" | CalleeFlexibleAccessPath | console.log |
+| index.js:78:30:78:39 | "someData" | InputAccessPathFromCallee |  |
+| index.js:78:30:78:39 | "someData" | InputArgumentIndex | 0 |
+| index.js:78:30:78:39 | "someData" | assignedToPropName |  |
+| index.js:78:30:78:39 | "someData" | calleeImports |  |
+| index.js:78:30:78:39 | "someData" | contextFunctionInterfaces | constantExpression()\neffectiveSinkAndNotASink(foo)\nflowFromSourceToNotASink()\nflowFromSourceToSink()\nidentity(x)\nnotASink()\nnotASinkMultipleReasons()\nnotConstantExpression()\nnotFlowFromSource()\nveryLongFunctionBody() |
+| index.js:78:30:78:39 | "someData" | contextSurroundingFunctionParameters | () |
+| index.js:78:30:78:39 | "someData" | enclosingFunctionBody | console log someData |
+| index.js:78:30:78:39 | "someData" | enclosingFunctionName | identity#functionalargument |
+| index.js:78:30:78:39 | "someData" | fileImports | express mongoose |
+| index.js:78:30:78:39 | "someData" | receiverName | console |
+| index.js:78:30:78:39 | "someData" | stringConcatenatedWith |  |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | CalleeFlexibleAccessPath | $.ajax |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | InputAccessPathFromCallee |  |
 | index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | InputArgumentIndex | 0 |

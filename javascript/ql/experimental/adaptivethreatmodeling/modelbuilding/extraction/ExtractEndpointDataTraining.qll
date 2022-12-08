@@ -57,10 +57,6 @@ query predicate trainingEndpoints(
   characteristic.appliesToEndpoint(endpoint) and
   // Only consider the source code for the project being analyzed.
   exists(endpoint.getFile().getRelativePath()) and
-  // Only select endpoints that can be part of a tainted flow: Constant expressions always evaluate to a constant
-  // primitive value. Therefore they can't ever appear in an alert, making them less interesting training examples.
-  // TODO: Experiment with removing this requirement.
-  not endpoint.asExpr() instanceof ConstantExpr and
   // Do not select endpoints filtered out by end-to-end evaluation.
   // TODO: Experiment with removing this requirement.
   not Exclusions::isFileExcluded(endpoint.getFile()) and
