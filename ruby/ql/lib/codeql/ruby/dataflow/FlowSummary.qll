@@ -4,7 +4,9 @@ import codeql.ruby.AST
 import codeql.ruby.DataFlow
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
+private import internal.DataFlowImplCommon as DataFlowImplCommon
 private import internal.DataFlowPrivate
+private import internal.FlowSummaryImplSpecific
 
 // import all instances below
 private module Summaries {
@@ -127,6 +129,17 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
    */
   pragma[nomagic]
   predicate propagatesFlowExt(string input, string output, boolean preservesValue) { none() }
+
+  /**
+   * Gets the synthesized parameter that results from an input specification
+   * that starts with `Argument[s]` for this library callable.
+   */
+  DataFlow::ParameterNode getParameter(string s) {
+    exists(ParameterPosition pos |
+      DataFlowImplCommon::parameterNode(result, TLibraryCallable(this), pos) and
+      s = getParameterPositionCsv(pos)
+    )
+  }
 }
 
 /**
