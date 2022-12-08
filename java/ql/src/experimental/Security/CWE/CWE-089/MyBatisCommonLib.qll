@@ -135,7 +135,7 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
     exists(Annotation annotation |
       unsafeExpression
           .regexpMatch("\\$\\{\\s*" + annotation.getValue("value").(CompileTimeConstantExpr).getStringValue() +
-              "\\b[^}]*?\\}") and
+              "\\b[^}]*\\}") and
       annotation.getType() instanceof TypeParam and
       ma.getAnArgument() = node.asExpr() and
       annotation.getTarget() =
@@ -153,11 +153,11 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
     exists(int i |
       not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
       (
-        unsafeExpression.regexpMatch("\\$\\{\\s*param" + (i + 1) + "\\b[^}]*?\\}")
+        unsafeExpression.regexpMatch("\\$\\{\\s*param" + (i + 1) + "\\b[^}]*\\}")
         or
-        unsafeExpression.regexpMatch("\\$\\{\\s*arg" + i + "\\b[^}]*?\\}")
+        unsafeExpression.regexpMatch("\\$\\{\\s*arg" + i + "\\b[^}]*\\}")
         or
-        unsafeExpression.regexpMatch("\\$\\{\\s*" + ma.getMethod().getParameter(i).getName() + "\\b[^}]*?\\}")
+        unsafeExpression.regexpMatch("\\$\\{\\s*" + ma.getMethod().getParameter(i).getName() + "\\b[^}]*\\}")
       ) and
       ma.getArgument(i) = node.asExpr()
     )
@@ -172,7 +172,7 @@ predicate isMybatisXmlOrAnnotationSqlInjection(
     exists(int i, RefType t |
       not ma.getMethod().getParameter(i).getAnAnnotation().getType() instanceof TypeParam and
       ma.getMethod().getParameterType(i).getName() = t.getName() and
-      unsafeExpression.regexpMatch("\\$\\{\\s*" + t.getAField().getName() + "\\b[^}]*?\\}") and
+      unsafeExpression.regexpMatch("\\$\\{\\s*" + t.getAField().getName() + "\\b[^}]*\\}") and
       ma.getArgument(i) = node.asExpr()
     )
     or
