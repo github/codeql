@@ -127,3 +127,10 @@ class CreateFromParcelMethod extends Method {
     this.getEnclosingCallable().getDeclaringType().getAnAncestor() instanceof TypeParcelable
   }
 }
+
+/**
+ * A method annotated with the `android.webkit.JavascriptInterface` annotation.
+ */
+class JavascriptInterfaceMethod extends Method {
+  JavascriptInterfaceMethod() { this.hasAnnotation("android.webkit", "JavascriptInterface") }
+}
