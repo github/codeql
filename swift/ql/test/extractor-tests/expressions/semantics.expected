@@ -5,7 +5,7 @@
 | expressions.swift:15:9:15:9 | x | OrdinarySemantics |
 | expressions.swift:20:6:20:6 | failure(_:) | OrdinarySemantics |
 | expressions.swift:21:6:21:6 | failure(_:) | OrdinarySemantics |
-| expressions.swift:27:13:27:13 | init() | OrdinarySemantics |
+| expressions.swift:27:13:27:13 | Klass.init() | OrdinarySemantics |
 | expressions.swift:35:1:35:1 | print(_:separator:terminator:) | OrdinarySemantics |
 | expressions.swift:35:7:35:7 | d | OrdinarySemantics |
 | expressions.swift:35:7:35:12 | ...[...] | OrdinarySemantics |
@@ -33,13 +33,13 @@
 | expressions.swift:73:5:73:5 | self | OrdinarySemantics |
 | expressions.swift:73:10:73:10 | x | OrdinarySemantics |
 | expressions.swift:77:7:77:7 | _unimplementedInitializer(className:initName:file:line:column:) | OrdinarySemantics |
-| expressions.swift:83:15:83:15 | init() | OrdinarySemantics |
+| expressions.swift:83:15:83:15 | Derived.init() | OrdinarySemantics |
 | expressions.swift:84:5:84:5 | derived | OrdinarySemantics |
 | expressions.swift:84:5:84:13 | .xx | OrdinarySemantics |
 | expressions.swift:87:1:87:1 | opt | OrdinarySemantics |
 | expressions.swift:88:1:88:1 | d | OrdinarySemantics |
 | expressions.swift:88:1:88:6 | ...[...] | OrdinarySemantics |
-| expressions.swift:92:37:92:37 | init() | OrdinarySemantics |
+| expressions.swift:92:37:92:37 | ToPtr.init() | OrdinarySemantics |
 | expressions.swift:93:29:93:29 | opaque | OrdinarySemantics |
 | expressions.swift:131:3:131:3 | hp | OrdinarySemantics |
 | expressions.swift:131:3:131:6 | .settableField | OrdinarySemantics |

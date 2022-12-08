@@ -1,15 +1,8 @@
 noStaticTarget
 | file://:0:0:0:0 | call to ... | file://:0:0:0:0 | (no string representation) | DeclRefExpr |
-| methodlookup.swift:27:5:27:27 | call to ... | methodlookup.swift:27:5:27:9 | .{ ... } | DotSyntaxBaseIgnoredExpr |
-| methodlookup.swift:27:5:27:29 | call to ... | methodlookup.swift:27:5:27:27 | call to ... | CallExpr |
-| methodlookup.swift:47:11:47:30 | call to ... | methodlookup.swift:47:11:47:15 | call to instanceMethod() | DotSyntaxCallExpr |
-| methodlookup.swift:48:11:48:33 | call to ... | methodlookup.swift:48:11:48:15 | .{ ... } | DotSyntaxBaseIgnoredExpr |
-| methodlookup.swift:48:11:48:35 | call to ... | methodlookup.swift:48:11:48:33 | call to ... | CallExpr |
-| methodlookup.swift:50:11:50:27 | call to ... | methodlookup.swift:50:11:50:15 | call to classMethod() | DotSyntaxCallExpr |
-| methodlookup.swift:51:11:51:28 | call to ... | methodlookup.swift:51:11:51:15 | call to staticMethod() | DotSyntaxCallExpr |
 #select
 | file://:0:0:0:0 | call to ... | false | - |
-| file://:0:0:0:0 | call to init(_:) | true | init(_:) |
+| file://:0:0:0:0 | call to UnownedSerialExecutor.init(_:) | true | UnownedSerialExecutor.init(_:) |
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
@@ -26,25 +19,25 @@ noStaticTarget
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
 | file://:0:0:0:0 | call to zeroInitializer() | true | zeroInitializer() |
-| methodlookup.swift:23:15:23:19 | call to init() | true | init() |
-| methodlookup.swift:24:9:24:18 | call to init() | true | init() |
+| methodlookup.swift:23:15:23:19 | call to Foo.init() | true | Foo.init() |
+| methodlookup.swift:24:9:24:18 | call to Foo.init() | true | Foo.init() |
 | methodlookup.swift:26:5:26:24 | call to instanceMethod() | true | instanceMethod() |
-| methodlookup.swift:27:5:27:27 | call to ... | false | - |
-| methodlookup.swift:27:5:27:29 | call to ... | false | - |
+| methodlookup.swift:27:5:27:27 | call to Foo.instanceMethod() | true | { ... } |
+| methodlookup.swift:27:5:27:29 | call to call to Foo.instanceMethod() | true | { ... } |
 | methodlookup.swift:27:9:27:9 | call to instanceMethod() | true | instanceMethod() |
 | methodlookup.swift:29:5:29:21 | call to classMethod() | true | classMethod() |
 | methodlookup.swift:30:5:30:22 | call to staticMethod() | true | staticMethod() |
-| methodlookup.swift:33:1:41:1 | call to init(priority:operation:) | true | init(priority:operation:) |
-| methodlookup.swift:34:15:34:19 | call to init() | true | init() |
-| methodlookup.swift:35:9:35:18 | call to init() | true | init() |
+| methodlookup.swift:33:1:41:1 | call to Task<Success, Never>.init(priority:operation:) | true | Task<Success, Never>.init(priority:operation:) |
+| methodlookup.swift:34:15:34:19 | call to Bar.init() | true | Bar.init() |
+| methodlookup.swift:35:9:35:18 | call to Bar.init() | true | Bar.init() |
 | methodlookup.swift:37:11:37:30 | call to instanceMethod() | true | instanceMethod() |
 | methodlookup.swift:40:5:40:22 | call to staticMethod() | true | staticMethod() |
-| methodlookup.swift:43:1:52:1 | call to init(priority:operation:) | true | init(priority:operation:) |
-| methodlookup.swift:44:21:44:25 | call to init() | true | init() |
-| methodlookup.swift:45:15:45:24 | call to init() | true | init() |
-| methodlookup.swift:47:11:47:30 | call to ... | false | - |
-| methodlookup.swift:48:11:48:33 | call to ... | false | - |
-| methodlookup.swift:48:11:48:35 | call to ... | false | - |
+| methodlookup.swift:43:1:52:1 | call to Task<Success, Never>.init(priority:operation:) | true | Task<Success, Never>.init(priority:operation:) |
+| methodlookup.swift:44:21:44:25 | call to Baz.init() | true | Baz.init() |
+| methodlookup.swift:45:15:45:24 | call to Baz.init() | true | Baz.init() |
+| methodlookup.swift:47:11:47:30 | call to instanceMethod() | true | instanceMethod() |
+| methodlookup.swift:48:11:48:33 | call to Baz.instanceMethod() | true | { ... } |
+| methodlookup.swift:48:11:48:35 | call to call to Baz.instanceMethod() | true | { ... } |
 | methodlookup.swift:48:15:48:15 | call to instanceMethod() | true | instanceMethod() |
-| methodlookup.swift:50:11:50:27 | call to ... | false | - |
-| methodlookup.swift:51:11:51:28 | call to ... | false | - |
+| methodlookup.swift:50:11:50:27 | call to classMethod() | true | classMethod() |
+| methodlookup.swift:51:11:51:28 | call to staticMethod() | true | staticMethod() |
