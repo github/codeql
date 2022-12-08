@@ -45,9 +45,6 @@ module ModelScoring {
       internalEnpointScores(endpoint, endpointType.getDescription()) and
       score = 1.0
     )
-    or
-    encodedEndpointType = any(EndpointType endpointType).getEncoding() and
-    score = 0.0
   }
 
   predicate internalEnpointScores(DataFlow::Node endpoint, string prediction) =
