@@ -108,6 +108,101 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
   )
 }
 
+private module IteratorDefUse {
+  private import semmle.code.cpp.models.interfaces.Iterator as Interfaces
+  private import semmle.code.cpp.models.implementations.Iterator as Iterator
+  private import semmle.code.cpp.models.implementations.StdContainer as StdContainer
+
+  private CallInstruction getCall(ArgumentOperand operand) { result.getAnOperand() = operand }
+
+  /**
+   * Gets a `CallInstruction` that targets an iterator-returning function that was
+   * used to construct the value used by `use`.
+   */
+  private CallInstruction getAnIteratorAccess(UseImpl use) {
+    exists(Instruction value, StoreInstruction store |
+      // Get the ultimiate definition of this use.
+      store = use.getPruningUse().getAnUltimateValue().asInstruction() and
+      value = store.getSourceValue()
+    |
+      // We're done if it's a call that targets an iterator-returning function.
+      if value.(CallInstruction).getStaticCallTarget() instanceof Iterator::GetIteratorFunction
+      then result = value
+      else
+        // Otherwise, we recursively search for a prior definition.
+        exists(Operand operand |
+          // Recurse through identity conversions
+          conversionFlow(operand, value, _)
+          or
+          // ... and dereferences.
+          exists(CallInstruction call |
+            isDereference(call, operand) and
+            operandForfullyConvertedCall(store.getDestinationAddressOperand(), call)
+          )
+        |
+          result = getAnIteratorAccess(any(UseImpl priorUse | priorUse.getOperand() = operand))
+        )
+    )
+  }
+
+  /**
+   * Holds if `containerUse` is the use of a variable of a container type that is used to obtain
+   * an iterator into the container represented by `containerUse`, and `iteratorUse` is a use
+   * of this iterator.
+   */
+  private predicate acquiresIteratorFromContainer(DirectUse containerUse, DirectUse iteratorUse) {
+    exists(CallInstruction getIterator |
+      containerUse.getOperand() = getIterator.getThisArgumentOperand() and
+      containerUse.getIndirectionIndex() = 1 and
+      getIterator = getAnIteratorAccess(iteratorUse)
+    )
+  }
+
+  /**
+   * Holds if `use` is a use of an iterator that is obtained by calling an iterator-returning
+   * function that returns an iterator to the container represented by `containerUse.`
+   */
+  predicate isIteratorUse(DirectUse use, DirectUse containerUse) {
+    exists(DirectUse iteratorUse |
+      // Consider an example like:
+      // ```cpp
+      //   iterator = container.begin();
+      //   sink(*iterator);
+      // ```
+      // In this case, `use` is the use of `*iterator`, `containerUse` is the use of `container`,
+      // and `iteratorUse` is the use of `iterator` on line 2.
+      use.getIndirection() > 1 and
+      use.getIndirectionIndex() = 0 and
+      use.getPruningUse().getSourceVariable().getBaseVariable().getType().getUnspecifiedType()
+        instanceof Iterator::Iterator and
+      use.getOperand() = iteratorUse.getOperand() and
+      acquiresIteratorFromContainer(containerUse, iteratorUse)
+    )
+  }
+
+  /**
+   * Holds if `def` is a definition of an iterator that implicitly stores a value into a
+   * container through an iterator represented by `containerUser`.
+   */
+  predicate isIteratorDef(DirectDef def, DirectUse containerUse) {
+    exists(UseImpl iteratorUse |
+      // Consider an example like:
+      // ```cpp
+      //   iterator = container.begin();
+      //   *iterator = source();
+      // ```
+      // In this case, `def` is the definition of `*iterator`, `containerUse` is the use of `container`,
+      // and `iteratorUse` is the use of `iterator` on line 2.
+      def.getIndirection() > 1 and
+      def.getIndirectionIndex() = 0 and
+      def.getPruningDef().getBase().getBaseSourceVariable().getType().getUnspecifiedType()
+        instanceof Iterator::Iterator and
+      acquiresIteratorFromContainer(containerUse, iteratorUse) and
+      operandForfullyConvertedCall(def.getAddressOperand(), getCall(iteratorUse.getOperand()))
+    )
+  }
+}
+
 cached
 private newtype TDefOrUseImpl =
   TDirectDef(Operand address, int indirectionIndex) {
@@ -119,6 +214,12 @@ private newtype TDefOrUseImpl =
   TDirectUse(Operand operand, int indirectionIndex) {
     isUse(_, operand, _, _, indirectionIndex) and
     not isDef(true, _, operand, _, _, _)
+  } or
+  TIteratorUse(DirectUse use, DirectUse containerUse) {
+    IteratorDefUse::isIteratorUse(use, containerUse)
+  } or
+  TIteratorDef(DirectDef def, DirectUse containerUse) {
+    IteratorDefUse::isIteratorDef(def, containerUse)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -243,6 +344,26 @@ private class DirectDef extends DefImpl, TDirectDef {
   override int getIndirectionIndex() { result = ind }
 }
 
+private class IteratorDef extends DefImpl, TIteratorDef {
+  DirectDef def;
+  DirectUse containerUse;
+
+  IteratorDef() {
+    this = TIteratorDef(def, containerUse) and
+    def = TDirectDef(address, ind + 1)
+  }
+
+  override BaseSourceVariableInstruction getBase() { result = containerUse.getBase() }
+
+  override int getIndirection() { result = def.getIndirection() - 1 }
+
+  override int getIndirectionIndex() { result = def.getIndirectionIndex() }
+
+  override string toString() { result = "IteratorDef" }
+
+  override predicate cannotBePruned() { any() }
+}
+
 abstract class UseImpl extends DefOrUseImpl {
   Operand operand;
   int ind;
@@ -280,6 +401,22 @@ private class DirectUse extends UseImpl, TDirectUse {
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
 
   override predicate isCertain() { isUse(true, operand, _, _, ind) }
+}
+
+private class IteratorUse extends UseImpl, TIteratorUse {
+  DirectUse use;
+  DirectUse containerUse;
+
+  IteratorUse() {
+    this = TIteratorUse(use, containerUse) and
+    use = TDirectUse(operand, ind + 1)
+  }
+
+  override BaseSourceVariableInstruction getBase() { result = containerUse.getBase() }
+
+  override int getIndirection() { result = containerUse.getIndirection() }
+
+  override string toString() { result = "IteratorUse" }
 }
 
 /**
