@@ -19,9 +19,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.github.codeql.Logger;
-import static com.github.codeql.ClassNamesKt.getIrDeclBinaryName;
+import static com.github.codeql.ClassNamesKt.getIrElementBinaryName;
 import static com.github.codeql.ClassNamesKt.getIrClassVirtualFile;
 
+import org.jetbrains.kotlin.ir.IrElement;
 import org.jetbrains.kotlin.ir.declarations.IrClass;
 
 import com.intellij.openapi.vfs.VirtualFile;
@@ -212,20 +213,19 @@ public class OdasaOutput {
 				PathTransformer.std().fileAsDatabaseString(file) + ".trap.gz");
 	}
 
-	private File getTrapFileForDecl(IrDeclaration sym, String signature) {
+	private File getTrapFileForDecl(IrElement sym, String signature) {
 		if (currentSpecFileEntry == null)
 			return null;
 		return trapFileForDecl(sym, signature);
 	}
 
-	private File trapFileForDecl(IrDeclaration sym, String signature) {
+	private File trapFileForDecl(IrElement sym, String signature) {
 		return FileUtil.fileRelativeTo(currentSpecFileEntry.getTrapFolder(),
 				trapFilePathForDecl(sym, signature));
 	}
 
-	private String trapFilePathForDecl(IrDeclaration sym, String signature) {
-		String binaryName = getIrDeclBinaryName(sym);
-		String binaryNameWithSignature = binaryName + signature;
+	private String trapFilePathForDecl(IrElement sym, String signature) {
+		String binaryName = getIrElementBinaryName(sym);
 		// TODO: Reinstate this?
 		//if (getTrackClassOrigins())
 		//  classId += "-" + StringDigestor.digest(sym.getSourceFileId());
@@ -241,7 +241,7 @@ public class OdasaOutput {
 	 * Deletion of existing trap files.
 	 */
 
-	private void deleteTrapFileAndDependencies(IrDeclaration sym, String signature) {
+	private void deleteTrapFileAndDependencies(IrElement sym, String signature) {
 		File trap = trapFileForDecl(sym, signature);
 		if (trap.exists()) {
 			trap.delete();
@@ -269,7 +269,7 @@ public class OdasaOutput {
 	 * 		Any unique suffix needed to distinguish `sym` from other declarations with the same name.
 	 * 		For functions for example, this means its parameter signature.
 	 */
-	private TrapFileManager getMembersWriterForDecl(File trap, File trapFileBase, TrapClassVersion trapFileVersion, IrDeclaration sym, String signature) {
+	private TrapFileManager getMembersWriterForDecl(File trap, File trapFileBase, TrapClassVersion trapFileVersion, IrElement sym, String signature) {
 		if (use_trap_locking) {
 			TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym, log);
 			String shortName = sym instanceof IrDeclarationWithName ? ((IrDeclarationWithName)sym).getName().asString() : "(name unknown)";
@@ -326,7 +326,7 @@ public class OdasaOutput {
 		return trapWriter(trap, sym, signature);
 	}
 
-	private TrapFileManager trapWriter(File trapFile, IrDeclaration sym, String signature) {
+	private TrapFileManager trapWriter(File trapFile, IrElement sym, String signature) {
 		if (!trapFile.getName().endsWith(".trap.gz"))
 			throw new CatastrophicError("OdasaOutput only supports writing to compressed trap files");
 		String relative = FileUtil.relativePath(trapFile, currentSpecFileEntry.getTrapFolder());
@@ -335,7 +335,7 @@ public class OdasaOutput {
 		return concurrentWriter(trapFile, relative, log, sym, signature);
 	}
 
-	private TrapFileManager concurrentWriter(File trapFile, String relative, Logger log, IrDeclaration sym, String signature) {
+	private TrapFileManager concurrentWriter(File trapFile, String relative, Logger log, IrElement sym, String signature) {
 		if (trapFile.exists())
 			return null;
 		return new TrapFileManager(trapFile, relative, true, log, sym, signature);
@@ -345,11 +345,11 @@ public class OdasaOutput {
 
 		private TrapDependencies trapDependenciesForClass;
 		private File trapFile;
-		private IrDeclaration sym;
+		private IrElement sym;
 		private String signature;
 		private boolean hasError = false;
 
-		private TrapFileManager(File trapFile, String relative, boolean concurrentCreation, Logger log, IrDeclaration sym, String signature) {
+		private TrapFileManager(File trapFile, String relative, boolean concurrentCreation, Logger log, IrElement sym, String signature) {
 			trapDependenciesForClass = new TrapDependencies(relative);
 			this.trapFile = trapFile;
 			this.sym = sym;
@@ -360,7 +360,7 @@ public class OdasaOutput {
 			return trapFile;
 		}
 
-		public void addDependency(IrDeclaration dep, String signature) {
+		public void addDependency(IrElement dep, String signature) {
 			trapDependenciesForClass.addDependency(trapFilePathForDecl(dep, signature));
 		}
 
@@ -422,7 +422,7 @@ public class OdasaOutput {
 	 * previously set by a call to {@link OdasaOutput#setCurrentSourceFile(File)}.
 	 */
 	public TrapLocker getTrapLockerForCurrentSourceFile() {
-		return new TrapLocker((IrClass)null, null);
+		return new TrapLocker((IrClass)null, null, true);
 	}
 
 	/**
@@ -460,19 +460,19 @@ public class OdasaOutput {
 	 *
 	 * @return  a {@link TrapLocker} for the trap file corresponding to the given class symbol.
 	 */
-	public TrapLocker getTrapLockerForDecl(IrDeclaration sym, String signature) {
-		return new TrapLocker(sym, signature);
+	public TrapLocker getTrapLockerForDecl(IrElement sym, String signature, boolean fromSource) {
+		return new TrapLocker(sym, signature, fromSource);
 	}
 
 	public class TrapLocker implements AutoCloseable {
-		private final IrDeclaration sym;
+		private final IrElement sym;
 		private final File trapFile;
 		// trapFileBase is used when doing lockless TRAP file writing.
 		// It is trapFile without the #metadata.trap.gz suffix.
 		private File trapFileBase = null;
 		private TrapClassVersion trapFileVersion = null;
 		private final String signature;
-		private TrapLocker(IrDeclaration decl, String signature) {
+		private TrapLocker(IrElement decl, String signature, boolean fromSource) {
 			this.sym = decl;
 			this.signature = signature;
 			if (sym==null) {
@@ -485,7 +485,10 @@ public class OdasaOutput {
 				} else {
 					// We encode the metadata into the filename, so that the
 					// TRAP filenames for different metadatas don't overlap.
-					trapFileVersion = TrapClassVersion.fromSymbol(sym, log);
+					if (fromSource)
+						trapFileVersion = new TrapClassVersion(0, 0, 0, "kotlin");
+					else
+						trapFileVersion = TrapClassVersion.fromSymbol(sym, log);
 					String baseName = normalTrapFile.getName().replace(".trap.gz", "");
 					// If a class has lots of inner classes, then we get lots of files
 					// in a single directory. This makes our directory listings later slow.
@@ -717,11 +720,18 @@ public class OdasaOutput {
             return vf.getTimeStamp();
         }
 
-		private static TrapClassVersion fromSymbol(IrDeclaration sym, Logger log) {
-			VirtualFile vf = sym instanceof IrClass ? getIrClassVirtualFile((IrClass)sym) :
-					sym.getParent() instanceof IrClass ? getIrClassVirtualFile((IrClass)sym.getParent()) :
-					null;
-			if(vf == null)
+		private static VirtualFile getVirtualFileIfClass(IrElement e) {
+			if (e instanceof IrClass)
+				return getIrClassVirtualFile((IrClass)e);
+			else
+				return null;
+		}
+
+		private static TrapClassVersion fromSymbol(IrElement sym, Logger log) {
+			VirtualFile vf = getVirtualFileIfClass(sym);
+			if (vf == null && sym instanceof IrDeclaration)
+				vf = getVirtualFileIfClass(((IrDeclaration)sym).getParent());
+			if (vf == null)
 				return new TrapClassVersion(-1, 0, 0, null);
 
 			final int[] versionStore = new int[1];

@@ -81,53 +81,6 @@ private import internal.AccessPathSyntax
 private import FlowSummary
 
 /**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import internal.ContainerFlow
-  private import semmle.code.java.frameworks.android.Android
-  private import semmle.code.java.frameworks.android.ContentProviders
-  private import semmle.code.java.frameworks.android.ExternalStorage
-  private import semmle.code.java.frameworks.android.Intent
-  private import semmle.code.java.frameworks.android.SharedPreferences
-  private import semmle.code.java.frameworks.android.Slice
-  private import semmle.code.java.frameworks.android.SQLite
-  private import semmle.code.java.frameworks.android.Widget
-  private import semmle.code.java.frameworks.ApacheHttp
-  private import semmle.code.java.frameworks.apache.Collections
-  private import semmle.code.java.frameworks.apache.Lang
-  private import semmle.code.java.frameworks.Flexjson
-  private import semmle.code.java.frameworks.guava.Guava
-  private import semmle.code.java.frameworks.jackson.JacksonSerializability
-  private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
-  private import semmle.code.java.frameworks.JaxWS
-  private import semmle.code.java.frameworks.JoddJson
-  private import semmle.code.java.frameworks.Stream
-  private import semmle.code.java.frameworks.ratpack.RatpackExec
-  private import semmle.code.java.frameworks.spring.SpringHttp
-  private import semmle.code.java.frameworks.spring.SpringWebClient
-  private import semmle.code.java.security.AndroidIntentRedirection
-  private import semmle.code.java.security.ResponseSplitting
-  private import semmle.code.java.security.InformationLeak
-  private import semmle.code.java.security.FragmentInjection
-  private import semmle.code.java.security.GroovyInjection
-  private import semmle.code.java.security.ImplicitPendingIntents
-  private import semmle.code.java.security.JndiInjection
-  private import semmle.code.java.security.LdapInjection
-  private import semmle.code.java.security.MvelInjection
-  private import semmle.code.java.security.OgnlInjection
-  private import semmle.code.java.security.TemplateInjection
-  private import semmle.code.java.security.XPath
-  private import semmle.code.java.security.XsltInjection
-  private import semmle.code.java.frameworks.Jdbc
-  private import semmle.code.java.frameworks.SpringJdbc
-  private import semmle.code.java.frameworks.MyBatis
-  private import semmle.code.java.frameworks.Hibernate
-  private import semmle.code.java.frameworks.jOOQ
-}
-
-/**
  * DEPRECATED: Define source models as data extensions instead.
  *
  * A unit class for adding additional source model rows.

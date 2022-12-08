@@ -36,6 +36,6 @@ module Generated {
     /**
      * Gets the number of active elements of this if config declaration.
      */
-    final int getNumberOfActiveElements() { result = count(getAnActiveElement()) }
+    final int getNumberOfActiveElements() { result = count(int i | exists(getActiveElement(i))) }
   }
 }

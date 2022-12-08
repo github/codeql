@@ -614,9 +614,12 @@
 | string.swift:7:14:7:14 | [post] &... | string.swift:7:15:7:15 | $interpolation |
 | string.swift:7:15:7:15 | $interpolation | string.swift:7:15:7:15 | &... |
 | string.swift:7:15:7:15 | &... | string.swift:7:15:7:15 | [post] &... |
+| string.swift:7:15:7:15 | &... | string.swift:7:16:7:16 | [post] x |
 | string.swift:7:15:7:15 | &... | string.swift:7:18:7:18 | $interpolation |
 | string.swift:7:15:7:15 | [post] &... | string.swift:7:18:7:18 | $interpolation |
+| string.swift:7:16:7:16 | [post] x | string.swift:9:16:9:16 | x |
 | string.swift:7:16:7:16 | x | string.swift:7:15:7:15 | [post] &... |
+| string.swift:7:16:7:16 | x | string.swift:7:16:7:16 | [post] x |
 | string.swift:7:16:7:16 | x | string.swift:9:16:9:16 | x |
 | string.swift:7:18:7:18 |  | string.swift:7:18:7:18 | [post]  |
 | string.swift:7:18:7:18 |  | string.swift:7:18:7:18 | [post] &... |
@@ -637,9 +640,12 @@
 | string.swift:9:14:9:14 | [post] &... | string.swift:9:15:9:15 | $interpolation |
 | string.swift:9:15:9:15 | $interpolation | string.swift:9:15:9:15 | &... |
 | string.swift:9:15:9:15 | &... | string.swift:9:15:9:15 | [post] &... |
+| string.swift:9:15:9:15 | &... | string.swift:9:16:9:16 | [post] x |
 | string.swift:9:15:9:15 | &... | string.swift:9:18:9:18 | $interpolation |
 | string.swift:9:15:9:15 | [post] &... | string.swift:9:18:9:18 | $interpolation |
+| string.swift:9:16:9:16 | [post] x | string.swift:9:21:9:21 | x |
 | string.swift:9:16:9:16 | x | string.swift:9:15:9:15 | [post] &... |
+| string.swift:9:16:9:16 | x | string.swift:9:16:9:16 | [post] x |
 | string.swift:9:16:9:16 | x | string.swift:9:21:9:21 | x |
 | string.swift:9:18:9:18 |   | string.swift:9:18:9:18 | [post]   |
 | string.swift:9:18:9:18 |   | string.swift:9:18:9:18 | [post] &... |
@@ -650,9 +656,12 @@
 | string.swift:9:18:9:18 | [post] &... | string.swift:9:20:9:20 | $interpolation |
 | string.swift:9:20:9:20 | $interpolation | string.swift:9:20:9:20 | &... |
 | string.swift:9:20:9:20 | &... | string.swift:9:20:9:20 | [post] &... |
+| string.swift:9:20:9:20 | &... | string.swift:9:21:9:21 | [post] x |
 | string.swift:9:20:9:20 | &... | string.swift:9:23:9:23 | $interpolation |
 | string.swift:9:20:9:20 | [post] &... | string.swift:9:23:9:23 | $interpolation |
+| string.swift:9:21:9:21 | [post] x | string.swift:11:16:11:16 | x |
 | string.swift:9:21:9:21 | x | string.swift:9:20:9:20 | [post] &... |
+| string.swift:9:21:9:21 | x | string.swift:9:21:9:21 | [post] x |
 | string.swift:9:21:9:21 | x | string.swift:11:16:11:16 | x |
 | string.swift:9:23:9:23 |  | string.swift:9:23:9:23 | [post]  |
 | string.swift:9:23:9:23 |  | string.swift:9:23:9:23 | [post] &... |
@@ -673,9 +682,12 @@
 | string.swift:11:14:11:14 | [post] &... | string.swift:11:15:11:15 | $interpolation |
 | string.swift:11:15:11:15 | $interpolation | string.swift:11:15:11:15 | &... |
 | string.swift:11:15:11:15 | &... | string.swift:11:15:11:15 | [post] &... |
+| string.swift:11:15:11:15 | &... | string.swift:11:16:11:16 | [post] x |
 | string.swift:11:15:11:15 | &... | string.swift:11:18:11:18 | $interpolation |
 | string.swift:11:15:11:15 | [post] &... | string.swift:11:18:11:18 | $interpolation |
+| string.swift:11:16:11:16 | [post] x | string.swift:11:26:11:26 | x |
 | string.swift:11:16:11:16 | x | string.swift:11:15:11:15 | [post] &... |
+| string.swift:11:16:11:16 | x | string.swift:11:16:11:16 | [post] x |
 | string.swift:11:16:11:16 | x | string.swift:11:26:11:26 | x |
 | string.swift:11:18:11:18 |   | string.swift:11:18:11:18 | [post]   |
 | string.swift:11:18:11:18 |   | string.swift:11:18:11:18 | [post] &... |
@@ -700,9 +712,12 @@
 | string.swift:11:23:11:23 | [post] &... | string.swift:11:25:11:25 | $interpolation |
 | string.swift:11:25:11:25 | $interpolation | string.swift:11:25:11:25 | &... |
 | string.swift:11:25:11:25 | &... | string.swift:11:25:11:25 | [post] &... |
+| string.swift:11:25:11:25 | &... | string.swift:11:26:11:26 | [post] x |
 | string.swift:11:25:11:25 | &... | string.swift:11:28:11:28 | $interpolation |
 | string.swift:11:25:11:25 | [post] &... | string.swift:11:28:11:28 | $interpolation |
+| string.swift:11:26:11:26 | [post] x | string.swift:16:16:16:16 | x |
 | string.swift:11:26:11:26 | x | string.swift:11:25:11:25 | [post] &... |
+| string.swift:11:26:11:26 | x | string.swift:11:26:11:26 | [post] x |
 | string.swift:11:26:11:26 | x | string.swift:16:16:16:16 | x |
 | string.swift:11:28:11:28 |  | string.swift:11:28:11:28 | [post]  |
 | string.swift:11:28:11:28 |  | string.swift:11:28:11:28 | [post] &... |
@@ -725,9 +740,12 @@
 | string.swift:14:14:14:14 | [post] &... | string.swift:14:15:14:15 | $interpolation |
 | string.swift:14:15:14:15 | $interpolation | string.swift:14:15:14:15 | &... |
 | string.swift:14:15:14:15 | &... | string.swift:14:15:14:15 | [post] &... |
+| string.swift:14:15:14:15 | &... | string.swift:14:16:14:16 | [post] y |
 | string.swift:14:15:14:15 | &... | string.swift:14:18:14:18 | $interpolation |
 | string.swift:14:15:14:15 | [post] &... | string.swift:14:18:14:18 | $interpolation |
+| string.swift:14:16:14:16 | [post] y | string.swift:16:27:16:27 | y |
 | string.swift:14:16:14:16 | y | string.swift:14:15:14:15 | [post] &... |
+| string.swift:14:16:14:16 | y | string.swift:14:16:14:16 | [post] y |
 | string.swift:14:16:14:16 | y | string.swift:16:27:16:27 | y |
 | string.swift:14:18:14:18 |  | string.swift:14:18:14:18 | [post]  |
 | string.swift:14:18:14:18 |  | string.swift:14:18:14:18 | [post] &... |
@@ -748,9 +766,12 @@
 | string.swift:16:14:16:14 | [post] &... | string.swift:16:15:16:15 | $interpolation |
 | string.swift:16:15:16:15 | $interpolation | string.swift:16:15:16:15 | &... |
 | string.swift:16:15:16:15 | &... | string.swift:16:15:16:15 | [post] &... |
+| string.swift:16:15:16:15 | &... | string.swift:16:16:16:16 | [post] x |
 | string.swift:16:15:16:15 | &... | string.swift:16:18:16:18 | $interpolation |
 | string.swift:16:15:16:15 | [post] &... | string.swift:16:18:16:18 | $interpolation |
+| string.swift:16:16:16:16 | [post] x | string.swift:18:27:18:27 | x |
 | string.swift:16:16:16:16 | x | string.swift:16:15:16:15 | [post] &... |
+| string.swift:16:16:16:16 | x | string.swift:16:16:16:16 | [post] x |
 | string.swift:16:16:16:16 | x | string.swift:18:27:18:27 | x |
 | string.swift:16:18:16:18 |  hello  | string.swift:16:18:16:18 | [post]  hello  |
 | string.swift:16:18:16:18 |  hello  | string.swift:16:18:16:18 | [post] &... |
@@ -761,9 +782,12 @@
 | string.swift:16:18:16:18 | [post] &... | string.swift:16:26:16:26 | $interpolation |
 | string.swift:16:26:16:26 | $interpolation | string.swift:16:26:16:26 | &... |
 | string.swift:16:26:16:26 | &... | string.swift:16:26:16:26 | [post] &... |
+| string.swift:16:26:16:26 | &... | string.swift:16:27:16:27 | [post] y |
 | string.swift:16:26:16:26 | &... | string.swift:16:29:16:29 | $interpolation |
 | string.swift:16:26:16:26 | [post] &... | string.swift:16:29:16:29 | $interpolation |
+| string.swift:16:27:16:27 | [post] y | string.swift:18:16:18:16 | y |
 | string.swift:16:27:16:27 | y | string.swift:16:26:16:26 | [post] &... |
+| string.swift:16:27:16:27 | y | string.swift:16:27:16:27 | [post] y |
 | string.swift:16:27:16:27 | y | string.swift:18:16:18:16 | y |
 | string.swift:16:29:16:29 |  | string.swift:16:29:16:29 | [post]  |
 | string.swift:16:29:16:29 |  | string.swift:16:29:16:29 | [post] &... |
@@ -784,9 +808,11 @@
 | string.swift:18:14:18:14 | [post] &... | string.swift:18:15:18:15 | $interpolation |
 | string.swift:18:15:18:15 | $interpolation | string.swift:18:15:18:15 | &... |
 | string.swift:18:15:18:15 | &... | string.swift:18:15:18:15 | [post] &... |
+| string.swift:18:15:18:15 | &... | string.swift:18:16:18:16 | [post] y |
 | string.swift:18:15:18:15 | &... | string.swift:18:18:18:18 | $interpolation |
 | string.swift:18:15:18:15 | [post] &... | string.swift:18:18:18:18 | $interpolation |
 | string.swift:18:16:18:16 | y | string.swift:18:15:18:15 | [post] &... |
+| string.swift:18:16:18:16 | y | string.swift:18:16:18:16 | [post] y |
 | string.swift:18:18:18:18 |  world  | string.swift:18:18:18:18 | [post]  world  |
 | string.swift:18:18:18:18 |  world  | string.swift:18:18:18:18 | [post] &... |
 | string.swift:18:18:18:18 | $interpolation | string.swift:18:18:18:18 | &... |
@@ -796,9 +822,11 @@
 | string.swift:18:18:18:18 | [post] &... | string.swift:18:26:18:26 | $interpolation |
 | string.swift:18:26:18:26 | $interpolation | string.swift:18:26:18:26 | &... |
 | string.swift:18:26:18:26 | &... | string.swift:18:26:18:26 | [post] &... |
+| string.swift:18:26:18:26 | &... | string.swift:18:27:18:27 | [post] x |
 | string.swift:18:26:18:26 | &... | string.swift:18:29:18:29 | $interpolation |
 | string.swift:18:26:18:26 | [post] &... | string.swift:18:29:18:29 | $interpolation |
 | string.swift:18:27:18:27 | x | string.swift:18:26:18:26 | [post] &... |
+| string.swift:18:27:18:27 | x | string.swift:18:27:18:27 | [post] x |
 | string.swift:18:29:18:29 |  | string.swift:18:29:18:29 | [post]  |
 | string.swift:18:29:18:29 |  | string.swift:18:29:18:29 | [post] &... |
 | string.swift:18:29:18:29 | $interpolation | string.swift:18:29:18:29 | &... |
@@ -820,9 +848,11 @@
 | string.swift:21:14:21:14 | [post] &... | string.swift:21:15:21:15 | $interpolation |
 | string.swift:21:15:21:15 | $interpolation | string.swift:21:15:21:15 | &... |
 | string.swift:21:15:21:15 | &... | string.swift:21:15:21:15 | [post] &... |
+| string.swift:21:15:21:15 | &... | string.swift:21:16:21:16 | [post] x |
 | string.swift:21:15:21:15 | &... | string.swift:21:18:21:18 | $interpolation |
 | string.swift:21:15:21:15 | [post] &... | string.swift:21:18:21:18 | $interpolation |
 | string.swift:21:16:21:16 | x | string.swift:21:15:21:15 | [post] &... |
+| string.swift:21:16:21:16 | x | string.swift:21:16:21:16 | [post] x |
 | string.swift:21:18:21:18 |  | string.swift:21:18:21:18 | [post]  |
 | string.swift:21:18:21:18 |  | string.swift:21:18:21:18 | [post] &... |
 | string.swift:21:18:21:18 | $interpolation | string.swift:21:18:21:18 | &... |
@@ -834,22 +864,32 @@
 | string.swift:27:15:27:15 | abcdef | string.swift:27:7:27:7 | SSA def(clean) |
 | string.swift:28:7:28:7 | SSA def(tainted) | string.swift:31:13:31:13 | tainted |
 | string.swift:28:17:28:25 | call to source2() | string.swift:28:7:28:7 | SSA def(tainted) |
+| string.swift:30:13:30:13 | [post] clean | string.swift:33:13:33:13 | clean |
 | string.swift:30:13:30:13 | clean | string.swift:33:13:33:13 | clean |
+| string.swift:31:13:31:13 | [post] tainted | string.swift:34:21:34:21 | tainted |
 | string.swift:31:13:31:13 | tainted | string.swift:34:21:34:21 | tainted |
+| string.swift:33:13:33:13 | [post] clean | string.swift:33:21:33:21 | clean |
 | string.swift:33:13:33:13 | clean | string.swift:33:13:33:21 | ... .+(_:_:) ... |
 | string.swift:33:13:33:13 | clean | string.swift:33:21:33:21 | clean |
+| string.swift:33:21:33:21 | [post] clean | string.swift:34:13:34:13 | clean |
 | string.swift:33:21:33:21 | clean | string.swift:33:13:33:21 | ... .+(_:_:) ... |
 | string.swift:33:21:33:21 | clean | string.swift:34:13:34:13 | clean |
+| string.swift:34:13:34:13 | [post] clean | string.swift:35:23:35:23 | clean |
 | string.swift:34:13:34:13 | clean | string.swift:34:13:34:21 | ... .+(_:_:) ... |
 | string.swift:34:13:34:13 | clean | string.swift:35:23:35:23 | clean |
+| string.swift:34:21:34:21 | [post] tainted | string.swift:35:13:35:13 | tainted |
 | string.swift:34:21:34:21 | tainted | string.swift:34:13:34:21 | ... .+(_:_:) ... |
 | string.swift:34:21:34:21 | tainted | string.swift:35:13:35:13 | tainted |
+| string.swift:35:13:35:13 | [post] tainted | string.swift:36:13:36:13 | tainted |
 | string.swift:35:13:35:13 | tainted | string.swift:35:13:35:23 | ... .+(_:_:) ... |
 | string.swift:35:13:35:13 | tainted | string.swift:36:13:36:13 | tainted |
+| string.swift:35:23:35:23 | [post] clean | string.swift:38:19:38:19 | clean |
 | string.swift:35:23:35:23 | clean | string.swift:35:13:35:23 | ... .+(_:_:) ... |
 | string.swift:35:23:35:23 | clean | string.swift:38:19:38:19 | clean |
+| string.swift:36:13:36:13 | [post] tainted | string.swift:36:23:36:23 | tainted |
 | string.swift:36:13:36:13 | tainted | string.swift:36:13:36:23 | ... .+(_:_:) ... |
 | string.swift:36:13:36:13 | tainted | string.swift:36:23:36:23 | tainted |
+| string.swift:36:23:36:23 | [post] tainted | string.swift:39:19:39:19 | tainted |
 | string.swift:36:23:36:23 | tainted | string.swift:36:13:36:23 | ... .+(_:_:) ... |
 | string.swift:36:23:36:23 | tainted | string.swift:39:19:39:19 | tainted |
 | string.swift:38:13:38:13 | > | string.swift:38:13:38:19 | ... .+(_:_:) ... |
@@ -862,31 +902,38 @@
 | string.swift:39:29:39:29 | < | string.swift:39:13:39:29 | ... .+(_:_:) ... |
 | string.swift:41:7:41:7 | SSA def(str) | string.swift:43:13:43:13 | str |
 | string.swift:41:13:41:13 | abc | string.swift:41:7:41:7 | SSA def(str) |
+| string.swift:43:13:43:13 | [post] str | string.swift:45:3:45:3 | str |
 | string.swift:43:13:43:13 | str | string.swift:45:3:45:3 | str |
 | string.swift:45:3:45:3 | &... | string.swift:46:13:46:13 | str |
 | string.swift:45:3:45:3 | [post] &... | string.swift:46:13:46:13 | str |
 | string.swift:45:3:45:3 | str | string.swift:45:3:45:3 | &... |
+| string.swift:46:13:46:13 | [post] str | string.swift:48:3:48:3 | str |
 | string.swift:46:13:46:13 | str | string.swift:48:3:48:3 | str |
 | string.swift:48:3:48:3 | &... | string.swift:49:13:49:13 | str |
 | string.swift:48:3:48:3 | [post] &... | string.swift:49:13:49:13 | str |
 | string.swift:48:3:48:3 | str | string.swift:48:3:48:3 | &... |
 | string.swift:51:7:51:7 | SSA def(str2) | string.swift:53:13:53:13 | str2 |
 | string.swift:51:14:51:14 | abc | string.swift:51:7:51:7 | SSA def(str2) |
+| string.swift:53:13:53:13 | [post] str2 | string.swift:55:3:55:3 | str2 |
 | string.swift:53:13:53:13 | str2 | string.swift:55:3:55:3 | str2 |
 | string.swift:55:3:55:3 | &... | string.swift:56:13:56:13 | str2 |
 | string.swift:55:3:55:3 | [post] &... | string.swift:56:13:56:13 | str2 |
 | string.swift:55:3:55:3 | str2 | string.swift:55:3:55:3 | &... |
+| string.swift:56:13:56:13 | [post] str2 | string.swift:58:3:58:3 | str2 |
 | string.swift:56:13:56:13 | str2 | string.swift:58:3:58:3 | str2 |
 | string.swift:58:3:58:3 | &... | string.swift:59:13:59:13 | str2 |
 | string.swift:58:3:58:3 | [post] &... | string.swift:59:13:59:13 | str2 |
 | string.swift:58:3:58:3 | str2 | string.swift:58:3:58:3 | &... |
+| string.swift:59:13:59:13 | [post] str2 | string.swift:69:13:69:13 | str2 |
 | string.swift:59:13:59:13 | str2 | string.swift:69:13:69:13 | str2 |
 | string.swift:61:7:61:7 | SSA def(str3) | string.swift:63:13:63:13 | str3 |
 | string.swift:61:14:61:14 | abc | string.swift:61:7:61:7 | SSA def(str3) |
+| string.swift:63:13:63:13 | [post] str3 | string.swift:65:3:65:3 | str3 |
 | string.swift:63:13:63:13 | str3 | string.swift:65:3:65:3 | str3 |
 | string.swift:65:3:65:3 | &... | string.swift:66:13:66:13 | str3 |
 | string.swift:65:3:65:3 | [post] &... | string.swift:66:13:66:13 | str3 |
 | string.swift:65:3:65:3 | str3 | string.swift:65:3:65:3 | &... |
+| string.swift:66:13:66:13 | [post] str3 | string.swift:68:3:68:3 | str3 |
 | string.swift:66:13:66:13 | str3 | string.swift:68:3:68:3 | str3 |
 | string.swift:68:3:68:3 | str3 | string.swift:68:3:68:3 | &... |
 | string.swift:73:7:73:7 | SSA def(clean) | string.swift:77:20:77:20 | clean |
@@ -895,9 +942,13 @@
 | string.swift:74:17:74:25 | call to source2() | string.swift:74:7:74:7 | SSA def(tainted) |
 | string.swift:75:7:75:7 | SSA def(taintedInt) | string.swift:79:20:79:20 | taintedInt |
 | string.swift:75:20:75:27 | call to source() | string.swift:75:7:75:7 | SSA def(taintedInt) |
+| string.swift:77:20:77:20 | [post] clean | string.swift:81:31:81:31 | clean |
 | string.swift:77:20:77:20 | clean | string.swift:81:31:81:31 | clean |
+| string.swift:78:20:78:20 | [post] tainted | string.swift:82:31:82:31 | tainted |
 | string.swift:78:20:78:20 | tainted | string.swift:82:31:82:31 | tainted |
+| string.swift:81:31:81:31 | [post] clean | string.swift:84:13:84:13 | clean |
 | string.swift:81:31:81:31 | clean | string.swift:84:13:84:13 | clean |
+| string.swift:82:31:82:31 | [post] tainted | string.swift:85:13:85:13 | tainted |
 | string.swift:82:31:82:31 | tainted | string.swift:85:13:85:13 | tainted |
 | string.swift:84:13:84:13 | [post] clean | string.swift:87:13:87:13 | clean |
 | string.swift:84:13:84:13 | clean | string.swift:84:13:84:19 | .description |

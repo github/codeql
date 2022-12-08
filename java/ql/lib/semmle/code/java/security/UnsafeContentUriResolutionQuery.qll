@@ -1,7 +1,6 @@
 /** Provides taint tracking configurations to be used in unsafe content URI resolution queries. */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.UnsafeContentUriResolution

@@ -1,6 +1,6 @@
 /** Definitions related to `java.util.regex`. */
 
-private import semmle.code.java.dataflow.ExternalFlow
+import java
 
 /** The class `java.util.regex.Pattern`. */
 class TypeRegexPattern extends Class {

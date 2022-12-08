@@ -57,6 +57,6 @@ module Generated {
     /**
      * Gets the number of arguments of this parameterized protocol type.
      */
-    final int getNumberOfArgs() { result = count(getAnArg()) }
+    final int getNumberOfArgs() { result = count(int i | exists(getArg(i))) }
   }
 }

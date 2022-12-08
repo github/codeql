@@ -63,6 +63,6 @@ module Generated {
     /**
      * Gets the number of declarations of this import declaration.
      */
-    final int getNumberOfDeclarations() { result = count(getADeclaration()) }
+    final int getNumberOfDeclarations() { result = count(int i | exists(getDeclaration(i))) }
   }
 }

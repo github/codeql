@@ -28,7 +28,7 @@ class ValueOrRefType extends Type, @dotnet_valueorreftype {
     or
     if this.getDeclaringNamespace().isGlobalNamespace()
     then result = ""
-    else result = this.getDeclaringNamespace().getQualifiedName() + "."
+    else result = this.getDeclaringNamespace().getFullName() + "."
   }
 
   pragma[noinline]
