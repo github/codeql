@@ -1,0 +1,12 @@
+We want to be able to redirect module output options to an internal artifact storage.
+--- a/include/swift/Frontend/FrontendInputsAndOutputs.h	2022-11-30 12:57:18.000000000 +0100
++++ b/include/swift/Frontend/FrontendInputsAndOutputs.h	2022-12-08 10:30:43.286040435 +0100
+@@ -182,8 +182,6 @@
+                            llvm::MemoryBuffer *buffer = nullptr);
+
+   // Outputs
+-
+-private:
+   friend class ArgsToFrontendOptionsConverter;
+   friend struct InterfaceSubContextDelegateImpl;
+   void setMainAndSupplementaryOutputs(
