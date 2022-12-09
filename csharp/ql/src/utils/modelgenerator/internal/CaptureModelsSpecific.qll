@@ -30,11 +30,6 @@ private predicate isHigherOrder(CS::Callable api) {
   )
 }
 
-/** Holds if the given API is a constructor without parameters. */
-private predicate isParameterlessConstructor(CS::Callable api) {
-  api instanceof CS::Constructor and api.getNumberOfParameters() = 0
-}
-
 /**
  * Holds if it is relevant to generate models for `api`.
  */
@@ -44,7 +39,7 @@ private predicate isRelevantForModels(CS::Callable api) {
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
   not api instanceof CS::Destructor and
-  not isParameterlessConstructor(api)
+  not api.(CS::Constructor).isParameterless()
 }
 
 /**
