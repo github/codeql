@@ -300,7 +300,7 @@ private class CookiesSameSiteProtectionSetting extends Settings::NillableStringl
  * named `name`.
  */
 pragma[noinline]
-private predicate isMethodCall(MethodCall call, string name, ErbFile erb) {
+private predicate isMethodCallFromErb(MethodCall call, string name, ErbFile erb) {
   name = call.getMethodName() and
   erb = call.getLocation().getFile()
 }
@@ -310,29 +310,29 @@ private predicate isMethodCall(MethodCall call, string name, ErbFile erb) {
  * with ERB file `erb`.
  */
 pragma[noinline]
-private predicate isHelperMethod(
+private predicate isViewHelperMethod(
   ActionController::ActionControllerHelperMethod helperMethod, string name, ErbFile erb
 ) {
   helperMethod.getName() = name and
   helperMethod.getControllerClass() = ActionController::getAssociatedControllerClass(erb)
 }
 
-private class FlowIntoHelperMethod extends AdditionalFlowStep {
+private class FlowIntoViewHelperMethod extends AdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from template into controller helper method
     exists(
       ErbFile template, ActionController::ActionControllerHelperMethod helperMethod, string name,
       CfgNodes::ExprNodes::MethodCallCfgNode helperMethodCall, int argIdx
     |
-      isHelperMethod(helperMethod, name, template) and
-      isMethodCall(helperMethodCall.getExpr(), name, template) and
+      isViewHelperMethod(helperMethod, name, template) and
+      isMethodCallFromErb(helperMethodCall.getExpr(), name, template) and
       helperMethodCall.getArgument(pragma[only_bind_into](argIdx)) = node1.asExpr() and
       helperMethod.getParameter(pragma[only_bind_into](argIdx)) = node2.asParameter()
     )
   }
 }
 
-private class FlowFromHelperMethod extends AdditionalFlowStep {
+private class FlowFromViewHelperMethod extends AdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     // flow out of controller helper method into template
     exists(
@@ -341,8 +341,8 @@ private class FlowFromHelperMethod extends AdditionalFlowStep {
       // `node1` is an expr node that may be returned by the helper method
       exprNodeReturnedFrom(node1, helperMethod) and
       // `node2` is a call to the helper method
-      isHelperMethod(helperMethod, name, template) and
-      isMethodCall(node2.asExpr().getExpr(), name, template)
+      isViewHelperMethod(helperMethod, name, template) and
+      isMethodCallFromErb(node2.asExpr().getExpr(), name, template)
     )
   }
 }
@@ -362,7 +362,7 @@ private predicate renderCallLocals(string hashKey, Expr value, ErbFile erb) {
 }
 
 pragma[noinline]
-private predicate isFlowFromLocals0(
+private predicate isFlowFromLocalsIntoErb0(
   CfgNodes::ExprNodes::ElementReferenceCfgNode refNode, string hashKey, ErbFile erb
 ) {
   exists(DataFlow::Node argNode |
@@ -373,18 +373,18 @@ private predicate isFlowFromLocals0(
   )
 }
 
-private class FlowFromLocals extends AdditionalFlowStep {
+private class FlowFromLocalsIntoErb extends AdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     exists(string hashKey, ErbFile erb |
       // node1 is a `locals` argument to a render call...
       renderCallLocals(hashKey, node1.asExpr().getExpr(), erb)
     |
       // node2 is an element reference against `local_assigns`
-      isFlowFromLocals0(node2.asExpr(), hashKey, erb)
+      isFlowFromLocalsIntoErb0(node2.asExpr(), hashKey, erb)
       or
       // ...node2 is a "method call" to a "method" with `hashKey` as its name
       // TODO: This may be a variable read in reality that we interpret as a method call
-      isMethodCall(node2.asExpr().getExpr(), hashKey, erb)
+      isMethodCallFromErb(node2.asExpr().getExpr(), hashKey, erb)
     )
   }
 }
@@ -428,7 +428,9 @@ private predicate actionAssigns(
 }
 
 pragma[noinline]
-private predicate isVariableReadAccess(VariableReadAccess viewVarRead, string name, ErbFile erb) {
+private predicate isVariableReadAccessFromErb(
+  VariableReadAccess viewVarRead, string name, ErbFile erb
+) {
   erb = viewVarRead.getLocation().getFile() and
   viewVarRead.getVariable().getName() = name
 }
@@ -440,7 +442,7 @@ private class FlowFromControllerInstanceVariable extends AdditionalFlowStep {
       // match read to write on variable name
       actionAssigns(action, name, node1.asExpr().getExpr(), template) and
       // propagate taint from assignment RHS expr to variable read access in view
-      isVariableReadAccess(node2.asExpr().getExpr(), name, template)
+      isVariableReadAccessFromErb(node2.asExpr().getExpr(), name, template)
     )
   }
 }
