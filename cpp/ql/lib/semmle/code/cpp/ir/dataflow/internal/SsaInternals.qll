@@ -160,7 +160,7 @@ private module IteratorDefUse {
 
   /**
    * Holds if `use` is a use of an iterator that is obtained by calling an iterator-returning
-   * function that returns an iterator to the container represented by `containerUse.`
+   * function that returns an iterator to the container represented by `containerUse`.
    */
   predicate isIteratorUse(DirectUse use, DirectUse containerUse) {
     exists(DirectUse iteratorUse |
@@ -182,7 +182,7 @@ private module IteratorDefUse {
 
   /**
    * Holds if `def` is a definition of an iterator that implicitly stores a value into a
-   * container through an iterator represented by `containerUser`.
+   * container through an iterator represented by `containerUse`.
    */
   predicate isIteratorDef(DirectDef def, DirectUse containerUse) {
     exists(UseImpl iteratorUse |
