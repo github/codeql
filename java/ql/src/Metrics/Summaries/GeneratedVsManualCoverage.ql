@@ -9,6 +9,7 @@
 //import java // not needed I guess
 import semmle.code.java.dataflow.FlowSummary // for SummarizedCallable
 import utils.modelgenerator.internal.CaptureModels // for DataFlowTargetApi
+import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl // for NegativeSummarizedCallable
 
 // ! improve QLDoc?
 /**
@@ -53,8 +54,8 @@ float getNumMadModels(string package, string provenance) {
 
 // ! move to other file
 /**
- * Returns the number of APIs without MaD
- * models for a given package.
+ * Returns the number of APIs without SummarizedCallables
+ * (MaD models) for a given package.
  */
 float getNumApisWithoutMadModel(string package) {
   exists(DataFlowTargetApi dataFlowTargApi |
@@ -63,8 +64,19 @@ float getNumApisWithoutMadModel(string package) {
     result =
       count(DataFlowTargetApi d |
         package = d.getDeclaringType().getPackage().toString() and
-        not exists(SummarizedCallable sc | d = sc.asCallable())
+        not exists(MadModeledCallable sc | d = sc.asCallable())
       )
+  )
+}
+
+/**
+ * Returns the total number of APIs for a given package.
+ */
+float getNumApis(string package) {
+  exists(DataFlowTargetApi dataFlowTargApi |
+    package = dataFlowTargApi.getDeclaringType().getPackage().toString()
+  |
+    result = count(DataFlowTargetApi d | package = d.getDeclaringType().getPackage().toString())
   )
 }
 
@@ -75,9 +87,17 @@ where
   generatedOnly = getNumMadModels(package, "generated") and
   manualOnly = getNumMadModels(package, "manual") and
   both = getNumMadModels(package, "both") and
-  non = getNumApisWithoutMadModel(package) and // ! edit this
-  all = generatedOnly + both + manualOnly + non and
+  // non = getNumApisWithoutMadModel(package) and
+  // all = generatedOnly + both + manualOnly + non and
+  all = getNumApis(package) and
+  non = all - (generatedOnly + both + manualOnly) and
   generatedCoverage = (both / (both + manualOnly)) and // Proportion of manual models covered by generated ones
   manualCoverage = (both / (both + generatedOnly)) // Proportion of generated models covered by manual ones
 select package, generatedOnly, both, manualOnly, non, all, generatedCoverage, manualCoverage
   order by package
+// * "all" and "none" tests
+// from string package, float num
+// where num = getNumApis(package) // allY2 = DFTAs
+// // where num = getNumModeledApis(package) // allY1 = api that has either a positive or negative model
+// // where num = getNumApisWithoutMadModel(package) // noneY2 = DFTAs \ SCs
+// select package, num order by package
