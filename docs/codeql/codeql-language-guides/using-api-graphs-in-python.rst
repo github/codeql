@@ -29,8 +29,6 @@ following snippet demonstrates.
 
     select API::moduleImport("re")
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1876172022264324639/>`__.
-
 This query selects the API graph node corresponding to the ``re`` module. This node represents the fact that the ``re`` module has been imported rather than a specific location in the program where the import happens. Therefore, there will be at most one result per project, and it will not have a useful location, so you'll have to click `Show 1 non-source result` in order to see it.
 
 To find where the ``re`` module is referenced in the program, you can use the ``getAUse`` method. The following query selects all references to the ``re`` module in the current database.
@@ -41,8 +39,6 @@ To find where the ``re`` module is referenced in the program, you can use the ``
     import semmle.python.ApiGraphs
 
     select API::moduleImport("re").getAUse()
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8072356519514905526/>`__.
 
 Note that the ``getAUse`` method accounts for local flow, so that ``my_re_compile``
 in the following snippet is
@@ -77,8 +73,6 @@ the above ``re.compile`` example, you can now find references to ``re.compile``.
 
     select API::moduleImport("re").getMember("compile").getAUse()
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7970570434725297676/>`__.
-
 In addition to ``getMember``, you can use the ``getUnknownMember`` method to find references to API
 components where the name is not known statically. You can use the ``getAMember`` method to
 access all members, both known and unknown.
@@ -97,14 +91,10 @@ where the return value of ``re.compile`` is used:
 
     select API::moduleImport("re").getMember("compile").getReturn().getAUse()
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/4346050399960356921/>`__.
-
 Note that this includes all uses of the result of ``re.compile``, including those reachable via
 local flow. To get just the *calls* to ``re.compile``, you can use ``getAnImmediateUse`` instead of
 ``getAUse``. As this is a common occurrence, you can use ``getACall`` instead of
 ``getReturn`` followed by ``getAnImmediateUse``.
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8143347716552092926/>`__.
 
 Note that the API graph does not distinguish between class instantiations and function calls. As far
 as it's concerned, both are simply places where an API graph node is called.
@@ -133,8 +123,6 @@ all subclasses of ``View``, you must explicitly include the subclasses of ``Meth
     }
 
     select viewClass().getAUse()
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/288293322319747121/>`__.
 
 Note the use of the set literal ``["View", "MethodView"]`` to match both classes simultaneously.
 

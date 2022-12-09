@@ -53,7 +53,9 @@ module Generated {
     /**
      * Gets the number of replacement types of this declaration ref expression.
      */
-    final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
+    final int getNumberOfReplacementTypes() {
+      result = count(int i | exists(getReplacementType(i)))
+    }
 
     /**
      * Holds if this declaration ref expression has direct to storage semantics.
@@ -74,6 +76,13 @@ module Generated {
      */
     predicate hasOrdinarySemantics() {
       Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
+    }
+
+    /**
+     * Holds if this declaration ref expression has distributed thunk semantics.
+     */
+    predicate hasDistributedThunkSemantics() {
+      Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).hasDistributedThunkSemantics()
     }
   }
 }

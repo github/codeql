@@ -82,8 +82,8 @@ func taintThroughData() {
 	let dataTainted2 = Data(dataTainted)
 
 	sink(arg: dataClean)
-	sink(arg: dataTainted) // $ MISSING: tainted=81
-	sink(arg: dataTainted2) // $ MISSING: tainted=81
+	sink(arg: dataTainted) // $ tainted=81
+	sink(arg: dataTainted2) // $ tainted=81
 
 	// ";Data;true;init(base64Encoded:options:);;;Argument[0];ReturnValue;taint",
 	let dataTainted3 = Data(base64Encoded: source() as! Data, options: [])

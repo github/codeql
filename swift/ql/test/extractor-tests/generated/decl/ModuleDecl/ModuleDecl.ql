@@ -3,15 +3,21 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  ModuleDecl x, ModuleDecl getModule, Type getInterfaceType, string getName, string isBuiltinModule,
-  string isSystemModule
+  ModuleDecl x, ModuleDecl getModule, Type getInterfaceType, string getName,
+  int getNumberOfBaseTypes, string isBuiltinModule, string isSystemModule,
+  int getNumberOfImportedModules, int getNumberOfExportedModules
 where
   toBeTested(x) and
   not x.isUnknown() and
   getModule = x.getModule() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName() and
+  getNumberOfBaseTypes = x.getNumberOfBaseTypes() and
   (if x.isBuiltinModule() then isBuiltinModule = "yes" else isBuiltinModule = "no") and
-  if x.isSystemModule() then isSystemModule = "yes" else isSystemModule = "no"
+  (if x.isSystemModule() then isSystemModule = "yes" else isSystemModule = "no") and
+  getNumberOfImportedModules = x.getNumberOfImportedModules() and
+  getNumberOfExportedModules = x.getNumberOfExportedModules()
 select x, "getModule:", getModule, "getInterfaceType:", getInterfaceType, "getName:", getName,
-  "isBuiltinModule:", isBuiltinModule, "isSystemModule:", isSystemModule
+  "getNumberOfBaseTypes:", getNumberOfBaseTypes, "isBuiltinModule:", isBuiltinModule,
+  "isSystemModule:", isSystemModule, "getNumberOfImportedModules:", getNumberOfImportedModules,
+  "getNumberOfExportedModules:", getNumberOfExportedModules

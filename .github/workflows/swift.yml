@@ -7,8 +7,7 @@ on:
       - "misc/bazel/**"
       - "*.bazel*"
       - .github/workflows/swift.yml
-      - .github/actions/fetch-codeql/action.yml
-      - .github/actions/cache-query-compilation/action.yml
+      - .github/actions/**
       - codeql-workspace.yml
       - .pre-commit-config.yaml
       - "!**/*.md"
@@ -22,8 +21,7 @@ on:
       - "misc/bazel/**"
       - "*.bazel*"
       - .github/workflows/swift.yml
-      - .github/actions/fetch-codeql/action.yml
-      - .github/actions/cache-query-compilation/action.yml
+      - .github/actions/**
       - codeql-workspace.yml
       - "!**/*.md"
       - "!**/*.qhelp"
@@ -35,20 +33,15 @@ jobs:
   # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
   # without waiting for the macOS build
   build-and-test-macos:
-    if: ${{ github.event_name == 'pull_request' }}
     runs-on: macos-12-xl
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/create-extractor-pack
-      - uses: ./swift/actions/run-quick-tests
-      - uses: ./swift/actions/print-unextracted
+      - uses: ./swift/actions/build-and-test
   build-and-test-linux:
     runs-on: ubuntu-latest-xl
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/create-extractor-pack
-      - uses: ./swift/actions/run-quick-tests
-      - uses: ./swift/actions/print-unextracted
+      - uses: ./swift/actions/build-and-test
   qltests-linux:
     needs: build-and-test-linux
     runs-on: ubuntu-latest-xl
@@ -80,7 +73,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./swift/actions/setup-env
+      - uses: bazelbuild/setup-bazelisk@v2
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: 'swift/.python-version'
       - uses: pre-commit/action@v3.0.0
         name: Check that python code is properly formatted
         with:

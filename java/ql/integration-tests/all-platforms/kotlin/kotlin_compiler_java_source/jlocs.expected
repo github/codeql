@@ -1,3 +1,4 @@
 | J.java:1:14:1:14 | J |
 | build/J.class:0:0:0:0 | J<String> |
+| file:///!unknown-binary-location/J.class:0:0:0:0 | J<> |
 | file:///!unknown-binary-location/J.class:0:0:0:0 | J<Integer> |

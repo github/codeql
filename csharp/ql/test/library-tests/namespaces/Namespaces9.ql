@@ -10,5 +10,5 @@ where
   a.getATypeParameter().hasName("T") and
   a.getANestedType() = b and
   b.getName() = "B" and
-  b.hasQualifiedName("R1.A<>+B")
+  b.hasQualifiedName("R1", "A<>+B")
 select a, b

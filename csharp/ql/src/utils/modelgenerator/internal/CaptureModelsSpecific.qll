@@ -35,7 +35,7 @@ private predicate isHigherOrder(CS::Callable api) {
  */
 private predicate isRelevantForModels(CS::Callable api) {
   [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
-  api.getDeclaringType().getNamespace().getQualifiedName() != "" and
+  api.getDeclaringType().getNamespace().getFullName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
   not api instanceof CS::Destructor

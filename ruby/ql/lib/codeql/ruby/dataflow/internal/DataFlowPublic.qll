@@ -373,7 +373,7 @@ private module Cached {
   LocalSourceNode getConstantAccessNode(ConstantAccess access) {
     // Namespaces don't evaluate to the constant being accessed, they return the value of their last statement.
     // Use the definition of 'self' in the namespace as the representative in this case.
-    result.(SsaDefinitionNode).getDefinition().(Ssa::SelfDefinition).getSourceVariable() =
+    result.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::SelfDefinition).getSourceVariable() =
       access.(Namespace).getModuleSelfVariable()
     or
     not access instanceof Namespace and
@@ -615,7 +615,7 @@ class ContentSet extends TContentSet {
  * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
  * the argument `x`.
  */
-signature predicate guardChecksSig(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch);
+signature predicate guardChecksSig(CfgNodes::AstCfgNode g, CfgNode e, boolean branch);
 
 /**
  * Provides a set of barrier nodes for a guard that validates an expression.
@@ -625,13 +625,13 @@ signature predicate guardChecksSig(CfgNodes::ExprCfgNode g, CfgNode e, boolean b
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   pragma[nomagic]
-  private predicate guardChecksSsaDef(CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def) {
+  private predicate guardChecksSsaDef(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def) {
     guardChecks(g, def.getARead(), branch)
   }
 
   pragma[nomagic]
   private predicate guardControlsSsaDef(
-    CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def, Node n
+    CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, Node n
   ) {
     def.getARead() = n.asExpr() and
     guardControlsBlock(g, n.asExpr().getBasicBlock(), branch)
@@ -639,7 +639,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def |
+    exists(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def |
       guardChecksSsaDef(g, branch, def) and
       guardControlsSsaDef(g, branch, def, result)
     )
@@ -669,8 +669,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 }
 
 /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-private predicate guardControlsBlock(CfgNodes::ExprCfgNode guard, BasicBlock bb, boolean branch) {
-  exists(ConditionBlock conditionBlock, SuccessorTypes::BooleanSuccessor s |
+private predicate guardControlsBlock(CfgNodes::AstCfgNode guard, BasicBlock bb, boolean branch) {
+  exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
     guard = conditionBlock.getLastNode() and
     s.getValue() = branch and
     conditionBlock.controls(bb, s)
@@ -819,7 +819,7 @@ class ModuleNode instanceof Module {
    * This only gets `self` at the module level, not inside any (singleton) method.
    */
   LocalSourceNode getModuleLevelSelf() {
-    result.(SsaDefinitionNode).getVariable() = super.getADeclaration().getModuleSelfVariable()
+    result.(SsaDefinitionExtNode).getVariable() = super.getADeclaration().getModuleSelfVariable()
   }
 
   /**

@@ -12,8 +12,8 @@ import IDEContextual
  *
  * In some cases it is preferable to modify locations (the
  * `hasLocationInfo()` predicate) so that they are short, and
- * non-overlapping with other locations that might be highlighted in
- * the LGTM interface.
+ * non-overlapping with other locations that might be reported as
+ * code scanning alerts on GitHub.
  *
  * We need to give locations that may not be in the database, so
  * we use `hasLocationInfo()` rather than `getLocation()`.

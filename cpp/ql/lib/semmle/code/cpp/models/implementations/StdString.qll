@@ -17,6 +17,15 @@ private class StdBasicString extends ClassTemplateInstantiation {
 
 /**
  * The `std::basic_string::iterator` declaration.
+ *
+ * Intuitively, this class shouldn't be necessary as it's already captured
+ * by the `StdIterator` class. However, this class ensures that the typedef inside the
+ * body of the `std::string` class is also seen as an iterator.
+ *
+ * Eventually, we should be consistent about which of the following should be recognized as iterators:
+ * 1. The typedef type.
+ * 2. The template class of the resolved type.
+ * 3. Any instantiation of the resolved type.
  */
 private class StdBasicStringIterator extends Iterator, Type {
   StdBasicStringIterator() {
