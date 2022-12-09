@@ -1,7 +1,7 @@
 /**
  * @name Android WebSettings file access
  * @kind problem
- * @description Enabling access to the file system in a WebView can enable access to sensitive information.
+ * @description Enabling access to the file system in a WebView allows attackers to view sensitive information.
  * @id java/android-websettings-file-access
  * @problem.severity warning
  * @security-severity 6.5
