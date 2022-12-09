@@ -337,7 +337,7 @@ private class DirectDef extends DefImpl, TDirectDef {
 
   override int getIndirection() { isDef(_, _, address, _, result, ind) }
 
-  override string toString() { result = "DefImpl" }
+  override string toString() { result = "DirectDef" }
 
   override int getIndirectionIndex() { result = ind }
 }
