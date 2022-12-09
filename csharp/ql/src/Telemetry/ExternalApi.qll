@@ -33,7 +33,9 @@ private predicate isParameterlessConstructor(DotNet::Callable c) {
 private predicate isTestLibrary(DotNet::Callable c) { c.getDeclaringType() instanceof TestLibrary }
 
 /** Holds if the given callable is not worth supporting. */
-predicate isUninteresting(DotNet::Callable c) { isTestLibrary(c) or isParameterlessConstructor(c) }
+private predicate isUninteresting(DotNet::Callable c) {
+  isTestLibrary(c) or isParameterlessConstructor(c)
+}
 
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
