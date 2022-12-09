@@ -158,6 +158,6 @@ private class Getaddrinfo extends TaintFunction, ArrayFunction, RemoteFlowSource
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(3) and
-    description = "Address returned by " + this.getName()
+    description = "address returned by " + this.getName()
   }
 }
