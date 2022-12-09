@@ -68,28 +68,16 @@ float getNumApisWithoutMadModel(string package) {
   )
 }
 
-// ! Note: adjust metric formulas as needed after more discussion with Yorck
-/*
- * metric1:
- * Proportion of manual models covered by automation: “both” / (“both” + “manual-only”)
- * Auto-generated vs all positive manual (percentage of manual models covered by auto-generation)
- */
-
-/*
- * metric2:
- * Coverage relative to total number of APIs: (“auto-only” + “both” + “manual-only”) / “all”
- * Auto-generated vs specific pos+neg subset (top-N manual, random)
- */
-
 from
-  string package, float generatedPos, float manualPos, float bothPos, float notModeled, float all,
-  float metric1, float metric2
+  string package, float generatedOnly, float both, float manualOnly, float non, float all,
+  float generatedCoverage, float manualCoverage
 where
-  generatedPos = getNumMadModels(package, "generated") and
-  manualPos = getNumMadModels(package, "manual") and
-  bothPos = getNumMadModels(package, "both") and
-  notModeled = getNumApisWithoutMadModel(package) and
-  all = generatedPos + manualPos + bothPos + notModeled and
-  metric1 = (bothPos / (bothPos + manualPos)) and // ! I believe this metric was intended to be only on the positive ones?
-  metric2 = (generatedPos + bothPos + manualPos) / all
-select package, generatedPos, manualPos, bothPos, notModeled, all, metric1, metric2 order by package
+  generatedOnly = getNumMadModels(package, "generated") and
+  manualOnly = getNumMadModels(package, "manual") and
+  both = getNumMadModels(package, "both") and
+  non = getNumApisWithoutMadModel(package) and // ! edit this
+  all = generatedOnly + both + manualOnly + non and
+  generatedCoverage = (both / (both + manualOnly)) and // Proportion of manual models covered by generated ones
+  manualCoverage = (both / (both + generatedOnly)) // Proportion of generated models covered by manual ones
+select package, generatedOnly, both, manualOnly, non, all, generatedCoverage, manualCoverage
+  order by package
