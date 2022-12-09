@@ -9,7 +9,7 @@ private class Unit = DFPrivate::Unit;
 
 /**
  * A module importing the frameworks that implement additional flow steps,
- * ensuring that they are visible to the taint tracking library.
+ * ensuring that they are visible to the dataflow and taint tracking libraries.
  */
 private module Frameworks {
   import codeql.ruby.frameworks.StringFormatters
@@ -30,16 +30,17 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
+// TODO: this class is not applied to all configurations by default.
 /**
  * A unit class for adding additional flow steps.
  *
- * Extend this class to add additional taint steps that should apply to all
- * taint configurations.
+ * Extend this class to add additional flow steps that can be used by all
+ * dataflow configurations.
  */
 class AdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for all configurations.
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step.
    */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
