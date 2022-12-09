@@ -4,16 +4,16 @@
 <qhelp>
   <overview>
     <p>
-      File access in an Android WebView can expose the device's file system to
-      the JavaScript running in the WebView. If there are vulnerabilities in the
-      JavaScript or untrusted content is loaded in the WebView, file access may
-      allow an attacker to access or steal the user's data.
+      Allowing file access in an Android WebView can expose a device's file system to
+      the JavaScript running in that WebView. If the JavaScript contains
+      vulnerabilities or the WebView loads untrusted content, file access
+      allows an attacker to steal the user's data.
     </p>
   </overview>
 
   <recommendation>
-    <p>When possible, you should not allow file access. The file access settings
-    are disabled by default. You can explicitly disbale them by setting the
+    <p>When possible, do not allow file access. The file access settings
+    are disabled by default. You can explicitly disable file access by setting the
     following settings to <code>false</code>:</p>
 
     <ul>
@@ -23,14 +23,14 @@
     </ul>
 
     <p>If your application requires access to the file system, it is best to
-    avoid using <code>file://</code> urls, and instead use an alternative that
-    allows loading files via https, such
+    avoid using <code>file://</code> URLs. Instead, use an alternative that
+    loads files via HTTPS, such
     as <code>androidx.webkit.WebViewAssetLoader</code>.</p>
   </recommendation>
 
   <example>
-    <p>In the following (bad) example, the WebView is configured with the settings
-    which would allow local file access.</p>
+    <p>In the following (bad) example, the WebView is configured with settings
+    that allow local file access.</p>
 
     <sample src="WebViewFileAccessUnsafe.java"/>
 
@@ -39,8 +39,9 @@
     <sample src="WebViewFileAccessSafe.java"/>
 
     <p>
-      In the following example, an asset loader is configured so that assets can
-      be access over <code>https</code>, and not require file system access.
+      As mentioned previously, asset loaders can load files without file system 
+      access. In the following (good) example, an asset loader is configured to 
+      load assets over HTTPS.
     </p>
 
     <sample src="AssetLoaderExample.java"/>
