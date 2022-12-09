@@ -217,7 +217,8 @@ open class KotlinFileExtractor(
                 is IrField -> {
                     val parentId = useDeclarationParent(getFieldParent(declaration), false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractField(declaration, parentId, extractFunctionBodies)
+                        // For consistency with the Java extractor, enum entries get type accesses only if we're extracting from .kt source (i.e., when `extractFunctionBodies` is set)
+                        extractField(declaration, parentId, extractAnnotationEnumTypeAccesses = extractFunctionBodies)
                     }
                     Unit
                 }
@@ -496,7 +497,7 @@ open class KotlinFileExtractor(
     private fun replaceKotlinDeprecatedAnnotation(annotations: List<IrConstructorCall>): List<IrConstructorCall> {
         val shouldReplace =
             annotations.any { (it.type as? IrSimpleType)?.classFqName?.asString() == "kotlin.Deprecated" } &&
-                    annotations.none { (it.type as? IrSimpleType)?.classFqName?.asString() == "java.lang.Deprecated" }
+                    annotations.none { it.type.classOrNull == javaLangDeprecated?.symbol }
         val jldConstructor = javaLangDeprecatedConstructor
         if (!shouldReplace || jldConstructor == null)
             return annotations
@@ -508,10 +509,7 @@ open class KotlinFileExtractor(
     }
 
     private fun extractAnnotations(c: IrAnnotationContainer, annotations: List<IrConstructorCall>, parent: Label<out DbExprparent>, extractEnumTypeAccesses: Boolean) {
-        val origin = when(c) {
-            is IrDeclaration -> c.origin
-            else -> null
-        }
+        val origin = (c as? IrDeclaration)?.origin ?: run { logger.warn("Unexpected annotation container: $c"); return }
         val replacedAnnotations =
             if (origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB)
                 replaceKotlinDeprecatedAnnotation(annotations)
