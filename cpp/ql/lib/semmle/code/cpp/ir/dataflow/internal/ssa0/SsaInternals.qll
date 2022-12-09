@@ -198,6 +198,10 @@ class DefOrUse extends TDefOrUse, SsaDefOrUse {
   final override Location getLocation() { result = defOrUse.getLocation() }
 
   final SourceVariable getSourceVariable() { result = defOrUse.getSourceVariable() }
+
+  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+    defOrUse.hasIndexInBlock(block, index, sv)
+  }
 }
 
 class Phi extends TPhi, SsaDefOrUse {
@@ -212,14 +216,13 @@ class Phi extends TPhi, SsaDefOrUse {
   Definition getAnInput() { Cached::lastRefRedef(result, _, _, phi) }
 }
 
-private Node0Impl getAnUltimateValueForDef(Definition def) {
-  exists(IRBlock bb, int i, SourceVariable sv | def.definesAt(sv, bb, i) |
-    result = getAnUltimateValueForDef(any(Phi phi | phi.asPhi() = def).getAnInput())
-    or
-    exists(DefOrUse defOrUse |
-      defOrUse.asDefOrUse().hasIndexInBlock(bb, i, sv) and
-      result = defOrUse.asDefOrUse().(DirectDef).getValue()
-    )
+private Node0Impl getAnUltimateValueForDef(Definition definition) {
+  result = getAnUltimateValueForDef(any(Phi phi | phi.asPhi() = definition).getAnInput())
+  or
+  exists(Def def, IRBlock bb, int i, SourceVariable sv |
+    definition.definesAt(sv, bb, i) and
+    def.hasIndexInBlock(bb, i, sv) and
+    result = def.getValue()
   )
 }
 
