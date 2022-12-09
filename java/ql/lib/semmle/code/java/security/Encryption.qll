@@ -143,6 +143,7 @@ class CreateSslEngineMethod extends Method {
   }
 }
 
+/** The `setConnectionFactory` method of the class `javax.net.ssl.HttpsURLConnection`. */
 class SetConnectionFactoryMethod extends Method {
   SetConnectionFactoryMethod() {
     this.hasName("setSSLSocketFactory") and
@@ -150,6 +151,7 @@ class SetConnectionFactoryMethod extends Method {
   }
 }
 
+/** The `setDefaultConnectionFactory` method of the class `javax.net.ssl.HttpsURLConnection`. */
 class SetDefaultConnectionFactoryMethod extends Method {
   SetDefaultConnectionFactoryMethod() {
     this.hasName("setDefaultSSLSocketFactory") and
