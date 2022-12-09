@@ -1,8 +1,9 @@
 /**
- * @name Arbitrary file write during a remotely downloaded tarball extraction
- * @description Extracting files from a malicious tarball using `shutil.unpack_archive()` without validating
+ * @name Arbitrary file write during a tarball extraction from user controlled source
+ * @description Extracting files from a potentially malicious tarball using `shutil.unpack_archive()` without validating
  *              that the destination file path is within the destination directory can cause files outside
- *              the destination directory to be overwritten. More precisely, if the tarball comes from a remote location.
+ *              the destination directory to be overwritten. More precisely, if the tarball comes from a user controlled 
+ *              location either a remote one or cli argument.
  * @kind path-problem
  * @id py/unsafe-unpacking
  * @problem.severity error
@@ -26,6 +27,14 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) {
     // A source coming from a remote location
     exists(Http::Client::Request request | source = request)
+    or
+    // A source coming from a CLI argparse module
+    exists(Node o, API::Node ap, MethodCallNode args |
+      ap = API::moduleImport("argparse").getMember("ArgumentParser").getACall().getReturn() and
+      args = ap.getMember("parse_args").getACall() and
+      args.flowsTo(o) and 
+      source.(AttrRead).accesses(o, any(string s))
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -54,7 +63,7 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       // Accessing the name
       exists(AttrRead ar | ar.accesses(nodeFrom, "name") and nodeTo = ar)
       or
-      // Considering closing use
+      // Considering the use of closing()
       exists(API::Node closing |
         closing = API::moduleImport("contextlib").getMember("closing") and
         closing.getACall().flowsTo(nodeTo) and
