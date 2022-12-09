@@ -40,10 +40,24 @@ module ModelScoring {
   }
 
   predicate endpointScores(DataFlow::Node endpoint, int encodedEndpointType, float score) {
+    endpoint = getSampleFromSampleRate(0.1) and
     exists(EndpointType endpointType |
       endpointType.getEncoding() = encodedEndpointType and
       internalEnpointScores(endpoint, endpointType.getDescription()) and
       score = 1.0
+    )
+  }
+
+  bindingset[rate]
+  DataFlow::Node getSampleFromSampleRate(float rate) {
+    exists(int r |
+      result =
+        rank[r](DataFlow::Node n, string path, int a, int b, int c, int d |
+          n.asExpr().getLocation().hasLocationInfo(path, a, b, c, d)
+        |
+          n order by path, a, b, c, d
+        ) and
+      r % (1 / rate).ceil() = 0
     )
   }
 
