@@ -2,6 +2,7 @@ import javascript
 import EndpointTypes as EndpointTypes
 
 module ModelPrompt {
+  pragma[inline]
   string getPrompt(DataFlow::Node endpoint) {
     result = getTrainingSetPrompt() + getCurrentEndpointPrompt(endpoint)
   }
