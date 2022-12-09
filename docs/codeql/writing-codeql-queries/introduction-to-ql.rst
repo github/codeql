@@ -14,12 +14,12 @@ QL is a logic programming language, so it is built up of logical formulas. QL us
 
 QL also supports recursion and aggregates. This allows you to write complex recursive queries using simple QL syntax and directly use aggregates such as ``count``, ``sum``, and ``average``.
 
+.. include:: ../reusables/codespaces-template-note.rst
+
 Running a query
 ---------------
 
-You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>`, or you can run them in GitHub Codespaces using the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codeql-codespaces-template>`__. This will open a GitHub Codespaces environment preconfigured to run CodeQL queries.
-
-Once you open the GitHub Codespaces template, follow the instructions in the README to take a code tour and learn how to run queries in the workspace.
+You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>`.
 
 Here is an example of a basic query:
 
@@ -94,8 +94,6 @@ The exercises above all show queries with exactly one result, but in fact many q
          x*x + y*y = z*z
    select x, y, z
 
-.. include:: ../reusables/run-query-in-template.rst
-
 To simplify the query, we can introduce a class ``SmallInt`` representing the integers between 1 and 10. We can also define a predicate ``square()`` on integers in that class. Defining classes and predicates in this way makes it easy to reuse code without having to repeat it every time.
 
 .. code-block:: ql
@@ -108,8 +106,6 @@ To simplify the query, we can introduce a class ``SmallInt`` representing the in
    from SmallInt x, SmallInt y, SmallInt z
    where x.square() + y.square() = z.square()
    select x, y, z
-
-.. include:: ../reusables/run-query-in-template.rst
 
 Example CodeQL queries
 ----------------------
@@ -130,9 +126,7 @@ To import the CodeQL library for a specific programming language, type ``import 
    where count(f.getAnArg()) > 7
    select f
 
-➤ The ``from`` clause defines a variable ``f`` representing a Python function. The ``where`` part limits the functions ``f`` to those with more than 7 arguments. Finally, the ``select`` clause lists these functions.
-
-.. include:: ../reusables/run-query-in-template.rst
+The ``from`` clause defines a variable ``f`` representing a Python function. The ``where`` part limits the functions ``f`` to those with more than 7 arguments. Finally, the ``select`` clause lists these functions.
 
 .. code-block:: ql
 
@@ -142,9 +136,7 @@ To import the CodeQL library for a specific programming language, type ``import 
    where c.getText().regexpMatch("(?si).*\\bTODO\\b.*")
    select c
 
-➤ The ``from`` clause defines a variable ``c`` representing a JavaScript comment. The ``where`` part limits the comments ``c`` to those containing the word ``"TODO"``. The ``select`` clause lists these comments.
-
-.. include:: ../reusables/run-query-in-template.rst
+The ``from`` clause defines a variable ``c`` representing a JavaScript comment. The ``where`` part limits the comments ``c`` to those containing the word ``"TODO"``. The ``select`` clause lists these comments.
 
 .. code-block:: ql
 
@@ -154,9 +146,7 @@ To import the CodeQL library for a specific programming language, type ``import 
    where not exists(p.getAnAccess())
    select p
 
-➤ The ``from`` clause defines a variable ``p`` representing a Java parameter. The ``where`` clause finds unused parameters by limiting the parameters ``p`` to those which are not accessed. Finally, the ``select`` clause lists these parameters.
-
-.. include:: ../reusables/run-query-in-template.rst
+The ``from`` clause defines a variable ``p`` representing a Java parameter. The ``where`` clause finds unused parameters by limiting the parameters ``p`` to those which are not accessed. Finally, the ``select`` clause lists these parameters.
 
 Further reading
 ---------------
