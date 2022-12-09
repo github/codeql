@@ -47,6 +47,7 @@ module ModelScoring {
     )
   }
 
+  pragma[inline]
   predicate internalEnpointScores(DataFlow::Node endpoint, string prediction) =
     remoteScoreEndpoints(getEndpointPrompt/2)(endpoint, prediction)
 
@@ -55,6 +56,7 @@ module ModelScoring {
     prompt = ModelPrompt::ModelPrompt::getPrompt(node)
   }
 
+  pragma[inline]
   predicate internalEnpointScoresForAnyEndpoint(DataFlow::Node endpoint, string prediction) =
     remoteScoreEndpoints(getEndpointPromptForAnyEndpoint/2)(endpoint, prediction)
 }
