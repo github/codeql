@@ -17,6 +17,7 @@ import javascript
  * ```
  */
 class Token extends Locatable, @token {
+  pragma[inline]
   override Location getLocation() { hasLocation(this, result) }
 
   /** Gets the toplevel syntactic structure to which this token belongs. */

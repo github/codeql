@@ -41,6 +41,7 @@ class Location extends @location {
   }
 
   /** Holds if this location starts before or at the same place as location `that`. */
+  pragma[inline]
   predicate startsBeforeOrWith(Location that) {
     exists(File f, int sl1, int sc1, int sl2, int sc2 |
       locations_default(this, f, sl1, sc1, _, _) and
@@ -88,6 +89,7 @@ class Location extends @location {
    * Holds if this location contains location `that`, meaning that it starts
    * before or at the same place and ends after or at the same place.
    */
+  pragma[inline]
   predicate containsLoosely(Location that) {
     this.startsBeforeOrWith(that) and this.endsAfterOrWith(that)
   }
@@ -105,6 +107,7 @@ class Location extends @location {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
+  pragma[inline]
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
@@ -121,6 +124,7 @@ class Locatable extends @locatable {
   File getFile() { result = this.getLocation().getFile() }
 
   /** Gets this element's location. */
+  pragma[inline]
   Location getLocation() {
     // overridden by subclasses
     none()
@@ -184,6 +188,7 @@ class Locatable extends @locatable {
  * to `none()`, which is unhelpful.
  */
 private class FileLocatable extends File, Locatable {
+  pragma[inline]
   override Location getLocation() { result = File.super.getLocation() }
 
   override string toString() { result = File.super.toString() }
