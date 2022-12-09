@@ -61,12 +61,6 @@ Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <h
 
 ➤ `Check your answer <#exercise-1>`__
 
-There is often more than one way to define a query. For example, we can also write the above query in the shorter form:
-
-.. code-block:: ql
-
-   select "lgtm".length()
-
 Exercise 2 - Numbers
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -182,6 +176,12 @@ Exercise 1
    from string s
    where s = "lgtm"
    select s.length()
+   
+There is often more than one way to define a query. For example, we can also write the above query in the shorter form:
+
+.. code-block:: ql
+
+   select "lgtm".length()
 
 Exercise 2
 ~~~~~~~~~~
