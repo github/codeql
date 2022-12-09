@@ -24,17 +24,13 @@ class TestLibrary extends RefType {
   }
 }
 
-/** Holds if the given callable is a constructor without parameters. */
-private predicate isParameterlessConstructor(DotNet::Callable c) {
-  c instanceof Constructor and c.getNumberOfParameters() = 0
-}
-
 /** Holds if the given callable is part of a common testing library or framework. */
 private predicate isTestLibrary(DotNet::Callable c) { c.getDeclaringType() instanceof TestLibrary }
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(DotNet::Callable c) {
-  isTestLibrary(c) or isParameterlessConstructor(c)
+  isTestLibrary(c) or
+  c.(Constructor).isParameterless()
 }
 
 /**
