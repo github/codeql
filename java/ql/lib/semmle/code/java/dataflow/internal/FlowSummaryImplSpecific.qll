@@ -120,8 +120,11 @@ private predicate correspondingKotlinParameterDefaultsArgSpec(
           exists(int oldArgParsed |
             oldArgParsed = AccessPathSyntax::AccessPath::parseInt(oldArgNumber.splitAt(",").trim())
           |
-            if ktExtensionFunctions(originalCallable, _, _) and oldArgParsed = 0
-            then defaultsArgSpec = "Argument[0]"
+            if
+              ktExtensionFunctions(originalCallable, _, _) and
+              ktExtensionFunctions(defaultsCallable, _, _) and
+              oldArgParsed = 0
+            then defaultsArgSpec = "Argument[" + paramOffset + "]" // 1 if dispatch receiver is present, 0 otherwise.
             else defaultsArgSpec = "Argument[" + (oldArgParsed + paramOffset) + "]" + rest
           )
         )
