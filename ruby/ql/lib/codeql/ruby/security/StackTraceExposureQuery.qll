@@ -8,6 +8,7 @@
  */
 
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.FlowSteps
 private import codeql.ruby.TaintTracking
 private import StackTraceExposureCustomizations::StackTraceExposure
 
@@ -22,4 +23,8 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(AdditionalFlowStep s).step(node1, node2)
+  }
 }
