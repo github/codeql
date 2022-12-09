@@ -12,7 +12,6 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|             2: [ArrayInit] {...}
 #    0|           3: [VarAccess] DeprecationLevel.HIDDEN
 #    0|             -1: [TypeAccess] DeprecationLevel
-#    0|         2: [Annotation] NotNull
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] seen1
 #    0|           0: [TypeAccess] int
@@ -445,8 +444,6 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|               -1: [VarAccess] tmp1_output
 #    7|               0: [VarAccess] tmp0_desc
 #    7|       6: [Constructor] $serializer
-#-----|         1: (Annotations)
-#    0|           1: [Annotation] NotNull
 #    7|         5: [BlockStmt] { ... }
 #    7|           0: [SuperConstructorInvocationStmt] super(...)
 #    7|           1: [BlockStmt] { ... }
@@ -493,14 +490,10 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|           0: [ReturnStmt] return ...
 #    7|             0: [VarAccess] INSTANCE
 #    7|       2: [Constructor] Companion
-#-----|         1: (Annotations)
-#    0|           1: [Annotation] NotNull
 #    7|         5: [BlockStmt] { ... }
 #    7|           0: [SuperConstructorInvocationStmt] super(...)
 #    7|           1: [BlockStmt] { ... }
 #    8|     12: [Constructor] Project
-#-----|       1: (Annotations)
-#    0|         1: [Annotation] NotNull
 #-----|       4: (Parameters)
 #    8|         0: [Parameter] name
 #-----|           -1: (Annotations)
@@ -554,7 +547,6 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|             2: [ArrayInit] {...}
 #    0|           3: [VarAccess] DeprecationLevel.HIDDEN
 #    0|             -1: [TypeAccess] DeprecationLevel
-#    0|         2: [Annotation] NotNull
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] seen1
 #    0|           0: [TypeAccess] int
@@ -813,8 +805,6 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|               -1: [VarAccess] tmp1_output
 #   14|               0: [VarAccess] tmp0_desc
 #   14|       6: [Constructor] $serializer
-#-----|         1: (Annotations)
-#    0|           1: [Annotation] NotNull
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [SuperConstructorInvocationStmt] super(...)
 #   14|           1: [BlockStmt] { ... }
@@ -856,14 +846,10 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|           0: [ReturnStmt] return ...
 #   14|             0: [VarAccess] INSTANCE
 #   14|       2: [Constructor] Companion
-#-----|         1: (Annotations)
-#    0|           1: [Annotation] NotNull
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [SuperConstructorInvocationStmt] super(...)
 #   14|           1: [BlockStmt] { ... }
 #   15|     5: [Constructor] X
-#-----|       1: (Annotations)
-#    0|         1: [Annotation] NotNull
 #   14|       5: [BlockStmt] { ... }
 #   14|         0: [SuperConstructorInvocationStmt] super(...)
 #   15|         1: [BlockStmt] { ... }
