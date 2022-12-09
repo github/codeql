@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-12-09-06h55m44s.frosty-house-2rxpc7nw.7ffc47a2142e50c0b075cafb39bfe932614fff12bff91ad1db6c5308213ecb4b
+compiled: false
