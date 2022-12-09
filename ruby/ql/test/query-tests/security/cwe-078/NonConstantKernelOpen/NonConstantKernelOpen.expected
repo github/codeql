@@ -8,3 +8,4 @@
 | NonConstantKernelOpen.rb:11:5:11:18 | call to open | Call to URI.open with a non-constant value. Consider replacing it with URI(<uri>).open. |
 | NonConstantKernelOpen.rb:15:5:15:21 | call to open | Call to Kernel.open with a non-constant value. Consider replacing it with File.open. |
 | NonConstantKernelOpen.rb:25:5:25:33 | call to open | Call to Kernel.open with a non-constant value. Consider replacing it with File.open. |
+| NonConstantKernelOpen.rb:33:5:33:14 | call to open | Call to Kernel.open with a non-constant value. Consider replacing it with File.open. |

@@ -7,6 +7,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.core.Kernel::Kernel
+private import codeql.ruby.frameworks.Files
 
 /** A call to a method that might access a file or start a process. */
 class AmbiguousPathCall extends DataFlow::CallNode {
@@ -16,23 +17,12 @@ class AmbiguousPathCall extends DataFlow::CallNode {
     this.(KernelMethodCall).getMethodName() = "open" and
     name = "Kernel.open"
     or
-    methodCallOnlyOnIO(this, "read") and
-    name = "IO.read"
-    or
-    methodCallOnlyOnIO(this, "write") and
-    name = "IO.write"
-    or
-    methodCallOnlyOnIO(this, "binread") and
-    name = "IO.binread"
-    or
-    methodCallOnlyOnIO(this, "binwrite") and
-    name = "IO.binwrite"
-    or
-    methodCallOnlyOnIO(this, "foreach") and
-    name = "IO.foreach"
-    or
-    methodCallOnlyOnIO(this, "readlines") and
-    name = "IO.readlines"
+    exists(string methodName |
+      methodName = ["read", "write", "binread", "binwrite", "foreach", "readlines"]
+    |
+      methodCallOnlyOnIO(this, methodName) and
+      name = "IO." + methodName
+    )
     or
     this = API::getTopLevelMember("URI").getAMethodCall("open") and
     name = "URI.open"
@@ -75,11 +65,9 @@ private predicate methodCallOnlyOnIO(DataFlow::CallNode node, string methodName)
 abstract class Sanitizer extends DataFlow::Node { }
 
 /**
- * If a File.join is performed the resulting string will not start with a pipe |
+ * If a `File.join` is performed the resulting string will not start with a pipe `|`.
  * This is true as long the tainted data doesn't flow into the first argument.
  */
-private class FileJoinCall extends Sanitizer, DataFlow::ExprNode {
-  FileJoinCall() {
-    this = API::getTopLevelMember("File").getAMethodCall("join").getArgument(any(int i | i > 0))
-  }
+private class FileJoinSanitizer extends Sanitizer {
+  FileJoinSanitizer() { this = any(File::FileJoinSummary s).getParameter("1..") }
 }

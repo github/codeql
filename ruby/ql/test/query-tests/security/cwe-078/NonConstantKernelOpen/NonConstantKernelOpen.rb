@@ -29,5 +29,7 @@ class UsersController < ActionController::Base
     IO.foreach("|" + EnvUtil.rubybin + " -e 'puts :foo; puts :bar; puts :baz'") {|x| a << x } # GOOD
 
     IO.write(File.join("foo", "bar.txt"), "bar") # GOOD
+
+    open(file) # BAD - sanity check to verify that file was not mistakenly marked as sanitized
   end
 end
