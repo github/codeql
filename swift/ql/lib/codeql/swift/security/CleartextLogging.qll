@@ -31,8 +31,8 @@ private class DefaultCleartextLoggingSink extends CleartextLoggingSink {
 
 /**
  * A sanitizer for `OSLogMessage`s configured with the appropriate privacy option.
- * Numeric and boolean arguments aren't redacted unless the `public` option is used.
- * Arguments of other types are always redacted unless the `private` or `sensitive` options are used.
+ * Numeric and boolean arguments aren't redacted unless the `private` or `sensitive` options are used.
+ * Arguments of other types are always redacted unless the `public` option is used.
  */
 private class OsLogPrivacyCleartextLoggingSanitizer extends CleartextLoggingSanitizer {
   OsLogPrivacyCleartextLoggingSanitizer() {
