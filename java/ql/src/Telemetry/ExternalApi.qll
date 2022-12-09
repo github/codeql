@@ -31,16 +31,14 @@ private string containerAsJar(Container container) {
   if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
 }
 
-/** Holds if the given callable is a constructor without parameters. */
-private predicate isParameterlessConstructor(Callable c) {
-  c instanceof Constructor and c.getNumberOfParameters() = 0
-}
-
 /** Holds if the given callable is part of a common testing library or framework. */
 private predicate isTestLibrary(Callable c) { c.getDeclaringType() instanceof TestLibrary }
 
 /** Holds if the given callable is not worth supporting. */
-private predicate isUninteresting(Callable c) { isTestLibrary(c) or isParameterlessConstructor(c) }
+private predicate isUninteresting(Callable c) {
+  isTestLibrary(c) or
+  c.(Constructor).isParameterless()
+}
 
 /**
  * An external API from either the Standard Library or a 3rd party library.

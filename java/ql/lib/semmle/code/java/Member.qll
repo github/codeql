@@ -638,6 +638,9 @@ class Constructor extends Callable, @constructor {
   /** Holds if this is a default constructor, not explicitly declared in source code. */
   predicate isDefaultConstructor() { isDefConstr(this) }
 
+  /** Holds if this is a constructor without parameters. */
+  predicate isParameterless() { this.getNumberOfParameters() = 0 }
+
   override Constructor getSourceDeclaration() { constrs(this, _, _, _, _, result) }
 
   override string getSignature() { constrs(this, _, result, _, _, _) }
