@@ -29,7 +29,7 @@ query predicate extensionsMismatch(Method src, Method def) {
 
 query predicate extensionIndex(ExtensionMethod m, int i, Type t) {
   m.fromSource() and
-  m.getExtensionParameterIndex() = i and
+  m.getExtensionReceiverParameterIndex() = i and
   m.getExtendedType() = t and
   m.getParameter(i).getType() = t
 }

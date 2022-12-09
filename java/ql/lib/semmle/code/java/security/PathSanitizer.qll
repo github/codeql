@@ -299,7 +299,8 @@ private class PathNormalizeSanitizer extends MethodAccess {
  */
 private Expr getVisualQualifier(MethodAccess ma) {
   if ma.getMethod() instanceof ExtensionMethod
-  then result = ma.getArgument(ma.getMethod().(ExtensionMethod).getExtensionParameterIndex())
+  then
+    result = ma.getArgument(ma.getMethod().(ExtensionMethod).getExtensionReceiverParameterIndex())
   else result = ma.getQualifier()
 }
 
@@ -313,7 +314,8 @@ private Argument getVisualArgument(MethodAccess ma, int argPos) {
   if ma.getMethod() instanceof ExtensionMethod
   then
     result =
-      ma.getArgument(argPos + ma.getMethod().(ExtensionMethod).getExtensionParameterIndex() + 1)
+      ma.getArgument(argPos + ma.getMethod().(ExtensionMethod).getExtensionReceiverParameterIndex() +
+          1)
   else result = ma.getArgument(argPos)
 }
 

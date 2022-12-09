@@ -820,7 +820,7 @@ class ExtensionMethod extends Method {
    * extension methods that are defined as members, the index is 1. Index 0 is the dispatch receiver of the `$default`
    * method.
    */
-  int getExtensionParameterIndex() {
+  int getExtensionReceiverParameterIndex() {
     if
       exists(Method src |
         this = src.getKotlinParameterDefaultsProxy() and
