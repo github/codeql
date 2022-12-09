@@ -24,10 +24,7 @@ class MadModeledCallable extends SummarizedCallableBase {
       this instanceof SummarizedCallable or
       this instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
     ) and
-    exists(DataFlowTargetApi dataFlowTargApi |
-      this.asCallable() = dataFlowTargApi and
-      not exists(FunctionalExpr funcExpr | dataFlowTargApi = funcExpr.asMethod()) // ! remove this if DataFlowTargetApi itself is adjusted to exclude FunctionalExpr (see static-team slack thread)
-    )
+    exists(DataFlowTargetApi dataFlowTargApi | this.asCallable() = dataFlowTargApi)
   }
 }
 
@@ -84,13 +81,11 @@ float getNumMadModels(string package, string provenance, string posOrNeg) {
  */
 float getNumApisWithoutMadModel(string package) {
   exists(DataFlowTargetApi dataFlowTargApi |
-    package = dataFlowTargApi.getDeclaringType().getPackage().toString() and
-    not exists(FunctionalExpr fe | dataFlowTargApi = fe.asMethod()) // remove lambdas // ! remove this if DataFlowTargetApi itself is adjusted to exclude FunctionalExpr (see static-team slack thread)
+    package = dataFlowTargApi.getDeclaringType().getPackage().toString()
   |
     result =
       count(DataFlowTargetApi d |
         package = d.getDeclaringType().getPackage().toString() and
-        not exists(FunctionalExpr funcExpr | d = funcExpr.asMethod()) and // remove lambdas // ! remove this if DataFlowTargetApi itself is adjusted to exclude FunctionalExpr (see static-team slack thread)
         not exists(SummarizedCallable sc | d = sc.asCallable()) and
         not exists(FlowSummaryImpl::Public::NegativeSummarizedCallable nc | d = nc.asCallable())
       )
