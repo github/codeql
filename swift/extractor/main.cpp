@@ -30,7 +30,7 @@ static void lockOutputSwiftModuleTraps(const codeql::SwiftExtractorConfiguration
   }
 }
 
-static void modifyFrontendOptions(swift::FrontendOptions& options) {
+static void processFrontendOptions(swift::FrontendOptions& options) {
   using Action = swift::FrontendOptions::ActionType;
   switch (options.RequestedAction) {
     case Action::EmitModuleOnly:
@@ -58,9 +58,9 @@ static void modifyFrontendOptions(swift::FrontendOptions& options) {
       // version printing is used by CI to match up the correct compiler version
       return;
     default:
-      // otherwise, do nothing (the closest action to doing nothing is printing the version)
-      options.RequestedAction = Action::PrintVersion;
-      break;
+      // otherwise, we have nothing to do
+      std::cerr << "Frontend action requires no action from extractor, exiting\n";
+      std::exit(0);
   }
 }
 
@@ -74,7 +74,7 @@ class Observer : public swift::FrontendObserver {
       : config{config}, diagConsumer{diagConsumer} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
-    modifyFrontendOptions(invocation.getFrontendOptions());
+    processFrontendOptions(invocation.getFrontendOptions());
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
