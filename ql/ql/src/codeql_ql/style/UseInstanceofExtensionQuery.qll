@@ -14,7 +14,9 @@ predicate instanceofThisInCharPred(Class c, Type type) {
   |
     instanceOf.getExpr() instanceof ThisAccess and
     type = instanceOf.getType().getResolvedType()
-  )
+  ) and
+  // no existing super-type corresponds to the instanceof type, that is benign.
+  not c.getASuperType().getResolvedType() = type
 }
 
 /** Gets an inline cast that cases `this` to `type` inside a class predicate for `c`. */
