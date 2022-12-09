@@ -2337,7 +2337,7 @@ private module LocalFlowBigStep {
 
 private import LocalFlowBigStep
 
-private module Stage2Point5Param implements MkStage<Stage2>::StageParam {
+private module Stage3Param implements MkStage<Stage2>::StageParam {
   private module PrevStage = Stage2;
 
   class Ap = ApproxAccessPathFront;
@@ -2409,12 +2409,12 @@ private module Stage2Point5Param implements MkStage<Stage2>::StageParam {
   }
 }
 
-private module Stage2Point5 implements StageSig {
-  import MkStage<Stage2>::Stage<Stage2Point5Param>
+private module Stage3 implements StageSig {
+  import MkStage<Stage2>::Stage<Stage3Param>
 }
 
-private module Stage3Param implements MkStage<Stage2Point5>::StageParam {
-  private module PrevStage = Stage2Point5;
+private module Stage4Param implements MkStage<Stage3>::StageParam {
+  private module PrevStage = Stage3;
 
   class Ap = AccessPathFront;
 
@@ -2531,8 +2531,8 @@ private module Stage3Param implements MkStage<Stage2Point5>::StageParam {
   }
 }
 
-private module Stage3 implements StageSig {
-  import MkStage<Stage2Point5>::Stage<Stage3Param>
+private module Stage4 implements StageSig {
+  import MkStage<Stage3>::Stage<Stage4Param>
 }
 
 /**
@@ -2543,8 +2543,8 @@ private predicate flowCandSummaryCtx(
   NodeEx node, FlowState state, AccessPathFront argApf, Configuration config
 ) {
   exists(AccessPathFront apf |
-    Stage3::revFlow(node, state, TReturnCtxMaybeFlowThrough(_), _, apf, config) and
-    Stage3::fwdFlow(node, state, any(Stage3::CcCall ccc), _, TAccessPathFrontSome(argApf), apf,
+    Stage4::revFlow(node, state, TReturnCtxMaybeFlowThrough(_), _, apf, config) and
+    Stage4::fwdFlow(node, state, any(Stage4::CcCall ccc), _, TAccessPathFrontSome(argApf), apf,
       config)
   )
 }
@@ -2555,10 +2555,10 @@ private predicate flowCandSummaryCtx(
  */
 private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) {
   exists(int tails, int nodes, int apLimit, int tupleLimit |
-    tails = strictcount(AccessPathFront apf | Stage3::consCand(tc, apf, config)) and
+    tails = strictcount(AccessPathFront apf | Stage4::consCand(tc, apf, config)) and
     nodes =
       strictcount(NodeEx n, FlowState state |
-        Stage3::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = tc), config)
+        Stage4::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = tc), config)
         or
         flowCandSummaryCtx(n, state, any(AccessPathFrontHead apf | apf.getHead() = tc), config)
       ) and
@@ -2572,11 +2572,11 @@ private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) 
 private newtype TAccessPathApprox =
   TNil(DataFlowType t) or
   TConsNil(TypedContent tc, DataFlowType t) {
-    Stage3::consCand(tc, TFrontNil(t), _) and
+    Stage4::consCand(tc, TFrontNil(t), _) and
     not expensiveLen2unfolding(tc, _)
   } or
   TConsCons(TypedContent tc1, TypedContent tc2, int len) {
-    Stage3::consCand(tc1, TFrontHead(tc2), _) and
+    Stage4::consCand(tc1, TFrontHead(tc2), _) and
     len in [2 .. accessPathLimit()] and
     not expensiveLen2unfolding(tc1, _)
   } or
@@ -2706,7 +2706,7 @@ private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
   override AccessPathApprox pop(TypedContent head) {
     head = tc and
     (
-      exists(TypedContent tc2 | Stage3::consCand(tc, TFrontHead(tc2), _) |
+      exists(TypedContent tc2 | Stage4::consCand(tc, TFrontHead(tc2), _) |
         result = TConsCons(tc2, _, len - 1)
         or
         len = 2 and
@@ -2717,7 +2717,7 @@ private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
       or
       exists(DataFlowType t |
         len = 1 and
-        Stage3::consCand(tc, TFrontNil(t), _) and
+        Stage4::consCand(tc, TFrontNil(t), _) and
         result = TNil(t)
       )
     )
@@ -2742,8 +2742,8 @@ private class AccessPathApproxOption extends TAccessPathApproxOption {
   }
 }
 
-private module Stage4Param implements MkStage<Stage3>::StageParam {
-  private module PrevStage = Stage3;
+private module Stage5Param implements MkStage<Stage4>::StageParam {
+  private module PrevStage = Stage4;
 
   class Ap = AccessPathApprox;
 
@@ -2814,7 +2814,7 @@ private module Stage4Param implements MkStage<Stage3>::StageParam {
   predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
 }
 
-private module Stage4 = MkStage<Stage3>::Stage<Stage4Param>;
+private module Stage5 = MkStage<Stage4>::Stage<Stage5Param>;
 
 bindingset[conf, result]
 private Configuration unbindConf(Configuration conf) {
@@ -2828,8 +2828,8 @@ private predicate nodeMayUseSummary0(
 ) {
   exists(AccessPathApprox apa0 |
     c = n.getEnclosingCallable() and
-    Stage4::revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, apa0, config) and
-    Stage4::fwdFlow(n, state, any(CallContextCall ccc), TParameterPositionSome(pos),
+    Stage5::revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, apa0, config) and
+    Stage5::fwdFlow(n, state, any(CallContextCall ccc), TParameterPositionSome(pos),
       TAccessPathApproxSome(apa), apa0, config)
   )
 }
@@ -2839,7 +2839,7 @@ private predicate nodeMayUseSummary(
   NodeEx n, FlowState state, AccessPathApprox apa, Configuration config
 ) {
   exists(DataFlowCallable c, ParameterPosition pos, ParamNodeEx p |
-    Stage4::parameterMayFlowThrough(p, apa, config) and
+    Stage5::parameterMayFlowThrough(p, apa, config) and
     nodeMayUseSummary0(n, c, pos, state, apa, config) and
     p.isParameterOf(c, pos)
   )
@@ -2849,8 +2849,8 @@ private newtype TSummaryCtx =
   TSummaryCtxNone() or
   TSummaryCtxSome(ParamNodeEx p, FlowState state, AccessPath ap) {
     exists(Configuration config |
-      Stage4::parameterMayFlowThrough(p, ap.getApprox(), config) and
-      Stage4::revFlow(p, state, _, config)
+      Stage5::parameterMayFlowThrough(p, ap.getApprox(), config) and
+      Stage5::revFlow(p, state, _, config)
     )
   }
 
@@ -2899,7 +2899,7 @@ private int count1to2unfold(AccessPathApproxCons1 apa, Configuration config) {
     len = apa.len() and
     result =
       strictcount(AccessPathFront apf |
-        Stage4::consCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1),
+        Stage5::consCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1),
           config)
       )
   )
@@ -2908,7 +2908,7 @@ private int count1to2unfold(AccessPathApproxCons1 apa, Configuration config) {
 private int countNodesUsingAccessPath(AccessPathApprox apa, Configuration config) {
   result =
     strictcount(NodeEx n, FlowState state |
-      Stage4::revFlow(n, state, apa, config) or nodeMayUseSummary(n, state, apa, config)
+      Stage5::revFlow(n, state, apa, config) or nodeMayUseSummary(n, state, apa, config)
     )
 }
 
@@ -2929,7 +2929,7 @@ private predicate expensiveLen1to2unfolding(AccessPathApproxCons1 apa, Configura
 private AccessPathApprox getATail(AccessPathApprox apa, Configuration config) {
   exists(TypedContent head |
     apa.pop(head) = result and
-    Stage4::consCand(head, result, config)
+    Stage5::consCand(head, result, config)
   )
 }
 
@@ -3011,7 +3011,7 @@ private newtype TPathNode =
     NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, AccessPath ap, Configuration config
   ) {
     // A PathNode is introduced by a source ...
-    Stage4::revFlow(node, state, config) and
+    Stage5::revFlow(node, state, config) and
     sourceNode(node, state, config) and
     (
       if hasSourceCallCtx(config)
@@ -3025,7 +3025,7 @@ private newtype TPathNode =
     exists(PathNodeMid mid |
       pathStep(mid, node, state, cc, sc, ap) and
       pragma[only_bind_into](config) = mid.getConfiguration() and
-      Stage4::revFlow(node, state, ap.getApprox(), pragma[only_bind_into](config))
+      Stage5::revFlow(node, state, ap.getApprox(), pragma[only_bind_into](config))
     )
   } or
   TPathNodeSink(NodeEx node, FlowState state, Configuration config) {
@@ -3167,7 +3167,7 @@ private class AccessPathCons2 extends AccessPath, TAccessPathCons2 {
   override TypedContent getHead() { result = head1 }
 
   override AccessPath getTail() {
-    Stage4::consCand(head1, result.getApprox(), _) and
+    Stage5::consCand(head1, result.getApprox(), _) and
     result.getHead() = head2 and
     result.length() = len - 1
   }
@@ -3198,7 +3198,7 @@ private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
   override TypedContent getHead() { result = head }
 
   override AccessPath getTail() {
-    Stage4::consCand(head, result.getApprox(), _) and result.length() = len - 1
+    Stage5::consCand(head, result.getApprox(), _) and result.length() = len - 1
   }
 
   override AccessPathFrontHead getFront() { result = TFrontHead(head) }
@@ -3633,7 +3633,7 @@ private predicate pathReadStep(
 ) {
   ap0 = mid.getAp() and
   tc = ap0.getHead() and
-  Stage4::readStepCand(mid.getNodeEx(), tc.getContent(), node, mid.getConfiguration()) and
+  Stage5::readStepCand(mid.getNodeEx(), tc.getContent(), node, mid.getConfiguration()) and
   state = mid.getState() and
   cc = mid.getCallContext()
 }
@@ -3643,7 +3643,7 @@ private predicate pathStoreStep(
   PathNodeMid mid, NodeEx node, FlowState state, AccessPath ap0, TypedContent tc, CallContext cc
 ) {
   ap0 = mid.getAp() and
-  Stage4::storeStepCand(mid.getNodeEx(), _, tc, node, _, mid.getConfiguration()) and
+  Stage5::storeStepCand(mid.getNodeEx(), _, tc, node, _, mid.getConfiguration()) and
   state = mid.getState() and
   cc = mid.getCallContext()
 }
@@ -3680,7 +3680,7 @@ private NodeEx getAnOutNodeFlow(
   ReturnKindExt kind, DataFlowCall call, AccessPathApprox apa, Configuration config
 ) {
   result.asNode() = kind.getAnOutNode(call) and
-  Stage4::revFlow(result, _, apa, config)
+  Stage5::revFlow(result, _, apa, config)
 }
 
 /**
@@ -3716,7 +3716,7 @@ private predicate parameterCand(
   DataFlowCallable callable, ParameterPosition pos, AccessPathApprox apa, Configuration config
 ) {
   exists(ParamNodeEx p |
-    Stage4::revFlow(p, _, apa, config) and
+    Stage5::revFlow(p, _, apa, config) and
     p.isParameterOf(callable, pos)
   )
 }
@@ -3979,14 +3979,6 @@ predicate stageStats(
   n = 25 and
   Stage2::stats(false, nodes, fields, conscand, states, tuples, config)
   or
-  stage = "2.5 Fwd" and
-  n = 25 and
-  Stage2Point5::stats(true, nodes, fields, conscand, states, tuples, config)
-  or
-  stage = "2.5 Rev" and
-  n = 27 and
-  Stage2Point5::stats(false, nodes, fields, conscand, states, tuples, config)
-  or
   stage = "3 Fwd" and
   n = 30 and
   Stage3::stats(true, nodes, fields, conscand, states, tuples, config)
@@ -4003,9 +3995,17 @@ predicate stageStats(
   n = 45 and
   Stage4::stats(false, nodes, fields, conscand, states, tuples, config)
   or
-  stage = "5 Fwd" and n = 50 and finalStats(true, nodes, fields, conscand, states, tuples)
+  stage = "5 Fwd" and
+  n = 50 and
+  Stage5::stats(true, nodes, fields, conscand, states, tuples, config)
   or
-  stage = "5 Rev" and n = 55 and finalStats(false, nodes, fields, conscand, states, tuples)
+  stage = "5 Rev" and
+  n = 55 and
+  Stage5::stats(false, nodes, fields, conscand, states, tuples, config)
+  or
+  stage = "6 Fwd" and n = 60 and finalStats(true, nodes, fields, conscand, states, tuples)
+  or
+  stage = "6 Rev" and n = 65 and finalStats(false, nodes, fields, conscand, states, tuples)
 }
 
 private module FlowExploration {
