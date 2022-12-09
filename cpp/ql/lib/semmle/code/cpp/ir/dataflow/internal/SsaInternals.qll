@@ -312,8 +312,6 @@ abstract class DefImpl extends DefOrUseImpl {
 
   Node0Impl getValue() { isDef(_, result, address, _, _, _) }
 
-  override string toString() { result = "DefImpl" }
-
   override IRBlock getBlock() { result = this.getAddressOperand().getUse().getBlock() }
 
   override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
