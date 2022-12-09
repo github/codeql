@@ -748,20 +748,11 @@ private module FieldFlow {
 
     override predicate isSink(Node sink) { readStep(_, _, sink) }
 
-    override predicate isBarrier(Node node) { node instanceof ParameterNode }
-
-    override predicate isBarrierOut(Node node) {
-      node.asExpr().getParent() instanceof ReturnStmt
-      or
-      node.asExpr().getParent() instanceof ThrowExpr
-    }
+    override FlowFeature getAFeature() { result instanceof FeatureEqualSourceSinkCallContext }
   }
 
   predicate fieldFlow(Node node1, Node node2) {
-    exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
-    // This configuration should not be able to cross function boundaries, but
-    // we double-check here just to be sure.
-    getNodeEnclosingCallable(node1) = getNodeEnclosingCallable(node2)
+    exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2))
   }
 }
 
