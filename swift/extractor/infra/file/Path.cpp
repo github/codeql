@@ -1,4 +1,4 @@
-#include "swift/extractor/infra/Path.h"
+#include "swift/extractor/infra/file/Path.h"
 #include <iostream>
 #include <unistd.h>
 
@@ -16,7 +16,7 @@ static bool shouldCanonicalize() {
   return true;
 }
 
-std::filesystem::path getCodeQLPath(std::string_view path) {
+std::filesystem::path resolvePath(std::string_view path) {
   std::error_code ec;
   std::filesystem::path ret = {};
   static const auto canonicalize = shouldCanonicalize();
@@ -28,7 +28,7 @@ std::filesystem::path getCodeQLPath(std::string_view path) {
   if (ec) {
     std::cerr << "Cannot get " << (canonicalize ? "canonical" : "absolute")
               << " path: " << std::quoted(path) << ": " << ec.message() << "\n";
-    return {};
+    return path;
   }
   return ret;
 }
