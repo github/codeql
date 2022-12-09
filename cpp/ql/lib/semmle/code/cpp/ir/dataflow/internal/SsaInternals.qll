@@ -215,11 +215,11 @@ private newtype TDefOrUseImpl =
     isUse(_, operand, _, _, indirectionIndex) and
     not isDef(true, _, operand, _, _, _)
   } or
-  TIteratorUse(DirectUse use, DirectUse containerUse) {
-    IteratorDefUse::isIteratorUse(use, containerUse)
-  } or
   TIteratorDef(DirectDef def, DirectUse containerUse) {
     IteratorDefUse::isIteratorDef(def, containerUse)
+  } or
+  TIteratorUse(DirectUse use, DirectUse containerUse) {
+    IteratorDefUse::isIteratorUse(use, containerUse)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
