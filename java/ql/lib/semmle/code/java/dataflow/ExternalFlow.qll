@@ -122,27 +122,11 @@ private class SummaryModelCsvInternal extends Unit {
   abstract predicate row(string row);
 }
 
-/**
- * DEPRECATED: Define neutral models as data extensions instead.
- *
- * A unit class for adding additional neutral model rows.
- *
- * Extend this class to add additional neutral definitions.
- */
-deprecated class NeutralModelCsv = NeutralModelCsvInternal;
-
-private class NeutralModelCsvInternal extends Unit {
-  /** Holds if `row` specifies a neutral definition. */
-  abstract predicate row(string row);
-}
-
 private predicate sourceModelInternal(string row) { any(SourceModelCsvInternal s).row(row) }
 
 private predicate summaryModelInternal(string row) { any(SummaryModelCsvInternal s).row(row) }
 
 private predicate sinkModelInternal(string row) { any(SinkModelCsvInternal s).row(row) }
-
-private predicate neutralModelInternal(string row) { any(NeutralModelCsvInternal s).row(row) }
 
 /**
  * Holds if an experimental source model exists for the given parameters.
@@ -318,15 +302,6 @@ extensible predicate extNeutralModel(
 
 /** Holds if a neutral model exists indicating there is no flow for the given parameters. */
 predicate neutralModel(string package, string type, string name, string signature, string provenance) {
-  exists(string row |
-    neutralModelInternal(row) and
-    row.splitAt(";", 0) = package and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = name and
-    row.splitAt(";", 3) = signature and
-    row.splitAt(";", 4) = provenance
-  )
-  or
   extNeutralModel(package, type, name, signature, provenance)
 }
 
@@ -468,8 +443,6 @@ module ModelValidation {
       sinkModelInternal(row) and expect = 9 and pred = "sink"
       or
       summaryModelInternal(row) and expect = 10 and pred = "summary"
-      or
-      neutralModelInternal(row) and expect = 5 and pred = "neutral"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
