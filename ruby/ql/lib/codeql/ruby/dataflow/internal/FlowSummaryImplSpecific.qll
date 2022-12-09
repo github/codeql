@@ -145,19 +145,32 @@ string getComponentSpecificCsv(SummaryComponent sc) { none() }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPositionCsv(ParameterPosition pos) {
-  pos.isSelf() and result = "self"
-  or
-  pos.isBlock() and result = "block"
-  or
   exists(int i |
     pos.isPositional(i) and
     result = i.toString()
+  )
+  or
+  exists(int i |
+    pos.isPositionalLowerBound(i) and
+    result = i + ".."
   )
   or
   exists(string name |
     pos.isKeyword(name) and
     result = name + ":"
   )
+  or
+  pos.isSelf() and
+  result = "self"
+  or
+  pos.isBlock() and
+  result = "block"
+  or
+  pos.isAny() and
+  result = "any"
+  or
+  pos.isAnyNamed() and
+  result = "any-named"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
