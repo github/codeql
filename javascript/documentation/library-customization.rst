@@ -2,7 +2,7 @@ Customizing the JavaScript analysis
 ===================================
 
 This document describes the main extension points offered by the JavaScript analysis for customizing
-analysis behavior without editing the queries or libraries themselves.
+analysis behavior from CodeQL without editing the queries or libraries themselves.
 
 Customization mechanisms
 ------------------------
