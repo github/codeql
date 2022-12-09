@@ -16,7 +16,7 @@ predicate instanceofThisInCharPred(Class c, Type type) {
     type = instanceOf.getType().getResolvedType()
   ) and
   // no existing super-type corresponds to the instanceof type, that is benign.
-  not c.getASuperType().getResolvedType() = type
+  not c.getType().getASuperType+() = type
 }
 
 /** Gets an inline cast that cases `this` to `type` inside a class predicate for `c`. */
@@ -29,7 +29,7 @@ InlineCast getAThisCast(Class c, Type type) {
   )
 }
 
-predicate usesFieldBasedInstanceof(Class c, TypeExpr type, FieldDecl field, ComparisonFormula comp) {
+predicate usesFieldBasedInstanceof(Class c, Type type, FieldDecl field, ComparisonFormula comp) {
   exists(FieldAccess fieldAccess |
     c.getCharPred().getBody() = comp or
     c.getCharPred().getBody().(Conjunction).getAnOperand() = comp
@@ -39,8 +39,9 @@ predicate usesFieldBasedInstanceof(Class c, TypeExpr type, FieldDecl field, Comp
     comp.getAnOperand() instanceof ThisAccess and
     comp.getAnOperand() = fieldAccess and
     fieldAccess.getDeclaration() = field and
-    field.getVarDecl().getTypeExpr() = type
-  )
+    field.getVarDecl().getType() = type
+  ) and
+  not c.getType().getASuperType+() = type
 }
 
 FieldAccess getARangeFieldAccess(Class c, FieldDecl field, string name) {

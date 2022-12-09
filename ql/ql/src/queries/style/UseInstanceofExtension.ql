@@ -15,7 +15,7 @@ from Class c, Type type, string message
 where
   (
     instanceofThisInCharPred(c, type) or
-    usesFieldBasedInstanceof(c, any(TypeExpr te | te.getResolvedType() = type), _, _)
+    usesFieldBasedInstanceof(c, type, _, _)
   ) and
   message = "Consider defining this class as non-extending subtype of $@."
 select c, message, type.getDeclaration(), type.getName()
