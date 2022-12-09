@@ -1326,13 +1326,8 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
   localFlow(instructionNode(e1), instructionNode(e2))
 }
 
-/**
- * Holds if data can flow from `e1` to `e2` in zero or more
- * local (intra-procedural) steps.
- */
-pragma[inline]
-predicate localExprFlow(Expr e1, Expr e2) { localExprFlowStep*(e1, e2) }
-
+cached
+private module ExprFlowCached {
 /**
  * Holds if `n1.asExpr()` doesn't have a result and `n1` flows to `n2` in a single
  * dataflow step.
@@ -1352,14 +1347,43 @@ private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
   e2 = n2.asExpr()
 }
 
-/** Holds if data can flow from `e1` to `e2` in one local (intra-procedural) step. */
-cached
-predicate localExprFlowStep(Expr e1, Expr e2) {
-  exists(Node mid, Node n1, Node n2 |
+  /**
+   * Holds if `n1.asExpr() = e1` and `n2.asExpr() = e2` and `n2` is the first node
+   * reacahble from `n1` such that `n2.asExpr()` exists.
+   */
+  private predicate localExprFlowSingleExprStep(Node n1, Expr e1, Node n2, Expr e2) {
+    exists(Node mid |
     localFlowStep(n1, mid) and
     localStepsToExpr(mid, n2, e2) and
     e1 = n1.asExpr()
   )
+  }
+
+  /**
+   * Holds if `n1.asExpr() = e1` and `e1 != e2` and `n2` is the first reachable node from
+   * `n1` such that `n2.asExpr() = e2`.
+   */
+  private predicate localExprFlowStepImpl(Node n1, Expr e1, Node n2, Expr e2) {
+    exists(Node n, Expr e | localExprFlowSingleExprStep(n1, e1, n, e) |
+      // If `n.asExpr()` and `n1.asExpr()` both resolve to the same node (which can
+      // happen if `n2` is the node attached to a conversion of `e1`), then we recursively
+      // perform another expression step.
+      if e1 = e
+      then localExprFlowStepImpl(n, e, n2, e2)
+      else (
+        // If we manage to step to a different expression we're done.
+        e2 = e and
+        n2 = n
+      )
+    )
+  }
+
+  /** Holds if data can flow from `e1` to `e2` in one local (intra-procedural) step. */
+  cached
+  predicate localExprFlowStep(Expr e1, Expr e2) { localExprFlowStepImpl(_, e1, _, e2) }
+}
+
+import ExprFlowCached
 }
 
 cached
