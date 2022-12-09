@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @id ql/class-predicate-doesnt-use-this
  * @tags performance
- * @precision medium
+ * @precision low
  */
 
 import ql
