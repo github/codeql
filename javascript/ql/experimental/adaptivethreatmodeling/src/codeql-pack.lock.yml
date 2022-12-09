@@ -1,6 +1,6 @@
 ---
-dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.3.0
-compiled: false
 lockVersion: 1.0.0
+dependencies:
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.3.1-2022-12-09-06h55m37s.patient-bottle-5z2fr8z4.198485f660745b04370cee7104300a16ff66b118c5bbe72bdb0ff5b96126d5ec
+compiled: false
