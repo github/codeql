@@ -121,44 +121,26 @@ func test1(password: String, passwordHash : String) {
     log.critical("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=121
     log.fault("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=122
 }
-/*
+
 class MyClass {
 	var harmless = "abc"
 	var password = "123"
 }
 
+func getPassword() -> String { return "" }
+func doSomething(password: String) { }
+
 func test3(x: String) {
 	// alternative evidence of sensitivity...
 
-	UserDefaults.standard.set(x, forKey: "myKey") // $ MISSING: hasCleartextLogging
+	NSLog(x) // $ MISSING: hasCleartextLogging=137
 	doSomething(password: x);
-	UserDefaults.standard.set(x, forKey: "myKey") // $ hasCleartextLogging
+	NSLog(x) // $ hasCleartextLogging=137
 
 	let y = getPassword();
-	UserDefaults.standard.set(y, forKey: "myKey") // $ hasCleartextLogging
+	NSLog(y) // $ hasCleartextLogging=140
 
 	let z = MyClass()
-	UserDefaults.standard.set(z.harmless, forKey: "myKey") // Safe
-	UserDefaults.standard.set(z.password, forKey: "myKey") // $ hasCleartextLogging
+	NSLog(z.harmless) // Safe
+	NSLog(z.password) // $ hasCleartextLogging=145
 }
-
-func test4(passwd: String) {
-	// sanitizers...
-
-	var x = passwd;
-	var y = passwd;
-	var z = passwd;
-
-	UserDefaults.standard.set(x, forKey: "myKey") // $ hasCleartextLogging
-	UserDefaults.standard.set(y, forKey: "myKey") // $ hasCleartextLogging
-	UserDefaults.standard.set(z, forKey: "myKey") // $ hasCleartextLogging
-
-	x = encrypt(x);
-	hash(data: &y);
-	z = "";
-
-	UserDefaults.standard.set(x, forKey: "myKey") // Safe
-	UserDefaults.standard.set(y, forKey: "myKey") // Safe
-	UserDefaults.standard.set(z, forKey: "myKey") // Safe
-}
-*/
