@@ -260,4 +260,9 @@ module Consistency {
     not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
     msg = "Parameter node with multiple positions."
   }
+
+  query predicate uniqueContentApprox(Content c, string msg) {
+    not exists(unique(ContentApprox approx | approx = getContentApprox(c))) and
+    msg = "Non-unique content approximation."
+  }
 }
