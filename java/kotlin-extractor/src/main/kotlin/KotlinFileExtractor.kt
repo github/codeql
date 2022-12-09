@@ -891,7 +891,7 @@ open class KotlinFileExtractor(
                 f.realOverrideTarget.let { it != f && (it as? IrSimpleFunction)?.modality != Modality.ABSTRACT && isKotlinDefinedInterface(it.parentClassOrNull) }
 
     private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)).also { functionId ->
+        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC, modality = Modality.OPEN)).also { functionId ->
             tw.writeCompiler_generated(functionId, CompilerGeneratedKinds.INTERFACE_FORWARDER.kind)
             if (extractBody) {
                 val realFunctionLocId = tw.getLocation(f)
@@ -1242,6 +1242,13 @@ open class KotlinFileExtractor(
                 }
                 if (f.isSuspend) {
                     addModifiers(id, "suspend")
+                }
+                if (f.symbol !is IrConstructorSymbol) {
+                    when(overriddenAttributes?.modality ?: (f as? IrSimpleFunction)?.modality) {
+                        Modality.ABSTRACT -> addModifiers(id, "abstract")
+                        Modality.FINAL -> addModifiers(id, "final")
+                        else -> Unit
+                    }
                 }
 
                 linesOfCode?.linesOfCodeInDeclaration(f, id)
@@ -5304,7 +5311,7 @@ open class KotlinFileExtractor(
                     // we would need to compose generic type substitutions -- for example, if we're implementing
                     // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so we can implement
                     // the real underlying R Function<T, R>.apply(T t).
-                    forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, overriddenAttributes = OverriddenFunctionAttributes(id = ids.function, sourceLoc = tw.getLocation(e)))
+                    forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, overriddenAttributes = OverriddenFunctionAttributes(id = ids.function, sourceLoc = tw.getLocation(e), modality = Modality.FINAL))
 
                     addModifiers(ids.function, "override")
                     if (st.isSuspendFunctionOrKFunction()) {
@@ -5529,6 +5536,7 @@ open class KotlinFileExtractor(
         val typeParameters: List<IrTypeParameter>? = null,
         val isStatic: Boolean? = null,
         val visibility: DescriptorVisibility? = null,
+        val modality: Modality? = null,
     )
 
     private fun peekDeclStackAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
