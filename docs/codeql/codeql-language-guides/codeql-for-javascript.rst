@@ -31,7 +31,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Specifying remote flow sources for JavaScript <specifying-additional-remote-flow-sources-for-javascript>`: You can model potential sources of untrusted user input in your code without making changes to the CodeQL standard library by specifying extra remote flow sources in an external file.
 
--  :doc:`Customizing library models for JavaScript <customizing-library-models-for-javascript>`: You can model potential sources of untrusted user input in your code without making changes to the CodeQL standard library by specifying extra remote flow sources in an external file.
+-  :doc:`Customizing library models for JavaScript <customizing-library-models-for-javascript>`: You can model the libraries used in your code without making changes to the CodeQL standard library by specifying source, sink, and flow summaries in a data extension file.
 
 -  :doc:`Using type tracking for API modeling <using-type-tracking-for-api-modeling>`: You can track data through an API by creating a model using the CodeQL type-tracking library for JavaScript.
 
