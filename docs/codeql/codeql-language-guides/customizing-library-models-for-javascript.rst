@@ -1,4 +1,4 @@
-.. \_customizing-library-models-for-javascript:
+.. _customizing-library-models-for-javascript:
 
 Customizing Library Models for JavaScript
 =========================================
