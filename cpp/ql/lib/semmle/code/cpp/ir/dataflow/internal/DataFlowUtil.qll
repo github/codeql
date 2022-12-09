@@ -1328,24 +1328,24 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
 
 cached
 private module ExprFlowCached {
-/**
- * Holds if `n1.asExpr()` doesn't have a result and `n1` flows to `n2` in a single
- * dataflow step.
- */
-private predicate localStepFromNonExpr(Node n1, Node n2) {
-  not exists(n1.asExpr()) and
-  localFlowStep(n1, n2)
-}
+  /**
+   * Holds if `n1.asExpr()` doesn't have a result and `n1` flows to `n2` in a single
+   * dataflow step.
+   */
+  private predicate localStepFromNonExpr(Node n1, Node n2) {
+    not exists(n1.asExpr()) and
+    localFlowStep(n1, n2)
+  }
 
-/**
- * Holds if `n1.asExpr()` doesn't have a result, `n2.asExpr() = e2` and
- * `n2` is the first node reachable from `n1` such that `n2.asExpr()` exists.
- */
-pragma[nomagic]
-private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
-  localStepFromNonExpr*(n1, n2) and
-  e2 = n2.asExpr()
-}
+  /**
+   * Holds if `n1.asExpr()` doesn't have a result, `n2.asExpr() = e2` and
+   * `n2` is the first node reachable from `n1` such that `n2.asExpr()` exists.
+   */
+  pragma[nomagic]
+  private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
+    localStepFromNonExpr*(n1, n2) and
+    e2 = n2.asExpr()
+  }
 
   /**
    * Holds if `n1.asExpr() = e1` and `n2.asExpr() = e2` and `n2` is the first node
@@ -1353,10 +1353,10 @@ private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
    */
   private predicate localExprFlowSingleExprStep(Node n1, Expr e1, Node n2, Expr e2) {
     exists(Node mid |
-    localFlowStep(n1, mid) and
-    localStepsToExpr(mid, n2, e2) and
-    e1 = n1.asExpr()
-  )
+      localFlowStep(n1, mid) and
+      localStepsToExpr(mid, n2, e2) and
+      e1 = n1.asExpr()
+    )
   }
 
   /**
@@ -1384,6 +1384,23 @@ private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
 }
 
 import ExprFlowCached
+
+/**
+ * Holds if data can flow from `e1` to `e2` in one or more
+ * local (intra-procedural) steps.
+ */
+pragma[inline]
+private predicate localExprFlowPlus(Expr e1, Expr e2) = fastTC(localExprFlowStep/2)(e1, e2)
+
+/**
+ * Holds if data can flow from `e1` to `e2` in zero or more
+ * local (intra-procedural) steps.
+ */
+pragma[inline]
+predicate localExprFlow(Expr e1, Expr e2) {
+  e1 = e2
+  or
+  localExprFlowPlus(e1, e2)
 }
 
 cached
