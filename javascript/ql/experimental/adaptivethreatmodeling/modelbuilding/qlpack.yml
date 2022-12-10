@@ -7,4 +7,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-12-10-06h56m00s.amusing-airport-cbtsnrc4.15aaed74fe07492811932a24d9bcd45f9d7a5cfa3c1b990c43cd5fde1d245aa5
