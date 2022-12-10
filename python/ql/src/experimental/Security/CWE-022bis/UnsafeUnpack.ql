@@ -53,6 +53,15 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
         nodeTo = is.(CallCfgNode).getArg(0)
       )
       or
+      // Copying the response data to the archive
+      exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
+        is.flowsTo(f) and
+        mc = API::moduleImport("shutil").getMember("copyfileobj").getACall() and
+        f = mc.getArg(1) and 
+        nodeFrom = mc.getArg(0) and
+        nodeTo = is.(CallCfgNode).getArg(0)
+      )
+      or
       // Reading the response
       exists(MethodCallNode mc |
         nodeFrom = mc.getObject() and
@@ -60,8 +69,8 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
         mc.flowsTo(nodeTo)
       )
       or
-      // Accessing the name
-      exists(AttrRead ar | ar.accesses(nodeFrom, "name") and nodeTo = ar)
+      // Accessing the name or raw content
+      exists(AttrRead ar | ar.accesses(nodeFrom, ["name","raw"]) and nodeTo = ar)
       or
       // Considering the use of closing()
       exists(API::Node closing |
