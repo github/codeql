@@ -1,8 +1,8 @@
 /**
- * @name Arbitrary file write during a tarball extraction from user controlled source
+ * @name Arbitrary file write during a tarball extraction from a user controlled source
  * @description Extracting files from a potentially malicious tarball using `shutil.unpack_archive()` without validating
  *              that the destination file path is within the destination directory can cause files outside
- *              the destination directory to be overwritten. More precisely, if the tarball comes from a user controlled 
+ *              the destination directory to be overwritten. More precisely, if the tarball comes from a user controlled
  *              location either a remote one or cli argument.
  * @kind path-problem
  * @id py/unsafe-unpacking
@@ -28,11 +28,11 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
     // A source coming from a remote location
     exists(Http::Client::Request request | source = request)
     or
-    // A source coming from a CLI argparse module
+    //A source coming from a CLI argparse module
     exists(Node o, API::Node ap, MethodCallNode args |
       ap = API::moduleImport("argparse").getMember("ArgumentParser").getACall().getReturn() and
       args = ap.getMember("parse_args").getACall() and
-      args.flowsTo(o) and 
+      args.flowsTo(o) and
       source.(AttrRead).accesses(o, any(string s))
     )
   }
@@ -57,7 +57,7 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       exists(Stdlib::FileLikeObject::InstanceSource is, Node f, MethodCallNode mc |
         is.flowsTo(f) and
         mc = API::moduleImport("shutil").getMember("copyfileobj").getACall() and
-        f = mc.getArg(1) and 
+        f = mc.getArg(1) and
         nodeFrom = mc.getArg(0) and
         nodeTo = is.(CallCfgNode).getArg(0)
       )
@@ -70,13 +70,25 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       )
       or
       // Accessing the name or raw content
-      exists(AttrRead ar | ar.accesses(nodeFrom, ["name","raw"]) and nodeTo = ar)
+      exists(AttrRead ar | ar.accesses(nodeFrom, ["name", "raw"]) and ar.flowsTo(nodeTo))
+      or
+      //Use of join of filename
+      exists(API::CallNode mcn |
+        mcn = API::moduleImport("os").getMember("path").getMember("join").getACall() and
+        nodeFrom = mcn.getArg(1) and
+        mcn.flowsTo(nodeTo)
+      )
+      or
+      // Read by chunks
+      exists(MethodCallNode mc |
+        nodeFrom = mc.getObject() and mc.getMethodName() = "chunks" and mc.flowsTo(nodeTo)
+      )
       or
       // Considering the use of closing()
-      exists(API::Node closing |
-        closing = API::moduleImport("contextlib").getMember("closing") and
-        closing.getACall().flowsTo(nodeTo) and
-        nodeFrom = closing.getACall().getArg(0)
+      exists(API::CallNode closing |
+        closing = API::moduleImport("contextlib").getMember("closing").getACall() and
+        closing.flowsTo(nodeTo) and
+        nodeFrom = closing.getArg(0)
       )
     )
   }
