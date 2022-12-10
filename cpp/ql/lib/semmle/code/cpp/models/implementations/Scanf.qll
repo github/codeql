@@ -74,7 +74,7 @@ abstract private class ScanfFunctionModel extends ArrayFunction, TaintFunction, 
 private class ScanfModel extends ScanfFunctionModel, LocalFlowSourceFunction instanceof Scanf {
   override predicate hasLocalFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(any(int i | i >= this.getArgsStartPosition())) and
-    description = "Value read by " + this.getName()
+    description = "value read by " + this.getName()
   }
 }
 
@@ -84,7 +84,7 @@ private class ScanfModel extends ScanfFunctionModel, LocalFlowSourceFunction ins
 private class FscanfModel extends ScanfFunctionModel, RemoteFlowSourceFunction instanceof Fscanf {
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(any(int i | i >= this.getArgsStartPosition())) and
-    description = "Value read by " + this.getName()
+    description = "value read by " + this.getName()
   }
 }
 
