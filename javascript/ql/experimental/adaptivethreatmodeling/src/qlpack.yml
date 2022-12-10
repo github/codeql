@@ -9,4 +9,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: ${workspace}
-    codeql/javascript-experimental-atm-model: "0.3.0"
+    dsp-testing/javascript-experimental-atm-model: 0.3.1-2022-12-10-06h55m48s.salmon-octopus-g80g60x2.8e86657f121e27b4ea74331e31e525d9f7cf27e50ed4c48e92b7fea65ed1e330
