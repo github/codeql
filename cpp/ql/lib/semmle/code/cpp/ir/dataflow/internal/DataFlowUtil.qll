@@ -17,8 +17,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
  * The IR dataflow graph consists of the following nodes:
- * - `InstructionNode`, which injects most instructions directly into the dataflow graph.
- * - `OperandNode`, which similarly injects most operands directly into the dataflow graph.
+ * - `Node0`, which injects most instructions and operands directly into the dataflow graph.
  * - `VariableNode`, which is used to model flow through global variables.
  * - `PostFieldUpdateNode`, which is used to model the state of a field after a value has been stored
  * into an address after a number of loads.
@@ -31,7 +30,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
  * of times.
  */
 cached
-newtype TIRDataFlowNode =
+private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
   TVariableNode(Variable var) or
   TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
