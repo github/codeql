@@ -25,7 +25,7 @@ Here is an example of a basic query:
 
 .. code-block:: ql
 
-   import tutorial
+   import <language>
 
    select "hello world"
 
