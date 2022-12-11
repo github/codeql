@@ -499,11 +499,8 @@ private RefType getAReferencedType(RefType t) {
 }
 
 /** A top level type whose file should be stubbed */
-class GeneratedTopLevel extends TopLevelType {
-  GeneratedTopLevel() {
-    this = this.getSourceDeclaration() and
-    this instanceof GeneratedType
-  }
+class GeneratedTopLevel extends TopLevelType instanceof GeneratedType {
+  GeneratedTopLevel() { this = this.getSourceDeclaration() }
 
   private TopLevelType getAnImportedType() {
     result = getAReferencedType(this).getSourceDeclaration()
@@ -536,8 +533,6 @@ class GeneratedTopLevel extends TopLevelType {
 
   /** Creates a full stub for the file containing this type. */
   string stubFile() {
-    result =
-      this.stubComment() + this.stubPackage() + this.stubImports() + this.(GeneratedType).getStub() +
-        "\n"
+    result = this.stubComment() + this.stubPackage() + this.stubImports() + super.getStub() + "\n"
   }
 }

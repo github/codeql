@@ -368,40 +368,32 @@ private Stmt getAnAssertingStmt(Assertion a) {
 }
 
 /** A method that forwards to a Boolean assertion method. */
-class ForwarderBooleanAssertMethod extends BooleanAssertMethod {
-  private ForwarderAssertMethod forwarder;
+class ForwarderBooleanAssertMethod extends BooleanAssertMethod instanceof ForwarderAssertMethod {
   private BooleanAssertMethod underlying;
 
-  ForwarderBooleanAssertMethod() {
-    forwarder = this and
-    underlying = forwarder.getUnderlyingAssertMethod()
-  }
+  ForwarderBooleanAssertMethod() { underlying = super.getUnderlyingAssertMethod() }
 
   override int getAnAssertionIndex(boolean b) {
-    forwarder.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
+    super.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
   }
 
   override AssertionFailure getAssertionFailure(int i) {
-    result = underlying.getAssertionFailure(forwarder.getAForwarderAssertionIndex(i))
+    result = underlying.getAssertionFailure(super.getAForwarderAssertionIndex(i))
   }
 }
 
 /** A method that forwards to a nullness assertion method. */
-class ForwarderNullnessAssertMethod extends NullnessAssertMethod {
-  private ForwarderAssertMethod forwarder;
+class ForwarderNullnessAssertMethod extends NullnessAssertMethod instanceof ForwarderAssertMethod {
   private NullnessAssertMethod underlying;
 
-  ForwarderNullnessAssertMethod() {
-    forwarder = this and
-    underlying = forwarder.getUnderlyingAssertMethod()
-  }
+  ForwarderNullnessAssertMethod() { underlying = super.getUnderlyingAssertMethod() }
 
   override int getAnAssertionIndex(boolean b) {
-    forwarder.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
+    super.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
   }
 
   override AssertionFailure getAssertionFailure(int i) {
-    result = underlying.getAssertionFailure(forwarder.getAForwarderAssertionIndex(i))
+    result = underlying.getAssertionFailure(super.getAForwarderAssertionIndex(i))
   }
 }
 
