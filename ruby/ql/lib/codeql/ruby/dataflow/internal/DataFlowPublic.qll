@@ -19,12 +19,10 @@ class Node extends TNode {
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /** Gets a textual representation of this node. */
-  cached
-  final string toString() { result = this.(NodeImpl).toStringImpl() }
+  final string toString() { result = toString(this) }
 
   /** Gets the location of this node. */
-  cached
-  final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
+  final Location getLocation() { result = getLocation(this) }
 
   /**
    * Holds if this element is at the specified location.
