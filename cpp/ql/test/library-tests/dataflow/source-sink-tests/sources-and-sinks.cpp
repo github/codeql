@@ -3,9 +3,9 @@ char *secure_getenv(const char *name);
 wchar_t *_wgetenv(const wchar_t *name);
 
 void test_getenv() {
-    void *var1 = getenv("VAR"); // $ local_source
-    void *var2 = secure_getenv("VAR"); // $ local_source
-    void *var3 = _wgetenv(L"VAR"); // $ local_source
+    void *var1 = getenv("VAR"); // $ local_source=6:18 local_source=6:18
+    void *var2 = secure_getenv("VAR"); // $ local_source=7:18 local_source=7:18
+    void *var3 = _wgetenv(L"VAR"); // $ local_source=8:18 local_source=8:18
 }
 
 int send(int, const void*, int, int);
