@@ -35,6 +35,9 @@ class UnsafeUnpackingConfig extends TaintTracking::Configuration {
       args.flowsTo(o) and
       source.(AttrRead).accesses(o, any(string s))
     )
+    or
+    // A source catching a S3 filename download
+    exists(API::Node s3 | source = s3.getMember("download_file").getACall().getArg(2))
   }
 
   override predicate isSink(DataFlow::Node sink) {
