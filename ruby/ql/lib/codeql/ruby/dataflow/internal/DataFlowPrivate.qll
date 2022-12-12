@@ -340,6 +340,12 @@ private module Cached {
     p.(KeywordParameter).getDefaultValue() = e.getExprNode().getExpr()
   }
 
+  cached
+  Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
+
+  cached
+  string toString(NodeImpl n) { result = n.toStringImpl() }
+
   /**
    * This is the local flow predicate that is used as a building block in global
    * data flow.
