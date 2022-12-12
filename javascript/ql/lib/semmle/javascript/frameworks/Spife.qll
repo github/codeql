@@ -25,7 +25,7 @@ module Spife {
     private string getRoutePattern() {
       // Concatenate the constant parts of the expression
       result =
-        concat(Expr e, int i |
+        strictconcat(Expr e, int i |
           e = template.getTemplate().getElement(i) and exists(e.getStringValue())
         |
           e.getStringValue() order by i
