@@ -9,19 +9,42 @@
 import swift
 import codeql.swift.dataflow.FlowSources
 import codeql.swift.security.SensitiveExprs
+import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.TaintTracking
 
-predicate statistic(string what, int value) {
-  what = "Files" and value = count(File f)
-  or
-  what = "Expressions" and value = count(Expr e | not e.getFile() instanceof UnknownFile)
-  or
-  what = "Local flow sources" and value = count(LocalFlowSource s)
-  or
-  what = "Remote flow sources" and value = count(RemoteFlowSource s)
-  or
-  what = "Sensitive expressions" and value = count(SensitiveExpr e)
+/**
+ * A taint configuration for tainted data reaching any node.
+ */
+class TaintReachConfig extends TaintTracking::Configuration {
+  TaintReachConfig() { this = "TaintReachConfig" }
+
+  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
+
+  override predicate isSink(DataFlow::Node node) { any() }
 }
 
-from string what, int value
+float taintReach() {
+  exists(TaintReachConfig config, int tainted, int total |
+    tainted = count(DataFlow::Node n | config.hasFlowTo(n)) and
+    total = count(DataFlow::Node n) and
+    result = (tainted * 1000000.0) / total
+  )
+}
+
+predicate statistic(string what, string value) {
+  what = "Files" and value = count(File f).toString()
+  or
+  what = "Expressions" and value = count(Expr e | not e.getFile() instanceof UnknownFile).toString()
+  or
+  what = "Local flow sources" and value = count(LocalFlowSource s).toString()
+  or
+  what = "Remote flow sources" and value = count(RemoteFlowSource s).toString()
+  or
+  what = "Sensitive expressions" and value = count(SensitiveExpr e).toString()
+  or
+  what = "Taint reach (per million nodes)" and value = taintReach().toString()
+}
+
+from string what, string value
 where statistic(what, value)
 select what, value

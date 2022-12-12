@@ -50,9 +50,9 @@ private class LocalModelSource extends LocalFlowSource {
 
 private class ArgvSource extends LocalFlowSource {
   ArgvSource() {
-    exists(Parameter argv |
-      argv.hasName("argv") and
-      argv.getFunction().hasGlobalName("main") and
+    exists(Function main, Parameter argv |
+      main.hasGlobalName("main") and
+      main.getParameter(1) = argv and
       this.asExpr() = argv.getAnAccess()
     )
   }
