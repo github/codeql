@@ -44,9 +44,7 @@ abstract private class ConstructorOrStaticMethodSink extends Sink { }
  */
 abstract class Sanitizer extends DataFlow::Node { }
 
-private class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
+private class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * User input to object method call deserialization flow tracking.
