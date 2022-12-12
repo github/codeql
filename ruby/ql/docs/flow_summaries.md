@@ -42,8 +42,9 @@ Any call to `chomp` in the database will be translated, in the dataflow graph,
 to a call to this fake definition. 
 
 `input` and `output` define the "from" and "to" locations in the flow summary.
-They use a custom string-based syntax which is similar but not identical to
-Models as Data. These strings are often referred to as access paths.
+They use a custom string-based syntax which is similar to that used in `path`
+column in the Models as Data format. These strings are often referred to as
+access paths.
 
 Note: The behaviour documented below is tested in
 `dataflow/flow-summaries/behaviour.ql`. Where specific quirks exist, we may
