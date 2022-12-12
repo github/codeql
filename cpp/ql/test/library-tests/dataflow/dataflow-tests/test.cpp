@@ -518,5 +518,5 @@ void uncertain_definition() {
   int clean = 0;
   stackArray[0] = source();
   stackArray[1] = clean;
-  sink(stackArray[0]); // $ ast=519:19 SPURIOUS: ast=517:7 MISSING: ir
+  sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
 }
