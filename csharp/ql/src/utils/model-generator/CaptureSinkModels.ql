@@ -13,5 +13,5 @@ class Activate extends ActiveConfiguration {
 }
 
 from DataFlowTargetApi api, string sink
-where sink = captureSink(api)
+where sink = captureSink(api, _)
 select sink order by sink

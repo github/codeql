@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Definitions of taint steps in the Java JDK 11 framework.
+
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extSinkModel
+    data:
+      - ["java.rmi.server", "RMIClassLoader", true, "loadClass", "(URL,String)", "", "Argument[0]", "open-url", "generated"]
+      - ["javax.management.loading", "MLetMBean", true, "getMBeansFromURL", "(URL)", "", "Argument[0]", "open-url", "generated"]
