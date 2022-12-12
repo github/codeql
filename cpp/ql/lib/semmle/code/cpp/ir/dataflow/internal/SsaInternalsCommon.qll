@@ -149,14 +149,14 @@ abstract class Indirection extends Type {
 
   /**
    * Holds if `deref` is an instruction that behaves as a `LoadInstruction`
-   * that loads the value computed by `addres`.
+   * that loads the value computed by `address`.
    */
   predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
 
   /**
    * Holds if `value` is written to the address computed by `address`.
    *
-   * `certain` is `true` if this write is guarenteed to write to the address.
+   * `certain` is `true` if this write is guaranteed to write to the address.
    */
   predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
 
