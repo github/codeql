@@ -1,4 +1,14 @@
 class CommentsController < ApplicationController
+  prepend_after_action :this_must_run_last
+  before_action :set_user
+  before_action :ensure_user_can_edit_comments, only: WRITE_ACTIONS
+  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :foo, :bar
+  after_action :log_comment_change, except: [:index, :show, :new]
+  prepend_before_action :this_must_run_first
+
+  WRITE_ACTIONS = %i[create update destroy]
+
   def index
     request.params
     request.parameters
@@ -35,6 +45,9 @@ class CommentsController < ApplicationController
     response.strong_etag = "value"
   end
 
+  def create
+  end
+
   def show
     respond_to do |format|
       format.html { redirect_to(comment_view_url) }
@@ -49,5 +62,34 @@ class CommentsController < ApplicationController
 
   def destroy
     body = request.body_stream
+  end
+
+  private
+
+  def ensure_user_can_edit_comments
+    return if @user.can_edit_comments?
+    render status: 403, text: "You are not allowed to edit comments"
+  end
+
+  def set_comment
+    @comment = @user.comments.find(params[:id])
+  end
+
+  def log_comment_change
+    AuditLog.create!(:comment_change, user: @user, comment: @comment)
+  end
+
+  def this_must_run_first
+    # for whatever reason
+  end
+
+  def this_must_run_last
+    # for whatever reason
+  end
+
+  def foo
+  end
+
+  def bar
   end
 end
