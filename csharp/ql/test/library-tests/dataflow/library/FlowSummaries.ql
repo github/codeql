@@ -6,11 +6,9 @@ private class IncludeAllSummarizedCallable extends IncludeSummarizedCallable {
   IncludeAllSummarizedCallable() { exists(this) }
 }
 
-private class IncludeNegativeSummarizedCallable extends RelevantNegativeSummarizedCallable {
-  IncludeNegativeSummarizedCallable() {
-    this instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
-  }
+private class IncludeNeutralCallable extends RelevantNeutralCallable {
+  IncludeNeutralCallable() { this instanceof FlowSummaryImpl::Public::NeutralCallable }
 
   /** Gets a string representing the callable in semi-colon separated format for use in flow summaries. */
-  final override string getCallableCsv() { result = Csv::asPartialNegativeModel(this) }
+  final override string getCallableCsv() { result = Csv::asPartialNeutralModel(this) }
 }

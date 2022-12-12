@@ -82,7 +82,7 @@ private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.Data
   private import codeql.swift.frameworks.StandardLibrary.FilePath
   private import codeql.swift.frameworks.StandardLibrary.InputStream
-  private import codeql.swift.frameworks.StandardLibrary.NSData
+  private import codeql.swift.frameworks.StandardLibrary.NsData
   private import codeql.swift.frameworks.StandardLibrary.NsUrl
   private import codeql.swift.frameworks.StandardLibrary.String
   private import codeql.swift.frameworks.StandardLibrary.Url

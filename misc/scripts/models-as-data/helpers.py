@@ -7,7 +7,7 @@ import subprocess
 summaryModelPredicate = "extSummaryModel"
 sinkModelPredicate = "extSinkModel"
 sourceModelPredicate = "extSourceModel"
-negativeSummaryModelPredicate = "extNegativeSummaryModel"
+neutralModelPredicate = "extNeutralModel"
 addsToTemplate = """  - addsTo:
       pack: {0}
       extensible: {1}

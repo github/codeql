@@ -1896,7 +1896,8 @@ class VarAccess extends Expr, @varaccess {
 class ExtensionReceiverAccess extends VarAccess {
   ExtensionReceiverAccess() {
     exists(Parameter p |
-      this.getVariable() = p and p.getPosition() = 0 and p.getCallable() instanceof ExtensionMethod
+      this.getVariable() = p and
+      p.isExtensionParameter()
     )
   }
 

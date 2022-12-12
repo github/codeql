@@ -1,9 +1,3 @@
-#-----| [ModuleDecl] __ObjC
-#-----| [ModuleDecl] cfg
-#-----| [ModuleDecl] declarations
-#-----| [ModuleDecl] expressions
-#-----| [ModuleDecl] patterns
-#-----| [ModuleDecl] statements
 cfg.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }
