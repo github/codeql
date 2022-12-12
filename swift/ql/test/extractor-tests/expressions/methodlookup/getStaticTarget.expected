@@ -1,5 +1,5 @@
 noStaticTarget
-| file://:0:0:0:0 | call to ... | file://:0:0:0:0 | (no string representation) | DeclRefExpr |
+| file://:0:0:0:0 | call to ... | file://:0:0:0:0 | (unknown declaration) | DeclRefExpr |
 #select
 | file://:0:0:0:0 | call to ... | false | - |
 | file://:0:0:0:0 | call to UnownedSerialExecutor.init(_:) | true | UnownedSerialExecutor.init(_:) |

@@ -41,7 +41,6 @@
 | expressions.swift:21:6:21:16 | call to failure(_:) | CallExpr |
 | expressions.swift:21:14:21:14 | 11 | IntegerLiteralExpr |
 | expressions.swift:27:13:27:13 | Klass.Type | TypeExpr |
-| expressions.swift:27:13:27:13 | Klass.init() | DeclRefExpr |
 | expressions.swift:27:13:27:13 | Klass.init() | MethodLookupExpr |
 | expressions.swift:27:13:27:19 | call to Klass.init() | CallExpr |
 | expressions.swift:29:9:29:19 | [...] | DictionaryExpr |
@@ -151,10 +150,8 @@
 | expressions.swift:79:5:79:11 | Base.init(x:) | MethodLookupExpr |
 | expressions.swift:79:5:79:21 | call to Base.init(x:) | CallExpr |
 | expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr |
-| expressions.swift:79:11:79:11 | Base.init(x:) | OtherConstructorDeclRefExpr |
 | expressions.swift:79:19:79:19 | 22 | IntegerLiteralExpr |
 | expressions.swift:83:15:83:15 | Derived.Type | TypeExpr |
-| expressions.swift:83:15:83:15 | Derived.init() | DeclRefExpr |
 | expressions.swift:83:15:83:15 | Derived.init() | MethodLookupExpr |
 | expressions.swift:83:15:83:23 | call to Derived.init() | CallExpr |
 | expressions.swift:84:1:84:1 | _ | DiscardAssignmentExpr |
@@ -174,7 +171,6 @@
 | expressions.swift:92:14:92:46 | .toOpaque() | MethodLookupExpr |
 | expressions.swift:92:14:92:55 | call to toOpaque() | CallExpr |
 | expressions.swift:92:37:92:37 | ToPtr.Type | TypeExpr |
-| expressions.swift:92:37:92:37 | ToPtr.init() | DeclRefExpr |
 | expressions.swift:92:37:92:37 | ToPtr.init() | MethodLookupExpr |
 | expressions.swift:92:37:92:43 | call to ToPtr.init() | CallExpr |
 | expressions.swift:93:1:93:16 | Unmanaged<ToPtr>.Type | TypeExpr |

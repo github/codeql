@@ -1,706 +1,251 @@
-#-----| [PatternBindingDecl] var ... = ...
-#-----| getPattern(0) -> [TypedPattern] ... as ...
-
-#-----| [ReturnStmt] return ...
-#-----| getResult() -> [CallExpr] call to UnownedSerialExecutor.init(_:)
-
-#-----| [AccessorDecl] get
-#-----|     InterfaceType = (Bar) -> () -> UnownedSerialExecutor
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#-----| [BraceStmt] { ... }
-#-----| getElement(0) -> [ReturnStmt] return ...
-
 #-----| [ModuleDecl] __ObjC
-
 #-----| [ModuleDecl] methodlookup
-
-#-----| [ParamDecl] self
-#-----|     Type = Bar
-
-#-----| [ParamDecl] self
-#-----|     Type = Foo
-
-#-----| [ParamDecl] self
-#-----|     Type = Baz
-
-#-----| [CallExpr] call to UnownedSerialExecutor.init(_:)
-#-----| getFunction() -> [MethodLookupExpr] UnownedSerialExecutor.init(_:)
-#-----| getArgument(0) -> [Argument] : call to ...
-
-#-----| [CallExpr] call to ...
-#-----| getFunction() -> (no string representation)
-#-----| getArgument(0) -> [Argument] : self
-
-#-----| [TypedPattern] ... as ...
-#-----| getSubPattern() -> [NamedPattern] unownedExecutor
-
-#-----| [NamedPattern] unownedExecutor
-
-#-----| [ConcreteVarDecl] unownedExecutor
-#-----|     Type = UnownedSerialExecutor
-#-----| getAccessorDecl(0) -> [AccessorDecl] get
-
-#-----| (no string representation)
-
-#-----| [DeclRefExpr] self
-
-#-----| [DeclRefExpr] self
-
-#-----| [DeclRefExpr] self
-
-#-----| [MethodLookupExpr] UnownedSerialExecutor.init(_:)
-
-#-----| [Argument] : call to ...
-#-----| getExpr() -> [CallExpr] call to ...
-
-#-----| [Argument] : self
-#-----| getExpr() -> [DeclRefExpr] self
-
 methodlookup.swift:
 #    1| [ClassDecl] Foo
-#-----| getMember(0) -> [ConstructorDecl] Foo.init()
-#-----| getMember(1) -> [ConcreteFuncDecl] instanceMethod()
-#-----| getMember(2) -> [ConcreteFuncDecl] staticMethod()
-#-----| getMember(3) -> [ConcreteFuncDecl] classMethod()
-#-----| getMember(4) -> [DestructorDecl] Foo.deinit()
-
-#    1| [DestructorDecl] Foo.deinit()
-#    1|     InterfaceType = (Foo) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#    1| [BraceStmt] { ... }
-
-#    1| [ParamDecl] self
-#    1|     Type = Foo
-
-#    2| [ParamDecl] self
-#    2|     Type = Foo
-
-#    2| [ConstructorDecl] Foo.init()
-#    2|     InterfaceType = (Foo.Type) -> () -> Foo
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#    2| [BraceStmt] { ... }
-#-----| getElement(0) -> [ReturnStmt] return
-
-#    2| [ReturnStmt] return
-
-#    3| [ConcreteFuncDecl] instanceMethod()
-#    3|     InterfaceType = (Foo) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#    3| [ParamDecl] self
-#    3|     Type = Foo
-
-#    3| [BraceStmt] { ... }
-
-#    4| [ConcreteFuncDecl] staticMethod()
-#    4|     InterfaceType = (Foo.Type) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#    4| [ParamDecl] self
-#    4|     Type = Foo.Type
-
-#    4| [BraceStmt] { ... }
-
-#    5| [ConcreteFuncDecl] classMethod()
-#    5|     InterfaceType = (Foo.Type) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#    5| [ParamDecl] self
-#    5|     Type = Foo.Type
-
-#    5| [BraceStmt] { ... }
-
+#    2|   getMember(0): [ConstructorDecl] Foo.init()
+#    2|       InterfaceType = (Foo.Type) -> () -> Foo
+#    2|     getSelfParam(): [ParamDecl] self
+#    2|         Type = Foo
+#    2|     getBody(): [BraceStmt] { ... }
+#    2|       getElement(0): [ReturnStmt] return
+#    3|   getMember(1): [ConcreteFuncDecl] instanceMethod()
+#    3|       InterfaceType = (Foo) -> () -> ()
+#    3|     getSelfParam(): [ParamDecl] self
+#    3|         Type = Foo
+#    3|     getBody(): [BraceStmt] { ... }
+#    4|   getMember(2): [ConcreteFuncDecl] staticMethod()
+#    4|       InterfaceType = (Foo.Type) -> () -> ()
+#    4|     getSelfParam(): [ParamDecl] self
+#    4|         Type = Foo.Type
+#    4|     getBody(): [BraceStmt] { ... }
+#    5|   getMember(3): [ConcreteFuncDecl] classMethod()
+#    5|       InterfaceType = (Foo.Type) -> () -> ()
+#    5|     getSelfParam(): [ParamDecl] self
+#    5|         Type = Foo.Type
+#    5|     getBody(): [BraceStmt] { ... }
+#    1|   getMember(4): [DestructorDecl] Foo.deinit()
+#    1|       InterfaceType = (Foo) -> () -> ()
+#    1|     getSelfParam(): [ParamDecl] self
+#    1|         Type = Foo
+#    1|     getBody(): [BraceStmt] { ... }
 #    8| [ClassDecl] Bar
-#-----| getMember(0) -> [ConstructorDecl] Bar.init()
-#-----| getMember(1) -> [ConcreteFuncDecl] instanceMethod()
-#-----| getMember(2) -> [ConcreteFuncDecl] staticMethod()
-#-----| getMember(3) -> [PatternBindingDecl] var ... = ...
-#-----| getMember(4) -> [DestructorDecl] Bar.deinit()
-#-----| getMember(5) -> [ConcreteVarDecl] unownedExecutor
-
-#    8| [DestructorDecl] Bar.deinit()
-#    8|     InterfaceType = (Bar) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#    8| [BraceStmt] { ... }
-
-#    8| [ParamDecl] self
-#    8|     Type = Bar
-
-#    9| [ParamDecl] self
-#    9|     Type = Bar
-
-#    9| [ConstructorDecl] Bar.init()
-#    9|     InterfaceType = (Bar.Type) -> () -> Bar
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#    9| [BraceStmt] { ... }
-#-----| getElement(0) -> [ReturnStmt] return
-
-#    9| [ReturnStmt] return
-
-#   10| [ConcreteFuncDecl] instanceMethod()
-#   10|     InterfaceType = (isolated Bar) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   10| [ParamDecl] self
-#   10|     Type = Bar
-
-#   10| [BraceStmt] { ... }
-
-#   11| [ConcreteFuncDecl] staticMethod()
-#   11|     InterfaceType = (Bar.Type) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   11| [ParamDecl] self
-#   11|     Type = Bar.Type
-
-#   11| [BraceStmt] { ... }
-
+#    9|   getMember(0): [ConstructorDecl] Bar.init()
+#    9|       InterfaceType = (Bar.Type) -> () -> Bar
+#    9|     getSelfParam(): [ParamDecl] self
+#    9|         Type = Bar
+#    9|     getBody(): [BraceStmt] { ... }
+#    9|       getElement(0): [ReturnStmt] return
+#   10|   getMember(1): [ConcreteFuncDecl] instanceMethod()
+#   10|       InterfaceType = (isolated Bar) -> () -> ()
+#   10|     getSelfParam(): [ParamDecl] self
+#   10|         Type = Bar
+#   10|     getBody(): [BraceStmt] { ... }
+#   11|   getMember(2): [ConcreteFuncDecl] staticMethod()
+#   11|       InterfaceType = (Bar.Type) -> () -> ()
+#   11|     getSelfParam(): [ParamDecl] self
+#   11|         Type = Bar.Type
+#   11|     getBody(): [BraceStmt] { ... }
+#-----|   getMember(3): [PatternBindingDecl] var ... = ...
+#-----|     getPattern(0): [TypedPattern] ... as ...
+#-----|       getSubPattern(): [NamedPattern] unownedExecutor
+#    8|   getMember(4): [DestructorDecl] Bar.deinit()
+#    8|       InterfaceType = (Bar) -> () -> ()
+#    8|     getSelfParam(): [ParamDecl] self
+#    8|         Type = Bar
+#    8|     getBody(): [BraceStmt] { ... }
+#-----|   getMember(5): [ConcreteVarDecl] unownedExecutor
+#-----|       Type = UnownedSerialExecutor
+#-----|     getAccessorDecl(0): [AccessorDecl] get
+#-----|         InterfaceType = (Bar) -> () -> UnownedSerialExecutor
+#-----|       getSelfParam(): [ParamDecl] self
+#-----|           Type = Bar
+#-----|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [CallExpr] call to UnownedSerialExecutor.init(_:)
+#-----|             getFunction(): [MethodLookupExpr] UnownedSerialExecutor.init(_:)
+#-----|               getBase(): [TypeExpr] UnownedSerialExecutor.Type
+#-----|             getArgument(0): [Argument] : call to ...
+#-----|               getExpr(): [CallExpr] call to ...
+#-----|                 getFunction(): [DeclRefExpr] (unknown declaration)
+#-----|                 getArgument(0): [Argument] : self
+#-----|                   getExpr(): [DeclRefExpr] self
 #   15| [ClassDecl] Baz
-#-----| getMember(0) -> [ConstructorDecl] Baz.init()
-#-----| getMember(1) -> [ConcreteFuncDecl] instanceMethod()
-#-----| getMember(2) -> [ConcreteFuncDecl] staticMethod()
-#-----| getMember(3) -> [ConcreteFuncDecl] classMethod()
-#-----| getMember(4) -> [DestructorDecl] Baz.deinit()
-
-#   15| [DestructorDecl] Baz.deinit()
-#   15|     InterfaceType = (Baz) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   15| [BraceStmt] { ... }
-
-#   15| [ParamDecl] self
-#   15|     Type = Baz
-
-#   16| [ParamDecl] self
-#   16|     Type = Baz
-
-#   16| [ConstructorDecl] Baz.init()
-#   16|     InterfaceType = (Baz.Type) -> () -> Baz
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   16| [BraceStmt] { ... }
-#-----| getElement(0) -> [ReturnStmt] return
-
-#   16| [ReturnStmt] return
-
-#   17| [ConcreteFuncDecl] instanceMethod()
-#   17|     InterfaceType = (Baz) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   17| [ParamDecl] self
-#   17|     Type = Baz
-
-#   17| [BraceStmt] { ... }
-
-#   18| [ConcreteFuncDecl] staticMethod()
-#   18|     InterfaceType = (Baz.Type) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   18| [ParamDecl] self
-#   18|     Type = Baz.Type
-
-#   18| [BraceStmt] { ... }
-
-#   19| [ConcreteFuncDecl] classMethod()
-#   19|     InterfaceType = (Baz.Type) -> () -> ()
-#-----| getSelfParam() -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   19| [ParamDecl] self
-#   19|     Type = Baz.Type
-
-#   19| [BraceStmt] { ... }
-
-#   22| [BraceStmt] { ... }
-#-----| getElement(0) -> [DoStmt] do { ... }
-
-#   22| [DoStmt] do { ... }
-#-----| getBody() -> [BraceStmt] { ... }
-
+#   16|   getMember(0): [ConstructorDecl] Baz.init()
+#   16|       InterfaceType = (Baz.Type) -> () -> Baz
+#   16|     getSelfParam(): [ParamDecl] self
+#   16|         Type = Baz
+#   16|     getBody(): [BraceStmt] { ... }
+#   16|       getElement(0): [ReturnStmt] return
+#   17|   getMember(1): [ConcreteFuncDecl] instanceMethod()
+#   17|       InterfaceType = (Baz) -> () -> ()
+#   17|     getSelfParam(): [ParamDecl] self
+#   17|         Type = Baz
+#   17|     getBody(): [BraceStmt] { ... }
+#   18|   getMember(2): [ConcreteFuncDecl] staticMethod()
+#   18|       InterfaceType = (Baz.Type) -> () -> ()
+#   18|     getSelfParam(): [ParamDecl] self
+#   18|         Type = Baz.Type
+#   18|     getBody(): [BraceStmt] { ... }
+#   19|   getMember(3): [ConcreteFuncDecl] classMethod()
+#   19|       InterfaceType = (Baz.Type) -> () -> ()
+#   19|     getSelfParam(): [ParamDecl] self
+#   19|         Type = Baz.Type
+#   19|     getBody(): [BraceStmt] { ... }
+#   15|   getMember(4): [DestructorDecl] Baz.deinit()
+#   15|       InterfaceType = (Baz) -> () -> ()
+#   15|     getSelfParam(): [ParamDecl] self
+#   15|         Type = Baz
+#   15|     getBody(): [BraceStmt] { ... }
 #   22| [TopLevelCodeDecl] { ... }
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   22| [BraceStmt] { ... }
-#-----| getElement(0) -> [PatternBindingDecl] var ... = ...
-#-----| getElement(1) -> [ConcreteVarDecl] foo
-#-----| getElement(2) -> [AssignExpr]  ... = ...
-#-----| getElement(3) -> [CallExpr] call to instanceMethod()
-#-----| getElement(4) -> [CallExpr] call to call to Foo.instanceMethod()
-#-----| getElement(5) -> [CallExpr] call to classMethod()
-#-----| getElement(6) -> [CallExpr] call to staticMethod()
-
-#   23| [PatternBindingDecl] var ... = ...
-#-----| getInit(0) -> [CallExpr] call to Foo.init()
-#-----| getPattern(0) -> [NamedPattern] foo
-
-#   23| [NamedPattern] foo
-
-#   23| [ConcreteVarDecl] foo
-#   23|     Type = Foo
-
-#   23| [TypeExpr] Foo.Type
-#-----| getTypeRepr() -> [TypeRepr] Foo
-
-#   23| [TypeRepr] Foo
-
-#   23| [DeclRefExpr] Foo.init()
-
-#   23| [MethodLookupExpr] Foo.init()
-#-----| getBase() -> [TypeExpr] Foo.Type
-
-#   23| [Argument] : Foo.Type
-#-----| getExpr() -> [TypeExpr] Foo.Type
-
-#   23| [CallExpr] call to Foo.init()
-#-----| getFunction() -> [MethodLookupExpr] Foo.init()
-
-#   24| [DiscardAssignmentExpr] _
-
-#   24| [AssignExpr]  ... = ...
-#-----| getDest() -> [DiscardAssignmentExpr] _
-#-----| getSource() -> [CallExpr] call to Foo.init()
-
-#   24| [TypeExpr] Foo.Type
-#-----| getTypeRepr() -> [TypeRepr] Foo
-
-#   24| [TypeRepr] Foo
-
-#   24| [Argument] : Foo.Type
-#-----| getExpr() -> [TypeExpr] Foo.Type
-
-#   24| [MethodLookupExpr] Foo.init()
-#-----| getBase() -> [TypeExpr] Foo.Type
-
-#   24| [CallExpr] call to Foo.init()
-#-----| getFunction() -> [MethodLookupExpr] Foo.init()
-
-#   24| [DeclRefExpr] Foo.init()
-
-#   26| [DeclRefExpr] foo
-
-#   26| [MethodLookupExpr] .instanceMethod()
-#-----| getBase() -> [DeclRefExpr] foo
-
-#   26| [CallExpr] call to instanceMethod()
-#-----| getFunction() -> [MethodLookupExpr] .instanceMethod()
-
-#   27| [TypeExpr] Foo.Type
-#-----| getTypeRepr() -> [TypeRepr] Foo
-
-#   27| [TypeRepr] Foo
-
-#   27| [DotSyntaxBaseIgnoredExpr] Foo.instanceMethod()
-#-----| getQualifier() -> [TypeExpr] Foo.Type
-#-----| getSubExpr() -> [AutoClosureExpr] { ... }
-
-#   27| [CallExpr] call to Foo.instanceMethod()
-#-----| getFunction() -> [DotSyntaxBaseIgnoredExpr] Foo.instanceMethod()
-#-----| getArgument(0) -> [Argument] : foo
-
-#   27| [CallExpr] call to call to Foo.instanceMethod()
-#-----| getFunction() -> [CallExpr] call to Foo.instanceMethod()
-
-#   27| [AutoClosureExpr] { ... }
-#-----| getParam(0) -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   27| [AutoClosureExpr] { ... }
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   27| [ReturnStmt] return ...
-#-----| getResult() -> [AutoClosureExpr] { ... }
-
-#   27| [ReturnStmt] return ...
-#-----| getResult() -> [CallExpr] call to instanceMethod()
-
-#   27| [BraceStmt] { ... }
-#-----| getElement(0) -> [ReturnStmt] return ...
-
-#   27| [BraceStmt] { ... }
-#-----| getElement(0) -> [ReturnStmt] return ...
-
-#   27| [CallExpr] call to instanceMethod()
-#-----| getFunction() -> [MethodLookupExpr] .instanceMethod()
-
-#   27| [MethodLookupExpr] .instanceMethod()
-#-----| getBase() -> [DeclRefExpr] self
-
-#   27| [DeclRefExpr] foo
-
-#   27| [Argument] : foo
-#-----| getExpr() -> [DeclRefExpr] foo
-
-#   29| [TypeExpr] Foo.Type
-#-----| getTypeRepr() -> [TypeRepr] Foo
-
-#   29| [TypeRepr] Foo
-
-#   29| [MethodLookupExpr] .classMethod()
-#-----| getBase() -> [TypeExpr] Foo.Type
-
-#   29| [CallExpr] call to classMethod()
-#-----| getFunction() -> [MethodLookupExpr] .classMethod()
-
-#   30| [TypeExpr] Foo.Type
-#-----| getTypeRepr() -> [TypeRepr] Foo
-
-#   30| [TypeRepr] Foo
-
-#   30| [MethodLookupExpr] .staticMethod()
-#-----| getBase() -> [TypeExpr] Foo.Type
-
-#   30| [CallExpr] call to staticMethod()
-#-----| getFunction() -> [MethodLookupExpr] .staticMethod()
-
-#   33| [TypeExpr] Task<(), Never>.Type
-#-----| getTypeRepr() -> [TypeRepr] Task<(), Never>
-
-#   33| [TypeRepr] Task<(), Never>
-
-#   33| [DeclRefExpr] Task<Success, Never>.init(priority:operation:)
-
-#   33| [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
-#-----| getBase() -> [TypeExpr] Task<(), Never>.Type
-
-#   33| [Argument] : Task<(), Never>.Type
-#-----| getExpr() -> [TypeExpr] Task<(), Never>.Type
-
-#   33| [BraceStmt] { ... }
-#-----| getElement(0) -> [CallExpr] call to Task<Success, Never>.init(priority:operation:)
-
-#   33| [CallExpr] call to Task<Success, Never>.init(priority:operation:)
-#-----| getFunction() -> [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
-#-----| getArgument(0) -> [Argument] priority: default priority
-#-----| getArgument(1) -> [Argument] operation: { ... }
-
+#   22|   getBody(): [BraceStmt] { ... }
+#   22|     getElement(0): [DoStmt] do { ... }
+#   22|       getBody(): [BraceStmt] { ... }
+#   23|         getElement(0): [PatternBindingDecl] var ... = ...
+#   23|           getInit(0): [CallExpr] call to Foo.init()
+#   23|             getFunction(): [MethodLookupExpr] Foo.init()
+#   23|               getBase(): [TypeExpr] Foo.Type
+#   23|                 getTypeRepr(): [TypeRepr] Foo
+#   23|           getPattern(0): [NamedPattern] foo
+#   23|         getElement(1): [ConcreteVarDecl] foo
+#   23|             Type = Foo
+#   24|         getElement(2): [AssignExpr]  ... = ...
+#   24|           getDest(): [DiscardAssignmentExpr] _
+#   24|           getSource(): [CallExpr] call to Foo.init()
+#   24|             getFunction(): [MethodLookupExpr] Foo.init()
+#   24|               getBase(): [TypeExpr] Foo.Type
+#   24|                 getTypeRepr(): [TypeRepr] Foo
+#   26|         getElement(3): [CallExpr] call to instanceMethod()
+#   26|           getFunction(): [MethodLookupExpr] .instanceMethod()
+#   26|             getBase(): [DeclRefExpr] foo
+#   27|         getElement(4): [CallExpr] call to call to Foo.instanceMethod()
+#   27|           getFunction(): [CallExpr] call to Foo.instanceMethod()
+#   27|             getFunction(): [DotSyntaxBaseIgnoredExpr] Foo.instanceMethod()
+#   27|               getQualifier(): [TypeExpr] Foo.Type
+#   27|                 getTypeRepr(): [TypeRepr] Foo
+#   27|               getSubExpr(): [AutoClosureExpr] { ... }
+#-----|                 getParam(0): [ParamDecl] self
+#-----|                     Type = Foo
+#   27|                 getBody(): [BraceStmt] { ... }
+#   27|                   getElement(0): [ReturnStmt] return ...
+#   27|                     getResult(): [AutoClosureExpr] { ... }
+#   27|                       getBody(): [BraceStmt] { ... }
+#   27|                         getElement(0): [ReturnStmt] return ...
+#   27|                           getResult(): [CallExpr] call to instanceMethod()
+#   27|                             getFunction(): [MethodLookupExpr] .instanceMethod()
+#-----|                               getBase(): [DeclRefExpr] self
+#   27|             getArgument(0): [Argument] : foo
+#   27|               getExpr(): [DeclRefExpr] foo
+#   29|         getElement(5): [CallExpr] call to classMethod()
+#   29|           getFunction(): [MethodLookupExpr] .classMethod()
+#   29|             getBase(): [TypeExpr] Foo.Type
+#   29|               getTypeRepr(): [TypeRepr] Foo
+#   30|         getElement(6): [CallExpr] call to staticMethod()
+#   30|           getFunction(): [MethodLookupExpr] .staticMethod()
+#   30|             getBase(): [TypeExpr] Foo.Type
+#   30|               getTypeRepr(): [TypeRepr] Foo
 #   33| [TopLevelCodeDecl] { ... }
-#-----| getBody() -> [BraceStmt] { ... }
-
+#   33|   getBody(): [BraceStmt] { ... }
+#   33|     getElement(0): [CallExpr] call to Task<Success, Never>.init(priority:operation:)
+#   33|       getFunction(): [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
+#   33|         getBase(): [TypeExpr] Task<(), Never>.Type
+#   33|           getTypeRepr(): [TypeRepr] Task<(), Never>
+#   33|       getArgument(0): [Argument] priority: default priority
+#   33|         getExpr(): [DefaultArgumentExpr] default priority
+#   33|       getArgument(1): [Argument] operation: { ... }
+#   33|         getExpr(): [ClosureExpr] { ... }
+#   33|           getBody(): [BraceStmt] { ... }
+#   34|             getElement(0): [PatternBindingDecl] var ... = ...
+#   34|               getInit(0): [CallExpr] call to Bar.init()
+#   34|                 getFunction(): [MethodLookupExpr] Bar.init()
+#   34|                   getBase(): [TypeExpr] Bar.Type
+#   34|                     getTypeRepr(): [TypeRepr] Bar
+#   34|               getPattern(0): [NamedPattern] bar
+#   34|             getElement(1): [ConcreteVarDecl] bar
+#   34|                 Type = Bar
+#   35|             getElement(2): [AssignExpr]  ... = ...
+#   35|               getDest(): [DiscardAssignmentExpr] _
+#   35|               getSource(): [CallExpr] call to Bar.init()
+#   35|                 getFunction(): [MethodLookupExpr] Bar.init()
+#   35|                   getBase(): [TypeExpr] Bar.Type
+#   35|                     getTypeRepr(): [TypeRepr] Bar
+#   37|             getElement(3): [CallExpr] call to instanceMethod()
+#   37|               getFunction(): [MethodLookupExpr] .instanceMethod()
+#   37|                 getBase(): [DeclRefExpr] bar
+#   37|             getElement(3).getFullyConverted(): [AwaitExpr] await ...
+#   40|             getElement(4): [CallExpr] call to staticMethod()
+#   40|               getFunction(): [MethodLookupExpr] .staticMethod()
+#   40|                 getBase(): [TypeExpr] Bar.Type
+#   40|                   getTypeRepr(): [TypeRepr] Bar
 #   33| [NilLiteralExpr] nil
-
-#   33| [DefaultArgumentExpr] default priority
-
-#   33| [Argument] priority: default priority
-#-----| getExpr() -> [DefaultArgumentExpr] default priority
-
-#   33| [ClosureExpr] { ... }
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   33| [BraceStmt] { ... }
-#-----| getElement(0) -> [PatternBindingDecl] var ... = ...
-#-----| getElement(1) -> [ConcreteVarDecl] bar
-#-----| getElement(2) -> [AssignExpr]  ... = ...
-#-----| getElement(3) -> [CallExpr] call to instanceMethod()
-#-----| getElement(3).getFullyConverted() -> [AwaitExpr] await ...
-#-----| getElement(4) -> [CallExpr] call to staticMethod()
-
-#   33| [Argument] operation: { ... }
-#-----| getExpr() -> [ClosureExpr] { ... }
-
-#   34| [PatternBindingDecl] var ... = ...
-#-----| getInit(0) -> [CallExpr] call to Bar.init()
-#-----| getPattern(0) -> [NamedPattern] bar
-
-#   34| [NamedPattern] bar
-
-#   34| [ConcreteVarDecl] bar
-#   34|     Type = Bar
-
-#   34| [TypeExpr] Bar.Type
-#-----| getTypeRepr() -> [TypeRepr] Bar
-
-#   34| [TypeRepr] Bar
-
-#   34| [DeclRefExpr] Bar.init()
-
-#   34| [MethodLookupExpr] Bar.init()
-#-----| getBase() -> [TypeExpr] Bar.Type
-
-#   34| [Argument] : Bar.Type
-#-----| getExpr() -> [TypeExpr] Bar.Type
-
-#   34| [CallExpr] call to Bar.init()
-#-----| getFunction() -> [MethodLookupExpr] Bar.init()
-
-#   35| [DiscardAssignmentExpr] _
-
-#   35| [AssignExpr]  ... = ...
-#-----| getDest() -> [DiscardAssignmentExpr] _
-#-----| getSource() -> [CallExpr] call to Bar.init()
-
-#   35| [TypeExpr] Bar.Type
-#-----| getTypeRepr() -> [TypeRepr] Bar
-
-#   35| [TypeRepr] Bar
-
-#   35| [Argument] : Bar.Type
-#-----| getExpr() -> [TypeExpr] Bar.Type
-
-#   35| [MethodLookupExpr] Bar.init()
-#-----| getBase() -> [TypeExpr] Bar.Type
-
-#   35| [CallExpr] call to Bar.init()
-#-----| getFunction() -> [MethodLookupExpr] Bar.init()
-
-#   35| [DeclRefExpr] Bar.init()
-
-#   37| [AwaitExpr] await ...
-
-#   37| [DeclRefExpr] bar
-
-#   37| [MethodLookupExpr] .instanceMethod()
-#-----| getBase() -> [DeclRefExpr] bar
-
-#   37| [CallExpr] call to instanceMethod()
-#-----| getFunction() -> [MethodLookupExpr] .instanceMethod()
-
 #   38| [Comment] // Bar.instanceMethod(bar2)() // error: actor-isolated instance method 'instanceMethod()' can not be referenced from a non-isolated context
 #   38| 
-
-#   40| [TypeExpr] Bar.Type
-#-----| getTypeRepr() -> [TypeRepr] Bar
-
-#   40| [TypeRepr] Bar
-
-#   40| [MethodLookupExpr] .staticMethod()
-#-----| getBase() -> [TypeExpr] Bar.Type
-
-#   40| [CallExpr] call to staticMethod()
-#-----| getFunction() -> [MethodLookupExpr] .staticMethod()
-
-#   43| [TypeExpr] Task<(), Never>.Type
-#-----| getTypeRepr() -> [TypeRepr] Task<(), Never>
-
-#   43| [TypeRepr] Task<(), Never>
-
-#   43| [DeclRefExpr] Task<Success, Never>.init(priority:operation:)
-
-#   43| [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
-#-----| getBase() -> [TypeExpr] Task<(), Never>.Type
-
-#   43| [Argument] : Task<(), Never>.Type
-#-----| getExpr() -> [TypeExpr] Task<(), Never>.Type
-
-#   43| [BraceStmt] { ... }
-#-----| getElement(0) -> [CallExpr] call to Task<Success, Never>.init(priority:operation:)
-
-#   43| [CallExpr] call to Task<Success, Never>.init(priority:operation:)
-#-----| getFunction() -> [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
-#-----| getArgument(0) -> [Argument] priority: default priority
-#-----| getArgument(1) -> [Argument] operation: { ... }
-
 #   43| [TopLevelCodeDecl] { ... }
-#-----| getBody() -> [BraceStmt] { ... }
-
+#   43|   getBody(): [BraceStmt] { ... }
+#   43|     getElement(0): [CallExpr] call to Task<Success, Never>.init(priority:operation:)
+#   43|       getFunction(): [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
+#   43|         getBase(): [TypeExpr] Task<(), Never>.Type
+#   43|           getTypeRepr(): [TypeRepr] Task<(), Never>
+#   43|       getArgument(0): [Argument] priority: default priority
+#   43|         getExpr(): [DefaultArgumentExpr] default priority
+#   43|       getArgument(1): [Argument] operation: { ... }
+#   43|         getExpr(): [ClosureExpr] { ... }
+#   43|           getBody(): [BraceStmt] { ... }
+#   44|             getElement(0): [PatternBindingDecl] var ... = ...
+#   44|               getInit(0): [CallExpr] call to Baz.init()
+#   44|                 getFunction(): [MethodLookupExpr] Baz.init()
+#   44|                   getBase(): [TypeExpr] Baz.Type
+#   44|                     getTypeRepr(): [TypeRepr] Baz
+#   44|               getInit(0).getFullyConverted(): [AwaitExpr] await ...
+#   44|               getPattern(0): [NamedPattern] baz
+#   44|             getElement(1): [ConcreteVarDecl] baz
+#   44|                 Type = Baz
+#   45|             getElement(2): [AssignExpr]  ... = ...
+#   45|               getDest(): [DiscardAssignmentExpr] _
+#   45|               getSource(): [CallExpr] call to Baz.init()
+#   45|                 getFunction(): [MethodLookupExpr] Baz.init()
+#   45|                   getBase(): [TypeExpr] Baz.Type
+#   45|                     getTypeRepr(): [TypeRepr] Baz
+#   45|               getSource().getFullyConverted(): [AwaitExpr] await ...
+#   47|             getElement(3): [CallExpr] call to instanceMethod()
+#   47|               getFunction(): [MethodLookupExpr] .instanceMethod()
+#   47|                 getBase(): [DeclRefExpr] baz
+#   47|             getElement(3).getFullyConverted(): [AwaitExpr] await ...
+#   48|             getElement(4): [CallExpr] call to call to Baz.instanceMethod()
+#   48|               getFunction(): [CallExpr] call to Baz.instanceMethod()
+#   48|                 getFunction(): [DotSyntaxBaseIgnoredExpr] Baz.instanceMethod()
+#   48|                   getQualifier(): [TypeExpr] Baz.Type
+#   48|                     getTypeRepr(): [TypeRepr] Baz
+#   48|                   getSubExpr(): [AutoClosureExpr] { ... }
+#-----|                     getParam(0): [ParamDecl] self
+#-----|                         Type = Baz
+#   48|                     getBody(): [BraceStmt] { ... }
+#   48|                       getElement(0): [ReturnStmt] return ...
+#   48|                         getResult(): [AutoClosureExpr] { ... }
+#   48|                           getBody(): [BraceStmt] { ... }
+#   48|                             getElement(0): [ReturnStmt] return ...
+#   48|                               getResult(): [CallExpr] call to instanceMethod()
+#   48|                                 getFunction(): [MethodLookupExpr] .instanceMethod()
+#-----|                                   getBase(): [DeclRefExpr] self
+#   48|                 getArgument(0): [Argument] : baz
+#   48|                   getExpr(): [DeclRefExpr] baz
+#   48|             getElement(4).getFullyConverted(): [AwaitExpr] await ...
+#   50|             getElement(5): [CallExpr] call to classMethod()
+#   50|               getFunction(): [MethodLookupExpr] .classMethod()
+#   50|                 getBase(): [TypeExpr] Baz.Type
+#   50|                   getTypeRepr(): [TypeRepr] Baz
+#   50|             getElement(5).getFullyConverted(): [AwaitExpr] await ...
+#   51|             getElement(6): [CallExpr] call to staticMethod()
+#   51|               getFunction(): [MethodLookupExpr] .staticMethod()
+#   51|                 getBase(): [TypeExpr] Baz.Type
+#   51|                   getTypeRepr(): [TypeRepr] Baz
+#   51|             getElement(6).getFullyConverted(): [AwaitExpr] await ...
 #   43| [NilLiteralExpr] nil
-
-#   43| [DefaultArgumentExpr] default priority
-
-#   43| [Argument] priority: default priority
-#-----| getExpr() -> [DefaultArgumentExpr] default priority
-
-#   43| [ClosureExpr] { ... }
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   43| [BraceStmt] { ... }
-#-----| getElement(0) -> [PatternBindingDecl] var ... = ...
-#-----| getElement(1) -> [ConcreteVarDecl] baz
-#-----| getElement(2) -> [AssignExpr]  ... = ...
-#-----| getElement(3) -> [CallExpr] call to instanceMethod()
-#-----| getElement(3).getFullyConverted() -> [AwaitExpr] await ...
-#-----| getElement(4) -> [CallExpr] call to call to Baz.instanceMethod()
-#-----| getElement(4).getFullyConverted() -> [AwaitExpr] await ...
-#-----| getElement(5) -> [CallExpr] call to classMethod()
-#-----| getElement(5).getFullyConverted() -> [AwaitExpr] await ...
-#-----| getElement(6) -> [CallExpr] call to staticMethod()
-#-----| getElement(6).getFullyConverted() -> [AwaitExpr] await ...
-
-#   43| [Argument] operation: { ... }
-#-----| getExpr() -> [ClosureExpr] { ... }
-
-#   44| [PatternBindingDecl] var ... = ...
-#-----| getInit(0) -> [CallExpr] call to Baz.init()
-#-----| getInit(0).getFullyConverted() -> [AwaitExpr] await ...
-#-----| getPattern(0) -> [NamedPattern] baz
-
-#   44| [NamedPattern] baz
-
-#   44| [ConcreteVarDecl] baz
-#   44|     Type = Baz
-
-#   44| [AwaitExpr] await ...
-
 #   44| [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> Baz) ...
-
-#   44| [TypeExpr] Baz.Type
-#-----| getTypeRepr() -> [TypeRepr] Baz
-
-#   44| [TypeRepr] Baz
-
-#   44| [DeclRefExpr] Baz.init()
-
-#   44| [MethodLookupExpr] Baz.init()
-#-----| getBase() -> [TypeExpr] Baz.Type
-
-#   44| [Argument] : Baz.Type
-#-----| getExpr() -> [TypeExpr] Baz.Type
-
-#   44| [CallExpr] call to Baz.init()
-#-----| getFunction() -> [MethodLookupExpr] Baz.init()
-
-#   45| [DiscardAssignmentExpr] _
-
-#   45| [AssignExpr]  ... = ...
-#-----| getDest() -> [DiscardAssignmentExpr] _
-#-----| getSource() -> [CallExpr] call to Baz.init()
-#-----| getSource().getFullyConverted() -> [AwaitExpr] await ...
-
-#   45| [AwaitExpr] await ...
-
-#   45| [TypeExpr] Baz.Type
-#-----| getTypeRepr() -> [TypeRepr] Baz
-
-#   45| [TypeRepr] Baz
-
-#   45| [Argument] : Baz.Type
-#-----| getExpr() -> [TypeExpr] Baz.Type
-
-#   45| [MethodLookupExpr] Baz.init()
-#-----| getBase() -> [TypeExpr] Baz.Type
-
-#   45| [CallExpr] call to Baz.init()
-#-----| getFunction() -> [MethodLookupExpr] Baz.init()
-
 #   45| [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> Baz) ...
-
-#   45| [DeclRefExpr] Baz.init()
-
-#   47| [AwaitExpr] await ...
-
-#   47| [DeclRefExpr] baz
-
-#   47| [Argument] : baz
-#-----| getExpr() -> [DeclRefExpr] baz
-
-#   47| [MethodLookupExpr] .instanceMethod()
-#-----| getBase() -> [DeclRefExpr] baz
-
-#   47| [CallExpr] call to instanceMethod()
-#-----| getFunction() -> [MethodLookupExpr] .instanceMethod()
-
 #   47| [FunctionConversionExpr] ((Baz) -> @MainActor () -> ()) ...
-
-#   47| [DeclRefExpr] instanceMethod()
-
 #   47| [Comment] // DotSyntaxCallExpr
 #   47| 
-
-#   48| [AwaitExpr] await ...
-
-#   48| [TypeExpr] Baz.Type
-#-----| getTypeRepr() -> [TypeRepr] Baz
-
-#   48| [TypeRepr] Baz
-
-#   48| [DotSyntaxBaseIgnoredExpr] Baz.instanceMethod()
-#-----| getQualifier() -> [TypeExpr] Baz.Type
-#-----| getSubExpr() -> [AutoClosureExpr] { ... }
-
-#   48| [CallExpr] call to Baz.instanceMethod()
-#-----| getFunction() -> [DotSyntaxBaseIgnoredExpr] Baz.instanceMethod()
-#-----| getArgument(0) -> [Argument] : baz
-
-#   48| [CallExpr] call to call to Baz.instanceMethod()
-#-----| getFunction() -> [CallExpr] call to Baz.instanceMethod()
-
-#   48| [AutoClosureExpr] { ... }
-#-----| getParam(0) -> [ParamDecl] self
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   48| [AutoClosureExpr] { ... }
-#-----| getBody() -> [BraceStmt] { ... }
-
-#   48| [ReturnStmt] return ...
-#-----| getResult() -> [AutoClosureExpr] { ... }
-
-#   48| [ReturnStmt] return ...
-#-----| getResult() -> [CallExpr] call to instanceMethod()
-
-#   48| [BraceStmt] { ... }
-#-----| getElement(0) -> [ReturnStmt] return ...
-
-#   48| [BraceStmt] { ... }
-#-----| getElement(0) -> [ReturnStmt] return ...
-
-#   48| [CallExpr] call to instanceMethod()
-#-----| getFunction() -> [MethodLookupExpr] .instanceMethod()
-
-#   48| [MethodLookupExpr] .instanceMethod()
-#-----| getBase() -> [DeclRefExpr] self
-
-#   48| [DeclRefExpr] baz
-
-#   48| [Argument] : baz
-#-----| getExpr() -> [DeclRefExpr] baz
-
 #   48| [Comment] // DotSyntaxBaseIgnoredExpr
 #   48| 
-
-#   50| [AwaitExpr] await ...
-
-#   50| [TypeExpr] Baz.Type
-#-----| getTypeRepr() -> [TypeRepr] Baz
-
-#   50| [TypeRepr] Baz
-
-#   50| [Argument] : Baz.Type
-#-----| getExpr() -> [TypeExpr] Baz.Type
-
-#   50| [MethodLookupExpr] .classMethod()
-#-----| getBase() -> [TypeExpr] Baz.Type
-
-#   50| [CallExpr] call to classMethod()
-#-----| getFunction() -> [MethodLookupExpr] .classMethod()
-
 #   50| [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> ()) ...
-
-#   50| [DeclRefExpr] classMethod()
-
-#   51| [AwaitExpr] await ...
-
-#   51| [TypeExpr] Baz.Type
-#-----| getTypeRepr() -> [TypeRepr] Baz
-
-#   51| [TypeRepr] Baz
-
-#   51| [Argument] : Baz.Type
-#-----| getExpr() -> [TypeExpr] Baz.Type
-
-#   51| [MethodLookupExpr] .staticMethod()
-#-----| getBase() -> [TypeExpr] Baz.Type
-
-#   51| [CallExpr] call to staticMethod()
-#-----| getFunction() -> [MethodLookupExpr] .staticMethod()
-
 #   51| [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> ()) ...
-
-#   51| [DeclRefExpr] staticMethod()
