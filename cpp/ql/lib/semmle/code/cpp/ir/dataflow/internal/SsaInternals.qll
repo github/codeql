@@ -108,6 +108,7 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
   )
 }
 
+cached
 private module IteratorDefUse {
   private import semmle.code.cpp.models.interfaces.Iterator as Interfaces
   private import semmle.code.cpp.models.implementations.Iterator as Iterator
@@ -115,16 +116,22 @@ private module IteratorDefUse {
 
   private CallInstruction getCall(ArgumentOperand operand) { result.getAnOperand() = operand }
 
+  pragma[nomagic]
+  private predicate useHasValue(UseImpl use, Instruction value, Instruction address) {
+    exists(StoreInstruction store |
+      store = use.getPruningUse().getAnUltimateValue().asInstruction() and
+      value = store.getSourceValue() and
+      address = store.getDestinationAddress()
+    )
+  }
+
   /**
    * Gets a `CallInstruction` that targets an iterator-returning function that was
    * used to construct the value used by `use`.
    */
+  pragma[assume_small_delta, nomagic]
   private CallInstruction getAnIteratorAccess(UseImpl use) {
-    exists(Instruction value, StoreInstruction store |
-      // Get the ultimiate definition of this use.
-      store = use.getPruningUse().getAnUltimateValue().asInstruction() and
-      value = store.getSourceValue()
-    |
+    exists(Instruction value, Instruction address | useHasValue(use, value, address) |
       // We're done if it's a call that targets an iterator-returning function.
       if value.(CallInstruction).getStaticCallTarget() instanceof Iterator::GetIteratorFunction
       then result = value
@@ -135,10 +142,7 @@ private module IteratorDefUse {
           conversionFlow(operand, value, _)
           or
           // ... and dereferences.
-          exists(CallInstruction call |
-            isDereference(call, operand) and
-            operandForfullyConvertedCall(store.getDestinationAddressOperand(), call)
-          )
+          isDereference(address, operand)
         |
           result = getAnIteratorAccess(any(UseImpl priorUse | priorUse.getOperand() = operand))
         )
@@ -162,6 +166,8 @@ private module IteratorDefUse {
    * Holds if `use` is a use of an iterator that is obtained by calling an iterator-returning
    * function that returns an iterator to the container represented by `containerUse`.
    */
+  pragma[assume_small_delta, nomagic]
+  cached
   predicate isIteratorUse(DirectUse use, DirectUse containerUse) {
     exists(DirectUse iteratorUse |
       // Consider an example like:
@@ -184,6 +190,8 @@ private module IteratorDefUse {
    * Holds if `def` is a definition of an iterator that implicitly stores a value into a
    * container through an iterator represented by `containerUse`.
    */
+  pragma[assume_small_delta, nomagic]
+  cached
   predicate isIteratorDef(DirectDef def, DirectUse containerUse) {
     exists(UseImpl iteratorUse |
       // Consider an example like:

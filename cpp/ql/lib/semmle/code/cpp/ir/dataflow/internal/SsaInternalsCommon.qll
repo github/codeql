@@ -99,6 +99,7 @@ class PointerOrReferenceType extends Cpp::DerivedType {
  * (i.e., `countIndirections(e.getUnspecifiedType())`).
  */
 private int countIndirections(Type t) {
+  DataFlowImplCommon::forceCachingInSameStage() and
   result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
   or
   not exists(Indirection ind | ind.getType() = t) and
