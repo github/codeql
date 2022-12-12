@@ -265,7 +265,7 @@ module Restify {
     /**
      * Gets the formatter handler installed by this setup.
      */
-    DataFlow::FunctionNode getAFormatterHandler() { formatters.hasPropertyWrite(_, result) }
+    DataFlow::FunctionNode getAFormatterHandler() { result = formatters.getAPropertyWrite().getRhs().getALocalSource() }
   }
 
   /**
