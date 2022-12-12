@@ -14,5 +14,5 @@ extensions:
     data: []
   - addsTo:
       pack: codeql/java-all
-      extensible: extNegativeSummaryModel
+      extensible: extNeutralModel
     data: []

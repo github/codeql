@@ -40,11 +40,15 @@ open class KotlinUsesExtractor(
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
 ) {
-    val javaLangObject by lazy {
-        val result = pluginContext.referenceClass(FqName("java.lang.Object"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    fun referenceExternalClass(name: String) =
+        pluginContext.referenceClass(FqName(name))?.owner.also {
+            if (it == null)
+                logger.warn("Unable to resolve external class $name")
+            else
+                extractExternalClassLater(it)
+        }
+
+    val javaLangObject by lazy { referenceExternalClass("java.lang.Object") }
 
     val javaLangObjectType by lazy {
         javaLangObject?.typeWith()
@@ -885,11 +889,7 @@ open class KotlinUsesExtractor(
             else -> null
         }
 
-    val javaUtilCollection by lazy {
-        val result = pluginContext.referenceClass(FqName("java.util.Collection"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    val javaUtilCollection by lazy { referenceExternalClass("java.util.Collection") }
 
     val wildcardCollectionType by lazy {
         javaUtilCollection?.let {
@@ -1152,11 +1152,7 @@ open class KotlinUsesExtractor(
         return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
-    val javaLangClass by lazy {
-        val result = pluginContext.referenceClass(FqName("java.lang.Class"))?.owner
-        result?.let { extractExternalClassLater(it) }
-        result
-    }
+    val javaLangClass by lazy { referenceExternalClass("java.lang.Class") }
 
     fun kClassToJavaClass(t: IrType): IrType {
         when(t) {
