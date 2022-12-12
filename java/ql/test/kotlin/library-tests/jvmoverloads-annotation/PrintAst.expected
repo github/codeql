@@ -72,7 +72,7 @@ test.kt:
 #   45|       5: [BlockStmt] { ... }
 #   45|         0: [ReturnStmt] return ...
 #   45|           0: [VarAccess] a
-#   45|     5: [Method] testExtensionFunction$default
+#   45|     5: [ExtensionMethod] testExtensionFunction$default
 #   45|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   45|         0: [Parameter] p0
@@ -116,7 +116,7 @@ test.kt:
 #   45|         2: [ReturnStmt] return ...
 #   45|           0: [MethodAccess] testExtensionFunction(...)
 #   45|             -1: [TypeAccess] TestKt
-#   45|             0: [VarAccess] p0
+#   45|             0: [ExtensionReceiverAccess] this
 #   45|             1: [VarAccess] p1
 #   45|             2: [VarAccess] p2
 #   45|             3: [VarAccess] p3
@@ -356,9 +356,9 @@ test.kt:
 #   12|         0: [ReturnStmt] return ...
 #   12|           0: [MethodAccess] testMemberExtensionFunction$default(...)
 #   12|             -1: [TypeAccess] Test
-#    0|             0: [ExtensionReceiverAccess] this
-#    0|             1: [ThisAccess] Test.this
+#    0|             0: [ThisAccess] Test.this
 #    0|               0: [TypeAccess] Test
+#    0|             1: [ExtensionReceiverAccess] this
 #    0|             2: [VarAccess] a
 #    1|             3: [NullLiteral] null
 #    0|             4: [VarAccess] c
@@ -383,9 +383,9 @@ test.kt:
 #   12|         0: [ReturnStmt] return ...
 #   12|           0: [MethodAccess] testMemberExtensionFunction$default(...)
 #   12|             -1: [TypeAccess] Test
-#    0|             0: [ExtensionReceiverAccess] this
-#    0|             1: [ThisAccess] Test.this
+#    0|             0: [ThisAccess] Test.this
 #    0|               0: [TypeAccess] Test
+#    0|             1: [ExtensionReceiverAccess] this
 #    0|             2: [VarAccess] a
 #    0|             3: [VarAccess] b
 #    0|             4: [VarAccess] c
@@ -411,13 +411,13 @@ test.kt:
 #   12|       5: [BlockStmt] { ... }
 #   12|         0: [ReturnStmt] return ...
 #   12|           0: [VarAccess] a
-#   12|     13: [Method] testMemberExtensionFunction$default
+#   12|     13: [ExtensionMethod] testMemberExtensionFunction$default
 #   12|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   12|         0: [Parameter] p0
-#   12|           0: [TypeAccess] Test2
-#   12|         1: [Parameter] p1
 #   12|           0: [TypeAccess] Test
+#   12|         1: [Parameter] p1
+#   12|           0: [TypeAccess] Test2
 #   12|         2: [Parameter] p2
 #   12|           0: [TypeAccess] int
 #   12|         3: [Parameter] p3
@@ -456,8 +456,8 @@ test.kt:
 #   12|               1: [FloatLiteral] 1.0
 #   12|         2: [ReturnStmt] return ...
 #   12|           0: [MethodAccess] testMemberExtensionFunction(...)
-#   12|             -1: [VarAccess] p1
-#   12|             0: [VarAccess] p0
+#   12|             -1: [VarAccess] p0
+#   12|             0: [ExtensionReceiverAccess] this
 #   12|             1: [VarAccess] p2
 #   12|             2: [VarAccess] p3
 #   12|             3: [VarAccess] p4

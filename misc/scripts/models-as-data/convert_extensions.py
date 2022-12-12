@@ -74,8 +74,8 @@ class Converter:
         summaries = self.getAddsTo("ExtractSummaries.ql", helpers.summaryModelPredicate)
         sources = self.getAddsTo("ExtractSources.ql", helpers.sourceModelPredicate)
         sinks = self.getAddsTo("ExtractSinks.ql", helpers.sinkModelPredicate)
-        negativeSummaries = self.getAddsTo("ExtractNegativeSummaries.ql", helpers.negativeSummaryModelPredicate)
-        return merge(sources, sinks, summaries, negativeSummaries)
+        neutrals = self.getAddsTo("ExtractNeutrals.ql", helpers.neutralModelPredicate)
+        return merge(sources, sinks, summaries, neutrals)
 
 
     def save(self, extensions):

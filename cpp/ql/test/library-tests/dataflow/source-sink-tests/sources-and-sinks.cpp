@@ -40,3 +40,13 @@ void test_scanf(FILE *stream, int *d, char *buf) {
   scanf("%d %s", d, buf); // $ local_source=40:18 local_source=40:21
   fscanf(stream, "%d %s", d, buf);  // $ remote_source=41:27 remote_source=41:30
 }
+
+struct addrinfo;
+
+int getaddrinfo(const char *hostname, const char *servname,
+                const struct addrinfo *hints, struct addrinfo **res);
+
+void test_inet(char *hostname, char *servname, struct addrinfo *hints) {
+  addrinfo *res;
+  int ret = getaddrinfo(hostname, servname, hints, &res); // $ remote_source
+}

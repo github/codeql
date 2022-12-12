@@ -1,7 +1,7 @@
 package foo.bar
 
-fun Int.fooBarTopLevelMethodExt(x: Int) {}
+fun String.fooBarTopLevelMethodExt(x: Int = 1) {}
 
 class Class3 {
-    fun Int.fooBarTopLevelMethodExt(x: Int) {}
+    fun String.fooBarMethodExt(x: Int = 1) {}
 }
