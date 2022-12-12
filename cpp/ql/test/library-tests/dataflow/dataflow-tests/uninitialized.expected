@@ -34,3 +34,6 @@
 | test.cpp:448:7:448:11 | local | test.cpp:449:18:449:22 | local |
 | test.cpp:448:7:448:11 | local | test.cpp:450:8:450:12 | local |
 | test.cpp:448:7:448:11 | local | test.cpp:451:9:451:13 | local |
+| test.cpp:517:7:517:16 | stackArray | test.cpp:519:3:519:12 | stackArray |
+| test.cpp:517:7:517:16 | stackArray | test.cpp:520:3:520:12 | stackArray |
+| test.cpp:517:7:517:16 | stackArray | test.cpp:521:8:521:17 | stackArray |

@@ -512,3 +512,11 @@ void viaOutparamMissingReturn() {
   intOutparamSourceMissingReturn(&x);
   sink(x); // $ ast MISSING: ir
 }
+
+void uncertain_definition() {
+  int stackArray[2];
+  int clean = 0;
+  stackArray[0] = source();
+  stackArray[1] = clean;
+  sink(stackArray[0]); // $ ast=519:19 SPURIOUS: ast=517:7 MISSING: ir
+}
