@@ -286,19 +286,7 @@ module SemanticExprConfig {
     )
   }
 
-  class Bound instanceof IRBound::Bound {
-    string toString() { result = super.toString() }
-
-    final Location getLocation() { result = super.getLocation() }
-  }
-
-  private class ValueNumberBound extends Bound {
-    IRBound::ValueNumberBound bound;
-
-    ValueNumberBound() { bound = this }
-
-    override string toString() { result = bound.toString() }
-  }
+  class Bound = IRBound::Bound;
 
   predicate zeroBound(Bound bound) { bound instanceof IRBound::ZeroBound }
 
