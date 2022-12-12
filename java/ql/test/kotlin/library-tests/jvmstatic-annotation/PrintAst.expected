@@ -157,6 +157,8 @@ test.kt:
 #   17|               0: [KtInitializerAssignExpr] ...=...
 #   17|                 0: [VarAccess] nonStaticProp
 #   13|       2: [Method] staticMethod
+#-----|         1: (Annotations)
+#   13|           1: [Annotation] JvmStatic
 #   13|         3: [TypeAccess] String
 #-----|         4: (Parameters)
 #   13|           0: [Parameter] s
@@ -217,6 +219,8 @@ test.kt:
 #   17|                 -1: [ThisAccess] this
 #   17|               1: [VarAccess] <set-?>
 #   20|       10: [Method] getPropWithStaticGetter
+#-----|         1: (Annotations)
+#   20|           1: [Annotation] JvmStatic
 #   20|         3: [TypeAccess] String
 #   20|         5: [BlockStmt] { ... }
 #   20|           0: [ReturnStmt] return ...
@@ -239,6 +243,8 @@ test.kt:
 #   24|             0: [MethodAccess] getPropWithStaticGetter(...)
 #   24|               -1: [ThisAccess] this
 #   25|       13: [Method] setPropWithStaticSetter
+#-----|         1: (Annotations)
+#   25|           1: [Annotation] JvmStatic
 #   25|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   25|           0: [Parameter] s
@@ -307,6 +313,8 @@ test.kt:
 #   37|             0: [KtInitializerAssignExpr] ...=...
 #   37|               0: [VarAccess] nonStaticProp
 #   33|     2: [Method] staticMethod
+#-----|       1: (Annotations)
+#   33|         1: [Annotation] JvmStatic
 #   33|       3: [TypeAccess] String
 #-----|       4: (Parameters)
 #   33|         0: [Parameter] s
@@ -370,6 +378,8 @@ test.kt:
 #   37|               -1: [ThisAccess] this
 #   37|             1: [VarAccess] <set-?>
 #   40|     10: [Method] getPropWithStaticGetter
+#-----|       1: (Annotations)
+#   40|         1: [Annotation] JvmStatic
 #   40|       3: [TypeAccess] String
 #   40|       5: [BlockStmt] { ... }
 #   40|         0: [ReturnStmt] return ...
@@ -393,6 +403,8 @@ test.kt:
 #   44|           0: [MethodAccess] getPropWithStaticGetter(...)
 #   44|             -1: [TypeAccess] NonCompanion
 #   45|     13: [Method] setPropWithStaticSetter
+#-----|       1: (Annotations)
+#   45|         1: [Annotation] JvmStatic
 #   45|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   45|         0: [Parameter] s
