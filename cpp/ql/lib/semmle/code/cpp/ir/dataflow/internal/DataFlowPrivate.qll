@@ -304,24 +304,19 @@ predicate clearsContent(Node n, Content c) {
 predicate expectsContent(Node n, ContentSet c) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-IRType getNodeType(Node n) {
-  suppressUnusedNode(n) and
-  result instanceof IRVoidType // stub implementation
-}
+DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a type returned by `getNodeType`. */
-string ppReprType(IRType t) { none() } // stub implementation
+string ppReprType(DataFlowType t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(IRType t1, IRType t2) {
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   any() // stub implementation
 }
-
-private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -341,7 +336,13 @@ class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = IRType;
+private newtype TDataFlowType =
+  TTodoDataFlowType() or
+  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+
+class DataFlowType extends TDataFlowType {
+  string toString() { result = "" }
+}
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
