@@ -24,6 +24,7 @@ private import ConceptsImports
  * to improve our libraries in the future to more precisely capture this aspect.
  */
 module Cryptography {
+  import semmle.python.concepts.CryptoAlgorithms
   // class CryptographicAlgorithm = CryptoAlgorithms::CryptographicAlgorithm;
 
   // class EncryptionAlgorithm = CryptoAlgorithms::EncryptionAlgorithm;
@@ -55,9 +56,6 @@ module Cryptography {
      * This may have no result - for example if the `CryptographicAlgorithm` used
      * is a stream cipher rather than a block cipher.
      */
-    // TODO: modify to use raw to get unknown, return blockmode unknown (set a blockmode unknown)
-    //       make a module blockmode
-    //       make getblock mode final, and change all extending to use raw
     final BlockMode getBlockMode() { 
       if isKnownCipherBlockModeAlgorithm(super.getBlockModeRaw()) then
         result = super.getBlockModeRaw()
