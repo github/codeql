@@ -32,7 +32,7 @@ private newtype TDefOrUseImpl =
   TDefImpl(Operand address) { isDef(_, _, address, _, _, _) } or
   TUseImpl(Operand operand) {
     isUse(_, operand, _, _, _) and
-    not isDef(_, _, operand, _, _, _)
+    not isDef(true, _, operand, _, _, _)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
