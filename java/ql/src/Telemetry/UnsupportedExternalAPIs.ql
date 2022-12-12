@@ -12,7 +12,7 @@ import ExternalApi
 
 private predicate relevant(ExternalApi api) {
   not api.isSupported() and
-  not api = any(FlowSummaryImpl::Public::NegativeSummarizedCallable nsc).asCallable()
+  not api = any(FlowSummaryImpl::Public::NeutralCallable nsc).asCallable()
 }
 
 from string apiName, int usages

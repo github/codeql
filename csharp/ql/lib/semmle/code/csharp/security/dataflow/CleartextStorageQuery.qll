@@ -56,6 +56,4 @@ class ProtectSanitizer extends Sanitizer {
 /**
  * An external location sink.
  */
-class ExternalSink extends Sink {
-  ExternalSink() { this instanceof ExternalLocationSink }
-}
+class ExternalSink extends Sink instanceof ExternalLocationSink { }

@@ -12,8 +12,8 @@ private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSumma
 private import ExternalApi
 
 private predicate relevant(ExternalApi api) {
-  api.isSupported() or
-  api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
+    api.isSupported() or
+    api instanceof FlowSummaryImpl::Public::NeutralCallable
 }
 
 from string info, int usages

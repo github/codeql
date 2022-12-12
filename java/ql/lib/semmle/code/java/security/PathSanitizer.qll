@@ -298,8 +298,9 @@ private class PathNormalizeSanitizer extends MethodAccess {
  * what `getQualifier` actually gets in Java and Kotlin.
  */
 private Expr getVisualQualifier(MethodAccess ma) {
-  if getSourceMethod(ma.getMethod()) instanceof ExtensionMethod
-  then result = ma.getArgument(0)
+  if ma.getMethod() instanceof ExtensionMethod
+  then
+    result = ma.getArgument(ma.getMethod().(ExtensionMethod).getExtensionReceiverParameterIndex())
   else result = ma.getQualifier()
 }
 
@@ -310,8 +311,11 @@ private Expr getVisualQualifier(MethodAccess ma) {
  */
 bindingset[argPos]
 private Argument getVisualArgument(MethodAccess ma, int argPos) {
-  if getSourceMethod(ma.getMethod()) instanceof ExtensionMethod
-  then result = ma.getArgument(argPos + 1)
+  if ma.getMethod() instanceof ExtensionMethod
+  then
+    result =
+      ma.getArgument(argPos + ma.getMethod().(ExtensionMethod).getExtensionReceiverParameterIndex() +
+          1)
   else result = ma.getArgument(argPos)
 }
 
