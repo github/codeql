@@ -56,6 +56,7 @@ jobs:
           echo "SARIF_PATH=${SARIF_PATH}" >> "${GITHUB_ENV}"
 
           codeql database analyze \
+            --threads=0 \
             --format sarif-latest \
             --output "${SARIF_PATH}" \
             --sarif-group-rules-by-pack \
