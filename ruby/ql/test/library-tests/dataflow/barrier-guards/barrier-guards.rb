@@ -277,3 +277,8 @@ foos = [f, g]
 if foos.include? foo
     foo # $ guarded
 end
+
+foos = [f, g, some_method_call]
+if foos.include? foo
+    foo
+end
