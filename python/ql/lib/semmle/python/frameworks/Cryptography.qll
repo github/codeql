@@ -193,20 +193,11 @@ private module CryptographyModel {
         algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
             call.getArg(0), call.getArgByName("algorithm")
           ] and
-        exists(DataFlow::Node modeArg, string foundMode | modeArg in [call.getArg(1), call.getArgByName("mode")] |
-          (
-            // Find the used mode name
-            if modeArg = modeClassRef(_).getReturn().getAValueReachableFromSource()
-            then modeArg = modeClassRef(foundMode).getReturn().getAValueReachableFromSource()
-            else foundMode = unknownAlgorithmStub()
-          )
-          and
-          (
-            // check the found mode name, setting modeName to the unknown stub if not a known algorithm
-            if isKnownCipherBlockModeAlgorithm(foundMode)
-            then modeName = foundMode
-            else modeName = unknownAlgorithmStub()
-          )
+        exists(DataFlow::Node modeArg | modeArg in [call.getArg(1), call.getArgByName("mode")] |
+          // Find the used mode name
+          if modeArg = modeClassRef(_).getReturn().getAValueReachableFromSource()
+          then modeArg = modeClassRef(modeName).getReturn().getAValueReachableFromSource()
+          else modeName = unknownAlgorithm()
         )
 
       )
@@ -229,13 +220,14 @@ private module CryptographyModel {
               .getACall()
       }
 
-      override Cryptography::CryptographicAlgorithm getAlgorithm() {
-        result.matchesName(algorithmName)
+      override string getAlgorithmRaw() {
+        //result.matchesName(algorithmName)
+        result = algorithmName
       }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-      override Cryptography::BlockMode getBlockMode() { result = modeName }
+      override string getBlockModeRaw() { result = modeName }
     }
   }
 
@@ -281,13 +273,14 @@ private module CryptographyModel {
         this = hashInstance(algorithmName).getMember("update").getACall()
       }
 
-      override Cryptography::CryptographicAlgorithm getAlgorithm() {
-        result.matchesName(algorithmName)
+      override string getAlgorithmRaw() {
+        //result.matchesName(algorithmName)
+        result = algorithmName
       }
 
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-      override Cryptography::BlockMode getBlockMode() { none() }
+      override string getBlockModeRaw() { none() }
     }
   }
 }

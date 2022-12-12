@@ -11,6 +11,7 @@
  */
 
 import semmle.python.concepts.internal.CryptoAlgorithmNames
+import semmle.python.concepts.CryptoAlgorithms
 private import ConceptsImports
 
 
@@ -23,13 +24,13 @@ private import ConceptsImports
  * to improve our libraries in the future to more precisely capture this aspect.
  */
 module Cryptography {
-  class CryptographicAlgorithm = CryptoAlgorithms::CryptographicAlgorithm;
+  // class CryptographicAlgorithm = CryptoAlgorithms::CryptographicAlgorithm;
 
-  class EncryptionAlgorithm = CryptoAlgorithms::EncryptionAlgorithm;
+  // class EncryptionAlgorithm = CryptoAlgorithms::EncryptionAlgorithm;
 
-  class HashingAlgorithm = CryptoAlgorithms::HashingAlgorithm;
+  // class HashingAlgorithm = CryptoAlgorithms::HashingAlgorithm;
 
-  class PasswordHashingAlgorithm = CryptoAlgorithms::PasswordHashingAlgorithm;
+  // class PasswordHashingAlgorithm = CryptoAlgorithms::PasswordHashingAlgorithm;
 
   /**
    * A data-flow node that is an application of a cryptographic algorithm. For example,
@@ -40,17 +41,30 @@ module Cryptography {
    */
   class CryptographicOperation extends DataFlow::Node instanceof CryptographicOperation::Range {
     /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-    CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
+    CryptographicAlgorithm getAlgorithm() { 
+      result.matchesName(super.getAlgorithmRaw()) or 
+      not exists(CryptographicAlgorithm algo | algo.matchesName(super.getAlgorithmRaw())) and result instanceof UnknownAlgorithm }
+
 
     /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
     DataFlow::Node getAnInput() { result = super.getAnInput() }
+
 
     /**
      * Gets the block mode used to perform this cryptographic operation.
      * This may have no result - for example if the `CryptographicAlgorithm` used
      * is a stream cipher rather than a block cipher.
      */
-    BlockMode getBlockMode() { result = super.getBlockMode() }
+    // TODO: modify to use raw to get unknown, return blockmode unknown (set a blockmode unknown)
+    //       make a module blockmode
+    //       make getblock mode final, and change all extending to use raw
+    final BlockMode getBlockMode() { 
+      if isKnownCipherBlockModeAlgorithm(super.getBlockModeRaw()) then
+        result = super.getBlockModeRaw()
+      else
+        result = BlockMode::unknown()
+    }
+
   }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
@@ -63,38 +77,53 @@ module Cryptography {
      * extend `CryptographicOperation` instead.
      */
     abstract class Range extends DataFlow::Node {
-      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-      abstract CryptographicAlgorithm getAlgorithm();
+      /** Gets the raw algorithm used, i.e., the algorithm extracted directly from the source*/
+      abstract string getAlgorithmRaw();
+
 
       /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
       abstract DataFlow::Node getAnInput();
 
-      /**
-       * Gets the block mode used to perform this cryptographic operation.
-       * This may have no result - for example if the `CryptographicAlgorithm` used
-       * is a stream cipher rather than a block cipher.
-       */
-      abstract BlockMode getBlockMode();
+      /** Gets the raw block mode used, i.e., the block mode extracted directly from the source*/
+      abstract string getBlockModeRaw();
     }
   }
+
 
   /**
    * A cryptographic block cipher mode of operation. This can be used to encrypt
    * data of arbitrary length using a block encryption algorithm.
    */
   class BlockMode extends string {
-    BlockMode() { isKnownCipherBlockModeAlgorithm(this) or this = unknownAlgorithmStub()}
+    BlockMode() { 
+      isKnownCipherBlockModeAlgorithm(this) or 
+      (not isKnownCipherBlockModeAlgorithm(this) and this = BlockMode::unknown())
+    }
 
     /** 
-     * Holds if this block mode is considered to be insecure. 
-     * Assumed weak if the mode is not known.
+     * Holds if this block mode is known and considered to be insecure. 
+     * NOTE: if the algorithm is not known, no assessment is made on if it is secure.
+     *       Users should use the `isUnknown` predicate specifically to make their 
+     *       own assessment in these conditions.  
     */
-    predicate isWeak() {isWeakCipherBlockModeAlgorithm(this) or not isKnownCipherBlockModeAlgorithm(this)}
+    predicate isWeak() {
+      isWeakCipherBlockModeAlgorithm(this)
+    }
 
     /**
-     * Holds if this block mode is a known block mode
+     * Holds if this block mode is not a known block mode
      */
-    predicate isKnown() {isKnownCipherBlockModeAlgorithm(this)}
+    predicate isUnknown() {
+      not isKnownCipherBlockModeAlgorithm(this)
+    }
+  }
+
+  module BlockMode
+  {
+    BlockMode unknown()
+    {
+      result = unknownAlgorithm()
+    }
   }
 }
 

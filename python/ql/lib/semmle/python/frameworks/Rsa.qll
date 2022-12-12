@@ -36,13 +36,16 @@ private module Rsa {
   class RsaEncryptCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaEncryptCall() { this = API::moduleImport("rsa").getMember("encrypt").getACall() }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
+    override string getAlgorithmRaw() { 
+      result = "RSA"
+      //result.getName() = "RSA" 
+    }
 
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("message")]
     }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 
   /**
@@ -53,11 +56,14 @@ private module Rsa {
   class RsaDecryptCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaDecryptCall() { this = API::moduleImport("rsa").getMember("decrypt").getACall() }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
+    override string getAlgorithmRaw() { 
+      result = "RSA"
+      //result.getName() = "RSA" 
+    }
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("crypto")] }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 
   /**
@@ -68,23 +74,31 @@ private module Rsa {
   class RsaSignCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaSignCall() { this = API::moduleImport("rsa").getMember("sign").getACall() }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() {
+    override string getAlgorithmRaw() {
       // signature part
-      result.getName() = "RSA"
+      result = "RSA"
       or
       // hashing part
       exists(StrConst str, DataFlow::Node hashNameArg |
         hashNameArg in [this.getArg(2), this.getArgByName("hash_method")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
-        result.matchesName(str.getText())
-      )
+        result = str.getText())
+      // // signature part
+      // result.getName() = "RSA"
+      // or
+      // // hashing part
+      // exists(StrConst str, DataFlow::Node hashNameArg |
+      //   hashNameArg in [this.getArg(2), this.getArgByName("hash_method")] and
+      //   DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
+      //   result.matchesName(str.getText())
+      // )
     }
 
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("message")]
     }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override Cryptography::BlockMode getBlockModeRaw() { none() }
   }
 
   /**
@@ -95,10 +109,11 @@ private module Rsa {
   class RsaVerifyCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaVerifyCall() { this = API::moduleImport("rsa").getMember("verify").getACall() }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() {
+    override string getAlgorithmRaw() {
       // note that technically there is also a hashing operation going on but we don't
       // know what algorithm is used up front, since it is encoded in the signature
-      result.getName() = "RSA"
+      result = "RSA"
+      //result.getName() = "RSA"
     }
 
     override DataFlow::Node getAnInput() {
@@ -107,7 +122,7 @@ private module Rsa {
       result in [this.getArg(1), this.getArgByName("signature")]
     }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 
   /**
@@ -119,19 +134,23 @@ private module Rsa {
     DataFlow::CallCfgNode {
     RsaComputeHashCall() { this = API::moduleImport("rsa").getMember("compute_hash").getACall() }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() {
+    override string getAlgorithmRaw() {
       exists(StrConst str, DataFlow::Node hashNameArg |
         hashNameArg in [this.getArg(1), this.getArgByName("method_name")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
-        result.matchesName(str.getText())
-      )
+        result = str.getText())
+      // exists(StrConst str, DataFlow::Node hashNameArg |
+      //   hashNameArg in [this.getArg(1), this.getArgByName("method_name")] and
+      //   DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
+      //   result.matchesName(str.getText())
+      // )
     }
 
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("message")]
     }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 
   /**
@@ -142,12 +161,14 @@ private module Rsa {
   class RsaSignHashCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
     RsaSignHashCall() { this = API::moduleImport("rsa").getMember("sign_hash").getACall() }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
+    override string getAlgorithmRaw() { 
+      result = "RSA"
+    }
 
     override DataFlow::Node getAnInput() {
       result in [this.getArg(0), this.getArgByName("hash_value")]
     }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 }

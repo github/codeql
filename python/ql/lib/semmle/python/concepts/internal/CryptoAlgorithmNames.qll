@@ -13,10 +13,11 @@
   * Returns a string to represent generally unknown algorithms. 
   * To be used in place of hardcoded strings representing 'unknown' to maintain consistency.
   */
- string unknownAlgorithmStub()
+ string unknownAlgorithm()
  {
-  result = "<None or Unknown>"
+  result = "UNKNOWN"
  }
+
 
  /**
   * Holds if `name` is a known hashing algorithm in the model/library.
@@ -32,7 +33,7 @@
 predicate isStrongHashingAlgorithm(string name) {
   name =
     [
-      "DSA", "ED25519", "ES256", "ECDSA256", "ES384", "ECDSA384", "ES512", "ECDSA512", "SHA2",
+      "BLAKE2", "BLAKE2b", "BLAKE2s", "DSA", "ED25519", "ES256", "ECDSA256", "ES384", "ECDSA384", "ES512", "ECDSA512", "SHA2",
       "SHA224", "SHA256", "SHA384", "SHA512", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512", 
       "SHAKE128", "SHAKE256"
     ]
@@ -67,7 +68,7 @@ predicate isStrongEncryptionAlgorithm(string name) {
       "AES", "AES128", "AES192", "AES256", "AES512", "AES-128", "AES-192", "AES-256", "AES-512",
       "ARIA", "BLOWFISH", "BF", "ECIES", "CAST", "CAST5", "CAMELLIA", "CAMELLIA128", "CAMELLIA192",
       "CAMELLIA256", "CAMELLIA-128", "CAMELLIA-192", "CAMELLIA-256", "CHACHA", "GOST", "GOST89",
-      "IDEA", "RABBIT", "RSA", "SEED", "SM4"
+      "IDEA", "RABBIT", "RSA", "SEED", "SM3", "SM4"
     ]
 }
 

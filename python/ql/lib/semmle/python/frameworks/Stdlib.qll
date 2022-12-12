@@ -2669,11 +2669,14 @@ private module StdlibPrivate {
       exists(this.getParameter(1, "data"))
     }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+    override string getAlgorithmRaw() { 
+      //result.matchesName(hashName) 
+      result = hashName
+    }
 
     override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").asSink() }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 
   /**
@@ -2686,11 +2689,14 @@ private module StdlibPrivate {
       this = hashlibNewCall(hashName).getReturn().getMember("update").getACall()
     }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+    override string getAlgorithmRaw() { 
+      //result.matchesName(hashName) 
+      result = hashName
+    }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 
   /** Helper predicate for the `HashLibGenericHashOperation` charpred, to prevent a bad join order. */
@@ -2713,9 +2719,12 @@ private module StdlibPrivate {
     bindingset[this]
     HashlibGenericHashOperation() { hashClass = hashlibMember(hashName) }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+    override string getAlgorithmRaw() { 
+      //result.matchesName(hashName) 
+      result = hashName
+    }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 
   /**

@@ -9,7 +9,7 @@ private import internal.CryptoAlgorithmNames
 /**
  * A cryptographic algorithm.
  */
-private newtype TCryptographicAlgorithm =
+private newtype TCryptographicAlgorithm = 
   MkHashingAlgorithm(string name, boolean isWeak) {
     isStrongHashingAlgorithm(name) and isWeak = false
     or
@@ -25,6 +25,21 @@ private newtype TCryptographicAlgorithm =
     or
     isWeakPasswordHashingAlgorithm(name) and isWeak = true
   }
+  or
+  MkUnknown() 
+  
+//add an unknown algorithm extends mkUnknown, isUnknown returns any and weak yes
+class UnknownAlgorithm extends MkUnknown, CryptographicAlgorithm {
+  override predicate isUnknown() { any() }
+
+  override string getName() { result = unknownAlgorithm() }
+
+  override predicate isWeak() { any() }
+
+  bindingset[name]
+  override predicate matchesName(string name) { none()}
+
+}
 
 /**
  * A cryptographic algorithm.
@@ -53,6 +68,17 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
    * Holds if this algorithm is weak.
    */
   abstract predicate isWeak();
+
+  // /** Gets the raw algorithm used, i.e., the algorithm extracted directly from the source*/
+  // abstract string getAlgorithmRaw();
+
+  // /** Gets the raw block mode used, i.e., the block mode extracted directly from the source*/
+  // abstract string getBlockModeRaw();
+
+  /**
+   * Holds if this algorithm is not known.
+   */
+  predicate isUnknown() { this instanceof UnknownAlgorithm }
 }
 
 /**

@@ -125,7 +125,10 @@ private module CryptodomeModel {
       this = newCall.getReturn().getMember(methodName).getACall()
     }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(cipherName) }
+    override string getAlgorithmRaw() { 
+      //result.matchesName(cipherName) 
+      result = cipherName
+    }
 
     override DataFlow::Node getAnInput() {
       methodName = "encrypt" and
@@ -157,31 +160,23 @@ private module CryptodomeModel {
         ]
     }
 
-    override Cryptography::BlockMode getBlockMode() {
-      // `modeName` is of the form "MODE_<BlockMode>"
-      exists(string foundMode |
-        newCall.getArg(1) =
-          API::moduleImport(["Crypto", "Cryptodome"])
-              .getMember("Cipher")
-              .getMember(cipherName)
-              .getMember(foundMode)
-              .getAValueReachableFromSource()
-      |
-        if isKnownCipherBlockModeAlgorithm(foundMode)
-        then result = foundMode.splitAt("_", 1)
-        else result = unknownAlgorithmStub()
-      )
-      or
-      (
-        not exists(string modeName |
-          newCall.getArg(1) =
-            API::moduleImport(["Crypto", "Cryptodome"])
-                .getMember("Cipher")
-                .getMember(cipherName)
-                .getMember(modeName)
-                .getAValueReachableFromSource())
-        and result = unknownAlgorithmStub()
-      )
+    private predicate resolveModeName(string modeName)
+    {
+      newCall.getArg(1) =
+      API::moduleImport(["Crypto", "Cryptodome"])
+          .getMember("Cipher")
+          .getMember(cipherName)
+          .getMember(modeName)
+          .getAValueReachableFromSource()
+    }
+
+    override Cryptography::BlockMode getBlockModeRaw() {
+        // `modeName` is of the form "MODE_<BlockMode>"
+        exists(string modeName | 
+          if resolveModeName(modeName)
+          then result = modeName.splitAt("_", 1)
+          else modeName = unknownAlgorithm() and 
+              result = unknownAlgorithm())
     }
   }
 
@@ -205,8 +200,9 @@ private module CryptodomeModel {
             .getACall()
     }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() {
-      result.matchesName(signatureName)
+    override string getAlgorithmRaw() {
+      //result.matchesName(signatureName)
+      result = signatureName
     }
 
     override DataFlow::Node getAnInput() {
@@ -221,7 +217,7 @@ private module CryptodomeModel {
       )
     }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 
   /**
@@ -242,10 +238,13 @@ private module CryptodomeModel {
       )
     }
 
-    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+    override string getAlgorithmRaw() { 
+      //result.matchesName(hashName) 
+      result = hashName
+    }
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
 
-    override Cryptography::BlockMode getBlockMode() { none() }
+    override string getBlockModeRaw() { none() }
   }
 }
