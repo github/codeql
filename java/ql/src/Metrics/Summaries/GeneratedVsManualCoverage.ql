@@ -15,7 +15,7 @@ import utils.modelgenerator.internal.CaptureModels
  * for a given package and provenance.
  */
 bindingset[package]
-private float getNumMadModeledApis(string package, string provenance) {
+private int getNumMadModeledApis(string package, string provenance) {
   provenance in ["generated", "manual", "both"] and
   result =
     count(SummarizedCallable sc |
@@ -36,7 +36,7 @@ private float getNumMadModeledApis(string package, string provenance) {
 
 /** Returns the total number of `DataFlowTargetApi`s for a given package. */
 bindingset[package]
-private float getNumApis(string package) {
+private int getNumApis(string package) {
   result =
     count(DataFlowTargetApi dataFlowTargApi |
       package = dataFlowTargApi.getCompilationUnit().getPackage().getName()
@@ -44,8 +44,8 @@ private float getNumApis(string package) {
 }
 
 from
-  DataFlowTargetApi dataFlowTargApi, string package, float generatedOnly, float both,
-  float manualOnly, float non, float all, float generatedCoverage, float manualCoverage
+  DataFlowTargetApi dataFlowTargApi, string package, int generatedOnly, int both, int manualOnly,
+  int non, int all, float generatedCoverage, float manualCoverage
 where
   // bind `package` to a `DataFlowTargetApi` package name
   package = dataFlowTargApi.getCompilationUnit().getPackage().getName() and
@@ -57,8 +57,8 @@ where
   all = getNumApis(package) and
   non = all - (generatedOnly + both + manualOnly) and
   // Proportion of manual models covered by generated ones
-  generatedCoverage = (both / (both + manualOnly)) and
+  generatedCoverage = (both.(float) / (both + manualOnly)) and
   // Proportion of generated models covered by manual ones
-  manualCoverage = (both / (both + generatedOnly))
+  manualCoverage = (both.(float) / (both + generatedOnly))
 select package, generatedOnly, both, manualOnly, non, all, generatedCoverage, manualCoverage
   order by package
