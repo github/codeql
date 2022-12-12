@@ -57,6 +57,7 @@ jobs:
 
           codeql database analyze \
             --threads=0 \
+            --ram 50000 \
             --format sarif-latest \
             --output "${SARIF_PATH}" \
             --sarif-group-rules-by-pack \
