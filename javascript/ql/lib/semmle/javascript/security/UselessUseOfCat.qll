@@ -10,21 +10,17 @@ import Declarations.UnusedVariable
  * A call that executes a system command.
  * This class provides utility predicates for reasoning about command execution calls.
  */
-private class CommandCall extends DataFlow::InvokeNode {
-  SystemCommandExecution command;
-
-  CommandCall() { this = command }
-
+private class CommandCall extends DataFlow::InvokeNode instanceof SystemCommandExecution {
   /**
    * Holds if the call is synchronous (e.g. `execFileSync`).
    */
-  predicate isSync() { command.isSync() }
+  predicate isSync() { super.isSync() }
 
   /**
    * Gets a list that specifies the arguments given to the command.
    */
   DataFlow::ArrayCreationNode getArgumentList() {
-    result = command.getArgumentList().getALocalSource()
+    result = super.getArgumentList().getALocalSource()
   }
 
   /**
@@ -42,7 +38,7 @@ private class CommandCall extends DataFlow::InvokeNode {
   /**
    * Gets the data-flow node (if it exists) for an options argument for an `exec`-like call.
    */
-  DataFlow::Node getOptionsArg() { result = command.getOptionsArg() }
+  DataFlow::Node getOptionsArg() { result = super.getOptionsArg() }
 
   /**
    * Gets the constant-string parts that are not part of the command itself.
@@ -99,7 +95,6 @@ private string getConstantStringParts(DataFlow::Node node) {
  */
 class UselessCat extends CommandCall {
   UselessCat() {
-    this = command and
     this.isACallTo(getACatExecuteable()) and
     // There is a file to read, it's not just spawning `cat`.
     not (

@@ -25,8 +25,7 @@ module IndirectCommandInjection {
   /**
    * A source of user input from the command-line, considered as a flow source for command injection.
    */
-  private class CommandLineArgumentsArrayAsSource extends Source {
-    CommandLineArgumentsArrayAsSource() { this instanceof CommandLineArgumentsArray }
+  private class CommandLineArgumentsArrayAsSource extends Source instanceof CommandLineArgumentsArray {
   }
 
   /**

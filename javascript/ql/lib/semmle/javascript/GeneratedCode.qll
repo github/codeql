@@ -16,8 +16,7 @@ abstract class GeneratedCodeMarkerComment extends Comment { }
 /**
  * A source mapping comment, viewed as a marker comment indicating generated code.
  */
-private class SourceMappingCommentMarkerComment extends GeneratedCodeMarkerComment {
-  SourceMappingCommentMarkerComment() { this instanceof SourceMappingComment }
+private class SourceMappingCommentMarkerComment extends GeneratedCodeMarkerComment instanceof SourceMappingComment {
 }
 
 /**
