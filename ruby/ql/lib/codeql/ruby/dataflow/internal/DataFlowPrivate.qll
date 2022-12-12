@@ -1146,6 +1146,7 @@ private module OutNodes {
 }
 
 import OutNodes
+private import codeql.ruby.frameworks.ActionControllerFilters
 
 predicate jumpStep(Node pred, Node succ) {
   SsaImpl::captureFlowIn(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
@@ -1157,6 +1158,8 @@ predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+  or
+  ActionControllerFilters::additionalJumpStep(pred, succ)
 }
 
 private ContentSet getKeywordContent(string name) {
