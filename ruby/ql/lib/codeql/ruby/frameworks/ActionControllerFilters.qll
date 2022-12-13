@@ -6,24 +6,50 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 module ActionControllerFilters {
-  class ActionControllerFilterConfigCall extends MethodCallCfgNode {
+  /**
+   * A call that registers a callback for one or more actions.
+   * These are commonly called filters.
+   */
+  class Filter extends MethodCallCfgNode {
     private ActionControllerClass controller;
     private ModuleBase enclosingModule;
 
-    ActionControllerFilterConfigCall() {
+    Filter() {
       this.getExpr().getEnclosingModule() = enclosingModule and
       enclosingModule = controller.getADeclaration() and
       this.getMethodName() =
         ["", "prepend_", "append"] + ["before_action", "after_action", "around_action"]
     }
 
-    string getFilterName() { result = this.getArgument(0).getConstantValue().getStringlikeValue() }
+    /**
+     * Holds if this callback is registered before `other`. This does not
+     * guarantee that the callback will be executed before `other`. For example,
+     * `after_action` callbacks are executed in reverse order.
+     */
+    predicate registeredBefore(Filter other) {
+      this.getEnclosingModule() = other.getEnclosingModule() and
+      (
+        this.getLocation().getStartLine() < other.getLocation().getStartLine()
+        or
+        this.getLocation().getStartLine() = other.getLocation().getStartLine() and
+        this.getLocation().getStartColumn() < other.getLocation().getStartColumn()
+      )
+    }
 
-    ModuleBase getEnclosingModule() { result = enclosingModule }
+    /**
+     * Holds if this callback runs before `other`.
+     */
+    predicate runsBefore(Filter other) { registeredBefore(other) }
+
+    private string getFilterName() {
+      result = this.getArgument(0).getConstantValue().getStringlikeValue()
+    }
+
+    private ModuleBase getEnclosingModule() { result = enclosingModule }
 
     /**
      * Gets the callable that implements this filter.
-     * This currently only finds methods in the local class or superclass, or inline blocks.
+     * This currently only finds methods in the local class or superclass.
      * It doesn't handle:
      * - lambdas
      * - blocks
@@ -75,9 +101,12 @@ module ActionControllerFilters {
     /**
      * Gets an action which this filter is applied to.
      */
-    Method getAction() {
+    ActionControllerActionMethod getAction() {
+      // A filter cannot apply to another filter
+      result != any(Filter f).getFilterCallable() and
+      // Only include routable actions. This can exclude valid actions if we can't parse the `routes.rb` file fully.
+      exists(result.getARoute()) and
       result = this.getEnclosingModule().getAMethod() and
-      not result.isPrivate() and
       (
         result.getName() = this.getOnlyArgument()
         or
@@ -85,36 +114,67 @@ module ActionControllerFilters {
         forall(string except | except = this.getExceptArgument() | result.getName() != except)
       )
     }
+
+    Filter getNextFilter() { none() }
   }
 
-  class BeforeFilter extends ActionControllerFilterConfigCall {
-    BeforeFilter() { this.getMethodName() = ["before_action"] }
+  class BeforeFilter extends Filter {
+    BeforeFilter() { this.getMethodName() = "before_action" }
+
+    override BeforeFilter getNextFilter() {
+      result != this and
+      this.runsBefore(result) and
+      not exists(BeforeFilter mid | this.runsBefore(mid) | mid.runsBefore(result))
+    }
   }
 
-  class AfterFilter extends ActionControllerFilterConfigCall {
-    AfterFilter() { this.getMethodName() = ["after_action"] }
+  class AfterFilter extends Filter {
+    AfterFilter() { this.getMethodName() = "after_action" }
+
+    override predicate runsBefore(Filter other) { other.registeredBefore(this) }
+
+    override AfterFilter getNextFilter() {
+      result != this and
+      this.runsBefore(result) and
+      not exists(AfterFilter mid | this.runsBefore(mid) and mid.runsBefore(result))
+    }
   }
+
+  /**
+   * Holds if `pred` is called before `succ` in the callback chain.
+   * `pred` and `succ` may be methods bound to callbacks or controller actions.
+   */
+  predicate next(Method pred, Method succ) {
+    exists(BeforeFilter f | pred = f.getFilterCallable() |
+      succ = f.getNextFilter().getFilterCallable()
+      or
+      not exists(f.getNextFilter()) and succ = f.getAction()
+    )
+    or
+    exists(AfterFilter f |
+      pred = f.getAction() and
+      succ = f.getFilterCallable() and
+      not exists(AfterFilter g | g.getNextFilter() = f)
+      or
+      pred = f.getFilterCallable() and succ = f.getNextFilter().getFilterCallable()
+    )
+  }
+
+  pragma[inline]
+  predicate variableAccessPostUpdate(DataFlow::PostUpdateNode n, Method m) {
+    n.getPreUpdateNode().asExpr() instanceof SelfVariableAccessCfgNode and
+    m = n.getPreUpdateNode().asExpr().getExpr().getEnclosingCallable() and
+    DataFlowPrivate::storeStep(_, _, n)
+  }
+
+  pragma[inline]
+  predicate selfParameter(DataFlowPrivate::SelfParameterNode n, Method m) { m = n.getMethod() }
 
   predicate additionalJumpStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // Flow from a [post-update] self arg node to a self parameter node
-    pred.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() instanceof SelfVariableAccessCfgNode and
-    succ instanceof DataFlowPrivate::SelfParameterNode and
-    // and the post-update node is from an instance var assignment
-    DataFlowPrivate::storeStep(_, _, pred) and
-    // and the post-update node is in a callback method
-    // and the self parameter node is for an action method that the callback applies to
     exists(Method predMethod, Method succMethod |
-      predMethod =
-        pred.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr().getEnclosingCallable() and
-      succMethod = succ.(DataFlowPrivate::SelfParameterNode).getMethod()
-    |
-      exists(BeforeFilter call |
-        call.getFilterCallable() = predMethod and call.getAction() = succMethod
-      )
-      or
-      exists(AfterFilter call |
-        call.getFilterCallable() = succMethod and call.getAction() = predMethod
-      )
+      variableAccessPostUpdate(pred, predMethod) and
+      selfParameter(succ, succMethod) and
+      next(predMethod, succMethod)
     )
   }
 }
