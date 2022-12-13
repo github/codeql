@@ -4,10 +4,24 @@ private import codeql.swift.elements.expr.CallExpr
 private import codeql.swift.elements.expr.TypeExpr
 private import codeql.swift.elements.decl.MethodDecl
 
+/**
+ * An expression representing a partially applied lookup of an instance property via the receiver's type object.
+ *
+ * An example is the sub-expression `SomeClass.instanceMethod` of
+ * `SomeClass.instanceMethod(someInstance)(arg, ...)`.
+ *
+ * Internally, the Swift compiler desugars this AST node type into a closure expression of the form
+ * `{ (someInstance: SomeClass) in { (arg, ...) in someInstance.instanceMethod(arg, ...) } }`,
+ * which in turn can be accessed using the `getSubExpr/0` predicate.
+ */
 class DotSyntaxBaseIgnoredExpr extends Generated::DotSyntaxBaseIgnoredExpr {
   override string toString() {
     result =
-      concat(this.getQualifier().(TypeExpr).getTypeRepr().toString()) + "." + this.getMethod()
+      any(string base |
+          if exists(this.getQualifier().(TypeExpr).getTypeRepr().toString())
+          then base = this.getQualifier().(TypeExpr).getTypeRepr().toString() + "."
+          else base = "."
+        ) + this.getMethod()
   }
 
   /**
