@@ -924,7 +924,7 @@ private module Cached {
   newtype TReturnCtx =
     TReturnCtxNone() or
     TReturnCtxNoFlowThrough() or
-    TReturnCtxMaybeFlowThrough(ReturnKindExt kind)
+    TReturnCtxMaybeFlowThrough(ReturnPosition pos)
 
   cached
   newtype TTypedContentApprox =
@@ -1363,7 +1363,7 @@ class ParamNodeOption extends TParamNodeOption {
  *
  * - `TReturnCtxNone()`: no return flow.
  * - `TReturnCtxNoFlowThrough()`: return flow, but flow through is not possible.
- * - `TReturnCtxMaybeFlowThrough(ReturnKindExt kind)`: return flow, of kind `kind`, and
+ * - `TReturnCtxMaybeFlowThrough(ReturnPosition pos)`: return flow, of kind `pos`, and
  *    flow through may be possible.
  */
 class ReturnCtx extends TReturnCtx {
@@ -1374,9 +1374,9 @@ class ReturnCtx extends TReturnCtx {
     this = TReturnCtxNoFlowThrough() and
     result = "(no flow through)"
     or
-    exists(ReturnKindExt kind |
-      this = TReturnCtxMaybeFlowThrough(kind) and
-      result = kind.toString()
+    exists(ReturnPosition pos |
+      this = TReturnCtxMaybeFlowThrough(pos) and
+      result = pos.toString()
     )
   }
 }
