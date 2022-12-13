@@ -45,7 +45,7 @@ extensions:
       - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]     # SUPPORTED: already modelled in java.util.stream.model.yml at line 45
       - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]       # SUPPORTED: already modelled in java.util.stream.model.yml at line 46
       - ["java.util.stream", "Stream", True, "forEach", "(Consumer)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"] # SUPPORTED (extra one from Michael's list): already modelled in java.util.stream.model.yml at line 33
-      # - ["java.util.stream", "Stream", True, "collect", "(Collector)", "", "", "", "value", "manual"]                                          # **UNSUPPORTED**: noted in java.util.stream.model.yml at line 19 that "collect(Collector<T,A,R> collector) is handled separately on a case-by-case basis as it is too complex for MaD" (Note: look into if/how this is ever handled)
+      # - ["java.util.stream", "Stream", True, "collect", "(Collector)", "", "", "", "value", "manual"]                                          # **UNSUPPORTED**: noted in java.util.stream.model.yml at line 19 that "collect(Collector<T,A,R> collector) is handled separately on a case-by-case basis as it is too complex for MaD"
       - ["java.lang", "Iterable", True, "forEach", "(Consumer)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]      # SUPPORTED: already modelled in java.lang.model.yml at line 40
       - ["java.lang", "String", False, "trim", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                                       # SUPPORTED: already modelled in java.lang.model.yml at line 81, but no signature specified in existing model
       - ["java.lang", "String", False, "substring", "(int,int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                           # SUPPORTED: already modelled in java.lang.model.yml at line 75, but no signature specified in existing model
@@ -71,18 +71,19 @@ extensions:
       - ["java.io", "PrintWriter", False, "write", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                             # SUPPORTED: no MaD row, modelled by Writer.write in java.io.model.yml at line 86 through subtyping
       - ["java.nio.file", "Path", True, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                              # **COLLISION** (both supported and unsupported per initial telemetry query): already modelled in java.nio.file.model.yml at line 29, but no signature specified in existing model
       - ["java.math", "BigDecimal", False, "BigDecimal", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                       # SUPPORTED: no MaD row or regular CodeQL model that I can find... (Note: check for existing model again)
+      - ["java.lang", "String", False, "valueOf", "(int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                                  # **UNSUPPORTED**: already modelled in java.lang.model.yml at lines 82-84 for other signatures (Tony wants this one)
+      - ["java.lang", "String", False, "charAt", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                                  # **UNSUPPORTED**: per Anders: "We may want this as a general model, and we've discussed it before without a clear-cut answer, I believe."
+      - ["java.lang", "StringBuilder", "toString", "()", "manual"]        # **SUPPORTED**: Tony said to keep as positive; modelled in java.lang.model.yml at line 34 through AbstractStringBuilder.toString subtyping
+      - ["java.lang", "Throwable", "getMessage", "()", "", "manual"]      # **UNSUPPORTED**: per Anders: "This should likely have a model, but as mentioned above, it's not really relevant yet."
+      - ["java.sql", "ResultSet", "getString", "(String)", "", "manual"]  # **UNSUPPORTED**: similar to toString()? per Anders: "It looks like something that probably ought to have a model."
 
-      # MAYBE Positive models (not sure about these):
-      - ["java.lang", "String", False, "valueOf", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                                               # **UNSUPPORTED**: already modelled in java.lang.model.yml at lines 82-84 for other signatures, this exact signature is not modelled, is there a reason to exclude it?
-      - ["java.lang", "String", False, "valueOf", "(int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                                                  # **UNSUPPORTED**: already modelled in java.lang.model.yml at lines 82-84 for other signatures, this exact signature is not modelled, is there a reason to exclude it?
-      - ["java.lang", "String", False, "charAt", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                                                  # **UNSUPPORTED**: flow from String to returned char value?, is only getting a char back not considered interesting flow?
+      # Exception modelling, add more detailed field flow per Anders:
       - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                                      # **UNSUPPORTED**: flow from Throwable arg to new Throwable object?
       - ["java.lang", "RuntimeException", False, "RuntimeException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                           # **UNSUPPORTED**: flow from arg to new RuntimeException object?
       - ["java.lang", "RuntimeException", False, "RuntimeException", "(Throwable)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                        # **UNSUPPORTED**: flow from arg to new RuntimeException object?
       - ["java.lang", "IllegalArgumentException", False, "IllegalArgumentException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]           # **UNSUPPORTED**: flow from arg to new IllegalArgumentException object?
       - ["java.lang", "IllegalStateException", False, "IllegalStateException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                 # **UNSUPPORTED**: flow from arg to new IllegalStateException object?
       - ["java.lang", "UnsupportedOperationException", False, "UnsupportedOperationException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"] # **UNSUPPORTED**: flow from arg to new UnsupportedOperationException object?
-      - ["java.util.stream", "Collectors", False, "toList", "()", "", "Argument[-1].Element", "ReturnValue.Element", "value", "manual"]                          # **UNSUPPORTED**: seems to have flow from input elements into a Collector->List?, is this too complex for MaD like Stream.collect(Collector)?
 
   - addsTo:
       pack: codeql/java-all
@@ -117,17 +118,14 @@ extensions:
       - ["java.lang", "String", "isEmpty", "()", "manual"]                # UNSUPPORTED: type as sanitizer
       - ["java.lang", "String", "contains", "(CharSequence)", "manual"]   # UNSUPPORTED: type as sanitizer
       - ["java.lang", "String", "startsWith", "(String)", "manual"]       # UNSUPPORTED: type as sanitizer
-      - ["java.lang", "StringBuilder", "toString", "()", "manual"]        # **SUPPORTED**: shouldn't model due to causing problems with dataflow?, unless it's fine with StringBuilder? (Note: modelled in java.lang.model.yml at line 34 through AbstractStringBuilder.toString subtyping)
       - ["java.lang", "Enum", "equals", "(Object)", "manual"]             # UNSUPPORTED: type as sanitizer
       - ["java.lang", "Enum", "toString", "()", "manual"]                 # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
       - ["java.lang", "System", "currentTimeMillis", "()", "manual"]      # UNSUPPORTED: just gives current time
-      - ["java.lang", "Enum", "Enum", "(String,int)", "", "manual"]       # UNSUPPORTED: per Javadocs, "Programmers cannot invoke this constructor."
-      - ["java.lang", "Enum", "name", "()", "", "manual"]                 # UNSUPPORTED: just gets name, no flow?, similar usage to toString() per Javadocs
-
-      # MAYBE Negative models (not sure about these):
-      - ["java.util", "Objects", "hash", "(Object[])", "manual"]          # UNSUPPORTED: do we care about controlling the hashcode value?
-      - ["java.lang", "Object", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value?
-      - ["java.lang", "String", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value?
-      - ["java.lang", "Throwable", "printStackTrace", "()", "manual"]     # UNSUPPORTED: only print stacktrace, no flow? (or flow from Throwable to its printed stacktrace??)
-      - ["java.lang", "Throwable", "getMessage", "()", "", "manual"]      # UNSUPPORTED: only get message, no flow? (or flow from Throwable to its message??)
-      - ["java.sql", "ResultSet", "getString", "(String)", "", "manual"]  # UNSUPPORTED: similar to toString()?
+      - ["java.lang", "Enum", "Enum", "(String,int)", "manual"]           # UNSUPPORTED: per Javadocs, "Programmers cannot invoke this constructor."
+      - ["java.lang", "Enum", "name", "()", "manual"]                     # UNSUPPORTED: just gets name, no flow?, similar usage to toString() per Javadocs
+      - ["java.util.stream", "Collectors", "toList", "()", "manual"]      # UNSUPPORTED: shouldn't have a model per Anders
+      - ["java.lang", "String", "valueOf", "(Object)", "manual"]          # UNSUPPORTED: per Anders: "this is a complex case that we haven't fully decided how to deal with"
+      - ["java.util", "Objects", "hash", "(Object[])", "manual"]          # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
+      - ["java.lang", "Object", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
+      - ["java.lang", "String", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
+      - ["java.lang", "Throwable", "printStackTrace", "()", "manual"]     # UNSUPPORTED: per Anders: "This should probably not be a general step, but there might be specialised queries that care."
