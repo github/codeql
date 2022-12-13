@@ -1,5 +1,7 @@
 edges
 | overflowdestination.cpp:27:9:27:12 | argv | overflowdestination.cpp:30:17:30:20 | arg1 |
+| overflowdestination.cpp:27:9:27:12 | argv indirection | overflowdestination.cpp:30:17:30:20 | arg1 |
+| overflowdestination.cpp:27:9:27:12 | argv indirection | overflowdestination.cpp:30:17:30:20 | arg1 |
 | overflowdestination.cpp:43:8:43:10 | fgets output argument | overflowdestination.cpp:46:15:46:17 | src |
 | overflowdestination.cpp:50:52:50:54 | src | overflowdestination.cpp:52:9:52:12 | memcpy output argument |
 | overflowdestination.cpp:50:52:50:54 | src | overflowdestination.cpp:53:9:53:12 | memcpy output argument |
@@ -60,6 +62,8 @@ edges
 | overflowdestination.cpp:76:30:76:32 | src | overflowdestination.cpp:76:30:76:32 | overflowdest_test3 output argument |
 nodes
 | overflowdestination.cpp:27:9:27:12 | argv | semmle.label | argv |
+| overflowdestination.cpp:27:9:27:12 | argv indirection | semmle.label | argv indirection |
+| overflowdestination.cpp:27:9:27:12 | argv indirection | semmle.label | argv indirection |
 | overflowdestination.cpp:30:17:30:20 | arg1 | semmle.label | arg1 |
 | overflowdestination.cpp:43:8:43:10 | fgets output argument | semmle.label | fgets output argument |
 | overflowdestination.cpp:46:15:46:17 | src | semmle.label | src |
@@ -118,6 +122,8 @@ subpaths
 | overflowdestination.cpp:76:30:76:32 | src | overflowdestination.cpp:57:52:57:54 | src | overflowdestination.cpp:65:9:65:13 | memcpy output argument | overflowdestination.cpp:76:30:76:32 | overflowdest_test3 output argument |
 #select
 | overflowdestination.cpp:30:2:30:8 | call to strncpy | overflowdestination.cpp:27:9:27:12 | argv | overflowdestination.cpp:30:17:30:20 | arg1 | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
+| overflowdestination.cpp:30:2:30:8 | call to strncpy | overflowdestination.cpp:27:9:27:12 | argv indirection | overflowdestination.cpp:30:17:30:20 | arg1 | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
+| overflowdestination.cpp:30:2:30:8 | call to strncpy | overflowdestination.cpp:27:9:27:12 | argv indirection | overflowdestination.cpp:30:17:30:20 | arg1 | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
 | overflowdestination.cpp:46:2:46:7 | call to memcpy | overflowdestination.cpp:43:8:43:10 | fgets output argument | overflowdestination.cpp:46:15:46:17 | src | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
 | overflowdestination.cpp:53:2:53:7 | call to memcpy | overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:53:15:53:17 | src | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |
 | overflowdestination.cpp:64:2:64:7 | call to memcpy | overflowdestination.cpp:73:8:73:10 | fgets output argument | overflowdestination.cpp:64:16:64:19 | src2 | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |

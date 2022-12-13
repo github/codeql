@@ -1,4 +1,8 @@
 edges
+| test.cpp:16:20:16:23 | argv indirection | test.cpp:22:45:22:52 | Load indirection |
+| test.cpp:16:20:16:23 | argv indirection | test.cpp:22:45:22:52 | Load indirection |
+| test.cpp:22:13:22:20 | sprintf output argument | test.cpp:23:12:23:19 | Convert indirection |
+| test.cpp:22:45:22:52 | Load indirection | test.cpp:22:13:22:20 | sprintf output argument |
 | test.cpp:47:21:47:26 | call to getenv indirection | test.cpp:50:35:50:43 | Load indirection |
 | test.cpp:50:11:50:17 | sprintf output argument | test.cpp:51:10:51:16 | Convert indirection |
 | test.cpp:50:35:50:43 | Load indirection | test.cpp:50:11:50:17 | sprintf output argument |
@@ -97,6 +101,11 @@ edges
 | test.cpp:220:19:220:26 | Convert indirection | test.cpp:220:10:220:16 | strncat output argument |
 | test.cpp:220:19:220:26 | Convert indirection | test.cpp:220:10:220:16 | strncat output argument |
 nodes
+| test.cpp:16:20:16:23 | argv indirection | semmle.label | argv indirection |
+| test.cpp:16:20:16:23 | argv indirection | semmle.label | argv indirection |
+| test.cpp:22:13:22:20 | sprintf output argument | semmle.label | sprintf output argument |
+| test.cpp:22:45:22:52 | Load indirection | semmle.label | Load indirection |
+| test.cpp:23:12:23:19 | Convert indirection | semmle.label | Convert indirection |
 | test.cpp:47:21:47:26 | call to getenv indirection | semmle.label | call to getenv indirection |
 | test.cpp:50:11:50:17 | sprintf output argument | semmle.label | sprintf output argument |
 | test.cpp:50:35:50:43 | Load indirection | semmle.label | Load indirection |
@@ -202,6 +211,8 @@ subpaths
 | test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:187:11:187:15 | strncat output argument | test.cpp:196:19:196:23 | concat output argument |
 | test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 #select
+| test.cpp:23:12:23:19 | command1 | test.cpp:16:20:16:23 | argv indirection | test.cpp:23:12:23:19 | Convert indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:16:20:16:23 | argv indirection | user input (a command-line argument) | test.cpp:22:13:22:20 | sprintf output argument | sprintf output argument |
+| test.cpp:23:12:23:19 | command1 | test.cpp:16:20:16:23 | argv indirection | test.cpp:23:12:23:19 | Convert indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:16:20:16:23 | argv indirection | user input (a command-line argument) | test.cpp:22:13:22:20 | sprintf output argument | sprintf output argument |
 | test.cpp:51:10:51:16 | command | test.cpp:47:21:47:26 | call to getenv indirection | test.cpp:51:10:51:16 | Convert indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:47:21:47:26 | call to getenv indirection | user input (an environment variable) | test.cpp:50:11:50:17 | sprintf output argument | sprintf output argument |
 | test.cpp:65:10:65:16 | command | test.cpp:62:9:62:16 | fread output argument | test.cpp:65:10:65:16 | Convert indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:62:9:62:16 | fread output argument | user input (string read by fread) | test.cpp:64:11:64:17 | strncat output argument | strncat output argument |
 | test.cpp:85:32:85:38 | command | test.cpp:82:9:82:16 | fread output argument | test.cpp:85:32:85:38 | Convert indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl. | test.cpp:82:9:82:16 | fread output argument | user input (string read by fread) | test.cpp:84:11:84:17 | strncat output argument | strncat output argument |
