@@ -81,15 +81,6 @@ private module Rsa {
         hashNameArg in [this.getArg(2), this.getArgByName("hash_method")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result = str.getText())
-      // // signature part
-      // result.getName() = "RSA"
-      // or
-      // // hashing part
-      // exists(StrConst str, DataFlow::Node hashNameArg |
-      //   hashNameArg in [this.getArg(2), this.getArgByName("hash_method")] and
-      //   DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
-      //   result.matchesName(str.getText())
-      // )
     }
 
     override DataFlow::Node getAnInput() {
