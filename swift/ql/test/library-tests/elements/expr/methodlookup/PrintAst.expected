@@ -117,7 +117,7 @@ methodlookup.swift:
 #   26|         getElement(3): [CallExpr] call to instanceMethod()
 #   26|           getFunction(): [MethodLookupExpr] .instanceMethod()
 #   26|             getBase(): [DeclRefExpr] foo
-#   27|         getElement(4): [CallExpr] call to call to Foo.instanceMethod()
+#   27|         getElement(4): [CallExpr] call to { ... }
 #   27|           getFunction(): [CallExpr] call to Foo.instanceMethod()
 #   27|             getFunction(): [DotSyntaxBaseIgnoredExpr] Foo.instanceMethod()
 #   27|               getQualifier(): [TypeExpr] Foo.Type
@@ -210,7 +210,7 @@ methodlookup.swift:
 #   47|               getFunction(): [MethodLookupExpr] .instanceMethod()
 #   47|                 getBase(): [DeclRefExpr] baz
 #   47|             getElement(3).getFullyConverted(): [AwaitExpr] await ...
-#   48|             getElement(4): [CallExpr] call to call to Baz.instanceMethod()
+#   48|             getElement(4): [CallExpr] call to { ... }
 #   48|               getFunction(): [CallExpr] call to Baz.instanceMethod()
 #   48|                 getFunction(): [DotSyntaxBaseIgnoredExpr] Baz.instanceMethod()
 #   48|                   getQualifier(): [TypeExpr] Baz.Type

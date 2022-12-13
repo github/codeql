@@ -56,6 +56,4 @@ private class FullDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {
   FullDotSyntaxBaseIgnoredApplyExpr() { expr = this.getFunction() }
 
   override AutoClosureExpr getStaticTarget() { result = expr.getStaticTarget().getExpr() }
-
-  override string toString() { result = "call to " + expr }
 }
