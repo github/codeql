@@ -358,6 +358,9 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
     if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
 
+  /** Holds if this is a constructor without parameters. */
+  predicate isParameterless() { this.getNumberOfParameters() = 0 }
+
   override string getUndecoratedName() { result = ".ctor" }
 }
 
