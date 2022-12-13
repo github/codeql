@@ -5794,9 +5794,6 @@ open class KotlinFileExtractor(
 
         fun findOverriddenAttributes(f: IrFunction) =
             stack.lastOrNull { it.first == f } ?.second
-
-        fun findFirst(f: (Pair<IrDeclaration, OverriddenFunctionAttributes?>) -> Boolean) =
-            stack.findLast(f)
     }
 
     data class OverriddenFunctionAttributes(
