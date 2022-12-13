@@ -4,27 +4,27 @@
 <qhelp>
   <overview>
     <p>
-      The <code>addJavascriptInterface</code> method of
+      Calling the <code>addJavascriptInterface</code> method of
       the <code>android.webkit.WebView</code> class allows the web pages of a
-      WebView to access methods of a Java object via JavaScript.
+      WebView to access a Java object's methods via JavaScript.
     </p>
 
     <p>
-      Objects exposed to Javascript are available in all frames of the
+      Objects exposed to JavaScript are available in all frames of the
       WebView.
     </p>
   </overview>
 
   <recommendation>
     <p>
-      If you need to expose Java objects with Javascript, you should guarantee
-      that no untrusted third party content is loaded into the WebView.
+      If you need to expose Java objects to JavaScript, guarantee that no
+      untrusted third-party content is loaded into the WebView.
     </p>
   </recommendation>
 
   <example>
     <p>
-      In the following (bad) example, a Java object is exposed to Javascript.
+      In the following (bad) example, a Java object is exposed to JavaScript.
     </p>
 
     <sample src="AndroidWebViewAddJavascriptInterfaceExample.java"/>
@@ -33,7 +33,7 @@
 
   <references>
     <li>
-      Android Documentation<a href="https://developer.android.com/reference/android/webkit/WebView#addJavascriptInterface(java.lang.Object">addJavascriptInterface</a>
+      Android Documentation: <a href="https://developer.android.com/reference/android/webkit/WebView#addJavascriptInterface(java.lang.Object,%20java.lang.String)">addJavascriptInterface</a>
     </li>
   </references>
 
