@@ -89,6 +89,7 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
+private import ExternalFlowExtensions as Extensions
 
 /**
  * DEPRECATED: Define source models as data extensions instead.
@@ -138,14 +139,6 @@ private predicate summaryModelInternal(string row) { any(SummaryModelCsvInternal
 
 private predicate sinkModelInternal(string row) { any(SinkModelCsvInternal s).row(row) }
 
-/**
- * Holds if a source model exists for the given parameters.
- */
-extensible predicate extSourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
-);
-
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
@@ -165,14 +158,8 @@ predicate sourceModel(
     row.splitAt(";", 8) = provenance
   )
   or
-  extSourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)
+  Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)
 }
-
-/** Holds if a sink model exists for the given parameters. */
-extensible predicate extSinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
-);
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
@@ -193,14 +180,8 @@ predicate sinkModel(
     row.splitAt(";", 8) = provenance
   )
   or
-  extSinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)
+  Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)
 }
-
-/** Holds if a summary model exists for the given parameters. */
-extensible predicate extSummaryModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
-);
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
@@ -222,19 +203,15 @@ predicate summaryModel(
     row.splitAt(";", 9) = provenance
   )
   or
-  extSummaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)
+  Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+    provenance)
 }
-
-/** Holds if a model exists indicating there is no flow for the given parameters. */
-extensible predicate extNeutralModel(
-  string namespace, string type, string name, string signature, string provenance
-);
 
 /** Holds if a model exists indicating there is no flow for the given parameters. */
 predicate neutralModel(
   string namespace, string type, string name, string signature, string provenance
 ) {
-  extNeutralModel(namespace, type, name, signature, provenance)
+  Extensions::neutralModel(namespace, type, name, signature, provenance)
 }
 
 private predicate relevantNamespace(string namespace) {
