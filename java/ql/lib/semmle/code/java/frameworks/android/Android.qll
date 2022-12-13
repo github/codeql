@@ -26,7 +26,12 @@ class AndroidComponent extends Class {
 
   /** The XML element corresponding to this Android component. */
   AndroidComponentXmlElement getAndroidComponentXmlElement() {
-    result.getResolvedComponentName() = this.getQualifiedName()
+    // Find an element with an identifier matching the qualified name of the component.
+    // Aliases have two identifiers (name and target), so check both identifiers (if present).
+    exists(AndroidIdentifierXmlAttribute identifier |
+      identifier = result.getAnAttribute() and
+      result.getResolvedIdentifier(identifier) = this.getQualifiedName()
+    )
   }
 
   /** Holds if this Android component is configured as `exported` in an `AndroidManifest.xml` file. */
@@ -52,6 +57,12 @@ class ExportableAndroidComponent extends AndroidComponent {
     or
     this.hasIntentFilter() and
     not this.getAndroidComponentXmlElement().isNotExported()
+    or
+    exists(AndroidActivityAliasXmlElement e |
+      e = this.getAndroidComponentXmlElement() and
+      not e.isNotExported() and
+      e.hasAnIntentFilterElement()
+    )
   }
 }
 
