@@ -19,7 +19,7 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>` or the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codeql-codespaces-template>`__ on GitHub Codespaces.
+You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>` or the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codespaces-codeql>`__ on GitHub Codespaces.
 
 Here is an example of a basic query:
 
