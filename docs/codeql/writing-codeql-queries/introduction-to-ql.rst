@@ -19,13 +19,13 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>` or the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codeql-codespaces-template>'.
+You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>` or the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codeql-codespaces-template>' on GitHub Codespaces.
 
 Here is an example of a basic query:
 
 .. code-block:: ql
 
-   import <language>
+   import tutorial
 
    select "hello world"
 
@@ -111,10 +111,12 @@ Example CodeQL queries
 ----------------------
 
 The previous examples used the primitive types built in to QL. Although we chose a project to query, we didn't use the information in that project's database.
-The following example queries *do* use these databases and give you an idea of how to use CodeQL to analyze projects.
+The following example queries *do* use these databases and give you an idea of how to use CodeQL to analyze projects. 
 
 Queries using the CodeQL libraries can find errors and uncover variants of important security vulnerabilities in codebases.
 Visit `GitHub Security Lab <https://securitylab.github.com/>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
+
+Before you can run the following examples, you will need to install the CodeQL extension for Visual Studio Code. For more information, see :ref:`Setting up CodeQL in Visual Studio Code <setting-up-codeql-in-visual-studio-code>`. You will also need to import and select a database in the corresponding programming language. For more information about obtaining CodeQL databases, see `Analyzing your projects <https://codeql.github.com/docs/codeql-for-visual-studio-code/analyzing-your-projects/#choosing-a-database>`__ in the CodeQL for VS Code documentation.
 
 To import the CodeQL library for a specific programming language, type ``import <language>`` at the start of the query.
 
@@ -163,6 +165,8 @@ Exercise 1
 
 .. code-block:: ql
 
+   import tutorial
+
    from string s
    where s = "lgtm"
    select s.length()
@@ -171,12 +175,16 @@ There is often more than one way to define a query. For example, we can also wri
 
 .. code-block:: ql
 
+   import tutorial
+
    select "lgtm".length()
 
 Exercise 2
 ~~~~~~~~~~
 
 .. code-block:: ql
+
+   import tutorial
 
    from float x, float y
    where x = 3.pow(5) and y = 245.6
@@ -187,6 +195,8 @@ Exercise 3
 
 .. code-block:: ql
 
+   import tutorial
+
    from boolean b
    where b = false
    select b.booleanNot()
@@ -195,6 +205,8 @@ Exercise 4
 ~~~~~~~~~~
 
 .. code-block:: ql
+
+   import tutorial
 
    from date start, date end
    where start = "10/06/2017".toDate() and end = "28/09/2017".toDate()
