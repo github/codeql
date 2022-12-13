@@ -40,20 +40,17 @@ private int getNumMadModeledApis(string package, string provenance) {
 }
 
 /** Returns the total number of `DataFlowTargetApi`s for a given package. */
-bindingset[package]
 private int getNumApis(string package) {
   result =
-    count(DataFlowTargetApi dataFlowTargApi |
+    strictcount(DataFlowTargetApi dataFlowTargApi |
       package = dataFlowTargApi.getCompilationUnit().getPackage().getName()
     )
 }
 
 from
-  DataFlowTargetApi dataFlowTargApi, string package, int generatedOnly, int both, int manualOnly,
-  int non, int all, float generatedCoverage, float manualCoverage
+  string package, int generatedOnly, int both, int manualOnly, int non, int all,
+  float generatedCoverage, float manualCoverage
 where
-  // bind `package` to a `DataFlowTargetApi` package name
-  package = dataFlowTargApi.getCompilationUnit().getPackage().getName() and
   // count the number of APIs with generated-only, both, and manual-only MaD models for each package
   generatedOnly = getNumMadModeledApis(package, "generated") and
   both = getNumMadModeledApis(package, "both") and
