@@ -257,9 +257,7 @@ class SystemNullReferenceExceptionClass extends SystemClass {
 }
 
 /** The `System.Object` class. */
-class SystemObjectClass extends SystemClass {
-  SystemObjectClass() { this instanceof ObjectType }
-
+class SystemObjectClass extends SystemClass instanceof ObjectType {
   /** Gets the `Equals(object)` method. */
   Method getEqualsMethod() {
     result.getDeclaringType() = this and

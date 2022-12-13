@@ -5,7 +5,7 @@
 #include "swift/extractor/trap/generated/TrapEntries.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
-#include "swift/extractor/infra/Path.h"
+#include "swift/extractor/infra/file/Path.h"
 
 using namespace codeql;
 
@@ -17,7 +17,7 @@ void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceMa
     // invalid locations seem to come from entities synthesized by the compiler
     return;
   }
-  auto file = getCodeQLPath(sourceManager.getDisplayNameForLoc(start));
+  auto file = resolvePath(sourceManager.getDisplayNameForLoc(start));
   DbLocation entry{{}};
   entry.file = fetchFileLabel(file);
   std::tie(entry.start_line, entry.start_column) = sourceManager.getLineAndColumnInBuffer(start);
@@ -30,7 +30,7 @@ void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceMa
 }
 
 void SwiftLocationExtractor::emitFile(llvm::StringRef path) {
-  fetchFileLabel(getCodeQLPath(path));
+  fetchFileLabel(resolvePath(path));
 }
 
 TrapLabel<FileTag> SwiftLocationExtractor::fetchFileLabel(const std::filesystem::path& file) {

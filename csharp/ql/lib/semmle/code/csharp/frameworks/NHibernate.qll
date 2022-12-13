@@ -14,7 +14,7 @@ module NHibernate {
 
   /** The interface `NHibernamte.ISession`. */
   class ISessionInterface extends Interface {
-    ISessionInterface() { this.hasQualifiedName("NHibernate.ISession") }
+    ISessionInterface() { this.hasQualifiedName("NHibernate", "ISession") }
 
     /** Gets a parameter that uses a mapped object. */
     Parameter getAMappedObjectParameter() {

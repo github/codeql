@@ -2321,8 +2321,8 @@ module Csv {
     )
   }
 
-  /** Computes the first 4 columns for negative CSV rows of `c`. */
-  string asPartialNegativeModel(DotNet::Callable c) {
+  /** Computes the first 4 columns for neutral CSV rows of `c`. */
+  string asPartialNeutralModel(DotNet::Callable c) {
     exists(string namespace, string type, string name, string parameters |
       partialModel(c, namespace, type, name, parameters) and
       result =

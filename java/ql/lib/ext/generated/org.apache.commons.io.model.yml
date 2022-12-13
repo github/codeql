@@ -676,7 +676,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: extNegativeSummaryModel
+      extensible: extNeutralModel
     data:
       - ["org.apache.commons.io.charset", "CharsetDecoders", "CharsetDecoders", "()", "generated"]
       - ["org.apache.commons.io.charset", "CharsetEncoders", "CharsetEncoders", "()", "generated"]

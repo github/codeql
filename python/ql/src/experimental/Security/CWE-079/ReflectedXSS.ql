@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 2.9
  * @sub-severity high
- * @id py/reflective-xss
+ * @id py/reflective-xss-email
  * @tags security
  *       external/cwe/cwe-079
  *       external/cwe/cwe-116

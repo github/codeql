@@ -138,9 +138,9 @@ string asPartialModel(TargetApiSpecific api) {
 }
 
 /**
- * Computes the first 4 columns for negative CSV rows.
+ * Computes the first 4 columns for neutral CSV rows.
  */
-string asPartialNegativeModel(TargetApiSpecific api) {
+string asPartialNeutralModel(TargetApiSpecific api) {
   exists(string type, string name, string parameters |
     partialModel(api, type, name, parameters) and
     result =

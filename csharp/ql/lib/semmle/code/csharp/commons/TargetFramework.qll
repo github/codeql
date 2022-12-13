@@ -14,7 +14,7 @@ class TargetFrameworkAttribute extends Attribute {
   Assembly assembly;
 
   TargetFrameworkAttribute() {
-    this.getType().getQualifiedName() = "System.Runtime.Versioning.TargetFrameworkAttribute" and
+    this.getType().hasQualifiedName("System.Runtime.Versioning", "TargetFrameworkAttribute") and
     assembly = this.getTarget()
   }
 

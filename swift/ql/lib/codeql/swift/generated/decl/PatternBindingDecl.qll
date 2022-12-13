@@ -63,6 +63,6 @@ module Generated {
     /**
      * Gets the number of patterns of this pattern binding declaration.
      */
-    final int getNumberOfPatterns() { result = count(getAPattern()) }
+    final int getNumberOfPatterns() { result = count(int i | exists(getPattern(i))) }
   }
 }

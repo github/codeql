@@ -73,9 +73,8 @@ abstract class AlwaysEnabledSpringProfile extends string {
  *
  * Includes all `SpringProfile`s that are not specified as always enabled or never enabled.
  */
-class SometimesEnabledSpringProfile extends string {
+class SometimesEnabledSpringProfile extends string instanceof SpringProfile {
   SometimesEnabledSpringProfile() {
-    this instanceof SpringProfile and
     not (
       this instanceof AlwaysEnabledSpringProfile or
       this instanceof NeverEnabledSpringProfile

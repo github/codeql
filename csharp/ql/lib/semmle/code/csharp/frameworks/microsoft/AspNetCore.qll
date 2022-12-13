@@ -217,7 +217,7 @@ class MicrosoftAspNetCoreMvcController extends Class {
           .getType()
           .getABaseType*()
           // ApiControllerAttribute is derived from ControllerAttribute
-          .hasQualifiedName("Microsoft.AspNetCore.Mvc.ControllerAttribute")
+          .hasQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
     ) and
     not this.getABaseType*().getAnAttribute() instanceof
       MicrosoftAspNetCoreMvcNonControllerAttribute
@@ -288,7 +288,7 @@ class MicrosoftAspNetCoreHttpHttpResponse extends Class {
 /** An interface that is a wrapper around the collection of cookies in the response. */
 class MicrosoftAspNetCoreHttpResponseCookies extends Interface {
   MicrosoftAspNetCoreHttpResponseCookies() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Http.IResponseCookies")
+    this.hasQualifiedName("Microsoft.AspNetCore.Http", "IResponseCookies")
   }
 
   /** Gets the `Append` method. */

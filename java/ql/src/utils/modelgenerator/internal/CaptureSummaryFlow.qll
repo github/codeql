@@ -77,10 +77,10 @@ string captureFlow(DataFlowTargetApi api) {
 }
 
 /**
- * Gets the negative summary for `api`, if any.
- * A negative summary is generated, if there does not exist any positive flow.
+ * Gets the neutral summary for `api`, if any.
+ * A neutral model is generated, if there does not exist any summary model.
  */
 string captureNoFlow(DataFlowTargetApi api) {
   not exists(captureFlow(api)) and
-  result = asNegativeSummaryModel(api)
+  result = asNeutralModel(api)
 }
