@@ -32,6 +32,12 @@ element_is_unknown(
 ;
 
 #keyset[id]
+callable_names(
+  int id: @callable ref,
+  string name: string ref
+);
+
+#keyset[id]
 callable_self_params(
   int id: @callable ref,
   int self_param: @param_decl_or_none ref
@@ -314,12 +320,6 @@ value_decls(  //dir=decl
 | @destructor_decl
 | @func_decl
 ;
-
-#keyset[id]
-abstract_function_decls(  //dir=decl
-  int id: @abstract_function_decl ref,
-  string name: string ref
-);
 
 @abstract_storage_decl =
   @subscript_decl
