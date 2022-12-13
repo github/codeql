@@ -7,7 +7,7 @@ package main
 //go:generate depstubber -vendor github.com/davecgh/go-spew/spew "" Dump,Errorf,Print,Printf,Println,Fdump,Fprint,Fprintf,Fprintln
 //go:generate depstubber -vendor github.com/elazarl/goproxy ProxyCtx ""
 //go:generate depstubber -vendor github.com/golang/glog Level,Verbose Info,InfoDepth,Infof,Infoln,Error,ErrorDepth,Errorf,Errorln,Fatal,FatalDepth,Fatalf,Fatalln,Exit,ExitDepth,Exitf,Exitln,V
-//go:generate depstubber -vendor github.com/sirupsen/logrus Fields,Entry,Logger,Level Debug,Debugf,Debugln,Error,Errorf,Errorln,Fatal,Fatalf,Fatalln,Info,Infof,Infoln,Panic,Panicf,Panicln,Print,Printf,Println,Trace,Tracef,Traceln,Warn,Warnf,Warnln,Warning,Warningf,Warningln,WithFields,WithField
+//go:generate depstubber -vendor github.com/sirupsen/logrus Fields,Entry,Logger,Level,JSONFormatter,TextFormatter Debug,Debugf,Debugln,Error,Errorf,Errorln,Fatal,Fatalf,Fatalln,Info,Infof,Infoln,Panic,Panicf,Panicln,Print,Printf,Println,SetFormatter,Trace,Tracef,Traceln,Warn,Warnf,Warnln,Warning,Warningf,Warningln,WithFields,WithField
 //go:generate depstubber -vendor go.uber.org/zap Logger,SugaredLogger NewProduction
 
 import (

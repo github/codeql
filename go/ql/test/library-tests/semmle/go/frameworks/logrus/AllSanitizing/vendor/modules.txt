@@ -1,0 +1,6 @@
+# github.com/elazarl/goproxy v0.0.0-20221015165544-a0805db90819
+## explicit
+github.com/elazarl/goproxy
+# github.com/sirupsen/logrus v1.8.1
+## explicit
+github.com/sirupsen/logrus

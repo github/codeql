@@ -32,7 +32,12 @@ module Logrus {
   }
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this = any(LogFunction f).getACall() }
+    LogCall() {
+      // find calls to logrus logging functions
+      this = any(LogFunction f).getACall() and
+      // unless all formatters that get assigned are sanitizing formatters
+      not allFormattersSanitizing()
+    }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
@@ -48,5 +53,76 @@ module Logrus {
     override int getFormatStringIndex() { result = argOffset }
 
     override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
+  }
+
+  private class SetFormatterFunction extends Function {
+    SetFormatterFunction() {
+      this.hasQualifiedName(packagePath(), "SetFormatter") or
+      this.(Method).hasQualifiedName(packagePath(), "Logger", "SetFormatter")
+    }
+  }
+
+  private class Formatter extends Type {
+    Formatter() { this.hasQualifiedName(packagePath(), "Formatter") }
+  }
+
+  private class Logger extends Type {
+    Logger() { this.hasQualifiedName(packagePath(), "Logger") }
+  }
+
+  private class LoggerFormatter extends Field {
+    LoggerFormatter() { this.hasQualifiedName(packagePath(), "Logger", "Formatter") }
+  }
+
+  private class JSONFormatter extends Type {
+    JSONFormatter() { this.hasQualifiedName(packagePath(), "JSONFormatter") }
+  }
+
+  /**
+   * Gets the types corresponding to sanitizing formatters.
+   */
+  private Type sanitizingFormatter() { result instanceof JSONFormatter }
+
+  /**
+   * An assignment statement that assigns a value to the `Formatter` property of a `Logger` object.
+   */
+  private class SetFormatterAssignment extends AssignStmt {
+    SetFormatterAssignment() {
+      exists(LoggerFormatter field | this.getAnLhs().(SelectorExpr).getSelector().refersTo(field))
+    }
+  }
+
+  /**
+   * Holds if there is local data flow to `node` that, at some point, has a sanitizing formatter
+   * type.
+   */
+  private predicate isSanitizingFormatter(DataFlow::Node node) {
+    // is there data flow from something of a sanitizing formatter type to the node?
+    exists(DataFlow::Node source |
+      // this is a slight approximation since a variable could be set to a
+      // sanitizing formatter and then replaced with another one that isn't
+      DataFlow::localFlow(source, node) and
+      source.getType() = sanitizingFormatter().getPointerType()
+    )
+  }
+
+  /**
+   * Holds if `node` is the first argument to a call to the `SetFormatter` function or if `node`
+   * is the value being assigned to the `Formatter` property of a `Logger` object.
+   */
+  private predicate isSanitizerNode(DataFlow::Node node) {
+    node = any(SetFormatterFunction f).getACall().getArgument(0)
+    or
+    node.asExpr() = any(SetFormatterAssignment stmt).getRhs()
+  }
+
+  /**
+   * Holds if all calls to `SetFormatter` have a sanitizing formatter as argument and all
+   * assignments to the `Formatter` property of `Logger` values are also sanitizing formatters.
+   * Also holds if there are not any calls to `SetFormatter` or assignments to the `Formatter`
+   * property in the codebase.
+   */
+  private predicate allFormattersSanitizing() {
+    forex(DataFlow::Node node | isSanitizerNode(node) | isSanitizingFormatter(node))
   }
 }
