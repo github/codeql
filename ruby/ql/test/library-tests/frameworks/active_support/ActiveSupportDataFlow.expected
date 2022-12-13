@@ -1,4 +1,5 @@
 failures
+| hash_extensions.rb:126:10:126:19 | call to sole | Unexpected result: hasValueFlow=b |
 edges
 | active_support.rb:10:9:10:18 | call to source :  | active_support.rb:11:10:11:10 | x :  |
 | active_support.rb:11:10:11:10 | x :  | active_support.rb:11:10:11:19 | call to at |
@@ -186,6 +187,22 @@ edges
 | active_support.rb:290:7:290:16 | call to source :  | active_support.rb:291:8:291:8 | x :  |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
+| active_support.rb:303:7:303:16 | call to source :  | active_support.rb:304:19:304:19 | a :  |
+| active_support.rb:304:7:304:19 | call to json_escape :  | active_support.rb:305:8:305:8 | b |
+| active_support.rb:304:19:304:19 | a :  | active_support.rb:304:7:304:19 | call to json_escape :  |
+| active_support.rb:309:9:309:18 | call to source :  | active_support.rb:310:37:310:37 | x :  |
+| active_support.rb:310:37:310:37 | x :  | active_support.rb:310:10:310:38 | call to encode |
+| active_support.rb:314:9:314:18 | call to source :  | active_support.rb:315:37:315:37 | x :  |
+| active_support.rb:315:37:315:37 | x :  | active_support.rb:315:10:315:38 | call to decode |
+| active_support.rb:319:9:319:18 | call to source :  | active_support.rb:320:35:320:35 | x :  |
+| active_support.rb:320:35:320:35 | x :  | active_support.rb:320:10:320:36 | call to dump |
+| active_support.rb:324:9:324:18 | call to source :  | active_support.rb:325:35:325:35 | x :  |
+| active_support.rb:325:35:325:35 | x :  | active_support.rb:325:10:325:36 | call to load |
+| active_support.rb:329:9:329:18 | call to source :  | active_support.rb:330:10:330:10 | x :  |
+| active_support.rb:329:9:329:18 | call to source :  | active_support.rb:331:10:331:10 | x :  |
+| active_support.rb:330:10:330:10 | x :  | active_support.rb:332:10:332:10 | y [element 0] :  |
+| active_support.rb:331:10:331:10 | x :  | active_support.rb:331:10:331:18 | call to to_json |
+| active_support.rb:332:10:332:10 | y [element 0] :  | active_support.rb:332:10:332:18 | call to to_json |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  |
@@ -286,6 +303,138 @@ edges
 | hash_extensions.rb:73:10:73:10 | h [element] :  | hash_extensions.rb:73:10:73:16 | ...[...] |
 | hash_extensions.rb:74:10:74:10 | h [element] :  | hash_extensions.rb:74:10:74:16 | ...[...] |
 | hash_extensions.rb:74:10:74:10 | h [element] :  | hash_extensions.rb:74:10:74:16 | ...[...] |
+| hash_extensions.rb:80:15:80:25 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 0] :  |
+| hash_extensions.rb:80:15:80:25 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 0] :  |
+| hash_extensions.rb:80:28:80:38 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 1] :  |
+| hash_extensions.rb:80:28:80:38 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 1] :  |
+| hash_extensions.rb:80:41:80:51 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 2] :  |
+| hash_extensions.rb:80:41:80:51 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 2] :  |
+| hash_extensions.rb:81:9:81:14 | values [element 0] :  | hash_extensions.rb:81:31:81:33 | key :  |
+| hash_extensions.rb:81:9:81:14 | values [element 0] :  | hash_extensions.rb:81:31:81:33 | key :  |
+| hash_extensions.rb:81:9:81:14 | values [element 1] :  | hash_extensions.rb:81:31:81:33 | key :  |
+| hash_extensions.rb:81:9:81:14 | values [element 1] :  | hash_extensions.rb:81:31:81:33 | key :  |
+| hash_extensions.rb:81:9:81:14 | values [element 2] :  | hash_extensions.rb:81:31:81:33 | key :  |
+| hash_extensions.rb:81:9:81:14 | values [element 2] :  | hash_extensions.rb:81:31:81:33 | key :  |
+| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:86:10:86:10 | h [element] :  |
+| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:86:10:86:10 | h [element] :  |
+| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:87:10:87:10 | h [element] :  |
+| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:87:10:87:10 | h [element] :  |
+| hash_extensions.rb:81:31:81:33 | key :  | hash_extensions.rb:82:14:82:16 | key |
+| hash_extensions.rb:81:31:81:33 | key :  | hash_extensions.rb:82:14:82:16 | key |
+| hash_extensions.rb:83:9:83:19 | call to source :  | hash_extensions.rb:81:9:84:7 | call to index_with [element] :  |
+| hash_extensions.rb:83:9:83:19 | call to source :  | hash_extensions.rb:81:9:84:7 | call to index_with [element] :  |
+| hash_extensions.rb:86:10:86:10 | h [element] :  | hash_extensions.rb:86:10:86:16 | ...[...] |
+| hash_extensions.rb:86:10:86:10 | h [element] :  | hash_extensions.rb:86:10:86:16 | ...[...] |
+| hash_extensions.rb:87:10:87:10 | h [element] :  | hash_extensions.rb:87:10:87:16 | ...[...] |
+| hash_extensions.rb:87:10:87:10 | h [element] :  | hash_extensions.rb:87:10:87:16 | ...[...] |
+| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:91:10:91:10 | j [element] :  |
+| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:91:10:91:10 | j [element] :  |
+| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:92:10:92:10 | j [element] :  |
+| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:92:10:92:10 | j [element] :  |
+| hash_extensions.rb:89:27:89:37 | call to source :  | hash_extensions.rb:89:9:89:38 | call to index_with [element] :  |
+| hash_extensions.rb:89:27:89:37 | call to source :  | hash_extensions.rb:89:9:89:38 | call to index_with [element] :  |
+| hash_extensions.rb:91:10:91:10 | j [element] :  | hash_extensions.rb:91:10:91:16 | ...[...] |
+| hash_extensions.rb:91:10:91:10 | j [element] :  | hash_extensions.rb:91:10:91:16 | ...[...] |
+| hash_extensions.rb:92:10:92:10 | j [element] :  | hash_extensions.rb:92:10:92:16 | ...[...] |
+| hash_extensions.rb:92:10:92:10 | j [element] :  | hash_extensions.rb:92:10:92:16 | ...[...] |
+| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  | hash_extensions.rb:99:10:99:25 | call to pick |
+| hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  | hash_extensions.rb:99:10:99:25 | call to pick |
+| hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  | hash_extensions.rb:100:10:100:27 | call to pick |
+| hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  | hash_extensions.rb:100:10:100:27 | call to pick |
+| hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  | hash_extensions.rb:101:10:101:32 | call to pick [element 0] :  |
+| hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  | hash_extensions.rb:101:10:101:32 | call to pick [element 0] :  |
+| hash_extensions.rb:101:10:101:32 | call to pick [element 0] :  | hash_extensions.rb:101:10:101:35 | ...[...] |
+| hash_extensions.rb:101:10:101:32 | call to pick [element 0] :  | hash_extensions.rb:101:10:101:35 | ...[...] |
+| hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  | hash_extensions.rb:102:10:102:32 | call to pick [element 1] :  |
+| hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  | hash_extensions.rb:102:10:102:32 | call to pick [element 1] :  |
+| hash_extensions.rb:102:10:102:32 | call to pick [element 1] :  | hash_extensions.rb:102:10:102:35 | ...[...] |
+| hash_extensions.rb:102:10:102:32 | call to pick [element 1] :  | hash_extensions.rb:102:10:102:35 | ...[...] |
+| hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  | hash_extensions.rb:103:10:103:32 | call to pick [element 0] :  |
+| hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  | hash_extensions.rb:103:10:103:32 | call to pick [element 0] :  |
+| hash_extensions.rb:103:10:103:32 | call to pick [element 0] :  | hash_extensions.rb:103:10:103:35 | ...[...] |
+| hash_extensions.rb:103:10:103:32 | call to pick [element 0] :  | hash_extensions.rb:103:10:103:35 | ...[...] |
+| hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  | hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  |
+| hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  | hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  |
+| hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  | hash_extensions.rb:104:10:104:35 | ...[...] |
+| hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  | hash_extensions.rb:104:10:104:35 | ...[...] |
+| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  | hash_extensions.rb:111:10:111:28 | call to pluck [element] :  |
+| hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  | hash_extensions.rb:111:10:111:28 | call to pluck [element] :  |
+| hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  | hash_extensions.rb:111:10:111:28 | call to pluck [element] :  |
+| hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  | hash_extensions.rb:111:10:111:28 | call to pluck [element] :  |
+| hash_extensions.rb:111:10:111:28 | call to pluck [element] :  | hash_extensions.rb:111:10:111:31 | ...[...] |
+| hash_extensions.rb:111:10:111:28 | call to pluck [element] :  | hash_extensions.rb:111:10:111:31 | ...[...] |
+| hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  | hash_extensions.rb:112:10:112:33 | call to pluck [element, element 0] :  |
+| hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  | hash_extensions.rb:112:10:112:33 | call to pluck [element, element 0] :  |
+| hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  | hash_extensions.rb:112:10:112:33 | call to pluck [element, element 0] :  |
+| hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  | hash_extensions.rb:112:10:112:33 | call to pluck [element, element 0] :  |
+| hash_extensions.rb:112:10:112:33 | call to pluck [element, element 0] :  | hash_extensions.rb:112:10:112:36 | ...[...] [element 0] :  |
+| hash_extensions.rb:112:10:112:33 | call to pluck [element, element 0] :  | hash_extensions.rb:112:10:112:36 | ...[...] [element 0] :  |
+| hash_extensions.rb:112:10:112:36 | ...[...] [element 0] :  | hash_extensions.rb:112:10:112:39 | ...[...] |
+| hash_extensions.rb:112:10:112:36 | ...[...] [element 0] :  | hash_extensions.rb:112:10:112:39 | ...[...] |
+| hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  | hash_extensions.rb:113:10:113:33 | call to pluck [element, element 1] :  |
+| hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  | hash_extensions.rb:113:10:113:33 | call to pluck [element, element 1] :  |
+| hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  | hash_extensions.rb:113:10:113:33 | call to pluck [element, element 1] :  |
+| hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  | hash_extensions.rb:113:10:113:33 | call to pluck [element, element 1] :  |
+| hash_extensions.rb:113:10:113:33 | call to pluck [element, element 1] :  | hash_extensions.rb:113:10:113:36 | ...[...] [element 1] :  |
+| hash_extensions.rb:113:10:113:33 | call to pluck [element, element 1] :  | hash_extensions.rb:113:10:113:36 | ...[...] [element 1] :  |
+| hash_extensions.rb:113:10:113:36 | ...[...] [element 1] :  | hash_extensions.rb:113:10:113:39 | ...[...] |
+| hash_extensions.rb:113:10:113:36 | ...[...] [element 1] :  | hash_extensions.rb:113:10:113:39 | ...[...] |
+| hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  | hash_extensions.rb:114:10:114:33 | call to pluck [element, element 0] :  |
+| hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  | hash_extensions.rb:114:10:114:33 | call to pluck [element, element 0] :  |
+| hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  | hash_extensions.rb:114:10:114:33 | call to pluck [element, element 0] :  |
+| hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  | hash_extensions.rb:114:10:114:33 | call to pluck [element, element 0] :  |
+| hash_extensions.rb:114:10:114:33 | call to pluck [element, element 0] :  | hash_extensions.rb:114:10:114:36 | ...[...] [element 0] :  |
+| hash_extensions.rb:114:10:114:33 | call to pluck [element, element 0] :  | hash_extensions.rb:114:10:114:36 | ...[...] [element 0] :  |
+| hash_extensions.rb:114:10:114:36 | ...[...] [element 0] :  | hash_extensions.rb:114:10:114:39 | ...[...] |
+| hash_extensions.rb:114:10:114:36 | ...[...] [element 0] :  | hash_extensions.rb:114:10:114:39 | ...[...] |
+| hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  | hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  |
+| hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  | hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  |
+| hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  | hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  |
+| hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  | hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  |
+| hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  |
+| hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  |
+| hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | hash_extensions.rb:115:10:115:39 | ...[...] |
+| hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | hash_extensions.rb:115:10:115:39 | ...[...] |
+| hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:125:10:125:15 | single [element 0] :  |
+| hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:125:10:125:15 | single [element 0] :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:126:10:126:14 | multi [element 0] :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:126:10:126:14 | multi [element 0] :  |
+| hash_extensions.rb:125:10:125:15 | single [element 0] :  | hash_extensions.rb:125:10:125:20 | call to sole |
+| hash_extensions.rb:125:10:125:15 | single [element 0] :  | hash_extensions.rb:125:10:125:20 | call to sole |
+| hash_extensions.rb:126:10:126:14 | multi [element 0] :  | hash_extensions.rb:126:10:126:19 | call to sole |
+| hash_extensions.rb:126:10:126:14 | multi [element 0] :  | hash_extensions.rb:126:10:126:19 | call to sole |
 nodes
 | active_support.rb:10:9:10:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:11:10:11:10 | x :  | semmle.label | x :  |
@@ -532,6 +681,28 @@ nodes
 | active_support.rb:291:8:291:8 | x :  | semmle.label | x :  |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
+| active_support.rb:303:7:303:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:304:7:304:19 | call to json_escape :  | semmle.label | call to json_escape :  |
+| active_support.rb:304:19:304:19 | a :  | semmle.label | a :  |
+| active_support.rb:305:8:305:8 | b | semmle.label | b |
+| active_support.rb:309:9:309:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:310:10:310:38 | call to encode | semmle.label | call to encode |
+| active_support.rb:310:37:310:37 | x :  | semmle.label | x :  |
+| active_support.rb:314:9:314:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:315:10:315:38 | call to decode | semmle.label | call to decode |
+| active_support.rb:315:37:315:37 | x :  | semmle.label | x :  |
+| active_support.rb:319:9:319:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:320:10:320:36 | call to dump | semmle.label | call to dump |
+| active_support.rb:320:35:320:35 | x :  | semmle.label | x :  |
+| active_support.rb:324:9:324:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:325:10:325:36 | call to load | semmle.label | call to load |
+| active_support.rb:325:35:325:35 | x :  | semmle.label | x :  |
+| active_support.rb:329:9:329:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:330:10:330:10 | x :  | semmle.label | x :  |
+| active_support.rb:331:10:331:10 | x :  | semmle.label | x :  |
+| active_support.rb:331:10:331:18 | call to to_json | semmle.label | call to to_json |
+| active_support.rb:332:10:332:10 | y [element 0] :  | semmle.label | y [element 0] :  |
+| active_support.rb:332:10:332:18 | call to to_json | semmle.label | call to to_json |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | semmle.label | h [element :a] :  |
@@ -648,6 +819,150 @@ nodes
 | hash_extensions.rb:74:10:74:10 | h [element] :  | semmle.label | h [element] :  |
 | hash_extensions.rb:74:10:74:16 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:74:10:74:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:80:15:80:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:80:15:80:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:80:28:80:38 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:80:28:80:38 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:80:41:80:51 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:80:41:80:51 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:81:9:81:14 | values [element 0] :  | semmle.label | values [element 0] :  |
+| hash_extensions.rb:81:9:81:14 | values [element 0] :  | semmle.label | values [element 0] :  |
+| hash_extensions.rb:81:9:81:14 | values [element 1] :  | semmle.label | values [element 1] :  |
+| hash_extensions.rb:81:9:81:14 | values [element 1] :  | semmle.label | values [element 1] :  |
+| hash_extensions.rb:81:9:81:14 | values [element 2] :  | semmle.label | values [element 2] :  |
+| hash_extensions.rb:81:9:81:14 | values [element 2] :  | semmle.label | values [element 2] :  |
+| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | semmle.label | call to index_with [element] :  |
+| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | semmle.label | call to index_with [element] :  |
+| hash_extensions.rb:81:31:81:33 | key :  | semmle.label | key :  |
+| hash_extensions.rb:81:31:81:33 | key :  | semmle.label | key :  |
+| hash_extensions.rb:82:14:82:16 | key | semmle.label | key |
+| hash_extensions.rb:82:14:82:16 | key | semmle.label | key |
+| hash_extensions.rb:83:9:83:19 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:83:9:83:19 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:86:10:86:10 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:86:10:86:10 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:86:10:86:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:86:10:86:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:87:10:87:10 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:87:10:87:10 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:87:10:87:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:87:10:87:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | semmle.label | call to index_with [element] :  |
+| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | semmle.label | call to index_with [element] :  |
+| hash_extensions.rb:89:27:89:37 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:89:27:89:37 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:91:10:91:10 | j [element] :  | semmle.label | j [element] :  |
+| hash_extensions.rb:91:10:91:10 | j [element] :  | semmle.label | j [element] :  |
+| hash_extensions.rb:91:10:91:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:91:10:91:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:92:10:92:10 | j [element] :  | semmle.label | j [element] :  |
+| hash_extensions.rb:92:10:92:10 | j [element] :  | semmle.label | j [element] :  |
+| hash_extensions.rb:92:10:92:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:92:10:92:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:98:21:98:31 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:98:21:98:31 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:99:10:99:25 | call to pick | semmle.label | call to pick |
+| hash_extensions.rb:99:10:99:25 | call to pick | semmle.label | call to pick |
+| hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:100:10:100:27 | call to pick | semmle.label | call to pick |
+| hash_extensions.rb:100:10:100:27 | call to pick | semmle.label | call to pick |
+| hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:101:10:101:32 | call to pick [element 0] :  | semmle.label | call to pick [element 0] :  |
+| hash_extensions.rb:101:10:101:32 | call to pick [element 0] :  | semmle.label | call to pick [element 0] :  |
+| hash_extensions.rb:101:10:101:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:101:10:101:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:102:10:102:32 | call to pick [element 1] :  | semmle.label | call to pick [element 1] :  |
+| hash_extensions.rb:102:10:102:32 | call to pick [element 1] :  | semmle.label | call to pick [element 1] :  |
+| hash_extensions.rb:102:10:102:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:102:10:102:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:103:10:103:32 | call to pick [element 0] :  | semmle.label | call to pick [element 0] :  |
+| hash_extensions.rb:103:10:103:32 | call to pick [element 0] :  | semmle.label | call to pick [element 0] :  |
+| hash_extensions.rb:103:10:103:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:103:10:103:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  | semmle.label | call to pick [element 1] :  |
+| hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  | semmle.label | call to pick [element 1] :  |
+| hash_extensions.rb:104:10:104:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:104:10:104:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:110:21:110:31 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:110:21:110:31 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:110:65:110:75 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:110:65:110:75 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  | semmle.label | values [element 1, element :name] :  |
+| hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  | semmle.label | values [element 1, element :name] :  |
+| hash_extensions.rb:111:10:111:28 | call to pluck [element] :  | semmle.label | call to pluck [element] :  |
+| hash_extensions.rb:111:10:111:28 | call to pluck [element] :  | semmle.label | call to pluck [element] :  |
+| hash_extensions.rb:111:10:111:31 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:111:10:111:31 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  | semmle.label | values [element 1, element :id] :  |
+| hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  | semmle.label | values [element 1, element :id] :  |
+| hash_extensions.rb:112:10:112:33 | call to pluck [element, element 0] :  | semmle.label | call to pluck [element, element 0] :  |
+| hash_extensions.rb:112:10:112:33 | call to pluck [element, element 0] :  | semmle.label | call to pluck [element, element 0] :  |
+| hash_extensions.rb:112:10:112:36 | ...[...] [element 0] :  | semmle.label | ...[...] [element 0] :  |
+| hash_extensions.rb:112:10:112:36 | ...[...] [element 0] :  | semmle.label | ...[...] [element 0] :  |
+| hash_extensions.rb:112:10:112:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:112:10:112:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  | semmle.label | values [element 1, element :name] :  |
+| hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  | semmle.label | values [element 1, element :name] :  |
+| hash_extensions.rb:113:10:113:33 | call to pluck [element, element 1] :  | semmle.label | call to pluck [element, element 1] :  |
+| hash_extensions.rb:113:10:113:33 | call to pluck [element, element 1] :  | semmle.label | call to pluck [element, element 1] :  |
+| hash_extensions.rb:113:10:113:36 | ...[...] [element 1] :  | semmle.label | ...[...] [element 1] :  |
+| hash_extensions.rb:113:10:113:36 | ...[...] [element 1] :  | semmle.label | ...[...] [element 1] :  |
+| hash_extensions.rb:113:10:113:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:113:10:113:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  | semmle.label | values [element 1, element :name] :  |
+| hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  | semmle.label | values [element 1, element :name] :  |
+| hash_extensions.rb:114:10:114:33 | call to pluck [element, element 0] :  | semmle.label | call to pluck [element, element 0] :  |
+| hash_extensions.rb:114:10:114:33 | call to pluck [element, element 0] :  | semmle.label | call to pluck [element, element 0] :  |
+| hash_extensions.rb:114:10:114:36 | ...[...] [element 0] :  | semmle.label | ...[...] [element 0] :  |
+| hash_extensions.rb:114:10:114:36 | ...[...] [element 0] :  | semmle.label | ...[...] [element 0] :  |
+| hash_extensions.rb:114:10:114:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:114:10:114:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  | semmle.label | values [element 1, element :id] :  |
+| hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  | semmle.label | values [element 1, element :id] :  |
+| hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  | semmle.label | call to pluck [element, element 1] :  |
+| hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  | semmle.label | call to pluck [element, element 1] :  |
+| hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | semmle.label | ...[...] [element 1] :  |
+| hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | semmle.label | ...[...] [element 1] :  |
+| hash_extensions.rb:115:10:115:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:115:10:115:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:122:15:122:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:122:15:122:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:125:10:125:15 | single [element 0] :  | semmle.label | single [element 0] :  |
+| hash_extensions.rb:125:10:125:15 | single [element 0] :  | semmle.label | single [element 0] :  |
+| hash_extensions.rb:125:10:125:20 | call to sole | semmle.label | call to sole |
+| hash_extensions.rb:125:10:125:20 | call to sole | semmle.label | call to sole |
+| hash_extensions.rb:126:10:126:14 | multi [element 0] :  | semmle.label | multi [element 0] :  |
+| hash_extensions.rb:126:10:126:14 | multi [element 0] :  | semmle.label | multi [element 0] :  |
+| hash_extensions.rb:126:10:126:19 | call to sole | semmle.label | call to sole |
+| hash_extensions.rb:126:10:126:19 | call to sole | semmle.label | call to sole |
 subpaths
 #select
 | active_support.rb:182:10:182:13 | ...[...] | active_support.rb:180:10:180:17 | call to source :  | active_support.rb:182:10:182:13 | ...[...] | $@ | active_support.rb:180:10:180:17 | call to source :  | call to source :  |
@@ -685,3 +1000,28 @@ subpaths
 | hash_extensions.rb:74:10:74:16 | ...[...] | hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:74:10:74:16 | ...[...] | $@ | hash_extensions.rb:67:15:67:25 | call to source :  | call to source :  |
 | hash_extensions.rb:74:10:74:16 | ...[...] | hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:74:10:74:16 | ...[...] | $@ | hash_extensions.rb:67:28:67:38 | call to source :  | call to source :  |
 | hash_extensions.rb:74:10:74:16 | ...[...] | hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:74:10:74:16 | ...[...] | $@ | hash_extensions.rb:67:41:67:51 | call to source :  | call to source :  |
+| hash_extensions.rb:82:14:82:16 | key | hash_extensions.rb:80:15:80:25 | call to source :  | hash_extensions.rb:82:14:82:16 | key | $@ | hash_extensions.rb:80:15:80:25 | call to source :  | call to source :  |
+| hash_extensions.rb:82:14:82:16 | key | hash_extensions.rb:80:28:80:38 | call to source :  | hash_extensions.rb:82:14:82:16 | key | $@ | hash_extensions.rb:80:28:80:38 | call to source :  | call to source :  |
+| hash_extensions.rb:82:14:82:16 | key | hash_extensions.rb:80:41:80:51 | call to source :  | hash_extensions.rb:82:14:82:16 | key | $@ | hash_extensions.rb:80:41:80:51 | call to source :  | call to source :  |
+| hash_extensions.rb:86:10:86:16 | ...[...] | hash_extensions.rb:83:9:83:19 | call to source :  | hash_extensions.rb:86:10:86:16 | ...[...] | $@ | hash_extensions.rb:83:9:83:19 | call to source :  | call to source :  |
+| hash_extensions.rb:87:10:87:16 | ...[...] | hash_extensions.rb:83:9:83:19 | call to source :  | hash_extensions.rb:87:10:87:16 | ...[...] | $@ | hash_extensions.rb:83:9:83:19 | call to source :  | call to source :  |
+| hash_extensions.rb:91:10:91:16 | ...[...] | hash_extensions.rb:89:27:89:37 | call to source :  | hash_extensions.rb:91:10:91:16 | ...[...] | $@ | hash_extensions.rb:89:27:89:37 | call to source :  | call to source :  |
+| hash_extensions.rb:92:10:92:16 | ...[...] | hash_extensions.rb:89:27:89:37 | call to source :  | hash_extensions.rb:92:10:92:16 | ...[...] | $@ | hash_extensions.rb:89:27:89:37 | call to source :  | call to source :  |
+| hash_extensions.rb:99:10:99:25 | call to pick | hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:99:10:99:25 | call to pick | $@ | hash_extensions.rb:98:21:98:31 | call to source :  | call to source :  |
+| hash_extensions.rb:100:10:100:27 | call to pick | hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:100:10:100:27 | call to pick | $@ | hash_extensions.rb:98:40:98:54 | call to source :  | call to source :  |
+| hash_extensions.rb:101:10:101:35 | ...[...] | hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:101:10:101:35 | ...[...] | $@ | hash_extensions.rb:98:21:98:31 | call to source :  | call to source :  |
+| hash_extensions.rb:102:10:102:35 | ...[...] | hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:102:10:102:35 | ...[...] | $@ | hash_extensions.rb:98:40:98:54 | call to source :  | call to source :  |
+| hash_extensions.rb:103:10:103:35 | ...[...] | hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:103:10:103:35 | ...[...] | $@ | hash_extensions.rb:98:40:98:54 | call to source :  | call to source :  |
+| hash_extensions.rb:104:10:104:35 | ...[...] | hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:104:10:104:35 | ...[...] | $@ | hash_extensions.rb:98:21:98:31 | call to source :  | call to source :  |
+| hash_extensions.rb:111:10:111:31 | ...[...] | hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:111:10:111:31 | ...[...] | $@ | hash_extensions.rb:110:40:110:54 | call to source :  | call to source :  |
+| hash_extensions.rb:111:10:111:31 | ...[...] | hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:111:10:111:31 | ...[...] | $@ | hash_extensions.rb:110:84:110:99 | call to source :  | call to source :  |
+| hash_extensions.rb:112:10:112:39 | ...[...] | hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:112:10:112:39 | ...[...] | $@ | hash_extensions.rb:110:21:110:31 | call to source :  | call to source :  |
+| hash_extensions.rb:112:10:112:39 | ...[...] | hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:112:10:112:39 | ...[...] | $@ | hash_extensions.rb:110:65:110:75 | call to source :  | call to source :  |
+| hash_extensions.rb:113:10:113:39 | ...[...] | hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:113:10:113:39 | ...[...] | $@ | hash_extensions.rb:110:40:110:54 | call to source :  | call to source :  |
+| hash_extensions.rb:113:10:113:39 | ...[...] | hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:113:10:113:39 | ...[...] | $@ | hash_extensions.rb:110:84:110:99 | call to source :  | call to source :  |
+| hash_extensions.rb:114:10:114:39 | ...[...] | hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:114:10:114:39 | ...[...] | $@ | hash_extensions.rb:110:40:110:54 | call to source :  | call to source :  |
+| hash_extensions.rb:114:10:114:39 | ...[...] | hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:114:10:114:39 | ...[...] | $@ | hash_extensions.rb:110:84:110:99 | call to source :  | call to source :  |
+| hash_extensions.rb:115:10:115:39 | ...[...] | hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:115:10:115:39 | ...[...] | $@ | hash_extensions.rb:110:21:110:31 | call to source :  | call to source :  |
+| hash_extensions.rb:115:10:115:39 | ...[...] | hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:115:10:115:39 | ...[...] | $@ | hash_extensions.rb:110:65:110:75 | call to source :  | call to source :  |
+| hash_extensions.rb:125:10:125:20 | call to sole | hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:125:10:125:20 | call to sole | $@ | hash_extensions.rb:122:15:122:25 | call to source :  | call to source :  |
+| hash_extensions.rb:126:10:126:19 | call to sole | hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:126:10:126:19 | call to sole | $@ | hash_extensions.rb:123:14:123:24 | call to source :  | call to source :  |

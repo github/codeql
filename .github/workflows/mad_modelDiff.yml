@@ -61,8 +61,8 @@ jobs:
             DATABASE=$2
             cd codeql-$QL_VARIANT
             SHORTNAME=`basename $DATABASE`
-            python java/ql/src/utils/model-generator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE $MODELS/${SHORTNAME}.qll
-            mv $MODELS/${SHORTNAME}.qll $MODELS/${SHORTNAME}Generated_${QL_VARIANT}.qll
+            python java/ql/src/utils/model-generator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE ${SHORTNAME}.temp.model.yml
+            mv java/ql/lib/ext/generated/${SHORTNAME}.temp.model.yml $MODELS/${SHORTNAME}Generated_${QL_VARIANT}.model.yml
             cd ..
           }
 
@@ -85,16 +85,16 @@ jobs:
           set -x
           MODELS=`pwd`/tmp-models
           ls -1 tmp-models/
-          for m in $MODELS/*_main.qll ; do
+          for m in $MODELS/*_main.model.yml ; do
             t="${m/main/"pr"}"
             basename=`basename $m`
-            name="diff_${basename/_main.qll/""}"
+            name="diff_${basename/_main.model.yml/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
       - uses: actions/upload-artifact@v3
         with:
           name: models
-          path: tmp-models/*.qll
+          path: tmp-models/*.model.yml
           retention-days: 20
       - uses: actions/upload-artifact@v3
         with:

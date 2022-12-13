@@ -26,7 +26,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    working-with-source-locations
    abstract-syntax-tree-classes-for-working-with-java-programs
 
--  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for Java <codeql-library-for-java>`: When analyzing Java code, you can use the large collection of classes in the CodeQL library for Java.
 

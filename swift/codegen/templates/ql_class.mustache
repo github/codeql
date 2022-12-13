@@ -126,7 +126,7 @@ module Generated {
      * Gets the number of {{doc_plural}}.
      */
     final int getNumberOf{{plural}}() {
-      result = count({{indefinite_getter}}())
+      result = count(int i | exists({{getter}}(i)))
     }
     {{/is_optional}}
     {{/is_repeated}}

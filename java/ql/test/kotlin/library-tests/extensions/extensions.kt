@@ -30,6 +30,3 @@ fun foo() {
     fun String.baz(p1: String): String { return "Baz" }
     "someString".baz("bazParam")
 }
-
-// Diagnostic Matches: Completion failure for type: org.jetbrains.annotations.NotNull
-// Diagnostic Matches: Unknown location for org.jetbrains.annotations.NotNull

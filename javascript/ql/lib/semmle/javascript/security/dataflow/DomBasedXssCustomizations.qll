@@ -342,4 +342,8 @@ module DomBasedXss {
       outcome = super.getPolarity()
     }
   }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("html-injection").asSink() }
+  }
 }

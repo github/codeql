@@ -2,11 +2,8 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineExpectationsTest
 
-class LocalSource extends DataFlow::Node {
-  LocalSource() {
-    this instanceof UserInput and
-    not this instanceof RemoteFlowSource
-  }
+class LocalSource extends DataFlow::Node instanceof UserInput {
+  LocalSource() { not this instanceof RemoteFlowSource }
 }
 
 predicate isTestSink(DataFlow::Node n) {

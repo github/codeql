@@ -260,21 +260,34 @@ Alternative solutions
 
 Here are some more example queries that solve the river crossing puzzle:
 
-  #. This query uses a modified ``path`` variable to describe the resulting path in
-     more detail.
+.. container:: toggle
 
-     ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/659603593702729237/>`__
+   .. container:: name
 
-  #. This query models the man and the cargo items in a different way, using an 
-     :ref:`abstract <abstract>`
-     class and predicate. It also displays the resulting path in a more visual way.
+      *Show/hide example query - modified path*
 
-     ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/1025323464423811143/>`__
+   .. literalinclude:: river-answer-1-path.ql
+      :language: ql
 
-  #. This query introduces :ref:`algebraic datatypes <algebraic-datatypes>`
-     to model the situation, instead of defining everything as a subclass of ``string``.
 
-     ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/7260748307619718263/>`__
+.. container:: toggle
+
+   .. container:: name
+
+      *Show/hide example query - abstract class*
+
+   .. literalinclude:: river-answer-2-abstract-class.ql
+      :language: ql
+
+
+.. container:: toggle
+
+   .. container:: name
+
+      *Show/hide example query - datatypes*
+
+   .. literalinclude:: river-answer-3-datatypes.ql
+      :language: ql
 
 Further reading
 ---------------

@@ -51,7 +51,7 @@ module Generated {
     /**
      * Gets the number of labels of this case statement.
      */
-    final int getNumberOfLabels() { result = count(getALabel()) }
+    final int getNumberOfLabels() { result = count(int i | exists(getLabel(i))) }
 
     /**
      * Gets the `index`th variable of this case statement (0-based).
@@ -79,6 +79,6 @@ module Generated {
     /**
      * Gets the number of variables of this case statement.
      */
-    final int getNumberOfVariables() { result = count(getAVariable()) }
+    final int getNumberOfVariables() { result = count(int i | exists(getVariable(i))) }
   }
 }

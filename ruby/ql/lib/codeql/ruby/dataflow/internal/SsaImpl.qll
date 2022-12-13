@@ -225,6 +225,15 @@ private predicate adjacentDefRead(
   v = def.getSourceVariable()
 }
 
+pragma[noinline]
+private predicate adjacentDefReadExt(
+  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
+  SsaInput::SourceVariable v
+) {
+  Impl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
+  v = def.getSourceVariable()
+}
+
 private predicate adjacentDefReachesRead(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
@@ -241,6 +250,22 @@ private predicate adjacentDefReachesRead(
   )
 }
 
+private predicate adjacentDefReachesReadExt(
+  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+) {
+  exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
+    def.definesAt(v, bb1, i1, _)
+    or
+    SsaInput::variableRead(bb1, i1, v, true)
+  )
+  or
+  exists(SsaInput::BasicBlock bb3, int i3 |
+    adjacentDefReachesReadExt(def, bb1, i1, bb3, i3) and
+    SsaInput::variableRead(bb3, i3, _, false) and
+    Impl::adjacentDefReadExt(def, _, bb3, i3, bb2, i2)
+  )
+}
+
 /** Same as `adjacentDefRead`, but skips uncertain reads. */
 pragma[nomagic]
 private predicate adjacentDefSkipUncertainReads(
@@ -250,22 +275,31 @@ private predicate adjacentDefSkipUncertainReads(
   SsaInput::variableRead(bb2, i2, _, true)
 }
 
-private predicate adjacentDefReachesUncertainRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+/** Same as `adjacentDefReadExt`, but skips uncertain reads. */
+pragma[nomagic]
+private predicate adjacentDefSkipUncertainReadsExt(
+  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
+  adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
+  SsaInput::variableRead(bb2, i2, _, true)
+}
+
+private predicate adjacentDefReachesUncertainReadExt(
+  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+) {
+  adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
   SsaInput::variableRead(bb2, i2, _, false)
 }
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReads(Definition def, SsaInput::BasicBlock bb, int i) {
+private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, SsaInput::BasicBlock bb, int i) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
   exists(SsaInput::BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
-    adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
+    adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
   )
 }
 
@@ -437,6 +471,19 @@ private module Cached {
   }
 
   /**
+   * Holds if the value defined at SSA definition `def` can reach a read at `read`,
+   * without passing through any other non-pseudo read.
+   */
+  cached
+  predicate firstReadExt(DefinitionExt def, VariableReadAccessCfgNode read) {
+    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
+      def.definesAt(_, bb1, i1, _) and
+      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
+      read = bb2.getNode(i2)
+    )
+  }
+
+  /**
    * Holds if the read at `read2` is a read of the same SSA definition `def`
    * as the read at `read1`, and `read2` can be reached from `read1` without
    * passing through another non-pseudo read.
@@ -454,6 +501,23 @@ private module Cached {
   }
 
   /**
+   * Holds if the read at `read2` is a read of the same SSA definition `def`
+   * as the read at `read1`, and `read2` can be reached from `read1` without
+   * passing through another non-pseudo read.
+   */
+  cached
+  predicate adjacentReadPairExt(
+    DefinitionExt def, VariableReadAccessCfgNode read1, VariableReadAccessCfgNode read2
+  ) {
+    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
+      read1 = bb1.getNode(i1) and
+      variableReadActual(bb1, i1, _) and
+      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
+      read2 = bb2.getNode(i2)
+    )
+  }
+
+  /**
    * Holds if the read of `def` at `read` may be a last read. That is, `read`
    * can either reach another definition of the underlying source variable or
    * the end of the CFG scope, without passing through another non-pseudo read.
@@ -461,7 +525,7 @@ private module Cached {
   cached
   predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
     exists(Cfg::BasicBlock bb, int i |
-      lastRefSkipUncertainReads(def, bb, i) and
+      lastRefSkipUncertainReadsExt(def, bb, i) and
       variableReadActual(bb, i, _) and
       read = bb.getNode(i)
     )
@@ -475,13 +539,15 @@ private module Cached {
    * The reference is either a read of `def` or `def` itself.
    */
   cached
-  predicate lastRefBeforeRedef(Definition def, Cfg::BasicBlock bb, int i, Definition next) {
-    Impl::lastRefRedef(def, bb, i, next) and
-    not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
+  predicate lastRefBeforeRedefExt(DefinitionExt def, Cfg::BasicBlock bb, int i, DefinitionExt next) {
+    exists(LocalVariable v |
+      Impl::lastRefRedefExt(def, v, bb, i, next) and
+      not SsaInput::variableRead(bb, i, v, false)
+    )
     or
     exists(SsaInput::BasicBlock bb0, int i0 |
-      Impl::lastRefRedef(def, bb0, i0, next) and
-      adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
+      Impl::lastRefRedefExt(def, _, bb0, i0, next) and
+      adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
     )
   }
 

@@ -2,12 +2,16 @@
 import codeql.swift.elements
 import TestUtils
 
-from PrimaryArchetypeType x, string getName, Type getCanonicalType, Type getInterfaceType
+from
+  PrimaryArchetypeType x, string getName, Type getCanonicalType, Type getInterfaceType,
+  string hasSuperclass, int getNumberOfProtocols
 where
   toBeTested(x) and
   not x.isUnknown() and
   getName = x.getName() and
   getCanonicalType = x.getCanonicalType() and
-  getInterfaceType = x.getInterfaceType()
+  getInterfaceType = x.getInterfaceType() and
+  (if x.hasSuperclass() then hasSuperclass = "yes" else hasSuperclass = "no") and
+  getNumberOfProtocols = x.getNumberOfProtocols()
 select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getInterfaceType:",
-  getInterfaceType
+  getInterfaceType, "hasSuperclass:", hasSuperclass, "getNumberOfProtocols:", getNumberOfProtocols

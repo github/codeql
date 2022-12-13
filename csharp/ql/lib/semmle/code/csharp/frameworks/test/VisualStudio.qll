@@ -5,7 +5,7 @@ import semmle.code.csharp.frameworks.Test
 
 /** The `Microsoft.VisualStudio.TestTools.UnitTesting` namespace. */
 class VSTestNamespace extends Namespace {
-  VSTestNamespace() { this.hasQualifiedName("Microsoft.VisualStudio.TestTools.UnitTesting") }
+  VSTestNamespace() { this.getFullName() = "Microsoft.VisualStudio.TestTools.UnitTesting" }
 }
 
 /** A class that contains test methods. */

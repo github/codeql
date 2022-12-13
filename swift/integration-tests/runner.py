@@ -25,6 +25,7 @@ def options():
     p.add_argument("--check-databases", action="store_true")
     p.add_argument("--learn", action="store_true")
     p.add_argument("--threads", "-j", type=int, default=0)
+    p.add_argument("--compilation-cache")
     return p.parse_args()
 
 
@@ -65,6 +66,8 @@ def main(opts):
             cmd.append("--no-check-databases")
         if opts.learn:
             cmd.append("--learn")
+        if opts.compilation_cache:
+            cmd.append(f'--compilation-cache="{opts.compilation_cache}"')
         cmd.extend(str(t.parent) for t in succesful_db_creation)
         ql_test_success = subprocess.run(cmd).returncode == 0
 

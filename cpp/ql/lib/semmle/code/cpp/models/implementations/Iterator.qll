@@ -31,7 +31,17 @@ private class IteratorTraits extends Class {
  * `std::iterator_traits` instantiation for it.
  */
 private class IteratorByTraits extends Iterator {
-  IteratorByTraits() { exists(IteratorTraits it | it.getIteratorType() = this) }
+  IteratorTraits trait;
+
+  IteratorByTraits() { trait.getIteratorType() = this }
+
+  override Type getValueType() {
+    exists(TypedefType t |
+      trait.getAMember() = t and
+      t.getName() = "value_type" and
+      result = t.getUnderlyingType()
+    )
+  }
 }
 
 /**
@@ -42,20 +52,27 @@ private class IteratorByTraits extends Iterator {
  */
 private class IteratorByPointer extends Iterator instanceof PointerType {
   IteratorByPointer() { not this instanceof IteratorByTraits }
+
+  override Type getValueType() { result = super.getBaseType() }
 }
 
 /**
  * A type which has the typedefs expected for an iterator.
  */
 private class IteratorByTypedefs extends Iterator, Class {
+  TypedefType valueType;
+
   IteratorByTypedefs() {
     this.getAMember().(TypedefType).hasName("difference_type") and
-    this.getAMember().(TypedefType).hasName("value_type") and
+    valueType = this.getAMember() and
+    valueType.hasName("value_type") and
     this.getAMember().(TypedefType).hasName("pointer") and
     this.getAMember().(TypedefType).hasName("reference") and
     this.getAMember().(TypedefType).hasName("iterator_category") and
     not this.hasQualifiedName(["std", "bsl"], "iterator_traits")
   }
+
+  override Type getValueType() { result = valueType.getUnderlyingType() }
 }
 
 /**
@@ -63,6 +80,8 @@ private class IteratorByTypedefs extends Iterator, Class {
  */
 private class StdIterator extends Iterator, Class {
   StdIterator() { this.hasQualifiedName(["std", "bsl"], "iterator") }
+
+  override Type getValueType() { result = this.getTemplateArgument(1).(Type).getUnderlyingType() }
 }
 
 /**
@@ -166,12 +185,15 @@ private class IteratorSubOperator extends Operator, TaintFunction {
 /**
  * A non-member `operator+=` or `operator-=` function for an iterator type.
  */
-private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, TaintFunction {
+class IteratorAssignArithmeticOperator extends Operator {
   IteratorAssignArithmeticOperator() {
     this.hasName(["operator+=", "operator-="]) and
     exists(getIteratorArgumentInput(this, 0))
   }
+}
 
+private class IteratorAssignArithmeticOperatorModel extends IteratorAssignArithmeticOperator,
+  DataFlowFunction, TaintFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and
     output.isReturnValue()
@@ -210,11 +232,14 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
 /**
  * An `operator++` or `operator--` member function for an iterator type.
  */
-private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
+class IteratorCrementMemberOperator extends MemberFunction {
   IteratorCrementMemberOperator() {
     this.getClassAndName(["operator++", "operator--"]) instanceof Iterator
   }
+}
 
+private class IteratorCrementMemberOperatorModel extends IteratorCrementMemberOperator,
+  DataFlowFunction, TaintFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
     output.isReturnValue()

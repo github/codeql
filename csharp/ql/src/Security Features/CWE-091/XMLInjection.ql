@@ -27,7 +27,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasName("WriteRaw") and
-      mc.getTarget().getDeclaringType().getABaseType*().hasQualifiedName("System.Xml.XmlWriter")
+      mc.getTarget().getDeclaringType().getABaseType*().hasQualifiedName("System.Xml", "XmlWriter")
     |
       mc.getArgument(0) = sink.asExpr()
     )
@@ -39,7 +39,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
       mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Security.SecurityElement")
+          .hasQualifiedName("System.Security", "SecurityElement")
     |
       mc = node.asExpr()
     )

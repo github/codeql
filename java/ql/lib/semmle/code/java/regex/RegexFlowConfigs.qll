@@ -6,7 +6,6 @@ import java
 import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.DataFlow2
-private import RegexFlowModels
 private import semmle.code.java.security.SecurityTests
 
 private class ExploitableStringLiteral extends StringLiteral {
