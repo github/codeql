@@ -40,11 +40,11 @@ private predicate isJdkInternal(J::CompilationUnit cu) {
   cu.getPackage().getName().matches("java.awt%") or
   cu.getPackage().getName().matches("sun%") or
   cu.getPackage().getName().matches("jdk%") or
-  cu.getPackage().getName().matches("java2d.%") or
-  cu.getPackage().getName().matches("build.tools.%") or
+  cu.getPackage().getName().matches("java2d%") or
+  cu.getPackage().getName().matches("build.tools%") or
   cu.getPackage().getName().matches("propertiesparser%") or
-  cu.getPackage().getName().matches("org.jcp.%") or
-  cu.getPackage().getName().matches("org.w3c.%") or
+  cu.getPackage().getName().matches("org.jcp%") or
+  cu.getPackage().getName().matches("org.w3c%") or
   cu.getPackage().getName().matches("org.ietf.jgss%") or
   cu.getPackage().getName().matches("org.xml.sax%") or
   cu.getPackage().getName().matches("com.oracle%") or
