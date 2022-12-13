@@ -11,7 +11,8 @@
 
  /**
   * Returns a string to represent generally unknown algorithms. 
-  * To be used in place of hardcoded strings representing 'unknown' to maintain consistency.
+  * Predicate is to be used to get a consistent string representation 
+  * for unknown algorithms.
   */
  string unknownAlgorithm()
  {

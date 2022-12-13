@@ -2669,7 +2669,6 @@ private module StdlibPrivate {
     }
 
     override string getAlgorithmRaw() { 
-      //result.matchesName(hashName) 
       result = hashName
     }
 
@@ -2697,7 +2696,6 @@ private module StdlibPrivate {
     }
 
     override string getAlgorithmRaw() { 
-      //result.matchesName(hashName) 
       result = hashName
     }
 
@@ -2717,7 +2715,6 @@ private module StdlibPrivate {
     }
 
     override string getAlgorithmRaw() { 
-      //result.matchesName(hashName) 
       result = hashName
     }
 
@@ -2747,8 +2744,7 @@ private module StdlibPrivate {
     bindingset[this]
     HashlibGenericHashOperation() { hashClass = hashlibMember(hashName) }
 
-    override string getAlgorithmRaw() { 
-      //result.matchesName(hashName) 
+    override string getAlgorithmRaw() {  
       result = hashName
     }
 

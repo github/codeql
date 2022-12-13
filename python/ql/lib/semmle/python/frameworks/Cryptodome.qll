@@ -126,7 +126,6 @@ private module CryptodomeModel {
     }
 
     override string getAlgorithmRaw() { 
-      //result.matchesName(cipherName) 
       result = cipherName
     }
 
@@ -201,7 +200,6 @@ private module CryptodomeModel {
     }
 
     override string getAlgorithmRaw() {
-      //result.matchesName(signatureName)
       result = signatureName
     }
 
@@ -239,7 +237,6 @@ private module CryptodomeModel {
     }
 
     override string getAlgorithmRaw() { 
-      //result.matchesName(hashName) 
       result = hashName
     }
 

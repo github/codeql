@@ -221,7 +221,6 @@ private module CryptographyModel {
       }
 
       override string getAlgorithmRaw() {
-        //result.matchesName(algorithmName)
         result = algorithmName
       }
 
@@ -274,7 +273,6 @@ private module CryptographyModel {
       }
 
       override string getAlgorithmRaw() {
-        //result.matchesName(algorithmName)
         result = algorithmName
       }
 

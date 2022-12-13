@@ -25,13 +25,6 @@ private import ConceptsImports
  */
 module Cryptography {
   import semmle.python.concepts.CryptoAlgorithms
-  // class CryptographicAlgorithm = CryptoAlgorithms::CryptographicAlgorithm;
-
-  // class EncryptionAlgorithm = CryptoAlgorithms::EncryptionAlgorithm;
-
-  // class HashingAlgorithm = CryptoAlgorithms::HashingAlgorithm;
-
-  // class PasswordHashingAlgorithm = CryptoAlgorithms::PasswordHashingAlgorithm;
 
   /**
    * A data-flow node that is an application of a cryptographic algorithm. For example,

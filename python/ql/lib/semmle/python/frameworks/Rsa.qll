@@ -38,7 +38,6 @@ private module Rsa {
 
     override string getAlgorithmRaw() { 
       result = "RSA"
-      //result.getName() = "RSA" 
     }
 
     override DataFlow::Node getAnInput() {
@@ -58,7 +57,6 @@ private module Rsa {
 
     override string getAlgorithmRaw() { 
       result = "RSA"
-      //result.getName() = "RSA" 
     }
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("crypto")] }
@@ -113,7 +111,6 @@ private module Rsa {
       // note that technically there is also a hashing operation going on but we don't
       // know what algorithm is used up front, since it is encoded in the signature
       result = "RSA"
-      //result.getName() = "RSA"
     }
 
     override DataFlow::Node getAnInput() {
