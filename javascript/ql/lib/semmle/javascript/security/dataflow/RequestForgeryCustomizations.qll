@@ -73,4 +73,12 @@ module RequestForgery {
       pred = url.getArgument(0)
     )
   }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("request-forgery").asSink() }
+
+    override DataFlow::Node getARequest() { result = this }
+
+    override string getKind() { result = "endpoint" }
+  }
 }

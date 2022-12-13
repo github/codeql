@@ -235,4 +235,8 @@ module ClientSideUrlRedirect {
       this = NextJS::nextRouter().getAMemberCall(["push", "replace"]).getArgument(0)
     }
   }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
+  }
 }
