@@ -49,7 +49,7 @@ module Generated {
     /**
      * Gets the number of imported modules of this module declaration.
      */
-    final int getNumberOfImportedModules() { result = count(getAnImportedModule()) }
+    final int getNumberOfImportedModules() { result = count(int i | exists(getImportedModule(i))) }
 
     /**
      * Gets the `index`th exported module of this module declaration (0-based).
@@ -79,6 +79,6 @@ module Generated {
     /**
      * Gets the number of exported modules of this module declaration.
      */
-    final int getNumberOfExportedModules() { result = count(getAnExportedModule()) }
+    final int getNumberOfExportedModules() { result = count(int i | exists(getExportedModule(i))) }
   }
 }

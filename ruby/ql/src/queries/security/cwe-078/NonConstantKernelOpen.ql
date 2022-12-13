@@ -1,6 +1,7 @@
 /**
- * @name Use of `Kernel.open` or `IO.read` with a non-constant value
- * @description Using `Kernel.open` or `IO.read` may allow a malicious
+ * @name Use of `Kernel.open` or `IO.read` or similar sinks with a non-constant value
+ * @description Using `Kernel.open`, `IO.read`, `IO.write`, `IO.binread`, `IO.binwrite`,
+ *              `IO.foreach`, `IO.readlines`, or `URI.open` may allow a malicious
  *              user to execute arbitrary system commands.
  * @kind problem
  * @problem.severity warning
@@ -15,15 +16,25 @@
  */
 
 import codeql.ruby.security.KernelOpenQuery
-import codeql.ruby.ast.Literal
+import codeql.ruby.AST
+import codeql.ruby.ApiGraphs
 
 from AmbiguousPathCall call
 where
-  // there is not a constant string argument
-  not exists(call.getPathArgument().getConstantValue()) and
-  // if it's a format string, then the first argument is not a constant string
-  not call.getPathArgument().getALocalSource().asExpr().getExpr().(StringLiteral).getComponent(0)
-    instanceof StringTextComponent
+  not hasConstantPrefix(call.getPathArgument().getALocalSource().asExpr().getExpr()) and
+  not call.getPathArgument().getALocalSource() =
+    API::getTopLevelMember("File").getAMethodCall("join")
 select call,
   "Call to " + call.getName() + " with a non-constant value. Consider replacing it with " +
     call.getReplacement() + "."
+
+predicate hasConstantPrefix(Expr e) {
+  // if it's a format string, then the first argument is not a constant string
+  e.(StringlikeLiteral).getComponent(0) instanceof StringTextComponent
+  or
+  // it is not a constant string argument
+  exists(e.getConstantValue())
+  or
+  // not a concatenation that starts with a constant string
+  hasConstantPrefix(e.(AddExpr).getLeftOperand())
+}

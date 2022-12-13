@@ -12,14 +12,11 @@
 #include "swift/extractor/translators/SwiftVisitor.h"
 #include "swift/extractor/TargetTrapFile.h"
 #include "swift/extractor/SwiftBuiltinSymbols.h"
+#include "swift/extractor/infra/file/Path.h"
 
 using namespace codeql;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
-
-static fs::path toPath(llvm::StringRef s) {
-  return {static_cast<std::string_view>(s)};
-}
 
 static void ensureDirectory(const char* label, const fs::path& dir) {
   std::error_code ec;
@@ -31,27 +28,23 @@ static void ensureDirectory(const char* label, const fs::path& dir) {
 }
 
 static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
-  ensureDirectory("TRAP", config.trapDir);
-  ensureDirectory("source archive", config.sourceArchiveDir);
+  auto source = codeql::resolvePath(file.getFilename());
+  auto destination = config.sourceArchiveDir / source.relative_path();
 
-  fs::path srcFilePath = fs::absolute(toPath(file.getFilename()));
-  auto dstFilePath = config.sourceArchiveDir;
-  dstFilePath += srcFilePath;
-
-  ensureDirectory("source archive destination", dstFilePath.parent_path());
+  ensureDirectory("source archive destination", destination.parent_path());
 
   std::error_code ec;
-  fs::copy(srcFilePath, dstFilePath, fs::copy_options::overwrite_existing, ec);
+  fs::copy(source, destination, fs::copy_options::overwrite_existing, ec);
 
   if (ec) {
-    std::cerr << "Cannot archive source file " << srcFilePath << " -> " << dstFilePath << ": "
+    std::cerr << "Cannot archive source file " << source << " -> " << destination << ": "
               << ec.message() << "\n";
   }
 }
 
 static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
   if (primaryFile) {
-    return primaryFile->getFilename().str();
+    return resolvePath(primaryFile->getFilename());
   }
   // PCM clang module
   if (module.isNonSwiftModule()) {
@@ -60,7 +53,7 @@ static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primar
     // Moreover, pcm files may come from caches located in different directories, but are
     // unambiguously identified by the base file name, so we can discard the absolute directory
     fs::path filename = "/pcms";
-    filename /= toPath(module.getModuleFilename()).filename();
+    filename /= fs::path{std::string_view{module.getModuleFilename()}}.filename();
     filename += "-";
     filename += module.getName().str();
     return filename;
@@ -69,13 +62,13 @@ static fs::path getFilename(swift::ModuleDecl& module, swift::SourceFile* primar
     // The Builtin module has an empty filename, let's fix that
     return "/__Builtin__";
   }
-  auto filename = toPath(module.getModuleFilename());
+  std::string_view filename = module.getModuleFilename();
   // there is a special case of a module without an actual filename reporting `<imports>`: in this
   // case we want to avoid the `<>` characters, in case a dirty DB is imported on Windows
   if (filename == "<imports>") {
     return "/__imports__";
   }
-  return filename;
+  return resolvePath(filename);
 }
 
 /* The builtin module is special, as it does not publish any top-level declaration

@@ -81,13 +81,13 @@ test.kt:
 #   52|             0: [TypeAccess] Unit
 #   52|             1: [MethodAccess] staticMethod(...)
 #   52|               -1: [VarAccess] Companion
-#   52|               0: [StringLiteral] 1
+#   52|               0: [StringLiteral] "1"
 #   53|         1: [ExprStmt] <Expr>;
 #   53|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   53|             0: [TypeAccess] Unit
 #   53|             1: [MethodAccess] nonStaticMethod(...)
 #   53|               -1: [VarAccess] Companion
-#   53|               0: [StringLiteral] 2
+#   53|               0: [StringLiteral] "2"
 #   54|         2: [ExprStmt] <Expr>;
 #   54|           0: [MethodAccess] setStaticProp(...)
 #   54|             -1: [VarAccess] Companion
@@ -113,13 +113,13 @@ test.kt:
 #   60|             0: [TypeAccess] Unit
 #   60|             1: [MethodAccess] staticMethod(...)
 #   60|               -1: [TypeAccess] NonCompanion
-#   60|               0: [StringLiteral] 1
+#   60|               0: [StringLiteral] "1"
 #   61|         7: [ExprStmt] <Expr>;
 #   61|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   61|             0: [TypeAccess] Unit
 #   61|             1: [MethodAccess] nonStaticMethod(...)
 #   61|               -1: [VarAccess] INSTANCE
-#   61|               0: [StringLiteral] 2
+#   61|               0: [StringLiteral] "2"
 #   62|         8: [ExprStmt] <Expr>;
 #   62|           0: [MethodAccess] setStaticProp(...)
 #   62|             -1: [TypeAccess] NonCompanion
@@ -141,11 +141,11 @@ test.kt:
 #   65|             0: [MethodAccess] getPropWithStaticGetter(...)
 #   65|               -1: [TypeAccess] NonCompanion
 #    9|   2: [Class] HasCompanion
-#    9|     2: [Constructor] HasCompanion
+#    9|     1: [Constructor] HasCompanion
 #    9|       5: [BlockStmt] { ... }
 #    9|         0: [SuperConstructorInvocationStmt] super(...)
 #    9|         1: [BlockStmt] { ... }
-#   11|     3: [Class] Companion
+#   11|     2: [Class] Companion
 #   11|       1: [Constructor] Companion
 #   11|         5: [BlockStmt] { ... }
 #   11|           0: [SuperConstructorInvocationStmt] super(...)
@@ -158,10 +158,10 @@ test.kt:
 #   17|                 0: [VarAccess] nonStaticProp
 #   13|       2: [Method] staticMethod
 #-----|         1: (Annotations)
+#   13|           1: [Annotation] JvmStatic
 #   13|         3: [TypeAccess] String
 #-----|         4: (Parameters)
 #   13|           0: [Parameter] s
-#-----|             -1: (Annotations)
 #   13|             0: [TypeAccess] String
 #   13|         5: [BlockStmt] { ... }
 #   13|           0: [ReturnStmt] return ...
@@ -169,11 +169,9 @@ test.kt:
 #   13|               -1: [ThisAccess] this
 #   13|               0: [VarAccess] s
 #   14|       3: [Method] nonStaticMethod
-#-----|         1: (Annotations)
 #   14|         3: [TypeAccess] String
 #-----|         4: (Parameters)
 #   14|           0: [Parameter] s
-#-----|             -1: (Annotations)
 #   14|             0: [TypeAccess] String
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [ReturnStmt] return ...
@@ -182,9 +180,8 @@ test.kt:
 #   14|               0: [VarAccess] s
 #   16|       4: [FieldDeclaration] String staticProp;
 #   16|         -1: [TypeAccess] String
-#   16|         0: [StringLiteral] a
+#   16|         0: [StringLiteral] "a"
 #   16|       5: [Method] getStaticProp
-#-----|         1: (Annotations)
 #   16|         3: [TypeAccess] String
 #   16|         5: [BlockStmt] { ... }
 #   16|           0: [ReturnStmt] return ...
@@ -194,7 +191,6 @@ test.kt:
 #   16|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   16|           0: [Parameter] <set-?>
-#-----|             -1: (Annotations)
 #   16|             0: [TypeAccess] String
 #   16|         5: [BlockStmt] { ... }
 #   16|           0: [ExprStmt] <Expr>;
@@ -204,9 +200,8 @@ test.kt:
 #   16|               1: [VarAccess] <set-?>
 #   17|       7: [FieldDeclaration] String nonStaticProp;
 #   17|         -1: [TypeAccess] String
-#   17|         0: [StringLiteral] b
+#   17|         0: [StringLiteral] "b"
 #   17|       8: [Method] getNonStaticProp
-#-----|         1: (Annotations)
 #   17|         3: [TypeAccess] String
 #   17|         5: [BlockStmt] { ... }
 #   17|           0: [ReturnStmt] return ...
@@ -216,7 +211,6 @@ test.kt:
 #   17|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   17|           0: [Parameter] <set-?>
-#-----|             -1: (Annotations)
 #   17|             0: [TypeAccess] String
 #   17|         5: [BlockStmt] { ... }
 #   17|           0: [ExprStmt] <Expr>;
@@ -226,6 +220,7 @@ test.kt:
 #   17|               1: [VarAccess] <set-?>
 #   20|       10: [Method] getPropWithStaticGetter
 #-----|         1: (Annotations)
+#   20|           1: [Annotation] JvmStatic
 #   20|         3: [TypeAccess] String
 #   20|         5: [BlockStmt] { ... }
 #   20|           0: [ReturnStmt] return ...
@@ -235,7 +230,6 @@ test.kt:
 #   21|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   21|           0: [Parameter] s
-#-----|             -1: (Annotations)
 #   21|             0: [TypeAccess] String
 #   21|         5: [BlockStmt] { ... }
 #   21|           0: [ExprStmt] <Expr>;
@@ -243,7 +237,6 @@ test.kt:
 #   21|               -1: [ThisAccess] this
 #   21|               0: [VarAccess] s
 #   24|       12: [Method] getPropWithStaticSetter
-#-----|         1: (Annotations)
 #   24|         3: [TypeAccess] String
 #   24|         5: [BlockStmt] { ... }
 #   24|           0: [ReturnStmt] return ...
@@ -251,22 +244,20 @@ test.kt:
 #   24|               -1: [ThisAccess] this
 #   25|       13: [Method] setPropWithStaticSetter
 #-----|         1: (Annotations)
+#   25|           1: [Annotation] JvmStatic
 #   25|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   25|           0: [Parameter] s
-#-----|             -1: (Annotations)
 #   25|             0: [TypeAccess] String
 #   25|         5: [BlockStmt] { ... }
 #   25|           0: [ExprStmt] <Expr>;
 #   25|             0: [MethodAccess] setPropWithStaticGetter(...)
 #   25|               -1: [ThisAccess] this
 #   25|               0: [VarAccess] s
-#   13|     4: [Method] staticMethod
-#-----|       1: (Annotations)
+#   13|     3: [Method] staticMethod
 #   13|       3: [TypeAccess] String
 #-----|       4: (Parameters)
 #   13|         0: [Parameter] s
-#-----|           -1: (Annotations)
 #   13|           0: [TypeAccess] String
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ReturnStmt] return ...
@@ -274,19 +265,17 @@ test.kt:
 #   13|             -1: [VarAccess] HasCompanion.Companion
 #   13|               -1: [TypeAccess] HasCompanion
 #   13|             0: [VarAccess] s
-#   16|     5: [Method] getStaticProp
-#-----|       1: (Annotations)
+#   16|     4: [Method] getStaticProp
 #   16|       3: [TypeAccess] String
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
 #   16|           0: [MethodAccess] getStaticProp(...)
 #   16|             -1: [VarAccess] HasCompanion.Companion
 #   16|               -1: [TypeAccess] HasCompanion
-#   16|     6: [Method] setStaticProp
+#   16|     5: [Method] setStaticProp
 #   16|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   16|         0: [Parameter] <set-?>
-#-----|           -1: (Annotations)
 #   16|           0: [TypeAccess] String
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
@@ -294,20 +283,17 @@ test.kt:
 #   16|             -1: [VarAccess] HasCompanion.Companion
 #   16|               -1: [TypeAccess] HasCompanion
 #   16|             0: [VarAccess] <set-?>
-#   20|     7: [Method] getPropWithStaticGetter
-#-----|       1: (Annotations)
+#   20|     6: [Method] getPropWithStaticGetter
 #   20|       3: [TypeAccess] String
 #   20|       5: [BlockStmt] { ... }
 #   20|         0: [ReturnStmt] return ...
 #   20|           0: [MethodAccess] getPropWithStaticGetter(...)
 #   20|             -1: [VarAccess] HasCompanion.Companion
 #   20|               -1: [TypeAccess] HasCompanion
-#   25|     8: [Method] setPropWithStaticSetter
-#-----|       1: (Annotations)
+#   25|     7: [Method] setPropWithStaticSetter
 #   25|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   25|         0: [Parameter] s
-#-----|           -1: (Annotations)
 #   25|           0: [TypeAccess] String
 #   25|       5: [BlockStmt] { ... }
 #   25|         0: [ReturnStmt] return ...
@@ -316,7 +302,7 @@ test.kt:
 #   25|               -1: [TypeAccess] HasCompanion
 #   25|             0: [VarAccess] s
 #   31|   3: [Class] NonCompanion
-#   31|     2: [Constructor] NonCompanion
+#   31|     1: [Constructor] NonCompanion
 #   31|       5: [BlockStmt] { ... }
 #   31|         0: [SuperConstructorInvocationStmt] super(...)
 #   31|         1: [BlockStmt] { ... }
@@ -326,12 +312,12 @@ test.kt:
 #   37|           1: [ExprStmt] <Expr>;
 #   37|             0: [KtInitializerAssignExpr] ...=...
 #   37|               0: [VarAccess] nonStaticProp
-#   33|     3: [Method] staticMethod
+#   33|     2: [Method] staticMethod
 #-----|       1: (Annotations)
+#   33|         1: [Annotation] JvmStatic
 #   33|       3: [TypeAccess] String
 #-----|       4: (Parameters)
 #   33|         0: [Parameter] s
-#-----|           -1: (Annotations)
 #   33|           0: [TypeAccess] String
 #   33|       5: [BlockStmt] { ... }
 #   33|         0: [ReturnStmt] return ...
@@ -339,34 +325,30 @@ test.kt:
 #   33|             -1: [VarAccess] NonCompanion.INSTANCE
 #   33|               -1: [TypeAccess] NonCompanion
 #   33|             0: [VarAccess] s
-#   34|     4: [Method] nonStaticMethod
-#-----|       1: (Annotations)
+#   34|     3: [Method] nonStaticMethod
 #   34|       3: [TypeAccess] String
 #-----|       4: (Parameters)
 #   34|         0: [Parameter] s
-#-----|           -1: (Annotations)
 #   34|           0: [TypeAccess] String
 #   34|       5: [BlockStmt] { ... }
 #   34|         0: [ReturnStmt] return ...
 #   34|           0: [MethodAccess] staticMethod(...)
 #   34|             -1: [TypeAccess] NonCompanion
 #   34|             0: [VarAccess] s
-#   36|     5: [FieldDeclaration] String staticProp;
+#   36|     4: [FieldDeclaration] String staticProp;
 #   36|       -1: [TypeAccess] String
-#   36|       0: [StringLiteral] a
-#   36|     6: [Method] getStaticProp
-#-----|       1: (Annotations)
+#   36|       0: [StringLiteral] "a"
+#   36|     5: [Method] getStaticProp
 #   36|       3: [TypeAccess] String
 #   36|       5: [BlockStmt] { ... }
 #   36|         0: [ReturnStmt] return ...
 #   36|           0: [VarAccess] NonCompanion.INSTANCE.staticProp
 #   36|             -1: [VarAccess] NonCompanion.INSTANCE
 #   36|               -1: [TypeAccess] NonCompanion
-#   36|     7: [Method] setStaticProp
+#   36|     6: [Method] setStaticProp
 #   36|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   36|         0: [Parameter] <set-?>
-#-----|           -1: (Annotations)
 #   36|           0: [TypeAccess] String
 #   36|       5: [BlockStmt] { ... }
 #   36|         0: [ExprStmt] <Expr>;
@@ -375,21 +357,19 @@ test.kt:
 #   36|               -1: [VarAccess] NonCompanion.INSTANCE
 #   36|                 -1: [TypeAccess] NonCompanion
 #   36|             1: [VarAccess] <set-?>
-#   37|     8: [FieldDeclaration] String nonStaticProp;
+#   37|     7: [FieldDeclaration] String nonStaticProp;
 #   37|       -1: [TypeAccess] String
-#   37|       0: [StringLiteral] b
-#   37|     9: [Method] getNonStaticProp
-#-----|       1: (Annotations)
+#   37|       0: [StringLiteral] "b"
+#   37|     8: [Method] getNonStaticProp
 #   37|       3: [TypeAccess] String
 #   37|       5: [BlockStmt] { ... }
 #   37|         0: [ReturnStmt] return ...
 #   37|           0: [VarAccess] this.nonStaticProp
 #   37|             -1: [ThisAccess] this
-#   37|     10: [Method] setNonStaticProp
+#   37|     9: [Method] setNonStaticProp
 #   37|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   37|         0: [Parameter] <set-?>
-#-----|           -1: (Annotations)
 #   37|           0: [TypeAccess] String
 #   37|       5: [BlockStmt] { ... }
 #   37|         0: [ExprStmt] <Expr>;
@@ -397,38 +377,37 @@ test.kt:
 #   37|             0: [VarAccess] this.nonStaticProp
 #   37|               -1: [ThisAccess] this
 #   37|             1: [VarAccess] <set-?>
-#   40|     11: [Method] getPropWithStaticGetter
+#   40|     10: [Method] getPropWithStaticGetter
 #-----|       1: (Annotations)
+#   40|         1: [Annotation] JvmStatic
 #   40|       3: [TypeAccess] String
 #   40|       5: [BlockStmt] { ... }
 #   40|         0: [ReturnStmt] return ...
 #   40|           0: [MethodAccess] getPropWithStaticSetter(...)
 #   40|             -1: [VarAccess] NonCompanion.INSTANCE
 #   40|               -1: [TypeAccess] NonCompanion
-#   41|     12: [Method] setPropWithStaticGetter
+#   41|     11: [Method] setPropWithStaticGetter
 #   41|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   41|         0: [Parameter] s
-#-----|           -1: (Annotations)
 #   41|           0: [TypeAccess] String
 #   41|       5: [BlockStmt] { ... }
 #   41|         0: [ExprStmt] <Expr>;
 #   41|           0: [MethodAccess] setPropWithStaticSetter(...)
 #   41|             -1: [TypeAccess] NonCompanion
 #   41|             0: [VarAccess] s
-#   44|     13: [Method] getPropWithStaticSetter
-#-----|       1: (Annotations)
+#   44|     12: [Method] getPropWithStaticSetter
 #   44|       3: [TypeAccess] String
 #   44|       5: [BlockStmt] { ... }
 #   44|         0: [ReturnStmt] return ...
 #   44|           0: [MethodAccess] getPropWithStaticGetter(...)
 #   44|             -1: [TypeAccess] NonCompanion
-#   45|     14: [Method] setPropWithStaticSetter
+#   45|     13: [Method] setPropWithStaticSetter
 #-----|       1: (Annotations)
+#   45|         1: [Annotation] JvmStatic
 #   45|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   45|         0: [Parameter] s
-#-----|           -1: (Annotations)
 #   45|           0: [TypeAccess] String
 #   45|       5: [BlockStmt] { ... }
 #   45|         0: [ExprStmt] <Expr>;

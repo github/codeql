@@ -2,9 +2,14 @@
 import codeql.swift.elements
 import TestUtils
 
-from PropertyWrapperValuePlaceholderExpr x, OpaqueValueExpr getPlaceholder
+from
+  PropertyWrapperValuePlaceholderExpr x, string hasType, string hasWrappedValue,
+  OpaqueValueExpr getPlaceholder
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
+  (if x.hasWrappedValue() then hasWrappedValue = "yes" else hasWrappedValue = "no") and
   getPlaceholder = x.getPlaceholder()
-select x, "getPlaceholder:", getPlaceholder
+select x, "hasType:", hasType, "hasWrappedValue:", hasWrappedValue, "getPlaceholder:",
+  getPlaceholder

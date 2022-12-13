@@ -39,6 +39,4 @@ private class PrivateDataSource extends Source {
   PrivateDataSource() { this.getExpr() instanceof PrivateDataExpr }
 }
 
-private class ExternalLocation extends Sink {
-  ExternalLocation() { this instanceof ExternalLocationSink }
-}
+private class ExternalLocation extends Sink instanceof ExternalLocationSink { }

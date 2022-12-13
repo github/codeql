@@ -59,7 +59,8 @@ private predicate isRelevantForModels(J::Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and
   not api instanceof J::MainMethod and
-  not api instanceof J::StaticInitializer
+  not api instanceof J::StaticInitializer and
+  not api.(J::Constructor).isParameterless()
 }
 
 /**
@@ -131,9 +132,9 @@ string asPartialModel(TargetApiSpecific api) {
 }
 
 /**
- * Computes the first 4 columns for negative CSV rows.
+ * Computes the first 4 columns for neutral CSV rows.
  */
-string asPartialNegativeModel(TargetApiSpecific api) {
+string asPartialNeutralModel(TargetApiSpecific api) {
   exists(string type, string name, string parameters |
     partialModel(api, type, name, parameters) and
     result =

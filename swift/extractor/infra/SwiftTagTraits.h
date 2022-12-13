@@ -1,100 +1,320 @@
 #pragma once
 
 // This file implements the mapping needed by the API defined in the TrapTagTraits.h, so that
-// TrapTagOf/TrapLabelOf provide the tags/labels for specific swift entity types.
+// TrapTagOf/TrapLabelOf/TrapClassOf provide the tags/labels for specific swift entity types.
 #include <filesystem>
-#include <swift/AST/ASTVisitor.h>
 #include "swift/extractor/trap/TrapTagTraits.h"
 #include "swift/extractor/trap/generated/TrapTags.h"
+#include <swift/AST/ASTNode.h>
+#include <swift/AST/Decl.h>
+#include <swift/AST/Expr.h>
+#include <swift/AST/Stmt.h>
+#include <swift/AST/Pattern.h>
+#include <swift/AST/TypeRepr.h>
+#include <swift/AST/Type.h>
 
 namespace codeql {
 
-// OverloadSetRefExpr is collapsed with its only derived class OverloadedDeclRefExpr
-using OverloadSetRefExprTag = OverloadedDeclRefExprTag;
-
-// We don't really expect to see the following in extraction. Mapping these tags to void effectively
-// ignores all elements of that class (with a message).
-
-// only generated for code editing
-using CodeCompletionExprTag = void;
-using EditorPlaceholderExprTag = void;
-// not present after the Sema phase
-using ArrowExprTag = void;
-// experimental variadic generics, implemented only in the frontend for now, thus not compilable
-using PackExprTag = void;
-using PackTypeTag = void;
-using ReifyPackExprTag = void;
-using PackExpansionTypeTag = void;
-using SequenceArchetypeTypeTag = void;
-// Placeholder types appear in ambiguous types but are anyway transformed to UnresolvedType
-using PlaceholderTypeTag = void;
-// SIL types that cannot really appear in the frontend run
-using SILBlockStorageTypeTag = void;
-using SILBoxTypeTag = void;
-using SILFunctionTypeTag = void;
-using SILTokenTypeTag = void;
-// This is created during type checking and is only used for constraint checking
-using TypeVariableTypeTag = void;
-
-#define MAP_TYPE_TO_TAG(TYPE, TAG)    \
+#define MAP(TYPE, TAG)                \
   template <>                         \
   struct detail::ToTagFunctor<TYPE> { \
     using type = TAG;                 \
-  }
-#define MAP_TAG(TYPE) MAP_TYPE_TO_TAG(swift::TYPE, TYPE##Tag)
-#define MAP_SUBTAG(TYPE, PARENT)                                                              \
-  MAP_TAG(TYPE);                                                                              \
-  static_assert(std::is_same_v<TYPE##Tag, void> || std::is_base_of_v<PARENT##Tag, TYPE##Tag>, \
-                #PARENT "Tag must be a base of " #TYPE "Tag");
+  };
+#define MAP_CONCRETE(TYPE, TAG)                \
+  template <>                                  \
+  struct detail::ToTagConcreteOverride<TYPE> { \
+    using type = TAG;                          \
+  };
 
-#define OVERRIDE_TAG(TYPE, TAG)               \
-  template <>                                 \
-  struct detail::ToTagOverride<swift::TYPE> { \
-    using type = TAG;                         \
-  };                                          \
-  static_assert(std::is_base_of_v<TYPE##Tag, TAG>, "override is not a subtag");
+// clang-format off
+// use indentation to recreate all involved type hierarchies
+MAP(std::filesystem::path, DbFileTag)
+MAP(swift::StmtCondition, StmtConditionTag)
+MAP(swift::StmtConditionElement, ConditionElementTag)
+MAP(swift::CaseLabelItem, CaseLabelItemTag)
 
-MAP_TAG(Stmt);
-MAP_TAG(StmtCondition);
-MAP_TYPE_TO_TAG(swift::StmtConditionElement, ConditionElementTag);
-MAP_TAG(CaseLabelItem);
-#define ABSTRACT_STMT(CLASS, PARENT) MAP_SUBTAG(CLASS##Stmt, PARENT)
-#define STMT(CLASS, PARENT) ABSTRACT_STMT(CLASS, PARENT)
-#include <swift/AST/StmtNodes.def>
+MAP(swift::Stmt, StmtTag)
+  MAP(swift::BraceStmt, BraceStmtTag)
+  MAP(swift::ReturnStmt, ReturnStmtTag)
+  MAP(swift::YieldStmt, YieldStmtTag)
+  MAP(swift::DeferStmt, DeferStmtTag)
+  MAP(swift::LabeledStmt, LabeledStmtTag)
+    MAP(swift::LabeledConditionalStmt, LabeledConditionalStmtTag)
+      MAP(swift::IfStmt, IfStmtTag)
+      MAP(swift::GuardStmt, GuardStmtTag)
+      MAP(swift::WhileStmt, WhileStmtTag)
+    MAP(swift::DoStmt, DoStmtTag)
+    MAP(swift::DoCatchStmt, DoCatchStmtTag)
+    MAP(swift::RepeatWhileStmt, RepeatWhileStmtTag)
+    MAP(swift::ForEachStmt, ForEachStmtTag)
+    MAP(swift::SwitchStmt, SwitchStmtTag)
+  MAP(swift::CaseStmt, CaseStmtTag)
+  MAP(swift::BreakStmt, BreakStmtTag)
+  MAP(swift::ContinueStmt, ContinueStmtTag)
+  MAP(swift::FallthroughStmt, FallthroughStmtTag)
+  MAP(swift::FailStmt, FailStmtTag)
+  MAP(swift::ThrowStmt, ThrowStmtTag)
+  MAP(swift::PoundAssertStmt, PoundAssertStmtTag)
 
-MAP_TAG(Expr);
-MAP_TAG(Argument);
-#define ABSTRACT_EXPR(CLASS, PARENT) MAP_SUBTAG(CLASS##Expr, PARENT)
-#define EXPR(CLASS, PARENT) ABSTRACT_EXPR(CLASS, PARENT)
-#include <swift/AST/ExprNodes.def>
+MAP(swift::Argument, ArgumentTag)
+MAP(swift::Expr, ExprTag)
+  MAP(swift::ErrorExpr, ErrorExprTag)
+  MAP(swift::LiteralExpr, LiteralExprTag)
+    MAP(swift::NilLiteralExpr, NilLiteralExprTag)
+    MAP(swift::BuiltinLiteralExpr, BuiltinLiteralExprTag)
+      MAP(swift::BooleanLiteralExpr, BooleanLiteralExprTag)
+      MAP(swift::NumberLiteralExpr, NumberLiteralExprTag)
+        MAP(swift::IntegerLiteralExpr, IntegerLiteralExprTag)
+        MAP(swift::FloatLiteralExpr, FloatLiteralExprTag)
+      MAP(swift::StringLiteralExpr, StringLiteralExprTag)
+      MAP(swift::MagicIdentifierLiteralExpr, MagicIdentifierLiteralExprTag)
+    MAP(swift::InterpolatedStringLiteralExpr, InterpolatedStringLiteralExprTag)
+    MAP(swift::RegexLiteralExpr, RegexLiteralExprTag)
+    MAP(swift::ObjectLiteralExpr, ObjectLiteralExprTag)
+  MAP(swift::DiscardAssignmentExpr, DiscardAssignmentExprTag)
+  MAP(swift::DeclRefExpr, DeclRefExprTag)
+  MAP(swift::SuperRefExpr, SuperRefExprTag)
+  MAP(swift::TypeExpr, TypeExprTag)
+  MAP(swift::OtherConstructorDeclRefExpr, OtherConstructorDeclRefExprTag)
+  MAP(swift::DotSyntaxBaseIgnoredExpr, DotSyntaxBaseIgnoredExprTag)
+  MAP(swift::OverloadSetRefExpr, OverloadedDeclRefExprTag)  // collapsed with its only derived class OverloadedDeclRefExpr
+    MAP(swift::OverloadedDeclRefExpr, OverloadedDeclRefExprTag)
+  MAP(swift::UnresolvedDeclRefExpr, UnresolvedDeclRefExprTag)
+  MAP(swift::LookupExpr, LookupExprTag)
+    MAP(swift::MemberRefExpr, MemberRefExprTag)
+    MAP(swift::SubscriptExpr, SubscriptExprTag)
+    MAP(swift::DynamicLookupExpr, DynamicLookupExprTag)
+      MAP(swift::DynamicMemberRefExpr, DynamicMemberRefExprTag)
+      MAP(swift::DynamicSubscriptExpr, DynamicSubscriptExprTag)
+  MAP(swift::UnresolvedSpecializeExpr, UnresolvedSpecializeExprTag)
+  MAP(swift::UnresolvedMemberExpr, UnresolvedMemberExprTag)
+  MAP(swift::UnresolvedDotExpr, UnresolvedDotExprTag)
+  MAP(swift::SequenceExpr, SequenceExprTag)
+  MAP(swift::IdentityExpr, IdentityExprTag)
+    MAP(swift::ParenExpr, ParenExprTag)
+    MAP(swift::DotSelfExpr, DotSelfExprTag)
+    MAP(swift::AwaitExpr, AwaitExprTag)
+    MAP(swift::UnresolvedMemberChainResultExpr, UnresolvedMemberChainResultExprTag)
+  MAP(swift::AnyTryExpr, AnyTryExprTag)
+    MAP(swift::TryExpr, TryExprTag)
+    MAP(swift::ForceTryExpr, ForceTryExprTag)
+    MAP(swift::OptionalTryExpr, OptionalTryExprTag)
+  MAP(swift::TupleExpr, TupleExprTag)
+  MAP(swift::CollectionExpr, CollectionExprTag)
+    MAP(swift::ArrayExpr, ArrayExprTag)
+    MAP(swift::DictionaryExpr, DictionaryExprTag)
+  MAP(swift::KeyPathApplicationExpr, KeyPathApplicationExprTag)
+  MAP(swift::TupleElementExpr, TupleElementExprTag)
+  MAP(swift::CaptureListExpr, CaptureListExprTag)
+  MAP(swift::AbstractClosureExpr, AbstractClosureExprTag)
+    MAP(swift::ClosureExpr, ClosureExprTag)
+    MAP(swift::AutoClosureExpr, AutoClosureExprTag)
+  MAP(swift::InOutExpr, InOutExprTag)
+  MAP(swift::VarargExpansionExpr, VarargExpansionExprTag)
+  MAP(swift::DynamicTypeExpr, DynamicTypeExprTag)
+  MAP(swift::RebindSelfInConstructorExpr, RebindSelfInConstructorExprTag)
+  MAP(swift::OpaqueValueExpr, OpaqueValueExprTag)
+  MAP(swift::PropertyWrapperValuePlaceholderExpr, PropertyWrapperValuePlaceholderExprTag)
+  MAP(swift::AppliedPropertyWrapperExpr, AppliedPropertyWrapperExprTag)
+  MAP(swift::DefaultArgumentExpr, DefaultArgumentExprTag)
+  MAP(swift::BindOptionalExpr, BindOptionalExprTag)
+  MAP(swift::OptionalEvaluationExpr, OptionalEvaluationExprTag)
+  MAP(swift::ForceValueExpr, ForceValueExprTag)
+  MAP(swift::OpenExistentialExpr, OpenExistentialExprTag)
+  MAP(swift::MakeTemporarilyEscapableExpr, MakeTemporarilyEscapableExprTag)
+  MAP(swift::ApplyExpr, ApplyExprTag)
+    MAP(swift::CallExpr, CallExprTag)
+    MAP(swift::PrefixUnaryExpr, PrefixUnaryExprTag)
+    MAP(swift::PostfixUnaryExpr, PostfixUnaryExprTag)
+    MAP(swift::BinaryExpr, BinaryExprTag)
+    MAP(swift::SelfApplyExpr, SelfApplyExprTag)
+      MAP(swift::DotSyntaxCallExpr, DotSyntaxCallExprTag)
+      MAP(swift::ConstructorRefCallExpr, ConstructorRefCallExprTag)
+  MAP(swift::ImplicitConversionExpr, ImplicitConversionExprTag)
+    MAP(swift::LoadExpr, LoadExprTag)
+    MAP(swift::DestructureTupleExpr, DestructureTupleExprTag)
+    MAP(swift::UnresolvedTypeConversionExpr, UnresolvedTypeConversionExprTag)
+    MAP(swift::FunctionConversionExpr, FunctionConversionExprTag)
+    MAP(swift::CovariantFunctionConversionExpr, CovariantFunctionConversionExprTag)
+    MAP(swift::CovariantReturnConversionExpr, CovariantReturnConversionExprTag)
+    MAP(swift::MetatypeConversionExpr, MetatypeConversionExprTag)
+    MAP(swift::CollectionUpcastConversionExpr, CollectionUpcastConversionExprTag)
+    MAP(swift::ErasureExpr, ErasureExprTag)
+    MAP(swift::AnyHashableErasureExpr, AnyHashableErasureExprTag)
+    MAP(swift::BridgeToObjCExpr, BridgeToObjCExprTag)
+    MAP(swift::BridgeFromObjCExpr, BridgeFromObjCExprTag)
+    MAP(swift::ConditionalBridgeFromObjCExpr, ConditionalBridgeFromObjCExprTag)
+    MAP(swift::DerivedToBaseExpr, DerivedToBaseExprTag)
+    MAP(swift::ArchetypeToSuperExpr, ArchetypeToSuperExprTag)
+    MAP(swift::InjectIntoOptionalExpr, InjectIntoOptionalExprTag)
+    MAP(swift::ClassMetatypeToObjectExpr, ClassMetatypeToObjectExprTag)
+    MAP(swift::ExistentialMetatypeToObjectExpr, ExistentialMetatypeToObjectExprTag)
+    MAP(swift::ProtocolMetatypeToObjectExpr, ProtocolMetatypeToObjectExprTag)
+    MAP(swift::InOutToPointerExpr, InOutToPointerExprTag)
+    MAP(swift::ArrayToPointerExpr, ArrayToPointerExprTag)
+    MAP(swift::StringToPointerExpr, StringToPointerExprTag)
+    MAP(swift::PointerToPointerExpr, PointerToPointerExprTag)
+    MAP(swift::ForeignObjectConversionExpr, ForeignObjectConversionExprTag)
+    MAP(swift::UnevaluatedInstanceExpr, UnevaluatedInstanceExprTag)
+    MAP(swift::UnderlyingToOpaqueExpr, UnderlyingToOpaqueExprTag)
+    MAP(swift::DifferentiableFunctionExpr, DifferentiableFunctionExprTag)
+    MAP(swift::LinearFunctionExpr, LinearFunctionExprTag)
+    MAP(swift::DifferentiableFunctionExtractOriginalExpr, DifferentiableFunctionExtractOriginalExprTag)
+    MAP(swift::LinearFunctionExtractOriginalExpr, LinearFunctionExtractOriginalExprTag)
+    MAP(swift::LinearToDifferentiableFunctionExpr, LinearToDifferentiableFunctionExprTag)
+    MAP(swift::ReifyPackExpr, void)  // experimental variadic generics
+    MAP(swift::ABISafeConversionExpr, AbiSafeConversionExprTag)  // different acronym convention
+  MAP(swift::ExplicitCastExpr, ExplicitCastExprTag)
+    MAP(swift::CheckedCastExpr, CheckedCastExprTag)
+      MAP(swift::ForcedCheckedCastExpr, ForcedCheckedCastExprTag)
+      MAP(swift::ConditionalCheckedCastExpr, ConditionalCheckedCastExprTag)
+      MAP(swift::IsExpr, IsExprTag)
+    MAP(swift::CoerceExpr, CoerceExprTag)
+  MAP(swift::ArrowExpr, void)  // not present after the Sema phase
+  MAP(swift::IfExpr, IfExprTag)
+  MAP(swift::EnumIsCaseExpr, EnumIsCaseExprTag)
+  MAP(swift::AssignExpr, AssignExprTag)
+  MAP(swift::CodeCompletionExpr, void) // only generated for code editing
+  MAP(swift::UnresolvedPatternExpr, UnresolvedPatternExprTag)
+  MAP(swift::LazyInitializerExpr, LazyInitializerExprTag)
+  MAP(swift::EditorPlaceholderExpr, void)  // only generated for code editing
+  MAP(swift::ObjCSelectorExpr, ObjCSelectorExprTag)
+  MAP(swift::KeyPathExpr, KeyPathExprTag)
+  MAP(swift::KeyPathDotExpr, KeyPathDotExprTag)
+  MAP(swift::OneWayExpr, OneWayExprTag)
+  MAP(swift::TapExpr, TapExprTag)
+  MAP(swift::PackExpr, void)  // experimental variadic generics
 
-MAP_TAG(Decl);
-#define ABSTRACT_DECL(CLASS, PARENT) MAP_SUBTAG(CLASS##Decl, PARENT)
-#define DECL(CLASS, PARENT) ABSTRACT_DECL(CLASS, PARENT)
-#include <swift/AST/DeclNodes.def>
+MAP(swift::Decl, DeclTag)
+  MAP(swift::ValueDecl, ValueDeclTag)
+    MAP(swift::TypeDecl, TypeDeclTag)
+      MAP(swift::GenericTypeDecl, GenericTypeDeclTag)
+        MAP(swift::NominalTypeDecl, NominalTypeDeclTag)
+          MAP(swift::EnumDecl, EnumDeclTag)
+          MAP(swift::StructDecl, StructDeclTag)
+          MAP(swift::ClassDecl, ClassDeclTag)
+          MAP(swift::ProtocolDecl, ProtocolDeclTag)
+        MAP(swift::OpaqueTypeDecl, OpaqueTypeDeclTag)
+        MAP(swift::TypeAliasDecl, TypeAliasDeclTag)
+      MAP(swift::AbstractTypeParamDecl, AbstractTypeParamDeclTag)
+        MAP(swift::GenericTypeParamDecl, GenericTypeParamDeclTag)
+        MAP(swift::AssociatedTypeDecl, AssociatedTypeDeclTag)
+      MAP(swift::ModuleDecl, ModuleDeclTag)
+    MAP(swift::AbstractStorageDecl, AbstractStorageDeclTag)
+      MAP(swift::VarDecl, VarDeclTag)
+        MAP_CONCRETE(swift::VarDecl, ConcreteVarDeclTag)
+        MAP(swift::ParamDecl, ParamDeclTag)
+      MAP(swift::SubscriptDecl, SubscriptDeclTag)
+    MAP(swift::AbstractFunctionDecl, AbstractFunctionDeclTag)
+      MAP(swift::ConstructorDecl, ConstructorDeclTag)
+      MAP(swift::DestructorDecl, DestructorDeclTag)
+      MAP(swift::FuncDecl, FuncDeclTag)
+        MAP_CONCRETE(swift::FuncDecl, ConcreteFuncDeclTag)
+        MAP(swift::AccessorDecl, AccessorDeclTag)
+    MAP(swift::EnumElementDecl, EnumElementDeclTag)
+  MAP(swift::ExtensionDecl, ExtensionDeclTag)
+  MAP(swift::TopLevelCodeDecl, TopLevelCodeDeclTag)
+  MAP(swift::ImportDecl, ImportDeclTag)
+  MAP(swift::IfConfigDecl, IfConfigDeclTag)
+  MAP(swift::PoundDiagnosticDecl, PoundDiagnosticDeclTag)
+  MAP(swift::PrecedenceGroupDecl, PrecedenceGroupDeclTag)
+  MAP(swift::MissingMemberDecl, MissingMemberDeclTag)
+  MAP(swift::PatternBindingDecl, PatternBindingDeclTag)
+  MAP(swift::EnumCaseDecl, EnumCaseDeclTag)
+  MAP(swift::OperatorDecl, OperatorDeclTag)
+    MAP(swift::InfixOperatorDecl, InfixOperatorDeclTag)
+    MAP(swift::PrefixOperatorDecl, PrefixOperatorDeclTag)
+    MAP(swift::PostfixOperatorDecl, PostfixOperatorDeclTag)
 
-MAP_TAG(Pattern);
-#define ABSTRACT_PATTERN(CLASS, PARENT) MAP_SUBTAG(CLASS##Pattern, PARENT)
-#define PATTERN(CLASS, PARENT) ABSTRACT_PATTERN(CLASS, PARENT)
-#include <swift/AST/PatternNodes.def>
+MAP(swift::Pattern, PatternTag)
+  MAP(swift::ParenPattern, ParenPatternTag)
+  MAP(swift::TuplePattern, TuplePatternTag)
+  MAP(swift::NamedPattern, NamedPatternTag)
+  MAP(swift::AnyPattern, AnyPatternTag)
+  MAP(swift::TypedPattern, TypedPatternTag)
+  MAP(swift::BindingPattern, BindingPatternTag)
+  MAP(swift::IsPattern, IsPatternTag)
+  MAP(swift::EnumElementPattern, EnumElementPatternTag)
+  MAP(swift::OptionalSomePattern, OptionalSomePatternTag)
+  MAP(swift::BoolPattern, BoolPatternTag)
+  MAP(swift::ExprPattern, ExprPatternTag)
 
-MAP_TAG(TypeRepr);
+MAP(swift::TypeRepr, TypeReprTag)
 
-MAP_TYPE_TO_TAG(swift::TypeBase, TypeTag);
-#define ABSTRACT_TYPE(CLASS, PARENT) MAP_SUBTAG(CLASS##Type, PARENT)
-#define TYPE(CLASS, PARENT) ABSTRACT_TYPE(CLASS, PARENT)
-#include <swift/AST/TypeNodes.def>
-
-OVERRIDE_TAG(FuncDecl, ConcreteFuncDeclTag);
-OVERRIDE_TAG(VarDecl, ConcreteVarDeclTag);
-
-MAP_TYPE_TO_TAG(std::filesystem::path, DbFileTag);
-
-#undef MAP_TAG
-#undef MAP_SUBTAG
-#undef MAP_TYPE_TO_TAG
-#undef OVERRIDE_TAG
-
-// All the other macros defined here are undefined by the .def files
-
+MAP(swift::Type, TypeTag)
+MAP(swift::TypeBase, TypeTag)
+  MAP(swift::ErrorType, ErrorTypeTag)
+  MAP(swift::UnresolvedType, UnresolvedTypeTag)
+  MAP(swift::PlaceholderType, void)  // appears in ambiguous types but are then transformed to UnresolvedType
+  MAP(swift::BuiltinType, BuiltinTypeTag)
+    MAP(swift::AnyBuiltinIntegerType, AnyBuiltinIntegerTypeTag)
+      MAP(swift::BuiltinIntegerType, BuiltinIntegerTypeTag)
+      MAP(swift::BuiltinIntegerLiteralType, BuiltinIntegerLiteralTypeTag)
+    MAP(swift::BuiltinExecutorType, BuiltinExecutorTypeTag)
+    MAP(swift::BuiltinFloatType, BuiltinFloatTypeTag)
+    MAP(swift::BuiltinJobType, BuiltinJobTypeTag)
+    MAP(swift::BuiltinRawPointerType, BuiltinRawPointerTypeTag)
+    MAP(swift::BuiltinRawUnsafeContinuationType, BuiltinRawUnsafeContinuationTypeTag)
+    MAP(swift::BuiltinNativeObjectType, BuiltinNativeObjectTypeTag)
+    MAP(swift::BuiltinBridgeObjectType, BuiltinBridgeObjectTypeTag)
+    MAP(swift::BuiltinUnsafeValueBufferType, BuiltinUnsafeValueBufferTypeTag)
+    MAP(swift::BuiltinDefaultActorStorageType, BuiltinDefaultActorStorageTypeTag)
+    MAP(swift::BuiltinVectorType, BuiltinVectorTypeTag)
+  MAP(swift::TupleType, TupleTypeTag)
+  MAP(swift::ReferenceStorageType, ReferenceStorageTypeTag)
+  MAP(swift::WeakStorageType, WeakStorageTypeTag)
+  MAP(swift::UnownedStorageType, UnownedStorageTypeTag)
+  MAP(swift::UnmanagedStorageType, UnmanagedStorageTypeTag)
+  MAP(swift::AnyGenericType, AnyGenericTypeTag)
+    MAP(swift::NominalOrBoundGenericNominalType, NominalOrBoundGenericNominalTypeTag)
+      MAP(swift::NominalType, NominalTypeTag)
+        MAP(swift::EnumType, EnumTypeTag)
+        MAP(swift::StructType, StructTypeTag)
+        MAP(swift::ClassType, ClassTypeTag)
+        MAP(swift::ProtocolType, ProtocolTypeTag)
+      MAP(swift::BoundGenericType, BoundGenericTypeTag)
+        MAP(swift::BoundGenericClassType, BoundGenericClassTypeTag)
+        MAP(swift::BoundGenericEnumType, BoundGenericEnumTypeTag)
+        MAP(swift::BoundGenericStructType, BoundGenericStructTypeTag)
+    MAP(swift::UnboundGenericType, UnboundGenericTypeTag)
+  MAP(swift::AnyMetatypeType, AnyMetatypeTypeTag)
+    MAP(swift::MetatypeType, MetatypeTypeTag)
+    MAP(swift::ExistentialMetatypeType, ExistentialMetatypeTypeTag)
+  MAP(swift::ModuleType, ModuleTypeTag)
+  MAP(swift::DynamicSelfType, DynamicSelfTypeTag)
+  MAP(swift::SubstitutableType, SubstitutableTypeTag)
+    MAP(swift::ArchetypeType, ArchetypeTypeTag)
+      MAP(swift::PrimaryArchetypeType, PrimaryArchetypeTypeTag)
+      MAP(swift::OpaqueTypeArchetypeType, OpaqueTypeArchetypeTypeTag)
+      MAP(swift::OpenedArchetypeType, OpenedArchetypeTypeTag)
+      MAP(swift::SequenceArchetypeType, void)  // experimental variadic generics
+    MAP(swift::GenericTypeParamType, GenericTypeParamTypeTag)
+  MAP(swift::DependentMemberType, DependentMemberTypeTag)
+  MAP(swift::AnyFunctionType, AnyFunctionTypeTag)
+    MAP(swift::FunctionType, FunctionTypeTag)
+    MAP(swift::GenericFunctionType, GenericFunctionTypeTag)
+  MAP(swift::SILFunctionType, void)  // SIL types cannot really appear in the frontend run)
+  MAP(swift::SILBlockStorageType, void)  // SIL types cannot really appear in the frontend run)
+  MAP(swift::SILBoxType, void)  // SIL types cannot really appear in the frontend run)
+  MAP(swift::SILTokenType, void)  // SIL types cannot really appear in the frontend run)
+  MAP(swift::ProtocolCompositionType, ProtocolCompositionTypeTag)
+  MAP(swift::ParameterizedProtocolType, ParameterizedProtocolTypeTag)
+  MAP(swift::ExistentialType, ExistentialTypeTag)
+  MAP(swift::LValueType, LValueTypeTag)
+  MAP(swift::InOutType, InOutTypeTag)
+  MAP(swift::PackType, void)  // experimental variadic generics
+  MAP(swift::PackExpansionType, void)  // experimental variadic generics
+  MAP(swift::TypeVariableType, void)  // created during type checking and only used for constraint checking
+  MAP(swift::SugarType, SugarTypeTag)
+    MAP(swift::ParenType, ParenTypeTag)
+    MAP(swift::TypeAliasType, TypeAliasTypeTag)
+    MAP(swift::SyntaxSugarType, SyntaxSugarTypeTag)
+      MAP(swift::UnarySyntaxSugarType, UnarySyntaxSugarTypeTag)
+        MAP(swift::ArraySliceType, ArraySliceTypeTag)
+        MAP(swift::OptionalType, OptionalTypeTag)
+        MAP(swift::VariadicSequenceType, VariadicSequenceTypeTag)
+      MAP(swift::DictionaryType, DictionaryTypeTag)
+// clang-format on
+#undef MAP
+#undef MAP_CONCRETE
 }  // namespace codeql

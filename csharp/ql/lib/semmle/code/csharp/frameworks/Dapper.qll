@@ -9,7 +9,7 @@ private import semmle.code.csharp.frameworks.system.Data
 module Dapper {
   /** The namespace `Dapper`. */
   class DapperNamespace extends Namespace {
-    DapperNamespace() { this.hasQualifiedName("Dapper") }
+    DapperNamespace() { this.getFullName() = "Dapper" }
   }
 
   /** A class in `Dapper`. */

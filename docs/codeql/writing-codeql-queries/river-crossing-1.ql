@@ -99,4 +99,3 @@ class GoalState extends State {
 from string path
 where any(InitialState i).reachesVia(path, _) = any(GoalState g)
 select path
-

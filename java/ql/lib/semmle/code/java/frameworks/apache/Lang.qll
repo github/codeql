@@ -1,10 +1,7 @@
 /** Definitions related to the Apache Commons Lang library. */
 
 import java
-import Lang2Generated
-import Lang3Generated
 private import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * The class `org.apache.commons.lang.RandomStringUtils` or `org.apache.commons.lang3.RandomStringUtils`.

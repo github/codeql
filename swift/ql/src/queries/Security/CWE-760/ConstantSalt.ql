@@ -32,13 +32,11 @@ class ConstantSaltSource extends Expr {
 class ConstantSaltSink extends Expr {
   ConstantSaltSink() {
     // `salt` arg in `init` is a sink
-    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call, int arg |
+    exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
       c.getFullName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
-      f.getName().matches("%init(%salt:%") and
       call.getStaticTarget() = f and
-      f.getParam(pragma[only_bind_into](arg)).getName() = "salt" and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this
+      call.getArgumentWithLabel("salt").getExpr() = this
     )
   }
 }

@@ -11,9 +11,9 @@
  *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
- * - Negative Summaries:
+ * - Neutrals:
  *   `namespace; type; name; signature; provenance`
- *   A negative summary is used to indicate that there is no flow via a callable.
+ *   A neutral is used to indicate that there is no flow via a callable.
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -91,43 +91,6 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 
 /**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import semmle.code.csharp.frameworks.EntityFramework
-  private import semmle.code.csharp.frameworks.JsonNET
-  private import semmle.code.csharp.frameworks.ServiceStack
-  private import semmle.code.csharp.frameworks.Sql
-  private import semmle.code.csharp.frameworks.System
-  private import semmle.code.csharp.frameworks.system.CodeDom
-  private import semmle.code.csharp.frameworks.system.Collections
-  private import semmle.code.csharp.frameworks.system.collections.Generic
-  private import semmle.code.csharp.frameworks.system.collections.Specialized
-  private import semmle.code.csharp.frameworks.system.Data
-  private import semmle.code.csharp.frameworks.system.data.Common
-  private import semmle.code.csharp.frameworks.system.Diagnostics
-  private import semmle.code.csharp.frameworks.system.Linq
-  private import semmle.code.csharp.frameworks.system.Net
-  private import semmle.code.csharp.frameworks.system.net.Mail
-  private import semmle.code.csharp.frameworks.system.IO
-  private import semmle.code.csharp.frameworks.system.io.Compression
-  private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
-  private import semmle.code.csharp.frameworks.system.Security
-  private import semmle.code.csharp.frameworks.system.security.Cryptography
-  private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
-  private import semmle.code.csharp.frameworks.system.Text
-  private import semmle.code.csharp.frameworks.system.text.RegularExpressions
-  private import semmle.code.csharp.frameworks.system.threading.Tasks
-  private import semmle.code.csharp.frameworks.system.Web
-  private import semmle.code.csharp.frameworks.system.web.ui.WebControls
-  private import semmle.code.csharp.frameworks.system.Xml
-  private import semmle.code.csharp.security.dataflow.flowsinks.Html
-  private import semmle.code.csharp.security.dataflow.flowsources.Local
-  private import semmle.code.csharp.security.dataflow.XSSSinks
-}
-
-/**
  * DEPRECATED: Define source models as data extensions instead.
  *
  * A unit class for adding additional source model rows.
@@ -169,29 +132,11 @@ private class SummaryModelCsvInternal extends Unit {
   abstract predicate row(string row);
 }
 
-/**
- * DEPRECATED: Define negative summary models as data extensions instead.
- *
- * A unit class for adding additional negative summary model rows.
- *
- * Extend this class to add additional negative summary definitions.
- */
-deprecated class NegativeSummaryModelCsv = NegativeSummaryModelCsvInternal;
-
-private class NegativeSummaryModelCsvInternal extends Unit {
-  /** Holds if `row` specifies a negative summary definition. */
-  abstract predicate row(string row);
-}
-
 private predicate sourceModelInternal(string row) { any(SourceModelCsvInternal s).row(row) }
 
 private predicate summaryModelInternal(string row) { any(SummaryModelCsvInternal s).row(row) }
 
 private predicate sinkModelInternal(string row) { any(SinkModelCsvInternal s).row(row) }
-
-private predicate negativeSummaryModelInternal(string row) {
-  any(NegativeSummaryModelCsvInternal s).row(row)
-}
 
 /**
  * Holds if a source model exists for the given parameters.
@@ -280,25 +225,16 @@ predicate summaryModel(
   extSummaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
 
-/** Holds if a summary model exists indicating there is no flow for the given parameters. */
-extensible predicate extNegativeSummaryModel(
+/** Holds if a model exists indicating there is no flow for the given parameters. */
+extensible predicate extNeutralModel(
   string namespace, string type, string name, string signature, string provenance
 );
 
-/** Holds if a summary model exists indicating there is no flow for the given parameters. */
-predicate negativeSummaryModel(
+/** Holds if a model exists indicating there is no flow for the given parameters. */
+predicate neutralModel(
   string namespace, string type, string name, string signature, string provenance
 ) {
-  exists(string row |
-    negativeSummaryModelInternal(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = name and
-    row.splitAt(";", 3) = signature and
-    row.splitAt(";", 4) = provenance
-  )
-  or
-  extNegativeSummaryModel(namespace, type, name, signature, provenance)
+  extNeutralModel(namespace, type, name, signature, provenance)
 }
 
 private predicate relevantNamespace(string namespace) {
@@ -402,7 +338,7 @@ module ModelValidation {
     )
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["local", "file"] and
+      not kind = ["local", "remote", "file"] and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
   }
@@ -430,8 +366,6 @@ module ModelValidation {
       sinkModelInternal(row) and expect = 9 and pred = "sink"
       or
       summaryModelInternal(row) and expect = 10 and pred = "summary"
-      or
-      negativeSummaryModelInternal(row) and expect = 5 and pred = "negative summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
@@ -455,9 +389,9 @@ module ModelValidation {
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
       pred = "summary"
       or
-      negativeSummaryModel(namespace, type, name, signature, provenance) and
+      neutralModel(namespace, type, name, signature, provenance) and
       ext = "" and
-      pred = "negative summary"
+      pred = "neutral"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -498,7 +432,7 @@ private predicate elementSpec(
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  negativeSummaryModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
+  neutralModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
 }
 
 private predicate elementSpec(
@@ -632,7 +566,7 @@ private Element interpretElement0(
   )
 }
 
-/** Gets the source/sink/summary/negativesummary element corresponding to the supplied parameters. */
+/** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {

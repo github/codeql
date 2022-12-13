@@ -5,3 +5,7 @@ dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/regex: ${workspace}
+dataExtensions:
+  - semmle/javascript/frameworks/**/model.yml

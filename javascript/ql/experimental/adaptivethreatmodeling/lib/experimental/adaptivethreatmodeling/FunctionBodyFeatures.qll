@@ -1,4 +1,4 @@
-/*
+/**
  * FunctionBodyFeatures.qll
  *
  * Contains logic relating to the `enclosingFunctionBody` and `enclosingFunctionName` features.

@@ -5,21 +5,9 @@
 #include "swift/extractor/trap/generated/TrapEntries.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
+#include "swift/extractor/infra/file/Path.h"
 
 using namespace codeql;
-
-static std::filesystem::path getFilePath(std::string_view path) {
-  // TODO: this needs more testing
-  // TODO: check canonicalization of names on a case insensitive filesystems
-  // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
-  std::error_code ec;
-  auto ret = std::filesystem::canonical(path, ec);
-  if (ec) {
-    std::cerr << "Cannot get real path: " << std::quoted(path) << ": " << ec.message() << "\n";
-    return {};
-  }
-  return ret;
-}
 
 void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceManager,
                                             swift::SourceLoc start,
@@ -29,7 +17,7 @@ void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceMa
     // invalid locations seem to come from entities synthesized by the compiler
     return;
   }
-  auto file = getFilePath(sourceManager.getDisplayNameForLoc(start));
+  auto file = resolvePath(sourceManager.getDisplayNameForLoc(start));
   DbLocation entry{{}};
   entry.file = fetchFileLabel(file);
   std::tie(entry.start_line, entry.start_column) = sourceManager.getLineAndColumnInBuffer(start);
@@ -42,7 +30,7 @@ void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceMa
 }
 
 void SwiftLocationExtractor::emitFile(llvm::StringRef path) {
-  fetchFileLabel(getFilePath(path));
+  fetchFileLabel(resolvePath(path));
 }
 
 TrapLabel<FileTag> SwiftLocationExtractor::fetchFileLabel(const std::filesystem::path& file) {

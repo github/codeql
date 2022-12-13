@@ -410,4 +410,8 @@ module CodeInjection {
 
   /** DEPRECATED: Alias for JsonStringifySanitizer */
   deprecated class JSONStringifySanitizer = JsonStringifySanitizer;
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("code-injection").asSink() }
+  }
 }

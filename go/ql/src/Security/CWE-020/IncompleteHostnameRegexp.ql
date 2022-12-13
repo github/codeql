@@ -83,7 +83,7 @@ predicate regexpGuardsError(RegexpPattern regexp) {
 class Config extends DataFlow::Configuration {
   Config() { this = "IncompleteHostNameRegexp::Config" }
 
-  predicate isSource(DataFlow::Node source, string hostPart) {
+  predicate isSourceString(DataFlow::Node source, string hostPart) {
     exists(Expr e |
       e = source.asExpr() and
       isIncompleteHostNameRegexpPattern(e.getStringValue(), hostPart)
@@ -95,7 +95,7 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof RegexpPattern and
@@ -107,7 +107,7 @@ class Config extends DataFlow::Configuration {
 }
 
 from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string hostPart
-where c.hasFlowPath(source, sink) and c.isSource(source.getNode(), hostPart)
+where c.hasFlowPath(source, sink) and c.isSourceString(source.getNode(), hostPart)
 select source, source, sink,
   "This regular expression has an unescaped dot before '" + hostPart + "', " +
     "so it might match more hosts than expected when $@.", sink, "the regular expression is used"

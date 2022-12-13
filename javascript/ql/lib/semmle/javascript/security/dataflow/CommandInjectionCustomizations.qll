@@ -50,4 +50,8 @@ module CommandInjection {
   class SystemCommandExecutionSink extends Sink, DataFlow::ValueNode {
     SystemCommandExecutionSink() { this = any(SystemCommandExecution sys).getACommandArgument() }
   }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("command-line-injection").asSink() }
+  }
 }

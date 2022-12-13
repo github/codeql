@@ -86,6 +86,10 @@ private module ConditionalCompletionSplitting {
         last(succ.(ConditionalExpr).getBranch(_), pred, c) and
         completion = c
       )
+      or
+      succ(pred, succ, c) and
+      succ instanceof WhenClause and
+      completion = c
     }
 
     override predicate hasEntryScope(CfgScope scope, AstNode succ) { none() }

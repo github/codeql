@@ -1,15 +1,24 @@
 name: "Go: Run Tests"
 on:
+  push:
+    paths:
+      - "go/**"
+      - .github/workflows/go-tests.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+    branches:
+      - main
+      - "rc/*"
   pull_request:
     paths:
       - "go/**"
       - .github/workflows/go-tests.yml
-      - .github/actions/fetch-codeql/action.yml
+      - .github/actions/**
       - codeql-workspace.yml
 jobs:
   test-linux:
     name: Test Linux (Ubuntu)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-xl
     steps:
       - name: Set up Go 1.19
         uses: actions/setup-go@v3
@@ -32,7 +41,7 @@ jobs:
           cd go
           make
 
-      - name: Check that all QL and Go code is autoformatted
+      - name: Check that all Go code is autoformatted
         run: |
           cd go
           make check-formatting
@@ -48,67 +57,13 @@ jobs:
           name: qhelp-markdown
           path: go/qhelp-out/**/*.md
 
-      - name: Test
-        run: |
-          cd go
-          make test
-
-  test-mac:
-    name: Test MacOS
-    runs-on: macos-latest
-    steps:
-      - name: Set up Go 1.19
-        uses: actions/setup-go@v3
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
         with:
-          go-version: 1.19
-        id: go
-
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up CodeQL CLI
-        uses: ./.github/actions/fetch-codeql
-
-      - name: Enable problem matchers in repository
-        shell: bash
-        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
-
-      - name: Build
-        run: |
-          cd go
-          make
+          key: go-qltest
 
       - name: Test
         run: |
           cd go
-          make test
-
-  test-win:
-    name: Test Windows
-    runs-on: windows-2019
-    steps:
-      - name: Set up Go 1.19
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.19
-        id: go
-
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up CodeQL CLI
-        uses: ./.github/actions/fetch-codeql
-
-      - name: Enable problem matchers in repository
-        shell: bash
-        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
-
-      - name: Build
-        run: |
-          cd go
-          make
-
-      - name: Test
-        run: |
-          cd go
-          make test
+          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
