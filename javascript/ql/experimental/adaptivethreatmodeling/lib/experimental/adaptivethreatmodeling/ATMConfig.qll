@@ -105,13 +105,11 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
       // implies they're not sinks, rather than using only medium-confidence characteristics, by deleting the following
       // line.
       confidence < filter.highConfidence() and
-      (
-        // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
-        filter.hasImplications(any(NegativeType negative), true, confidence)
-        or
-        // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
-        filter.hasImplications(this.getASinkEndpointType(), false, confidence)
-      ) and
+      // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
+      filter.hasImplications(any(NegativeType negative), true, confidence) and
+      // or
+      // // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
+      // filter.hasImplications(this.getASinkEndpointType(), false, confidence)
       result = filter
     )
   }
