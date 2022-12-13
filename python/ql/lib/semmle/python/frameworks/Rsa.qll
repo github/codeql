@@ -127,11 +127,6 @@ private module Rsa {
         hashNameArg in [this.getArg(1), this.getArgByName("method_name")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result = str.getText())
-      // exists(StrConst str, DataFlow::Node hashNameArg |
-      //   hashNameArg in [this.getArg(1), this.getArgByName("method_name")] and
-      //   DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
-      //   result.matchesName(str.getText())
-      // )
     }
 
     override DataFlow::Node getAnInput() {
