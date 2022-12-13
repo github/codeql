@@ -75,6 +75,16 @@ private DataFlow::Node getAValueExportedByPackage() {
     result = getAnExportFromModule(mod)
   )
   or
+  // re-export of a value from another module
+  // `module.exports.foo = require("./other").bar;`
+  // other.js:
+  // `module.exports.bar = function () { ... };`
+  exists(DataFlow::PropRead read, Import imp |
+    read = getAValueExportedByPackage() and
+    read.getBase().getALocalSource() = imp.getImportedModuleNode() and
+    result = imp.getImportedModule().getAnExportedValue(read.getPropertyName())
+  )
+  or
   // require("./other-module.js"); inside an AMD module.
   exists(Module mod, CallExpr call |
     call = getAValueExportedByPackage().asExpr() and

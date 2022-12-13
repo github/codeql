@@ -4,7 +4,6 @@
 
 private import csharp as CSharp
 private import semmle.code.csharp.frameworks.system.Data as Data
-private import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 
 /** Definitions relating to the `System.Data.Common` namespace. */
 module SystemDataCommon {
@@ -29,77 +28,5 @@ module SystemDataCommon {
   /** The `System.Data.Common.DbException` class. */
   class DbException extends Class {
     DbException() { this.hasName("DbException") }
-  }
-}
-
-/** Data flow for `System.Data.Common.DbConnectionStringBuilder`. */
-private class SystemDataCommonDbConnectionStringBuilderFlowModelCsv extends ExternalFlow::SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Data.Common;DbConnectionStringBuilder;false;Add;(System.String,System.Object);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-        "System.Data.Common;DbConnectionStringBuilder;false;Add;(System.String,System.Object);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-        "System.Data.Common;DbConnectionStringBuilder;false;get_Item;(System.String);;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value;manual",
-        "System.Data.Common;DbConnectionStringBuilder;false;set_Item;(System.String,System.Object);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-        "System.Data.Common;DbConnectionStringBuilder;false;set_Item;(System.String,System.Object);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-      ]
-  }
-}
-
-/** Data flow for `System.Data.Common.DataColumnMappingCollection`. */
-private class SystemDataCommonDataColumnMappingCollectionFlowModelCsv extends ExternalFlow::SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Data.Common;DataColumnMappingCollection;false;AddRange;(System.Array);;Argument[0].Element;Argument[this].Element;value;manual",
-        "System.Data.Common;DataColumnMappingCollection;false;AddRange;(System.Data.Common.DataColumnMapping[]);;Argument[0].Element;Argument[this].Element;value;manual",
-        "System.Data.Common;DataColumnMappingCollection;false;CopyTo;(System.Data.Common.DataColumnMapping[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
-        "System.Data.Common;DataColumnMappingCollection;false;Insert;(System.Int32,System.Data.Common.DataColumnMapping);;Argument[1];Argument[this].Element;value;manual",
-        "System.Data.Common;DataColumnMappingCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
-        "System.Data.Common;DataColumnMappingCollection;false;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
-        "System.Data.Common;DataColumnMappingCollection;false;set_Item;(System.Int32,System.Data.Common.DataColumnMapping);;Argument[1];Argument[this].Element;value;manual",
-        "System.Data.Common;DataColumnMappingCollection;false;set_Item;(System.String,System.Data.Common.DataColumnMapping);;Argument[1];Argument[this].Element;value;manual",
-      ]
-  }
-}
-
-/** Data flow for `System.Data.Common.DataTableMappingCollection`. */
-private class SystemDataCommonDataTableMappingCollectionFlowModelCsv extends ExternalFlow::SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Data.Common;DataTableMappingCollection;false;AddRange;(System.Array);;Argument[0].Element;Argument[this].Element;value;manual",
-        "System.Data.Common;DataTableMappingCollection;false;AddRange;(System.Data.Common.DataTableMapping[]);;Argument[0].Element;Argument[this].Element;value;manual",
-        "System.Data.Common;DataTableMappingCollection;false;CopyTo;(System.Data.Common.DataTableMapping[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
-        "System.Data.Common;DataTableMappingCollection;false;Insert;(System.Int32,System.Data.Common.DataTableMapping);;Argument[1];Argument[this].Element;value;manual",
-        "System.Data.Common;DataTableMappingCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
-        "System.Data.Common;DataTableMappingCollection;false;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
-        "System.Data.Common;DataTableMappingCollection;false;set_Item;(System.Int32,System.Data.Common.DataTableMapping);;Argument[1];Argument[this].Element;value;manual",
-        "System.Data.Common;DataTableMappingCollection;false;set_Item;(System.String,System.Data.Common.DataTableMapping);;Argument[1];Argument[this].Element;value;manual",
-      ]
-  }
-}
-
-/** Data flow for `System.Data.Common.DbParameterCollection`. */
-private class SystemDataCommonDbParameterCollectionFlowModelCsv extends ExternalFlow::SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Data.Common;DbParameterCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
-        "System.Data.Common;DbParameterCollection;false;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
-        "System.Data.Common;DbParameterCollection;false;set_Item;(System.Int32,System.Data.Common.DbParameter);;Argument[1];Argument[this].Element;value;manual",
-        "System.Data.Common;DbParameterCollection;false;set_Item;(System.String,System.Data.Common.DbParameter);;Argument[1];Argument[this].Element;value;manual",
-        "System.Data.Common;DbParameterCollection;true;Add;(System.Object);;Argument[0];Argument[this].Element;value;manual",
-        "System.Data.Common;DbParameterCollection;true;AddRange;(System.Array);;Argument[0].Element;Argument[this].Element;value;manual",
-        "System.Data.Common;DbParameterCollection;true;Insert;(System.Int32,System.Object);;Argument[1];Argument[this].Element;value;manual",
-      ]
-  }
-}
-
-/** Data flow for `System.Data.Common.DbBatchCommandCollection`. */
-private class SystemDataCommonDbBatchCommandCollectionFlowModelCsv extends ExternalFlow::SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Data.Common;DbBatchCommandCollection;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
   }
 }

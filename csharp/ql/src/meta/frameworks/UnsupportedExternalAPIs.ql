@@ -11,13 +11,12 @@
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.dataflow.internal.NegativeSummary
 private import Telemetry.ExternalApi
 
-from DispatchCall c, ExternalApi api
+from Call c, ExternalApi api
 where
-  c = api.getACall() and
+  c.getTarget().getUnboundDeclaration() = api and
   not api.isUninteresting() and
   not api.isSupported() and
-  not api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
+  not api instanceof FlowSummaryImpl::Public::NeutralCallable
 select c, "Call to unsupported external API $@.", api, api.toString()

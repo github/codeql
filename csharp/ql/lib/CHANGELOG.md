@@ -1,3 +1,13 @@
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### Minor Analysis Improvements
+
+* The `[Summary|Sink|Source]ModelCsv` classes have been deprecated and Models as Data models are defined as data extensions instead.
+
 ## 0.4.3
 
 No user-facing changes.

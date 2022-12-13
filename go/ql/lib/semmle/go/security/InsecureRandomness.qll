@@ -25,10 +25,10 @@ module InsecureRandomness {
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
+    override predicate isSink(DataFlow::Node sink) { this.isSinkWithKind(sink, _) }
 
     /** Holds if `sink` is a sink for this configuration with kind `kind`. */
-    predicate isSink(Sink sink, string kind) { kind = sink.getKind() }
+    predicate isSinkWithKind(Sink sink, string kind) { kind = sink.getKind() }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }

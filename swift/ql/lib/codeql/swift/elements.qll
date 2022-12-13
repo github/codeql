@@ -4,13 +4,15 @@ import codeql.swift.elements.Callable
 import codeql.swift.elements.Comment
 import codeql.swift.elements.DbFile
 import codeql.swift.elements.DbLocation
+import codeql.swift.elements.Diagnostics
 import codeql.swift.elements.Element
+import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.File
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
 import codeql.swift.elements.UnknownFile
 import codeql.swift.elements.UnknownLocation
-import codeql.swift.elements.UnresolvedElement
+import codeql.swift.elements.UnspecifiedElement
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.decl.AbstractTypeParamDecl
@@ -53,6 +55,7 @@ import codeql.swift.elements.decl.TypeAliasDecl
 import codeql.swift.elements.decl.TypeDecl
 import codeql.swift.elements.decl.ValueDecl
 import codeql.swift.elements.decl.VarDecl
+import codeql.swift.elements.expr.AbiSafeConversionExpr
 import codeql.swift.elements.expr.AbstractClosureExpr
 import codeql.swift.elements.expr.AnyHashableErasureExpr
 import codeql.swift.elements.expr.AnyTryExpr
@@ -62,7 +65,6 @@ import codeql.swift.elements.expr.ArchetypeToSuperExpr
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.expr.ArrayExpr
 import codeql.swift.elements.expr.ArrayToPointerExpr
-import codeql.swift.elements.expr.ArrowExpr
 import codeql.swift.elements.expr.AssignExpr
 import codeql.swift.elements.expr.AutoClosureExpr
 import codeql.swift.elements.expr.AwaitExpr
@@ -77,7 +79,6 @@ import codeql.swift.elements.expr.CaptureListExpr
 import codeql.swift.elements.expr.CheckedCastExpr
 import codeql.swift.elements.expr.ClassMetatypeToObjectExpr
 import codeql.swift.elements.expr.ClosureExpr
-import codeql.swift.elements.expr.CodeCompletionExpr
 import codeql.swift.elements.expr.CoerceExpr
 import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.CollectionUpcastConversionExpr
@@ -101,7 +102,6 @@ import codeql.swift.elements.expr.DynamicLookupExpr
 import codeql.swift.elements.expr.DynamicMemberRefExpr
 import codeql.swift.elements.expr.DynamicSubscriptExpr
 import codeql.swift.elements.expr.DynamicTypeExpr
-import codeql.swift.elements.expr.EditorPlaceholderExpr
 import codeql.swift.elements.expr.EnumIsCaseExpr
 import codeql.swift.elements.expr.ErasureExpr
 import codeql.swift.elements.expr.ErrorExpr
@@ -148,9 +148,7 @@ import codeql.swift.elements.expr.OpenExistentialExpr
 import codeql.swift.elements.expr.OptionalEvaluationExpr
 import codeql.swift.elements.expr.OptionalTryExpr
 import codeql.swift.elements.expr.OtherConstructorDeclRefExpr
-import codeql.swift.elements.expr.OverloadSetRefExpr
 import codeql.swift.elements.expr.OverloadedDeclRefExpr
-import codeql.swift.elements.expr.PackExpr
 import codeql.swift.elements.expr.ParenExpr
 import codeql.swift.elements.expr.PointerToPointerExpr
 import codeql.swift.elements.expr.PostfixUnaryExpr
@@ -159,7 +157,6 @@ import codeql.swift.elements.expr.PropertyWrapperValuePlaceholderExpr
 import codeql.swift.elements.expr.ProtocolMetatypeToObjectExpr
 import codeql.swift.elements.expr.RebindSelfInConstructorExpr
 import codeql.swift.elements.expr.RegexLiteralExpr
-import codeql.swift.elements.expr.ReifyPackExpr
 import codeql.swift.elements.expr.SelfApplyExpr
 import codeql.swift.elements.expr.SequenceExpr
 import codeql.swift.elements.expr.StringLiteralExpr
@@ -261,20 +258,12 @@ import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.type.OpaqueTypeArchetypeType
 import codeql.swift.elements.type.OpenedArchetypeType
 import codeql.swift.elements.type.OptionalType
-import codeql.swift.elements.type.PackExpansionType
-import codeql.swift.elements.type.PackType
 import codeql.swift.elements.type.ParameterizedProtocolType
 import codeql.swift.elements.type.ParenType
-import codeql.swift.elements.type.PlaceholderType
 import codeql.swift.elements.type.PrimaryArchetypeType
 import codeql.swift.elements.type.ProtocolCompositionType
 import codeql.swift.elements.type.ProtocolType
 import codeql.swift.elements.type.ReferenceStorageType
-import codeql.swift.elements.type.SequenceArchetypeType
-import codeql.swift.elements.type.SilBlockStorageType
-import codeql.swift.elements.type.SilBoxType
-import codeql.swift.elements.type.SilFunctionType
-import codeql.swift.elements.type.SilTokenType
 import codeql.swift.elements.type.StructType
 import codeql.swift.elements.type.SubstitutableType
 import codeql.swift.elements.type.SugarType
@@ -283,7 +272,6 @@ import codeql.swift.elements.type.TupleType
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.type.TypeAliasType
 import codeql.swift.elements.type.TypeRepr
-import codeql.swift.elements.type.TypeVariableType
 import codeql.swift.elements.type.UnarySyntaxSugarType
 import codeql.swift.elements.type.UnboundGenericType
 import codeql.swift.elements.type.UnmanagedStorageType

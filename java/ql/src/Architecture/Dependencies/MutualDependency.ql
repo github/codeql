@@ -30,6 +30,8 @@ where
     t2.getName().toLowerCase().matches("%visitor%") or
     t1.getAMethod().getName().toLowerCase().matches("%visit%") or
     t2.getAMethod().getName().toLowerCase().matches("%visit%") or
-    t1.getPackage() = t2.getPackage()
+    t1.getPackage() = t2.getPackage() or
+    t1.getFile().isKotlinSourceFile() or
+    t2.getFile().isKotlinSourceFile()
   )
 select t1, "This type and type $@ are mutually dependent.", t2, t2.getName()

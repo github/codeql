@@ -11,7 +11,7 @@ namespace Semmle.Autobuild.CSharp
             try
             {
                 var actions = SystemBuildActions.Instance;
-                var options = new AutobuildOptions(actions, Language.CSharp);
+                var options = new CSharpAutobuildOptions(actions);
                 try
                 {
                     Console.WriteLine("CodeQL C# autobuilder");

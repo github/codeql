@@ -31,8 +31,8 @@ module ActiveStorage {
     override predicate row(string row) {
       row =
         [
-          "activestorage;;Member[ActiveStorage].Member[Filename].Method[new];Argument[0];ReturnValue;taint",
-          "activestorage;;Member[ActiveStorage].Member[Filename].Instance.Method[sanitized];Argument[self];ReturnValue;taint",
+          "ActiveStorage::Filename!;Method[new];Argument[0];ReturnValue;taint",
+          "ActiveStorage::Filename;Method[sanitized];Argument[self];ReturnValue;taint",
         ]
     }
   }
@@ -45,25 +45,23 @@ module ActiveStorage {
       // package1;type1;package2;type2;path
       row =
         [
-          // ActiveStorage::Blob.new : Blob
-          "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Instance",
           // ActiveStorage::Blob.create_and_upload! : Blob
-          "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[create_and_upload!].ReturnValue",
+          "ActiveStorage::Blob;ActiveStorage::Blob!;Method[create_and_upload!].ReturnValue",
           // ActiveStorage::Blob.create_before_direct_upload! : Blob
-          "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[create_before_direct_upload!].ReturnValue",
+          "ActiveStorage::Blob;ActiveStorage::Blob!;Method[create_before_direct_upload!].ReturnValue",
           // ActiveStorage::Blob.compose(blobs : [Blob]) : Blob
-          "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[compose].ReturnValue",
+          "ActiveStorage::Blob;ActiveStorage::Blob!;Method[compose].ReturnValue",
           // gives error: Invalid name 'Element' in access path
-          // "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[compose].Argument[0].Element[any]",
+          // "ActiveStorage::Blob;ActiveStorage::Blob!;Method[compose].Argument[0].Element[any]",
           // ActiveStorage::Blob.find_signed(!) : Blob
-          "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[find_signed,find_signed!].ReturnValue",
+          "ActiveStorage::Blob;ActiveStorage::Blob!;Method[find_signed,find_signed!].ReturnValue",
         ]
     }
   }
 
   private class BlobInstance extends DataFlow::Node {
     BlobInstance() {
-      this = ModelOutput::getATypeNode("activestorage", "Blob").getAValueReachableFromSource()
+      this = ModelOutput::getATypeNode("ActiveStorage::Blob").getAValueReachableFromSource()
       or
       // ActiveStorage::Attachment#blob : Blob
       exists(DataFlow::CallNode call |
@@ -168,7 +166,7 @@ module ActiveStorage {
    * A call on an ActiveStorage object that results in an image transformation.
    * Arguments to these calls may be executed as system commands.
    */
-  private class ImageProcessingCall extends DataFlow::CallNode, SystemCommandExecution::Range {
+  private class ImageProcessingCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     ImageProcessingCall() {
       this.getReceiver() instanceof BlobInstance and
       this.getMethodName() = ["variant", "preview", "representation"]
@@ -209,7 +207,7 @@ module ActiveStorage {
       this = API::getTopLevelMember("ActiveStorage").getAMethodCall("video_preview_arguments=")
     }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument(0) }
   }
 
   /**

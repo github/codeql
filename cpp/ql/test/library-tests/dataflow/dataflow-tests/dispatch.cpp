@@ -87,7 +87,7 @@ Top *identity(Top *top) {
 
 void callIdentityFunctions(Top *top, Bottom *bottom) {
   identity(bottom)->isSink(source()); // $ MISSING: ast,ir
-  identity(top)->isSink(source()); // now flow
+  identity(top)->isSink(source()); // no flow
 }
 
 using SinkFunctionType = void (*)(int);

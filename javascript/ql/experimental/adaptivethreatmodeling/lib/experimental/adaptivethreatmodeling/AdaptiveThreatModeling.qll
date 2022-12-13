@@ -1,4 +1,4 @@
-/*
+/**
  * For internal use only.
  *
  * Provides information about the results of boosted queries for use in adaptive threat modeling (ATM).

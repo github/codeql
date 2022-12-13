@@ -86,7 +86,7 @@ private module Cached {
       hasExprNode(n,
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
-          any(ApplyExpr apply).getQualifier()
+          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr()
         ])
     }
 
@@ -148,10 +148,28 @@ private module Cached {
     // flow through `!`
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
-    // flow through `?`
+    // flow through `?` and `?.`
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
+    or
+    // flow through nil-coalescing operator `??`
+    exists(BinaryExpr nco |
+      nco.getOperator().(FreeFunctionDecl).getName() = "??(_:_:)" and
+      nodeTo.asExpr() = nco
+    |
+      // value argument
+      nodeFrom.asExpr() = nco.getAnOperand()
+      or
+      // unpack closure (the second argument is an `AutoClosureExpr` argument)
+      nodeFrom.asExpr() = nco.getAnOperand().(AutoClosureExpr).getExpr()
+    )
+    or
+    // flow through ternary operator `? :`
+    exists(IfExpr ie |
+      nodeTo.asExpr() = ie and
+      nodeFrom.asExpr() = ie.getBranch(_)
+    )
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
@@ -177,7 +195,9 @@ private module Cached {
   newtype TContentSet = TSingletonContent(Content c)
 
   cached
-  newtype TContent = TFieldContent(FieldDecl f)
+  newtype TContent =
+    TFieldContent(FieldDecl f) or
+    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) }
 }
 
 /**
@@ -498,11 +518,27 @@ predicate jumpStep(Node pred, Node succ) {
 }
 
 predicate storeStep(Node node1, ContentSet c, Node node2) {
+  // assignment to a member variable `obj.member = value`
   exists(MemberRefExpr ref, AssignExpr assign |
     ref = assign.getDest() and
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = ref.getBase() and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+  or
+  // creation of a tuple `(v1, v2)`
+  exists(TupleExpr tuple, int pos |
+    node1.asExpr() = tuple.getElement(pos) and
+    node2.asExpr() = tuple and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = pos))
+  )
+  or
+  // assignment to a tuple member `tuple.index = value`
+  exists(TupleElementExpr tuple, AssignExpr assign |
+    tuple = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = tuple.getSubExpr() and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
@@ -511,11 +547,19 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
 
 predicate readStep(Node node1, ContentSet c, Node node2) {
+  // read of a member variable `obj.member`
   exists(MemberRefExpr ref |
     not isLValue(ref) and
     node1.asExpr() = ref.getBase() and
     node2.asExpr() = ref and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+  or
+  // read of a tuple member `tuple.index`
+  exists(TupleElementExpr tuple |
+    node1.asExpr() = tuple.getSubExpr() and
+    node2.asExpr() = tuple and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
 }
 

@@ -1,12 +1,5 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.ExternalFlow
-
-class Step extends SummaryModelCsv {
-  override predicate row(string row) {
-    row = ";Uri;false;getQueryParameter;;;Argument[-1];ReturnValue;taint;manual"
-  }
-}
 
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "qltest:notNullExprFlow" }

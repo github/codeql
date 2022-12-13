@@ -1,6 +1,7 @@
 /**
- * @name Use of `Kernel.open` or `IO.read` with user-controlled input
- * @description Using `Kernel.open` or `IO.read` may allow a malicious
+ * @name Use of `Kernel.open`, `IO.read` or similar sinks with user-controlled input
+ * @description Using `Kernel.open`, `IO.read`, `IO.write`, `IO.binread`, `IO.binwrite`,
+ *              `IO.foreach`, `IO.readlines`, or `URI.open` may allow a malicious
  *              user to execute arbitrary system commands.
  * @kind path-problem
  * @problem.severity error
@@ -32,7 +33,8 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     node instanceof StringConstCompareBarrier or
-    node instanceof StringConstArrayInclusionCallBarrier
+    node instanceof StringConstArrayInclusionCallBarrier or
+    node instanceof Sanitizer
   }
 }
 
