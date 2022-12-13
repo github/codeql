@@ -58,5 +58,10 @@ class MethodDecl extends AbstractFunctionDecl {
   /**
    * Holds if this function is a `static` or `class` method, as opposed to an instance method.
    */
-  predicate isStatic() { this.getSelfParam().getType() instanceof MetatypeType }
+  predicate isStaticOrClassMethod() { this.getSelfParam().getType() instanceof MetatypeType }
+
+  /**
+   * Holds if this function is an instance method, as opposed to a `static` or `class` method.
+   */
+  predicate isInstanceMethod() { not this.isStaticOrClassMethod() }
 }
