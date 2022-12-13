@@ -12,7 +12,7 @@ module Spife {
   /**
    * A call to a Spife method that sets up a route.
    */
-  private class RouteSetup extends API::CallNode, Http::Servers::StandardRouteSetup {
+  private class RouteSetup extends DataFlow::CallNode, Http::Servers::StandardRouteSetup {
     TaggedTemplateExpr template;
 
     RouteSetup() {
@@ -44,9 +44,11 @@ module Spife {
       )
     }
 
-    API::Node getHandlerByName(string name) { result = this.getParameter(0).getMember(name) }
+    DataFlow::Node getHandlerByName(string name) {
+      result = DataFlow::parameterNode(this.getACallee().getParameter(0)).getAPropertyRead(name)
+    }
 
-    API::Node getHandlerByRoute(string method, string path) {
+    DataFlow::Node getHandlerByRoute(string method, string path) {
       exists(string handlerName |
         this.hasLine(method, path, handlerName) and
         result = this.getHandlerByName(handlerName)
@@ -54,10 +56,10 @@ module Spife {
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = this.getHandlerByRoute(_, _).getAValueReachingSink().(DataFlow::FunctionNode)
+      result = this.getHandlerByRoute(_, _).getALocalSource().(DataFlow::FunctionNode)
       or
       exists(DataFlow::MethodCallNode validation |
-        validation = this.getHandlerByRoute(_, _).getAValueReachingSink() and
+        validation = this.getHandlerByRoute(_, _).getALocalSource() and
         result = validation.getArgument(1).getAFunctionValue()
       )
     }
@@ -90,7 +92,7 @@ module Spife {
   /**
    * A function that looks like a Spife route handler.
    *
-   * For example, this could be the function `function(req, res, next){...}`.
+   * For example, this could be the function `function(request, context){...}`.
    */
   class RouteHandlerCandidate extends Http::RouteHandlerCandidate {
     RouteHandlerCandidate() {
@@ -139,22 +141,30 @@ module Spife {
     string kind;
 
     RequestInputAccess() {
+      // req.body
       this = rh.getARequestSource().ref().getAPropertyRead("body") and
       kind = "body"
       or
+      // req.query['foo']
       this = rh.getARequestSource().ref().getAPropertyRead("query").getAPropertyRead() and
       kind = "parameter"
       or
+      // req.raw
       this = rh.getARequestSource().ref().getAPropertyRead("raw") and
       kind = "raw"
       or
+      // req.url
+      // req.urlObject
       this = rh.getARequestSource().ref().getAPropertyRead(["url", "urlObject"]) and
       kind = "url"
       or
+      // req.cookie('foo')
+      // req.cookies()
       this = rh.getARequestSource().ref().getAMethodCall() and
       this.(DataFlow::MethodCallNode).getMethodName() = ["cookie", "cookies"] and
       kind = "cookie"
       or
+      // req.validatedBody.get('foo')
       exists(DataFlow::PropRead validated, DataFlow::MethodCallNode get |
         rh.getARequestSource().ref().getAPropertyRead() = validated and
         validated.getPropertyName().matches("validated%") and
