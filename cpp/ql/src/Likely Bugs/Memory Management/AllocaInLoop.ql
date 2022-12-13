@@ -210,7 +210,7 @@ class LoopWithAlloca extends Stmt {
       // Phi nodes will be preceded by nodes that represent actual definitions
       not result instanceof DataFlow::SsaPhiNode and
       // A source is outside the loop if it's not inside the loop
-      not exists(Expr e | e = getExpr(result) | this = getAnEnclosingLoopOfExpr(e))
+      not exists(Expr e | e = this.getExpr(result) | this = getAnEnclosingLoopOfExpr(e))
     )
   }
 
@@ -221,9 +221,9 @@ class LoopWithAlloca extends Stmt {
   private int getAControllingVarInitialValue(Variable var, DataFlow::Node source) {
     source = this.getAPrecedingDef(var) and
     (
-      result = getExpr(source).getValue().toInt()
+      result = this.getExpr(source).getValue().toInt()
       or
-      result = getExpr(source).(Assignment).getRValue().getValue().toInt()
+      result = this.getExpr(source).(Assignment).getRValue().getValue().toInt()
     )
   }
 
