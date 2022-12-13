@@ -60,9 +60,7 @@ module UnvalidatedDynamicMethodCall {
   /**
    * A source of remote user input, considered as a source for unvalidated dynamic method calls.
    */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * The page URL considered as a flow source for unvalidated dynamic method calls.

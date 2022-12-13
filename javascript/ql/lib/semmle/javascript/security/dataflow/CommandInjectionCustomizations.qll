@@ -26,11 +26,8 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for command injection. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() {
-      this instanceof RemoteFlowSource and
-      not this instanceof ClientSideRemoteFlowSource
-    }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
+    RemoteFlowSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
 
     override string getSourceType() { result = "a user-provided value" }
   }

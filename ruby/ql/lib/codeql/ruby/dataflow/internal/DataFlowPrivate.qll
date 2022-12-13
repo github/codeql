@@ -1289,9 +1289,7 @@ private module PostUpdateNodes {
 private import PostUpdateNodes
 
 /** A node that performs a type cast. */
-class CastNode extends Node {
-  CastNode() { this instanceof ReturningNode }
-}
+class CastNode extends Node instanceof ReturningNode { }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
 

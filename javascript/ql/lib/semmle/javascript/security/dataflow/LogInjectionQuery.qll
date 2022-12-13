@@ -35,10 +35,8 @@ class LogInjectionConfiguration extends TaintTracking::Configuration {
 /**
  * A source of remote user controlled input.
  */
-class RemoteSource extends Source {
-  RemoteSource() {
-    this instanceof RemoteFlowSource and not this instanceof ClientSideRemoteFlowSource
-  }
+class RemoteSource extends Source instanceof RemoteFlowSource {
+  RemoteSource() { not this instanceof ClientSideRemoteFlowSource }
 }
 
 /**
@@ -60,9 +58,7 @@ class StringReplaceSanitizer extends Sanitizer {
 /**
  * A call to an HTML sanitizer is considered to sanitize the user input.
  */
-class HtmlSanitizer extends Sanitizer {
-  HtmlSanitizer() { this instanceof HtmlSanitizerCall }
-}
+class HtmlSanitizer extends Sanitizer instanceof HtmlSanitizerCall { }
 
 /**
  * A call to `JSON.stringify` or similar, seen as sanitizing log output.
