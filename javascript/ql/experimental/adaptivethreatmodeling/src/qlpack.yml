@@ -1,6 +1,6 @@
 name: codeql/javascript-experimental-atm-queries
 language: javascript
-version: 0.4.3
+version: 0.4.4
 suites: codeql-suites
 defaultSuiteFile: codeql-suites/javascript-atm-code-scanning.qls
 groups:
