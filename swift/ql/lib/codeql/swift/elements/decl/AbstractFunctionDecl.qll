@@ -1,16 +1,12 @@
 private import codeql.swift.generated.decl.AbstractFunctionDecl
 private import codeql.swift.elements.decl.MethodDecl
+private import codeql.swift.elements.Callable
 
 /**
  * A function.
  */
-class AbstractFunctionDecl extends Generated::AbstractFunctionDecl {
+class AbstractFunctionDecl extends Generated::AbstractFunctionDecl, Callable {
   override string toString() { result = this.getName() }
-
-  /**
-   * Holds if this function is called `funcName`.
-   */
-  predicate hasName(string funcName) { this.getName() = funcName }
 }
 
 /**
