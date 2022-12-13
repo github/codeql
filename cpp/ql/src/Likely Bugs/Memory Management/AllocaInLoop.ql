@@ -221,7 +221,7 @@ class LoopWithAlloca extends Stmt {
   private int getAControllingVarInitialValue(Variable var, DataFlow::Node source) {
     source = this.getAPrecedingDef(var) and
     (
-      result = getExpr(source).(Expr).getValue().toInt()
+      result = getExpr(source).getValue().toInt()
       or
       result = getExpr(source).(Assignment).getRValue().getValue().toInt()
     )
