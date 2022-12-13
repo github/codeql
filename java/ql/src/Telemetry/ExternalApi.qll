@@ -31,12 +31,9 @@ private string containerAsJar(Container container) {
   if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
 }
 
-/** Holds if the given callable is part of a common testing library or framework. */
-private predicate isTestLibrary(Callable c) { c.getDeclaringType() instanceof TestLibrary }
-
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {
-  isTestLibrary(c) or
+  c.getDeclaringType() instanceof TestLibrary or
   c.(Constructor).isParameterless()
 }
 

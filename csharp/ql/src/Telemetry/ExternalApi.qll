@@ -24,12 +24,9 @@ class TestLibrary extends RefType {
   }
 }
 
-/** Holds if the given callable is part of a common testing library or framework. */
-private predicate isTestLibrary(DotNet::Callable c) { c.getDeclaringType() instanceof TestLibrary }
-
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(DotNet::Callable c) {
-  isTestLibrary(c) or
+  c.getDeclaringType() instanceof TestLibrary or
   c.(Constructor).isParameterless()
 }
 
