@@ -61,21 +61,13 @@ module ModelPrompt {
   /**
    * Gets the reconstructed source code text for a range of locations.
    * TODO: This excludes comments
-   * TODO: Don't add a space if the current or previous token is a period.
    */
   string tokenize(Location location) {
     result =
       strictconcat(Token token |
         location.containsLoosely(token.getLocation())
       |
-        token
-                .getValue()
-                .replaceAll("\"", " ")
-                .replaceAll("\\", " ")
-                .replaceAll("\n", " ")
-                .replaceAll("\r", " ")
-                .replaceAll("|", " ")
-                .replaceAll("`", " ") +
+        token.getValue() +
             // Use space as the separator, since that is most likely.
             // May not be an exact reconstruction, e.g. if the code
             // had newlines between successive tokens.
@@ -83,6 +75,21 @@ module ModelPrompt {
         order by
           token.getLocation().getStartLine(), token.getLocation().getStartColumn()
       )
+          // Remove some characters that have special meaning in the markdown table prompt, or that are not allowed in
+          //the HOP:
+          .replaceAll("\"", " ")
+          .replaceAll("\\", " ")
+          .replaceAll("\n", " ")
+          .replaceAll("\r", " ")
+          .replaceAll("|", " ")
+          .replaceAll("`", " ")
+          // Remove spaces that break the code syntax or make for strange code styling:
+          .replaceAll(" . ", ".")
+          .replaceAll(" :", ":")
+          .replaceAll(" ,", ",")
+          .replaceAll(" (", "(")
+          .replaceAll(" )", ")")
+          .replaceAll("( ", "(")
   }
 
   /**
@@ -106,7 +113,7 @@ module ModelPrompt {
           loc.containsLoosely(node.getAstNode().getLocation()) and
           loc.getStartLine() >= node.getAstNode().getLocation().getStartLine() - neighborhoodSize and
           loc.getEndLine() <= node.getAstNode().getLocation().getEndLine() + neighborhoodSize
-            |
+        |
           loc
           order by
             loc.getNumLines(), loc.getEndColumn() - loc.getStartColumn(), loc.getEndColumn(),
