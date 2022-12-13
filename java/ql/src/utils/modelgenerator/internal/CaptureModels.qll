@@ -74,7 +74,7 @@ string asValueModel(TargetApiSpecific api, string input, string output) {
  * Gets the taint summary model for `api` with `input` and `output`.
  */
 bindingset[input, output]
-private string asTaintModel(TargetApiSpecific api, string input, string output) {
+string asTaintModel(TargetApiSpecific api, string input, string output) {
   result = asSummaryModel(api, input, output, "taint")
 }
 
@@ -147,7 +147,7 @@ private class TaintStore extends DataFlow::FlowState {
  *
  * This can be used to generate Flow summaries for APIs from parameter to return.
  */
-private class ThroughFlowConfig extends TaintTracking::Configuration {
+class ThroughFlowConfig extends TaintTracking::Configuration {
   ThroughFlowConfig() {
     this = "ThroughFlowConfig" and any(ActiveConfiguration ac).activateThroughFlowConfig()
   }
