@@ -1,5 +1,3 @@
-#-----| [ModuleDecl] __ObjC
-#-----| [ModuleDecl] methodlookup
 methodlookup.swift:
 #    1| [ClassDecl] Foo
 #    2|   getMember(0): [ConstructorDecl] Foo.init()
