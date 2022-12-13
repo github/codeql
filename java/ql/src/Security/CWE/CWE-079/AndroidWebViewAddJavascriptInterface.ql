@@ -1,4 +1,5 @@
 /**
+ * @name Access Java object methods through JavaScript exposure
  * @id java/android-webview-addjavascriptinterface
  * @description Exposing a Javascript interface to a Java object in a WebView can lead to malicious JavaScript controlling the application.
  * @kind problem
