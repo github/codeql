@@ -25,7 +25,7 @@ inputs, or avoid constructing code in the first place.
 
 <example>
 <p>
-The following example shows two methods implemented using `eval`: a simple
+The following example shows two methods implemented using <code>eval</code>: a simple
 deserialization routine and a getter method.
 If untrusted inputs are used with these methods,
 then an attacker might be able to execute arbitrary code on the system. 
@@ -35,12 +35,35 @@ then an attacker might be able to execute arbitrary code on the system.
 
 <p>
 To avoid this problem, either properly document that the function is potentially
-unsafe, or use an alternative solution such as `JSON.parse` or another library, like in the examples below, 
+unsafe, or use an alternative solution such as <code>JSON.parse</code> or another library, like in the examples below, 
 that does not allow arbitrary code to be executed.
 </p>
 
 <sample src="examples/UnsafeCodeConstructionSafe.rb" />
 
+</example>
+
+<example>
+<p>
+As another example, consider the below code which dynamically constructs 
+a class that has a getter method with a custom name.
+</p>
+
+<sample src="examples/UnsafeCodeConstruction2.rb" />
+
+<p>
+The example dynamically constructs a string which is then executed using <code>module_eval</code>.  
+This code will break if the specified name is not a valid Ruby identifier, and 
+if the value is controlled by an attacker, then this could lead to code injection.
+</p>
+
+<p>
+A more robust implementation, that is also immune to code injection, 
+can be made by using <code>module_eval</code> with a block and using <code>define_method</code>
+to define the getter method.
+</p>
+
+<sample src="examples/UnsafeCodeConstruction2Safe.rb" />
 </example>
 
 <references>
