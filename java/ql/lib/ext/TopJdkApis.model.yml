@@ -90,42 +90,47 @@ extensions:
       extensible: extNegativeSummaryModel
     data:
       # namespace; type; name; signature; provenance (5)
-      - ["java.util", "Objects", "equals", "(Object,Object)", "manual"]   # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Collection", "size", "()", "manual"]               # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Collections", "emptyList", "()", "manual"]         # UNSUPPORTED: just gives an emptylist
-      - ["java.util", "Iterator", "hasNext", "()", "manual"]              # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Set", "contains", "(Object)", "manual"]            # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Set", "size", "()", "manual"]                      # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Set", "isEmpty", "()", "manual"]                   # UNSUPPORTED: type as sanitizer
-      - ["java.util", "List", "size", "()", "manual"]                     # UNSUPPORTED: type as sanitizer
-      - ["java.util", "List", "contains", "(Object)", "manual"]           # UNSUPPORTED: type as sanitizer
-      - ["java.util", "List", "isEmpty", "()", "manual"]                  # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Map", "containsKey", "(Object)", "manual"]         # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Map", "size", "()", "manual"]                      # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Map", "isEmpty", "()", "manual"]                   # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Optional", "isPresent", "()", "manual"]            # UNSUPPORTED: type as sanitizer
-      - ["java.util", "Optional", "empty", "()", "manual"]                # UNSUPPORTED: just gives empty Optional instance
-      - ["java.util", "UUID", "randomUUID", "()", "manual"]               # UNSUPPORTED: just gives UUID, no flow
-      - ["java.util", "UUID", "toString", "()", "manual"]                 # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
-      - ["java.lang", "Object", "toString", "()", "manual"]               # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
-      - ["java.lang", "Object", "equals", "(Object)", "manual"]           # **COLLISION** (both supported and unsupported per initial telemetry query): type as sanitizer
-      - ["java.lang", "Object", "getClass", "()", "manual"]               # UNSUPPORTED: only returns the class of the object, no dataflow?
-      - ["java.lang", "Class", "getName", "()", "manual"]                 # UNSUPPORTED: just returns class name, no flow as far as I can tell
-      - ["java.lang", "Class", "getSimpleName", "()", "manual"]           # UNSUPPORTED: just returns class name, no flow as far as I can tell
-      - ["java.lang", "String", "equals", "(Object)", "manual"]           # **SUPPORTED**: should be negative per Michael, but "supported" according to telemetry results (Note: no obvious MaD row... look into further, has the model been removed recently?)
-      - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"] # UNSUPPORTED: type as sanitizer
-      - ["java.lang", "String", "length", "()", "manual"]                 # UNSUPPORTED: negative per Michael
-      - ["java.lang", "String", "isEmpty", "()", "manual"]                # UNSUPPORTED: type as sanitizer
-      - ["java.lang", "String", "contains", "(CharSequence)", "manual"]   # UNSUPPORTED: type as sanitizer
-      - ["java.lang", "String", "startsWith", "(String)", "manual"]       # UNSUPPORTED: type as sanitizer
-      - ["java.lang", "Enum", "equals", "(Object)", "manual"]             # UNSUPPORTED: type as sanitizer
-      - ["java.lang", "Enum", "toString", "()", "manual"]                 # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
-      - ["java.lang", "System", "currentTimeMillis", "()", "manual"]      # UNSUPPORTED: just gives current time
-      - ["java.lang", "Enum", "Enum", "(String,int)", "manual"]           # UNSUPPORTED: per Javadocs, "Programmers cannot invoke this constructor."
-      - ["java.lang", "Enum", "name", "()", "manual"]                     # UNSUPPORTED: just gets name, no flow?, similar usage to toString() per Javadocs
-      - ["java.util.stream", "Collectors", "toList", "()", "manual"]      # UNSUPPORTED: shouldn't have a model per Anders
-      - ["java.lang", "String", "valueOf", "(Object)", "manual"]          # UNSUPPORTED: per Anders: "this is a complex case that we haven't fully decided how to deal with"
-      - ["java.util", "Objects", "hash", "(Object[])", "manual"]          # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
-      - ["java.lang", "Object", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
-      - ["java.lang", "String", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
+      # COMMENT OUT ONCE MOVED TO `<packagename>.model.yml` FILE
+      # - ["java.util", "Objects", "equals", "(Object,Object)", "manual"]   # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Collection", "size", "()", "manual"]               # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Collections", "emptyList", "()", "manual"]         # UNSUPPORTED: just gives an emptylist
+      # - ["java.util", "Iterator", "hasNext", "()", "manual"]              # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Set", "contains", "(Object)", "manual"]            # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Set", "size", "()", "manual"]                      # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Set", "isEmpty", "()", "manual"]                   # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "List", "size", "()", "manual"]                     # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "List", "contains", "(Object)", "manual"]           # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "List", "isEmpty", "()", "manual"]                  # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Map", "containsKey", "(Object)", "manual"]         # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Map", "size", "()", "manual"]                      # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Map", "isEmpty", "()", "manual"]                   # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Optional", "isPresent", "()", "manual"]            # UNSUPPORTED: type as sanitizer
+      # - ["java.util", "Optional", "empty", "()", "manual"]                # UNSUPPORTED: just gives empty Optional instance
+      # - ["java.util", "UUID", "randomUUID", "()", "manual"]               # UNSUPPORTED: just gives UUID, no flow
+      # - ["java.util", "UUID", "toString", "()", "manual"]                 # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
+      # - ["java.util", "Objects", "hash", "(Object[])", "manual"]          # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
+
+      # - ["java.util.stream", "Collectors", "toList", "()", "manual"]      # UNSUPPORTED: shouldn't have a model per Anders
+
+      # - ["java.lang", "Object", "toString", "()", "manual"]               # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
+      # - ["java.lang", "Object", "equals", "(Object)", "manual"]           # **COLLISION** (both supported and unsupported per initial telemetry query): type as sanitizer
+      # - ["java.lang", "Object", "getClass", "()", "manual"]               # UNSUPPORTED: only returns the class of the object, no dataflow?
+      # - ["java.lang", "Class", "getName", "()", "manual"]                 # UNSUPPORTED: just returns class name, no flow as far as I can tell
+      # - ["java.lang", "Class", "getSimpleName", "()", "manual"]           # UNSUPPORTED: just returns class name, no flow as far as I can tell
+      # - ["java.lang", "String", "equals", "(Object)", "manual"]           # **SUPPORTED**: should be negative per Michael, but "supported" according to telemetry results (Note: no obvious MaD row... look into further, has the model been removed recently?)
+      # - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"] # UNSUPPORTED: type as sanitizer
+      # - ["java.lang", "String", "length", "()", "manual"]                 # UNSUPPORTED: negative per Michael
+      # - ["java.lang", "String", "isEmpty", "()", "manual"]                # UNSUPPORTED: type as sanitizer
+      # - ["java.lang", "String", "contains", "(CharSequence)", "manual"]   # UNSUPPORTED: type as sanitizer
+      # - ["java.lang", "String", "startsWith", "(String)", "manual"]       # UNSUPPORTED: type as sanitizer
+      # - ["java.lang", "Enum", "equals", "(Object)", "manual"]             # UNSUPPORTED: type as sanitizer
+      # - ["java.lang", "Enum", "toString", "()", "manual"]                 # UNSUPPORTED: shouldn't model due to causing problems with dataflow?
+      # - ["java.lang", "System", "currentTimeMillis", "()", "manual"]      # UNSUPPORTED: just gives current time
+      # - ["java.lang", "Enum", "Enum", "(String,int)", "manual"]           # UNSUPPORTED: per Javadocs, "Programmers cannot invoke this constructor."
+      # - ["java.lang", "Enum", "name", "()", "manual"]                     # UNSUPPORTED: just gets name, no flow?, similar usage to toString() per Javadocs
+      # - ["java.lang", "Object", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
+      # - ["java.lang", "String", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
+
+      # Ask Tony:
       - ["java.lang", "Throwable", "printStackTrace", "()", "manual"]     # UNSUPPORTED: per Anders: "This should probably not be a general step, but there might be specialised queries that care."
+      - ["java.lang", "String", "valueOf", "(Object)", "manual"]          # UNSUPPORTED: per Anders: "this is a complex case that we haven't fully decided how to deal with"

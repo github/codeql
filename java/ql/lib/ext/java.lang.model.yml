@@ -86,3 +86,26 @@ extensions:
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "StringBuilder", True, "StringBuilder", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.lang", "System", False, "arraycopy", "", "", "Argument[0]", "Argument[2]", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: extNegativeSummaryModel
+    data:
+      - ["java.lang", "Object", "toString", "()", "manual"]
+      - ["java.lang", "Object", "equals", "(Object)", "manual"]
+      - ["java.lang", "Object", "getClass", "()", "manual"]
+      - ["java.lang", "Class", "getName", "()", "manual"]
+      - ["java.lang", "Class", "getSimpleName", "()", "manual"]
+      - ["java.lang", "String", "equals", "(Object)", "manual"]
+      - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"]
+      - ["java.lang", "String", "length", "()", "manual"]
+      - ["java.lang", "String", "isEmpty", "()", "manual"]
+      - ["java.lang", "String", "contains", "(CharSequence)", "manual"]
+      - ["java.lang", "String", "startsWith", "(String)", "manual"]
+      - ["java.lang", "Enum", "equals", "(Object)", "manual"]
+      - ["java.lang", "Enum", "toString", "()", "manual"]
+      - ["java.lang", "System", "currentTimeMillis", "()", "manual"]
+      - ["java.lang", "Enum", "Enum", "(String,int)", "manual"]
+      - ["java.lang", "Enum", "name", "()", "manual"]
+      - ["java.lang", "Object", "hashCode", "()", "manual"]
+      - ["java.lang", "String", "hashCode", "()", "manual"]
