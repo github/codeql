@@ -4,6 +4,7 @@
  *              changing the predicate's intended logic.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 8.8
  * @precision high
  * @id swift/predicate-injection
  * @tags security
@@ -17,4 +18,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(PredicateInjectionConf c).hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@", source.getNode(), ""
+select sink.getNode(), source, sink, "This predicate depends on a $@.", source.getNode(),
+  "user-provided value"
