@@ -11,12 +11,11 @@ module ActionControllerFilters {
    * These are commonly called filters.
    */
   class Filter extends MethodCallCfgNode {
-    private ActionControllerClass controller;
     private ModuleBase enclosingModule;
 
     Filter() {
       this.getExpr().getEnclosingModule() = enclosingModule and
-      enclosingModule = controller.getADeclaration() and
+      enclosingModule = any(ActionControllerClass c).getADeclaration() and
       this.getMethodName() =
         ["", "prepend_", "append"] + ["before_action", "after_action", "around_action"]
     }
@@ -34,6 +33,9 @@ module ActionControllerFilters {
         this.getLocation().getStartLine() = other.getLocation().getStartLine() and
         this.getLocation().getStartColumn() < other.getLocation().getStartColumn()
       )
+      or
+      // This callback is in a superclass of `other`'s class.
+      other.getEnclosingModule().getModule() = this.getEnclosingModule().getModule().getASubClass+()
     }
 
     /**
@@ -106,12 +108,19 @@ module ActionControllerFilters {
       result != any(Filter f).getFilterCallable() and
       // Only include routable actions. This can exclude valid actions if we can't parse the `routes.rb` file fully.
       exists(result.getARoute()) and
-      result = this.getEnclosingModule().getAMethod() and
       (
         result.getName() = this.getOnlyArgument()
         or
         not exists(this.getOnlyArgument()) and
         forall(string except | except = this.getExceptArgument() | result.getName() != except)
+      ) and
+      (
+        result = this.getEnclosingModule().getAMethod()
+        or
+        exists(ModuleBase m |
+          m.getModule() = this.getEnclosingModule().getModule().getADescendent() and
+          result = m.getAMethod()
+        )
       )
     }
 
