@@ -25,8 +25,6 @@ Here is an example of a basic query:
 
 .. code-block:: ql
 
-   import tutorial
-
    select "hello world"
 
 This query returns the string ``"hello world"``.
@@ -165,8 +163,6 @@ Exercise 1
 
 .. code-block:: ql
 
-   import tutorial
-
    from string s
    where s = "lgtm"
    select s.length()
@@ -175,16 +171,12 @@ There is often more than one way to define a query. For example, we can also wri
 
 .. code-block:: ql
 
-   import tutorial
-
    select "lgtm".length()
 
 Exercise 2
 ~~~~~~~~~~
 
 .. code-block:: ql
-
-   import tutorial
 
    from float x, float y
    where x = 3.pow(5) and y = 245.6
@@ -195,8 +187,6 @@ Exercise 3
 
 .. code-block:: ql
 
-   import tutorial
-
    from boolean b
    where b = false
    select b.booleanNot()
@@ -205,8 +195,6 @@ Exercise 4
 ~~~~~~~~~~
 
 .. code-block:: ql
-
-   import tutorial
 
    from date start, date end
    where start = "10/06/2017".toDate() and end = "28/09/2017".toDate()
