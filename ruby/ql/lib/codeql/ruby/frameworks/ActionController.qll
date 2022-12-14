@@ -13,6 +13,7 @@ private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+import codeql.ruby.frameworks.actioncontroller.Filters
 
 /**
  * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
