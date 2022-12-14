@@ -47,16 +47,6 @@ class FileFunction extends FunctionWithWrappers {
   override predicate interestingArg(int arg) { arg = 0 }
 }
 
-Expr asSinkExpr(DataFlow::Node node) {
-  result =
-    node.asOperand()
-        .(SideEffectOperand)
-        .getUse()
-        .(ReadSideEffectInstruction)
-        .getArgumentDef()
-        .getUnconvertedResultExpression()
-}
-
 /**
  * Holds for a variable that has any kind of upper-bound check anywhere in the program.
  * This is biased towards being inclusive and being a coarse overapproximation because
@@ -87,7 +77,7 @@ class TaintedPathConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node node) {
     exists(FileFunction fileFunction |
-      fileFunction.outermostWrapperFunctionCall(asSinkExpr(node), _)
+      fileFunction.outermostWrapperFunctionCall(node.asIndirectArgument(), _)
     )
   }
 
@@ -108,7 +98,7 @@ from
   FileFunction fileFunction, Expr taintedArg, FlowSource taintSource, TaintedPathConfiguration cfg,
   DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, string callChain
 where
-  taintedArg = asSinkExpr(sinkNode.getNode()) and
+  taintedArg = sinkNode.getNode().asIndirectArgument() and
   fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
   cfg.hasFlowPath(sourceNode, sinkNode) and
   taintSource = sourceNode.getNode()
