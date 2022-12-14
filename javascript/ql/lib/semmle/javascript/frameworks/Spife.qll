@@ -49,15 +49,15 @@ module Spife {
       t.start() and
       result = this.getArgument(0).getALocalSource()
       or
-      exists(TypeBackTracker t2 | result = getHandlerDefinitions(t2).backtrack(t2, t))
+      exists(TypeBackTracker t2 | result = this.getHandlerDefinitions(t2).backtrack(t2, t))
     }
 
     DataFlow::SourceNode getHandlerDefinitions() {
-      result = getHandlerDefinitions(TypeBackTracker::end())
+      result = this.getHandlerDefinitions(TypeBackTracker::end())
     }
 
     DataFlow::SourceNode getHandlerByName(string name) {
-      result = getHandlerDefinitions().getAPropertySource(name)
+      result = this.getHandlerDefinitions().getAPropertySource(name)
     }
 
     DataFlow::SourceNode getHandlerByRoute(string method, string path) {
