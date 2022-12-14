@@ -1,6 +1,5 @@
 private import codeql.swift.generated.decl.AbstractFunctionDecl
 private import codeql.swift.elements.decl.MethodDecl
-private import codeql.swift.elements.Callable
 
 /**
  * A function.
