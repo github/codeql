@@ -7,9 +7,15 @@ cc_library(
     ] + select({
         "@platforms//os:linux": [
             "libCodeQLSwiftFrontendTool.so",
+            "libswiftCore.so",
         ],
         "@platforms//os:macos": [
             "libCodeQLSwiftFrontendTool.dylib",
+            "libswiftCore.dylib",
+            "libswiftCompatibility50.a",
+            "libswiftCompatibility51.a",
+            "libswiftCompatibilityConcurrency.a",
+            "libswiftCompatibilityDynamicReplacements.a",
         ],
     }),
     hdrs = glob(["include/**/*", "stdlib/**/*" ]),
@@ -22,6 +28,9 @@ cc_library(
             "-lrt",
             "-lpthread",
             "-ldl",
+        ],
+        "@platforms//os:macos": [
+            "-L/usr/lib/swift",
         ],
         "//conditions:default": [],
     }),

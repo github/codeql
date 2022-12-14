@@ -11,6 +11,10 @@ module NoSql {
     /** Gets an expression that is interpreted as a code operator in this query. */
     DataFlow::Node getACodeOperator() { none() }
   }
+
+  private class QueryFromModel extends Query {
+    QueryFromModel() { this = ModelOutput::getASinkNode("nosql-injection").asSink() }
+  }
 }
 
 /** DEPRECATED: Alias for NoSql */

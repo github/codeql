@@ -239,3 +239,4 @@ uniqueParameterNodeAtPosition
 | ir.cpp:724:6:724:13 | TryCatch | 0 indirection | ir.cpp:735:22:735:22 | s indirection | Parameters with overlapping positions. |
 | ir.cpp:724:6:724:13 | TryCatch | 0 indirection | ir.cpp:738:24:738:24 | e indirection | Parameters with overlapping positions. |
 uniqueParameterNodePosition
+uniqueContentApprox

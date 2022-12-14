@@ -1,0 +1,5 @@
+| .AnotherAlias | .AnotherActivity |
+| .Example2Alias | .Example2Activity |
+| .ExampleAlias | .ExampleActivity |
+| .MainAlias | .MainActivity |
+| .SecondAlias | .MainActivity |

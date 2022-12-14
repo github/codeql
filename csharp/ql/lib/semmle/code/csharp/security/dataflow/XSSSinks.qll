@@ -27,9 +27,7 @@ private class ExternalXssSink extends Sink {
   ExternalXssSink() { sinkNode(this, "xss") }
 }
 
-private class HtmlSinkSink extends Sink {
-  HtmlSinkSink() { this instanceof HtmlSink }
-
+private class HtmlSinkSink extends Sink instanceof HtmlSink {
   override string explanation() {
     this instanceof WebPageWriteLiteralSink and
     result = "System.Web.WebPages.WebPage.WriteLiteral() method"

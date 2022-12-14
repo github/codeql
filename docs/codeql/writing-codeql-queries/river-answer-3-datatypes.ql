@@ -90,11 +90,8 @@ newtype TState = Currently(Man man, Goat goat, Cabbage cabbage, Wolf wolf)
 /** A record of where everything is. */
 class State extends TState {
   Man man;
-
   Goat goat;
-
   Cabbage cabbage;
-
   Wolf wolf;
 
   State() { this = Currently(man, goat, cabbage, wolf) }

@@ -83,6 +83,7 @@ extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \
 	cp codeql-extractor.yml LICENSE ql/lib/go.dbscheme ql/lib/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
 	mkdir $(EXTRACTOR_PACK_OUT)/tools
 	cp -r tools/tokenizer.jar $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
+	cp -r downgrades $(EXTRACTOR_PACK_OUT)
 
 extractor: extractor-common tools-codeql
 	cp -r tools/$(CODEQL_PLATFORM) $(EXTRACTOR_PACK_OUT)/tools

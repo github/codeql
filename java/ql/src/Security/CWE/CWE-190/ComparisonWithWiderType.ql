@@ -20,9 +20,7 @@ int leftWidth(ComparisonExpr e) { result = e.getLeftOperand().getType().(NumType
 
 int rightWidth(ComparisonExpr e) { result = e.getRightOperand().getType().(NumType).getWidthRank() }
 
-abstract class WideningComparison extends BinaryExpr {
-  WideningComparison() { this instanceof ComparisonExpr }
-
+abstract class WideningComparison extends BinaryExpr instanceof ComparisonExpr {
   abstract Expr getNarrower();
 
   abstract Expr getWider();
