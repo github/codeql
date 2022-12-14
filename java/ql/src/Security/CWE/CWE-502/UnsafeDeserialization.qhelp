@@ -51,6 +51,59 @@ from the input stream removes the vulnerability.
 
 </example>
 
+<p>
+
+Fixes by framework
+<table>
+    <tbody>
+        <tr>
+            <th>Project</th>
+            <th>Maven Cordinates</th>
+            <th>Secure by Default</th>
+            <th>Fix</th>
+        </tr>
+            <tr>
+            <td>XMLDecoder</td>
+            <td>Java Standard Library</td>
+            <td>No</td>
+            <td>Don't use XMLDecoder with untrusted user input. It is impossible to secure.</td>
+        </tr>
+        <tr>
+            <td>ObjectInputStream</td>
+            <td>Java Standard Library</td>
+            <td>No</td>
+            <td>Leverage a validating input stream like <code>org.apache.commons.io.serialization.ValidatingObjectInputStream</code></td>
+        </tr>
+            <tr>
+            <td>FastJson</td>
+            <td>com.alibaba:fastjson</td>
+            <td>Partially</td>
+            <td>Call <code>com.alibaba.fastjson.parser.ParserConfig#setSafeMode</code> with the argument <code>true</code></td>
+        </tr>
+        <tr>
+            <td>SnakeYAML</td>
+            <td>org.yaml:snakeyaml</td>
+            <td><a href="https://bitbucket.org/snakeyaml/snakeyaml/wiki/CVE%20&amp;%20NIST.md">No</a>. <a href="https://bitbucket.org/snakeyaml/snakeyaml/issues/561/cve-2022-1471-vulnerability-in">Maintainer response</a>.</td>
+            <td>Instantiate the <code>org.yaml.snakeyaml.Yaml</code> instance explicitly with an instance of <code>org.yaml.snakeyaml.constructor.SafeConstructor</code> as an argument.</td>
+        </tr>
+        <tr>
+            <td>FasterXML jackson-databind</td>
+            <td>com.fasterxml.jackson.core:jackson-databind</td>
+            <td>Yes</td>
+            <td>
+                Don't call <code>com.fasterxml.jackson.databind.ObjectMapper#enableDefaultTyping</code> and don't annotate any object fields with <code>com.fasterxml.jackson.annotation.JsonTypeInfo</code> passing either the <code>CLASS</code> or <code>MINIMAL_CLASS</code> values to the annotation.
+                Read <a href="https://cowtowncoder.medium.com/jackson-2-10-safe-default-typing-2d018f0ce2ba">this guide</a>.
+            </td>
+        </tr>
+        <tr>
+            <td>Kryo</td>
+            <td>com.esotericsoftware:kryo and com.esotericsoftware:kryo5</td>
+            <td>com.esotericsoftware:kryo versions including &amp; after 5.0.0 Yes; com.esotericsoftware:kryo5 Yes</td>
+            <td>Don't call <code>com.esotericsoftware.kryo(5).Kryo#setRegistrationRequired</code> with the argument <code>false</code>.</td>
+        </tr>
+    </tbody>
+</table>
+
 <references>
 
 <li>
@@ -74,7 +127,7 @@ Alvaro Muñoz &amp; Christian Schneider, RSAConference 2016:
 </li>
 <li>
 SnakeYaml documentation on deserialization:
-<a href="https://bitbucket.org/asomov/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a>.
+<a href="https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a>.
 </li>
 <li>
 Hessian deserialization and related gadget chains:
