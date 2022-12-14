@@ -670,7 +670,15 @@ private Type getTypeImpl(Type t, int indirectionIndex) {
   result = t
   or
   indirectionIndex > 0 and
-  result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
+  exists(Type stripped |
+    stripped = stripPointer(t) and
+    // We need to avoid the case where `stripPointer(t) = t` (which can happen on
+    // iterators that specify a `value_type` that is the iterator itself). Such a type
+    // would create an infinite loop otherwise. For these cases we simply don't produce
+    // a result for `getType`.
+    stripped.getUnspecifiedType() != t.getUnspecifiedType() and
+    result = getTypeImpl(stripPointer(t), indirectionIndex - 1)
+  )
 }
 
 /**
