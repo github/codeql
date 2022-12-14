@@ -1,3 +1,9 @@
+signature class AstNode {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  );
+}
+
 signature class SingleLineComment {
   string toString();
 
@@ -11,7 +17,7 @@ signature class SingleLineComment {
 /**
  * Constructs an alert suppression query.
  */
-module Make<SingleLineComment Comment> {
+module Make<AstNode Node, SingleLineComment Comment> {
   /**
    * An alert suppression comment.
    */
@@ -72,6 +78,19 @@ module Make<SingleLineComment Comment> {
     ) {
       this.hasLocationInfo(filepath, startline, _, endline, endcolumn) and
       startcolumn = 1
+      or
+      exists(int cStartLine, int cStartColumn, int cEndLine, int cEndColumn |
+        this.hasLocationInfo(filepath, cStartLine, cStartColumn, cEndLine, cEndColumn) and
+        not exists(int c, Node n | c < cStartColumn |
+          n.hasLocationInfo(filepath, _, _, cStartLine, c) or
+          n.hasLocationInfo(filepath, cStartLine, c, _, _)
+        ) and
+        // when there is no column information, a location spans the whole line
+        startcolumn = 0 and
+        endcolumn = 0 and
+        startline = cEndLine + 1 and
+        endline = startline
+      )
     }
   }
 

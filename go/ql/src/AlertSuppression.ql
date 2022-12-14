@@ -15,4 +15,4 @@ class SingleLineComment extends G::Comment {
   }
 }
 
-import AS::Make<SingleLineComment>
+import AS::Make<G::Locatable, SingleLineComment>

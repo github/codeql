@@ -18,4 +18,4 @@ class SingleLineComment extends Javadoc {
   string getText() { result = this.getChild(0).getText() }
 }
 
-import AS::Make<SingleLineComment>
+import AS::Make<Top, SingleLineComment>
