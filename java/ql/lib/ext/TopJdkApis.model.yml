@@ -66,24 +66,37 @@ extensions:
       - ["java.lang", "StringBuilder", False, "append", "(int)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                           # SUPPORTED: already modelled in java.lang.model.yml at line 25 through AbstractStringBuilder.append subtyping
       - ["java.lang", "StringBuffer", False, "append", "(String)", "", "Argument[-1]", "ReturnValue", "value", "manual"]                         # SUPPORTED: already modelled in java.lang.model.yml at line 24 through AbstractStringBuilder.append subtyping
       - ["java.lang", "StringBuffer", False, "append", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                         # SUPPORTED: already modelled in java.lang.model.yml at line 25 through AbstractStringBuilder.append subtyping
-      - ["java.lang", "Integer", False, "parseInt", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                             # SUPPORTED: no MaD row or regular CodeQL model that I can find... (Note: check for existing model again)
       - ["java.io", "File", False, "File", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                                     # SUPPORTED: already modelled in java.io.model.yml at line 60, but no signature specified in existing model
-      - ["java.io", "PrintWriter", False, "write", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                             # SUPPORTED: no MaD row, modelled by Writer.write in java.io.model.yml at line 86 through subtyping
       - ["java.nio.file", "Path", True, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                              # **COLLISION** (both supported and unsupported per initial telemetry query): already modelled in java.nio.file.model.yml at line 29, but no signature specified in existing model
-      - ["java.math", "BigDecimal", False, "BigDecimal", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                       # SUPPORTED: no MaD row or regular CodeQL model that I can find... (Note: check for existing model again)
+      - ["java.io", "PrintWriter", False, "write", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]                             # SUPPORTED: no MaD row, modelled by Writer.write in java.io.model.yml at line 86 through subtyping
       - ["java.lang", "String", False, "valueOf", "(int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]                                  # **UNSUPPORTED**: already modelled in java.lang.model.yml at lines 82-84 for other signatures (Tony wants this one)
-      - ["java.lang", "String", False, "charAt", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]                                  # **UNSUPPORTED**: per Anders: "We may want this as a general model, and we've discussed it before without a clear-cut answer, I believe."
-      - ["java.lang", "StringBuilder", "toString", "()", "manual"]        # **SUPPORTED**: Tony said to keep as positive; modelled in java.lang.model.yml at line 34 through AbstractStringBuilder.toString subtyping
-      - ["java.lang", "Throwable", "getMessage", "()", "", "manual"]      # **UNSUPPORTED**: per Anders: "This should likely have a model, but as mentioned above, it's not really relevant yet."
-      - ["java.sql", "ResultSet", "getString", "(String)", "", "manual"]  # **UNSUPPORTED**: similar to toString()? per Anders: "It looks like something that probably ought to have a model."
+      - ["java.lang", "StringBuilder", "toString", "()", "manual"]        # SUPPORTED: modelled in java.lang.model.yml at line 34 through AbstractStringBuilder.toString subtyping
+      - ["java.lang", "String", False, "charAt", "(int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]   # **UNSUPPORTED**: per Anders: "We may want this as a general model, and we've discussed it before without a clear-cut answer, I believe."
+      - ["java.sql", "ResultSet", "getString", "(String)", "", "manual"]  # **UNSUPPORTED**: similar to toString()?, per Anders: "It looks like something that probably ought to have a model."
 
-      # Exception modelling, add more detailed field flow per Anders:
+
+      # ! Where are the existing models for these two?
+      - ["java.lang", "Integer", False, "parseInt", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]          # SUPPORTED: no MaD row or regular CodeQL model that I can find... (Note: check for existing model again)
+      - ["java.math", "BigDecimal", False, "BigDecimal", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]    # SUPPORTED: no MaD row or regular CodeQL model that I can find... (Note: check for existing model again)
+
+      # ! Exception modelling, add more detailed field flow per Anders
+      # ! Should I even model yet if the support for exceptions is blocked?
+
       - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                                      # **UNSUPPORTED**: flow from Throwable arg to new Throwable object?
-      - ["java.lang", "RuntimeException", False, "RuntimeException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                           # **UNSUPPORTED**: flow from arg to new RuntimeException object?
+
+      - ["java.lang", "RuntimeException", False, "RuntimeException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.RuntimeException.message]", "value", "manual"]                           # **UNSUPPORTED**: flow from arg to new RuntimeException object?
+      - ["java.lang", "RuntimeException", False, "getMessage", "()", "", "Argument[-1].SyntheticField[java.lang.RuntimeException.message]", "ReturnValue", "value", "manual"]                           # **UNSUPPORTED**: flow from arg to new RuntimeException object?
+
+
       - ["java.lang", "RuntimeException", False, "RuntimeException", "(Throwable)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                        # **UNSUPPORTED**: flow from arg to new RuntimeException object?
       - ["java.lang", "IllegalArgumentException", False, "IllegalArgumentException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]           # **UNSUPPORTED**: flow from arg to new IllegalArgumentException object?
       - ["java.lang", "IllegalStateException", False, "IllegalStateException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"]                 # **UNSUPPORTED**: flow from arg to new IllegalStateException object?
       - ["java.lang", "UnsupportedOperationException", False, "UnsupportedOperationException", "(String)", "", "Argument[0]", "Argument[-1]", "value", "manual"] # **UNSUPPORTED**: flow from arg to new UnsupportedOperationException object?
+      - ["java.lang", "Throwable", "getMessage", "()", "", "manual"]      # **UNSUPPORTED**: per Anders: "This should likely have a model, but as mentioned above, it's not really relevant yet."
+
+      # ! Leave these as a negative/neutral model? Or no model at all? (or just leave commented out like "collect(Collector<T,A,R> collector)" to indicate that it was looked at)
+      - ["java.lang", "Throwable", "printStackTrace", "()", "manual"] # UNSUPPORTED: per Anders: "This should probably not be a general step, but there might be specialised queries that care."
+      - ["java.lang", "String", "valueOf", "(Object)", "manual"]      # UNSUPPORTED: per Anders: "this is a complex case that we haven't fully decided how to deal with"
 
   - addsTo:
       pack: codeql/java-all
@@ -130,7 +143,3 @@ extensions:
       # - ["java.lang", "Enum", "name", "()", "manual"]                     # UNSUPPORTED: just gets name, no flow?, similar usage to toString() per Javadocs
       # - ["java.lang", "Object", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
       # - ["java.lang", "String", "hashCode", "()", "manual"]               # UNSUPPORTED: do we care about controlling the hashcode value? - no per Anders
-
-      # Ask Tony:
-      - ["java.lang", "Throwable", "printStackTrace", "()", "manual"]     # UNSUPPORTED: per Anders: "This should probably not be a general step, but there might be specialised queries that care."
-      - ["java.lang", "String", "valueOf", "(Object)", "manual"]          # UNSUPPORTED: per Anders: "this is a complex case that we haven't fully decided how to deal with"
