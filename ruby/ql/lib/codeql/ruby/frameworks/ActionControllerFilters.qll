@@ -25,8 +25,102 @@ module ActionControllerFilters {
   }
 
   /**
-   * A call that registers a callback for one or more ActionController actions.
-   * These are commonly called filters.
+   * A call to a class method that adds or removes a filter from the callback chain.
+   * This class exists to encapsulate common behaviour between calls that
+   * register callbacks (`before_action`, `after_action` etc.) and calls that
+   * remove callbacks (`skip_before_action`, `skip_after_action` etc.)
+   */
+  private class FilterCall extends MethodCallCfgNode {
+    private FilterKind kind;
+
+    FilterCall() {
+      this.getExpr().getEnclosingModule() = any(ActionControllerClass c).getADeclaration() and
+      this.getMethodName() = ["", "prepend_", "append_", "skip_"] + kind + "_action"
+    }
+
+    FilterKind getKind() { result = kind }
+
+    /**
+     * Gets an action which this filter is applied to.
+     */
+    ActionControllerActionMethod getAction() {
+      // A filter cannot apply to another filter
+      result != any(Filter f).getFilterCallable() and
+      // Only include routable actions. This can exclude valid actions if we can't parse the `routes.rb` file fully.
+      exists(result.getARoute()) and
+      (
+        result.getName() = this.getOnlyArgument()
+        or
+        not exists(this.getOnlyArgument()) and
+        forall(string except | except = this.getExceptArgument() | result.getName() != except)
+      ) and
+      (
+        result = this.getExpr().getEnclosingModule().getAMethod()
+        or
+        exists(ModuleBase m |
+          m.getModule() = this.getExpr().getEnclosingModule().getModule().getADescendent() and
+          result = m.getAMethod()
+        )
+      )
+    }
+
+    private string getOnlyArgument() {
+      exists(ExprCfgNode only | only = this.getKeywordArgument("only") |
+        // only: :index
+        result = only.getConstantValue().getStringlikeValue()
+        or
+        // only: [:index, :show]
+        result = only.(ArrayLiteralCfgNode).getAnArgument().getConstantValue().getStringlikeValue()
+      )
+    }
+
+    private string getExceptArgument() {
+      exists(ExprCfgNode except | except = this.getKeywordArgument("except") |
+        // except: :create
+        result = except.getConstantValue().getStringlikeValue()
+        or
+        // except: [:create, :update]
+        result =
+          except.(ArrayLiteralCfgNode).getAnArgument().getConstantValue().getStringlikeValue()
+      )
+    }
+
+    StringlikeLiteralCfgNode getFilterArgument() { result = this.getPositionalArgument(_) }
+
+    /**
+     * Gets the callable that implements this filter.
+     * This currently only finds methods in the local class or superclass.
+     * It doesn't handle:
+     * - lambdas
+     * - blocks
+     * - classes
+     *
+     * In the example below, the callable for the filter is the method `foo`.
+     * ```rb
+     * class PostsController < ActionController::Base
+     *   before_action :foo
+     *
+     *   def foo
+     *   end
+     * end
+     * ```
+     */
+    Callable getFilterCallable(string name) {
+      result.(MethodBase).getName() = name and
+      // Method in same class
+      (
+        result.getEnclosingModule() = this.getExpr().getEnclosingModule()
+        or
+        // Method in superclass
+        result.getEnclosingModule().getModule() =
+          this.getExpr().getEnclosingModule().getModule().getSuperClass()
+      )
+    }
+  }
+
+  /**
+   * An argument to a call that registers a callback for one or more
+   * ActionController actions. These are commonly called filters.
    *
    * In the example below, the `before_action` call registers `set_user` as a
    * callback for all actions in the controller. When a request is routed to
@@ -75,12 +169,12 @@ module ActionControllerFilters {
    * ```
    */
   private class Filter extends StringlikeLiteralCfgNode {
-    private MethodCallCfgNode call;
+    private FilterCall call;
     private FilterKind kind;
 
     Filter() {
-      call.getExpr().getEnclosingModule() = any(ActionControllerClass c).getADeclaration() and
-      this = call.getPositionalArgument(_) and
+      this = call.getFilterArgument() and
+      kind = call.getKind() and
       call.getMethodName() = ["", "prepend_", "append_"] + kind + "_action"
     }
 
@@ -111,7 +205,6 @@ module ActionControllerFilters {
     /**
      * Holds if this callback runs before `other`.
      */
-    pragma[inline]
     private predicate runsBefore(Filter other, ActionControllerActionMethod action) {
       other.getKind() = this.getKind() and
       not this.skipped(action) and
@@ -139,93 +232,17 @@ module ActionControllerFilters {
 
     private string getFilterName() { result = this.getConstantValue().getStringlikeValue() }
 
-    /**
-     * Gets the callable that implements this filter.
-     * This currently only finds methods in the local class or superclass.
-     * It doesn't handle:
-     * - lambdas
-     * - blocks
-     * - classes
-     *
-     * In the example below, the callable for the filter is the method `foo`.
-     * ```rb
-     * class PostsController < ActionController::Base
-     *   before_action :foo
-     *
-     *   def foo
-     *   end
-     * end
-     * ```
-     */
-    Callable getFilterCallable() { result = getFilterCallable(call, this.getFilterName()) }
+    Callable getFilterCallable() { result = call.getFilterCallable(this.getFilterName()) }
 
-    /**
-     * Gets an action which this filter is applied to.
-     */
-    ActionControllerActionMethod getAction() { result = getActionFromFilterCall(call) }
-  }
-
-  pragma[inline]
-  private Callable getFilterCallable(MethodCallCfgNode call, string name) {
-    result.(MethodBase).getName() = name and
-    // Method in same class
-    (
-      result.getEnclosingModule() = call.getExpr().getEnclosingModule()
-      or
-      // Method in superclass
-      result.getEnclosingModule().getModule() =
-        call.getExpr().getEnclosingModule().getModule().getSuperClass()
-    )
-  }
-
-  private string onlyArgument(MethodCallCfgNode call) {
-    exists(ExprCfgNode only | only = call.getKeywordArgument("only") |
-      // only: :index
-      result = only.getConstantValue().getStringlikeValue()
-      or
-      // only: [:index, :show]
-      result = only.(ArrayLiteralCfgNode).getAnArgument().getConstantValue().getStringlikeValue()
-    )
-  }
-
-  private string exceptArgument(MethodCallCfgNode call) {
-    exists(ExprCfgNode except | except = call.getKeywordArgument("except") |
-      // except: :create
-      result = except.getConstantValue().getStringlikeValue()
-      or
-      // except: [:create, :update]
-      result = except.(ArrayLiteralCfgNode).getAnArgument().getConstantValue().getStringlikeValue()
-    )
-  }
-
-  private ActionControllerActionMethod getActionFromFilterCall(MethodCallCfgNode call) {
-    // A filter cannot apply to another filter
-    result != any(Filter f).getFilterCallable() and
-    // Only include routable actions. This can exclude valid actions if we can't parse the `routes.rb` file fully.
-    exists(result.getARoute()) and
-    (
-      result.getName() = onlyArgument(call)
-      or
-      not exists(onlyArgument(call)) and
-      forall(string except | except = exceptArgument(call) | result.getName() != except)
-    ) and
-    (
-      result = call.getExpr().getEnclosingModule().getAMethod()
-      or
-      exists(ModuleBase m |
-        m.getModule() = call.getExpr().getEnclosingModule().getModule().getADescendent() and
-        result = m.getAMethod()
-      )
-    )
+    ActionControllerActionMethod getAction() { result = call.getAction() }
   }
 
   private class SkipFilter extends StringlikeLiteralCfgNode {
-    private MethodCallCfgNode call;
+    private FilterCall call;
     private FilterKind kind;
 
     SkipFilter() {
-      call.getExpr().getEnclosingModule() = any(ActionControllerClass c).getADeclaration() and
-      this = call.getPositionalArgument(_) and
+      this = call.getFilterArgument() and
       call.getMethodName() = "skip_" + kind + "_action"
     }
 
@@ -233,9 +250,9 @@ module ActionControllerFilters {
 
     private string getFilterName() { result = this.getConstantValue().getStringlikeValue() }
 
-    Callable getFilterCallable() { result = getFilterCallable(call, this.getFilterName()) }
+    Callable getFilterCallable() { result = call.getFilterCallable(this.getFilterName()) }
 
-    ActionControllerActionMethod getAction() { result = getActionFromFilterCall(call) }
+    ActionControllerActionMethod getAction() { result = call.getAction() }
 
     Filter getSkippedFilter(ActionControllerActionMethod action) {
       not result instanceof SkipFilter and
