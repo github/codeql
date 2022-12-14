@@ -6,6 +6,7 @@ groups:
 dependencies:
     codeql/cpp-all: ${workspace}
     codeql/suite-helpers: ${workspace}
+    codeql/util: ${workspace}
 suites: codeql-suites
 extractor: cpp
 defaultSuiteFile: codeql-suites/cpp-code-scanning.qls
