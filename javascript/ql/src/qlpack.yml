@@ -10,3 +10,4 @@ dependencies:
   codeql/javascript-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/typos: ${workspace}
+  codeql/util: ${workspace}
