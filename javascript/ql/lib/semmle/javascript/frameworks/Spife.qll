@@ -165,13 +165,12 @@ module Spife {
       kind = "cookie"
       or
       // req.validatedBody.get('foo')
-      exists(DataFlow::PropRead validated, DataFlow::MethodCallNode get |
-        rh.getARequestSource().ref().getAPropertyRead() = validated and
-        validated.getPropertyName().matches("validated%") and
-        get.getReceiver() = validated and
-        this = get and
-        kind = "body"
-      )
+      this =
+        rh.getARequestSource()
+            .ref()
+            .getAPropertyRead(any(string s | s.matches("validated%")))
+            .getAMethodCall("get") and
+      kind = "body"
     }
 
     override RouteHandler getRouteHandler() { result = rh }
