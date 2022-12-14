@@ -1433,9 +1433,12 @@ private module MkStage<StageSig PrevStage> {
       )
       or
       // flow through a callable
-      exists(DataFlowCall call, ParamNodeEx summaryCtx0, Ap argAp0 |
-        fwdFlowOutFromArg(call, node, state, summaryCtx0, argAp0, ap, apa, config) and
-        fwdFlowIsEntered(call, cc, summaryCtx, argAp, summaryCtx0, argAp0, config)
+      exists(
+        DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow, ApApprox innerArgApa
+      |
+        fwdFlowThrough(call, cc, state, ccc, summaryCtx, argAp, ap, apa, ret, innerArgApa, config) and
+        flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa, config) and
+        if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
 
@@ -1505,62 +1508,40 @@ private module MkStage<StageSig PrevStage> {
 
     pragma[nomagic]
     private predicate fwdFlowRetFromArg(
-      RetNodeEx ret, FlowState state, CcCall ccc, ParamNodeEx summaryCtx, Ap argAp, ApApprox argApa,
-      Ap ap, ApApprox apa, Configuration config
+      RetNodeEx ret, ReturnKindExt kind, FlowState state, CcCall ccc, ParamNodeEx summaryCtx,
+      Ap argAp, ApApprox argApa, Ap ap, ApApprox apa, Configuration config
     ) {
-      exists(ReturnKindExt kind |
-        fwdFlow(pragma[only_bind_into](ret), state, ccc,
-          TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), apSome(argAp), ap, apa,
-          config) and
-        getApprox(argAp) = argApa and
-        kind = ret.getKind() and
-        parameterFlowThroughAllowed(summaryCtx, kind)
-      )
+      fwdFlow(pragma[only_bind_into](ret), state, ccc,
+        TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())),
+        pragma[only_bind_into](apSome(argAp)), ap, pragma[only_bind_into](apa),
+        pragma[only_bind_into](config)) and
+      kind = ret.getKind() and
+      parameterFlowThroughAllowed(summaryCtx, kind) and
+      argApa = getApprox(argAp) and
+      PrevStage::returnMayFlowThrough(ret, argApa, apa, kind, pragma[only_bind_into](config))
     }
 
     pragma[inline]
-    private predicate fwdFlowInMayFlowThrough(
-      DataFlowCall call, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx, ApOption argAp,
-      ParamNodeEx param, Ap ap, ApApprox apa, Configuration config
+    private predicate fwdFlowThrough0(
+      DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
+      ApOption argAp, Ap ap, ApApprox apa, RetNodeEx ret, ReturnKindExt kind,
+      ParamNodeEx innerSummaryCtx, Ap innerArgAp, ApApprox innerArgApa, Configuration config
     ) {
-      fwdFlowIn(call, pragma[only_bind_into](param), _, cc, innerCc, summaryCtx, argAp, ap,
-        pragma[only_bind_into](apa), pragma[only_bind_into](config)) and
-      PrevStage::parameterMayFlowThrough(param, apa, config)
-    }
-
-    // dedup before joining with `flowThroughOutOfCall`
-    pragma[nomagic]
-    private predicate fwdFlowInMayFlowThroughProj(
-      DataFlowCall call, CcCall innerCc, ApApprox apa, Configuration config
-    ) {
-      fwdFlowInMayFlowThrough(call, _, innerCc, _, _, _, _, apa, config)
-    }
-
-    /**
-     * Same as `flowThroughOutOfCall`, but restricted to calls that are reached
-     * in the flow covered by `fwdFlow`, where data might flow through the target
-     * callable and back out at `call`.
-     */
-    pragma[nomagic]
-    private predicate fwdFlowThroughOutOfCall(
-      DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
-      ApApprox argApa, ApApprox apa, Configuration config
-    ) {
-      fwdFlowInMayFlowThroughProj(call, ccc, argApa, config) and
-      flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, argApa, apa, config)
+      fwdFlowRetFromArg(pragma[only_bind_into](ret), kind, state, pragma[only_bind_into](ccc),
+        innerSummaryCtx, innerArgAp, innerArgApa, ap, pragma[only_bind_into](apa),
+        pragma[only_bind_into](config)) and
+      fwdFlowIsEntered(call, cc, ccc, summaryCtx, argAp, innerSummaryCtx, innerArgAp,
+        pragma[only_bind_into](config)) and
+      matchesCall(ccc, call)
     }
 
     pragma[nomagic]
-    private predicate fwdFlowOutFromArg(
-      DataFlowCall call, NodeEx out, FlowState state, ParamNodeEx summaryCtx, Ap argAp, Ap ap,
-      ApApprox apa, Configuration config
+    private predicate fwdFlowThrough(
+      DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
+      ApOption argAp, Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa, Configuration config
     ) {
-      exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc, ApApprox argApa |
-        fwdFlowRetFromArg(pragma[only_bind_into](ret), state, pragma[only_bind_into](ccc),
-          summaryCtx, argAp, pragma[only_bind_into](argApa), ap, pragma[only_bind_into](apa), config) and
-        fwdFlowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, argApa, apa, config) and
-        (if allowsFieldFlow = false then ap instanceof ApNil else any())
-      )
+      fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argAp, ap, apa, ret, _, _, _, innerArgApa,
+        config)
     }
 
     /**
@@ -1569,10 +1550,15 @@ private module MkStage<StageSig PrevStage> {
      */
     pragma[nomagic]
     private predicate fwdFlowIsEntered(
-      DataFlowCall call, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, ParamNodeEx p, Ap ap,
-      Configuration config
+      DataFlowCall call, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx, ApOption argAp,
+      ParamNodeEx p, Ap ap, Configuration config
     ) {
-      fwdFlowInMayFlowThrough(call, cc, _, summaryCtx, argAp, p, ap, _, config)
+      exists(ApApprox apa |
+        fwdFlowIn(call, pragma[only_bind_into](p), _, cc, innerCc, summaryCtx, argAp, ap,
+          pragma[only_bind_into](apa), pragma[only_bind_into](config)) and
+        PrevStage::parameterMayFlowThrough(p, apa, config) and
+        PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config))
+      )
     }
 
     pragma[nomagic]
@@ -1592,16 +1578,24 @@ private module MkStage<StageSig PrevStage> {
     }
 
     pragma[nomagic]
+    private predicate returnFlowsThrough0(
+      DataFlowCall call, FlowState state, CcCall ccc, Ap ap, ApApprox apa, RetNodeEx ret,
+      ReturnKindExt kind, ParamNodeEx innerSummaryCtx, Ap innerArgAp, ApApprox innerArgApa,
+      Configuration config
+    ) {
+      fwdFlowThrough0(call, _, state, ccc, _, _, ap, apa, ret, kind, innerSummaryCtx, innerArgAp,
+        innerArgApa, config)
+    }
+
+    pragma[nomagic]
     private predicate returnFlowsThrough(
       RetNodeEx ret, ReturnKindExt kind, FlowState state, CcCall ccc, ParamNodeEx p, Ap argAp,
       Ap ap, Configuration config
     ) {
-      exists(boolean allowsFieldFlow, ApApprox argApa, ApApprox apa |
-        fwdFlowRetFromArg(pragma[only_bind_into](ret), state, pragma[only_bind_into](ccc), p, argAp,
-          pragma[only_bind_into](argApa), ap, pragma[only_bind_into](apa), config) and
-        kind = ret.getKind() and
-        fwdFlowThroughOutOfCall(_, ccc, ret, _, allowsFieldFlow, argApa, apa, config) and
-        (if allowsFieldFlow = false then ap instanceof ApNil else any())
+      exists(DataFlowCall call, ApApprox apa, boolean allowsFieldFlow, ApApprox innerArgApa |
+        returnFlowsThrough0(call, state, ccc, ap, apa, ret, kind, p, argAp, innerArgApa, config) and
+        flowThroughOutOfCall(call, ccc, ret, _, allowsFieldFlow, innerArgApa, apa, config) and
+        if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
 
