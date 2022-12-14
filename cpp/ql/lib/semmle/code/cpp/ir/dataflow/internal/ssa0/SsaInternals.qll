@@ -33,6 +33,12 @@ private newtype TDefOrUseImpl =
   TUseImpl(Operand operand) {
     isUse(_, operand, _, _, _) and
     not isDef(true, _, operand, _, _, _)
+  } or
+  TIteratorDef(BaseSourceVariableInstruction container, Operand iteratorAddress) {
+    isIteratorDef(container, iteratorAddress, _, _, _)
+  } or
+  TIteratorUse(BaseSourceVariableInstruction container, Operand iteratorAddress) {
+    isIteratorUse(container, iteratorAddress, _, _)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -93,8 +99,18 @@ private class DirectDef extends DefImpl, TDefImpl {
   override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
 
   override predicate isCertain() { isDef(true, _, address, _, _, _) }
+}
 
-  predicate isCertain() { isDef(true, _, address, _, _, _) }
+private class IteratorDef extends DefImpl, TIteratorDef {
+  BaseSourceVariableInstruction container;
+
+  IteratorDef() { this = TIteratorDef(container, address) }
+
+  override BaseSourceVariableInstruction getBase() { result = container }
+
+  override Node0Impl getValue() { isIteratorDef(_, address, result, _, _) }
+
+  override predicate isCertain() { none() }
 }
 
 abstract class UseImpl extends DefOrUseImpl {
@@ -119,6 +135,16 @@ private class DirectUse extends UseImpl, TUseImpl {
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, _) }
 
   override predicate isCertain() { isUse(true, operand, _, _, _) }
+}
+
+private class IteratorUse extends UseImpl, TIteratorUse {
+  BaseSourceVariableInstruction container;
+
+  IteratorUse() { this = TIteratorUse(container, operand) }
+
+  override BaseSourceVariableInstruction getBase() { result = container }
+
+  override predicate isCertain() { none() }
 }
 
 private module SsaInput implements SsaImplCommon::InputSig {
@@ -223,6 +249,8 @@ class Def extends DefOrUse {
   override string toString() { result = this.asDefOrUse().toString() }
 
   BaseSourceVariableInstruction getBase() { result = defOrUse.getBase() }
+
+  predicate isIteratorDef() { defOrUse instanceof IteratorDef }
 }
 
 private module SsaImpl = SsaImplCommon::Make<SsaInput>;
