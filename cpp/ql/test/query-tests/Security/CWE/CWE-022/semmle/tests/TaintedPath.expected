@@ -1,4 +1,36 @@
 edges
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | Convert indirection |
+| test.c:9:23:9:26 | argv indirection | test.c:17:11:17:18 | Convert indirection |
+| test.c:9:23:9:26 | argv indirection | test.c:17:11:17:18 | Convert indirection |
+| test.c:31:22:31:25 | argv indirection | test.c:32:11:32:18 | Convert indirection |
+| test.c:31:22:31:25 | argv indirection | test.c:32:11:32:18 | Convert indirection |
+| test.c:37:17:37:24 | scanf output argument | test.c:38:11:38:18 | Convert indirection |
+| test.c:43:17:43:24 | scanf output argument | test.c:44:11:44:18 | Convert indirection |
+| test.c:57:10:57:13 | argv indirection | test.c:57:10:57:16 | access to array indirection |
+| test.c:57:10:57:13 | argv indirection | test.c:57:10:57:16 | access to array indirection |
 nodes
+| test.c:9:23:9:26 | argv | semmle.label | argv |
+| test.c:9:23:9:26 | argv indirection | semmle.label | argv indirection |
+| test.c:9:23:9:26 | argv indirection | semmle.label | argv indirection |
+| test.c:17:11:17:18 | Convert indirection | semmle.label | Convert indirection |
+| test.c:31:22:31:25 | argv indirection | semmle.label | argv indirection |
+| test.c:31:22:31:25 | argv indirection | semmle.label | argv indirection |
+| test.c:32:11:32:18 | Convert indirection | semmle.label | Convert indirection |
+| test.c:37:17:37:24 | scanf output argument | semmle.label | scanf output argument |
+| test.c:38:11:38:18 | Convert indirection | semmle.label | Convert indirection |
+| test.c:43:17:43:24 | scanf output argument | semmle.label | scanf output argument |
+| test.c:44:11:44:18 | Convert indirection | semmle.label | Convert indirection |
+| test.c:57:10:57:13 | argv indirection | semmle.label | argv indirection |
+| test.c:57:10:57:13 | argv indirection | semmle.label | argv indirection |
+| test.c:57:10:57:16 | access to array indirection | semmle.label | access to array indirection |
 subpaths
 #select
+| test.c:17:11:17:18 | fileName | test.c:9:23:9:26 | argv | test.c:17:11:17:18 | Convert indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:9:23:9:26 | argv | user input (a command-line argument) |
+| test.c:17:11:17:18 | fileName | test.c:9:23:9:26 | argv indirection | test.c:17:11:17:18 | Convert indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:9:23:9:26 | argv indirection | user input (a command-line argument) |
+| test.c:17:11:17:18 | fileName | test.c:9:23:9:26 | argv indirection | test.c:17:11:17:18 | Convert indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:9:23:9:26 | argv indirection | user input (a command-line argument) |
+| test.c:32:11:32:18 | fileName | test.c:31:22:31:25 | argv indirection | test.c:32:11:32:18 | Convert indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:31:22:31:25 | argv indirection | user input (a command-line argument) |
+| test.c:32:11:32:18 | fileName | test.c:31:22:31:25 | argv indirection | test.c:32:11:32:18 | Convert indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:31:22:31:25 | argv indirection | user input (a command-line argument) |
+| test.c:38:11:38:18 | fileName | test.c:37:17:37:24 | scanf output argument | test.c:38:11:38:18 | Convert indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:37:17:37:24 | scanf output argument | user input (value read by scanf) |
+| test.c:44:11:44:18 | fileName | test.c:43:17:43:24 | scanf output argument | test.c:44:11:44:18 | Convert indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | test.c:43:17:43:24 | scanf output argument | user input (value read by scanf) |
+| test.c:57:10:57:16 | access to array | test.c:57:10:57:13 | argv indirection | test.c:57:10:57:16 | access to array indirection | This argument to a file access function is derived from $@ and then passed to read(fileName), which calls fopen(filename). | test.c:57:10:57:13 | argv indirection | user input (a command-line argument) |
+| test.c:57:10:57:16 | access to array | test.c:57:10:57:13 | argv indirection | test.c:57:10:57:16 | access to array indirection | This argument to a file access function is derived from $@ and then passed to read(fileName), which calls fopen(filename). | test.c:57:10:57:13 | argv indirection | user input (a command-line argument) |
