@@ -319,7 +319,8 @@ case @expr.kind of
 | 51 = @andnotexpr
 | 52 = @sendchantypeexpr
 | 53 = @recvchantypeexpr
-| 54 = @sendrcvchantypeexpr;
+| 54 = @sendrcvchantypeexpr
+| 55 = @errorexpr;
 
 @basiclit = @intlit | @floatlit | @imaglit | @charlit | @stringlit;
 
