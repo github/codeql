@@ -51,7 +51,7 @@ query predicate passingPositiveTests(string res, string expectation, InlineTest 
     expectation = "source" and
     exists(RemoteFlowSource n | t.inNode(n))
     or
-    expectation = "setup" and
+    expectation = "routeSetup" and
     exists(Http::RouteSetup n | t.inNode(n))
     or
     expectation = "handler" and
@@ -107,7 +107,7 @@ query predicate failingPositiveTests(string res, string expectation, InlineTest 
     expectation = "source" and
     not exists(RemoteFlowSource n | t.inNode(n))
     or
-    expectation = "setup" and
+    expectation = "routeSetup" and
     not exists(Http::RouteSetup n | t.inNode(n))
     or
     expectation = "handler" and
@@ -163,7 +163,7 @@ query predicate passingNegativeTests(string res, string expectation, InlineTest 
     expectation = "!source" and
     not exists(RemoteFlowSource n | t.inNode(n))
     or
-    expectation = "!setup" and
+    expectation = "!routeSetup" and
     not exists(Http::RouteSetup n | t.inNode(n))
     or
     expectation = "!handler" and
@@ -219,7 +219,7 @@ query predicate failingNegativeTests(string res, string expectation, InlineTest 
     expectation = "!source" and
     exists(RemoteFlowSource n | t.inNode(n))
     or
-    expectation = "!setup" and
+    expectation = "!routeSetup" and
     exists(Http::RouteSetup n | t.inNode(n))
     or
     expectation = "!handler" and

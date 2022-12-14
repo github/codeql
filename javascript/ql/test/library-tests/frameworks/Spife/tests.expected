@@ -26,6 +26,11 @@ passingPositiveTests
 | PASSED | headerDefinition | lib/views/index.js:107:88:107:150 | // test ... inition |
 | PASSED | redirectSink | lib/views/index.js:54:54:54:82 | // test ...  source |
 | PASSED | responseBody | lib/views/index.js:38:61:38:136 | // test ... nseBody |
+| PASSED | routeSetup | lib/routes/index.js:20:79:20:96 | // test:routeSetup |
+| PASSED | routeSetup | lib/routes/index.js:22:87:22:105 | // test: routeSetup |
+| PASSED | routeSetup | lib/routes/index.js:24:81:24:99 | // test: routeSetup |
+| PASSED | routeSetup | lib/routes/index.js:26:107:26:125 | // test: routeSetup |
+| PASSED | routeSetup | lib/routes/index.js:28:92:28:110 | // test: routeSetup |
 | PASSED | source | lib/views/index.js:24:56:24:70 | // test: source |
 | PASSED | source | lib/views/index.js:29:28:29:42 | // test: source |
 | PASSED | source | lib/views/index.js:30:28:30:42 | // test: source |
