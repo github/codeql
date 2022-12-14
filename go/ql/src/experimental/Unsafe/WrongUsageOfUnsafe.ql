@@ -6,6 +6,7 @@
  * @problem.severity error
  * @id go/wrong-usage-of-unsafe
  * @tags security
+ *       experimental
  *       external/cwe/cwe-119
  *       external/cwe/cwe-126
  */

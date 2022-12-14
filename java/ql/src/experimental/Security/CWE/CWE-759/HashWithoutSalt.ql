@@ -6,6 +6,7 @@
  * @precision low
  * @id java/hash-without-salt
  * @tags security
+ *       experimental
  *       external/cwe/cwe-759
  */
 

@@ -8,6 +8,7 @@
  * @security-severity 5
  * @id js/predictable-token
  * @tags security
+ *       experimental
  *       external/cwe/cwe-340
  */
 

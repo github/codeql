@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @tags reliability
  *       security
+ *       experimental
  *       external/cwe/cwe-787
  */
 

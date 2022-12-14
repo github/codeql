@@ -9,6 +9,7 @@
  * @precision high
  * @id cs/web/cookie-httponly-not-set
  * @tags security
+ *       experimental
  *       external/cwe/cwe-1004
  */
 

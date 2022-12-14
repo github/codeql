@@ -6,6 +6,7 @@
  * @id go/pam-auth-bypass
  * @tags maintainability
  *       correctness
+ *       experimental
  *       external/cwe/cwe-561
  *       external/cwe/cwe-285
  * @precision very-high
