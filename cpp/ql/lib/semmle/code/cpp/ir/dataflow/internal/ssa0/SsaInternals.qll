@@ -63,18 +63,16 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   final SourceVariable getSourceVariable() {
     result.getBaseVariable() = this.getBaseSourceVariable()
   }
+
+  abstract predicate isCertain();
 }
 
-class DefImpl extends DefOrUseImpl, TDefImpl {
+abstract class DefImpl extends DefOrUseImpl {
   Operand address;
-
-  DefImpl() { this = TDefImpl(address) }
-
-  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
 
   Operand getAddressOperand() { result = address }
 
-  Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+  abstract Node0Impl getValue();
 
   override string toString() { result = address.toString() }
 
@@ -85,14 +83,22 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     this.getAddressOperand().getUse() = block.getInstruction(index)
   }
+}
+
+private class DirectDef extends DefImpl, TDefImpl {
+  DirectDef() { this = TDefImpl(address) }
+
+  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+
+  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, _, _, _) }
 
   predicate isCertain() { isDef(true, _, address, _, _, _) }
 }
 
-class UseImpl extends DefOrUseImpl, TUseImpl {
+abstract class UseImpl extends DefOrUseImpl {
   Operand operand;
-
-  UseImpl() { this = TUseImpl(operand) }
 
   Operand getOperand() { result = operand }
 
@@ -105,10 +111,14 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   final override IRBlock getBlock() { result = operand.getUse().getBlock() }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
+}
+
+private class DirectUse extends UseImpl, TUseImpl {
+  DirectUse() { this = TUseImpl(operand) }
 
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, _) }
 
-  predicate isCertain() { isUse(true, operand, _, _, _) }
+  override predicate isCertain() { isUse(true, operand, _, _, _) }
 }
 
 private module SsaInput implements SsaImplCommon::InputSig {

@@ -192,21 +192,22 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
   v.getIndirection() = ind
 }
 
-class DefImpl extends DefOrUseImpl, TDefImpl {
+abstract class DefImpl extends DefOrUseImpl {
   Operand address;
   int ind;
 
-  DefImpl() { this = TDefImpl(address, ind) }
+  bindingset[ind]
+  DefImpl() { any() }
 
-  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+  abstract int getIndirection();
+
+  abstract Node0Impl getValue();
+
+  abstract predicate isCertain();
 
   Operand getAddressOperand() { result = address }
 
-  int getIndirection() { isDef(_, _, address, _, result, ind) }
-
   override int getIndirectionIndex() { result = ind }
-
-  Node0Impl getValue() { isDef(_, result, address, _, _, _) }
 
   override string toString() { result = "DefImpl" }
 
@@ -217,15 +218,28 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     this.getAddressOperand().getUse() = block.getInstruction(index)
   }
+}
+
+private class DirectDef extends DefImpl, TDefImpl {
+  DirectDef() { this = TDefImpl(address, ind) }
+
+  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+
+  override int getIndirection() { isDef(_, _, address, _, result, ind) }
+
+  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, _, _, ind) }
 
   predicate isCertain() { isDef(true, _, address, _, _, ind) }
 }
 
-class UseImpl extends DefOrUseImpl, TUseImpl {
+abstract class UseImpl extends DefOrUseImpl {
   Operand operand;
   int ind;
 
-  UseImpl() { this = TUseImpl(operand, ind) }
+  bindingset[ind]
+  UseImpl() { any() }
 
   Operand getOperand() { result = operand }
 
@@ -239,13 +253,21 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 
-  final int getIndirection() { isUse(_, operand, _, result, ind) }
-
   override int getIndirectionIndex() { result = ind }
+
+  abstract int getIndirection();
+
+  abstract predicate isCertain();
+}
+
+private class DirectUse extends UseImpl, TUseImpl {
+  DirectUse() { this = TUseImpl(operand, ind) }
+
+  override int getIndirection() { isUse(_, operand, _, result, ind) }
 
   override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
 
-  predicate isCertain() { isUse(true, operand, _, _, ind) }
+  override predicate isCertain() { isUse(true, operand, _, _, ind) }
 }
 
 /**
