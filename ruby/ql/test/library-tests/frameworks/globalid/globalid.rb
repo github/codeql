@@ -42,3 +42,49 @@ def m8
   sgid = SignedGlobalID.parse sgidp
   SignedGlobalID.find sgid
 end
+
+class Person
+  include GlobalID::Identification
+
+  def self.find(id)
+    # implementation goes here
+  end
+end
+
+def m9
+  p = Person.find(1)
+  gid = p.to_gid
+  GlobalID.find gid
+end
+
+def m10
+  p = Person.find(1)
+  gid = p.to_global_id
+  GlobalID.find gid
+end
+
+def m11
+  p = Person.find(1)
+  gidp = p.to_gid_param
+  gid = GlobalID.parse gidp
+  GlobalID::Locator.locate gid
+end
+
+def m12
+  p = Person.find(1)
+  sgid = p.to_sgid
+  SignedGlobalID.find sgid
+end
+
+def m10
+  p = Person.find(1)
+  sgid = p.to_signed_global_id
+  SignedGlobalID.find sgid
+end
+
+def m11
+  p = Person.find(1)
+  sgidp = p.to_sgid_param
+  sgid = SignedGlobalID.parse sgidp
+  GlobalID::Locator.locate_signed sgid
+end

@@ -70,26 +70,40 @@ module GlobalId {
     }
   }
 
-  // TODO: methods in this module are available to any class that includes it, not just ActiveRecord models
   /** `GlobalID::Identification` */
   module Identification {
+    /** A `DataFlow::CallNode` against an instance of a class that includes the `GlobalID::Identification` module */
+    private class IdentificationInstanceCall extends DataFlow::CallNode {
+      IdentificationInstanceCall() {
+        this =
+          DataFlow::getConstant("GlobalID")
+              .getConstant("Identification")
+              .getADescendentModule()
+              .getAnImmediateReference()
+              .getAMethodCall(["new", "find"])
+              .getAMethodCall()
+        or
+        this instanceof ActiveRecordInstanceMethodCall
+      }
+    }
+
     /** A call to `GlobalID::Identification.to_global_id` */
-    class ToGlobalIdCall extends ActiveRecordInstanceMethodCall {
+    class ToGlobalIdCall extends IdentificationInstanceCall {
       ToGlobalIdCall() { this.getMethodName() = ["to_global_id", "to_gid"] }
     }
 
     /** A call to `GlobalID::Identification.to_gid_param` */
-    class ToGidParamCall extends ActiveRecordInstanceMethodCall {
+    class ToGidParamCall extends DataFlow::CallNode {
       ToGidParamCall() { this.getMethodName() = "to_gid_param" }
     }
 
     /** A call to `GlobalID::Identification.to_signed_global_id` */
-    class ToSignedGlobalIdCall extends ActiveRecordInstanceMethodCall {
+    class ToSignedGlobalIdCall extends DataFlow::CallNode {
       ToSignedGlobalIdCall() { this.getMethodName() = ["to_signed_global_id", "to_sgid"] }
     }
 
     /** A call to `GlobalID::Identification.to_sgid_param` */
-    class ToSgidParamCall extends ActiveRecordInstanceMethodCall {
+    class ToSgidParamCall extends DataFlow::CallNode {
       ToSgidParamCall() { this.getMethodName() = "to_sgid_param" }
     }
   }
