@@ -32,12 +32,6 @@ element_is_unknown(
 ;
 
 #keyset[id]
-callable_names(
-  int id: @callable ref,
-  string name: string ref
-);
-
-#keyset[id]
 callable_self_params(
   int id: @callable ref,
   int self_param: @param_decl_or_none ref
@@ -321,6 +315,12 @@ value_decls(  //dir=decl
 | @func_decl
 ;
 
+#keyset[id]
+abstract_function_decls(  //dir=decl
+  int id: @abstract_function_decl ref,
+  string name: string ref
+);
+
 @abstract_storage_decl =
   @subscript_decl
 | @var_decl
@@ -521,26 +521,6 @@ accessor_decl_is_will_set(  //dir=decl
 
 #keyset[id]
 accessor_decl_is_did_set(  //dir=decl
-  int id: @accessor_decl ref
-);
-
-#keyset[id]
-accessor_decl_is_read(  //dir=decl
-  int id: @accessor_decl ref
-);
-
-#keyset[id]
-accessor_decl_is_modify(  //dir=decl
-  int id: @accessor_decl ref
-);
-
-#keyset[id]
-accessor_decl_is_unsafe_address(  //dir=decl
-  int id: @accessor_decl ref
-);
-
-#keyset[id]
-accessor_decl_is_unsafe_mutable_address(  //dir=decl
   int id: @accessor_decl ref
 );
 
@@ -791,11 +771,6 @@ decl_ref_expr_has_ordinary_semantics(  //dir=expr
   int id: @decl_ref_expr ref
 );
 
-#keyset[id]
-decl_ref_expr_has_distributed_thunk_semantics(  //dir=expr
-  int id: @decl_ref_expr ref
-);
-
 default_argument_exprs(  //dir=expr
   unique int id: @default_argument_expr,
   int param_decl: @param_decl_or_none ref,
@@ -870,8 +845,7 @@ if_exprs(  //dir=expr
 );
 
 @implicit_conversion_expr =
-  @abi_safe_conversion_expr
-| @any_hashable_erasure_expr
+  @any_hashable_erasure_expr
 | @archetype_to_super_expr
 | @array_to_pointer_expr
 | @bridge_from_obj_c_expr
@@ -1130,10 +1104,6 @@ vararg_expansion_exprs(  //dir=expr
   int sub_expr: @expr_or_none ref
 );
 
-abi_safe_conversion_exprs(  //dir=expr
-  unique int id: @abi_safe_conversion_expr
-);
-
 any_hashable_erasure_exprs(  //dir=expr
   unique int id: @any_hashable_erasure_expr
 );
@@ -1349,11 +1319,6 @@ member_ref_expr_has_ordinary_semantics(  //dir=expr
   int id: @member_ref_expr ref
 );
 
-#keyset[id]
-member_ref_expr_has_distributed_thunk_semantics(  //dir=expr
-  int id: @member_ref_expr ref
-);
-
 metatype_conversion_exprs(  //dir=expr
   unique int id: @metatype_conversion_expr
 );
@@ -1440,11 +1405,6 @@ subscript_expr_has_direct_to_implementation_semantics(  //dir=expr
 
 #keyset[id]
 subscript_expr_has_ordinary_semantics(  //dir=expr
-  int id: @subscript_expr ref
-);
-
-#keyset[id]
-subscript_expr_has_distributed_thunk_semantics(  //dir=expr
   int id: @subscript_expr ref
 );
 
