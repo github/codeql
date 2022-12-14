@@ -4,37 +4,29 @@
 
 import javascript
 import semmle.javascript.frameworks.HTTP
+private import DataFlow
 
 /**
  * Provides classes for working with [Spife](https://github.com/npm/spife) applications.
  */
 module Spife {
-  private class TaggedTemplateEntryPoint extends API::EntryPoint {
-    TaggedTemplateEntryPoint() { this = "TaggedTemplateEntryPoint" }
-
-    override DataFlow::SourceNode getASource() { result.asExpr() instanceof TaggedTemplateExpr }
-  }
-
   /**
    * A call to a Spife method that sets up a route.
    */
-  private class RouteSetup extends API::CallNode, Http::Servers::StandardRouteSetup {
+  private class RouteSetup extends DataFlow::CallNode, Http::Servers::StandardRouteSetup {
     TaggedTemplateExpr template;
 
     RouteSetup() {
-      exists(CallExpr templateCall |
-        this.getCalleeNode().asExpr() = template and
-        API::moduleImport(["@npm/spife/routing", "spife/routing"])
-            .asSource()
-            .flowsToExpr(template.getTag()) and
-        templateCall.getAChild() = template
-      )
+      this.getCalleeNode().asExpr() = template and
+      API::moduleImport(["@npm/spife/routing", "spife/routing"])
+          .asSource()
+          .flowsToExpr(template.getTag())
     }
 
     private string getRoutePattern() {
       // Concatenate the constant parts of the expression
       result =
-        concat(Expr e, int i |
+        strictconcat(Expr e, int i |
           e = template.getTemplate().getElement(i) and exists(e.getStringValue())
         |
           e.getStringValue() order by i
@@ -53,9 +45,22 @@ module Spife {
       )
     }
 
-    API::Node getHandlerByName(string name) { result = this.getParameter(0).getMember(name) }
+    DataFlow::SourceNode getHandlerDefinitions(TypeBackTracker t) {
+      t.start() and
+      result = this.getArgument(0).getALocalSource()
+      or
+      exists(TypeBackTracker t2 | result = getHandlerDefinitions(t2).backtrack(t2, t))
+    }
 
-    API::Node getHandlerByRoute(string method, string path) {
+    DataFlow::SourceNode getHandlerDefinitions() {
+      result = getHandlerDefinitions(TypeBackTracker::end())
+    }
+
+    DataFlow::SourceNode getHandlerByName(string name) {
+      result = getHandlerDefinitions().getAPropertySource(name)
+    }
+
+    DataFlow::SourceNode getHandlerByRoute(string method, string path) {
       exists(string handlerName |
         this.hasLine(method, path, handlerName) and
         result = this.getHandlerByName(handlerName)
@@ -63,10 +68,10 @@ module Spife {
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = this.getHandlerByRoute(_, _).getAValueReachingSink().(DataFlow::FunctionNode)
+      result = this.getHandlerByRoute(_, _).getALocalSource().(DataFlow::FunctionNode)
       or
       exists(DataFlow::MethodCallNode validation |
-        validation = this.getHandlerByRoute(_, _).getAValueReachingSink() and
+        validation = this.getHandlerByRoute(_, _).getALocalSource() and
         result = validation.getArgument(1).getAFunctionValue()
       )
     }
