@@ -1,4 +1,4 @@
-class Callable extends @callable {
+class Callable extends @callable, @abstract_function_decl {
   string toString() { result = "" }
 }
 
