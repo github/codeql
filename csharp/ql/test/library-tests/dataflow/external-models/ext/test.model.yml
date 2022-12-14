@@ -2,7 +2,7 @@ extensions:
 
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
     # "namespace", "type", "overrides", "name", "signature", "ext", "spec", "kind", "provenance",
       - ["My.Qltest", "A", false, "Src1", "()", "", "ReturnValue", "local", "manual"]
@@ -22,7 +22,7 @@ extensions:
 
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
     # "namespace", "type", "overrides", "name", "signature", "ext", "spec", "kind", "provenance"
       - ["My.Qltest", "B", false, "Sink1", "(System.Object)", "", "Argument[0]", "code", "manual"]
@@ -34,7 +34,7 @@ extensions:
   # Summaries relevant for the ExternalFlow testcase.
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
     # "namespace", "type", "overrides", "name", "signature", "ext", "inputspec", "outputspec", "kind", "provenance"
       - ["My.Qltest", "D", false, "StepArgRes", "(System.Object)","", "Argument[0]", "ReturnValue", "taint", "manual"]
@@ -66,7 +66,7 @@ extensions:
   # Summaries relevant for the Steps testcase.
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
       # "namespace", "type", "overrides", "name", "signature", "ext", "inputspec", "outputspec", "kind", "provenance"
     data:
       - ["My.Qltest", "C", false, "StepArgRes", "(System.Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
