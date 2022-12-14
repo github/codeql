@@ -94,6 +94,34 @@ module Make<AstNode Node, SingleLineComment Comment> {
     }
   }
 
+  private class CodeQlSuppressionComment extends SuppressionComment {
+    private string annotation;
+
+    CodeQlSuppressionComment() {
+      // match `codeql[...]` anywhere in the comment
+      annotation = this.(Comment).getText().regexpFind("(?i)\\bcodeql\\s*\\[[^\\]]*\\]", _, _) and
+      exists(string filepath, int cStartLine, int cStartColumn |
+        this.(Comment).hasLocationInfo(filepath, cStartLine, cStartColumn, _, _) and
+        not exists(int c, Node n | c < cStartColumn |
+          n.hasLocationInfo(filepath, _, _, cStartLine, c) or
+          n.hasLocationInfo(filepath, cStartLine, c, _, _)
+        )
+      )
+    }
+
+    override string getAnnotation() { result = "lgtm" + annotation.suffix(6) }
+
+    override predicate covers(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this.hasLocationInfo(filepath, _, _, startline - 1, _) and
+      // when there is no column information, a location spans the whole line
+      startcolumn = 0 and
+      endcolumn = 0 and
+      endline = startline
+    }
+  }
+
   /**
    * The scope of an alert suppression comment.
    */

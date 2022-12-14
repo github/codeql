@@ -12,8 +12,8 @@ import Metrics.Internal.Extents
 /** Gets the LGTM suppression annotation text in the string `s`, if any. */
 bindingset[s]
 string getAnnotationText(string s) {
-  // match `lgtm[...]` anywhere in the comment
-  result = s.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)
+  // match `lgtm[...]` or `codeql[...]` anywhere in the comment
+  result = s.regexpFind("(?i)\\b(lgtm|codeql)\\s*\\[[^\\]]*\\]", _, _).trim()
 }
 
 /**
@@ -96,5 +96,5 @@ where
   annotationText = getAnnotationText(text)
 select c, // suppression entity
   text, // full text of suppression string
-  annotationText, // LGTM suppression annotation text
+  annotationText.regexpReplaceAll("(?i)^codeql", "lgtm"), // LGTM suppression annotation text
   c.getScope() // scope of suppression
