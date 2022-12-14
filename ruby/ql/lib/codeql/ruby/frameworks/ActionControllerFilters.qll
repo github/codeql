@@ -178,6 +178,8 @@ module ActionControllerFilters {
       call.getMethodName() = ["", "prepend_", "append_"] + kind + "_action"
     }
 
+    predicate isPrepended() { call.getMethodName().regexpMatch("^prepend.+$") }
+
     MethodCallCfgNode getCall() { result = call }
 
     FilterKind getKind() { result = kind }
@@ -212,11 +214,27 @@ module ActionControllerFilters {
       action = this.getAction() and
       action = other.getAction() and
       (
-        this.getKind() = TBeforeFilterKind() and
-        this.registeredBefore(other)
+        not this.isPrepended() and
+        not other.isPrepended() and
+        (
+          this.getKind() = TBeforeFilterKind() and
+          this.registeredBefore(other)
+          or
+          this.getKind() = TAfterFilterKind() and
+          other.registeredBefore(this)
+        )
         or
-        this.getKind() = TAfterFilterKind() and
-        other.registeredBefore(this)
+        this.isPrepended() and
+        (
+          not other.isPrepended()
+          or
+          other.isPrepended() and
+          (
+            this.getKind() = TBeforeFilterKind() and this.registeredBefore(other)
+            or
+            this.getKind() = TAfterFilterKind() and other.registeredBefore(this)
+          )
+        )
       )
     }
 
@@ -237,6 +255,20 @@ module ActionControllerFilters {
     ActionControllerActionMethod getAction() { result = call.getAction() }
   }
 
+  private class BeforeFilter extends Filter {
+    BeforeFilter() { this.getKind() = TBeforeFilterKind() }
+  }
+
+  private class AfterFilter extends Filter {
+    AfterFilter() { this.getKind() = TAfterFilterKind() }
+  }
+
+  /**
+   * A call to `skip_before_action`, `skip_after_action` or `skip_around_action`.
+   * This skips a previously registered callback.
+   * Like other filter calls, the `except` and `only` keyword arguments can be
+   * passed to restrict the actions that the callback is skipped for.
+   */
   private class SkipFilter extends StringlikeLiteralCfgNode {
     private FilterCall call;
     private FilterKind kind;
@@ -260,14 +292,6 @@ module ActionControllerFilters {
       action = result.getAction() and
       result.getFilterCallable() = this.getFilterCallable()
     }
-  }
-
-  private class BeforeFilter extends Filter {
-    BeforeFilter() { this.getCall().getMethodName() = "before_action" }
-  }
-
-  private class AfterFilter extends Filter {
-    AfterFilter() { this.getCall().getMethodName() = "after_action" }
   }
 
   /**
