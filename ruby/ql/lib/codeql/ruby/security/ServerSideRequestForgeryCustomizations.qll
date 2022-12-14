@@ -39,9 +39,7 @@ module ServerSideRequestForgery {
   abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A source of remote user input, considered as a flow source for server side request forgery. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /** The URL of an HTTP request, considered as a sink. */
   class HttpRequestAsSink extends Sink {

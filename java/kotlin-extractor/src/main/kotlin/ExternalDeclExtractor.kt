@@ -119,7 +119,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
 
                             fileExtractor.extractClassSource(irDecl, extractDeclarations = !irDecl.isFileClass, extractStaticInitializer = false, extractPrivateMembers = false, extractFunctionBodies = false)
                         } else {
-                            fileExtractor.extractDeclaration(irDecl, extractPrivateMembers = false, extractFunctionBodies = false)
+                            fileExtractor.extractDeclaration(irDecl, extractPrivateMembers = false, extractFunctionBodies = false, extractAnnotations = true)
                         }
                     }
                 }

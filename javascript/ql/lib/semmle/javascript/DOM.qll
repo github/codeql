@@ -138,16 +138,14 @@ module DOM {
   /**
    * A JSX attribute, viewed as an `AttributeDefinition`.
    */
-  private class JsxAttributeDefinition extends AttributeDefinition, @jsx_attribute {
-    JsxAttribute attr;
+  private class JsxAttributeDefinition extends AttributeDefinition, @jsx_attribute instanceof JsxAttribute {
+    override string getName() { result = JsxAttribute.super.getName() }
 
-    JsxAttributeDefinition() { this = attr }
+    override DataFlow::Node getValueNode() {
+      result = DataFlow::valueNode(JsxAttribute.super.getValue())
+    }
 
-    override string getName() { result = attr.getName() }
-
-    override DataFlow::Node getValueNode() { result = DataFlow::valueNode(attr.getValue()) }
-
-    override ElementDefinition getElement() { result = attr.getElement() }
+    override ElementDefinition getElement() { result = JsxAttribute.super.getElement() }
   }
 
   /**

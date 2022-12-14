@@ -58,9 +58,7 @@ module RequestForgery {
    * A remote data flow source taken as a source
    * for Server Side Request Forgery(SSRF) Vulnerabilities.
    */
-  private class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * An url argument to a `HttpRequestMessage` constructor call

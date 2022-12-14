@@ -32,12 +32,8 @@ module XPathInjection {
   abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A source of untrusted data, used in an XPath expression. */
-  class UntrustedFlowAsSource extends Source {
-    UntrustedFlowAsSource() { this instanceof UntrustedFlowSource }
-  }
+  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
 
   /** An XPath expression string, considered as a taint sink for XPath injection. */
-  class XPathExpressionStringAsSink extends Sink {
-    XPathExpressionStringAsSink() { this instanceof XPath::XPathExpressionString }
-  }
+  class XPathExpressionStringAsSink extends Sink instanceof XPath::XPathExpressionString { }
 }

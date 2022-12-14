@@ -15,6 +15,7 @@
 #include "swift/extractor/remapping/SwiftFileInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/trap/TrapDomain.h"
+#include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
 
@@ -175,6 +176,7 @@ int main(int argc, char** argv) {
   // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
+  initializeSwiftModules();
 
   const auto configuration = configure(argc, argv);
 

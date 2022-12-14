@@ -2807,13 +2807,14 @@
 | file://:0:0:0:0 | parameter position 0 of File.absolute_path | file://:0:0:0:0 | [summary] to write: return (return) in File.absolute_path |
 | file://:0:0:0:0 | parameter position 0 of File.dirname | file://:0:0:0:0 | [summary] to write: return (return) in File.dirname |
 | file://:0:0:0:0 | parameter position 0 of File.expand_path | file://:0:0:0:0 | [summary] to write: return (return) in File.expand_path |
+| file://:0:0:0:0 | parameter position 0 of File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
 | file://:0:0:0:0 | parameter position 0 of File.path | file://:0:0:0:0 | [summary] to write: return (return) in File.path |
 | file://:0:0:0:0 | parameter position 0 of File.realdirpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realdirpath |
 | file://:0:0:0:0 | parameter position 0 of File.realpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realpath |
 | file://:0:0:0:0 | parameter position 0 of Hash[] | file://:0:0:0:0 | [summary] read: argument position 0.any element in Hash[] |
 | file://:0:0:0:0 | parameter position 0 of String.try_convert | file://:0:0:0:0 | [summary] to write: return (return) in String.try_convert |
 | file://:0:0:0:0 | parameter position 0 of \| | file://:0:0:0:0 | [summary] read: argument position 0.any element in \| |
-| file://:0:0:0:0 | parameter position 0.. of File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
+| file://:0:0:0:0 | parameter position 1.. of File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
 | file://:0:0:0:0 | parameter self of & | file://:0:0:0:0 | [summary] read: argument self.any element in & |
 | file://:0:0:0:0 | parameter self of * | file://:0:0:0:0 | [summary] read: argument self.any element in * |
 | file://:0:0:0:0 | parameter self of - | file://:0:0:0:0 | [summary] read: argument self.any element in - |
