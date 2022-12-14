@@ -292,6 +292,12 @@ The following aggregates are available in QL:
   .. code-block:: ql
 
       concat(int i | i = [0 .. 3] | i.toString(), "|")
+  
+  To use ``order by`` and a separator together, ``order by`` should come after the separator. For example, the following aggregation returns ``"3|2|1|0"``:
+  
+  .. code-block:: ql
+  
+      concat(int i | i = [0 .. 3] | i.toString(), "|" order by i desc)
 
 .. index:: rank
 
