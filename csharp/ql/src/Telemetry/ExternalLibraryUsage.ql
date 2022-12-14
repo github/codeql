@@ -14,8 +14,7 @@ private predicate getRelevantUsages(string namespace, int usages) {
   usages =
     strictcount(Call c, ExternalApi api |
       c.getTarget().getUnboundDeclaration() = api and
-      api.getNamespace() = namespace and
-      not api.isUninteresting()
+      api.getNamespace() = namespace
     )
 }
 
