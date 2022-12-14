@@ -97,9 +97,7 @@ class RemExpr extends BinaryExpr {
  * -a
  * ```
  */
-class UnaryArithmeticOperation extends PrefixUnaryExpr {
-  UnaryArithmeticOperation() { this instanceof UnaryMinusExpr }
-}
+class UnaryArithmeticOperation extends PrefixUnaryExpr instanceof UnaryMinusExpr { }
 
 /**
  * A unary minus expression.
