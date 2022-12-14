@@ -1508,26 +1508,28 @@ private module MkStage<StageSig PrevStage> {
 
     pragma[nomagic]
     private predicate fwdFlowRetFromArg(
-      RetNodeEx ret, ReturnKindExt kind, FlowState state, CcCall ccc, ParamNodeEx summaryCtx,
-      Ap argAp, ApApprox argApa, Ap ap, ApApprox apa, Configuration config
+      RetNodeEx ret, FlowState state, CcCall ccc, ParamNodeEx summaryCtx, Ap argAp, ApApprox argApa,
+      Ap ap, ApApprox apa, Configuration config
     ) {
-      fwdFlow(pragma[only_bind_into](ret), state, ccc,
-        TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())),
-        pragma[only_bind_into](apSome(argAp)), ap, pragma[only_bind_into](apa),
-        pragma[only_bind_into](config)) and
-      kind = ret.getKind() and
-      parameterFlowThroughAllowed(summaryCtx, kind) and
-      argApa = getApprox(argAp) and
-      PrevStage::returnMayFlowThrough(ret, argApa, apa, kind, pragma[only_bind_into](config))
+      exists(ReturnKindExt kind |
+        fwdFlow(pragma[only_bind_into](ret), state, ccc,
+          TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())),
+          pragma[only_bind_into](apSome(argAp)), ap, pragma[only_bind_into](apa),
+          pragma[only_bind_into](config)) and
+        kind = ret.getKind() and
+        parameterFlowThroughAllowed(summaryCtx, kind) and
+        argApa = getApprox(argAp) and
+        PrevStage::returnMayFlowThrough(ret, argApa, apa, kind, pragma[only_bind_into](config))
+      )
     }
 
     pragma[inline]
     private predicate fwdFlowThrough0(
       DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
-      ApOption argAp, Ap ap, ApApprox apa, RetNodeEx ret, ReturnKindExt kind,
-      ParamNodeEx innerSummaryCtx, Ap innerArgAp, ApApprox innerArgApa, Configuration config
+      ApOption argAp, Ap ap, ApApprox apa, RetNodeEx ret, ParamNodeEx innerSummaryCtx,
+      Ap innerArgAp, ApApprox innerArgApa, Configuration config
     ) {
-      fwdFlowRetFromArg(pragma[only_bind_into](ret), kind, state, pragma[only_bind_into](ccc),
+      fwdFlowRetFromArg(pragma[only_bind_into](ret), state, pragma[only_bind_into](ccc),
         innerSummaryCtx, innerArgAp, innerArgApa, ap, pragma[only_bind_into](apa),
         pragma[only_bind_into](config)) and
       fwdFlowIsEntered(call, cc, ccc, summaryCtx, argAp, innerSummaryCtx, innerArgAp,
@@ -1540,7 +1542,7 @@ private module MkStage<StageSig PrevStage> {
       DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
       ApOption argAp, Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa, Configuration config
     ) {
-      fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argAp, ap, apa, ret, _, _, _, innerArgApa,
+      fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argAp, ap, apa, ret, _, _, innerArgApa,
         config)
     }
 
@@ -1580,21 +1582,21 @@ private module MkStage<StageSig PrevStage> {
     pragma[nomagic]
     private predicate returnFlowsThrough0(
       DataFlowCall call, FlowState state, CcCall ccc, Ap ap, ApApprox apa, RetNodeEx ret,
-      ReturnKindExt kind, ParamNodeEx innerSummaryCtx, Ap innerArgAp, ApApprox innerArgApa,
-      Configuration config
+      ParamNodeEx innerSummaryCtx, Ap innerArgAp, ApApprox innerArgApa, Configuration config
     ) {
-      fwdFlowThrough0(call, _, state, ccc, _, _, ap, apa, ret, kind, innerSummaryCtx, innerArgAp,
+      fwdFlowThrough0(call, _, state, ccc, _, _, ap, apa, ret, innerSummaryCtx, innerArgAp,
         innerArgApa, config)
     }
 
     pragma[nomagic]
     private predicate returnFlowsThrough(
-      RetNodeEx ret, ReturnKindExt kind, FlowState state, CcCall ccc, ParamNodeEx p, Ap argAp,
+      RetNodeEx ret, ReturnPosition pos, FlowState state, CcCall ccc, ParamNodeEx p, Ap argAp,
       Ap ap, Configuration config
     ) {
       exists(DataFlowCall call, ApApprox apa, boolean allowsFieldFlow, ApApprox innerArgApa |
-        returnFlowsThrough0(call, state, ccc, ap, apa, ret, kind, p, argAp, innerArgApa, config) and
+        returnFlowsThrough0(call, state, ccc, ap, apa, ret, p, argAp, innerArgApa, config) and
         flowThroughOutOfCall(call, ccc, ret, _, allowsFieldFlow, innerArgApa, apa, config) and
+        pos = ret.getReturnPosition() and
         if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
@@ -1628,12 +1630,13 @@ private module MkStage<StageSig PrevStage> {
 
     pragma[nomagic]
     private predicate flowOutOfCallAp(
-      DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
+      DataFlowCall call, RetNodeEx ret, ReturnPosition pos, NodeEx out, boolean allowsFieldFlow,
       Ap ap, Configuration config
     ) {
       exists(ApApprox apa |
-        flowOutOfCallApa(call, ret, kind, out, allowsFieldFlow, apa, config) and
-        fwdFlow(ret, _, _, _, _, ap, apa, config)
+        flowOutOfCallApa(call, ret, _, out, allowsFieldFlow, apa, config) and
+        fwdFlow(ret, _, _, _, _, ap, apa, config) and
+        pos = ret.getReturnPosition()
       )
     }
 
@@ -1728,17 +1731,17 @@ private module MkStage<StageSig PrevStage> {
       )
       or
       // flow through a callable
-      exists(DataFlowCall call, ReturnKindExt returnKind0, Ap returnAp0 |
-        revFlowInToReturn(call, node, state, returnKind0, returnAp0, ap, config) and
-        revFlowIsReturned(call, returnCtx, returnAp, returnKind0, returnAp0, config)
+      exists(DataFlowCall call, ReturnPosition pos, Ap returnAp0 |
+        revFlowInToReturn(call, node, state, pos, returnAp0, ap, config) and
+        revFlowIsReturned(call, returnCtx, returnAp, pos, returnAp0, config)
       )
       or
       // flow out of a callable
-      exists(ReturnKindExt kind |
-        revFlowOut(_, node, kind, state, _, _, ap, config) and
-        if returnFlowsThrough(node, kind, state, _, _, _, ap, config)
+      exists(ReturnPosition pos |
+        revFlowOut(_, node, pos, state, _, _, ap, config) and
+        if returnFlowsThrough(node, pos, state, _, _, _, ap, config)
         then (
-          returnCtx = TReturnCtxMaybeFlowThrough(kind) and
+          returnCtx = TReturnCtxMaybeFlowThrough(pos) and
           returnAp = apSome(ap)
         ) else (
           returnCtx = TReturnCtxNoFlowThrough() and returnAp = apNone()
@@ -1771,12 +1774,12 @@ private module MkStage<StageSig PrevStage> {
 
     pragma[nomagic]
     private predicate revFlowOut(
-      DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, FlowState state, ReturnCtx returnCtx,
+      DataFlowCall call, RetNodeEx ret, ReturnPosition pos, FlowState state, ReturnCtx returnCtx,
       ApOption returnAp, Ap ap, Configuration config
     ) {
       exists(NodeEx out, boolean allowsFieldFlow |
         revFlow(out, state, returnCtx, returnAp, ap, config) and
-        flowOutOfCallAp(call, ret, kind, out, allowsFieldFlow, ap, config) and
+        flowOutOfCallAp(call, ret, pos, out, allowsFieldFlow, ap, config) and
         if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
@@ -1797,19 +1800,19 @@ private module MkStage<StageSig PrevStage> {
 
     pragma[nomagic]
     private predicate revFlowParamToReturn(
-      ParamNodeEx p, FlowState state, ReturnKindExt kind, Ap returnAp, Ap ap, Configuration config
+      ParamNodeEx p, FlowState state, ReturnPosition pos, Ap returnAp, Ap ap, Configuration config
     ) {
-      revFlow(p, state, TReturnCtxMaybeFlowThrough(kind), apSome(returnAp), ap, config) and
-      parameterFlowThroughAllowed(p, kind)
+      revFlow(p, state, TReturnCtxMaybeFlowThrough(pos), apSome(returnAp), ap, config) and
+      parameterFlowThroughAllowed(p, pos.getKind())
     }
 
     pragma[nomagic]
     private predicate revFlowInToReturn(
-      DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnKindExt kind, Ap returnAp, Ap ap,
+      DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnPosition pos, Ap returnAp, Ap ap,
       Configuration config
     ) {
       exists(ParamNodeEx p, boolean allowsFieldFlow |
-        revFlowParamToReturn(p, state, kind, returnAp, ap, config) and
+        revFlowParamToReturn(p, state, pos, returnAp, ap, config) and
         revFlowThroughIntoCall(call, arg, p, allowsFieldFlow, ap, config)
       )
     }
@@ -1821,12 +1824,12 @@ private module MkStage<StageSig PrevStage> {
      */
     pragma[nomagic]
     private predicate revFlowIsReturned(
-      DataFlowCall call, ReturnCtx returnCtx, ApOption returnAp, ReturnKindExt kind, Ap ap,
+      DataFlowCall call, ReturnCtx returnCtx, ApOption returnAp, ReturnPosition pos, Ap ap,
       Configuration config
     ) {
       exists(RetNodeEx ret, FlowState state, CcCall ccc |
-        revFlowOut(call, ret, kind, state, returnCtx, returnAp, ap, config) and
-        returnFlowsThrough(ret, kind, state, ccc, _, _, ap, config) and
+        revFlowOut(call, ret, pos, state, returnCtx, returnAp, ap, config) and
+        returnFlowsThrough(ret, pos, state, ccc, _, _, ap, config) and
         matchesCall(ccc, call)
       )
     }
@@ -1904,17 +1907,17 @@ private module MkStage<StageSig PrevStage> {
 
     pragma[nomagic]
     private predicate parameterFlowsThroughRev(
-      ParamNodeEx p, Ap ap, ReturnKindExt kind, Ap returnAp, Configuration config
+      ParamNodeEx p, Ap ap, ReturnPosition pos, Ap returnAp, Configuration config
     ) {
-      revFlow(p, _, TReturnCtxMaybeFlowThrough(kind), apSome(returnAp), ap, config) and
-      parameterFlowThroughAllowed(p, kind)
+      revFlow(p, _, TReturnCtxMaybeFlowThrough(pos), apSome(returnAp), ap, config) and
+      parameterFlowThroughAllowed(p, pos.getKind())
     }
 
     pragma[nomagic]
     predicate parameterMayFlowThrough(ParamNodeEx p, Ap ap, Configuration config) {
-      exists(RetNodeEx ret, ReturnKindExt kind |
-        returnFlowsThrough(ret, kind, _, _, p, ap, _, config) and
-        parameterFlowsThroughRev(p, ap, kind, _, config)
+      exists(RetNodeEx ret, ReturnPosition pos |
+        returnFlowsThrough(ret, pos, _, _, p, ap, _, config) and
+        parameterFlowsThroughRev(p, ap, pos, _, config)
       )
     }
 
@@ -1922,9 +1925,10 @@ private module MkStage<StageSig PrevStage> {
     predicate returnMayFlowThrough(
       RetNodeEx ret, Ap argAp, Ap ap, ReturnKindExt kind, Configuration config
     ) {
-      exists(ParamNodeEx p |
-        returnFlowsThrough(ret, kind, _, _, p, argAp, ap, config) and
-        parameterFlowsThroughRev(p, argAp, kind, ap, config)
+      exists(ParamNodeEx p, ReturnPosition pos |
+        returnFlowsThrough(ret, pos, _, _, p, argAp, ap, config) and
+        parameterFlowsThroughRev(p, argAp, pos, ap, config) and
+        kind = pos.getKind()
       )
     }
 
@@ -1933,9 +1937,9 @@ private module MkStage<StageSig PrevStage> {
       DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp,
       Ap ap, Configuration config
     ) {
-      exists(ReturnKindExt returnKind0, Ap returnAp0 |
-        revFlowInToReturn(call, arg, state, returnKind0, returnAp0, ap, config) and
-        revFlowIsReturned(call, returnCtx, returnAp, returnKind0, returnAp0, config)
+      exists(ReturnPosition pos, Ap returnAp0 |
+        revFlowInToReturn(call, arg, state, pos, returnAp0, ap, config) and
+        revFlowIsReturned(call, returnCtx, returnAp, pos, returnAp0, config)
       )
     }
 
