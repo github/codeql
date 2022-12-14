@@ -19,7 +19,10 @@ import DataFlow::PathGraph
 import experimental.adaptivethreatmodeling.XssThroughDomATM
 
 from AtmConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink, float score
-where cfg.hasBoostedFlowPath(source, sink, score)
+where
+  cfg.hasFlowPath(source, sink) and
+  not AtmResultsInfo::isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
+  score = 0.9
 select sink.getNode(), source, sink,
   "(Experimental) $@ may be reinterpreted as HTML without escaping meta-characters. Identified using machine learning.",
   source.getNode(), "DOM text", score
