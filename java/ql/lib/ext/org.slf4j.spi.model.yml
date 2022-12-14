@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.slf4j.spi", "LoggingEventBuilder", True, "log", "", "", "Argument[0]", "logging", "manual"]
       - ["org.slf4j.spi", "LoggingEventBuilder", True, "log", "(String,Object)", "", "Argument[0..1]", "logging", "manual"]
@@ -10,7 +10,7 @@ extensions:
       - ["org.slf4j.spi", "LoggingEventBuilder", True, "log", "(Supplier)", "", "Argument[0]", "logging", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.slf4j.spi", "LoggingEventBuilder", True, "addArgument", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
       - ["org.slf4j.spi", "LoggingEventBuilder", True, "addArgument", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]

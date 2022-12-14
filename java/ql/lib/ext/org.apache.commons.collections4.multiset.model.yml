@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.commons.collections4.multiset", "HashMultiSet", True, "HashMultiSet", "", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]
       - ["org.apache.commons.collections4.multiset", "PredicatedMultiSet", True, "predicatedMultiSet", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]

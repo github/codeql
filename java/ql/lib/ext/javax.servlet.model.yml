@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["javax.servlet", "ServletRequest", False, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
       - ["javax.servlet", "ServletRequest", False, "getParameter", "(String)", "", "ReturnValue", "remote", "manual"]

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       # Methods depending on lambda flow are not currently modeled
       # Methods depending on stronger aliasing properties than we support are also not modeled.
