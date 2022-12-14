@@ -904,6 +904,13 @@ private module Cached {
     TElementContent() or
     TSyntheticFieldContent(SyntheticField f)
 
+  cached
+  newtype TContentApprox =
+    TFieldApproxContent(string firstChar) { firstChar = approximateFieldContent(_) } or
+    TPropertyApproxContent(string firstChar) { firstChar = approximatePropertyContent(_) } or
+    TElementApproxContent() or
+    TSyntheticFieldApproxContent()
+
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantDataFlowType t2) {
     not t1 instanceof Gvn::TypeParameterGvnType and
@@ -2244,6 +2251,46 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+/** An approximated `Content`. */
+class ContentApprox extends TContentApprox {
+  /** Gets a textual representation of this approximated `Content`. */
+  string toString() {
+    exists(string firstChar |
+      this = TFieldApproxContent(firstChar) and result = "approximated field " + firstChar
+    )
+    or
+    exists(string firstChar |
+      this = TPropertyApproxContent(firstChar) and result = "approximated property " + firstChar
+    )
+    or
+    this = TElementApproxContent() and result = "element"
+    or
+    this = TSyntheticFieldApproxContent() and result = "approximated synthetic field"
+  }
+}
+
+/** Gets a string for approximating the name of a field. */
+private string approximateFieldContent(FieldContent fc) {
+  result = fc.getField().getName().prefix(1)
+}
+
+/** Gets a string for approximating the name of a property. */
+private string approximatePropertyContent(PropertyContent pc) {
+  result = pc.getProperty().getName().prefix(1)
+}
+
+/** Gets an approximated value for content `c`. */
+pragma[nomagic]
+ContentApprox getContentApprox(Content c) {
+  result = TFieldApproxContent(approximateFieldContent(c))
+  or
+  result = TPropertyApproxContent(approximatePropertyContent(c))
+  or
+  c instanceof ElementContent and result = TElementApproxContent()
+  or
+  c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
 }
 
 /**

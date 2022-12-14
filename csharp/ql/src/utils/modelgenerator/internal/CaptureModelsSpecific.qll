@@ -38,7 +38,9 @@ private predicate isRelevantForModels(CS::Callable api) {
   api.getDeclaringType().getNamespace().getFullName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not api instanceof CS::Destructor
+  not api instanceof CS::Destructor and
+  not api instanceof CS::AnonymousFunctionExpr and
+  not api.(CS::Constructor).isParameterless()
 }
 
 /**

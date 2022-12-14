@@ -9,11 +9,12 @@
 import java
 private import VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
-private import semmle.code.java.dataflow.internal.DataFlowUtil
-private import semmle.code.java.dataflow.internal.DataFlowPrivate
+private import semmle.code.java.dataflow.internal.DataFlowUtil as DataFlow
+private import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
+private import codeql.typetracking.TypeTracking
 
 /**
  * Gets a viable dispatch target for `ma`. This is the input dispatch relation.
@@ -23,7 +24,8 @@ private Method viableImpl_inp(MethodAccess ma) { result = viableImpl_v2(ma) }
 private Callable dispatchCand(Call c) {
   c instanceof ConstructorCall and result = c.getCallee().getSourceDeclaration()
   or
-  result = viableImpl_inp(c)
+  result = viableImpl_inp(c) and
+  not dispatchOrigin(_, c, result)
 }
 
 /**
@@ -56,7 +58,7 @@ private predicate publicStaticFieldInit(ClassInstanceExpr cie) {
  */
 private predicate publicThroughField(RefType t) {
   exists(ClassInstanceExpr cie |
-    cie.getConstructedType() = t and
+    cie.getConstructedType().getSourceDeclaration() = t and
     publicStaticFieldInit(cie)
   )
 }
@@ -64,7 +66,7 @@ private predicate publicThroughField(RefType t) {
 /**
  * Holds if `t` and its subtypes are private or anonymous.
  */
-private predicate privateConstruction(RefType t) {
+private predicate privateConstruction(SrcRefType t) {
   (t.isPrivate() or t instanceof AnonymousClass) and
   not publicThroughField(t) and
   forall(SrcRefType sub | sub.getASourceSupertype+() = t.getSourceDeclaration() |
@@ -122,188 +124,282 @@ private predicate relevant(RefType t) {
 }
 
 /** A node with a type that is relevant for dispatch flow. */
-private class RelevantNode extends Node {
+private class RelevantNode extends DataFlow::Node {
   RelevantNode() { relevant(this.getType()) }
 }
 
-/**
- * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
- * The instance parameter is considered to have index `-1`.
- */
-pragma[nomagic]
-private predicate viableParamCand(Call call, int i, ParameterNode p) {
-  exists(DataFlowCallable callable |
-    callable.asCallable() = dispatchCand(call) and
-    p.isParameterOf(callable, i) and
-    p instanceof RelevantNode
-  )
-}
+private module TypeTrackingSteps {
+  class Node = RelevantNode;
 
-/**
- * Holds if `arg` is a possible argument to `p` taking virtual dispatch into account.
- */
-private predicate viableArgParamCand(ArgumentNode arg, ParameterNode p) {
-  exists(int i, DataFlowCall call |
-    viableParamCand(call.asCall(), i, p) and
-    arg.argumentOf(call, i)
-  )
-}
+  class LocalSourceNode extends RelevantNode {
+    LocalSourceNode() {
+      this.asExpr() instanceof Call or
+      this.asExpr() instanceof RValue or
+      this instanceof DataFlow::ParameterNode or
+      this instanceof DataFlow::ImplicitVarargsArray or
+      this.asExpr() instanceof ArrayInit or
+      this.asExpr() instanceof ArrayAccess or
+      this instanceof DataFlow::FieldValueNode
+    }
+  }
 
-/**
- * Holds if data may flow from `n1` to `n2` in a single step through a call or a return.
- */
-private predicate callFlowStepCand(RelevantNode n1, RelevantNode n2) {
-  exists(ReturnStmt ret, Method m |
-    ret.getEnclosingCallable() = m and
-    ret.getResult() = n1.asExpr() and
-    m = dispatchCand(n2.asExpr())
-  )
-  or
-  viableArgParamCand(n1, n2)
-}
+  private newtype TContent =
+    ContentArray() or
+    ContentArrayArray()
 
-/**
- * Holds if data may flow from `n1` to `n2` in a single step that does not go
- * through a call or a return.
- */
-private predicate flowStep(RelevantNode n1, RelevantNode n2) {
-  exists(BaseSsaVariable v, BaseSsaVariable def |
-    def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
-    or
-    def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter())
-    or
-    exists(EnhancedForStmt for |
-      for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
-      for.getExpr() = n1.asExpr() and
-      n1.getType() instanceof Array
-    )
-  |
-    v.getAnUltimateDefinition() = def and
-    v.getAUse() = n2.asExpr()
-  )
-  or
-  exists(Callable c | n1.(InstanceParameterNode).getCallable() = c |
-    exists(InstanceAccess ia |
-      ia = n2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()
+  class Content extends TContent {
+    string toString() {
+      this = ContentArray() and result = "array"
+      or
+      this = ContentArrayArray() and result = "array array"
+    }
+  }
+
+  class ContentFilter extends Content {
+    Content getAMatchingContent() { result = this }
+  }
+
+  predicate compatibleContents(Content storeContents, Content loadContents) {
+    storeContents = loadContents
+  }
+
+  predicate simpleLocalSmallStep(Node n1, Node n2) {
+    exists(BaseSsaVariable v, BaseSsaVariable def |
+      def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
+      or
+      def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter())
+    |
+      v.getAnUltimateDefinition() = def and
+      v.getAUse() = n2.asExpr()
     )
     or
-    n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
-  )
-  or
-  n2.(FieldValueNode).getField().getAnAssignedValue() = n1.asExpr()
-  or
-  n2.asExpr().(FieldRead).getField() = n1.(FieldValueNode).getField()
-  or
-  exists(EnumType enum, Method getValue |
-    enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
-    getValue.getDeclaringType() = enum and
-    (getValue.hasName("values") or getValue.hasName("valueOf")) and
-    n2.asExpr().(MethodAccess).getMethod() = getValue
-  )
-  or
-  n2.asExpr().(CastingExpr).getExpr() = n1.asExpr()
-  or
-  n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
-  or
-  n2.asExpr().(AssignExpr).getSource() = n1.asExpr()
-  or
-  n2.asExpr().(ArrayInit).getAnInit() = n1.asExpr()
-  or
-  n2.asExpr().(ArrayCreationExpr).getInit() = n1.asExpr()
-  or
-  n2.asExpr().(ArrayAccess).getArray() = n1.asExpr()
-  or
-  exists(Argument arg |
-    n1.asExpr() = arg and arg.isVararg() and n2.(ImplicitVarargsArray).getCall() = arg.getCall()
-  )
-  or
-  exists(AssignExpr a, Variable v |
-    a.getSource() = n1.asExpr() and
-    a.getDest().(ArrayAccess).getArray() = v.getAnAccess() and
-    n2.asExpr() = v.getAnAccess().(RValue)
-  )
-  or
-  exists(Variable v, MethodAccess put, MethodAccess get |
-    put.getArgument(1) = n1.asExpr() and
-    put.getMethod().(MapMethod).hasName("put") and
-    put.getQualifier() = v.getAnAccess() and
-    get.getQualifier() = v.getAnAccess() and
-    get.getMethod().(MapMethod).hasName("get") and
-    n2.asExpr() = get
-  )
-  or
-  exists(Variable v, MethodAccess add |
-    add.getAnArgument() = n1.asExpr() and
-    add.getMethod().(CollectionMethod).hasName("add") and
-    add.getQualifier() = v.getAnAccess()
-  |
-    exists(MethodAccess get |
+    exists(Callable c | n1.(DataFlow::InstanceParameterNode).getCallable() = c |
+      exists(InstanceAccess ia |
+        ia = n2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()
+      )
+      or
+      n2.(DataFlow::ImplicitInstanceAccess)
+          .getInstanceAccess()
+          .(OwnInstanceAccess)
+          .getEnclosingCallable() = c
+    )
+    or
+    n2.asExpr().(CastingExpr).getExpr() = n1.asExpr()
+    or
+    n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
+    or
+    n2.asExpr().(AssignExpr).getSource() = n1.asExpr()
+    or
+    n2.asExpr().(ArrayCreationExpr).getInit() = n1.asExpr()
+  }
+
+  predicate levelStepNoCall(Node n1, LocalSourceNode n2) {
+    exists(EnumType enum, Method getValue |
+      enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
+      getValue.getDeclaringType() = enum and
+      getValue.hasName("valueOf") and
+      n2.asExpr().(MethodAccess).getMethod() = getValue
+    )
+    or
+    exists(Variable v, MethodAccess put, MethodAccess get |
+      put.getArgument(1) = n1.asExpr() and
+      put.getMethod().(MapMethod).hasName("put") and
+      put.getQualifier() = v.getAnAccess() and
       get.getQualifier() = v.getAnAccess() and
-      get.getMethod().(CollectionMethod).hasName("get") and
+      get.getMethod().(MapMethod).hasName("get") and
       n2.asExpr() = get
     )
     or
-    exists(EnhancedForStmt for, BaseSsaVariable ssa, BaseSsaVariable def |
-      for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
-      for.getExpr() = v.getAnAccess() and
-      ssa.getAnUltimateDefinition() = def and
-      ssa.getAUse() = n2.asExpr()
+    exists(Variable v, MethodAccess add |
+      add.getAnArgument() = n1.asExpr() and
+      add.getMethod().(CollectionMethod).hasName("add") and
+      add.getQualifier() = v.getAnAccess()
+    |
+      exists(MethodAccess get |
+        get.getQualifier() = v.getAnAccess() and
+        get.getMethod().(CollectionMethod).hasName("get") and
+        n2.asExpr() = get
+      )
+      or
+      exists(EnhancedForStmt for, BaseSsaVariable ssa, BaseSsaVariable def |
+        for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+        for.getExpr() = v.getAnAccess() and
+        ssa.getAnUltimateDefinition() = def and
+        ssa.getAUse() = n2.asExpr()
+      )
     )
-  )
+  }
+
+  predicate levelStepCall(Node n1, LocalSourceNode n2) { none() }
+
+  predicate storeStep(Node n1, Node n2, Content f) {
+    exists(EnumType enum, Method getValue |
+      enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
+      getValue.getDeclaringType() = enum and
+      getValue.hasName("values") and
+      n2.asExpr().(MethodAccess).getMethod() = getValue and
+      f = ContentArray()
+    )
+    or
+    n2.asExpr().(ArrayInit).getAnInit() = n1.asExpr() and
+    f = ContentArray()
+    or
+    exists(Argument arg |
+      n1.asExpr() = arg and
+      arg.isVararg() and
+      n2.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall() and
+      f = ContentArray()
+    )
+    or
+    exists(AssignExpr a, Variable v |
+      a.getSource() = n1.asExpr() and
+      a.getDest().(ArrayAccess).getArray() = v.getAnAccess() and
+      n2.asExpr() = v.getAnAccess().(RValue) and
+      f = ContentArray()
+    )
+  }
+
+  predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
+    exists(BaseSsaVariable v, BaseSsaVariable def |
+      exists(EnhancedForStmt for |
+        for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+        for.getExpr() = n1.asExpr() and
+        n1.getType() instanceof Array and
+        f = ContentArray()
+      )
+    |
+      v.getAnUltimateDefinition() = def and
+      v.getAUse() = n2.asExpr()
+    )
+    or
+    n2.asExpr().(ArrayAccess).getArray() = n1.asExpr()
+  }
+
+  predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2) {
+    loadStep(nodeFrom, nodeTo, ContentArray()) and
+    f1 = ContentArrayArray() and
+    f2 = ContentArray()
+    or
+    storeStep(nodeFrom, nodeTo, ContentArray()) and
+    f1 = ContentArray() and
+    f2 = ContentArrayArray()
+  }
+
+  predicate withContentStep(Node nodeFrom, LocalSourceNode nodeTo, ContentFilter f) { none() }
+
+  predicate withoutContentStep(Node nodeFrom, LocalSourceNode nodeTo, ContentFilter f) { none() }
+
+  predicate jumpStep(Node n1, LocalSourceNode n2) {
+    n2.(DataFlow::FieldValueNode).getField().getAnAssignedValue() = n1.asExpr()
+    or
+    n2.asExpr().(FieldRead).getField() = n1.(DataFlow::FieldValueNode).getField()
+  }
+
+  predicate hasFeatureBacktrackStoreTarget() { none() }
 }
 
-/**
- * Holds if `n` is forward-reachable from a relevant `ClassInstanceExpr`.
- */
-private predicate nodeCandFwd(Node n) {
-  dispatchOrigin(n.asExpr(), _, _)
-  or
-  exists(Node mid | nodeCandFwd(mid) | flowStep(mid, n) or callFlowStepCand(mid, n))
+private predicate lambdaSource(RelevantNode n) { dispatchOrigin(n.asExpr(), _, _) }
+
+private predicate lambdaSink(RelevantNode n) {
+  exists(MethodAccess ma | dispatchOrigin(_, ma, _) | n = DataFlow::getInstanceArgument(ma))
 }
 
-/**
- * Holds if `n` may occur on a dispatch flow path. That is, a path from a
- * relevant `ClassInstanceExpr` to a qualifier of a relevant `MethodAccess`.
- */
-private predicate nodeCand(Node n) {
-  exists(MethodAccess ma |
-    dispatchOrigin(_, ma, _) and
-    n = getInstanceArgument(ma) and
-    nodeCandFwd(n)
-  )
-  or
-  exists(Node mid | nodeCand(mid) | flowStep(n, mid) or callFlowStepCand(n, mid)) and
-  nodeCandFwd(n)
+private signature Method methodDispatchSig(MethodAccess ma);
+
+private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
+  private Callable dispatch(Call c) {
+    result = dispatchCand(c) or
+    result = lambdaDispatch0(c)
+  }
+
+  /**
+   * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
+   * The instance parameter is considered to have index `-1`.
+   */
+  pragma[nomagic]
+  private predicate paramCand(Call call, int i, DataFlow::ParameterNode p) {
+    exists(DataFlowPrivate::DataFlowCallable callable |
+      callable.asCallable() = dispatch(call) and
+      p.isParameterOf(callable, i) and
+      p instanceof RelevantNode
+    )
+  }
+
+  /**
+   * Holds if `arg` is a possible argument to `p` taking virtual dispatch into account.
+   */
+  private predicate argParamCand(DataFlowPrivate::ArgumentNode arg, DataFlow::ParameterNode p) {
+    exists(int i, DataFlowPrivate::DataFlowCall call |
+      paramCand(call.asCall(), i, p) and
+      arg.argumentOf(call, i)
+    )
+  }
+
+  private module TtInput implements TypeTrackingInput {
+    import TypeTrackingSteps
+
+    predicate callStep(Node n1, LocalSourceNode n2) { argParamCand(n1, n2) }
+
+    predicate returnStep(Node n1, LocalSourceNode n2) {
+      exists(ReturnStmt ret, Method m |
+        ret.getEnclosingCallable() = m and
+        ret.getResult() = n1.asExpr() and
+        m = dispatch(n2.asExpr())
+      )
+    }
+  }
+
+  private import TypeTracking<TtInput>::TypeTrack<lambdaSource/1>::Graph<lambdaSink/1>
+
+  private predicate edgePlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
+
+  private predicate pairCand(PathNode p1, PathNode p2, Method m, MethodAccess ma) {
+    exists(ClassInstanceExpr cie |
+      dispatchOrigin(cie, ma, m) and
+      p1.getNode() = DataFlow::exprNode(cie) and
+      p2.getNode() = DataFlow::getInstanceArgument(ma) and
+      p1.isSource() and
+      p2.isSink()
+    )
+  }
+
+  /**
+   * Holds if there is flow from a `ClassInstanceExpr` instantiating a type that
+   * declares or inherits the tracked method `result` to the qualifier of `ma` such
+   * that `ma` may dispatch to `result`.
+   */
+  Method lambdaDispatch(MethodAccess ma) {
+    exists(PathNode p1, PathNode p2 |
+      (p1 = p2 or edgePlus(p1, p2)) and
+      pairCand(p1, p2, result, ma)
+    )
+  }
 }
 
-/**
- * Holds if `n1 -> n2` is a relevant dispatch flow step.
- */
-private predicate step(Node n1, Node n2) {
-  (flowStep(n1, n2) or callFlowStepCand(n1, n2)) and
-  nodeCand(n1) and
-  nodeCand(n2)
-}
+private Method noDisp(MethodAccess ma) { none() }
 
-private predicate stepPlus(Node n1, Node n2) = fastTC(step/2)(n1, n2)
+pragma[nomagic]
+private Method d1(MethodAccess ma) { result = TrackLambda<noDisp/1>::lambdaDispatch(ma) }
 
-/**
- * Holds if there is flow from a `ClassInstanceExpr` instantiating a type that
- * declares or inherits the tracked method `m` to the qualifier of `ma` such
- * that `ma` may dispatch to `m`.
- */
-pragma[inline]
-private predicate hasDispatchFlow(MethodAccess ma, Method m) {
-  exists(ClassInstanceExpr cie |
-    dispatchOrigin(cie, ma, m) and
-    stepPlus(exprNode(cie), getInstanceArgument(ma))
-  )
-}
+pragma[nomagic]
+private Method d2(MethodAccess ma) { result = TrackLambda<d1/1>::lambdaDispatch(ma) }
+
+pragma[nomagic]
+private Method d3(MethodAccess ma) { result = TrackLambda<d2/1>::lambdaDispatch(ma) }
+
+pragma[nomagic]
+private Method d4(MethodAccess ma) { result = TrackLambda<d3/1>::lambdaDispatch(ma) }
+
+pragma[nomagic]
+private Method d5(MethodAccess ma) { result = TrackLambda<d4/1>::lambdaDispatch(ma) }
+
+pragma[nomagic]
+private Method d6(MethodAccess ma) { result = TrackLambda<d5/1>::lambdaDispatch(ma) }
 
 /**
  * Gets a viable dispatch target for `ma`. This is the output dispatch relation.
  */
 Method viableImpl_out(MethodAccess ma) {
   result = viableImpl_inp(ma) and
-  (hasDispatchFlow(ma, result) or not dispatchOrigin(_, ma, result))
+  (result = d6(ma) or not dispatchOrigin(_, ma, result))
 }

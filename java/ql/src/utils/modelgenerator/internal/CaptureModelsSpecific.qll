@@ -39,23 +39,23 @@ private predicate isJdkInternal(J::CompilationUnit cu) {
   cu.getPackage().getName().matches("javax.swing%") or
   cu.getPackage().getName().matches("java.awt%") or
   cu.getPackage().getName().matches("sun%") or
-  cu.getPackage().getName().matches("jdk.%") or
-  cu.getPackage().getName().matches("java2d.%") or
-  cu.getPackage().getName().matches("build.tools.%") or
-  cu.getPackage().getName().matches("propertiesparser.%") or
-  cu.getPackage().getName().matches("org.jcp.%") or
-  cu.getPackage().getName().matches("org.w3c.%") or
-  cu.getPackage().getName().matches("org.ietf.jgss.%") or
+  cu.getPackage().getName().matches("jdk%") or
+  cu.getPackage().getName().matches("java2d%") or
+  cu.getPackage().getName().matches("build.tools%") or
+  cu.getPackage().getName().matches("propertiesparser%") or
+  cu.getPackage().getName().matches("org.jcp%") or
+  cu.getPackage().getName().matches("org.w3c%") or
+  cu.getPackage().getName().matches("org.ietf.jgss%") or
   cu.getPackage().getName().matches("org.xml.sax%") or
+  cu.getPackage().getName().matches("com.oracle%") or
+  cu.getPackage().getName().matches("org.omg%") or
+  cu.getPackage().getName().matches("org.relaxng%") or
   cu.getPackage().getName() = "compileproperties" or
+  cu.getPackage().getName() = "transparentruler" or
+  cu.getPackage().getName() = "genstubs" or
   cu.getPackage().getName() = "netscape.javascript" or
   cu.getPackage().getName() = ""
 }
-
-/** Holds if the given API is a constructor without parameters. */
-private predicate isParameterlessConstructor(J::Callable api) {
-  api instanceof J::Constructor and api.getNumberOfParameters() = 0
-} // ! merge with PR #11624
 
 /**
  * Holds if it is relevant to generate models for `api`.
@@ -65,8 +65,8 @@ private predicate isRelevantForModels(J::Callable api) {
   not isJdkInternal(api.getCompilationUnit()) and
   not api instanceof J::MainMethod and
   not api instanceof J::StaticInitializer and
-  not exists(J::FunctionalExpr funcExpr | api = funcExpr.asMethod()) and // ! merge with PR #11623
-  not isParameterlessConstructor(api) // ! merge with PR #11624
+  not exists(J::FunctionalExpr funcExpr | api = funcExpr.asMethod()) and
+  not api.(J::Constructor).isParameterless()
 }
 
 /**

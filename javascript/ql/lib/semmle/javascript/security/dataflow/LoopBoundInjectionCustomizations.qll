@@ -169,9 +169,7 @@ module LoopBoundInjection {
   /**
    * A source of remote user input objects.
    */
-  class TaintedObjectSource extends Source {
-    TaintedObjectSource() { this instanceof TaintedObject::Source }
-  }
+  class TaintedObjectSource extends Source instanceof TaintedObject::Source { }
 
   /**
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` function.

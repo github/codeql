@@ -16,6 +16,7 @@
 #include "swift/extractor/remapping/SwiftOpenInterception.h"
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
 #include "swift/extractor/trap/TrapDomain.h"
+#include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
 
@@ -129,6 +130,7 @@ int main(int argc, char** argv) {
   // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
+  initializeSwiftModules();
 
   codeql::SwiftExtractorConfiguration configuration{};
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");

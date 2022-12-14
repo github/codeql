@@ -35,9 +35,7 @@ module UnsafeDeserialization {
   }
 
   /** A source of remote user input, considered as a flow source for unsafe deserialization. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * An argument in a call to `Marshal.load` or `Marshal.restore`, considered a

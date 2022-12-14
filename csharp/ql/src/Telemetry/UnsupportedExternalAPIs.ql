@@ -12,7 +12,6 @@ private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSumma
 private import ExternalApi
 
 private predicate relevant(ExternalApi api) {
-  not api.isUninteresting() and
   not api.isSupported() and
   not api instanceof FlowSummaryImpl::Public::NeutralCallable
 }
