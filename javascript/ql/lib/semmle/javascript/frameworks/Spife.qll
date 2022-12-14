@@ -9,23 +9,32 @@ import semmle.javascript.frameworks.HTTP
  * Provides classes for working with [Spife](https://github.com/npm/spife) applications.
  */
 module Spife {
+  private class TaggedTemplateEntryPoint extends API::EntryPoint {
+    TaggedTemplateEntryPoint() { this = "TaggedTemplateEntryPoint" }
+
+    override DataFlow::SourceNode getASource() { result.asExpr() instanceof TaggedTemplateExpr }
+  }
+
   /**
    * A call to a Spife method that sets up a route.
    */
-  private class RouteSetup extends DataFlow::CallNode, Http::Servers::StandardRouteSetup {
+  private class RouteSetup extends API::CallNode, Http::Servers::StandardRouteSetup {
     TaggedTemplateExpr template;
 
     RouteSetup() {
-      this.getCalleeNode().asExpr() = template and
-      API::moduleImport(["@npm/spife/routing", "spife/routing"])
-          .asSource()
-          .flowsToExpr(template.getTag())
+      exists(CallExpr templateCall |
+        this.getCalleeNode().asExpr() = template and
+        API::moduleImport(["@npm/spife/routing", "spife/routing"])
+            .asSource()
+            .flowsToExpr(template.getTag()) and
+        templateCall.getAChild() = template
+      )
     }
 
     private string getRoutePattern() {
       // Concatenate the constant parts of the expression
       result =
-        strictconcat(Expr e, int i |
+        concat(Expr e, int i |
           e = template.getTemplate().getElement(i) and exists(e.getStringValue())
         |
           e.getStringValue() order by i
@@ -44,11 +53,9 @@ module Spife {
       )
     }
 
-    DataFlow::Node getHandlerByName(string name) {
-      result = DataFlow::parameterNode(this.getACallee().getParameter(0)).getAPropertyRead(name)
-    }
+    API::Node getHandlerByName(string name) { result = this.getParameter(0).getMember(name) }
 
-    DataFlow::Node getHandlerByRoute(string method, string path) {
+    API::Node getHandlerByRoute(string method, string path) {
       exists(string handlerName |
         this.hasLine(method, path, handlerName) and
         result = this.getHandlerByName(handlerName)
@@ -56,10 +63,10 @@ module Spife {
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = this.getHandlerByRoute(_, _).getALocalSource().(DataFlow::FunctionNode)
+      result = this.getHandlerByRoute(_, _).getAValueReachingSink().(DataFlow::FunctionNode)
       or
       exists(DataFlow::MethodCallNode validation |
-        validation = this.getHandlerByRoute(_, _).getALocalSource() and
+        validation = this.getHandlerByRoute(_, _).getAValueReachingSink() and
         result = validation.getArgument(1).getAFunctionValue()
       )
     }
