@@ -199,21 +199,17 @@ predicate expectsContent(Node n, ContentSet c) {
 }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(Node n) {
-  result = n.getType()
-  or
-  result = FlowSummaryImpl::Private::summaryNodeType(n)
-}
+DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a type returned by `getNodeType()`. */
-string ppReprType(Type t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   any() // stub implementation
 }
 
@@ -227,7 +223,13 @@ class CastNode extends ExprNode {
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+private newtype TDataFlowType =
+  TTodoDataFlowType() or
+  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+
+class DataFlowType extends TDataFlowType {
+  string toString() { result = "" }
+}
 
 class DataFlowLocation = Location;
 
