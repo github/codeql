@@ -80,7 +80,7 @@ function test2(req, context) { // test: handler
 }
 
 function test3(req, context) { // test: candidateHandler
-  return reply('<p>' + req.query.name + '</p>') // test: source, stackTraceExposureSink, !xssSink, !xss
+  return reply('<p>' + req.query.name + '</p>')
 }
 
 function test4(req, context) { // test: handler

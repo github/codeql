@@ -50,7 +50,6 @@ passingPositiveTests
 | PASSED | source | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | source | lib/views/index.js:75:41:75:79 | // test ... ureSink |
 | PASSED | source | lib/views/index.js:77:94:77:166 | // test ... inition |
-| PASSED | source | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
 | PASSED | source | lib/views/index.js:87:25:87:39 | // test: source |
 | PASSED | source | lib/views/index.js:94:25:94:39 | // test: source |
 | PASSED | source | lib/views/index.js:101:25:101:39 | // test: source |
@@ -63,7 +62,6 @@ passingPositiveTests
 | PASSED | stackTraceExposureSink | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | stackTraceExposureSink | lib/views/index.js:75:41:75:79 | // test ... ureSink |
 | PASSED | stackTraceExposureSink | lib/views/index.js:77:94:77:166 | // test ... inition |
-| PASSED | stackTraceExposureSink | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
 | PASSED | stackTraceExposureSink | lib/views/index.js:90:57:90:121 | // test ... inition |
 | PASSED | stackTraceExposureSink | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
 | PASSED | stackTraceExposureSink | lib/views/index.js:105:59:105:123 | // test ... inition |
@@ -80,13 +78,11 @@ failingPositiveTests
 passingNegativeTests
 | PASSED | !xss | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | !xss | lib/views/index.js:77:94:77:166 | // test ... inition |
-| PASSED | !xss | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
 | PASSED | !xss | lib/views/index.js:90:57:90:121 | // test ... inition |
 | PASSED | !xss | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
 | PASSED | !xss | lib/views/index.js:105:59:105:123 | // test ... inition |
 | PASSED | !xssSink | lib/views/index.js:67:94:67:184 | // test ... inition |
 | PASSED | !xssSink | lib/views/index.js:77:94:77:166 | // test ... inition |
-| PASSED | !xssSink | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
 | PASSED | !xssSink | lib/views/index.js:90:57:90:121 | // test ... inition |
 | PASSED | !xssSink | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
 | PASSED | !xssSink | lib/views/index.js:105:59:105:123 | // test ... inition |
