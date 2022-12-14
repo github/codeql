@@ -37,20 +37,35 @@ static void processFrontendOptions(swift::FrontendOptions& options) {
     case Action::EmitModuleOnly:
     case Action::MergeModules:
     case Action::CompileModuleFromInterface:
-      // for module emission actions, we redirect the output to our internal artifact storage
-      {
-        swift::SupplementaryOutputPaths paths;
-        paths.ModuleOutputPath =
-            codeql::redirect(options.InputsAndOutputs.getSingleOutputFilename()).string();
-        options.InputsAndOutputs.setMainAndSupplementaryOutputs(std::vector{paths.ModuleOutputPath},
-                                                                std::vector{paths});
-        return;
+    case Action::EmitObject: {
+      auto& inOuts = options.InputsAndOutputs;
+      std::vector<swift::InputFile> inputs;
+      inOuts.forEachInput([&](const swift::InputFile& input) {
+        swift::PrimarySpecificPaths psp{};
+        if (std::filesystem::path output = input.getPrimarySpecificPaths().OutputFilename;
+            !output.empty()) {
+          if (output.extension() == ".swiftmodule") {
+            psp.OutputFilename = codeql::redirect(output);
+          } else {
+            psp.OutputFilename = "/dev/null";
+          }
+        }
+        if (std::filesystem::path module =
+                input.getPrimarySpecificPaths().SupplementaryOutputs.ModuleOutputPath;
+            !module.empty()) {
+          psp.SupplementaryOutputs.ModuleOutputPath = codeql::redirect(module);
+        }
+        auto inputCopy = input;
+        inputCopy.setPrimarySpecificPaths(std::move(psp));
+        inputs.push_back(std::move(inputCopy));
+        return false;
+      });
+      inOuts.clearInputs();
+      for (const auto& i : inputs) {
+        inOuts.addInput(i);
       }
-    case Action::EmitObject:
-      // for object emission, we do a type check pass instead, muting output but getting the sema
-      // phase to run in order to extract everything
-      options.RequestedAction = Action::Typecheck;
       return;
+    }
     case Action::PrintVersion:
     case Action::DumpAST:
     case Action::PrintAST:
