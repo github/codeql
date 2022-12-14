@@ -1,0 +1,44 @@
+filterChain
+| controllers/comments_controller.rb:8:3:42:5 | index | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/comments_controller.rb:8:3:42:5 | index |
+| controllers/comments_controller.rb:8:3:42:5 | index | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
+| controllers/comments_controller.rb:8:3:42:5 | index | controllers/comments_controller.rb:78:3:80:5 | this_must_run_first | controllers/application_controller.rb:10:3:12:5 | log_request |
+| controllers/comments_controller.rb:44:3:45:5 | create | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/comments_controller.rb:65:3:68:5 | ensure_user_can_edit_comments |
+| controllers/comments_controller.rb:44:3:45:5 | create | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
+| controllers/comments_controller.rb:44:3:45:5 | create | controllers/comments_controller.rb:44:3:45:5 | create | controllers/comments_controller.rb:74:3:76:5 | log_comment_change |
+| controllers/comments_controller.rb:44:3:45:5 | create | controllers/comments_controller.rb:65:3:68:5 | ensure_user_can_edit_comments | controllers/comments_controller.rb:44:3:45:5 | create |
+| controllers/comments_controller.rb:44:3:45:5 | create | controllers/comments_controller.rb:78:3:80:5 | this_must_run_first | controllers/application_controller.rb:10:3:12:5 | log_request |
+| controllers/comments_controller.rb:47:3:53:5 | show | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/comments_controller.rb:70:3:72:5 | set_comment |
+| controllers/comments_controller.rb:47:3:53:5 | show | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
+| controllers/comments_controller.rb:47:3:53:5 | show | controllers/comments_controller.rb:70:3:72:5 | set_comment | controllers/comments_controller.rb:47:3:53:5 | show |
+| controllers/comments_controller.rb:47:3:53:5 | show | controllers/comments_controller.rb:78:3:80:5 | this_must_run_first | controllers/application_controller.rb:10:3:12:5 | log_request |
+| controllers/comments_controller.rb:55:3:57:5 | photo | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/comments_controller.rb:55:3:57:5 | photo |
+| controllers/comments_controller.rb:55:3:57:5 | photo | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
+| controllers/comments_controller.rb:55:3:57:5 | photo | controllers/comments_controller.rb:55:3:57:5 | photo | controllers/comments_controller.rb:74:3:76:5 | log_comment_change |
+| controllers/comments_controller.rb:55:3:57:5 | photo | controllers/comments_controller.rb:78:3:80:5 | this_must_run_first | controllers/application_controller.rb:10:3:12:5 | log_request |
+| controllers/comments_controller.rb:59:3:61:5 | destroy | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/comments_controller.rb:65:3:68:5 | ensure_user_can_edit_comments |
+| controllers/comments_controller.rb:59:3:61:5 | destroy | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
+| controllers/comments_controller.rb:59:3:61:5 | destroy | controllers/comments_controller.rb:59:3:61:5 | destroy | controllers/comments_controller.rb:74:3:76:5 | log_comment_change |
+| controllers/comments_controller.rb:59:3:61:5 | destroy | controllers/comments_controller.rb:65:3:68:5 | ensure_user_can_edit_comments | controllers/comments_controller.rb:70:3:72:5 | set_comment |
+| controllers/comments_controller.rb:59:3:61:5 | destroy | controllers/comments_controller.rb:70:3:72:5 | set_comment | controllers/comments_controller.rb:59:3:61:5 | destroy |
+| controllers/comments_controller.rb:59:3:61:5 | destroy | controllers/comments_controller.rb:78:3:80:5 | this_must_run_first | controllers/application_controller.rb:10:3:12:5 | log_request |
+| controllers/photos_controller.rb:2:3:3:5 | show | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/photos_controller.rb:2:3:3:5 | show |
+| controllers/posts_controller.rb:6:3:7:5 | index | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/posts_controller.rb:6:3:7:5 | index |
+| controllers/posts_controller.rb:6:3:7:5 | index | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
+| controllers/posts_controller.rb:9:3:10:5 | show | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/posts_controller.rb:17:3:19:5 | set_post |
+| controllers/posts_controller.rb:9:3:10:5 | show | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
+| controllers/posts_controller.rb:9:3:10:5 | show | controllers/posts_controller.rb:17:3:19:5 | set_post | controllers/posts_controller.rb:9:3:10:5 | show |
+| controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/application_controller.rb:6:3:8:5 | set_user | controllers/posts_controller.rb:17:3:19:5 | set_post |
+| controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/application_controller.rb:10:3:12:5 | log_request | controllers/application_controller.rb:6:3:8:5 | set_user |
+| controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/posts_controller.rb:21:3:23:5 | log_upvote |
+| controllers/posts_controller.rb:12:3:13:5 | upvote | controllers/posts_controller.rb:17:3:19:5 | set_post | controllers/posts_controller.rb:12:3:13:5 | upvote |
+additionalFlowSteps
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:8:3:42:5 | self in index |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:55:3:57:5 | self in photo |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:65:3:68:5 | self in ensure_user_can_edit_comments |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/comments_controller.rb:70:3:72:5 | self in set_comment |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:6:3:7:5 | self in index |
+| controllers/application_controller.rb:7:5:7:9 | [post] self | controllers/posts_controller.rb:17:3:19:5 | self in set_post |
+| controllers/comments_controller.rb:71:5:71:12 | [post] self | controllers/comments_controller.rb:47:3:53:5 | self in show |
+| controllers/comments_controller.rb:71:5:71:12 | [post] self | controllers/comments_controller.rb:59:3:61:5 | self in destroy |
+| controllers/posts_controller.rb:18:5:18:9 | [post] self | controllers/posts_controller.rb:9:3:10:5 | self in show |
+| controllers/posts_controller.rb:18:5:18:9 | [post] self | controllers/posts_controller.rb:12:3:13:5 | self in upvote |

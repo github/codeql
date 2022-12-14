@@ -305,7 +305,7 @@ module ActionController {
      * Holds if `pred` is called before `succ` in the callback chain for action `action`.
      * `pred` and `succ` may be methods bound to callbacks or controller actions.
      */
-    private predicate next(Method pred, Method succ, ActionControllerActionMethod action) {
+    predicate next(Method pred, Method succ, ActionControllerActionMethod action) {
       exists(BeforeFilter f | pred = f.getFilterCallable() |
         // Non-terminal before filter
         succ = f.getNextFilter(action).getFilterCallable()
