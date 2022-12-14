@@ -6,7 +6,6 @@ import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
 import semmle.javascript.security.dataflow.RequestForgeryCustomizations
 import semmle.javascript.security.dataflow.ReflectedXssCustomizations
 import semmle.javascript.security.dataflow.ReflectedXssQuery as XssConfig
-import semmle.javascript.heuristics.AdditionalRouteHandlers
 
 class InlineTest extends LineComment {
   string tests;

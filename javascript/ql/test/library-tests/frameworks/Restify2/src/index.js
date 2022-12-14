@@ -123,9 +123,18 @@ function xss(req, res, next) { // test: handler
   res.send('hello ' + req.query.name); // test: source, stackTraceExposureSink, xssSink, xss
   next();
 }
-server["get"]('/xss', xss); // test: setup
 
-function xss2(req, res, next) { // test: handler
+function xss2(req, res, next) { // test: candidateHandler
+  next()
+}
+
+function xss3(req, res, next) { // test: handler
+  res.header("Content-Type", "text/html"); // test: headerDefinition
+  res.send('hello ' + req.header("foo")); // test: source, stackTraceExposureSink, xssSink, !xss
+  next();
+}
+
+function xss4(req, res, next) { // test: handler
   var body = req.params.name; // test: source
   res.writeHead(200, {
     'Content-Length': Buffer.byteLength(body),
@@ -135,19 +144,16 @@ function xss2(req, res, next) { // test: handler
   res.end();
   next();
 }
+
+server["get"]('/xss', xss); // test: setup
 ["get", "head"].forEach(method => {
   server[method]('/xss2', xss2);
 });
-
-function xss3(req, res, next) { // test: handler
-  res.header("Content-Type", "text/html"); // test: headerDefinition
-  res.send('hello ' + req.header("foo")); // test: source, stackTraceExposureSink, xssSink, !xss
-  next();
-}
 server["get"]('/xss3', xss3); // test: setup
+server["get"]('/xss4', xss4); // test: setup
 
 
-function sendV2(req, res, next) { // test: candidateHandler
+server.get('/testv2', function(req, res, next) { // test: handler
   res.set({
     "Content-Type": "text/html",
     "access-control-allow-origin": "*", // test: corsMiconfigurationSink
@@ -162,7 +168,8 @@ function sendV2(req, res, next) { // test: candidateHandler
   clients.createJsonClient(req.params.uri); // test: source, ssrfSink
 
   next();
-}
+})
+
 server.get('/hello2/:name', restify.plugins.conditionalHandler([ // test: setup
   { version: ['2.0.0', '2.1.0', '2.2.0'], handler: sendV2 }
 ]));
